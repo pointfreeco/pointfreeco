@@ -313,7 +313,7 @@ private let defaultSectionNode = section(
         input(
           [
             type(.submit),
-            value("Subscribe")
+            value("Sign up")
           ]
         )
       ]
@@ -347,8 +347,8 @@ let launchSignupView =
   metaLayout(view)
     .contramap(
       Metadata.create(
-        description: "A weekly video series on Swift and functional programming.",
-        title: "Point-Free – A weekly video series on Swift and functional programming.",
+        description: "A weekly video series on Swift and functional programming. Each week we will discuss an interesting topic and then ask the question “what’s the point?!”",
+        title: "Point-Free",
         twitterSite: "@pointfreeco",
         type: "website",
         url: link(to: .home(signedUpSuccessfully: nil))
