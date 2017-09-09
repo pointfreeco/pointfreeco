@@ -63,7 +63,7 @@ private let hosts = [
   "localhost"
 ]
 
-// TODO: move to support file for HttpPipeline+ApplicativeParser
+// TODO: move to HttpPipeline
 private func redirectUnrelatedDomains<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
   )
