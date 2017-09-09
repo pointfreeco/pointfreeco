@@ -7,7 +7,7 @@ Request:
 URL: /?success=true
 Method: GET
 Headers: [
-    Authorization: Basic cG9pbnQ6ZnJlZQ==
+  
 ]
 Body: (Data, 0 bytes)
 
