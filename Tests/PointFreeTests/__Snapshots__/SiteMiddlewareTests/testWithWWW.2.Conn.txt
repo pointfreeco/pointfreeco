@@ -1,0 +1,22 @@
+Step:
+-----
+ResponseEnded
+
+Request:
+--------
+URL: http://www.pointfree.co/episodes
+Method: GET
+Headers: [
+  
+]
+Body: (Data, 0 bytes)
+
+Response:
+---------
+Status 404 (notFound)
+Headers: [
+  Content-Type: text/plain
+]
+Bytes: 19
+
+don't know that url
