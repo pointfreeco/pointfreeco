@@ -4,7 +4,7 @@ ResponseEnded
 
 Request:
 --------
-URL: /?success=true
+URL: http://localhost/?success=true
 Method: GET
 Headers: [
   

@@ -6,7 +6,8 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  route(router: PointFree.router)
+  redirectUnrelatedDomains
+    <<< route(router: PointFree.router)
     <| (render(conn:) >>> perform)
 
 public enum Route {
@@ -52,6 +53,41 @@ private func route<I, A, Route>(
           .map(const >>> conn.map >>> middleware)
           ?? (conn |> notFound(respond(text: "don't know that url")))
       }
+    }
+}
+
+private let hosts = [
+  "www.pointfree.co",
+  "127.0.0.1",
+  "0.0.0.0",
+  "localhost"
+]
+
+// TODO: move to HttpPipeline
+private func redirectUnrelatedDomains<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
+
+    return { conn in
+
+      conn.request.url.flatMap { url in
+        if url.host.map(hosts.contains) != .some(true) {
+          var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
+          components?.host = "www.pointfree.co"
+          return components?.url.map {
+            conn
+              |> writeStatus(.movedPermanently)
+              |> writeHeader(.location($0.absoluteString))
+              |> map(const(nil))
+              |> closeHeaders
+              |> end
+          }
+        } else {
+          return nil
+        }
+      }
+      ?? middleware(conn)
     }
 }
 
