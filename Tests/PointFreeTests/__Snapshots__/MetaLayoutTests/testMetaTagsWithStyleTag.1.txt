@@ -2,14 +2,14 @@
 <html>
   <head>
     <title>
-      Point Free
+      Point-Free
     </title>
     <meta name="description" content="A video series on functional programming.">
     <meta property="og:description" content="A video series on functional programming.">
     <meta name="twitter:description" content="A video series on functional programming.">
-    <meta name="title" content="Point Free">
-    <meta property="og:title" content="Point Free">
-    <meta name="twitter:title" content="Point Free">
+    <meta name="title" content="Point-Free">
+    <meta property="og:title" content="Point-Free">
+    <meta name="twitter:title" content="Point-Free">
     <meta property="og:type" content="website">
     <meta name="twitter:site" content="pointfreeco">
     <meta property="og:url" content="http://www.pointfree.co">
