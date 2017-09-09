@@ -226,7 +226,7 @@ private let view: View<Bool?> = View { success in
         [
           head(
             [
-              title("Point Free – A weekly video series on Swift and functional programming."),
+              title("Point-Free – A weekly video series on Swift and functional programming."),
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1))
             ]
@@ -286,7 +286,7 @@ private let successSectionNode = section(
       [
         img(base64: checkmarkSvgBase64, mediaType: .image(.svg), alt: "", []),
         h1(["We'll be in touch."]),
-        p(["Help spread the word about Point Free!"]),
+        p(["Help spread the word about Point-Free!"]),
         twitterLink,
         facebookLink
       ]
@@ -348,7 +348,7 @@ let launchSignupView =
     .contramap(
       Metadata.create(
         description: "A weekly video series on Swift and functional programming.",
-        title: "Point Free – A weekly video series on Swift and functional programming.",
+        title: "Point-Free – A weekly video series on Swift and functional programming.",
         twitterSite: "@pointfreeco",
         type: "website",
         url: link(to: .home(signedUpSuccessfully: nil))
