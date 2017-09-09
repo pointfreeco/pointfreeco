@@ -15,7 +15,7 @@ class MetaLayoutTests: XCTestCase {
         [
           html(
             [
-              head([title("Point Free")]),
+              head([title("Point-Free")]),
               body(["Hello world!"])
             ]
           )
@@ -31,7 +31,7 @@ class MetaLayoutTests: XCTestCase {
           .init(
             description: "A video series on functional programming.",
             rest: unit,
-            title: "Point Free",
+            title: "Point-Free",
             twitterSite: "pointfreeco",
             type: "website",
             url: "http://www.pointfree.co"
