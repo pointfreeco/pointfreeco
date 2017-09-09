@@ -347,7 +347,7 @@ let launchSignupView =
   metaLayout(view)
     .contramap(
       Metadata.create(
-        description: "A weekly video series on Swift and functional programming. Each week we will discuss an interesting topic and then ask the question “what’s the point?!”",
+        description: "A weekly video series on Swift and functional programming. Each week we discuss a topic and then ask “what’s the point?!”",
         title: "Point-Free",
         twitterSite: "@pointfreeco",
         type: "website",
