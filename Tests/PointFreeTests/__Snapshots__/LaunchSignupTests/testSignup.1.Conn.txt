@@ -1,0 +1,20 @@
+Step:
+-----
+ResponseEnded
+
+Request:
+--------
+URL: /launch-signup
+Method: POST
+Headers: [
+    Authorization: Basic cG9pbnQ6ZnJlZQ==
+]
+Body: email=hello@pointfree.co
+
+Response:
+---------
+Status 302 (found)
+Headers: [
+  Location: /?success=true
+]
+Bytes: 0
