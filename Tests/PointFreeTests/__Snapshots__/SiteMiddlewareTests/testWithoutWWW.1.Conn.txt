@@ -1,0 +1,20 @@
+Step:
+-----
+ResponseEnded
+
+Request:
+--------
+URL: http://pointfree.co
+Method: GET
+Headers: [
+  
+]
+Body: (Data, 0 bytes)
+
+Response:
+---------
+Status 301 (movedPermanently)
+Headers: [
+  Location: http://www.pointfree.co
+]
+Bytes: 0
