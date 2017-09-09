@@ -1,0 +1,70 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Algebra",
+        "repositoryURL": "https://github.com/typelift/Algebra.git",
+        "state": {
+          "branch": null,
+          "revision": "e81a20aa543dd0847897b57073a3f939c2124375",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "DoctorPretty",
+        "repositoryURL": "https://github.com/bkase/DoctorPretty.git",
+        "state": {
+          "branch": null,
+          "revision": "2d0370ade8098dd1e24c08460edc1606eb81a54f",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "Operadics",
+        "repositoryURL": "https://github.com/typelift/Operadics.git",
+        "state": {
+          "branch": null,
+          "revision": "bc8cdd83868c395b7075d0db5e930842172012ec",
+          "version": "0.2.3"
+        }
+      },
+      {
+        "package": "Prelude",
+        "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
+        "state": {
+          "branch": "17d2746",
+          "revision": "17d27464ff8e2130908c9771f541bb00abe875f3",
+          "version": null
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": "f96de1f",
+          "revision": "f96de1f722b8b1e23cacf6697a8dab0868c98139",
+          "version": null
+        }
+      },
+      {
+        "package": "Swiftx",
+        "repositoryURL": "https://github.com/typelift/Swiftx.git",
+        "state": {
+          "branch": null,
+          "revision": "32cb9a833cbc69b1ee2ebad2392eca3090b7211c",
+          "version": "0.5.3"
+        }
+      },
+      {
+        "package": "Web",
+        "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
+        "state": {
+          "branch": "8309686",
+          "revision": "83096862f734b55d1cbc623c03de6a8026171657",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
