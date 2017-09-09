@@ -6,9 +6,8 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  basicAuth(user: "point", password: "free")
-    <<< route(router: PointFree.router)
-    <| (perform <<< render(conn:))
+  route(router: PointFree.router)
+    <| (render(conn:) >>> perform)
 
 public enum Route {
   case home(signedUpSuccessfully: Bool?)
