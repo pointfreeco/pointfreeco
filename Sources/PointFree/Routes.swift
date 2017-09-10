@@ -95,6 +95,12 @@ private func redirectUnrelatedDomains<A>(
     }
 }
 
+private let httpAllowedHosts = [
+  "127.0.0.1",
+  "0.0.0.0",
+  "localhost"
+]
+
 // TODO: move to HttpPipeline
 private func requireHttps<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
@@ -103,7 +109,10 @@ private func requireHttps<A>(
 
     return { conn in
       conn.request.url
-        .filterOptional { $0.scheme == .some("http") }
+        .filterOptional { (url: URL) -> Bool in
+          url.scheme == .some("http")
+            && url.host.map(httpAllowedHosts.contains) != .some(true)
+        }
         .flatMap(makeHttps)
         .map {
           conn
