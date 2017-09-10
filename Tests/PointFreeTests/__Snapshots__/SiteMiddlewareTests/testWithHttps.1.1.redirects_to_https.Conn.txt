@@ -4,7 +4,7 @@ ResponseEnded
 
 Request:
 --------
-URL: https://pointfree.co/episodes
+URL: http://www.pointfree.co
 Method: GET
 Headers: [
   
@@ -15,6 +15,6 @@ Response:
 ---------
 Status 301 (movedPermanently)
 Headers: [
-  Location: https://www.pointfree.co/episodes
+  Location: https://www.pointfree.co
 ]
 Bytes: 0
