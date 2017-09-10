@@ -75,10 +75,9 @@ private func redirectUnrelatedDomains<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
 
     return { conn in
-
-      conn.request.url.flatMap { url in
+      return conn.request.url.flatMap { url in
         if url.host.map(hosts.contains) != .some(true) {
-          var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
+          var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
           components?.host = "www.pointfree.co"
           return components?.url.map {
             conn
@@ -103,25 +102,33 @@ private func requireHttps<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
 
     return { conn in
-
-      conn.request.url.flatMap { url in
-        if url.scheme == .some("http") {
-          var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
-          components?.scheme = "https"
-          return components?.url.map {
-            conn
-              |> writeStatus(.movedPermanently)
-              |> writeHeader(.location($0.absoluteString))
-              |> map(const(nil))
-              |> closeHeaders
-              |> end
-          }
-        } else {
-          return nil
-        }
+      conn.request.url
+        .filterOptional { $0.scheme == .some("http") }
+        .flatMap(makeHttps)
+        .map {
+          conn
+            |> writeStatus(.movedPermanently)
+            |> writeHeader(.location($0.absoluteString))
+            |> map(const(nil))
+            |> closeHeaders
+            |> end
         }
         ?? middleware(conn)
     }
+}
+
+// TODO: move to httppipeline?
+private func makeHttps(url: URL) -> URL? {
+  var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+  components?.scheme = "https"
+  return components?.url
+}
+
+// TODO: move to prelude
+extension Optional {
+  fileprivate func filterOptional(_ p: (Wrapped) -> Bool) -> Optional {
+    return self.flatMap { p($0) ? $0 : nil }
+  }
 }
 
 private func toBool(string: String) -> Bool {
