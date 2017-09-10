@@ -42,12 +42,12 @@ class SiteMiddlewareTests: TestCase {
   func testWithHttps() {
     assertSnapshot(
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!)) |> siteMiddleware,
-      named: "redirects_to_https"
+      named: "1.redirects_to_https"
     )
 
     assertSnapshot(
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!)) |> siteMiddleware,
-      named: "redirects_to_https"
+      named: "2.redirects_to_https"
     )
 
     assertSnapshot(
