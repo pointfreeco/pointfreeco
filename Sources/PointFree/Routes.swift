@@ -6,9 +6,10 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  redirectUnrelatedDomains
+  requireHttps
+    <<< redirectUnrelatedDomains
     <<< route(router: PointFree.router)
-    <| (render(conn:) >>> perform)
+    <| render(conn:)
 
 public enum Route {
   case home(signedUpSuccessfully: Bool?)
@@ -30,13 +31,17 @@ private let router =
   Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
     <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
 
-private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
+private func render(conn: Conn<StatusLineOpen, Route>) -> Conn<ResponseEnded, Data?> {
+  let io: IO<Conn<ResponseEnded, Data?>>
+
   switch conn.data {
   case let .home(signedUpSuccessfully):
-    return conn.map(const(signedUpSuccessfully)) |> homeResponse
+    io = conn.map(const(signedUpSuccessfully)) |> homeResponse
   case let .launchSignup(email):
-    return conn.map(const(email)) |> signupResponse
+    io = conn.map(const(email)) |> signupResponse
   }
+
+  return io.perform()
 }
 
 // TODO: move to support file for HttpPipeline+ApplicativeParser
@@ -86,8 +91,36 @@ private func redirectUnrelatedDomains<A>(
         } else {
           return nil
         }
-      }
-      ?? middleware(conn)
+        }
+        ?? middleware(conn)
+    }
+}
+
+// TODO: move to HttpPipeline
+private func requireHttps<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
+
+    return { conn in
+
+      conn.request.url.flatMap { url in
+        if url.scheme == .some("http") {
+          var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
+          components?.scheme = "https"
+          return components?.url.map {
+            conn
+              |> writeStatus(.movedPermanently)
+              |> writeHeader(.location($0.absoluteString))
+              |> map(const(nil))
+              |> closeHeaders
+              |> end
+          }
+        } else {
+          return nil
+        }
+        }
+        ?? middleware(conn)
     }
 }
 
