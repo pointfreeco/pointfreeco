@@ -7,7 +7,7 @@ import SnapshotTesting
 @testable import PointFree
 import XCTest
 
-class MetaLayoutTests: XCTestCase {
+class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
 
     let view = View<Prelude.Unit> { _ in

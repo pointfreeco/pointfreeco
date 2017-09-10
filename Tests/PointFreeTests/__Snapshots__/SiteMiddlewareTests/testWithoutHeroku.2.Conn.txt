@@ -4,7 +4,7 @@ ResponseEnded
 
 Request:
 --------
-URL: http://pointfreeco.herokuapp.com/episodes
+URL: https://pointfreeco.herokuapp.com/episodes
 Method: GET
 Headers: [
   
@@ -15,6 +15,6 @@ Response:
 ---------
 Status 301 (movedPermanently)
 Headers: [
-  Location: http://www.pointfree.co/episodes
+  Location: https://www.pointfree.co/episodes
 ]
 Bytes: 0
