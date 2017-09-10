@@ -4,7 +4,7 @@ ResponseEnded
 
 Request:
 --------
-URL: https://www.pointfree.co
+URL: http://0.0.0.0:8080/
 Method: GET
 Headers: [
   
