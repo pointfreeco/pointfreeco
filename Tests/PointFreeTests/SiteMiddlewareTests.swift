@@ -41,23 +41,28 @@ class SiteMiddlewareTests: TestCase {
 
   func testWithHttps() {
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!)) |> siteMiddleware
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!)) |> siteMiddleware,
+      named: "redirects_to_https"
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!)) |> siteMiddleware
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!)) |> siteMiddleware,
+      named: "redirects_to_https"
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!)) |> siteMiddleware
+      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!)) |> siteMiddleware,
+      named: "0.0.0.0_allowed"
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!)) |> siteMiddleware
+      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!)) |> siteMiddleware,
+      named: "127.0.0.0_allowed"
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!)) |> siteMiddleware
+      matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!)) |> siteMiddleware,
+      named: "localhost_allowed"
     )
   }
 }

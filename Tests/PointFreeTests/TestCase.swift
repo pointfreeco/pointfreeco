@@ -1,5 +1,6 @@
 @testable import PointFree
 import Prelude
+import SnapshotTesting
 import XCTest
 
 class TestCase: XCTestCase {
