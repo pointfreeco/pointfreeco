@@ -47,5 +47,17 @@ class SiteMiddlewareTests: TestCase {
     assertSnapshot(
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!)) |> siteMiddleware
     )
+
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!)) |> siteMiddleware
+    )
+
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!)) |> siteMiddleware
+    )
+
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!)) |> siteMiddleware
+    )
   }
 }
