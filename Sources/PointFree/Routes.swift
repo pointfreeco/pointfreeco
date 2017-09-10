@@ -2,6 +2,7 @@ import ApplicativeRouter
 import Foundation
 import Html
 import HttpPipeline
+import Optics
 import Prelude
 import Styleguide
 
@@ -77,8 +78,8 @@ private func redirectUnrelatedDomains<A>(
     return { conn in
       return conn.request.url.flatMap { url in
         if url.host.map(hosts.contains) != .some(true) {
-          var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-          components?.host = "www.pointfree.co"
+          let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            |> map(\.host .~ "www.pointfree.co")
           return components?.url.map {
             conn
               |> writeStatus(.movedPermanently)
@@ -128,9 +129,9 @@ private func requireHttps<A>(
 
 // TODO: move to httppipeline?
 private func makeHttps(url: URL) -> URL? {
-  var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-  components?.scheme = "https"
-  return components?.url
+  return URLComponents(url: url, resolvingAgainstBaseURL: false)
+    |> map(\.scheme .~ "https")
+    |> flatMap { $0.url }
 }
 
 // TODO: move to prelude
