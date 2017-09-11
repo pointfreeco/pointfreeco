@@ -233,8 +233,8 @@ private let view: View<Bool?> = View { success in
           ),
           body(
             success == .some(true)
-              ? [ successSectionNode, headerNode ]
-              : [ headerNode, defaultSectionNode ]
+              ? [ successSectionNode, headerNode, googleAnalytics ]
+              : [ headerNode, defaultSectionNode, googleAnalytics ]
           )
         ]
       )
@@ -319,6 +319,19 @@ private let defaultSectionNode = section(
       ]
     )
   ]
+)
+
+private let googleAnalytics: Node = script(
+"""
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-106218876-1', 'auto');
+  ga('send', 'pageview');
+</script>
+"""
 )
 
 private let twitterShareHref = { () -> String in
