@@ -7,7 +7,7 @@ Request:
 URL: https://pointfreeco.herokuapp.com
 Method: GET
 Headers: [
-  
+    X-Forwarded-Proto: https
 ]
 Body: (Data, 0 bytes)
 

@@ -7,7 +7,7 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  requireHttps
+  requireHerokuHttps
     <<< redirectUnrelatedDomains
     <<< route(router: PointFree.router)
     <| render(conn:)
@@ -62,8 +62,9 @@ private func route<I, A, Route>(
     }
 }
 
-private let hosts = [
-  "www.pointfree.co",
+private let canonicalUrl = "www.pointfree.co"
+private let allowedHosts: [String] = [
+  canonicalUrl,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
@@ -77,9 +78,9 @@ private func redirectUnrelatedDomains<A>(
 
     return { conn in
       return conn.request.url.flatMap { url in
-        if url.host.map(hosts.contains) != .some(true) {
+        if !allowedHosts.contains(url.host ?? "") {
           let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-            |> map(\.host .~ "www.pointfree.co")
+            |> map(\.host .~ canonicalUrl)
           return components?.url.map {
             conn
               |> writeStatus(.movedPermanently)
@@ -91,19 +92,18 @@ private func redirectUnrelatedDomains<A>(
         } else {
           return nil
         }
-        }
-        ?? middleware(conn)
+        } ?? middleware(conn)
     }
 }
 
-private let httpAllowedHosts = [
+private let allowedInsecureHosts: [String] = [
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
 ]
 
 // TODO: move to HttpPipeline
-private func requireHttps<A>(
+private func requireHerokuHttps<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
@@ -111,8 +111,10 @@ private func requireHttps<A>(
     return { conn in
       conn.request.url
         .filterOptional { (url: URL) -> Bool in
-          url.scheme == .some("http")
-            && url.host.map(httpAllowedHosts.contains) != .some(true)
+          // `url.scheme` cannot be trusted on Heroku, instead we need to look at the `X-Forwarded-Proto`
+          // header to determine if we are on https or not.
+          conn.request.allHTTPHeaderFields?["X-Forwarded-Proto"] != .some("https")
+            && !allowedInsecureHosts.contains(url.host ?? "")
         }
         .flatMap(makeHttps)
         .map {
