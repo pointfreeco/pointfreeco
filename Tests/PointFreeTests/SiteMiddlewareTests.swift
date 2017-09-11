@@ -7,35 +7,41 @@ import XCTest
 @testable import PointFree
 @testable import HttpPipeline
 import HttpPipelineTestSupport
+import Optics
+
+private func secureRequest(_ urlString: String) -> URLRequest {
+  return URLRequest(url: URL(string: urlString)!)
+    |> \.allHTTPHeaderFields .~ ["X-Forwarded-Proto": "https"]
+}
 
 class SiteMiddlewareTests: TestCase {
   func testWithoutWWW() {
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://pointfree.co")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://pointfree.co")) |> siteMiddleware
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://pointfree.co/episodes")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://pointfree.co/episodes")) |> siteMiddleware
     )
   }
 
   func testWithoutHeroku() {
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://pointfreeco.herokuapp.com")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com")) |> siteMiddleware
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://pointfreeco.herokuapp.com/episodes")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com/episodes")) |> siteMiddleware
     )
   }
 
   func testWithWWW() {
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://www.pointfree.co")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://www.pointfree.co")) |> siteMiddleware
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "https://www.pointfree.co/episodes")!)) |> siteMiddleware
+      matching: connection(from: secureRequest("https://www.pointfree.co/episodes")) |> siteMiddleware
     )
   }
 
