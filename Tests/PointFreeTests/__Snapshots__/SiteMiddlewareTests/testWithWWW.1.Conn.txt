@@ -4,10 +4,10 @@ ResponseEnded
 
 Request:
 --------
-URL: http://www.pointfree.co
+URL: https://www.pointfree.co
 Method: GET
 Headers: [
-  
+    X-Forwarded-Proto: https
 ]
 Body: (Data, 0 bytes)
 

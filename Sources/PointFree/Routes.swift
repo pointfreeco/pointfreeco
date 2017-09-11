@@ -2,13 +2,15 @@ import ApplicativeRouter
 import Foundation
 import Html
 import HttpPipeline
+import Optics
 import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  redirectUnrelatedDomains
+  requireHerokuHttps
+    <<< redirectUnrelatedDomains
     <<< route(router: PointFree.router)
-    <| (render(conn:) >>> perform)
+    <| render(conn:)
 
 public enum Route {
   case home(signedUpSuccessfully: Bool?)
@@ -30,13 +32,17 @@ private let router =
   Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
     <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
 
-private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
+private func render(conn: Conn<StatusLineOpen, Route>) -> Conn<ResponseEnded, Data?> {
+  let io: IO<Conn<ResponseEnded, Data?>>
+
   switch conn.data {
   case let .home(signedUpSuccessfully):
-    return conn.map(const(signedUpSuccessfully)) |> homeResponse
+    io = conn.map(const(signedUpSuccessfully)) |> homeResponse
   case let .launchSignup(email):
-    return conn.map(const(email)) |> signupResponse
+    io = conn.map(const(email)) |> signupResponse
   }
+
+  return io.perform()
 }
 
 // TODO: move to support file for HttpPipeline+ApplicativeParser
@@ -56,8 +62,9 @@ private func route<I, A, Route>(
     }
 }
 
-private let hosts = [
-  "www.pointfree.co",
+private let canonicalUrl = "www.pointfree.co"
+private let allowedHosts: [String] = [
+  canonicalUrl,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
@@ -70,11 +77,10 @@ private func redirectUnrelatedDomains<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
 
     return { conn in
-
-      conn.request.url.flatMap { url in
-        if url.host.map(hosts.contains) != .some(true) {
-          var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
-          components?.host = "www.pointfree.co"
+      return conn.request.url.flatMap { url in
+        if !allowedHosts.contains(url.host ?? "") {
+          let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            |> map(\.host .~ canonicalUrl)
           return components?.url.map {
             conn
               |> writeStatus(.movedPermanently)
@@ -86,9 +92,55 @@ private func redirectUnrelatedDomains<A>(
         } else {
           return nil
         }
-      }
-      ?? middleware(conn)
+        } ?? middleware(conn)
     }
+}
+
+private let allowedInsecureHosts: [String] = [
+  "127.0.0.1",
+  "0.0.0.0",
+  "localhost"
+]
+
+// TODO: move to HttpPipeline
+private func requireHerokuHttps<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data?>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data?> {
+
+    return { conn in
+      conn.request.url
+        .filterOptional { (url: URL) -> Bool in
+          // `url.scheme` cannot be trusted on Heroku, instead we need to look at the `X-Forwarded-Proto`
+          // header to determine if we are on https or not.
+          conn.request.allHTTPHeaderFields?["X-Forwarded-Proto"] != .some("https")
+            && !allowedInsecureHosts.contains(url.host ?? "")
+        }
+        .flatMap(makeHttps)
+        .map {
+          conn
+            |> writeStatus(.movedPermanently)
+            |> writeHeader(.location($0.absoluteString))
+            |> map(const(nil))
+            |> closeHeaders
+            |> end
+        }
+        ?? middleware(conn)
+    }
+}
+
+// TODO: move to httppipeline?
+private func makeHttps(url: URL) -> URL? {
+  return URLComponents(url: url, resolvingAgainstBaseURL: false)
+    |> map(\.scheme .~ "https")
+    |> flatMap { $0.url }
+}
+
+// TODO: move to prelude
+extension Optional {
+  fileprivate func filterOptional(_ p: (Wrapped) -> Bool) -> Optional {
+    return self.flatMap { p($0) ? $0 : nil }
+  }
 }
 
 private func toBool(string: String) -> Bool {
