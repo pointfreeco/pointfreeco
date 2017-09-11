@@ -14,7 +14,7 @@ AppEnvironment.push(
   )
 )
 
-var request = URLRequest(url: URL(string: "/")!)
+var request = URLRequest(url: URL(string: "http://localhost/")!)
 request.allHTTPHeaderFields = [
   "Authorization": "Basic " + "point:free".data(using: .utf8)!.base64EncodedString()
 ]
