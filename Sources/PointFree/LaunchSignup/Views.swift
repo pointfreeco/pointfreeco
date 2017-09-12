@@ -228,13 +228,14 @@ private let view: View<Bool?> = View { success in
             [
               title("Point-Free – A weekly video series on Swift and functional programming."),
               style(reset <> stylesheet),
-              meta(viewport: .width(.deviceWidth), .initialScale(1))
+              meta(viewport: .width(.deviceWidth), .initialScale(1)),
+              googleAnalytics
             ]
           ),
           body(
             success == .some(true)
-              ? [ successSectionNode, headerNode, googleAnalytics ]
-              : [ headerNode, defaultSectionNode, googleAnalytics ]
+              ? [ successSectionNode, headerNode ]
+              : [ headerNode, defaultSectionNode ]
           )
         ]
       )
@@ -321,16 +322,14 @@ private let defaultSectionNode = section(
   ]
 )
 
-private let googleAnalytics: Node = script(
+private let googleAnalytics: ChildOf<Element.Head> = script(
 """
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-106218876-1', 'auto');
-  ga('send', 'pageview');
-</script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-106218876-1', 'auto');
+ga('send', 'pageview');
 """
 )
 
