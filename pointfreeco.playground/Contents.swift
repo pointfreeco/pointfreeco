@@ -1,19 +1,18 @@
-@testable import PointFree
-import Prelude
-AppEnvironment.push(
-  env: .init(
-    airtableStuff: mockCreateRow(result: .left(unit))
-  )
-)
-
 import Css
 import CssReset
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import PlaygroundSupport
+@testable import PointFree
 import Prelude
 import WebKit
+
+AppEnvironment.push(
+  env: .init(
+    airtableStuff: mockCreateRow(result: .left(unit))
+  )
+)
 
 var request = URLRequest(url: URL(string: "http://localhost/")!)
 
