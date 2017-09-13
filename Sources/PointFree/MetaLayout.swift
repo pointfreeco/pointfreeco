@@ -6,8 +6,10 @@ import Prelude
 
 public struct Metadata<A> {
   public let description: String?
+  public let image: String?
   public let rest: A
   public let title: String?
+  public let twitterCard: String?
   /// @username of website. Either twitter:site or twitter:site:id is required.
   public let twitterSite: String?
   public let type: String?
@@ -15,7 +17,9 @@ public struct Metadata<A> {
 
   public static func create(
     description: String? = nil,
+    image: String? = nil,
     title: String? = nil,
+    twitterCard: String? = nil,
     twitterSite: String? = nil,
     type: String? = nil,
     url: String? = nil
@@ -24,8 +28,10 @@ public struct Metadata<A> {
       return { rest in
         .init(
           description: description,
+          image: image,
           rest: rest,
           title: title,
+          twitterCard: twitterCard,
           twitterSite: twitterSite,
           type: type,
           url: url
@@ -40,12 +46,15 @@ public struct Metadata<A> {
       self.description.map { meta(property: "og:description", content: $0) },
       self.description.map { meta(name: "twitter:description", content: $0) },
 
+      self.image.map { meta(name: "twitter:image", content: $0) },
+
       self.title.map { meta(name: "title", content: $0) },
       self.title.map { meta(property: "og:title", content: $0) },
       self.title.map { meta(name: "twitter:title", content: $0) },
 
       self.type.map { meta(property: "og:type", content: $0) },
 
+      self.twitterCard.map { meta(name: "twitter:card", content: $0) },
       self.twitterSite.map { meta(name: "twitter:site", content: $0) },
 
       self.url.map { meta(property: "og:url", content: $0) },
