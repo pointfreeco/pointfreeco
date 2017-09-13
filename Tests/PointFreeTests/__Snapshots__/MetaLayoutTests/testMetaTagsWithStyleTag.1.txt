@@ -8,6 +8,7 @@
     <meta property="og:description" content="A video series on functional programming.">
     <meta name="twitter:description" content="A video series on functional programming.">
     <meta name="twitter:image" content="http://www.example.com/image.jpg">
+    <meta name="og:image" content="http://www.example.com/image.jpg">
     <meta name="title" content="Point-Free">
     <meta property="og:title" content="Point-Free">
     <meta name="twitter:title" content="Point-Free">
