@@ -14,20 +14,19 @@ let logoStyle = ".logo" % (
 )
 
 let heroHeadingStyle = baseFontStyle
-  <> lineHeight(1.29)
-  <> letterSpacing(.px(0.4))
+  <> lineHeight(1.4)
+  <> fontSize(.px(22))
 
 let h1Style = h1 % (
   heroHeadingStyle
     <> color(.white(0, 1))
-    <> padding(bottom: .px(6))
-    <> fontSize(.px(20))
+    <> padding(bottom: .px(16))
 )
 
 let h2Style = h2 % (
   heroHeadingStyle
-    <> color(.white(0.5, 1))
-    <> fontSize(.px(17))
+    <> color(.white(0.6, 1))
+    <> padding(bottom: .px(120))
 )
 
 let h3Style = h3 % (
@@ -105,9 +104,8 @@ let heroStyle = ".hero" % (
     <> (footer ** p) % (
       baseFontStyle
         <> color(.white(0,0.3))
-        <> fontSize(.px(13))
-        <> lineHeight(1.5)
-        <> margin(top: .px(120))
+        <> fontSize(.px(12))
+        <> lineHeight(1.4)
     )
     <> (footer ** a) % (
       fontWeight(.w600)
@@ -136,8 +134,8 @@ let responsiveSuccessContainer = ".success .container" % (
     <> margin(top: .px(-200))
 )
 
-let responsiveH1Style = h1 % fontSize(.px(22))
-let responsiveH2Style = h2 % fontSize(.px(20))
+let responsiveH1Style = h1 % fontSize(.px(19))
+let responsiveH2Style = h2 % fontSize(.px(19))
 
 let responsiveHeroStyle = responsiveHeroContainer
   <> ".hero" % position(.relative)
@@ -226,7 +224,7 @@ private let view: View<Bool?> = View { success in
         [
           head(
             [
-              title("Point-Free – A weekly video series on Swift and functional programming."),
+              title("Point-Free — A weekly video series on Swift and functional programming."),
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1)),
               googleAnalytics,
@@ -253,8 +251,8 @@ private let headerNode = header(
           [href("/")],
           [img(base64: logoSvgBase64, mediaType: .image(.svg), alt: "Point Free", [`class`("logo")])]
         ),
-        h1(["A new weekly Swift video series."]),
-        h2(["Exploring functional programming and more. Coming really, really soon."]),
+        h1(["A new weekly Swift video series exploring functional programming and more."]),
+        h2(["Coming really, really soon."]),
         footer(
           [
             p(
@@ -269,12 +267,21 @@ private let headerNode = header(
                   [href("https://twitter.com/stephencelis"), target(.blank)],
                   ["@stephencelis"]
                 ),
-                ", open‑sourced on ",
+                "."
+              ]
+            ),
+            p(
+              [
+                "Built with ",
+                a(
+                  [href=("https://swift.org"), target(.blank)],
+                  ["Swift"]
+                ),
+                " and open-sourced on ",
                 a(
                   [href("https://github.com/pointfreeco/pointfreeco"), target(.blank)],
                   ["GitHub"]
                 ),
-                "."
               ]
             )
           ]
@@ -341,7 +348,7 @@ ga('send', 'pageview');
 private let twitterShareHref = { () -> String in
   var components = URLComponents(string: "https://twitter.com/intent/tweet")!
   components.queryItems = [
-    URLQueryItem(name: "text", value: "A new weekly video series on Swift and functional programming is starting soon…"),
+    URLQueryItem(name: "text", value: "A new weekly video series on Swift and functional programming is coming soon!"),
     URLQueryItem(name: "url", value: "http://www.pointfree.co"),
     URLQueryItem(name: "via", value: "pointfreeco"),
   ]
