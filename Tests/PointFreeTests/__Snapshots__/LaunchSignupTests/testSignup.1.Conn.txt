@@ -1,20 +1,11 @@
-Step:
------
-ResponseEnded
+▿ Step
+  ResponseEnded
 
-Request:
---------
-URL: http://localhost:8080/launch-signup
-Method: POST
-Headers: [
-  
-]
-Body: email=hello@pointfree.co
+▿ Request
+  POST http://localhost:8080/launch-signup
 
-Response:
----------
-Status 302 (found)
-Headers: [
+  email=hello@pointfree.co
+
+▿ Response
+  Status 302 FOUND
   Location: /?success=true
-]
-Bytes: 0

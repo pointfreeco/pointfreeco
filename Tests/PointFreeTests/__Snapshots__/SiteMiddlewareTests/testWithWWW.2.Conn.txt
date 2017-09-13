@@ -1,22 +1,15 @@
-Step:
------
-ResponseEnded
+▿ Step
+  ResponseEnded
 
-Request:
---------
-URL: https://www.pointfree.co/episodes
-Method: GET
-Headers: [
-    X-Forwarded-Proto: https
-]
-Body: (Data, 0 bytes)
+▿ Request
+  GET https://www.pointfree.co/episodes
+  X-Forwarded-Proto: https
 
-Response:
----------
-Status 404 (notFound)
-Headers: [
+  (Data, 0 bytes)
+
+▿ Response
+  Status 404 NOTFOUND
+  Content-Length: 19
   Content-Type: text/plain
-]
-Bytes: 19
 
-don't know that url
+  don't know that url
