@@ -1,20 +1,12 @@
-Step:
------
-ResponseEnded
+▿ Step
+  ResponseEnded
 
-Request:
---------
-URL: https://pointfree.co
-Method: GET
-Headers: [
-    X-Forwarded-Proto: https
-]
-Body: (Data, 0 bytes)
+▿ Request
+  GET https://pointfree.co
+  X-Forwarded-Proto: https
 
-Response:
----------
-Status 301 (movedPermanently)
-Headers: [
+  (Data, 0 bytes)
+
+▿ Response
+  Status 301 MOVEDPERMANENTLY
   Location: https://www.pointfree.co
-]
-Bytes: 0
