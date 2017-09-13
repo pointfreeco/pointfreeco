@@ -229,7 +229,10 @@ private let view: View<Bool?> = View { success in
               title("Point-Free – A weekly video series on Swift and functional programming."),
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1)),
-              googleAnalytics
+              googleAnalytics,
+              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")]),
+              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")]),
+              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")])
             ]
           ),
           body(
