@@ -230,9 +230,6 @@ private let view: View<Bool?> = View { success in
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1)),
               googleAnalytics,
-              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")]),
-              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")]),
-              link([rel(.icon), type(.png), href("https://s3.amazonaws.com/pointfree.co/favicon-16x16.png")])
             ]
           ),
           body(
