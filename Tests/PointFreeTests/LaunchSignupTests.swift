@@ -33,7 +33,7 @@ extension XCTestCase {
         webView.loadHTMLString(String(data: conn.response.body!, encoding: .utf8)!, baseURL: nil)
         let exp = expectation(description: "webView")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           assertSnapshot(
             matching: webView,
             named: (name ?? "") + "_\(size.width)x\(size.height)",
