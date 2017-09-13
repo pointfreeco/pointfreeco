@@ -104,10 +104,10 @@ let heroStyle = ".hero" % (
   background(Color.white(1))
     <> (footer ** p) % (
       baseFontStyle
-        <> fontSize(.px(13))
-        <> margin(top: .px(120))
         <> color(.white(0,0.3))
-      
+        <> fontSize(.px(13))
+        <> lineHeight(1.5)
+        <> margin(top: .px(120))
     )
     <> (footer ** a) % (
       fontWeight(.w600)
@@ -268,6 +268,11 @@ private let headerNode = header(
                 a(
                   [href("https://twitter.com/stephencelis"), target(.blank)],
                   ["@stephencelis"]
+                ),
+                " open‑sourced on ",
+                a(
+                  [href("https://github.com/pointfreeco/pointfreeco"), target(.blank)],
+                  ["GitHub"]
                 ),
                 "."
               ]
