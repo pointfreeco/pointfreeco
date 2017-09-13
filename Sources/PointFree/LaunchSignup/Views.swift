@@ -269,7 +269,7 @@ private let headerNode = header(
                   [href("https://twitter.com/stephencelis"), target(.blank)],
                   ["@stephencelis"]
                 ),
-                " open‑sourced on ",
+                ", open‑sourced on ",
                 a(
                   [href("https://github.com/pointfreeco/pointfreeco"), target(.blank)],
                   ["GitHub"]

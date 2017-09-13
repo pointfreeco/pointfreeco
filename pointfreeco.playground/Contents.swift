@@ -1,23 +1,20 @@
-import Prelude
-import HttpPipeline
-import Html
 import Css
-import HtmlCssSupport
 import CssReset
-@testable import PointFree
-import WebKit
+import Html
+import HtmlCssSupport
+import HttpPipeline
 import PlaygroundSupport
+@testable import PointFree
+import Prelude
+import WebKit
 
 AppEnvironment.push(
   env: .init(
     airtableStuff: mockCreateRow(result: .left(unit))
   )
 )
-
+ 
 var request = URLRequest(url: URL(string: "http://localhost/")!)
-request.allHTTPHeaderFields = [
-  "Authorization": "Basic " + "point:free".data(using: .utf8)!.base64EncodedString()
-]
 
 let conn = connection(from: request)
 let result = conn |> siteMiddleware
