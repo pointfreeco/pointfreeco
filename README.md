@@ -19,20 +19,39 @@ The repo contains an extensive test suite and some playgrounds to explore. You c
 * Open a playground!
 
 
-### Some fun things to explore
+## Some fun things to explore
 
 There’s a lot of fun things to explore in this repo. For example:
 
-* We develop web pages in playgrounds for a continuous feedback loop.
+* We develop web pages in playgrounds for a continuous feedback loop. This is made possible by the fact that the entire server stack is composed of pure functions with side-effects pushed to the boundaries of the application. It allows us to load up any request in isolation, including `POST` requests, all without ever worrying about doing a side-effect.
+![Server side Swift in a playground](.github/pointfreeco-playgrounds.png)
 
-  - We use playgrounds to iterate on each web page. (links).
+*  We use snapshot testing to capture full data structures in order to verify their correctness. Not only do we do this in the traditional way of taking screenshots of web pages at various break points (e.g. on [iPhone](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.3._375.0x667.0.png) and [desktop](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.5._800.0x600.0.png)), but we can also snapshot any entire request-to-response lifecycle (e.g. the `POST` to a signup page does the correct [redirect](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testSignup.1.Conn.txt)).
 
-  - Our tests use snapshot testing to capture several iOS and desktop breakpoints (links) and track UI changes over time (link).
+```
+▿ Step
+  ResponseEnded
 
-Point-Free uses a bunch of cool (and related) open-source software:
+▿ Request
+  POST http://localhost:8080/launch-signup
 
-  - swift-web Powers our back-end and front-end: (more)
+  email=hello@pointfree.co
 
-  - swift-prelude Offers a standard library for experimental functional programming in Swift (expect to learn more if you subscribe to our series)
+▿ Response
+  Status 302 FOUND
+  Location: /?success=true
+```
 
-  - swift-snapshot-testing Powers our testing infrastructure: we get detailed views of our expectations, visually and...figuratively?
+## Related projects
+
+Point-Free uses a bunch of interesting open-source software:
+
+* [swift-web](https://www.github.com/pointfreeco/swift-web): A collection of types and functions for dealing with common web server concerns, such as HTML render, CSS preprocessing, middleware and more.
+* [swift-prelude](https://www.github.com/pointfreeco/swift-prelude): Offers a standard library for experimental functional programming in Swift.
+* [swift-snapshot-testing](https://www.github.com/pointfreeco/swift-prelude): Powers our testing infrastructure by tacking snapshots of various data structures to guarantee the correctness of their output. We use this on everything from [middleware](https://github.com/pointfreeco/pointfreeco/blob/27f6eae212c1fea48da24b1f16a26043baaea4aa/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testSignup.1.Conn.txt) to ensure requests are correctly transformed into responses, and even entire web pages to make sure the site looks correct at a variety of sizes (e.g. on [iPhone](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.3._375.0x667.0.png) and [desktop](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.5._800.0x600.0.png)).
+
+Explore more of our open-source on the [Point-Free](https://www.github.com/pointfreeco) organization.
+
+## Find this interesting?
+
+Then check out [Point-Free](https://www.pointfree.co), a soon-to-be launching weekly video series exploring Swift and functional programming!
