@@ -30,8 +30,10 @@ class MetaLayoutTests: TestCase {
         nodes: layoutView.view(
           .init(
             description: "A video series on functional programming.",
+            image: "http://www.example.com/image.jpg",
             rest: unit,
             title: "Point-Free",
+            twitterCard: "summary_large_image",
             twitterSite: "pointfreeco",
             type: "website",
             url: "http://www.pointfree.co"
