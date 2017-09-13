@@ -1,20 +1,11 @@
-Step:
------
-ResponseEnded
+▿ Step
+  ResponseEnded
 
-Request:
---------
-URL: http://www.pointfree.co
-Method: GET
-Headers: [
-  
-]
-Body: (Data, 0 bytes)
+▿ Request
+  GET http://www.pointfree.co
 
-Response:
----------
-Status 301 (movedPermanently)
-Headers: [
+  (Data, 0 bytes)
+
+▿ Response
+  Status 301 MOVEDPERMANENTLY
   Location: https://www.pointfree.co
-]
-Bytes: 0
