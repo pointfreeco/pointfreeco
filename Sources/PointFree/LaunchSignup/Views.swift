@@ -229,7 +229,7 @@ private let view: View<Bool?> = View { success in
               title("Point-Free – A weekly video series on Swift and functional programming."),
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1)),
-              googleAnalytics
+              googleAnalytics,
             ]
           ),
           body(
@@ -365,9 +365,11 @@ let launchSignupView =
     .contramap(
       Metadata.create(
         description: "A weekly video series on Swift and functional programming. Each week we discuss a topic and then ask: “What’s the point!?”",
+        image: "https://s3.amazonaws.com/pointfree.co/twitter-card-large.png",
         title: "Point-Free",
+        twitterCard: "summary_large_image",
         twitterSite: "@pointfreeco",
         type: "website",
-        url: link(to: .home(signedUpSuccessfully: nil))
+        url: "https://www.pointfree.co"
       )
 )
