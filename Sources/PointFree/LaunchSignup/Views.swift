@@ -274,7 +274,7 @@ private let headerNode = header(
               [
                 "Built with ",
                 a(
-                  [href=("https://swift.org"), target(.blank)],
+                  [href("https://swift.org"), target(.blank)],
                   ["Swift"]
                 ),
                 " and open-sourced on ",
