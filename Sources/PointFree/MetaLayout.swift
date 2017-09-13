@@ -47,7 +47,7 @@ public struct Metadata<A> {
       self.description.map { meta(name: "twitter:description", content: $0) },
 
       self.image.map { meta(name: "twitter:image", content: $0) },
-      self.image.map { meta(name: "og:image", content: $0) },
+      self.image.map { meta(property: "og:image", content: $0) },
 
       self.title.map { meta(name: "title", content: $0) },
       self.title.map { meta(property: "og:title", content: $0) },
