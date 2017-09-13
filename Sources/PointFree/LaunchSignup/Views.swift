@@ -373,6 +373,6 @@ let launchSignupView =
         twitterCard: "summary_large_image",
         twitterSite: "@pointfreeco",
         type: "website",
-        url: link(to: .home(signedUpSuccessfully: nil))
+        url: "https://www.pointfree.co"
       )
 )
