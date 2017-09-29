@@ -36,7 +36,10 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
     p(["welcome home"]),
 
     p([
-      text(data.right.map { "You are logged in as \($0.gitHubUser.name)" } ?? "You are not logged in")
+      text(
+        data.right.map { "You are logged in as \($0.gitHubUser.name)" }
+          ?? "You are not logged in"
+      )
       ]),
 
     p([
