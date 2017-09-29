@@ -13,33 +13,57 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <| render(conn:)
 
 public enum Route {
+  case githhubCallback(code: String)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
+  case login
+  case logout
+  case secretHome
 }
 
 func link(to route: Route) -> String {
   switch route {
+  case let .githhubCallback(code):
+    return "/github-callback?code=\(code)"
   case let .home(.some(signedUpSuccessfully)):
     return "/?success=\(signedUpSuccessfully)"
   case .home:
     return "/"
   case .launchSignup:
     return "/launch-signup"
+  case .login:
+    return "/login"
+  case .logout:
+    return "/logout"
+  case .secretHome:
+    return "/home"
   }
 }
 
 private let router =
-  Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
+  Route.githhubCallback <¢> (.get <* lit("github-auth") *> param("code")) <*| end
+    <|> Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
     <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
+    <|> Route.login <¢ (.get <* lit("login")) <*| end
+    <|> Route.logout <¢ (.get <* lit("logout")) <*| end
+    <|> Route.secretHome <¢ (.get <* lit("home")) <*| end
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> Conn<ResponseEnded, Data?> {
   let io: IO<Conn<ResponseEnded, Data?>>
 
   switch conn.data {
+  case let .githhubCallback(code):
+    io = conn.map(const(code)) |> githubCallbackResponse
   case let .home(signedUpSuccessfully):
     io = conn.map(const(signedUpSuccessfully)) |> homeResponse
   case let .launchSignup(email):
     io = conn.map(const(email)) |> signupResponse
+  case .login:
+    io = conn.map(const(unit)) |> loginResponse
+  case .logout:
+    io = conn.map(const(unit)) |> logoutResponse
+  case .secretHome:
+    io = conn.map(const(unit)) |> secretHomeResponse
   }
 
   return io.perform()

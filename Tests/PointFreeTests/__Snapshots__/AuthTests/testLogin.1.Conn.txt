@@ -1,0 +1,11 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/login
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: https://github.com/login/oauth/authorize?scope=user:email&client_id=bf71e3ff1937fcd066d8
