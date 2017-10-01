@@ -82,6 +82,7 @@ class AuthTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result)
+    assertWebPageSnapshot(matching: result)
   }
 
   func testSecretHome_LoggedIn() {
@@ -104,5 +105,6 @@ class AuthTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result)
+    assertWebPageSnapshot(matching: result)
   }
 }

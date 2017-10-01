@@ -28,12 +28,13 @@ extension XCTestCase {
     function: String = #function,
     line: UInt = #line) {
     #if os(iOS)
-      sizes.forEach { size in
-        let webView = UIWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(String(data: conn.response.body!, encoding: .utf8)!, baseURL: nil)
-        let exp = expectation(description: "webView")
+      let webView = UIWebView(frame: .init(origin: .zero, size: .zero))
+      webView.loadHTMLString(String(data: conn.response.body!, encoding: .utf8)!, baseURL: nil)
+      let exp = expectation(description: "webView")
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        sizes.forEach { size in
+          webView.frame.size = size
           assertSnapshot(
             matching: webView,
             named: (name ?? "") + "_\(size.width)x\(size.height)",
@@ -42,11 +43,11 @@ extension XCTestCase {
             function: function,
             line: line
           )
-          exp.fulfill()
         }
-
-        waitForExpectations(timeout: 4, handler: nil)
+        exp.fulfill()
       }
+
+      waitForExpectations(timeout: 4, handler: nil)
     #endif
   }
 }
