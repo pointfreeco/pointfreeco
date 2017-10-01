@@ -3,6 +3,7 @@
 
 ▿ Request
   GET http://localhost:8080/logout
+  Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: github_session=deadbeef; HttpOnly; Secure
 
   (Data, 0 bytes)
