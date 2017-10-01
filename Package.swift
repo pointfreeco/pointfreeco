@@ -24,6 +24,7 @@ let package = Package(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
+        "ApplicativeRouterHttpPipelineSupport",
         "Css",
         "CssReset",
         "Either",

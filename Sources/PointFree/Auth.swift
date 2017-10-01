@@ -17,9 +17,6 @@ let githubCallbackResponse =
     >-> redirect(to: link(to: .secretHome), headersMiddleware: writeCookieMiddleware)
     >>> pure
 
-private let githubAuthorizationUrl =
-  "https://github.com/login/oauth/authorize?scope=user:email&client_id=\(EnvVars.GitHub.clientId)"
-
 let loginResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(to: githubAuthorizationUrl)
     >>> pure
@@ -55,12 +52,11 @@ extension URLRequest {
   public var cookies: [String: String] {
     let pairs = (self.allHTTPHeaderFields?["Cookie"] ?? "")
       .components(separatedBy: "; ")
-      .map { $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false) }
-      .flatMap { (array: [Substring]) -> (String, String)? in
-        pure(createTuple)
-          <*> array.first.map(String.init)
-          <*> array.last.map(String.init)
-    }
+      .map {
+        $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+          .map(String.init)
+      }
+      .flatMap { pure(createTuple) <*> $0.first <*> $0.last }
     return Dictionary<String, String>(uniqueKeysWithValues: pairs)
   }
 }
@@ -114,11 +110,14 @@ private func authTokenMiddleware<I>(
   )
   -> IO<Conn<I, Either<Prelude.Unit, GitHubUserEnvelope>>> {
 
-    return authToken(forCode: conn.data)
+    return AppEnvironment.current.fetchAuthToken(conn.data)
       .flatMap { token in
-        githubUser(accessToken: token)
+        AppEnvironment.current.fetchGitHubUser(token)
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .run
       .map { conn.map(const($0)) }
 }
+
+private let githubAuthorizationUrl =
+  "https://github.com/login/oauth/authorize?scope=user:email&client_id=\(EnvVars.GitHub.clientId)"

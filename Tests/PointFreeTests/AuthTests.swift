@@ -18,6 +18,28 @@ class AuthTests: TestCase {
     assertSnapshot(matching: result)
   }
 
+  func testAuth_WithFetchAuthTokenFailure() {
+    AppEnvironment.with(fetchAuthToken: mockFetchAuthToken(result: .left(unit))) {
+      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
+
+      let conn = connection(from: request)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result)
+    }
+  }
+
+  func testAuth_WithFetchUserFailure() {
+    AppEnvironment.with(fetchGitHubUser: mockFetchGithubUser(result: .left(unit))) {
+      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
+
+      let conn = connection(from: request)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result)
+    }
+  }
+
   func testLogin() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/login")!)
 
