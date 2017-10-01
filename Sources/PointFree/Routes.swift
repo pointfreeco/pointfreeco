@@ -77,8 +77,6 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
   case .secretHome:
     return conn.map(const(unit))
       |> secretHomeResponse
-      |> perform
-      |> pure
   }
 }
 
