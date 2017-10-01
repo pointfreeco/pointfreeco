@@ -22,7 +22,7 @@ public struct GitHubUserEnvelope: Codable {
   let gitHubUser: GitHubUser
 }
 
-/// Requests an access token from GitHub from a `code` that was obtained from the callback redirect.
+/// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
 func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken> {
 
   let request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
@@ -68,7 +68,7 @@ func mockFetchAuthToken(
     }
 }
 
-/// Requests a GitHub user.
+/// Fetches a GitHub user from an access token.
 func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser> {
 
   let request = URLRequest(url: URL(string: "https://api.github.com/user")!)
