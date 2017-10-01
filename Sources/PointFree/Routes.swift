@@ -117,8 +117,8 @@ private let protectRoutes:
 
       return conn
         |> writeStatus(.unauthorized)
-        >>> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
-        >>> respond(text: "Please authenticate.")
+        |> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
+        |> respond(text: "Please authenticate.")
     }
 }
 
