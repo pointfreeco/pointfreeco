@@ -9,8 +9,9 @@ import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
-    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalUrl)
+    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHosts)
     <<< route(router: PointFree.router)
+    <<< protectRoutes
     <| render(conn:)
     >>> perform
 
@@ -54,23 +55,36 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
 
   switch conn.data {
   case let .githhubCallback(code):
-    return conn.map(const(code)) |> githubCallbackResponse
+    return conn.map(const(code))
+      |> githubCallbackResponse
+
   case let .home(signedUpSuccessfully):
-    return conn.map(const(signedUpSuccessfully)) |> homeResponse
+    return conn.map(const(signedUpSuccessfully))
+      |> homeResponse
+
   case let .launchSignup(email):
-    return conn.map(const(email)) |> signupResponse
+    return conn.map(const(email))
+      |> signupResponse
+
   case .login:
-    return conn.map(const(unit)) |> loginResponse
+    return conn.map(const(unit))
+      |> loginResponse
+
   case .logout:
-    return conn.map(const(unit)) |> logoutResponse
+    return conn.map(const(unit))
+      |> logoutResponse
+
   case .secretHome:
-    return conn.map(const(unit)) |> secretHomeResponse
+    return conn.map(const(unit))
+      |> secretHomeResponse
+      |> perform
+      |> pure
   }
 }
 
-private let canonicalUrl = "www.pointfree.co"
+private let canonicalHosts = "www.pointfree.co"
 private let allowedHosts: [String] = [
-  canonicalUrl,
+  canonicalHosts,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
@@ -84,4 +98,35 @@ private let allowedInsecureHosts: [String] = [
 
 private func toBool(string: String) -> Bool {
   return string == "true" || string == "1"
+}
+
+private let protectRoutes:
+  (@escaping Middleware<StatusLineOpen, ResponseEnded, Route, Data?>)
+  -> Middleware<StatusLineOpen, ResponseEnded, Route, Data?>
+  = { middleware in
+    return { conn in
+      let validated = validateBasicAuth(
+        user: EnvVars.BasicAuth.username,
+        password: EnvVars.BasicAuth.password,
+        request: conn.request
+      )
+
+      if !isProtected(route: conn.data) || validated {
+        return middleware(conn)
+      }
+
+      return conn
+        |> writeStatus(.unauthorized)
+        >>> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
+        >>> respond(text: "Please authenticate.")
+    }
+}
+
+private func isProtected(route: Route) -> Bool {
+  switch route {
+  case .githhubCallback, .login, .logout, .secretHome:
+    return true
+  case .home, .launchSignup:
+    return false
+  }
 }
