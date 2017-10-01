@@ -8,13 +8,13 @@ import Prelude
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   writeStatus(.ok)
-    >>> readCookieMiddleware
+    >>> readGitHubSessionCookieMiddleware
     >>> respond(secretHomeView)
     >>> pure
 
 let githubCallbackResponse =
   authTokenMiddleware
-    >-> redirect(to: link(to: .secretHome), headersMiddleware: writeCookieMiddleware)
+    >-> redirect(to: link(to: .secretHome), headersMiddleware: writeGitHubSessionCookieMiddleware)
     >>> pure
 
 let loginResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
@@ -66,7 +66,7 @@ private func createTuple<A, B>(_ a: A) -> (B) -> (A, B) {
   return { b in (a, b) }
 }
 
-private func readCookieMiddleware(
+private func readGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Prelude.Unit>
   )
   -> Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>> {
@@ -81,7 +81,7 @@ private func readCookieMiddleware(
     )
 }
 
-private func writeCookieMiddleware(
+private func writeGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>
   )
   -> Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>> {
