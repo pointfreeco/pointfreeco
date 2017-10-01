@@ -57,7 +57,7 @@ extension URLRequest {
           .map(String.init)
       }
       .flatMap { pure(createTuple) <*> $0.first <*> $0.last }
-    return Dictionary<String, String>(uniqueKeysWithValues: pairs)
+    return .init(uniqueKeysWithValues: pairs)
   }
 }
 
