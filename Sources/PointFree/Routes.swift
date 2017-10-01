@@ -10,7 +10,7 @@ import Styleguide
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHosts)
-    <<< route(router: PointFree.router)
+    <<< route(router: router)
     <<< protectRoutes
     <| render(conn:)
     >>> perform
