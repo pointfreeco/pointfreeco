@@ -3,7 +3,7 @@ import Foundation
 import Optics
 import Prelude
 
-struct GitHubAccessToken: Codable {
+public struct GitHubAccessToken: Codable {
   let accessToken: String
 
   enum CodingKeys: String, CodingKey {
@@ -11,18 +11,19 @@ struct GitHubAccessToken: Codable {
   }
 }
 
-struct GitHubUser: Codable {
+public struct GitHubUser: Codable {
   let email: String
   let id: Int
   let name: String
 }
 
-struct GitHubUserEnvelope: Codable {
+public struct GitHubUserEnvelope: Codable {
   let accessToken: GitHubAccessToken
   let gitHubUser: GitHubUser
 }
 
-func authToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken> {
+/// Requests an access token from GitHub from a `code` that was obtained from the callback redirect.
+func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken> {
 
   let request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
     |> \.httpMethod .~ "POST"
@@ -53,7 +54,7 @@ func authToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken
   )
 }
 
-func mockAuthToken(
+func mockFetchAuthToken(
   result: Either<Prelude.Unit, GitHubAccessToken>
   )
   -> (String)
@@ -67,7 +68,8 @@ func mockAuthToken(
     }
 }
 
-func githubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser> {
+/// Requests a GitHub user.
+func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser> {
 
   let request = URLRequest(url: URL(string: "https://api.github.com/user")!)
     |> \.allHTTPHeaderFields .~ [
@@ -90,10 +92,10 @@ func githubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHub
   )
 }
 
-func githubUser(
+func mockFetchGithubUser(
   result: Either<Prelude.Unit, GitHubUser>
   )
-  -> (String)
+  -> (GitHubAccessToken)
   -> EitherIO<Prelude.Unit, GitHubUser> {
     return { code in
       return .init(
