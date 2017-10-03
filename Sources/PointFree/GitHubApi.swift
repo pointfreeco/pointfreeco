@@ -41,7 +41,7 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
 
   return .init(
     run: .init { callback in
-      URLSession(configuration: .default)
+      session
         .dataTask(with: request) { data, response, error in
           callback(
             data.flatMap { try? JSONDecoder().decode(GitHubAccessToken.self, from: $0) }
@@ -79,7 +79,7 @@ func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, G
 
   return .init(
     run: .init { callback in
-      URLSession(configuration: .default)
+      session
         .dataTask(with: request) { data, response, error in
           callback(
             data.flatMap { try? JSONDecoder().decode(GitHubUser.self, from: $0) }
@@ -105,3 +105,5 @@ func mockFetchGithubUser(
       )
     }
 }
+
+private let session = URLSession(configuration: .default)

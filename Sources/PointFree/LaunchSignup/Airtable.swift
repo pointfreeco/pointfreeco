@@ -18,7 +18,7 @@ func createRow(email: String)
 
       return .init(
         run: .init { callback in
-          URLSession(configuration: .default)
+          session
             .dataTask(with: request) { data, response, error in
               callback(error == nil ? .right(unit) : .left(unit))
             }
@@ -39,3 +39,5 @@ func mockCreateRow(result: Either<Prelude.Unit, Prelude.Unit>) -> AirtableCreate
     }
   }
 }
+
+private let session = URLSession(configuration: .default)
