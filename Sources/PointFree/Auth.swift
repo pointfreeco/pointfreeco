@@ -40,7 +40,7 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
     p([
        data.isRight
         ? a([href(link(to: .logout))], ["Log out"])
-        : a([href(link(to: .login(redirect: link(to: .secretHome))))], ["Log in"])
+        : a([href(link(to: .login(redirect: link(to: .secretHome, absolute: true))))], ["Log in"])
       ])
     ]
 }

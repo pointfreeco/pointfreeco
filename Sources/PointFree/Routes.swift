@@ -29,12 +29,12 @@ func link(to route: Route, absolute: Bool = false) -> String {
 
   func path(to: Route) -> String {
     switch route {
-    case let .githubCallback(code, redirect):
+    case let .githubCallback(_, redirect):
       let param = redirect
         .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
-        .map { "&redirect=\($0)&" }
+        .map { "redirect=\($0)" }
         ?? ""
-      return "/github-auth?code=\(code)\(param)"
+      return "/github-auth?\(param)"
     case let .home(.some(signedUpSuccessfully)):
       return "/?success=\(signedUpSuccessfully)"
     case .home:
@@ -43,7 +43,6 @@ func link(to route: Route, absolute: Bool = false) -> String {
       return "/launch-signup"
     case let .login(redirect):
       let param = redirect
-        .map { "http://localhost:8080\($0)" }
         .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
         .map { "?redirect=\($0)" }
         ?? ""
@@ -59,7 +58,7 @@ func link(to route: Route, absolute: Bool = false) -> String {
 
   // TODO: figure out absolute base url
   return absolute
-    ? "http://0.0.0.0:8080\(path(to: route))"
+    ? "http://localhost:8080\(path(to: route))"
     : path(to: route)
 }
 
