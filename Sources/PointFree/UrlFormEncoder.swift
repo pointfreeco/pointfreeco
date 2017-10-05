@@ -3,6 +3,19 @@ import Prelude
 
 // todo: move to swift-web
 
+/// Encodes an encodable into `x-www-form-urlencoded` format. It first converts the value into a JSON
+/// dictionary, and then it encodes that into the format.
+///
+/// - Parameter value: The encodable value to encode.
+public func urlFormEncode<A: Encodable>(value: A) -> String {
+
+  return (try? JSONEncoder().encode(value))
+    .flatMap { try? JSONSerialization.jsonObject(with: $0) }
+    .flatMap { $0 as? [String: Any] }
+    .map(urlFormEncode(value:))
+    ?? ""
+}
+
 /// Encodes an array into `x-www-form-urlencoded` format.
 ///
 /// - Parameters:
@@ -20,6 +33,8 @@ public func urlFormEncode(value: [String: Any]) -> String {
 }
 
 private func urlFormEncode(values: [Any], rootKey: String, keyConstructor: (String) -> String) -> String {
+//  guard !values.isEmpty else { return "" }
+
   return values
     .map { value in
       switch value {

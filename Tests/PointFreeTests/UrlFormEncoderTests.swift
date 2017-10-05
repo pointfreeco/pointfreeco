@@ -33,6 +33,19 @@ class UrlFormEncoderTests: TestCase {
     )
   }
 
+  func testEncoding_Emtpy() {
+    assertSnapshot(
+      matching: urlFormEncode(
+        value: [
+          "id": 42,
+          "name": "Blob McBlob",
+          "empty_array": [],
+          "empty_object": [:],
+        ]
+        ).replacingOccurrences(of: "&", with: "&\n")
+    )
+  }
+
   func testEncoding_RootArray_SimpleObjects() {
     assertSnapshot(
       matching: urlFormEncode(

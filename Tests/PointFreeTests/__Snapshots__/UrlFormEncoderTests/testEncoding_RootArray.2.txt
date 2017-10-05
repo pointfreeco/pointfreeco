@@ -1,3 +1,0 @@
-episodes[]=Functions&
-episodes[]=Monoids&
-episodes[]=Applicatives
