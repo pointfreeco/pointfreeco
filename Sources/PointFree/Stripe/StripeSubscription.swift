@@ -5,21 +5,40 @@ import Prelude
 
 public let subscriptionPlans: [StripeSubscriptionPlan] = [
   StripeSubscriptionPlan(
-    amount: 1, currency: .usd, id: "test", interval: .month, name: "Test", statementDescriptor: nil
+    amount: .cents(1_00),
+    currency: .usd,
+    id: "test",
+    interval: .month,
+    metadata: [:],
+    name: "Test",
+    statementDescriptor: nil
   ),
   StripeSubscriptionPlan(
-    amount: 9, currency: .usd, id: "monthly", interval: .month, name: "Monthly", statementDescriptor: nil
+    amount: .cents(9_00),
+    currency: .usd,
+    id: "monthly",
+    interval: .month,
+    metadata: [:],
+    name: "Monthly",
+    statementDescriptor: nil
   ),
   StripeSubscriptionPlan(
-    amount: 90, currency: .usd, id: "year", interval: .year, name: "Yearly", statementDescriptor: nil
+    amount: .cents(90_00),
+    currency: .usd,
+    id: "year",
+    interval: .year,
+    metadata: [:],
+    name: "Yearly",
+    statementDescriptor: nil
   ),
 ]
 
 public struct StripeSubscriptionPlan: Codable {
-  let amount: Int
+  let amount: Cents
   let currency: Currency
   let id: String
   let interval: Interval
+  let metadata: [String: String]
   let name: String
   let statementDescriptor: String?
 
@@ -28,6 +47,7 @@ public struct StripeSubscriptionPlan: Codable {
     case currency
     case id
     case interval
+    case metadata
     case name
     case statementDescriptor = "statement_descriptor"
   }
@@ -41,15 +61,24 @@ public struct StripeSubscriptionPlan: Codable {
     case usd
   }
 
-  public var urlEncodedString: String {
-    return """
-    amount=\(self.amount * 100)&\
-    currency=\(self.currency)&\
-    id=\(self.id)&\
-    interval=\(self.interval)&\
-    name=\(self.name)&
-    statement_descriptor=\(statementDescriptor ?? "")
-    """
+  public enum Cents: Codable {
+    case cents(Int)
+
+    public var value: Int {
+      switch self {
+      case let .cents(cents):
+        return cents
+      }
+    }
+
+    public init(from decoder: Decoder) throws {
+      self = .cents(try decoder.singleValueContainer().decode(Int.self))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+      var container = encoder.singleValueContainer()
+      try container.encode(self.value)
+    }
   }
 }
 
@@ -59,7 +88,7 @@ public func bootstrapStripeSubscriptionPlans() {
 
   subscriptionPlans.forEach { plan in
 
-    let tmp = fetch(plan: plan).flatMap(update(plan:)) <|> update(plan: plan)
+    let tmp = fetch(plan: plan) <|> create(plan: plan)
 
     switch tmp.run.perform() {
     case let .left(error):
@@ -84,7 +113,7 @@ private func fetch(plan: StripeSubscriptionPlan) -> EitherIO<Prelude.Unit, Strip
         "Authorization": "Basic " + Data("\(EnvVars.Stripe.secretKey):".utf8).base64EncodedString()
     ]
 
-    session.dataTask(with: request) { data, response, errro in
+    session.dataTask(with: request) { data, response, error in
       guard
         let data = data,
         let masterPlan = try? JSONDecoder().decode(StripeSubscriptionPlan.self, from: data)
@@ -104,12 +133,12 @@ private func create(plan: StripeSubscriptionPlan) -> EitherIO<Prelude.Unit, Stri
   return EitherIO<Prelude.Unit, StripeSubscriptionPlan>(run: .init { callback in
     let request = URLRequest(url: URL.init(string: "https://api.stripe.com/v1/plans")!)
       |> \.httpMethod .~ "POST"
-      |> \.httpBody .~ Data(plan.urlEncodedString.utf8)
+      |> \.httpBody .~ Data(urlFormEncode(value: plan).utf8)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("\(EnvVars.Stripe.secretKey):".utf8).base64EncodedString()
     ]
 
-    session.dataTask(with: request) { data, response, errro in
+    session.dataTask(with: request) { data, response, error in
       guard
         let data = data,
         let masterPlan = try? JSONDecoder().decode(StripeSubscriptionPlan.self, from: data)
@@ -128,13 +157,13 @@ private func update(plan: StripeSubscriptionPlan) -> EitherIO<Prelude.Unit, Stri
 
   return EitherIO<Prelude.Unit, StripeSubscriptionPlan>(run: .init { callback in
     let request = URLRequest(url: URL.init(string: "https://api.stripe.com/v1/plans/\(plan.id)")!)
-      |> \.httpMethod .~ "PUT"
-      |> \.httpBody .~ Data(plan.urlEncodedString.utf8)
+      |> \.httpMethod .~ "POST"
+      |> \.httpBody .~ Data(urlFormEncode(value: plan).utf8)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("\(EnvVars.Stripe.secretKey):".utf8).base64EncodedString()
     ]
 
-    session.dataTask(with: request) { data, response, errro in
+    session.dataTask(with: request) { data, response, error in
       guard
         let data = data,
         let masterPlan = try? JSONDecoder().decode(StripeSubscriptionPlan.self, from: data)
