@@ -33,8 +33,6 @@ public func urlFormEncode(value: [String: Any]) -> String {
 }
 
 private func urlFormEncode(values: [Any], rootKey: String, keyConstructor: (String) -> String) -> String {
-//  guard !values.isEmpty else { return "" }
-
   return values
     .map { value in
       switch value {

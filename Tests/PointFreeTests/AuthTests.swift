@@ -59,6 +59,18 @@ class AuthTests: TestCase {
     assertSnapshot(matching: result)
   }
 
+  func testLogin_WithRedirect() {
+    let request = URLRequest(url: URL(string: "http://localhost:8080/login?redirect=%2Fhome")!)
+      |> \.allHTTPHeaderFields .~ [
+        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+    ]
+
+    let conn = connection(from: request)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result)
+  }
+
   func testLogout() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/logout")!)
       |> \.allHTTPHeaderFields .~ [
