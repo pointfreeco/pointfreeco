@@ -15,6 +15,8 @@ private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { dat
   [
     h1(["Subscribe to Point-Free"]),
 
+    a([href(link(to: .secretHome))], ["Home"]),
+
     div([
       h3(["Monthly"]),
       h3(["$9"])
