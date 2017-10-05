@@ -7,11 +7,6 @@ import SnapshotTesting
 import XCTest
 
 class UrlFormEncoderTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    record = true
-  }
-
   func testEncoding_DeepObject() {
     assertSnapshot(
       matching: urlFormEncode(

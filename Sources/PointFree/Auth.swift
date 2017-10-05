@@ -14,11 +14,9 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
 
 let githubCallbackResponse =
   authTokenMiddleware
-    >-> redirect(to: link(to: .secretHome), headersMiddleware: writeGitHubSessionCookieMiddleware)
-    >>> pure
 
-let loginResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
-  redirect(to: githubAuthorizationUrl)
+let loginResponse: (Conn<StatusLineOpen, String?>) -> IO<Conn<ResponseEnded, Data?>> =
+  { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
     >>> pure
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
@@ -42,7 +40,7 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
     p([
        data.isRight
         ? a([href(link(to: .logout))], ["Log out"])
-        : a([href(link(to: .login))], ["Log in"])
+        : a([href(link(to: .login(redirect: link(to: .secretHome))))], ["Log in"])
       ])
     ]
 }
@@ -66,7 +64,7 @@ private func createTuple<A, B>(_ a: A) -> (B) -> (A, B) {
   return { b in (a, b) }
 }
 
-private func readGitHubSessionCookieMiddleware(
+public func readGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Prelude.Unit>
   )
   -> Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>> {
@@ -105,19 +103,33 @@ private func writeGitHubSessionCookieMiddleware(
 }
 
 /// Exchanges a github code for an access token and loads the user's data.
-private func authTokenMiddleware<I>(
-  _ conn: Conn<I, String>
+private func authTokenMiddleware(
+  _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
   )
-  -> IO<Conn<I, Either<Prelude.Unit, GitHubUserEnvelope>>> {
+  -> IO<Conn<ResponseEnded, Data?>> {
 
-    return AppEnvironment.current.fetchAuthToken(conn.data)
+    return AppEnvironment.current.fetchAuthToken(conn.data.code)
       .flatMap { token in
         AppEnvironment.current.fetchGitHubUser(token)
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .run
-      .map { conn.map(const($0)) }
+      .map { githubUserEnvelope in
+        conn.map(const(githubUserEnvelope))
+          |> redirect(
+            to: conn.data.redirect ?? link(to: .secretHome),
+            headersMiddleware: writeGitHubSessionCookieMiddleware
+        )
+    }
 }
 
-private let githubAuthorizationUrl =
-  "https://github.com/login/oauth/authorize?scope=user:email&client_id=\(EnvVars.GitHub.clientId)"
+private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
+  var params: [String: String] = [
+    "scope": "user:email",
+    "client_id": EnvVars.GitHub.clientId
+  ]
+
+  params["redirect_uri"] = link(to: .githubCallback(code: "", redirect: redirect), absolute: true)
+
+  return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
+}

@@ -16,48 +16,70 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >>> perform
 
 public enum Route {
-  case githhubCallback(code: String)
+  case githubCallback(code: String, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
-  case login
+  case login(redirect: String?)
   case logout
   case secretHome
+  case subscribe
 }
 
-func link(to route: Route) -> String {
-  bootstrapStripeSubscriptionPlans()
+func link(to route: Route, absolute: Bool = false) -> String {
 
-  switch route {
-  case let .githhubCallback(code):
-    return "/github-callback?code=\(code)"
-  case let .home(.some(signedUpSuccessfully)):
-    return "/?success=\(signedUpSuccessfully)"
-  case .home:
-    return "/"
-  case .launchSignup:
-    return "/launch-signup"
-  case .login:
-    return "/login"
-  case .logout:
-    return "/logout"
-  case .secretHome:
-    return "/home"
+  func path(to: Route) -> String {
+    switch route {
+    case let .githubCallback(code, redirect):
+      let param = redirect
+        .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
+        .map { "&redirect=\($0)&" }
+        ?? ""
+      return "/github-auth?code=\(code)\(param)"
+    case let .home(.some(signedUpSuccessfully)):
+      return "/?success=\(signedUpSuccessfully)"
+    case .home:
+      return "/"
+    case .launchSignup:
+      return "/launch-signup"
+    case let .login(redirect):
+      let param = redirect
+        .map { "http://localhost:8080\($0)" }
+        .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
+        .map { "?redirect=\($0)" }
+        ?? ""
+      return "/login\(param)"
+    case .logout:
+      return "/logout"
+    case .secretHome:
+      return "/home"
+    case .subscribe:
+      return "/subscribe"
+    }
   }
+
+  // TODO: figure out absolute base url
+  return absolute
+    ? "http://0.0.0.0:8080\(path(to: route))"
+    : path(to: route)
 }
 
-private let router =
-  Route.githhubCallback <¢> (.get <* lit("github-auth") *> param("code")) <*| end
+private let tmp =
+  curry(Route.githubCallback) <¢> (.get <* lit("github-auth") *> param("code")) <*> opt(param("redirect")) <*| end
     <|> Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
     <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
-    <|> Route.login <¢ (.get <* lit("login")) <*| end
+    <|> Route.login <¢> (.get <* lit("login") *> opt(param("redirect"))) <*| end
+
+private let router =
+  tmp
     <|> Route.logout <¢ (.get <* lit("logout")) <*| end
     <|> Route.secretHome <¢ (.get <* lit("home")) <*| end
+    <|> Route.subscribe <¢ (.get <* lit("subscribe")) <*| end
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
-
+  
   switch conn.data {
-  case let .githhubCallback(code):
-    return conn.map(const(code))
+  case let .githubCallback(code, redirect):
+    return conn.map(const((code: code, redirect: redirect)))
       |> githubCallbackResponse
 
   case let .home(signedUpSuccessfully):
@@ -68,8 +90,8 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(email))
       |> signupResponse
 
-  case .login:
-    return conn.map(const(unit))
+  case let .login(redirect):
+    return conn.map(const(redirect))
       |> loginResponse
 
   case .logout:
@@ -79,6 +101,10 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
   case .secretHome:
     return conn.map(const(unit))
       |> secretHomeResponse
+
+  case .subscribe:
+    return conn.map(const(unit))
+      |> subscribeResponse
   }
 }
 
@@ -124,7 +150,7 @@ private let protectRoutes:
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .githhubCallback, .login, .logout, .secretHome:
+  case .githubCallback, .login, .logout, .secretHome, .subscribe:
     return true
   case .home, .launchSignup:
     return false
