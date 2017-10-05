@@ -25,6 +25,8 @@ public enum Route {
 }
 
 func link(to route: Route) -> String {
+  bootstrapStripeSubscriptionPlans()
+
   switch route {
   case let .githhubCallback(code):
     return "/github-callback?code=\(code)"

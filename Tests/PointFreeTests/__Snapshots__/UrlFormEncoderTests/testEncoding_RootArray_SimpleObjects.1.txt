@@ -1,0 +1,3 @@
+episodes[]=Functions%20%26%20Purity&
+episodes[]=Monoids&
+episodes[]=Applicatives
