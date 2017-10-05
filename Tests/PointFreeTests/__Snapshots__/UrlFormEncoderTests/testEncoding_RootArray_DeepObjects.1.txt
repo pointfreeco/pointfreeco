@@ -1,0 +1,4 @@
+episodes[]=Functions&
+episodes[][]=Point&
+episodes[][]=Free&
+episodes[]=Monoids

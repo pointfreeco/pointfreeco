@@ -1,0 +1,45 @@
+import HttpPipeline
+import HttpPipelineTestSupport
+import Optics
+@testable import PointFree
+import Prelude
+import SnapshotTesting
+import XCTest
+
+class UrlFormEncoderTests: TestCase {
+  override func setUp() {
+    super.setUp()
+    record = true
+  }
+
+  func testEncoding_DeepObject() {
+    assertSnapshot(
+      matching: urlFormEncode(
+        value: [
+          "id": 42,
+          "name": "Blob McBlob",
+          "bio": "!*'();:@&=+$,/?%#[] ^",
+          "favorite_colors": ["blue", "green"],
+          "location": [
+            "id": 12,
+            "name": "Brooklyn",
+            "neighborhoods": [
+              ["id": 2, "name": "Williamsburg"],
+              ["id": 3, "name": "Bed-Stuy"],
+            ]
+          ]
+        ]
+        ).replacingOccurrences(of: "&", with: "&\n")
+    )
+  }
+
+  func testEncoding_RootArray_SimpleObjects() {
+    assertSnapshot(
+      matching: urlFormEncode(
+        values: ["Functions & Purity", "Monoids", "Applicatives"],
+        rootKey: "episodes"
+        )
+        .replacingOccurrences(of: "&", with: "&\n")
+    )
+  }
+}

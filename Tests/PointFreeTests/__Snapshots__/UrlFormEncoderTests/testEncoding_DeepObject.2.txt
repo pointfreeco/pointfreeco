@@ -1,0 +1,10 @@
+name=Blob&
+location[id]=12&
+location[name]=Brooklyn&
+location[neighborhoods][][id]=2&
+location[neighborhoods][][name]=Williamsburg&
+location[neighborhoods][][id]=3&
+location[neighborhoods][][name]=Bed-Stuy&
+id=42&
+favorite_colors[]=blue&
+favorite_colors[]=green
