@@ -33,17 +33,19 @@ public func urlFormEncode(value: [String: Any]) -> String {
 }
 
 private func urlFormEncode(values: [Any], rootKey: String, keyConstructor: (String) -> String) -> String {
-  return values
-    .map { value in
+  return values.enumerated()
+    .map { idx, value in
       switch value {
       case let value as [String: Any]:
-        return urlFormEncode(value: value, keyConstructor: { "\(keyConstructor(rootKey))[][\($0)]" })
+        return urlFormEncode(value: value, keyConstructor: { "\(keyConstructor(rootKey))[\(idx)][\($0)]" })
 
       case let values as [Any]:
-        return urlFormEncode(value: values, keyConstructor: { _ in "\(keyConstructor(rootKey))[][]" })
+        return urlFormEncode(
+          values: values, rootKey: "", keyConstructor: { _ in "\(keyConstructor(rootKey))[\(idx)]" }
+        )
 
       default:
-        return urlFormEncode(value: value, keyConstructor: { _ in "\(keyConstructor(rootKey))[]" })
+        return urlFormEncode(value: value, keyConstructor: { _ in "\(keyConstructor(rootKey))[\(idx)]" })
       }
     }
     .joined(separator: "&")

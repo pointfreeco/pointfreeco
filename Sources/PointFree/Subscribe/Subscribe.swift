@@ -11,24 +11,36 @@ let subscribeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseE
     >>> respond(subscribeView)
     >>> pure
 
+//<script src="https://js.stripe.com/v3/"></script>
+
 private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
-  [
-    h1(["Subscribe to Point-Free"]),
+  document([
+    html([
+      head([
+        script([src("https://js.stripe.com/v3/")])
+        ]),
 
-    a([href(link(to: .secretHome))], ["Home"]),
+      body([
+        h1(["Subscribe to Point-Free"]),
 
-    div([
-      h3(["Monthly"]),
-      h3(["$9"])
-      ]),
+        a([href(link(to: .secretHome))], ["Home"]),
 
-    div([
-      h3(["Year"]),
-      h3(["$90"])
-      ]),
+        div([
+          h3(["Monthly"]),
+          h3(["$9"])
+          ]),
 
-    data.isRight
-      ? a([href("#")], ["Subscribe now!"])
-      : a([href(link(to: .login(redirect: link(to: .subscribe))))], ["Login with GitHub!"])
-  ]
+        div([
+          h3(["Year"]),
+          h3(["$90"])
+          ]),
+
+        data.isRight
+          ? a([href("#")], ["Subscribe now!"])
+          : a([href(link(to: .login(redirect: link(to: .subscribe))))], ["Login with GitHub!"]),
+
+        p(["Subscriptions can be cancelled at any time."])
+        ])
+      ])
+    ])
 }

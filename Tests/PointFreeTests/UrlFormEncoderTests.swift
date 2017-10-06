@@ -50,4 +50,18 @@ class UrlFormEncoderTests: TestCase {
         .replacingOccurrences(of: "&", with: "&\n")
     )
   }
+
+  func testEncoding_DoubleArray() {
+    assertSnapshot(
+      matching: urlFormEncode(
+        values: [
+          ["Functions", "Purity"],
+          ["Semigroups", "Monoids"],
+          ["Applicatives", "Monads"]
+        ],
+        rootKey: "episodes"
+        )
+        .replacingOccurrences(of: "&", with: "&\n")
+    )
+  }
 }

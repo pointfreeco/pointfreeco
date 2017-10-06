@@ -28,7 +28,13 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
 
 private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
   [
-    p(["welcome home"]),
+    h1(["welcome home"]),
+
+    p(
+      [
+        a([href(link(to: .subscribe))], ["Subscribe"])
+      ]
+    ),
 
     p([
       text(
