@@ -1,0 +1,6 @@
+episodes[0][0]=Functions&
+episodes[0][1]=Purity&
+episodes[1][0]=Semigroups&
+episodes[1][1]=Monoids&
+episodes[2][0]=Applicatives&
+episodes[2][1]=Monads
