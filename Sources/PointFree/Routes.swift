@@ -14,7 +14,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 
 public enum Route {
   case home(signedUpSuccessfully: Bool?)
-  case launchSignup(email: String)
+  case launchSignup(email: String, csrf: String)
 }
 
 func link(to route: Route) -> String {
@@ -30,7 +30,7 @@ func link(to route: Route) -> String {
 
 private let router =
   Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
-    <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
+    <|> curry(Route.launchSignup) <¢> (.post *> .formField("email")) <*> .formField("csrf") <* lit("launch-signup") <*| end
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> Conn<ResponseEnded, Data?> {
   let io: IO<Conn<ResponseEnded, Data?>>
@@ -38,7 +38,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> Conn<ResponseEnded, Da
   switch conn.data {
   case let .home(signedUpSuccessfully):
     io = conn.map(const(signedUpSuccessfully)) |> homeResponse
-  case let .launchSignup(email):
+  case let .launchSignup(email, csrf):
     io = conn.map(const(email)) |> signupResponse
   }
 
