@@ -9,7 +9,7 @@ import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
-    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHosts)
+    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
     <<< protectRoutes
     <| render(conn:)
@@ -107,7 +107,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
   }
 }
 
-private let canonicalHosts = "www.pointfree.co"
+private let canonicalHost = "www.pointfree.co"
 private let allowedHosts: [String] = [
   canonicalHosts,
   "127.0.0.1",

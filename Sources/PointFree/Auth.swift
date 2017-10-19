@@ -14,6 +14,8 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
 
 let githubCallbackResponse =
   authTokenMiddleware
+    >-> redirect(to: link(to: .secretHome), headersMiddleware: writeGitHubSessionCookieMiddleware)
+    >>> pure
 
 let loginResponse: (Conn<StatusLineOpen, String?>) -> IO<Conn<ResponseEnded, Data?>> =
   { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
