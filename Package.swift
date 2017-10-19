@@ -9,7 +9,7 @@ let package = Package(
     .library(name: "PointFree", targets: ["PointFree"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("ec0dcab")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("b550987")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("aab186e")),
   ],
   targets: [
@@ -24,6 +24,7 @@ let package = Package(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
+        "ApplicativeRouterHttpPipelineSupport",
         "Css",
         "CssReset",
         "Either",

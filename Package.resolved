@@ -11,6 +11,24 @@
         }
       },
       {
+        "package": "CommonCrypto",
+        "repositoryURL": "https://github.com/IBM-Swift/CommonCrypto.git",
+        "state": {
+          "branch": null,
+          "revision": "9156d238dbc4c15455b77b45e721b2bb0b995e31",
+          "version": "0.1.5"
+        }
+      },
+      {
+        "package": "Cryptor",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
+        "state": {
+          "branch": null,
+          "revision": "389bbad82d5a11f6fdbd98bc4407967569787c21",
+          "version": "0.8.17"
+        }
+      },
+      {
         "package": "DoctorPretty",
         "repositoryURL": "https://github.com/bkase/DoctorPretty.git",
         "state": {
@@ -24,8 +42,8 @@
         "repositoryURL": "https://github.com/typelift/Operadics.git",
         "state": {
           "branch": null,
-          "revision": "bc8cdd83868c395b7075d0db5e930842172012ec",
-          "version": "0.2.3"
+          "revision": "c2a14919b3653a39a9bf268c1ae0bf71ad6833fe",
+          "version": "0.3.0"
         }
       },
       {
@@ -59,8 +77,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "ec0dcab",
-          "revision": "ec0dcab4f0ff8de47567b9c2d481dd2b63a3dc79",
+          "branch": "b550987",
+          "revision": "b550987ad5ccd5364d04c068b40ca66a62c3e2d5",
           "version": null
         }
       }

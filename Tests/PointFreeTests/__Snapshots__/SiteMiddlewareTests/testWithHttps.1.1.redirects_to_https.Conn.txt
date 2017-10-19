@@ -7,5 +7,5 @@
   (Data, 0 bytes)
 
 ▿ Response
-  Status 301 MOVEDPERMANENTLY
+  Status 301 MOVED PERMANENTLY
   Location: https://www.pointfree.co
