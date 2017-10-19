@@ -18,9 +18,12 @@ func createRow(email: String)
 
       return .init(
         run: .init { callback in
-          URLSession(configuration: .default)
+          // TODO: make an `IO` helper for `URLSession` that does clean up automatically
+          let session = URLSession(configuration: .default)
+          session
             .dataTask(with: request) { data, response, error in
               callback(error == nil ? .right(unit) : .left(unit))
+              session.finishTasksAndInvalidate()
             }
             .resume()
         }
