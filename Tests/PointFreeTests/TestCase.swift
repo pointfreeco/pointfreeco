@@ -9,7 +9,11 @@ class TestCase: XCTestCase {
 
     AppEnvironment.push(
       env: .init(
-        airtableStuff: mockCreateRow(result: .right(unit))
+        airtableStuff: mockCreateRow(result: .right(unit)),
+        fetchAuthToken: mockFetchAuthToken(result: .right(.init(accessToken: "deadbeef"))),
+        fetchGitHubUser: mockFetchGithubUser(
+          result: .right(.init(email: "hello@pointfree.co", id: 1, name: "Blob"))
+        )
       )
     )
   }

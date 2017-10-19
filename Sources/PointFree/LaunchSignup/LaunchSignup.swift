@@ -17,7 +17,7 @@ let signupResponse =
 
 private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
 
-  let result = [EnvVars.airbaseBase1, EnvVars.airbaseBase2, EnvVars.airbaseBase3]
+  let result = [EnvVars.Airtable.base1, EnvVars.Airtable.base2, EnvVars.Airtable.base3]
     .map(AppEnvironment.current.airtableStuff(conn.data))
     .reduce(lift(.left(unit))) { $0 <|> $1 }
     .run

@@ -8,7 +8,7 @@
   (Data, 0 bytes)
 
 ▿ Response
-  Status 404 NOTFOUND
+  Status 404 NOT FOUND
   Content-Length: 19
   Content-Type: text/plain
 
