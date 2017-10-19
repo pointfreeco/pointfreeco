@@ -1,0 +1,14 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/logout
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: github_session=deadbeef; HttpOnly; Secure
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /home
+  Set-Cookie: github_session=; Max-Age=0; Expires=Thu, 1 Jan 1970 00:00:00 GMT
