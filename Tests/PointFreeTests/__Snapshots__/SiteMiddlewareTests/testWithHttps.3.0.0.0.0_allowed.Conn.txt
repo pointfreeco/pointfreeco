@@ -2,7 +2,7 @@
   ResponseEnded
 
 ▿ Request
-  GET http://0.0.0.0:8080/
+  GET http://0.0.0.0:8080
 
   (Data, 0 bytes)
 

@@ -68,12 +68,12 @@ public enum Route {
 }
 
 public func link(to route: Route) -> String {
-  return router.url(for: route)?.absoluteString ?? ""
+  return router.absoluteString(for: route)
 }
 
 private let router: Router<Route> = [
   Route.iso.githhubCallback
-    <¢> get %> lit("github-auth") %> queryParam("code") <% end,
+    <¢> get %> lit("github-auth") %> queryParam("code", .string) <% end,
 
   Route.iso.home
     <¢> get %> queryParam("success", opt(.bool)) <% end,

@@ -51,6 +51,8 @@ extension XCTestCase {
   }
 }
 
+import ApplicativeRouter
+
 class LaunchSignupTests: TestCase {
   func testHome() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/")!)

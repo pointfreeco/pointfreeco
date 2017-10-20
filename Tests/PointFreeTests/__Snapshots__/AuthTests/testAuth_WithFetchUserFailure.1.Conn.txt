@@ -9,4 +9,4 @@
 
 ▿ Response
   Status 302 FOUND
-  Location: home
+  Location: /home
