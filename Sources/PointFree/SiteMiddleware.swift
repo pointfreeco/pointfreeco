@@ -58,10 +58,6 @@ private let allowedInsecureHosts: [String] = [
   "localhost"
 ]
 
-private func toBool(string: String) -> Bool {
-  return string == "true" || string == "1"
-}
-
 private func routeLogger<I, J, B>(
   _ middleware: @escaping Middleware<I, J, Route, B>
   )
