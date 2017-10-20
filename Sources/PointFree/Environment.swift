@@ -1,13 +1,15 @@
 import Either
+import Foundation
 import Optics
 import Prelude
 
-public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String) -> EitherIO<Unit, Unit>
-public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Unit, GitHubUser>
+public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String) -> EitherIO<Prelude.Unit, Prelude.Unit>
+public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser>
 public typealias FetchAuthToken = (_ code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
+  public private(set) var baseUrl = URL(string: "http://localhost:8080")
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
 
