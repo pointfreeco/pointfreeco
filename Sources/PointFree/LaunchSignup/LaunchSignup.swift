@@ -7,13 +7,13 @@ import Prelude
 
 let homeResponse =
   analytics
-    >>> map(writeStatus(.ok))
-    >>> map(respond(launchSignupView))
+    >-> writeStatus(.ok)
+    >-> respond(launchSignupView)
 
 let signupResponse =
   analytics
     >-> airtableStuff
-    >>> map(redirect(to: link(to: .home(signedUpSuccessfully: true))))
+    >-> redirect(to: link(to: .home(signedUpSuccessfully: true)))
 
 private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
 
