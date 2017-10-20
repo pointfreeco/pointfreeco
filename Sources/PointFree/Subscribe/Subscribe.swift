@@ -7,11 +7,8 @@ import Prelude
 
 let subscribeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   writeStatus(.ok)
-    >>> readGitHubSessionCookieMiddleware
-    >>> respond(subscribeView)
-    >>> pure
-
-//<script src="https://js.stripe.com/v3/"></script>
+    >-> readGitHubSessionCookieMiddleware
+    >-> respond(subscribeView)
 
 private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
   document([

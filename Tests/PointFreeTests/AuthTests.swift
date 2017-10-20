@@ -16,7 +16,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
@@ -29,7 +29,7 @@ class AuthTests: TestCase {
       let conn = connection(from: request)
       let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result)
+      assertSnapshot(matching: result.perform())
     }
   }
 
@@ -43,7 +43,7 @@ class AuthTests: TestCase {
       let conn = connection(from: request)
       let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result)
+      assertSnapshot(matching: result.perform())
     }
   }
 
@@ -56,7 +56,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 
   func testLogin_WithRedirect() {
@@ -68,7 +68,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 
   func testLogout() {
@@ -81,7 +81,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 
   func testSecretHome_LoggedOut() {
@@ -93,7 +93,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 
   func testSecretHome_LoggedIn() {
@@ -113,8 +113,8 @@ class AuthTests: TestCase {
     ]
 
     let conn = connection(from: request)
-    let result = conn |> siteMiddleware
+    let result = conn |> siteMiddleware 
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 }
