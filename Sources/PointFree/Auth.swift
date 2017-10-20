@@ -11,7 +11,6 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
 
-
 let githubCallbackResponse =
   authTokenMiddleware
 
