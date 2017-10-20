@@ -50,8 +50,8 @@
         "package": "Prelude",
         "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
         "state": {
-          "branch": "aab186e",
-          "revision": "aab186e757d88efbca2f17939dd7b94731744852",
+          "branch": "a8a4849",
+          "revision": "a8a48493685da8067b7605ce1094e42e9993598a",
           "version": null
         }
       },
@@ -59,8 +59,8 @@
         "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
         "state": {
-          "branch": "6a292e9",
-          "revision": "6a292e9fe1d994207f1bf47fefdb78ca44951a09",
+          "branch": "b4081b7",
+          "revision": "b4081b7f14eac7d0540b6cf6a4caf57816d7a8c2",
           "version": null
         }
       },
@@ -77,8 +77,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "b550987",
-          "revision": "b550987ad5ccd5364d04c068b40ca66a62c3e2d5",
+          "branch": "34b4143",
+          "revision": "34b4143b4153f4b624364203e55e61e2fa9edc38",
           "version": null
         }
       }

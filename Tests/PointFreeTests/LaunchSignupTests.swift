@@ -59,7 +59,7 @@ class LaunchSignupTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result)
-    assertWebPageSnapshot(matching: result)
+    assertWebPageSnapshot(matching: result.perform())
   }
 
   func testHome_SuccessfulSignup() {
@@ -69,7 +69,7 @@ class LaunchSignupTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result)
-    assertWebPageSnapshot(matching: result)
+    assertWebPageSnapshot(matching: result.perform())
   }
 
   func testSignup() {
