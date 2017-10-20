@@ -58,7 +58,7 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
     assertWebPageSnapshot(matching: result.perform())
   }
 
@@ -68,7 +68,7 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
     assertWebPageSnapshot(matching: result.perform())
   }
 
@@ -80,6 +80,6 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 }
