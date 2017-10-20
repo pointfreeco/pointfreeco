@@ -13,7 +13,6 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< route(router: router)
     <<< protectRoutes
     <| render(conn:)
-    >>> perform
 
 public enum Route {
   case githhubCallback(code: String)
@@ -22,34 +21,76 @@ public enum Route {
   case login
   case logout
   case secretHome
-}
 
-func link(to route: Route) -> String {
-  switch route {
-  case let .githhubCallback(code):
-    return "/github-callback?code=\(code)"
-  case let .home(.some(signedUpSuccessfully)):
-    return "/?success=\(signedUpSuccessfully)"
-  case .home:
-    return "/"
-  case .launchSignup:
-    return "/launch-signup"
-  case .login:
-    return "/login"
-  case .logout:
-    return "/logout"
-  case .secretHome:
-    return "/home"
+  public enum iso {
+    static let githhubCallback = parenthesize <| PartialIso(
+      apply: Route.githhubCallback,
+      unapply: {
+        guard case let .githhubCallback(result) = $0 else { return nil }
+        return result
+    })
+
+    static let home = parenthesize <| PartialIso(
+      apply: Route.home,
+      unapply: {
+        guard case let .home(result) = $0 else { return nil }
+        return result
+    })
+
+    static let launchSignup = parenthesize <| PartialIso(
+      apply: Route.launchSignup,
+      unapply: {
+        guard case let .launchSignup(result) = $0 else { return nil }
+        return result
+    })
+
+    static let login = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.login)),
+      unapply: {
+        guard case .login = $0 else { return nil }
+        return unit
+    })
+
+    static let logout = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.logout)),
+      unapply: {
+        guard case .logout = $0 else { return nil }
+        return unit
+    })
+
+    static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.secretHome)),
+      unapply: {
+        guard case .secretHome = $0 else { return nil }
+        return unit
+    })
   }
 }
 
-private let router =
-  Route.githhubCallback <¢> (.get <* lit("github-auth") *> param("code")) <*| end
-    <|> Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
-    <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
-    <|> Route.login <¢ (.get <* lit("login")) <*| end
-    <|> Route.logout <¢ (.get <* lit("logout")) <*| end
-    <|> Route.secretHome <¢ (.get <* lit("home")) <*| end
+public func link(to route: Route) -> String {
+  return router.absoluteString(for: route)
+}
+
+private let router: Router<Route> = [
+  Route.iso.githhubCallback
+    <¢> get %> lit("github-auth") %> queryParam("code", .string) <% end,
+
+  Route.iso.home
+    <¢> get %> queryParam("success", opt(.bool)) <% end,
+
+  Route.iso.launchSignup
+    <¢> post %> formField("email") <% lit("launch-signup") <% end,
+
+  Route.iso.login
+    <¢> get %> lit("login") <% end,
+
+  Route.iso.logout
+    <¢> get %> lit("logout") <% end,
+
+  Route.iso.secretHome
+    <¢> get %> lit("home") <% end,
+  ]
+  .reduce(.empty, <|>)
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
 
@@ -115,8 +156,8 @@ private let protectRoutes:
 
       return conn
         |> writeStatus(.unauthorized)
-        |> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
-        |> respond(text: "Please authenticate.")
+        >-> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
+        >-> respond(text: "Please authenticate.")
     }
 }
 

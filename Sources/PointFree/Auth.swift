@@ -8,25 +8,22 @@ import Prelude
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   writeStatus(.ok)
-    >>> readGitHubSessionCookieMiddleware
-    >>> respond(secretHomeView)
-    >>> pure
+    >-> readGitHubSessionCookieMiddleware
+    >-> respond(secretHomeView)
+
 
 let githubCallbackResponse =
   authTokenMiddleware
     >-> redirect(to: link(to: .secretHome), headersMiddleware: writeGitHubSessionCookieMiddleware)
-    >>> pure
 
 let loginResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(to: githubAuthorizationUrl)
-    >>> pure
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(
     to: link(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: "github_session"))
     )
-    >>> pure
 
 private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
   [
@@ -69,9 +66,9 @@ private func createTuple<A, B>(_ a: A) -> (B) -> (A, B) {
 private func readGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Prelude.Unit>
   )
-  -> Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>> {
+  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>> {
 
-    return conn.map(
+    return pure <| conn.map(
       const(
         conn.request.cookies["github_session"]
           .flatMap { ResponseHeader.verifiedValue(signedCookieValue: $0, secret: EnvVars.appSecret) }
@@ -84,11 +81,11 @@ private func readGitHubSessionCookieMiddleware(
 private func writeGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>
   )
-  -> Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>> {
+  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>> {
 
     switch conn.data {
     case .left:
-      return conn
+      return conn |> pure
     case let .right(envelope):
       return conn |> writeHeaders(
         [
