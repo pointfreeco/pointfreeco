@@ -27,11 +27,9 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
   [
     h1(["welcome home"]),
 
-    p(
-      [
-        a([href(path(to: .subscribe))], ["Subscribe"])
-      ]
-    ),
+    p([
+      a([href(path(to: .subscribe))], ["Subscribe"])
+      ]),
 
     p([
       text(

@@ -5,7 +5,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 
-let subscribeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
+let subscribeResponse = 
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
     >-> respond(subscribeView)
