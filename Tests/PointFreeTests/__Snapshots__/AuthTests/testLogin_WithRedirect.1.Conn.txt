@@ -9,4 +9,4 @@
 
 ▿ Response
   Status 302 FOUND
-  Location: https://github.com/login/oauth/authorize?scope=user%3Aemail&redirect_uri=http%3A%2F%2F0.0.0.0%3A8080%2Fgithub-auth%3Fcode%3D%26redirect%3D%252Fhome%26&client_id=bf71e3ff1937fcd066d8
+  Location: https://github.com/login/oauth/authorize?scope=user%3Aemail&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fgithub-auth%3Fcode%3D%26redirect%3D%2Fhome&client_id=bf71e3ff1937fcd066d8

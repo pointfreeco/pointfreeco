@@ -1,9 +1,17 @@
 import Foundation
 
 enum EnvVars {
-  private static var env: [String: String] {
-    return ProcessInfo.processInfo.environment
-  }
+  private static let env: [String: String] = {
+    let envFilePath = URL(fileURLWithPath: #file)
+      .deletingLastPathComponent()
+      .appendingPathComponent(".env")
+
+    let localEnvVars = (try? Data(contentsOf: envFilePath))
+      .flatMap { try? JSONSerialization.jsonObject(with: $0) }
+      .flatMap { $0 as? [String: String] }
+
+    return localEnvVars ?? ProcessInfo.processInfo.environment
+  }()
 
   static let appSecret = env["APP_SECRET"] ?? "deadbeefdeadbeefdeadbeefdeadbeef"
 
@@ -20,12 +28,12 @@ enum EnvVars {
   }
 
   enum GitHub {
-    static let clientId = env["GITHUB_CLIENT_ID"] ?? "bf71e3ff1937fcd066d8"
-    static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "94fb563ec0c21222db5d0254f228120030bf5bab"
+    static let clientId = env["GITHUB_CLIENT_ID"] ?? "deadbeef-client-id"
+    static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "deadbeef-client-secret"
   }
 
   enum Stripe {
-    static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test_1DKkPO2BfCeBmrIorOSsCpxK"
-    static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test_93K0AimNIXqK8aUZDKWcceYF"
+    static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test"
+    static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test"
   }
 }
