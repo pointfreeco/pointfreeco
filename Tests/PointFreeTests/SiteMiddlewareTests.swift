@@ -73,14 +73,14 @@ class SiteMiddlewareTests: TestCase {
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080")!))
+      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
         |> siteMiddleware
         |> Prelude.perform,
       named: "0.0.0.0_allowed"
     )
 
     assertSnapshot(
-      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080")!))
+      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
         |> siteMiddleware
         |> Prelude.perform,
       named: "127.0.0.0_allowed"
