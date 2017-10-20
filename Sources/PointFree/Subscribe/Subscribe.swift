@@ -34,7 +34,7 @@ private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { dat
 
         data.isRight
           ? a([href("#")], ["Subscribe now!"])
-          : a([href(url(to: .login(redirect: path(to: .subscribe))))], ["Login with GitHub!"]),
+          : a([href(path(to: .login(redirect: url(to: .subscribe))))], ["Login with GitHub!"]),
 
         p(["Subscriptions can be cancelled at any time."])
         ])

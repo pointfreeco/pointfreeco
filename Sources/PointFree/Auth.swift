@@ -133,7 +133,12 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
     "client_id": EnvVars.GitHub.clientId
   ]
 
-  params["redirect_uri"] = url(to: .githubCallback(code: "", redirect: redirect))
+  params["redirect_uri"] = url(
+    to: .githubCallback(
+      code: "",
+      redirect: redirect ?? url(to: .home(signedUpSuccessfully: nil))
+    )
+  )
 
   return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
 }
