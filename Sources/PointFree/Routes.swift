@@ -13,7 +13,6 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< route(router: router)
     <<< protectRoutes
     <| render(conn:)
-    >>> perform
 
 public enum Route {
   case githubCallback(code: String, redirect: String?)
@@ -23,59 +22,86 @@ public enum Route {
   case logout
   case secretHome
   case subscribe
-}
 
-func link(to route: Route, absolute: Bool = false) -> String {
+  public enum iso {
+    static let githubCallback = parenthesize <| PartialIso(
+      apply: Route.githubCallback,
+      unapply: {
+        guard case let .githubCallback(result) = $0 else { return nil }
+        return result
+    })
 
-  func path(to: Route) -> String {
-    switch route {
-    case let .githubCallback(_, redirect):
-      let param = redirect
-        .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
-        .map { "redirect=\($0)" }
-        ?? ""
-      return "/github-auth?\(param)"
-    case let .home(.some(signedUpSuccessfully)):
-      return "/?success=\(signedUpSuccessfully)"
-    case .home:
-      return "/"
-    case .launchSignup:
-      return "/launch-signup"
-    case let .login(redirect):
-      let param = redirect
-        .flatMap { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) }
-        .map { "?redirect=\($0)" }
-        ?? ""
-      return "/login\(param)"
-    case .logout:
-      return "/logout"
-    case .secretHome:
-      return "/home"
-    case .subscribe:
-      return "/subscribe"
-    }
+    static let home = parenthesize <| PartialIso(
+      apply: Route.home,
+      unapply: {
+        guard case let .home(result) = $0 else { return nil }
+        return result
+    })
+
+    static let launchSignup = parenthesize <| PartialIso(
+      apply: Route.launchSignup,
+      unapply: {
+        guard case let .launchSignup(result) = $0 else { return nil }
+        return result
+    })
+
+    static let login = parenthesize <| PartialIso(
+      apply: Route.login,
+      unapply: {
+        guard case let .login(result) = $0 else { return nil }
+        return result
+    })
+
+    static let logout = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.logout)),
+      unapply: {
+        guard case .logout = $0 else { return nil }
+        return unit
+    })
+
+    static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.secretHome)),
+      unapply: {
+        guard case .secretHome = $0 else { return nil }
+        return unit
+    })
+
+    static let subscribe = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.subscribe)),
+      unapply: {
+        guard case .subscribe = $0 else { return nil }
+        return unit
+    })
   }
-
-  // TODO: figure out absolute base url
-  return absolute
-    ? "http://localhost:8080\(path(to: route))"
-    : path(to: route)
 }
 
-private let tmp =
-  curry(Route.githubCallback) <¢> (.get <* lit("github-auth") *> param("code")) <*> opt(param("redirect")) <*| end
-    <|> Route.home <¢> (.get *> opt(param("success", map(toBool)))) <*| end
-    <|> Route.launchSignup <¢> (.post *> .formField("email")) <* lit("launch-signup") <*| end
-    <|> Route.login <¢> (.get <* lit("login") *> opt(param("redirect"))) <*| end
+public func link(to route: Route) -> String {
+  return router.absoluteString(for: route)
+}
 
-private let router =
-  tmp
-    <|> Route.logout <¢ (.get <* lit("logout")) <*| end
-    <|> Route.secretHome <¢ (.get <* lit("home")) <*| end
-    <|> Route.subscribe <¢ (.get <* lit("subscribe")) <*| end
+private let router: Router<Route> = [
+  Route.iso.githubCallback
+    <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
+
+  Route.iso.home
+    <¢> get %> queryParam("success", opt(.bool)) <% end,
+
+  Route.iso.launchSignup
+    <¢> post %> formField("email") <% lit("launch-signup") <% end,
+
+  Route.iso.login
+    <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
+
+  Route.iso.logout
+    <¢> get %> lit("logout") <% end,
+
+  Route.iso.secretHome
+    <¢> get %> lit("home") <% end,
+  ]
+  .reduce(.empty, <|>)
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
-  
+
   switch conn.data {
   case let .githubCallback(code, redirect):
     return conn.map(const((code: code, redirect: redirect)))
@@ -142,8 +168,8 @@ private let protectRoutes:
 
       return conn
         |> writeStatus(.unauthorized)
-        |> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
-        |> respond(text: "Please authenticate.")
+        >-> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
+        >-> respond(text: "Please authenticate.")
     }
 }
 

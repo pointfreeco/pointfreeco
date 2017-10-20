@@ -58,8 +58,8 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
-    assertWebPageSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
+    assertWebPageSnapshot(matching: result.perform())
   }
 
   func testHome_SuccessfulSignup() {
@@ -68,8 +68,8 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
-    assertWebPageSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
+    assertWebPageSnapshot(matching: result.perform())
   }
 
   func testSignup() {
@@ -80,6 +80,6 @@ class LaunchSignupTests: TestCase {
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result.perform())
   }
 }
