@@ -20,7 +20,7 @@ let loginResponse: (Conn<StatusLineOpen, String?>) -> IO<Conn<ResponseEnded, Dat
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(
-    to: link(to: .secretHome),
+    to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: "github_session"))
     )
 
@@ -30,7 +30,7 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
 
     p(
       [
-        a([href(link(to: .subscribe))], ["Subscribe"])
+        a([href(path(to: .subscribe))], ["Subscribe"])
       ]
     ),
 
@@ -43,8 +43,8 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
 
     p([
        data.isRight
-        ? a([href(link(to: .logout))], ["Log out"])
-        : a([href(link(to: .login(redirect: link(to: .secretHome))))], ["Log in"])
+        ? a([href(path(to: .logout))], ["Log out"])
+        : a([href(path(to: .login(redirect: url(to: .secretHome))))], ["Log in"])
       ])
     ]
 }
@@ -121,7 +121,7 @@ private func authTokenMiddleware(
       .flatMap { githubUserEnvelope in
         conn.map(const(githubUserEnvelope))
           |> redirect(
-            to: conn.data.redirect ?? link(to: .secretHome),
+            to: conn.data.redirect ?? path(to: .secretHome),
             headersMiddleware: writeGitHubSessionCookieMiddleware
         )
     }
@@ -133,7 +133,7 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
     "client_id": EnvVars.GitHub.clientId
   ]
 
-  params["redirect_uri"] = link(to: .githubCallback(code: "", redirect: redirect))
+  params["redirect_uri"] = url(to: .githubCallback(code: "", redirect: redirect))
 
   return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
 }

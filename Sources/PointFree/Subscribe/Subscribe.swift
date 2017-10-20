@@ -20,7 +20,7 @@ private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { dat
       body([
         h1(["Subscribe to Point-Free"]),
 
-        a([href(link(to: .secretHome))], ["Home"]),
+        a([href(path(to: .secretHome))], ["Home"]),
 
         div([
           h3(["Monthly"]),
@@ -34,7 +34,7 @@ private let subscribeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { dat
 
         data.isRight
           ? a([href("#")], ["Subscribe now!"])
-          : a([href(link(to: .login(redirect: link(to: .subscribe))))], ["Login with GitHub!"]),
+          : a([href(url(to: .login(redirect: path(to: .subscribe))))], ["Login with GitHub!"]),
 
         p(["Subscriptions can be cancelled at any time."])
         ])

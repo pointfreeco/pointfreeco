@@ -75,8 +75,12 @@ public enum Route {
   }
 }
 
-public func link(to route: Route) -> String {
+public func path(to route: Route) -> String {
   return router.absoluteString(for: route)
+}
+
+public func url(to route: Route) -> String {
+  return router.url(for: route, base: AppEnvironment.current.baseUrl)?.absoluteString ?? ""
 }
 
 private let router: Router<Route> = [
@@ -97,6 +101,9 @@ private let router: Router<Route> = [
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
+
+  Route.iso.subscribe
+    <¢> get %> lit("subscribe") <% end,
   ]
   .reduce(.empty, <|>)
 
