@@ -15,7 +15,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <| render(conn:)
 
 public enum Route {
-  case githubCallback(code: String, redirect: String)
+  case githubCallback(code: String, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
   case login(redirect: String?)
@@ -85,7 +85,7 @@ public func url(to route: Route) -> String {
 
 private let router: Router<Route> = [
   Route.iso.githubCallback
-    <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", .string) <% end,
+    <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
 
   Route.iso.home
     <¢> get %> queryParam("success", opt(.bool)) <% end,
