@@ -3,12 +3,17 @@ import Foundation
 import HttpPipeline
 import Prelude
 
-public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> =
-  requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
+public let siteMiddleware =
+  requestLogger
+    <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
-    <<< routeLogger
-    <<< protectRoutes
+    <<< basicAuth(
+      user: EnvVars.BasicAuth.username,
+      password: EnvVars.BasicAuth.password,
+      realm: "Point-Free",
+      protect: isProtected(route:)
+    )
     <| render(conn:)
 
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
@@ -58,40 +63,31 @@ private let allowedInsecureHosts: [String] = [
   "localhost"
 ]
 
-private func routeLogger<I, J, B>(
-  _ middleware: @escaping Middleware<I, J, Route, B>
+// TODO: Move to swift-web
+private func requestLogger(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?>
   )
-  -> Middleware<I, J, Route, B> {
-
-    return { conn in
-      return (conn |> middleware).flatMap { b in
-        IO {
-          print("[Route] \(conn.request)")
-          return b
-        }
-      }
-    }
+  -> Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> {
+    return requestLogger(logger: { print($0) })(middleware)
 }
 
-private let protectRoutes:
-  (@escaping Middleware<StatusLineOpen, ResponseEnded, Route, Data?>)
-  -> Middleware<StatusLineOpen, ResponseEnded, Route, Data?>
-  = { middleware in
-    return { conn in
-      let validated = validateBasicAuth(
-        user: EnvVars.BasicAuth.username,
-        password: EnvVars.BasicAuth.password,
-        request: conn.request
-      )
+// TODO: Move to swift-web
+private func requestLogger(logger: (String) -> Void)
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?>)
+  -> Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?> {
 
-      guard isProtected(route: conn.data) && !validated else {
-        return middleware(conn)
+    return { middleware in
+      return { conn in
+        let startTime = Date().timeIntervalSince1970
+        return middleware(conn).flatMap { b in
+          IO {
+            let endTime = Date().timeIntervalSince1970
+            print("[Route] \(conn.request.httpMethod ?? "GET") \(conn.request)")
+            print("[Time]  \(Int((endTime - startTime) * 1000))ms")
+            return b
+          }
+        }
       }
-
-      return conn
-        |> writeStatus(.unauthorized)
-        >-> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
-        >-> respond(text: "Please authenticate.")
     }
 }
 
