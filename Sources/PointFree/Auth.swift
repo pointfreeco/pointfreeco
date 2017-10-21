@@ -14,13 +14,14 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
 let githubCallbackResponse =
   authTokenMiddleware
 
+/// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: (Conn<StatusLineOpen, String?>) -> IO<Conn<ResponseEnded, Data?>> =
   { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(key: "github_session"))
+    headersMiddleware: writeHeader(.clearCookie(key: githubSessionCookieName))
     )
 
 private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
@@ -55,14 +56,9 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { pure(createTuple) <*> $0.first <*> $0.last }
+      .flatMap { pure(tuple) <*> $0.first <*> $0.last }
     return .init(uniqueKeysWithValues: pairs)
   }
-}
-
-// todo: move to prelude
-private func createTuple<A, B>(_ a: A) -> (B) -> (A, B) {
-  return { b in (a, b) }
 }
 
 public func readGitHubSessionCookieMiddleware(
@@ -72,7 +68,7 @@ public func readGitHubSessionCookieMiddleware(
 
     return pure <| conn.map(
       const(
-        conn.request.cookies["github_session"]
+        conn.request.cookies[githubSessionCookieName]
           .flatMap { ResponseHeader.verifiedValue(signedCookieValue: $0, secret: EnvVars.appSecret) }
           .map(Either.right)
           ?? Either.left(unit)
@@ -81,26 +77,21 @@ public func readGitHubSessionCookieMiddleware(
 }
 
 private func writeGitHubSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>
+  _ conn: Conn<HeadersOpen, GitHubUserEnvelope>
   )
-  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>> {
-
-    switch conn.data {
-    case .left:
-      return conn |> pure
-    case let .right(envelope):
-      return conn |> writeHeaders(
-        [
-          ResponseHeader.setSignedCookie(
-            key: "github_session",
-            value: envelope,
-            options: [],
-            secret: EnvVars.appSecret,
-            encrypt: true
-          )
-          ] |> catOptionals
-      )
-    }
+  -> IO<Conn<HeadersOpen, GitHubUserEnvelope>> {
+    
+    return conn |> writeHeaders(
+      [
+        ResponseHeader.setSignedCookie(
+          key: "github_session",
+          value: conn.data,
+          options: [],
+          secret: EnvVars.appSecret,
+          encrypt: true
+        )
+        ] |> catOptionals
+    )
 }
 
 /// Exchanges a github code for an access token and loads the user's data.
@@ -116,11 +107,19 @@ private func authTokenMiddleware(
       }
       .run
       .flatMap { githubUserEnvelope in
-        conn.map(const(githubUserEnvelope))
-          |> redirect(
-            to: conn.data.redirect ?? path(to: .secretHome),
-            headersMiddleware: writeGitHubSessionCookieMiddleware
-        )
+        switch githubUserEnvelope {
+
+        case .left:
+          return conn
+            |> redirect(to: path(to: .secretHome))
+
+        case let .right(env):
+          return conn.map(const(env))
+            |> redirect(
+              to: conn.data.redirect ?? path(to: .secretHome),
+              headersMiddleware: writeGitHubSessionCookieMiddleware
+          )
+        }
     }
 }
 
@@ -134,3 +133,5 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
 
   return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
 }
+
+private let githubSessionCookieName = "github_session"

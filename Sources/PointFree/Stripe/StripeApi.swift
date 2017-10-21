@@ -3,7 +3,7 @@ import Foundation
 import Prelude
 import Optics
 
-internal func fetch(planId id: String) -> EitherIO<Prelude.Unit, StripeSubscriptionPlan> {
+func fetch(planId id: String) -> EitherIO<Prelude.Unit, StripeSubscriptionPlan> {
 
   return EitherIO<Prelude.Unit, StripeSubscriptionPlan>(run: .init { callback in
     let request = URLRequest(url: URL.init(string: "https://api.stripe.com/v1/plans/\(id)")!)
