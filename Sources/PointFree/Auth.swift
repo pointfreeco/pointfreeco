@@ -22,7 +22,7 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
   redirect(
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: githubSessionCookieName))
-    )
+  )
 
 private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
   [
@@ -56,7 +56,7 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { pure(tuple) <*> $0.first <*> $0.last }
+      .flatMap { tuple <¢> $0.first <*> $0.last }
     return .init(uniqueKeysWithValues: pairs)
   }
 }
