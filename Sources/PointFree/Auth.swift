@@ -16,7 +16,7 @@ let githubCallbackResponse =
   authTokenMiddleware
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: (Conn<StatusLineOpen, String?>) -> IO<Conn<ResponseEnded, Data?>> =
+let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data?> =
   { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
