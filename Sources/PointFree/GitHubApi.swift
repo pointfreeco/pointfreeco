@@ -54,20 +54,6 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
   )
 }
 
-func mockFetchAuthToken(
-  result: Either<Prelude.Unit, GitHubAccessToken>
-  )
-  -> (String)
-  -> EitherIO<Prelude.Unit, GitHubAccessToken> {
-    return { code in
-      return .init(
-        run: .init { callback in
-          callback(result)
-        }
-      )
-    }
-}
-
 /// Fetches a GitHub user from an access token.
 func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser> {
 
@@ -90,20 +76,6 @@ func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, G
         .resume()
     }
   )
-}
-
-func mockFetchGithubUser(
-  result: Either<Prelude.Unit, GitHubUser>
-  )
-  -> (GitHubAccessToken)
-  -> EitherIO<Prelude.Unit, GitHubUser> {
-    return { code in
-      return .init(
-        run: .init { callback in
-          callback(result)
-        }
-      )
-    }
 }
 
 private let session = URLSession(configuration: .default)
