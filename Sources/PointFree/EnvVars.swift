@@ -7,8 +7,7 @@ enum EnvVars {
       .appendingPathComponent(".env")
 
     let localEnvVars = (try? Data(contentsOf: envFilePath))
-      .flatMap { try? JSONSerialization.jsonObject(with: $0) }
-      .flatMap { $0 as? [String: String] }
+      .flatMap { try? JSONDecoder().decode([String: String].self, from: $0) }
 
     return localEnvVars ?? ProcessInfo.processInfo.environment
   }()
