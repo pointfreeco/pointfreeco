@@ -10,7 +10,7 @@ class TestCase: XCTestCase {
 
     AppEnvironment.push(
       env: .init(
-        airtableStuff: mockCreateRow(result: .right(unit)),
+        airtableStuff: const(const(pure(unit))),
         fetchAuthToken: const(pure(.init(accessToken: "deadbeef"))),
         fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob")))
       )
