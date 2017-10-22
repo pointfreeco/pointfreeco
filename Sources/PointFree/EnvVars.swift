@@ -1,16 +1,18 @@
 import Foundation
 
 enum EnvVars {
-  private static var env: [String: String] {
-    return ProcessInfo.processInfo.environment
-  }
+  private static let env: [String: String] = {
+    let envFilePath = URL(fileURLWithPath: #file)
+      .deletingLastPathComponent()
+      .appendingPathComponent(".env")
+
+    let localEnvVars = (try? Data(contentsOf: envFilePath))
+      .flatMap { try? JSONDecoder().decode([String: String].self, from: $0) }
+
+    return localEnvVars ?? ProcessInfo.processInfo.environment
+  }()
 
   static let appSecret = env["APP_SECRET"] ?? "deadbeefdeadbeefdeadbeefdeadbeef"
-
-  enum BasicAuth {
-    static let username = env["BASIC_AUTH_USERNAME"] ?? "hello"
-    static let password = env["BASIC_AUTH_PASSWORD"] ?? "world"
-  }
 
   enum Airtable {
     static let base1 = env["AIRTABLE_BASE_1"] ?? "deadbeef-base-1"
@@ -19,8 +21,18 @@ enum EnvVars {
     static let bearer = env["AIRTABLE_BEARER"] ?? "deadbeef-bearer"
   }
 
+  enum BasicAuth {
+    static let username = env["BASIC_AUTH_USERNAME"] ?? "hello"
+    static let password = env["BASIC_AUTH_PASSWORD"] ?? "world"
+  }
+
   enum GitHub {
-    static let clientId = env["GITHUB_CLIENT_ID"] ?? "bf71e3ff1937fcd066d8"
-    static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "94fb563ec0c21222db5d0254f228120030bf5bab"
+    static let clientId = env["GITHUB_CLIENT_ID"] ?? "deadbeef-client-id"
+    static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "deadbeef-client-secret"
+  }
+
+  enum Stripe {
+    static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test"
+    static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test"
   }
 }
