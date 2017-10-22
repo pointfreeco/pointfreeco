@@ -30,15 +30,3 @@ func createRow(email: String)
       )
     }
 }
-
-func mockCreateRow(result: Either<Prelude.Unit, Prelude.Unit>) -> AirtableCreateRow {
-  return { email in
-    return { baseId in
-      return .init(
-        run: .init { callback in
-          callback(result)
-        }
-      )
-    }
-  }
-}

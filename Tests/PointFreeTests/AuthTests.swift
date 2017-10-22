@@ -1,3 +1,4 @@
+import Either
 import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
@@ -20,7 +21,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    AppEnvironment.with(fetchAuthToken: mockFetchAuthToken(result: .left(unit))) {
+    AppEnvironment.with(fetchAuthToken: unit |> throwE >>> const) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
@@ -34,7 +35,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() {
-    AppEnvironment.with(fetchGitHubUser: mockFetchGithubUser(result: .left(unit))) {
+    AppEnvironment.with(fetchGitHubUser: unit |> throwE >>> const) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
