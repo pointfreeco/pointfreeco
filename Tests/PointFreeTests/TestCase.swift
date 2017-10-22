@@ -1,3 +1,4 @@
+import Either
 @testable import PointFree
 import Prelude
 import SnapshotTesting
@@ -9,11 +10,9 @@ class TestCase: XCTestCase {
 
     AppEnvironment.push(
       env: .init(
-        airtableStuff: mockCreateRow(result: .right(unit)),
-        fetchAuthToken: mockFetchAuthToken(result: .right(.init(accessToken: "deadbeef"))),
-        fetchGitHubUser: mockFetchGithubUser(
-          result: .right(.init(email: "hello@pointfree.co", id: 1, name: "Blob"))
-        )
+        airtableStuff: const(const(pure(unit))),
+        fetchAuthToken: const(pure(.init(accessToken: "deadbeef"))),
+        fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob")))
       )
     )
   }
