@@ -35,4 +35,12 @@ enum EnvVars {
     static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test"
     static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test"
   }
+
+  enum PostgreSQL {
+    static let hostname = env["POSTGRES_HOSTNAME"] ?? "localhost"
+    static let port = env["POSTGRES_PORT"] ?? "5432"
+    static let database = env["POSTGRES_DATABASE"] ?? "pointfreeco"
+    static let user = env["POSTGRES_USER"] ?? "pointfreeco"
+    static let password = env["POSTGRES_PASSWORD"] ?? ""
+  }
 }

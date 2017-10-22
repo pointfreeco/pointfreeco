@@ -53,14 +53,9 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { pure(createTuple) <*> $0.first <*> $0.last }
+      .flatMap { pure(tuple) <*> $0.first <*> $0.last }
     return .init(uniqueKeysWithValues: pairs)
   }
-}
-
-// todo: move to prelude
-private func createTuple<A, B>(_ a: A) -> (B) -> (A, B) {
-  return { b in (a, b) }
 }
 
 private func readGitHubSessionCookieMiddleware(
@@ -113,7 +108,7 @@ private func authTokenMiddleware<I>(
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .run
-      .map { conn.map(const($0)) }
+      .map(conn.map <<< const)
 }
 
 private let githubAuthorizationUrl =

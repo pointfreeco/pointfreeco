@@ -11,6 +11,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("e9cc7cd")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("a8a4849")),
+    .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
   ],
   targets: [
     .target(
@@ -33,6 +34,7 @@ let package = Package(
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Optics",
+        "PostgreSQL",
         "Styleguide",
       ]
     ),

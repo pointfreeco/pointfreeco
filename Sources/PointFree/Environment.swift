@@ -3,8 +3,10 @@ import Optics
 import Prelude
 
 public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String) -> EitherIO<Unit, Unit>
+public typealias DatabaseCreateUser = (GitHubUser) -> EitherIO<Unit, Unit>
+public typealias DatabaseFetchUser = (GitHubAccessToken) -> EitherIO<Unit, GitHubUser>
 public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Unit, GitHubUser>
-public typealias FetchAuthToken = (_ code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken>
+public typealias FetchAuthToken = (_ code: String) -> EitherIO<Unit, GitHubAccessToken>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
