@@ -15,18 +15,18 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <| render(conn:)
 
 public enum Route {
-  case githhubCallback(code: String)
+  case githubCallback(code: String, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
-  case login
+  case login(redirect: String?)
   case logout
   case secretHome
 
   public enum iso {
-    static let githhubCallback = parenthesize <| PartialIso(
-      apply: Route.githhubCallback,
+    static let githubCallback = parenthesize <| PartialIso(
+      apply: Route.githubCallback,
       unapply: {
-        guard case let .githhubCallback(result) = $0 else { return nil }
+        guard case let .githubCallback(result) = $0 else { return nil }
         return result
     })
 
@@ -44,11 +44,11 @@ public enum Route {
         return result
     })
 
-    static let login = parenthesize <| PartialIso<Prelude.Unit, Route>(
-      apply: const(.some(.login)),
+    static let login = parenthesize <| PartialIso(
+      apply: Route.login,
       unapply: {
-        guard case .login = $0 else { return nil }
-        return unit
+        guard case let .login(result) = $0 else { return nil }
+        return result
     })
 
     static let logout = parenthesize <| PartialIso<Prelude.Unit, Route>(
@@ -67,14 +67,17 @@ public enum Route {
   }
 }
 
-public func link(to route: Route) -> String {
+public func path(to route: Route) -> String {
   return router.absoluteString(for: route)
 }
 
-private let router: Router<Route> = [
-  Route.iso.githhubCallback
-    <¢> get %> lit("github-auth") %> queryParam("code", .string) <% end,
+public func url(to route: Route) -> String {
+  return router.url(for: route, base: AppEnvironment.current.baseUrl)?.absoluteString ?? ""
+}
 
+private let router: Router<Route> = [
+  Route.iso.githubCallback
+    <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
   Route.iso.home
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
@@ -82,7 +85,7 @@ private let router: Router<Route> = [
     <¢> post %> formField("email") <% lit("launch-signup") <% end,
 
   Route.iso.login
-    <¢> get %> lit("login") <% end,
+    <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
 
   Route.iso.logout
     <¢> get %> lit("logout") <% end,
@@ -95,8 +98,8 @@ private let router: Router<Route> = [
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data?>> {
 
   switch conn.data {
-  case let .githhubCallback(code):
-    return conn.map(const(code))
+  case let .githubCallback(code, redirect):
+    return conn.map(const((code, redirect)))
       |> githubCallbackResponse
 
   case let .home(signedUpSuccessfully):
@@ -107,8 +110,8 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(email))
       |> signupResponse
 
-  case .login:
-    return conn.map(const(unit))
+  case let .login(redirect):
+    return conn.map(const(redirect))
       |> loginResponse
 
   case .logout:
@@ -163,7 +166,7 @@ private let protectRoutes:
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .githhubCallback, .login, .logout, .secretHome:
+  case .githubCallback, .login, .logout, .secretHome:
     return true
   case .home, .launchSignup:
     return false
