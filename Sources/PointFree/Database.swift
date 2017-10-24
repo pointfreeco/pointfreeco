@@ -27,7 +27,7 @@ public func execute(_ query: String, _ representable: [NodeRepresentable]) -> Ei
   }
 }
 
-public func saveUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Unit> {
+public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Unit> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -43,7 +43,7 @@ public func saveUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Unit>
     .map(const(unit))
 }
 
-public func loadUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
+public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
   return execute(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"

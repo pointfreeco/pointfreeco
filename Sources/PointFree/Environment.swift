@@ -1,24 +1,33 @@
 import Either
+import Foundation
 import Optics
 import Prelude
 
-public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String) -> EitherIO<Unit, Unit>
-public typealias DatabaseCreateUser = (GitHubUser) -> EitherIO<Unit, Unit>
-public typealias DatabaseFetchUser = (GitHubAccessToken) -> EitherIO<Unit, GitHubUser>
-public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Unit, GitHubUser>
-public typealias FetchAuthToken = (_ code: String) -> EitherIO<Unit, GitHubAccessToken>
+public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String)
+  -> EitherIO<Prelude.Unit, Prelude.Unit>
+public typealias CreateUser = (GitHubUserEnvelope) -> EitherIO<Error, Prelude.Unit>
+public typealias FetchAuthToken = (_ code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken>
+public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser>
+public typealias FetchUser = (GitHubAccessToken) -> EitherIO<Error, User?>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
+  public private(set) var baseUrl = URL(string: "http://localhost:8080")
+  public private(set) var createUser: CreateUser
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
+  public private(set) var fetchUser: FetchUser
 
   init(airtableStuff: @escaping AirtableCreateRow = createRow,
+       createUser: @escaping CreateUser = PointFree.createUser,
        fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
-       fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser) {
+       fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
+       fetchUser: @escaping FetchUser = PointFree.fetchUser) {
     self.airtableStuff = airtableStuff
+    self.createUser = createUser
     self.fetchAuthToken = fetchAuthToken
     self.fetchGitHubUser = fetchGitHubUser
+    self.fetchUser = fetchUser
   }
 }
 
