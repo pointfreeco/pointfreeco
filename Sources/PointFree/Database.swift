@@ -8,6 +8,12 @@ public struct User {
   let gitHubAccessToken: String
   let id: Int
   let name: String
+  let subscriptionId: Int?
+}
+
+public struct Subscription {
+  let stripeSubscriptionId: String
+  let userId: Int
 }
 
 private let postgres = EitherIO.init <<< IO.wrap(Either.wrap(Database.init)) <| ConnInfo.basic(
@@ -27,6 +33,40 @@ public func execute(_ query: String, _ representable: [NodeRepresentable]) -> Ei
   }
 }
 
+// FIXME
+public struct StripeSubscription {
+  let id: String
+}
+
+public func createSubscription(from stripeSubscription: StripeSubscription, for user: User)
+  -> EitherIO<Error, Unit> {
+    return execute(
+      """
+      INSERT INTO "subscriptions" ("stripe_susbcription_id", "user_id")
+      VALUES ($1, $2)
+      RETURNING "id"
+      """,
+      [
+        stripeSubscription.id,
+        user.id,
+      ]
+      )
+      .flatMap { node in
+        execute(
+          """
+          UPDATE "users"
+          SET "subscription_id" = $1
+          WHERE "users"."id" = $2
+          """,
+          [
+            node[0, "id"]?.int,
+            user.id
+          ]
+        )
+      }
+      .map(const(unit))
+}
+
 public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Unit> {
   return execute(
     """
@@ -41,6 +81,29 @@ public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Uni
       ]
     )
     .map(const(unit))
+}
+
+public func curry<A, B, C, D, E, F, G>(_ fn: @escaping (A, B, C, D, E, F) -> G)
+  -> (A)
+  -> (B)
+  -> (C)
+  -> (D)
+  -> (E)
+  -> (F)
+  -> G {
+    return { a in
+      { b in
+        { c in
+          { d in
+            { e in
+              { f in
+                fn(a, b, c, d, e, f)
+              }
+            }
+          }
+        }
+      }
+    }
 }
 
 public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
@@ -60,5 +123,6 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
         <*> result[2, "github_access_token"]?.string
         <*> result[3, "id"]?.int
         <*> result[4, "name"]?.string
+        <*> .some(result[5, "subscription_id"]?.int)
   }
 }
