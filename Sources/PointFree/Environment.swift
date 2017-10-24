@@ -9,14 +9,16 @@ public typealias FetchAuthToken = (_ code: String) -> EitherIO<Prelude.Unit, Git
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
-  public private(set) var baseUrl = URL(string: "http://localhost:8080")
+  public private(set) var baseUrl: URL?
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
 
   init(airtableStuff: @escaping AirtableCreateRow = createRow,
+       baseUrl: URL? = EnvVars.baseUrl,
        fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
        fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser) {
     self.airtableStuff = airtableStuff
+    self.baseUrl = baseUrl
     self.fetchAuthToken = fetchAuthToken
     self.fetchGitHubUser = fetchGitHubUser
   }

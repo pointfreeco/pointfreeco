@@ -13,6 +13,7 @@ enum EnvVars {
   }()
 
   static let appSecret = env["APP_SECRET"] ?? "deadbeefdeadbeefdeadbeefdeadbeef"
+  static let baseUrl = URL(string: env["BASE_URL"] ?? "http://localhost:8080")
 
   enum Airtable {
     static let base1 = env["AIRTABLE_BASE_1"] ?? "deadbeef-base-1"
