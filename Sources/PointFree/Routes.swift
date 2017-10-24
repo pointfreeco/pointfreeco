@@ -127,6 +127,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
 private let canonicalHost = "www.pointfree.co"
 private let allowedHosts: [String] = [
   canonicalHost,
+  EnvVars.baseUrl?.absoluteString ?? canonicalHost,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
