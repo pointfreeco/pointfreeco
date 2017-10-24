@@ -11,7 +11,12 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
-    <<< protectRoutes
+    <<< basicAuth(
+      user: EnvVars.BasicAuth.username,
+      password: EnvVars.BasicAuth.password,
+      realm: "Point-Free",
+      protect: isProtected
+    )
     <| render(conn:)
 
 public enum Route {
@@ -138,32 +143,6 @@ private let allowedInsecureHosts: [String] = [
   "0.0.0.0",
   "localhost"
 ]
-
-private func toBool(string: String) -> Bool {
-  return string == "true" || string == "1"
-}
-
-private let protectRoutes:
-  (@escaping Middleware<StatusLineOpen, ResponseEnded, Route, Data?>)
-  -> Middleware<StatusLineOpen, ResponseEnded, Route, Data?>
-  = { middleware in
-    return { conn in
-      let validated = validateBasicAuth(
-        user: EnvVars.BasicAuth.username,
-        password: EnvVars.BasicAuth.password,
-        request: conn.request
-      )
-
-      if !isProtected(route: conn.data) || validated {
-        return middleware(conn)
-      }
-
-      return conn
-        |> writeStatus(.unauthorized)
-        >-> writeHeader(.wwwAuthenticate(.basic(realm: "Point-Free")))
-        >-> respond(text: "Please authenticate.")
-    }
-}
 
 private func isProtected(route: Route) -> Bool {
   switch route {
