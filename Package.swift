@@ -9,8 +9,8 @@ let package = Package(
     .library(name: "PointFree", targets: ["PointFree"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("e9cc7cd")),
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("a8a4849")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2497c4c")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9161df1")),
   ],
   targets: [
     .target(
