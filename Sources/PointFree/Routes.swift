@@ -13,6 +13,7 @@ public enum Route {
 public let router: Router<Route> = [
   Route.iso.githubCallback
     <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
+  
   Route.iso.home
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
