@@ -5,9 +5,9 @@ import Foundation
 // todo: move to httppipeline
 
 public func staticFileServer(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data?>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, Data?, Data?> {
+  -> Middleware<StatusLineOpen, ResponseEnded, Data, Data> {
 
     let currentFile = #file
     let rootDir = URL(fileURLWithPath: currentFile)
