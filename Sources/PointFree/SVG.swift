@@ -2,7 +2,7 @@ import Foundation
 import Prelude
 
 private func base64EncodedString(_ string: String) -> String {
-  return string.data(using: .utf8)!.base64EncodedString()
+  return Data(string.utf8).base64EncodedString()
 }
 
 let logoSvgBase64 = base64EncodedString <| """
