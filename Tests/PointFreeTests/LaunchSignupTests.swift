@@ -21,7 +21,7 @@ let sizes = [
 
 extension XCTestCase {
   func assertWebPageSnapshot<I>(
-    matching conn: Conn<I, Data?>,
+    matching conn: Conn<I, Data>,
     named name: String? = nil,
     record recording: Bool = SnapshotTesting.record,
     file: StaticString = #file,
