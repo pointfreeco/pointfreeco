@@ -30,7 +30,7 @@ extension XCTestCase {
     #if os(iOS)
       sizes.forEach { size in
         let webView = UIWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(String(data: conn.response.body!, encoding: .utf8)!, baseURL: nil)
+        webView.loadHTMLString(String(decoding: conn.response.body ?? Data(), as: UTF8.self), baseURL: nil)
         let exp = expectation(description: "webView")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -75,7 +75,7 @@ class LaunchSignupTests: TestCase {
   func testSignup() {
     var request = URLRequest(url: URL(string: "http://localhost:8080/launch-signup")!)
     request.httpMethod = "POST"
-    request.httpBody = "email=hello@pointfree.co".data(using: .utf8)
+    request.httpBody = Data("email=hello@pointfree.co".utf8)
 
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
