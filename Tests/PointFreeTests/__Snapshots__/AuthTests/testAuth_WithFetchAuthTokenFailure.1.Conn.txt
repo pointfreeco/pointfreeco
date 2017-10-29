@@ -8,5 +8,8 @@
   (Data, 0 bytes)
 
 ▿ Response
-  Status 302 FOUND
-  Location: /home
+  Status 500 INTERNAL SERVER ERROR
+  Content-Length: 76
+  Content-Type: text/plain
+
+  The operation couldn’t be completed. (PointFreeTests.ServerError error 1.)
