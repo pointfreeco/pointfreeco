@@ -7,7 +7,9 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-class AuthTests: TestCase {
+struct ServerError: Error {}
+
+final class AuthTests: TestCase {
   func testAuth() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
       |> \.allHTTPHeaderFields .~ [
@@ -21,7 +23,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    AppEnvironment.with(fetchAuthToken: unit |> throwE >>> const) {
+    AppEnvironment.with(fetchAuthToken: ServerError() |> throwE >>> const) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
@@ -35,7 +37,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() {
-    AppEnvironment.with(fetchGitHubUser: unit |> throwE >>> const) {
+    AppEnvironment.with(fetchGitHubUser: ServerError() |> throwE >>> const) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()

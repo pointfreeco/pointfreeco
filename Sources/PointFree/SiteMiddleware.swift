@@ -1,4 +1,5 @@
 import ApplicativeRouterHttpPipelineSupport
+import Either
 import Foundation
 import HttpPipeline
 import Prelude
@@ -13,35 +14,69 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       realm: "Point-Free",
       protect: isProtected
     )
+    <<< handleErrors
     <| render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
+private func render(conn: Conn<StatusLineOpen, Route>)
+  -> IO<Conn<ResponseEnded, Either<Error, Data>>> {
 
-  switch conn.data {
-  case let .githubCallback(code, redirect):
-    return conn.map(const((code, redirect)))
-      |> githubCallbackResponse
+    switch conn.data {
+    case let .githubCallback(code, redirect):
+      return conn.map(const((code, redirect)))
+        |> githubCallbackResponse
 
-  case let .home(signedUpSuccessfully):
-    return conn.map(const(signedUpSuccessfully))
-      |> homeResponse
+    case let .home(signedUpSuccessfully):
+      return conn.map(const(signedUpSuccessfully))
+        |> homeResponse
+        >>> map(map(pure))
 
-  case let .launchSignup(email):
-    return conn.map(const(email))
-      |> signupResponse
+    case let .launchSignup(email):
+      return conn.map(const(email))
+        |> signupResponse
+        >>> map(map(pure))
 
-  case let .login(redirect):
-    return conn.map(const(redirect))
-      |> loginResponse
+    case let .login(redirect):
+      return conn.map(const(redirect))
+        |> loginResponse
+        >>> map(map(pure))
 
-  case .logout:
-    return conn.map(const(unit))
-      |> logoutResponse
+    case .logout:
+      return conn.map(const(unit))
+        |> logoutResponse
+        >>> map(map(pure))
 
-  case .secretHome:
-    return conn.map(const(unit))
-      |> secretHomeResponse
-  }
+    case .secretHome:
+      return conn.map(const(unit))
+        |> secretHomeResponse
+        >>> map(map(pure))
+    }
+}
+
+public func handleErrors<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Either<Error, Data>>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { conn in
+      middleware(conn)
+        .flatMap {
+          switch $0.data {
+          case let .left(error):
+            switch AppEnvironment.current.deployedTo {
+            case .production:
+              return conn
+                |> writeStatus(.internalServerError)
+                >-> respond(text: "An error occurred.")
+            case .development, .staging:
+              return conn
+                |> writeStatus(.internalServerError)
+                >-> respond(text: error.localizedDescription)
+            }
+          case let .right(data):
+            return pure($0.map(const(data)))
+          }
+      }
+    }
 }
 
 private let canonicalHost = "www.pointfree.co"
