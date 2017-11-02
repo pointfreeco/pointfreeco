@@ -95,7 +95,7 @@ private func writeGitHubSessionCookieMiddleware(
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
   )
-  -> IO<Conn<ResponseEnded, Either<Error, Data>>> {
+  -> IO<Either<Error, Conn<ResponseEnded, Data>>> {
 
     return AppEnvironment.current.fetchAuthToken(conn.data.code)
       .flatMap { token in
@@ -103,23 +103,14 @@ private func authTokenMiddleware(
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .run
-      .flatMap { gitHubUserEnvelope in
-
-        switch gitHubUserEnvelope {
-        case let .left(error):
-          return conn.map(const(Either<Error, Data>.left(error)))
-            |> writeStatus(.internalServerError)
-            >-> end
-            >>> map(map(const(.left(error))))
-        case let .right(env):
-          return conn.map(const(env))
-            |> redirect(
-              to: conn.data.redirect ?? path(to: .secretHome),
-              headersMiddleware: writeGitHubSessionCookieMiddleware
-            )
-            >>> map(map(pure))
-        }
-    }
+      .map(map { env in
+        conn.map(const(env))
+          |> redirect(
+            to: conn.data.redirect ?? path(to: .secretHome),
+            headersMiddleware: writeGitHubSessionCookieMiddleware
+          )
+          >>> perform
+      })
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
