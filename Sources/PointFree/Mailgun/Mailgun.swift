@@ -1,8 +1,5 @@
-import Css
-import CssReset
 import Either
 import Foundation
-import HtmlCssSupport
 import HttpPipeline
 import Html
 import Optics
@@ -12,22 +9,18 @@ func sendEmail(
   from: String,
   to: String,
   subject: String,
-  content: Either<String, Node>,
+  content: Either3<String, Node, (String, Node)>,
   domain: String = "mg.pointfree.co"
   )
   -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
-    let plain: String
-    let html: String?
-    switch content {
-
-    case let .left(text):
-      plain = text
-      html = nil
-    case let .right(node):
-      plain = plainText(for: node)
-      html = render(node)
-    }
+    let (plain, html): (String, String?) =
+      destructure(
+        content,
+        { plain in (plain, nil) },
+        { node in (plainText(for: node), render(node)) },
+        second(render)
+    )
 
     let params = [
       "from": from,
@@ -55,37 +48,6 @@ func sendEmail(
         }
         .resume()
     })
-}
-
-func notifyUs<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
-  return IO {
-
-    let email = html([
-      head([style(reset)]),
-      body([
-        p(["Hello!"]),
-        p([
-          "This is an ",
-          em(["HTML"]),
-          " email!"
-          ]),
-        p(["We will notify you when we launch!"]),
-        a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"])
-        ])
-      ])
-
-    // Fire-and-forget to notify us that someone signed up
-    _ = sendEmail(
-      from: "Point-Free <brandon@pointfree.co>",
-      to: conn.data,
-      subject: "Thanks for signing up!",
-      content: .right(email)
-      )
-      .run
-      .perform()
-
-    return conn
-  }
 }
 
 // TODO: move to swift-web
@@ -136,4 +98,22 @@ private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
     }
   }
   return result
+}
+
+// TODO: move to swift-prelude
+public func destructure<A, B, C, D>(
+  _ either: Either3<A, B, C>,
+  _ a2d: (A) -> D,
+  _ b2d: (B) -> D,
+  _ c2d: (C) -> D
+  )
+  -> D {
+    switch either {
+    case let .left(a):
+      return a2d(a)
+    case let .right(.left(b)):
+      return b2d(b)
+    case let .right(.right(.left(c))):
+      return c2d(c)
+    }
 }
