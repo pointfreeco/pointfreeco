@@ -3,7 +3,7 @@ import Foundation
 import HttpPipeline
 import Prelude
 
-public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Never, Never, Prelude.Unit, Data> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
@@ -15,9 +15,9 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     )
     <| render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
+private func render(conn: Conn<StatusLineOpen, Never, Route>) -> IO<Conn<ResponseEnded, Never, Data>> {
 
-  switch conn.data {
+  switch conn.data.right! {
   case let .githubCallback(code, redirect):
     return conn.map(const((code, redirect)))
       |> githubCallbackResponse

@@ -8,4 +8,5 @@
 
 ▿ Response
   Status 302 FOUND
+  Content-Length: 0
   Location: /?success=true

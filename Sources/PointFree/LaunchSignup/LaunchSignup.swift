@@ -15,17 +15,17 @@ let signupResponse =
     >-> airtableStuff
     >-> redirect(to: path(to: .home(signedUpSuccessfully: true)))
 
-private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
+private func airtableStuff<I>(_ conn: Conn<I, Never, String>) -> IO<Conn<I, Never, Either<Prelude.Unit, Prelude.Unit>>> {
 
   let result = [EnvVars.Airtable.base1, EnvVars.Airtable.base2, EnvVars.Airtable.base3]
-    .map(AppEnvironment.current.airtableStuff(conn.data))
+    .map(AppEnvironment.current.airtableStuff(conn.data.right!))
     .reduce(lift(.left(unit))) { $0 <|> $1 }
     .run
 
   return result.map { conn.map(const($0)) }
 }
 
-private func analytics<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
+private func analytics<I, A>(_ conn: Conn<I, Never, A>) -> IO<Conn<I, Never, A>> {
   return IO {
     print("tracked analytics")
     return conn
