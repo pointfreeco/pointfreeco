@@ -8,4 +8,5 @@
 
 ▿ Response
   Status 301 MOVED PERMANENTLY
+  Content-Length: 0
   Location: https://www.pointfree.co/episodes

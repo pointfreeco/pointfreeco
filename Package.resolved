@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/typelift/Operadics.git",
         "state": {
           "branch": null,
-          "revision": "c2a14919b3653a39a9bf268c1ae0bf71ad6833fe",
-          "version": "0.3.0"
+          "revision": "fcacc621d00449c2cc0cb7227756928566370d28",
+          "version": "0.2.2"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/typelift/Swiftx.git",
         "state": {
           "branch": null,
-          "revision": "32cb9a833cbc69b1ee2ebad2392eca3090b7211c",
-          "version": "0.5.3"
+          "revision": "0d481bbe0617c38bb816c9cbbf54ab93edb813b9",
+          "version": "0.5.2"
         }
       },
       {

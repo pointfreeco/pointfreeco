@@ -10,5 +10,6 @@
 
 ▿ Response
   Status 302 FOUND
+  Content-Length: 0
   Location: /home
   Set-Cookie: github_session=; Max-Age=0; Expires=Thu, 1 Jan 1970 00:00:00 GMT
