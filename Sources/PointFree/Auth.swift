@@ -6,7 +6,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
@@ -16,10 +16,10 @@ let githubCallbackResponse =
   authTokenMiddleware
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
+let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data?> =
   { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
 
-let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
   redirect(
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: githubSessionCookieName))
@@ -95,7 +95,7 @@ private func writeGitHubSessionCookieMiddleware(
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
   )
-  -> IO<Conn<ResponseEnded, Data>> {
+  -> IO<Conn<ResponseEnded, Data?>> {
 
     return AppEnvironment.current.fetchAuthToken(conn.data.code)
       .flatMap { token in

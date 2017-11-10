@@ -4,6 +4,7 @@ import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
+import Optics
 
 let homeResponse =
   analytics
@@ -12,8 +13,8 @@ let homeResponse =
 
 let signupResponse =
   analytics
-    >-> airtableStuff
     >-> notifyUs
+    >-> airtableStuff
     >-> redirect(to: path(to: .home(signedUpSuccessfully: true)))
 
 private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
@@ -24,12 +25,6 @@ private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prel
     .run
 
   return result.map { conn.map(const($0)) }
-}
-
-private func notifyUs<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
-  return IO {
-    return conn
-  }
 }
 
 private func analytics<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
