@@ -6,7 +6,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
+let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
