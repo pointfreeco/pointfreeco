@@ -97,11 +97,6 @@ private func writeGitHubSessionCookieMiddleware(
     )
 }
 
-enum GitHubError {
-  case badCode
-  case badToken
-}
-
 /// Exchanges a github code for an access token and loads the user's data.
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, Never, (code: String, redirect: String?)>
@@ -116,10 +111,7 @@ private func authTokenMiddleware(
       .run
       .flatMap { githubUserEnvelope in
         switch githubUserEnvelope {
-
         case let .left(error):
-//          conn
-//          return
           fatalError()
 
         case let .right(env):
