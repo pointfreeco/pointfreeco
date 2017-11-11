@@ -32,6 +32,10 @@ enum EnvVars {
     static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "deadbeef-client-secret"
   }
 
+  enum Mailgun {
+    static let apiKey = env["MAILGUN_PRIVATE_API_KEY"] ?? "deadbeef-mg-api-key"
+  }
+
   enum Stripe {
     static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test"
     static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test"
