@@ -7,9 +7,9 @@ import Prelude
 
 func sendEmail(
   from: String,
-  to: String,
+  to: [String],
   subject: String,
-  content: Either3<String, Node, (String, Node)>,
+  content: Either3<String, [Node], (String, [Node])>,
   domain: String = "mg.pointfree.co"
   )
   -> EitherIO<Prelude.Unit, Prelude.Unit> {
@@ -18,11 +18,11 @@ func sendEmail(
       destructure(
         content,
         { plain in (plain, nil) },
-        { node in (plainText(for: node), render(node)) },
+        { nodes in (plainText(for: nodes), render(nodes)) },
         second(render)
     )
 
-    return mailgunSend(from: from, to: [to], subject: subject, text: plain, html: html, domain: domain)
+    return mailgunSend(from: from, to: to, subject: subject, text: plain, html: html, domain: domain)
 }
 
 enum Tracking: String {
@@ -45,12 +45,12 @@ enum TrackingOpens: String {
 func mailgunSend(
   from: String,
   to: [String],
-  cc: [String] = [],
-  bcc: [String] = [],
+  cc: [String]? = nil,
+  bcc: [String]? = nil,
   subject: String,
   text: String?,
   html: String?,
-  testMode: Bool = false,
+  testMode: Bool? = nil,
   tracking: Tracking? = nil,
   trackingClicks: TrackingClicks? = nil,
   trackingOpens: TrackingOpens? = nil,
@@ -61,8 +61,8 @@ func mailgunSend(
     let params = [
       "from": from,
       "to": to.joined(separator: ","),
-      "cc": cc.joined(separator: ","),
-      "bcc": bcc.joined(separator: ","),
+      "cc": cc?.joined(separator: ","),
+      "bcc": bcc?.joined(separator: ","),
       "subject": subject,
       "text": text,
       "html": html,

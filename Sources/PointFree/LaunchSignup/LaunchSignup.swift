@@ -32,27 +32,29 @@ private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prel
 func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
   return IO {
 
-    let emailHtml = html([
-      head([style(reset)]),
-      body([
-        p(["We just got a new signup for Point-Free! Wooooo!"]),
-        p(["Email: ", .text(encode(conn.data))]),
-        p(["Good job everyone!"])
-        ])
-      ])
-
     // Fire-and-forget to notify us that someone signed up
     _ = sendEmail(
       from: "Point-Free <brandon@pointfree.co>",
-      to: "mbw234@gmail.com",
+      to: ["mbw234@gmail.com", "stephen.celis@gmail.com"],
       subject: "New signup for Point-Free!",
-      content: inj2(emailHtml)
+      content: inj2(notifyUsView.view(conn.data))
       )
       .run
       .perform()
 
     return conn
   }
+}
+
+let notifyUsView = View<String> { email in
+  html([
+    head([style(reset)]),
+    body([
+      p(["We just got a new signup for Point-Free! Wooooo!"]),
+      p(["Email: ", .text(encode(email))]),
+      p(["Good job everyone!"])
+      ])
+    ])
 }
 
 private func analytics<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
