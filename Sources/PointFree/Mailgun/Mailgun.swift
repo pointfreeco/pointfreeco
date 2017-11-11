@@ -22,12 +22,53 @@ func sendEmail(
         second(render)
     )
 
+    return mailgunSend(from: from, to: [to], subject: subject, text: plain, html: html, domain: domain)
+}
+
+enum Tracking: String {
+  case no
+  case yes
+}
+
+enum TrackingClicks: String {
+  case yes
+  case no
+  case htmlOnly = "htmlonly"
+}
+
+enum TrackingOpens: String {
+  case yes
+  case no
+  case htmlOnly = "htmlonly"
+}
+
+func mailgunSend(
+  from: String,
+  to: [String],
+  cc: [String] = [],
+  bcc: [String] = [],
+  subject: String,
+  text: String?,
+  html: String?,
+  testMode: Bool = false,
+  tracking: Tracking? = nil,
+  trackingClicks: TrackingClicks? = nil,
+  trackingOpens: TrackingOpens? = nil,
+  domain: String
+  )
+  -> EitherIO<Prelude.Unit, Prelude.Unit> {
+
     let params = [
       "from": from,
-      "to": to,
+      "to": to.joined(separator: ","),
+      "cc": cc.joined(separator: ","),
+      "bcc": bcc.joined(separator: ","),
       "subject": subject,
-      "text": plain,
-      "html": html
+      "text": text,
+      "html": html,
+      "tracking": tracking?.rawValue,
+      "tracking-clicks": trackingClicks?.rawValue,
+      "tracking-opens": trackingOpens?.rawValue
       ]
       |> compact
 
@@ -45,9 +86,9 @@ func sendEmail(
           error == nil
             ? callback(.right(unit))
             : callback(.left(unit))
-        }
-        .resume()
-    })
+          }
+          .resume()
+      })
 }
 
 // TODO: move to swift-web
@@ -101,7 +142,7 @@ private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
 }
 
 // TODO: move to swift-prelude
-public func destructure<A, B, C, D>(
+private func destructure<A, B, C, D>(
   _ either: Either3<A, B, C>,
   _ a2d: (A) -> D,
   _ b2d: (B) -> D,
