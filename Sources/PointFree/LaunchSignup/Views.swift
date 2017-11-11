@@ -218,7 +218,7 @@ let stylesheet = inputStyle
   <> socialCss
 
 private let view: View<Bool?> = View { success in
-  document(
+  return document(
     [
       html(
         [
@@ -231,9 +231,9 @@ private let view: View<Bool?> = View { success in
             ]
           ),
           body(
-            success == .some(true)
-              ? [ successSectionNode, headerNode ]
-              : [ headerNode, defaultSectionNode ]
+            success == .some(true) ? [ successSectionNode, headerNode ] :
+              success == .some(false) ? ["There was an error"] :
+              [ headerNode, defaultSectionNode ]
           )
         ]
       )
