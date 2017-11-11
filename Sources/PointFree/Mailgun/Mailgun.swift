@@ -1,29 +1,8 @@
 import Either
 import Foundation
 import HttpPipeline
-import Html
 import Optics
 import Prelude
-
-func sendEmail(
-  from: String,
-  to: [String],
-  subject: String,
-  content: Either3<String, [Node], (String, [Node])>,
-  domain: String = "mg.pointfree.co"
-  )
-  -> EitherIO<Prelude.Unit, Prelude.Unit> {
-
-    let (plain, html): (String, String?) =
-      destructure(
-        content,
-        { plain in (plain, nil) },
-        { nodes in (plainText(for: nodes), render(nodes)) },
-        second(render)
-    )
-
-    return mailgunSend(from: from, to: to, subject: subject, text: plain, html: html, domain: domain)
-}
 
 enum Tracking: String {
   case no
@@ -42,87 +21,62 @@ enum TrackingOpens: String {
   case htmlOnly = "htmlonly"
 }
 
-func mailgunSend(
-  from: String,
-  to: [String],
-  cc: [String]? = nil,
-  bcc: [String]? = nil,
-  subject: String,
-  text: String?,
-  html: String?,
-  testMode: Bool? = nil,
-  tracking: Tracking? = nil,
-  trackingClicks: TrackingClicks? = nil,
-  trackingOpens: TrackingOpens? = nil,
-  domain: String
-  )
-  -> EitherIO<Prelude.Unit, Prelude.Unit> {
-
-    let params = [
-      "from": from,
-      "to": to.joined(separator: ","),
-      "cc": cc?.joined(separator: ","),
-      "bcc": bcc?.joined(separator: ","),
-      "subject": subject,
-      "text": text,
-      "html": html,
-      "tracking": tracking?.rawValue,
-      "tracking-clicks": trackingClicks?.rawValue,
-      "tracking-opens": trackingOpens?.rawValue
-      ]
-      |> compact
-
-
-    let request = URLRequest(url: URL(string: "https://api.mailgun.net/v3/\(domain)/messages")!)
-      |> \.httpMethod .~ "POST"
-      |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
-      |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
-
-    let session = URLSession(configuration: .default)
-
-    return .init(
-      run: .init { callback in
-        session.dataTask(with: request) { data, response, error in
-          error == nil
-            ? callback(.right(unit))
-            : callback(.left(unit))
-          }
-          .resume()
-      })
+public struct Email {
+  var from: String
+  var to: [String]
+  var cc: [String]? = nil
+  var bcc: [String]? = nil
+  var subject: String
+  var text: String?
+  var html: String?
+  var testMode: Bool? = nil
+  var tracking: Tracking? = nil
+  var trackingClicks: TrackingClicks? = nil
+  var trackingOpens: TrackingOpens? = nil
+  var domain: String
 }
 
-// TODO: move to swift-web
-private func plainText(for node: Node) -> String {
-  switch node {
-
-  case .comment(_):
-    return ""
-  case let .document(document):
-    return document.map(plainText).joined()
-  case let .element(element):
-    return plainText(for: element)
-  case let .text(text):
-    return text.string
-  }
+public struct SendEmailResponse: Decodable {
+  let id: String
+  let message: String
 }
 
-private func plainText(for element: Element) -> String {
+func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
 
-  switch element.name.lowercased() {
-  case "br":
-    return "\n"
-  case "style", "script":
-    return ""
-  case "b", "big", "i", "small", "tt", "abbr", "acronym",
-       "cite", "code", "dfn", "em", "kbd", "strong", "samp",
-       "var", "a", "bdo", "br", "img", "map", "object", "q",
-       "script", "span", "sub", "sup", "button", "input", "label",
-       "select", "textarea":
-    return (element.content ?? []).map(plainText).joined()
+  let params = [
+    "from": email.from,
+    "to": email.to.joined(separator: ","),
+    "cc": email.cc?.joined(separator: ","),
+    "bcc": email.bcc?.joined(separator: ","),
+    "subject": email.subject,
+    "text": email.text,
+    "html": email.html,
+    "tracking": email.tracking?.rawValue,
+    "tracking-clicks": email.trackingClicks?.rawValue,
+    "tracking-opens": email.trackingOpens?.rawValue
+    ]
+    |> compact
 
-  default:
-    return (element.content ?? []).map(plainText).joined() + "\n"
-  }
+
+  let request = URLRequest(url: URL(string: "https://api.mailgun.net/v3/\(email.domain)/messages")!)
+    |> \.httpMethod .~ "POST"
+    |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
+    |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
+
+  let session = URLSession(configuration: .default)
+
+  return .init(
+    run: .init { callback in
+      session.dataTask(with: request) { data, response, error in
+        callback(
+          data
+            .flatMap { try? JSONDecoder().decode(SendEmailResponse.self, from: $0) }
+            .map(Either.right)
+            ?? .left(unit)
+        )
+        }
+        .resume()
+    })
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
@@ -139,22 +93,4 @@ private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
     }
   }
   return result
-}
-
-// TODO: move to swift-prelude
-private func destructure<A, B, C, D>(
-  _ either: Either3<A, B, C>,
-  _ a2d: (A) -> D,
-  _ b2d: (B) -> D,
-  _ c2d: (C) -> D
-  )
-  -> D {
-    switch either {
-    case let .left(a):
-      return a2d(a)
-    case let .right(.left(b)):
-      return b2d(b)
-    case let .right(.right(.left(c))):
-      return c2d(c)
-    }
 }
