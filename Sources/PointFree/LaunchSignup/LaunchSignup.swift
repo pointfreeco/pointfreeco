@@ -34,8 +34,8 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
 
     // Fire-and-forget to notify us that someone signed up
     _ = sendEmail(
-      from: "Point-Free <brandon@pointfree.co>",
-      to: ["mbw234@gmail.com", "stephen.celis@gmail.com"],
+      from: "Point-Free <support@pointfree.co>",
+      to: ["brandon@pointfree.co", "stephen@pointfree.co"],
       subject: "New signup for Point-Free!",
       content: inj2(notifyUsView.view(conn.data))
       )
