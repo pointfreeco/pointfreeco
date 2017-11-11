@@ -72,6 +72,16 @@ class LaunchSignupTests: TestCase {
     assertWebPageSnapshot(matching: result.perform())
   }
 
+  func testHome_UnsuccessfulSignup() {
+    let request = URLRequest(url: URL(string: "http://localhost:8080/?success=false")!)
+
+    let conn = connection(from: request)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+    assertWebPageSnapshot(matching: result.perform())
+  }
+
   func testSignup() {
     var request = URLRequest(url: URL(string: "http://localhost:8080/launch-signup")!)
     request.httpMethod = "POST"

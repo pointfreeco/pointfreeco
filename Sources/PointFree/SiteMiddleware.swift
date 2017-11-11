@@ -19,8 +19,9 @@ private func render(conn: Conn<StatusLineOpen, Never, Route>) -> IO<Conn<Respons
 
   switch conn.data.right! {
   case let .githubCallback(code, redirect):
-    return conn.map(const((code, redirect)))
-      |> githubCallbackResponse
+    fatalError()
+//    return conn.map(const((code, redirect)))
+//      |> githubCallbackResponse
 
   case let .home(signedUpSuccessfully):
     return conn.map(const(signedUpSuccessfully))
