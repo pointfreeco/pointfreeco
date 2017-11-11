@@ -81,7 +81,7 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
   return (headers ?? [:])
-    |> key("Authorization") .~ ("Basic " + Data("api:\(EnvVars.Mailgun.apiKey)".utf8).base64EncodedString())
+    |> key("Authorization") .~ ("Basic " + Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString())
 }
 
 // TODO: move to swift-prelude
