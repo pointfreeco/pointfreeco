@@ -53,6 +53,10 @@ private func airtableStuff<I>(_ conn: Conn<I, Never, String>) -> IO<Conn<I, Prel
 
 // mapExceptT :: (m (Either e a) -> n (Either e' b)) -> ExceptT e m a -> ExceptT e' n b
 
+// ((E | A) -> (F | B)) -> (Conn<I, E, A>) -> Conn<I, E | F, B>
+
+
+
 private func handleError<I>(_ conn: Conn<I, Prelude.Unit, Prelude.Unit>) -> IO<Conn<I, Never, Route>> {
 
   return pure <| conn.mapConn(const(.right(.home(signedUpSuccessfully: conn.data.isRight))))
