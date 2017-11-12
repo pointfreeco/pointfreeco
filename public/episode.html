@@ -14,9 +14,54 @@
         <p class="h4">In the article “Algebraic Structure and Protocols” we described how to use Swift protocols to describe some basic algebraic structures, such as semigroups and monoids, provided some simple examples, and then provided constructions to build new instances from existing. Here we apply those ideas to the concrete ideas of predicates and sorting functions, and show how they build a wonderful little algebra that is quite expressive.</p>
         <h2 class="h4 pt1">Recall from last time…</h2>
         <p>…that we defined a semigroup and monoid as protocols satisfying some axioms:</p>
+        <pre><code class="code">infix operator <>: AdditionPrecedence
+
+protocol Semigroup {
+  // **AXIOM** Associativity
+  // For all a, b, c in Self:
+  //    a <> (b <> c) == (a <> b) <> c
+  static func <> (lhs: Self, rhs: Self) -> Self
+}
+
+protocol Monoid: Semigroup {
+  // **AXIOM** Identity
+  // For all a in Self:
+  //    a <> e == e <> a == a
+  static var e: Self { get }
+}</code></pre>
+        <p>Types that conform to these protocols have some of the simplest forms of computation around. They know how to take two values of the type, and combine them into a single value. We know of quite a few types that are monoids:</p>
+        <pre><code class="code">extension Bool: Monoid {
+  static func <>(lhs: Bool, rhs: Bool) -> Bool {
+    return lhs && rhs
+  }
+  static let e = true
+}
+
+extension Int: Monoid {
+  static func <>(lhs: Int, rhs: Int) -> Int {
+    return lhs + rhs
+  }
+  static let e = 0
+}
+
+extension String: Monoid {
+  static func <>(lhs: String, rhs: String) -> String {
+    return lhs + rhs
+  }
+  static let e = ""
+}
+
+extension Array: Monoid {
+  static func <>(lhs: Array, rhs: Array) -> Array {
+    return lhs + rhs
+  }
+  static var e: Array { return [] }
+  //      ^-- Static properties are not allowed on generics in
+  //          Swift 3.1, so we must store it as a computed variable.
+}</code></pre>
       </div>
-      <div class="col-6 pt5 bg-dark vh100">
-        <video>
+      <div class="col-6 pt5 bg-dark">
+        <video controls>
           <source src="video.ts">
         </video>
       </div>

@@ -5,7 +5,8 @@ Base
 */
 
 html, body {
-  height: 100vh;
+  /* fill all available height */
+  height: 100%;
 }
 
 body {
@@ -34,14 +35,6 @@ strong {
 
 video {
   max-width: 100%;
-}
-
-.bg-dark {
-  background-color: #222;
-}
-
-.vh100 {
-  height: 100vh;
 }
 
 /*
@@ -87,7 +80,7 @@ Font sizes
 
 /*
 
-Font styles
+Styles
 
 */
 
@@ -98,6 +91,18 @@ Font styles
 .h-caps {
   text-transform: uppercase;
   letter-spacing: 0.54pt;
+}
+
+.bg-dark {
+  background-color: #222;
+}
+
+.code {
+  display: block;
+  background-color: #fafafa;
+  font-family: monospace;
+  padding: 2rem;
+  overflow-x: auto;
 }
 
 /*
