@@ -6,20 +6,19 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
+let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
-
 
 let githubCallbackResponse =
   authTokenMiddleware
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data?> =
+let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
   { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
 
-let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data?>> =
+let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: githubSessionCookieName))
@@ -53,7 +52,7 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { pure(tuple) <*> $0.first <*> $0.last }
+      .flatMap { tuple <¢> $0.first <*> $0.last }
     return .init(uniqueKeysWithValues: pairs)
   }
 }
@@ -101,7 +100,7 @@ extension EitherIO {
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
   )
-  -> IO<Conn<ResponseEnded, Data?>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     return AppEnvironment.current.fetchAuthToken(conn.data.code)
       .flatMap { token in

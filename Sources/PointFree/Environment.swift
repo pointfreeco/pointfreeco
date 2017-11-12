@@ -9,6 +9,7 @@ public typealias CreateUser = (GitHubUserEnvelope) -> EitherIO<Error, Prelude.Un
 public typealias FetchAuthToken = (_ code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken>
 public typealias FetchGitHubUser = (GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser>
 public typealias FetchUser = (GitHubAccessToken) -> EitherIO<Error, User?>
+public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
@@ -17,17 +18,22 @@ public struct Environment {
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
   public private(set) var fetchUser: FetchUser
+  public private(set) var sendEmail: SendEmail
 
-  init(airtableStuff: @escaping AirtableCreateRow = createRow,
-       createUser: @escaping CreateUser = PointFree.createUser,
-       fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
-       fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
-       fetchUser: @escaping FetchUser = PointFree.fetchUser) {
+  init(
+    airtableStuff: @escaping AirtableCreateRow = createRow,
+    createUser: @escaping CreateUser = PointFree.createUser,
+    fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
+    fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
+    fetchUser: @escaping FetchUser = PointFree.fetchUser,
+    sendEmail: @escaping SendEmail = PointFree.mailgunSend) {
+
     self.airtableStuff = airtableStuff
     self.createUser = createUser
     self.fetchAuthToken = fetchAuthToken
     self.fetchGitHubUser = fetchGitHubUser
     self.fetchUser = fetchUser
+    self.sendEmail = sendEmail
   }
 }
 
@@ -39,16 +45,19 @@ public struct AppEnvironment {
     self.stack.append(env)
   }
 
-  public static func with(airtableStuff: @escaping AirtableCreateRow = AppEnvironment.current.airtableStuff,
-       fetchAuthToken: @escaping FetchAuthToken = AppEnvironment.current.fetchAuthToken,
-       fetchGitHubUser: @escaping FetchGitHubUser = AppEnvironment.current.fetchGitHubUser,
-       block: @escaping () -> Void) {
+  public static func with(
+    airtableStuff: @escaping AirtableCreateRow = AppEnvironment.current.airtableStuff,
+    fetchAuthToken: @escaping FetchAuthToken = AppEnvironment.current.fetchAuthToken,
+    fetchGitHubUser: @escaping FetchGitHubUser = AppEnvironment.current.fetchGitHubUser,
+    sendEmail: @escaping SendEmail = AppEnvironment.current.sendEmail,
+    block: @escaping () -> Void) {
 
     self.push(
       env: AppEnvironment.current
         |> \.airtableStuff .~ airtableStuff
         |> \.fetchAuthToken .~ fetchAuthToken
         |> \.fetchGitHubUser .~ fetchGitHubUser
+        |> \.sendEmail .~ sendEmail
     )
     block()
     self.pop()

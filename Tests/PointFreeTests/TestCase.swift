@@ -12,7 +12,8 @@ class TestCase: XCTestCase {
       env: .init(
         airtableStuff: const(const(pure(unit))),
         fetchAuthToken: const(pure(.init(accessToken: "deadbeef"))),
-        fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob")))
+        fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob"))),
+        sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
       )
     )
   }

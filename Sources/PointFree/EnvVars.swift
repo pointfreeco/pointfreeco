@@ -13,6 +13,7 @@ enum EnvVars {
   }()
 
   static let appSecret = env["APP_SECRET"] ?? "deadbeefdeadbeefdeadbeefdeadbeef"
+  static let baseUrl = URL(string: env["BASE_URL"] ?? "http://localhost:8080")
 
   enum Airtable {
     static let base1 = env["AIRTABLE_BASE_1"] ?? "deadbeef-base-1"
@@ -29,6 +30,10 @@ enum EnvVars {
   enum GitHub {
     static let clientId = env["GITHUB_CLIENT_ID"] ?? "deadbeef-client-id"
     static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "deadbeef-client-secret"
+  }
+
+  enum Mailgun {
+    static let apiKey = env["MAILGUN_PRIVATE_API_KEY"] ?? "deadbeef-mg-api-key"
   }
 
   enum Stripe {

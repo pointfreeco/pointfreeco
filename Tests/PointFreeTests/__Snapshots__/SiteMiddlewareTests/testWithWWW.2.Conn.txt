@@ -9,7 +9,7 @@
 
 ▿ Response
   Status 404 NOT FOUND
-  Content-Length: 19
+  Content-Length: 9
   Content-Type: text/plain
 
-  don't know that url
+  Not Found
