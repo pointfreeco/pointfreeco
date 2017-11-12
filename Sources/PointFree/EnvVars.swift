@@ -1,43 +1,116 @@
 import Foundation
 
-enum EnvVars {
-  private static let env: [String: String] = {
+public struct EnvVars: Codable {
+  var airtable = Airtable()
+  var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
+  var baseUrlString = "http://localhost:8080"
+  var basicAuth = BasicAuth()
+  var gitHub = GitHub()
+  var mailgun = Mailgun()
+  var stripe = Stripe()
+
+  private enum CodingKeys: String, CodingKey {
+    case appSecret = "APP_SECRET"
+    case baseUrlString = "BASE_URL"
+  }
+
+  public struct Airtable: Codable {
+    var base1 = "deadbeef-base-1"
+    var base2 = "deadbeef-base-2"
+    var base3 = "deadbeef-base-3"
+    var bearer = "deadbeef-bearer"
+
+    private enum CodingKeys: String, CodingKey {
+      case base1 = "AIRTABLE_BASE_1"
+      case base2 = "AIRTABLE_BASE_2"
+      case base3 = "AIRTABLE_BASE_3"
+      case bearer = "AIRTABLE_BEARER"
+    }
+  }
+
+  public struct BasicAuth: Codable {
+    var username = "hello"
+    var password = "world"
+
+    private enum CodingKeys: String, CodingKey {
+      case username = "BASIC_AUTH_USERNAME"
+      case password = "BASIC_AUTH_PASSWORD"
+    }
+  }
+
+  public struct GitHub: Codable {
+    var clientId = "deadbeef-client-id"
+    var clientSecret = "deadbeef-client-secret"
+
+    private enum CodingKeys: String, CodingKey {
+      case clientId = "GITHUB_CLIENT_ID"
+      case clientSecret = "GITHUB_CLIENT_SECRET"
+    }
+  }
+
+  public struct Mailgun: Codable {
+    var apiKey = "deadbeef-mg-api-key"
+    var domain = "mg.domain.com"
+
+    private enum CodingKeys: String, CodingKey {
+      case apiKey = "MAILGUN_PRIVATE_API_KEY"
+      case domain = "MAILGUN_DOMAIN"
+    }
+  }
+
+  public struct Stripe: Codable {
+    var publishableKey = "pk_test"
+    var secretKey = "sk_test"
+
+    private enum CodingKeys: String, CodingKey {
+      case publishableKey = "STRIPE_PUBLISHABLE_KEY"
+      case secretKey = "STRIPE_SECRET_KEY"
+    }
+  }
+
+  public var baseUrl: URL {
+    return URL(string: self.baseUrlString)!
+  }
+
+  public static let `default` = { () -> EnvVars in
     let envFilePath = URL(fileURLWithPath: #file)
       .deletingLastPathComponent()
       .appendingPathComponent(".env")
 
     let localEnvVars = (try? Data(contentsOf: envFilePath))
       .flatMap { try? JSONDecoder().decode([String: String].self, from: $0) }
+      ?? [:]
 
-    return localEnvVars ?? ProcessInfo.processInfo.environment
+    let envVars = localEnvVars.merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
+
+    return (try? JSONSerialization.data(withJSONObject: envVars))
+      .flatMap { try? JSONDecoder().decode(EnvVars.self, from: $0) }
+      ?? EnvVars()
   }()
+}
 
-  static let appSecret = env["APP_SECRET"] ?? "deadbeefdeadbeefdeadbeefdeadbeef"
-  static let baseUrl = URL(string: env["BASE_URL"] ?? "http://localhost:8080")
+extension EnvVars {
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
 
-  enum Airtable {
-    static let base1 = env["AIRTABLE_BASE_1"] ?? "deadbeef-base-1"
-    static let base2 = env["AIRTABLE_BASE_2"] ?? "deadbeef-base-2"
-    static let base3 = env["AIRTABLE_BASE_3"] ?? "deadbeef-base-3"
-    static let bearer = env["AIRTABLE_BEARER"] ?? "deadbeef-bearer"
+    self.airtable = try EnvVars.Airtable.init(from: decoder)
+    self.appSecret = try values.decode(String.self, forKey: .appSecret)
+    self.baseUrlString = try values.decode(String.self, forKey: .baseUrlString)
+    self.basicAuth = try EnvVars.BasicAuth.init(from: decoder)
+    self.gitHub = try EnvVars.GitHub.init(from: decoder)
+    self.mailgun = try EnvVars.Mailgun.init(from: decoder)
+    self.stripe = try EnvVars.Stripe.init(from: decoder)
   }
 
-  enum BasicAuth {
-    static let username = env["BASIC_AUTH_USERNAME"] ?? "hello"
-    static let password = env["BASIC_AUTH_PASSWORD"] ?? "world"
-  }
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
 
-  enum GitHub {
-    static let clientId = env["GITHUB_CLIENT_ID"] ?? "deadbeef-client-id"
-    static let clientSecret = env["GITHUB_CLIENT_SECRET"] ?? "deadbeef-client-secret"
-  }
-
-  enum Mailgun {
-    static let apiKey = env["MAILGUN_PRIVATE_API_KEY"] ?? "deadbeef-mg-api-key"
-  }
-
-  enum Stripe {
-    static let publishableKey = env["STRIPE_PUBLISHABLE_KEY"] ?? "pk_test"
-    static let secretKey = env["STRIPE_SECRET_KEY"] ?? "sk_test"
+    try self.airtable.encode(to: encoder)
+    try container.encode(self.appSecret, forKey: .appSecret)
+    try container.encode(self.baseUrlString, forKey: .baseUrlString)
+    try self.basicAuth.encode(to: encoder)
+    try self.gitHub.encode(to: encoder)
+    try self.mailgun.encode(to: encoder)
+    try self.stripe.encode(to: encoder)
   }
 }

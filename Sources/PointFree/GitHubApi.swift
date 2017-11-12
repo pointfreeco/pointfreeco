@@ -29,8 +29,8 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
     |> \.httpMethod .~ "POST"
     |> \.httpBody .~ (try? JSONEncoder().encode(
       [
-        "client_id": EnvVars.GitHub.clientId,
-        "client_secret": EnvVars.GitHub.clientSecret,
+        "client_id": AppEnvironment.current.envVars.gitHub.clientId,
+        "client_secret": AppEnvironment.current.envVars.gitHub.clientSecret,
         "code": code,
         "accept": "json"
       ]))
