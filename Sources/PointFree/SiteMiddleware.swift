@@ -18,6 +18,10 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
 
   switch conn.data {
+  case let .episode(param):
+    return conn.map(const(param))
+      |> episodeResponse
+
   case let .githubCallback(code, redirect):
     return conn.map(const((code, redirect)))
       |> githubCallbackResponse
@@ -61,7 +65,7 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .githubCallback, .login, .logout, .secretHome:
+  case .episode, .githubCallback, .login, .logout, .secretHome:
     return true
   case .home, .launchSignup:
     return false

@@ -1,7 +1,9 @@
 import ApplicativeRouter
+import Either
 import Prelude
 
 public enum Route {
+  case episode(Either<String, Int>)
   case githubCallback(code: String, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
@@ -11,6 +13,10 @@ public enum Route {
 }
 
 public let router: Router<Route> = [
+
+  Route.iso.episode
+    <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+
   Route.iso.githubCallback
     <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
   
@@ -33,6 +39,13 @@ public let router: Router<Route> = [
 
 extension Route {
   public enum iso {
+    static let episode = parenthesize <| PartialIso(
+      apply: Route.episode,
+      unapply: {
+        guard case let .episode(result) = $0 else { return nil }
+        return result
+    })
+
     static let githubCallback = parenthesize <| PartialIso(
       apply: Route.githubCallback,
       unapply: {
