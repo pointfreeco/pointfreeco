@@ -96,6 +96,9 @@ private let notFoundView = View<Prelude.Unit> { _ in
 private func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
   return .init(
     "class",
-    selectors.reduce("") { $0 + renderSelector(inline, $1) }
+    selectors.reduce("") { accum, sel in
+      accum
+        + renderSelector(inline, sel).replacingOccurrences(of: ".", with: "")
+    }
   )
 }
