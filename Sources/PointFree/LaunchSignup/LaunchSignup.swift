@@ -1,9 +1,12 @@
+import CssReset
 import Either
 import Foundation
 import Html
+import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
+import Optics
 
 let homeResponse =
   analytics
@@ -12,6 +15,7 @@ let homeResponse =
 
 let signupResponse =
   analytics
+    >-> notifyUsOfNewSignup
     >-> airtableStuff
     >-> flashErrors(on: unit)
     >-> { $0 |> redirect(to: path(to: .home(signedUpSuccessfully: $0.data.guaranteedRight.0 == nil))) }
@@ -60,6 +64,34 @@ private func airtableStuff<I>(_ conn: Conn<I, Never, String>) -> IO<Conn<I, Prel
 private func handleError<I>(_ conn: Conn<I, Prelude.Unit, Prelude.Unit>) -> IO<Conn<I, Never, Route>> {
 
   return pure <| conn.mapConn(const(.right(.home(signedUpSuccessfully: conn.data.isRight))))
+}
+
+func notifyUsOfNewSignup<I>(_ conn: Conn<I, Never, String>) -> IO<Conn<I, Never, String>> {
+  return IO {
+
+    // Fire-and-forget to notify us that someone signed up
+    _ = sendEmail(
+      from: "Point-Free <support@pointfree.co>",
+      to: ["brandon@pointfree.co", "stephen@pointfree.co"],
+      subject: "New signup for Point-Free!",
+      content: inj2(notifyUsView.view(conn.data.guaranteedRight))
+      )
+      .run
+      .perform()
+
+    return conn
+  }
+}
+
+let notifyUsView = View<String> { email in
+  html([
+    head([style(reset)]),
+    body([
+      p(["We just got a new signup for Point-Free! Wooooo!"]),
+      p(["Email: ", .text(encode(email))]),
+      p(["Good job everyone!"])
+      ])
+    ])
 }
 
 private func analytics<I, A>(_ conn: Conn<I, Never, A>) -> IO<Conn<I, Never, A>> {
