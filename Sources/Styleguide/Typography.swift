@@ -5,11 +5,11 @@ public let typography: Stylesheet =
   bodyStyles
     <> headerStyles
     <> paragraphStyles
-    <> fwBold % fontWeight(.w700)
     <> hCaps % (
       textTransform(.uppercase)
         <> letterSpacing(.pt(0.54))
-)
+    )
+    <> fwBold % fontWeight(.w700)
 
 private let bodyStyles = body % (
   fontSize(.px(16))
@@ -22,7 +22,7 @@ private let paragraphStyles = p % margin(topBottom: .rem(1.5))
 private let headerStyles =
   (h1 | h2 | h3 | h4 | h5 | h6) % (
     margin(topBottom: .rem(1.5))
-        <> fontWeight(.w700)
+      <> fontWeight(.w700)
     )
     <> h1Class % fontSize(.rem(3.998))
     <> h2Class % fontSize(.rem(2.827))
