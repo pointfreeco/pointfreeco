@@ -33,14 +33,16 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
   return IO {
 
     // Fire-and-forget to notify us that someone signed up
-    _ = sendEmail(
-      from: "Point-Free <support@pointfree.co>",
-      to: ["brandon@pointfree.co", "stephen@pointfree.co"],
-      subject: "New signup for Point-Free!",
-      content: inj2(notifyUsView.view(conn.data))
+    parallel(
+      sendEmail(
+        from: "Point-Free <support@pointfree.co>",
+        to: ["brandon@pointfree.co", "stephen@pointfree.co"],
+        subject: "New signup for Point-Free!",
+        content: inj2(notifyUsView.view(conn.data))
+        )
+        .run
       )
-      .run
-      .perform()
+      .run({ _ in })
 
     return conn
   }
