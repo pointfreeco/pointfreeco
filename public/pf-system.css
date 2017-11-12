@@ -1,12 +1,22 @@
 /*
 
-Base fonts
+Base
 
 */
+
+html, body {
+  height: 100vh;
+}
+
 body {
   font-size: 16px;
   font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -22,11 +32,24 @@ strong {
   font-weight: 700;
 }
 
+video {
+  max-width: 100%;
+}
+
+.bg-dark {
+  background-color: #222;
+}
+
+.vh100 {
+  height: 100vh;
+}
+
 /*
 
 Line height
 
 */
+
 .h1 {
   line-height: 1.15;
 }
@@ -36,11 +59,13 @@ Line height
 .h4, .h5 {
   line-height: 1.45;
 }
+
 /*
 
 Font sizes
 
 */
+
 .h1 {
   font-size: 3.998rem;
 }
@@ -65,6 +90,7 @@ Font sizes
 Font styles
 
 */
+
 .fw-bold {
   font-weight: 700;
 }
@@ -76,9 +102,76 @@ Font styles
 
 /*
 
+Grid
+
+*/
+
+.grid {
+  display: flex;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.col {
+  flex: 1;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+.col-1 {
+  flex-basis: calc(1/12 * 100%);
+  max-width: calc(1/12 * 100%);
+}
+.col-2 {
+  flex-basis: calc(2/12 * 100%);
+  max-width: calc(2/12 * 100%);
+}
+.col-3 {
+  flex-basis: calc(3/12 * 100%);
+  max-width: calc(3/12 * 100%);
+}
+.col-4 {
+  flex-basis: calc(4/12 * 100%);
+  max-width: calc(4/12 * 100%);
+}
+.col-5 {
+  flex-basis: calc(5/12 * 100%);
+  max-width: calc(5/12 * 100%);
+}
+.col-6 {
+  flex-basis: calc(6/12 * 100%);
+  max-width: calc(6/12 * 100%);
+}
+.col-7 {
+  flex-basis: calc(7/12 * 100%);
+  max-width: calc(7/12 * 100%);
+}
+.col-8 {
+  flex-basis: calc(8/12 * 100%);
+  max-width: calc(8/12 * 100%);
+}
+.col-9 {
+  flex-basis: calc(9/12 * 100%);
+  max-width: calc(9/12 * 100%);
+}
+.col-10 {
+  flex-basis: calc(10/12 * 100%);
+  max-width: calc(10/12 * 100%);
+}
+.col-11 {
+  flex-basis: calc(11/12 * 100%);
+  max-width: calc(11/12 * 100%);
+}
+.col-12 {
+  flex-basis: calc(12/12 * 100%);
+  max-width: calc(12/12 * 100%);
+}
+
+/*
+
 Padding
 
 */
+
 .p0 {
   padding: 0;
 }
