@@ -132,9 +132,14 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
+      CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
+      """
+    )))
+    .flatMap(const(execute(
+      """
       CREATE TABLE "users" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "email" character varying NOT NULL UNIQUE,
+        "email" citext NOT NULL UNIQUE,
         "github_user_id" integer UNIQUE,
         "github_access_token" character varying,
         "name" character varying,
