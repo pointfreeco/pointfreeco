@@ -93,29 +93,6 @@ public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Pre
     .map(const(unit))
 }
 
-public func curry<A, B, C, D, E, F, G>(_ fn: @escaping (A, B, C, D, E, F) -> G)
-  -> (A)
-  -> (B)
-  -> (C)
-  -> (D)
-  -> (E)
-  -> (F)
-  -> G {
-    return { a in
-      { b in
-        { c in
-          { d in
-            { e in
-              { f in
-                fn(a, b, c, d, e, f)
-              }
-            }
-          }
-        }
-      }
-    }
-}
-
 public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
   return execute(
     """
