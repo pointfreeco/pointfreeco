@@ -1,7 +1,7 @@
 import Either
 import Foundation
 import Html
-import HttpPipeline
+@testable import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
@@ -80,9 +80,9 @@ private func readGitHubSessionCookieMiddleware(
 }
 
 private func writeGitHubSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, Never, GitHubUserEnvelope>
+  _ conn: Conn<HeadersOpen, Error, GitHubUserEnvelope>
   )
-  -> IO<Conn<HeadersOpen, Never, GitHubUserEnvelope>> {
+  -> IO<Conn<HeadersOpen, Error, GitHubUserEnvelope>> {
 
     return conn |> writeHeaders(
       [
@@ -97,6 +97,16 @@ private func writeGitHubSessionCookieMiddleware(
     )
 }
 
+extension Conn {
+  func `throw`<J, B>(_ error: Error) -> Conn<J, Error, B> {
+    return .init(
+      data: .left(error),
+      request: self.request,
+      response: self.response
+    )
+  }
+}
+
 /// Exchanges a github code for an access token and loads the user's data.
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, Never, (code: String, redirect: String?)>
@@ -109,18 +119,17 @@ private func authTokenMiddleware(
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .run
-      .flatMap { githubUserEnvelope in
-        switch githubUserEnvelope {
+      .flatMap { gitHubUserEnvelope in
+        switch gitHubUserEnvelope {
         case let .left(error):
-          fatalError()
+          return pure <| conn.throw(error)
 
         case let .right(env):
-          fatalError()
-//          return conn.map(const(env))
-//            |> redirect(
-//              to: conn.data.right!.redirect ?? path(to: .secretHome),
-//              headersMiddleware: writeGitHubSessionCookieMiddleware
-//          )
+          return conn.mapConn(const(Either<Error, GitHubUserEnvelope>.right(env)))
+            |> redirect(
+              to: conn.data.guaranteedRight.redirect ?? path(to: .secretHome),
+              headersMiddleware: writeGitHubSessionCookieMiddleware
+          )
         }
     }
 }
