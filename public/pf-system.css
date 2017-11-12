@@ -6,37 +6,21 @@ Base fonts
 body {
   font-size: 16px;
   font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6, p {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/*h1 {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+strong {
+  font-weight: 700;
 }
-
-h2 {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-h3, h4 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-h5, h6 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}*/
 
 /*
 
@@ -50,7 +34,7 @@ Line height
   line-height: 1.25;
 }
 .h4, .h5 {
-  line-height: 1.35;
+  line-height: 1.45;
 }
 /*
 
