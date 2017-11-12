@@ -66,7 +66,10 @@ private func readGitHubSessionCookieMiddleware(
     return pure <| conn.map(
       const(
         conn.request.cookies[githubSessionCookieName]
-          .flatMap { ResponseHeader.verifiedValue(signedCookieValue: $0, secret: EnvVars.appSecret) }
+          .flatMap {
+            ResponseHeader
+              .verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+          }
           .map(Either.right)
           ?? Either.left(unit)
       )
@@ -84,7 +87,7 @@ private func writeGitHubSessionCookieMiddleware(
           key: githubSessionCookieName,
           value: conn.data,
           options: [],
-          secret: EnvVars.appSecret,
+          secret: AppEnvironment.current.envVars.appSecret,
           encrypt: true
         )
         ] |> catOptionals
@@ -121,21 +124,17 @@ private func authTokenMiddleware(
 }
 
 private let githubAuthorizationUrl =
-  "https://github.com/login/oauth/authorize?scope=user:email&client_id=\(EnvVars.GitHub.clientId)"
+  "https://github.com/login/oauth/authorize?scope=user:email&client_id="
+    + AppEnvironment.current.envVars.gitHub.clientId
 private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
 
   let params: [String: String] = [
     "scope": "user:email",
-    "client_id": EnvVars.GitHub.clientId,
+    "client_id": AppEnvironment.current.envVars.gitHub.clientId,
     "redirect_uri": url(to: .githubCallback(code: "", redirect: redirect))
   ]
 
-  let query = params.map { key, value in
-    "\(key)=" + (value.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) ?? "")
-    }
-    .joined(separator: "&")
-
-  return "https://github.com/login/oauth/authorize?\(query)"
+  return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
 }
 
 private let githubSessionCookieName = "github_session"
