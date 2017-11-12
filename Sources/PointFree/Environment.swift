@@ -10,20 +10,17 @@ public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmai
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
-//  public private(set) var baseUrl: URL?
   public private(set) var envVars: EnvVars
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
   public private(set) var sendEmail: SendEmail
 
   init(airtableStuff: @escaping AirtableCreateRow = createRow,
-//       baseUrl: URL? = nil,
-       envVars: EnvVars = EnvVars(),
+       envVars: EnvVars = EnvVars.default,
        fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
        fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
        sendEmail: @escaping SendEmail = PointFree.mailgunSend) {
     self.airtableStuff = airtableStuff
-//    self.baseUrl = baseUrl
     self.envVars = envVars
     self.fetchAuthToken = fetchAuthToken
     self.fetchGitHubUser = fetchGitHubUser

@@ -71,7 +71,6 @@ public struct EnvVars: Codable {
   }
 
   public static let `default` = { () -> EnvVars in
-
     let envFilePath = URL(fileURLWithPath: #file)
       .deletingLastPathComponent()
       .appendingPathComponent(".env")
@@ -82,7 +81,12 @@ public struct EnvVars: Codable {
 
     let envVars = localEnvVars.merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
-    return EnvVars()
+    return try! JSONDecoder()
+      .decode(
+        EnvVars.self,
+        from: try! JSONSerialization.data(withJSONObject: envVars)
+      )
+      ?? EnvVars()
   }()
 }
 
