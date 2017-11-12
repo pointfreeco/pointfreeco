@@ -4,8 +4,9 @@ import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
-import Prelude
 import HttpPipelineHtmlSupport
+import Prelude
+import Styleguide
 
 struct Episode {
   var blurb: String
@@ -66,10 +67,10 @@ private let view = View<Episode> { ep in
   document([
     html([
       head([
-        style(reset)
+        style(reset <> typography)
         ]),
       body([
-        h1([.text(encode(ep.title))]),
+        h1([`class`([h1])], [.text(encode(ep.title))]),
         p([.text(encode(ep.blurb))]),
         a([href(path(to: .episode(.left(ep.slug))))], ["Link!"])
         ])
@@ -87,4 +88,14 @@ private let notFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
+}
+
+// TODO: move to a support package in swift-web
+@testable import Css
+
+private func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
+  return .init(
+    "class",
+    selectors.reduce("") { $0 + renderSelector(inline, $1) }
+  )
 }
