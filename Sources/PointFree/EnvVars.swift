@@ -81,11 +81,8 @@ public struct EnvVars: Codable {
 
     let envVars = localEnvVars.merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
-    return try! JSONDecoder()
-      .decode(
-        EnvVars.self,
-        from: try! JSONSerialization.data(withJSONObject: envVars)
-      )
+    return (try? JSONSerialization.data(withJSONObject: envVars))
+      .flatMap { try? JSONDecoder().decode(EnvVars.self, from: $0) }
       ?? EnvVars()
   }()
 }

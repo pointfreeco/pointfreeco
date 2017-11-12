@@ -66,7 +66,10 @@ private func readGitHubSessionCookieMiddleware(
     return pure <| conn.map(
       const(
         conn.request.cookies[githubSessionCookieName]
-          .flatMap { ResponseHeader.verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret) }
+          .flatMap {
+            ResponseHeader
+              .verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+          }
           .map(Either.right)
           ?? Either.left(unit)
       )
