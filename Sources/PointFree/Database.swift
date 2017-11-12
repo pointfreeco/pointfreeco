@@ -85,6 +85,8 @@ public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Pre
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
     VALUES ($1, $2, $3, $4)
+    ON CONFLICT ("github_user_id") DO UPDATE
+    SET "email" = $1, "github_access_token" = $3, "name" = $4
     """,
     [
       envelope.gitHubUser.email,
@@ -120,14 +122,9 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
 public func migrate() -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
-    CREATE EXTENSION IF NOT EXISTS "plpgsql" WITH SCHEMA "pg_catalog"
+    CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
     """
     )
-    .flatMap(const(execute(
-      """
-      CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
-      """
-    )))
     .flatMap(const(execute(
       """
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
@@ -137,8 +134,8 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE TABLE "users" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "email" character varying NOT NULL,
-        "github_user_id" integer,
+        "email" character varying NOT NULL UNIQUE,
+        "github_user_id" integer UNIQUE,
         "github_access_token" character varying,
         "name" character varying,
         "subscription_id" uuid,
