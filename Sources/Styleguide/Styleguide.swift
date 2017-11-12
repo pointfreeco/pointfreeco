@@ -4,5 +4,5 @@ import Prelude
 
 public let styleguide =
   buttonClass
-    <> headers
+    <> typography
     <> gridSystem

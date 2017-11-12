@@ -1,0 +1,44 @@
+
+html {
+  font-size   : 16px;
+  font-family : -apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+  line-height : 1.45;
+}
+
+.h1, .h2, .h3, .h4, .h5 {
+  line-height : 1.2;
+}
+
+.h1 {
+  font-size : 3.998rem;
+}
+
+.h2 {
+  font-size : 2.827rem;
+}
+
+.h3 {
+  font-size : 1.999rem;
+}
+
+.h4 {
+  font-size : 1.414rem;
+}
+
+.h5 {
+  font-size : 1rem;
+}
+
+.h6 {
+  font-size : 0.707rem;
+}
+
+.fw-bold {
+  font-weight : 700;
+}
+
+.h-caps {
+  text-transform : uppercase;
+  letter-spacing : 0.54pt;
+}
+

@@ -1,17 +1,30 @@
 import Css
 import Prelude
 
-public let headers: Stylesheet =
-  (h1 | ".h1") % (fontSize(.rem(1.5)))
-    <> (h2 | ".h2") % (fontSize(.rem(1.25)))
-    <> (h3 | ".h3") % (fontSize(.rem(1.1875)))
-    <> (h4 | ".h4") % (fontSize(.rem(1.125)))
-    <> (h5 | ".h5") % (fontSize(.rem(1.0625)))
-    <> (h6 | ".h6") % (fontSize(.rem(1)))
-    <> (h1 | h2 | h3 | h4 | h5 | h6 | ".h1" | ".h2" | ".h3" | ".h4" | ".h5" | ".h6") % (
-      color(.rgb(0x48, 0x48, 0x48))
-        <> fontFamily(["Open Sans", "Helvetica Neue", "Arial", "Helvetica", "Verdana", "sans-serif"])
-        <> fontWeight(.w600)
-        <> lineHeight(1.4)
-        <> margin(top: 0, bottom: .em(0.5))
+public let typography: Stylesheet =
+  htmlStyles
+    <> headerStyles
+    <> fwBold
+    <> hCaps
+
+private let htmlStyles = html % (
+  fontSize(.px(16))
+    <> fontFamily(["-apple-system", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"])
+    <> lineHeight(1.45)
+)
+
+private let headerStyles =
+  (".h1" | ".h2" | ".h3" | ".h4" | ".h5") % lineHeight(1.2)
+    <> ".h1" % fontSize(.rem(3.998))
+    <> ".h2" % fontSize(.rem(2.827))
+    <> ".h3" % fontSize(.rem(1.999))
+    <> ".h4" % fontSize(.rem(1.414))
+    <> ".h5" % fontSize(.rem(1.0))
+    <> ".h6" % fontSize(.rem(0.707))
+
+private let fwBold = ".fw-bold" % fontWeight(.w700)
+
+private let hCaps = ".h-caps" % (
+  textTransform(.uppercase)
+    <> letterSpacing(.pt(0.54))
 )
