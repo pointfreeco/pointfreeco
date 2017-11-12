@@ -149,7 +149,7 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE TABLE subscriptions (
+      CREATE TABLE "subscriptions" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "user_id" uuid NOT NULL,
         "stripe_subscription_id" character varying NOT NULL,
