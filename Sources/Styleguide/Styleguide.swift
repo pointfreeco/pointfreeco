@@ -3,6 +3,6 @@ import Css
 import Prelude
 
 public let styleguide =
-  buttonClass
-    <> typography
-    <> gridSystem
+  typography
+    <> grid
+    <> spacing

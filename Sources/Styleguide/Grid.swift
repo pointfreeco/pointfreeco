@@ -1,72 +1,54 @@
-import Css
+@testable import Css
 import Prelude
 
-private let rowBase = "row"
-private let columnBase = "column"
-private let offsetBase = "offset"
+public let grid =
+  gridStyles
+    <> columnStyles
 
-private let rowSelector: CssSelector = .class(rowBase)
-private let columnSelector: CssSelector = .class(columnBase)
-
-private let gridColumnCount = 12
-private let columnMargin = 1.5
-private let minimumColumnWidth: Double =
-  (100 - (columnMargin * (Double(gridColumnCount) - 1.0))) / Double(gridColumnCount)
-
-private func columnWidth(columnCount: Int) -> Double {
-  return minimumColumnWidth * Double(columnCount) + columnMargin * (Double(columnCount) - 1)
+private let columnStyles: Stylesheet = (1...12).reduce(.empty) { accum, idx in
+  accum
+    <> CssSelector.class("col-\(idx)") % (
+      _flex(basis: (1 / Double(idx)) * .pct(100))
+        <> maxWidth((1 / Double(idx)) * .pct(100))
+  )
 }
 
-private func columnSelector(_ n: Int) -> CssSelector {
-  return .class("\(columnBase)-\(n)")
-}
-
-private func offsetSelector(_ n: Int) -> CssSelector {
-  return .class("\(offsetBase)-\(n)")
-}
-
-let columns: Stylesheet = concat(
-  (1...gridColumnCount)
-    .map { n in
-      columnSelector(n) % width(.pct(columnWidth(columnCount: n)))
-  }
+private let gridStyles: Stylesheet =
+  gridClass % (
+    display(.flex)
+      <> margin(topBottom: 0, leftRight: .auto)
+      // TODO: overflow: hidden;
 )
 
-let offsets: Stylesheet = concat(
-  (1..<gridColumnCount)
-    .map { n in
-      offsetSelector(n) % margin(left: .pct(columnWidth(columnCount: n) + columnMargin))
-  }
-)
+private let gridClass = CssSelector.class("grid")
+private let colClass = CssSelector.class("col")
+private let col1Class = CssSelector.class("col-1")
+private let col2Class = CssSelector.class("col-2")
+private let col3Class = CssSelector.class("col-3")
+private let col4Class = CssSelector.class("col-4")
+private let col5Class = CssSelector.class("col-5")
+private let col6Class = CssSelector.class("col-6")
+private let col7Class = CssSelector.class("col-7")
+private let col8Class = CssSelector.class("col-8")
+private let col9Class = CssSelector.class("col-9")
+private let col10Class = CssSelector.class("col-10")
+private let col11Class = CssSelector.class("col-11")
+private let col12Class = CssSelector.class("col-12")
 
-let responsive: Stylesheet = queryOnly(screen, [maxWidth(.px(550))]) {
-  concat((2...gridColumnCount).map(columnSelector), .class("\(columnBase)-1")) % (
-    width(.auto)
-      <> float(.none)
-    )
-    <> (columnSelector + columnSelector) % margin(left: 0)
+// TODO: add to swift-web
+private func _flex(
+  grow: Int? = nil,
+  shrink: Int? = nil,
+  basis: Size? = nil
+  )
+  ->
+  Stylesheet {
+
+    return [
+      grow.map(key("flex-grow")),
+      shrink.map(key("flex-shrink")),
+      basis.map(key("flex-basis"))
+      ]
+      |> catOptionals
+      |> concat
 }
-
-public let gridSystem: Stylesheet =
-  (rowSelector | columnSelector) % (
-    boxSizing(.borderBox)
-  )
-  <> (rowSelector & .pseudoElem(.before) | rowSelector & .pseudoElem(.after)) % (
-    content(stringContent(" "))
-      <> display(.table)
-  )
-  <> (rowSelector & .pseudoElem(.after)) % (
-    clear(.both)
-  )
-  <> columnSelector % (
-    position(.relative)
-      <> float(.left)
-      <> display(.block)
-  )
-  <> (columnSelector + columnSelector) % (
-    margin(left: .pct(columnMargin))
-  )
-  <> columns
-  <> offsets
-  <> responsive
-
