@@ -1,4 +1,5 @@
 import Either
+import Foundation
 import PostgreSQL
 import Prelude
 
@@ -16,15 +17,29 @@ public struct Subscription {
   let userId: Int
 }
 
-private let postgres = EitherIO.init <<< IO.wrap(Either.wrap(Database.init)) <| ConnInfo.basic(
-  hostname: EnvVars.PostgreSQL.hostname,
-  port: EnvVars.PostgreSQL.port,
-  database: EnvVars.PostgreSQL.database,
-  user: EnvVars.PostgreSQL.user,
-  password: EnvVars.PostgreSQL.password
-)
+// FIXME
+public struct StripeSubscription {
+  let id: String
+}
 
-private let conn: EitherIO<Error, Connection> = postgres
+public enum DatabaseError: Error {
+  case invalidUrl
+}
+
+private let connInfo = URLComponents(string: EnvVars.PostgreSQL.url)
+  .flatMap {
+    curry(ConnInfo.basic)
+      <¢> $0.host
+      <*> $0.port
+      <*> $0.path
+      <*> $0.user
+      <*> $0.password
+  }.map(Either.right)
+  ?? .left(DatabaseError.invalidUrl as Error)
+
+private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.wrap(Database.init)))
+
+private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
 public func execute(_ query: String, _ representable: [NodeRepresentable]) -> EitherIO<Error, Node> {
@@ -33,13 +48,8 @@ public func execute(_ query: String, _ representable: [NodeRepresentable]) -> Ei
   }
 }
 
-// FIXME
-public struct StripeSubscription {
-  let id: String
-}
-
 public func createSubscription(from stripeSubscription: StripeSubscription, for user: User)
-  -> EitherIO<Error, Unit> {
+  -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
       INSERT INTO "subscriptions" ("stripe_susbcription_id", "user_id")
@@ -67,7 +77,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
       .map(const(unit))
 }
 
-public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Unit> {
+public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")

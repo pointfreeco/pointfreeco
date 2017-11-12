@@ -42,10 +42,6 @@ enum EnvVars {
   }
 
   enum PostgreSQL {
-    static let database = env["POSTGRES_DATABASE"] ?? "pointfreeco"
-    static let hostname = env["POSTGRES_HOSTNAME"] ?? "localhost"
-    static let password = env["POSTGRES_PASSWORD"] ?? ""
-    static let port = env["POSTGRES_PORT"].flatMap(Int.init) ?? 5432
-    static let user = env["POSTGRES_USER"] ?? "pointfreeco"
+    static let url = env["DATABASE_URL"] ?? "postgres://pointfreeco:@localhost:5432/pointfreeco"
   }
 }
