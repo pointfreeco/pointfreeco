@@ -5,8 +5,10 @@ body {
   line-height : 1.45;
 }
 
-.h1, .h2, .h3, .h4, .h5 {
-  line-height : 1.2;
+h1, h2, h3, h4, h5, h6 {
+  margin-top    : 1.5rem;
+  margin-bottom : 1.5rem;
+  font-weight   : 700;
 }
 
 .h1 {
@@ -31,6 +33,23 @@ body {
 
 .h6 {
   font-size : 0.707rem;
+}
+
+.h1 {
+  line-height : 1.15;
+}
+
+.h2, .h3 {
+  line-height : 1.25;
+}
+
+.h4, .h5 {
+  line-height : 1.35;
+}
+
+p {
+  margin-top    : 1.5rem;
+  margin-bottom : 1.5rem;
 }
 
 .fw-bold {
