@@ -151,7 +151,7 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE TABLE "subscriptions" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "user_id" uuid NOT NULL,
+        "user_id" uuid REFERENCES "users" ("id") NOT NULL,
         "stripe_subscription_id" character varying NOT NULL,
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
