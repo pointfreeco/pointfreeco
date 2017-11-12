@@ -17,7 +17,7 @@ public struct Subscription {
   let userId: Int
 }
 
-// FIXME
+/// FIXME: Move to Stripe.swift
 public struct StripeSubscription {
   let id: String
 }
@@ -42,7 +42,8 @@ private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.w
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
-public func execute(_ query: String, _ representable: [NodeRepresentable]) -> EitherIO<Error, Node> {
+// public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
+public func execute(_ query: String, _ representable: [NodeRepresentable] = []) -> EitherIO<Error, Node> {
   return conn.flatMap { conn in
     .wrap { try conn.execute(query, representable) }
   }
@@ -52,7 +53,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
-      INSERT INTO "subscriptions" ("stripe_susbcription_id", "user_id")
+      INSERT INTO "subscriptions" ("stripe_subscription_id", "user_id")
       VALUES ($1, $2)
       RETURNING "id"
       """,
@@ -64,8 +65,10 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
       .flatMap { node in
         execute(
           """
-          UPDATE "users"
-          SET "subscription_id" = $1
+          UPDATE "users" SET (
+            "subscription_id" = $1,
+            "updated_at" = NOW()
+          )
           WHERE "users"."id" = $2
           """,
           [
@@ -112,4 +115,48 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
         <*> result[4, "name"]?.string
         <*> .some(result[5, "subscription_id"]?.int)
   }
+}
+
+public func migrate() -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    CREATE EXTENSION IF NOT EXISTS "plpgsql" WITH SCHEMA "pg_catalog"
+    """
+    )
+    .flatMap(const(execute(
+      """
+      CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE "users" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "email" character varying NOT NULL,
+        "github_user_id" integer,
+        "github_access_token" character varying,
+        "name" character varying,
+        "subscription_id" uuid,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE subscriptions (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "user_id" uuid NOT NULL,
+        "stripe_subscription_id" character varying NOT NULL,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      );
+      """
+    )))
+    .map(const(unit))
 }
