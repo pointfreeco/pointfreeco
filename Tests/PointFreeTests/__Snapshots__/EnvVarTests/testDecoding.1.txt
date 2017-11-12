@@ -14,6 +14,7 @@
     - clientSecret: "deadbeef-client-secret"
   ▿ mailgun: PointFree.EnvVars.Mailgun
     - apiKey: "deadbeef-mg-api-key"
+    - domain: "mg.domain.com"
   ▿ stripe: PointFree.EnvVars.Stripe
     - publishableKey: "pk_test"
     - secretKey: "sk_test"

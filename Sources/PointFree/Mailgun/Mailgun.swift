@@ -58,7 +58,9 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
     |> compact
 
 
-  let request = URLRequest(url: URL(string: "https://api.mailgun.net/v3/\(email.domain)/messages")!)
+  let request = URLRequest(
+    url: URL(string: "https://api.mailgun.net/v3/\(AppEnvironment.current.envVars.mailgun.domain)/messages")!
+    )
     |> \.httpMethod .~ "POST"
     |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
     |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
