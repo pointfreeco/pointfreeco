@@ -125,7 +125,7 @@ private func authTokenMiddleware(
           return pure <| conn.throw(error)
 
         case let .right(env):
-          return conn.mapConn(const(Either<Error, GitHubUserEnvelope>.right(env)))
+          return conn.mapConn(const(.right(env)))
             |> redirect(
               to: conn.data.guaranteedRight.redirect ?? path(to: .secretHome),
               headersMiddleware: writeGitHubSessionCookieMiddleware
