@@ -1,8 +1,11 @@
-import XCTest
+import Css
+import SnapshotTesting
 import Styleguide
+import XCTest
 
 class StyleguideTests: XCTestCase {
-  func testExample() {
+  func testStyleguide() {
+    assertSnapshot(matching: render(config: pretty, css: styleguide), record: true)
   }
 }
 
@@ -15,4 +18,3 @@ extension StyleguideTests  {
   }
 }
 #endif
-

@@ -1,5 +1,7 @@
 import Css
 
+public let spacing: Stylesheet = .empty
+
 private let padding0 = CssSelector.class("p0")
 private let padding0_5 = CssSelector.class("p0_5")
 private let padding1 = CssSelector.class("p1")
