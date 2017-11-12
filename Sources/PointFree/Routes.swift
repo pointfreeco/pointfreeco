@@ -82,5 +82,5 @@ public func path(to route: Route) -> String {
 }
 
 public func url(to route: Route) -> String {
-  return router.url(for: route, base: AppEnvironment.current.baseUrl)?.absoluteString ?? ""
+  return router.url(for: route, base: AppEnvironment.current.envVars.baseUrl)?.absoluteString ?? ""
 }

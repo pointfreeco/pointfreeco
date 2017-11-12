@@ -12,7 +12,7 @@ func createRow(email: String)
         |> \.httpMethod .~ "POST"
         |> \.httpBody .~ (try? JSONEncoder().encode(["fields": ["Email": email]]))
         |> \.allHTTPHeaderFields .~ [
-          "Authorization": "Bearer \(EnvVars.Airtable.bearer)",
+          "Authorization": "Bearer \(AppEnvironment.current.envVars.airtable.bearer)",
           "Content-Type": "application/json"
       ]
 

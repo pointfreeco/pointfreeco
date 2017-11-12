@@ -26,7 +26,7 @@ public enum DatabaseError: Error {
   case invalidUrl
 }
 
-private let connInfo = URLComponents(string: EnvVars.PostgreSQL.url)
+private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
   .flatMap {
     curry(ConnInfo.basic)
       <¢> $0.host

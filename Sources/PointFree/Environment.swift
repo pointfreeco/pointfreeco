@@ -13,8 +13,8 @@ public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmai
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
-  public private(set) var baseUrl = URL(string: "http://localhost:8080")
   public private(set) var createUser: CreateUser
+  public private(set) var envVars: EnvVars
   public private(set) var fetchAuthToken: FetchAuthToken
   public private(set) var fetchGitHubUser: FetchGitHubUser
   public private(set) var fetchUser: FetchUser
@@ -23,6 +23,7 @@ public struct Environment {
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
     createUser: @escaping CreateUser = PointFree.createUser,
+    envVars: EnvVars = EnvVars.default,
     fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
     fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
     fetchUser: @escaping FetchUser = PointFree.fetchUser,
@@ -30,6 +31,7 @@ public struct Environment {
 
     self.airtableStuff = airtableStuff
     self.createUser = createUser
+    self.envVars = envVars
     self.fetchAuthToken = fetchAuthToken
     self.fetchGitHubUser = fetchGitHubUser
     self.fetchUser = fetchUser
@@ -47,6 +49,7 @@ public struct AppEnvironment {
 
   public static func with(
     airtableStuff: @escaping AirtableCreateRow = AppEnvironment.current.airtableStuff,
+    envVars: EnvVars = AppEnvironment.current.envVars,
     fetchAuthToken: @escaping FetchAuthToken = AppEnvironment.current.fetchAuthToken,
     fetchGitHubUser: @escaping FetchGitHubUser = AppEnvironment.current.fetchGitHubUser,
     sendEmail: @escaping SendEmail = AppEnvironment.current.sendEmail,
@@ -55,6 +58,7 @@ public struct AppEnvironment {
     self.push(
       env: AppEnvironment.current
         |> \.airtableStuff .~ airtableStuff
+        |> \.envVars .~ envVars
         |> \.fetchAuthToken .~ fetchAuthToken
         |> \.fetchGitHubUser .~ fetchGitHubUser
         |> \.sendEmail .~ sendEmail

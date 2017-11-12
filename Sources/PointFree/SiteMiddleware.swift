@@ -8,8 +8,8 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
     <<< basicAuth(
-      user: EnvVars.BasicAuth.username,
-      password: EnvVars.BasicAuth.password,
+      user: AppEnvironment.current.envVars.basicAuth.username,
+      password: AppEnvironment.current.envVars.basicAuth.password,
       realm: "Point-Free",
       protect: isProtected
     )
@@ -47,7 +47,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
 private let canonicalHost = "www.pointfree.co"
 private let allowedHosts: [String] = [
   canonicalHost,
-  EnvVars.baseUrl?.host ?? canonicalHost,
+  AppEnvironment.current.envVars.baseUrl.host ?? canonicalHost,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"
