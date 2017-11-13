@@ -6,7 +6,7 @@ import XCTest
 
 class GridTests: XCTestCase {
   func testGrid() {
-    assertSnapshot(matching: render(config: pretty, css: grid), record: true)
+    assertSnapshot(matching: grid, record: true)
   }
 }
 
