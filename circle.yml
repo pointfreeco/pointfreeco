@@ -1,6 +1,9 @@
 machine:
   xcode:
     version: "9.0"
+dependencies:
+  pre:
+    - brew install postgresql
 test:
   pre:
     - swift package generate-xcodeproj
