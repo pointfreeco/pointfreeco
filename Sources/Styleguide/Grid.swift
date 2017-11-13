@@ -1,9 +1,14 @@
-@testable import Css
+import Css
 import Prelude
 
 public let grid =
-  gridStyles
+  resets
+    <> gridStyles
     <> columnStyles
+
+private let resets =
+  body % boxSizing(.borderBox)
+    <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
 private let columnStyles: Stylesheet = (1...12).reduce(.empty) { accum, idx in
   accum
@@ -36,6 +41,7 @@ private let col11Class = CssSelector.class("col-11")
 private let col12Class = CssSelector.class("col-12")
 
 // TODO: add to swift-web
+@testable import Css
 private func _flex(
   grow: Int? = nil,
   shrink: Int? = nil,

@@ -3,6 +3,7 @@ import Css
 import Prelude
 
 public let styleguide =
-  typography
+  base
     <> grid
+    <> typography
     <> spacing
