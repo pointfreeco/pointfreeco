@@ -93,6 +93,7 @@ private func writeGitHubSessionCookieMiddleware(
     )
 }
 
+// TODO: Move to Prelude.
 extension EitherIO {
   public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
     return .init(run: self.run.map { $0.bimap(f, g) })
