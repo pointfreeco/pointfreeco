@@ -1,4 +1,8 @@
 
+body, html {
+  height : 100%;
+}
+
 body {
   -webkit-box-sizing : border-box;
   -moz-box-sizing    : border-box;
@@ -177,5 +181,71 @@ body {
   max-width  : -ms-calc(1.0 * 100%);
   max-width  : -o-calc(1.0 * 100%);
   max-width  : calc(1.0 * 100%);
+}
+
+body {
+  font-size   : 16px;
+  font-family : -apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+  line-height : 1.45;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top    : 1rem;
+  margin-bottom : 1rem;
+  font-weight   : 700;
+}
+
+.h1 {
+  font-size : 3.998rem;
+}
+
+.h2 {
+  font-size : 2.827rem;
+}
+
+.h3 {
+  font-size : 1.999rem;
+}
+
+.h4 {
+  font-size : 1.414rem;
+}
+
+.h5 {
+  font-size : 1rem;
+}
+
+.h6 {
+  font-size : 0.707rem;
+}
+
+.h1 {
+  line-height : 1.15;
+}
+
+.h2, .h3 {
+  line-height : 1.25;
+}
+
+.h4, .h5 {
+  line-height : 1.35;
+}
+
+p {
+  margin-top    : 1rem;
+  margin-bottom : 1rem;
+}
+
+strong {
+  font-weight : 700;
+}
+
+.h-caps {
+  text-transform : uppercase;
+  letter-spacing : 0.54pt;
+}
+
+.fw-bold {
+  font-weight : 700;
 }
 

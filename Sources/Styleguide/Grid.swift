@@ -10,11 +10,13 @@ private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
-private let columnStyles: Stylesheet = (1...12).reduce(.empty) { accum, idx in
+private let numColumns = 12
+
+private let columnStyles: Stylesheet = (1...numColumns).reduce(.empty) { accum, idx in
   accum
     <> CssSelector.class("col-\(idx)") % (
-      _flex(basis: (1 / Double(idx)) * .pct(100))
-        <> maxWidth((1 / Double(idx)) * .pct(100))
+      _flex(basis: (Double(idx) / Double(numColumns)) * .pct(100))
+        <> maxWidth((Double(idx) / Double(numColumns)) * .pct(100))
   )
 }
 

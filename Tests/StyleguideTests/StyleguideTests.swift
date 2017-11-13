@@ -5,7 +5,7 @@ import XCTest
 
 class StyleguideTests: XCTestCase {
   func testStyleguide() {
-    assertSnapshot(matching: render(config: pretty, css: styleguide), record: true)
+    assertSnapshot(matching: styleguide, record: true)
   }
 }
 
