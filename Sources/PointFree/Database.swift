@@ -7,15 +7,15 @@ public struct User {
   let email: String
   let gitHubUserId: Int
   let gitHubAccessToken: String
-  let id: String
+  let id: UUID
   let name: String
-  let subscriptionId: Int?
+  let subscriptionId: UUID?
 }
 
 public struct Subscription {
-  let id: String
+  let id: UUID
   let stripeSubscriptionId: String
-  let userId: Int
+  let userId: UUID
 }
 
 /// FIXME: Move to Stripe.swift
@@ -61,7 +61,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
       """,
       [
         stripeSubscription.id,
-        user.id,
+        user.id.uuidString,
       ]
       )
       .flatMap { node in
@@ -110,14 +110,18 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
     """,
     [token.accessToken]
     )
-    .map { result in
+    .map { result -> User? in
+      let uuid = result[3, "id"]
+        .flatMap { $0.string.flatMap(UUID.init(uuidString:)) }
+      let subscriptionId = result[5, "subscription_id"].flatMap { $0.string.flatMap(UUID.init(uuidString:)) }
+
       return curry(User.init)
         <¢> result[0, "email"]?.string
         <*> result[1, "github_user_id"]?.int
         <*> result[2, "github_access_token"]?.string
-        <*> result[3, "id"]?.string
+        <*> uuid
         <*> result[4, "name"]?.string
-        <*> .some(result[5, "subscription_id"]?.int)
+        <*> .some(subscriptionId)
   }
 }
 
@@ -139,7 +143,7 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE TABLE "users" (
+      CREATE TABLE IF NOT EXISTS "users" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "email" citext NOT NULL UNIQUE,
         "github_user_id" integer UNIQUE,
@@ -153,7 +157,7 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE TABLE "subscriptions" (
+      CREATE TABLE IF NOT EXISTS "subscriptions" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL,
         "stripe_subscription_id" character varying NOT NULL,
