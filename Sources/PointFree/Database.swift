@@ -7,12 +7,13 @@ public struct User {
   let email: String
   let gitHubUserId: Int
   let gitHubAccessToken: String
-  let id: Int
+  let id: String
   let name: String
   let subscriptionId: Int?
 }
 
 public struct Subscription {
+  let id: String
   let stripeSubscriptionId: String
   let userId: Int
 }
@@ -73,7 +74,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
           WHERE "users"."id" = $2
           """,
           [
-            node[0, "id"]?.int,
+            node[0, "id"]?.string,
             user.id
           ]
         )
@@ -114,7 +115,7 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
         <¢> result[0, "email"]?.string
         <*> result[1, "github_user_id"]?.int
         <*> result[2, "github_access_token"]?.string
-        <*> result[3, "id"]?.int
+        <*> result[3, "id"]?.string
         <*> result[4, "name"]?.string
         <*> .some(result[5, "subscription_id"]?.int)
   }
