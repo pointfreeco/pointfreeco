@@ -111,8 +111,10 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
     [token.accessToken]
     )
     .map { result -> User? in
-      let uuid = result[3, "id"].flatMap { $0.string.flatMap(UUID.init(uuidString:)) }
-      let subscriptionId = result[5, "subscription_id"].flatMap { $0.string.flatMap(UUID.init(uuidString:)) }
+      let uuid = result[3, "id"].flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
+
+      let subscriptionId = result[5, "subscription_id"]
+        .flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
 
       return curry(User.init)
         <¢> result[0, "email"]?.string
