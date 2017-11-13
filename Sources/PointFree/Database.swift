@@ -27,14 +27,15 @@ public enum DatabaseError: Error {
 }
 
 private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
-  .flatMap {
+  .flatMap { url -> ConnInfo? in
     curry(ConnInfo.basic)
-      <¢> $0.host
-      <*> $0.port
-      <*> $0.path
-      <*> $0.user
-      <*> $0.password
-  }.map(Either.right)
+      <¢> url.host
+      <*> url.port
+      <*> String(url.path.dropFirst())
+      <*> url.user
+      <*> url.password
+  }
+  .map(Either.right)
   ?? .left(DatabaseError.invalidUrl as Error)
 
 private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.wrap(Database.init)))

@@ -102,13 +102,14 @@ extension EnvVars {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.airtable = try EnvVars.Airtable.init(from: decoder)
+    self.airtable = try .init(from: decoder)
     self.appSecret = try values.decode(String.self, forKey: .appSecret)
     self.baseUrlString = try values.decode(String.self, forKey: .baseUrlString)
-    self.basicAuth = try EnvVars.BasicAuth.init(from: decoder)
-    self.gitHub = try EnvVars.GitHub.init(from: decoder)
-    self.mailgun = try EnvVars.Mailgun.init(from: decoder)
-    self.stripe = try EnvVars.Stripe.init(from: decoder)
+    self.basicAuth = try .init(from: decoder)
+    self.gitHub = try .init(from: decoder)
+    self.mailgun = try .init(from: decoder)
+    self.postgres = try .init(from: decoder)
+    self.stripe = try .init(from: decoder)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -120,6 +121,7 @@ extension EnvVars {
     try self.basicAuth.encode(to: encoder)
     try self.gitHub.encode(to: encoder)
     try self.mailgun.encode(to: encoder)
+    try self.postgres.encode(to: encoder)
     try self.stripe.encode(to: encoder)
   }
 }

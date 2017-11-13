@@ -115,11 +115,12 @@ private func authTokenMiddleware(
           <|> AppEnvironment.current.createUser(env).bimap(const(unit), const(env))
       }
       .run
-      .flatMap { githubUserEnvelope in
-        switch githubUserEnvelope {
+      .flatMap { gitHubUserEnvelope in
+        switch gitHubUserEnvelope {
 
         case .left:
           return conn
+            // TODO: Handle errors.
             |> redirect(to: path(to: .secretHome))
 
         case let .right(env):
