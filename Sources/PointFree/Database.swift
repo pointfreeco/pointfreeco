@@ -1,7 +1,36 @@
 import Either
 import Foundation
-import PostgreSQL
 import Prelude
+
+#if os(iOS)
+  enum PostgreSQL {
+    enum ConnInfo {
+      case basic(String, Int, String, String, String)
+    }
+    struct Database {
+      init(_ connInfo: ConnInfo) throws {
+      }
+      func makeConnection() throws -> Connection {
+        return Connection()
+      }
+    }
+    struct Connection {
+      func execute(_ query: String, _ representable: [NodeRepresentable] = []) throws -> Node {
+        return Node()
+      }
+    }
+    public typealias NodeRepresentable = Any
+    struct Node {
+      subscript(_: Int, _: String) -> Node? {
+        return nil
+      }
+      var int: Int?
+      var string: String?
+    }
+  }
+#else
+  import PostgreSQL
+#endif
 
 public struct User {
   let email: String
@@ -28,8 +57,8 @@ public enum DatabaseError: Error {
 }
 
 private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
-  .flatMap { url -> ConnInfo? in
-    curry(ConnInfo.basic)
+  .flatMap { url -> PostgreSQL.ConnInfo? in
+    curry(PostgreSQL.ConnInfo.basic)
       <¢> url.host
       <*> url.port
       <*> String(url.path.dropFirst())
@@ -39,13 +68,13 @@ private let connInfo = URLComponents(string: AppEnvironment.current.envVars.post
   .map(Either.right)
   ?? .left(DatabaseError.invalidUrl as Error)
 
-private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.wrap(Database.init)))
+private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
 
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
-public func execute(_ query: String, _ representable: [NodeRepresentable] = []) -> EitherIO<Error, Node> {
+func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = []) -> EitherIO<Error, PostgreSQL.Node> {
   return conn.flatMap { conn in
     .wrap { try conn.execute(query, representable) }
   }
