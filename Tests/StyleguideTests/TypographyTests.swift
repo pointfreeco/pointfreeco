@@ -22,12 +22,12 @@ private let typographyDoc = document([
       style(reset <> typography)
       ]),
     body([
-      h1([`class`(".h1 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
-      h1([`class`(".h2 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
-      h1([`class`(".h3 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
-      h1([`class`(".h4 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
-      h1([`class`(".h5 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
-      h1([`class`(".h6 fw-bold h-caps")], ["The Algebra of Predicates and Sorting Functions"]),
+      h1([`class`("h1 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
+      h2([`class`("h2 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
+      h3([`class`("h3 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
+      h4([`class`("h4 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
+      h5([`class`("h5 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
+      h6([`class`("h6 fw-bold h-caps")], ["The Algebra of Predicates and Sorting Functions"]),
 
       p([
         """
