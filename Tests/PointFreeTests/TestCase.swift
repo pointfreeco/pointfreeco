@@ -11,6 +11,7 @@ class TestCase: XCTestCase {
     AppEnvironment.push(
       env: .init(
         airtableStuff: const(const(pure(unit))),
+        createUser: const(pure(unit)),
         envVars: EnvVars(),
         fetchAuthToken: const(pure(.init(accessToken: "deadbeef"))),
         fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob"))),
