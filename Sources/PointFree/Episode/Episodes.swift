@@ -41,5 +41,4 @@ private let episodeView = View<Episode> { ep in
     [href(path(to: .episode(.left(ep.slug))))],
     [.text(encode(ep.title))]
   )
-  //Node
 }

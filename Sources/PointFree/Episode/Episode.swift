@@ -97,6 +97,7 @@ private let view = View<Episode> { ep in
             div(
               [`class`("col-6 p5")],
               [
+
                 strong(
                   [`class`("h6 h-caps")],
                   [.text(encode("Episode \(ep.sequence)"))]
@@ -154,6 +155,21 @@ private let view = View<Episode> { ep in
       ])
     ])
   ])
+}
+
+private let breadcrumbs = View<Prelude.Unit> { _ in
+  [
+    a(
+      [`class`("h6"), href(path(to: .secretHome))],
+      ["Home"]
+    ),
+    " > ",
+    a(
+      [`class`("h6"), href(path(to: .episodes))],
+      ["Episodes"]
+    ),
+    br
+  ]
 }
 
 private let notFoundView = View<Prelude.Unit> { _ in

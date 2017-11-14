@@ -6,6 +6,7 @@ import Prelude
 public let grid =
   resets
     <> gridStyles
+    <> parentColumnStyles
     <> columnStyles
 
 private let resets =
@@ -14,13 +15,19 @@ private let resets =
 
 private let numColumns = 12
 
-private let columnStyles: Stylesheet = (1...numColumns).reduce(.empty) { accum, idx in
-  accum
-    <> CssSelector.class("col-\(idx)") % (
+private let parentColumnStyles: Stylesheet = colClass % (
+  flex(grow: 1, shrink: 1, basis: 0)
+    <> maxWidth(.pct(100))
+)
+
+private let columnStyles: Stylesheet =
+  (1...numColumns).map { idx in
+    .class("col-\(idx)") % (
       _flex(basis: (Double(idx) / Double(numColumns)) * .pct(100))
         <> maxWidth((Double(idx) / Double(numColumns)) * .pct(100))
-  )
-}
+    )
+    }
+    .reduce(.empty, <>)
 
 private let gridStyles: Stylesheet =
   gridClass % (
@@ -29,20 +36,20 @@ private let gridStyles: Stylesheet =
       <> overflow(.hidden)
 )
 
-private let gridClass = CssSelector.class("grid")
-private let colClass = CssSelector.class("col")
-private let col1Class = CssSelector.class("col-1")
-private let col2Class = CssSelector.class("col-2")
-private let col3Class = CssSelector.class("col-3")
-private let col4Class = CssSelector.class("col-4")
-private let col5Class = CssSelector.class("col-5")
-private let col6Class = CssSelector.class("col-6")
-private let col7Class = CssSelector.class("col-7")
-private let col8Class = CssSelector.class("col-8")
-private let col9Class = CssSelector.class("col-9")
-private let col10Class = CssSelector.class("col-10")
-private let col11Class = CssSelector.class("col-11")
-private let col12Class = CssSelector.class("col-12")
+public let gridClass = CssSelector.class("grid")
+public let colClass = CssSelector.class("col")
+public let col1Class = CssSelector.class("col-1")
+public let col2Class = CssSelector.class("col-2")
+public let col3Class = CssSelector.class("col-3")
+public let col4Class = CssSelector.class("col-4")
+public let col5Class = CssSelector.class("col-5")
+public let col6Class = CssSelector.class("col-6")
+public let col7Class = CssSelector.class("col-7")
+public let col8Class = CssSelector.class("col-8")
+public let col9Class = CssSelector.class("col-9")
+public let col10Class = CssSelector.class("col-10")
+public let col11Class = CssSelector.class("col-11")
+public let col12Class = CssSelector.class("col-12")
 
 // TODO: add to swift-web
 @testable import Css
@@ -103,9 +110,8 @@ public func overflow(x: Overflow? = nil, y: Overflow? = nil) -> Stylesheet {
 public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
   return .init(
     "class",
-    selectors.reduce("") { accum, sel in
-      accum
-        + renderSelector(inline, sel).replacingOccurrences(of: ".", with: "")
-    }
+    selectors
+      .map { renderSelector(inline, $0).replacingOccurrences(of: ".", with: "") }
+      .joined(separator: " ")
   )
 }
