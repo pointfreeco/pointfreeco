@@ -11,7 +11,6 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
 
-
 let githubCallbackResponse =
   authTokenMiddleware
 
@@ -35,6 +34,11 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
           ?? "You are not logged in"
       )
       ]),
+
+    a(
+      [href(path(to: .episodes))],
+      ["Episodes"]
+    ),
 
     p([
        data.isRight

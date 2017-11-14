@@ -1,4 +1,6 @@
 import Css
+import Foundation
+import Html
 import Prelude
 
 public let grid =
@@ -24,7 +26,7 @@ private let gridStyles: Stylesheet =
   gridClass % (
     display(.flex)
       <> margin(topBottom: 0, leftRight: .auto)
-      // TODO: overflow: hidden;
+      <> overflow(.hidden)
 )
 
 private let gridClass = CssSelector.class("grid")
@@ -47,7 +49,7 @@ private let col12Class = CssSelector.class("col-12")
 private func _flex(
   grow: Int? = nil,
   shrink: Int? = nil,
-  basis: Size? = nil
+  basis: Css.Size? = nil
   )
   ->
   Stylesheet {
@@ -59,4 +61,51 @@ private func _flex(
       ]
       |> catOptionals
       |> concat
+}
+
+// TODO: move to swift-web
+public func backgroundColor(_ color: Color) -> Stylesheet {
+  return key("background-color")(color)
+}
+
+public struct Overflow: Val, Other, Auto, Inherit, Hidden, Visible {
+  let overflow: Css.Value
+
+  public func value() -> Css.Value {
+    return self.overflow
+  }
+
+  public static func other(_ other: Css.Value) -> Overflow {
+    return .init(overflow: other)
+  }
+
+  public static let auto: Overflow = .init(overflow: .auto)
+  public static let inherit: Overflow = .init(overflow: .inherit)
+  public static let hidden: Overflow = .init(overflow: .hidden)
+  public static let visible: Overflow = .init(overflow: .visible)
+  public static let scroll: Overflow = .init(overflow: "scroll")
+}
+
+public func overflow(_ overflow: Overflow) -> Stylesheet {
+  return key("overflow")(overflow)
+}
+
+public func overflow(x: Overflow? = nil, y: Overflow? = nil) -> Stylesheet {
+  return [ x.map { key("overflow-x", $0) },
+           y.map { key("overflow-y", $0) } ]
+    |> catOptionals
+    |> concat
+}
+
+// TODO: move to a support package in swift-web
+@testable import Css
+
+public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
+  return .init(
+    "class",
+    selectors.reduce("") { accum, sel in
+      accum
+        + renderSelector(inline, sel).replacingOccurrences(of: ".", with: "")
+    }
+  )
 }

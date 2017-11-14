@@ -4,6 +4,7 @@ import Prelude
 
 public enum Route {
   case episode(Either<String, Int>)
+  case episodes
   case githubCallback(code: String, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
@@ -16,6 +17,9 @@ public let router: Router<Route> = [
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+
+  Route.iso.episodes
+    <¢> get %> lit("episodes") <% end,
 
   Route.iso.githubCallback
     <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
@@ -45,6 +49,14 @@ extension Route {
         guard case let .episode(result) = $0 else { return nil }
         return result
     })
+
+    static let episodes = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.episodes)),
+      unapply: {
+        guard case .episodes = $0 else { return nil }
+        return unit
+    })
+
 
     static let githubCallback = parenthesize <| PartialIso(
       apply: Route.githubCallback,

@@ -1,6 +1,22 @@
 import Css
+import Prelude
 
-public let spacing: Stylesheet = .empty
+public let spacing: Stylesheet =
+  padding0 % padding(all: 0)
+    <> padding0_5 % padding(all: .rem(0.5))
+    <> padding1 % padding(all: .rem(1))
+    <> padding2 % padding(all: .rem(2))
+    <> padding3 % padding(all: .rem(3))
+    <> padding4 % padding(all: .rem(4))
+    <> padding5 % padding(all: .rem(5))
+
+    <> paddingTop0 % padding(top: 0)
+    <> paddingTop0_5 % padding(top: .rem(0.5))
+    <> paddingTop1 % padding(top: .rem(1))
+    <> paddingTop2 % padding(top: .rem(2))
+    <> paddingTop3 % padding(top: .rem(3))
+    <> paddingTop4 % padding(top: .rem(4))
+    <> paddingTop5 % padding(top: .rem(5))
 
 private let padding0 = CssSelector.class("p0")
 private let padding0_5 = CssSelector.class("p0_5")

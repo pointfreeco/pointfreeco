@@ -1,3 +1,4 @@
+import Css
 import CssReset
 import Either
 import Foundation
@@ -66,11 +67,28 @@ private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<Res
   }
 }
 
+private let codeStyle = ".code" % (
+  display(.block)
+    <> backgroundColor(.rgba(250, 250, 250, 1))
+    <> fontFamily(["monospace"])
+    <> padding(all: .rem(2))
+    <> overflow(x: .auto)
+)
+
+private let styles =
+  video % maxWidth(.pct(100))
+    <> ".bg-dark" % backgroundColor(.rgba(32, 32, 32, 1))
+    <> codeStyle
+
 private let view = View<Episode> { ep in
   document([
     html([
       head([
-        style(reset <> styleguide)
+        style(
+          reset
+            <> styleguide
+            <> styles
+        )
         ]),
       body([
         div(
@@ -90,7 +108,36 @@ private let view = View<Episode> { ep in
                 p(
                   [`class`("h4")],
                   [.text(encode(ep.blurb))]
-                )
+                ),
+                pre([
+                  code(
+                    [`class`("code")],
+                    [
+                      """
+                      infix operator <>: AdditionPrecedence
+
+                      protocol Semigroup {
+                        // **AXIOM** Associativity
+                        // For all a, b, c in Self:
+                        //    a <> (b <> c) == (a <> b) <> c
+                        static func <> (lhs: Self, rhs: Self) -> Self
+                      }
+
+                      protocol Monoid: Semigroup {
+                        // **AXIOM** Identity
+                        // For all a in Self:
+                        //    a <> e == e <> a == a
+                        static var e: Self { get }
+                      }
+                      """
+                    ])
+                  ]),
+                p(["""
+                   Types that conform to these protocols have some of the simplest forms of computation \
+                   around. They know how to take two values of the type, and combine them into a single \
+                   value. We know of quite a few types that are monoids:
+                   """
+                  ])
               ]
             ),
             div(
@@ -98,7 +145,7 @@ private let view = View<Episode> { ep in
               [
                 video(
                   [controls(true)],
-                  [source(src: "video.ts")]
+                  [source(src: "https://d2sazdeahkz1yk.cloudfront.net/videos/8aa19eff-1703-4377-866b-64660a04c6ee/1/720p00034.ts")]
                 )
               ]
             )
@@ -119,17 +166,4 @@ private let notFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
-
-// TODO: move to a support package in swift-web
-@testable import Css
-
-private func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
-  return .init(
-    "class",
-    selectors.reduce("") { accum, sel in
-      accum
-        + renderSelector(inline, sel).replacingOccurrences(of: ".", with: "")
-    }
-  )
 }
