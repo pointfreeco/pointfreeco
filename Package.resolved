@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/vapor/core.git",
         "state": {
           "branch": null,
-          "revision": "b8330808f4f6b69941961afe8ad6b015562f7b7c",
-          "version": "2.1.2"
+          "revision": "f9f3a585ab0ea5764b46d7a36d9c0d9d508b9c63",
+          "version": "2.2.0"
         }
       },
       {
@@ -104,8 +104,8 @@
         "package": "Prelude",
         "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
         "state": {
-          "branch": "338f4b0",
-          "revision": "338f4b0167c92a53001efc65e28f91a12839cc69",
+          "branch": "e341975",
+          "revision": "e341975be2bb83e78e4b58f3c8a7170b392ca5e2",
           "version": null
         }
       },
@@ -113,8 +113,8 @@
         "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
         "state": {
-          "branch": "d9fdff4",
-          "revision": "d9fdff434cbfd6da822032e482d14ee0300f9f1a",
+          "branch": "d9e4781",
+          "revision": "d9e4781211e499fa3b82cc1166ec32e7366b5617",
           "version": null
         }
       },
@@ -131,8 +131,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "7f3f4fc",
-          "revision": "7f3f4fcccc2d1ad306362ba4f5906e51f1195525",
+          "branch": "15ff68a",
+          "revision": "15ff68a3c103b08e99919c56f29c72d2654deac7",
           "version": null
         }
       }
