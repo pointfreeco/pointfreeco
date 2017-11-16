@@ -123,8 +123,8 @@ public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Pre
       envelope.gitHubUser.email,
       envelope.gitHubUser.id,
       envelope.accessToken.accessToken,
-      envelope.gitHubUser.name,
-      ]
+      envelope.gitHubUser.name
+    ]
     )
     .map(const(unit))
 }
