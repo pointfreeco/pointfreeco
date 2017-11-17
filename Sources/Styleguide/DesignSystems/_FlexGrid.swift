@@ -1,14 +1,27 @@
 import Css
 import Prelude
 
-enum Breakpoint: String {
+public enum Breakpoint: String {
   case xs
   case sm
   case md
   case lg
+
+  public var minSize: Size {
+    switch self {
+    case .xs:
+      return .em(0)
+    case .sm:
+      return .em(40)
+    case .md:
+      return .em(52)
+    case .lg:
+      return .em(64)
+    }
+  }
 }
 
-private enum _GridClass {
+private enum GridClass {
   static let row = CssSelector.class("row")
   static let col = CssSelector.class("col")
 
@@ -23,15 +36,14 @@ private enum _GridClass {
   }
 }
 
-public let flexGrid =
-  containerStyles
-    <> rowStyle
+public let flexGridStyles =
+  rowStyle
     <> reversedRowStyle
     <> reversedColStyle
     <> styles(for: .xs)
-    <> queryOnly(screen, [minWidth(Breakpoints.sm)]) { styles(for: .sm) }
-    <> queryOnly(screen, [minWidth(Breakpoints.md)]) { styles(for: .md) }
-    <> queryOnly(screen, [minWidth(Breakpoints.lg)]) { styles(for: .lg) }
+    <> queryOnly(screen, [minWidth(Breakpoint.sm.minSize)]) { styles(for: .sm) }
+    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) { styles(for: .md) }
+    <> queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) { styles(for: .lg) }
 
 private let rowStyle =
   ".row" % (
@@ -42,25 +54,20 @@ private let rowStyle =
 )
 
 private let reversedRowStyle =
-  (".row" & ".reverse") % (
+  GridClass.rowReversed % (
     flex(direction: .rowReverse)
 )
 
 private let reversedColStyle =
-  (".col" & ".reverse") % (
+  GridClass.colReversed % (
     flex(direction: .columnReverse)
-)
-
-private let containerStyles =
-  (".container-fluid" | ".container") % (
-    margin(leftRight: .auto)
 )
 
 private func styles(for breakpoint: Breakpoint) -> Stylesheet {
 
   let allColsSelector = (1...12)
-    .map { _GridClass.col(breakpoint, $0) }
-    .reduce(_GridClass.col(breakpoint, nil), |)
+    .map { GridClass.col(breakpoint, $0) }
+    .reduce(GridClass.col(breakpoint, nil), |)
 
   let baseColStyles =
     allColsSelector % (
@@ -68,13 +75,13 @@ private func styles(for breakpoint: Breakpoint) -> Stylesheet {
         <> flex(grow: 0, shrink: 0, basis: .auto)
   )
 
-  let colStyles = _GridClass.col(breakpoint, nil) % (
+  let colStyles = GridClass.col(breakpoint, nil) % (
     flex(grow: 1, basis: 0)
       <> maxWidth(.pct(100))
     )
     <> (1...12).map { idx in
-      _GridClass.col(breakpoint, idx) % (
-        _flex(basis: .pct(100 * Double(idx) / 12))
+      GridClass.col(breakpoint, idx) % (
+        flex(basis: .pct(100 * Double(idx) / 12))
           <> maxWidth(.pct(100 * Double(idx) / 12))
       )
       }

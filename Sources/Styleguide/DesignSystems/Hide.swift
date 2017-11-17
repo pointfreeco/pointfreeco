@@ -20,26 +20,20 @@ public let hideStyles: Stylesheet =
     <> responsiveStyles
 
 private let responsiveStyles: Stylesheet =
-  queryOnly(screen, [maxWidth(Breakpoints.sm)]) {
+  queryOnly(screen, [maxWidth(Breakpoint.sm.minSize)]) {
     HideClass.xsHide % display(.none)
     }
     <>
-    queryOnly(screen, [minWidth(Breakpoints.sm), maxWidth(Breakpoints.md)]) {
+    queryOnly(screen, [minWidth(Breakpoint.sm.minSize), maxWidth(Breakpoint.md.minSize)]) {
       HideClass.smHide % display(.none)
     }
     <>
-    queryOnly(screen, [minWidth(Breakpoints.md), maxWidth(Breakpoints.lg)]) {
+    queryOnly(screen, [minWidth(Breakpoint.md.minSize), maxWidth(Breakpoint.lg.minSize)]) {
       HideClass.mdHide % display(.none)
     }
     <>
-    queryOnly(screen, [minWidth(Breakpoints.lg)]) {
+    queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) {
       HideClass.lgHide % display(.none)
-}
-
-public enum Breakpoints {
-  public static let sm: Size = .em(40)
-  public static let md: Size = .em(52)
-  public static let lg: Size = .em(64)
 }
 
 

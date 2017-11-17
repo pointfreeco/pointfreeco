@@ -4,6 +4,5 @@ import Prelude
 
 public let styleguide =
   base
-    <> grid
     <> typography
-    <> spacing
+    <> designSystems

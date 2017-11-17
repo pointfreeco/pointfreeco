@@ -10,7 +10,7 @@ public enum HeaderClass {
   public static let h6 = CssSelector.class("h6")
 }
 
-public let typeScale =
+public let typeScaleStyles =
   HeaderClass.h1 % fontSize(.rem(2))
     <> HeaderClass.h2 % fontSize(.rem(1.5))
     <> HeaderClass.h3 % fontSize(.rem(1.25))

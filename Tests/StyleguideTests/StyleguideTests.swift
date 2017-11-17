@@ -9,7 +9,11 @@ class StyleguideTests: XCTestCase {
   }
 
   func test_SecretGrid() {
-    assertSnapshot(matching: flexGrid, record: true)
+    assertSnapshot(matching: flexGridStyles, record: true)
+  }
+
+  func test_DesignSystem() {
+    assertSnapshot(matching: designSystems, record: true)
   }
 }
 
