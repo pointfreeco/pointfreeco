@@ -1,29 +1,87 @@
 import Css
 import Prelude
 
-public enum FlexClass {
-  public static let flex = CssSelector.class(".flex")
-  public static let column = CssSelector.class(".flex-column")
-  public static let wrap = CssSelector.class(".flex-wrap")
-  public static let none = CssSelector.class(".flex-none")
+public enum Class {
+  public enum flex {
+    /// ".flex"
+    public static let flex = CssSelector.class(".flex")
+    /// ".flex-column"
+    public static let column = CssSelector.class(".flex-column")
+    /// ".flex-wrap"
+    public static let wrap = CssSelector.class(".flex-wrap")
+    /// ".flex-none"
+    public static let none = CssSelector.class(".flex-none")
 
-  public enum items {
-    public static let start = CssSelector.class(".items-start")
-    public static let end = CssSelector.class(".items-end")
-    public static let center = CssSelector.class(".items-center")
-    public static let baseline = CssSelector.class(".items-baseline")
-    public static let stretch = CssSelector.class(".items-stretch")
+    public enum items {
+      /// ".items-start"
+      public static let start = CssSelector.class(".items-start")
+      /// ".items-end"
+      public static let end = CssSelector.class(".items-end")
+      /// ".items-center"
+      public static let center = CssSelector.class(".items-center")
+      /// ".items-baseline"
+      public static let baseline = CssSelector.class(".items-baseline")
+      /// ".items-stretch"
+      public static let stretch = CssSelector.class(".items-stretch")
+    }
+
+    public enum `self` {
+      /// ".self-start"
+      public static let start = CssSelector.class(".self-start")
+      /// ".self-end"
+      public static let end = CssSelector.class(".self-end")
+      /// ".self-center"
+      public static let center = CssSelector.class(".self-center")
+      /// ".self-baseline"
+      public static let baseline = CssSelector.class(".self-baseline")
+      /// ".self-stretch"
+      public static let stretch = CssSelector.class(".self-stretch")
+    }
+
+    public enum justify {
+      /// ".justify-start"
+      public static let start = CssSelector.class(".justify-start")
+      /// ".justify-end"
+      public static let end = CssSelector.class(".justify-end")
+      /// ".justify-center"
+      public static let center = CssSelector.class(".justify-center")
+      /// ".justify-between"
+      public static let between = CssSelector.class(".justify-between")
+      /// ".justify-around"
+      public static let around = CssSelector.class(".justify-around")
+    }
+
+    public enum align {
+      /// ".align-start"
+      public static let start = CssSelector.class(".align-start")
+      /// ".align-end"
+      public static let end = CssSelector.class(".align-end")
+      /// ".align-center"
+      public static let center = CssSelector.class(".align-center")
+      /// ".align-between"
+      public static let between = CssSelector.class(".align-between")
+      /// ".align-around"
+      public static let around = CssSelector.class(".align-around")
+    }
+
+    public static let order = (
+      CssSelector.class(".order-0"),
+      CssSelector.class(".order-1"),
+      CssSelector.class(".order-2"),
+      CssSelector.class(".order-3"),
+      last: CssSelector.class(".order-last")
+    )
   }
 }
 
 public let flexStyles: Stylesheet =
-  FlexClass.flex % display(.flex)
-    <> queryOnly(screen, [minWidth(Breakpoint.sm.minSize)]) { FlexClass.flex % display(.flex) }
-    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) { FlexClass.flex % display(.flex) }
-    <> queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) { FlexClass.flex % display(.flex) }
-    <> FlexClass.column % flex(direction: .column)
-    <> FlexClass.wrap % flex(wrap: .wrap)
-    <> FlexClass.none % flex(wrap: .none)
+       Class.flex.flex % display(.flex)
+    <> queryOnly(screen, [minWidth(Breakpoint.sm.minSize)]) { Class.flex.flex % display(.flex) }
+    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) { Class.flex.flex % display(.flex) }
+    <> queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) { Class.flex.flex % display(.flex) }
+    <> Class.flex.column % flex(direction: .column)
+    <> Class.flex.wrap % flex(wrap: .wrap)
+    <> Class.flex.none % flex(wrap: .none)
     <> itemStyles
     <> selfStyles
     <> justifyStyles
@@ -31,36 +89,36 @@ public let flexStyles: Stylesheet =
     <> orderStyles
 
 private let itemStyles =
-  FlexClass.items.start % align(items: .flexStart)
-    <> FlexClass.items.end % align(items: .flexEnd)
-    <> FlexClass.items.center % align(items: .center)
-    <> FlexClass.items.baseline % align(items: .baseline)
-    <> FlexClass.items.stretch % align(items: .stretch)
+       Class.flex.items.start    % align(items: .flexStart)
+    <> Class.flex.items.end      % align(items: .flexEnd)
+    <> Class.flex.items.center   % align(items: .center)
+    <> Class.flex.items.baseline % align(items: .baseline)
+    <> Class.flex.items.stretch  % align(items: .stretch)
 
 private let selfStyles =
-  ".self-start" % align(self: .flexStart)
-    <> ".self-end" % align(self: .flexEnd)
-    <> ".self-center" % align(self: .center)
-    <> ".self-baseline" % align(self: .baseline)
-    <> ".self-stretch" % align(self: .stretch)
+       Class.flex.`self`.start    % align(self: .flexStart)
+    <> Class.flex.`self`.end      % align(self: .flexEnd)
+    <> Class.flex.`self`.center   % align(self: .center)
+    <> Class.flex.`self`.baseline % align(self: .baseline)
+    <> Class.flex.`self`.stretch  % align(self: .stretch)
 
 private let justifyStyles =
-  ".justify-start" % justify(content: .flexStart)
-    <> ".justify-end" % justify(content: .flexEnd)
-    <> ".justify-center" % justify(content: .center)
-    <> ".justify-between" % justify(content: .spaceBetween)
-    <> ".justify-around" % justify(content: .spaceAround)
+       Class.flex.justify.start % justify(content: .flexStart)
+    <> Class.flex.justify.end % justify(content: .flexEnd)
+    <> Class.flex.justify.center % justify(content: .center)
+    <> Class.flex.justify.between % justify(content: .spaceBetween)
+    <> Class.flex.justify.around % justify(content: .spaceAround)
 
 private let alignContentStyles =
-  ".self-start" % align(content: .flexStart)
-    <> ".self-end" % align(content: .flexEnd)
-    <> ".self-center" % align(content: .center)
-    <> ".self-baseline" % align(content: .spaceBetween)
-    <> ".self-stretch" % align(content: .spaceAround)
+       Class.flex.align.start % align(content: .flexStart)
+    <> Class.flex.align.end % align(content: .flexEnd)
+    <> Class.flex.align.center % align(content: .center)
+    <> Class.flex.align.between % align(content: .spaceBetween)
+    <> Class.flex.align.around % align(content: .spaceAround)
 
 private let orderStyles =
-  ".order-0" % order(0)
-    <> ".order-1" % order(1)
-    <> ".order-2" % order(2)
-    <> ".order-3" % order(3)
-    <> ".order-last" % order(99999)
+       Class.flex.order.0     % order(0)
+    <> Class.flex.order.1     % order(1)
+    <> Class.flex.order.2     % order(2)
+    <> Class.flex.order.3     % order(3)
+    <> Class.flex.order.last  % order(99999)

@@ -101,6 +101,119 @@ strong {
   clip     : rect(1px1px1px1px);
 }
 
+..flex {
+  display : flex;
+}
+
+..flex-column {
+  flex-direction : column;
+}
+
+..flex-wrap {
+  flex-wrap : wrap;
+}
+
+
+..items-start {
+  align-items : flex-start;
+}
+
+..items-end {
+  align-items : flex-end;
+}
+
+..items-center {
+  align-items : center;
+}
+
+..items-baseline {
+  align-items : baseline;
+}
+
+..items-stretch {
+  align-items : stretch;
+}
+
+.self-start {
+  align-self : flex-start;
+}
+
+.self-end {
+  align-self : flex-end;
+}
+
+.self-center {
+  align-self : center;
+}
+
+.self-baseline {
+  align-self : baseline;
+}
+
+.self-stretch {
+  align-self : stretch;
+}
+
+.justify-start {
+  justify-content : flex-start;
+}
+
+.justify-end {
+  justify-content : flex-end;
+}
+
+.justify-center {
+  justify-content : center;
+}
+
+.justify-between {
+  justify-content : space-between;
+}
+
+.justify-around {
+  justify-content : space-around;
+}
+
+.self-start {
+  align-content : flex-start;
+}
+
+.self-end {
+  align-content : flex-end;
+}
+
+.self-center {
+  align-content : center;
+}
+
+.self-baseline {
+  align-content : space-between;
+}
+
+.self-stretch {
+  align-content : space-around;
+}
+
+.order-0 {
+  order : 0;
+}
+
+.order-1 {
+  order : 1;
+}
+
+.order-2 {
+  order : 2;
+}
+
+.order-3 {
+  order : 3;
+}
+
+.order-last {
+  order : 99999;
+}
+
 .row {
   -webkit-box-sizing : border-box;
   -moz-box-sizing    : border-box;
@@ -509,6 +622,27 @@ strong {
 
 .lg-hide {
   display : none;
+}
+
+}
+@media only screen and (min-width: 40em) {
+
+..flex {
+  display : flex;
+}
+
+}
+@media only screen and (min-width: 52em) {
+
+..flex {
+  display : flex;
+}
+
+}
+@media only screen and (min-width: 64em) {
+
+..flex {
+  display : flex;
 }
 
 }

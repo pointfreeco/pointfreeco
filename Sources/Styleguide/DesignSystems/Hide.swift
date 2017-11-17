@@ -1,39 +1,44 @@
 @testable import Css
 import Prelude
 
-public enum HideClass {
-  public static let hide = CssSelector.class("hide")
-  public static let xsHide = CssSelector.class("xs-hide")
-  public static let smHide = CssSelector.class("sm-hide")
-  public static let mdHide = CssSelector.class("md-hide")
-  public static let lgHide = CssSelector.class("lg-hide")
+extension Class {
+  public enum hide {
+    public static let all = CssSelector.class("hide")
+    public static let xs = CssSelector.class("xs-hide")
+    public static let sm = CssSelector.class("sm-hide")
+    public static let md = CssSelector.class("md-hide")
+    public static let lg = CssSelector.class("lg-hide")
+  }
 }
 
 public let hideStyles: Stylesheet =
-  HideClass.hide % (
+  hideAllStyles
+    <> responsiveStyles
+
+private let hideAllStyles =
+  Class.hide.all % (
     position(.absolute)
       <> height(.px(1))
       <> width(.px(1))
       <> overflow(.hidden)
       <> clip(rect(top: .px(1), right: .px(1), bottom: .px(1), left: .px(1)))
-    )
-    <> responsiveStyles
+)
 
 private let responsiveStyles: Stylesheet =
   queryOnly(screen, [maxWidth(Breakpoint.sm.minSize)]) {
-    HideClass.xsHide % display(.none)
+    Class.hide.xs % display(.none)
     }
     <>
     queryOnly(screen, [minWidth(Breakpoint.sm.minSize), maxWidth(Breakpoint.md.minSize)]) {
-      HideClass.smHide % display(.none)
+      Class.hide.sm % display(.none)
     }
     <>
     queryOnly(screen, [minWidth(Breakpoint.md.minSize), maxWidth(Breakpoint.lg.minSize)]) {
-      HideClass.mdHide % display(.none)
+      Class.hide.md % display(.none)
     }
     <>
     queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) {
-      HideClass.lgHide % display(.none)
+      Class.hide.lg % display(.none)
 }
 
 
