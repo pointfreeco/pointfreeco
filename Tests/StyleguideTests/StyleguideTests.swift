@@ -7,6 +7,10 @@ class StyleguideTests: XCTestCase {
   func testStyleguide() {
     assertSnapshot(matching: styleguide, record: true)
   }
+
+  func test_SecretGrid() {
+    assertSnapshot(matching: flexGrid, record: true)
+  }
 }
 
 #if os(Linux)

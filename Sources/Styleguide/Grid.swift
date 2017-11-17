@@ -53,7 +53,7 @@ public let col12Class = CssSelector.class("col-12")
 
 // TODO: add to swift-web
 @testable import Css
-private func _flex(
+public func _flex(
   grow: Int? = nil,
   shrink: Int? = nil,
   basis: Css.Size? = nil
