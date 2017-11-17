@@ -10,7 +10,7 @@ public enum Breakpoint: String {
   public var minSize: Size {
     switch self {
     case .xs:
-      return .em(0)
+      return .em(24)
     case .sm:
       return .em(40)
     case .md:
