@@ -1,0 +1,31 @@
+html, body {
+  /* fill all available height */
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.bg-dark {
+  background-color: #222;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.code {
+  display: block;
+  background-color: #fafafa;
+  font-family: monospace;
+  padding: 2rem;
+  overflow-x: auto;
+}
