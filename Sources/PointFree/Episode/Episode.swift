@@ -84,9 +84,9 @@ private let view = View<Episode> { ep in
   document([
     html([
       head([
+        style(renderedNormalizeCss),
         style(
-          reset
-            <> styleguide
+          styleguide
             <> styles
         )
         ]),

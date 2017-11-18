@@ -1,9 +1,9 @@
 import Css
 import Prelude
 
-public enum HeaderClass {
+extension Class {
   public static let h1 = CssSelector.class("h1")
-  public static let h2 = CssSelector.class("h")
+  public static let h2 = CssSelector.class("h2")
   public static let h3 = CssSelector.class("h3")
   public static let h4 = CssSelector.class("h4")
   public static let h5 = CssSelector.class("h5")
@@ -11,9 +11,9 @@ public enum HeaderClass {
 }
 
 public let typeScaleStyles =
-  HeaderClass.h1 % fontSize(.rem(2))
-    <> HeaderClass.h2 % fontSize(.rem(1.5))
-    <> HeaderClass.h3 % fontSize(.rem(1.25))
-    <> HeaderClass.h4 % fontSize(.rem(1))
-    <> HeaderClass.h5 % fontSize(.rem(0.875))
-    <> HeaderClass.h6 % fontSize(.rem(0.75))
+  Class.h1 % fontSize(.rem(2))
+    <> Class.h2 % fontSize(.rem(1.5))
+    <> Class.h3 % fontSize(.rem(1.25))
+    <> Class.h4 % fontSize(.rem(1))
+    <> Class.h5 % fontSize(.rem(0.875))
+    <> Class.h6 % fontSize(.rem(0.75))

@@ -1,26 +1,6 @@
 import Css
 import Prelude
 
-public enum Breakpoint: String {
-  case xs
-  case sm
-  case md
-  case lg
-
-  public var minSize: Size {
-    switch self {
-    case .xs:
-      return .em(24)
-    case .sm:
-      return .em(40)
-    case .md:
-      return .em(52)
-    case .lg:
-      return .em(64)
-    }
-  }
-}
-
 private enum GridClass {
   static let row = CssSelector.class("row")
   static let col = CssSelector.class("col")

@@ -41,9 +41,6 @@ private let responsiveStyles: Stylesheet =
       Class.hide.lg % display(.none)
 }
 
-
-
-
 // TODO: move to swift-web/Display
 public struct Clip: Val, Other, Auto, Inherit {
   let clip: Value
