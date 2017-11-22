@@ -1,67 +1,21 @@
 
-body {
-  font-size   : 16px;
-  font-family : -apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
-  line-height : 1.45;
+.caps {
+  text-transform : uppercase;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin-top    : 1rem;
-  margin-bottom : 1rem;
-  font-weight   : 700;
-}
-
-.h1 {
-  font-size : 3.998rem;
-}
-
-.h2 {
-  font-size : 2.827rem;
-}
-
-.h3 {
-  font-size : 1.999rem;
-}
-
-.h4 {
-  font-size : 1.414rem;
-}
-
-.h5 {
-  font-size : 1rem;
-}
-
-.h6 {
-  font-size : 0.707rem;
-}
-
-.h1 {
+.line-height-1 {
   line-height : 1.15;
 }
 
-.h2, .h3 {
+.line-height-2 {
   line-height : 1.25;
 }
 
-.h4, .h5 {
-  line-height : 1.35;
+.line-height-3 {
+  line-height : 1.45;
 }
 
-p {
-  margin-top    : 1rem;
-  margin-bottom : 1rem;
-}
-
-strong {
-  font-weight : 700;
-}
-
-.h-caps {
-  text-transform : uppercase;
-  letter-spacing : 0.54pt;
-}
-
-.fw-bold {
-  font-weight : 700;
+.line-height-4 {
+  line-height : 1.5;
 }
 

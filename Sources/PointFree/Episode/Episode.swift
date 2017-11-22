@@ -9,7 +9,7 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
-struct Episode {
+public struct Episode {
   var blurb: String
   var id: Int
   var sequence: Int
@@ -63,56 +63,42 @@ private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<Res
       |> respond(notFoundView)
   case let .some(ep):
     return conn.map(const(ep))
-      |> respond(view)
+      |> respond(episodeView)
   }
 }
 
-private let codeStyle = ".code" % (
-  display(.block)
-    <> backgroundColor(.rgba(250, 250, 250, 1))
-    <> fontFamily(["monospace"])
-    <> padding(all: .rem(2))
-    <> overflow(x: .auto)
-)
 
-private let styles =
-  video % maxWidth(.pct(100))
-    <> ".bg-dark" % backgroundColor(.rgba(32, 32, 32, 1))
-    <> codeStyle
-
-private let view = View<Episode> { ep in
+public let episodeView = View<Episode> { ep in
   document([
     html([
       head([
         style(renderedNormalizeCss),
-        style(
-          styleguide
-            <> styles
-        )
+        style(styleguide)
         ]),
-      body([
-        div(
-          [`class`("grid")],
-          [
-            div(
-              [`class`("col-6 p5")],
-              [
-
+      body([`class`([Class.pf.bgDark])], [
+        div([
+          div([`class`([Class.grid.row])], [
+            div([`class`([Class.grid.col(.xs, 6), Class.pf.bgWhite])], [
+              div([`class`([PaddingClass.all(4)])], [
                 strong(
-                  [`class`("h6 h-caps")],
+                  [`class`([Class.h6, Class.type.caps, Class.type.lineHeight4])],
                   [.text(encode("Episode \(ep.sequence)"))]
                 ),
                 h1(
-                  [`class`("h3")],
+                  [`class`([Class.h3, Class.type.lineHeight2, MarginClass.top(1)])],
                   [.text(encode(ep.title))]
                 ),
-                p(
-                  [`class`("h4")],
-                  [.text(encode(ep.blurb))]
-                ),
+                p([
+                  """
+In the article “Algebraic Structure and Protocols” we described how to use Swift protocols to describe some basic algebraic structures, such as semigroups and monoids, provided some simple examples, and then provided constructions to build new instances from existing. Here we apply those ideas to the concrete ideas of predicates and sorting functions, and show how they build a wonderful little algebra that is quite expressive.
+"""
+                  ]),
+                h2([`class`([Class.h4, Class.type.lineHeight3])], [
+                  "Recall from last time..."
+                  ]),
                 pre([
                   code(
-                    [`class`("code")],
+                    [`class`([Class.pf.code])],
                     [
                       """
                       infix operator <>: AdditionPrecedence
@@ -139,33 +125,30 @@ private let view = View<Episode> { ep in
                    value. We know of quite a few types that are monoids:
                    """
                   ])
-              ]
-            ),
-            div(
-              [`class`("col-6 p5 bg-dark")],
-              [
-                video(
-                  [controls(true)],
-                  [source(src: "https://d2sazdeahkz1yk.cloudfront.net/videos/8aa19eff-1703-4377-866b-64660a04c6ee/1/720p00034.ts")]
-                )
-              ]
-            )
-          ]
-        )
+                ]),
+              ]),
+            div([`class`([Class.grid.col(.xs, 6), Class.pf.bgDark])], [
+              video(
+                [controls(true)],
+                [source(src: "https://d2sazdeahkz1yk.cloudfront.net/videos/8aa19eff-1703-4377-866b-64660a04c6ee/1/720p00034.ts")]
+              )
+              ])
+            ])
+          ])
+        ])
       ])
     ])
-  ])
 }
 
 private let breadcrumbs = View<Prelude.Unit> { _ in
   [
     a(
-      [`class`("h6"), href(path(to: .secretHome))],
+      [`class`([Class.h6]), href(path(to: .secretHome))],
       ["Home"]
     ),
     " > ",
     a(
-      [`class`("h6"), href(path(to: .episodes))],
+      [`class`([Class.h6]), href(path(to: .episodes))],
       ["Episodes"]
     ),
     br

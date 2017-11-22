@@ -11,9 +11,9 @@ extension Class {
 }
 
 public let typeScaleStyles =
-  Class.h1 % fontSize(.rem(2))
-    <> Class.h2 % fontSize(.rem(1.5))
-    <> Class.h3 % fontSize(.rem(1.25))
-    <> Class.h4 % fontSize(.rem(1))
-    <> Class.h5 % fontSize(.rem(0.875))
-    <> Class.h6 % fontSize(.rem(0.75))
+       Class.h1 % fontSize(.rem(3.998))
+    <> Class.h2 % fontSize(.rem(2.827))
+    <> Class.h3 % fontSize(.rem(1.999))
+    <> Class.h4 % fontSize(.rem(1.414))
+    <> Class.h5 % fontSize(.rem(1.0))
+    <> Class.h6 % fontSize(.rem(0.707))

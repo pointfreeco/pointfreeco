@@ -25,7 +25,7 @@ private let view = View<[Episode]> { eps in
           ["Episodes"]
         ),
         ul(
-          eps.map(episodeView.view >>> li)
+          eps.map(_episodeView.view >>> li)
         ),
         a(
           [href(path(to: .secretHome))],
@@ -36,7 +36,7 @@ private let view = View<[Episode]> { eps in
     ])
 }
 
-private let episodeView = View<Episode> { ep in
+private let _episodeView = View<Episode> { ep in
   a(
     [href(path(to: .episode(.left(ep.slug))))],
     [.text(encode(ep.title))]

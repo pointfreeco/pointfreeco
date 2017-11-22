@@ -4,5 +4,4 @@ import Prelude
 
 public let styleguide =
   pointFreeBaseStyles
-    <> typography
     <> designSystems

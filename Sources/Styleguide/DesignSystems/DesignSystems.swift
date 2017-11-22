@@ -7,3 +7,4 @@ public let designSystems =
     <> flexStyles
     <> flexGridStyles
     <> spacingStyles
+    <> designSystemsTypography

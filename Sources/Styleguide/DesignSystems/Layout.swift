@@ -33,8 +33,3 @@ private let widthStyles =
     <> ".max-width-3" % maxWidth(Breakpoint.md.minSize)
     <> ".max-width-4" % maxWidth(Breakpoint.lg.minSize)
 
-// TODO: move to swift-web
-extension Display {
-  public static let inline: Display = "inline"
-  public static let tableCell: Display = "table-cell"
-}

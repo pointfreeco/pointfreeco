@@ -4,72 +4,72 @@ import Prelude
 public enum Class {
   public enum flex {
     /// ".flex"
-    public static let flex = CssSelector.class(".flex")
+    public static let flex = CssSelector.class("flex")
     /// ".flex-column"
-    public static let column = CssSelector.class(".flex-column")
+    public static let column = CssSelector.class("flex-column")
     /// ".flex-wrap"
-    public static let wrap = CssSelector.class(".flex-wrap")
+    public static let wrap = CssSelector.class("flex-wrap")
     /// ".flex-none"
-    public static let none = CssSelector.class(".flex-none")
+    public static let none = CssSelector.class("flex-none")
 
     public enum items {
       /// ".items-start"
-      public static let start = CssSelector.class(".items-start")
+      public static let start = CssSelector.class("items-start")
       /// ".items-end"
-      public static let end = CssSelector.class(".items-end")
+      public static let end = CssSelector.class("items-end")
       /// ".items-center"
-      public static let center = CssSelector.class(".items-center")
+      public static let center = CssSelector.class("items-center")
       /// ".items-baseline"
-      public static let baseline = CssSelector.class(".items-baseline")
+      public static let baseline = CssSelector.class("items-baseline")
       /// ".items-stretch"
-      public static let stretch = CssSelector.class(".items-stretch")
+      public static let stretch = CssSelector.class("items-stretch")
     }
 
     public enum `self` {
       /// ".self-start"
-      public static let start = CssSelector.class(".self-start")
+      public static let start = CssSelector.class("self-start")
       /// ".self-end"
-      public static let end = CssSelector.class(".self-end")
+      public static let end = CssSelector.class("self-end")
       /// ".self-center"
-      public static let center = CssSelector.class(".self-center")
+      public static let center = CssSelector.class("self-center")
       /// ".self-baseline"
-      public static let baseline = CssSelector.class(".self-baseline")
+      public static let baseline = CssSelector.class("self-baseline")
       /// ".self-stretch"
-      public static let stretch = CssSelector.class(".self-stretch")
+      public static let stretch = CssSelector.class("self-stretch")
     }
 
     public enum justify {
       /// ".justify-start"
-      public static let start = CssSelector.class(".justify-start")
+      public static let start = CssSelector.class("justify-start")
       /// ".justify-end"
-      public static let end = CssSelector.class(".justify-end")
+      public static let end = CssSelector.class("justify-end")
       /// ".justify-center"
-      public static let center = CssSelector.class(".justify-center")
+      public static let center = CssSelector.class("justify-center")
       /// ".justify-between"
-      public static let between = CssSelector.class(".justify-between")
+      public static let between = CssSelector.class("justify-between")
       /// ".justify-around"
-      public static let around = CssSelector.class(".justify-around")
+      public static let around = CssSelector.class("justify-around")
     }
 
     public enum align {
       /// ".align-start"
-      public static let start = CssSelector.class(".align-start")
+      public static let start = CssSelector.class("align-start")
       /// ".align-end"
-      public static let end = CssSelector.class(".align-end")
+      public static let end = CssSelector.class("align-end")
       /// ".align-center"
-      public static let center = CssSelector.class(".align-center")
+      public static let center = CssSelector.class("align-center")
       /// ".align-between"
-      public static let between = CssSelector.class(".align-between")
+      public static let between = CssSelector.class("align-between")
       /// ".align-around"
-      public static let around = CssSelector.class(".align-around")
+      public static let around = CssSelector.class("align-around")
     }
 
     public static let order = (
-      CssSelector.class(".order-0"),
-      CssSelector.class(".order-1"),
-      CssSelector.class(".order-2"),
-      CssSelector.class(".order-3"),
-      last: CssSelector.class(".order-last")
+      CssSelector.class("order-0"),
+      CssSelector.class("order-1"),
+      CssSelector.class("order-2"),
+      CssSelector.class("order-3"),
+      last: CssSelector.class("order-last")
     )
   }
 }

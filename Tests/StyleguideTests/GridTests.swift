@@ -10,7 +10,7 @@ import XCTest
 
 class GridTests: XCTestCase {
   func testGrid() {
-    assertSnapshot(matching: grid, record: true)
+    assertSnapshot(matching: flexGridStyles, record: true)
   }
 
   func testSampleGrid() {

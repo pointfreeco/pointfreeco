@@ -3,7 +3,7 @@
   font-size : 2rem;
 }
 
-.h {
+.h2 {
   font-size : 1.5rem;
 }
 
@@ -31,36 +31,36 @@
   clip     : rect(1px1px1px1px);
 }
 
-..flex {
+.flex {
   display : flex;
 }
 
-..flex-column {
+.flex-column {
   flex-direction : column;
 }
 
-..flex-wrap {
+.flex-wrap {
   flex-wrap : wrap;
 }
 
 
-..items-start {
+.items-start {
   align-items : flex-start;
 }
 
-..items-end {
+.items-end {
   align-items : flex-end;
 }
 
-..items-center {
+.items-center {
   align-items : center;
 }
 
-..items-baseline {
+.items-baseline {
   align-items : baseline;
 }
 
-..items-stretch {
+.items-stretch {
   align-items : stretch;
 }
 
@@ -104,23 +104,23 @@
   justify-content : space-around;
 }
 
-.self-start {
+.align-start {
   align-content : flex-start;
 }
 
-.self-end {
+.align-end {
   align-content : flex-end;
 }
 
-.self-center {
+.align-center {
   align-content : center;
 }
 
-.self-baseline {
+.align-between {
   align-content : space-between;
 }
 
-.self-stretch {
+.align-around {
   align-content : space-around;
 }
 
@@ -527,6 +527,26 @@
   margin-left  : auto;
 }
 
+.caps {
+  text-transform : uppercase;
+}
+
+.line-height-1 {
+  line-height : 1.15;
+}
+
+.line-height-2 {
+  line-height : 1.25;
+}
+
+.line-height-3 {
+  line-height : 1.45;
+}
+
+.line-height-4 {
+  line-height : 1.5;
+}
+
 @media only screen and (max-width: 40em) {
 
 .xs-hide {
@@ -557,21 +577,21 @@
 }
 @media only screen and (min-width: 40em) {
 
-..flex {
+.flex {
   display : flex;
 }
 
 }
 @media only screen and (min-width: 52em) {
 
-..flex {
+.flex {
   display : flex;
 }
 
 }
 @media only screen and (min-width: 64em) {
 
-..flex {
+.flex {
   display : flex;
 }
 
