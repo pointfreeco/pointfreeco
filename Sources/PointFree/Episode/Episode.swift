@@ -150,36 +150,7 @@ private let notFoundView = View<Prelude.Unit> { _ in
     ])
 }
 
-private func gridRow(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
-  let tmp = addClasses([Class.grid.row]) <| attribs
-  return node("div", tmp, content)
-}
-
-private func gridRow(_ content: [Node]) -> Node {
-  return div([`class`([Class.grid.row])], content)
-}
-
-private func gridColumn(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
-  let tmp = addClasses([Class.grid.col]) <| attribs
-  return node("div", tmp, content)
-}
-
-private func gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
-  return { nodes in
-    let classes = [Class.grid.col] + sizes.map { breakpoint, size in
-      Class.grid.col(breakpoint, size)
-    }
-    return [
-      div([`class`(classes)], nodes)
-    ]
-  }
-}
-
-private func gridColumn(_ content: [Node]) -> Node {
-  return gridColumn([], content)
-}
-
-/*private*/ let footerView = View<Prelude.Unit> { _ in
+let footerView = View<Prelude.Unit> { _ in
   footer(
     [
       `class`([
@@ -239,20 +210,3 @@ private let moreColumnView = View<Prelude.Unit> { _ in
     ])
 }
 
-// todo: where should this live?
-// todo: render `CssSelector.union` better
-private func addClasses<T>(_ classes: [CssSelector]) -> ([Attribute<T>]) -> [Attribute<T>] {
-  return { attributes in
-    attributes.map { attribute in
-      guard attribute.attrib.key == "class" else { return attribute }
-
-      let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
-        + " "
-        + classes
-          .map { renderSelector($0).replacingOccurrences(of: ".", with: "") }
-          .joined(separator: " ")
-
-      return .init("class", newValue)
-    }
-  }
-}
