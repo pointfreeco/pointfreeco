@@ -10,3 +10,4 @@ public let designSystems =
     <> typography
     <> layoutStyles
     <> positionStyles
+    <> borderStyles

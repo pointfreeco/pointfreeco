@@ -2,6 +2,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Foundation
 import HttpPipeline
 import Prelude
+import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
@@ -18,6 +19,10 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
 
   switch conn.data {
+  case .about:
+    return conn.map(const(unit))
+      |> aboutResponse
+
   case let .episode(param):
     return conn.map(const(param))
       |> episodeResponse
@@ -49,6 +54,10 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
   case .secretHome:
     return conn.map(const(unit))
       |> secretHomeResponse
+
+  case .terms:
+    return conn.map(const(unit))
+      |> termsResponse
   }
 }
 
@@ -69,7 +78,7 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .episode, .episodes, .githubCallback, .login, .logout, .secretHome:
+  case .about, .episode, .episodes, .githubCallback, .login, .logout, .secretHome, .terms:
     return true
   case .home, .launchSignup:
     return false

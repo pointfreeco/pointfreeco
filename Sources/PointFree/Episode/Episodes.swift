@@ -27,7 +27,6 @@ private let view = View<[Episode]> { eps in
       body([
 
         div([`class`([Class.grid.row])], [
-
           div([`class`([Class.grid.col(.xs, 12), Class.padding.leftRight(4), Class.padding.topBottom(2)])], [
             div([
               h3(
@@ -36,29 +35,29 @@ private let view = View<[Episode]> { eps in
               ),
               ul([`class`([Class.type.list.reset])],
                  eps.map(episodeListItemView.view >>> li)
-              ),
-              a(
-                [href(path(to: .secretHome))],
-                ["Home"]
               )
               ])
             ])
           ])
-        ])
+        ] + footerView.view(unit))
       ])
     ])
 }
 
-let css: Stylesheet =
+let episodeImageStyles: Stylesheet =
   width(.pct(100))
     <> maxHeight(.px(200))
     <> objectFit(.cover)
 
 private let episodeListItemView = View<Episode> { ep in
-  div([`class`([Class.grid.row, Class.margin.bottom(2)])], [
+  div([`class`([Class.grid.row, Class.margin.bottom(4)])], [
     div([`class`([Class.grid.col, Class.grid.col(.xs, 4)])], [
       div([`class`([Class.padding.right(3)])], [
-        img(src: "https://d2sazdeahkz1yk.cloudfront.net/assets/W1siZiIsIjIwMTcvMTEvMTYvMTgvNDUvMDMvZTVlNWUyZGYtZTA4NC00ODAyLWEyYjAtMjNjY2ZhMmQ5YWVlLzc2IFVuZGVyc3RhbmRpbmcgUmVhY3RpdmUgR2xpdGNoZXMuanBnIl0sWyJwIiwidGh1bWIiLCIzMDB4MTY5IyJdXQ?sha=9a80d378dac6eaad", alt: "", [`class`([Class.pf.bgDark, Class.layout.fit]), style(css)])
+        img(
+          base64: logoSvgBase64,
+          mediaType: .image(.svg),
+          alt: "",
+          [`class`([Class.pf.colors.bg.white, Class.layout.fit]), style(episodeImageStyles)])
         ])
       ]),
 
@@ -71,11 +70,40 @@ private let episodeListItemView = View<Episode> { ep in
         h5([`class`([Class.h5, Class.type.lineHeight1, Class.margin.top(0), Class.margin.bottom(2)])], [
           a(
             [href(path(to: .episode(.left(ep.slug))))],
-            [.text(encode(ep.title))]
-          )
+            [.text(encode(ep.title))])
           ]),
-        p([.text(encode(ep.blurb))])
+        p([.text(encode(ep.blurb))]),
+
+        div(episodeTagsView.view(ep.tags))
         ])
       ])
     ])
+}
+
+private let episodeTagsView = View<[Episode.Tag]> { tags in
+  ol(
+    [`class`([Class.layout.inlineBlock, Class.type.list.reset])],
+    tags.map(
+      episodeTagView.contramap(get(\.name)).view
+        >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(2)])])
+    )
+  )
+}
+
+private let episodeTagView = View<String> { tag in
+  a(
+    [
+      href("#"),
+      `class`([
+        Class.h6,
+        Class.padding.leftRight(2),
+        Class.padding.topBottom(1),
+        Class.border.pill,
+        Class.pf.colors.bg.light,
+        Class.pf.colors.fg.white,
+        Class.type.textDecorationNone,
+        ])
+    ],
+    [.text(encode(tag))]
+  )
 }

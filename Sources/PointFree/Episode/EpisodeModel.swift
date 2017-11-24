@@ -1,8 +1,10 @@
 public struct Episode {
   var blurb: String
   var id: Int
+  var length: Int
   var sequence: Int
   var slug: String
+  var tags: [Tag]
   var title: String
   var transcriptBlocks: [TranscriptBlock]
 
@@ -17,6 +19,10 @@ public struct Episode {
       case title
     }
   }
+
+  public struct Tag {
+    var name: String
+  }
 }
 
 let episodes = [
@@ -27,8 +33,16 @@ Swift’s generic functions allow us to explore a beautiful idea that straddles 
 and computer science
 """,
     id: 1,
+    length: 1080,
     sequence: 1,
     slug: "ep1-proof-in-functions",
+    tags: [
+      Episode.Tag(name: "Math"),
+      Episode.Tag(name: "Generics"),
+      Episode.Tag(name: "Polymorphism"),
+      Episode.Tag(name: "Swift"),
+      Episode.Tag(name: "Programming"),
+    ],
     title: "Proof in Functions",
     transcriptBlocks: [
       Episode.TranscriptBlock(
@@ -113,8 +127,13 @@ really have no choice but to just return x, i.e. it’s the identity function:
            and show how they can lead to very composable constructions.
            """,
     id: 42,
+    length: 1380 ,
     sequence: 2,
     slug: "ep6-the-algebra-of-predicates-and-sorting-functions",
+    tags: [
+      Episode.Tag(name: "Math"),
+      Episode.Tag(name: "Algebra")
+      ],
     title: "The Algebra of Predicates and Sorting Functions",
     transcriptBlocks: [
       Episode.TranscriptBlock(

@@ -44,13 +44,13 @@ public let episodeView = View<Episode> { ep in
         style(styleguide),
         title("Episode #\(ep.sequence): \(ep.title)")
         ]),
-      body([`class`([Class.pf.bgDark])], [
+      body([`class`([Class.pf.colors.bg.dark])], [
         gridRow([
           gridColumn([
             `class`([
               Class.grid.col(.sm, 12),
               Class.grid.col(.md, 6),
-              Class.pf.bgWhite])
+              Class.pf.colors.bg.white])
             ], transcriptView.view(ep)
           ),
 
@@ -58,9 +58,9 @@ public let episodeView = View<Episode> { ep in
             `class`([
               Class.grid.col(.sm, 12),
               Class.grid.col(.md, 6),
-              Class.grid.first(.sm),
+              Class.grid.first(.xs),
               Class.grid.last(.md),
-              Class.pf.bgDark])
+              Class.pf.colors.bg.dark])
             ], [video([
               `class`([
                 Class.layout.fit,
@@ -69,7 +69,8 @@ public let episodeView = View<Episode> { ep in
               controls(true)], [source(src: "")])
             ])
           ])
-        ])
+        ]
+        + footerView.view(unit))
       ])
     ])
 }
@@ -163,10 +164,83 @@ private func gridColumn(_ attribs: [Attribute<Element.Div>], _ content: [Node]) 
   return node("div", tmp, content)
 }
 
+private func gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
+  return { nodes in
+    let classes = [Class.grid.col] + sizes.map { breakpoint, size in
+      Class.grid.col(breakpoint, size)
+    }
+    return [
+      div([`class`(classes)], nodes)
+    ]
+  }
+}
+
 private func gridColumn(_ content: [Node]) -> Node {
   return gridColumn([], content)
 }
 
+/*private*/ let footerView = View<Prelude.Unit> { _ in
+  footer(
+    [
+      `class`([
+        Class.border.top,
+        Class.grid.row,
+        Class.padding.leftRight(4),
+        Class.padding.topBottom(2),
+        Class.pf.colors.bg.white]),
+      style(borderColor(top: .other("#ccc")))
+    ],
+    footerInfoColumnsView.view(unit)
+  )
+}
+
+let footerInfoColumnsView =
+  footerPointFreeView.map(gridColumn(sizes: [.xs: 12, .md: 6]))
+    <> learnColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
+    <> followColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
+    <> moreColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
+
+private let footerPointFreeView = View<Prelude.Unit> { _ in
+  div([`class`([Class.padding.right(4)])], [
+    h4([`class`([Class.h4, Class.margin.bottom(0)])], ["Point-Free"]),
+    p(["A weekly video series on functional programming and the Swift programming language."])
+    ])
+}
+
+private let learnColumnView = View<Prelude.Unit> { _ in
+  div([
+    h5([`class`([Class.h5])], ["Learn"]),
+    ol([`class`([Class.type.list.reset])], [
+      li([a([href(path(to: .episodes))], ["Videos"])]),
+      li([a([href("#")], ["Books"])]),
+      li([a([href("#")], ["Hire Us"])]),
+      ])
+    ])
+}
+
+private let followColumnView = View<Prelude.Unit> { _ in
+  div([
+    h5([`class`([Class.h5])], ["Follow"]),
+    ol([`class`([Class.type.list.reset])], [
+      li([a([href("#")], ["Blog"])]),
+      li([a([href("https://www.twitter.com/pointfreeco")], ["Twitter"])]),
+      ])
+    ])
+}
+
+private let moreColumnView = View<Prelude.Unit> { _ in
+  div([
+    h5([`class`([Class.h5])], ["More"]),
+    ol([`class`([Class.type.list.reset])], [
+      li([a([href(path(to: .about))], ["About"])]),
+      li([a([href("mailto:support@pointfree.co")], ["Email"])]),
+      li([a([href(path(to: .terms))], ["Terms"])]),
+      ])
+    ])
+}
+
+// todo: where should this live?
+// todo: render `CssSelector.union` better
 private func addClasses<T>(_ classes: [CssSelector]) -> ([Attribute<T>]) -> [Attribute<T>] {
   return { attributes in
     attributes.map { attribute in

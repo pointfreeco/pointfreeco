@@ -89,3 +89,7 @@ extension Position {
 extension FontStyle {
   public static let italic = FontStyle(style: "italic")
 }
+
+public func li<T: ContainsList>(_ attribs: [Attribute<Element.Li>]) -> ([Node]) -> ChildOf<T> {
+  return { .init(node("li", attribs, $0)) }
+}

@@ -3,6 +3,7 @@ import Either
 import Prelude
 
 public enum Route {
+  case about
   case episode(Either<String, Int>)
   case episodes
   case githubCallback(code: String, redirect: String?)
@@ -11,9 +12,13 @@ public enum Route {
   case login(redirect: String?)
   case logout
   case secretHome
+  case terms
 }
 
 public let router: Router<Route> = [
+
+  Route.iso.about
+    <¢> get %> lit("about") <% end,
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
@@ -38,11 +43,22 @@ public let router: Router<Route> = [
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
+
+  Route.iso.terms
+    <¢> get %> lit("terms") <% end,
+
   ]
   .reduce(.empty, <|>)
 
 extension Route {
   public enum iso {
+    static let about = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.about)),
+      unapply: {
+        guard case .about = $0 else { return nil }
+        return unit
+    })
+
     static let episode = parenthesize <| PartialIso(
       apply: Route.episode,
       unapply: {
@@ -97,6 +113,13 @@ extension Route {
       apply: const(.some(.secretHome)),
       unapply: {
         guard case .secretHome = $0 else { return nil }
+        return unit
+    })
+
+    static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
+      apply: const(.some(.terms)),
+      unapply: {
+        guard case .terms = $0 else { return nil }
         return unit
     })
   }
