@@ -2,9 +2,11 @@ import Css
 import Prelude
 
 public let designSystems =
-  typeScaleStyles
+  typescale
     <> hideStyles
     <> flexStyles
     <> flexGridStyles
     <> spacingStyles
-    <> designSystemsTypography
+    <> typography
+    <> layoutStyles
+    <> positionStyles

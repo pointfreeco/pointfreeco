@@ -12,6 +12,10 @@ public enum Class {
     /// ".flex-none"
     public static let none = CssSelector.class("flex-none")
 
+    public static func flex(breakpoint: Breakpoint) -> CssSelector {
+      return CssSelector.class("flex-\(breakpoint)")
+    }
+
     public enum items {
       /// ".items-start"
       public static let start = CssSelector.class("items-start")
@@ -75,10 +79,10 @@ public enum Class {
 }
 
 public let flexStyles: Stylesheet =
-       Class.flex.flex % display(.flex)
-    <> queryOnly(screen, [minWidth(Breakpoint.sm.minSize)]) { Class.flex.flex % display(.flex) }
-    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) { Class.flex.flex % display(.flex) }
-    <> queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) { Class.flex.flex % display(.flex) }
+  Breakpoint.all.map { b in
+    queryOnly(screen, [minWidth(b.minSize)]) { Class.flex.flex(breakpoint: b) % display(.flex) }
+    }.concat()
+    <> Class.flex.flex % display(.flex)
     <> Class.flex.column % flex(direction: .column)
     <> Class.flex.wrap % flex(wrap: .wrap)
     <> Class.flex.none % flex(wrap: .none)

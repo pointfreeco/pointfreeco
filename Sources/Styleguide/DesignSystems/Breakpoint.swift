@@ -14,4 +14,6 @@ public enum Breakpoint: String {
     case .lg: return .em(64)
     }
   }
+
+  public static let all: [Breakpoint] = [.lg, .md, .sm, .xs]
 }

@@ -1,4 +1,4 @@
-import Css
+@testable import Css
 import Prelude
 
 extension Class {
@@ -6,15 +6,17 @@ extension Class {
     public static let bgDark = CssSelector.class("bg-dark")
     public static let bgWhite = CssSelector.class("bg-white")
     public static let code = CssSelector.class("code")
+    public static let inlineCode = CssSelector.class("inline-code")
   }
 }
-
+ 
 public let pointFreeBaseStyles =
   (body | html) % height(.pct(100))
     <> bodyStyles
     <> resets
     <> colorStyles
     <> codeStyles
+    <> inlineCodeStyles
 
 private let bodyStyles =
   body % (
@@ -39,4 +41,13 @@ private let codeStyles =
       <> fontFamily(["monospace"])
       <> padding(all: .rem(2))
       <> overflow(x: .auto)
+)
+
+private let inlineCodeStyles =
+  Class.pf.inlineCode % (
+    fontFamily(["monospace"])
+      <> padding(topBottom: .px(1), leftRight: .px(5))
+      <> borderWidth(all: .px(1))
+      <> borderRadius(all: .px(3))
+      <> backgroundColor(Color.other("#fafafa"))
 )

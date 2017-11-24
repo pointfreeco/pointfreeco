@@ -1,35 +1,49 @@
 import Css
 import Prelude
 
+extension Class {
+  public enum layout {
+    public static let fit = CssSelector.class("fit")
+    public static let inline = CssSelector.class("inline")
+    public static let block = CssSelector.class("inline")
+    public static let inlineBlock = CssSelector.class("inline")
+    public static let overflowHidden = CssSelector.class("overflow-hidden")
+    public static let overflowScroll = CssSelector.class("overflow-scroll")
+    public static let overflowAuto = CssSelector.class("overflow-auto")
+    public static let clearFix = CssSelector.class("clear-fix")
+    public static let left = CssSelector.class("left")
+    public static let right = CssSelector.class("right")
+  }
+}
+
 public let layoutStyles =
-  ".inline" % display(.inline)
-    <> ".block" % display(.block)
-    <> ".inline-block" % display(.inlineBlock)
+       Class.layout.inline % display(.inline)
+    <> Class.layout.block % display(.block)
+    <> Class.layout.inlineBlock % display(.inlineBlock)
     <> ".table" % display(.table)
     <> ".table-cell" % display(.tableCell)
-    <> ".overflow-hidden" % overflow(.hidden)
-    <> ".overflow-scroll" % overflow(.scroll)
-    <> ".overflow-auto" % overflow(.auto)
+    <> Class.layout.overflowHidden % overflow(.hidden)
+    <> Class.layout.overflowScroll % overflow(.scroll)
+    <> Class.layout.overflowAuto % overflow(.auto)
     <> clearFixStyles
     <> floatStyles
     <> widthStyles
     <> ".border-box" % boxSizing(.borderBox)
 
 private let clearFixStyles =
-  (".clearfix" & .pseudoElem(.before) | ".clearfix" & .pseudoElem(.after)) % (
+  (Class.layout.clearFix & .pseudoElem(.before) | Class.layout.clearFix & .pseudoElem(.after)) % (
     content(stringContent(""))
       <> display(.table)
   )
-  <> (".clearfix" & .pseudoElem(.after)) % clear(.both)
+  <> (Class.layout.clearFix & .pseudoElem(.after)) % clear(.both)
 
 private let floatStyles =
-  ".left" % float(.left)
-    <> ".right" % float(.right)
+       Class.layout.left % float(.left)
+    <> Class.layout.right % float(.right)
 
 private let widthStyles =
-  ".fit" % maxWidth(.pct(100))
+  Class.layout.fit % maxWidth(.pct(100))
     <> ".max-width-1" % maxWidth(Breakpoint.xs.minSize)
     <> ".max-width-2" % maxWidth(Breakpoint.sm.minSize)
     <> ".max-width-3" % maxWidth(Breakpoint.md.minSize)
     <> ".max-width-4" % maxWidth(Breakpoint.lg.minSize)
-

@@ -1,4 +1,4 @@
-import Css
+@testable import Css
 import Prelude
 
 extension Class {
@@ -8,31 +8,57 @@ extension Class {
     public static let lineHeight2 = CssSelector.class("line-height-2")
     public static let lineHeight3 = CssSelector.class("line-height-3")
     public static let lineHeight4 = CssSelector.class("line-height-4")
+
+    public static let bold = CssSelector.class("bold")
+    public static let regular = CssSelector.class("regular")
+    public static let italic = CssSelector.class("italic")
+    public static let underline = CssSelector.class("underline")
+
+    public static let fontFamilyInherit = CssSelector.class("font-family-inherit")
+    public static let fontSizeInherit = CssSelector.class("font-size-inherit")
+    public static let textDecorationNone = CssSelector.class("text-decoration-none")
+
+    public enum list {
+      public static let styleNone = CssSelector.class("list-style-none")
+      public static let reset = CssSelector.class("list-reset")
+    }
   }
 }
 
-public let designSystemsTypography: Stylesheet =
-  Class.type.caps % (
-    textTransform(.uppercase)
-      <> letterSpacing(.pt(0.54))
-      )
-    <> Class.type.lineHeight1 % lineHeight(1.15)
+public let typography: Stylesheet =
+  emphasisStyles
+    <> lineHeightStyles
+    <> miscStyles
+    <> listStyles
+
+private let lineHeightStyles =
+  Class.type.lineHeight1 % lineHeight(1.15)
     <> Class.type.lineHeight2 % lineHeight(1.25)
     <> Class.type.lineHeight3 % lineHeight(1.45)
     <> Class.type.lineHeight4 % lineHeight(1.5)
 
+private let emphasisStyles: Stylesheet =
+  Class.type.bold % fontWeight(.w700)
+    <> Class.type.regular % fontWeight(.normal)
+    <> Class.type.italic % fontStyle(.italic)
+    <> Class.type.underline % key("text-decoration", "underline")
+    <> Class.type.caps % (
+      textTransform(.uppercase)
+        <> letterSpacing(.pt(0.54))
+)
 
-//
-///* Basscss Typography */
-//
-//.font-family-inherit { font-family: inherit }
-//.font-size-inherit { font-size: inherit }
-//.text-decoration-none { text-decoration: none }
-//
-//.bold    { font-weight: var(--bold-font-weight, bold) }
-//.regular { font-weight: normal }
-//.italic  { font-style: italic }
-//.caps    { text-transform: uppercase; letter-spacing: var(--caps-letter-spacing); }
+private let miscStyles: Stylesheet =
+  Class.type.fontFamilyInherit % fontFamily(.inherit)
+    <> Class.type.fontSizeInherit % fontSize(.inherit)
+    <> Class.type.textDecorationNone % key("text-decoration", "none")
+
+private let listStyles: Stylesheet =
+  Class.type.list.styleNone % listStyleType(.none)
+  <> Class.type.list.reset % (
+    listStyleType(.none)
+      <> padding(left: 0)
+)
+
 //
 //.left-align   { text-align: left }
 //.center       { text-align: center }
@@ -41,14 +67,6 @@ public let designSystemsTypography: Stylesheet =
 //
 //.nowrap { white-space: nowrap }
 //.break-word { word-wrap: break-word }
-//
-//.line-height-1 { line-height: var(--line-height-1) }
-//.line-height-2 { line-height: var(--line-height-2) }
-//.line-height-3 { line-height: var(--line-height-3) }
-//.line-height-4 { line-height: var(--line-height-4) }
-//
-//.list-style-none { list-style: none }
-//.underline { text-decoration: underline }
 //
 //.truncate {
 //  max-width: 100%;
@@ -71,4 +89,3 @@ public let designSystemsTypography: Stylesheet =
 //  --caps-letter-spacing: 0.54pt;
 //  --bold-font-weight: 700;
 //}
-

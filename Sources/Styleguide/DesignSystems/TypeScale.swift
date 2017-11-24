@@ -10,7 +10,7 @@ extension Class {
   public static let h6 = CssSelector.class("h6")
 }
 
-public let typeScaleStyles =
+public let typescale =
        Class.h1 % fontSize(.rem(3.998))
     <> Class.h2 % fontSize(.rem(2.827))
     <> Class.h3 % fontSize(.rem(1.999))
