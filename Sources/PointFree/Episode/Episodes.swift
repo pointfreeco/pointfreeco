@@ -7,13 +7,20 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
-let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
   fetchEpisodes
     >-> respond(view)
 
-private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<HeadersOpen, [Episode]>> {
+private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Tag?>) -> IO<Conn<HeadersOpen, [Episode]>> {
 
-  return conn.map(const(Array(episodes.reversed())))
+  return conn.map(
+    const(
+      episodes
+        .filter { conn.data.map($0.tags.contains) != .some(false) }
+        .sorted(by: get(\.sequence))
+        .reversed()
+    )
+    )
     |> writeStatus(.ok)
 }
 
@@ -80,20 +87,28 @@ private let episodeListItemView = View<Episode> { ep in
     ])
 }
 
-private let episodeTagsView = View<[Episode.Tag]> { tags in
+extension Array {
+  func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
+    return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
+  }
+}
+
+private let episodeTagsView = View<[Tag]> { tags in
   ol(
     [`class`([Class.layout.inlineBlock, Class.type.list.reset])],
-    tags.map(
-      episodeTagView.contramap(get(\.name)).view
-        >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(2)])])
+    tags
+      .sorted(by: get(\.name))
+      .map(
+        episodeTagView.view
+          >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(2)])])
     )
   )
 }
 
-private let episodeTagView = View<String> { tag in
+private let episodeTagView = View<Tag> { tag in
   a(
     [
-      href("#"),
+      href(   path(to: .episodes(tag: .some(tag)))   ),
       `class`([
         Class.h6,
         Class.padding.leftRight(2),
@@ -104,6 +119,6 @@ private let episodeTagView = View<String> { tag in
         Class.type.textDecorationNone,
         ])
     ],
-    [.text(encode(tag))]
+    [.text(encode(tag.name))]
   )
 }

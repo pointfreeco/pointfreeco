@@ -49,7 +49,7 @@ public let episodeView = View<Episode> { ep in
           gridColumn([
             `class`([
               Class.grid.col(.sm, 12),
-              Class.grid.col(.md, 6),
+              Class.grid.col(.md, 7),
               Class.pf.colors.bg.white])
             ], transcriptView.view(ep)
           ),
@@ -57,7 +57,7 @@ public let episodeView = View<Episode> { ep in
           gridColumn([
             `class`([
               Class.grid.col(.sm, 12),
-              Class.grid.col(.md, 6),
+              Class.grid.col(.md, 5),
               Class.grid.first(.xs),
               Class.grid.last(.md),
               Class.pf.colors.bg.dark])
@@ -131,7 +131,7 @@ private let breadcrumbs = View<Prelude.Unit> { _ in
     ),
     " > ",
     a(
-      [`class`([Class.h6]), href(path(to: .episodes))],
+      [`class`([Class.h6]), href(path(to: .episodes(tag: nil)))],
       ["Episodes"]
     ),
     br
@@ -149,64 +149,3 @@ private let notFoundView = View<Prelude.Unit> { _ in
       ])
     ])
 }
-
-let footerView = View<Prelude.Unit> { _ in
-  footer(
-    [
-      `class`([
-        Class.border.top,
-        Class.grid.row,
-        Class.padding.leftRight(4),
-        Class.padding.topBottom(2),
-        Class.pf.colors.bg.white]),
-      style(borderColor(top: .other("#ccc")))
-    ],
-    footerInfoColumnsView.view(unit)
-  )
-}
-
-let footerInfoColumnsView =
-  footerPointFreeView.map(gridColumn(sizes: [.xs: 12, .md: 6]))
-    <> learnColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
-    <> followColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
-    <> moreColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
-
-private let footerPointFreeView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding.right(4)])], [
-    h4([`class`([Class.h4, Class.margin.bottom(0)])], ["Point-Free"]),
-    p(["A weekly video series on functional programming and the Swift programming language."])
-    ])
-}
-
-private let learnColumnView = View<Prelude.Unit> { _ in
-  div([
-    h5([`class`([Class.h5])], ["Learn"]),
-    ol([`class`([Class.type.list.reset])], [
-      li([a([href(path(to: .episodes))], ["Videos"])]),
-      li([a([href("#")], ["Books"])]),
-      li([a([href("#")], ["Hire Us"])]),
-      ])
-    ])
-}
-
-private let followColumnView = View<Prelude.Unit> { _ in
-  div([
-    h5([`class`([Class.h5])], ["Follow"]),
-    ol([`class`([Class.type.list.reset])], [
-      li([a([href("#")], ["Blog"])]),
-      li([a([href("https://www.twitter.com/pointfreeco")], ["Twitter"])]),
-      ])
-    ])
-}
-
-private let moreColumnView = View<Prelude.Unit> { _ in
-  div([
-    h5([`class`([Class.h5])], ["More"]),
-    ol([`class`([Class.type.list.reset])], [
-      li([a([href(path(to: .about))], ["About"])]),
-      li([a([href("mailto:support@pointfree.co")], ["Email"])]),
-      li([a([href(path(to: .terms))], ["Terms"])]),
-      ])
-    ])
-}
-

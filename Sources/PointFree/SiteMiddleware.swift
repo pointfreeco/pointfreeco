@@ -27,8 +27,8 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(param))
       |> episodeResponse
 
-  case .episodes:
-    return conn.map(const(unit))
+  case let .episodes(tag):
+    return conn.map(const(tag))
       |> episodesResponse
 
   case let .githubCallback(code, redirect):

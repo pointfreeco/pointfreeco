@@ -36,7 +36,7 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { da
       ]),
 
     a(
-      [href(path(to: .episodes))],
+      [href(path(to: .episodes(tag: nil)))],
       ["Episodes"]
     ),
 

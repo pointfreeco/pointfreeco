@@ -12,9 +12,7 @@ public func addClasses<T>(_ classes: [CssSelector]) -> ([Attribute<T>]) -> [Attr
 
       let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
         + " "
-        + classes
-          .map { renderSelector($0).replacingOccurrences(of: ".", with: "") }
-          .joined(separator: " ")
+        + render(classes: classes)
 
       return .init("class", newValue)
     }
@@ -24,7 +22,7 @@ public func addClasses<T>(_ classes: [CssSelector]) -> ([Attribute<T>]) -> [Attr
 // TODO: extract to grid helpers in design systems?
 public func gridRow(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
   let tmp = addClasses([Class.grid.row]) <| attribs
-  return node("div", tmp, content)
+  return div(tmp, content)
 }
 
 // TODO: extract to grid helpers in design systems?
@@ -35,7 +33,7 @@ public func gridRow(_ content: [Node]) -> Node {
 // TODO: extract to grid helpers in design systems?
 public func gridColumn(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
   let tmp = addClasses([Class.grid.col]) <| attribs
-  return node("div", tmp, content)
+  return div(tmp, content)
 }
 
 // TODO: extract to grid helpers in design systems?
@@ -53,4 +51,23 @@ public func gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
 // TODO: extract to grid helpers in design systems?
 public func gridColumn(_ content: [Node]) -> Node {
   return gridColumn([], content)
+}
+
+public func array<A>(_ tuple: (A, A)) -> [A] {
+  return [tuple.0, tuple.1]
+}
+public func array<A>(_ tuple: (A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2]
+}
+public func array<A>(_ tuple: (A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3]
+}
+public func array<A>(_ tuple: (A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4]
+}
+public func array<A>(_ tuple: (A, A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5]
+}
+public func array<A>(_ tuple: (A, A, A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6]
 }

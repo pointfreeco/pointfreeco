@@ -45,13 +45,26 @@ extension Display {
   public static let tableCell: Display = "table-cell"
 }
 
+public func render(classes: [CssSelector]) -> String {
+  return classes.map(render(class:)).joined(separator: " ")
+}
+
+public func render(class selector: CssSelector) -> String {
+  switch selector {
+  case .star, .elem, .id, .pseudo, .pseudoElem, .attr, .child, .sibling, .deep, .adjacent, .combined:
+    return ""
+  case let .class(str):
+    return str
+  case let .union(lhs, rhs):
+    return render(class: lhs) + " " + render(class: rhs)
+  }
+}
+
 // TODO: move to a support package in swift-web
 public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
   return .init(
     "class",
-    selectors
-      .map { renderSelector($0).replacingOccurrences(of: ".", with: "") }
-      .joined(separator: " ")
+    render(classes: selectors)
   )
 }
 

@@ -2,6 +2,7 @@ public struct Episode {
   var blurb: String
   var id: Int
   var length: Int
+  var publishedAt: Double
   var sequence: Int
   var slug: String
   var tags: [Tag]
@@ -19,9 +20,34 @@ public struct Episode {
       case title
     }
   }
+}
 
-  public struct Tag {
-    var name: String
+public struct Tag: Equatable {
+  var name: String
+
+  var slug: String {
+    return PointFree.slug(for: name)
+  }
+
+  public static let all = (
+    algebra: Tag(name: "Algebra"),
+    generics: Tag(name: "Generics"),
+    math: Tag(name: "Math"),
+    polymorphism: Tag(name: "Polymorphism"),
+    programming: Tag(name: "Programming"),
+    swift: Tag(name: "Swift")
+  )
+
+  public static func ==(lhs: Tag, rhs: Tag) -> Bool {
+    return lhs.name == rhs.name
+  }
+}
+
+extension Tag {
+  public init?(slug: String) {
+    guard let tag = array(Tag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
+      else { return nil }
+    self = tag
   }
 }
 
@@ -34,15 +60,10 @@ and computer science
 """,
     id: 1,
     length: 1080,
+    publishedAt: 1_482_192_000,
     sequence: 1,
     slug: "ep1-proof-in-functions",
-    tags: [
-      Episode.Tag(name: "Math"),
-      Episode.Tag(name: "Generics"),
-      Episode.Tag(name: "Polymorphism"),
-      Episode.Tag(name: "Swift"),
-      Episode.Tag(name: "Programming"),
-    ],
+    tags: [Tag.all.algebra, Tag.all.generics, Tag.all.polymorphism, Tag.all.swift, Tag.all.programming],
     title: "Proof in Functions",
     transcriptBlocks: [
       Episode.TranscriptBlock(
@@ -128,12 +149,10 @@ really have no choice but to just return x, i.e. it’s the identity function:
            """,
     id: 42,
     length: 1380 ,
+    publishedAt: 1_497_960_000,
     sequence: 2,
     slug: "ep6-the-algebra-of-predicates-and-sorting-functions",
-    tags: [
-      Episode.Tag(name: "Math"),
-      Episode.Tag(name: "Algebra")
-      ],
+    tags: [Tag.all.math, Tag.all.algebra],
     title: "The Algebra of Predicates and Sorting Functions",
     transcriptBlocks: [
       Episode.TranscriptBlock(
@@ -173,3 +192,7 @@ protocol Monoid: Semigroup {
       ]
   )
 ]
+
+func slug(for string: String) -> String {
+  return string.lowercased().replacingOccurrences(of: " ", with: "-")
+}
