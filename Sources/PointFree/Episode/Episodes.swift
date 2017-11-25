@@ -37,22 +37,25 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
         ]),
       body([
 
-        div([`class`([Class.grid.row])], [
-          div([`class`([Class.grid.col, Class.grid.col(.xs, 12), Class.grid.col(.md, 9), Class.padding.leftRight(4), Class.padding.topBottom(2)])], [
-            div([
-              h3(
-                [`class`("h3")],
-                ["Episodes"]
-              ),
-              ul([`class`([Class.type.list.reset])],
-                 eps.map(episodeListItemView.view >>> li)
-              )
-              ])
+        gridRow([
+          gridColumn(
+            sizes: [.xs: 12, .md: 9], [
+              div([`class`([Class.padding.leftRight(4), Class.padding.topBottom(2)])], [
+                h3(
+                  [`class`("h3")],
+                  ["Episodes"]
+                ),
+                ul([`class`([Class.type.list.reset])],
+                   eps.map(episodeListItemView.view >>> li)
+                )
+                ])
             ]),
 
-          div(
-            [`class`([Class.grid.col, Class.grid.col(.md, 3), Class.hide.xs, Class.hide.sm, Class.padding.right(4), Class.padding.topBottom(2)])],
-            sideMenuView.view(selectedTag))
+          gridColumn(
+            sizes: [.md: 3],
+            [`class`([Class.hide.xs, Class.hide.sm])],
+            sideMenuView.view(selectedTag)
+          )
 
           ])
 
@@ -62,7 +65,7 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
 }
 
 private let sideMenuView = View<Tag?> { selectedTag in
-  div([`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])], [
+  div([`class`([Class.padding.right(4), Class.padding.topBottom(2), Class.position.sticky(breakpoint: .md), Class.position.top0])], [
     h5([`class`([Class.h5])], ["Sort by"]),
     ol([`class`([Class.type.list.reset])], [
       li([a([href("#")], ["Newest first"])]),
@@ -97,8 +100,8 @@ let episodeImageStyles: Stylesheet =
     <> objectFit(.cover)
 
 private let episodeListItemView = View<Episode> { ep in
-  div([`class`([Class.grid.row, Class.margin.bottom(4)])], [
-    div([`class`([Class.grid.col, Class.grid.col(.xs, 4)])], [
+  gridRow([`class`([Class.margin.bottom(4)])], [
+    gridColumn(sizes: [.xs: 4], [
       div([`class`([Class.padding.right(3)])], [
         a(
           [href(path(to: .episode(.left(ep.slug))))],
@@ -113,7 +116,7 @@ private let episodeListItemView = View<Episode> { ep in
         ])
       ]),
 
-    div([`class`([Class.grid.col, Class.grid.col(.xs, 8)])], [
+    gridColumn(sizes: [.xs: 8], [
       div([
         strong(
           [`class`([Class.h6, Class.type.caps, Class.type.lineHeight1])],
