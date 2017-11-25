@@ -9,22 +9,26 @@ import Styleguide
 
 let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
   fetchEpisodes
-    >-> respond(view)
+    >-> respond(episodesView)
 
-private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Tag?>) -> IO<Conn<HeadersOpen, [Episode]>> {
+private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Tag?>) -> IO<Conn<HeadersOpen, ([Episode], Tag?)>> {
 
   return conn.map(
     const(
-      episodes
-        .filter { conn.data.map($0.tags.contains) != .some(false) }
-        .sorted(by: get(\.sequence))
-        .reversed()
+      (
+        episodes: episodes
+          .filter { conn.data.map($0.tags.contains) != .some(false) }
+          .sorted(by: get(\.sequence))
+          .reversed(),
+
+        selectedTag: conn.data
+      )
     )
     )
     |> writeStatus(.ok)
 }
 
-private let view = View<[Episode]> { eps in
+private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
   document([
     html([
       head([
@@ -34,7 +38,7 @@ private let view = View<[Episode]> { eps in
       body([
 
         div([`class`([Class.grid.row])], [
-          div([`class`([Class.grid.col(.xs, 12), Class.padding.leftRight(4), Class.padding.topBottom(2)])], [
+          div([`class`([Class.grid.col, Class.grid.col(.xs, 12), Class.grid.col(.md, 9), Class.padding.leftRight(4), Class.padding.topBottom(2)])], [
             div([
               h3(
                 [`class`("h3")],
@@ -44,11 +48,45 @@ private let view = View<[Episode]> { eps in
                  eps.map(episodeListItemView.view >>> li)
               )
               ])
-            ])
+            ]),
+
+          div(
+            [`class`([Class.grid.col, Class.grid.col(.md, 3), Class.hide.xs, Class.hide.sm, Class.padding.right(4), Class.padding.topBottom(2)])],
+            sideMenu.view(selectedTag))
+
           ])
+
         ] + footerView.view(unit))
       ])
     ])
+}
+
+private let sideMenu = View<Tag?> { selectedTag in
+  div([
+    h5([`class`([Class.h5])], ["Sort by"]),
+    ol([`class`([Class.type.list.reset])], [
+      li([a([href("#")], ["Newest first"])]),
+      li([a([href("#")], ["Oldest first"])]),
+      ]),
+
+    h5([`class`([Class.h5])], ["Episode Type"]),
+    ol([`class`([Class.type.list.reset])], [
+      li([a([href("#")], ["All"])]),
+      li([a([href("#")], ["Subscriber only"])]),
+      li([a([href("#")], ["Free"])]),
+      ]),
+
+    h5([`class`([Class.h5])], ["Tag"]),
+    ol(
+      [`class`([Class.type.list.reset])],
+      ([nil] + array(Tag.all).map(Optional.some)).map { li(tagListItemView.view((tag: $0, selectedTag: selectedTag))) })
+
+    ])
+}
+
+private let tagListItemView = View<(tag: Tag?, selectedTag: Tag?)> { tag, selectedTag in
+  (selectedTag == tag ? ["> "] : [])
+    + [a([href(path(to: .episodes(tag: tag)))], [.text(encode(tag?.name ?? "All"))])]
 }
 
 let episodeImageStyles: Stylesheet =
@@ -60,11 +98,16 @@ private let episodeListItemView = View<Episode> { ep in
   div([`class`([Class.grid.row, Class.margin.bottom(4)])], [
     div([`class`([Class.grid.col, Class.grid.col(.xs, 4)])], [
       div([`class`([Class.padding.right(3)])], [
-        img(
-          base64: logoSvgBase64,
-          mediaType: .image(.svg),
-          alt: "",
-          [`class`([Class.pf.colors.bg.white, Class.layout.fit]), style(episodeImageStyles)])
+        a(
+          [href(path(to: .episode(.left(ep.slug))))],
+          [
+            img(
+              base64: logoSvgBase64,
+              mediaType: .image(.svg),
+              alt: "",
+              [`class`([Class.pf.colors.bg.white, Class.layout.fit]), style(episodeImageStyles)])
+          ]
+        )
         ])
       ]),
 
@@ -100,7 +143,7 @@ private let episodeTagsView = View<[Tag]> { tags in
       .sorted(by: get(\.name))
       .map(
         episodeTagView.view
-          >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(2)])])
+          >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(1)])])
     )
   )
 }

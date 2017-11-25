@@ -71,3 +71,13 @@ public func array<A>(_ tuple: (A, A, A, A, A, A)) -> [A] {
 public func array<A>(_ tuple: (A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6]
 }
+public func array<A>(_ tuple: (A, A, A, A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7]
+}
+public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8]
+}
+public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
+  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8, tuple.9]
+}
+

@@ -10,7 +10,7 @@ let footerView = View<Prelude.Unit> { _ in
       `class`([
         Class.grid.row,
         Class.padding.leftRight(4),
-        Class.padding.topBottom(2),
+        Class.padding.topBottom(4),
         Class.border.top,
         Class.pf.colors.bg.white]),
       style(borderColor(top: .other("#ccc")))
