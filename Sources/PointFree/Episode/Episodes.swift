@@ -62,7 +62,7 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
 }
 
 private let sideMenu = View<Tag?> { selectedTag in
-  div([
+  div([`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])], [
     h5([`class`([Class.h5])], ["Sort by"]),
     ol([`class`([Class.type.list.reset])], [
       li([a([href("#")], ["Newest first"])]),
@@ -79,7 +79,9 @@ private let sideMenu = View<Tag?> { selectedTag in
     h5([`class`([Class.h5])], ["Tag"]),
     ol(
       [`class`([Class.type.list.reset])],
-      ([nil] + array(Tag.all).map(Optional.some)).map { li(tagListItemView.view((tag: $0, selectedTag: selectedTag))) })
+      ([nil] + array(Tag.all).map(Optional.some))
+        .map { (tag: $0, selectedTag: selectedTag) }
+        .map(tagListItemView.view >>> li))
 
     ])
 }

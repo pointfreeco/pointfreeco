@@ -20,10 +20,10 @@ let footerView = View<Prelude.Unit> { _ in
 }
 
 let footerInfoColumnsView =
-       pointFreeView.map(gridColumn(sizes: [.xs: 12, .md: 6]))
-    <> learnColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
-    <> followColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
-    <> moreColumnView.map(gridColumn(sizes: [.xs: 4, .md: 2]))
+       pointFreeView    .map(gridColumn(sizes: [.xs: 12, .md: 6]) >>> pure)
+    <> learnColumnView  .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
+    <> followColumnView .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
+    <> moreColumnView   .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
 
 private let pointFreeView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding.right(4)])], [
