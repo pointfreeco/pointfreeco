@@ -44,6 +44,7 @@ private let followColumnView = View<Prelude.Unit> { _ in
     ol([`class`([Class.type.list.reset])], [
       li([a([href("#")], ["Blog"])]),
       li([a([href("https://www.twitter.com/pointfreeco")], ["Twitter"])]),
+      li([a([href("https://www.github.com/pointfreeco")], ["GitHub"])]),
       ])
     ])
 }

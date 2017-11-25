@@ -1,11 +1,11 @@
 import Css
-import CssReset
 import Either
 import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Optics
 import Prelude
 import Styleguide
 
@@ -32,7 +32,7 @@ private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<Res
       |> respond(notFoundView)
   case let .some(ep):
     return conn.map(const(ep))
-      |> respond(episodeView)
+      |> respond(episodeView.map(addHighlightJs))
   }
 }
 
@@ -44,6 +44,7 @@ public let episodeView = View<Episode> { ep in
         style(styleguide),
         title("Episode #\(ep.sequence): \(ep.title)")
         ]),
+
       body([`class`([Class.pf.colors.bg.dark])], [
         gridRow([
 
@@ -103,9 +104,9 @@ private let transcriptView = View<Episode> { ep in
 
 private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   switch block.type {
-  case .code:
+  case let .code(lang):
     return pre([
-      code([`class`([Class.pf.code])], [.text(encode(block.content))])
+      code([`class`([Class.pf.code, CssSelector.class(lang.identifier)])], [.text(encode(block.content))])
       ])
 
   case .paragraph:
@@ -128,4 +129,29 @@ private let notFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
+}
+
+private let highlightJsHead: [ChildOf<Element.Head>] = [
+  link([rel(.stylesheet), href("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css")]),
+  script([src("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js")]),
+  script("hljs.initHighlightingOnLoad();")
+]
+
+/// Walks the node tree looking for the <head> tag, and once found adds the necessary script and stylesheet
+/// tags for highlight.js
+private func addHighlightJs(_ nodes: [Node]) -> [Node] {
+  return nodes.map { node in
+    switch node {
+    case .comment:
+      return node
+    case let .document(doc):
+      return .document(addHighlightJs(doc))
+    case let .element(element):
+      return element.name == "head"
+        ? .element(element |> \.content %~ { ($0 ?? []) + highlightJsHead.map(get(\.node)) })
+        : .element(element |> \.content %~ { $0.map(addHighlightJs) })
+    case .text:
+      return node
+    }
+  }
 }

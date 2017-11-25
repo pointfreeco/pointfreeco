@@ -19,9 +19,23 @@ public struct Episode {
     var type: BlockType
 
     public enum BlockType {
-      case code
+      case code(lang: CodeLang)
       case paragraph
       case title
+
+      public enum CodeLang {
+        case html
+        case other(String)
+        case swift
+
+        var identifier: String {
+          switch self {
+          case .html:             return "html"
+          case let .other(other): return other
+          case .swift:            return "swift"
+          }
+        }
+      }
     }
   }
 }
@@ -109,7 +123,7 @@ func f <A> (x: A) -> A {
 }
 """,
       timestamp: 30,
-      type: .code
+      type: .code(lang: .swift)
     ),
     Episode.TranscriptBlock(
       content: """
@@ -129,7 +143,7 @@ enum Empty {
 }
 """,
       timestamp: 30,
-      type: .code
+      type: .code(lang: .swift)
     ),
     Episode.TranscriptBlock(
       content: """
@@ -195,7 +209,7 @@ protocol Monoid: Semigroup {
 }
 """,
       timestamp: 60,
-      type: .code
+      type: .code(lang: .swift)
     ),
     ]
 )
@@ -310,7 +324,7 @@ A popular method for generating HTML is using so-called â€œtemplating languagesâ
     Episode.TranscriptBlock(
       content: "<h1>{{title}}</h1>",
       timestamp: 0,
-      type: .code
+      type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: "and here is a Leaf template:",
@@ -320,7 +334,7 @@ A popular method for generating HTML is using so-called â€œtemplating languagesâ
     Episode.TranscriptBlock(
       content: "<h1>#(title)</h1>",
       timestamp: 0,
-      type: .code
+      type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
@@ -332,7 +346,7 @@ You can then render these templates by providing a dictionary of key/value pairs
     Episode.TranscriptBlock(
       content: "<h1>Hello World!</h1>",
       timestamp: 0,
-      type: .code
+      type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
@@ -349,7 +363,7 @@ Templating languages will also provide simple constructs for injecting small amo
 {{/if}}
 """,
       timestamp: 0,
-      type: .code
+      type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content:
@@ -359,7 +373,7 @@ Templating languages will also provide simple constructs for injecting small amo
 }
 """,
       timestamp: 0,
-      type: .code
+      type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
