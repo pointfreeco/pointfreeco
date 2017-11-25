@@ -59,10 +59,10 @@ public let episodeView = View<Episode> { ep in
             [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
             [
               div([`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])], [
-                video([
-                  `class`([Class.layout.fit]),
-                  controls(true),
-                  playsInline(true)], [source(src: "https://d2sazdeahkz1yk.cloudfront.net/previews/487300ce-c2f7-4b39-87c7-19a202f6ca88/1/hls.m3u8")])
+                video(
+                  [`class`([Class.layout.fit]), controls(true), playsInline(true), autoplay(true)],
+                  [source(src: "https://d2sazdeahkz1yk.cloudfront.net/previews/487300ce-c2f7-4b39-87c7-19a202f6ca88/1/hls.m3u8")]
+                )
                 ])
             ]
           ),

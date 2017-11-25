@@ -89,3 +89,6 @@ private func guaranteeClassAttributeExists<T>(_ attributes: [Attribute<T>]) -> [
 public func playsInline<T>(_ value: Bool) -> Attribute<T> {
   return .init("playsinline", value)
 }
+public func muted<T>(_ value: Bool) -> Attribute<T> {
+  return .init("muted", value)
+}
