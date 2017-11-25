@@ -52,7 +52,7 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
 
           div(
             [`class`([Class.grid.col, Class.grid.col(.md, 3), Class.hide.xs, Class.hide.sm, Class.padding.right(4), Class.padding.topBottom(2)])],
-            sideMenu.view(selectedTag))
+            sideMenuView.view(selectedTag))
 
           ])
 
@@ -61,7 +61,7 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
     ])
 }
 
-private let sideMenu = View<Tag?> { selectedTag in
+private let sideMenuView = View<Tag?> { selectedTag in
   div([`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])], [
     h5([`class`([Class.h5])], ["Sort by"]),
     ol([`class`([Class.type.list.reset])], [
@@ -153,7 +153,7 @@ private let episodeTagsView = View<[Tag]> { tags in
 private let episodeTagView = View<Tag> { tag in
   a(
     [
-      href(   path(to: .episodes(tag: .some(tag)))   ),
+      href(path(to: .episodes(tag: .some(tag)))),
       `class`([
         Class.h6,
         Class.padding.leftRight(2),

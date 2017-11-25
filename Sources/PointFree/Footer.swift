@@ -7,19 +7,14 @@ import Prelude
 let footerView = View<Prelude.Unit> { _ in
   footer(
     [
-      `class`([
-        Class.grid.row,
-        Class.padding.leftRight(4),
-        Class.padding.topBottom(4),
-        Class.border.top,
-        Class.pf.colors.bg.white]),
+      `class`([Class.grid.row, Class.padding.all(4), Class.border.top, Class.pf.colors.bg.white]),
       style(borderColor(top: .other("#ccc")))
     ],
     footerInfoColumnsView.view(unit)
   )
 }
 
-let footerInfoColumnsView =
+private let footerInfoColumnsView =
        pointFreeView    .map(gridColumn(sizes: [.xs: 12, .md: 6]) >>> pure)
     <> learnColumnView  .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
     <> followColumnView .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)

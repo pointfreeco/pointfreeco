@@ -27,7 +27,9 @@ public let router: Router<Route> = [
     <¢> get %> lit("episodes") %> queryParam("tag", opt(.tag)) <% end,
 
   Route.iso.githubCallback
-    <¢> get %> lit("github-auth") %> queryParam("code", .string) <%> queryParam("redirect", opt(.string)) <% end,
+    <¢> get %> lit("github-auth")
+    %> queryParam("code", .string) <%> queryParam("redirect", opt(.string))
+    <% end,
   
   Route.iso.home
     <¢> get %> queryParam("success", opt(.bool)) <% end,
