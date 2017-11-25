@@ -23,7 +23,19 @@ private let footerInfoColumnsView =
 private let pointFreeView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding.right(4)])], [
     h4([`class`([Class.h4, Class.margin.bottom(0)])], ["Point-Free"]),
-    p(["A weekly video series on functional programming and the Swift programming language."])
+    p([
+      "A weekly video series on functional programming and the Swift programming language. Hosted by ",
+      a(
+        [href("https://www.twitter.com/mbrandonw"), `class`([Class.type.textDecorationNone])],
+        ["Brandon Williams"]
+      ),
+      " and ",
+      a(
+        [href("https://www.twitter.com/stephencelis"), `class`([Class.type.textDecorationNone])],
+        ["Stephen Celis"]
+      ),
+      "."
+      ])
     ])
 }
 

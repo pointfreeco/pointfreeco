@@ -84,3 +84,8 @@ private func guaranteeClassAttributeExists<T>(_ attributes: [Attribute<T>]) -> [
     ? attributes
     : attributes + [Attribute<T>.init("class", "")]
 }
+
+// todo: HasPlaysInline
+public func playsInline<T>(_ value: Bool) -> Attribute<T> {
+  return .init("playsinline", value)
+}
