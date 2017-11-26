@@ -11,7 +11,7 @@ import XCTest
 
 class TypographyTests: XCTestCase {
   func testTypography() {
-    assertSnapshot(matching: designSystemsTypography, record: true)
+    assertSnapshot(matching: typography, record: true)
     assertWebPageSnapshot(matching: prettyPrint(node: typographyDoc), record: true)
   }
 }
@@ -19,7 +19,7 @@ class TypographyTests: XCTestCase {
 private let typographyDoc = document([
   html([
     head([
-      style(reset <> designSystemsTypography)
+      style(reset <> typography)
       ]),
     body([
       h1([`class`("h1 fw-bold")], ["The Algebra of Predicates and Sorting Functions"]),
