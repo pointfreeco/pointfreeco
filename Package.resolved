@@ -104,8 +104,8 @@
         "package": "Prelude",
         "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
         "state": {
-          "branch": "e341975",
-          "revision": "e341975be2bb83e78e4b58f3c8a7170b392ca5e2",
+          "branch": "df1b68e",
+          "revision": "df1b68e30b184384d5e5221ac3edea364ed0ed78",
           "version": null
         }
       },
@@ -131,8 +131,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "15ff68a",
-          "revision": "15ff68a3c103b08e99919c56f29c72d2654deac7",
+          "branch": "c631f9c",
+          "revision": "c631f9c7d07dc1fbc46b6900eaf6acc6c6cc4650",
           "version": null
         }
       }
