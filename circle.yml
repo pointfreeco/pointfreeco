@@ -1,9 +1,11 @@
 machine:
   xcode:
     version: "9.0"
+dependencies:
+  pre:
+    - brew install postgresql
 test:
   pre:
     - swift package generate-xcodeproj
   override:
-    - xcodebuild test -scheme PointFree-Package -destination platform="iOS Simulator,name=iPhone 7,OS=11.0.1"
-    - xcodebuild test -scheme PointFree-Package -destination platform="macOS"
+    - swift test
