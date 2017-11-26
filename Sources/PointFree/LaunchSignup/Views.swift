@@ -76,7 +76,7 @@ let inputStyle = input["type"=="email"] % (
   )
 )
 
-let buttonStyle = input["type"=="submit"] % (
+private let buttonStyle = input["type"=="submit"] % (
   baseInputStyle
     <> borderRadius(all: .px(6))
     <> borderWidth(all: 0)

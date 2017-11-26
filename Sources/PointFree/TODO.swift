@@ -34,6 +34,7 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.D
 }
 
 // todo: swift-prelude?
+// todo: rename to `tupleArray`?
 public func array<A>(_ tuple: (A, A)) -> [A] {
   return [tuple.0, tuple.1]
 }
@@ -96,5 +97,25 @@ public func muted<T>(_ value: Bool) -> Attribute<T> {
 extension FunctionM {
   public static func <¢> <N>(f: @escaping (M) -> N, c: FunctionM) -> FunctionM<A, N> {
     return c.map(f)
+  }
+}
+
+public func id<T>(_ idSelector: CssSelector) -> Attribute<T> {
+  return .init("id", idSelector.idString ?? "")
+}
+
+public func `for`<T: HasFor>(_ idSelector: CssSelector) -> Attribute<T> {
+  return .init("for", idSelector.idString ?? "")
+}
+
+extension CssSelector {
+  public var idString: String? {
+    switch self {
+    case .star, .elem, .class, .pseudo, .pseudoElem, .attr, .child, .sibling, .deep, .adjacent, .combined,
+         .union:
+      return nil
+    case let .id(id):
+      return id
+    }
   }
 }

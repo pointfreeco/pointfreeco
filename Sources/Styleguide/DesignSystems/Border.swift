@@ -5,7 +5,11 @@ extension Class {
   public static let border = (
     circle: CssSelector.class("circle"),
     pill: CssSelector.class("pill"),
-    rounded: CssSelector.class("rounded"),
+    rounded: (
+      all: CssSelector.class("rounded"),
+      left: CssSelector.class("rounded-left"),
+      right: CssSelector.class("rounded-right")
+    ),
     all: CssSelector.class("border"),
     top: CssSelector.class("border-top"),
     right: CssSelector.class("border-right"),
@@ -43,6 +47,8 @@ public let borderStyles: Stylesheet =
     <> roundedStyles
 
 private let roundedStyles =
-  Class.border.rounded % borderRadius(all: .px(3))
+  Class.border.rounded.all % borderRadius(all: .px(3))
+    <> Class.border.rounded.left % borderRadius(topLeft: .px(3), bottomLeft: .px(3))
+    <> Class.border.rounded.right % borderRadius(topRight: .px(3), bottomRight: .px(3))
     <> Class.border.circle % borderRadius(all: .pct(50))
     <> Class.border.pill % borderRadius(all: .px(9999))

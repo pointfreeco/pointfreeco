@@ -31,6 +31,7 @@ public let pointFreeBaseStyles =
     <> codeStyles
     <> inlineCodeStyles
     <> opacities
+    <> buttonStyles
 
 private let bodyStyles =
   html % (
@@ -77,3 +78,46 @@ private let opacities =
   Class.pf.colors.opacity25 % opacity(0.25)
     <> Class.pf.colors.opacity50 % opacity(0.50)
     <> Class.pf.colors.opacity75 % opacity(0.75)
+
+private let buttonStyles =
+  baseButtonStyles
+    <> btnHoverStyles
+    <> btnFocusStyles
+
+private let baseButtonStyles: Stylesheet =
+  Class.btn.base % (
+    appearance(.none)
+      <> backgroundColor(.transparent)
+      <> borderColor(all: .transparent)
+      <> borderStyle(all: .solid)
+      <> borderWidth(all: .px(1))
+      <> color(.inherit)
+      <> key("cursor", "pointer")
+      <> display(.inlineBlock)
+      <> fontFamily(.inherit)
+      <> fontSize(.inherit)
+      <> fontWeight(.bold)
+      <> height(.auto)
+      <> lineHeight(.rem(1.125))
+      <> margin(all: 0)
+      <> padding(all: .rem(1))
+      <> key("text-decoration", "none")
+      <> verticalAlign(.middle)
+)
+
+private let btnHoverStyles: Stylesheet =
+  (Class.btn.base & .pseudo(.hover)) % key("text-decoration", "none")
+
+private let btnFocusStyles: Stylesheet =
+  (Class.btn.base & .pseudo(.focus)) % (
+    outlineStyle(all: .none)
+      <> borderColor(all: .rgba(0, 0, 0, 0.125))
+      <> boxShadow(hShadow: 0, vShadow: 0, blurRadius: 0, spreadRadius: .px(3), color: .rgba(0, 0, 0, 0.25))
+)
+
+extension Class {
+  public static let btn = (
+    base: CssSelector.class("btn"),
+    primary: CssSelector.class("btn-pr")
+  )
+}

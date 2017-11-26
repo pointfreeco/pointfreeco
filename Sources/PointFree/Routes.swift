@@ -11,11 +11,12 @@ public enum Route {
   case launchSignup(email: String)
   case login(redirect: String?)
   case logout
+  case pricing(Prelude.Unit)
   case secretHome
   case terms
 }
 
-public let router: Router<Route> = [
+private let routers: [Router<Route>] = [
 
   Route.iso.about
     <¢> get %> lit("about") <% end,
@@ -43,14 +44,18 @@ public let router: Router<Route> = [
   Route.iso.logout
     <¢> get %> lit("logout") <% end,
 
+  Route.iso.pricing
+    <¢> get %> lit("pricing") <% end,
+
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
 
-  ]
-  .reduce(.empty, <|>)
+]
+
+public let router = routers.reduce(.empty, <|>)
 
 extension Route {
   public enum iso {
@@ -108,6 +113,13 @@ extension Route {
       unapply: {
         guard case .logout = $0 else { return nil }
         return unit
+    })
+
+    static let pricing = parenthesize <| PartialIso(
+      apply: Route.pricing,
+      unapply: {
+        guard case let .pricing(result) = $0 else { return nil }
+        return result
     })
 
     static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(

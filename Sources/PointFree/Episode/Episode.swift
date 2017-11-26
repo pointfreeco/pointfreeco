@@ -179,7 +179,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
             Class.type.textDecorationNone,
             Class.pf.colors.bg.light,
             Class.pf.colors.fg.white,
-            Class.border.rounded,
+            Class.border.rounded.all,
             Class.h6,
             Class.padding.leftRight(1),
             Class.padding.topBottom(1),

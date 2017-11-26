@@ -11,6 +11,7 @@ let footerView = View<Prelude.Unit> { _ in
       style(borderColor(top: .other("#ccc")))
     ],
     footerInfoColumnsView.view(unit)
+      + legalView.map(gridColumn(sizes: [.xs: 12]) >>> pure).view(unit)
   )
 }
 
@@ -19,6 +20,14 @@ private let footerInfoColumnsView =
     <> learnColumnView  .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
     <> followColumnView .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
     <> moreColumnView   .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
+
+private let legalView = View<Prelude.Unit> { _ in
+  p([`class`([Class.type.align.center, Class.h6])], [
+"""
+All videos © Point-Free, Inc. All Rights Reserved. You may not sell or distribute the content found on this site.
+"""
+    ])
+}
 
 private let pointFreeView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding.right(4)])], [
