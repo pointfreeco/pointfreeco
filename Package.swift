@@ -9,8 +9,9 @@ let package = Package(
     .library(name: "PointFree", targets: ["PointFree"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("eb7ea4a")),
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("e341975")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("df1b68e")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("c631f9c")),
+    .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
   ],
   targets: [
     .target(
@@ -33,6 +34,7 @@ let package = Package(
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Optics",
+        "PostgreSQL",
         "Styleguide",
       ]
     ),

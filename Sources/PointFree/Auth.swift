@@ -98,6 +98,13 @@ private func writeGitHubSessionCookieMiddleware(
     )
 }
 
+// TODO: Move to Prelude.
+extension EitherIO {
+  public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
+    return .init(run: self.run.map { $0.bimap(f, g) })
+  }
+}
+
 /// Exchanges a github code for an access token and loads the user's data.
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
@@ -109,12 +116,17 @@ private func authTokenMiddleware(
         AppEnvironment.current.fetchGitHubUser(token)
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
+      .flatMap { env in
+        AppEnvironment.current.fetchUser(env.accessToken).bimap(const(unit), const(env))
+          <|> AppEnvironment.current.createUser(env).bimap(const(unit), const(env))
+      }
       .run
-      .flatMap { githubUserEnvelope in
-        switch githubUserEnvelope {
+      .flatMap { gitHubUserEnvelope in
+        switch gitHubUserEnvelope {
 
         case .left:
           return conn
+            // TODO: Handle errors.
             |> redirect(to: path(to: .secretHome))
 
         case let .right(env):
