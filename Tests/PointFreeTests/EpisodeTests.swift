@@ -24,6 +24,9 @@ class EpisodeTests: TestCase {
 //  }
 
   func testEpisodeHtml() {
-    assertSnapshot(matching: prettyPrint(nodes: episodeView.view(episodes.last!)), pathExtension: "html", record: true)
+    assertSnapshot(
+      matching: prettyPrint(nodes: episodeView.view(episodes.last!), pageWidth: 220),
+      pathExtension: "html"
+    )
   }
 }

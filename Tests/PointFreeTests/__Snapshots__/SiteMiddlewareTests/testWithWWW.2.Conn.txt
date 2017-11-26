@@ -8,8 +8,9 @@
   (Data, 0 bytes)
 
 ▿ Response
-  Status 404 NOT FOUND
-  Content-Length: 9
+  Status 401 UNAUTHORIZED
+  Content-Length: 20
   Content-Type: text/plain
+  WWW-Authenticate: Basic realm="Point-Free"
 
-  Not Found
+  Please authenticate.

@@ -5,24 +5,10 @@ import XCTest
 
 class StyleguideTests: XCTestCase {
   func testStyleguide() {
-    assertSnapshot(matching: styleguide, record: true)
-  }
-
-  func test_SecretGrid() {
-    assertSnapshot(matching: flexGridStyles, record: true)
+    assertSnapshot(matching: render(config: pretty, css: styleguide), pathExtension: "css")
   }
 
   func test_DesignSystem() {
-    assertSnapshot(matching: designSystems, record: true)
+    assertSnapshot(matching: render(config: pretty, css: designSystems), pathExtension: "css")
   }
 }
-
-#if os(Linux)
-extension StyleguideTests  {
-  static var allTests : [(String, StyleguideTests -> () throws -> Void)] {
-    return [
-      ("testExample", testExample),
-    ]
-  }
-}
-#endif
