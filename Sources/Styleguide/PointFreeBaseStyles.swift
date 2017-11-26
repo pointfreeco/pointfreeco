@@ -14,6 +14,9 @@ extension Class {
         public static let light = CssSelector.class("bg-light")
         public static let white = CssSelector.class("bg-white")
       }
+      public static let opacity25 = CssSelector.class("opacity-25")
+      public static let opacity50 = CssSelector.class("opacity-50")
+      public static let opacity75 = CssSelector.class("opacity-75")
     }
     public static let code = CssSelector.class("code")
     public static let inlineCode = CssSelector.class("inline-code")
@@ -27,6 +30,7 @@ public let pointFreeBaseStyles =
     <> colorStyles
     <> codeStyles
     <> inlineCodeStyles
+    <> opacities
 
 private let bodyStyles =
   html % (
@@ -68,3 +72,8 @@ private let inlineCodeStyles =
       <> borderRadius(all: .px(3))
       <> backgroundColor(Color.other("#fafafa"))
 )
+
+private let opacities =
+  Class.pf.colors.opacity25 % opacity(0.25)
+    <> Class.pf.colors.opacity50 % opacity(0.50)
+    <> Class.pf.colors.opacity75 % opacity(0.75)

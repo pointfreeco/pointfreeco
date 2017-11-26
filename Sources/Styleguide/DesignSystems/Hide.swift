@@ -2,13 +2,13 @@ import Css
 import Prelude
 
 extension Class {
-  public enum hide {
-    public static let all = CssSelector.class("hide")
-    public static let xs = CssSelector.class("xs-hide")
-    public static let sm = CssSelector.class("sm-hide")
-    public static let md = CssSelector.class("md-hide")
-    public static let lg = CssSelector.class("lg-hide")
-  }
+  public static let hide = (
+    all: CssSelector.class("hide"),
+    xs: CssSelector.class("xs-hide"),
+    sm: CssSelector.class("sm-hide"),
+    md: CssSelector.class("md-hide"),
+    lg: CssSelector.class("lg-hide")
+  )
 }
 
 public let hideStyles: Stylesheet =

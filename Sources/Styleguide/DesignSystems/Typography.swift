@@ -22,6 +22,13 @@ extension Class {
       public static let styleNone = CssSelector.class("list-style-none")
       public static let reset = CssSelector.class("list-reset")
     }
+
+    public static let align = (
+      start: CssSelector.class("start-align"),
+      center: CssSelector.class("center"),
+      end: CssSelector.class("end-align"),
+      justify: CssSelector.class("justify")
+    )
   }
 }
 
@@ -30,6 +37,7 @@ public let typography: Stylesheet =
     <> lineHeightStyles
     <> miscStyles
     <> listStyles
+    <> alignStyles
 
 private let lineHeightStyles =
   Class.type.lineHeight1 % lineHeight(1.15)
@@ -59,11 +67,12 @@ private let listStyles: Stylesheet =
       <> padding(left: 0)
 )
 
-//
-//.left-align   { text-align: left }
-//.center       { text-align: center }
-//.right-align  { text-align: right }
-//.justify      { text-align: justify }
+private let alignStyles =
+  Class.type.align.start % textAlign(.start)
+    <> Class.type.align.center % textAlign(.center)
+    <> Class.type.align.end % textAlign(.end)
+    <> Class.type.align.justify % textAlign(.justify)
+
 //
 //.nowrap { white-space: nowrap }
 //.break-word { word-wrap: break-word }
@@ -75,17 +84,3 @@ private let listStyles: Stylesheet =
 //  white-space: nowrap;
 //}
 //
-//.list-reset {
-//  list-style: none;
-//  padding-left: 0;
-//}
-//
-//:root {
-//  --line-height-1: 1.15;
-//  --line-height-2: 1.25;
-//  --line-height-3: 1.45;
-//  --line-height-4: 1.5;
-//  --letter-spacing: 1;
-//  --caps-letter-spacing: 0.54pt;
-//  --bold-font-weight: 700;
-//}

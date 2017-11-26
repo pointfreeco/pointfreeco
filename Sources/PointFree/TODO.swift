@@ -92,3 +92,9 @@ public func playsInline<T>(_ value: Bool) -> Attribute<T> {
 public func muted<T>(_ value: Bool) -> Attribute<T> {
   return .init("muted", value)
 }
+
+extension FunctionM {
+  public static func <¢> <N>(f: @escaping (M) -> N, c: FunctionM) -> FunctionM<A, N> {
+    return c.map(f)
+  }
+}

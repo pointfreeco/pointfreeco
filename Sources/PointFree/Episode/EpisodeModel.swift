@@ -18,12 +18,12 @@ public struct Episode {
     var timestamp: Double?
     var type: BlockType
 
-    public enum BlockType {
+    public enum BlockType: Equatable {
       case code(lang: CodeLang)
       case paragraph
       case title
 
-      public enum CodeLang {
+      public enum CodeLang: Equatable {
         case html
         case other(String)
         case swift
@@ -35,32 +35,30 @@ public struct Episode {
           case .swift:            return "swift"
           }
         }
+
+        public static func ==(lhs: CodeLang, rhs: CodeLang) -> Bool {
+          switch (lhs, rhs) {
+          case (.html, .html), (.swift, .swift):
+            return true
+          case let (.other(lhs), .other(rhs)):
+            return lhs == rhs
+          case (.html, _), (.other, _), (.swift, _):
+            return false
+          }
+        }
+      }
+
+      public static func ==(lhs: Episode.TranscriptBlock.BlockType, rhs: Episode.TranscriptBlock.BlockType) -> Bool {
+        switch (lhs, rhs) {
+        case let (.code(lhs), .code(rhs)):
+          return lhs == rhs
+        case (.paragraph, .paragraph), (.title, .title):
+          return true
+        case (.code, _), (.paragraph, _), (.title, _):
+          return false
+        }
       }
     }
-  }
-}
-
-public struct Tag: Equatable {
-  var name: String
-
-  var slug: String {
-    return PointFree.slug(for: name)
-  }
-
-  public static let all = (
-    algebra: Tag(name: "Algebra"),
-    dsl: Tag(name: "DSL"),
-    generics: Tag(name: "Generics"),
-    html: Tag(name: "HTML"),
-    math: Tag(name: "Math"),
-    polymorphism: Tag(name: "Polymorphism"),
-    programming: Tag(name: "Programming"),
-    serverSideSwift: Tag(name: "Server-Side Swift"),
-    swift: Tag(name: "Swift")
-  )
-
-  public static func ==(lhs: Tag, rhs: Tag) -> Bool {
-    return lhs.name == rhs.name
   }
 }
 
@@ -292,7 +290,7 @@ The process of studying algebraic structures abstractly and then specializing th
 private let typeSafeHtml = Episode(
   blurb:
   """
-As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.
+As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   id: 4,
   length: 1380,
@@ -311,7 +309,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
     ),
     Episode.TranscriptBlock(
       content: "Template Languages",
-      timestamp: 30,
+      timestamp: 0,
       type: .title
     ),
     Episode.TranscriptBlock(
@@ -403,6 +401,64 @@ We claim that rather than embracing “logic-less” templates, and instead embr
       timestamp: 0,
       type: .paragraph
     ),
+    Episode.TranscriptBlock(
+      content: "Embedded Domain Specific Language",
+      timestamp: 30,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:
+""",
+      timestamp: 0,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content:
+      """
+<header>
+  <h1 id="welcome">Welcome!</h1>
+  <p>
+    Welcome to you, who has come here. See <a href="/more">more</a>.
+  </p>
+</header>
+""",
+      timestamp: 0,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: "Making the EDSL easier to use",
+      timestamp: 270,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!
+""",
+      timestamp: 0,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Safer Attributes",
+      timestamp: 640,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width="foo". We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.
+""",
+      timestamp: 0,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: """
+We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. "id", "href", etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:
+""",
+      timestamp: 0,
+      type: .paragraph
+    ),
+
+
     ]
 )
 

@@ -2,18 +2,18 @@ import Css
 import Prelude
 
 extension Class {
-  public enum layout {
-    public static let fit = CssSelector.class("fit")
-    public static let inline = CssSelector.class("inline")
-    public static let block = CssSelector.class("inline")
-    public static let inlineBlock = CssSelector.class("inline")
-    public static let overflowHidden = CssSelector.class("overflow-hidden")
-    public static let overflowScroll = CssSelector.class("overflow-scroll")
-    public static let overflowAuto = CssSelector.class("overflow-auto")
-    public static let clearFix = CssSelector.class("clear-fix")
-    public static let left = CssSelector.class("left")
-    public static let right = CssSelector.class("right")
-  }
+  public static let layout = (
+    fit: CssSelector.class("fit"),
+    inline: CssSelector.class("inline"),
+    block: CssSelector.class("inline"),
+    inlineBlock: CssSelector.class("inline"),
+    overflowHidden: CssSelector.class("overflow-hidden"),
+    overflowScroll: CssSelector.class("overflow-scroll"),
+    overflowAuto: CssSelector.class("overflow-auto"),
+    clearFix: CssSelector.class("clear-fix"),
+    left: CssSelector.class("left"),
+    right: CssSelector.class("right")
+  )
 }
 
 public let layoutStyles =

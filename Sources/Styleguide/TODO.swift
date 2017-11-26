@@ -106,3 +106,7 @@ extension FontStyle {
 public func li<T: ContainsList>(_ attribs: [Attribute<Element.Li>]) -> ([Node]) -> ChildOf<T> {
   return { .init(node("li", attribs, $0)) }
 }
+
+public func opacity(_ value: Double) -> Stylesheet {
+  return key("opacity")(value)
+}
