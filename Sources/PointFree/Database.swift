@@ -68,16 +68,19 @@ private let connInfo = URLComponents(string: AppEnvironment.current.envVars.post
   .map(Either.right)
   ?? .left(DatabaseError.invalidUrl as Error)
 
-private let postgres = lift(connInfo).flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
+private let postgres = lift(connInfo)
+  .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
 
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
-func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = []) -> EitherIO<Error, PostgreSQL.Node> {
-  return conn.flatMap { conn in
-    .wrap { try conn.execute(query, representable) }
-  }
+func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, PostgreSQL.Node> {
+
+    return conn.flatMap { conn in
+      .wrap { try conn.execute(query, representable) }
+    }
 }
 
 public func createSubscription(from stripeSubscription: StripeSubscription, for user: User)
