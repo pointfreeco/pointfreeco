@@ -3,6 +3,7 @@
   "BASIC_AUTH_USERNAME" : "hello",
   "GITHUB_CLIENT_ID" : "deadbeef-client-id",
   "AIRTABLE_BASE_3" : "deadbeef-base-3",
+  "DATABASE_URL" : "postgres:\/\/pointfreeco:@localhost:5432\/pointfreeco",
   "MAILGUN_DOMAIN" : "mg.domain.com",
   "MAILGUN_PRIVATE_API_KEY" : "deadbeef-mg-api-key",
   "BASE_URL" : "http:\/\/localhost:8080",
