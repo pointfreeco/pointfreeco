@@ -460,7 +460,7 @@ template {
   </head>
   <body class="bg-dark">
     <div class="row">
-      <div class="col col-sm-12 col-md-7">
+      <div class="col col-xs-12 col-md-7">
         <div class="p4 bg-white">
           <strong class="h6 caps line-height-4">
             Episode 4
@@ -470,7 +470,7 @@ template {
           </h1>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.
           </p>
@@ -479,7 +479,7 @@ template {
           </h2>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:
           </p>
@@ -490,7 +490,7 @@ template {
           </pre>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:30
             </a>
             and here is a Leaf template:
           </p>
@@ -501,7 +501,7 @@ template {
           </pre>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. [&quot;title&quot;: &quot;Hello World!&quot;], and then it will generate HTML that can be sent to the browser:
           </p>
@@ -512,7 +512,7 @@ template {
           </pre>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:
           </p>
@@ -532,25 +532,25 @@ template {
           </pre>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.
           </p>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.
           </p>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.
           </p>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.
           </p>
@@ -559,7 +559,7 @@ template {
           </h2>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:
           </p>
@@ -578,7 +578,7 @@ template {
           </h2>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!
           </p>
@@ -587,19 +587,19 @@ template {
           </h2>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width=&quot;foo&quot;. We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.
           </p>
           <p>
             <a href="#" class="text-decoration-none bg-light fg-white rounded h6 px1 py1" style="padding-top:0.25rem; padding-right:0.25rem; padding-bottom:0.25rem; padding-left:0.25rem; margin-right:0.25rem;">
-              0:00
+              00:00
             </a>
             We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. &quot;id&quot;, &quot;href&quot;, etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:
           </p>
         </div>
       </div>
-      <div class="first-xs last-md col col-sm-12 col-md-5">
+      <div class="first-xs last-md col col-xs-12 col-md-5">
         <div class="sticky-md top-0">
           <video class="fit" controls playsinline autoplay>
             <source src="https://d2sazdeahkz1yk.cloudfront.net/previews/487300ce-c2f7-4b39-87c7-19a202f6ca88/1/hls.m3u8">

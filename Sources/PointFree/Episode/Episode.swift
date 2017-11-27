@@ -32,7 +32,7 @@ private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<Res
       |> respond(notFoundView)
   case let .some(ep):
     return conn.map(const(ep))
-      |> respond(episodeView.map(addHighlightJs))
+      |> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
   }
 }
 
@@ -49,12 +49,12 @@ public let episodeView = View<Episode> { ep in
       body([`class`([Class.pf.colors.bg.dark])], [
         gridRow([
           gridColumn(
-            sizes: [.sm: 12, .md: 7],
+            sizes: [.xs: 12, .md: 7],
             transcriptView.view(ep)
           ),
 
           gridColumn(
-            sizes: [.sm: 12, .md: 5],
+            sizes: [.xs: 12, .md: 5],
             [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
             [
               div(
@@ -186,7 +186,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
             ]),
           style(padding(all: .rem(0.25)) <> margin(right: .rem(0.25)))
         ],
-        ["0:00"]
+        [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
       ),
       .text(encode(block.content))
       ])
