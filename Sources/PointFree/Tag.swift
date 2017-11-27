@@ -47,8 +47,8 @@ private let episodeTagView = View<Tag> { tag in
         Class.padding.leftRight(2),
         Class.padding.topBottom(1),
         Class.border.pill,
-        Class.pf.colors.bg.light,
-        Class.pf.colors.fg.white,
+        Class.border.all,
+        Class.pf.colors.bg.white,
         Class.type.textDecorationNone,
         ])
     ],

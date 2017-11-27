@@ -31,7 +31,7 @@ body {
 }
 
 .bg-dark {
-  background-color : #222;
+  background-color : #121212;
 }
 
 .bg-light {
@@ -146,6 +146,88 @@ body {
   -ms-box-shadow      : 0 0 0 3px rgba(0,0,0,0.25);
   -o-box-shadow       : 0 0 0 3px rgba(0,0,0,0.25);
   box-shadow          : 0 0 0 3px rgba(0,0,0,0.25);
+}
+
+a, a:link, a:visited {
+  color           : #121212;
+  text-decoration : none;
+}
+
+a:hover, a:active {
+  text-decoration : underline;
+}
+
+.pf-large-title, .pf-title-1, .pf-title-2, .pf-title-3, .pf-headline, .pf-subhead {
+  color : #000000;
+}
+
+.pf-large-title, .pf-title-1, .pf-title-2, .pf-title-3, .pf-subhead {
+  font-weight : 700;
+}
+
+.pf-large-title {
+  font-size   : 3.998rem;
+  line-height : 1.15;
+}
+
+.pf-title-1 {
+  font-size   : 2.827rem;
+  line-height : 1.25;
+}
+
+.pf-title-2 {
+  font-size   : 1.999rem;
+  line-height : 1.25;
+}
+
+.pf-title-3 {
+  font-size   : 1.414rem;
+  line-height : 1.45;
+}
+
+.pf-footnote {
+  font-size   : 0.8125rem;
+  line-height : 1.5;
+}
+
+.pf-callout {
+  font-size   : 1.1875rem;
+  line-height : 1.5;
+}
+
+.pf-headline {
+  font-size   : 1rem;
+  font-weight : 600;
+  line-height : 1.45;
+}
+
+.pf-subhead {
+  font-size      : 0.707rem;
+  line-height    : 1.5;
+  letter-spacing : 0.54pt;
+  text-transform : uppercase;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin-top    : 0.5rem;
+  margin-bottom : 0.5rem;
+  margin-right  : 0;
+  margin-left   : 0;
+}
+
+.pf-navbar {
+  height           : 64px;
+  line-height      : 64px;
+  background-color : #974DFF;
+  color            : #fff;
+  padding-top      : 0;
+  padding-bottom   : 0;
+  padding-right    : 2rem;
+  padding-left     : 2rem;
+}
+
+.pf-navbar a, .pf-navbar a:link {
+  color : #fff;
 }
 
 .h1 {

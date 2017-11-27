@@ -46,27 +46,28 @@ public let episodeView = View<Episode> { ep in
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
-      body([`class`([Class.pf.colors.bg.dark])], [
-        gridRow([
-          gridColumn(
-            sizes: [.xs: 12, .md: 7],
-            transcriptView.view(ep)
-          ),
+      body(
+        [`class`([Class.pf.colors.bg.dark])],
+        navView.view(unit) <> [
+          gridRow([
+            gridColumn(
+              sizes: [.xs: 12, .md: 7],
+              transcriptView.view(ep)
+            ),
 
-          gridColumn(
-            sizes: [.xs: 12, .md: 5],
-            [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
-            [
-              div(
-                [`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])],
-                topLevelEpisodeInfoView.view(ep)
-              )
-            ]
-          ),
-          
-          ])
-        ]
-        + footerView.view(unit))
+            gridColumn(
+              sizes: [.xs: 12, .md: 5],
+              [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
+              [
+                div(
+                  [`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])],
+                  topLevelEpisodeInfoView.view(ep)
+                )
+              ]
+            ),
+
+            ])
+          ] <> footerView.view(unit))
       ])
     ])
 }
@@ -127,7 +128,7 @@ private let tocEntryView = View<(content: String, timestamp: Double)> { content,
 
     gridColumn(sizes: [.xs: 2], [
       div(
-        [`class`([Class.pf.colors.fg.white, Class.type.align.end, Class.pf.colors.opacity75])],
+        [`class`([Class.pf.colors.fg.white, Class.type.align.end, Class.pf.opacity75])],
         [.text(encode(timestampLabel(for: timestamp)))]
       )
       ])

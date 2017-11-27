@@ -21,7 +21,7 @@ private let termsView = View<Prelude.Unit> { _ in
         style(styleguide),
         title("Terms of Service")
         ]),
-      body([
+      body(navView.view(unit) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [
