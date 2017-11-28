@@ -23,7 +23,7 @@ public struct Environment {
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
     createUser: @escaping CreateUser = PointFree.createUser,
-    envVars: EnvVars = EnvVars.default,
+    envVars: EnvVars = EnvVars(),
     fetchAuthToken: @escaping FetchAuthToken = PointFree.fetchAuthToken,
     fetchGitHubUser: @escaping FetchGitHubUser = PointFree.fetchGitHubUser,
     fetchUser: @escaping FetchUser = PointFree.fetchUser,
