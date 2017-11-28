@@ -26,6 +26,14 @@ public struct Tag: Equatable {
   }
 }
 
+extension Tag {
+  public init?(slug: String) {
+    guard let tag = array(Tag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
+      else { return nil }
+    self = tag
+  }
+}
+
 public let pillTagsView = View<[Tag]> { tags in
   ol(
     [`class`([Class.layout.inlineBlock, Class.type.list.reset])],

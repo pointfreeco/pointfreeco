@@ -62,14 +62,6 @@ public struct Episode {
   }
 }
 
-extension Tag {
-  public init?(slug: String) {
-    guard let tag = array(Tag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
-      else { return nil }
-    self = tag
-  }
-}
-
 let episodes = [proofInFunctions, algebraOfPredicates, algebraicStructure, typeSafeHtml]
 
 private let proofInFunctions = Episode(

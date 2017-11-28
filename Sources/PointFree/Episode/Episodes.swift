@@ -70,26 +70,33 @@ private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
 }
 
 private let sideMenuView = View<Tag?> { selectedTag in
-  div([`class`([Class.padding.right(4), Class.padding.bottom(2), Class.padding.top(3), Class.position.sticky(breakpoint: .md), Class.position.top0])], [
-    h5([`class`([Class.pf.type.subhead])], ["Sort by"]),
-    ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
-      li([a([href("#")], ["Newest first"])]),
-      li([a([href("#")], ["Oldest first"])]),
-      ]),
+  div(
+    [`class`([
+      Class.padding.right(4),
+      Class.padding.bottom(2),
+      Class.padding.top(3),
+      Class.position.sticky(.md),
+      Class.position.top0])],
+    [
+      h5([`class`([Class.pf.type.subhead])], ["Sort by"]),
+      ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
+        li([a([href("#")], ["Newest first"])]),
+        li([a([href("#")], ["Oldest first"])]),
+        ]),
 
-    h5([`class`([Class.pf.type.subhead])], ["Episode Type"]),
-    ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
-      li([a([href("#")], ["All"])]),
-      li([a([href("#")], ["Subscriber only"])]),
-      li([a([href("#")], ["Free"])]),
-      ]),
+      h5([`class`([Class.pf.type.subhead])], ["Episode Type"]),
+      ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
+        li([a([href("#")], ["All"])]),
+        li([a([href("#")], ["Subscriber only"])]),
+        li([a([href("#")], ["Free"])]),
+        ]),
 
-    h5([`class`([Class.pf.type.subhead])], ["Tag"]),
-    ol(
-      [`class`([Class.type.list.reset, Class.padding.bottom(2)])],
-      ([nil] + array(Tag.all).map(Optional.some))
-        .map { (tag: $0, selectedTag: selectedTag) }
-        .map(tagListItemView.view >>> li))
+      h5([`class`([Class.pf.type.subhead])], ["Tag"]),
+      ol(
+        [`class`([Class.type.list.reset, Class.padding.bottom(2)])],
+        ([nil] + array(Tag.all).map(Optional.some))
+          .map { (tag: $0, selectedTag: selectedTag) }
+          .map(tagListItemView.view >>> li))
 
     ])
 }

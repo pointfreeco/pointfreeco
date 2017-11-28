@@ -60,7 +60,7 @@ public let episodeView = View<Episode> { ep in
               [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
               [
                 div(
-                  [`class`([Class.position.sticky(breakpoint: .md), Class.position.top0])],
+                  [`class`([Class.position.sticky(.md), Class.position.top0])],
                   topLevelEpisodeInfoView.view(ep)
                 )
               ]
