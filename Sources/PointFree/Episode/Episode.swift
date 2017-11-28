@@ -77,9 +77,7 @@ private let topLevelEpisodeInfoView: View<Episode> =
     <>
     (
       (curry(div)([`class`([Class.padding.all(2)])]) >>> pure)
-        <¢> topLevelBlurbView.contramap(get(\.blurb))
-        <> topLevelTagsView.contramap(get(\.tags))
-        <> episodeTocView.contramap(get(\.transcriptBlocks))
+        <¢> episodeTocView.contramap(get(\.transcriptBlocks))
 )
 
 private let videoView = View<Prelude.Unit> { _ in
