@@ -84,8 +84,14 @@ private let topLevelEpisodeInfoView: View<Episode> =
 
 private let videoView = View<Prelude.Unit> { _ in
   video(
-    [`class`([Class.layout.fit]), controls(true), playsInline(true), autoplay(true)],
-    [source(src: "https://d2sazdeahkz1yk.cloudfront.net/previews/487300ce-c2f7-4b39-87c7-19a202f6ca88/1/hls.m3u8")]
+    [
+      `class`([Class.layout.fit]),
+      controls(true),
+      playsInline(true),
+      autoplay(true),
+      poster("https://d2sazdeahkz1yk.cloudfront.net/assets/W1siZiIsIjIwMTcvMDQvMjgvMDcvMzYvNTAvOTg2ZjI0N2UtZTU4YS00MTQzLTk4M2YtOGQxZDRiMDRkNGZhLzQ3IFZpZXcgTW9kZWxzIGF0IEtpY2tzdGFydGVyLmpwZyJdLFsicCIsInRodW1iIiwiMTkyMHgxMDgwIyJdXQ?sha=318940b4f059d474")
+    ],
+    [source(src: "")]
   )
 }
 
