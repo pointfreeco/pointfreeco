@@ -5,8 +5,7 @@ import Styleguide
 
 // TODO: extract to grid helpers in design systems?
 public func gridRow(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
-  let tmp = addClasses([Class.grid.row]) <| attribs
-  return div(tmp, content)
+  return div(addClasses([Class.grid.row], to: attribs), content)
 }
 
 // TODO: extract to grid helpers in design systems?
@@ -30,7 +29,7 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.D
     Class.grid.col(breakpoint, size)
   }
 
-  return div(addClasses(classes)(attribs), content)
+  return div(addClasses(classes, to: attribs), content)
 }
 
 // todo: swift-prelude?
@@ -65,18 +64,16 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
 
 // todo: where should this live?
 // todo: render `CssSelector.union` better
-private func addClasses<T>(_ classes: [CssSelector]) -> ([Attribute<T>]) -> [Attribute<T>] {
-  return { attributes in
-    guaranteeClassAttributeExists(attributes)
-      .map { attribute in
-        guard attribute.attrib.key == "class" else { return attribute }
+private func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
+  return guaranteeClassAttributeExists(attributes)
+    .map { attribute in
+      guard attribute.attrib.key == "class" else { return attribute }
 
-        let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
-          + " "
-          + render(classes: classes)
+      let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
+        + " "
+        + render(classes: classes)
 
-        return .init("class", newValue)
-    }
+      return .init("class", newValue)
   }
 }
 

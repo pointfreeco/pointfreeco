@@ -103,6 +103,8 @@ extension FontStyle {
   public static let italic = FontStyle(style: "italic")
 }
 
+// this is just a curried version of `li`. i wasnt able to use `curry(li)` cause the compiler was confused by
+// the `ChildOf` stuff. 
 public func li<T: ContainsList>(_ attribs: [Attribute<Element.Li>]) -> ([Node]) -> ChildOf<T> {
   return { .init(node("li", attribs, $0)) }
 }

@@ -1,19 +1,36 @@
 import Css
 import CssReset
-import CssTestSupport
 import Html
 import HtmlCssSupport
 import PlaygroundSupport
 import Prelude
-import SnapshotTesting
 import Styleguide
 import WebKit
 
-let testStyles =
-  ".grid" % (
-    fontSize(.px(10))
-    )
-    <> ".col" % (
+func row(_ widths: [Int]) -> Node {
+  return div(
+    [Html.class("row")],
+    widths.map { column($0, [p([text("\($0)")])]) }
+  )
+}
+
+func row(_ nodes: [Node]) -> Node {
+  return div(
+    [Html.class("row")],
+    nodes
+  )
+}
+
+func column(_ n: Int, _ nodes: [Node]) -> Node {
+  return div(
+    [Html.class("column column-\(n)")],
+    nodes
+  )
+}
+
+let gridStylesCss: Stylesheet =
+  body % padding(all: .px(20))
+    <> ".column" % (
       background(Color.white(0.9, 1))
         <> borderWidth(all: .pt(1))
         <> borderStyle(all: .solid)
@@ -24,74 +41,94 @@ let testStyles =
         <> minHeight(.px(30))
         <> textAlign(.center)
     )
-    <> (".col" ** ".col") % (
+    <> ".row" % (
+      fontSize(.px(10))
+        <> margin(bottom: .px(10))
+        <> .pseudo(.lastChild) & margin(bottom: 0)
+    )
+    <> (".column" ** ".column") % (
       color(.white(0.9, 1))
         <> background(Color.white(0.25, 1))
         <> borderColor(all: .white(0, 1))
 )
 
-let columns12 =
-  div([`class`([gridClass, paddingBottom1])],
-      (1...12).map({
-        div([`class`([colClass, col1Class])], [.text(encode("\($0)"))])
-      })
-)
-let columns6 =
-  div([`class`([gridClass, paddingBottom1])],
-      (1...6).map({
-        div([`class`([colClass, col2Class])], [.text(encode("\($0)"))])
-      })
+let extraResets = html % (
+  fontFamily(["Open Sans", "Helvetica Neue", "Arial", "Helvetica", "Verdana", "sans-serif"])
 )
 
-private let columns4 =
-  div([`class`([gridClass, paddingBottom1])], [
-    div([`class`([colClass, col3Class])], ["1"]),
-    div([`class`([colClass, col3Class])], ["2"]),
-    div([`class`([colClass, col3Class])], ["3"]),
-    div([`class`([colClass, col3Class])], ["4"]),
-    ])
+let styleguideHtml = html(
+  [],
+  [
+    head(
+      [
+        style(
+          reset
+            <> styleguide
+            <> gridSystem
+            <> gridStylesCss
+            <> extraResets
+        )
+      ]
+    ),
+    body(
+      [
+        div(
+          [
+            Html.button(
+              [Html.class("btn")],
+              ["I’m a button!"]
+            ),
+            h1(["Heading Level 1"]),
+            h2(["Heading Level 2"]),
+            h3(["Heading Level 3"]),
+            h4(["Heading Level 4"]),
+            h5(["Heading Level 5"]),
+            h6(["Heading Level 6"]),
+            ]
+        ),
+        div(
+          [
+            row([
+              div(
+                [Html.class("offset-8 column column-4")],
+                ["4"]
+              )
+              ]),
 
-private let columns3 =
-  div([`class`([gridClass, paddingBottom1])], [
-    div([`class`([colClass, col4Class])], ["1"]),
-    div([`class`([colClass, col4Class])], ["2"]),
-    div([`class`([colClass, col4Class])], ["3"]),
-    ])
+            row([12]),
+            row([6, 6]),
+            row([4, 4, 4]),
+            row([3, 3, 3, 3]),
+            row([1, 2, 2, 2, 2, 2, 1]),
+            row([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
 
-private let columns2 =
-  div([`class`([gridClass, paddingBottom1])], [
-    div([`class`([colClass, col6Class])], ["1"]),
-    div([`class`([colClass, col6Class])], ["2"]),
-    ])
+            row(
+              [
+                column(6, [
+                  row([3, 3, 3, 3]),
+                  row([6, 6]),
+                  row([12])
+                  ]),
+                column(6, [
+                  row([1, 2, 3, 4, 2]),
+                  row([1, 2, 2, 2, 2, 2, 1]),
+                  row([1, 2, 3, 3, 2, 1]),
+                  ]),
+                ]
+            ),
 
-private let nested =
-  div([`class`([gridClass, paddingBottom1])], [
-    div([`class`([colClass, col6Class])], [columns3]),
-    div([`class`([colClass, col6Class])], [columns6]),
-    ])
+            row([2, 1, 3, 4, 2]),
+            row([12]),
+            ]
+        )
+      ]
+    )
+  ]
+)
 
-private let doc = document([
-  html([
-    head([
-      style(
-        reset
-          <> testStyles
-          <> grid
-          <> spacing)
-      ]),
-    body([`class`([padding1])], [
-      columns4,
-      columns3,
-      columns12,
-      columns6,
-      columns2,
-      nested
-      ])
-    ])
-  ])
+let htmlString = render(styleguideHtml, config: pretty)
 
-let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-let htmlString = render(doc)
-dump(htmlString)
+let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 700))
 webView.loadHTMLString(htmlString, baseURL: nil)
 PlaygroundPage.current.liveView = webView
+
