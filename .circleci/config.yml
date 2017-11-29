@@ -13,12 +13,12 @@ jobs:
           command: system_profiler SPSoftwareDataType
 
       - run:
-        name: Install Postgres
-        command: brew install postgresql
+          name: Install Postgres
+          command: brew install postgresql
 
       - run:
-        name: Start Postgres
-        command: brew services start postgresql
+          name: Start Postgres
+          command: brew services start postgresql
 
       - run:
           name: Run macOS tests
