@@ -3,35 +3,6 @@ import Html
 import Prelude
 import Styleguide
 
-// TODO: extract to grid helpers in design systems?
-public func gridRow(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
-  return div(addClasses([Class.grid.row], to: attribs), content)
-}
-
-// TODO: extract to grid helpers in design systems?
-public func gridRow(_ content: [Node]) -> Node {
-  return gridRow([], content)
-}
-
-// TODO: extract to grid helpers in design systems?
-public func gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> Node {
-  return { content in
-    gridColumn(sizes: sizes, [], content)
-  }
-}
-
-public func gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
-  return gridColumn(sizes: sizes, [], content)
-}
-
-public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
-  let classes = [Class.grid.col] + sizes.map { breakpoint, size in
-    Class.grid.col(breakpoint, size)
-  }
-
-  return div(addClasses(classes, to: attribs), content)
-}
-
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
 public func array<A>(_ tuple: (A, A)) -> [A] {
@@ -60,27 +31,6 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
 }
 public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8, tuple.9]
-}
-
-// todo: where should this live?
-// todo: render `CssSelector.union` better
-private func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
-  return guaranteeClassAttributeExists(attributes)
-    .map { attribute in
-      guard attribute.attrib.key == "class" else { return attribute }
-
-      let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
-        + " "
-        + render(classes: classes)
-
-      return .init("class", newValue)
-  }
-}
-
-private func guaranteeClassAttributeExists<T>(_ attributes: [Attribute<T>]) -> [Attribute<T>] {
-  return attributes.contains(where: { $0.attrib.key == "class" })
-    ? attributes
-    : attributes + [Attribute<T>.init("class", "")]
 }
 
 // todo: HasPlaysInline
