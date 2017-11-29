@@ -52,10 +52,6 @@ extension StyleguideTests {
     ("test_DesignSystem", test_DesignSystem)
   ]
 }
-extension TestCase {
-  static var allTests: [(String, (TestCase) -> () throws -> Void)] = [
-  ]
-}
 
 // swiftlint:disable trailing_comma
 XCTMain([
@@ -66,6 +62,5 @@ XCTMain([
   testCase(MetaLayoutTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
-  testCase(TestCase.allTests),
 ])
 // swiftlint:enable trailing_comma
