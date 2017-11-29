@@ -1,6 +1,6 @@
 imports = \
 	@testable import PointFreeTests; \
-	@testable import Styleguidetests; 
+	@testable import StyleguideTests; 
 
 xcodeproj:
 	swift package generate-xcodeproj
