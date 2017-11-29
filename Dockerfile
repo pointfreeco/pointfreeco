@@ -5,7 +5,7 @@ RUN apt-get install -y postgresql libpq-dev
 
 WORKDIR /package
 
-COPY . ./
+# COPY . ./
 
 RUN swift package resolve
 RUN swift package clean

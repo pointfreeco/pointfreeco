@@ -16,6 +16,7 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 
 class SiteMiddlewareTests: TestCase {
   func testWithoutWWW() {
+    print("testWithoutWWW")
     assertSnapshot(
       matching: connection(from: secureRequest("https://pointfree.co"))
         |> siteMiddleware
@@ -30,6 +31,7 @@ class SiteMiddlewareTests: TestCase {
   }
 
   func testWithoutHeroku() {
+    print("testWithoutHeroku")
     assertSnapshot(
       matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com"))
         |> siteMiddleware
@@ -44,33 +46,35 @@ class SiteMiddlewareTests: TestCase {
   }
 
   func testWithWWW() {
+    print("testWithWWW")
     print("----------------------")
     print("----------------------")
     print("----------------------")
     print(connection(from: secureRequest("https://www.pointfree.co")))
     print(connection(from: secureRequest("https://www.pointfree.co"))
       |> siteMiddleware)
-    print(connection(from: secureRequest("https://www.pointfree.co"))
-      |> siteMiddleware
-      |> Prelude.perform)
-      print("----------------------")
-      print("----------------------")
-      print("----------------------")
-
+//    print(connection(from: secureRequest("https://www.pointfree.co"))
+//      |> siteMiddleware
+//      |> Prelude.perform)
+//      print("----------------------")
+//      print("----------------------")
+//      print("----------------------")
+//
     assertSnapshot(
       matching: connection(from: secureRequest("https://www.pointfree.co"))
         |> siteMiddleware
         |> Prelude.perform
     )
-
-    assertSnapshot(
-      matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
-        |> siteMiddleware
-        |> Prelude.perform
-    )
+//
+//    assertSnapshot(
+//      matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
+//        |> siteMiddleware
+//        |> Prelude.perform
+//    )
   }
 
   func testWithHttps() {
+    print("testWithHttps")
     assertSnapshot(
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
         |> siteMiddleware
