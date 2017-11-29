@@ -44,6 +44,19 @@ class SiteMiddlewareTests: TestCase {
   }
 
   func testWithWWW() {
+    print("----------------------")
+    print("----------------------")
+    print("----------------------")
+    print(connection(from: secureRequest("https://www.pointfree.co")))
+    print(connection(from: secureRequest("https://www.pointfree.co"))
+      |> siteMiddleware)
+    print(connection(from: secureRequest("https://www.pointfree.co"))
+      |> siteMiddleware
+      |> Prelude.perform)
+      print("----------------------")
+      print("----------------------")
+      print("----------------------")
+
     assertSnapshot(
       matching: connection(from: secureRequest("https://www.pointfree.co"))
         |> siteMiddleware

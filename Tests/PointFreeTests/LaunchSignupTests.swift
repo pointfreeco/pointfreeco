@@ -52,15 +52,15 @@ extension XCTestCase {
 }
 
 class LaunchSignupTests: TestCase {
-  func testHome() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/")!)
-
-    let conn = connection(from: request)
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result.perform())
-    assertWebPageSnapshot(matching: result.perform())
-  }
+//  func testHome() {
+//    let request = URLRequest(url: URL(string: "http://localhost:8080/")!)
+//
+//    let conn = connection(from: request)
+//    let result = conn |> siteMiddleware
+//
+//    assertSnapshot(matching: result.perform())
+//    assertWebPageSnapshot(matching: result.perform())
+//  }
 
   func testHome_SuccessfulSignup() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/?success=true")!)
