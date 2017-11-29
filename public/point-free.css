@@ -1,0 +1,160 @@
+html, body {
+  /* fill all available height */
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: var(--line-height-4);
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.bg-dark {
+  background-color: var(--black);
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-black-50 {
+  background-color: #808080;
+}
+
+.code {
+  display: block;
+  background-color: #fafafa;
+  font-family: monospace;
+  padding: 2rem;
+  overflow-x: auto;
+}
+
+a,
+a:link,
+a:visited {
+  color: var(--black);
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  margin: 0.5rem 0;
+}
+
+.pf-large-title,
+.pf-title-1,
+.pf-title-2,
+.pf-title-3,
+.pf-headline,
+.pf-subhead {
+  color: var(--black);
+}
+
+.pf-large-title,
+.pf-title-1,
+.pf-title-2,
+.pf-title-3,
+.pf-subhead {
+  font-weight: var(--bold-font-weight);
+}
+
+.pf-large-title {
+  font-size: var(--h1);
+  line-height: var(--line-height-1);
+}
+
+.pf-title-1 {
+  font-size: var(--h2);
+  line-height: var(--line-height-2);
+}
+
+.pf-title-2 {
+  font-size: var(--h3);
+  line-height: var(--line-height-2);
+}
+
+.pf-title-3 {
+  font-size: var(--h4);
+  line-height: var(--line-height-3);
+}
+
+.pf-headline {
+  font-size: var(--h5);
+  font-weight: var(--semibold-font-weight);
+  line-height: var(--line-height-3);
+}
+
+.pf-subhead {
+  font-size: var(--h6);
+  line-height: var(--line-height-4);
+  letter-spacing: var(--caps-letter-spacing);
+  text-transform: uppercase;
+}
+
+.pf-footnote {
+  font-size: var(--footnote);
+  line-height: var(--line-height-4);
+}
+
+.pf-callout {
+  font-size: var(--callout);
+  line-height: var(--line-height-4);
+}
+
+.pf-navbar {
+  height: 64px;
+  line-height: 64px;
+  background-color: var(--purple);
+  color: #fff;
+  padding: 0 var(--space-3);
+}
+
+.pf-navbar a,
+.pf-navbar a:link {
+  color: #fff;
+}
+
+:root {
+  --h1: 3.998rem; /* 64pt */
+  --h2: 2.827rem; /* 45pt */
+  --h3: 1.999rem; /* 32pt */
+  --h4: 1.414rem; /* 23pt */
+  --h5: 1.0rem; /* 16pt */
+  --h6: 0.707rem; /* 11pt */
+  --line-height-1: 1.15;
+  --line-height-2: 1.25;
+  --line-height-3: 1.45;
+  --line-height-4: 1.5;
+  --letter-spacing: 1;
+  --caps-letter-spacing: 0.54pt;
+  --bold-font-weight: 700;
+  --semibold-font-weight: 600;
+  --space-1: .5rem;
+  --space-2: 1rem;
+  --space-3: 2rem;
+  --space-4: 4rem;
+  --black: #121212;
+  --purple: #974DFF;
+  --blue: #4CCCFF;
+  --green: #79F2B0;
+  --yellow: #FFF080;
+  --footnote: 0.8125rem; /* 13pt */
+  --callout: 1.1875rem; /* 19pt */
+}
