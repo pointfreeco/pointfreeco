@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import PointFreeTests; @testable import Styleguidetests;
+@testable import PointFreeTests; @testable import StyleguideTests;
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
     ("testAuth", testAuth),
