@@ -13,12 +13,6 @@ jobs:
           command: system_profiler SPSoftwareDataType
 
       - run:
-          name: Run iOS tests
-          command: make test-ios
-          environment:
-            SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
-
-      - run:
           name: Run macOS tests
           command: make test-macos
           environment:
