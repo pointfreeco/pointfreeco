@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <style>
+    section {
+      display: none;
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    input:checked + label {
+      color: orange;
+    }
+    #tab1:checked ~ #content1,
+    #tab2:checked ~ #content2,
+    #tab3:checked ~ #content3,
+    #tab4:checked ~ #content4 {
+      display: block;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Tabs</h1>
+    <main>
+      <input id="tab1" type="radio" name="tabs">
+      <label for="tab1">Tab 1</label>
+
+      <input id="tab2" type="radio" name="tabs">
+      <label for="tab2">Tab 2</label>
+
+      <input id="tab3" type="radio" name="tabs">
+      <label for="tab3">Tab 3</label>
+
+      <input id="tab4" type="radio" name="tabs">
+      <label for="tab4">Tab 4</label>
+
+      <section id="content1">
+        <p>Content 1</p>
+      </section>
+      <section id="content2">
+        <p>Content 2</p>
+      </section>
+      <section id="content3">
+        <p>Content 3</p>
+      </section>
+      <section id="content4">
+        <p>Content 4</p>
+      </section>
+    </main>
+  </body>
+</html>

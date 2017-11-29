@@ -30,14 +30,14 @@ extension XCTestCase {
     #if os(iOS)
       sizes.forEach { size in
         let webView = UIWebView(frame: .init(origin: .zero, size: size))
-        webView.loadHTMLString(String(decoding: conn.response.body ?? Data(), as: UTF8.self), baseURL: nil)
+        webView.loadHTMLString(String(decoding: conn.response.body, as: UTF8.self), baseURL: nil)
         let exp = expectation(description: "webView")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           assertSnapshot(
             matching: webView,
             named: (name ?? "") + "_\(size.width)x\(size.height)",
-            record: record,
+            record: recording,
             file: file,
             function: function,
             line: line
