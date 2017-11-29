@@ -80,22 +80,6 @@ public struct EnvVars: Codable {
   public var baseUrl: URL {
     return URL(string: self.baseUrlString)!
   }
-
-  public static let `default` = { () -> EnvVars in
-    let envFilePath = URL(fileURLWithPath: #file)
-      .deletingLastPathComponent()
-      .appendingPathComponent(".env")
-
-    let localEnvVars = (try? Data(contentsOf: envFilePath))
-      .flatMap { try? JSONDecoder().decode([String: String].self, from: $0) }
-      ?? [:]
-
-    let envVars = localEnvVars.merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
-
-    return (try? JSONSerialization.data(withJSONObject: envVars))
-      .flatMap { try? JSONDecoder().decode(EnvVars.self, from: $0) }
-      ?? EnvVars()
-  }()
 }
 
 extension EnvVars {
