@@ -1,49 +1,9 @@
-@testable import Css
-@testable import Html
+import Css
+import Html
 import Foundation
 import Prelude
 
-// TODO: move to swift-web/Display
-public struct Clip: Val, Other, Auto, Inherit {
-  let clip: Css.Value
-
-  public func value() -> Css.Value {
-    return self.clip
-  }
-
-  public static func other(_ other: Css.Value) -> Clip {
-    return .init(clip: other)
-  }
-
-  public static let auto = Clip(clip: "auto")
-  public static let inherit = Clip(clip: "inherit")
-}
-
-public func clip(_ clip: Clip) -> Stylesheet {
-  return key("clip")(clip)
-}
-
-public func rect(top: Css.Size, right: Css.Size, bottom: Css.Size, left: Css.Size) -> Clip {
-  return Clip(
-    clip: Value(
-      [
-        "rect(",
-        top.value().unValue,
-        right.value().unValue,
-        bottom.value().unValue,
-        left.value().unValue,
-        ")"
-        ]
-        .concat()
-    )
-  )
-}
-
 // TODO: move to swift-web
-extension Display {
-  public static let inline: Display = "inline"
-  public static let tableCell: Display = "table-cell"
-}
 
 public func render(classes: [CssSelector]) -> String {
   return classes.map(render(class:)).joined(separator: " ")
@@ -90,18 +50,6 @@ private let selectElement = CssSelector.Element.other("select")
 public let select = CssSelector.elem(selectElement)
 private let textareaElement = CssSelector.Element.other("textarea")
 public let textarea = CssSelector.elem(textareaElement)
-
-extension Color {
-  public static let transparent = Color.other("transparent")
-}
-
-extension Position {
-  public static let sticky: Position = "sticky"
-}
-
-extension FontStyle {
-  public static let italic = FontStyle(style: "italic")
-}
 
 // this is just a curried version of `li`. i wasnt able to use `curry(li)` cause the compiler was confused by
 // the `ChildOf` stuff. 

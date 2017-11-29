@@ -1,4 +1,4 @@
-@testable import Css
+import Css
 import Prelude
 
 extension Class {
