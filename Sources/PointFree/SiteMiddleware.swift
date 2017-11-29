@@ -2,6 +2,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Foundation
 import HttpPipeline
 import Prelude
+import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
@@ -18,6 +19,18 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
 
   switch conn.data {
+  case .about:
+    return conn.map(const(unit))
+      |> aboutResponse
+
+  case let .episode(param):
+    return conn.map(const(param))
+      |> episodeResponse
+
+  case let .episodes(tag):
+    return conn.map(const(tag))
+      |> episodesResponse
+
   case let .githubCallback(code, redirect):
     return conn.map(const((code, redirect)))
       |> githubCallbackResponse
@@ -38,9 +51,17 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(unit))
       |> logoutResponse
 
+  case let .pricing(value):
+    return conn.map(const(value))
+      |> pricingResponse
+
   case .secretHome:
     return conn.map(const(unit))
       |> secretHomeResponse
+
+  case .terms:
+    return conn.map(const(unit))
+      |> termsResponse
   }
 }
 
@@ -61,7 +82,7 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .githubCallback, .login, .logout, .secretHome:
+  case .about, .episode, .episodes, .githubCallback, .login, .logout, .pricing, .secretHome, .terms:
     return true
   case .home, .launchSignup:
     return false
