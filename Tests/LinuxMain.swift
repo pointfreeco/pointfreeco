@@ -17,7 +17,6 @@ extension AuthTests {
 }
 extension EnvVarTests {
   static var allTests: [(String, (EnvVarTests) -> () throws -> Void)] = [
-    ("testEncoding", testEncoding),
     ("testDecoding", testDecoding)
   ]
 }

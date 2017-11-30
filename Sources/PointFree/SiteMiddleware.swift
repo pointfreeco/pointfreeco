@@ -36,9 +36,6 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
       |> githubCallbackResponse
 
   case let .home(signedUpSuccessfully):
-//    return conn.map(const(Data()))
-//      |> writeStatus(.ok)
-//      >-> respond(text: "what!")
     return conn.map(const(signedUpSuccessfully))
       |> homeResponse
 

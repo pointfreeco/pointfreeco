@@ -13,7 +13,36 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
     >-> respond(secretHomeView)
 
 let githubCallbackResponse =
-  authTokenMiddleware
+  extractGitHubAuthCode
+    <| authTokenMiddleware
+
+private func extractGitHubAuthCode(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
+    
+    return { conn in
+      conn.data.code
+        .map { (code: $0, redirect: conn.data.redirect) }
+        .map { conn.map(const($0)) }
+        .map(middleware)
+        ?? (conn |> (const(unit) >¢< missingGitHubAuthCodeMiddleware))
+    }
+}
+
+// TODO: Move to HttpPipeline
+private func >¢< <A, B, C, I, J>(
+  lhs: @escaping (A) -> C,
+  rhs: @escaping Middleware<I, J, C, B>
+  )
+  -> Middleware<I, J, A, B> {
+
+    return map(lhs) >>> rhs
+}
+
+private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+  writeStatus(.badRequest)
+    >-> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
@@ -151,7 +180,7 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
   let params: [String: String] = [
     "scope": "user:email",
     "client_id": AppEnvironment.current.envVars.gitHub.clientId,
-    "redirect_uri": url(to: .githubCallback(code: "", redirect: redirect))
+    "redirect_uri": url(to: .githubCallback(code: nil, redirect: redirect))
   ]
 
   return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
