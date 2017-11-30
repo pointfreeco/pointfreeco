@@ -28,6 +28,7 @@ extension EpisodeTests {
 }
 extension LaunchSignupTests {
   static var allTests: [(String, (LaunchSignupTests) -> () throws -> Void)] = [
+    ("testHome", testHome),
     ("testHome_SuccessfulSignup", testHome_SuccessfulSignup),
     ("testSignup", testSignup)
   ]

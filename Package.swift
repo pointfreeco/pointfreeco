@@ -10,7 +10,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("ed2ba5e")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2cd8bd3")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
   ],
   targets: [
@@ -36,6 +36,7 @@ let package = Package(
         "Optics",
         "PostgreSQL",
         "Styleguide",
+        "UrlFormEncoding"
       ]
     ),
     .testTarget(

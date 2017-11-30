@@ -1,9 +1,10 @@
 imports = \
 	@testable import PointFreeTests; \
-	@testable import StyleguideTests; 
+	@testable import StyleguideTests;
 
 xcodeproj:
-	swift package generate-xcodeproj
+	swift package generate-xcodeproj \
+		--xcconfig-overrides Configs.xcconfig 
 
 linux-main:
 	sourcery \

@@ -44,57 +44,53 @@ class SiteMiddlewareTests: TestCase {
   }
 
   func testWithWWW() {
-    #if !os(Linux)
-      assertSnapshot(
-        matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
-          |> siteMiddleware
-          |> Prelude.perform
-      )
+    assertSnapshot(
+      matching: connection(from: secureRequest("https://www.pointfree.co"))
+        |> siteMiddleware
+        |> Prelude.perform
+    )
 
-      assertSnapshot(
-        matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
-          |> siteMiddleware
-          |> Prelude.perform
-      )
-    #endif
+    assertSnapshot(
+      matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
+        |> siteMiddleware
+        |> Prelude.perform
+    )
   }
 
   func testWithHttps() {
-    #if !os(Linux)
-      assertSnapshot(
-        matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
-          |> siteMiddleware
-          |> Prelude.perform,
-        named: "1.redirects_to_https"
-      )
-
-      assertSnapshot(
-        matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!))
-          |> siteMiddleware
-          |> Prelude.perform,
-        named: "2.redirects_to_https"
-      )
-
-      assertSnapshot(
-        matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
-          |> siteMiddleware
-          |> Prelude.perform,
-        named: "0.0.0.0_allowed"
-      )
-
-      assertSnapshot(
-        matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
-          |> siteMiddleware
-          |> Prelude.perform,
-        named: "127.0.0.0_allowed"
-      )
-
-      assertSnapshot(
-        matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!))
-          |> siteMiddleware
-          |> Prelude.perform,
-        named: "localhost_allowed"
-      )
-    #endif
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
+        |> siteMiddleware
+        |> Prelude.perform,
+      named: "1.redirects_to_https"
+    )
+    
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!))
+        |> siteMiddleware
+        |> Prelude.perform,
+      named: "2.redirects_to_https"
+    )
+    
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
+        |> siteMiddleware
+        |> Prelude.perform,
+      named: "0.0.0.0_allowed"
+    )
+    
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
+        |> siteMiddleware
+        |> Prelude.perform,
+      named: "127.0.0.0_allowed"
+    )
+    
+    assertSnapshot(
+      matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!))
+        |> siteMiddleware
+        |> Prelude.perform,
+      named: "localhost_allowed"
+    )
   }
 }

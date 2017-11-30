@@ -5,6 +5,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
+import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)

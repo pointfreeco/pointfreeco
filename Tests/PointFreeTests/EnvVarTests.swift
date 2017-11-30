@@ -5,7 +5,7 @@ import XCTest
 class EnvVarTests: TestCase {
   func testEncoding() {
     let prettyEncoder = JSONEncoder()
-    prettyEncoder.outputFormatting = .prettyPrinted
+    prettyEncoder.outputFormatting = [.prettyPrinted, .sortedKeys]
     assertSnapshot(
       matching: String(data: try! prettyEncoder.encode(EnvVars()), encoding: .utf8)!
     )
