@@ -177,13 +177,19 @@ private let githubAuthorizationUrl =
     + AppEnvironment.current.envVars.gitHub.clientId
 private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
 
-  let params: [String: String] = [
-    "scope": "user:email",
-    "client_id": AppEnvironment.current.envVars.gitHub.clientId,
-    "redirect_uri": url(to: .githubCallback(code: nil, redirect: redirect))
+  let params: [(String, String)] = [
+    ("scope", "user:email"),
+    ("client_id", AppEnvironment.current.envVars.gitHub.clientId),
+    ("redirect_uri", url(to: .githubCallback(code: nil, redirect: redirect)))
   ]
 
-  return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
+  let queryString = params
+    .map { key, value in
+      key + "=" + (value.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) ?? "")
+    }
+    .joined(separator: "&")
+
+  return "https://github.com/login/oauth/authorize?\(queryString)"
 }
 
 private let githubSessionCookieName = "github_session"
