@@ -16,6 +16,8 @@ let githubCallbackResponse =
   extractGitHubAuthCode
     <| authTokenMiddleware
 
+/// Middleware transformer to convert the optional GitHub code to a non-optional. In the `nil` case we show
+/// a 400 Bad Request page.
 private func extractGitHubAuthCode(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
   )
@@ -26,7 +28,7 @@ private func extractGitHubAuthCode(
         .map { (code: $0, redirect: conn.data.redirect) }
         .map { conn.map(const($0)) }
         .map(middleware)
-        ?? (conn |> (const(unit) >¢< missingGitHubAuthCodeMiddleware))
+        ?? (conn |> const(unit) >¢< missingGitHubAuthCodeMiddleware)
     }
 }
 
@@ -40,6 +42,7 @@ private func >¢< <A, B, C, I, J>(
     return map(lhs) >>> rhs
 }
 
+/// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.badRequest)
     >-> respond(text: "GitHub code wasn't found :(")
