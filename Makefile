@@ -3,8 +3,7 @@ imports = \
 	@testable import StyleguideTests;
 
 xcodeproj:
-	swift package generate-xcodeproj \
-		--xcconfig-overrides Configs.xcconfig 
+	swift package generate-xcodeproj
 
 linux-main:
 	sourcery \
