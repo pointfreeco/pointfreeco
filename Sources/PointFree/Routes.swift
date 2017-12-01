@@ -15,6 +15,7 @@ public enum Route: DerivePartialIsos {
   case logout
   case pricing(Prelude.Unit)
   case secretHome
+  case subscribe(StripeSubscriptionPlan.Id, StripeToken)
   case terms
 }
 
@@ -52,10 +53,29 @@ private let routers: [Router<Route>] = [
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
 
+  Route.iso.subscribe
+    <¢> post %> lit("subscribe") %> pathParam(.codable) <%> .jsonBody <% end,
+
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
 
 ]
+
+// TODO: Move to swift-web
+extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
+  public static var codable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: { $0.rawValue }
+    )
+  }
+}
+
+extension Router where A: Codable {
+  static var jsonBody: Router {
+    return dataBody.map(PartialIso.codableToData.inverted)
+  }
+}
 
 public let router = routers.reduce(.empty, <|>)
 

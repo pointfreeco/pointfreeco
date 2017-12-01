@@ -5,20 +5,16 @@ import Prelude
 import Optics
 import UrlFormEncoding
 
-private let subscriptionPlanIds = [
-  "yearly", "monthly", "yearly-team", "monthly-team"
-]
-
 public let subscriptionPlans = fetchPlans
-  .map(^\.data >>> filter(subscriptionPlanIds.contains <<< ^\.id))
+  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
 // MARK: - API
 
 let fetchPlans: EitherIO<Prelude.Unit, StripeSubscriptionsEnvelope> =
   stripeDataTask("https://api.stripe.com/v1/plans")
 
-func fetchPlan(id: String) -> EitherIO<Prelude.Unit, StripeSubscriptionPlan> {
-  return stripeDataTask("https://api.stripe.com/v1/plans/\(id)")
+func fetchPlan(id: StripeSubscriptionPlan.Id) -> EitherIO<Prelude.Unit, StripeSubscriptionPlan> {
+  return stripeDataTask("https://api.stripe.com/v1/plans/\(id.rawValue)")
 }
 
 func createCustomer(token: String) -> EitherIO<Prelude.Unit, Customer> {
@@ -99,7 +95,7 @@ public struct StripeSubscriptionPlan: Codable {
   let amount: Cents
   let created: Date
   let currency: Currency
-  let id: String
+  let id: Id
   let interval: Interval
   let metadata: [String: String]
   let name: String
@@ -124,6 +120,15 @@ public struct StripeSubscriptionPlan: Codable {
   public enum Currency: String, Codable {
     case usd
   }
+
+  public enum Id: String, Codable, RawRepresentable {
+    case yearly
+    case monthly
+    case yearlyTeam = "yearly-team"
+    case monthlyTeam = "monthly-team"
+
+    static let all: [Id] = [.yearly, .monthly, .yearlyTeam, .monthlyTeam]
+  }
 }
 
 public struct StripeSubscriptionsEnvelope: Codable {
@@ -134,6 +139,10 @@ public struct StripeSubscriptionsEnvelope: Codable {
     case hasMore = "has_more"
     case data
   }
+}
+
+public struct StripeToken: Codable {
+  let id: String
 }
 
 // MARK: -
