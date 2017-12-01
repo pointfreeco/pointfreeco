@@ -6,14 +6,14 @@ import Prelude
     enum iso {
       {% for case in enum.cases %}
           {% if case.hasAssociatedValue %}
-            static let {{ case.name }} = parenthesize <| PartialIso(
+            {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso(
               apply: Route.{{ case.name }},
               unapply: {
                 guard case let .{{ case.name }}(result) = $0 else { return nil }
                 return result
             })
           {% else %}
-            static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, Route>(
               apply: const(.some(.{{ case.name }})),
               unapply: {
                 guard case .{{ case.name }} = $0 else { return nil }
