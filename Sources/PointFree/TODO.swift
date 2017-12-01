@@ -72,6 +72,22 @@ extension CssSelector {
   }
 }
 
+extension EitherIO {
+  public func `catch`(_ f: @escaping (E) -> EitherIO) -> EitherIO {
+    return catchE(self, f)
+  }
+
+  public func mapExcept<F, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> EitherIO<F, B> {
+    return .init(
+      run: self.run.map(f)
+    )
+  }
+
+  public func withExcept<F>(_ f: @escaping (E) -> F) -> EitherIO<F, A> {
+    return self.bimap(f, id)
+  }
+}
+
 // TODO: Move to PreludeFoundation?
 
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
@@ -93,12 +109,14 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
   )
 }
 
-public func jsonDataTask<A>(with request: URLRequest) -> EitherIO<Error, A> where A: Decodable {
+public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = nil)
+  -> EitherIO<Error, A>
+  where A: Decodable {
 
-  return dataTask(with: request)
-    .flatMap { data, _ in
-      EitherIO.wrap { try decoder.decode(A.self, from: data) }
-  }
+    return dataTask(with: request)
+      .flatMap { data, _ in
+        EitherIO.wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+    }
 }
 
-private let decoder = JSONDecoder()
+private let defaultDecoder = JSONDecoder()

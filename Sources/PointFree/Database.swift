@@ -47,11 +47,6 @@ public struct Subscription {
   let userId: UUID
 }
 
-/// FIXME: Move to Stripe.swift
-public struct StripeSubscription {
-  let id: String
-}
-
 public enum DatabaseError: Error {
   case invalidUrl
 }
