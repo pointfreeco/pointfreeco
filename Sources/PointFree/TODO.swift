@@ -1,4 +1,6 @@
 import Css
+import Either
+import Foundation
 import Html
 import Prelude
 import Styleguide
@@ -69,3 +71,34 @@ extension CssSelector {
     }
   }
 }
+
+// TODO: Move to PreludeFoundation?
+
+public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
+  return .init(
+    run: .init { callback in
+      let session = URLSession(configuration: .default)
+      session
+        .dataTask(with: request) { data, response, error in
+          defer { session.invalidateAndCancel() }
+          if let error = error {
+            callback(.left(error))
+          }
+          if let data = data, let response = response {
+            callback(.right((data, response)))
+          }
+        }
+        .resume()
+    }
+  )
+}
+
+public func jsonDataTask<A>(with request: URLRequest) -> EitherIO<Error, A> where A: Decodable {
+
+  return dataTask(with: request)
+    .flatMap { data, _ in
+      EitherIO.wrap { try decoder.decode(A.self, from: data) }
+  }
+}
+
+private let decoder = JSONDecoder()

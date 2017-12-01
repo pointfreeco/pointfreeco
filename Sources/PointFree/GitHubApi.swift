@@ -39,19 +39,8 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
       "Accept": "application/json"
   ]
 
-  return .init(
-    run: .init { callback in
-      session
-        .dataTask(with: request) { data, response, error in
-          callback(
-            data.flatMap { try? JSONDecoder().decode(GitHubAccessToken.self, from: $0) }
-              .map(Either.right)
-              ?? Either.left(unit)
-          )
-        }
-        .resume()
-    }
-  )
+  return jsonDataTask(with: request)
+    .withExcept(const(unit))
 }
 
 /// Fetches a GitHub user from an access token.
@@ -63,19 +52,6 @@ func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, G
       "Accept": "application/vnd.github.v3+json"
   ]
 
-  return .init(
-    run: .init { callback in
-      session
-        .dataTask(with: request) { data, response, error in
-          callback(
-            data.flatMap { try? JSONDecoder().decode(GitHubUser.self, from: $0) }
-              .map(Either.right)
-              ?? Either.left(unit)
-          )
-        }
-        .resume()
-    }
-  )
+  return jsonDataTask(with: request)
+    .withExcept(const(unit))
 }
-
-private let session = URLSession(configuration: .default)
