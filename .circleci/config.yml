@@ -21,6 +21,10 @@ jobs:
           command: brew services start postgresql
 
       - run:
+          name: Install Sourcery
+          command: brew install sourcery
+
+      - run:
           name: Run macOS tests
           command: make test-macos
           environment:
