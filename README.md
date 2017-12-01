@@ -1,6 +1,6 @@
 # [www.pointfree.co](http://www.pointfree.co)
 
-[![CircleCI](https://circleci.com/gh/pointfreeco/pointfreeco.svg?style=svg)](https://circleci.com/gh/pointfreeco/pointfreeco)
+macOS [![CircleCI](https://circleci.com/gh/pointfreeco/pointfreeco.svg?style=svg)](https://circleci.com/gh/pointfreeco/pointfreeco) Linux [![Build Status](https://travis-ci.org/pointfreeco/pointfreeco.svg?branch=master)](https://travis-ci.org/pointfreeco/pointfreeco)
 
 This repo contains the application code for the [Point-Free](http://www.pointfree.co) website, a weekly video series exploring Swift and functional programming. It's responsible for routing requests, loading data and serving HTML. If you're interested in running it locally, check out the [server code](https://github.com/pointfreeco/pointfreeco-server), which is responsible for connecting a bare bones Kitura server to this code.
 
