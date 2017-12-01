@@ -9,50 +9,56 @@ import Optics
 import Prelude
 import Styleguide
 
-let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Either<String, Int>, Data> =
-  fetchEpisode
-    >-> responseEpisode
+private func requireSome<A>(
+  notFoundView: View<Prelude.Unit>
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
 
-private func fetchEpisode(_ conn: Conn<StatusLineOpen, Either<String, Int>>) -> IO<Conn<HeadersOpen, Episode?>> {
+    return { middleware in
+      return { conn in
+        return conn.data
+          .map { conn.map(const($0)) }
+          .map(middleware)
+          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+      }
+    }
+}
 
-  let possibleEpisode = episodes.first(where: {
-    conn.data.left == .some($0.slug)
-      || conn.data.right == .some($0.id)
+let episodeResponse =
+  map(episode(for:))
+    >>> (
+      requireSome(notFoundView: episodeNotFoundView)
+        <| setupGlobals
+        >-> writeStatus(.ok)
+        >-> respond(
+          episodeView.map(addHighlightJs >>> addGoogleAnalytics)
+      )
+)
+
+private func episode(for param: Either<String, Int>) -> Episode? {
+  return episodes.first(where: {
+    param.left == .some($0.slug) || param.right == .some($0.id)
   })
-
-  return conn.map(const(possibleEpisode))
-    |> writeStatus(possibleEpisode == nil ? .notFound : .ok)
 }
 
-private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<ResponseEnded, Data>> {
-
-  switch conn.data {
-  case .none:
-    return conn.map(const(unit))
-      |> respond(notFoundView)
-  case let .some(ep):
-    return conn.map(const(ep))
-      |> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
-  }
-}
-
-public let episodeView = View<Episode> { ep in
+private let episodeView = View<GlobalVars<Episode>> { globals in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(ep.sequence): \(ep.title)"),
+        title("Episode #\(globals.continuation.sequence): \(globals.continuation.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
       body(
         [`class`([Class.pf.colors.bg.dark])],
-        navView.view(nil) <> [
+        navView.view(globals.map(const(unit))) <> [
           gridRow([
             gridColumn(
               sizes: [.xs: 12, .md: 7],
-              transcriptView.view(ep)
+              transcriptView.view(globals.continuation)
             ),
 
             gridColumn(
@@ -61,7 +67,7 @@ public let episodeView = View<Episode> { ep in
               [
                 div(
                   [`class`([Class.position.sticky(.md), Class.position.top0])],
-                  topLevelEpisodeInfoView.view(ep)
+                  topLevelEpisodeInfoView.view(globals.continuation)
                 )
               ]
             ),
@@ -203,14 +209,15 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   }
 }
 
-private let notFoundView = View<Prelude.Unit> { _ in
+private let episodeNotFoundView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
         ]),
-      body([
-        "Not found..."
-        ])
+      body(
+        [
+        "We couldn't find that episode."
+        ] <> footerView.view(unit))
       ])
     ])
 }

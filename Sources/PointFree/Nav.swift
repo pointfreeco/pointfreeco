@@ -4,13 +4,28 @@ import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
+import Optics
 import Styleguide
 import Prelude
 
-struct CurrentUser<A> {
-  let continuation: A
-  let user: User?
+struct GlobalVars<A> {
+  private(set) var continuation: A
+  private(set) var currentUser: User? = nil
+  private(set) var currentRequest: URLRequest
+
+  func map<B>(_ f: (A) -> B) -> GlobalVars<B> {
+    return .init(
+      continuation: f(self.continuation),
+      currentUser: self.currentUser,
+      currentRequest: self.currentRequest
+    )
+  }
 }
+
+func map<A, B>(_ f: @escaping (A) -> B) -> (GlobalVars<A>) -> GlobalVars<B> {
+  return { $0.map(f) }
+}
+
 
 private func extractedGitHubUserEnvelope<I, A>(from conn: Conn<I, A>) -> GitHubUserEnvelope? {
   return conn.request.cookies[githubSessionCookieName]
@@ -22,45 +37,61 @@ private func extractedGitHubUserEnvelope<I, A>(from conn: Conn<I, A>) -> GitHubU
   }
 }
 
-/// Fetches the current user from the DB based on what is stored in the encr
-func fetchCurrentUser<A, I>(
-  _ conn: Conn<I, A>
-  ) -> IO<Conn<I, CurrentUser<A>>> {
+func setupGlobals<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<StatusLineOpen, GlobalVars<A>>> {
 
-  let currentUser = extractedGitHubUserEnvelope(from: conn).map {
-    AppEnvironment.current.fetchUser($0.accessToken)
-      .run
-      .map(get(\.right) >>> flatMap(id))
-      .map { CurrentUser(continuation: conn.data, user: $0) }
-    }
-    ?? pure(CurrentUser(continuation: conn.data, user: nil))
-
-  return currentUser.map { conn.map(const($0)) }
+  return pure(
+    conn.map(
+      const(
+        GlobalVars(
+          continuation: conn.data,
+          currentUser: nil,
+          currentRequest: conn.request
+        )
+      )
+    )
+  )
+  >>- _fetch(currentUser: \.currentUser)
 }
 
-let navView = View<User?> { _ in
+func _fetch<A, I>(currentUser keyPath: WritableKeyPath<A, User?>) -> Middleware<I, I, A, A> {
+
+  return { conn in
+    let currentUser = extractedGitHubUserEnvelope(from: conn)
+      .map {
+        AppEnvironment.current.fetchUser($0.accessToken)
+          .run
+          .map(get(\.right) >>> flatMap(id))
+      }
+      ?? pure(nil)
+
+    return (currentUser.map(set(keyPath)) <*> pure(conn.data))
+      .map { conn.map(const($0)) }
+  }
+}
+
+let navView = View<GlobalVars<Prelude.Unit>> { globals in
   [
-    nav([`class`([Class.pf.navBar])], [
-      ul([`class`([Class.type.list.reset, Class.margin.all(0)])], [
-        li([`class`([Class.layout.inline])], [
-          a([href(path(to: .episodes(tag: nil))), `class`([Class.padding.leftRight(1)])], ["Videos"])
-          ]),
-        li([`class`([Class.layout.inline])], [
-          a([href("#"), `class`([Class.padding.leftRight(1)])], ["Blog"])
-          ]),
-        li([`class`([Class.layout.inline])], [
-          a([href("#"), `class`([Class.padding.leftRight(1)])], ["Books"])
-          ]),
-        li([`class`([Class.layout.inline])], [
-          a([href(path(to: .about)), `class`([Class.padding.leftRight(1)])], ["About"])
-          ]),
-        ])
-      ])
+    gridRow([`class`([Class.pf.navBar, Class.grid.between(.xs), Class.pf.colors.bg.light]), style(height(.px(64)))], [
+      gridColumn(
+        sizes: [:],
+        [`class`([Class.grid.col(.xs, nil)])],
+        unpersonalizedNavItems.view(unit)
+      ),
+
+      gridColumn(
+        sizes: [:],
+        [`class`([Class.grid.col(.xs, nil)])],
+        personalizedNavItems.view(globals)
+      ),
+
+      ]),
   ]
 }
 
 private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
-  [
+  ul([`class`([Class.type.list.reset, Class.margin.all(0)])], [
     li([`class`([Class.layout.inline])], [
       a([href(path(to: .episodes(tag: nil))), `class`([Class.padding.leftRight(1)])], ["Videos"])
       ]),
@@ -73,28 +104,35 @@ private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
     li([`class`([Class.layout.inline])], [
       a([href(path(to: .about)), `class`([Class.padding.leftRight(1)])], ["About"])
       ]),
-  ]
+    ])
 }
 
-//let tmp = episodeTagView.view
-//  >>> li([`class`([Class.layout.inlineBlock, Class.margin.right(1), Class.margin.bottom(1)])])
+private let personalizedNavItems = View<GlobalVars<Prelude.Unit>> { globals in
+  globals.currentUser.map(loggedInNavItems.view)
+    ?? loggedOutNavItems.view(globals.currentRequest)
+}
 
-private let personalizedNavItems =
-  loggedInNavItems
-    <> loggedOutNavItems.contramap(const(unit))
+private let loggedInNavItems = View<User> { user in
 
-private let loggedInNavItems = View<User?> { user in
-  user.map { user in
-    [
+  ul([`class`([Class.layout.right, Class.type.list.reset, Class.margin.all(0)])], [
+    li([`class`([Class.layout.inline])], [
       a([href("#"), `class`([Class.padding.leftRight(1)])], ["Account"])
-    ]
-    }
-    ?? []
+      ]),
+
+    li([`class`([Class.layout.inline])], [
+      a([href(path(to: .logout)), `class`([Class.padding.leftRight(1)])], ["Logout"])
+      ]),
+    ])
 }
 
-private let loggedOutNavItems = View<Prelude.Unit> { _ in
-  [
-    a([href(path(to: .login(redirect: nil))), `class`([Class.padding.leftRight(1)])], ["Login"]),
-    a([href(path(to: .pricing(unit))), `class`([Class.padding.leftRight(1)])], ["Subscribe"]),
-  ]
+private let loggedOutNavItems = View<URLRequest> { request in
+
+  ul([`class`([Class.layout.right, Class.type.list.reset, Class.margin.all(0)])], [
+    li([`class`([Class.layout.inline])], [
+      a([href(path(to: .login(redirect: request.url?.absoluteString))), `class`([Class.padding.leftRight(1)])], ["Login"])
+      ]),
+    li([`class`([Class.layout.inline])], [
+      a([href(path(to: .pricing(unit))), `class`([Class.padding.leftRight(1)])], ["Subscribe"])
+      ]),
+    ])
 }

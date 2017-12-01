@@ -140,8 +140,10 @@ private func authTokenMiddleware(
           .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .flatMap { env in
-        AppEnvironment.current.fetchUser(env.accessToken).bimap(const(unit), const(env))
-          <|> AppEnvironment.current.createUser(env).bimap(const(unit), const(env))
+        // todo: fetch or create aint working
+//        AppEnvironment.current.fetchUser(env.accessToken).bimap(const(unit), const(env))
+//          <|>
+          AppEnvironment.current.createUser(env).bimap(const(unit), const(env))
       }
       .run
       .flatMap { gitHubUserEnvelope in

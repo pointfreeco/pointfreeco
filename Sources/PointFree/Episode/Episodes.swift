@@ -8,27 +8,23 @@ import Prelude
 import Styleguide
 
 let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
-  fetchEpisodes
+  map(episodes(for:))
+    >>> setupGlobals
+    >-> writeStatus(.ok)
     >-> respond(episodesDocumentView.map(addGoogleAnalytics))
 
-private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Tag?>) -> IO<Conn<HeadersOpen, ([Episode], Tag?)>> {
+private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?) {
+  return (
+    episodes: episodes
+      .filter { tag.map($0.tags.contains) != .some(false) }
+      .sorted(by: get(\.sequence))
+      .reversed(),
 
-  return conn.map(
-    const(
-      (
-        episodes: episodes
-          .filter { conn.data.map($0.tags.contains) != .some(false) }
-          .sorted(by: get(\.sequence))
-          .reversed(),
-
-        selectedTag: conn.data
-      )
-    )
-    )
-    |> writeStatus(.ok)
+    selectedTag: tag
+  )
 }
 
-private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
+private let episodesDocumentView = View<GlobalVars<(episodes: [Episode], selectedTag: Tag?)>> { globals in
   document(
     [
       html(
@@ -40,8 +36,8 @@ private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
               ]
           ),
           body(
-            navView.view(nil)
-              <> episodesView.view((eps, selectedTag))
+            navView.view(globals.map(const(unit)))
+              <> episodesView.view(globals.continuation)
               <> footerView.view(unit)
           )
         ]
@@ -50,7 +46,7 @@ private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
   )
 }
 
-private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
+private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps, selectedTag in
   gridRow([
     gridColumn(
       sizes: [.xs: 12, .md: 9], [

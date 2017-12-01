@@ -5,7 +5,8 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
+  requestLogger
+    <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
     <<< basicAuth(

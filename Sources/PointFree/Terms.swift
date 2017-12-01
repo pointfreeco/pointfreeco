@@ -9,12 +9,12 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
-let termsResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  writeStatus(.ok)
-    >-> fetchCurrentUser
+let termsResponse =
+  setupGlobals
+    >-> writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<CurrentUser<Prelude.Unit>> { currentUser in
+private let termsView = View<GlobalVars<Prelude.Unit>> { globals in
   document([
     html([
       head([
@@ -22,7 +22,7 @@ private let termsView = View<CurrentUser<Prelude.Unit>> { currentUser in
         style(styleguide),
         title("Terms of Service")
         ]),
-      body(navView.view(currentUser.user) + [
+      body(navView.view(globals) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

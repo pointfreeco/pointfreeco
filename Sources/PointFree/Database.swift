@@ -1,36 +1,7 @@
 import Either
 import Foundation
 import Prelude
-
-#if os(iOS)
-  enum PostgreSQL {
-    enum ConnInfo {
-      case basic(String, Int, String, String, String)
-    }
-    struct Database {
-      init(_ connInfo: ConnInfo) throws {
-      }
-      func makeConnection() throws -> Connection {
-        return Connection()
-      }
-    }
-    struct Connection {
-      func execute(_ query: String, _ representable: [NodeRepresentable] = []) throws -> Node {
-        return Node()
-      }
-    }
-    public typealias NodeRepresentable = Any
-    struct Node {
-      subscript(_: Int, _: String) -> Node? {
-        return nil
-      }
-      var int: Int?
-      var string: String?
-    }
-  }
-#else
-  import PostgreSQL
-#endif
+import PostgreSQL
 
 public struct User {
   let email: String
@@ -137,23 +108,21 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
-    WHERE "github_token" = $1
+    WHERE "github_access_token" = $1
     LIMIT 1
     """,
     [token.accessToken]
     )
     .map { result -> User? in
-      let uuid = result[3, "id"].flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
-
-      let subscriptionId = result[5, "subscription_id"]
-        .flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
+      let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
 
       return curry(User.init)
-        <¢> result[0, "email"]?.string
-        <*> result[1, "github_user_id"]?.int
-        <*> result[2, "github_access_token"]?.string
+        <¢> result["email"]?.array?.first?.wrapped.string
+        <*> result["github_user_id"]?.array?.first?.wrapped.int
+        <*> result["github_access_token"]?.array?.first?.wrapped.string
         <*> uuid
-        <*> result[4, "name"]?.string
+        <*> result["name"]?.array?.first?.wrapped.string
         <*> .some(subscriptionId)
   }
 }
