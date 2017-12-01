@@ -3,6 +3,7 @@ import Foundation
 import HttpPipeline
 import Optics
 import Prelude
+import UrlFormEncoding
 
 enum Tracking: String {
   case no

@@ -6,7 +6,7 @@ public enum Route {
   case about
   case episode(Either<String, Int>)
   case episodes(tag: Tag?)
-  case githubCallback(code: String, redirect: String?)
+  case githubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
   case login(redirect: String?)
@@ -29,7 +29,7 @@ private let routers: [Router<Route>] = [
 
   Route.iso.githubCallback
     <¢> get %> lit("github-auth")
-    %> queryParam("code", .string) <%> queryParam("redirect", opt(.string))
+    %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
     <% end,
   
   Route.iso.home
