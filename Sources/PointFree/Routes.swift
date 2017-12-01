@@ -54,7 +54,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("home") <% end,
 
   Route.iso.subscribe
-    <¢> post %> lit("subscribe") %> pathParam(.codable) <%> .jsonBody <% end,
+    <¢> post %> lit("subscribe") %> pathParam(.rawRepresentable) <%> .jsonBody <% end,
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
@@ -63,7 +63,7 @@ private let routers: [Router<Route>] = [
 
 // TODO: Move to swift-web
 extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
-  public static var codable: PartialIso {
+  public static var rawRepresentable: PartialIso {
     return .init(
       apply: B.init(rawValue:),
       unapply: { $0.rawValue }
