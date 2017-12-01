@@ -4,6 +4,7 @@
     - base2: "deadbeef-base-2"
     - base3: "deadbeef-base-3"
     - bearer: "deadbeef-bearer"
+  - appEnv: PointFree.EnvVars.AppEnv.development
   - appSecret: "deadbeefdeadbeefdeadbeefdeadbeef"
   - baseUrlString: "http://localhost:8080"
   ▿ basicAuth: PointFree.EnvVars.BasicAuth
