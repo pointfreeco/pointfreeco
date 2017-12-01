@@ -5,21 +5,21 @@ import Prelude
   extension {{ enum.name }} {
     enum iso {
       {% for case in enum.cases %}
-          {% if case.hasAssociatedValue %}
-            {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso(
-              apply: Route.{{ case.name }},
-              unapply: {
-                guard case let .{{ case.name }}(result) = $0 else { return nil }
-                return result
-            })
-          {% else %}
-            {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, Route>(
-              apply: const(.some(.{{ case.name }})),
-              unapply: {
-                guard case .{{ case.name }} = $0 else { return nil }
-                return unit
-            })
-          {% endif %}
+        {% if case.hasAssociatedValue %}
+          {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso(
+            apply: Route.{{ case.name }},
+            unapply: {
+              guard case let .{{ case.name }}(result) = $0 else { return nil }
+              return result
+          })
+        {% else %}
+          {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.{{ case.name }})),
+            unapply: {
+              guard case .{{ case.name }} = $0 else { return nil }
+              return unit
+          })
+        {% endif %}
       {% endfor %}
     }
   }
