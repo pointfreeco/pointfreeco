@@ -49,18 +49,22 @@ public struct AppEnvironment {
 
   public static func with(
     airtableStuff: @escaping AirtableCreateRow = AppEnvironment.current.airtableStuff,
+    createUser: @escaping CreateUser = AppEnvironment.current.createUser,
     envVars: EnvVars = AppEnvironment.current.envVars,
     fetchAuthToken: @escaping FetchAuthToken = AppEnvironment.current.fetchAuthToken,
     fetchGitHubUser: @escaping FetchGitHubUser = AppEnvironment.current.fetchGitHubUser,
+    fetchUser: @escaping FetchUser = AppEnvironment.current.fetchUser,
     sendEmail: @escaping SendEmail = AppEnvironment.current.sendEmail,
     block: @escaping () -> Void) {
 
     self.push(
       env: AppEnvironment.current
         |> \.airtableStuff .~ airtableStuff
+        |> \.createUser .~ createUser
         |> \.envVars .~ envVars
         |> \.fetchAuthToken .~ fetchAuthToken
         |> \.fetchGitHubUser .~ fetchGitHubUser
+        |> \.fetchUser .~ fetchUser
         |> \.sendEmail .~ sendEmail
     )
     block()
