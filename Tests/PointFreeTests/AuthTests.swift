@@ -9,15 +9,20 @@ import XCTest
 
 class AuthTests: TestCase {
   func testAuth() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
+    // NB: It seems that the result of OpenSSL crypto on Linux is not deterministic, although its decryption
+    //     is, so we cannot do snapshot tests on encrypted values :/ We will still run these tests on
+    //     macOS at least.
+    #if !os(Linux)
+      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
+        |> \.allHTTPHeaderFields .~ [
+          "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+      ]
 
-    let conn = connection(from: request)
-    let result = conn |> siteMiddleware
+      let conn = connection(from: request)
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
+    #endif
   }
 
   func testAuth_WithFetchAuthTokenFailure() {

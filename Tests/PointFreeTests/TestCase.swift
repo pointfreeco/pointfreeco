@@ -4,6 +4,7 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
+// sourcery: disableTests
 class TestCase: XCTestCase {
   override func setUp() {
     super.setUp()

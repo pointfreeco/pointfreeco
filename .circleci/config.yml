@@ -1,0 +1,33 @@
+version: 2
+
+jobs:
+  build:
+    macos:
+      xcode: "9.1.0"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Mac Info
+          command: system_profiler SPSoftwareDataType
+
+      - run:
+          name: Install Postgres
+          command: brew install postgresql
+
+      - run:
+          name: Start Postgres
+          command: brew services start postgresql
+
+      - run:
+          name: Run macOS tests
+          command: make test-macos
+          environment:
+            SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
+
+      - run:
+          name: Run Swift tests
+          command: make test-swift
+          environment:
+            SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS

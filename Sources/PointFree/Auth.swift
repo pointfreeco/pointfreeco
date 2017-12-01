@@ -5,6 +5,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
+import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
@@ -12,7 +13,39 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
     >-> respond(secretHomeView)
 
 let githubCallbackResponse =
-  authTokenMiddleware
+  extractGitHubAuthCode
+    <| authTokenMiddleware
+
+/// Middleware transformer to convert the optional GitHub code to a non-optional. In the `nil` case we show
+/// a 400 Bad Request page.
+private func extractGitHubAuthCode(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
+    
+    return { conn in
+      conn.data.code
+        .map { (code: $0, redirect: conn.data.redirect) }
+        .map { conn.map(const($0)) }
+        .map(middleware)
+        ?? (conn |> const(unit) >¢< missingGitHubAuthCodeMiddleware)
+    }
+}
+
+// TODO: Move to HttpPipeline
+private func >¢< <A, B, C, I, J>(
+  lhs: @escaping (A) -> C,
+  rhs: @escaping Middleware<I, J, C, B>
+  )
+  -> Middleware<I, J, A, B> {
+
+    return map(lhs) >>> rhs
+}
+
+/// Middleware to run when the GitHub auth code is missing.
+private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+  writeStatus(.badRequest)
+    >-> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
@@ -144,13 +177,19 @@ private let githubAuthorizationUrl =
     + AppEnvironment.current.envVars.gitHub.clientId
 private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
 
-  let params: [String: String] = [
-    "scope": "user:email",
-    "client_id": AppEnvironment.current.envVars.gitHub.clientId,
-    "redirect_uri": url(to: .githubCallback(code: "", redirect: redirect))
+  let params: [(String, String)] = [
+    ("scope", "user:email"),
+    ("client_id", AppEnvironment.current.envVars.gitHub.clientId),
+    ("redirect_uri", url(to: .githubCallback(code: nil, redirect: redirect)))
   ]
 
-  return "https://github.com/login/oauth/authorize?\(urlFormEncode(value: params))"
+  let queryString = params
+    .map { key, value in
+      key + "=" + (value.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) ?? "")
+    }
+    .joined(separator: "&")
+
+  return "https://github.com/login/oauth/authorize?\(queryString)"
 }
 
 private let githubSessionCookieName = "github_session"
