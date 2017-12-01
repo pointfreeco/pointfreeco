@@ -137,7 +137,7 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
-    WHERE "github_token" = $1
+    WHERE "github_access_token" = $1
     LIMIT 1
     """,
     [token.accessToken]
