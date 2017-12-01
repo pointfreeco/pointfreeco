@@ -48,7 +48,7 @@ public let episodeView = View<Episode> { ep in
 
       body(
         [`class`([Class.pf.colors.bg.dark])],
-        navView.view(unit) <> [
+        navView.view(nil) <> [
           gridRow([
             gridColumn(
               sizes: [.xs: 12, .md: 7],

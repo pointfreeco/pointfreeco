@@ -40,7 +40,7 @@ private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
               ]
           ),
           body(
-            navView.view(unit)
+            navView.view(nil)
               <> episodesView.view((eps, selectedTag))
               <> footerView.view(unit)
           )

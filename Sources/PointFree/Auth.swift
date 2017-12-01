@@ -32,16 +32,6 @@ private func extractGitHubAuthCode(
     }
 }
 
-// TODO: Move to HttpPipeline
-private func >¢< <A, B, C, I, J>(
-  lhs: @escaping (A) -> C,
-  rhs: @escaping Middleware<I, J, C, B>
-  )
-  -> Middleware<I, J, A, B> {
-
-    return map(lhs) >>> rhs
-}
-
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.badRequest)
@@ -192,7 +182,7 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return "https://github.com/login/oauth/authorize?\(queryString)"
 }
 
-private let githubSessionCookieName = "github_session"
+let githubSessionCookieName = "github_session"
 
 extension CharacterSet {
   fileprivate static let urlQueryParamAllowed = CharacterSet(charactersIn: "?=&# ").inverted

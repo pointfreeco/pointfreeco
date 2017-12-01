@@ -1,5 +1,6 @@
 import Css
 import Html
+import HttpPipeline
 import Prelude
 import Styleguide
 
@@ -68,4 +69,14 @@ extension CssSelector {
       return id
     }
   }
+}
+
+// TODO: Move to HttpPipeline
+public func >¢< <A, B, C, I, J>(
+  lhs: @escaping (A) -> C,
+  rhs: @escaping Middleware<I, J, C, B>
+  )
+  -> Middleware<I, J, A, B> {
+
+    return map(lhs) >>> rhs
 }

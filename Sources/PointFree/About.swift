@@ -18,7 +18,7 @@ private let aboutView = View<Prelude.Unit> { _ in
         style(styleguide),
         title("About Us")
         ]),
-      body(navView.view(unit) + [
+      body(navView.view(nil) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [
