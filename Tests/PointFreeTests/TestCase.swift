@@ -10,7 +10,7 @@ class TestCase: XCTestCase {
     super.setUp()
 
     AppEnvironment.push(
-      env: .init(
+      .init(
         airtableStuff: const(const(pure(unit))),
         createUser: const(pure(unit)),
         envVars: EnvVars(),
