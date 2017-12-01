@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 
 let termsResponse =
-  setupGlobals
+  requestContextMiddleware
     >-> writeStatus(.ok)
     >-> respond(termsView)
 

@@ -7,7 +7,7 @@ import Prelude
 import Styleguide
 
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  setupGlobals
+  requestContextMiddleware
     >-> writeStatus(.ok)
     >-> respond(aboutView)
 

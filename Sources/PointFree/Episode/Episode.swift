@@ -13,7 +13,7 @@ let episodeResponse =
   map(episode(for:))
     >>> (
       requireSome(notFoundView: episodeNotFoundView)
-        <| setupGlobals
+        <| requestContextMiddleware
         >-> writeStatus(.ok)
         >-> respond(
           episodeView.map(addHighlightJs >>> addGoogleAnalytics)

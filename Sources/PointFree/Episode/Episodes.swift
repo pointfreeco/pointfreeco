@@ -9,7 +9,7 @@ import Styleguide
 
 let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
   map(episodes(for:))
-    >>> setupGlobals
+    >>> requestContextMiddleware
     >-> writeStatus(.ok)
     >-> respond(episodesDocumentView.map(addGoogleAnalytics))
 
