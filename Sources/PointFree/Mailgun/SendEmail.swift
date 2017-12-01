@@ -25,7 +25,9 @@ func sendEmail(
         to: to,
         cc: nil,
         bcc: nil,
-        subject: subject,
+        subject: AppEnvironment.current.envVars.appEnv == .production
+          ? subject
+          : "[\(AppEnvironment.current.envVars.appEnv)] " + subject,
         text: plain,
         html: html,
         testMode: nil,

@@ -2,6 +2,7 @@ import Foundation
 
 public struct EnvVars: Codable {
   var airtable = Airtable()
+  var appEnv = AppEnv.development
   var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
   var baseUrlString = "http://localhost:8080"
   var basicAuth = BasicAuth()
@@ -11,6 +12,7 @@ public struct EnvVars: Codable {
   var stripe = Stripe()
 
   private enum CodingKeys: String, CodingKey {
+    case appEnv = "APP_ENV"
     case appSecret = "APP_SECRET"
     case baseUrlString = "BASE_URL"
   }
@@ -27,6 +29,12 @@ public struct EnvVars: Codable {
       case base3 = "AIRTABLE_BASE_3"
       case bearer = "AIRTABLE_BEARER"
     }
+  }
+
+  public enum AppEnv: String, Codable {
+    case development
+    case staging
+    case production
   }
 
   public struct BasicAuth: Codable {
@@ -87,6 +95,7 @@ extension EnvVars {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     self.airtable = try .init(from: decoder)
+    self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
     self.appSecret = try values.decode(String.self, forKey: .appSecret)
     self.baseUrlString = try values.decode(String.self, forKey: .baseUrlString)
     self.basicAuth = try .init(from: decoder)
@@ -100,6 +109,7 @@ extension EnvVars {
     var container = encoder.container(keyedBy: CodingKeys.self)
 
     try self.airtable.encode(to: encoder)
+    try container.encode(self.appEnv, forKey: .appEnv)
     try container.encode(self.appSecret, forKey: .appSecret)
     try container.encode(self.baseUrlString, forKey: .baseUrlString)
     try self.basicAuth.encode(to: encoder)
