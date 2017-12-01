@@ -1,6 +1,8 @@
 import Css
+import Foundation
 import Html
 import HttpPipeline
+import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
@@ -79,4 +81,21 @@ public func >¢< <A, B, C, I, J>(
   -> Middleware<I, J, A, B> {
 
     return map(lhs) >>> rhs
+}
+
+// TODO: Move to HttpPipeline
+public func requireSome<A>(
+  notFoundView: View<Prelude.Unit>
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
+
+    return { middleware in
+      return { conn in
+        return conn.data
+          .map { conn.map(const($0)) }
+          .map(middleware)
+          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+      }
+    }
 }

@@ -9,22 +9,6 @@ import Optics
 import Prelude
 import Styleguide
 
-private func requireSome<A>(
-  notFoundView: View<Prelude.Unit>
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
-
-    return { middleware in
-      return { conn in
-        return conn.data
-          .map { conn.map(const($0)) }
-          .map(middleware)
-          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
-      }
-    }
-}
-
 let episodeResponse =
   map(episode(for:))
     >>> (
@@ -42,13 +26,13 @@ private func episode(for param: Either<String, Int>) -> Episode? {
   })
 }
 
-private let episodeView = View<GlobalVars<Episode>> { globals in
+private let episodeView = View<RequestContext<Episode>> { globals in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(globals.continuation.sequence): \(globals.continuation.title)"),
+        title("Episode #\(globals.data.sequence): \(globals.data.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
@@ -58,7 +42,7 @@ private let episodeView = View<GlobalVars<Episode>> { globals in
           gridRow([
             gridColumn(
               sizes: [.xs: 12, .md: 7],
-              transcriptView.view(globals.continuation)
+              transcriptView.view(globals.data)
             ),
 
             gridColumn(
@@ -67,7 +51,7 @@ private let episodeView = View<GlobalVars<Episode>> { globals in
               [
                 div(
                   [`class`([Class.position.sticky(.md), Class.position.top0])],
-                  topLevelEpisodeInfoView.view(globals.continuation)
+                  topLevelEpisodeInfoView.view(globals.data)
                 )
               ]
             ),
@@ -213,6 +197,8 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
+        style(renderedNormalizeCss),
+        style(styleguide),
         ]),
       body(
         [

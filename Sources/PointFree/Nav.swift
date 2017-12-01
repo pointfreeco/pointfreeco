@@ -8,21 +8,21 @@ import Optics
 import Styleguide
 import Prelude
 
-struct GlobalVars<A> {
-  private(set) var continuation: A
+struct RequestContext<A> {
+  private(set) var data: A
   private(set) var currentUser: User? = nil
   private(set) var currentRequest: URLRequest
 
-  func map<B>(_ f: (A) -> B) -> GlobalVars<B> {
+  func map<B>(_ f: (A) -> B) -> RequestContext<B> {
     return .init(
-      continuation: f(self.continuation),
+      data: f(self.data),
       currentUser: self.currentUser,
       currentRequest: self.currentRequest
     )
   }
 }
 
-func map<A, B>(_ f: @escaping (A) -> B) -> (GlobalVars<A>) -> GlobalVars<B> {
+func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext<B> {
   return { $0.map(f) }
 }
 
@@ -39,13 +39,13 @@ private func extractedGitHubUserEnvelope<I, A>(from conn: Conn<I, A>) -> GitHubU
 
 func setupGlobals<A>(
   _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<StatusLineOpen, GlobalVars<A>>> {
+  ) -> IO<Conn<StatusLineOpen, RequestContext<A>>> {
 
   return pure(
     conn.map(
       const(
-        GlobalVars(
-          continuation: conn.data,
+        RequestContext(
+          data: conn.data,
           currentUser: nil,
           currentRequest: conn.request
         )
@@ -71,7 +71,7 @@ func _fetch<A, I>(currentUser keyPath: WritableKeyPath<A, User?>) -> Middleware<
   }
 }
 
-let navView = View<GlobalVars<Prelude.Unit>> { globals in
+let navView = View<RequestContext<Prelude.Unit>> { globals in
   [
     gridRow([`class`([Class.pf.navBar, Class.grid.between(.xs), Class.pf.colors.bg.light]), style(height(.px(64)))], [
       gridColumn(
@@ -107,7 +107,7 @@ private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
     ])
 }
 
-private let personalizedNavItems = View<GlobalVars<Prelude.Unit>> { globals in
+private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { globals in
   globals.currentUser.map(loggedInNavItems.view)
     ?? loggedOutNavItems.view(globals.currentRequest)
 }
