@@ -14,7 +14,7 @@ let termsResponse =
     >-> writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<RequestContext<Prelude.Unit>> { globals in
+private let termsView = View<RequestContext<Prelude.Unit>> { context in
   document([
     html([
       head([
@@ -23,7 +23,7 @@ private let termsView = View<RequestContext<Prelude.Unit>> { globals in
         title("Terms of Service")
         ]),
       body(
-        navView.view(globals) + [
+        navView.view(context) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

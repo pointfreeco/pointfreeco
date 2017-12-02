@@ -26,23 +26,23 @@ private func episode(for param: Either<String, Int>) -> Episode? {
   })
 }
 
-private let episodeView = View<RequestContext<Episode>> { globals in
+let episodeView = View<RequestContext<Episode>> { context in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(globals.data.sequence): \(globals.data.title)"),
+        title("Episode #\(context.data.sequence): \(context.data.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
       body(
         [`class`([Class.pf.colors.bg.dark])],
-        navView.view(globals.map(const(unit))) <> [
+        navView.view(context.map(const(unit))) <> [
           gridRow([
             gridColumn(
               sizes: [.xs: 12, .md: 7],
-              transcriptView.view(globals.data)
+              transcriptView.view(context.data)
             ),
 
             gridColumn(
@@ -51,7 +51,7 @@ private let episodeView = View<RequestContext<Episode>> { globals in
               [
                 div(
                   [`class`([Class.position.sticky(.md), Class.position.top0])],
-                  topLevelEpisodeInfoView.view(globals.data)
+                  topLevelEpisodeInfoView.view(context.data)
                 )
               ]
             ),

@@ -650,20 +650,36 @@
   letter-spacing : 0.54pt;
 }
 
-.line-height-1 {
+.lh-0 {
   line-height : 1.15;
 }
 
-.line-height-2 {
+.lh-1 {
   line-height : 1.25;
 }
 
-.line-height-3 {
+.lh-2 {
   line-height : 1.45;
 }
 
-.line-height-4 {
+.lh-3 {
   line-height : 1.5;
+}
+
+.lh-1r {
+  line-height : 1rem;
+}
+
+.lh-2r {
+  line-height : 2rem;
+}
+
+.lh-3r {
+  line-height : 3rem;
+}
+
+.lh-4r {
+  line-height : 4rem;
 }
 
 .font-family-inherit {

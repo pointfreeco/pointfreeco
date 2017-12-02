@@ -24,7 +24,7 @@ private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?)
   )
 }
 
-private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { globals in
+private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { context in
   document(
     [
       html(
@@ -36,8 +36,8 @@ private let episodesDocumentView = View<RequestContext<(episodes: [Episode], sel
               ]
           ),
           body(
-            navView.view(globals.map(const(unit)))
-              <> episodesView.view(globals.data)
+            navView.view(context.map(const(unit)))
+              <> episodesView.view(context.data)
               <> footerView.view(unit)
           )
         ]

@@ -8,25 +8,24 @@ import XCTest
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
+import WebKit
 
 class EpisodeTests: TestCase {
-//  func testHome() {
-//    let request = URLRequest(url: URL(string: "https://localhost:8080/episodes/ep6-the-algebra-of-predicates-and-sorting-functions")!)
-//      |> \.allHTTPHeaderFields .~ [
-//        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-//    ]
-//
-//    let conn = connection(from: request)
-//    let result = conn |> siteMiddleware
-//
-//    assertSnapshot(matching: result.perform(), record: true)
-//    assertWebPageSnapshot(matching: result.perform(), record: true)
-//  }
+  func testHome() {
+    let request = URLRequest(url: URL(string: url(to: Route.episode(.left(episodes.first!.slug))))!)
+      |> \.allHTTPHeaderFields .~ [
+        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+    ]
 
-  func testEpisodeHtml() {
-    assertSnapshot(
-      matching: prettyPrint(nodes: episodeView.view(episodes.last!), pageWidth: 220),
-      pathExtension: "html"
-    )
+    let conn = connection(from: request)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+
+    let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1800))
+    webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+    if #available(OSX 10.13, *) {
+      assertSnapshot(matching: webView)
+    }
   }
 }

@@ -30,6 +30,18 @@ body {
   box-sizing         : inherit;
 }
 
+.fg-dark {
+  color : #222;
+}
+
+.fg-light {
+  background-color : #888;
+}
+
+.fg-white {
+  color : #fff;
+}
+
 .bg-dark {
   background-color : #121212;
 }
@@ -42,16 +54,12 @@ body {
   background-color : #fff;
 }
 
-.fg-dark {
-  color : #222;
+.bg-black {
+  background-color : #121212;
 }
 
-.fg-light {
-  background-color : #888;
-}
-
-.fg-white {
-  color : #fff;
+.bg-purple {
+  background-color : #974DFF;
 }
 
 .code {
@@ -213,17 +221,6 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
   margin-bottom : 0.5rem;
   margin-right  : 0;
   margin-left   : 0;
-}
-
-.pf-navbar {
-  height           : 64px;
-  line-height      : 64px;
-  background-color : #974DFF;
-  color            : #fff;
-  padding-top      : 0;
-  padding-bottom   : 0;
-  padding-right    : 2rem;
-  padding-left     : 2rem;
 }
 
 .pf-navbar a, .pf-navbar a:link {
@@ -881,20 +878,36 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
   letter-spacing : 0.54pt;
 }
 
-.line-height-1 {
+.lh-0 {
   line-height : 1.15;
 }
 
-.line-height-2 {
+.lh-1 {
   line-height : 1.25;
 }
 
-.line-height-3 {
+.lh-2 {
   line-height : 1.45;
 }
 
-.line-height-4 {
+.lh-3 {
   line-height : 1.5;
+}
+
+.lh-1r {
+  line-height : 1rem;
+}
+
+.lh-2r {
+  line-height : 2rem;
+}
+
+.lh-3r {
+  line-height : 3rem;
+}
+
+.lh-4r {
+  line-height : 4rem;
 }
 
 .font-family-inherit {
