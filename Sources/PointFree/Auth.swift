@@ -12,7 +12,7 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
     >-> readGitHubSessionCookieMiddleware
     >-> respond(secretHomeView)
 
-let githubCallbackResponse =
+let gitHubCallbackResponse =
   extractGitHubAuthCode
     <| authTokenMiddleware
 
@@ -49,15 +49,15 @@ private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, Response
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
-  { $0 |> redirect(to: githubAuthorizationUrl(withRedirect: $0.data)) }
+  { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(key: githubSessionCookieName))
+    headersMiddleware: writeHeader(.clearCookie(key: gitHubSessionCookieName))
     )
 
-private let secretHomeView = View<Either<Prelude.Unit, GitHubUserEnvelope>> { data in
+private let secretHomeView = View<Either<Prelude.Unit, GitHub.UserEnvelope>> { data in
   [
     p(["welcome home"]),
 
@@ -98,11 +98,11 @@ extension URLRequest {
 private func readGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Prelude.Unit>
   )
-  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHubUserEnvelope>>> {
+  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHub.UserEnvelope>>> {
 
     return pure <| conn.map(
       const(
-        conn.request.cookies[githubSessionCookieName]
+        conn.request.cookies[gitHubSessionCookieName]
           .flatMap {
             ResponseHeader
               .verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
@@ -114,14 +114,14 @@ private func readGitHubSessionCookieMiddleware(
 }
 
 private func writeGitHubSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, GitHubUserEnvelope>
+  _ conn: Conn<HeadersOpen, GitHub.UserEnvelope>
   )
-  -> IO<Conn<HeadersOpen, GitHubUserEnvelope>> {
+  -> IO<Conn<HeadersOpen, GitHub.UserEnvelope>> {
 
     return conn |> writeHeaders(
       [
         ResponseHeader.setSignedCookie(
-          key: githubSessionCookieName,
+          key: gitHubSessionCookieName,
           value: conn.data,
           options: [],
           secret: AppEnvironment.current.envVars.appSecret,
@@ -144,14 +144,14 @@ private func authTokenMiddleware(
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
-    return AppEnvironment.current.fetchAuthToken(conn.data.code)
+    return AppEnvironment.current.gitHub.fetchAuthToken(conn.data.code)
       .flatMap { token in
-        AppEnvironment.current.fetchGitHubUser(token)
-          .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
+        AppEnvironment.current.gitHub.fetchUser(token)
+          .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .flatMap { env in
-        AppEnvironment.current.fetchUser(env.accessToken).bimap(const(unit), const(env))
-          <|> AppEnvironment.current.createUser(env).bimap(const(unit), const(env))
+        AppEnvironment.current.database.fetchUser(env.accessToken).bimap(const(unit), const(env))
+          <|> AppEnvironment.current.database.createUser(env).bimap(const(unit), const(env))
       }
       .run
       .flatMap { gitHubUserEnvelope in
@@ -172,15 +172,12 @@ private func authTokenMiddleware(
     }
 }
 
-private let githubAuthorizationUrl =
-  "https://github.com/login/oauth/authorize?scope=user:email&client_id="
-    + AppEnvironment.current.envVars.gitHub.clientId
-private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
+private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
 
   let params: [(String, String)] = [
     ("scope", "user:email"),
     ("client_id", AppEnvironment.current.envVars.gitHub.clientId),
-    ("redirect_uri", url(to: .githubCallback(code: nil, redirect: redirect)))
+    ("redirect_uri", url(to: .gitHubCallback(code: nil, redirect: redirect)))
   ]
 
   let queryString = params
@@ -192,7 +189,7 @@ private func githubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return "https://github.com/login/oauth/authorize?\(queryString)"
 }
 
-private let githubSessionCookieName = "github_session"
+private let gitHubSessionCookieName = "github_session"
 
 extension CharacterSet {
   fileprivate static let urlQueryParamAllowed = CharacterSet(charactersIn: "?=&# ").inverted
