@@ -84,6 +84,12 @@ public func >¢< <A, B, C, I, J>(
 }
 
 // TODO: Move to HttpPipeline
+
+/// Lifts middleware that operates on non-optional values to one that operates on optionals, but renders
+/// a 404 not found view in place of `nil` values.
+///
+/// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
+/// - Returns: New middleware that operates on optional values.
 public func requireSome<A>(
   notFoundView: View<Prelude.Unit>
   )
