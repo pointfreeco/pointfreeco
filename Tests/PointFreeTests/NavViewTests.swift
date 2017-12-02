@@ -49,7 +49,6 @@ private let testDocView = View<RequestContext<Prelude.Unit>> { context in
   document([
     html([
       head([
-        style(renderedNormalizeCss),
         style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
