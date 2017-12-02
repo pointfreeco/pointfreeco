@@ -160,7 +160,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case let .code(lang):
     return pre([
       code(
-        [`class`([Class.pf.code, CssSelector.class(lang.identifier)])],
+        [`class`([Class.pf.code(lang: lang.identifier)])],
         [.text(encode(block.content))]
       )
       ])
@@ -207,7 +207,7 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
             div([`class`([Class.padding.all(4)])], [
               h5([`class`([Class.h5])], ["Episode not found :("]),
               pre([
-                code([`class`([Class.pf.code, "swift"])], [
+                code([`class`([Class.pf.code(lang: "swift")])], [
                   "f: (A) -> Never"
                   ])
                 ])

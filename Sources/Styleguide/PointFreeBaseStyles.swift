@@ -26,7 +26,9 @@ extension Class {
         public static let white = CssSelector.class("fg-white")
       }
     }
-    public static let code = CssSelector.class("code")
+    public static func code(lang: String?) -> CssSelector {
+      return _codeClass | .class(lang ?? "")
+    }
     public static let inlineCode = CssSelector.class("inline-code")
     public static let opacity25 = CssSelector.class("opacity-25")
     public static let opacity50 = CssSelector.class("opacity-50")
@@ -104,8 +106,9 @@ private let colorStyles =
   foregroundColors
     <> backgroundColors
 
+private let _codeClass = CssSelector.class("code")
 private let codeStyles =
-  Class.pf.code % (
+  _codeClass % (
     display(.block)
       <> backgroundColor(.other("#fafafa"))
       <> fontFamily(["monospace"])

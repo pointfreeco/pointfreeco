@@ -22,10 +22,10 @@ class NavViewTests: TestCase {
     if #available(OSX 10.13, *) {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop", record: true)
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile", record: true)
+      assertSnapshot(matching: webView, named: "mobile")
     }
   }
 
@@ -37,10 +37,10 @@ class NavViewTests: TestCase {
     if #available(OSX 10.13, *) {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop", record: true)
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile", record: true)
+      assertSnapshot(matching: webView, named: "mobile")
     }
   }
 }
