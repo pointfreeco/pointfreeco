@@ -10,7 +10,7 @@ public struct GitHub {
   /// Fetches a GitHub user from an access token.
   var fetchUser: (AccessToken) -> EitherIO<Prelude.Unit, User>
 
-  static let `default` = GitHub(
+  static let live = GitHub(
     fetchAuthToken: PointFree.fetchAuthToken,
     fetchUser: PointFree.fetchUser
   )
