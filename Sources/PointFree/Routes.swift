@@ -66,7 +66,7 @@ extension PartialIso where A == String, B: RawRepresentable, B.RawValue == Strin
   public static var rawRepresentable: PartialIso {
     return .init(
       apply: B.init(rawValue:),
-      unapply: { $0.rawValue }
+      unapply: ^\.rawValue
     )
   }
 }
