@@ -85,7 +85,7 @@ extension PartialIso where A == String, B == Tag {
   public static var tag: PartialIso<String, Tag> {
     return PartialIso<String, Tag>(
       apply: Tag.init(slug:),
-      unapply: get(\.name)
+      unapply: ^\.name
     )
   }
 }
