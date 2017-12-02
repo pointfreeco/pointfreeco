@@ -1,5 +1,5 @@
 import Html
-import HtmlTestSupport
+//import HtmlTestSupport
 import HtmlPrettyPrint
 import SnapshotTesting
 import Prelude
@@ -8,10 +8,12 @@ import XCTest
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
-import WebKit
 import Styleguide
 import HtmlCssSupport
 import SnapshotTesting
+#if !os(Linux)
+  import WebKit
+#endif
 
 class NavViewTests: TestCase {
   func testNav_LoggedOut() {
