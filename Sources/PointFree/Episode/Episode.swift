@@ -143,11 +143,11 @@ private let transcriptView = View<Episode> { ep in
     [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
     [
       strong(
-        [`class`([Class.h6, Class.type.caps, Class.type.lineHeight4])],
+        [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
         [.text(encode("Episode \(ep.sequence)"))]
       ),
       h1(
-        [`class`([Class.h3, Class.type.lineHeight2, Class.margin.top(1)])],
+        [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(1)])],
         [.text(encode(ep.title))]
       ),
       ]
@@ -187,7 +187,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight3])], [
+    return h2([`class`([Class.h4, Class.type.lineHeight(3)])], [
       .text(encode(block.content))
       ])
   }
@@ -201,8 +201,19 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         style(styleguide),
         ]),
       body(
-        [
-        "We couldn't find that episode."
+        minimalNavView.view(unit) <> [
+        gridRow([`class`([Class.grid.center(.xs)])], [
+          gridColumn(sizes: [:], [
+            div([`class`([Class.padding.all(4)])], [
+              h5([`class`([Class.h5])], ["Episode not found :("]),
+              pre([
+                code([`class`([Class.pf.code, "swift"])], [
+                  "f: (A) -> Never"
+                  ])
+                ])
+              ])
+            ])
+          ])
         ] <> footerView.view(unit))
       ])
     ])

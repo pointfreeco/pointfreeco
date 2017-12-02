@@ -127,7 +127,7 @@ private let episodeListItemView = View<Episode> { ep in
     gridColumn(sizes: [.xs: 8], [
       div([
         strong(
-          [`class`([Class.h6, Class.type.caps, Class.type.lineHeight1])],
+          [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(1)])],
           [.text(encode("Episode \(ep.sequence)"))]
         ),
         h5([`class`([Class.pf.type.title3])], [

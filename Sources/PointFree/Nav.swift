@@ -10,21 +10,30 @@ import Prelude
 
 let navView = View<RequestContext<Prelude.Unit>> { globals in
   [
-    gridRow([`class`([Class.pf.navBar, Class.grid.between(.xs), Class.pf.colors.bg.light]), style(height(.px(64)))], [
+    gridRow([`class`([Class.pf.components.navBar, Class.grid.between(.xs)])], [
       gridColumn(
         sizes: [:],
-        [`class`([Class.grid.col(.xs, nil)])],
         unpersonalizedNavItems.view(unit)
       ),
 
       gridColumn(
         sizes: [:],
-        [`class`([Class.grid.col(.xs, nil)])],
         personalizedNavItems.view(globals)
       ),
 
       ]),
-  ]
+    ]
+}
+
+let minimalNavView = View<Prelude.Unit> { _ in
+  [
+    gridRow([`class`([Class.pf.components.minimalNavBar, Class.grid.between(.xs)])], [
+      gridColumn(
+        sizes: [:],
+        unpersonalizedNavItems.view(unit)
+      ),
+      ]),
+    ]
 }
 
 private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
@@ -51,7 +60,7 @@ private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { globals 
 
 private let loggedInNavItems = View<User> { user in
 
-  ul([`class`([Class.layout.right, Class.type.list.reset, Class.margin.all(0)])], [
+  ul([`class`([Class.type.list.reset, Class.margin.all(0)])], [
     li([`class`([Class.layout.inline])], [
       a([href("#"), `class`([Class.padding.leftRight(1)])], ["Account"])
       ]),

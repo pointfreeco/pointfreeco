@@ -4,10 +4,14 @@ import Prelude
 extension Class {
   public enum type {
     public static let caps = CssSelector.class("caps")
-    public static let lineHeight1 = CssSelector.class("line-height-1")
-    public static let lineHeight2 = CssSelector.class("line-height-2")
-    public static let lineHeight3 = CssSelector.class("line-height-3")
-    public static let lineHeight4 = CssSelector.class("line-height-4")
+
+    public static func lineHeight(_ n: Int) -> CssSelector {
+      return CssSelector.class("lh-\(n)")
+    }
+
+    public static func lineHeight(rem n: Int) -> CssSelector {
+      return CssSelector.class("lh-\(n)r")
+    }
 
     public static let bold = CssSelector.class("bold")
     public static let regular = CssSelector.class("regular")
@@ -39,11 +43,9 @@ public let typography: Stylesheet =
     <> listStyles
     <> alignStyles
 
-private let lineHeightStyles =
-  Class.type.lineHeight1 % lineHeight(1.15)
-    <> Class.type.lineHeight2 % lineHeight(1.25)
-    <> Class.type.lineHeight3 % lineHeight(1.45)
-    <> Class.type.lineHeight4 % lineHeight(1.5)
+private let lineHeightStyles: Stylesheet =
+  [1.15, 1.25, 1.45, 1.5].enumerated().map { Class.type.lineHeight($0) % lineHeight($1) }.concat()
+    <> [1, 2, 3, 4].map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }.concat()
 
 private let emphasisStyles: Stylesheet =
   Class.type.bold % fontWeight(.w700)

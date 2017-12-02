@@ -2,16 +2,18 @@ import Foundation
 import HttpPipeline
 import Prelude
 
+/// A value that wraps any given data with additional context that is useful for completing the
+/// request-to-response lifecycle.
 struct RequestContext<A> {
-  private(set) var data: A
   private(set) var currentUser: User? = nil
   private(set) var currentRequest: URLRequest
+  private(set) var data: A
 
   func map<B>(_ f: (A) -> B) -> RequestContext<B> {
     return .init(
-      data: f(self.data),
       currentUser: self.currentUser,
-      currentRequest: self.currentRequest
+      currentRequest: self.currentRequest,
+      data: f(self.data)
     )
   }
 }
@@ -20,6 +22,32 @@ func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext
   return { $0.map(f) }
 }
 
+func requestContextMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<StatusLineOpen, RequestContext<A>>> {
+
+  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+    .map {
+      AppEnvironment.current.fetchUser($0.accessToken)
+        .run
+        .map(get(\.right) >>> flatMap(id))
+    }
+    ?? pure(nil)
+
+  return currentUser.map {
+    conn.map(
+      const(
+        RequestContext(
+          currentUser: $0,
+          currentRequest: conn.request,
+          data: conn.data
+        )
+      )
+    )
+  }
+}
+
+///
 private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHubUserEnvelope? {
   return request.cookies[githubSessionCookieName]
     .flatMap {
@@ -29,38 +57,3 @@ private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHubUser
       )
   }
 }
-
-func requestContextMiddleware<A>(
-  _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<StatusLineOpen, RequestContext<A>>> {
-
-  return pure(
-    conn.map(
-      const(
-        RequestContext(
-          data: conn.data,
-          currentUser: nil,
-          currentRequest: conn.request
-        )
-      )
-    )
-    )
-    >>- _fetch(currentUser: \.currentUser)
-}
-
-func _fetch<A, I>(currentUser keyPath: WritableKeyPath<A, User?>) -> Middleware<I, I, A, A> {
-
-  return { conn in
-    let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-      .map {
-        AppEnvironment.current.fetchUser($0.accessToken)
-          .run
-          .map(get(\.right) >>> flatMap(id))
-      }
-      ?? pure(nil)
-
-    return (currentUser.map(set(keyPath)) <*> pure(conn.data))
-      .map { conn.map(const($0)) }
-  }
-}
-

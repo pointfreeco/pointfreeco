@@ -17,6 +17,8 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let light = CssSelector.class("bg-light")
         public static let white = CssSelector.class("bg-white")
+        public static let black = CssSelector.class("bg-black")
+        public static let purple = CssSelector.class("bg-purple")
       }
       public enum fg {
         public static let dark = CssSelector.class("fg-dark")
@@ -26,7 +28,6 @@ extension Class {
     }
     public static let code = CssSelector.class("code")
     public static let inlineCode = CssSelector.class("inline-code")
-    public static let navBar = CssSelector.class("pf-navbar")
     public static let opacity25 = CssSelector.class("opacity-25")
     public static let opacity50 = CssSelector.class("opacity-50")
     public static let opacity75 = CssSelector.class("opacity-75")
@@ -39,6 +40,22 @@ extension Class {
       public static let subhead = CssSelector.class("pf-subhead")
       public static let footnote = CssSelector.class("pf-footnote")
       public static let callout = CssSelector.class("pf-callout")
+    }
+
+    public enum components {
+      public static let navBar =
+        _navBar
+          | Class.pf.colors.bg.purple
+          | Class.padding.leftRight(2)
+          | Class.type.lineHeight(rem: 4)
+          | Class.size.height(rem: 4)
+
+      public static let minimalNavBar =
+        _navBar
+          | Class.pf.colors.bg.black
+          | Class.padding.leftRight(2)
+          | Class.type.lineHeight(rem: 3)
+          | Class.size.height(rem: 3)
     }
   }
 }
@@ -72,13 +89,20 @@ private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
-private let colorStyles =
+private let foregroundColors = Class.pf.colors.fg.dark % color(.other("#222"))
+  <> Class.pf.colors.fg.light % backgroundColor(.other("#888"))
+  <> Class.pf.colors.fg.white % color(.other("#fff"))
+
+private let backgroundColors =
   Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
-    <> Class.pf.colors.fg.dark % color(.other("#222"))
-    <> Class.pf.colors.fg.light % backgroundColor(.other("#888"))
-    <> Class.pf.colors.fg.white % color(.other("#fff"))
+    <> Class.pf.colors.bg.black % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
+
+private let colorStyles =
+  foregroundColors
+    <> backgroundColors
 
 private let codeStyles =
   Class.pf.code % (
@@ -192,12 +216,6 @@ private let typeStyles =
         <> textTransform(.uppercase)
 )
 
+private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
-  Class.pf.navBar % (
-    height(.px(64))
-      <> lineHeight(.px(64))
-      <> backgroundColor(Colors.purple)
-      <> color(.other("#fff"))
-      <> padding(topBottom: 0, leftRight: .rem(2))
-  )
-  <> ((Class.pf.navBar ** a) | (Class.pf.navBar ** a & .pseudo(.link))) % color(.other("#fff"))
+  ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
