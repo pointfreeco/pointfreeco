@@ -8,7 +8,7 @@ public struct Database {
   var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
   var migrate: () -> EitherIO<Error, Prelude.Unit>
 
-  static let `default` = Database(
+  static let live = Database(
     createSubscription: PointFree.createSubscription,
     createUser: PointFree.createUser,
     fetchUser: PointFree.fetchUser,

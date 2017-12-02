@@ -17,11 +17,11 @@ public struct Environment {
 
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
-    database: PointFree.Database = .default,
+    database: PointFree.Database = .live,
     envVars: EnvVars = EnvVars(),
-    gitHub: GitHub = .default,
+    gitHub: GitHub = .live,
     sendEmail: @escaping SendEmail = PointFree.mailgunSend,
-    stripe: Stripe = .default) {
+    stripe: Stripe = .live) {
 
     self.airtableStuff = airtableStuff
     self.database = database

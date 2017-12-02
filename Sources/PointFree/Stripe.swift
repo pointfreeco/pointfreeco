@@ -14,7 +14,7 @@ public struct Stripe {
   var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   var fetchSubscription: (String) -> EitherIO<Prelude.Unit, Subscription>
 
-  public static let `default` = Stripe(
+  public static let live = Stripe(
     cancelSubscription: PointFree.cancelSubscription,
     createCustomer: PointFree.createCustomer,
     createSubscription: PointFree.createSubscription,
