@@ -73,7 +73,7 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
   let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
   return (headers ?? [:])
-    |> \.["Authorization"] .~ ("Basic " + secret)
+    |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
 // TODO: move to swift-prelude

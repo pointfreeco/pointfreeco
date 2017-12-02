@@ -188,7 +188,7 @@ private func auth(_ request: URLRequest) -> URLRequest {
 private func attachStripeAuthorization(_ headers: [String: String]?) -> [String: String] {
   let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
   return (headers ?? [:])
-    |> \.["Authorization"] .~ ("Basic " + secret)
+    |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
 public protocol SingleValueCodable: Codable, RawRepresentable {}
