@@ -71,12 +71,6 @@ extension PartialIso where A == String, B: RawRepresentable, B.RawValue == Strin
   }
 }
 
-extension Router where A: Codable {
-  static var jsonBody: Router {
-    return dataBody.map(PartialIso.codableToData.inverted)
-  }
-}
-
 public let router = routers.reduce(.empty, <|>)
 
 public func path(to route: Route) -> String {
