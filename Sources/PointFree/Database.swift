@@ -65,11 +65,11 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
 private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
-      INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
-      VALUES ($1, $2, $3, $4)
-      ON CONFLICT ("github_user_id") DO UPDATE
-      SET "email" = $1, "github_access_token" = $3, "name" = $4
-      """,
+    INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
+    VALUES ($1, $2, $3, $4)
+    ON CONFLICT ("github_user_id") DO UPDATE
+    SET "email" = $1, "github_access_token" = $3, "name" = $4
+    """,
     [
       envelope.gitHubUser.email,
       envelope.gitHubUser.id,
