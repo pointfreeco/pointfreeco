@@ -73,7 +73,7 @@ private let pricingView = View<Prelude.Unit> { _ in
 
               ]),
             form([action("/subscribe"), id("payment-form"), method(.post)], [
-              input([name("plan"), type(.hidden), value(StripeSubscriptionPlan.Id.monthly.rawValue)]),
+              input([name("plan"), type(.hidden), value(Stripe.Plan.Id.monthly.rawValue)]),
               input([name("token"), type(.hidden)]),
               div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
               div([id("card-errors"), role(.alert)], []),

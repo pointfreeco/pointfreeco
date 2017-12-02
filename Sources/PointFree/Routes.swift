@@ -8,14 +8,14 @@ public enum Route: DerivePartialIsos {
   case about
   case episode(Either<String, Int>)
   case episodes(tag: Tag?)
-  case githubCallback(code: String?, redirect: String?)
+  case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(email: String)
   case login(redirect: String?)
   case logout
   case pricing(Prelude.Unit)
   case secretHome
-  case subscribe(StripeSubscriptionPlan.Id, token: String)
+  case subscribe(Stripe.Plan.Id, token: String)
   case terms
 }
 
@@ -30,7 +30,7 @@ private let routers: [Router<Route>] = [
   Route.iso.episodes
     <¢> get %> lit("episodes") %> queryParam("tag", opt(.tag)) <% end,
 
-  Route.iso.githubCallback
+  Route.iso.gitHubCallback
     <¢> get %> lit("github-auth")
     %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
     <% end,
