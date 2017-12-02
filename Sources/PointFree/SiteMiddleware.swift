@@ -59,8 +59,9 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(unit))
       |> secretHomeResponse
 
-  case let .subscribe(stripeToken):
-    fatalError()
+  case let .subscribe(plan, stripeToken):
+    return conn.map(const((plan, stripeToken)))
+      |> subscribeResponse
 
   case .terms:
     return conn.map(const(unit))

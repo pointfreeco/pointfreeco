@@ -15,7 +15,7 @@ public enum Route: DerivePartialIsos {
   case logout
   case pricing(Prelude.Unit)
   case secretHome
-  case subscribe(StripeSubscriptionPlan.Id, StripeToken)
+  case subscribe(StripeSubscriptionPlan.Id, token: String)
   case terms
 }
 
@@ -54,7 +54,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("home") <% end,
 
   Route.iso.subscribe
-    <¢> post %> lit("subscribe") %> pathParam(.rawRepresentable) <%> .jsonBody <% end,
+    <¢> post %> lit("subscribe") %> formField("plan", .rawRepresentable) <%> formField("token") <% end,
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,

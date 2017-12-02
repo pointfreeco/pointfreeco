@@ -18,17 +18,19 @@ func fetchPlan(id: StripeSubscriptionPlan.Id) -> EitherIO<Prelude.Unit, StripeSu
 }
 
 func createCustomer(token: String) -> EitherIO<Prelude.Unit, Customer> {
-  return stripeDataTask("https://api.stripe.com/v1/customers", .post(["token": token]))
+  return stripeDataTask("https://api.stripe.com/v1/customers", .post(["source": token]))
 }
 
 func fetchCustomer(id: String) -> EitherIO<Prelude.Unit, Customer> {
-  return stripeDataTask("https://api.stripe.com/v1/customer/\(id)")
+  return stripeDataTask("https://api.stripe.com/v1/customers/\(id)")
 }
 
-func createSubscription(customer: String, plan: String) -> EitherIO<Prelude.Unit, StripeSubscription> {
+func createStripeSubscription(customer: String, plan: StripeSubscriptionPlan.Id)
+  -> EitherIO<Prelude.Unit, StripeSubscription> {
+
   return stripeDataTask("https://api.stripe.com/v1/subscriptions", .post([
     "customer": customer,
-    "items[0][plan]": plan
+    "items[0][plan]": plan.rawValue
     ]))
 }
 

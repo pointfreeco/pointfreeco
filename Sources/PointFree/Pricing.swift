@@ -72,7 +72,9 @@ private let pricingView = View<Prelude.Unit> { _ in
                 ]),
 
               ]),
-            form([action("/charge"), method(.post), id("payment-form")], [
+            form([action("/subscribe"), id("payment-form"), method(.post)], [
+              input([name("plan"), type(.hidden), value(StripeSubscriptionPlan.Id.monthly.rawValue)]),
+              input([name("token"), type(.hidden)]),
               div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
               div([id("card-errors"), role(.alert)], []),
               button(["Submit Payment"])
@@ -118,7 +120,8 @@ private let pricingView = View<Prelude.Unit> { _ in
                   var errorElement = document.getElementById('card-errors');
                   errorElement.textContent = result.error.message;
                 } else {
-                  alert(JSON.stringify(result.token, null, 2));
+                  form.token.value = result.token.id;
+                  form.submit();
                 }
               });
             });
