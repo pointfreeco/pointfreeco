@@ -21,14 +21,17 @@ extension Class {
         public static let purple = CssSelector.class("bg-purple")
       }
       public enum fg {
-        public static let dark = CssSelector.class("fg-dark")
-        public static let light = CssSelector.class("fg-light")
         public static let white = CssSelector.class("fg-white")
       }
     }
     public static func code(lang: String?) -> CssSelector {
-      return _codeClass | .class(lang ?? "")
+      return _codeClass
+        | .class(lang ?? "")
+        | Class.layout.block
+        | Class.padding.all(3)
+        | Class.layout.overflowAuto(.x)
     }
+
     public static let inlineCode = CssSelector.class("inline-code")
     public static let opacity25 = CssSelector.class("opacity-25")
     public static let opacity50 = CssSelector.class("opacity-50")
@@ -45,6 +48,7 @@ extension Class {
     }
 
     public enum components {
+      /// The standard nav bar style.
       public static let navBar =
         _navBar
           | Class.pf.colors.bg.purple
@@ -52,6 +56,7 @@ extension Class {
           | Class.type.lineHeight(rem: 4)
           | Class.size.height(rem: 4)
 
+      /// A minimal nav bar style.
       public static let minimalNavBar =
         _navBar
           | Class.pf.colors.bg.black
@@ -91,29 +96,20 @@ private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
-private let foregroundColors = Class.pf.colors.fg.dark % color(.other("#222"))
-  <> Class.pf.colors.fg.light % backgroundColor(.other("#888"))
-  <> Class.pf.colors.fg.white % color(.other("#fff"))
-
-private let backgroundColors =
-  Class.pf.colors.bg.dark % backgroundColor(Colors.black)
+private let colorStyles =
+  Class.pf.colors.bg.black50 % color(.other("#808080"))
+    <> Class.pf.colors.fg.white % color(.other("#fff"))
+    <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
     <> Class.pf.colors.bg.black % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
 
-private let colorStyles =
-  foregroundColors
-    <> backgroundColors
-
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
   _codeClass % (
-    display(.block)
-      <> backgroundColor(.other("#fafafa"))
+    backgroundColor(.other("#fafafa"))
       <> fontFamily(["monospace"])
-      <> padding(all: .rem(2))
-      <> overflow(x: .auto)
 )
 
 private let inlineCodeStyles =

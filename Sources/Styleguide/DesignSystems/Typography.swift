@@ -5,12 +5,15 @@ extension Class {
   public enum type {
     public static let caps = CssSelector.class("caps")
 
+    /// Sets the line height to an absolute value. The inputs of 1 through 4 correspond to
+    /// 1.15, 1.25, 1.45, 1.5
     public static func lineHeight(_ n: Int) -> CssSelector {
       return CssSelector.class("lh-\(n)")
     }
 
-    public static func lineHeight(rem n: Int) -> CssSelector {
-      return CssSelector.class("lh-\(n)r")
+    /// Sets the line height to a rem multiple
+    public static func lineHeight(rem: Int) -> CssSelector {
+      return CssSelector.class("lh-\(rem)r")
     }
 
     public static let bold = CssSelector.class("bold")

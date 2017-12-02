@@ -3,6 +3,7 @@ import Prelude
 
 extension Class {
   public enum size {
+    /// Sets the height to a rem multiple.
     public static func height(rem: Int) -> CssSelector {
       return .class("h-\(rem)r")
     }
