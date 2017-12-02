@@ -14,7 +14,7 @@ import Optics
 
 class EpisodeTests: TestCase {
   func testHome() {
-    let request = URLRequest(url: URL(string: url(to: Route.episode(.left(episodes.first!.slug))))!)
+    let request = URLRequest(url: URL(string: url(to: .episode(.left(episodes.first!.slug))))!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]

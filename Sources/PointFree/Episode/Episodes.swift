@@ -33,6 +33,7 @@ private let episodesDocumentView = View<RequestContext<(episodes: [Episode], sel
             [
               style(renderedNormalizeCss),
               style(styleguide),
+              meta(viewport: .width(.deviceWidth), .initialScale(1)),
               ]
           ),
           body(
