@@ -1,6 +1,8 @@
 imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
+	
+bootstrap: xcodeproj postgres-mm sourcery
 
 xcodeproj: sourcery
 	swift package generate-xcodeproj
@@ -48,7 +50,6 @@ postgres-mm:
 	-@mkdir -p "$(POSTGRES_PATH)"
 	-@echo "$$POSTGRES_MODULE_MAP" > "$(POSTGRES_PATH)/module.map"
 	-@echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
-
 
 SDK_PATH = $(shell xcrun --show-sdk-path)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
