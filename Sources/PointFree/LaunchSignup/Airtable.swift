@@ -16,17 +16,7 @@ func createRow(email: String)
           "Content-Type": "application/json"
       ]
 
-      return .init(
-        run: .init { callback in
-          // TODO: make an `IO` helper for `URLSession` that does clean up automatically
-          let session = URLSession(configuration: .default)
-          session
-            .dataTask(with: request) { data, response, error in
-              callback(error == nil ? .right(unit) : .left(unit))
-              session.finishTasksAndInvalidate()
-            }
-            .resume()
-        }
-      )
+      return dataTask(with: request)
+        .bimap(const(unit), const(unit))
     }
 }

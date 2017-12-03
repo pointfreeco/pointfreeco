@@ -3,7 +3,7 @@ import Foundation
 import Prelude
 
 public struct Database {
-  var createSubscription: (StripeSubscription, User) -> EitherIO<Error, Prelude.Unit>
+  var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
   var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
   var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
   var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -31,7 +31,7 @@ public struct Database {
   }
 }
 
-private func createSubscription(with stripeSubscription: StripeSubscription, for user: Database.User)
+private func createSubscription(with stripeSubscription: Stripe.Subscription, for user: Database.User)
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
@@ -179,11 +179,6 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
 #else
   import PostgreSQL
 #endif
-
-/// FIXME: Move to Stripe.swift
-public struct StripeSubscription {
-  let id: String
-}
 
 public enum DatabaseError: Error {
   case invalidUrl

@@ -13,19 +13,22 @@ public struct Environment {
   public private(set) var envVars: EnvVars
   public private(set) var gitHub: GitHub
   public private(set) var sendEmail: SendEmail
+  public private(set) var stripe: Stripe
 
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
     database: PointFree.Database = .live,
     envVars: EnvVars = EnvVars(),
     gitHub: GitHub = .live,
-    sendEmail: @escaping SendEmail = PointFree.mailgunSend) {
+    sendEmail: @escaping SendEmail = PointFree.mailgunSend,
+    stripe: Stripe = .live) {
 
     self.airtableStuff = airtableStuff
     self.database = database
     self.envVars = envVars
     self.gitHub = gitHub
     self.sendEmail = sendEmail
+    self.stripe = stripe
   }
 }
 

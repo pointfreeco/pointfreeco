@@ -15,7 +15,8 @@ class TestCase: XCTestCase {
         database: .mock,
         envVars: EnvVars(),
         gitHub: .mock,
-        sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
+        sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
+        stripe: .mock
       )
     )
   }
@@ -64,5 +65,60 @@ extension GitHub.User {
     email: "hello@pointfree.co",
     id: 1,
     name: "Blob"
+  )
+}
+
+extension Stripe {
+  static let mock = Stripe(
+    cancelSubscription: const(pure(.mock)),
+    createCustomer: const(pure(.mock)),
+    createSubscription: { _, _ in pure(.mock) },
+    fetchCustomer: const(pure(.mock)),
+    fetchPlans: pure(.mock),
+    fetchPlan: const(pure(.mock)),
+    fetchSubscription: const(pure(.mock))
+  )
+}
+
+extension Stripe.Customer {
+  static let mock = Stripe.Customer(
+    id: "cus_test"
+  )
+}
+
+extension Stripe.Plan {
+  static let mock = Stripe.Plan(
+    amount: .init(rawValue: 15_00),
+    created: Date(timeIntervalSinceReferenceDate: 0),
+    currency: .usd,
+    id: .monthly,
+    interval: .month,
+    metadata: [:],
+    name: "Monthly",
+    statementDescriptor: nil
+  )
+}
+
+extension Stripe.PlansEnvelope {
+  static let mock = Stripe.PlansEnvelope(
+    data: [.mock],
+    hasMore: false
+  )
+}
+
+extension Stripe.Subscription {
+  static let mock = Stripe.Subscription(
+    canceledAt: nil,
+    cancelAtPeriodEnd: false,
+    created: Date(timeIntervalSinceReferenceDate: 0),
+    currentPeriodStart: Date(timeIntervalSinceReferenceDate: 0),
+    currentPeriodEnd: Date(timeIntervalSinceReferenceDate: 60 * 60 * 24 * 30),
+    customer: "cus_test",
+    endedAt: nil,
+    id: "sub_test",
+    plan: .mock,
+    quantity: 1,
+    start: Date(timeIntervalSinceReferenceDate: 0),
+    status: .active
   )
 }
