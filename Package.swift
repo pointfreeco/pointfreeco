@@ -7,19 +7,20 @@ let package = Package(
   products: [
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
-  ],
+    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
+    ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("a253396")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
-  ],
+    ],
   targets: [
     .target(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
     .testTarget(
-       name: "StyleguideTests",
-       dependencies: ["Styleguide", "CssTestSupport"]),
+      name: "StyleguideTests",
+      dependencies: ["Styleguide", "CssTestSupport"]),
 
     .target(
       name: "PointFree",
@@ -41,13 +42,18 @@ let package = Package(
     ),
     .testTarget(
       name: "PointFreeTests",
-       dependencies: [
-         "CssTestSupport",
-         "HtmlTestSupport",
-         "HttpPipelineTestSupport",
-         "PointFree",
-         ]
-     ),
-  ],
+      dependencies: [
+        "CssTestSupport",
+        "HtmlTestSupport",
+        "HttpPipelineTestSupport",
+        "PointFree",
+        "PointFreeTestSupport"
+      ]
+    ),
+
+    .target(
+      name: "PointFreeTestSupport",
+      dependencies: ["Either", "PointFree", "Prelude"]),
+    ],
   swiftLanguageVersions: [4]
 )
