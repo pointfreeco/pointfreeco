@@ -22,7 +22,8 @@ extension EnvVarTests {
 }
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
-    ("testHome", testHome)
+    ("testEpisodePage", testEpisodePage),
+    ("testEpisodeNotFound", testEpisodeNotFound)
   ]
 }
 extension EpisodesTests {
