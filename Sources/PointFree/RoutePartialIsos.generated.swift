@@ -24,10 +24,10 @@ import Prelude
                 guard case let .episodes(result) = $0 else { return nil }
                 return result
             })
-            public static let githubCallback = parenthesize <| PartialIso(
-              apply: Route.githubCallback,
+            public static let gitHubCallback = parenthesize <| PartialIso(
+              apply: Route.gitHubCallback,
               unapply: {
-                guard case let .githubCallback(result) = $0 else { return nil }
+                guard case let .gitHubCallback(result) = $0 else { return nil }
                 return result
             })
             public static let home = parenthesize <| PartialIso(
