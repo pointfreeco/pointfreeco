@@ -17,16 +17,22 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let light = CssSelector.class("bg-light")
         public static let white = CssSelector.class("bg-white")
+        public static let black = CssSelector.class("bg-black")
+        public static let purple = CssSelector.class("bg-purple")
       }
       public enum fg {
-        public static let dark = CssSelector.class("fg-dark")
-        public static let light = CssSelector.class("fg-light")
         public static let white = CssSelector.class("fg-white")
       }
     }
-    public static let code = CssSelector.class("code")
+    public static func code(lang: String?) -> CssSelector {
+      return _codeClass
+        | .class(lang ?? "")
+        | Class.layout.block
+        | Class.padding.all(3)
+        | Class.layout.overflowAuto(.x)
+    }
+
     public static let inlineCode = CssSelector.class("inline-code")
-    public static let navBar = CssSelector.class("pf-navbar")
     public static let opacity25 = CssSelector.class("opacity-25")
     public static let opacity50 = CssSelector.class("opacity-50")
     public static let opacity75 = CssSelector.class("opacity-75")
@@ -39,6 +45,24 @@ extension Class {
       public static let subhead = CssSelector.class("pf-subhead")
       public static let footnote = CssSelector.class("pf-footnote")
       public static let callout = CssSelector.class("pf-callout")
+    }
+
+    public enum components {
+      /// The standard nav bar style.
+      public static let navBar =
+        _navBar
+          | Class.pf.colors.bg.purple
+          | Class.padding.leftRight(2)
+          | Class.type.lineHeight(rem: 4)
+          | Class.size.height(rem: 4)
+
+      /// A minimal nav bar style.
+      public static let minimalNavBar =
+        _navBar
+          | Class.pf.colors.bg.black
+          | Class.padding.leftRight(2)
+          | Class.type.lineHeight(rem: 3)
+          | Class.size.height(rem: 3)
     }
   }
 }
@@ -73,20 +97,19 @@ private let resets =
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
 private let colorStyles =
-  Class.pf.colors.bg.dark % backgroundColor(Colors.black)
+  Class.pf.colors.bg.black50 % color(.other("#808080"))
+    <> Class.pf.colors.fg.white % color(.other("#fff"))
+    <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
-    <> Class.pf.colors.fg.dark % color(.other("#222"))
-    <> Class.pf.colors.fg.light % backgroundColor(.other("#888"))
-    <> Class.pf.colors.fg.white % color(.other("#fff"))
+    <> Class.pf.colors.bg.black % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
 
+private let _codeClass = CssSelector.class("code")
 private let codeStyles =
-  Class.pf.code % (
-    display(.block)
-      <> backgroundColor(.other("#fafafa"))
+  _codeClass % (
+    backgroundColor(.other("#fafafa"))
       <> fontFamily(["monospace"])
-      <> padding(all: .rem(2))
-      <> overflow(x: .auto)
 )
 
 private let inlineCodeStyles =
@@ -192,12 +215,6 @@ private let typeStyles =
         <> textTransform(.uppercase)
 )
 
+private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
-  Class.pf.navBar % (
-    height(.px(64))
-      <> lineHeight(.px(64))
-      <> backgroundColor(Colors.purple)
-      <> color(.other("#fff"))
-      <> padding(topBottom: 0, leftRight: .rem(2))
-  )
-  <> ((Class.pf.navBar ** a) | (Class.pf.navBar ** a & .pseudo(.link))) % color(.other("#fff"))
+  ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))

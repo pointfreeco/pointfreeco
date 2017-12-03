@@ -1,23 +1,31 @@
 import Css
 import Prelude
 
+public enum Dimension: String {
+  case x
+  case y
+}
+
 extension Class {
-  public static let layout = (
-    fit: CssSelector.class("fit"),
-    inline: CssSelector.class("inline"),
-    block: CssSelector.class("inline"),
-    inlineBlock: CssSelector.class("inline"),
-    overflowHidden: CssSelector.class("overflow-hidden"),
-    overflowScroll: CssSelector.class("overflow-scroll"),
-    overflowAuto: CssSelector.class("overflow-auto"),
-    clearFix: CssSelector.class("clear-fix"),
-    left: CssSelector.class("left"),
-    right: CssSelector.class("right")
-  )
+  public enum layout {
+    public static let fit = CssSelector.class("fit")
+    public static let inline = CssSelector.class("inline")
+    public static let block = CssSelector.class("block")
+    public static let inlineBlock = CssSelector.class("inline-block")
+    public static let overflowHidden = CssSelector.class("overflow-hidden")
+    public static let overflowScroll = CssSelector.class("overflow-scroll")
+    public static let overflowAuto = CssSelector.class("overflow-auto")
+    public static func overflowAuto(_ dim: Dimension) -> CssSelector {
+      return CssSelector.class("overflow-auto-\(dim)")
+    }
+    public static let clearFix = CssSelector.class("clear-fix")
+    public static let left = CssSelector.class("left")
+    public static let right = CssSelector.class("right")
+  }
 }
 
 public let layoutStyles =
-       Class.layout.inline % display(.inline)
+  Class.layout.inline % display(.inline)
     <> Class.layout.block % display(.block)
     <> Class.layout.inlineBlock % display(.inlineBlock)
     <> ".table" % display(.table)
@@ -25,6 +33,8 @@ public let layoutStyles =
     <> Class.layout.overflowHidden % overflow(.hidden)
     <> Class.layout.overflowScroll % overflow(.scroll)
     <> Class.layout.overflowAuto % overflow(.auto)
+    <> Class.layout.overflowAuto(.x) % overflow(x: .auto)
+    <> Class.layout.overflowAuto(.y) % overflow(y: .auto)
     <> clearFixStyles
     <> floatStyles
     <> widthStyles

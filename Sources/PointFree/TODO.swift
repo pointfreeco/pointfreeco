@@ -2,6 +2,8 @@ import Css
 import Either
 import Foundation
 import Html
+import HttpPipeline
+import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
@@ -70,6 +72,39 @@ extension CssSelector {
       return id
     }
   }
+}
+
+// TODO: Move to HttpPipeline
+public func >¢< <A, B, C, I, J>(
+  lhs: @escaping (A) -> C,
+  rhs: @escaping Middleware<I, J, C, B>
+  )
+  -> Middleware<I, J, A, B> {
+
+    return map(lhs) >>> rhs
+}
+
+// TODO: Move to HttpPipeline
+
+/// Lifts middleware that operates on non-optional values to one that operates on optionals, but renders
+/// a 404 not found view in place of `nil` values.
+///
+/// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
+/// - Returns: New middleware that operates on optional values.
+public func requireSome<A>(
+  notFoundView: View<Prelude.Unit>
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
+
+    return { middleware in
+      return { conn in
+        return conn.data
+          .map { conn.map(const($0)) }
+          .map(middleware)
+          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+      }
+    }
 }
 
 extension EitherIO {

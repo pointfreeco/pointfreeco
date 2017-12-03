@@ -7,10 +7,11 @@ import Prelude
 import Styleguide
 
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  writeStatus(.ok)
+  requestContextMiddleware
+    >-> writeStatus(.ok)
     >-> respond(aboutView)
 
-private let aboutView = View<Prelude.Unit> { _ in
+private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
@@ -18,7 +19,7 @@ private let aboutView = View<Prelude.Unit> { _ in
         style(styleguide),
         title("About Us")
         ]),
-      body(navView.view(unit) + [
+      body(navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

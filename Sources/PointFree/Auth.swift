@@ -32,16 +32,6 @@ private func extractGitHubAuthCode(
     }
 }
 
-// TODO: Move to HttpPipeline
-private func >¢< <A, B, C, I, J>(
-  lhs: @escaping (A) -> C,
-  rhs: @escaping Middleware<I, J, C, B>
-  )
-  -> Middleware<I, J, A, B> {
-
-    return map(lhs) >>> rhs
-}
-
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.badRequest)
@@ -150,6 +140,7 @@ private func authTokenMiddleware(
           .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .flatMap { env in
+        // todo: fetch or create aint working
         AppEnvironment.current.database.fetchUser(env.accessToken).bimap(const(unit), const(env))
           <|> AppEnvironment.current.database.createUser(env).bimap(const(unit), const(env))
       }
@@ -189,7 +180,7 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return "https://github.com/login/oauth/authorize?\(queryString)"
 }
 
-private let gitHubSessionCookieName = "github_session"
+let gitHubSessionCookieName = "github_session"
 
 extension CharacterSet {
   fileprivate static let urlQueryParamAllowed = CharacterSet(charactersIn: "?=&# ").inverted
