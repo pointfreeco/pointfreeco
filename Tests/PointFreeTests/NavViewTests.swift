@@ -21,14 +21,16 @@ class NavViewTests: TestCase {
 
     assertSnapshot(matching: doc.first!)
 
-    if #available(OSX 10.13, *) {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
-      webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-      webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile")
-    }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
+    #endif
   }
 
   func testNav_LoggedIn() {
@@ -36,14 +38,16 @@ class NavViewTests: TestCase {
 
     assertSnapshot(matching: doc.first!)
 
-    if #available(OSX 10.13, *) {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
-      webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 80))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-      webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile")
-    }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
+    #endif
   }
 }
 
