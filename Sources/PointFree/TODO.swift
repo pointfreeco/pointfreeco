@@ -1,4 +1,6 @@
 import Css
+import Either
+import Foundation
 import Html
 import Prelude
 import Styleguide
@@ -69,3 +71,52 @@ extension CssSelector {
     }
   }
 }
+
+extension EitherIO {
+  public func `catch`(_ f: @escaping (E) -> EitherIO) -> EitherIO {
+    return catchE(self, f)
+  }
+
+  public func mapExcept<F, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> EitherIO<F, B> {
+    return .init(
+      run: self.run.map(f)
+    )
+  }
+
+  public func withExcept<F>(_ f: @escaping (E) -> F) -> EitherIO<F, A> {
+    return self.bimap(f, id)
+  }
+}
+
+// TODO: Move to PreludeFoundation?
+
+public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
+  return .init(
+    run: .init { callback in
+      let session = URLSession(configuration: .default)
+      session
+        .dataTask(with: request) { data, response, error in
+          defer { session.invalidateAndCancel() }
+          if let error = error {
+            callback(.left(error))
+          }
+          if let data = data, let response = response {
+            callback(.right((data, response)))
+          }
+        }
+        .resume()
+    }
+  )
+}
+
+public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = nil)
+  -> EitherIO<Error, A>
+  where A: Decodable {
+
+    return dataTask(with: request)
+      .flatMap { data, _ in
+        EitherIO.wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+    }
+}
+
+private let defaultDecoder = JSONDecoder()

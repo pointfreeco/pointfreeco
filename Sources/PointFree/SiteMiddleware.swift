@@ -59,6 +59,10 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(unit))
       |> secretHomeResponse
 
+  case let .subscribe(plan, stripeToken):
+    return conn.map(const((plan, stripeToken)))
+      |> subscribeResponse
+
   case .terms:
     return conn.map(const(unit))
       |> termsResponse
@@ -82,9 +86,22 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .about, .episode, .episodes, .gitHubCallback, .login, .logout, .pricing, .secretHome, .terms:
+  case .about,
+       .episode,
+       .episodes,
+       .gitHubCallback,
+       .login,
+       .logout,
+       .pricing,
+       .secretHome,
+       .subscribe,
+       .terms:
+
     return true
-  case .home, .launchSignup:
+
+  case .home,
+       .launchSignup:
+    
     return false
   }
 }

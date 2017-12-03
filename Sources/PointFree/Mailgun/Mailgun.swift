@@ -66,25 +66,14 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
     |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
     |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
 
-  let session = URLSession(configuration: .default)
-
-  return .init(
-    run: .init { callback in
-      session.dataTask(with: request) { data, response, error in
-        callback(
-          data
-            .flatMap { try? JSONDecoder().decode(SendEmailResponse.self, from: $0) }
-            .map(Either.right)
-            ?? .left(unit)
-        )
-        }
-        .resume()
-    })
+  return jsonDataTask(with: request)
+    .withExcept(const(unit))
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
+  let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
   return (headers ?? [:])
-    |> key("Authorization") .~ ("Basic " + Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString())
+    |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
 // TODO: move to swift-prelude
