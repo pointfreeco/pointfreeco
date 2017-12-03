@@ -9,50 +9,40 @@ import Optics
 import Prelude
 import Styleguide
 
-let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Either<String, Int>, Data> =
-  fetchEpisode
-    >-> responseEpisode
+let episodeResponse =
+  map(episode(for:))
+    >>> (
+      requireSome(notFoundView: episodeNotFoundView)
+        <| requestContextMiddleware
+        >-> writeStatus(.ok)
+        >-> respond(
+          episodeView.map(addHighlightJs >>> addGoogleAnalytics)
+      )
+)
 
-private func fetchEpisode(_ conn: Conn<StatusLineOpen, Either<String, Int>>) -> IO<Conn<HeadersOpen, Episode?>> {
-
-  let possibleEpisode = episodes.first(where: {
-    conn.data.left == .some($0.slug)
-      || conn.data.right == .some($0.id)
+private func episode(for param: Either<String, Int>) -> Episode? {
+  return episodes.first(where: {
+    param.left == .some($0.slug) || param.right == .some($0.id)
   })
-
-  return conn.map(const(possibleEpisode))
-    |> writeStatus(possibleEpisode == nil ? .notFound : .ok)
 }
 
-private func responseEpisode(_ conn: Conn<HeadersOpen, Episode?>) -> IO<Conn<ResponseEnded, Data>> {
-
-  switch conn.data {
-  case .none:
-    return conn.map(const(unit))
-      |> respond(notFoundView)
-  case let .some(ep):
-    return conn.map(const(ep))
-      |> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
-  }
-}
-
-public let episodeView = View<Episode> { ep in
+let episodeView = View<RequestContext<Episode>> { ctx in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(ep.sequence): \(ep.title)"),
+        title("Episode #\(ctx.data.sequence): \(ctx.data.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
       body(
         [`class`([Class.pf.colors.bg.dark])],
-        navView.view(unit) <> [
+        navView.view(ctx.map(const(unit))) <> [
           gridRow([
             gridColumn(
               sizes: [.xs: 12, .md: 7],
-              transcriptView.view(ep)
+              transcriptView.view(ctx.data)
             ),
 
             gridColumn(
@@ -61,7 +51,7 @@ public let episodeView = View<Episode> { ep in
               [
                 div(
                   [`class`([Class.position.sticky(.md), Class.position.top0])],
-                  topLevelEpisodeInfoView.view(ep)
+                  topLevelEpisodeInfoView.view(ctx.data)
                 )
               ]
             ),
@@ -153,11 +143,11 @@ private let transcriptView = View<Episode> { ep in
     [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
     [
       strong(
-        [`class`([Class.h6, Class.type.caps, Class.type.lineHeight4])],
+        [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
         [.text(encode("Episode \(ep.sequence)"))]
       ),
       h1(
-        [`class`([Class.h3, Class.type.lineHeight2, Class.margin.top(1)])],
+        [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(1)])],
         [.text(encode(ep.title))]
       ),
       ]
@@ -170,7 +160,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case let .code(lang):
     return pre([
       code(
-        [`class`([Class.pf.code, CssSelector.class(lang.identifier)])],
+        [`class`([Class.pf.code(lang: lang.identifier)])],
         [.text(encode(block.content))]
       )
       ])
@@ -197,20 +187,34 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight3])], [
+    return h2([`class`([Class.h4, Class.type.lineHeight(3)])], [
       .text(encode(block.content))
       ])
   }
 }
 
-private let notFoundView = View<Prelude.Unit> { _ in
+private let episodeNotFoundView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
+        style(renderedNormalizeCss),
+        style(styleguide),
         ]),
-      body([
-        "Not found..."
-        ])
+      body(
+        minimalNavView.view(unit) <> [
+        gridRow([`class`([Class.grid.center(.xs)])], [
+          gridColumn(sizes: [:], [
+            div([`class`([Class.padding.all(4)])], [
+              h5([`class`([Class.h5])], ["Episode not found :("]),
+              pre([
+                code([`class`([Class.pf.code(lang: "swift")])], [
+                  "f: (Episode) -> Never"
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ] <> footerView.view(unit))
       ])
     ])
 }

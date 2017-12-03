@@ -91,17 +91,15 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     [token.accessToken]
     )
     .map { result -> Database.User? in
-      let uuid = result[3, "id"].flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
-
-      let subscriptionId = result[5, "subscription_id"]
-        .flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
+      let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
 
       return curry(Database.User.init)
-        <¢> result[0, "email"]?.string
-        <*> result[1, "github_user_id"]?.int
-        <*> result[2, "github_access_token"]?.string
+        <¢> result["email"]?.array?.first?.wrapped.string
+        <*> result["github_user_id"]?.array?.first?.wrapped.int
+        <*> result["github_access_token"]?.array?.first?.wrapped.string
         <*> uuid
-        <*> result[4, "name"]?.string
+        <*> result["name"]?.array?.first?.wrapped.string
         <*> .some(subscriptionId)
   }
 }
