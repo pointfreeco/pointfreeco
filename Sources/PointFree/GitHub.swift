@@ -66,3 +66,5 @@ private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude
   return jsonDataTask(with: request)
     .withExcept(const(unit))
 }
+
+private let session = URLSession(configuration: .default)
