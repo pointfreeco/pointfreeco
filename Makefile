@@ -1,7 +1,7 @@
 imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
-	
+
 bootstrap: xcodeproj postgres-mm sourcery
 
 xcodeproj: sourcery
@@ -52,8 +52,7 @@ postgres-mm:
 	-@echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
 
 SDK_PATH = $(shell xcrun --show-sdk-path)
-FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
-POSTGRES_PATH = $(FRAMEWORKS_PATH)/CPostgreSQL.framework
+POSTGRES_PATH = $(SDK_PATH)/System/Library/Frameworks/CPostgreSQL.framework
 define POSTGRES_MODULE_MAP
 module CPostgreSQL [system] {
     header "shim.h"
