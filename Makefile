@@ -43,3 +43,32 @@ route-partial-iso:
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/RoutePartialIsos.stencil \
 		--output ./Sources/PointFree/
+
+postgres-mm:
+	-@mkdir -p "$(POSTGRES_PATH)"
+	-@echo "$$POSTGRES_MODULE_MAP" > "$(POSTGRES_PATH)/module.map"
+	-@echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
+
+
+SDK_PATH = $(shell xcrun --show-sdk-path)
+FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
+POSTGRES_PATH = $(FRAMEWORKS_PATH)/CPostgreSQL.framework
+define POSTGRES_MODULE_MAP
+module CPostgreSQL [system] {
+    header "shim.h"
+    link "pq"
+    export *
+}
+endef
+export POSTGRES_MODULE_MAP
+
+define POSTGRES_SHIM_H
+#ifndef __CPOSTGRESQL_SHIM_H__
+#define __CPOSTGRESQL_SHIM_H__
+
+#include <libpq-fe.h>
+#include <postgres_ext.h>
+
+#endif
+endef
+export POSTGRES_SHIM_H

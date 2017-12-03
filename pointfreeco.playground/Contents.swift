@@ -7,21 +7,22 @@ import PlaygroundSupport
 @testable import PointFree
 import Prelude
 import WebKit
+import Optics
 
-AppEnvironment.push(
-  env: .init(
-    airtableStuff: mockCreateRow(result: .left(unit))
-  )
-)
+//AppEnvironment.push(
+//  env: .init(
+//    airtableStuff: mockCreateRow(result: .left(unit))
+//  )
+//)
 
-var request = URLRequest(url: URL(string: "http://localhost/")!)
+var request = URLRequest(url: URL(string: "http://localhost/episodes/1")!)
+  |> \.allHTTPHeaderFields .~ [
+    "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+]
 
 let conn = connection(from: request)
-let result = conn |> siteMiddleware
-let htmlStr = result.data
-  .flatMap {
-    String(data: $0,  encoding: .utf8)
-}
+let result = (conn |> siteMiddleware).perform()
+let htmlStr = String.init(data: result.data, encoding: .utf8)
 
 let liveView: NSView
 if let htmlStr = htmlStr {
@@ -30,7 +31,7 @@ if let htmlStr = htmlStr {
   liveView = webView  
 } else {
   let responseLabel = NSTextField(frame: .init(x: 0, y: 0, width: 375, height: 667))
-  responseLabel.stringValue = result.response.body.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+  responseLabel.stringValue = String(data: result.response.body, encoding: .utf8) ?? ""
   liveView = responseLabel
 }
 

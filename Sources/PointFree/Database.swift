@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import Prelude
+import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
@@ -147,36 +148,6 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .map(const(unit))
 }
-
-#if os(iOS)
-  enum PostgreSQL {
-    enum ConnInfo {
-      case basic(String, Int, String, String, String)
-    }
-    struct Database {
-      init(_ connInfo: ConnInfo) throws {
-      }
-      func makeConnection() throws -> Connection {
-        return Connection()
-      }
-    }
-    struct Connection {
-      func execute(_ query: String, _ representable: [NodeRepresentable] = []) throws -> Node {
-        return Node()
-      }
-    }
-    public typealias NodeRepresentable = Any
-    struct Node {
-      subscript(_: Int, _: String) -> Node? {
-        return nil
-      }
-      var int: Int?
-      var string: String?
-    }
-  }
-#else
-  import PostgreSQL
-#endif
 
 public enum DatabaseError: Error {
   case invalidUrl
