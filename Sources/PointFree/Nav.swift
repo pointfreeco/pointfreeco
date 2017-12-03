@@ -27,7 +27,7 @@ let navView = View<RequestContext<Prelude.Unit>> { context in
 
 let minimalNavView = View<Prelude.Unit> { _ in
   [
-    gridRow([`class`([Class.pf.components.minimalNavBar, Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.pf.components.minimalNavBar])], [
       gridColumn(
         sizes: [:],
         unpersonalizedNavItems.view(unit)
