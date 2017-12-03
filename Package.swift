@@ -1,6 +1,15 @@
 // swift-tools-version:4.0
-
+import Foundation
 import PackageDescription
+
+let episodesDependency: Package.Dependency
+if ProcessInfo.processInfo.environment["ENV"] == "OSS" {
+  episodesDependency = .package(url: "https://github.com/pointfreeco/episodes-oss.git", .revision("c2741dd"))
+} else if ProcessInfo.processInfo.environment["ENV"] == "PF" {
+  episodesDependency = .package(url: "https://github.com/mbrandonw/episodes.git", .revision("947706b"))
+} else {
+  fatalError("Must specificy an `ENV` environment variable with value `OSS` or `PF`.")
+}
 
 let package = Package(
   name: "PointFree",
@@ -13,8 +22,10 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("a253396")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+    episodesDependency
     ],
   targets: [
+
     .target(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
@@ -30,6 +41,7 @@ let package = Package(
         "Css",
         "CssReset",
         "Either",
+        "Episodes",
         "Html",
         "HtmlCssSupport",
         "HttpPipeline",
