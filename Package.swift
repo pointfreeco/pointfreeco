@@ -23,10 +23,6 @@ let package = Package(
       dependencies: ["Styleguide", "CssTestSupport"]),
 
     .target(
-      name: "PointFreeTestSupport",
-      dependencies: ["Either", "PointFree", "Prelude"]),
-
-    .target(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
@@ -54,6 +50,10 @@ let package = Package(
          "PointFreeTestSupport"
          ]
      ),
+
+    .target(
+      name: "PointFreeTestSupport",
+      dependencies: ["Either", "PointFree", "Prelude"]),
   ],
   swiftLanguageVersions: [4]
 )
