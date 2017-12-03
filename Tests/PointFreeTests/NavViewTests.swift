@@ -1,13 +1,7 @@
 import Html
-//import HtmlTestSupport
-import HtmlPrettyPrint
-import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
-@testable import HttpPipeline
-import HttpPipelineTestSupport
-import Optics
 import Styleguide
 import HtmlCssSupport
 import SnapshotTesting

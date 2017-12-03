@@ -1,12 +1,8 @@
-import Html
-import HtmlTestSupport
-import HtmlPrettyPrint
 import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
-@testable import HttpPipeline
-import HttpPipelineTestSupport
+import HttpPipeline
 import Optics
 #if !os(Linux)
   import WebKit
