@@ -7,6 +7,7 @@ let package = Package(
   products: [
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
   ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
@@ -18,8 +19,12 @@ let package = Package(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
     .testTarget(
-       name: "StyleguideTests",
-       dependencies: ["Styleguide", "CssTestSupport"]),
+      name: "StyleguideTests",
+      dependencies: ["Styleguide", "CssTestSupport"]),
+
+    .target(
+      name: "PointFreeTestSupport",
+      dependencies: ["Either", "PointFree", "Prelude"]),
 
     .target(
       name: "PointFree",
@@ -46,6 +51,7 @@ let package = Package(
          "HtmlTestSupport",
          "HttpPipelineTestSupport",
          "PointFree",
+         "PointFreeTestSupport"
          ]
      ),
   ],
