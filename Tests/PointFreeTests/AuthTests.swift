@@ -1,6 +1,5 @@
 import Either
 import HttpPipeline
-import HttpPipelineTestSupport
 import Optics
 @testable import PointFree
 import Prelude

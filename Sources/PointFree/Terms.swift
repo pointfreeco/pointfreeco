@@ -9,11 +9,12 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
-let termsResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  writeStatus(.ok)
+let termsResponse =
+  requestContextMiddleware
+    >-> writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<Prelude.Unit> { _ in
+private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
@@ -21,7 +22,8 @@ private let termsView = View<Prelude.Unit> { _ in
         style(styleguide),
         title("Terms of Service")
         ]),
-      body(navView.view(unit) + [
+      body(
+        navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

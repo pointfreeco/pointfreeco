@@ -8,27 +8,23 @@ import Prelude
 import Styleguide
 
 let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
-  fetchEpisodes
+  map(episodes(for:))
+    >>> requestContextMiddleware
+    >-> writeStatus(.ok)
     >-> respond(episodesDocumentView.map(addGoogleAnalytics))
 
-private func fetchEpisodes(_ conn: Conn<StatusLineOpen, Tag?>) -> IO<Conn<HeadersOpen, ([Episode], Tag?)>> {
+private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?) {
+  return (
+    episodes: episodes
+      .filter { tag.map($0.tags.contains) != .some(false) }
+      .sorted(by: ^\.sequence)
+      .reversed(),
 
-  return conn.map(
-    const(
-      (
-        episodes: episodes
-          .filter { conn.data.map($0.tags.contains) != .some(false) }
-          .sorted(by: get(\.sequence))
-          .reversed(),
-
-        selectedTag: conn.data
-      )
-    )
-    )
-    |> writeStatus(.ok)
+    selectedTag: tag
+  )
 }
 
-private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
+private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { ctx in
   document(
     [
       html(
@@ -37,11 +33,12 @@ private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
             [
               style(renderedNormalizeCss),
               style(styleguide),
+              meta(viewport: .width(.deviceWidth), .initialScale(1)),
               ]
           ),
           body(
-            navView.view(unit)
-              <> episodesView.view((eps, selectedTag))
+            navView.view(ctx.map(const(unit)))
+              <> episodesView.view(ctx.data)
               <> footerView.view(unit)
           )
         ]
@@ -50,7 +47,7 @@ private let episodesDocumentView = View<([Episode], Tag?)> { eps, selectedTag in
   )
 }
 
-private let episodesView = View<([Episode], Tag?)> { eps, selectedTag in
+private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps, selectedTag in
   gridRow([
     gridColumn(
       sizes: [.xs: 12, .md: 9], [
@@ -131,7 +128,7 @@ private let episodeListItemView = View<Episode> { ep in
     gridColumn(sizes: [.xs: 8], [
       div([
         strong(
-          [`class`([Class.h6, Class.type.caps, Class.type.lineHeight1])],
+          [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(1)])],
           [.text(encode("Episode \(ep.sequence)"))]
         ),
         h5([`class`([Class.pf.type.title3])], [
