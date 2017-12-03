@@ -3,32 +3,6 @@ import Html
 import Prelude
 import Styleguide
 
-extension Tag {
-  var slug: String {
-    return PointFree.slug(for: name)
-  }
-}
-
-extension Tag {
-  init?(slug: String) {
-    guard let tag = array(Tag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
-      else { return nil }
-    self = tag
-  }
-
-  static let all = (
-    algebra: Tag(name: "Algebra"),
-    dsl: Tag(name: "DSL"),
-    generics: Tag(name: "Generics"),
-    html: Tag(name: "HTML"),
-    math: Tag(name: "Math"),
-    polymorphism: Tag(name: "Polymorphism"),
-    programming: Tag(name: "Programming"),
-    serverSideSwift: Tag(name: "Server-Side Swift"),
-    swift: Tag(name: "Swift")
-  )
-}
-
 public let pillTagsView = View<[Tag]> { tags in
   ol(
     [`class`([Class.layout.inlineBlock, Class.type.list.reset])],

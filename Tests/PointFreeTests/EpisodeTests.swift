@@ -1,3 +1,4 @@
+import Episodes
 import SnapshotTesting
 import Prelude
 import XCTest
@@ -10,7 +11,7 @@ import Optics
 
 class EpisodeTests: TestCase {
   func testEpisodePage() {
-    let request = URLRequest(url: URL(string: url(to: .episode(.left(episodes.first!.slug))))!)
+    let request = URLRequest(url: URL(string: url(to: .episode(.left(Episodes.allEpisodes.first!.slug))))!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
