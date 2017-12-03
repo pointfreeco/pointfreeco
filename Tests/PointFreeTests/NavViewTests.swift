@@ -64,14 +64,7 @@ private let loggedOutRequestContext = RequestContext(
 )
 
 private let loggedInRequestContext = RequestContext(
-  currentUser: Database.User(
-    email: "hello@pointfree.co",
-    gitHubUserId: 1,
-    gitHubAccessToken: "deadbeef",
-    id: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFDEAD")!,
-    name: "Blob",
-    subscriptionId: nil
-  ),
+  currentUser: Database.User.mock,
   currentRequest: URLRequest(url: URL(string: "/")!),
   data: unit
 )
