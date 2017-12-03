@@ -84,10 +84,10 @@
       },
       {
         "package": "Episodes",
-        "repositoryURL": "https://github.com/mbrandonw/episodes.git",
+        "repositoryURL": "https://github.com/pointfreeco/episodes-oss.git",
         "state": {
-          "branch": "947706b",
-          "revision": "947706b25113fa861df47cf1f9b81da96a8e378d",
+          "branch": "8e0751d",
+          "revision": "8e0751dc8ec67e5b309dce55e999a077bdedc55c",
           "version": null
         }
       },

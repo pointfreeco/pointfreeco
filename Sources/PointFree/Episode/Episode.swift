@@ -1,5 +1,6 @@
 import Css
 import Either
+import Episodes
 import EpisodeModels
 import Foundation
 import Html
@@ -22,7 +23,7 @@ let episodeResponse =
 )
 
 private func episode(for param: Either<String, Int>) -> Episode? {
-  return episodes.first(where: {
+  return Episodes.allEpisodes.first(where: {
     param.left == .some($0.slug) || param.right == .some($0.id)
   })
 }
