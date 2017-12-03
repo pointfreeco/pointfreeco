@@ -5,10 +5,8 @@ import PackageDescription
 let episodesDependency: Package.Dependency
 if ProcessInfo.processInfo.environment["ENV"] == "OSS" {
   episodesDependency = .package(url: "https://github.com/pointfreeco/episodes-oss.git", .revision("c2741dd"))
-} else if ProcessInfo.processInfo.environment["ENV"] == "PF" {
-  episodesDependency = .package(url: "https://github.com/mbrandonw/episodes.git", .revision("947706b"))
 } else {
-  fatalError("Must specificy an `ENV` environment variable with value `OSS` or `PF`.")
+  episodesDependency = .package(url: "https://github.com/mbrandonw/episodes.git", .revision("947706b"))
 }
 
 let package = Package(
