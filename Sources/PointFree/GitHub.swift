@@ -3,27 +3,39 @@ import Foundation
 import Optics
 import Prelude
 
-public struct GitHubAccessToken: Codable {
-  let accessToken: String
+public struct GitHub {
+  /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
+  var fetchAuthToken: (String) -> EitherIO<Prelude.Unit, AccessToken>
 
-  enum CodingKeys: String, CodingKey {
-    case accessToken = "access_token"
+  /// Fetches a GitHub user from an access token.
+  var fetchUser: (AccessToken) -> EitherIO<Prelude.Unit, User>
+
+  static let live = GitHub(
+    fetchAuthToken: PointFree.fetchAuthToken,
+    fetchUser: PointFree.fetchUser
+  )
+
+  public struct AccessToken: Codable {
+    let accessToken: String
+
+    enum CodingKeys: String, CodingKey {
+      case accessToken = "access_token"
+    }
+  }
+
+  public struct User: Codable {
+    let email: String
+    let id: Int
+    let name: String
+  }
+
+  public struct UserEnvelope: Codable {
+    let accessToken: AccessToken
+    let gitHubUser: User
   }
 }
 
-public struct GitHubUser: Codable {
-  let email: String
-  let id: Int
-  let name: String
-}
-
-public struct GitHubUserEnvelope: Codable {
-  let accessToken: GitHubAccessToken
-  let gitHubUser: GitHubUser
-}
-
-/// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccessToken> {
+private func fetchAuthToken(with code: String) -> EitherIO<Prelude.Unit, GitHub.AccessToken> {
 
   let request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
     |> \.httpMethod .~ "POST"
@@ -44,7 +56,7 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
       session
         .dataTask(with: request) { data, response, error in
           callback(
-            data.flatMap { try? JSONDecoder().decode(GitHubAccessToken.self, from: $0) }
+            data.flatMap { try? JSONDecoder().decode(GitHub.AccessToken.self, from: $0) }
               .map(Either.right)
               ?? Either.left(unit)
           )
@@ -54,8 +66,7 @@ func fetchAuthToken(forCode code: String) -> EitherIO<Prelude.Unit, GitHubAccess
   )
 }
 
-/// Fetches a GitHub user from an access token.
-func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, GitHubUser> {
+private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude.Unit, GitHub.User> {
 
   let request = URLRequest(url: URL(string: "https://api.github.com/user")!)
     |> \.allHTTPHeaderFields .~ [
@@ -68,7 +79,7 @@ func fetchGitHubUser(accessToken: GitHubAccessToken) -> EitherIO<Prelude.Unit, G
       session
         .dataTask(with: request) { data, response, error in
           callback(
-            data.flatMap { try? JSONDecoder().decode(GitHubUser.self, from: $0) }
+            data.flatMap { try? JSONDecoder().decode(GitHub.User.self, from: $0) }
               .map(Either.right)
               ?? Either.left(unit)
           )
