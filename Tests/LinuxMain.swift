@@ -60,7 +60,8 @@ extension SiteMiddlewareTests {
 extension StyleguideTests {
   static var allTests: [(String, (StyleguideTests) -> () throws -> Void)] = [
     ("testStyleguide", testStyleguide),
-    ("test_DesignSystem", test_DesignSystem)
+    ("testDesignSystem", testDesignSystem),
+    ("testPointFreeStyles", testPointFreeStyles)
   ]
 }
 
