@@ -756,7 +756,7 @@
 }
 
 .overflow-auto-y {
-  overflow-x : auto;
+  overflow-y : auto;
 }
 
 .clear-fix::before, .clear-fix::after {

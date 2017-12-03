@@ -11,7 +11,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
     >-> writeStatus(.ok)
     >-> respond(aboutView)
 
-private let aboutView = View<RequestContext<Prelude.Unit>> { context in
+private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
@@ -19,7 +19,7 @@ private let aboutView = View<RequestContext<Prelude.Unit>> { context in
         style(styleguide),
         title("About Us")
         ]),
-      body(navView.view(context) + [
+      body(navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

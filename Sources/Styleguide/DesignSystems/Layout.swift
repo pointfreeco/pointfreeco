@@ -34,7 +34,7 @@ public let layoutStyles =
     <> Class.layout.overflowScroll % overflow(.scroll)
     <> Class.layout.overflowAuto % overflow(.auto)
     <> Class.layout.overflowAuto(.x) % overflow(x: .auto)
-    <> Class.layout.overflowAuto(.y) % overflow(x: .auto)
+    <> Class.layout.overflowAuto(.y) % overflow(y: .auto)
     <> clearFixStyles
     <> floatStyles
     <> widthStyles

@@ -8,7 +8,7 @@ import Optics
 import Styleguide
 import Prelude
 
-let navView = View<RequestContext<Prelude.Unit>> { context in
+let navView = View<RequestContext<Prelude.Unit>> { ctx in
   [
     gridRow([`class`([Class.pf.components.navBar, Class.grid.between(.xs)])], [
       gridColumn(
@@ -18,7 +18,7 @@ let navView = View<RequestContext<Prelude.Unit>> { context in
 
       gridColumn(
         sizes: [:],
-        personalizedNavItems.view(context)
+        personalizedNavItems.view(ctx)
       ),
 
       ]),
@@ -53,9 +53,9 @@ private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
     ])
 }
 
-private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { context in
-  context.currentUser.map(loggedInNavItems.view)
-    ?? loggedOutNavItems.view(context.currentRequest)
+private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { ctx in
+  ctx.currentUser.map(loggedInNavItems.view)
+    ?? loggedOutNavItems.view(ctx.currentRequest)
 }
 
 private let loggedInNavItems = View<Database.User> { user in

@@ -45,14 +45,14 @@ class NavViewTests: TestCase {
   }
 }
 
-private let testDocView = View<RequestContext<Prelude.Unit>> { context in
+private let testDocView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
         style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
-      body(navView.view(context))
+      body(navView.view(ctx))
       ])
     ])
 }

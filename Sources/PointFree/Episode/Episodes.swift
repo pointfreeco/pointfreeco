@@ -17,14 +17,14 @@ private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?)
   return (
     episodes: episodes
       .filter { tag.map($0.tags.contains) != .some(false) }
-      .sorted(by: get(\.sequence))
+      .sorted(by: ^\.sequence)
       .reversed(),
 
     selectedTag: tag
   )
 }
 
-private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { context in
+private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { ctx in
   document(
     [
       html(
@@ -37,8 +37,8 @@ private let episodesDocumentView = View<RequestContext<(episodes: [Episode], sel
               ]
           ),
           body(
-            navView.view(context.map(const(unit)))
-              <> episodesView.view(context.data)
+            navView.view(ctx.map(const(unit)))
+              <> episodesView.view(ctx.data)
               <> footerView.view(unit)
           )
         ]

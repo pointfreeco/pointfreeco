@@ -14,7 +14,7 @@ let termsResponse =
     >-> writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<RequestContext<Prelude.Unit>> { context in
+private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
@@ -23,7 +23,7 @@ private let termsView = View<RequestContext<Prelude.Unit>> { context in
         title("Terms of Service")
         ]),
       body(
-        navView.view(context) + [
+        navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [
