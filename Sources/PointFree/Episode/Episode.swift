@@ -173,7 +173,7 @@ private let transcriptBlockView = View<TranscriptBlock> { block -> Node in
       ])
 
   case .image:
-    fatalError()
+    fatalError("We don't support images yet, but we will soon!")
 
   case let .text(timestamp):
     return p([
