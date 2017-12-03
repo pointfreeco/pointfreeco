@@ -208,7 +208,7 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
               h5([`class`([Class.h5])], ["Episode not found :("]),
               pre([
                 code([`class`([Class.pf.code(lang: "swift")])], [
-                  "f: (A) -> Never"
+                  "f: (Episode) -> Never"
                   ])
                 ])
               ])
