@@ -66,6 +66,12 @@ import Prelude
               guard case .secretHome = $0 else { return nil }
               return unit
           })
+          public static let subscribe = parenthesize <| PartialIso(
+            apply: Route.subscribe,
+            unapply: {
+              guard case let .subscribe(result) = $0 else { return nil }
+              return result
+          })
           public static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.terms)),
             unapply: {

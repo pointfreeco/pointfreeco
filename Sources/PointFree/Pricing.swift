@@ -71,14 +71,71 @@ private let pricingView = View<Prelude.Unit> { _ in
                   ])
                 ]),
 
+              ]),
+            form([action("/subscribe"), id("payment-form"), method(.post)], [
+              input([name("plan"), type(.hidden), value(Stripe.Plan.Id.monthly.rawValue)]),
+              input([name("token"), type(.hidden)]),
+              div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
+              div([id("card-errors"), role(.alert)], []),
+              button(["Submit Payment"])
               ])
             ]),
 
           ]),
         ]
-        <> footerView.view(unit))
-      ])
+        <> footerView.view(unit)
+        <> [
+          script([src("https://js.stripe.com/v3/")]),
+          script(
+            """
+            var apiKey = document.getElementById('card-element').dataset.stripeKey;
+            var stripe = Stripe(apiKey);
+            var elements = stripe.elements();
+
+            var style = {
+              base: {
+                color: '#32325d',
+                fontSize: '16px',
+              }
+            };
+
+            var card = elements.create('card', {style: style});
+            card.mount('#card-element');
+
+            card.addEventListener('change', function(event) {
+              var displayError = document.getElementById('card-errors');
+              if (event.error) {
+                displayError.textContent = event.error.message;
+              } else {
+                displayError.textContent = '';
+              }
+            });
+
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit', function(event) {
+              event.preventDefault();
+
+              stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                  var errorElement = document.getElementById('card-errors');
+                  errorElement.textContent = result.error.message;
+                } else {
+                  form.token.value = result.token.id;
+                  form.submit();
+                }
+              });
+            });
+            """
+          )
+        ]
+      )
     ])
+  ])
+}
+
+// FIXME: Move to swift-web
+public func data<T>(_ name: StaticString, _ value: String) -> Attribute<T> {
+  return .init("data-\(name)", value)
 }
 
 private let individualPricingView = View<Prelude.Unit> { _ in
