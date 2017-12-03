@@ -7,7 +7,7 @@ public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
   var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
   var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
-  var migrate: () -> EitherIO<Error, Prelude.Unit>
+  public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
