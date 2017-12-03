@@ -32,9 +32,9 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(tag))
       |> episodesResponse
 
-  case let .githubCallback(code, redirect):
+  case let .gitHubCallback(code, redirect):
     return conn.map(const((code, redirect)))
-      |> githubCallbackResponse
+      |> gitHubCallbackResponse
 
   case let .home(signedUpSuccessfully):
     return conn.map(const(signedUpSuccessfully))
@@ -83,7 +83,7 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .about, .episode, .episodes, .githubCallback, .login, .logout, .pricing, .secretHome, .terms:
+  case .about, .episode, .episodes, .gitHubCallback, .login, .logout, .pricing, .secretHome, .terms:
     return true
   case .home, .launchSignup:
     return false

@@ -1,60 +1,37 @@
 import Either
 import Foundation
 import Prelude
-import PostgreSQL
 
-public struct User {
-  let email: String
-  let gitHubUserId: Int
-  let gitHubAccessToken: String
-  let id: UUID
-  let name: String
-  let subscriptionId: UUID?
-}
+public struct Database {
+  var createSubscription: (StripeSubscription, User) -> EitherIO<Error, Prelude.Unit>
+  var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
+  var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var migrate: () -> EitherIO<Error, Prelude.Unit>
 
-public struct Subscription {
-  let id: UUID
-  let stripeSubscriptionId: String
-  let userId: UUID
-}
+  static let live = Database(
+    createSubscription: PointFree.createSubscription,
+    createUser: PointFree.createUser,
+    fetchUser: PointFree.fetchUser,
+    migrate: PointFree.migrate
+  )
 
-/// FIXME: Move to Stripe.swift
-public struct StripeSubscription {
-  let id: String
-}
-
-public enum DatabaseError: Error {
-  case invalidUrl
-}
-
-private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
-  .flatMap { url -> PostgreSQL.ConnInfo? in
-    curry(PostgreSQL.ConnInfo.basic)
-      <¢> url.host
-      <*> url.port
-      <*> String(url.path.dropFirst())
-      <*> url.user
-      <*> url.password
+  public struct User {
+    let email: String
+    let gitHubUserId: Int
+    let gitHubAccessToken: String
+    let id: UUID
+    let name: String
+    let subscriptionId: UUID?
   }
-  .map(Either.right)
-  ?? .left(DatabaseError.invalidUrl as Error)
 
-private let postgres = lift(connInfo)
-  .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
-
-private let conn = postgres
-  .flatMap { db in .wrap(db.makeConnection) }
-
-// public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
-func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
-  -> EitherIO<Error, PostgreSQL.Node> {
-
-    return conn.flatMap { conn in
-      .wrap { try conn.execute(query, representable) }
-    }
+  public struct Subscription {
+    let id: UUID
+    let stripeSubscriptionId: String
+    let userId: UUID
+  }
 }
 
-public func createSubscription(from stripeSubscription: StripeSubscription, for user: User)
+private func createSubscription(with stripeSubscription: StripeSubscription, for user: Database.User)
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
@@ -65,7 +42,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
       [
         stripeSubscription.id,
         user.id.uuidString,
-      ]
+        ]
       )
       .flatMap { node in
         execute(
@@ -85,7 +62,7 @@ public func createSubscription(from stripeSubscription: StripeSubscription, for 
       .map(const(unit))
 }
 
-public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Prelude.Unit> {
+private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -103,7 +80,7 @@ public func createUser(from envelope: GitHubUserEnvelope) -> EitherIO<Error, Pre
     .map(const(unit))
 }
 
-public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
+private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
@@ -113,21 +90,23 @@ public func fetchUser(from token: GitHubAccessToken) -> EitherIO<Error, User?> {
     """,
     [token.accessToken]
     )
-    .map { result -> User? in
-      let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+    .map { result -> Database.User? in
+      let uuid = result[3, "id"].flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
 
-      return curry(User.init)
-        <¢> result["email"]?.array?.first?.wrapped.string
-        <*> result["github_user_id"]?.array?.first?.wrapped.int
-        <*> result["github_access_token"]?.array?.first?.wrapped.string
+      let subscriptionId = result[5, "subscription_id"]
+        .flatMap(get(\.string) >>> flatMap(UUID.init(uuidString:)))
+
+      return curry(Database.User.init)
+        <¢> result[0, "email"]?.string
+        <*> result[1, "github_user_id"]?.int
+        <*> result[2, "github_access_token"]?.string
         <*> uuid
-        <*> result["name"]?.array?.first?.wrapped.string
+        <*> result[4, "name"]?.string
         <*> .some(subscriptionId)
   }
 }
 
-public func migrate() -> EitherIO<Error, Prelude.Unit> {
+private func migrate() -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
     CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
@@ -169,4 +148,70 @@ public func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
     )))
     .map(const(unit))
+}
+
+#if os(iOS)
+  enum PostgreSQL {
+    enum ConnInfo {
+      case basic(String, Int, String, String, String)
+    }
+    struct Database {
+      init(_ connInfo: ConnInfo) throws {
+      }
+      func makeConnection() throws -> Connection {
+        return Connection()
+      }
+    }
+    struct Connection {
+      func execute(_ query: String, _ representable: [NodeRepresentable] = []) throws -> Node {
+        return Node()
+      }
+    }
+    public typealias NodeRepresentable = Any
+    struct Node {
+      subscript(_: Int, _: String) -> Node? {
+        return nil
+      }
+      var int: Int?
+      var string: String?
+    }
+  }
+#else
+  import PostgreSQL
+#endif
+
+/// FIXME: Move to Stripe.swift
+public struct StripeSubscription {
+  let id: String
+}
+
+public enum DatabaseError: Error {
+  case invalidUrl
+}
+
+private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
+  .flatMap { url -> PostgreSQL.ConnInfo? in
+    curry(PostgreSQL.ConnInfo.basic)
+      <¢> url.host
+      <*> url.port
+      <*> String(url.path.dropFirst())
+      <*> url.user
+      <*> url.password
+  }
+  .map(Either.right)
+  ?? .left(DatabaseError.invalidUrl as Error)
+
+private let postgres = lift(connInfo)
+  .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
+
+private let conn = postgres
+  .flatMap { db in .wrap(db.makeConnection) }
+
+// public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
+private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, PostgreSQL.Node> {
+
+    return conn.flatMap { conn in
+      .wrap { try conn.execute(query, representable) }
+    }
 }

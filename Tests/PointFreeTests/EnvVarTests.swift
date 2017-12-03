@@ -9,6 +9,7 @@ class EnvVarTests: TestCase {
       "AIRTABLE_BASE_2": "deadbeef-base-2",
       "AIRTABLE_BASE_3": "deadbeef-base-3",
       "AIRTABLE_BEARER": "deadbeef-bearer",
+      "APP_ENV": "development",
       "APP_SECRET": "deadbeefdeadbeefdeadbeefdeadbeef",
       "BASE_URL": "http://localhost:8080",
       "BASIC_AUTH_PASSWORD": "world",

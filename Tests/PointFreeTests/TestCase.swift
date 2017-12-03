@@ -10,12 +10,11 @@ class TestCase: XCTestCase {
     super.setUp()
 
     AppEnvironment.push(
-      env: .init(
+      .init(
         airtableStuff: const(const(pure(unit))),
-        createUser: const(pure(unit)),
+        database: .mock,
         envVars: EnvVars(),
-        fetchAuthToken: const(pure(.init(accessToken: "deadbeef"))),
-        fetchGitHubUser: const(pure(.init(email: "hello@pointfree.co", id: 1, name: "Blob"))),
+        gitHub: .mock,
         sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
       )
     )
@@ -25,4 +24,45 @@ class TestCase: XCTestCase {
     super.tearDown()
     AppEnvironment.pop()
   }
+}
+
+extension Database {
+  static let mock = Database(
+    createSubscription: { _, _ in pure(unit) },
+    createUser: const(pure(unit)),
+    fetchUser: const(pure(.mock)),
+    migrate: { pure(unit) }
+  )
+}
+
+extension Database.User {
+  static let mock = Database.User(
+    email: "hello@pointfree.co",
+    gitHubUserId: 1,
+    gitHubAccessToken: "deadbeef",
+    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+    name: "Blob",
+    subscriptionId: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+  )
+}
+
+extension GitHub {
+  static let mock = GitHub(
+    fetchAuthToken: const(pure(.mock)),
+    fetchUser: const(pure(.mock))
+  )
+}
+
+extension GitHub.AccessToken {
+  static let mock = GitHub.AccessToken(
+    accessToken: "deadbeef"
+  )
+}
+
+extension GitHub.User {
+  static let mock = GitHub.User(
+    email: "hello@pointfree.co",
+    id: 1,
+    name: "Blob"
+  )
 }
