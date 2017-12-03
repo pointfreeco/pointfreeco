@@ -24,7 +24,6 @@ let package = Package(
     episodesDependency
     ],
   targets: [
-
     .target(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
