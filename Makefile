@@ -51,6 +51,10 @@ postgres-mm:
 	-@echo "$$POSTGRES_MODULE_MAP" > "$(POSTGRES_PATH)/module.map"
 	-@echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
 
+webkit-snapshot-mm:
+	-@mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
+	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" > "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map"
+
 SDK_PATH = $(shell xcrun --show-sdk-path)
 POSTGRES_PATH = $(SDK_PATH)/System/Library/Frameworks/CPostgreSQL.framework
 define POSTGRES_MODULE_MAP
@@ -72,3 +76,12 @@ define POSTGRES_SHIM_H
 #endif
 endef
 export POSTGRES_SHIM_H
+
+WEBKIT_SNAPSHOT_CONFIGURATION_PATH = $(SDK_PATH)/System/Library/Frameworks/WKSnapshotConfigurationShim.framework
+define WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP
+module WKSnapshotConfigurationShim [system] {
+  header "$(SDK_PATH)/System/Library/Frameworks/WebKit.framework/Headers/WKSnapshotConfiguration.h"
+  export *
+}
+endef
+export WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP

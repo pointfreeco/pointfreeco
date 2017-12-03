@@ -10,6 +10,7 @@ import PlaygroundSupport
 import Prelude
 import WebKit
 import Optics
+import SnapshotTesting
 
 AppEnvironment.push(.mock)
 
