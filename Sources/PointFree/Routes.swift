@@ -15,6 +15,7 @@ public enum Route: DerivePartialIsos {
   case logout
   case pricing(Prelude.Unit)
   case secretHome
+  case subscribe(Stripe.Plan.Id, token: String)
   case terms
 }
 
@@ -52,10 +53,23 @@ private let routers: [Router<Route>] = [
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
 
+  Route.iso.subscribe
+    <¢> post %> lit("subscribe") %> formField("plan", .rawRepresentable) <%> formField("token") <% end,
+
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
 
 ]
+
+// TODO: Move to swift-web
+extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
+  public static var rawRepresentable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}
 
 public let router = routers.reduce(.empty, <|>)
 
@@ -71,7 +85,7 @@ extension PartialIso where A == String, B == Tag {
   public static var tag: PartialIso<String, Tag> {
     return PartialIso<String, Tag>(
       apply: Tag.init(slug:),
-      unapply: get(\.name)
+      unapply: ^\.name
     )
   }
 }
