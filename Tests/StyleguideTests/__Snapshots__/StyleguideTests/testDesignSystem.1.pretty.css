@@ -723,11 +723,11 @@
   display : inline;
 }
 
-.inline {
+.block {
   display : block;
 }
 
-.inline {
+.inline-block {
   display : inline-block;
 }
 
@@ -749,6 +749,14 @@
 
 .overflow-auto {
   overflow : auto;
+}
+
+.overflow-auto-x {
+  overflow-x : auto;
+}
+
+.overflow-auto-y {
+  overflow-x : auto;
 }
 
 .clear-fix::before, .clear-fix::after {

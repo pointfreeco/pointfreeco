@@ -22,7 +22,13 @@ extension EnvVarTests {
 }
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
-    ("testEpisodeHtml", testEpisodeHtml)
+    ("testHome", testHome)
+  ]
+}
+extension EpisodesTests {
+  static var allTests: [(String, (EpisodesTests) -> () throws -> Void)] = [
+    ("testEpisodesList_NoTagSelected", testEpisodesList_NoTagSelected),
+    ("testEpisodesList_TagSelected", testEpisodesList_TagSelected)
   ]
 }
 extension LaunchSignupTests {
@@ -35,6 +41,12 @@ extension LaunchSignupTests {
 extension MetaLayoutTests {
   static var allTests: [(String, (MetaLayoutTests) -> () throws -> Void)] = [
     ("testMetaTagsWithStyleTag", testMetaTagsWithStyleTag)
+  ]
+}
+extension NavViewTests {
+  static var allTests: [(String, (NavViewTests) -> () throws -> Void)] = [
+    ("testNav_LoggedOut", testNav_LoggedOut),
+    ("testNav_LoggedIn", testNav_LoggedIn)
   ]
 }
 extension SiteMiddlewareTests {
@@ -57,8 +69,10 @@ XCTMain([
   testCase(AuthTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
+  testCase(EpisodesTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
+  testCase(NavViewTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
 ])

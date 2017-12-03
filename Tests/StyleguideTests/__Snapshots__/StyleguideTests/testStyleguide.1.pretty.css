@@ -30,12 +30,8 @@ body {
   box-sizing         : inherit;
 }
 
-.fg-dark {
-  color : #222;
-}
-
-.fg-light {
-  background-color : #888;
+.bg-black-50 {
+  color : #808080;
 }
 
 .fg-white {
@@ -63,14 +59,8 @@ body {
 }
 
 .code {
-  display          : block;
   background-color : #fafafa;
   font-family      : monospace;
-  padding-top      : 2rem;
-  padding-right    : 2rem;
-  padding-bottom   : 2rem;
-  padding-left     : 2rem;
-  overflow-x       : auto;
 }
 
 .inline-code {
@@ -951,11 +941,11 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
   display : inline;
 }
 
-.inline {
+.block {
   display : block;
 }
 
-.inline {
+.inline-block {
   display : inline-block;
 }
 
@@ -977,6 +967,14 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
 
 .overflow-auto {
   overflow : auto;
+}
+
+.overflow-auto-x {
+  overflow-x : auto;
+}
+
+.overflow-auto-y {
+  overflow-x : auto;
 }
 
 .clear-fix::before, .clear-fix::after {

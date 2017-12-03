@@ -58,7 +58,7 @@ private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { context 
     ?? loggedOutNavItems.view(context.currentRequest)
 }
 
-private let loggedInNavItems = View<User> { user in
+private let loggedInNavItems = View<Database.User> { user in
 
   ul([`class`([Class.type.list.reset, Class.margin.all(0)])], [
     li([`class`([Class.layout.inline])], [

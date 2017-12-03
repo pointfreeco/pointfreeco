@@ -66,7 +66,7 @@ private let loggedOutRequestContext = RequestContext(
 )
 
 private let loggedInRequestContext = RequestContext(
-  currentUser: User(
+  currentUser: Database.User(
     email: "hello@pointfree.co",
     gitHubUserId: 1,
     gitHubAccessToken: "deadbeef",

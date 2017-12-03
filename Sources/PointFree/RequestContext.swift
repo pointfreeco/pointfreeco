@@ -5,7 +5,7 @@ import Prelude
 /// A value that wraps any given data with additional context that is useful for completing the
 /// request-to-response lifecycle.
 struct RequestContext<A> {
-  private(set) var currentUser: User? = nil
+  private(set) var currentUser: Database.User? = nil
   private(set) var currentRequest: URLRequest
   private(set) var data: A
 
@@ -28,7 +28,7 @@ func requestContextMiddleware<A>(
 
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
     .map {
-      AppEnvironment.current.fetchUser($0.accessToken)
+      AppEnvironment.current.database.fetchUser($0.accessToken)
         .run
         .map(get(\.right) >>> flatMap(id))
     }
@@ -48,8 +48,8 @@ func requestContextMiddleware<A>(
 }
 
 ///
-private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHubUserEnvelope? {
-  return request.cookies[githubSessionCookieName]
+private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
+  return request.cookies[gitHubSessionCookieName]
     .flatMap {
       ResponseHeader.verifiedValue(
         signedCookieValue: $0,
