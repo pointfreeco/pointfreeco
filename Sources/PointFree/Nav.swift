@@ -75,10 +75,12 @@ private let loggedOutNavItems = View<URLRequest> { request in
 
   ul([`class`([Class.layout.right, Class.type.list.reset, Class.margin.all(0)])], [
     li([`class`([Class.layout.inline])], [
-      a([href(path(to: .login(redirect: request.url?.absoluteString))), `class`([Class.padding.leftRight(1)])], ["Login"])
+      a([href(path(to: .login(redirect: request.url?.absoluteString))), `class`([Class.padding.leftRight(1)])],
+        ["Login"])
       ]),
     li([`class`([Class.layout.inline])], [
-      a([href(path(to: .pricing(unit))), `class`([Class.padding.leftRight(1)])], ["Subscribe"])
+      a([href(path(to: .pricing(unit))), `class`([Class.padding.leftRight(1)])],
+        ["Subscribe"])
       ]),
     ])
 }
