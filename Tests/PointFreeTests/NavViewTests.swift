@@ -2,6 +2,7 @@ import Html
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreeTestSupport
 import Styleguide
 import HtmlCssSupport
 import SnapshotTesting
@@ -64,7 +65,7 @@ private let loggedOutRequestContext = RequestContext(
 )
 
 private let loggedInRequestContext = RequestContext(
-  currentUser: Database.User.mock,
+  currentUser: .mock,
   currentRequest: URLRequest(url: URL(string: "/")!),
   data: unit
 )
