@@ -131,7 +131,7 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
       let session = URLSession(configuration: .default)
       session
         .dataTask(with: request) { data, response, error in
-          defer { session.invalidateAndCancel() }
+          defer { session.finishTasksAndInvalidate() }
           if let error = error {
             callback(.left(error))
           }
@@ -161,3 +161,7 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 }
 
 private let defaultDecoder = JSONDecoder()
+
+public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
+  return tuple <¢> lhs <*> rhs
+}
