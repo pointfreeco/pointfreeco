@@ -131,7 +131,7 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
       let session = URLSession(configuration: .default)
       session
         .dataTask(with: request) { data, response, error in
-          defer { session.invalidateAndCancel() }
+          defer { session.finishTasksAndInvalidate() }
           if let error = error {
             callback(.left(error))
           }
