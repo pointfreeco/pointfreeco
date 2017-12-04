@@ -5,8 +5,9 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
-import Prelude
 import Optics
+import Prelude
+import Styleguide
 
 let homeResponse =
   analytics
@@ -36,13 +37,23 @@ private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prel
 func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
   return IO {
 
-    // Fire-and-forget to notify us that someone signed up
-    parallel(
-      sendEmail(
+    // Fire-and-forget to send some emails
+    zip(
+      // Notify us that someone signed up
+      parallel <| sendEmail(
         from: "Point-Free <support@pointfree.co>",
         to: ["brandon@pointfree.co", "stephen@pointfree.co"],
         subject: "New signup for Point-Free!",
         content: inj2(notifyUsView.view(conn.data))
+        )
+        .run,
+
+      //
+      parallel <| sendEmail(
+        from: "Point-Free <support@pointfree.co>",
+        to: [conn.data],
+        subject: "New signup for Point-Free!",
+        content: inj2(launchSignupConfirmationEmailView.view(unit))
         )
         .run
       )
@@ -63,9 +74,48 @@ let notifyUsView = View<String> { email in
     ])
 }
 
+let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
+  document([
+    html([
+      head([
+        style(styleguide),
+        ]),
+
+      body([
+        gridRow([
+          gridColumn(sizes: [:], [
+            div([`class`([Class.padding.all(2)])], [
+              h2([`class`([Class.h2])], ["Thanks for signing up!"]),
+              p([`class`([Class.padding.topBottom(2)])], [
+                "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
+                a([href("https://www.github.com/pointfreeco")], ["@pointfreeco"]),
+                ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",
+                a([href("https://www.twitter.com/pointfreeco")], ["@pointfreeco"]),
+                " to see our progress in making the site and learn more about the interesting techniques we are using."
+                ]),
+              p([
+                a([href("https://www.twitter.com/mbrandonw")], ["Brandon Williams"]),
+                br,
+                a([href("https://www.twitter.com/stephencelis")], ["Stephen Celis"]),
+                ]),
+              p([
+                a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"]),
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+}
+
 private func analytics<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
   return IO {
     print("tracked analytics")
     return conn
   }
+}
+
+public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
+  return tuple <¢> lhs <*> rhs
 }
