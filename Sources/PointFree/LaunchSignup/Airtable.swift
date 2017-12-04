@@ -17,6 +17,8 @@ func createRow(email: String)
       ]
 
       return dataTask(with: request)
-        .bimap(const(unit), const(unit))
+        .map(tap(AppEnvironment.current.logger.debug))
+        .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+        .map(const(unit))
     }
 }

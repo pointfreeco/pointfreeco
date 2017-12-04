@@ -149,8 +149,14 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
   where A: Decodable {
 
     return dataTask(with: request)
-      .flatMap { data, _ in
-        EitherIO.wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+      .map(
+        first >>> {
+          AppEnvironment.current.logger.debug(String(decoding: $0, as: UTF8.self))
+          return $0
+        }
+      )
+      .flatMap { data in
+        .wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
     }
 }
 
