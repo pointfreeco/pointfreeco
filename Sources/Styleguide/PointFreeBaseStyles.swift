@@ -13,23 +13,26 @@ extension Class {
   public enum pf {
     public enum colors {
       public enum bg {
+        public static let black = CssSelector.class("bg-black")
         public static let black50 = CssSelector.class("bg-black-50")
         public static let dark = CssSelector.class("bg-dark")
         public static let light = CssSelector.class("bg-light")
-        public static let white = CssSelector.class("bg-white")
-        public static let black = CssSelector.class("bg-black")
         public static let purple = CssSelector.class("bg-purple")
+        public static let white = CssSelector.class("bg-white")
       }
       public enum fg {
+        public static let black = CssSelector.class("fg-black")
         public static let white = CssSelector.class("fg-white")
       }
     }
-    public static func code(lang: String?) -> CssSelector {
-      return _codeClass
-        | .class(lang ?? "")
+
+    private static let _codeClasses =
+      _codeClass
         | Class.layout.block
         | Class.padding.all(3)
         | Class.layout.overflowAuto(.x)
+    public static func code(lang: String?) -> CssSelector {
+      return _codeClasses | .class(lang ?? "")
     }
 
     public static let inlineCode = CssSelector.class("inline-code")
@@ -37,12 +40,43 @@ extension Class {
     public static let opacity50 = CssSelector.class("opacity-50")
     public static let opacity75 = CssSelector.class("opacity-75")
     public enum type {
-      public static let largeTitle = CssSelector.class("pf-large-title")
-      public static let title1 = CssSelector.class("pf-title-1")
-      public static let title2 = CssSelector.class("pf-title-2")
-      public static let title3 = CssSelector.class("pf-title-3")
-      public static let headline = CssSelector.class("pf-headline")
-      public static let subhead = CssSelector.class("pf-subhead")
+      public static let largeTitle =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h1
+          | Class.type.lineHeight(0)
+
+      public static let title1 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h2
+          | Class.type.lineHeight(1)
+
+      public static let title2 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h3
+          | Class.type.lineHeight(1)
+
+      public static let title3 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h4
+          | Class.type.lineHeight(2)
+
+      public static let headline =
+        _headline
+          | Class.pf.colors.fg.black
+          | Class.h5
+          | Class.type.lineHeight(2)
+
+      public static let subhead =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h6
+          | Class.type.lineHeight(3)
+          | Class.type.caps
+
       public static let footnote = CssSelector.class("pf-footnote")
       public static let callout = CssSelector.class("pf-callout")
     }
@@ -97,13 +131,14 @@ private let resets =
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
 private let colorStyles =
-  Class.pf.colors.bg.black50 % color(.other("#808080"))
-    <> Class.pf.colors.fg.white % color(.other("#fff"))
+  Class.pf.colors.bg.black % backgroundColor(Colors.black)
+  <> Class.pf.colors.bg.black50 % color(.other("#808080"))
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
-    <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
-    <> Class.pf.colors.bg.black % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
+    <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
+    <> Class.pf.colors.fg.black % color(Colors.black)
+    <> Class.pf.colors.fg.white % color(.other("#fff"))
 
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
@@ -181,39 +216,13 @@ private let aStyles =
 private let baseMarginStyles =
   (h1 | h2 | h3 | h4 | h5 | h6 | p | ul | ol) % margin(topBottom: .rem(0.5), leftRight: 0)
 
+private let _headline = CssSelector.class("pf-headline")
+
 private let typeStyles =
-  (Class.pf.type.largeTitle
-    | Class.pf.type.title1
-    | Class.pf.type.title2
-    | Class.pf.type.title3
-    | Class.pf.type.headline
-    | Class.pf.type.subhead) % color(Color.black)
-
-    <> (Class.pf.type.largeTitle
-      | Class.pf.type.title1
-      | Class.pf.type.title2
-      | Class.pf.type.title3
-      | Class.pf.type.subhead) % fontWeight(.w700)
-
-    <> Class.pf.type.largeTitle % (fontSize(.rem(3.998)) <> lineHeight(1.15))
-    <> Class.pf.type.title1 % (fontSize(.rem(2.827)) <> lineHeight(1.25))
-    <> Class.pf.type.title2 % (fontSize(.rem(1.999)) <> lineHeight(1.25))
-    <> Class.pf.type.title3 % (fontSize(.rem(1.414)) <> lineHeight(1.45))
-
+  _headline % fontWeight(.w600)
     <> Class.pf.type.footnote % (fontSize(.rem(0.8125)) <> lineHeight(1.5))
     <> Class.pf.type.callout % (fontSize(.rem(1.1875)) <> lineHeight(1.5))
 
-    <> Class.pf.type.headline % (
-      fontSize(.rem(1))
-        <> fontWeight(.w600)
-        <> lineHeight(1.45)
-    )
-    <> Class.pf.type.subhead % (
-      fontSize(.rem(0.707))
-        <> lineHeight(1.5)
-        <> letterSpacing(.pt(0.54))
-        <> textTransform(.uppercase)
-)
 
 private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =

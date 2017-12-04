@@ -30,12 +30,12 @@ body {
   box-sizing         : inherit;
 }
 
-.bg-black-50 {
-  color : #808080;
+.bg-black {
+  background-color : #121212;
 }
 
-.fg-white {
-  color : #fff;
+.bg-black-50 {
+  color : #808080;
 }
 
 .bg-dark {
@@ -46,16 +46,20 @@ body {
   background-color : #888;
 }
 
+.bg-purple {
+  background-color : #974DFF;
+}
+
 .bg-white {
   background-color : #fff;
 }
 
-.bg-black {
-  background-color : #121212;
+.fg-black {
+  color : #121212;
 }
 
-.bg-purple {
-  background-color : #974DFF;
+.fg-white {
+  color : #fff;
 }
 
 .code {
@@ -155,32 +159,8 @@ a:hover, a:active {
   text-decoration : underline;
 }
 
-.pf-large-title, .pf-title-1, .pf-title-2, .pf-title-3, .pf-headline, .pf-subhead {
-  color : #000000;
-}
-
-.pf-large-title, .pf-title-1, .pf-title-2, .pf-title-3, .pf-subhead {
-  font-weight : 700;
-}
-
-.pf-large-title {
-  font-size   : 3.998rem;
-  line-height : 1.15;
-}
-
-.pf-title-1 {
-  font-size   : 2.827rem;
-  line-height : 1.25;
-}
-
-.pf-title-2 {
-  font-size   : 1.999rem;
-  line-height : 1.25;
-}
-
-.pf-title-3 {
-  font-size   : 1.414rem;
-  line-height : 1.45;
+.pf-headline {
+  font-weight : 600;
 }
 
 .pf-footnote {
@@ -191,19 +171,6 @@ a:hover, a:active {
 .pf-callout {
   font-size   : 1.1875rem;
   line-height : 1.5;
-}
-
-.pf-headline {
-  font-size   : 1rem;
-  font-weight : 600;
-  line-height : 1.45;
-}
-
-.pf-subhead {
-  font-size      : 0.707rem;
-  line-height    : 1.5;
-  letter-spacing : 0.54pt;
-  text-transform : uppercase;
 }
 
 h1, h2, h3, h4, h5, h6, p, ul, ol {
