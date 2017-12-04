@@ -60,7 +60,7 @@ public struct EnvVars: Codable {
   public struct Mailgun: Codable {
     var apiKey = "deadbeef-mg-api-key"
     var domain = "mg.domain.com"
-    
+
     private enum CodingKeys: String, CodingKey {
       case apiKey = "MAILGUN_PRIVATE_API_KEY"
       case domain = "MAILGUN_DOMAIN"
