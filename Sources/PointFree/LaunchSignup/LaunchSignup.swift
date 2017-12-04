@@ -10,13 +10,11 @@ import Prelude
 import Styleguide
 
 let homeResponse =
-  analytics
-    >-> writeStatus(.ok)
+  writeStatus(.ok)
     >-> respond(launchSignupView)
 
 let signupResponse =
-  analytics
-    >-> notifyUsOfNewSignup
+  notifyUsOfNewSignup
     >-> airtableStuff
     >-> redirect(to: path(to: .home(signedUpSuccessfully: true)))
 
@@ -107,15 +105,4 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
-
-private func analytics<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, A>> {
-  return IO {
-    print("tracked analytics")
-    return conn
-  }
-}
-
-public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
-  return tuple <¢> lhs <*> rhs
 }

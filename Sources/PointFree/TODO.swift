@@ -155,3 +155,7 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 }
 
 private let defaultDecoder = JSONDecoder()
+
+public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
+  return tuple <¢> lhs <*> rhs
+}
