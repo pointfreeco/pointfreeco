@@ -1,6 +1,13 @@
 // swift-tools-version:4.0
-
+import Foundation
 import PackageDescription
+
+let episodesDependency: Package.Dependency
+if ProcessInfo.processInfo.environment["ENV"] == "PF" {
+  episodesDependency = .package(url: "https://github.com/mbrandonw/episodes.git", .revision("947706b"))
+} else {
+  episodesDependency = .package(url: "https://github.com/pointfreeco/episodes-oss.git", .revision("8e0751d"))
+}
 
 let package = Package(
   name: "PointFree",
@@ -12,7 +19,9 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("a253396")),
+    .package(url: "https://github.com/pointfreeco/episode-models.git", .revision("d3f2ef3")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+    episodesDependency
     ],
   targets: [
     .target(
@@ -30,6 +39,8 @@ let package = Package(
         "Css",
         "CssReset",
         "Either",
+        "Episodes",
+        "EpisodeModels",
         "Html",
         "HtmlCssSupport",
         "HttpPipeline",

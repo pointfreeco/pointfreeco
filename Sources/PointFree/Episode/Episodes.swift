@@ -1,4 +1,6 @@
 import Css
+import Episodes
+import EpisodeModels
 import Foundation
 import Html
 import HtmlCssSupport
@@ -15,7 +17,7 @@ let episodesResponse: Middleware<StatusLineOpen, ResponseEnded, Tag?, Data> =
 
 private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?) {
   return (
-    episodes: episodes
+    episodes: Episodes.allEpisodes
       .filter { tag.map($0.tags.contains) != .some(false) }
       .sorted(by: ^\.sequence)
       .reversed(),

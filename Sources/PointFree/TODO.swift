@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import Css
 import Either
 import Foundation
@@ -155,3 +156,13 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 }
 
 private let defaultDecoder = JSONDecoder()
+
+// TODO: Move to swift-web
+extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
+  public static var rawRepresentable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}

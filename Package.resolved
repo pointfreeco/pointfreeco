@@ -74,6 +74,24 @@
         }
       },
       {
+        "package": "EpisodeModels",
+        "repositoryURL": "https://github.com/pointfreeco/episode-models.git",
+        "state": {
+          "branch": "d3f2ef3",
+          "revision": "d3f2ef31926ba59cb35cad976392dfa0f0cf11c3",
+          "version": null
+        }
+      },
+      {
+        "package": "Episodes",
+        "repositoryURL": "https://github.com/pointfreeco/episodes-oss.git",
+        "state": {
+          "branch": "8e0751d",
+          "revision": "8e0751dc8ec67e5b309dce55e999a077bdedc55c",
+          "version": null
+        }
+      },
+      {
         "package": "Node",
         "repositoryURL": "https://github.com/vapor/node.git",
         "state": {
@@ -96,8 +114,8 @@
         "repositoryURL": "https://github.com/vapor/postgresql.git",
         "state": {
           "branch": null,
-          "revision": "cfbfa12c148fd2b44e6777d4ed2f57ca597e06e7",
-          "version": "2.1.0"
+          "revision": "d57aa99805da230704f924f7680195cfbf869642",
+          "version": "2.1.1"
         }
       },
       {

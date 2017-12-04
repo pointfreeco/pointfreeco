@@ -1,5 +1,7 @@
 import Css
 import Either
+import Episodes
+import EpisodeModels
 import Foundation
 import Html
 import HtmlCssSupport
@@ -21,7 +23,7 @@ let episodeResponse =
 )
 
 private func episode(for param: Either<String, Int>) -> Episode? {
-  return episodes.first(where: {
+  return Episodes.allEpisodes.first(where: {
     param.left == .some($0.slug) || param.right == .some($0.id)
   })
 }
@@ -101,11 +103,16 @@ private let topLevelTagsView = View<[Tag]> { tags in
     ])
 }
 
-private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
+private let episodeTocView = View<[TranscriptBlock]> { blocks in
   blocks
-    .filter { $0.type == .title && $0.timestamp != nil }
-    .flatMap { block in
-      tocEntryView.view((block.content, block.timestamp ?? 0))
+    .flatMap { block -> [Node] in
+      switch block.type {
+      case let .title(timestamp):
+        return tocEntryView.view((block.content, timestamp))
+
+      case .code, .image, .text:
+        return []
+      }
   }
 }
 
@@ -155,7 +162,7 @@ private let transcriptView = View<Episode> { ep in
   )
 }
 
-private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
+private let transcriptBlockView = View<TranscriptBlock> { block -> Node in
   switch block.type {
   case let .code(lang):
     return pre([
@@ -165,7 +172,10 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       )
       ])
 
-  case .paragraph:
+  case .image:
+    fatalError("We don't support images yet, but we will soon!")
+
+  case let .text(timestamp):
     return p([
       a(
         [
@@ -181,7 +191,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
             ]),
           style(padding(all: .rem(0.25)) <> margin(right: .rem(0.25)))
         ],
-        [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
+        [.text(encode(timestampLabel(for: timestamp)))]
       ),
       .text(encode(block.content))
       ])
