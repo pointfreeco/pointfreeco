@@ -19,3 +19,12 @@ print("✅")
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 800))
 webView.loadHTMLString(render(emailNodes), baseURL: nil)
 PlaygroundPage.current.liveView = webView
+
+print(sendEmail(
+  from: "Point-Free <support@pointfree.co>",
+  to: ["brandon@pointfree.co"],
+  subject: "We’ll let you know when Point-Free is ready!",
+  content: inj2(launchSignupConfirmationEmailView.view(unit))
+  )
+  .run.perform()
+)

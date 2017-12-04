@@ -50,7 +50,7 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
       parallel <| sendEmail(
         from: "Point-Free <support@pointfree.co>",
         to: [conn.data],
-        subject: "New signup for Point-Free!",
+        subject: "We’ll let you know when Point-Free is ready!",
         content: inj2(launchSignupConfirmationEmailView.view(unit))
         )
         .run
@@ -83,7 +83,7 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
         gridRow([
           gridColumn(sizes: [:], [
             div([`class`([Class.padding.all(2)])], [
-              h2([`class`([Class.h2])], ["Thanks for signing up!"]),
+              h3([`class`([Class.h3])], ["Thanks for signing up!"]),
               p([`class`([Class.padding.topBottom(2)])], [
                 "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
                 a([href("https://www.github.com/pointfreeco")], ["@pointfreeco"]),
