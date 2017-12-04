@@ -25,12 +25,14 @@ extension Class {
         public static let white = CssSelector.class("fg-white")
       }
     }
-    public static func code(lang: String?) -> CssSelector {
-      return _codeClass
-        | .class(lang ?? "")
+
+    private static let _codeClasses =
+      _codeClass
         | Class.layout.block
         | Class.padding.all(3)
         | Class.layout.overflowAuto(.x)
+    public static func code(lang: String?) -> CssSelector {
+      return _codeClasses | .class(lang ?? "")
     }
 
     public static let inlineCode = CssSelector.class("inline-code")
