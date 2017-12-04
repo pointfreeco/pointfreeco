@@ -37,6 +37,7 @@ let package = Package(
         "Optics",
         "PostgreSQL",
         "Styleguide",
+        "Tuple",
         "UrlFormEncoding"
       ]
     ),

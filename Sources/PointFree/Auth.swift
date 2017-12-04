@@ -128,6 +128,33 @@ extension EitherIO {
   }
 }
 
+extension Prelude.Unit: Error {}
+
+func test(_ x: GitHub.UserEnvelope) {
+  let tmp = AppEnvironment.current.database.fetchUser(x.accessToken)
+    .flatMap { user in
+      EitherIO.init(
+        run: IO.init {
+          user.map(Either.right) ?? .left(unit)
+      })
+  }
+
+  tmp
+}
+
+//private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, GitHub.UserEnvelope> {
+//
+//  let tmp = AppEnvironment.current.database.fetchUser(env.accessToken)
+//    .flatMap { user in
+//      EitherIO.init(
+//        run: IO.init {
+//          user.map(Either.right) ?? .left(unit)
+//      })
+//  }
+//
+//  fatalError()
+//}
+
 /// Exchanges a github code for an access token and loads the user's data.
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
@@ -141,9 +168,10 @@ private func authTokenMiddleware(
       }
       .flatMap { env in
         // todo: fetch or create aint working
-        AppEnvironment.current.database.fetchUser(env.accessToken).bimap(const(unit), const(env))
-          <|> AppEnvironment.current.database.createUser(env).bimap(const(unit), const(env))
+//        AppEnvironment.current.database.fetchUser(env.accessToken).bimap(const(unit), const(env))
+          AppEnvironment.current.database.upsertUser(env).bimap(const(unit), const(env))
       }
+//      .flatMap(registerUser(env:))
       .run
       .flatMap { gitHubUserEnvelope in
         switch gitHubUserEnvelope {

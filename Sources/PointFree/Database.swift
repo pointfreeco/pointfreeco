@@ -5,13 +5,13 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
-  var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
+  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
   var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
-    createUser: PointFree.createUser,
+    upsertUser: PointFree.upsertUser,
     fetchUser: PointFree.fetchUser,
     migrate: PointFree.migrate
   )
@@ -63,7 +63,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       .map(const(unit))
 }
 
-private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
+private func upsertUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
