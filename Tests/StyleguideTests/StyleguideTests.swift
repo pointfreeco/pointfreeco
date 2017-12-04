@@ -4,6 +4,11 @@ import Styleguide
 import XCTest
 
 class StyleguideTests: XCTestCase {
+  override func setUp() {
+    super.setUp()
+    record = true
+  }
+
   func testStyleguide() {
     assertSnapshot(
       matching: render(config: pretty, css: styleguide),
