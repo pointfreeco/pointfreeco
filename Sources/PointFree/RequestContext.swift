@@ -22,6 +22,27 @@ func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext
   return { $0.map(f) }
 }
 
+import Tuple
+
+func _requestContextMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<StatusLineOpen, Tuple3<Database.User?, URLRequest, A>>> {
+
+  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+    .map {
+      AppEnvironment.current.database.fetchUser($0.accessToken)
+        .run
+        .map(get(\.right) >>> flatMap(id))
+    }
+    ?? pure(nil)
+
+  return currentUser.map {
+    conn.map(
+      const($0 .*. conn.request .*. conn.data)
+    )
+  }
+}
+
 func requestContextMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
   ) -> IO<Conn<StatusLineOpen, RequestContext<A>>> {
@@ -48,7 +69,7 @@ func requestContextMiddleware<A>(
 }
 
 ///
-private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
+func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
   return request.cookies[gitHubSessionCookieName]
     .flatMap {
       ResponseHeader.verifiedValue(

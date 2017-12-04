@@ -7,6 +7,11 @@ import HttpPipeline
 import Optics
 import Styleguide
 import Prelude
+import Tuple
+
+let _navView = View<Tuple3<Database.User?, URLRequest, Prelude.Unit>> { ctx in
+  []
+}
 
 let navView = View<RequestContext<Prelude.Unit>> { ctx in
   [
