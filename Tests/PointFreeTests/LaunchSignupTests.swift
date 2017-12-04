@@ -7,7 +7,9 @@ import XCTest
 @testable import PointFree
 @testable import HttpPipeline
 import HttpPipelineTestSupport
-import WebKit
+#if !os(Linux)
+  import WebKit
+#endif
 
 #if os(iOS)
   import UIKit
@@ -88,12 +90,12 @@ class LaunchSignupTests: TestCase {
     let emailNodes = launchSignupConfirmationEmailView.view(unit)
 
     assertSnapshot(matching: prettyPrint(nodes: emailNodes), pathExtension: "html")
-    
+
     #if !os(Linux)
       if #available(OSX 10.13, *) {
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
         webView.loadHTMLString(render(emailNodes), baseURL: nil)
-        
+
         assertSnapshot(matching: webView)
       }
     #endif
