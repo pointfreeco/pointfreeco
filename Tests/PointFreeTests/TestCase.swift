@@ -1,5 +1,6 @@
 @testable import PointFree
 import PointFreeTestSupport
+import SnapshotTesting
 import XCTest
 
 // sourcery: disableTests
