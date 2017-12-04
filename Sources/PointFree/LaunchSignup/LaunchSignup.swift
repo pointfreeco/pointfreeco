@@ -48,7 +48,7 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
         )
         .run,
 
-      //
+      // Notify user that they signed up
       parallel <| sendEmail(
         from: "Point-Free <support@pointfree.co>",
         to: [conn.data],
