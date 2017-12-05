@@ -183,9 +183,8 @@ private func authTokenMiddleware(
       }
       .flatMap(fetchOrRegisterUser(env:))
       .run
-      .flatMap { errorOrUser in
-        switch errorOrUser {
-
+      .flatMap {
+        switch $0 {
         case .left:
           return conn
             // TODO: Handle errors.
