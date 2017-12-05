@@ -5,7 +5,7 @@ import Prelude
 import Styleguide
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger
+  requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
@@ -53,7 +53,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
       |> logoutResponse
 
   case let .pricing(value):
-    return conn.map(const(value))
+    return conn.map(const(value ?? .monthlyTeam))
       |> pricingResponse
 
   case .secretHome:
