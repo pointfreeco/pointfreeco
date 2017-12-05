@@ -10,21 +10,6 @@ import Prelude
 import Styleguide
 import UrlFormEncoding
 
-// todo: move to httppipeline
-private func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
-  return conn.map { $0.right }
-}
-
-// better way of doing this? or should we add to Either.swift?
-private func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
-  switch e {
-  case let .left(e):
-    return .left(e)
-  case let .right(user):
-    return user.map(Either.right) ?? .left(unit)
-  }
-}
-
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
@@ -262,4 +247,19 @@ let registrationEmailView = View<GitHub.User> { _ in
         ])
       ])
     ])
+}
+
+// todo: move to httppipeline
+private func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
+  return conn.map { $0.right }
+}
+
+// better way of doing this? or should we add to Either.swift?
+private func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
+  switch e {
+  case let .left(e):
+    return .left(e)
+  case let .right(user):
+    return user.map(Either.right) ?? .left(unit)
+  }
 }

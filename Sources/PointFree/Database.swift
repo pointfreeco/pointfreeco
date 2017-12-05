@@ -12,9 +12,9 @@ public struct Database {
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
-    fetchUserByGitHub: PointFree.fetchUserByGitHub,
-    fetchUserById: PointFree.fetchUserById,
-    upsertUser: PointFree.upsertUser,
+    fetchUserByGitHub: PointFree.fetchUser(gitHubAccessToken:),
+    fetchUserById: PointFree.fetchUser(byUserId:),
+    upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
 
@@ -65,7 +65,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       .map(const(unit))
 }
 
-private func upsertUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
+private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -80,10 +80,10 @@ private func upsertUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, D
       envelope.gitHubUser.name
     ]
     )
-    .flatMap { _ in fetchUserByGitHub(with: envelope.accessToken) }
+    .flatMap { _ in fetchUser(gitHubAccessToken: envelope.accessToken) }
 }
 
-private func fetchUserById(uuid: UUID) -> EitherIO<Error, Database.User?> {
+private func fetchUser(byUserId uuid: UUID) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
@@ -96,7 +96,7 @@ private func fetchUserById(uuid: UUID) -> EitherIO<Error, Database.User?> {
     .map(Database.User.create(from:))
 }
 
-private func fetchUserByGitHub(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
+private func fetchUser(gitHubAccessToken token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
