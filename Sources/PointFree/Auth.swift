@@ -120,7 +120,7 @@ private func readGitHubSessionCookieMiddleware(
           AppEnvironment.current.database.fetchUserById($0)
             .mapExcept(requireSome)
         }
-        ?? EitherIO(run: pure(.left(unit)))
+        ?? throwE(unit)
       )
       .run
       .map { conn.map(const($0)) }
