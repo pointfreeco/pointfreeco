@@ -258,12 +258,12 @@ private let headerNode = header(
               [
                 "Made by ",
                 a(
-                  [href("https://twitter.com/mbrandonw"), target(.blank)],
+                  [href(twitterUrl(to: .mbrandonw)), target(.blank)],
                   ["@mbrandonw"]
                 ),
                 " and ",
                 a(
-                  [href("https://twitter.com/stephencelis"), target(.blank)],
+                  [href(twitterUrl(to: .stephencelis)), target(.blank)],
                   ["@stephencelis"]
                 ),
                 "."

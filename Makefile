@@ -1,4 +1,4 @@
-	imports = \
+imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 

@@ -88,13 +88,13 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
                 "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
                 a([href(gitHubUrl(to: .organization))], ["@pointfreeco"]),
                 ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",
-                a([href("https://www.twitter.com/pointfreeco")], ["@pointfreeco"]),
+                a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
                 " to see our progress in making the site and learn more about the interesting techniques we are using."
                 ]),
               p([
-                a([href("https://www.twitter.com/mbrandonw")], ["Brandon Williams"]),
+                a([href(twitterUrl(to: .mbrandonw))], ["Brandon Williams"]),
                 br,
-                a([href("https://www.twitter.com/stephencelis")], ["Stephen Celis"]),
+                a([href(twitterUrl(to: .stephencelis))], ["Stephen Celis"]),
                 ]),
               p([
                 a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"]),

@@ -35,12 +35,12 @@ private let pointFreeView = View<Prelude.Unit> { _ in
     p([
       "A weekly video series on functional programming and the Swift programming language. Hosted by ",
       a(
-        [href("https://www.twitter.com/mbrandonw"), `class`([Class.type.textDecorationNone])],
+        [href(twitterUrl(to: .mbrandonw)), `class`([Class.type.textDecorationNone])],
         ["Brandon Williams"]
       ),
       " and ",
       a(
-        [href("https://www.twitter.com/stephencelis"), `class`([Class.type.textDecorationNone])],
+        [href(twitterUrl(to: .stephencelis)), `class`([Class.type.textDecorationNone])],
         ["Stephen Celis"]
       ),
       "."
@@ -64,7 +64,7 @@ private let followColumnView = View<Prelude.Unit> { _ in
     h5([`class`([Class.h5])], ["Follow"]),
     ol([`class`([Class.type.list.reset])], [
       li([a([href("#")], ["Blog"])]),
-      li([a([href("https://www.twitter.com/pointfreeco")], ["Twitter"])]),
+      li([a([href(twitterUrl(to: .pointfreeco))], ["Twitter"])]),
       li([a([href(gitHubUrl(to: .organization))], ["GitHub"])]),
       ])
     ])

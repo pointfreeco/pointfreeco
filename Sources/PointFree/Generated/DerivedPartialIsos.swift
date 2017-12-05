@@ -103,3 +103,25 @@ import Prelude
           })
     }
   }
+  extension TwitterRoute {
+    enum iso {
+          public static let mbrandonw = parenthesize <| PartialIso<Prelude.Unit, TwitterRoute>(
+            apply: const(.some(.mbrandonw)),
+            unapply: {
+              guard case .mbrandonw = $0 else { return nil }
+              return unit
+          })
+          public static let pointfreeco = parenthesize <| PartialIso<Prelude.Unit, TwitterRoute>(
+            apply: const(.some(.pointfreeco)),
+            unapply: {
+              guard case .pointfreeco = $0 else { return nil }
+              return unit
+          })
+          public static let stephencelis = parenthesize <| PartialIso<Prelude.Unit, TwitterRoute>(
+            apply: const(.some(.stephencelis)),
+            unapply: {
+              guard case .stephencelis = $0 else { return nil }
+              return unit
+          })
+    }
+  }

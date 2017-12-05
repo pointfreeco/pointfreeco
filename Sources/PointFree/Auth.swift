@@ -164,21 +164,6 @@ private func authTokenMiddleware(
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
-
-  let params: [(String, String)] = [
-    ("scope", "user:email"),
-    ("client_id", AppEnvironment.current.envVars.gitHub.clientId),
-    ("redirect_uri", url(to: .gitHubCallback(code: nil, redirect: redirect)))
-  ]
-
-  let queryString = params
-    .map { key, value in
-      key + "=" + (value.addingPercentEncoding(withAllowedCharacters: .urlQueryParamAllowed) ?? "")
-    }
-    .joined(separator: "&")
-
-//  return "https://github.com/login/oauth/authorize?\(queryString)"
-
   return gitHubUrl(
     to: .authorize(
       clientId: AppEnvironment.current.envVars.gitHub.clientId,
