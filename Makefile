@@ -1,4 +1,4 @@
-imports = \
+	imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 
@@ -37,14 +37,15 @@ linux-main:
 		--sources ./Tests/ \
 		--templates ./.sourcery-templates/LinuxMain.stencil \
 		--output ./Tests/ \
-		--args testimports='$(imports)' \
-		&& mv ./Tests/LinuxMain.generated.swift ./Tests/LinuxMain.swift
+		--args testimports='$(imports)'
+	mv ./Tests/LinuxMain.generated.swift ./Tests/LinuxMain.swift
 
 route-partial-iso:
+	mkdir -p ./Sources/PointFree/Generated
 	sourcery \
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/RoutePartialIsos.stencil \
-		--output ./Sources/PointFree/
+		--output ./Sources/PointFree/Generated/DerivedPartialIsos.swift
 
 postgres-mm:
 	-@mkdir -p "$(POSTGRES_PATH)"

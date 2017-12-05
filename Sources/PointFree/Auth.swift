@@ -177,7 +177,15 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
     }
     .joined(separator: "&")
 
-  return "https://github.com/login/oauth/authorize?\(queryString)"
+//  return "https://github.com/login/oauth/authorize?\(queryString)"
+
+  return gitHubUrl(
+    to: .authorize(
+      clientId: AppEnvironment.current.envVars.gitHub.clientId,
+      redirectUri: url(to: .gitHubCallback(code: nil, redirect: redirect)),
+      scope: "user:email"
+    )
+  )
 }
 
 let gitHubSessionCookieName = "github_session"

@@ -1,9 +1,32 @@
 // Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+
 import ApplicativeRouter
 import Prelude
 
+  extension GitHubRoute {
+    enum iso {
+          public static let authorize = parenthesize <| PartialIso(
+            apply: GitHubRoute.authorize,
+            unapply: {
+              guard case let .authorize(result) = $0 else { return nil }
+              return result
+          })
+          public static let organization = parenthesize <| PartialIso<Prelude.Unit, GitHubRoute>(
+            apply: const(.some(.organization)),
+            unapply: {
+              guard case .organization = $0 else { return nil }
+              return unit
+          })
+          public static let repo = parenthesize <| PartialIso(
+            apply: GitHubRoute.repo,
+            unapply: {
+              guard case let .repo(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
   extension Route {
     enum iso {
           public static let about = parenthesize <| PartialIso<Prelude.Unit, Route>(

@@ -7,13 +7,13 @@ import Prelude
       {% for case in enum.cases %}
         {% if case.hasAssociatedValue %}
           {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso(
-            apply: Route.{{ case.name }},
+            apply: {{ enum.name }}.{{ case.name }},
             unapply: {
               guard case let .{{ case.name }}(result) = $0 else { return nil }
               return result
           })
         {% else %}
-          {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, {{ enum.name }}>(
             apply: const(.some(.{{ case.name }})),
             unapply: {
               guard case .{{ case.name }} = $0 else { return nil }

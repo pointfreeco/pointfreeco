@@ -278,7 +278,7 @@ private let headerNode = header(
                 ),
                 " and open-sourced on ",
                 a(
-                  [href("https://github.com/pointfreeco/pointfreeco"), target(.blank)],
+                  [href(gitHubUrl(to: .repo(.pointfreeco))), target(.blank)],
                   ["GitHub"]
                 ),
               ]

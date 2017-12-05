@@ -86,7 +86,7 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
               h3([`class`([Class.h3])], ["Thanks for signing up!"]),
               p([`class`([Class.padding.topBottom(2)])], [
                 "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
-                a([href("https://www.github.com/pointfreeco")], ["@pointfreeco"]),
+                a([href(gitHubUrl(to: .organization))], ["@pointfreeco"]),
                 ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",
                 a([href("https://www.twitter.com/pointfreeco")], ["@pointfreeco"]),
                 " to see our progress in making the site and learn more about the interesting techniques we are using."
