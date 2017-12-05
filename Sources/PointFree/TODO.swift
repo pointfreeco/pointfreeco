@@ -165,3 +165,23 @@ private let defaultDecoder = JSONDecoder()
 public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
   return tuple <¢> lhs <*> rhs
 }
+
+// TODO: Move to swift-web
+import ApplicativeRouter
+extension PartialIso {
+  public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
+    return .init(
+      apply: { iso.apply($0) ?? `default` },
+      unapply: iso.unapply
+    )
+  }
+}
+
+extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
+  public static var rawRepresentable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}
