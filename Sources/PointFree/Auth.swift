@@ -158,9 +158,9 @@ private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.U
   return AppEnvironment.current.database.fetchUserByGitHub(env.accessToken)
     .flatMap { user in
       EitherIO(run: IO { user.map(Either.right) ?? .left(unit) })
-        .catch { _ in registerUser(env: env) }
+        .catch(const(registerUser(env: env)))
     }
-    .mapExcept { $0.bimap(const(unit), id) }
+    .mapExcept(bimap(const(unit), id))
 }
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
