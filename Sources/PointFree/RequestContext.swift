@@ -24,6 +24,25 @@ func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext
 
 import Tuple
 
+func currentUserMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<StatusLineOpen, Tuple2<Database.User?, A>>> {
+
+  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+    .map {
+      AppEnvironment.current.database.fetchUser($0.accessToken)
+        .run
+        .map(get(\.right) >>> flatMap(id))
+    }
+    ?? pure(nil)
+
+  return currentUser.map {
+    conn.map(
+      const($0 .*. conn.data)
+    )
+  }
+}
+
 func _requestContextMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
   ) -> IO<Conn<StatusLineOpen, Tuple3<Database.User?, URLRequest, A>>> {
