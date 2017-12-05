@@ -41,11 +41,11 @@ linux-main:
 	mv ./Tests/LinuxMain.generated.swift ./Tests/LinuxMain.swift
 
 route-partial-iso:
-	mkdir -p ./Sources/PointFree/Generated
+	mkdir -p ./Sources/PointFree/__Generated__
 	sourcery \
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/RoutePartialIsos.stencil \
-		--output ./Sources/PointFree/Generated/DerivedPartialIsos.swift
+		--output ./Sources/PointFree/__Generated__/DerivedPartialIsos.swift
 
 postgres-mm:
 	-@mkdir -p "$(POSTGRES_PATH)"
