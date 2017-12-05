@@ -19,7 +19,7 @@ enum PricingType {
   }
 }
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
   writeStatus(.ok)
     >-> respond(pricingView)
 
@@ -41,7 +41,7 @@ private let extraStyles: Stylesheet = tabStyles(
     ]
 )
 
-private let pricingView = View<Prelude.Unit> { _ in
+private let pricingView = View<Stripe.Plan.Id> { plan in
   document([
     html([
       head([
@@ -73,7 +73,7 @@ private let pricingView = View<Prelude.Unit> { _ in
 
               ]),
             form([action("/subscribe"), id("payment-form"), method(.post)], [
-              input([name("plan"), type(.hidden), value(Stripe.Plan.Id.monthly.rawValue)]),
+              input([name("plan"), type(.hidden), value(plan.rawValue)]),
               input([name("token"), type(.hidden)]),
               div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
               div([id("card-errors"), role(.alert)], []),
