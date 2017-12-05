@@ -5,14 +5,16 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
-  var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
-  var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var fetchUserByGitHub: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var fetchUserById: (UUID) -> EitherIO<Error, User?>
+  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
-    createUser: PointFree.createUser,
-    fetchUser: PointFree.fetchUser,
+    fetchUserByGitHub: PointFree.fetchUserByGitHub,
+    fetchUserById: PointFree.fetchUserById,
+    upsertUser: PointFree.upsertUser,
     migrate: PointFree.migrate
   )
 
@@ -63,7 +65,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       .map(const(unit))
 }
 
-private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
+private func upsertUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -78,10 +80,23 @@ private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, P
       envelope.gitHubUser.name
     ]
     )
-    .map(const(unit))
+    .flatMap { _ in fetchUserByGitHub(with: envelope.accessToken) }
 }
 
-private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
+private func fetchUserById(uuid: UUID) -> EitherIO<Error, Database.User?> {
+  return execute(
+    """
+    SELECT "email", "github_user_id", "github_access_token", "id", "name"
+    FROM "users"
+    WHERE "id" = $1
+    LIMIT 1
+    """,
+    [uuid.uuidString]
+    )
+    .map(Database.User.create(from:))
+}
+
+private func fetchUserByGitHub(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
@@ -91,18 +106,7 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     """,
     [token.accessToken]
     )
-    .map { result -> Database.User? in
-      let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-
-      return curry(Database.User.init)
-        <¢> result["email"]?.array?.first?.wrapped.string
-        <*> result["github_user_id"]?.array?.first?.wrapped.int
-        <*> result["github_access_token"]?.array?.first?.wrapped.string
-        <*> uuid
-        <*> result["name"]?.array?.first?.wrapped.string
-        <*> .some(subscriptionId)
-  }
+    .map(Database.User.create(from:))
 }
 
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
@@ -178,4 +182,19 @@ private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresent
     return conn.flatMap { conn in
       .wrap { try conn.execute(query, representable) }
     }
+}
+
+extension Database.User {
+  static func create(from result: Node) -> Database.User? {
+    let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+    let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+
+    return curry(Database.User.init)
+      <¢> result["email"]?.array?.first?.wrapped.string
+      <*> result["github_user_id"]?.array?.first?.wrapped.int
+      <*> result["github_access_token"]?.array?.first?.wrapped.string
+      <*> uuid
+      <*> result["name"]?.array?.first?.wrapped.string
+      <*> .some(subscriptionId)
+  }
 }

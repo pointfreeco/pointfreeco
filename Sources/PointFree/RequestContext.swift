@@ -28,7 +28,7 @@ func requestContextMiddleware<A>(
 
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
     .map {
-      AppEnvironment.current.database.fetchUser($0.accessToken)
+      AppEnvironment.current.database.fetchUserByGitHub($0.accessToken)
         .run
         .map(get(\.right) >>> flatMap(id))
     }
@@ -49,7 +49,7 @@ func requestContextMiddleware<A>(
 
 ///
 private func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
-  return request.cookies[gitHubSessionCookieName]
+  return request.cookies[pointFreeUserSession]
     .flatMap {
       ResponseHeader.verifiedValue(
         signedCookieValue: $0,
