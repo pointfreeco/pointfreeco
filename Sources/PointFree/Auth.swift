@@ -153,7 +153,7 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
     .flatMap { user in
       EitherIO(run: IO { () -> Either<Error, Database.User> in
 
-        // Fir-and-forget notify user that they signed up
+        // Fire-and-forget notify user that they signed up
         parallel(
           sendEmail(
             from: "Point-Free <support@pointfree.co>",
