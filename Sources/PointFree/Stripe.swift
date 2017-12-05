@@ -193,7 +193,8 @@ private func stripeDataTask<A>(_ urlString: String, _ method: Method = .get)
 
     return pure(request)
       .flatMap { jsonDataTask(with: auth <| $0) }
-      .withExcept(const(unit))
+      .map(tap(AppEnvironment.current.logger.debug))
+      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
 
 private func auth(_ request: URLRequest) -> URLRequest {
@@ -216,5 +217,13 @@ extension SingleValueCodable where RawValue: Codable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(self.rawValue)
+  }
+}
+
+// FIXME???
+func tap<A>(_ f: @autoclosure @escaping () -> (@autoclosure () -> (A)) -> Void) -> (A) -> A {
+  return {
+    f()($0)
+    return $0
   }
 }

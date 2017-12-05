@@ -13,7 +13,7 @@ public enum Route: DerivePartialIsos {
   case launchSignup(email: String)
   case login(redirect: String?)
   case logout
-  case pricing(Prelude.Unit)
+  case pricing(Stripe.Plan.Id?)
   case secretHome
   case subscribe(Stripe.Plan.Id, token: String)
   case terms
@@ -48,7 +48,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("logout") <% end,
 
   Route.iso.pricing
-    <¢> get %> lit("pricing") <% end,
+    <¢> get %> lit("pricing") %> queryParam("plan", opt(.iso(.rawRepresentable, default: .monthly))) <% end,
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
@@ -62,6 +62,15 @@ private let routers: [Router<Route>] = [
 ]
 
 // TODO: Move to swift-web
+extension PartialIso {
+  public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
+    return .init(
+      apply: { iso.apply($0) ?? `default` },
+      unapply: iso.unapply
+    )
+  }
+}
+
 extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
   public static var rawRepresentable: PartialIso {
     return .init(
