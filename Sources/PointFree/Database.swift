@@ -104,6 +104,8 @@ private func fetchUserByGitHub(with token: GitHub.AccessToken) -> EitherIO<Error
     WHERE "github_access_token" = $1
     LIMIT 1
     """,
+    // TODO: make this fetch by the github id, not access token, since it can change. also maybe build in
+    //       a fetch and update to refresh the token.
     [token.accessToken]
     )
     .map(Database.User.create(from:))
