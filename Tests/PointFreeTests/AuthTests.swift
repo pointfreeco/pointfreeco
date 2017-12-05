@@ -1,10 +1,15 @@
 import Either
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import Prelude
+import Optics
 import SnapshotTesting
 import XCTest
+#if !os(Linux)
+  import WebKit
+#endif
 
 class AuthTests: TestCase {
   func testAuth() {
@@ -106,5 +111,20 @@ class AuthTests: TestCase {
     let result = conn |> siteMiddleware 
 
     assertSnapshot(matching: result.perform())
+  }
+
+  func testRegistrationEmail() {
+    let emailNodes = registrationEmailView.view(.mock)
+
+    assertSnapshot(matching: prettyPrint(nodes: emailNodes), pathExtension: "html")
+
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+
+        assertSnapshot(matching: webView)
+      }
+    #endif
   }
 }
