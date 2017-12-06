@@ -55,3 +55,7 @@ Explore more of our open-source on the [Point-Free](https://github.com/pointfree
 ## Find this interesting?
 
 Then check out [Point-Free](https://www.pointfree.co), a soon-to-be-launching weekly video series exploring Swift and functional programming!
+
+## License
+
+The content of this project itself is licensed under the [CC BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/), and the underlying source code used to format and display that content is licensed under the [MIT license](LICENSE).

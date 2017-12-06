@@ -131,7 +131,7 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
       let session = URLSession(configuration: .default)
       session
         .dataTask(with: request) { data, response, error in
-          defer { session.invalidateAndCancel() }
+          defer { session.finishTasksAndInvalidate() }
           if let error = error {
             callback(.left(error))
           }
@@ -149,9 +149,39 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
   where A: Decodable {
 
     return dataTask(with: request)
-      .flatMap { data, _ in
-        EitherIO.wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+      .map(
+        first >>> {
+          AppEnvironment.current.logger.debug(String(decoding: $0, as: UTF8.self))
+          return $0
+        }
+      )
+      .flatMap { data in
+        .wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
     }
 }
 
 private let defaultDecoder = JSONDecoder()
+
+public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
+  return tuple <¢> lhs <*> rhs
+}
+
+// TODO: Move to swift-web
+import ApplicativeRouter
+extension PartialIso {
+  public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
+    return .init(
+      apply: { iso.apply($0) ?? `default` },
+      unapply: iso.unapply
+    )
+  }
+}
+
+extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
+  public static var rawRepresentable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}

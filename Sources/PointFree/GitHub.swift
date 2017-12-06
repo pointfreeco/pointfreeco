@@ -52,7 +52,8 @@ private func fetchAuthToken(with code: String) -> EitherIO<Prelude.Unit, GitHub.
   ]
 
   return jsonDataTask(with: request)
-    .withExcept(const(unit))
+    .map(tap(AppEnvironment.current.logger.debug))
+    .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
 
 private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude.Unit, GitHub.User> {
@@ -64,7 +65,8 @@ private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude
   ]
 
   return jsonDataTask(with: request)
-    .withExcept(const(unit))
+    .map(tap(AppEnvironment.current.logger.debug))
+    .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
 
 private let session = URLSession(configuration: .default)
