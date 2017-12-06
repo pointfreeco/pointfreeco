@@ -12,6 +12,7 @@ public struct Environment {
   public private(set) var database: Database
   public private(set) var envVars: EnvVars
   public private(set) var gitHub: GitHub
+  public private(set) var logger: Logger
   public private(set) var sendEmail: SendEmail
   public private(set) var stripe: Stripe
 
@@ -20,6 +21,7 @@ public struct Environment {
     database: PointFree.Database = .live,
     envVars: EnvVars = EnvVars(),
     gitHub: GitHub = .live,
+    logger: Logger = Logger(),
     sendEmail: @escaping SendEmail = PointFree.mailgunSend,
     stripe: Stripe = .live) {
 
@@ -27,6 +29,7 @@ public struct Environment {
     self.database = database
     self.envVars = envVars
     self.gitHub = gitHub
+    self.logger = logger
     self.sendEmail = sendEmail
     self.stripe = stripe
   }

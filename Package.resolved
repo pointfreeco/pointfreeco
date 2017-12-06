@@ -96,16 +96,16 @@
         "repositoryURL": "https://github.com/vapor/postgresql.git",
         "state": {
           "branch": null,
-          "revision": "cfbfa12c148fd2b44e6777d4ed2f57ca597e06e7",
-          "version": "2.1.0"
+          "revision": "d57aa99805da230704f924f7680195cfbf869642",
+          "version": "2.1.1"
         }
       },
       {
         "package": "Prelude",
         "repositoryURL": "https://github.com/pointfreeco/swift-prelude.git",
         "state": {
-          "branch": "7bb13df",
-          "revision": "7bb13dfcd87bd64278dc85ac870eabd53449f593",
+          "branch": "bbff2f3",
+          "revision": "bbff2f36afd8cd747aac98b6ce4a12ebc572f449",
           "version": null
         }
       },
@@ -131,8 +131,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "a253396",
-          "revision": "a253396a24bc47b07447a05f88c0a6a2f99b4fa3",
+          "branch": "7a6f50a",
+          "revision": "7a6f50ab7ec905532038b883de8f46d4dc4e4faa",
           "version": null
         }
       }

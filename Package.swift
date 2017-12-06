@@ -10,8 +10,8 @@ let package = Package(
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7bb13df")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("a253396")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("bbff2f3")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("7a6f50a")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
     ],
   targets: [
@@ -37,6 +37,7 @@ let package = Package(
         "Optics",
         "PostgreSQL",
         "Styleguide",
+        "Tuple",
         "UrlFormEncoding"
       ]
     ),
