@@ -9,10 +9,10 @@ import Styleguide
 import Prelude
 import Tuple
 
-func test() {
-  (1 .*. "" .*. true)
-    |> \.first .~ 2
-}
+//func test() {
+//  (1 .*. "" .*. true)
+//    |> \.first .~ 2
+//}
 
 let _navView = View<Tuple3<Database.User?, URLRequest, Prelude.Unit>> { ctx in
   []
