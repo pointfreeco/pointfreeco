@@ -177,11 +177,41 @@ extension PartialIso {
   }
 }
 
+// TODO: Move to swift-prelude
 extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
   public static var rawRepresentable: PartialIso {
     return .init(
       apply: B.init(rawValue:),
       unapply: ^\.rawValue
     )
+  }
+}
+
+public struct Tagged<Tag, A: Codable> {
+  public let unwrap: A
+
+  public init(_ unwrap: A) {
+    self.unwrap = unwrap
+  }
+}
+
+extension Tagged: Codable /* where A: Codable */ {
+  public init(from decoder: Decoder) throws {
+    self.init(try decoder.singleValueContainer().decode(A.self))
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(self.unwrap)
+  }
+}
+
+extension Tagged: RawRepresentable {
+  public init?(rawValue: A) {
+    self.init(rawValue)
+  }
+
+  public var rawValue: A {
+    return self.unwrap
   }
 }

@@ -17,18 +17,22 @@ public struct Database {
   )
 
   public struct User {
-    let email: String
-    let gitHubUserId: Int
-    let gitHubAccessToken: String
-    let id: UUID
-    let name: String
-    let subscriptionId: UUID?
+    public let email: String
+    public let gitHubUserId: Int
+    public let gitHubAccessToken: String
+    public let id: Id
+    public let name: String
+    public let subscriptionId: Subscription.Id?
+
+    public typealias Id = Tagged<User, UUID>
   }
 
   public struct Subscription {
-    let id: UUID
-    let stripeSubscriptionId: String
-    let userId: UUID
+    let id: Id
+    let stripeSubscriptionId: Stripe.Subscription.Id
+    let userId: User.Id
+
+    public typealias Id = Tagged<Subscription, UUID>
   }
 }
 
@@ -41,8 +45,8 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       RETURNING "id"
       """,
       [
-        stripeSubscription.id,
-        user.id.uuidString,
+        stripeSubscription.id.unwrap,
+        user.id.unwrap.uuidString,
         ]
       )
       .flatMap { node in
@@ -56,7 +60,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
           """,
           [
             node[0, "id"]?.string,
-            user.id
+            user.id.unwrap.uuidString
           ]
         )
       }
@@ -92,8 +96,13 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     [token.accessToken]
     )
     .map { result -> Database.User? in
-      let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
+      let uuid = result["id"]?.array?.first?.wrapped.string
+        .flatMap(UUID.init(uuidString:))
+        .map(Database.User.Id.init)
+
+      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string
+        .flatMap(UUID.init(uuidString:))
+        .map(Database.Subscription.Id.init)
 
       return curry(Database.User.init)
         <¢> result["email"]?.array?.first?.wrapped.string

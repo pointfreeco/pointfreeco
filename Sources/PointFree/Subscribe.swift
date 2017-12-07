@@ -3,17 +3,20 @@ import HttpPipeline
 import Prelude
 @testable import Tuple
 
-typealias SubscribeData = (plan: Stripe.Plan.Id, token: String)
+typealias SubscribeData = (plan: Stripe.Plan.Id, token: Stripe.Token.Id)
 
 let subscribeResponse =
-    currentUserMiddleware
-      >-> subscribe
+  map { $0 .*. unit }
+    >>> currentUserMiddleware
+    >-> subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, T2<Database.User?, SubscribeData>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User?, SubscribeData>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    return AppEnvironment.current.stripe.createCustomer(conn.data.second.token)
-      .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, conn.data.second.plan) }
+    let (currentUser, subscribeData) = conn.data |> lower
+    guard let user = currentUser else { fatalError() }
+    return AppEnvironment.current.stripe.createCustomer(user, subscribeData.token)
+      .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, subscribeData.plan) }
       .run
       .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in
 
@@ -26,7 +29,8 @@ private func subscribe(_ conn: Conn<StatusLineOpen, T2<Database.User?, Subscribe
         case let .right(sub):
           return conn
             |> writeStatus(.created)
-            >-> respond(text: "Created subscription! id: " + sub.id)
+            >-> respond(text: "Created subscription! id: " + sub.id.unwrap)
         }
     }
 }
+

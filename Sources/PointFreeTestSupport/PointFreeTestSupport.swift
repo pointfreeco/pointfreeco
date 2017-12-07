@@ -33,9 +33,9 @@ extension Database.User {
     email: "hello@pointfree.co",
     gitHubUserId: 1,
     gitHubAccessToken: "deadbeef",
-    id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
+    id: .init(UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     name: "Blob",
-    subscriptionId: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+    subscriptionId: .init(UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 }
 
@@ -63,7 +63,7 @@ extension GitHub.User {
 extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.mock)),
-    createCustomer: const(pure(.mock)),
+    createCustomer: { _, _ in pure(.mock) },
     createSubscription: { _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock),
@@ -74,13 +74,13 @@ extension Stripe {
 
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
-    id: "cus_test"
+    id: .init("cus_test")
   )
 }
 
 extension Stripe.Plan {
   public static let mock = Stripe.Plan(
-    amount: .init(rawValue: 15_00),
+    amount: .init(15_00),
     created: Date(timeIntervalSinceReferenceDate: 0),
     currency: .usd,
     id: .monthly,
@@ -105,9 +105,9 @@ extension Stripe.Subscription {
     created: Date(timeIntervalSinceReferenceDate: 0),
     currentPeriodStart: Date(timeIntervalSinceReferenceDate: 0),
     currentPeriodEnd: Date(timeIntervalSinceReferenceDate: 60 * 60 * 24 * 30),
-    customer: "cus_test",
+    customer: .init("cus_test"),
     endedAt: nil,
-    id: "sub_test",
+    id: .init("sub_test"),
     plan: .mock,
     quantity: 1,
     start: Date(timeIntervalSinceReferenceDate: 0),
