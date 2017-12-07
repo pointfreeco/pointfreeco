@@ -18,29 +18,32 @@ let signupResponse =
     >-> airtableStuff
     >-> redirect(to: path(to: .home(signedUpSuccessfully: true)))
 
-private func airtableStuff<I>(_ conn: Conn<I, String>) -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
+private func airtableStuff<I>(_ conn: Conn<I, EmailAddress>)
+  -> IO<Conn<I, Either<Prelude.Unit, Prelude.Unit>>> {
 
-  let result = [
-    AppEnvironment.current.envVars.airtable.base1,
-    AppEnvironment.current.envVars.airtable.base2,
-    AppEnvironment.current.envVars.airtable.base3
-    ]
-    .map(AppEnvironment.current.airtableStuff(conn.data))
-    .reduce(lift(.left(unit))) { $0 <|> $1 }
-    .run
+    let result = [
+      AppEnvironment.current.envVars.airtable.base1,
+      AppEnvironment.current.envVars.airtable.base2,
+      AppEnvironment.current.envVars.airtable.base3
+      ]
+      .map(AppEnvironment.current.airtableStuff(conn.data))
+      .reduce(lift(.left(unit))) { $0 <|> $1 }
+      .run
 
-  return result.map { conn.map(const($0)) }
+    return result.map { conn.map(const($0)) }
 }
 
-func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
+private let pointFreeSupport = EmailAddress("Point-Free <support@pointfree.co>")
+
+func notifyUsOfNewSignup<I>(_ conn: Conn<I, EmailAddress>) -> IO<Conn<I, EmailAddress>> {
   return IO {
 
     // Fire-and-forget to send some emails
     zip(
       // Notify us that someone signed up
       parallel <| sendEmail(
-        from: "Point-Free <support@pointfree.co>",
-        to: ["brandon@pointfree.co", "stephen@pointfree.co"],
+        from: pointFreeSupport,
+        to: [.init("brandon@pointfree.co"), .init("stephen@pointfree.co")],
         subject: "New signup for Point-Free!",
         content: inj2(notifyUsView.view(conn.data))
         )
@@ -48,7 +51,7 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
 
       // Notify user that they signed up
       parallel <| sendEmail(
-        from: "Point-Free <support@pointfree.co>",
+        from: pointFreeSupport,
         to: [conn.data],
         subject: "We’ll let you know when Point-Free is ready!",
         content: inj2(launchSignupConfirmationEmailView.view(unit))
@@ -61,12 +64,12 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, String>) -> IO<Conn<I, String>> {
   }
 }
 
-let notifyUsView = View<String> { email in
+let notifyUsView = View<EmailAddress> { email in
   html([
     head([style(reset)]),
     body([
       p(["We just got a new signup for Point-Free! Wooooo!"]),
-      p(["Email: ", .text(encode(email))]),
+      p(["Email: ", .text(encode(email.unwrap))]),
       p(["Good job everyone!"])
       ])
     ])

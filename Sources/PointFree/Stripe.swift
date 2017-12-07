@@ -141,7 +141,7 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id)
 
     return stripeDataTask("https://api.stripe.com/v1/customers", .post([
       "description": user.id.unwrap.uuidString,
-      "email": user.email,
+      "email": user.email.unwrap,
       "source": token.unwrap,
       ]))
 }

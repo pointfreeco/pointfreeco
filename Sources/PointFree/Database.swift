@@ -17,7 +17,7 @@ public struct Database {
   )
 
   public struct User {
-    public let email: String
+    public let email: EmailAddress
     public let gitHubUserId: Int
     public let gitHubAccessToken: String
     public let id: Id
@@ -76,7 +76,7 @@ private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, P
     SET "email" = $1, "github_access_token" = $3, "name" = $4
     """,
     [
-      envelope.gitHubUser.email,
+      envelope.gitHubUser.email.unwrap,
       envelope.gitHubUser.id,
       envelope.accessToken.accessToken,
       envelope.gitHubUser.name
@@ -96,6 +96,9 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     [token.accessToken]
     )
     .map { result -> Database.User? in
+      let email = result["email"]?.array?.first?.wrapped.string
+        .map(EmailAddress.init)
+
       let uuid = result["id"]?.array?.first?.wrapped.string
         .flatMap(UUID.init(uuidString:))
         .map(Database.User.Id.init)
@@ -105,7 +108,7 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
         .map(Database.Subscription.Id.init)
 
       return curry(Database.User.init)
-        <¢> result["email"]?.array?.first?.wrapped.string
+        <¢> email
         <*> result["github_user_id"]?.array?.first?.wrapped.int
         <*> result["github_access_token"]?.array?.first?.wrapped.string
         <*> uuid

@@ -30,7 +30,7 @@ extension Database {
 
 extension Database.User {
   public static let mock = Database.User(
-    email: "hello@pointfree.co",
+    email: .init("hello@pointfree.co"),
     gitHubUserId: 1,
     gitHubAccessToken: "deadbeef",
     id: .init(UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
@@ -54,7 +54,7 @@ extension GitHub.AccessToken {
 
 extension GitHub.User {
   public static let mock = GitHub.User(
-    email: "hello@pointfree.co",
+    email: .init("hello@pointfree.co"),
     id: 1,
     name: "Blob"
   )

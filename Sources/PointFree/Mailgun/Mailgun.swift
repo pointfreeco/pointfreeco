@@ -5,6 +5,8 @@ import Optics
 import Prelude
 import UrlFormEncoding
 
+public typealias EmailAddress = Tagged<Email, String>
+
 enum Tracking: String {
   case no
   case yes
@@ -23,10 +25,10 @@ enum TrackingOpens: String {
 }
 
 public struct Email {
-  var from: String
-  var to: [String]
-  var cc: [String]? = nil
-  var bcc: [String]? = nil
+  var from: EmailAddress
+  var to: [EmailAddress]
+  var cc: [EmailAddress]? = nil
+  var bcc: [EmailAddress]? = nil
   var subject: String
   var text: String?
   var html: String?
@@ -45,10 +47,10 @@ public struct SendEmailResponse: Decodable {
 func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
 
   let params = [
-    "from": email.from,
-    "to": email.to.joined(separator: ","),
-    "cc": email.cc?.joined(separator: ","),
-    "bcc": email.bcc?.joined(separator: ","),
+    "from": email.from.unwrap,
+    "to": email.to.map(^\.unwrap).joined(separator: ","),
+    "cc": email.cc.map(map(^\.unwrap) >>> joined(separator: ",")),
+    "bcc": email.bcc.map(map(^\.unwrap) >>> joined(separator: ",")),
     "subject": email.subject,
     "text": email.text,
     "html": email.html,

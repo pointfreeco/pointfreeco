@@ -24,7 +24,7 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-    let email: String
+    let email: EmailAddress
     let id: Int
     let name: String
   }
