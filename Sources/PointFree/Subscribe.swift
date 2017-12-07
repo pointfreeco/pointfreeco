@@ -5,17 +5,15 @@ import Prelude
 
 typealias SubscribeData = (plan: Stripe.Plan.Id, token: String)
 
-let subscribeResponse:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscribeData>, Data> =
+let subscribeResponse =
     currentUserMiddleware
-      >-> { conn in pure(conn.map { Tuple(first: $0, second: unit) }) }
       >-> subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User?, SubscribeData>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, T2<Database.User?, SubscribeData>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    return AppEnvironment.current.stripe.createCustomer(conn.data.second.first.token)
-      .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, conn.data.second.first.plan) }
+    return AppEnvironment.current.stripe.createCustomer(conn.data.second.token)
+      .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, conn.data.second.plan) }
       .run
       .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in
 
