@@ -26,7 +26,11 @@ private func episode(for param: Either<String, Int>) -> Episode? {
   })
 }
 
-private let extraStyles = (a & .pseudo(.visited) & CssSelector.class("pf-link-white")) % color(.white)
+private let extraStyles =
+  (a & .pseudo(.link) & CssSelector.class("pf-link-white")) % color(.white)
+    <> (a & .pseudo(.link) & CssSelector.class("pf-link-green")) % color(Colors.green)
+    <> (a & .pseudo(.link) & CssSelector.class("pf-link-purple")) % color(Colors.purple)
+    <> (a & .pseudo(.link) & CssSelector.class("pf-link-yellow")) % color(Colors.yellow)
 
 let episodeView = View<RequestContext<Episode>> { ctx in
   document([
@@ -111,16 +115,18 @@ private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
   <> blocks
     .filter { $0.type == .title && $0.timestamp != nil }
     .flatMap { block in
-      tocEntryView.view((block.content, block.timestamp ?? 0))
+      tocChapterView.view((block.content, block.timestamp ?? 0))
   }
+    <> downloadsView.view(unit)
+    <> creditsView.view(unit)
 }
 
-private let tocEntryView = View<(content: String, timestamp: Double)> { content, timestamp in
+private let tocChapterView = View<(content: String, timestamp: Double)> { content, timestamp in
   gridRow([`class`([Class.margin.bottom(1)])], [
     gridColumn(sizes: [.xs: 10], [
       div([
         a(
-          [href("#"), `class`([".pf-link-white", Class.type.textDecorationNone])],
+          [href("#"), `class`([".pf-link-green", Class.type.textDecorationNone])],
           [.text(encode(content))]
         ),
         ])
@@ -128,11 +134,34 @@ private let tocEntryView = View<(content: String, timestamp: Double)> { content,
 
     gridColumn(sizes: [.xs: 2], [
       div(
-        [`class`([Class.pf.colors.fg.white, Class.type.align.end, Class.pf.opacity75])],
+        [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
         [.text(encode(timestampLabel(for: timestamp)))]
       )
       ])
     ])
+}
+
+private let downloadsView = View<Prelude.Unit> { _ in
+  [
+    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Chapters"]),
+    img(
+      base64: gitHubSvgBase64(fill: "#FFF080"),
+      mediaType: .image(.svg),
+      alt: "",
+      [`class`([Class.layout.inlineBlock]), width(20), height(20)]
+    ),
+    a([href("#"), `class`([".pf-link-yellow"])], ["Type-Safe-Html.playground"])
+  ]
+}
+
+private let creditsView = View<Prelude.Unit> { _ in
+  [
+    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Credits"]),
+    p(
+      [`class`([Class.pf.colors.fg.gray300])],
+      ["Hosted by Brandon Williams and Stephen Celis. Recorded in Brooklyn, NY."]
+    )
+  ]
 }
 
 func timestampLabel(for timestamp: Double) -> String {
@@ -152,7 +181,7 @@ private let transcriptView = View<Episode> { ep in
         [.text(encode("Episode \(ep.sequence)"))]
       ),
       h1(
-        [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(1)])],
+        [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(0)])],
         [.text(encode(ep.title))]
       ),
       p([`class`([Class.padding.topBottom(2)])], [.text(encode(ep.blurb))]),
@@ -164,14 +193,6 @@ private let transcriptView = View<Episode> { ep in
         ep.transcriptBlocks.flatMap(transcriptBlockView.view)
     )
     ])
-}
-
-extension Element {
-  public enum Hr {}
-}
-
-public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
-  return node("hr", attribs, nil)
 }
 
 private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in

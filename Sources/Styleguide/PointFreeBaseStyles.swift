@@ -5,6 +5,7 @@ public enum Colors {
   public static let black = Color.other("#121212")
   public static let blue = Color.other("#4CCCFF")
   public static let gray900 = Color.other("#f6f6f6")
+  public static let gray300 = Color.other("#555555")
   public static let green = Color.other("#79F2B0")
   public static let purple = Color.other("#974DFF")
   public static let yellow = Color.other("#FFF080")
@@ -26,6 +27,8 @@ extension Class {
       }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
+        public static let gray300 = CssSelector.class("fg-gray300")
+        public static let purple = CssSelector.class("fg-purple")
         public static let white = CssSelector.class("fg-white")
       }
     }
@@ -151,6 +154,8 @@ private let colorStyles =
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
     <> Class.pf.colors.fg.black % color(Colors.black)
+    <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
+    <> Class.pf.colors.fg.purple % color(Colors.purple)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
 
 private let _codeClass = CssSelector.class("code")
