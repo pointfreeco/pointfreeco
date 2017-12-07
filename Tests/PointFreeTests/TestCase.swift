@@ -8,6 +8,7 @@ class TestCase: XCTestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.push(.mock)
+    record = true
   }
 
   override func tearDown() {

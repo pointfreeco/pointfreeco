@@ -58,6 +58,7 @@ private let episodeTagView = View<Tag> { tag in
         Class.border.all,
         Class.pf.colors.bg.white,
         Class.type.textDecorationNone,
+        Class.pf.colors.border.gray900
         ])
     ],
     [.text(encode(tag.name))]

@@ -3,5 +3,6 @@
     <pages>
         <page name='Episodes Page'/>
         <page name='Signup Email'/>
+        <page name='Episode Page'/>
     </pages>
 </playground>

@@ -26,27 +26,30 @@ private func episode(for param: Either<String, Int>) -> Episode? {
   })
 }
 
+private let extraStyles = (a & .pseudo(.visited) & CssSelector.class("pf-link-white")) % color(.white)
+
 let episodeView = View<RequestContext<Episode>> { ctx in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
+        style(extraStyles),
         title("Episode #\(ctx.data.sequence): \(ctx.data.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
       body(
         [`class`([Class.pf.colors.bg.dark])],
-        navView.view(ctx.map(const(unit))) <> [
+        [
           gridRow([
             gridColumn(
-              sizes: [.xs: 12, .md: 7],
+              sizes: [.xs: 12, .md: 6],
               transcriptView.view(ctx.data)
             ),
 
             gridColumn(
-              sizes: [.xs: 12, .md: 5],
+              sizes: [.xs: 12, .md: 6],
               [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
               [
                 div(
@@ -66,7 +69,7 @@ private let topLevelEpisodeInfoView: View<Episode> =
   videoView.contramap(const(unit))
     <>
     (
-      (curry(div)([`class`([Class.padding.all(2)])]) >>> pure)
+      (curry(div)([`class`([Class.padding.all(4)])]) >>> pure)
         <¢> episodeTocView.contramap(get(\.transcriptBlocks))
 )
 
@@ -102,7 +105,10 @@ private let topLevelTagsView = View<[Tag]> { tags in
 }
 
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  blocks
+  [
+    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Chapters"])
+  ]
+  <> blocks
     .filter { $0.type == .title && $0.timestamp != nil }
     .flatMap { block in
       tocEntryView.view((block.content, block.timestamp ?? 0))
@@ -114,7 +120,7 @@ private let tocEntryView = View<(content: String, timestamp: Double)> { content,
     gridColumn(sizes: [.xs: 10], [
       div([
         a(
-          [href("#"), `class`([Class.pf.colors.fg.white, Class.type.textDecorationNone])],
+          [href("#"), `class`([".pf-link-white", Class.type.textDecorationNone])],
           [.text(encode(content))]
         ),
         ])
@@ -139,9 +145,8 @@ func timestampLabel(for timestamp: Double) -> String {
 
 private let transcriptView = View<Episode> { ep in
 
-  return div(
-    [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
-    [
+  return div([
+    div([`class`([Class.padding.all(4), Class.pf.colors.bg.white])], [
       strong(
         [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
         [.text(encode("Episode \(ep.sequence)"))]
@@ -150,9 +155,23 @@ private let transcriptView = View<Episode> { ep in
         [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(1)])],
         [.text(encode(ep.title))]
       ),
+      p([`class`([Class.padding.topBottom(2)])], [.text(encode(ep.blurb))]),
+      div([], pillTagsView.view(ep.tags))
       ]
-      <> ep.transcriptBlocks.flatMap(transcriptBlockView.view)
-  )
+    ),
+    hr([`class`([Class.pf.divider])]),
+    div([`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
+        ep.transcriptBlocks.flatMap(transcriptBlockView.view)
+    )
+    ])
+}
+
+extension Element {
+  public enum Hr {}
+}
+
+public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
+  return node("hr", attribs, nil)
 }
 
 private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in

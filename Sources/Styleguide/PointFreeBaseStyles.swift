@@ -3,9 +3,10 @@ import Prelude
 
 public enum Colors {
   public static let black = Color.other("#121212")
-  public static let purple = Color.other("#974DFF")
   public static let blue = Color.other("#4CCCFF")
+  public static let gray900 = Color.other("#f6f6f6")
   public static let green = Color.other("#79F2B0")
+  public static let purple = Color.other("#974DFF")
   public static let yellow = Color.other("#FFF080")
 }
 
@@ -19,6 +20,9 @@ extension Class {
         public static let light = CssSelector.class("bg-light")
         public static let purple = CssSelector.class("bg-purple")
         public static let white = CssSelector.class("bg-white")
+      }
+      public enum border {
+        public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
@@ -34,6 +38,12 @@ extension Class {
     public static func code(lang: String?) -> CssSelector {
       return _codeClasses | .class(lang ?? "")
     }
+
+    public static let divider = _dividerClass
+      | Class.border.top
+      | Class.margin.all(0)
+      | Class.padding.all(0)
+      | Class.pf.colors.bg.white
 
     public static let inlineCode = CssSelector.class("inline-code")
     public static let opacity25 = CssSelector.class("opacity-25")
@@ -114,6 +124,9 @@ public let pointFreeBaseStyles =
     <> typeStyles
     <> baseMarginStyles
     <> navBarStyles
+    <> hrReset
+    <> dividerStyles
+    <> _borderStyles
 
 private let bodyStyles =
   html % (
@@ -227,3 +240,16 @@ private let typeStyles =
 private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
   ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
+
+private let hrReset =
+  hr % (borderColor(all: .none) <> borderStyle(all: .none) <> borderWidth(all: .none))
+
+private let _dividerClass = CssSelector.class("pf-divider")
+private let dividerStyles =
+  _dividerClass % (
+    borderColor(top: Color.other("#ddd"))
+      <> height(.px(1))
+)
+
+private let _borderStyles =
+  Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
