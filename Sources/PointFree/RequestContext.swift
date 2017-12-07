@@ -94,13 +94,12 @@ func currentRequestMiddleware<A, I>(
 private let _middleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   currentRequestMiddleware
     >-> currentUserMiddleware
-    >-> currentRequestMiddleware
     >-> writeStatus(.ok)
     >-> respond(_view)
 
 import Html
 import HttpPipelineHtmlSupport
-private let _view = View<Tuple3<URLRequest, Database.User?, URLRequest>> { _ in
+private let _view = View<Tuple2<Database.User?, URLRequest>> { _ in
   []
 }
 
