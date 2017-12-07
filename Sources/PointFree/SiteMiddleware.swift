@@ -61,8 +61,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
       |> secretHomeResponse
 
   case let .subscribe(plan, stripeToken):
-    let tmp = conn.map(const((plan: plan, token: stripeToken)))
-      return tmp
+    return conn.map(const((plan: plan, token: stripeToken)))
       |> subscribeResponse
 
   case .terms:
