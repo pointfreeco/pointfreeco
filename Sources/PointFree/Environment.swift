@@ -3,7 +3,7 @@ import Foundation
 import Optics
 import Prelude
 
-public typealias AirtableCreateRow = (_ email: String) -> (_ baseId: String)
+public typealias AirtableCreateRow = (_ email: EmailAddress) -> (_ baseId: String)
   -> EitherIO<Prelude.Unit, Prelude.Unit>
 public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
 

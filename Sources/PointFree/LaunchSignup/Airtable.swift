@@ -3,7 +3,7 @@ import Foundation
 import Optics
 import Prelude
 
-func createRow(email: String)
+func createRow(email: EmailAddress)
   -> (_ baseId: String)
   -> EitherIO<Prelude.Unit, Prelude.Unit> {
     return { baseId in
