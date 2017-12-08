@@ -44,7 +44,7 @@ public let typography: Stylesheet =
     <> lineHeightStyles
     <> miscStyles
     <> listStyles
-    <> alignStyles
+    <> _alignStyles
 
 private let lineHeightStyles: Stylesheet =
   [1.15, 1.25, 1.45, 1.5].enumerated().map { Class.type.lineHeight($0) % lineHeight($1) }.concat()
@@ -72,7 +72,7 @@ private let listStyles: Stylesheet =
       <> padding(left: 0)
 )
 
-private let alignStyles =
+private let _alignStyles =
   Class.type.align.start % textAlign(.start)
     <> Class.type.align.center % textAlign(.center)
     <> Class.type.align.end % textAlign(.end)

@@ -71,11 +71,10 @@ let episodeView = View<RequestContext<Episode>> { ctx in
 
 private let topLevelEpisodeInfoView: View<Episode> =
   videoView.contramap(const(unit))
-    <>
-    (
-      (curry(div)([`class`([Class.padding.all(4)])]) >>> pure)
-        <¢> episodeTocView.contramap(get(\.transcriptBlocks))
-)
+    <> episodeTocView.contramap(^\.transcriptBlocks)
+    <> downloadsView.contramap(const(unit))
+    <> creditsView.contramap(const(unit))
+
 
 private let videoView = View<Prelude.Unit> { _ in
   video(
@@ -90,35 +89,17 @@ private let videoView = View<Prelude.Unit> { _ in
   )
 }
 
-private let topLevelBlurbView = View<String> { blurb in
-  gridRow([`class`([Class.padding.bottom(1)])], [
-    gridColumn(sizes: [.xs: 12], [
-      div([`class`([Class.pf.colors.fg.white])], [
-        .text(encode(blurb))
-        ])
-      ])
-    ])
-}
-
-private let topLevelTagsView = View<[Tag]> { tags in
-  gridRow([`class`([Class.padding.bottom(2)])], [
-    gridColumn(sizes: [.xs: 12], [
-      div([], pillTagsView.view(tags))
-      ])
-    ])
-}
-
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  [
-    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Chapters"])
-  ]
-  <> blocks
-    .filter { $0.type == .title && $0.timestamp != nil }
-    .flatMap { block in
-      tocChapterView.view((block.content, block.timestamp ?? 0))
-  }
-    <> downloadsView.view(unit)
-    <> creditsView.view(unit)
+  div([`class`([Class.padding.leftRight(4), Class.padding.top(4)])],
+    [
+      h6([`class`([Class.pf.type.subhead, Class.type.caps, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])], ["Chapters"]),
+      ]
+      <> blocks
+        .filter { $0.type == .title && $0.timestamp != nil }
+        .flatMap { block in
+          tocChapterView.view((block.content, block.timestamp ?? 0))
+    }
+  )
 }
 
 private let tocChapterView = View<(content: String, timestamp: Double)> { content, timestamp in
@@ -142,26 +123,30 @@ private let tocChapterView = View<(content: String, timestamp: Double)> { conten
 }
 
 private let downloadsView = View<Prelude.Unit> { _ in
-  [
-    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Chapters"]),
-    img(
-      base64: gitHubSvgBase64(fill: "#FFF080"),
-      mediaType: .image(.svg),
-      alt: "",
-      [`class`([Class.layout.inlineBlock]), width(20), height(20)]
-    ),
-    a([href("#"), `class`([".pf-link-yellow"])], ["Type-Safe-Html.playground"])
-  ]
+  div([`class`([Class.padding.leftRight(4), Class.padding.top(4)])],
+      [
+        h6([`class`([Class.pf.type.subhead, Class.type.caps, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])], ["Downloads"]),
+        img(
+          base64: gitHubSvgBase64(fill: "#FFF080"),
+          mediaType: .image(.svg),
+          alt: "",
+          [`class`([Class.align.middle]), width(20), height(20)]
+        ),
+        a([href("#"), `class`([".pf-link-yellow", Class.margin.left(1), Class.align.middle])], ["Type-Safe-Html.playground"])
+    ]
+  )
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
-  [
-    h6([`class`([Class.h6, Class.type.caps, Class.pf.colors.fg.white])], ["Credits"]),
-    p(
-      [`class`([Class.pf.colors.fg.gray300])],
-      ["Hosted by Brandon Williams and Stephen Celis. Recorded in Brooklyn, NY."]
-    )
-  ]
+  div([`class`([Class.padding.leftRight(4), Class.padding.top(4)])],
+      [
+        h6([`class`([Class.pf.type.subhead, Class.type.caps, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])], ["Credits"]),
+        p(
+          [`class`([Class.pf.colors.fg.gray850])],
+          ["Hosted by Brandon Williams and Stephen Celis. Recorded in Brooklyn, NY."]
+        )
+    ]
+  )
 }
 
 func timestampLabel(for timestamp: Double) -> String {
