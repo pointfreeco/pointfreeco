@@ -190,14 +190,14 @@ extension PartialIso where A == String, B: RawRepresentable, B.RawValue == Strin
 public struct Tagged<Tag, A: Codable> {
   public let unwrap: A
 
-  public init(_ unwrap: A) {
+  public init(unwrap: A) {
     self.unwrap = unwrap
   }
 }
 
 extension Tagged: Codable /* where A: Codable */ {
   public init(from decoder: Decoder) throws {
-    self.init(try decoder.singleValueContainer().decode(A.self))
+    self.init(unwrap: try decoder.singleValueContainer().decode(A.self))
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -208,7 +208,7 @@ extension Tagged: Codable /* where A: Codable */ {
 
 extension Tagged: RawRepresentable {
   public init?(rawValue: A) {
-    self.init(rawValue)
+    self.init(unwrap: rawValue)
   }
 
   public var rawValue: A {

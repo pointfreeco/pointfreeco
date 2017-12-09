@@ -16,9 +16,9 @@ public struct Database {
     migrate: PointFree.migrate
   )
 
-  public struct User {
+  public struct User: Decodable {
     public let email: EmailAddress
-    public let gitHubUserId: Int
+    public let gitHubUserId: GitHub.User.Id
     public let gitHubAccessToken: String
     public let id: Id
     public let name: String
@@ -27,7 +27,7 @@ public struct Database {
     public typealias Id = Tagged<User, UUID>
   }
 
-  public struct Subscription {
+  public struct Subscription: Decodable {
     let id: Id
     let stripeSubscriptionId: Stripe.Subscription.Id
     let userId: User.Id
@@ -77,7 +77,7 @@ private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, P
     """,
     [
       envelope.gitHubUser.email.unwrap,
-      envelope.gitHubUser.id,
+      envelope.gitHubUser.id.unwrap,
       envelope.accessToken.accessToken,
       envelope.gitHubUser.name
     ]
@@ -86,7 +86,7 @@ private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, P
 }
 
 private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
-  return execute(
+  return firstRow(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
@@ -94,27 +94,7 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     LIMIT 1
     """,
     [token.accessToken]
-    )
-    .map { result -> Database.User? in
-      let email = result["email"]?.array?.first?.wrapped.string
-        .map(EmailAddress.init)
-
-      let uuid = result["id"]?.array?.first?.wrapped.string
-        .flatMap(UUID.init(uuidString:))
-        .map(Database.User.Id.init)
-
-      let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string
-        .flatMap(UUID.init(uuidString:))
-        .map(Database.Subscription.Id.init)
-
-      return curry(Database.User.init)
-        <¢> email
-        <*> result["github_user_id"]?.array?.first?.wrapped.int
-        <*> result["github_access_token"]?.array?.first?.wrapped.string
-        <*> uuid
-        <*> result["name"]?.array?.first?.wrapped.string
-        <*> .some(subscriptionId)
-  }
+  )
 }
 
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
@@ -182,6 +162,24 @@ private let postgres = lift(connInfo)
 
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
+
+private func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, [T]> {
+
+    return execute(query, representable)
+      .flatMap { node in
+        EitherIO.wrap {
+          try DatabaseDecoder().decode([T].self, from: node)
+        }
+    }
+}
+
+private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, T?> {
+
+    return rows(query, representable)
+      .map(^\.first)
+}
 
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
 private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])

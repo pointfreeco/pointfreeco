@@ -5,10 +5,10 @@ import Prelude
 
 public struct GitHub {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  var fetchAuthToken: (String) -> EitherIO<Prelude.Unit, AccessToken>
+  public var fetchAuthToken: (String) -> EitherIO<Prelude.Unit, AccessToken>
 
   /// Fetches a GitHub user from an access token.
-  var fetchUser: (AccessToken) -> EitherIO<Prelude.Unit, User>
+  public var fetchUser: (AccessToken) -> EitherIO<Prelude.Unit, User>
 
   static let live = GitHub(
     fetchAuthToken: PointFree.fetchAuthToken,
@@ -16,7 +16,7 @@ public struct GitHub {
   )
 
   public struct AccessToken: Codable {
-    let accessToken: String
+    public let accessToken: String
 
     enum CodingKeys: String, CodingKey {
       case accessToken = "access_token"
@@ -24,14 +24,16 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-    let email: EmailAddress
-    let id: Int
-    let name: String
+    public let email: EmailAddress
+    public let id: Id
+    public let name: String
+
+    public typealias Id = Tagged<User, Int>
   }
 
   public struct UserEnvelope: Codable {
-    let accessToken: AccessToken
-    let gitHubUser: User
+    public let accessToken: AccessToken
+    public let gitHubUser: User
   }
 }
 
@@ -68,5 +70,3 @@ private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude
     .map(tap(AppEnvironment.current.logger.debug))
     .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
-
-private let session = URLSession(configuration: .default)

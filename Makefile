@@ -48,13 +48,13 @@ route-partial-iso:
 		--output ./Sources/PointFree/__Generated__/DerivedPartialIsos.swift
 
 postgres-mm:
-	-@mkdir -p "$(POSTGRES_PATH)"
-	-@echo "$$POSTGRES_MODULE_MAP" > "$(POSTGRES_PATH)/module.map"
-	-@echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
+	-@sudo mkdir -p "$(POSTGRES_PATH)"
+	-@echo "$$POSTGRES_MODULE_MAP" | sudo tee "$(POSTGRES_PATH)/module.map" > /dev/null
+	-@echo "$$POSTGRES_SHIM_H" | sudo tee "$(POSTGRES_PATH)/shim.h" > /dev/null
 
 webkit-snapshot-mm:
-	-@mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
-	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" > "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map"
+	-@sudo mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
+	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" | sudo tee "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map" > /dev/null
 
 SDK_PATH = $(shell xcrun --show-sdk-path)
 POSTGRES_PATH = $(SDK_PATH)/System/Library/Frameworks/CPostgreSQL.framework
