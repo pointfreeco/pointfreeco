@@ -7,11 +7,6 @@ import Optics
 import Prelude
 import UrlFormEncoding
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
-  writeStatus(.ok)
-    >-> readGitHubSessionCookieMiddleware
-    >-> respond(secretHomeView)
-
 let gitHubCallbackResponse =
   extractGitHubAuthCode
     <| authTokenMiddleware
@@ -46,30 +41,6 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: gitHubSessionCookieName))
     )
-
-private let secretHomeView = View<Either<Prelude.Unit, GitHub.UserEnvelope>> { data in
-  [
-    p(["welcome home"]),
-
-    p([
-      text(
-        data.right.map { "You are logged in as \($0.gitHubUser.name)" }
-          ?? "You are not logged in"
-      )
-      ]),
-
-    a(
-      [href(path(to: .episodes(tag: nil)))],
-      ["Episodes"]
-    ),
-
-    p([
-       data.isRight
-        ? a([href(path(to: .logout))], ["Log out"])
-        : a([href(path(to: .login(redirect: url(to: .secretHome))))], ["Log in"])
-      ])
-    ]
-}
 
 // todo: move to swift-web
 extension URLRequest {

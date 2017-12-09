@@ -17,13 +17,15 @@ extension Class {
     }
 
     public static let bold = CssSelector.class("bold")
-    public static let regular = CssSelector.class("regular")
     public static let italic = CssSelector.class("italic")
+    public static let medium = CssSelector.class("medium")
+    public static let regular = CssSelector.class("regular")
+    public static let semiBold = CssSelector.class("semi-bold")
     public static let underline = CssSelector.class("underline")
 
-    public static let fontFamilyInherit = CssSelector.class("font-family-inherit")
-    public static let fontSizeInherit = CssSelector.class("font-size-inherit")
-    public static let textDecorationNone = CssSelector.class("text-decoration-none")
+    public static let fontFamilyInherit = CssSelector.class("ffi")
+    public static let fontSizeInherit = CssSelector.class("fsi")
+    public static let textDecorationNone = CssSelector.class("tdn")
 
     public enum list {
       public static let styleNone = CssSelector.class("list-style-none")
@@ -52,8 +54,10 @@ private let lineHeightStyles: Stylesheet =
 
 private let emphasisStyles: Stylesheet =
   Class.type.bold % fontWeight(.w700)
-    <> Class.type.regular % fontWeight(.normal)
     <> Class.type.italic % fontStyle(.italic)
+    <> Class.type.medium % fontWeight(.w500)
+    <> Class.type.regular % fontWeight(.normal)
+    <> Class.type.semiBold % fontWeight(.w600)
     <> Class.type.underline % key("text-decoration", "underline")
     <> Class.type.caps % (
       textTransform(.uppercase)

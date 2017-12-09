@@ -25,26 +25,20 @@ private func episodes(for tag: Tag?) -> (episodes: [Episode], selectedTag: Tag?)
 }
 
 private let episodesDocumentView = View<RequestContext<(episodes: [Episode], selectedTag: Tag?)>> { ctx in
-  document(
-    [
-      html(
-        [
-          head(
-            [
-              style(renderedNormalizeCss),
-              style(styleguide),
-              meta(viewport: .width(.deviceWidth), .initialScale(1)),
-              ]
-          ),
-          body(
-            navView.view(ctx.map(const(unit)))
-              <> episodesView.view(ctx.data)
-              <> footerView.view(unit)
-          )
-        ]
+  document([
+    html([
+      head([
+        style(renderedNormalizeCss),
+        style(styleguide),
+        meta(viewport: .width(.deviceWidth), .initialScale(1)),
+        ]),
+      body(
+        navView.view(ctx.map(const(unit)))
+          <> episodesView.view(ctx.data)
+          <> footerView.view(unit)
       )
-    ]
-  )
+      ])
+    ])
 }
 
 private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps, selectedTag in
@@ -75,20 +69,20 @@ private let sideMenuView = View<Tag?> { selectedTag in
       Class.position.sticky(.md),
       Class.position.top0])],
     [
-      h5([`class`([Class.pf.type.subhead])], ["Sort by"]),
+      h5([`class`([Class.pf.type.title6])], ["Sort by"]),
       ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
         li([a([href("#")], ["Newest first"])]),
         li([a([href("#")], ["Oldest first"])]),
         ]),
 
-      h5([`class`([Class.pf.type.subhead])], ["Episode Type"]),
+      h5([`class`([Class.pf.type.title6])], ["Episode Type"]),
       ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
         li([a([href("#")], ["All"])]),
         li([a([href("#")], ["Subscriber only"])]),
         li([a([href("#")], ["Free"])]),
         ]),
 
-      h5([`class`([Class.pf.type.subhead])], ["Tag"]),
+      h5([`class`([Class.pf.type.title6])], ["Tag"]),
       ol(
         [`class`([Class.type.list.reset, Class.padding.bottom(2)])],
         ([nil] + array(Tag.all).map(Optional.some))
@@ -136,7 +130,7 @@ private let episodeListItemView = View<Episode> { ep in
             [href(path(to: .episode(.left(ep.slug))))],
             [.text(encode(ep.title))])
           ]),
-        p([`class`([Class.pf.type.callout])], [.text(encode(ep.blurb))]),
+        p([`class`([Class.pf.type.body.leading])], [.text(encode(ep.blurb))]),
 
         div(pillTagsView.view(ep.tags))
         ])

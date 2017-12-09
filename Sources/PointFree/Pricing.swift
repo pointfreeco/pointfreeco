@@ -57,12 +57,12 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
             div([
               input([id(selectors.input.0), type(.radio), name("tabs"), checked(true)]),
               label([`for`(selectors.input.0)], [
-                button([`class`([Class.btn.base])], ["Just Me"]),
+                button(["Just Me"]),
                 ]),
 
               input([id(selectors.input.1), type(.radio), name("tabs")]),
               label([`for`(selectors.input.1)], [
-                button([`class`([Class.btn.base])], ["My Whole Squad"])
+                button(["My Whole Squad"])
                 ]),
 
               gridRow([
@@ -169,7 +169,7 @@ private let individualMonthlyView = View<Prelude.Unit> { _ in
       ]),
     gridColumn(sizes: [.xs: 12], [
       div([
-        button([`class`([Class.btn.base])], ["Choose monthly"])
+        button(["Choose monthly"])
         ])
       ]),
     ])
@@ -194,7 +194,7 @@ private let individualYearlyView = View<Prelude.Unit> { _ in
       ]),
     gridColumn(sizes: [.xs: 12], [
       div([
-        button([`class`([Class.btn.base])], ["Choose monthly"])
+        button(["Choose monthly"])
         ])
       ]),
     gridColumn(sizes: [.xs: 12], [

@@ -17,15 +17,19 @@ let footerView = View<Prelude.Unit> { _ in
 
 private let footerInfoColumnsView =
        pointFreeView    .map(gridColumn(sizes: [.xs: 12, .md: 6]) >>> pure)
-    <> learnColumnView  .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
-    <> followColumnView .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
-    <> moreColumnView   .map(gridColumn(sizes: [.xs: 4, .md: 2]) >>> pure)
+    <> accountColumnView.map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
+    <> contentColumnView.map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
+    <> moreColumnView   .map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
 
 private let legalView = View<Prelude.Unit> { _ in
-  p([`class`([Class.type.align.center, Class.h6])], [
-"""
-All videos © Point-Free, Inc. All Rights Reserved. You may not sell or distribute the content found on this site.
-"""
+  p([`class`([Class.pf.colors.fg.gray400, Class.type.align.center, Class.h6, Class.padding.top(2)])], [
+    "The content of this site is license under ",
+    a([href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
+    ", and the underlying ",
+    a([href("https://github.com/pointfreeco/pointfreeco")], ["source code"]),
+    " to run this site is licensed under the ",
+    a([href("https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE")], ["MIT license"]),
+    ". Point-Free, Inc 2018."
     ])
 }
 
@@ -48,24 +52,23 @@ private let pointFreeView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let learnColumnView = View<Prelude.Unit> { _ in
+private let contentColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([Class.h5])], ["Learn"]),
+    h5([`class`([Class.h5])], ["Content"]),
     ol([`class`([Class.type.list.reset])], [
-      li([a([href(path(to: .episodes(tag: nil)))], ["Videos"])]),
-      li([a([href("#")], ["Books"])]),
-      li([a([href("#")], ["Hire Us"])]),
+      li([a([href(path(to: .secretHome))], ["Videos"])]),
+      li([a([href("http://www.fewbutripe.com")], ["Few, but ripe…"])]),
+      li([a([href("http://www.stephencelis.com")], ["Stephen Celis"])]),
       ])
     ])
 }
 
-private let followColumnView = View<Prelude.Unit> { _ in
+private let accountColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([Class.h5])], ["Follow"]),
+    h5([`class`([Class.h5])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
-      li([a([href("#")], ["Blog"])]),
-      li([a([href(twitterUrl(to: .pointfreeco))], ["Twitter"])]),
-      li([a([href(gitHubUrl(to: .organization))], ["GitHub"])]),
+      li([a([href("#")], ["Subscribe"])]),
+      li([a([href("#")], ["Pricing"])]),
       ])
     ])
 }
@@ -74,9 +77,9 @@ private let moreColumnView = View<Prelude.Unit> { _ in
   div([
     h5([`class`([Class.h5])], ["More"]),
     ol([`class`([Class.type.list.reset])], [
-      li([a([href(path(to: .about))], ["About"])]),
-      li([a([href("mailto:support@pointfree.co")], ["Email"])]),
-      li([a([href(path(to: .terms))], ["Terms"])]),
+      li([a([href(twitterUrl(to: .pointfreeco))], ["Twitter"])]),
+      li([a([href(gitHubUrl(to: .organization))], ["GitHub"])]),
+      li([a([href("mailto:support@pointfree.co")], ["Contact us"])]),
       ])
     ])
 }

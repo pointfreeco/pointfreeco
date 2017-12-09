@@ -4,5 +4,6 @@
         <page name='Episodes Page'/>
         <page name='Signup Email'/>
         <page name='Episode Page'/>
+        <page name='Homepage'/>
     </pages>
 </playground>

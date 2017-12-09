@@ -4,6 +4,7 @@ import Prelude
 
 public enum GitHubRoute: DerivePartialIsos {
   case authorize(clientId: String, redirectUri: String?, scope: String)
+  case episodeCodeSample(directory: String)
   case organization
   case repo(Repo)
 
@@ -17,18 +18,23 @@ public enum GitHubRoute: DerivePartialIsos {
 
 let gitHubRouter = [
 
-  GitHubRoute.iso.organization
-    <¢> get <% lit("pointfreeco") <% end,
-
-  GitHubRoute.iso.repo
-    <¢> get %> lit("pointfreeco") %> pathParam(.rawRepresentable) <% end,
-
   GitHubRoute.iso.authorize
     <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
     %> queryParam("client_id", .string)
     <%> queryParam("redirect_uri", opt(.string))
     <%> queryParam("scope", .string)
-    <% end
+    <% end,
+
+  GitHubRoute.iso.episodeCodeSample
+    <¢> lit("pointfreeco") %> lit("episode-code-samples") %> lit("tree") %> lit("master")
+    %> pathParam(.string)
+    <% end,
+
+  GitHubRoute.iso.organization
+    <¢> get <% lit("pointfreeco") <% end,
+
+  GitHubRoute.iso.repo
+    <¢> get %> lit("pointfreeco") %> pathParam(.rawRepresentable) <% end,
 
   ]
   .reduce(.empty, <|>)
