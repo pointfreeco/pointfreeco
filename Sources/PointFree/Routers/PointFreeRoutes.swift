@@ -15,7 +15,7 @@ public enum Route: DerivePartialIsos {
   case logout
   case pricing(Stripe.Plan.Id?)
   case secretHome
-  case subscribe(Stripe.Plan.Id, token: Stripe.Token.Id)
+  case subscribe(Stripe.Plan.Id, Stripe.Token.Id)
   case terms
 }
 
