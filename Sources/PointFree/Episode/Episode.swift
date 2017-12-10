@@ -83,7 +83,7 @@ private let videoView = View<Prelude.Unit> { _ in
 }
 
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.top: 4]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 4]])])],
     [
       h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Chapters"]),
       ]
@@ -116,7 +116,7 @@ private let tocChapterView = View<(content: String, timestamp: Double)> { conten
 }
 
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.top: 3]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 3]])])], 
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],

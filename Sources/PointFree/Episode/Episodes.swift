@@ -63,9 +63,7 @@ private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps,
 private let sideMenuView = View<Tag?> { selectedTag in
   div(
     [`class`([
-      Class.padding([.mobile: [.right: 4]]),
-      Class.padding([.mobile: [.bottom: 2]]),
-      Class.padding([.mobile: [.top: 3]]),
+      Class.padding([.mobile: [.right: 4, .bottom: 2, .top: 3]]),
       Class.position.sticky(.md),
       Class.position.top0])],
     [
