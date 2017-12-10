@@ -5,14 +5,13 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
-import Tuple
 
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  _requestContextMiddleware
+  requestContextMiddleware
     >-> writeStatus(.ok)
     >-> respond(aboutView)
 
-private let aboutView = View<Tuple3<Database.User?, URLRequest, Prelude.Unit>> { ctx in
+private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
   document([
     html([
       head([
@@ -20,7 +19,7 @@ private let aboutView = View<Tuple3<Database.User?, URLRequest, Prelude.Unit>> {
         style(styleguide),
         title("About Us")
         ]),
-      body(_navView.view(ctx) + [
+      body(navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
             div([`class`([Class.padding.all(4)])], [

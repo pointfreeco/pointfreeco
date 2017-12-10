@@ -149,7 +149,6 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
         // Fire-and-forget notify user that they signed up
         parallel(
           sendEmail(
-            from: .init(unwrap: "Point-Free <support@pointfree.co>"),
             to: [env.gitHubUser.email],
             subject: "Point-Free Registration",
             content: inj2(registrationEmailView.view(env.gitHubUser))

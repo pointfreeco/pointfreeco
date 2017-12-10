@@ -33,8 +33,6 @@ private func airtableStuff<I>(_ conn: Conn<I, EmailAddress>)
     return result.map { conn.map(const($0)) }
 }
 
-private let pointFreeSupport = EmailAddress(unwrap: "Point-Free <support@pointfree.co>")
-
 func notifyUsOfNewSignup<I>(_ conn: Conn<I, EmailAddress>) -> IO<Conn<I, EmailAddress>> {
   return IO {
 
@@ -42,7 +40,6 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, EmailAddress>) -> IO<Conn<I, EmailAd
     zip(
       // Notify us that someone signed up
       parallel <| sendEmail(
-        from: pointFreeSupport,
         to: [.init(unwrap: "brandon@pointfree.co"), .init(unwrap: "stephen@pointfree.co")],
         subject: "New signup for Point-Free!",
         content: inj2(notifyUsView.view(conn.data))
@@ -51,7 +48,6 @@ func notifyUsOfNewSignup<I>(_ conn: Conn<I, EmailAddress>) -> IO<Conn<I, EmailAd
 
       // Notify user that they signed up
       parallel <| sendEmail(
-        from: pointFreeSupport,
         to: [conn.data],
         subject: "We’ll let you know when Point-Free is ready!",
         content: inj2(launchSignupConfirmationEmailView.view(unit))

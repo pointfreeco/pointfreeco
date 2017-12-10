@@ -7,16 +7,6 @@ import HttpPipeline
 import Optics
 import Styleguide
 import Prelude
-import Tuple
-
-//func test() {
-//  (1 .*. "" .*. true)
-//    |> \.first .~ 2
-//}
-
-let _navView = View<Tuple3<Database.User?, URLRequest, Prelude.Unit>> { ctx in
-  []
-}
 
 let navView = View<RequestContext<Prelude.Unit>> { ctx in
   [
@@ -89,7 +79,7 @@ private let loggedOutNavItems = View<URLRequest> { request in
         ["Login"])
       ]),
     li([`class`([Class.layout.inline])], [
-      a([href(path(to: .pricing(nil))), `class`([Class.padding.leftRight(1)])],
+      a([href(path(to: .pricing(.monthly))), `class`([Class.padding.leftRight(1)])],
         ["Subscribe"])
       ]),
     ])

@@ -7,7 +7,6 @@ public final class DatabaseDecoder: Decoder {
   private var container: PostgreSQL.Node {
     return containers.last!
   }
-  let jsonDecoder = JSONDecoder()
 
   public private(set) var codingPath: [CodingKey] = []
   public let userInfo: [CodingUserInfoKey: Any] = [:]

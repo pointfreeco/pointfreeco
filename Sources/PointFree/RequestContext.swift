@@ -1,6 +1,9 @@
 import Foundation
 import HttpPipeline
 import Prelude
+import Html
+import HttpPipelineHtmlSupport
+@testable import Tuple // FIXME
 
 /// A value that wraps any given data with additional context that is useful for completing the
 /// request-to-response lifecycle.
@@ -22,14 +25,11 @@ func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext
   return { $0.map(f) }
 }
 
-@testable import Tuple
-
 public func requireUser<A>(
   notFoundView: View<Prelude.Unit>
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
-
 
     return { middleware in
       return { conn in
@@ -40,21 +40,6 @@ public func requireUser<A>(
       }
     }
 }
-//public func requireSome<A>(
-//  notFoundView: View<Prelude.Unit>
-//  )
-//  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
-//  -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
-//
-//    return { middleware in
-//      return { conn in
-//        return conn.data
-//          .map { conn.map(const($0)) }
-//          .map(middleware)
-//          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
-//      }
-//    }
-//}
 
 func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
@@ -88,39 +73,6 @@ func currentRequestMiddleware<A, I>(
     conn.map(
       const(conn.request .*. conn.data)
   )
-}
-
-private let _middleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  currentRequestMiddleware
-    >-> currentUserMiddleware
-    >-> writeStatus(.ok)
-    >-> respond(_view)
-
-import Html
-import HttpPipelineHtmlSupport
-private let _view = View<Tuple2<Database.User?, URLRequest>> { _ in
-  []
-}
-
-
-func _requestContextMiddleware<A>(
-  _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<StatusLineOpen, Tuple3<Database.User?, URLRequest, A>>> {
-
-  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-    .map(
-      ^\.accessToken
-        >>> AppEnvironment.current.database.fetchUserByGitHub
-        >>> ^\.run
-        >>> map(^\.right >>> flatMap(id))
-    )
-    ?? pure(nil)
-
-  return currentUser.map {
-    conn.map(
-      const($0 .*. conn.request .*. conn.data)
-    )
-  }
 }
 
 func requestContextMiddleware<A>(

@@ -3,7 +3,7 @@ import Html
 import Prelude
 
 func sendEmail(
-  from: EmailAddress,
+  from: EmailAddress = .init(unwrap: "Point-Free <support@pointfree.co>"),
   to: [EmailAddress],
   subject: String,
   content: Either3<String, [Node], (String, [Node])>,
