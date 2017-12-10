@@ -2,42 +2,47 @@ import Foundation
 import PostgreSQL
 import Prelude
 
-final class DatabaseDecoder: Decoder {
-  private(set) var container: PostgreSQL.Node
+public final class DatabaseDecoder: Decoder {
+  private(set) var containers: [PostgreSQL.Node] = []
+  private var container: PostgreSQL.Node {
+    return containers.last!
+  }
   let jsonDecoder = JSONDecoder()
 
-  private(set) var codingPath: [CodingKey]
-  let userInfo: [CodingUserInfoKey: Any] = [:]
+  public private(set) var codingPath: [CodingKey] = []
+  public let userInfo: [CodingUserInfoKey: Any] = [:]
 
-  init(container: PostgreSQL.Node = nil, codingPath: [CodingKey] = []) {
-    self.container = container
-    self.codingPath = codingPath
+  public init() {
   }
 
-  func decode<T: Decodable>(_ type: T.Type, from node: Node) throws -> T {
-    let container = self.container
-    defer { self.container = container }
-    self.container = node
-    return try T(from: self)
+  public func decode<T: Decodable>(_ type: T.Type, from node: Node) throws -> T {
+    self.containers.append(node)
+    defer { self.containers.removeLast() }
+    if type == Date.self {
+      guard let date = node.date else { throw DatabaseDecoder.Error.decodingError(#line) }
+      return date as! T
+    } else {
+      return try T(from: self)
+    }
   }
 
-  func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key: CodingKey {
+  public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key: CodingKey {
     guard !self.container.isNull else { throw DatabaseDecoder.Error.decodingError(#line) }
     guard let container = self.container.object else { throw DatabaseDecoder.Error.decodingError(#line) }
     return .init(KeyedContainer(decoder: self, container: container))
   }
 
-  func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+  public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
     guard !self.container.isNull else { throw DatabaseDecoder.Error.decodingError(#line) }
     guard let container = self.container.array else { throw DatabaseDecoder.Error.decodingError(#line) }
     return UnkeyedContainer(decoder: self, container: container, codingPath: self.codingPath)
   }
 
-  func singleValueContainer() throws -> SingleValueDecodingContainer {
+  public func singleValueContainer() throws -> SingleValueDecodingContainer {
     return SingleValueContainer(decoder: self, container: self.container)
   }
 
-  enum Error: Swift.Error {
+  public enum Error: Swift.Error {
     case decodingError(Any)
   }
 
@@ -130,8 +135,7 @@ final class DatabaseDecoder: Decoder {
       self.decoder.codingPath.append(key)
       defer { self.decoder.codingPath.removeLast() }
       guard let container = self.container[key.stringValue] else { throw DatabaseDecoder.Error.decodingError(#line) }
-      let decoder = DatabaseDecoder(container: container, codingPath: self.codingPath)
-      return try T(from: decoder)
+      return try self.decoder.decode(T.self, from: container)
     }
 
     func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Key) throws
@@ -159,7 +163,10 @@ final class DatabaseDecoder: Decoder {
       self.decoder.codingPath.append(key)
       defer { self.decoder.codingPath.removeLast() }
       guard let container = self.container[key.stringValue] else { throw DatabaseDecoder.Error.decodingError(#line) }
-      return DatabaseDecoder(container: container, codingPath: self.codingPath)
+      let decoder = DatabaseDecoder()
+      decoder.containers = [container]
+      decoder.codingPath = self.codingPath
+      return decoder
     }
   }
 
@@ -266,8 +273,7 @@ final class DatabaseDecoder: Decoder {
       defer { self.codingPath.removeLast() }
       let container = self.container[self.currentIndex]
       self.currentIndex += 1
-      let decoder = DatabaseDecoder(container: container, codingPath: self.codingPath)
-      return try T(from: decoder)
+      return try self.decoder.decode(T.self, from: container)
     }
 
     mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> where NestedKey: CodingKey {
@@ -295,7 +301,10 @@ final class DatabaseDecoder: Decoder {
       defer { self.codingPath.removeLast() }
       let container = self.container[self.currentIndex]
       self.currentIndex += 1
-      return DatabaseDecoder(container: container, codingPath: self.codingPath)
+      let decoder = DatabaseDecoder()
+      decoder.containers = [container]
+      decoder.codingPath = self.codingPath
+      return decoder
     }
   }
 
@@ -306,7 +315,7 @@ final class DatabaseDecoder: Decoder {
     let codingPath: [CodingKey] = []
 
     private func unwrap<T>(_ block: (PostgreSQL.Node) -> T?, _ line: UInt = #line) throws -> T {
-      guard let value = try block(self.container) else { throw DatabaseDecoder.Error.decodingError(line) }
+      guard let value = block(self.container) else { throw DatabaseDecoder.Error.decodingError(line) }
       return value
     }
 
@@ -371,8 +380,7 @@ final class DatabaseDecoder: Decoder {
     }
 
     func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
-      let decoder = DatabaseDecoder(container: self.container, codingPath: self.codingPath)
-      return try T(from: decoder)
+      return try self.decoder.decode(T.self, from: container)
     }
   }
 }
