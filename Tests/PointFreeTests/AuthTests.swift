@@ -1,10 +1,15 @@
 import Either
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import Prelude
+import Optics
 import SnapshotTesting
 import XCTest
+#if !os(Linux)
+  import WebKit
+#endif
 
 class AuthTests: TestCase {
   func testAuth() {
@@ -91,17 +96,14 @@ class AuthTests: TestCase {
 
   func testSecretHome_LoggedIn() {
     let sessionCookie = """
-    8ec59947a58e227d0901ff96530b96c9b1e419ddd6781c6bacf97acdf784529d\
-    bd79e710821f29430d5df62438730123873e105aacaa6374bd5db7f4e937432c\
-    c9e0837bc28d511d5f8cde122ed8e18be42e2148cfb2ed1620bcd3418a6c93a6\
-    a801ee0c463888e40a0838d0ebc94c7fc1e30e130423b84edfcdccbdde146731\
-    45a2cf192aed0443ceee4ca5d283e12a2319a0a733c66f9f83514ec9622db1f8\
-    f864744d82395e50e1e4f5f480d28af3182f782db235c45a9d68cb8876328f33
+    e78e522838eb96eb96253b60dca1f4afc46adfc6f2e8f6700f03b2b7df656c6d\
+    bacd144a80672f96a0a077faf1b63f0de0ba20e2c6bfaaa321853ab5bfb20e8d\
+    e3212f5827ef1f51d4542ee4e6920dbcc991459f02f1bdb778782d4a88a7abce
     """
 
     let request = URLRequest(url: URL(string: "http://localhost:8080/home")!)
       |> \.allHTTPHeaderFields .~ [
-        "Cookie": "github_session=\(sessionCookie)",
+        "Cookie": "pf_session=\(sessionCookie)",
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
 
@@ -109,5 +111,20 @@ class AuthTests: TestCase {
     let result = conn |> siteMiddleware 
 
     assertSnapshot(matching: result.perform())
+  }
+
+  func testRegistrationEmail() {
+    let emailNodes = registrationEmailView.view(.mock)
+
+    assertSnapshot(matching: prettyPrint(nodes: emailNodes), pathExtension: "html")
+
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+
+        assertSnapshot(matching: webView)
+      }
+    #endif
   }
 }
