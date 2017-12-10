@@ -3,8 +3,8 @@ import Html
 import Prelude
 
 func sendEmail(
-  from: String,
-  to: [String],
+  from: EmailAddress = .init(unwrap: "Point-Free <support@pointfree.co>"),
+  to: [EmailAddress],
   subject: String,
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = "mg.pointfree.co"

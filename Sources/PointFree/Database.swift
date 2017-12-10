@@ -6,7 +6,7 @@ import PostgreSQL
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
   var fetchUserByGitHub: (GitHub.AccessToken) -> EitherIO<Error, User?>
-  var fetchUserById: (UUID) -> EitherIO<Error, User?>
+  var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -18,19 +18,38 @@ public struct Database {
     migrate: PointFree.migrate
   )
 
-  public struct User {
-    let email: String
-    let gitHubUserId: Int
-    let gitHubAccessToken: String
-    let id: UUID
-    let name: String
-    let subscriptionId: UUID?
+  public struct User: Decodable {
+    public let email: EmailAddress
+    public let gitHubUserId: GitHub.User.Id
+    public let gitHubAccessToken: String
+    public let id: Id
+    public let name: String
+    public let subscriptionId: Subscription.Id?
+
+    public typealias Id = Tagged<User, UUID>
+
+    private enum CodingKeys: String, CodingKey {
+      case email
+      case gitHubUserId = "github_user_id"
+      case gitHubAccessToken = "github_access_token"
+      case id
+      case name
+      case subscriptionId = "subscription_id"
+    }
   }
 
-  public struct Subscription {
-    let id: UUID
-    let stripeSubscriptionId: String
-    let userId: UUID
+  public struct Subscription: Decodable {
+    let id: Id
+    let stripeSubscriptionId: Stripe.Subscription.Id
+    let userId: User.Id
+
+    public typealias Id = Tagged<Subscription, UUID>
+
+    private enum CodingKeys: String, CodingKey {
+      case id
+      case stripeSubscriptionId = "stripe_subscription_id"
+      case userId = "user_id"
+    }
   }
 }
 
@@ -43,8 +62,8 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       RETURNING "id"
       """,
       [
-        stripeSubscription.id,
-        user.id.uuidString,
+        stripeSubscription.id.unwrap,
+        user.id.unwrap.uuidString,
         ]
       )
       .flatMap { node in
@@ -58,7 +77,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
           """,
           [
             node[0, "id"]?.string,
-            user.id
+            user.id.unwrap.uuidString
           ]
         )
       }
@@ -74,8 +93,8 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
     SET "email" = $1, "github_access_token" = $3, "name" = $4
     """,
     [
-      envelope.gitHubUser.email,
-      envelope.gitHubUser.id,
+      envelope.gitHubUser.email.unwrap,
+      envelope.gitHubUser.id.unwrap,
       envelope.accessToken.accessToken,
       envelope.gitHubUser.name
     ]
@@ -83,21 +102,20 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
     .flatMap { _ in fetchUser(gitHubAccessToken: envelope.accessToken) }
 }
 
-private func fetchUser(byUserId uuid: UUID) -> EitherIO<Error, Database.User?> {
-  return execute(
+private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
+  return firstRow(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
     """,
-    [uuid.uuidString]
-    )
-    .map(Database.User.create(from:))
+    [id.unwrap.uuidString]
+  )
 }
 
-private func fetchUser(gitHubAccessToken token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
-  return execute(
+private func fetchUser(gitHubAccessToken: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
+  return firstRow(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
@@ -106,9 +124,8 @@ private func fetchUser(gitHubAccessToken token: GitHub.AccessToken) -> EitherIO<
     """,
     // TODO: make this fetch by the github id, not access token, since it can change. also maybe build in
     //       a fetch and update to refresh the token.
-    [token.accessToken]
-    )
-    .map(Database.User.create(from:))
+    [gitHubAccessToken.accessToken]
+  )
 }
 
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
@@ -177,6 +194,24 @@ private let postgres = lift(connInfo)
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
+private func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, [T]> {
+
+    return execute(query, representable)
+      .flatMap { node in
+        EitherIO.wrap {
+          try DatabaseDecoder().decode([T].self, from: node)
+        }
+    }
+}
+
+private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+  -> EitherIO<Error, T?> {
+
+    return rows(query, representable)
+      .map(^\.first)
+}
+
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
 private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, PostgreSQL.Node> {
@@ -184,19 +219,4 @@ private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresent
     return conn.flatMap { conn in
       .wrap { try conn.execute(query, representable) }
     }
-}
-
-extension Database.User {
-  static func create(from result: Node) -> Database.User? {
-    let uuid = result["id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-    let subscriptionId = result["subscription_id"]?.array?.first?.wrapped.string.flatMap(UUID.init(uuidString:))
-
-    return curry(Database.User.init)
-      <¢> result["email"]?.array?.first?.wrapped.string
-      <*> result["github_user_id"]?.array?.first?.wrapped.int
-      <*> result["github_access_token"]?.array?.first?.wrapped.string
-      <*> uuid
-      <*> result["name"]?.array?.first?.wrapped.string
-      <*> .some(subscriptionId)
-  }
 }
