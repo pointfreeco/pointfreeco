@@ -79,7 +79,7 @@ private let loggedOutNavItems = View<URLRequest> { request in
         ["Login"])
       ]),
     li([`class`([Class.layout.inline])], [
-      a([href(path(to: .pricing(.monthly))), `class`([Class.padding.leftRight(1)])],
+      a([href(path(to: .pricing(nil))), `class`([Class.padding.leftRight(1)])],
         ["Subscribe"])
       ]),
     ])
