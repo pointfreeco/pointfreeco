@@ -9,9 +9,14 @@ extension Environment {
     database: .mock,
     envVars: EnvVars(),
     gitHub: .mock,
+    logger: .mock,
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
     stripe: .mock
   )
+}
+
+extension Logger {
+  public static let mock = Logger(level: .debug, logger: { _ in })
 }
 
 extension Database {
