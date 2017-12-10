@@ -25,15 +25,6 @@ public enum _Breakpoint: String {
     }
   }
 
-  public func queryOnly(_ mediaType: MediaType, rs: () -> Stylesheet) -> Stylesheet {
-    let features: [Feature] = [
-      self.minSize.map(minWidth),
-      self.maxSize.map(maxWidth)
-    ] |> catOptionals
-
-    return Css.queryOnly(mediaType, features, rs: rs)
-  }
-
   public func querySelfAndBigger(only mediaType: MediaType, rs: () -> Stylesheet) -> Stylesheet {
     return self.minSize.map(minWidth).map { Css.queryOnly(mediaType, [$0], rs: rs) }
       ?? rs()
