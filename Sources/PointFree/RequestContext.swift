@@ -56,16 +56,15 @@ public func requireUser<A>(
 //    }
 //}
 
-
 func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
   ) -> IO<Conn<I, T2<Database.User?, A>>> {
 
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
     .map {
-      AppEnvironment.current.database.fetchUser($0.accessToken)
+      AppEnvironment.current.database.fetchUserByGitHub($0.accessToken)
         .run
-        .map(get(\.right) >>> flatMap(id))
+        .map(^\.right >>> flatMap(id))
     }
     ?? pure(nil)
 
@@ -111,7 +110,7 @@ func _requestContextMiddleware<A>(
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
     .map(
       ^\.accessToken
-        >>> AppEnvironment.current.database.fetchUser
+        >>> AppEnvironment.current.database.fetchUserByGitHub
         >>> ^\.run
         >>> map(^\.right >>> flatMap(id))
     )
@@ -131,7 +130,7 @@ func requestContextMiddleware<A>(
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
     .map(
       ^\.accessToken
-        >>> AppEnvironment.current.database.fetchUser
+        >>> AppEnvironment.current.database.fetchUserByGitHub
         >>> ^\.run
         >>> map(^\.right >>> flatMap(id))
     )
@@ -151,7 +150,7 @@ func requestContextMiddleware<A>(
 }
 
 func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
-  return request.cookies[gitHubSessionCookieName]
+  return request.cookies[pointFreeUserSession]
     .flatMap {
       ResponseHeader.verifiedValue(
         signedCookieValue: $0,

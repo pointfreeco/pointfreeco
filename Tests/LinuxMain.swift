@@ -12,7 +12,8 @@ extension AuthTests {
     ("testLogin", testLogin),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
-    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn)
+    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn),
+    ("testRegistrationEmail", testRegistrationEmail)
   ]
 }
 extension EnvVarTests {

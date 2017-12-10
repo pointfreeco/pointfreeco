@@ -11,4 +11,4 @@
 ▿ Response
   Status 302 FOUND
   Location: /home
-  Set-Cookie: github_session=; Expires=Thu, 1 Jan 1970 00:00:00 GMT; Max-Age=0
+  Set-Cookie: pf_session=; Expires=Thu, 1 Jan 1970 00:00:00 GMT; Max-Age=0

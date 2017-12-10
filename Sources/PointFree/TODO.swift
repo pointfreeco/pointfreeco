@@ -169,6 +169,24 @@ public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)
   return tuple <¢> lhs <*> rhs
 }
 
+// todo: move to prelude
+extension Prelude.Unit: Error {}
+
+// todo: move to httppipeline
+public func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
+  return conn.map { $0.right }
+}
+
+// better way of doing this? or should we add to Either.swift?
+public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
+  switch e {
+  case let .left(e):
+    return .left(e)
+  case let .right(user):
+    return user.map(Either.right) ?? .left(unit)
+  }
+}
+
 // TODO: Move to swift-web
 import ApplicativeRouter
 extension PartialIso {

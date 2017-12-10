@@ -5,14 +5,16 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
-  var createUser: (GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit>
-  var fetchUser: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var fetchUserByGitHub: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
-    createUser: PointFree.createUser,
-    fetchUser: PointFree.fetchUser,
+    fetchUserByGitHub: PointFree.fetchUser(gitHubAccessToken:),
+    fetchUserById: PointFree.fetchUser(byUserId:),
+    upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
 
@@ -67,7 +69,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       .map(const(unit))
 }
 
-private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, Prelude.Unit> {
+private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -82,10 +84,22 @@ private func createUser(with envelope: GitHub.UserEnvelope) -> EitherIO<Error, P
       envelope.gitHubUser.name
     ]
     )
-    .map(const(unit))
+    .flatMap { _ in fetchUser(gitHubAccessToken: envelope.accessToken) }
 }
 
-private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
+private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
+  return firstRow(
+    """
+    SELECT "email", "github_user_id", "github_access_token", "id", "name"
+    FROM "users"
+    WHERE "id" = $1
+    LIMIT 1
+    """,
+    [id.unwrap.uuidString]
+  )
+}
+
+private func fetchUser(gitHubAccessToken: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
@@ -93,7 +107,9 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, Databa
     WHERE "github_access_token" = $1
     LIMIT 1
     """,
-    [token.accessToken]
+    // TODO: make this fetch by the github id, not access token, since it can change. also maybe build in
+    //       a fetch and update to refresh the token.
+    [gitHubAccessToken.accessToken]
   )
 }
 

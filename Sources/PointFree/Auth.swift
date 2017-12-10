@@ -1,15 +1,19 @@
+import Css
 import Either
 import Foundation
 import Html
+import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
+import Styleguide
 import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> readGitHubSessionCookieMiddleware
+    >-> (ignoreErrors >>> pure)
     >-> respond(secretHomeView)
 
 let gitHubCallbackResponse =
@@ -44,16 +48,16 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(key: gitHubSessionCookieName))
+    headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
     )
 
-private let secretHomeView = View<Either<Prelude.Unit, GitHub.UserEnvelope>> { data in
+private let secretHomeView = View<Database.User?> { user in
   [
     p(["welcome home"]),
 
     p([
       text(
-        data.right.map { "You are logged in as \($0.gitHubUser.name)" }
+        user.map { "You are logged in as \($0.name)" }
           ?? "You are not logged in"
       )
       ]),
@@ -64,7 +68,7 @@ private let secretHomeView = View<Either<Prelude.Unit, GitHub.UserEnvelope>> { d
     ),
 
     p([
-       data.isRight
+       user != nil
         ? a([href(path(to: .logout))], ["Log out"])
         : a([href(path(to: .login(redirect: url(to: .secretHome))))], ["Log in"])
       ])
@@ -88,37 +92,75 @@ extension URLRequest {
 private func readGitHubSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Prelude.Unit>
   )
-  -> IO<Conn<HeadersOpen, Either<Prelude.Unit, GitHub.UserEnvelope>>> {
+  -> IO<Conn<HeadersOpen, Either<Error, Database.User>>> {
 
-    return pure <| conn.map(
-      const(
-        conn.request.cookies[gitHubSessionCookieName]
-          .flatMap {
-            ResponseHeader
-              .verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-          }
-          .map(Either.right)
-          ?? Either.left(unit)
+    return (
+      conn.request.cookies[pointFreeUserSession]
+        .flatMap {
+          ResponseHeader
+            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+        }
+        .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
+        .map {
+          AppEnvironment.current.database.fetchUserById($0)
+            .mapExcept(requireSome)
+        }
+        ?? throwE(unit)
       )
-    )
+      .run
+      .map { conn.map(const($0)) }
 }
 
 private func writeGitHubSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, GitHub.UserEnvelope>
+  _ conn: Conn<HeadersOpen, Database.User>
   )
-  -> IO<Conn<HeadersOpen, GitHub.UserEnvelope>> {
+  -> IO<Conn<HeadersOpen, Database.User>> {
 
     return conn |> writeHeaders(
       [
         ResponseHeader.setSignedCookie(
-          key: gitHubSessionCookieName,
-          value: conn.data,
+          key: pointFreeUserSession,
+          value: conn.data.id.unwrap.uuidString,
           options: [],
           secret: AppEnvironment.current.envVars.appSecret,
           encrypt: true
         )
         ] |> catOptionals
     )
+}
+
+private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
+
+  return AppEnvironment.current.database.fetchUserByGitHub(env.accessToken)
+    .flatMap { user in
+      EitherIO(run: IO { user.map(Either.right) ?? .left(unit) })
+        .catch(const(registerUser(env: env)))
+    }
+    .mapExcept(bimap(const(unit), id))
+}
+
+private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
+
+  return AppEnvironment.current.database.upsertUser(env)
+    .mapExcept(requireSome)
+    .flatMap { user in
+      EitherIO(run: IO { () -> Either<Error, Database.User> in
+
+        // Fire-and-forget notify user that they signed up
+        parallel(
+          sendEmail(
+            from: .init(unwrap: "Point-Free <support@pointfree.co>"),
+            to: [env.gitHubUser.email],
+            subject: "Point-Free Registration",
+            content: inj2(registrationEmailView.view(env.gitHubUser))
+            )
+            .run
+          )
+          .run({ _ in })
+
+        return .right(user)
+      })
+  }
 }
 
 /// Exchanges a github code for an access token and loads the user's data.
@@ -132,22 +174,17 @@ private func authTokenMiddleware(
         AppEnvironment.current.gitHub.fetchUser(token)
           .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       }
-      .flatMap { env in
-        // todo: fetch or create aint working
-        AppEnvironment.current.database.fetchUser(env.accessToken).bimap(const(unit), const(env))
-          <|> AppEnvironment.current.database.createUser(env).bimap(const(unit), const(env))
-      }
+      .flatMap(fetchOrRegisterUser(env:))
       .run
-      .flatMap { gitHubUserEnvelope in
-        switch gitHubUserEnvelope {
-
+      .flatMap {
+        switch $0 {
         case .left:
           return conn
             // TODO: Handle errors.
             |> redirect(to: path(to: .secretHome))
 
-        case let .right(env):
-          return conn.map(const(env))
+        case let .right(user):
+          return conn.map(const(user))
             |> redirect(
               to: conn.data.redirect ?? path(to: .secretHome),
               headersMiddleware: writeGitHubSessionCookieMiddleware
@@ -166,8 +203,31 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   )
 }
 
-let gitHubSessionCookieName = "github_session"
+let pointFreeUserSession = "pf_session"
 
 extension CharacterSet {
   fileprivate static let urlQueryParamAllowed = CharacterSet(charactersIn: "?=&# ").inverted
+}
+
+let registrationEmailView = View<GitHub.User> { _ in
+  document([
+    html([
+      head([
+        style(styleguide),
+        ]),
+
+      body([
+        gridRow([
+          gridColumn(sizes: [:], [
+            div([`class`([Class.padding.all(2)])], [
+              h3([`class`([Class.h3])], ["Thanks for signing up!"]),
+              p([`class`([Class.padding.topBottom(2)])], [
+                "You’re one step closer to our weekly video series!",
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
 }

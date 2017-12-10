@@ -15,7 +15,6 @@ import Tuple
 //  _ conn: Conn<StatusLineOpen, A>
 //  ) -> IO<Conn<StatusLineOpen, Tuple3<Database.User?, URLRequest, A>>> {
 
-
 func requireUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User, URLRequest, A>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -24,9 +23,9 @@ func requireUser<A>(
 
     let currentUser = extractedGitHubUserEnvelope(from: conn.request)
       .map {
-        AppEnvironment.current.database.fetchUser($0.accessToken)
+        AppEnvironment.current.database.fetchUserByGitHub($0.accessToken)
           .run
-          .map(get(\.right) >>> flatMap(id))
+          .map(^\.right >>> flatMap(id))
       }
       ?? pure(nil)
 
@@ -34,9 +33,7 @@ func requireUser<A>(
       user.map { conn.map(const($0 .*. conn.request .*. conn.data)) |> middleware }
       ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
     }
-
   }
-
 
 //  return { conn in
 //    conn.data.first.map {
