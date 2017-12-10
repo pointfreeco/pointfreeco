@@ -40,10 +40,11 @@ public let spacingStyles =
 private let responsivePaddingStyles = Side.allSides
   .flatMap { side in
     _Breakpoint.all.flatMap { breakpoint in
-      spacings.enumerated().map { n, size in
-        breakpoint.querySelfAndBigger(only: screen) {
+      breakpoint.querySelfAndBigger(only: screen) {
+        spacings.enumerated().map { n, size in
           Class.padding([breakpoint: [side: n]]) % paddingStyle(side: side, size: size)
-        }
+          }
+          .concat()
       }
     }
   }.concat()
@@ -51,10 +52,11 @@ private let responsivePaddingStyles = Side.allSides
 private let responsiveMarginStyles = Side.allSides
   .flatMap { side in
     _Breakpoint.all.flatMap { breakpoint in
-      spacings.enumerated().map { n, size in
-        breakpoint.querySelfAndBigger(only: screen) {
+      breakpoint.querySelfAndBigger(only: screen) {
+        spacings.enumerated().map { n, size in
           Class.margin([breakpoint: [side: n]]) % marginStyle(side: side, size: size)
-        }
+          }
+          .concat()
       }
     }
   }.concat()

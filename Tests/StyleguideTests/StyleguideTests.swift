@@ -6,7 +6,6 @@ import XCTest
 class StyleguideTests: XCTestCase {
   override func setUp() {
     super.setUp()
-    record = true
   }
   func testStyleguide() {
     assertSnapshot(
