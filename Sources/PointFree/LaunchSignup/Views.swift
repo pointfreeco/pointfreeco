@@ -310,7 +310,7 @@ private let defaultSectionNode = section(
   [`class`("signup")],
   [
     form(
-      [`class`("container"), action(path(to: .launchSignup(email: ""))), method(.post)],
+      [`class`("container"), action(path(to: .launchSignup(.init(unwrap: "")))), method(.post)],
       [
         h3(["Get notified when we launch"]),
         label([`for`("email")], ["Email address"] ),

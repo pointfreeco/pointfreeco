@@ -10,12 +10,12 @@ public enum Route: DerivePartialIsos {
   case episodes(tag: Tag?)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
-  case launchSignup(email: String)
+  case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
   case pricing(Stripe.Plan.Id?)
   case secretHome
-  case subscribe(Stripe.Plan.Id, token: String)
+  case subscribe(Stripe.Plan.Id, Stripe.Token.Id)
   case terms
 }
 
@@ -39,7 +39,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
   Route.iso.launchSignup
-    <¢> post %> formField("email") <% lit("launch-signup") <% end,
+    <¢> post %> formField("email", .rawRepresentable) <% lit("launch-signup") <% end,
 
   Route.iso.login
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
@@ -54,7 +54,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("home") <% end,
 
   Route.iso.subscribe
-    <¢> post %> lit("subscribe") %> formField("plan", .rawRepresentable) <%> formField("token") <% end,
+    <¢> post %> lit("subscribe") %> formField("plan", .rawRepresentable) <%> formField("token", .rawRepresentable) <% end,
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,

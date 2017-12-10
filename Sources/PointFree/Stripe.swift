@@ -6,13 +6,13 @@ import Optics
 import UrlFormEncoding
 
 public struct Stripe {
-  var cancelSubscription: (String) -> EitherIO<Prelude.Unit, Stripe.Subscription>
-  var createCustomer: (String) -> EitherIO<Prelude.Unit, Customer>
-  var createSubscription: (String, Plan.Id) -> EitherIO<Prelude.Unit, Subscription>
-  var fetchCustomer: (String) -> EitherIO<Prelude.Unit, Customer>
-  var fetchPlans: EitherIO<Prelude.Unit, PlansEnvelope>
-  var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
-  var fetchSubscription: (String) -> EitherIO<Prelude.Unit, Subscription>
+  public var cancelSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var createCustomer: (Database.User, Token.Id) -> EitherIO<Prelude.Unit, Customer>
+  public var createSubscription: (Customer.Id, Plan.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var fetchCustomer: (Customer.Id) -> EitherIO<Prelude.Unit, Customer>
+  public var fetchPlans: EitherIO<Prelude.Unit, PlansEnvelope>
+  public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
+  public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
 
   public static let live = Stripe(
     cancelSubscription: PointFree.cancelSubscription,
@@ -24,30 +24,27 @@ public struct Stripe {
     fetchSubscription: PointFree.fetchSubscription
   )
 
-  public struct Cents: SingleValueCodable {
-    public let rawValue: Int
-    public init(rawValue: Int) {
-      self.rawValue = rawValue
-    }
-  }
+  public typealias Cents = Tagged<Stripe, Int>
 
   public struct Customer: Codable {
-    public let id: String
+    public let id: Id
+
+    public typealias Id = Tagged<Customer, String>
   }
 
   public struct Subscription: Codable {
-    let canceledAt: Date?
-    let cancelAtPeriodEnd: Bool
-    let created: Date
-    let currentPeriodStart: Date? // TODO: Audit nullability
-    let currentPeriodEnd: Date? // TODO: Audit nullability
-    let customer: String
-    let endedAt: Date?
-    let id: String
-    let plan: Plan
-    let quantity: Int
-    let start: Date
-    let status: Status
+    public let canceledAt: Date?
+    public let cancelAtPeriodEnd: Bool
+    public let created: Date
+    public let currentPeriodStart: Date? // TODO: Audit nullability
+    public let currentPeriodEnd: Date? // TODO: Audit nullability
+    public let customer: Customer.Id
+    public let endedAt: Date?
+    public let id: Id
+    public let plan: Plan
+    public let quantity: Int
+    public let start: Date
+    public let status: Status
 
     private enum CodingKeys: String, CodingKey {
       case canceledAt = "canceled_at"
@@ -64,6 +61,8 @@ public struct Stripe {
       case status
     }
 
+    public typealias Id = Tagged<Subscription, String>
+
     public enum Status: String, Codable {
       case trialing
       case active
@@ -74,14 +73,14 @@ public struct Stripe {
   }
 
   public struct Plan: Codable {
-    let amount: Cents
-    let created: Date
-    let currency: Currency
-    let id: Id
-    let interval: Interval
-    let metadata: [String: String]
-    let name: String
-    let statementDescriptor: String?
+    public let amount: Cents
+    public let created: Date
+    public let currency: Currency
+    public let id: Id
+    public let interval: Interval
+    public let metadata: [String: String]
+    public let name: String
+    public let statementDescriptor: String?
 
     private enum CodingKeys: String, CodingKey {
       case amount
@@ -114,8 +113,8 @@ public struct Stripe {
   }
 
   public struct PlansEnvelope: Codable {
-    let data: [Plan]
-    let hasMore: Bool
+    public let data: [Plan]
+    public let hasMore: Bool
 
     private enum CodingKeys: String, CodingKey {
       case data
@@ -124,32 +123,40 @@ public struct Stripe {
   }
 
   public struct Token: Codable {
-    let id: String
+    public let id: Id
+
+    public typealias Id = Tagged<Token, String>
   }
 }
 
 //private let subscriptionPlans = fetchPlans
 //  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
-private func cancelSubscription(id: String) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id)", .delete)
+private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id.rawValue)", .delete)
 }
 
-private func createCustomer(token: String) -> EitherIO<Prelude.Unit, Stripe.Customer> {
-  return stripeDataTask("https://api.stripe.com/v1/customers", .post(["source": token]))
-}
+private func createCustomer(user: Database.User, token: Stripe.Token.Id)
+  -> EitherIO<Prelude.Unit, Stripe.Customer> {
 
-private func createSubscription(customer: String, plan: Stripe.Plan.Id)
-  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-
-    return stripeDataTask("https://api.stripe.com/v1/subscriptions", .post([
-      "customer": customer,
-      "items[0][plan]": plan.rawValue
+    return stripeDataTask("https://api.stripe.com/v1/customers", .post([
+      "description": user.id.unwrap.uuidString,
+      "email": user.email.unwrap,
+      "source": token.unwrap,
       ]))
 }
 
-private func fetchCustomer(id: String) -> EitherIO<Prelude.Unit, Stripe.Customer> {
-  return stripeDataTask("https://api.stripe.com/v1/customers/\(id)")
+private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.Id)
+  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+
+    return stripeDataTask("https://api.stripe.com/v1/subscriptions", .post([
+      "customer": customer.rawValue,
+      "items[0][plan]": plan.rawValue,
+      ]))
+}
+
+private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
+  return stripeDataTask("https://api.stripe.com/v1/customers/\(id.unwrap)")
 }
 
 private let fetchPlans: EitherIO<Prelude.Unit, Stripe.PlansEnvelope> =
@@ -159,8 +166,8 @@ private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan
   return stripeDataTask("https://api.stripe.com/v1/plans/\(id.rawValue)")
 }
 
-private func fetchSubscription(id: String) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id)")
+private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id.unwrap)")
 }
 
 private let stripeJsonDecoder: JSONDecoder = {
@@ -205,19 +212,6 @@ private func attachStripeAuthorization(_ headers: [String: String]?) -> [String:
   let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
   return (headers ?? [:])
     |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
-}
-
-public protocol SingleValueCodable: Codable, RawRepresentable {}
-
-extension SingleValueCodable where RawValue: Codable {
-  public init(from decoder: Decoder) throws {
-    self.init(rawValue: try decoder.singleValueContainer().decode(RawValue.self))!
-  }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.singleValueContainer()
-    try container.encode(self.rawValue)
-  }
 }
 
 // FIXME???
