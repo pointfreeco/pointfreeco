@@ -35,7 +35,9 @@ private let legalView = View<Prelude.Unit> { _ in
 
 private let pointFreeView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding([.mobile: [.right: 4]])])], [
-    h4([`class`([Class.h4, Class.margin([.mobile: [.bottom: 0]])])], ["Point-Free"]),
+    h4([`class`([Class.h4, Class.margin([.mobile: [.bottom: 0]])])], [
+      a([href(path(to: .secretHome))], ["Point-Free"])
+      ]),
     p([
       "A weekly video series on functional programming and the Swift programming language. Hosted by ",
       a(

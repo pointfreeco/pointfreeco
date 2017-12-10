@@ -1,13 +1,10 @@
 import Css
+import PointFreeTestSupport
 import SnapshotTesting
 import Styleguide
 import XCTest
 
-class StyleguideTests: XCTestCase {
-  override func setUp() {
-    super.setUp()
-//    record = true
-  }
+class StyleguideTests: TestCase {
   func testStyleguide() {
     assertSnapshot(
       matching: render(config: pretty, css: styleguide),

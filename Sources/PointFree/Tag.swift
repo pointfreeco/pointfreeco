@@ -53,7 +53,7 @@ private let episodeTagView = View<Tag> { tag in
       `class`([
         Class.h6,
         Class.padding([.mobile: [.leftRight: 2]]),
-        Class.padding([.mobile: [.topBottom: 4]]),
+        Class.padding([.mobile: [.topBottom: 1]]),
         Class.border.pill,
         Class.border.all,
         Class.pf.colors.bg.white,

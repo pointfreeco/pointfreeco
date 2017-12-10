@@ -145,7 +145,13 @@ private let creditsView = View<Prelude.Unit> { _ in
         h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Credits"]),
         p(
           [`class`([Class.pf.colors.fg.gray850])],
-          ["Hosted by Brandon Williams and Stephen Celis. Recorded in Brooklyn, NY."]
+          [
+            "Hosted by ",
+            a([`class`([Class.pf.colors.link.white]), href("mailto:brandon@pointfree.co")], ["Brandon Williams"]),
+            " and ",
+            a([`class`([Class.pf.colors.link.white]), href("mailto:stephen@pointfree.co")], ["Stephen Celis"]),
+            ". Recorded in Brooklyn, NY."
+          ]
         )
     ]
   )
@@ -180,7 +186,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
     ),
     h1(
       [`class`([Class.h4, Class.margin([.mobile: [.top: 0]])])],
-      [.text(encode(ep.title))]
+      [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
     ),
     p([`class`([Class.pf.type.body.regular])], [.text(encode(ep.blurb))]),
     ]

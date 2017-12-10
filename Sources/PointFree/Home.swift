@@ -18,7 +18,7 @@ private let extraStyles: Stylesheet =
     "#hero" % maxWidth(.px(160))
 }
 
-private let secretHomeView = View<Prelude.Unit> { _ in
+let secretHomeView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
@@ -38,7 +38,7 @@ private let secretHomeView = View<Prelude.Unit> { _ in
 
 private let headerView = View<Prelude.Unit> { _ in
   [
-    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 2, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
       gridColumn(sizes: [:], [
         div([
           a([href("#"), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
@@ -63,7 +63,7 @@ private let headerView = View<Prelude.Unit> { _ in
 
     gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs)])], [
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 2]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
         img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
@@ -73,7 +73,7 @@ private let headerView = View<Prelude.Unit> { _ in
           ])
         ]),
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 2]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
         img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 

@@ -2,6 +2,7 @@ import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreeTestSupport
 import HttpPipeline
 import Optics
 #if !os(Linux)
