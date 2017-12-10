@@ -103,7 +103,7 @@ extension Class {
             | Class.type.lineHeight(4)
 
         public static let leading =
-          _leadingClass
+          bodyLeadingClass
             | Class.pf.colors.fg.black
             | Class.type.regular
             | Class.type.lineHeight(4)
@@ -117,7 +117,8 @@ extension Class.pf {
 
     public enum buttons {
       private static let base =
-        Class.type.medium
+        baseButtonClass
+          | Class.type.medium
           | Class.h5
           | Class.padding.leftRight(2)
           | Class.padding.topBottom(1)
@@ -138,7 +139,7 @@ extension Class.pf {
       return _codeClasses | .class(lang ?? "")
     }
 
-    public static let divider = _dividerClass
+    public static let divider = dividerClass
       | Class.border.top
       | Class.margin.all(0)
       | Class.padding.all(0)
@@ -183,6 +184,7 @@ public let pointFreeBaseStyles =
     <> hrReset
     <> dividerStyles
     <> navBarStyles
+    <> baseButtonStyles
 
 private let bodyStyles =
   html % (
@@ -260,16 +262,16 @@ private let aStyles =
 private let baseMarginStyles =
   (h1 | h2 | h3 | h4 | h5 | h6 | p | ul | ol) % margin(topBottom: .rem(0.5), leftRight: 0)
 
-private let _leadingClass = CssSelector.class("body-leading")
+private let bodyLeadingClass = CssSelector.class("body-leading")
 private let typeStyles =
-  _leadingClass % fontSize(.rem(1.1875))
+  bodyLeadingClass % fontSize(.rem(1.1875))
 
 private let hrReset =
   hr % (borderColor(all: .none) <> borderStyle(all: .none) <> borderWidth(all: .none))
 
-private let _dividerClass = CssSelector.class("pf-divider")
+private let dividerClass = CssSelector.class("pf-divider")
 private let dividerStyles =
-  _dividerClass % (
+  dividerClass % (
     borderColor(top: Color.other("#ddd"))
       <> height(.px(0))
 )
@@ -277,3 +279,36 @@ private let dividerStyles =
 private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
   ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
+
+private let baseButtonClass = CssSelector.class("btn")
+private let baseButtonStyles: Stylesheet =
+  (a & .pseudo(.hover) & baseButtonClass) % darken1
+    <> (a & .pseudo(.active) & baseButtonClass) % darken3
+    <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
+
+private let darken1 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.1)
+)
+
+private let darken2 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.2)
+)
+
+private let darken3 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.3)
+)

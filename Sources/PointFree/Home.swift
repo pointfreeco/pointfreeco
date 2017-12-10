@@ -13,12 +13,18 @@ let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<Response
   writeStatus(.ok)
     >-> respond(secretHomeView)
 
+private let extraStyles: Stylesheet =
+  queryOnly(screen, [maxWidth(Breakpoint.md.minSize)]) {
+    "#hero" % maxWidth(.px(160))
+}
+
 private let secretHomeView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
+        style(extraStyles),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(
@@ -32,7 +38,7 @@ private let secretHomeView = View<Prelude.Unit> { _ in
 
 private let headerView = View<Prelude.Unit> { _ in
   [
-    gridRow([`class`([Class.padding.leftRight(4), Class.padding.top(4), Class.padding.bottom(2), Class.grid.top(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.padding.leftRight(4), Class.padding.top(4), Class.padding.bottom(2), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
       gridColumn(sizes: [:], [
         div([
           a([href("#"), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
@@ -44,7 +50,7 @@ private let headerView = View<Prelude.Unit> { _ in
             base64: pointFreeHeroSvgBase64,
             mediaType: .image(.svg),
             alt: "",
-            []
+            [id("hero")]
           )
           ])
         ]),
@@ -57,17 +63,17 @@ private let headerView = View<Prelude.Unit> { _ in
 
     gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs)])], [
 
-      gridColumn(sizes: [.xs: 5], [style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding.top(2)]), style(lineHeight(0))], [
         img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
-      gridColumn(sizes: [.xs: 2], [
-        div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-4)))], [
+      gridColumn(sizes: [.xs: 2], [`class`([Class.position.z1])], [
+        div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
           "A new weekly Swift video series exploring functional programming and more."
           ])
         ]),
 
-      gridColumn(sizes: [.xs: 5], [style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding.top(2)]), style(lineHeight(0))], [
         img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
