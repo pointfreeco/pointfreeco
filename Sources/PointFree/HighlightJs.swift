@@ -13,7 +13,7 @@ public func addHighlightJs(_ nodes: [Node]) -> [Node] {
       return .document(addHighlightJs(doc))
     case let .element(element):
       return element.name == "head"
-        ? .element(element |> \.content %~ { ($0 ?? []) + highlightJsHead.map(get(\.node)) })
+        ? .element(element |> \.content %~ { ($0 ?? []) + highlightJsHead.map(^\.node) })
         : .element(element |> \.content %~ map(addHighlightJs))
     case .text:
       return node

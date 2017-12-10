@@ -63,7 +63,7 @@ public struct Metadata<A> {
 
       ]
       |> catOptionals
-      |> map(get(\.node))
+      |> map(^\.node)
   }
 }
 

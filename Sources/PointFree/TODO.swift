@@ -41,9 +41,6 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
 public func playsInline<T>(_ value: Bool) -> Attribute<T> {
   return .init("playsinline", value)
 }
-public func muted<T>(_ value: Bool) -> Attribute<T> {
-  return .init("muted", value)
-}
 public func poster<T>(_ value: String) -> Attribute<T> {
   return .init("poster", value)
 }
@@ -123,6 +120,12 @@ extension EitherIO {
   }
 }
 
+extension EitherIO {
+  public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
+    return .init(run: self.run.map { $0.bimap(f, g) })
+  }
+}
+
 // TODO: Move to PreludeFoundation?
 
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
@@ -195,11 +198,41 @@ extension PartialIso {
   }
 }
 
+// TODO: Move to swift-prelude
 extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
   public static var rawRepresentable: PartialIso {
     return .init(
       apply: B.init(rawValue:),
       unapply: ^\.rawValue
     )
+  }
+}
+
+public struct Tagged<Tag, A: Codable> {
+  public let unwrap: A
+
+  public init(unwrap: A) {
+    self.unwrap = unwrap
+  }
+}
+
+extension Tagged: Codable /* where A: Codable */ {
+  public init(from decoder: Decoder) throws {
+    self.init(unwrap: try decoder.singleValueContainer().decode(A.self))
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(self.unwrap)
+  }
+}
+
+extension Tagged: RawRepresentable {
+  public init?(rawValue: A) {
+    self.init(unwrap: rawValue)
+  }
+
+  public var rawValue: A {
+    return self.unwrap
   }
 }
