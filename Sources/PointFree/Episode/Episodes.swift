@@ -45,7 +45,7 @@ private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps,
   gridRow([
     gridColumn(
       sizes: [.xs: 12, .md: 9], [
-        div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 2]]), Class.padding([.mobile: [.top: 3]])])], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 4, .bottom: 2, .top: 3]])])], [
           ul([`class`([Class.type.list.reset])],
              eps.map(episodeListItemView.view >>> li)
           )

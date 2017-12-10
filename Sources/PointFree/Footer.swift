@@ -26,9 +26,9 @@ private let legalView = View<Prelude.Unit> { _ in
     "The content of this site is license under ",
     a([href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
-    a([href("https://github.com/pointfreeco/pointfreeco")], ["source code"]),
+    a([href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
     " to run this site is licensed under the ",
-    a([href("https://github.com/pointfreeco/pointfreeco/blob/master/LICENSE")], ["MIT license"]),
+    a([href(gitHubUrl(to: .license))], ["MIT license"]),
     ". Point-Free, Inc 2018."
     ])
 }

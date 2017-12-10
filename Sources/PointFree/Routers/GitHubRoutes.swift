@@ -5,6 +5,7 @@ import Prelude
 public enum GitHubRoute: DerivePartialIsos {
   case authorize(clientId: String, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
+  case license
   case organization
   case repo(Repo)
 
@@ -29,6 +30,9 @@ let gitHubRouter = [
     <¢> lit("pointfreeco") %> lit("episode-code-samples") %> lit("tree") %> lit("master")
     %> pathParam(.string)
     <% end,
+
+  GitHubRoute.iso.license
+    <¢> lit("pointfreeco") %> lit("pointfreeco") %> lit("blob") %> lit("master") %> lit("LICENSE") %> end,
 
   GitHubRoute.iso.organization
     <¢> get <% lit("pointfreeco") <% end,

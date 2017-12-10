@@ -507,15 +507,15 @@
   line-height : 4rem;
 }
 
-.ffi {
+.font-family-inherit {
   font-family : inherit;
 }
 
-.fsi {
+.font-size-inherit {
   font-size : inherit;
 }
 
-.tdn {
+.text-decoration-none {
   text-decoration : none;
 }
 

@@ -19,6 +19,12 @@ import Prelude
               guard case let .episodeCodeSample(result) = $0 else { return nil }
               return result
           })
+          public static let license = parenthesize <| PartialIso<Prelude.Unit, GitHubRoute>(
+            apply: const(.some(.license)),
+            unapply: {
+              guard case .license = $0 else { return nil }
+              return unit
+          })
           public static let organization = parenthesize <| PartialIso<Prelude.Unit, GitHubRoute>(
             apply: const(.some(.organization)),
             unapply: {

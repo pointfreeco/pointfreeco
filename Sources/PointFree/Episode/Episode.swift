@@ -85,7 +85,10 @@ private let videoView = View<Prelude.Unit> { _ in
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
   div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 4]])])],
     [
-      h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Chapters"]),
+      h6(
+        [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+        ["Chapters"]
+      ),
       ]
       <> blocks
         .filter { $0.type == .title && $0.timestamp != nil }
@@ -142,7 +145,10 @@ private let downloadsView = View<String> { codeSampleDirectory in
 private let creditsView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
-        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Credits"]),
+        h6(
+          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          ["Credits"]
+        ),
         p(
           [`class`([Class.pf.colors.fg.gray850])],
           [
