@@ -22,8 +22,9 @@ extension Logger {
 extension Database {
   public static let mock = Database(
     createSubscription: { _, _ in pure(unit) },
-    createUser: const(pure(unit)),
-    fetchUser: const(pure(.mock)),
+    fetchUserByGitHub: const(pure(.mock)),
+    fetchUserById: const(pure(.mock)),
+    upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
   )
 }
