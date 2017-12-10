@@ -7,7 +7,7 @@ import Prelude
 let footerView = View<Prelude.Unit> { _ in
   footer(
     [
-      `class`([Class.grid.row, Class.padding.all(4), Class.border.top, Class.pf.colors.bg.white]),
+      `class`([Class.grid.row, Class.padding([.mobile: [.all: 4]]), Class.border.top, Class.pf.colors.bg.white]),
       style(borderColor(top: .other("#ccc")))
     ],
     footerInfoColumnsView.view(unit)
@@ -22,7 +22,7 @@ private let footerInfoColumnsView =
     <> moreColumnView   .map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
 
 private let legalView = View<Prelude.Unit> { _ in
-  p([`class`([Class.pf.colors.fg.gray400, Class.type.align.center, Class.h6, Class.padding.top(2)])], [
+  p([`class`([Class.pf.colors.fg.gray400, Class.type.align.center, Class.h6, Class.padding([.mobile: [.top: 2]])])], [
     "The content of this site is license under ",
     a([href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
@@ -34,8 +34,8 @@ private let legalView = View<Prelude.Unit> { _ in
 }
 
 private let pointFreeView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding.right(4)])], [
-    h4([`class`([Class.h4, Class.margin.bottom(0)])], ["Point-Free"]),
+  div([`class`([Class.padding([.mobile: [.right: 4]])])], [
+    h4([`class`([Class.h4, Class.margin([.mobile: [.bottom: 0]])])], ["Point-Free"]),
     p([
       "A weekly video series on functional programming and the Swift programming language. Hosted by ",
       a(

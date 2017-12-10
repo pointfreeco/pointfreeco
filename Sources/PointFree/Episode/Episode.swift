@@ -83,9 +83,9 @@ private let videoView = View<Prelude.Unit> { _ in
 }
 
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding.leftRight(4), Class.padding.top(4)])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.top: 4]])])],
     [
-      h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])], ["Chapters"]),
+      h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Chapters"]),
       ]
       <> blocks
         .filter { $0.type == .title && $0.timestamp != nil }
@@ -96,7 +96,7 @@ private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
 }
 
 private let tocChapterView = View<(content: String, timestamp: Double)> { content, timestamp in
-  gridRow([`class`([Class.margin.bottom(1)])], [
+  gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
     gridColumn(sizes: [.xs: 10], [
       div([
         a(
@@ -116,10 +116,10 @@ private let tocChapterView = View<(content: String, timestamp: Double)> { conten
 }
 
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding.leftRight(4), Class.padding.top(3)])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.top: 3]])])],
       [
         h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])],
+          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
           ["Downloads"]
         ),
         img(
@@ -131,7 +131,7 @@ private let downloadsView = View<String> { codeSampleDirectory in
         a(
           [
             href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-            `class`([Class.pf.colors.link.yellow, Class.margin.left(1), Class.align.middle])
+            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
           ],
           [.text(encode("\(codeSampleDirectory).playground"))]
         )
@@ -140,9 +140,9 @@ private let downloadsView = View<String> { codeSampleDirectory in
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding.leftRight(4), Class.padding.topBottom(3)])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
-        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding.bottom(1)])], ["Credits"]),
+        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])], ["Credits"]),
         p(
           [`class`([Class.pf.colors.fg.gray850])],
           ["Hosted by Brandon Williams and Stephen Celis. Recorded in Brooklyn, NY."]
@@ -167,7 +167,7 @@ private let leftColumnView =
 
 private let episodeInfoView = View<Episode> { ep in
   div(
-    [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
+    [`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
   )
 }
@@ -179,7 +179,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [.text(encode("Episode \(ep.sequence)"))]
     ),
     h1(
-      [`class`([Class.h4, Class.margin.top(0)])],
+      [`class`([Class.h4, Class.margin([.mobile: [.top: 0]])])],
       [.text(encode(ep.title))]
     ),
     p([`class`([Class.pf.type.body.regular])], [.text(encode(ep.blurb))]),
@@ -191,7 +191,7 @@ let dividerView = View<Prelude.Unit> { _ in
 }
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
+  div([`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
       blocks.flatMap(transcriptBlockView.view)
   )
 }
@@ -220,7 +220,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding.top(2)])], [
+    return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
       .text(encode(block.content))
       ])
   }
@@ -237,7 +237,7 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         minimalNavView.view(unit) <> [
         gridRow([`class`([Class.grid.center(.xs)])], [
           gridColumn(sizes: [:], [
-            div([`class`([Class.padding.all(4)])], [
+            div([`class`([Class.padding([.mobile: [.all: 4]])])], [
               h5([`class`([Class.h5])], ["Episode not found :("]),
               pre([
                 code([`class`([Class.pf.components.code(lang: "swift")])], [

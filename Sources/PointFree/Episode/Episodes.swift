@@ -45,7 +45,7 @@ private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps,
   gridRow([
     gridColumn(
       sizes: [.xs: 12, .md: 9], [
-        div([`class`([Class.padding.leftRight(4), Class.padding.bottom(2), Class.padding.top(3)])], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 2]]), Class.padding([.mobile: [.top: 3]])])], [
           ul([`class`([Class.type.list.reset])],
              eps.map(episodeListItemView.view >>> li)
           )
@@ -63,20 +63,20 @@ private let episodesView = View<(episodes: [Episode], selectedTag: Tag?)> { eps,
 private let sideMenuView = View<Tag?> { selectedTag in
   div(
     [`class`([
-      Class.padding.right(4),
-      Class.padding.bottom(2),
-      Class.padding.top(3),
+      Class.padding([.mobile: [.right: 4]]),
+      Class.padding([.mobile: [.bottom: 2]]),
+      Class.padding([.mobile: [.top: 3]]),
       Class.position.sticky(.md),
       Class.position.top0])],
     [
       h5([`class`([Class.pf.type.title6])], ["Sort by"]),
-      ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
+      ol([`class`([Class.type.list.reset, Class.padding([.mobile: [.bottom: 2]])])], [
         li([a([href("#")], ["Newest first"])]),
         li([a([href("#")], ["Oldest first"])]),
         ]),
 
       h5([`class`([Class.pf.type.title6])], ["Episode Type"]),
-      ol([`class`([Class.type.list.reset, Class.padding.bottom(2)])], [
+      ol([`class`([Class.type.list.reset, Class.padding([.mobile: [.bottom: 2]])])], [
         li([a([href("#")], ["All"])]),
         li([a([href("#")], ["Subscriber only"])]),
         li([a([href("#")], ["Free"])]),
@@ -84,7 +84,7 @@ private let sideMenuView = View<Tag?> { selectedTag in
 
       h5([`class`([Class.pf.type.title6])], ["Tag"]),
       ol(
-        [`class`([Class.type.list.reset, Class.padding.bottom(2)])],
+        [`class`([Class.type.list.reset, Class.padding([.mobile: [.bottom: 2]])])],
         ([nil] + array(Tag.all).map(Optional.some))
           .map { (tag: $0, selectedTag: selectedTag) }
           .map(tagListItemView.view >>> li))
@@ -103,9 +103,9 @@ let episodeImageStyles: Stylesheet =
     <> objectFit(.cover)
 
 private let episodeListItemView = View<Episode> { ep in
-  gridRow([`class`([Class.margin.bottom(4)])], [
+  gridRow([`class`([Class.margin([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.xs: 4], [
-      div([`class`([Class.padding.right(3)])], [
+      div([`class`([Class.padding([.mobile: [.right: 3]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug))))],
           [

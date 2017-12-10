@@ -120,8 +120,8 @@ extension Class.pf {
         baseButtonClass
           | Class.type.medium
           | Class.h5
-          | Class.padding.leftRight(2)
-          | Class.padding.topBottom(1)
+          | Class.padding([.mobile: [.leftRight: 2]])
+          | Class.padding([.mobile: [.topBottom: 1]])
           | Class.pf.colors.link.white
           | Class.border.rounded.all
 
@@ -133,7 +133,7 @@ extension Class.pf {
     private static let _codeClasses =
       _codeClass
         | Class.layout.block
-        | Class.padding.all(3)
+        | Class.padding([.mobile: [.all: 3]])
         | Class.layout.overflowAuto(.x)
     public static func code(lang: String?) -> CssSelector {
       return _codeClasses | .class(lang ?? "")
@@ -141,15 +141,15 @@ extension Class.pf {
 
     public static let divider = dividerClass
       | Class.border.top
-      | Class.margin.all(0)
-      | Class.padding.all(0)
+      | Class.margin([.mobile: [.all: 0]])
+      | Class.padding([.mobile: [.all: 0]])
       | Class.pf.colors.bg.white
 
     /// The standard nav bar style.
     public static let navBar =
       _navBar
         | Class.pf.colors.bg.purple
-        | Class.padding.leftRight(2)
+        | Class.padding([.mobile: [.leftRight: 2]])
         | Class.type.lineHeight(rem: 4)
         | Class.size.height(rem: 4)
 
@@ -157,7 +157,7 @@ extension Class.pf {
     public static let minimalNavBar =
       _navBar
         | Class.pf.colors.bg.black
-        | Class.padding.leftRight(2)
+        | Class.padding([.mobile: [.leftRight: 2]])
         | Class.type.lineHeight(rem: 3)
         | Class.size.height(rem: 3)
 

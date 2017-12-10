@@ -82,9 +82,9 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
       body([
         gridRow([
           gridColumn(sizes: [:], [
-            div([`class`([Class.padding.all(2)])], [
+            div([`class`([Class.padding([.mobile: [.all: 2]])])], [
               h3([`class`([Class.h3])], ["Thanks for signing up!"]),
-              p([`class`([Class.padding.topBottom(2)])], [
+              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
                 "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
                 a([href(gitHubUrl(to: .organization))], ["@pointfreeco"]),
                 ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",

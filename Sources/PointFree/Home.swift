@@ -38,7 +38,7 @@ private let secretHomeView = View<Prelude.Unit> { _ in
 
 private let headerView = View<Prelude.Unit> { _ in
   [
-    gridRow([`class`([Class.padding.leftRight(4), Class.padding.top(4), Class.padding.bottom(2), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 2, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
       gridColumn(sizes: [:], [
         div([
           a([href("#"), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
@@ -63,7 +63,7 @@ private let headerView = View<Prelude.Unit> { _ in
 
     gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs)])], [
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding.top(2)]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 2]])]), style(lineHeight(0))], [
         img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
@@ -73,7 +73,7 @@ private let headerView = View<Prelude.Unit> { _ in
           ])
         ]),
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding.top(2)]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 2]])]), style(lineHeight(0))], [
         img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
@@ -107,9 +107,9 @@ private let episodeRowView = View<Episode> { ep in
 
 private let episodeInfoColumnView = View<Episode> { ep in
   div(
-    [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
+    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep) + [
-      div([`class`([Class.margin.top(2)])], [
+      div([`class`([Class.margin([.mobile: [.top: 2]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug)))), `class`([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
           [
@@ -118,7 +118,7 @@ private let episodeInfoColumnView = View<Episode> { ep in
               base64: rightArrowSvgBase64(fill: "#974DFF"),
               mediaType: .image(.svg),
               alt: "",
-              [`class`([Class.align.middle, Class.margin.left(1)]), width(16), height(16)]
+              [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
             )
           ]
         ),

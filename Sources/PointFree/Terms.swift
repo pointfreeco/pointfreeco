@@ -26,7 +26,7 @@ private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
         navView.view(ctx) + [
         gridRow([
           gridColumn(sizes: [.xs: 12], [
-            div([`class`([Class.padding.all(4)])], [
+            div([`class`([Class.padding([.mobile: [.all: 4]])])], [
               h1([`class`([Class.h1])], ["Terms of Service"]),
               p(["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."]),
               p(["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."]),

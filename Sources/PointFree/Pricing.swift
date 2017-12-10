@@ -52,7 +52,7 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
         ]),
 
       body([
-        gridRow([`class`([Class.padding.all(4)])], [
+        gridRow([`class`([Class.padding([.mobile: [.all: 4]])])], [
           gridColumn(sizes: [.xs: 12], [
             div([
               input([id(selectors.input.0), type(.radio), name("tabs"), checked(true)]),
@@ -151,7 +151,7 @@ private let individualPricingView = View<Prelude.Unit> { _ in
 }
 
 private let individualMonthlyView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.type.align.center, Class.padding.all(2), Class.pf.colors.bg.light, Class.border.rounded.all])], [
+  gridRow([`class`([Class.type.align.center, Class.padding([.mobile: [.all: 2]]), Class.pf.colors.bg.light, Class.border.rounded.all])], [
     gridColumn(sizes: [.xs: 12], [
       div([
         h3([`class`([Class.h3])], ["Monthly"])
@@ -176,7 +176,7 @@ private let individualMonthlyView = View<Prelude.Unit> { _ in
 }
 
 private let individualYearlyView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.type.align.center, Class.padding.all(2), Class.pf.colors.bg.light, Class.border.rounded.all])], [
+  gridRow([`class`([Class.type.align.center, Class.padding([.mobile: [.all: 2]]), Class.pf.colors.bg.light, Class.border.rounded.all])], [
     gridColumn(sizes: [.xs: 12], [
       div([
         h3([`class`([Class.h3])], ["Yearly"])
