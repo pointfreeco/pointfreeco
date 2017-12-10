@@ -20,7 +20,7 @@ let package = Package(
       dependencies: ["Html", "Css"]),
     .testTarget(
       name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport"]),
+      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
 
     .target(
       name: "PointFree",
