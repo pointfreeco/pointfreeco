@@ -121,13 +121,6 @@ private func writeGitHubSessionCookieMiddleware(
     )
 }
 
-// TODO: Move to Prelude.
-extension EitherIO {
-  public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
-    return .init(run: self.run.map { $0.bimap(f, g) })
-  }
-}
-
 /// Exchanges a github code for an access token and loads the user's data.
 private func authTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
