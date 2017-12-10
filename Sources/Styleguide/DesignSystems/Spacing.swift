@@ -9,15 +9,6 @@ public enum Side: String {
   case right = "r"
   case top = "t"
   case topBottom = "y"
-
-  fileprivate static let allSides: [Side] = [.bottom, .left, .right, .top]
-}
-
-private enum Whitespace: String {
-  case margin = "m"
-  case padding = "p"
-
-  static let all: [Whitespace] = [.margin, .padding]
 }
 
 extension Class {
@@ -33,6 +24,17 @@ extension Class {
 public let spacingStyles =
   responsivePaddingStyles
     <> responsiveMarginStyles
+
+extension Side {
+  fileprivate static let allSides: [Side] = [.bottom, .left, .right, .top]
+}
+
+private enum Whitespace: String {
+  case margin = "m"
+  case padding = "p"
+
+  static let all: [Whitespace] = [.margin, .padding]
+}
 
 private let responsivePaddingStyles =
   _Breakpoint.all.flatMap { breakpoint in
