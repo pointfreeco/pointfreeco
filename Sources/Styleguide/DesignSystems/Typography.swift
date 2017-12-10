@@ -23,9 +23,9 @@ extension Class {
     public static let semiBold = CssSelector.class("semi-bold")
     public static let underline = CssSelector.class("underline")
 
-    public static let fontFamilyInherit = CssSelector.class("ffi")
-    public static let fontSizeInherit = CssSelector.class("fsi")
-    public static let textDecorationNone = CssSelector.class("tdn")
+    public static let fontFamilyInherit = CssSelector.class("font-family-inherit")
+    public static let fontSizeInherit = CssSelector.class("font-size-inherit")
+    public static let textDecorationNone = CssSelector.class("text-decoration-none")
 
     public enum list {
       public static let styleNone = CssSelector.class("list-style-none")
