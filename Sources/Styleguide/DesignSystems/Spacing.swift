@@ -37,29 +37,31 @@ public let spacingStyles =
   responsivePaddingStyles
     <> responsiveMarginStyles
 
-private let responsivePaddingStyles = Side.allSides
-  .flatMap { side in
-    _Breakpoint.all.flatMap { breakpoint in
-      breakpoint.querySelfAndBigger(only: screen) {
+private let responsivePaddingStyles =
+  _Breakpoint.all.flatMap { breakpoint in
+    breakpoint.querySelfAndBigger(only: screen) {
+      Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
           Class.padding([breakpoint: [side: n]]) % paddingStyle(side: side, size: size)
           }
-          .concat()
+        }
+        .concat()
       }
     }
-  }.concat()
+    .concat()
 
-private let responsiveMarginStyles = Side.allSides
-  .flatMap { side in
-    _Breakpoint.all.flatMap { breakpoint in
-      breakpoint.querySelfAndBigger(only: screen) {
+private let responsiveMarginStyles =
+  _Breakpoint.all.flatMap { breakpoint in
+    breakpoint.querySelfAndBigger(only: screen) {
+      Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
           Class.margin([breakpoint: [side: n]]) % marginStyle(side: side, size: size)
-          }
-          .concat()
+        }
+        }
+        .concat()
       }
     }
-  }.concat()
+    .concat()
 
 private func paddingStyle(side: Side, size: Size) -> Stylesheet {
   switch side {
