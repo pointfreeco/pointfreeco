@@ -41,7 +41,7 @@ public let pillTagsView = View<[Tag]> { tags in
       .sorted(by: get(\.name))
       .map(
         episodeTagView.view
-          >>> li([`class`([Class.layout.inlineBlock, Class.margin([.mobile: [.right: 1]]), Class.margin([.mobile: [.bottom: 1]])])])
+          >>> li([`class`([Class.layout.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }
@@ -52,8 +52,7 @@ private let episodeTagView = View<Tag> { tag in
       href(path(to: .episodes(tag: .some(tag)))),
       `class`([
         Class.h6,
-        Class.padding([.mobile: [.leftRight: 2]]),
-        Class.padding([.mobile: [.topBottom: 1]]),
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 1]]),
         Class.border.pill,
         Class.border.all,
         Class.pf.colors.bg.white,

@@ -10,26 +10,23 @@ public enum Side: String {
   case top = "t"
   case topBottom = "y"
 
-  fileprivate static let allSides: [Side] = [.all, .bottom, .left, .leftRight, .right, .top, .topBottom]
+  fileprivate static let allSides: [Side] = [.bottom, .left, .right, .top]
+}
+
+private enum Whitespace: String {
+  case margin = "m"
+  case padding = "p"
+
+  static let all: [Whitespace] = [.margin, .padding]
 }
 
 extension Class {
   public static func padding(_ data: [_Breakpoint: [Side: Int]]) -> CssSelector {
-    let classes = data.flatMap { breakpoint, sides in
-      sides.map { side, n in
-        CssSelector.class("\(breakpoint.rawValue)-p\(side.rawValue)\(n)")
-      }
-    }
-    return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
+    return selector(data, whitespace: .padding)
   }
 
   public static func margin(_ data: [_Breakpoint: [Side: Int]]) -> CssSelector {
-    let classes = data.flatMap { breakpoint, sides in
-      sides.map { side, n in
-        CssSelector.class("\(breakpoint.rawValue)-m\(side.rawValue)\(n)")
-      }
-    }
-    return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
+    return selector(data, whitespace: .margin)
   }
 }
 
@@ -108,3 +105,33 @@ private let spacings: [Size] = [
   .rem(2.0),
   .rem(4.0)
 ]
+
+private func selector(_ data: [_Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {
+  let classes = data.flatMap { breakpoint, sides in
+    sides.map { side, n in
+      selector(side: side, breakpoint: breakpoint, n: n, whitespace: whitespace)
+    }
+  }
+  return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
+}
+
+private func selector(side: Side, breakpoint: _Breakpoint, n: Int, whitespace: Whitespace) -> CssSelector {
+  switch side {
+  case .all:
+    return selector(side: .left, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      | selector(side: .right, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      | selector(side: .top, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      | selector(side: .bottom, breakpoint: breakpoint, n: n, whitespace: whitespace)
+
+  case .bottom, .left, .top, .right:
+    return CssSelector.class("\(breakpoint.rawValue)-\(whitespace.rawValue)\(side.rawValue)\(n)")
+
+  case .leftRight:
+    return selector(side: .left, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      | selector(side: .right, breakpoint: breakpoint, n: n, whitespace: whitespace)
+
+  case .topBottom:
+    return  selector(side: .top, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      | selector(side: .bottom, breakpoint: breakpoint, n: n, whitespace: whitespace)
+  }
+}

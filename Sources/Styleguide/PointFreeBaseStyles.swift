@@ -142,7 +142,6 @@ extension Class.pf {
     public static let divider = dividerClass
       | Class.border.top
       | Class.margin([.mobile: [.all: 0]])
-      | Class.padding([.mobile: [.all: 0]])
       | Class.pf.colors.bg.white
 
     /// The standard nav bar style.
