@@ -27,6 +27,15 @@ public struct Database {
     public let subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
+
+    private enum CodingKeys: String, CodingKey {
+      case email
+      case gitHubUserId = "github_user_id"
+      case gitHubAccessToken = "github_access_token"
+      case id
+      case name
+      case subscriptionId = "subscription_id"
+    }
   }
 
   public struct Subscription: Decodable {
@@ -35,6 +44,12 @@ public struct Database {
     let userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
+
+    private enum CodingKeys: String, CodingKey {
+      case id
+      case stripeSubscriptionId = "stripe_subscription_id"
+      case userId = "user_id"
+    }
   }
 }
 
