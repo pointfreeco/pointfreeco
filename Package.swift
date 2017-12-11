@@ -58,7 +58,8 @@ let package = Package(
       dependencies: [
         "Either",
         "PointFree",
-        "Prelude"
+        "Prelude",
+        "SnapshotTesting"
       ]),
     ],
   swiftLanguageVersions: [4]
