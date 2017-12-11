@@ -54,7 +54,7 @@ let package = Package(
 
     .target(
       name: "PointFreeTestSupport",
-      dependencies: ["Either", "SnapshotTesting", "PointFree", "Prelude"]),
+      dependencies: ["Either", "PointFree", "Prelude"]),
     ],
   swiftLanguageVersions: [4]
 )
