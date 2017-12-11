@@ -17,6 +17,11 @@ extension Class {
     public static func sticky(_ breakpoint: Breakpoint) -> CssSelector {
       return CssSelector.class("sticky-\(breakpoint)")
     }
+
+    public static let z1 = CssSelector.class("z1")
+    public static let z2 = CssSelector.class("z2")
+    public static let z3 = CssSelector.class("z3")
+    public static let z4 = CssSelector.class("z4")
   }
 }
 
@@ -28,6 +33,7 @@ public let positionStyles: Stylesheet =
     <> Class.position.sticky % stickyPosition
     <> responsiveStyles
     <> sideStyles
+    <> zIndexStyles
 
 private let responsiveStyles: Stylesheet = Breakpoint.all
   .map { breakpoint in
@@ -45,3 +51,9 @@ private let sideStyles: Stylesheet =
     <> Class.position.right0 % right(0)
     <> Class.position.bottom0 % bottom(0)
     <> Class.position.left0 % left(0)
+
+private let zIndexStyles =
+  Class.position.z1 % zIndex(1)
+    <> Class.position.z2 % zIndex(2)
+    <> Class.position.z3 % zIndex(3)
+    <> Class.position.z4 % zIndex(4)

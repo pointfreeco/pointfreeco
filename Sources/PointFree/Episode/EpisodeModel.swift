@@ -1,5 +1,6 @@
 public struct Episode {
   var blurb: String
+  var codeSampleDirectory: String
   var id: Int
   var length: Int
   var publishedAt: Double
@@ -70,6 +71,7 @@ private let proofInFunctions = Episode(
 Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics \
 and computer science
 """,
+  codeSampleDirectory: "ep1-proof-in-functions",
   id: 1,
   length: 1080,
   publishedAt: 1_482_192_000,
@@ -159,6 +161,7 @@ private let algebraOfPredicates = Episode(
            We formulate predicates and sorting functions in terms of monoids \
            and show how they can lead to very composable constructions.
            """,
+  codeSampleDirectory: "ep2-sorting-functions",
   id: 3,
   length: 1380 ,
   publishedAt: 1_497_960_000,
@@ -213,6 +216,7 @@ highly reusable. Mathematicians do something very similar to study objects abstr
 field known as algebra. In this article we will link these two worlds together, and show that there is a \
 fundamental piece missing when we only look at the protocol level.
 """,
+  codeSampleDirectory: "ep3-algebra",
   id: 2,
   length: 1380 ,
   publishedAt: 1_497_960_000,
@@ -284,6 +288,7 @@ private let typeSafeHtml = Episode(
   """
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
+  codeSampleDirectory: "ep4-type-safe-html",
   id: 4,
   length: 1380,
   publishedAt: 1_497_960_000,

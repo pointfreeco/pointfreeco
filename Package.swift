@@ -11,6 +11,7 @@ let package = Package(
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b70de46")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("3a11a59")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
     ],
@@ -20,7 +21,7 @@ let package = Package(
       dependencies: ["Html", "Css"]),
     .testTarget(
       name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport"]),
+      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
 
     .target(
       name: "PointFree",
@@ -54,7 +55,12 @@ let package = Package(
 
     .target(
       name: "PointFreeTestSupport",
-      dependencies: ["Either", "PointFree", "Prelude"]),
+      dependencies: [
+        "Either",
+        "PointFree",
+        "Prelude",
+        "SnapshotTesting"
+      ]),
     ],
   swiftLanguageVersions: [4]
 )
