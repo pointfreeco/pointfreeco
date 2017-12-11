@@ -54,7 +54,23 @@ let package = Package(
 
     .target(
       name: "PointFreeTestSupport",
-      dependencies: ["Either", "PointFree", "Prelude"]),
+      dependencies: [
+        "ApplicativeRouter",
+        "ApplicativeRouterHttpPipelineSupport",
+        "Css",
+        "CssReset",
+        "Either",
+        "Html",
+        "HtmlCssSupport",
+        "HttpPipeline",
+        "HttpPipelineHtmlSupport",
+        "Optics",
+        "PostgreSQL",
+        "Styleguide",
+        "Tuple",
+        "UrlFormEncoding",
+        "PointFree",
+      ]),
     ],
   swiftLanguageVersions: [4]
 )
