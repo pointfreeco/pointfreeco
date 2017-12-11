@@ -205,3 +205,9 @@ extension Element {
 public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
   return node("hr", attribs, nil)
 }
+
+extension Array {
+  func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
+    return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
+  }
+}

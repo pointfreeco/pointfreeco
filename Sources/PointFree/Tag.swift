@@ -49,7 +49,7 @@ public let pillTagsView = View<[Tag]> { tags in
 private let episodeTagView = View<Tag> { tag in
   a(
     [
-      href(path(to: .episodes(tag: .some(tag)))),
+      href("#"),
       `class`([
         Class.h6,
         Class.padding([.mobile: [.leftRight: 2, .topBottom: 1]]),

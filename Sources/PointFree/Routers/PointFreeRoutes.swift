@@ -7,7 +7,6 @@ public protocol DerivePartialIsos {}
 public enum Route: DerivePartialIsos {
   case about
   case episode(Either<String, Int>)
-  case episodes(tag: Tag?)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case launchSignup(EmailAddress)
@@ -26,9 +25,6 @@ private let routers: [Router<Route>] = [
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
-
-  Route.iso.episodes
-    <¢> get %> lit("episodes") %> queryParam("tag", opt(.tag)) <% end,
 
   Route.iso.gitHubCallback
     <¢> get %> lit("github-auth")
