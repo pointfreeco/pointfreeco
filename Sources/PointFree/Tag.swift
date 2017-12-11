@@ -38,7 +38,7 @@ public let pillTagsView = View<[Tag]> { tags in
   ol(
     [`class`([Class.layout.inlineBlock, Class.type.list.reset])],
     tags
-      .sorted(by: get(\.name))
+      .sorted(by: ^\.name)
       .map(
         episodeTagView.view
           >>> li([`class`([Class.layout.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])

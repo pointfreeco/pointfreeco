@@ -1,15 +1,15 @@
 import Foundation
 
 public struct EnvVars: Codable {
-  var airtable = Airtable()
-  var appEnv = AppEnv.development
-  var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
-  var baseUrlString = "http://localhost:8080"
-  var basicAuth = BasicAuth()
-  var gitHub = GitHub()
-  var mailgun = Mailgun()
-  var postgres = Postgres()
-  var stripe = Stripe()
+  public var airtable = Airtable()
+  public var appEnv = AppEnv.development
+  public var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
+  public var baseUrlString = "http://localhost:8080"
+  public var basicAuth = BasicAuth()
+  public var gitHub = GitHub()
+  public var mailgun = Mailgun()
+  public var postgres = Postgres()
+  public var stripe = Stripe()
 
   private enum CodingKeys: String, CodingKey {
     case appEnv = "APP_ENV"
@@ -18,10 +18,10 @@ public struct EnvVars: Codable {
   }
 
   public struct Airtable: Codable {
-    var base1 = "deadbeef-base-1"
-    var base2 = "deadbeef-base-2"
-    var base3 = "deadbeef-base-3"
-    var bearer = "deadbeef-bearer"
+    public var base1 = "deadbeef-base-1"
+    public var base2 = "deadbeef-base-2"
+    public var base3 = "deadbeef-base-3"
+    public var bearer = "deadbeef-bearer"
 
     private enum CodingKeys: String, CodingKey {
       case base1 = "AIRTABLE_BASE_1"
@@ -38,8 +38,8 @@ public struct EnvVars: Codable {
   }
 
   public struct BasicAuth: Codable {
-    var username = "hello"
-    var password = "world"
+    public var username = "hello"
+    public var password = "world"
 
     private enum CodingKeys: String, CodingKey {
       case username = "BASIC_AUTH_USERNAME"
@@ -48,8 +48,8 @@ public struct EnvVars: Codable {
   }
 
   public struct GitHub: Codable {
-    var clientId = "deadbeef-client-id"
-    var clientSecret = "deadbeef-client-secret"
+    public var clientId = "deadbeef-client-id"
+    public var clientSecret = "deadbeef-client-secret"
 
     private enum CodingKeys: String, CodingKey {
       case clientId = "GITHUB_CLIENT_ID"
@@ -58,8 +58,8 @@ public struct EnvVars: Codable {
   }
 
   public struct Mailgun: Codable {
-    var apiKey = "deadbeef-mg-api-key"
-    var domain = "mg.domain.com"
+    public var apiKey = "deadbeef-mg-api-key"
+    public var domain = "mg.domain.com"
 
     private enum CodingKeys: String, CodingKey {
       case apiKey = "MAILGUN_PRIVATE_API_KEY"
@@ -68,7 +68,7 @@ public struct EnvVars: Codable {
   }
 
   public struct Postgres: Codable {
-    var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco"
+    public var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco"
 
     private enum CodingKeys: String, CodingKey {
       case databaseUrl = "DATABASE_URL"
@@ -76,8 +76,8 @@ public struct EnvVars: Codable {
   }
 
   public struct Stripe: Codable {
-    var publishableKey = "pk_test"
-    var secretKey = "sk_test"
+    public var publishableKey = "pk_test"
+    public var secretKey = "sk_test"
 
     private enum CodingKeys: String, CodingKey {
       case publishableKey = "STRIPE_PUBLISHABLE_KEY"

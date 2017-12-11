@@ -70,7 +70,7 @@ private func readGitHubSessionCookieMiddleware(
           ResponseHeader
             .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
         }
-        .flatMap(UUID.init(uuidString:))
+        .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
         .map {
           AppEnvironment.current.database.fetchUserById($0)
             .mapExcept(requireSome)
@@ -90,20 +90,13 @@ private func writeGitHubSessionCookieMiddleware(
       [
         ResponseHeader.setSignedCookie(
           key: pointFreeUserSession,
-          value: conn.data.id.uuidString,
+          value: conn.data.id.unwrap.uuidString,
           options: [],
           secret: AppEnvironment.current.envVars.appSecret,
           encrypt: true
         )
         ] |> catOptionals
     )
-}
-
-// TODO: Move to Prelude.
-extension EitherIO {
-  public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
-    return .init(run: self.run.map { $0.bimap(f, g) })
-  }
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
@@ -126,7 +119,6 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
         // Fire-and-forget notify user that they signed up
         parallel(
           sendEmail(
-            from: "Point-Free <support@pointfree.co>",
             to: [env.gitHubUser.email],
             subject: "Point-Free Registration",
             content: inj2(registrationEmailView.view(env.gitHubUser))

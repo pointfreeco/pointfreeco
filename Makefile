@@ -49,12 +49,12 @@ route-partial-iso:
 
 postgres-mm:
 	-@sudo mkdir -p "$(POSTGRES_PATH)"
-	-@sudo echo "$$POSTGRES_MODULE_MAP" > "$(POSTGRES_PATH)/module.map"
-	-@sudo echo "$$POSTGRES_SHIM_H" > "$(POSTGRES_PATH)/shim.h"
+	-@echo "$$POSTGRES_MODULE_MAP" | sudo tee "$(POSTGRES_PATH)/module.map" > /dev/null
+	-@echo "$$POSTGRES_SHIM_H" | sudo tee "$(POSTGRES_PATH)/shim.h" > /dev/null
 
 webkit-snapshot-mm:
 	-@sudo mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
-	-@sudo echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" > "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map"
+	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" | sudo tee "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map" > /dev/null
 
 SDK_PATH = $(shell xcrun --show-sdk-path)
 POSTGRES_PATH = $(SDK_PATH)/System/Library/Frameworks/CPostgreSQL.framework

@@ -41,9 +41,6 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
 public func playsInline<T>(_ value: Bool) -> Attribute<T> {
   return .init("playsinline", value)
 }
-public func muted<T>(_ value: Bool) -> Attribute<T> {
-  return .init("muted", value)
-}
 public func poster<T>(_ value: String) -> Attribute<T> {
   return .init("poster", value)
 }
@@ -123,6 +120,12 @@ extension EitherIO {
   }
 }
 
+extension EitherIO {
+  public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
+    return .init(run: self.run.map { $0.bimap(f, g) })
+  }
+}
+
 // TODO: Move to PreludeFoundation?
 
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
@@ -191,15 +194,6 @@ extension PartialIso {
     return .init(
       apply: { iso.apply($0) ?? `default` },
       unapply: iso.unapply
-    )
-  }
-}
-
-extension PartialIso where A == String, B: RawRepresentable, B.RawValue == String {
-  public static var rawRepresentable: PartialIso {
-    return .init(
-      apply: B.init(rawValue:),
-      unapply: ^\.rawValue
     )
   }
 }
