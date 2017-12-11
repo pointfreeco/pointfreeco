@@ -52,7 +52,7 @@ class SiteMiddlewareTests: TestCase {
     )
 
     assertSnapshot(
-      matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
+      matching: connection(from: secureRequest("https://www.pointfree.co/home"))
         |> siteMiddleware
         |> Prelude.perform
     )

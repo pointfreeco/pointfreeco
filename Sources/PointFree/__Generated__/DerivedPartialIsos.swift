@@ -53,12 +53,6 @@ import Prelude
               guard case let .episode(result) = $0 else { return nil }
               return result
           })
-          public static let episodes = parenthesize <| PartialIso(
-            apply: Route.episodes,
-            unapply: {
-              guard case let .episodes(result) = $0 else { return nil }
-              return result
-          })
           public static let gitHubCallback = parenthesize <| PartialIso(
             apply: Route.gitHubCallback,
             unapply: {
