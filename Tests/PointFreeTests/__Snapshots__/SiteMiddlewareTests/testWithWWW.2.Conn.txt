@@ -2,7 +2,7 @@
   ResponseEnded
 
 ▿ Request
-  GET https://www.pointfree.co/episodes
+  GET https://www.pointfree.co/home
   X-Forwarded-Proto: https
 
   (Data, 0 bytes)

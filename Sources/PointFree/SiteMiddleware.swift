@@ -28,10 +28,6 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(param))
       |> episodeResponse
 
-  case let .episodes(tag):
-    return conn.map(const(tag))
-      |> episodesResponse
-
   case let .gitHubCallback(code, redirect):
     return conn.map(const((code, redirect)))
       |> gitHubCallbackResponse
@@ -90,7 +86,6 @@ private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
        .episode,
-       .episodes,
        .gitHubCallback,
        .login,
        .logout,

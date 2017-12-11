@@ -39,7 +39,7 @@ let minimalNavView = View<Prelude.Unit> { _ in
 private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
   ul([`class`([Class.type.list.reset, Class.margin([.mobile: [.all: 0]])])], [
     li([`class`([Class.layout.inline])], [
-      a([href(path(to: .episodes(tag: nil))), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Videos"])
+      a([href(path(to: .secretHome)), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Videos"])
       ]),
     li([`class`([Class.layout.inline])], [
       a([href("#"), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Blog"])
