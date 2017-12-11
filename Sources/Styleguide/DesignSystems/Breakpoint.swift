@@ -1,4 +1,35 @@
 import Css
+import Prelude
+
+public enum _Breakpoint: String {
+  case mobile = "m"
+  case desktop = "d"
+
+  public static let all: [_Breakpoint] = [.mobile, .desktop]
+
+  public var minSize: Size? {
+    switch self {
+    case .mobile:
+      return nil
+    case .desktop:
+      return .px(832)
+    }
+  }
+
+  public var maxSize: Size? {
+    switch self {
+    case .mobile:
+      return .px(831)
+    case .desktop:
+      return nil
+    }
+  }
+
+  public func querySelfAndBigger(only mediaType: MediaType, rs: () -> Stylesheet) -> Stylesheet {
+    return self.minSize.map(minWidth).map { Css.queryOnly(mediaType, [$0], rs: rs) }
+      ?? rs()
+  }
+}
 
 public enum Breakpoint: String {
   case lg

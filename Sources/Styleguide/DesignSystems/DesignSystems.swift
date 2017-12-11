@@ -11,3 +11,4 @@ public let designSystems =
     <> layoutStyles
     <> positionStyles
     <> borderStyles
+    <> alignStyles
