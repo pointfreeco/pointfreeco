@@ -161,11 +161,14 @@ extension Class.pf {
         | Class.size.height(rem: 3)
 
     public static let videoTimeLink =
-      Class.type.textDecorationNone
+      videoTimeLinkClass
+        | Class.type.textDecorationNone
         | Class.pf.colors.bg.light
         | Class.pf.colors.link.white
         | Class.border.rounded.all
         | Class.h6
+
+    public static let heroLogo = CssSelector.class("hero-logo")
   }
 }
 
@@ -184,6 +187,8 @@ public let pointFreeBaseStyles =
     <> dividerStyles
     <> navBarStyles
     <> baseButtonStyles
+    <> heroLogoStyles
+    <> videoTimeLinkStyles
 
 private let bodyStyles =
   html % (
@@ -310,4 +315,16 @@ private let darken3 = boxShadow(
   blurRadius: 0,
   spreadRadius: .rem(20),
   color: Color.rgba(0, 0, 0, 0.3)
+)
+
+private let heroLogoStyles =
+  queryOnly(screen, [maxWidth(Breakpoint.md.minSize)]) {
+    Class.pf.components.heroLogo % maxWidth(.px(160))
+}
+
+private let videoTimeLinkClass = CssSelector.class("vid-time-link")
+private let videoTimeLinkStyles =
+  videoTimeLinkClass % (
+    padding(all: .rem(0.25))
+      <> margin(right: .rem(0.25))
 )

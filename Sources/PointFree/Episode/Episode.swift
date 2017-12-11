@@ -37,7 +37,6 @@ let episodeView = View<RequestContext<Episode>> { ctx in
         ]),
 
       body(
-        [`class`([Class.pf.colors.bg.dark])],
         [
           gridRow([
             gridColumn(
@@ -47,7 +46,7 @@ let episodeView = View<RequestContext<Episode>> { ctx in
 
             gridColumn(
               sizes: [.xs: 12, .md: 5],
-              [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
+              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.xs), Class.grid.last(.md)])],
               [
                 div(
                   [`class`([Class.position.sticky(.md), Class.position.top0])],
@@ -78,12 +77,12 @@ private let videoView = View<Prelude.Unit> { _ in
       autoplay(true),
       poster("https://d2sazdeahkz1yk.cloudfront.net/assets/W1siZiIsIjIwMTcvMDQvMjgvMDcvMzYvNTAvOTg2ZjI0N2UtZTU4YS00MTQzLTk4M2YtOGQxZDRiMDRkNGZhLzQ3IFZpZXcgTW9kZWxzIGF0IEtpY2tzdGFydGVyLmpwZyJdLFsicCIsInRodW1iIiwiMTkyMHgxMDgwIyJdXQ?sha=318940b4f059d474")
     ],
-    [source(src: "")]
+    [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
   )
 }
 
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 4]])])],
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4, .bottom: 0]])])],
     [
       h6(
         [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -98,12 +97,29 @@ private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
   )
 }
 
-private let tocChapterView = View<(content: String, timestamp: Double)> { content, timestamp in
+private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>] {
+  return [
+    href(""),
+
+    onclick(javascript: """
+    var video = document.getElementsByTagName("video")[0];
+    video.currentTime = event.target.dataset.t;
+    video.play();
+    event.preventDefault();
+    """),
+
+    data("t", "\(timestamp)")
+  ]
+}
+
+private let tocChapterView = View<(content: String, timestamp: Int)> { content, timestamp in
   gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
     gridColumn(sizes: [.xs: 10], [
       div([
         a(
-          [href("#"), `class`([Class.pf.colors.link.green, Class.type.textDecorationNone])],
+          timestampLinkAttributes(timestamp) + [
+            `class`([Class.pf.colors.link.green, Class.type.textDecorationNone])
+          ],
           [.text(encode(content))]
         ),
         ])
@@ -119,7 +135,7 @@ private let tocChapterView = View<(content: String, timestamp: Double)> { conten
 }
 
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 3]])])], 
+  div([`class`([Class.hide(.mobile), Class.padding([.mobile: [.leftRight: 4, .top: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -143,7 +159,7 @@ private let downloadsView = View<String> { codeSampleDirectory in
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+  div([`class`([Class.hide(.mobile), Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -166,7 +182,7 @@ private let creditsView = View<Prelude.Unit> { _ in
   )
 }
 
-private func timestampLabel(for timestamp: Double) -> String {
+private func timestampLabel(for timestamp: Int) -> String {
   let minute = Int(timestamp / 60)
   let second = Int(timestamp) % 60
   let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
@@ -194,7 +210,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [.text(encode("Episode \(ep.sequence)"))]
     ),
     h1(
-      [`class`([Class.h4, Class.margin([.mobile: [.top: 0]])])],
+      [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
       [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
     ),
     p([`class`([Class.pf.type.body.regular])], [.text(encode(ep.blurb))]),
@@ -224,10 +240,8 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case .paragraph:
     return p([
       a(
-        [
-          href("#"),
-          `class`([Class.pf.components.videoTimeLink]),
-          style(padding(all: .rem(0.25)) <> margin(right: .rem(0.25)))
+        timestampLinkAttributes(block.timestamp ?? 0) + [
+          `class`([Class.pf.components.videoTimeLink])
         ],
         [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
       ),

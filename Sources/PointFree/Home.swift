@@ -11,12 +11,7 @@ import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
-    >-> respond(secretHomeView)
-
-private let extraStyles: Stylesheet =
-  queryOnly(screen, [maxWidth(Breakpoint.md.minSize)]) {
-    "#hero" % maxWidth(.px(160))
-}
+    >-> respond(secretHomeView.map(addGoogleAnalytics))
 
 let secretHomeView = View<Prelude.Unit> { _ in
   document([
@@ -24,7 +19,6 @@ let secretHomeView = View<Prelude.Unit> { _ in
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        style(extraStyles),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(
@@ -50,20 +44,20 @@ private let headerView = View<Prelude.Unit> { _ in
             base64: pointFreeHeroSvgBase64,
             mediaType: .image(.svg),
             alt: "",
-            [id("hero")]
+            [`class`([Class.pf.components.heroLogo])]
           )
           ])
         ]),
       gridColumn(sizes: [:], [
         div([
-          a([href("#"), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
+          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
           ])
         ])
       ]),
 
-    gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
         img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
@@ -73,7 +67,7 @@ private let headerView = View<Prelude.Unit> { _ in
           ])
         ]),
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
         img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 

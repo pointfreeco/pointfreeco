@@ -16,7 +16,7 @@ public struct Episode {
 
   public struct TranscriptBlock {
     var content: String
-    var timestamp: Double?
+    var timestamp: Int?
     var type: BlockType
 
     public enum BlockType: Equatable {
@@ -301,7 +301,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
       content: """
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.
 """,
-      timestamp: 0,
+      timestamp: 1,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
@@ -313,41 +313,41 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
       content: """
 A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:
 """,
-      timestamp: 0,
+      timestamp: 2,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: "<h1>{{title}}</h1>",
-      timestamp: 0,
+      timestamp: 3,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: "and here is a Leaf template:",
-      timestamp: 30,
+      timestamp: 4,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: "<h1>#(title)</h1>",
-      timestamp: 0,
+      timestamp: 5,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
 You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. ["title": "Hello World!"], and then it will generate HTML that can be sent to the browser:
 """,
-      timestamp: 0,
+      timestamp: 6,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: "<h1>Hello World!</h1>",
-      timestamp: 0,
+      timestamp: 7,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
 Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:
 """,
-      timestamp: 0,
+      timestamp: 8,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
@@ -357,7 +357,7 @@ Templating languages will also provide simple constructs for injecting small amo
   <span>I’m here!</span>
 {{/if}}
 """,
-      timestamp: 0,
+      timestamp: 9,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
@@ -367,47 +367,47 @@ Templating languages will also provide simple constructs for injecting small amo
   <span>I’m here!</span>
 }
 """,
-      timestamp: 0,
+      timestamp: 10,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: """
 The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.
 """,
-      timestamp: 0,
+      timestamp: 11,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
 The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.
 """,
-      timestamp: 0,
+      timestamp: 12,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
 Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.
 """,
-      timestamp: 0,
+      timestamp: 13,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
 We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.
 """,
-      timestamp: 0,
+      timestamp: 14,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: "Embedded Domain Specific Language",
-      timestamp: 30,
+      timestamp: 3,
       type: .title
     ),
     Episode.TranscriptBlock(
       content: """
 An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:
 """,
-      timestamp: 0,
+      timestamp: 15,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
@@ -420,38 +420,38 @@ An alternative approach to views is using “embedded domain specific languages�
   </p>
 </header>
 """,
-      timestamp: 0,
+      timestamp: 2,
       type: .code(lang: .html)
     ),
     Episode.TranscriptBlock(
       content: "Making the EDSL easier to use",
-      timestamp: 270,
+      timestamp: 7,
       type: .title
     ),
     Episode.TranscriptBlock(
       content: """
 Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!
 """,
-      timestamp: 0,
+      timestamp: 3,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: "Safer Attributes",
-      timestamp: 640,
+      timestamp: 9,
       type: .title
     ),
     Episode.TranscriptBlock(
       content: """
 Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width="foo". We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.
 """,
-      timestamp: 0,
+      timestamp: 4,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
 We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. "id", "href", etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:
 """,
-      timestamp: 0,
+      timestamp: 6,
       type: .paragraph
     ),
 

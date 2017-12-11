@@ -223,6 +223,14 @@ a:link.btn {
   text-decoration : none;
 }
 
+.vid-time-link {
+  padding-top    : 0.25rem;
+  padding-right  : 0.25rem;
+  padding-bottom : 0.25rem;
+  padding-left   : 0.25rem;
+  margin-right   : 0.25rem;
+}
+
 .h1 {
   font-size : 4rem;
 }
@@ -247,7 +255,7 @@ a:link.btn {
   font-size : 0.75rem;
 }
 
-.hide {
+.hide-all {
   position : absolute;
   height   : 1px;
   width    : 1px;
@@ -990,30 +998,23 @@ html {
 }
 
 }
-@media only screen and (max-width: 40em) {
+@media only screen and (max-width: 52em) {
 
-.xs-hide {
+.hero-logo {
+  max-width : 160px;
+}
+
+}
+@media only screen and (max-width: 831px) {
+
+.hide-m {
   display : none;
 }
 
 }
-@media only screen and (min-width: 40em) and (max-width: 52em) {
+@media only screen and (min-width: 832px) {
 
-.sm-hide {
-  display : none;
-}
-
-}
-@media only screen and (min-width: 52em) and (max-width: 64em) {
-
-.md-hide {
-  display : none;
-}
-
-}
-@media only screen and (min-width: 64em) {
-
-.lg-hide {
+.hide-d {
   display : none;
 }
 
