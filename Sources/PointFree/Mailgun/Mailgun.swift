@@ -1,5 +1,6 @@
 import Either
 import Foundation
+import Html
 import HttpPipeline
 import Optics
 import Prelude
@@ -72,6 +73,10 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
     .withExcept(const(unit))
 }
 
+public func mailto<T: HasHref>(_ address: String) -> Attribute<T> {
+  return href("mailto:" + address)
+}
+
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
   let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
   return (headers ?? [:])
@@ -88,3 +93,4 @@ private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
   }
   return result
 }
+

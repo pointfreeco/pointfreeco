@@ -70,7 +70,7 @@ private let accountColumnView = View<Prelude.Unit> { _ in
     h5([`class`([Class.h5])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
       li([a([href("#")], ["Subscribe"])]),
-      li([a([href("#")], ["Pricing"])]),
+      li([a([href(path(to: .pricing(nil)))], ["Pricing"])]),
       ])
     ])
 }
@@ -81,7 +81,7 @@ private let moreColumnView = View<Prelude.Unit> { _ in
     ol([`class`([Class.type.list.reset])], [
       li([a([href(twitterUrl(to: .pointfreeco))], ["Twitter"])]),
       li([a([href(gitHubUrl(to: .organization))], ["GitHub"])]),
-      li([a([href("mailto:support@pointfree.co")], ["Contact us"])]),
+      li([a([mailto("support@pointfree.co")], ["Contact us"])]),
       ])
     ])
 }

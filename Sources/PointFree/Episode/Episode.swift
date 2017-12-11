@@ -153,9 +153,12 @@ private let creditsView = View<Prelude.Unit> { _ in
           [`class`([Class.pf.colors.fg.gray850])],
           [
             "Hosted by ",
-            a([`class`([Class.pf.colors.link.white]), href("mailto:brandon@pointfree.co")], ["Brandon Williams"]),
+            a(
+              [`class`([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
+              ["Brandon Williams"]
+            ),
             " and ",
-            a([`class`([Class.pf.colors.link.white]), href("mailto:stephen@pointfree.co")], ["Stephen Celis"]),
+            a([`class`([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")], ["Stephen Celis"]),
             ". Recorded in Brooklyn, NY."
           ]
         )
