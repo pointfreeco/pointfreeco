@@ -1,16 +1,14 @@
 @testable import PointFree
-import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
 
-// sourcery: disableTests
-class TestCase: XCTestCase {
-  override func setUp() {
+open class TestCase: XCTestCase {
+  override open func setUp() {
     super.setUp()
     AppEnvironment.push(.mock)
   }
 
-  override func tearDown() {
+  override open func tearDown() {
     super.tearDown()
     AppEnvironment.pop()
   }

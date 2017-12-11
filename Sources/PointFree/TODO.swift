@@ -197,3 +197,11 @@ extension PartialIso {
     )
   }
 }
+
+extension Element {
+  public enum Hr {}
+}
+
+public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
+  return node("hr", attribs, nil)
+}

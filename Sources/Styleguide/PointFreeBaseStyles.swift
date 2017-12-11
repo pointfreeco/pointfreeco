@@ -3,10 +3,18 @@ import Prelude
 
 public enum Colors {
   public static let black = Color.other("#121212")
-  public static let purple = Color.other("#974DFF")
   public static let blue = Color.other("#4CCCFF")
+  public static let gray300 = Color.other("#555555")
+  public static let gray400 = Color.other("#666666")
+  public static let gray650 = Color.other("#a8a8a8")
+  public static let gray850 = Color.other("#d8d8d8")
+  public static let gray900 = Color.other("#f6f6f6")
   public static let green = Color.other("#79F2B0")
+  public static let mint = Color.other("#79F2B0")
+  public static let purple = Color.other("#974DFF")
+  public static let teal = Color.other("#4CCCFF")
   public static let yellow = Color.other("#FFF080")
+  public static let white = Color.other("#fff")
 }
 
 extension Class {
@@ -20,87 +28,147 @@ extension Class {
         public static let purple = CssSelector.class("bg-purple")
         public static let white = CssSelector.class("bg-white")
       }
+      public enum border {
+        public static let gray900 = CssSelector.class("border-gray-900")
+      }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
+        public static let gray300 = CssSelector.class("fg-gray300")
+        public static let gray400 = CssSelector.class("fg-gray400")
+        public static let gray850 = CssSelector.class("fg-gray850")
+        public static let purple = CssSelector.class("fg-purple")
         public static let white = CssSelector.class("fg-white")
       }
+      public enum link {
+        public static let gray650 = CssSelector.class("pf-link-gray650")
+        public static let green = CssSelector.class("pf-link-green")
+        public static let purple = CssSelector.class("pf-link-purple")
+        public static let white = CssSelector.class("pf-link-white")
+        public static let yellow = CssSelector.class("pf-link-yellow")
+      }
     }
-
-    private static let _codeClasses =
-      _codeClass
-        | Class.layout.block
-        | Class.padding.all(3)
-        | Class.layout.overflowAuto(.x)
-    public static func code(lang: String?) -> CssSelector {
-      return _codeClasses | .class(lang ?? "")
-    }
-
     public static let inlineCode = CssSelector.class("inline-code")
     public static let opacity25 = CssSelector.class("opacity-25")
     public static let opacity50 = CssSelector.class("opacity-50")
     public static let opacity75 = CssSelector.class("opacity-75")
     public enum type {
-      public static let largeTitle =
-        Class.pf.colors.fg.black
-          | Class.type.bold
-          | Class.h1
-          | Class.type.lineHeight(0)
-
       public static let title1 =
         Class.pf.colors.fg.black
           | Class.type.bold
-          | Class.h2
-          | Class.type.lineHeight(1)
+          | Class.h1
+          | Class.type.lineHeight(2)
 
       public static let title2 =
         Class.pf.colors.fg.black
           | Class.type.bold
-          | Class.h3
-          | Class.type.lineHeight(1)
+          | Class.h2
+          | Class.type.lineHeight(2)
 
       public static let title3 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.h3
+          | Class.type.lineHeight(2)
+
+      public static let title4 =
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h4
           | Class.type.lineHeight(2)
 
-      public static let headline =
-        _headline
-          | Class.pf.colors.fg.black
+      public static let title5 =
+        Class.pf.colors.fg.black
+          | Class.type.semiBold
           | Class.h5
-          | Class.type.lineHeight(2)
+          | Class.type.lineHeight(1)
 
-      public static let subhead =
+      public static let title6 =
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h6
-          | Class.type.lineHeight(3)
+          | Class.type.lineHeight(1)
           | Class.type.caps
 
-      public static let footnote = CssSelector.class("pf-footnote")
-      public static let callout = CssSelector.class("pf-callout")
-    }
+      public enum body {
+        public static let small =
+          Class.pf.colors.fg.black
+            | Class.type.regular
+            | Class.h6
+            | Class.type.lineHeight(4)
 
-    public enum components {
-      /// The standard nav bar style.
-      public static let navBar =
-        _navBar
-          | Class.pf.colors.bg.purple
-          | Class.padding.leftRight(2)
-          | Class.type.lineHeight(rem: 4)
-          | Class.size.height(rem: 4)
+        public static let regular =
+          Class.pf.colors.fg.black
+            | Class.type.regular
+            | Class.h5
+            | Class.type.lineHeight(4)
 
-      /// A minimal nav bar style.
-      public static let minimalNavBar =
-        _navBar
-          | Class.pf.colors.bg.black
-          | Class.padding.leftRight(2)
-          | Class.type.lineHeight(rem: 3)
-          | Class.size.height(rem: 3)
+        public static let leading =
+          bodyLeadingClass
+            | Class.pf.colors.fg.black
+            | Class.type.regular
+            | Class.type.lineHeight(4)
+      }
     }
   }
 }
- 
+
+extension Class.pf {
+  public enum components {
+
+    public enum buttons {
+      private static let base =
+        baseButtonClass
+          | Class.type.medium
+          | Class.h5
+          | Class.padding([.mobile: [.leftRight: 2]])
+          | Class.padding([.mobile: [.topBottom: 1]])
+          | Class.pf.colors.link.white
+          | Class.border.rounded.all
+
+      public static let purple =
+        base
+          | Class.pf.colors.bg.purple
+    }
+
+    private static let _codeClasses =
+      _codeClass
+        | Class.layout.block
+        | Class.padding([.mobile: [.all: 3]])
+        | Class.layout.overflowAuto(.x)
+    public static func code(lang: String?) -> CssSelector {
+      return _codeClasses | .class(lang ?? "")
+    }
+
+    public static let divider = dividerClass
+      | Class.border.top
+      | Class.margin([.mobile: [.all: 0]])
+      | Class.pf.colors.bg.white
+
+    /// The standard nav bar style.
+    public static let navBar =
+      _navBar
+        | Class.pf.colors.bg.purple
+        | Class.padding([.mobile: [.leftRight: 2]])
+        | Class.type.lineHeight(rem: 4)
+        | Class.size.height(rem: 4)
+
+    /// A minimal nav bar style.
+    public static let minimalNavBar =
+      _navBar
+        | Class.pf.colors.bg.black
+        | Class.padding([.mobile: [.leftRight: 2]])
+        | Class.type.lineHeight(rem: 3)
+        | Class.size.height(rem: 3)
+
+    public static let videoTimeLink =
+      Class.type.textDecorationNone
+        | Class.pf.colors.bg.light
+        | Class.pf.colors.link.white
+        | Class.border.rounded.all
+        | Class.h6
+  }
+}
+
 public let pointFreeBaseStyles =
   (body | html) % height(.pct(100))
     <> bodyStyles
@@ -109,11 +177,13 @@ public let pointFreeBaseStyles =
     <> codeStyles
     <> inlineCodeStyles
     <> opacities
-    <> buttonStyles
     <> aStyles
     <> typeStyles
     <> baseMarginStyles
+    <> hrReset
+    <> dividerStyles
     <> navBarStyles
+    <> baseButtonStyles
 
 private let bodyStyles =
   html % (
@@ -130,15 +200,33 @@ private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
-private let colorStyles =
+private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
   <> Class.pf.colors.bg.black50 % color(.other("#808080"))
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
+
+    <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
+
     <> Class.pf.colors.fg.black % color(Colors.black)
+    <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
+    <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
+    <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
+    <> Class.pf.colors.fg.purple % color(Colors.purple)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
+
+    <> (a & .pseudo(.link) & Class.pf.colors.link.gray650) % color(Colors.gray650)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.gray650) % color(Colors.gray650)
+    <> (a & .pseudo(.link) & Class.pf.colors.link.green) % color(Colors.green)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.green) % color(Colors.green)
+    <> (a & .pseudo(.link) & Class.pf.colors.link.purple) % color(Colors.purple)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.purple) % color(Colors.purple)
+    <> (a & .pseudo(.link) & Class.pf.colors.link.white) % color(Colors.white)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
+    <> (a & .pseudo(.link) & Class.pf.colors.link.yellow) % color(Colors.yellow)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
 
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
@@ -161,49 +249,6 @@ private let opacities =
     <> Class.pf.opacity50 % opacity(0.50)
     <> Class.pf.opacity75 % opacity(0.75)
 
-private let buttonStyles =
-  baseButtonStyles
-    <> btnHoverStyles
-    <> btnFocusStyles
-
-private let baseButtonStyles: Stylesheet =
-  Class.btn.base % (
-    appearance(.none)
-      <> backgroundColor(.transparent)
-      <> borderColor(all: .transparent)
-      <> borderStyle(all: .solid)
-      <> borderWidth(all: .px(1))
-      <> color(.inherit)
-      <> key("cursor", "pointer")
-      <> display(.inlineBlock)
-      <> fontFamily(.inherit)
-      <> fontSize(.inherit)
-      <> fontWeight(.bold)
-      <> height(.auto)
-      <> lineHeight(.rem(1.125))
-      <> margin(all: 0)
-      <> padding(all: .rem(1))
-      <> key("text-decoration", "none")
-      <> verticalAlign(.middle)
-)
-
-private let btnHoverStyles: Stylesheet =
-  (Class.btn.base & .pseudo(.hover)) % key("text-decoration", "none")
-
-private let btnFocusStyles: Stylesheet =
-  (Class.btn.base & .pseudo(.focus)) % (
-    outlineStyle(all: .none)
-      <> borderColor(all: .rgba(0, 0, 0, 0.125))
-      <> boxShadow(hShadow: 0, vShadow: 0, blurRadius: 0, spreadRadius: .px(3), color: .rgba(0, 0, 0, 0.25))
-)
-
-extension Class {
-  public static let btn = (
-    base: CssSelector.class("btn"),
-    primary: CssSelector.class("btn-pr")
-  )
-}
-
 private let aStyles =
   (a | a & .pseudo(.link) | a & .pseudo(.visited)) % (
     color(Colors.black)
@@ -216,14 +261,53 @@ private let aStyles =
 private let baseMarginStyles =
   (h1 | h2 | h3 | h4 | h5 | h6 | p | ul | ol) % margin(topBottom: .rem(0.5), leftRight: 0)
 
-private let _headline = CssSelector.class("pf-headline")
-
+private let bodyLeadingClass = CssSelector.class("body-leading")
 private let typeStyles =
-  _headline % fontWeight(.w600)
-    <> Class.pf.type.footnote % (fontSize(.rem(0.8125)) <> lineHeight(1.5))
-    <> Class.pf.type.callout % (fontSize(.rem(1.1875)) <> lineHeight(1.5))
+  bodyLeadingClass % fontSize(.rem(1.1875))
 
+private let hrReset =
+  hr % (borderColor(all: .none) <> borderStyle(all: .none) <> borderWidth(all: .none))
+
+private let dividerClass = CssSelector.class("pf-divider")
+private let dividerStyles =
+  dividerClass % (
+    borderColor(top: Color.other("#ddd"))
+      <> height(.px(0))
+)
 
 private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
   ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
+
+private let baseButtonClass = CssSelector.class("btn")
+private let baseButtonStyles: Stylesheet =
+  (a & .pseudo(.hover) & baseButtonClass) % darken1
+    <> (a & .pseudo(.active) & baseButtonClass) % darken3
+    <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
+
+private let darken1 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.1)
+)
+
+private let darken2 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.2)
+)
+
+private let darken3 = boxShadow(
+  stroke: .inset,
+  hShadow: 0,
+  vShadow: 0,
+  blurRadius: 0,
+  spreadRadius: .rem(20),
+  color: Color.rgba(0, 0, 0, 0.3)
+)

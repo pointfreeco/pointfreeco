@@ -60,3 +60,7 @@ public func li<T: ContainsList>(_ attribs: [Attribute<Element.Li>]) -> ([Node]) 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
 }
+
+public func zIndex(_ n: Int) -> Stylesheet {
+  return key("z-index", "\(n)")
+}

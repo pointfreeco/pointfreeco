@@ -10,12 +10,6 @@ import Prelude
 import Styleguide
 import UrlFormEncoding
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
-  writeStatus(.ok)
-    >-> readGitHubSessionCookieMiddleware
-    >-> (ignoreErrors >>> pure)
-    >-> respond(secretHomeView)
-
 let gitHubCallbackResponse =
   extractGitHubAuthCode
     <| authTokenMiddleware
@@ -49,31 +43,7 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
   redirect(
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
-    )
-
-private let secretHomeView = View<Database.User?> { user in
-  [
-    p(["welcome home"]),
-
-    p([
-      text(
-        user.map { "You are logged in as \($0.name)" }
-          ?? "You are not logged in"
-      )
-      ]),
-
-    a(
-      [href(path(to: .episodes(tag: nil)))],
-      ["Episodes"]
-    ),
-
-    p([
-       user != nil
-        ? a([href(path(to: .logout))], ["Log out"])
-        : a([href(path(to: .login(redirect: url(to: .secretHome))))], ["Log in"])
-      ])
-    ]
-}
+)
 
 // todo: move to swift-web
 extension URLRequest {
@@ -218,9 +188,9 @@ let registrationEmailView = View<GitHub.User> { _ in
       body([
         gridRow([
           gridColumn(sizes: [:], [
-            div([`class`([Class.padding.all(2)])], [
+            div([`class`([Class.padding([.mobile: [.all: 2]])])], [
               h3([`class`([Class.h3])], ["Thanks for signing up!"]),
-              p([`class`([Class.padding.topBottom(2)])], [
+              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
                 "You’re one step closer to our weekly video series!",
                 ])
               ])
