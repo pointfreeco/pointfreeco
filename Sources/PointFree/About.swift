@@ -21,7 +21,7 @@ private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
         ]),
       body(navView.view(ctx) + [
         gridRow([
-          gridColumn(sizes: [.xs: 12], [
+          gridColumn(sizes: [.mobile: 12], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [
 
               h1([`class`([Class.h1])], ["About Us"]),

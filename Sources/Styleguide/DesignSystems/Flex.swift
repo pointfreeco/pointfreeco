@@ -13,7 +13,7 @@ public enum Class {
     public static let none = CssSelector.class("flex-none")
 
     public static func flex(breakpoint: Breakpoint) -> CssSelector {
-      return CssSelector.class("flex-\(breakpoint)")
+      return CssSelector.class("flex-\(breakpoint.rawValue)")
     }
 
     public enum items {
@@ -80,7 +80,7 @@ public enum Class {
 
 public let flexStyles: Stylesheet =
   Breakpoint.all.map { b in
-    queryOnly(screen, [minWidth(b.minSize)]) { Class.flex.flex(breakpoint: b) % display(.flex) }
+    b.query(only: screen) { Class.flex.flex(breakpoint: b) % display(.flex) }
     }.concat()
     <> Class.flex.flex % display(.flex)
     <> Class.flex.column % flex(direction: .column)

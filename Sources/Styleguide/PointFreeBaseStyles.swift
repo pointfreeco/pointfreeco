@@ -197,7 +197,7 @@ private let bodyStyles =
       <> lineHeight(1.5)
       <> boxSizing(.borderBox)
     )
-    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) {
+    <> Breakpoint.desktop.querySelfAndBigger(only: screen) {
       html % fontSize(.px(16))
 }
 
@@ -318,7 +318,7 @@ private let darken3 = boxShadow(
 )
 
 private let heroLogoStyles =
-  queryOnly(screen, [maxWidth(Breakpoint.md.minSize)]) {
+  Breakpoint.mobile.query(only: screen) {
     Class.pf.components.heroLogo % maxWidth(.px(160))
 }
 

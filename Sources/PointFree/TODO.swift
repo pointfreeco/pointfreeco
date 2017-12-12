@@ -1,7 +1,7 @@
 import Css
 import Either
 import Foundation
-@testable import Html
+import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude

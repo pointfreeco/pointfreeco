@@ -5,7 +5,7 @@ extension Class {
 
   public static let hide = CssSelector.class("hide-all")
 
-  public static func hide(_ breakpoint: _Breakpoint) -> CssSelector {
+  public static func hide(_ breakpoint: Breakpoint) -> CssSelector {
     return .class("hide-\(breakpoint.rawValue)")
   }
 }
@@ -24,7 +24,7 @@ private let hideAllStyles =
 )
 
 private let responsiveStyles: Stylesheet =
-  _Breakpoint.all.map { breakpoint in
+  Breakpoint.all.map { breakpoint in
     breakpoint.query(only: screen) {
       Class.hide(breakpoint) % display(.none)
     }

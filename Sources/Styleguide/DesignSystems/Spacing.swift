@@ -12,11 +12,11 @@ public enum Side: String {
 }
 
 extension Class {
-  public static func padding(_ data: [_Breakpoint: [Side: Int]]) -> CssSelector {
+  public static func padding(_ data: [Breakpoint: [Side: Int]]) -> CssSelector {
     return selector(data, whitespace: .padding)
   }
 
-  public static func margin(_ data: [_Breakpoint: [Side: Int]]) -> CssSelector {
+  public static func margin(_ data: [Breakpoint: [Side: Int]]) -> CssSelector {
     return selector(data, whitespace: .margin)
   }
 }
@@ -37,7 +37,7 @@ private enum Whitespace: String {
 }
 
 private let responsivePaddingStyles =
-  _Breakpoint.all.flatMap { breakpoint in
+  Breakpoint.all.flatMap { breakpoint in
     breakpoint.querySelfAndBigger(only: screen) {
       Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
@@ -50,7 +50,7 @@ private let responsivePaddingStyles =
     .concat()
 
 private let responsiveMarginStyles =
-  _Breakpoint.all.flatMap { breakpoint in
+  Breakpoint.all.flatMap { breakpoint in
     breakpoint.querySelfAndBigger(only: screen) {
       Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
@@ -108,7 +108,7 @@ private let spacings: [Size] = [
   .rem(4.0)
 ]
 
-private func selector(_ data: [_Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {
+private func selector(_ data: [Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {
   let classes = data.flatMap { breakpoint, sides in
     sides.map { side, n in
       selector(side: side, breakpoint: breakpoint, n: n, whitespace: whitespace)
@@ -117,7 +117,7 @@ private func selector(_ data: [_Breakpoint: [Side: Int]], whitespace: Whitespace
   return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
 }
 
-private func selector(side: Side, breakpoint: _Breakpoint, n: Int, whitespace: Whitespace) -> CssSelector {
+private func selector(side: Side, breakpoint: Breakpoint, n: Int, whitespace: Whitespace) -> CssSelector {
   switch side {
   case .all:
     return selector(side: .left, breakpoint: breakpoint, n: n, whitespace: whitespace)

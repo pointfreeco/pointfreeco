@@ -15,7 +15,7 @@ extension Class {
     public static let sticky = CssSelector.class("sticky")
 
     public static func sticky(_ breakpoint: Breakpoint) -> CssSelector {
-      return CssSelector.class("sticky-\(breakpoint)")
+      return CssSelector.class("sticky-\(breakpoint.rawValue)")
     }
 
     public static let z1 = CssSelector.class("z1")
@@ -37,7 +37,7 @@ public let positionStyles: Stylesheet =
 
 private let responsiveStyles: Stylesheet = Breakpoint.all
   .map { breakpoint in
-    queryOnly(screen, [minWidth(breakpoint.minSize)]) {
+    breakpoint.querySelfAndBigger(only: screen) {
       Class.position.sticky(breakpoint) % stickyPosition
     }
   }.concat()

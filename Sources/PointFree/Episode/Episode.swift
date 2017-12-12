@@ -40,16 +40,16 @@ let episodeView = View<RequestContext<Episode>> { ctx in
         [
           gridRow([
             gridColumn(
-              sizes: [.xs: 12, .md: 7],
+              sizes: [.mobile: 12, .desktop: 7],
               leftColumnView.view(ctx.data)
             ),
 
             gridColumn(
-              sizes: [.xs: 12, .md: 5],
-              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.xs), Class.grid.last(.md)])],
+              sizes: [.mobile: 12, .desktop: 5],
+              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
               [
                 div(
-                  [`class`([Class.position.sticky(.md), Class.position.top0])],
+                  [`class`([Class.position.sticky(.desktop), Class.position.top0])],
                   rightColumnView.view(ctx.data)
                 )
               ]
@@ -129,7 +129,7 @@ private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>]
 
 private let tocChapterView = View<(content: String, timestamp: Int)> { content, timestamp in
   gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
-    gridColumn(sizes: [.xs: 10], [
+    gridColumn(sizes: [.mobile: 10], [
       div([
         a(
           timestampLinkAttributes(timestamp) + [
@@ -140,7 +140,7 @@ private let tocChapterView = View<(content: String, timestamp: Int)> { content, 
         ])
       ]),
 
-    gridColumn(sizes: [.xs: 2], [
+    gridColumn(sizes: [.mobile: 2], [
       div(
         [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
         [.text(encode(timestampLabel(for: timestamp)))]
@@ -279,7 +279,7 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         ]),
       body(
         minimalNavView.view(unit) <> [
-        gridRow([`class`([Class.grid.center(.xs)])], [
+        gridRow([`class`([Class.grid.center(.mobile)])], [
           gridColumn(sizes: [:], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [
               h5([`class`([Class.h5])], ["Episode not found :("]),
