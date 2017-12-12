@@ -56,17 +56,32 @@ let episodeView = View<RequestContext<Episode>> { ctx in
             ),
 
             ])
-          ] <> footerView.view(unit))
+          ]
+          <> downloadsAndCredits.view((codeSampleDirectory: ctx.data.codeSampleDirectory, forDesktop: false))
+          <> footerView.view(unit))
       ])
     ])
+}
+
+private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {
+
+  div(
+    [
+      `class`([
+        Class.pf.colors.bg.dark,
+        $0.forDesktop ? Class.hide(.mobile) : Class.hide(.desktop)
+        ])
+    ],
+    
+    downloadsView.view($0.codeSampleDirectory)
+      <> creditsView.view(unit)
+  )
 }
 
 private let rightColumnView: View<Episode> =
   videoView.contramap(const(unit))
     <> episodeTocView.contramap(^\.transcriptBlocks)
-    <> downloadsView.contramap(^\.codeSampleDirectory)
-    <> creditsView.contramap(const(unit))
-
+    <> downloadsAndCredits.contramap({ ($0.codeSampleDirectory, forDesktop: true) })
 
 private let videoView = View<Prelude.Unit> { _ in
   video(
@@ -135,7 +150,7 @@ private let tocChapterView = View<(content: String, timestamp: Int)> { content, 
 }
 
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.hide(.mobile), Class.padding([.mobile: [.leftRight: 4, .top: 3]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -159,7 +174,7 @@ private let downloadsView = View<String> { codeSampleDirectory in
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.hide(.mobile), Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
