@@ -231,14 +231,14 @@ a:link.btn {
   margin-right   : 0.25rem;
 }
 
-@media only screen and (min-width: 52em) {
+@media only screen and (min-width: 832px) {
 
 html {
   font-size : 16px;
 }
 
 }
-@media only screen and (max-width: 52em) {
+@media only screen and (max-width: 831px) {
 
 .hero-logo {
   max-width : 160px;
