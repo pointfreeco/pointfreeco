@@ -12,48 +12,48 @@ extension Class {
     public static let colReversed = col & reversed
 
     public static func col(_ size: Breakpoint, _ n: Int?) -> CssSelector {
-      return n.map { CssSelector.class("col-\(size)-\($0)") }
-        ?? CssSelector.class("col-\(size)")
+      return n.map { CssSelector.class("col-\(size.rawValue)-\($0)") }
+        ?? CssSelector.class("col-\(size.rawValue)")
     }
 
     public static func start(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("start-\(size)")
+      return CssSelector.class("start-\(size.rawValue)")
     }
 
     public static func center(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("center-\(size)")
+      return CssSelector.class("center-\(size.rawValue)")
     }
 
     public static func end(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("end-\(size)")
+      return CssSelector.class("end-\(size.rawValue)")
     }
 
     public static func top(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("top-\(size)")
+      return CssSelector.class("top-\(size.rawValue)")
     }
 
     public static func middle(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("middle-\(size)")
+      return CssSelector.class("middle-\(size.rawValue)")
     }
 
     public static func bottom(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("bottom-\(size)")
+      return CssSelector.class("bottom-\(size.rawValue)")
     }
 
     public static func around(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("around-\(size)")
+      return CssSelector.class("around-\(size.rawValue)")
     }
 
     public static func between(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("between-\(size)")
+      return CssSelector.class("between-\(size.rawValue)")
     }
 
     public static func first(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("first-\(size)")
+      return CssSelector.class("first-\(size.rawValue)")
     }
 
     public static func last(_ size: Breakpoint) -> CssSelector {
-      return CssSelector.class("last-\(size)")
+      return CssSelector.class("last-\(size.rawValue)")
     }
   }
 }
@@ -62,10 +62,10 @@ public let flexGridStyles =
   rowStyle
     <> reversedRowStyle
     <> reversedColStyle
-    <> styles(for: .xs)
-    <> queryOnly(screen, [minWidth(Breakpoint.sm.minSize)]) { styles(for: .sm) }
-    <> queryOnly(screen, [minWidth(Breakpoint.md.minSize)]) { styles(for: .md) }
-    <> queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) { styles(for: .lg) }
+    <> Breakpoint.all.map { breakpoint in
+      breakpoint.query(only: screen) { styles(for: breakpoint) }
+      }
+      .concat()
 
 private let rowStyle =
   Class.grid.row % (

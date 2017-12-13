@@ -223,10 +223,25 @@ a:link.btn {
   text-decoration : none;
 }
 
-@media only screen and (min-width: 52em) {
+.vid-time-link {
+  padding-top    : 0.25rem;
+  padding-right  : 0.25rem;
+  padding-bottom : 0.25rem;
+  padding-left   : 0.25rem;
+  margin-right   : 0.25rem;
+}
+
+@media only screen and (min-width: 832px) {
 
 html {
   font-size : 16px;
+}
+
+}
+@media only screen and (max-width: 831px) {
+
+.hero-logo {
+  max-width : 160px;
 }
 
 }
