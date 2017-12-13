@@ -12,6 +12,7 @@ public enum Colors {
   public static let green = Color.other("#79F2B0")
   public static let mint = Color.other("#79F2B0")
   public static let purple = Color.other("#974DFF")
+  public static let purple150 = Color.other("#291a40")
   public static let teal = Color.other("#4CCCFF")
   public static let yellow = Color.other("#FFF080")
   public static let white = Color.other("#fff")
@@ -26,6 +27,7 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let light = CssSelector.class("bg-light")
         public static let purple = CssSelector.class("bg-purple")
+        public static let purple150 = CssSelector.class("bg-purple150")
         public static let white = CssSelector.class("bg-white")
       }
       public enum border {
@@ -36,6 +38,7 @@ extension Class {
         public static let gray300 = CssSelector.class("fg-gray300")
         public static let gray400 = CssSelector.class("fg-gray400")
         public static let gray850 = CssSelector.class("fg-gray850")
+        public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
         public static let white = CssSelector.class("fg-white")
       }
@@ -211,6 +214,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
+    <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
@@ -219,6 +223,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
     <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
     <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
+    <> Class.pf.colors.fg.green % color(Colors.green)
     <> Class.pf.colors.fg.purple % color(Colors.purple)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
 
