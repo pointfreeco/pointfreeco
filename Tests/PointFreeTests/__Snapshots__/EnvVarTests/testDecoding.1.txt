@@ -6,7 +6,9 @@
     - bearer: "deadbeef-bearer"
   - appEnv: PointFree.EnvVars.AppEnv.development
   - appSecret: "deadbeefdeadbeefdeadbeefdeadbeef"
-  - baseUrlString: "http://localhost:8080"
+  ▿ baseUrl: http://localhost:8080
+    - _url: http://localhost:8080 #0
+      - super: NSObject
   ▿ basicAuth: PointFree.EnvVars.BasicAuth
     - username: "hello"
     - password: "world"
@@ -16,6 +18,7 @@
   ▿ mailgun: PointFree.EnvVars.Mailgun
     - apiKey: "deadbeef-mg-api-key"
     - domain: "mg.domain.com"
+  - port: 8080
   ▿ postgres: PointFree.EnvVars.Postgres
     - databaseUrl: "postgres://hello:world@localhost:5432/pointfreeco"
   ▿ stripe: PointFree.EnvVars.Stripe

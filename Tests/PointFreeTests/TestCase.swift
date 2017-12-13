@@ -1,3 +1,4 @@
+import Prelude
 @testable import PointFree
 import PointFreeTestSupport
 import SnapshotTesting
@@ -7,7 +8,7 @@ import XCTest
 class TestCase: XCTestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(.mock)
+    AppEnvironment.push(const(.mock))
   }
 
   override func tearDown() {
