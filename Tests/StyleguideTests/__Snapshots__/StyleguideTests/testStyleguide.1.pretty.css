@@ -398,126 +398,6 @@ a:link.btn {
   flex-direction : column-reverse;
 }
 
-.col-m, .col-m-1, .col-m-2, .col-m-3, .col-m-4, .col-m-5, .col-m-6, .col-m-7, .col-m-8, .col-m-9, .col-m-10, .col-m-11, .col-m-12 {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
-  flex-grow          : 0;
-  flex-shrink        : 0;
-  flex-basis         : auto;
-}
-
-.col-m {
-  flex-grow  : 1;
-  flex-basis : 0;
-  max-width  : 100%;
-}
-
-.col-m-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
-}
-
-.col-m-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
-}
-
-.col-m-3 {
-  flex-basis : 25%;
-  max-width  : 25%;
-}
-
-.col-m-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
-}
-
-.col-m-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
-}
-
-.col-m-6 {
-  flex-basis : 50%;
-  max-width  : 50%;
-}
-
-.col-m-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
-}
-
-.col-m-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
-}
-
-.col-m-9 {
-  flex-basis : 75%;
-  max-width  : 75%;
-}
-
-.col-m-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
-}
-
-.col-m-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
-}
-
-.col-m-12 {
-  flex-basis : 100%;
-  max-width  : 100%;
-}
-
-.start-m {
-  justify-content : flex-start;
-  text-align      : start;
-}
-
-.center-m {
-  justify-content : center;
-  text-align      : center;
-}
-
-.end-m {
-  justify-content : flex-end;
-  text-align      : end;
-}
-
-.top-m {
-  align-items : flex-start;
-}
-
-.middle-m {
-  align-items : center;
-}
-
-.bottom-m {
-  align-items : flex-end;
-}
-
-.around-m {
-  justify-content : space-around;
-}
-
-.between-m {
-  justify-content : space-between;
-}
-
-.first-m {
-  order : -1;
-}
-
-.last-m {
-  order : 1;
-}
-
 .m-pb0 {
   padding-bottom : 0;
 }
@@ -1019,6 +899,129 @@ html {
 
 .flex-d {
   display : flex;
+}
+
+}
+@media only screen and (max-width: 831px) {
+
+.col-m, .col-m-1, .col-m-2, .col-m-3, .col-m-4, .col-m-5, .col-m-6, .col-m-7, .col-m-8, .col-m-9, .col-m-10, .col-m-11, .col-m-12 {
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  -ms-box-sizing     : border-box;
+  -o-box-sizing      : border-box;
+  box-sizing         : border-box;
+  flex-grow          : 0;
+  flex-shrink        : 0;
+  flex-basis         : auto;
+}
+
+.col-m {
+  flex-grow  : 1;
+  flex-basis : 0;
+  max-width  : 100%;
+}
+
+.col-m-1 {
+  flex-basis : 8.33333333333333%;
+  max-width  : 8.33333333333333%;
+}
+
+.col-m-2 {
+  flex-basis : 16.6666666666667%;
+  max-width  : 16.6666666666667%;
+}
+
+.col-m-3 {
+  flex-basis : 25%;
+  max-width  : 25%;
+}
+
+.col-m-4 {
+  flex-basis : 33.3333333333333%;
+  max-width  : 33.3333333333333%;
+}
+
+.col-m-5 {
+  flex-basis : 41.6666666666667%;
+  max-width  : 41.6666666666667%;
+}
+
+.col-m-6 {
+  flex-basis : 50%;
+  max-width  : 50%;
+}
+
+.col-m-7 {
+  flex-basis : 58.3333333333333%;
+  max-width  : 58.3333333333333%;
+}
+
+.col-m-8 {
+  flex-basis : 66.6666666666667%;
+  max-width  : 66.6666666666667%;
+}
+
+.col-m-9 {
+  flex-basis : 75%;
+  max-width  : 75%;
+}
+
+.col-m-10 {
+  flex-basis : 83.3333333333333%;
+  max-width  : 83.3333333333333%;
+}
+
+.col-m-11 {
+  flex-basis : 91.6666666666667%;
+  max-width  : 91.6666666666667%;
+}
+
+.col-m-12 {
+  flex-basis : 100%;
+  max-width  : 100%;
+}
+
+.start-m {
+  justify-content : flex-start;
+  text-align      : start;
+}
+
+.center-m {
+  justify-content : center;
+  text-align      : center;
+}
+
+.end-m {
+  justify-content : flex-end;
+  text-align      : end;
+}
+
+.top-m {
+  align-items : flex-start;
+}
+
+.middle-m {
+  align-items : center;
+}
+
+.bottom-m {
+  align-items : flex-end;
+}
+
+.around-m {
+  justify-content : space-around;
+}
+
+.between-m {
+  justify-content : space-between;
+}
+
+.first-m {
+  order : -1;
+}
+
+.last-m {
+  order : 1;
 }
 
 }

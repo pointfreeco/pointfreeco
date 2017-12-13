@@ -62,8 +62,10 @@ public let flexGridStyles =
   rowStyle
     <> reversedRowStyle
     <> reversedColStyle
-    <> styles(for: .mobile)
-    <> Breakpoint.desktop.query(only: screen) { styles(for: .desktop) }
+    <> Breakpoint.all.map { breakpoint in
+      breakpoint.query(only: screen) { styles(for: breakpoint) }
+      }
+      .concat()
 
 private let rowStyle =
   Class.grid.row % (
