@@ -211,3 +211,7 @@ extension Array {
     return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
   }
 }
+
+public func onclick<T>(javascript: StaticString) -> Attribute<T> {
+  return .init("onclick", "javascript:\(javascript)")
+}

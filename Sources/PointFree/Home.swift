@@ -11,12 +11,7 @@ import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
-    >-> respond(secretHomeView)
-
-private let extraStyles: Stylesheet =
-  queryOnly(screen, [maxWidth(Breakpoint.md.minSize)]) {
-    "#hero" % maxWidth(.px(160))
-}
+    >-> respond(secretHomeView.map(addGoogleAnalytics))
 
 let secretHomeView = View<Prelude.Unit> { _ in
   document([
@@ -24,7 +19,6 @@ let secretHomeView = View<Prelude.Unit> { _ in
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        style(extraStyles),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(
@@ -38,7 +32,7 @@ let secretHomeView = View<Prelude.Unit> { _ in
 
 private let headerView = View<Prelude.Unit> { _ in
   [
-    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.md), Class.grid.middle(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)])], [
       gridColumn(sizes: [:], [
         div([
           a([href("#"), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
@@ -50,30 +44,30 @@ private let headerView = View<Prelude.Unit> { _ in
             base64: pointFreeHeroSvgBase64,
             mediaType: .image(.svg),
             alt: "",
-            [id("hero")]
+            [`class`([Class.pf.components.heroLogo])]
           )
           ])
         ]),
       gridColumn(sizes: [:], [
         div([
-          a([href("#"), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
+          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
           ])
         ])
       ]),
 
-    gridRow([`class`([Class.grid.top(.xs), Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
         img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
-      gridColumn(sizes: [.xs: 2], [`class`([Class.position.z1])], [
+      gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
         div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
           "A new weekly Swift video series exploring functional programming and more."
           ])
         ]),
 
-      gridColumn(sizes: [.xs: 5], [`class`([Class.padding([.mobile: [.top: 4]])]), style(lineHeight(0))], [
+      gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
         img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
@@ -88,9 +82,9 @@ private let episodesListView = View<[Episode]> { eps in
 private let episodeRowView = View<Episode> { ep in
   dividerView.view(unit) + [
     gridRow([
-      gridColumn(sizes: [.xs: 7], episodeInfoColumnView.view(ep)),
+      gridColumn(sizes: [.mobile: 7], episodeInfoColumnView.view(ep)),
 
-      gridColumn(sizes: [.xs: 5], [
+      gridColumn(sizes: [.mobile: 5], [
         div([style(lineHeight(0))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
