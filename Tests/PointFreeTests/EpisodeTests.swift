@@ -10,10 +10,6 @@ import Optics
 #endif
 
 class EpisodeTests: TestCase {
-  override func setUp() {
-    super.setUp()
-    record = true
-  }
   func testEpisodePage() {
     let request = URLRequest(url: URL(string: url(to: .episode(.left(episodes.first!.slug))))!)
       |> \.allHTTPHeaderFields .~ [
