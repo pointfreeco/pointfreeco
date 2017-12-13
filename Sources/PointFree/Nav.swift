@@ -10,7 +10,7 @@ import Prelude
 
 let navView = View<RequestContext<Prelude.Unit>> { ctx in
   [
-    gridRow([`class`([Class.pf.components.navBar, Class.grid.between(.xs)])], [
+    gridRow([`class`([Class.pf.components.navBar, Class.grid.between(.mobile)])], [
       gridColumn(
         sizes: [:],
         unpersonalizedNavItems.view(unit)

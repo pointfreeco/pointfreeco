@@ -4,22 +4,26 @@ import HtmlCssSupport
 import Styleguide
 import Prelude
 
-let footerView = View<Prelude.Unit> { _ in
-  footer(
-    [
-      `class`([Class.grid.row, Class.padding([.mobile: [.all: 4]]), Class.border.top, Class.pf.colors.bg.white]),
-      style(borderColor(top: .other("#ccc")))
-    ],
-    footerInfoColumnsView.view(unit)
-      + legalView.map(gridColumn(sizes: [.xs: 12]) >>> pure).view(unit)
-  )
-}
+private let footerClasses = [
+  Class.grid.row,
+  Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+  Class.pf.colors.bg.white
+]
+
+let footerView =
+  dividerView
+    <> (curry(footer)([`class`(footerClasses)]) >>> pure
+      <¢> footerInfoColumnsView
+      <> (gridColumn(sizes: [.mobile: 12]) >>> pure
+        <¢> legalView
+      )
+)
 
 private let footerInfoColumnsView =
-       pointFreeView    .map(gridColumn(sizes: [.xs: 12, .md: 6]) >>> pure)
-    <> accountColumnView.map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
-    <> contentColumnView.map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
-    <> moreColumnView   .map(gridColumn(sizes: [.xs: 4,  .md: 2]) >>> pure)
+       pointFreeView    .map(gridColumn(sizes: [.mobile: 12, .desktop: 6]) >>> pure)
+    <> accountColumnView.map(gridColumn(sizes: [.mobile: 4,  .desktop: 2]) >>> pure)
+    <> contentColumnView.map(gridColumn(sizes: [.mobile: 4,  .desktop: 2]) >>> pure)
+    <> moreColumnView   .map(gridColumn(sizes: [.mobile: 4,  .desktop: 2]) >>> pure)
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([Class.pf.colors.fg.gray400, Class.type.align.center, Class.h6, Class.padding([.mobile: [.top: 2]])])], [
