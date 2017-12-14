@@ -27,7 +27,6 @@ class PricingTests: TestCase {
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
         assertSnapshot(matching: webView, named: "desktop")
 
-
         webView.evaluateJavaScript(
           """
           document.getElementById("tab0").checked = false;
