@@ -62,8 +62,7 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
       |> secretHomeResponse
 
   case let .subscribe(data):
-//    return conn.map(const(data))
-    return conn.map(const(data .*. unit))
+    return conn.map(const(data))
       |> subscribeResponse
 
   case .terms:

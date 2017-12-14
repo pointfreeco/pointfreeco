@@ -25,18 +25,31 @@ func map<A, B>(_ f: @escaping (A) -> B) -> (RequestContext<A>) -> RequestContext
   return { $0.map(f) }
 }
 
-public func requireUser<A>(
-  notFoundView: View<Prelude.Unit>
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+//func _requireUser<A>(
+//  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
+//  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+//
+//    return { conn in
+//      return conn.data.first
+//        .map { user in conn.map { T2(first: user, second: $0.second) } }
+//        .map(middleware)
+//        ?? (conn.map(const(unit)) |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
+//    }
+//}
 
-    return { middleware in
-      return { conn in
-        return conn.data.first
-          .map { user in conn.map { T2(first: user, second: $0.second) } }
-          .map(middleware)
-          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+public func requireUser<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { conn in
+
+      let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+        .map(fetchDatabaseUser)
+        ?? pure(nil)
+
+      return currentUser.flatMap { user in
+        user.map { conn.map(const($0 .*. conn.data .*. unit)) |> middleware }
+          ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
       }
     }
 }
@@ -46,11 +59,7 @@ func currentUserMiddleware<A, I>(
   ) -> IO<Conn<I, T2<Database.User?, A>>> {
 
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-    .map {
-      AppEnvironment.current.database.fetchUserByGitHub($0.accessToken)
-        .run
-        .map(^\.right >>> flatMap(id))
-    }
+    .map(fetchDatabaseUser)
     ?? pure(nil)
 
   return currentUser.map { user in
@@ -80,12 +89,7 @@ func requestContextMiddleware<A>(
   ) -> IO<Conn<StatusLineOpen, RequestContext<A>>> {
 
   let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-    .map(
-      ^\.accessToken
-        >>> AppEnvironment.current.database.fetchUserByGitHub
-        >>> ^\.run
-        >>> map(^\.right >>> flatMap(id))
-    )
+    .map(fetchDatabaseUser)
     ?? pure(nil)
 
   return currentUser.map {
@@ -110,3 +114,9 @@ func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelop
       )
   }
 }
+
+private let fetchDatabaseUser: (GitHub.UserEnvelope) -> IO<Database.User?> =
+  ^\.accessToken
+    >>> AppEnvironment.current.database.fetchUserByGitHub
+    >>> ^\.run
+    >>> map(^\.right >>> flatMap(id))
