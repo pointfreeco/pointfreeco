@@ -5,6 +5,7 @@ import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 #if !os(Linux)

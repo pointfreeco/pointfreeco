@@ -2,13 +2,12 @@ import Css
 import Prelude
 
 extension Class {
-  public static let hide = (
-    all: CssSelector.class("hide"),
-    xs: CssSelector.class("xs-hide"),
-    sm: CssSelector.class("sm-hide"),
-    md: CssSelector.class("md-hide"),
-    lg: CssSelector.class("lg-hide")
-  )
+
+  public static let hide = CssSelector.class("hide-all")
+
+  public static func hide(_ breakpoint: Breakpoint) -> CssSelector {
+    return .class("hide-\(breakpoint.rawValue)")
+  }
 }
 
 public let hideStyles: Stylesheet =
@@ -16,7 +15,7 @@ public let hideStyles: Stylesheet =
     <> responsiveStyles
 
 private let hideAllStyles =
-  Class.hide.all % (
+  Class.hide % (
     position(.absolute)
       <> height(.px(1))
       <> width(.px(1))
@@ -25,19 +24,9 @@ private let hideAllStyles =
 )
 
 private let responsiveStyles: Stylesheet =
-  queryOnly(screen, [maxWidth(Breakpoint.sm.minSize)]) {
-    Class.hide.xs % display(.none)
+  Breakpoint.all.map { breakpoint in
+    breakpoint.query(only: screen) {
+      Class.hide(breakpoint) % display(.none)
     }
-    <>
-    queryOnly(screen, [minWidth(Breakpoint.sm.minSize), maxWidth(Breakpoint.md.minSize)]) {
-      Class.hide.sm % display(.none)
     }
-    <>
-    queryOnly(screen, [minWidth(Breakpoint.md.minSize), maxWidth(Breakpoint.lg.minSize)]) {
-      Class.hide.md % display(.none)
-    }
-    <>
-    queryOnly(screen, [minWidth(Breakpoint.lg.minSize)]) {
-      Class.hide.lg % display(.none)
-}
-
+    .concat()

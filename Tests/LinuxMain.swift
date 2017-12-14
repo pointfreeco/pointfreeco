@@ -27,10 +27,9 @@ extension EpisodeTests {
     ("testEpisodeNotFound", testEpisodeNotFound)
   ]
 }
-extension EpisodesTests {
-  static var allTests: [(String, (EpisodesTests) -> () throws -> Void)] = [
-    ("testEpisodesList_NoTagSelected", testEpisodesList_NoTagSelected),
-    ("testEpisodesList_TagSelected", testEpisodesList_TagSelected)
+extension HomeTests {
+  static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
+    ("testHomepage", testHomepage)
   ]
 }
 extension LaunchSignupTests {
@@ -73,7 +72,7 @@ XCTMain([
   testCase(AuthTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
-  testCase(EpisodesTests.allTests),
+  testCase(HomeTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),

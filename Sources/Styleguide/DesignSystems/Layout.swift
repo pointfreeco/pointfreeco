@@ -53,7 +53,3 @@ private let floatStyles =
 
 private let widthStyles =
   Class.layout.fit % maxWidth(.pct(100))
-    <> ".max-width-1" % maxWidth(Breakpoint.xs.minSize)
-    <> ".max-width-2" % maxWidth(Breakpoint.sm.minSize)
-    <> ".max-width-3" % maxWidth(Breakpoint.md.minSize)
-    <> ".max-width-4" % maxWidth(Breakpoint.lg.minSize)

@@ -11,10 +11,6 @@ import Styleguide
 import UrlFormEncoding
 import Tuple
 
-let secretHomeResponse: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<ResponseEnded, Data>> =
-  writeStatus(.ok)
-    >-> respond(secretHomeView)
-
 let gitHubCallbackResponse =
   extractGitHubAuthCode
     <| gitHubAuthTokenMiddleware
@@ -25,7 +21,7 @@ private func extractGitHubAuthCode(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
-    
+
     return { conn in
       conn.data.code
         .map { (code: $0, redirect: conn.data.redirect) }
@@ -48,31 +44,7 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
   redirect(
     to: path(to: .secretHome),
     headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
-    )
-
-private let secretHomeView = View<Database.User?> { user in
-  [
-    p(["welcome home"]),
-
-    p([
-      text(
-        user.map { "You are logged in as \($0.name)" }
-          ?? "You are not logged in"
-      )
-      ]),
-
-    a(
-      [href(path(to: .episodes(tag: nil)))],
-      ["Episodes"]
-    ),
-
-    p([
-       user != nil
-        ? a([href(path(to: .logout))], ["Log out"])
-        : a([href(path(to: .login(redirect: url(to: .secretHome))))], ["Log in"])
-      ])
-    ]
-}
+)
 
 // todo: move to swift-web
 extension URLRequest {
@@ -256,9 +228,9 @@ let registrationEmailView = View<GitHub.User> { _ in
       body([
         gridRow([
           gridColumn(sizes: [:], [
-            div([`class`([Class.padding.all(2)])], [
+            div([`class`([Class.padding([.mobile: [.all: 2]])])], [
               h3([`class`([Class.h3])], ["Thanks for signing up!"]),
-              p([`class`([Class.padding.topBottom(2)])], [
+              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
                 "You’re one step closer to our weekly video series!",
                 ])
               ])

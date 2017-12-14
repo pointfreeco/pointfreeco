@@ -3,6 +3,7 @@ import Html
 import HtmlPrettyPrint
 import HttpPipeline
 @testable import PointFree
+import PointFreeTestSupport
 import Prelude
 import Optics
 import SnapshotTesting

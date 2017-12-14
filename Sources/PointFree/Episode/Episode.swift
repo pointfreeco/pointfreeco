@@ -37,38 +37,51 @@ let episodeView = View<RequestContext<Episode>> { ctx in
         ]),
 
       body(
-        [`class`([Class.pf.colors.bg.dark])],
-        navView.view(ctx.map(const(unit))) <> [
+        [
           gridRow([
             gridColumn(
-              sizes: [.xs: 12, .md: 7],
-              transcriptView.view(ctx.data)
+              sizes: [.mobile: 12, .desktop: 7],
+              leftColumnView.view(ctx.data)
             ),
 
             gridColumn(
-              sizes: [.xs: 12, .md: 5],
-              [`class`([Class.grid.first(.xs), Class.grid.last(.md)])],
+              sizes: [.mobile: 12, .desktop: 5],
+              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
               [
                 div(
-                  [`class`([Class.position.sticky(.md), Class.position.top0])],
-                  topLevelEpisodeInfoView.view(ctx.data)
+                  [`class`([Class.position.sticky(.desktop), Class.position.top0])],
+                  rightColumnView.view(ctx.data)
                 )
               ]
             ),
 
             ])
-          ] <> footerView.view(unit))
+          ]
+          <> downloadsAndCredits.view((codeSampleDirectory: ctx.data.codeSampleDirectory, forDesktop: false))
+          <> footerView.view(unit))
       ])
     ])
 }
 
-private let topLevelEpisodeInfoView: View<Episode> =
+private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {
+
+  div(
+    [
+      `class`([
+        Class.pf.colors.bg.dark,
+        $0.forDesktop ? Class.hide(.mobile) : Class.hide(.desktop)
+        ])
+    ],
+    
+    downloadsView.view($0.codeSampleDirectory)
+      <> creditsView.view(unit)
+  )
+}
+
+private let rightColumnView: View<Episode> =
   videoView.contramap(const(unit))
-    <>
-    (
-      (curry(div)([`class`([Class.padding.all(2)])]) >>> pure)
-        <¢> episodeTocView.contramap(^\.transcriptBlocks)
-)
+    <> episodeTocView.contramap(^\.transcriptBlocks)
+    <> downloadsAndCredits.contramap({ ($0.codeSampleDirectory, forDesktop: true) })
 
 private let videoView = View<Prelude.Unit> { _ in
   video(
@@ -79,57 +92,112 @@ private let videoView = View<Prelude.Unit> { _ in
       autoplay(true),
       poster("https://d2sazdeahkz1yk.cloudfront.net/assets/W1siZiIsIjIwMTcvMDQvMjgvMDcvMzYvNTAvOTg2ZjI0N2UtZTU4YS00MTQzLTk4M2YtOGQxZDRiMDRkNGZhLzQ3IFZpZXcgTW9kZWxzIGF0IEtpY2tzdGFydGVyLmpwZyJdLFsicCIsInRodW1iIiwiMTkyMHgxMDgwIyJdXQ?sha=318940b4f059d474")
     ],
-    [source(src: "")]
+    [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
   )
 }
 
-private let topLevelBlurbView = View<String> { blurb in
-  gridRow([`class`([Class.padding.bottom(1)])], [
-    gridColumn(sizes: [.xs: 12], [
-      div([`class`([Class.pf.colors.fg.white])], [
-        .text(encode(blurb))
-        ])
-      ])
-    ])
-}
-
-private let topLevelTagsView = View<[Tag]> { tags in
-  gridRow([`class`([Class.padding.bottom(2)])], [
-    gridColumn(sizes: [.xs: 12], [
-      div([], pillTagsView.view(tags))
-      ])
-    ])
-}
-
 private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  blocks
-    .filter { $0.type == .title && $0.timestamp != nil }
-    .flatMap { block in
-      tocEntryView.view((block.content, block.timestamp ?? 0))
-  }
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4, .bottom: 0]])])],
+    [
+      h6(
+        [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+        ["Chapters"]
+      ),
+      ]
+      <> blocks
+        .filter { $0.type == .title && $0.timestamp != nil }
+        .flatMap { block in
+          tocChapterView.view((block.content, block.timestamp ?? 0))
+    }
+  )
 }
 
-private let tocEntryView = View<(content: String, timestamp: Double)> { content, timestamp in
-  gridRow([`class`([Class.margin.bottom(1)])], [
-    gridColumn(sizes: [.xs: 10], [
+private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>] {
+  return [
+    href(""),
+
+    onclick(javascript: """
+    var video = document.getElementsByTagName("video")[0];
+    video.currentTime = event.target.dataset.t;
+    video.play();
+    event.preventDefault();
+    """),
+
+    data("t", "\(timestamp)")
+  ]
+}
+
+private let tocChapterView = View<(content: String, timestamp: Int)> { content, timestamp in
+  gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
+    gridColumn(sizes: [.mobile: 10], [
       div([
         a(
-          [href("#"), `class`([Class.pf.colors.fg.white, Class.type.textDecorationNone])],
+          timestampLinkAttributes(timestamp) + [
+            `class`([Class.pf.colors.link.green, Class.type.textDecorationNone])
+          ],
           [.text(encode(content))]
         ),
         ])
       ]),
 
-    gridColumn(sizes: [.xs: 2], [
+    gridColumn(sizes: [.mobile: 2], [
       div(
-        [`class`([Class.pf.colors.fg.white, Class.type.align.end, Class.pf.opacity75])],
+        [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
         [.text(encode(timestampLabel(for: timestamp)))]
       )
       ])
     ])
 }
 
-func timestampLabel(for timestamp: Double) -> String {
+private let downloadsView = View<String> { codeSampleDirectory in
+  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 3]])])],
+      [
+        h6(
+          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          ["Downloads"]
+        ),
+        img(
+          base64: gitHubSvgBase64(fill: "#FFF080"),
+          mediaType: .image(.svg),
+          alt: "",
+          [`class`([Class.align.middle]), width(20), height(20)]
+        ),
+        a(
+          [
+            href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
+            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+          ],
+          [.text(encode("\(codeSampleDirectory).playground"))]
+        )
+    ]
+  )
+}
+
+private let creditsView = View<Prelude.Unit> { _ in
+  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+      [
+        h6(
+          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          ["Credits"]
+        ),
+        p(
+          [`class`([Class.pf.colors.fg.gray850])],
+          [
+            "Hosted by ",
+            a(
+              [`class`([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
+              ["Brandon Williams"]
+            ),
+            " and ",
+            a([`class`([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")], ["Stephen Celis"]),
+            ". Recorded in Brooklyn, NY."
+          ]
+        )
+    ]
+  )
+}
+
+private func timestampLabel(for timestamp: Int) -> String {
   let minute = Int(timestamp / 60)
   let second = Int(timestamp) % 60
   let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
@@ -137,21 +205,40 @@ func timestampLabel(for timestamp: Double) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let transcriptView = View<Episode> { ep in
+private let leftColumnView =
+  (curry(div)([]) >>> pure)
+    <¢> episodeInfoView
+    <> dividerView.contramap(const(unit))
+    <> transcriptView.contramap(^\.transcriptBlocks)
 
-  return div(
-    [`class`([Class.padding.all(4), Class.pf.colors.bg.white])],
-    [
-      strong(
-        [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
-        [.text(encode("Episode \(ep.sequence)"))]
-      ),
-      h1(
-        [`class`([Class.h3, Class.type.lineHeight(2), Class.margin.top(1)])],
-        [.text(encode(ep.title))]
-      ),
-      ]
-      <> ep.transcriptBlocks.flatMap(transcriptBlockView.view)
+private let episodeInfoView = View<Episode> { ep in
+  div(
+    [`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
+    topLevelEpisodeInfoView.view(ep)
+  )
+}
+
+let topLevelEpisodeInfoView = View<Episode> { ep in
+  [
+    strong(
+      [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
+      [.text(encode("Episode \(ep.sequence)"))]
+    ),
+    h1(
+      [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
+      [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
+    ),
+    p([`class`([Class.pf.type.body.regular])], [.text(encode(ep.blurb))]),
+    ]
+}
+
+let dividerView = View<Prelude.Unit> { _ in
+  hr([`class`([Class.pf.components.divider])])
+}
+
+private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
+  div([`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
+      blocks.flatMap(transcriptBlockView.view)
   )
 }
 
@@ -160,7 +247,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case let .code(lang):
     return pre([
       code(
-        [`class`([Class.pf.code(lang: lang.identifier)])],
+        [`class`([Class.pf.components.code(lang: lang.identifier)])],
         [.text(encode(block.content))]
       )
       ])
@@ -168,18 +255,8 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case .paragraph:
     return p([
       a(
-        [
-          href("#"),
-          `class`([
-            Class.type.textDecorationNone,
-            Class.pf.colors.bg.light,
-            Class.pf.colors.fg.white,
-            Class.border.rounded.all,
-            Class.h6,
-            Class.padding.leftRight(1),
-            Class.padding.topBottom(1),
-            ]),
-          style(padding(all: .rem(0.25)) <> margin(right: .rem(0.25)))
+        timestampLinkAttributes(block.timestamp ?? 0) + [
+          `class`([Class.pf.components.videoTimeLink])
         ],
         [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
       ),
@@ -187,7 +264,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight(3)])], [
+    return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
       .text(encode(block.content))
       ])
   }
@@ -202,12 +279,12 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         ]),
       body(
         minimalNavView.view(unit) <> [
-        gridRow([`class`([Class.grid.center(.xs)])], [
+        gridRow([`class`([Class.grid.center(.mobile)])], [
           gridColumn(sizes: [:], [
-            div([`class`([Class.padding.all(4)])], [
+            div([`class`([Class.padding([.mobile: [.all: 4]])])], [
               h5([`class`([Class.h5])], ["Episode not found :("]),
               pre([
-                code([`class`([Class.pf.code(lang: "swift")])], [
+                code([`class`([Class.pf.components.code(lang: "swift")])], [
                   "f: (Episode) -> Never"
                   ])
                 ])

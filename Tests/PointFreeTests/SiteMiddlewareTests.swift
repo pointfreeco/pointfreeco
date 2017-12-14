@@ -5,6 +5,7 @@ import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
@@ -51,7 +52,7 @@ class SiteMiddlewareTests: TestCase {
     )
 
     assertSnapshot(
-      matching: connection(from: secureRequest("https://www.pointfree.co/episodes"))
+      matching: connection(from: secureRequest("https://www.pointfree.co/home"))
         |> siteMiddleware
         |> Prelude.perform
     )

@@ -46,9 +46,11 @@ public let borderStyles: Stylesheet =
     )
     <> roundedStyles
 
+private let cornerRadius = 6.0
+
 private let roundedStyles =
-  Class.border.rounded.all % borderRadius(all: .px(3))
-    <> Class.border.rounded.left % borderRadius(topLeft: .px(3), bottomLeft: .px(3))
-    <> Class.border.rounded.right % borderRadius(topRight: .px(3), bottomRight: .px(3))
+  Class.border.rounded.all % borderRadius(all: .px(cornerRadius))
+    <> Class.border.rounded.left % borderRadius(topLeft: .px(cornerRadius), bottomLeft: .px(cornerRadius))
+    <> Class.border.rounded.right % borderRadius(topRight: .px(cornerRadius), bottomRight: .px(cornerRadius))
     <> Class.border.circle % borderRadius(all: .pct(50))
     <> Class.border.pill % borderRadius(all: .px(9999))

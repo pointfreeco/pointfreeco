@@ -52,21 +52,21 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
         ]),
 
       body([
-        gridRow([`class`([Class.padding.all(4)])], [
-          gridColumn(sizes: [.xs: 12], [
+        gridRow([`class`([Class.padding([.mobile: [.all: 4]])])], [
+          gridColumn(sizes: [.mobile: 12], [
             div([
               input([id(selectors.input.0), type(.radio), name("tabs"), checked(true)]),
               label([`for`(selectors.input.0)], [
-                button([`class`([Class.btn.base])], ["Just Me"]),
+                button(["Just Me"]),
                 ]),
 
               input([id(selectors.input.1), type(.radio), name("tabs")]),
               label([`for`(selectors.input.1)], [
-                button([`class`([Class.btn.base])], ["My Whole Squad"])
+                button(["My Whole Squad"])
                 ]),
 
               gridRow([
-                gridColumn(sizes: [.xs: 12], [
+                gridColumn(sizes: [.mobile: 12], [
                   div(individualPricingView.view(unit) + teamPricingView.view(unit))
                   ])
                 ]),
@@ -140,64 +140,64 @@ public func data<T>(_ name: StaticString, _ value: String) -> Attribute<T> {
 
 private let individualPricingView = View<Prelude.Unit> { _ in
   gridRow([id(selectors.content.0)], [
-    gridColumn(sizes: [.xs: 12, .md: 6], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
       div(individualMonthlyView.view(unit))
       ]),
 
-    gridColumn(sizes: [.xs: 12, .md: 6], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
       div(individualYearlyView.view(unit))
       ]),
     ])
 }
 
 private let individualMonthlyView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.type.align.center, Class.padding.all(2), Class.pf.colors.bg.light, Class.border.rounded.all])], [
-    gridColumn(sizes: [.xs: 12], [
+  gridRow([`class`([Class.type.align.center, Class.padding([.mobile: [.all: 2]]), Class.pf.colors.bg.light, Class.border.rounded.all])], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         h3([`class`([Class.h3])], ["Monthly"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         h4([`class`([Class.h4])], ["$18"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         p([`class`([Class.type.caps])], ["per month"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
-        button([`class`([Class.btn.base])], ["Choose monthly"])
+        button(["Choose monthly"])
         ])
       ]),
     ])
 }
 
 private let individualYearlyView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.type.align.center, Class.padding.all(2), Class.pf.colors.bg.light, Class.border.rounded.all])], [
-    gridColumn(sizes: [.xs: 12], [
+  gridRow([`class`([Class.type.align.center, Class.padding([.mobile: [.all: 2]]), Class.pf.colors.bg.light, Class.border.rounded.all])], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         h3([`class`([Class.h3])], ["Yearly"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         h4([`class`([Class.h4])], ["$14"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         p([`class`([Class.type.caps])], ["per month, billed annually"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
-        button([`class`([Class.btn.base])], ["Choose monthly"])
+        button(["Choose monthly"])
         ])
       ]),
-    gridColumn(sizes: [.xs: 12], [
+    gridColumn(sizes: [.mobile: 12], [
       div([
         h6([`class`([Class.h6])], ["Save 22%"])
         ])

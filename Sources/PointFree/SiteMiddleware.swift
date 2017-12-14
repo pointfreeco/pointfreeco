@@ -32,10 +32,6 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(param))
         |> episodeResponse
 
-    case let .episodes(tag):
-      return conn.map(const(tag))
-        |> episodesResponse
-
     case let .gitHubCallback(code, redirect):
       return conn.map(const((code, redirect)))
         |> gitHubCallbackResponse
@@ -61,7 +57,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
         |> pricingResponse
 
     case .secretHome:
-      return conn.map(const(user))
+      return conn.map(const(unit))
         |> secretHomeResponse
 
     case let .subscribe(data):
@@ -93,7 +89,6 @@ private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
        .episode,
-       .episodes,
        .gitHubCallback,
        .login,
        .logout,
