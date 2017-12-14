@@ -1,26 +1,19 @@
-▿ PointFree.EnvVars
-  ▿ airtable: PointFree.EnvVars.Airtable
-    - base1: "deadbeef-base-1"
-    - base2: "deadbeef-base-2"
-    - base3: "deadbeef-base-3"
-    - bearer: "deadbeef-bearer"
-  - appEnv: PointFree.EnvVars.AppEnv.development
-  - appSecret: "deadbeefdeadbeefdeadbeefdeadbeef"
-  ▿ baseUrl: http://localhost:8080
-    - _url: http://localhost:8080 #0
-      - super: NSObject
-  ▿ basicAuth: PointFree.EnvVars.BasicAuth
-    - username: "hello"
-    - password: "world"
-  ▿ gitHub: PointFree.EnvVars.GitHub
-    - clientId: "deadbeef-client-id"
-    - clientSecret: "deadbeef-client-secret"
-  ▿ mailgun: PointFree.EnvVars.Mailgun
-    - apiKey: "deadbeef-mg-api-key"
-    - domain: "mg.domain.com"
-  - port: 8080
-  ▿ postgres: PointFree.EnvVars.Postgres
-    - databaseUrl: "postgres://hello:world@localhost:5432/pointfreeco"
-  ▿ stripe: PointFree.EnvVars.Stripe
-    - publishableKey: "pk_test"
-    - secretKey: "sk_test"
+{
+  "AIRTABLE_BASE_1" : "deadbeef-base-1",
+  "AIRTABLE_BASE_2" : "deadbeef-base-2",
+  "AIRTABLE_BASE_3" : "deadbeef-base-3",
+  "AIRTABLE_BEARER" : "deadbeef-bearer",
+  "APP_ENV" : "development",
+  "APP_SECRET" : "deadbeefdeadbeefdeadbeefdeadbeef",
+  "BASE_URL" : "http:\/\/localhost:8080",
+  "BASIC_AUTH_PASSWORD" : "world",
+  "BASIC_AUTH_USERNAME" : "hello",
+  "DATABASE_URL" : "postgres:\/\/hello:world@localhost:5432\/pointfreeco",
+  "GITHUB_CLIENT_ID" : "deadbeef-client-id",
+  "GITHUB_CLIENT_SECRET" : "deadbeef-client-secret",
+  "MAILGUN_DOMAIN" : "mg.domain.com",
+  "MAILGUN_PRIVATE_API_KEY" : "deadbeef-mg-api-key",
+  "PORT" : "8080",
+  "STRIPE_PUBLISHABLE_KEY" : "pk_test",
+  "STRIPE_SECRET_KEY" : "sk_test"
+}
