@@ -4,6 +4,10 @@ import Prelude
 
 public protocol DerivePartialIsos {}
 
+public enum DeprecatedRoutes {
+
+}
+
 public enum Route: DerivePartialIsos {
   case about
   case episode(Either<String, Int>)

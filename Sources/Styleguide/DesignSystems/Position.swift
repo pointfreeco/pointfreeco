@@ -22,6 +22,8 @@ extension Class {
     public static let z2 = CssSelector.class("z2")
     public static let z3 = CssSelector.class("z3")
     public static let z4 = CssSelector.class("z4")
+
+    public static let farFarAway = CssSelector.class("far-far-away")
   }
 }
 
@@ -34,6 +36,7 @@ public let positionStyles: Stylesheet =
     <> responsiveStyles
     <> sideStyles
     <> zIndexStyles
+    <> Class.position.farFarAway % (position(.absolute) <> top(.px(-9999)) <> left(.px(-9999)))
 
 private let responsiveStyles: Stylesheet = Breakpoint.all
   .map { breakpoint in

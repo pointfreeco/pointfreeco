@@ -12,3 +12,4 @@ public let designSystems =
     <> positionStyles
     <> borderStyles
     <> alignStyles
+    <> sizeStyles

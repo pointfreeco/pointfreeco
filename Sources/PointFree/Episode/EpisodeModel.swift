@@ -63,7 +63,7 @@ public struct Episode {
   }
 }
 
-let episodes = [proofInFunctions, algebraOfPredicates, algebraicStructure, typeSafeHtml]
+let episodes: [Episode] = []// = [proofInFunctions, algebraOfPredicates, algebraicStructure, typeSafeHtml]
 
 private let proofInFunctions = Episode(
   blurb:

@@ -19,6 +19,7 @@ let secretHomeView = View<Prelude.Unit> { _ in
       head([
         style(renderedNormalizeCss),
         style(styleguide),
+        style(render(config: pretty, css: pricingExtraStyles)),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(
