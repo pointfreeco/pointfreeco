@@ -33,4 +33,3 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User?, Subsc
         }
     }
 }
-

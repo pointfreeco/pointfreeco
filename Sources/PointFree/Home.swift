@@ -25,7 +25,7 @@ let secretHomeView = View<Prelude.Unit> { _ in
       body(
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
-          <> _pricingView.view(unit)
+          <> pricingOptionsView.view(unit)
           <> footerView.view(unit)
       )
       ])
