@@ -43,8 +43,8 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
 }
 
 let pricingOptionsView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.desktop), Class.padding([.desktop: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.desktop: 6], [], [
+  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.mobile: [.top: 4, .bottom: 0], .desktop: [.bottom: 4]])])], [
+    gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
       h2(
         [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
@@ -56,7 +56,7 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
         ["Unlock full episodes and receive new updates every week."]
       ),
 
-      gridRow([`class`([Class.pf.colors.bg.white, Class.margin([.desktop: [.top: 3]])])], [
+      gridRow([`class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
           div(
             pricingTabsView.view(unit)
@@ -102,15 +102,15 @@ private let individualPricingRowView: View<Prelude.Unit> =
 
 private let individualPricingColumnView = View<PricingType.BillingType> { billingType in
 
-  gridColumn(sizes: [.desktop: 6], [], [
-    label([`for`(radioId(for: billingType)), `class`([Class.display.block, Class.padding([.desktop: [.all: 3]])])], [
+  gridColumn(sizes: [.mobile: 6], [], [
+    label([`for`(radioId(for: billingType)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
           id(radioId(for: billingType)), name("individual"), type(.radio), checked(billingType == .monthly)]),
-        gridColumn(sizes: [.desktop: 12], [], [
+        gridColumn(sizes: [.mobile: 12], [], [
           h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: billingType)))]),
           ]),
-        gridColumn(sizes: [.desktop: 12], [], [
+        gridColumn(sizes: [.mobile: 12], [], [
           h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: billingType)))]),
           ]),
         ])
@@ -120,8 +120,8 @@ private let individualPricingColumnView = View<PricingType.BillingType> { billin
 
 private let teamPricingRowView = View<Prelude.Unit> { _ in
   gridRow([id(selectors.content.1)], [
-    gridColumn(sizes: [.desktop: 12], [], [
-      div([`class`([Class.padding([.desktop: [.topBottom: 3]])])], [
+    gridColumn(sizes: [.mobile: 12], [], [
+      div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
         h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
         p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
         input([
@@ -152,8 +152,8 @@ private let extraSpinnerStyles =
 
 private let pricingFooterView = View<Prelude.Unit> { _ in
   gridRow([
-    gridColumn(sizes: [.desktop: 12], [], [
-      div([`class`([Class.padding([.desktop: [.top: 2, .bottom: 3]])])], [
+    gridColumn(sizes: [.mobile: 12], [], [
+      div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
         gitHubLink(redirectRoute: .pricing(nil))
         ])
       ])
