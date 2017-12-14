@@ -30,6 +30,7 @@ extension Class {
         public static let white = CssSelector.class("bg-white")
       }
       public enum border {
+        public static let gray650 = CssSelector.class("border-gray-650")
         public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
@@ -143,6 +144,7 @@ extension Class.pf {
           | Class.padding([.mobile: [.topBottom: 2]])
           | Class.border.none
           | Class.size.width50pct
+          | Class.display.inlineBlock
       public static let pricingTabSelected =
         pricingTabBase
           | Class.pf.colors.bg.white
@@ -155,7 +157,7 @@ extension Class.pf {
 
     private static let _codeClasses =
       _codeClass
-        | Class.layout.block
+        | Class.display.block
         | Class.padding([.mobile: [.all: 3]])
         | Class.layout.overflowAuto(.x)
     public static func code(lang: String?) -> CssSelector {
@@ -236,6 +238,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
+    <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)
