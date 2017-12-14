@@ -4,7 +4,6 @@ import SnapshotTesting
 import XCTest
 
 class EnvVarTests: TestCase {
-  @available(OSX 10.13, *)
   func testDecoding() throws {
     let json = [
       "AIRTABLE_BASE_1": "deadbeef-base-1",
@@ -27,11 +26,11 @@ class EnvVarTests: TestCase {
     ]
 
     let envVars = try JSONDecoder()
-      .decode(EnvVars.self, from: try! JSONSerialization.data(withJSONObject: json))
+      .decode(EnvVars.self, from: try JSONSerialization.data(withJSONObject: json))
 
-    let encoder = JSONEncoder()
-    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    let roundTrip = try JSONSerialization.jsonObject(with: try JSONEncoder().encode(envVars), options: [])
+      as! [String: String]
 
-    assertSnapshot(matching: String(decoding: try encoder.encode(envVars), as: UTF8.self))
+    assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }))
   }
 }
