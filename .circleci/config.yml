@@ -13,6 +13,10 @@ jobs:
           command: system_profiler SPSoftwareDataType
 
       - run:
+          name: Sourcery Version
+          command: sourcery --version
+
+      - run:
           name: Install Postgres
           command: brew install postgresql
 
