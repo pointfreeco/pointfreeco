@@ -17,9 +17,12 @@ extension Class {
     }
 
     public static let bold = CssSelector.class("bold")
+    public static let bolder = CssSelector.class("bolder")
     public static let italic = CssSelector.class("italic")
+    public static let light = CssSelector.class("light")
+    public static let lighter = CssSelector.class("lighter")
     public static let medium = CssSelector.class("medium")
-    public static let regular = CssSelector.class("regular")
+    public static let normal = CssSelector.class("normal")
     public static let semiBold = CssSelector.class("semi-bold")
     public static let underline = CssSelector.class("underline")
 
@@ -53,16 +56,25 @@ private let lineHeightStyles: Stylesheet =
     <> [1, 2, 3, 4].map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }.concat()
 
 private let emphasisStyles: Stylesheet =
-  Class.type.bold % fontWeight(.w700)
+  boldStyles
+    <> capsStyles
     <> Class.type.italic % fontStyle(.italic)
-    <> Class.type.medium % fontWeight(.w500)
-    <> Class.type.regular % fontWeight(.normal)
-    <> Class.type.semiBold % fontWeight(.w600)
+    <> Class.type.light % fontWeight(.w300)
+    <> Class.type.lighter % fontWeight(.lighter)
+    <> Class.type.normal % fontWeight(.normal)
     <> Class.type.underline % key("text-decoration", "underline")
-    <> Class.type.caps % (
-      textTransform(.uppercase)
-        <> letterSpacing(.pt(0.54))
+
+private let capsStyles =
+  Class.type.caps % (
+    textTransform(.uppercase)
+      <> letterSpacing(.pt(0.54))
 )
+
+private let boldStyles =
+  Class.type.bold % fontWeight(.w700)
+    <> Class.type.bold % fontWeight(.bolder)
+    <> Class.type.medium % fontWeight(.w500)
+    <> Class.type.semiBold % fontWeight(.w600)
 
 private let miscStyles: Stylesheet =
   Class.type.fontFamilyInherit % fontFamily(.inherit)

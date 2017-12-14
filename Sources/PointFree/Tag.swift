@@ -36,12 +36,12 @@ extension Tag {
 
 public let pillTagsView = View<[Tag]> { tags in
   ol(
-    [`class`([Class.layout.inlineBlock, Class.type.list.reset])],
+    [`class`([Class.display.inlineBlock, Class.type.list.reset])],
     tags
       .sorted(by: ^\.name)
       .map(
         episodeTagView.view
-          >>> li([`class`([Class.layout.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
+          >>> li([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }

@@ -34,10 +34,6 @@ body {
   background-color : #121212;
 }
 
-.bg-black-50 {
-  color : #808080;
-}
-
 .bg-dark {
   background-color : #121212;
 }
@@ -50,8 +46,19 @@ body {
   background-color : #974DFF;
 }
 
+.bg-purple150 {
+  background-color : #291a40;
+}
+
 .bg-white {
   background-color : #fff;
+}
+
+.border-gray-650 {
+  border-top-color    : #a8a8a8;
+  border-right-color  : #a8a8a8;
+  border-bottom-color : #a8a8a8;
+  border-left-color   : #a8a8a8;
 }
 
 .border-gray-900 {
@@ -65,16 +72,20 @@ body {
   color : #121212;
 }
 
-.fg-gray300 {
-  color : #555555;
-}
-
 .fg-gray400 {
   color : #666666;
 }
 
+.fg-gray650 {
+  color : #a8a8a8;
+}
+
 .fg-gray850 {
   color : #d8d8d8;
+}
+
+.fg-green {
+  color : #79F2B0;
 }
 
 .fg-purple {
@@ -221,6 +232,11 @@ a:active.btn {
 
 a:link.btn {
   text-decoration : none;
+}
+
+.btn {
+  padding-top    : 0.75rem;
+  padding-bottom : 0.75rem;
 }
 
 .vid-time-link {
