@@ -403,7 +403,7 @@ public final class DatabaseDecoder: Decoder {
     }
 
     func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
-      return try self.decoder.decode(T.self, from: container)
+      return try self.decoder.decode(T.self, from: self.container)
     }
   }
 }
