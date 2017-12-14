@@ -56,7 +56,7 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
         ["Unlock full episodes and receive new updates every week."]
       ),
 
-      gridRow([`class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])], [
+      gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
           div(
             pricingTabsView.view(unit)
