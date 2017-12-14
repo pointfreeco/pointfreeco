@@ -4,17 +4,19 @@ public struct EnvVars: Codable {
   public var airtable = Airtable()
   public var appEnv = AppEnv.development
   public var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
-  public var baseUrlString = "http://localhost:8080"
+  public var baseUrl = URL(string: "http://localhost:8080")!
   public var basicAuth = BasicAuth()
   public var gitHub = GitHub()
   public var mailgun = Mailgun()
+  public var port = 8080
   public var postgres = Postgres()
   public var stripe = Stripe()
 
   private enum CodingKeys: String, CodingKey {
     case appEnv = "APP_ENV"
     case appSecret = "APP_SECRET"
-    case baseUrlString = "BASE_URL"
+    case baseUrl = "BASE_URL"
+    case port = "PORT"
   }
 
   public struct Airtable: Codable {
@@ -84,10 +86,6 @@ public struct EnvVars: Codable {
       case secretKey = "STRIPE_SECRET_KEY"
     }
   }
-
-  public var baseUrl: URL {
-    return URL(string: self.baseUrlString)!
-  }
 }
 
 extension EnvVars {
@@ -97,10 +95,11 @@ extension EnvVars {
     self.airtable = try .init(from: decoder)
     self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
     self.appSecret = try values.decode(String.self, forKey: .appSecret)
-    self.baseUrlString = try values.decode(String.self, forKey: .baseUrlString)
+    self.baseUrl = try values.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
     self.gitHub = try .init(from: decoder)
     self.mailgun = try .init(from: decoder)
+    self.port = Int(try values.decode(String.self, forKey: .port))!
     self.postgres = try .init(from: decoder)
     self.stripe = try .init(from: decoder)
   }
@@ -111,10 +110,11 @@ extension EnvVars {
     try self.airtable.encode(to: encoder)
     try container.encode(self.appEnv, forKey: .appEnv)
     try container.encode(self.appSecret, forKey: .appSecret)
-    try container.encode(self.baseUrlString, forKey: .baseUrlString)
+    try container.encode(self.baseUrl, forKey: .baseUrl)
     try self.basicAuth.encode(to: encoder)
     try self.gitHub.encode(to: encoder)
     try self.mailgun.encode(to: encoder)
+    try container.encode(String(self.port), forKey: .port)
     try self.postgres.encode(to: encoder)
     try self.stripe.encode(to: encoder)
   }

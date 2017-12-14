@@ -1,3 +1,4 @@
+import Prelude
 @testable import PointFree
 import SnapshotTesting
 import XCTest
@@ -5,7 +6,7 @@ import XCTest
 open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
-    AppEnvironment.push(.mock)
+    AppEnvironment.push(const(.mock))
 //    record = true
   }
 
