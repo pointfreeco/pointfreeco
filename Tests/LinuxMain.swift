@@ -51,6 +51,11 @@ extension NavViewTests {
     ("testNav_LoggedIn", testNav_LoggedIn)
   ]
 }
+extension PricingTests {
+  static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
+    ("testPricing", testPricing)
+  ]
+}
 extension SiteMiddlewareTests {
   static var allTests: [(String, (SiteMiddlewareTests) -> () throws -> Void)] = [
     ("testWithoutWWW", testWithoutWWW),
@@ -76,6 +81,7 @@ XCTMain([
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
+  testCase(PricingTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
 ])

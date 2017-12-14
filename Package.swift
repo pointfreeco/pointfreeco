@@ -12,7 +12,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b70de46")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("3a11a59")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("268a670")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
     ],
   targets: [

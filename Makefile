@@ -4,7 +4,7 @@ imports = \
 
 bootstrap: xcodeproj postgres-mm sourcery
 
-xcodeproj: sourcery
+xcodeproj:
 	swift package generate-xcodeproj
 
 sourcery: linux-main route-partial-iso
@@ -27,7 +27,7 @@ test-ios: xcodeproj
 		-destination platform="iOS Simulator,name=iPhone 8,OS=11.2" \
 		| xcpretty
 
-test-swift: sourcery
+test-swift:
 	swift test
 
 test-all: test-linux test-mac test-ios

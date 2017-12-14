@@ -19,18 +19,20 @@ let secretHomeView = View<Prelude.Unit> { _ in
       head([
         style(renderedNormalizeCss),
         style(styleguide),
+        style(render(config: pretty, css: pricingExtraStyles)),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
+          <> pricingOptionsView.view(unit)
           <> footerView.view(unit)
       )
       ])
     ])
 }
 
-private let headerView = View<Prelude.Unit> { _ in
+let headerView = View<Prelude.Unit> { _ in
   [
     gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)])], [
       gridColumn(sizes: [:], [
