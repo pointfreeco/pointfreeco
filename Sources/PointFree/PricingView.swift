@@ -34,28 +34,28 @@ let _pricingView = View<Prelude.Unit> { _ in
 
 private let pricingTabsView = View<Prelude.Unit> { _ in
   [
-    input([
-      `class`([Class.hide]),
-      id(selectors.input.0),
-      type(.radio),
-      name("tabs"),
-      checked(true)
-      ]),
     label([`for`(selectors.input.0)], [
-      button(
+      input([
+        //      `class`([Class.hide(.mobile)]),
+        id(selectors.input.0),
+        type(.radio),
+        name("tabs"),
+        //      checked(true)
+        ]),
+      a(
         [`class`([Class.pf.components.buttons.pricingTab])],
         ["For you"]
       ),
       ]),
 
-    input([
-      `class`([Class.hide]),
-      id(selectors.input.1),
-      type(.radio),
-      name("tabs")
-      ]),
     label([`for`(selectors.input.1)], [
-      button(
+      input([
+        //      `class`([Class.hide(.mobile)]),
+        id(selectors.input.1),
+        type(.radio),
+        name("tabs")
+        ]),
+      a(
         [`class`([Class.pf.components.buttons.pricingTab])],
         ["For your team"]
       ),
