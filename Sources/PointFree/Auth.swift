@@ -9,10 +9,11 @@ import Optics
 import Prelude
 import Styleguide
 import UrlFormEncoding
+import Tuple
 
 let gitHubCallbackResponse =
   extractGitHubAuthCode
-    <| authTokenMiddleware
+    <| gitHubAuthTokenMiddleware
 
 /// Middleware transformer to convert the optional GitHub code to a non-optional. In the `nil` case we show
 /// a 400 Bad Request page.
@@ -20,11 +21,11 @@ private func extractGitHubAuthCode(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
-    
+
     return { conn in
       conn.data.code
         .map { (code: $0, redirect: conn.data.redirect) }
-        .map { conn.map(const($0)) }
+        .map(conn.map <<< const)
         .map(middleware)
         ?? (conn |> const(unit) >¢< missingGitHubAuthCodeMiddleware)
     }
@@ -59,29 +60,51 @@ extension URLRequest {
   }
 }
 
-private func readGitHubSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, Prelude.Unit>
-  )
-  -> IO<Conn<HeadersOpen, Either<Error, Database.User>>> {
+public func readSessionCookieMiddleware<I, A>(
+  _ conn: Conn<I, A>)
+  -> IO<Conn<I, Tuple2<A, Database.User?>>> {
 
-    return (
-      conn.request.cookies[pointFreeUserSession]
-        .flatMap {
-          ResponseHeader
-            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-        }
-        .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
-        .map {
-          AppEnvironment.current.database.fetchUserById($0)
-            .mapExcept(requireSome)
-        }
-        ?? throwE(unit)
-      )
-      .run
-      .map { conn.map(const($0)) }
+    let user = conn.request.cookies[pointFreeUserSession]
+      .flatMap {
+        ResponseHeader
+          .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+      }
+      .flatMap(UUID.init >-> Database.User.Id.init)
+      .map {
+        AppEnvironment.current.database.fetchUserById($0)
+          .run
+          .map(either(const(nil), id))
+      }
+      ?? pure(nil)
+
+    return user
+      .map { conn.map(const(conn.data .*. $0)) }
 }
 
-private func writeGitHubSessionCookieMiddleware(
+//private func readSessionCookieMiddleware<I>(
+//  _ conn: Conn<I, Prelude.Unit>
+//  )
+//  -> IO<Conn<I, Database.User?>> {
+//
+//    return (
+//      conn.request.cookies[pointFreeUserSession]
+//        .flatMap {
+//          ResponseHeader
+//            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+//        }
+//        .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
+//        .map {
+//          AppEnvironment.current.database.fetchUserById($0)
+//            .mapExcept(requireSome)
+//        }
+//        ?? throwE(unit)
+//      )
+//      .run
+//      .map(conn.map <<< const)
+//      .map(ignoreErrors)
+//}
+
+private func writeSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Database.User>
   )
   -> IO<Conn<HeadersOpen, Database.User>> {
@@ -95,9 +118,27 @@ private func writeGitHubSessionCookieMiddleware(
           secret: AppEnvironment.current.envVars.appSecret,
           encrypt: true
         )
-        ] |> catOptionals
+        ]
+        |> catOptionals
     )
 }
+
+//public func requireUser<A>(
+//  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
+//  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+//
+//    return { conn in
+//
+//      let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+//        .map(fetchDatabaseUser)
+//        ?? pure(nil)
+//
+//      return currentUser.flatMap { user in
+//        user.map { conn.map(const($0 .*. conn.data .*. unit)) |> middleware }
+//          ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
+//      }
+//    }
+//}
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
@@ -133,7 +174,7 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
 }
 
 /// Exchanges a github code for an access token and loads the user's data.
-private func authTokenMiddleware(
+private func gitHubAuthTokenMiddleware(
   _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
   )
   -> IO<Conn<ResponseEnded, Data>> {
@@ -156,7 +197,7 @@ private func authTokenMiddleware(
           return conn.map(const(user))
             |> redirect(
               to: conn.data.redirect ?? path(to: .secretHome),
-              headersMiddleware: writeGitHubSessionCookieMiddleware
+              headersMiddleware: writeSessionCookieMiddleware
           )
         }
     }
@@ -173,10 +214,6 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
 }
 
 let pointFreeUserSession = "pf_session"
-
-extension CharacterSet {
-  fileprivate static let urlQueryParamAllowed = CharacterSet(charactersIn: "?=&# ").inverted
-}
 
 let registrationEmailView = View<GitHub.User> { _ in
   document([

@@ -2,7 +2,7 @@ imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 
-bootstrap: xcodeproj postgres-mm sourcery
+bootstrap: xcodeproj postgres-mm
 
 xcodeproj:
 	swift package generate-xcodeproj

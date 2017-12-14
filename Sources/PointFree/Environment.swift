@@ -39,17 +39,17 @@ public struct AppEnvironment {
   private static var stack: [Environment] = [Environment()]
   public static var current: Environment { return stack.last! }
 
-  public static func push(_ env: Environment) {
-    self.stack.append(env)
+  public static func push(_ env: (Environment) -> Environment) {
+    self.stack.append(self.current |> env)
   }
 
   public static func with(_ env: (Environment) -> Environment, _ block: () -> Void) {
-    self.push(AppEnvironment.current |> env)
+    self.push(env)
     block()
     self.pop()
   }
 
   public static func pop() {
-    _ = self.stack.popLast()
+    self.stack.removeLast()
   }
 }

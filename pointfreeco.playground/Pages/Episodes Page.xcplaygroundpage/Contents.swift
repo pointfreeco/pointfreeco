@@ -12,7 +12,7 @@ import WebKit
 import Optics
 import SnapshotTesting
 
-AppEnvironment.push(.mock)
+AppEnvironment.push(const(.mock))
 
 var request = URLRequest(url: URL(string: "http://localhost:8080/episodes")!)
   |> \.allHTTPHeaderFields .~ [

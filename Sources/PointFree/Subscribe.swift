@@ -1,22 +1,24 @@
 import Foundation
 import HttpPipeline
 import Prelude
-@testable import Tuple
+import Tuple
 
-typealias SubscribeData = (plan: Stripe.Plan.Id, token: Stripe.Token.Id)
+public struct SubscribeData: Codable {
+  public let plan: Stripe.Plan.Id
+  public let token: Stripe.Token.Id
+}
 
 let subscribeResponse =
-  map { $0 .*. unit }
-    >>> currentUserMiddleware
-    >-> subscribe
+  requireUser
+    <| subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User?, SubscribeData>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (currentUser, subscribeData) = conn.data |> lower
-    guard let user = currentUser else { fatalError() }
+    let (user, subscribeData) = conn.data |> lower
     return AppEnvironment.current.stripe.createCustomer(user, subscribeData.token)
       .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, subscribeData.plan) }
+      .flatMap { AppEnvironment.current.database.createSubscription($0, user).withExcept(const(unit)) }
       .run
       .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in
 
@@ -26,10 +28,10 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User?, Subsc
             |> writeStatus(.internalServerError)
             >-> respond(text: "Error creating subscription!")
 
-        case let .right(sub):
+        case .right:
           return conn
             |> writeStatus(.created)
-            >-> respond(text: "Created subscription! id: " + sub.id.unwrap)
+            >-> respond(text: "Created subscription!")
         }
     }
 }
