@@ -60,28 +60,25 @@ extension URLRequest {
   }
 }
 
-public func readSessionCookie<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<A, Database.User?>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+public func readSessionCookieMiddleware<I, A>(
+  _ conn: Conn<I, A>)
+  -> IO<Conn<I, Tuple2<A, Database.User?>>> {
 
-    return { conn in
-      let user = conn.request.cookies[pointFreeUserSession]
-        .flatMap {
-          ResponseHeader
-            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-        }
-        .flatMap(UUID.init >-> Database.User.Id.init)
-        .map {
-          AppEnvironment.current.database.fetchUserById($0)
-            .run
-            .map(either(const(nil), id))
-        }
-        ?? pure(nil)
+    let user = conn.request.cookies[pointFreeUserSession]
+      .flatMap {
+        ResponseHeader
+          .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+      }
+      .flatMap(UUID.init >-> Database.User.Id.init)
+      .map {
+        AppEnvironment.current.database.fetchUserById($0)
+          .run
+          .map(either(const(nil), id))
+      }
+      ?? pure(nil)
 
-      return user
-        .map { conn.map(const(conn.data .*. $0)) }
-        .flatMap(middleware)
-    }
+    return user
+      .map { conn.map(const(conn.data .*. $0)) }
 }
 
 //private func readSessionCookieMiddleware<I>(

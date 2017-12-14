@@ -10,14 +10,16 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
-    <<< readSessionCookie
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
       password: AppEnvironment.current.envVars.basicAuth.password,
       realm: "Point-Free",
-      protect: get1 >>> isProtected
+      protect: isProtected
     )
-    <| render(conn:)
+    <| (
+      readSessionCookieMiddleware
+        >-> render(conn:)
+)
 
 private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
   -> IO<Conn<ResponseEnded, Data>> {
