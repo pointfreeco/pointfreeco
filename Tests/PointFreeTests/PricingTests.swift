@@ -9,9 +9,9 @@ import Optics
   import WebKit
 #endif
 
-class HomeTests: TestCase {
-  func testHomepage() {
-    let request = URLRequest(url: URL(string: url(to: .secretHome))!)
+class PricingTests: TestCase {
+  func testPricing() {
+    let request = URLRequest(url: URL(string: url(to: .pricing(nil)))!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
@@ -23,11 +23,20 @@ class HomeTests: TestCase {
 
     #if !os(Linux)
       if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1600))
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1200))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
         assertSnapshot(matching: webView, named: "desktop")
+
+        webView.evaluateJavaScript(
+          """
+          document.getElementById("tab0").checked = false;
+          document.getElementById("tab1").checked = true;
+          """, completionHandler: nil)
+        assertSnapshot(matching: webView, named: "desktop-team")
+
         webView.frame.size.width = 400
         assertSnapshot(matching: webView, named: "mobile")
+
       }
     #endif
   }

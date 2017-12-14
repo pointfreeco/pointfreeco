@@ -12,6 +12,7 @@ public enum Colors {
   public static let green = Color.other("#79F2B0")
   public static let mint = Color.other("#79F2B0")
   public static let purple = Color.other("#974DFF")
+  public static let purple150 = Color.other("#291a40")
   public static let teal = Color.other("#4CCCFF")
   public static let yellow = Color.other("#FFF080")
   public static let white = Color.other("#fff")
@@ -22,20 +23,22 @@ extension Class {
     public enum colors {
       public enum bg {
         public static let black = CssSelector.class("bg-black")
-        public static let black50 = CssSelector.class("bg-black-50")
         public static let dark = CssSelector.class("bg-dark")
         public static let light = CssSelector.class("bg-light")
         public static let purple = CssSelector.class("bg-purple")
+        public static let purple150 = CssSelector.class("bg-purple150")
         public static let white = CssSelector.class("bg-white")
       }
       public enum border {
+        public static let gray650 = CssSelector.class("border-gray-650")
         public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
-        public static let gray300 = CssSelector.class("fg-gray300")
         public static let gray400 = CssSelector.class("fg-gray400")
+        public static let gray650 = CssSelector.class("fg-gray650")
         public static let gray850 = CssSelector.class("fg-gray850")
+        public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
         public static let white = CssSelector.class("fg-white")
       }
@@ -92,20 +95,20 @@ extension Class {
       public enum body {
         public static let small =
           Class.pf.colors.fg.black
-            | Class.type.regular
+            | Class.type.normal
             | Class.h6
             | Class.type.lineHeight(4)
 
         public static let regular =
           Class.pf.colors.fg.black
-            | Class.type.regular
+            | Class.type.normal
             | Class.h5
             | Class.type.lineHeight(4)
 
         public static let leading =
           bodyLeadingClass
             | Class.pf.colors.fg.black
-            | Class.type.regular
+            | Class.type.normal
             | Class.type.lineHeight(4)
       }
     }
@@ -116,23 +119,45 @@ extension Class.pf {
   public enum components {
 
     public enum buttons {
-      private static let base =
+      public static let base =
         baseButtonClass
           | Class.type.medium
           | Class.h5
           | Class.padding([.mobile: [.leftRight: 2]])
-          | Class.padding([.mobile: [.topBottom: 1]])
-          | Class.pf.colors.link.white
           | Class.border.rounded.all
 
       public static let purple =
         base
+          | Class.pf.colors.link.white
           | Class.pf.colors.bg.purple
+
+      public static let black =
+        base
+          | Class.pf.colors.link.white
+          | Class.pf.colors.bg.black
+
+      private static let pricingTabBase =
+        Class.layout.fit
+          | Class.pf.type.title5
+          | Class.type.medium
+          | Class.padding([.mobile: [.leftRight: 2]])
+          | Class.padding([.mobile: [.topBottom: 2]])
+          | Class.border.none
+          | Class.size.width50pct
+          | Class.display.inlineBlock
+      public static let pricingTabSelected =
+        pricingTabBase
+          | Class.pf.colors.bg.white
+          | Class.pf.colors.fg.purple
+      public static let pricingTab =
+        pricingTabBase
+          | Class.pf.colors.bg.purple
+          | Class.pf.colors.fg.white
     }
 
     private static let _codeClasses =
       _codeClass
-        | Class.layout.block
+        | Class.display.block
         | Class.padding([.mobile: [.all: 3]])
         | Class.layout.overflowAuto(.x)
     public static func code(lang: String?) -> CssSelector {
@@ -207,18 +232,20 @@ private let resets =
 
 private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
-  <> Class.pf.colors.bg.black50 % color(.other("#808080"))
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
+    <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
+    <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)
-    <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
     <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
+    <> Class.pf.colors.fg.gray650 % color(Colors.gray650)
     <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
+    <> Class.pf.colors.fg.green % color(Colors.green)
     <> Class.pf.colors.fg.purple % color(Colors.purple)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
 
@@ -289,6 +316,7 @@ private let baseButtonStyles: Stylesheet =
   (a & .pseudo(.hover) & baseButtonClass) % darken1
     <> (a & .pseudo(.active) & baseButtonClass) % darken3
     <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
+    <> baseButtonClass % padding(topBottom: .rem(0.75))
 
 private let darken1 = boxShadow(
   stroke: .inset,

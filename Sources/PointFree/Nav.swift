@@ -38,16 +38,16 @@ let minimalNavView = View<Prelude.Unit> { _ in
 
 private let unpersonalizedNavItems = View<Prelude.Unit> { _ in
   ul([`class`([Class.type.list.reset, Class.margin([.mobile: [.all: 0]])])], [
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href(path(to: .secretHome)), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Videos"])
       ]),
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href("#"), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Blog"])
       ]),
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href("#"), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Books"])
       ]),
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href(path(to: .about)), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["About"])
       ]),
     ])
@@ -61,11 +61,11 @@ private let personalizedNavItems = View<RequestContext<Prelude.Unit>> { ctx in
 private let loggedInNavItems = View<Database.User> { user in
 
   ul([`class`([Class.type.list.reset, Class.margin([.mobile: [.all: 0]])])], [
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href("#"), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Account"])
       ]),
 
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href(path(to: .logout)), `class`([Class.padding([.mobile: [.leftRight: 1]])])], ["Logout"])
       ]),
     ])
@@ -74,11 +74,11 @@ private let loggedInNavItems = View<Database.User> { user in
 private let loggedOutNavItems = View<URLRequest> { request in
 
   ul([`class`([Class.layout.right, Class.type.list.reset, Class.margin([.mobile: [.all: 0]])])], [
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href(path(to: .login(redirect: request.url?.absoluteString))), `class`([Class.padding([.mobile: [.leftRight: 1]])])],
         ["Login"])
       ]),
-    li([`class`([Class.layout.inline])], [
+    li([`class`([Class.display.inline])], [
       a([href(path(to: .pricing(nil))), `class`([Class.padding([.mobile: [.leftRight: 1]])])],
         ["Subscribe"])
       ]),

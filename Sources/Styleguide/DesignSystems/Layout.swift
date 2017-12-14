@@ -9,9 +9,6 @@ public enum Dimension: String {
 extension Class {
   public enum layout {
     public static let fit = CssSelector.class("fit")
-    public static let inline = CssSelector.class("inline")
-    public static let block = CssSelector.class("block")
-    public static let inlineBlock = CssSelector.class("inline-block")
     public static let overflowHidden = CssSelector.class("overflow-hidden")
     public static let overflowScroll = CssSelector.class("overflow-scroll")
     public static let overflowAuto = CssSelector.class("overflow-auto")
@@ -25,12 +22,7 @@ extension Class {
 }
 
 public let layoutStyles =
-  Class.layout.inline % display(.inline)
-    <> Class.layout.block % display(.block)
-    <> Class.layout.inlineBlock % display(.inlineBlock)
-    <> ".table" % display(.table)
-    <> ".table-cell" % display(.tableCell)
-    <> Class.layout.overflowHidden % overflow(.hidden)
+  Class.layout.overflowHidden % overflow(.hidden)
     <> Class.layout.overflowScroll % overflow(.scroll)
     <> Class.layout.overflowAuto % overflow(.auto)
     <> Class.layout.overflowAuto(.x) % overflow(x: .auto)
