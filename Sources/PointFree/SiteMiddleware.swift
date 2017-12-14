@@ -17,6 +17,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     )
     <| render(conn:)
 
+@testable import Tuple
 private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
 
   switch conn.data {
@@ -60,9 +61,9 @@ private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded,
     return conn.map(const(unit))
       |> secretHomeResponse
 
-  case let .subscribe(plan, stripeToken):
-    return conn.map(const((plan: plan, token: stripeToken)))
-//    return conn.map(const(Tuple(first: (plan: plan, token: stripeToken), second: unit)))
+  case let .subscribe(data):
+//    return conn.map(const(data))
+    return conn.map(const(data .*. unit))
       |> subscribeResponse
 
   case .terms:
