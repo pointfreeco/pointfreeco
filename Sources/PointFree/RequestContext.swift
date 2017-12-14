@@ -48,41 +48,41 @@ public func requireUser<A>(
         ?? pure(nil)
 
       return currentUser.flatMap { user in
-        user.map { conn.map(const($0 .*. conn.data .*. unit)) |> middleware }
+        user.map { conn.map(const($0 .*. conn.data)) |> middleware }
           ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
       }
     }
 }
 
-func currentUserMiddleware<A, I>(
-  _ conn: Conn<I, A>
-  ) -> IO<Conn<I, T2<Database.User?, A>>> {
-
-  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-    .map(fetchDatabaseUser)
-    ?? pure(nil)
-
-  return currentUser.map { user in
-    conn.map(
-      const(user .*. conn.data)
-    )
-  }
-}
+//func currentUserMiddleware<A, I>(
+//  _ conn: Conn<I, A>
+//  ) -> IO<Conn<I, T2<Database.User?, A>>> {
+//
+//  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
+//    .map(fetchDatabaseUser)
+//    ?? pure(nil)
+//
+//  return currentUser.map { user in
+//    conn.map(
+//      const(user .*. conn.data)
+//    )
+//  }
+//}
 
 // todo: maybe do this, maybe not
-public func .*. <A, B> (lhs: A, rhs: B) -> Tuple<A, B> {
-  return .init(first: lhs, second: rhs)
-}
+//public func .*. <A, B> (lhs: A, rhs: B) -> Tuple<A, B> {
+//  return .init(first: lhs, second: rhs)
+//}
 
-func currentRequestMiddleware<A, I>(
-  _ conn: Conn<I, A>
-  ) -> IO<Conn<I, T2<URLRequest, A>>> {
-
-  return pure <|
-    conn.map(
-      const(conn.request .*. conn.data)
-  )
-}
+//func currentRequestMiddleware<A, I>(
+//  _ conn: Conn<I, A>
+//  ) -> IO<Conn<I, T2<URLRequest, A>>> {
+//
+//  return pure <|
+//    conn.map(
+//      const(conn.request .*. conn.data)
+//  )
+//}
 
 func requestContextMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>

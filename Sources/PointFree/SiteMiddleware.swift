@@ -3,72 +3,75 @@ import Foundation
 import HttpPipeline
 import Prelude
 import Styleguide
+import Tuple
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
     <<< route(router: router)
+    <<< readSessionCookie
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
       password: AppEnvironment.current.envVars.basicAuth.password,
       realm: "Point-Free",
-      protect: isProtected
+      protect: get1 >>> isProtected
     )
     <| render(conn:)
 
-@testable import Tuple
-private func render(conn: Conn<StatusLineOpen, Route>) -> IO<Conn<ResponseEnded, Data>> {
+private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
+  -> IO<Conn<ResponseEnded, Data>> {
 
-  switch conn.data {
-  case .about:
-    return conn.map(const(unit))
-      |> aboutResponse
+    let (route, user) = lower <| conn.data
+    switch route {
+    case .about:
+      return conn.map(const(unit))
+        |> aboutResponse
 
-  case let .episode(param):
-    return conn.map(const(param))
-      |> episodeResponse
+    case let .episode(param):
+      return conn.map(const(param))
+        |> episodeResponse
 
-  case let .episodes(tag):
-    return conn.map(const(tag))
-      |> episodesResponse
+    case let .episodes(tag):
+      return conn.map(const(tag))
+        |> episodesResponse
 
-  case let .gitHubCallback(code, redirect):
-    return conn.map(const((code, redirect)))
-      |> gitHubCallbackResponse
+    case let .gitHubCallback(code, redirect):
+      return conn.map(const((code, redirect)))
+        |> gitHubCallbackResponse
 
-  case let .home(signedUpSuccessfully):
-    return conn.map(const(signedUpSuccessfully))
-      |> homeResponse
+    case let .home(signedUpSuccessfully):
+      return conn.map(const(signedUpSuccessfully))
+        |> homeResponse
 
-  case let .launchSignup(email):
-    return conn.map(const(email))
-      |> signupResponse
+    case let .launchSignup(email):
+      return conn.map(const(email))
+        |> signupResponse
 
-  case let .login(redirect):
-    return conn.map(const(redirect))
-      |> loginResponse
+    case let .login(redirect):
+      return conn.map(const(redirect))
+        |> loginResponse
 
-  case .logout:
-    return conn.map(const(unit))
-      |> logoutResponse
+    case .logout:
+      return conn.map(const(unit))
+        |> logoutResponse
 
-  case let .pricing(value):
-    return conn.map(const(value ?? .monthlyTeam))
-      |> pricingResponse
+    case let .pricing(value):
+      return conn.map(const(value ?? .monthlyTeam))
+        |> pricingResponse
 
-  case .secretHome:
-    return conn.map(const(unit))
-      |> secretHomeResponse
+    case .secretHome:
+      return conn.map(const(user))
+        |> secretHomeResponse
 
-  case let .subscribe(data):
-    return conn.map(const(data))
-      |> subscribeResponse
+    case let .subscribe(data):
+      return conn.map(const(data))
+        |> subscribeResponse
 
-  case .terms:
-    return conn.map(const(unit))
-      |> termsResponse
-  }
+    case .terms:
+      return conn.map(const(unit))
+        |> termsResponse
+    }
 }
 
 private let canonicalHost = "www.pointfree.co"

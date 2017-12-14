@@ -1,7 +1,7 @@
 import Foundation
 import HttpPipeline
 import Prelude
-@testable import Tuple
+import Tuple
 
 public struct SubscribeData: Codable {
   public let plan: Stripe.Plan.Id
