@@ -93,22 +93,22 @@ public func readSessionCookie<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      (
-        conn.request.cookies[pointFreeUserSession]
-          .flatMap {
-            ResponseHeader
-              .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-          }
-          .flatMap(UUID.init >-> Database.User.Id.init)
-          .map {
-            AppEnvironment.current.database.fetchUserById($0)
-              .mapExcept(requireSome)
-          }
-          ?? throwE(unit)
-        )
-        .run
-        .map(ignoreErrors <<< conn.map <<< const)
-        .map(map { conn.data .*. $0 })
+      let user = conn.request.cookies[pointFreeUserSession]
+        .flatMap {
+          ResponseHeader
+            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+        }
+        .flatMap(UUID.init >-> Database.User.Id.init)
+        .map {
+          AppEnvironment.current.database.fetchUserById($0)
+            .run
+            .map(either(const(nil), id))
+        }
+        ?? pure(nil)
+
+      return user
+        .map { conn.map(const(conn.data .*. $0)) }
+        .flatMap(middleware)
     }
 }
 
