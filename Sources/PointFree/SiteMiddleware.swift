@@ -30,6 +30,9 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(unit))
         |> aboutResponse
 
+    case .account:
+      fatalError()
+
     case let .episode(param):
       return conn.map(const(param))
         |> episodeResponse
@@ -41,6 +44,16 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
     case let .home(signedUpSuccessfully):
       return conn.map(const(signedUpSuccessfully))
         |> homeResponse
+
+    case .invite(.accept):
+      fatalError()
+
+    case .invite(.send):
+      fatalError()
+
+    case let .invite(.show(uuid)):
+      return conn.map(const(uuid))
+        |> showInviteResponse
 
     case let .launchSignup(email):
       return conn.map(const(email))
@@ -66,6 +79,10 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(data))
         |> subscribeResponse
 
+    case .team:
+      return conn.map(const(unit))
+        |> teamResponse
+
     case .terms:
       return conn.map(const(unit))
         |> termsResponse
@@ -90,13 +107,18 @@ private let allowedInsecureHosts: [String] = [
 private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
+       .account,
        .episode,
        .gitHubCallback,
+       .invite(.accept),
+       .invite(.send),
+       .invite(.show),
        .login,
        .logout,
        .pricing,
        .secretHome,
        .subscribe,
+       .team,
        .terms:
 
     return true

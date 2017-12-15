@@ -220,3 +220,13 @@ public func onclick<T>(javascript: StaticString) -> Attribute<T> {
 public func data<T>(_ name: StaticString, _ value: String) -> Attribute<T> {
   return .init("data-\(name)", value)
 }
+
+extension PartialIso {
+  /// Backwards composes two partial isomorphisms.
+  public static func <<< <C> (lhs: PartialIso<B, C>, rhs: PartialIso<A, B>) -> PartialIso<A, C> {
+    return .init(
+      apply: rhs.apply >-> lhs.apply,
+      unapply: lhs.unapply >-> rhs.unapply
+    )
+  }
+}

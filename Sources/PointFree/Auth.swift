@@ -69,7 +69,7 @@ public func readSessionCookieMiddleware<I, A>(
         ResponseHeader
           .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
       }
-      .flatMap(UUID.init >-> Database.User.Id.init)
+      .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
       .map {
         AppEnvironment.current.database.fetchUserById($0)
           .run

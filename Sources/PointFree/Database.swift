@@ -5,6 +5,8 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
+  var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Prelude.Unit>
+  var fetchTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?>
   var fetchUserByGitHub: (GitHub.AccessToken) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
@@ -12,6 +14,8 @@ public struct Database {
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
+    insertTeamInvite: PointFree.insertTeamInvite,
+    fetchTeamInvite: PointFree.fetchTeamInvite,
     fetchUserByGitHub: PointFree.fetchUser(gitHubAccessToken:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
@@ -49,6 +53,22 @@ public struct Database {
       case id
       case stripeSubscriptionId = "stripe_subscription_id"
       case userId = "user_id"
+    }
+  }
+
+  public struct TeamInvite: Decodable {
+    let createdAt: Date
+    let email: EmailAddress
+    let id: Id
+    let inviterUserId: Database.User.Id
+
+    public typealias Id = Tagged<TeamInvite, UUID>
+
+    private enum CodingKeys: String, CodingKey {
+      case createdAt = "created_at"
+      case email
+      case id
+      case inviterUserId = "inviter_user_id"
     }
   }
 }
@@ -128,6 +148,35 @@ private func fetchUser(gitHubAccessToken: GitHub.AccessToken) -> EitherIO<Error,
   )
 }
 
+private func fetchTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?> {
+  return firstRow(
+    """
+    SELECT "created_at", "email", "id", "inviter_user_id"
+    FROM "team_invites"
+    WHERE "id" = $1
+    LIMIT 1
+    """,
+    [id.unwrap.uuidString]
+  )
+}
+
+private func insertTeamInvite(
+  email: EmailAddress,
+  inviterUserId: Database.User.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    INSERT INTO "team_invites" ("email", "inviter_user_id")
+    VALUES ($1, $2)
+    """,
+    [
+      email.unwrap,
+      inviterUserId.unwrap.uuidString
+    ]
+    ).map(const(unit))
+}
+
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
@@ -167,6 +216,16 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
       );
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE IF NOT EXISTS "team_invites" (
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "email" character varying,
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "inviter_user_id" uuid REFERENCES "users" ("id") NOT NULL
+      )
       """
     )))
     .map(const(unit))

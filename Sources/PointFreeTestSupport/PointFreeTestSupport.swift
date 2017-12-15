@@ -22,6 +22,8 @@ extension Logger {
 extension Database {
   public static let mock = Database(
     createSubscription: { _, _ in pure(unit) },
+    insertTeamInvite: { _, _ in pure(unit) },
+    fetchTeamInvite: const(pure(.mock)),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     upsertUser: const(pure(.mock)),
@@ -37,6 +39,15 @@ extension Database.User {
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+  )
+}
+
+extension Database.TeamInvite {
+  public static let mock = Database.TeamInvite(
+    createdAt: Date(timeIntervalSince1970: 1234567890),
+    email: .init(unwrap: "blob@pointfree.co"),
+    id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
+    inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 

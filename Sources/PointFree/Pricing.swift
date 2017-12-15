@@ -250,8 +250,8 @@ private func tabStyles(
     let selectedStyles = idSelectors
       .map { inputSelector, contentSelector -> Stylesheet in
         let id = (inputSelector.idString ?? "")
-        let selector = CssSelector.star["for"==id]
-        return (inputSelector & .pseudo(.checked) ~ selector) % (
+//        let selector = CssSelector.star["for"==id]
+        return (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)
         )
       }

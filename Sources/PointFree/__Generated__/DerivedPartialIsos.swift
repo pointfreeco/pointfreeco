@@ -47,6 +47,12 @@ import Prelude
               guard case .about = $0 else { return nil }
               return unit
           })
+          public static let account = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.account)),
+            unapply: {
+              guard case .account = $0 else { return nil }
+              return unit
+          })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
             unapply: {
@@ -63,6 +69,12 @@ import Prelude
             apply: Route.home,
             unapply: {
               guard case let .home(result) = $0 else { return nil }
+              return result
+          })
+          public static let invite = parenthesize <| PartialIso(
+            apply: Route.invite,
+            unapply: {
+              guard case let .invite(result) = $0 else { return nil }
               return result
           })
           public static let launchSignup = parenthesize <| PartialIso(
@@ -101,11 +113,39 @@ import Prelude
               guard case let .subscribe(result) = $0 else { return nil }
               return result
           })
+          public static let team = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.team)),
+            unapply: {
+              guard case .team = $0 else { return nil }
+              return unit
+          })
           public static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.terms)),
             unapply: {
               guard case .terms = $0 else { return nil }
               return unit
+          })
+    }
+  }
+  extension Route.Invite {
+    enum iso {
+          public static let accept = parenthesize <| PartialIso(
+            apply: Route.Invite.accept,
+            unapply: {
+              guard case let .accept(result) = $0 else { return nil }
+              return result
+          })
+          public static let send = parenthesize <| PartialIso(
+            apply: Route.Invite.send,
+            unapply: {
+              guard case let .send(result) = $0 else { return nil }
+              return result
+          })
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Invite.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
+              return result
           })
     }
   }
