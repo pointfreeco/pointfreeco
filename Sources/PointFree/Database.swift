@@ -5,9 +5,9 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
-  var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Prelude.Unit>
+  var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
   var fetchTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?>
-  var fetchUserByGitHub: (GitHub.AccessToken) -> EitherIO<Error, User?>
+  var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -16,7 +16,7 @@ public struct Database {
     createSubscription: PointFree.createSubscription,
     insertTeamInvite: PointFree.insertTeamInvite,
     fetchTeamInvite: PointFree.fetchTeamInvite,
-    fetchUserByGitHub: PointFree.fetchUser(gitHubAccessToken:),
+    fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
@@ -119,7 +119,10 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
       envelope.gitHubUser.name
     ]
     )
-    .flatMap { _ in fetchUser(gitHubAccessToken: envelope.accessToken) }
+    .flatMap { _ in
+      AppEnvironment.current.database
+        .fetchUserByGitHub(envelope.gitHubUser.id)
+  }
 }
 
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
@@ -134,17 +137,17 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
   )
 }
 
-private func fetchUser(gitHubAccessToken: GitHub.AccessToken) -> EitherIO<Error, Database.User?> {
+private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
     SELECT "email", "github_user_id", "github_access_token", "id", "name"
     FROM "users"
-    WHERE "github_access_token" = $1
+    WHERE "github_user_id" = $1
     LIMIT 1
     """,
     // TODO: make this fetch by the github id, not access token, since it can change. also maybe build in
     //       a fetch and update to refresh the token.
-    [gitHubAccessToken.accessToken]
+    [userId.unwrap]
   )
 }
 
@@ -163,18 +166,29 @@ private func fetchTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Data
 private func insertTeamInvite(
   email: EmailAddress,
   inviterUserId: Database.User.Id
-  ) -> EitherIO<Error, Prelude.Unit> {
+  ) -> EitherIO<Error, Database.TeamInvite> {
 
   return execute(
     """
     INSERT INTO "team_invites" ("email", "inviter_user_id")
     VALUES ($1, $2)
+    RETURNING "id"
     """,
     [
       email.unwrap,
       inviterUserId.unwrap.uuidString
     ]
-    ).map(const(unit))
+    )
+    .flatMap { node -> EitherIO<Error, Database.TeamInvite> in
+      node[0, "id"]?.string
+        .flatMap(UUID.init(uuidString:))
+        .map(
+          Database.TeamInvite.Id.init
+            >>> AppEnvironment.current.database.fetchTeamInvite
+            >>> mapExcept(requireSome)
+        )
+        ?? throwE(unit)
+    }
 }
 
 private func migrate() -> EitherIO<Error, Prelude.Unit> {

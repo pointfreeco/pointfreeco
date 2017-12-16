@@ -62,7 +62,7 @@ extension URLRequest {
 
 public func readSessionCookieMiddleware<I, A>(
   _ conn: Conn<I, A>)
-  -> IO<Conn<I, Tuple2<A, Database.User?>>> {
+  -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
     let user = conn.request.cookies[pointFreeUserSession]
       .flatMap {
@@ -78,7 +78,7 @@ public func readSessionCookieMiddleware<I, A>(
       ?? pure(nil)
 
     return user
-      .map { conn.map(const(conn.data .*. $0)) }
+      .map { conn.map(const($0 .*. conn.data)) }
 }
 
 //private func readSessionCookieMiddleware<I>(
@@ -142,7 +142,7 @@ private func writeSessionCookieMiddleware(
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
-  return AppEnvironment.current.database.fetchUserByGitHub(env.accessToken)
+  return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)
     .flatMap { user in
       EitherIO(run: IO { user.map(Either.right) ?? .left(unit) })
         .catch(const(registerUser(env: env)))

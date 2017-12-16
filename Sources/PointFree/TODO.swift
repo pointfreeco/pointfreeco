@@ -230,3 +230,27 @@ extension PartialIso {
     )
   }
 }
+
+extension UUID: RawRepresentable {
+  public var rawValue: String {
+    return self.uuidString
+  }
+
+  public init?(rawValue: String) {
+    guard let uuid = UUID(uuidString: rawValue) else { return nil }
+    self = uuid
+  }
+}
+
+extension PartialIso where A == B.RawValue, B: RawRepresentable {
+  public static var _rawRepresentable: PartialIso {
+    return .init(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}
+
+public func mapExcept<E, F, A, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> (EitherIO<E, A>) -> EitherIO<F, B> {
+  return { $0.mapExcept(f) }
+}

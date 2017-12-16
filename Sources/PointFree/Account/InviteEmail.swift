@@ -20,12 +20,12 @@ let teamInviteEmailView = View<(inviter: Database.User, invite: Database.TeamInv
                 "Your colleague ",
                 .text(encode(inviter.name)),
                 """
-                has invited you to join their team account on Point-Free, a weekly video series discussing
+                 has invited you to join their team account on Point-Free, a weekly video series discussing
                 functional programming and the Swift language. To accept, simply click the link below!
                 """
                 ]),
               p([], [
-                a([href(url(to: .invite(.show(invite.id.unwrap))))], ["Click here!"])
+                a([href(url(to: .invite(.show(invite.id))))], ["Click here!"])
                 ])
               ])
             ])

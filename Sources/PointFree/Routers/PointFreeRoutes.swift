@@ -22,20 +22,9 @@ public enum Route: DerivePartialIsos {
   case terms
 
   public enum Invite: DerivePartialIsos {
-    case accept(UUID)
-    case send(EmailAddress)
-    case show(UUID)
-  }
-}
-
-extension UUID: RawRepresentable {
-  public var rawValue: String {
-    return self.uuidString
-  }
-
-  public init?(rawValue: String) {
-    guard let uuid = UUID(uuidString: rawValue) else { return nil }
-    self = uuid
+    case accept(Database.TeamInvite.Id)
+    case send(EmailAddress?)
+    case show(Database.TeamInvite.Id)
   }
 }
 
@@ -59,13 +48,17 @@ private let routers: [Router<Route>] = [
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
   Route.iso.invite <<< Route.Invite.iso.accept
-    <¢> get %> lit("invites") %> pathParam(.rawRepresentable) <% lit("accept") <% end,
+    // TODO: double raw representable is needed cause we have to go String -> UUID -> Tagged. Might need
+    //       a tagged combinator?
+    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("accept") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.send
-    <¢> post %> lit("invites") %> formField("email", .rawRepresentable) <% end,
+    // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
+    //       `(String?) -> A` like it is for `queryParam`.
+    <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
   Route.iso.invite <<< Route.Invite.iso.show
-    <¢> get %> lit("invites") %> pathParam(.rawRepresentable) <% end,
+    <¢> get %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% end,
 
   Route.iso.launchSignup
     <¢> post %> formField("email", .rawRepresentable) <% lit("launch-signup") <% end,

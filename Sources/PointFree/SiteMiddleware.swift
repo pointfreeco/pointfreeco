@@ -21,17 +21,18 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
         >-> render(conn:)
 )
 
-private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
+private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (route, user) = lower <| conn.data
+    let (user, route) = lower <| conn.data
     switch route {
     case .about:
       return conn.map(const(unit))
         |> aboutResponse
 
     case .account:
-      fatalError()
+      return conn.map(const(unit))
+        |> accountResponse
 
     case let .episode(param):
       return conn.map(const(param))
@@ -45,14 +46,16 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(signedUpSuccessfully))
         |> homeResponse
 
-    case .invite(.accept):
-      fatalError()
+    case let .invite(.accept(inviteId)):
+      return conn.map(const(inviteId))
+        |> acceptInviteResponse
 
-    case .invite(.send):
-      fatalError()
+    case let .invite(.send(email)):
+      return conn.map(const(email))
+        |> sendInviteResponse
 
-    case let .invite(.show(uuid)):
-      return conn.map(const(uuid))
+    case let .invite(.show(inviteId)):
+      return conn.map(const(inviteId))
         |> showInviteResponse
 
     case let .launchSignup(email):
@@ -87,6 +90,15 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(unit))
         |> termsResponse
     }
+}
+
+public func redirect<A>(
+  to route: Route,
+  headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
+  )
+  ->
+  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+    return redirect(to: path(to: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"

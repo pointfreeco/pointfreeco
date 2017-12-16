@@ -42,32 +42,23 @@ public func requireUser<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-
-      let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-        .map(fetchDatabaseUser)
-        ?? pure(nil)
-
-      return currentUser.flatMap { user in
-        user.map { conn.map(const($0 .*. conn.data)) |> middleware }
-          ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
+      (conn |> readSessionCookieMiddleware)
+        .flatMap { c in
+          get1(c.data).map { user in
+            c.map(const(user .*. get2(c.data)))
+              |> middleware
+            }
+            ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
       }
     }
 }
 
-//func currentUserMiddleware<A, I>(
-//  _ conn: Conn<I, A>
-//  ) -> IO<Conn<I, T2<Database.User?, A>>> {
-//
-//  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-//    .map(fetchDatabaseUser)
-//    ?? pure(nil)
-//
-//  return currentUser.map { user in
-//    conn.map(
-//      const(user .*. conn.data)
-//    )
-//  }
-//}
+func currentUserMiddleware<A, I>(
+  _ conn: Conn<I, A>
+  ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
+
+  return conn |> readSessionCookieMiddleware
+}
 
 // todo: maybe do this, maybe not
 //public func .*. <A, B> (lhs: A, rhs: B) -> Tuple<A, B> {
@@ -105,7 +96,7 @@ func requestContextMiddleware<A>(
   }
 }
 
-func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
+func extractedGitHubUserEnvelope(from request: URLRequest) -> Database.User.Id? {
   return request.cookies[pointFreeUserSession]
     .flatMap {
       ResponseHeader.verifiedValue(
@@ -115,8 +106,7 @@ func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelop
   }
 }
 
-private let fetchDatabaseUser: (GitHub.UserEnvelope) -> IO<Database.User?> =
-  ^\.accessToken
-    >>> AppEnvironment.current.database.fetchUserByGitHub
+private let fetchDatabaseUser: (Database.User.Id) -> IO<Database.User?> =
+  AppEnvironment.current.database.fetchUserById
     >>> ^\.run
     >>> map(^\.right >>> flatMap(id))
