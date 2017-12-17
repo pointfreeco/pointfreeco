@@ -39,6 +39,8 @@ let acceptInviteMiddleware =
     <<< requireUser
     <| { conn in
 
+      // TODO: need to validate that current user is not the inviter
+
       let sendInviterEmailOfAcceptance = parallel
         <| AppEnvironment.current.database.fetchUserById(get2(conn.data).inviterUserId)
           .run
@@ -69,6 +71,8 @@ let acceptInviteMiddleware =
 let sendInviteMiddleware =
   requireUser
     <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
+
+      // TODO: need to validate that email isnt the same as the inviter
 
       guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team(.show))) }
       let inviter = get1 <| conn.data
