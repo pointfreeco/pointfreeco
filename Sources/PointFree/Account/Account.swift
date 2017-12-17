@@ -12,11 +12,11 @@ import Tuple
 let accountResponse =
   requireUser
     <| writeStatus(.ok)
-    >-> respond(accountView)
+    >-> respond(accountView.contramap(lower))
 
-private let accountView = View<Tuple2<Database.User, Prelude.Unit>> { data in
+private let accountView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
   [
-    h1([.text(encode("Welcome \(data.first.name)"))]),
+    h1([.text(encode("Welcome \(currentUser.name)"))]),
     a([href(path(to: .team))], ["Your team"])
   ]
 }
