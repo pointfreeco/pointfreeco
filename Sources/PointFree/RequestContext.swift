@@ -53,18 +53,18 @@ public func requireUser<A>(
     }
 }
 
-public func _requireUser<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
-
-    return { conn in
-      conn.data.first.map { user in
-        conn.map(const(T2(first: user, second: conn.data.second)))
-        }
-        .map(middleware)
-        ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
-    }
-}
+//public func _requireUser<A>(
+//  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
+//  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+//
+//    return { conn in
+//      conn.data.first.map { user in
+//        conn.map(const(T2(first: user, second: conn.data.second)))
+//        }
+//        .map(middleware)
+//        ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
+//    }
+//}
 
 func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
@@ -72,21 +72,6 @@ func currentUserMiddleware<A, I>(
 
   return conn |> readSessionCookieMiddleware
 }
-
-// todo: maybe do this, maybe not
-//public func .*. <A, B> (lhs: A, rhs: B) -> Tuple<A, B> {
-//  return .init(first: lhs, second: rhs)
-//}
-
-//func currentRequestMiddleware<A, I>(
-//  _ conn: Conn<I, A>
-//  ) -> IO<Conn<I, T2<URLRequest, A>>> {
-//
-//  return pure <|
-//    conn.map(
-//      const(conn.request .*. conn.data)
-//  )
-//}
 
 func requestContextMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>

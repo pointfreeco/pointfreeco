@@ -139,12 +139,11 @@ private func requireTeamInvite(
 
 private func sendInviteEmail(
   invite: Database.TeamInvite, inviter: Database.User
-  )
-  ->  EitherIO<Prelude.Unit, SendEmailResponse> {
+  ) ->  EitherIO<Prelude.Unit, SendEmailResponse> {
 
-    return sendEmail(
-      to: [invite.email],
-      subject: "You’re invited to join \(inviter.name)’s team on Point-Free",
-      content: inj2(teamInviteEmailView.view((inviter, invite)))
-    )
+  return sendEmail(
+    to: [invite.email],
+    subject: "You’re invited to join \(inviter.name)’s team on Point-Free",
+    content: inj2(teamInviteEmailView.view((inviter, invite)))
+  )
 }
