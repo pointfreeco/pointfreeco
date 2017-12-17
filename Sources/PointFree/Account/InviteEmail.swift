@@ -4,7 +4,7 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
-let teamInviteEmailView = View<(inviter: Database.User, invite: Database.TeamInvite)> { inviter, invite in
+let teamInviteEmailView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
   document([
     html([
       head([
@@ -35,7 +35,7 @@ let teamInviteEmailView = View<(inviter: Database.User, invite: Database.TeamInv
     ])
 }
 
-let inviteeAcceptedEmailView = View<(inviter: Database.User, invitee: Database.User)> { inviter, invitee in
+let inviteeAcceptedEmailView = View<(Database.User, Database.User)> { inviter, invitee in
   document([
     html([
       head([
