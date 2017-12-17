@@ -18,8 +18,13 @@ public enum Route: DerivePartialIsos {
   case pricing(Stripe.Plan.Id?)
   case secretHome
   case subscribe(SubscribeData)
-  case team
+  case team(Team)
   case terms
+
+  public enum Team: DerivePartialIsos {
+    case remove(Database.User.Id)
+    case show
+  }
 
   public enum Invite: DerivePartialIsos {
     case accept(Database.TeamInvite.Id)
@@ -86,7 +91,12 @@ private let routers: [Router<Route>] = [
   Route.iso.subscribe
     <¢> post %> lit("subscribe") %> formDataBody(SubscribeData.self) <% end,
 
-  Route.iso.team
+  Route.iso.team <<< Route.Team.iso.remove
+    <¢> post %> lit("account") %> lit("team") %> lit("member")
+    %> pathParam((._rawRepresentable) >>> (._rawRepresentable))
+    <% end,
+
+  Route.iso.team <<< Route.Team.iso.show
     <¢> get %> lit("account") %> lit("team") <% end,
 
   Route.iso.terms

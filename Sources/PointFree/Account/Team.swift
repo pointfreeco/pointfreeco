@@ -26,6 +26,12 @@ let teamResponse =
     >-> writeStatus(.ok)
     >-> respond(teamView.contramap(lower))
 
+let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User.Id, Data> =
+  // TODO: do actual removal of subscription. should prob validate that teammateId is actually a teammate
+  //       of current user first.
+  requireUser
+    <| redirect(to: .team(.show))
+
 private let teamView = View<([Database.TeamInvite], [Database.User], Database.User, Prelude.Unit)> { invites, teammates, currentUser, _ in
   [
     h1(["Your team"]),
@@ -33,7 +39,9 @@ private let teamView = View<([Database.TeamInvite], [Database.User], Database.Us
       teammates.map { teammate in
         li([
           .text(encode(teammate.name)),
-          a([href("#")], ["Remove"]),
+          form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
+            input([type(.submit), value("Remove")])
+            ]),
           ])
       }
     ),
@@ -43,11 +51,9 @@ private let teamView = View<([Database.TeamInvite], [Database.User], Database.Us
       invites.map { invite in
         li([
           .text(encode(invite.email.unwrap)),
-          " ",
           form([action(path(to: .invite(.resend(invite.id)))), method(.post)], [
             input([type(.submit), value("Resend")])
             ]),
-          " ",
           form([action(path(to: .invite(.revoke(invite.id)))), method(.post)], [
             input([type(.submit), value("Revoke")])
             ]),

@@ -113,11 +113,11 @@ import Prelude
               guard case let .subscribe(result) = $0 else { return nil }
               return result
           })
-          public static let team = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.team)),
+          public static let team = parenthesize <| PartialIso(
+            apply: Route.team,
             unapply: {
-              guard case .team = $0 else { return nil }
-              return unit
+              guard case let .team(result) = $0 else { return nil }
+              return result
           })
           public static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.terms)),
@@ -157,6 +157,22 @@ import Prelude
             apply: Route.Invite.show,
             unapply: {
               guard case let .show(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Team {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let remove = parenthesize <| PartialIso(
+            apply: Route.Team.remove,
+            unapply: {
+              guard case let .remove(result) = $0 else { return nil }
               return result
           })
     }

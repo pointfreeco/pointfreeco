@@ -22,7 +22,7 @@ let revokeInviteMiddleware =
     <| { conn in
       AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .team))))
+        .flatMap(const(conn |> redirect(to: path(to: .team(.show)))))
 }
 
 let resendInviteMiddleware =
@@ -31,7 +31,7 @@ let resendInviteMiddleware =
     <| { conn in
       parallel(sendInviteEmail(invite: get2(conn.data), inviter: get1(conn.data)).run)
         .run({ _ in })
-      return conn |> redirect(to: path(to: .team))
+      return conn |> redirect(to: path(to: .team(.show)))
 }
 
 let acceptInviteMiddleware =
@@ -70,7 +70,7 @@ let sendInviteMiddleware =
   requireUser
     <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
 
-      guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team)) }
+      guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team(.show))) }
       let inviter = get1 <| conn.data
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
@@ -78,13 +78,13 @@ let sendInviteMiddleware =
         .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
           case .left:
-            return conn |> redirect(to: .team)
+            return conn |> redirect(to: .team(.show))
 
           case let .right(invite):
             parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
               .run({ _ in })
 
-            return conn |> redirect(to: .team)
+            return conn |> redirect(to: .team(.show))
           }
       }
 }
