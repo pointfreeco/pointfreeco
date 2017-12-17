@@ -8,7 +8,6 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
-import UrlFormEncoding
 
 let accountResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   requireUser
@@ -21,4 +20,3 @@ private let accountView = View<Tuple2<Database.User, Prelude.Unit>> { data in
     a([href(path(to: .team))], ["Your team"])
   ]
 }
-

@@ -9,7 +9,6 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
-import UrlFormEncoding
 
 let showInviteMiddleware =
   requireTeamInvite
@@ -36,14 +35,38 @@ let resendInviteMiddleware =
 }
 
 let acceptInviteMiddleware =
-  requireTeamInvite <| { conn in
-    
-    // TODO: subscribe user
-    // TOOD: send email to inviter
-    conn
-      |> redirect(to: path(to: .account))
-    
+  requireTeamInvite
+    <<< requireUser
+    <| { conn in
+
+      let sendInviteeAcceptedEmail = parallel
+        <| AppEnvironment.current.database.fetchUserById(get2(conn.data).inviterUserId)
+          .run
+          .map(requireSome)
+          .flatMap { errorOrInviter in
+            errorOrInviter.right.map { inviter in
+              sendEmail(
+                to: [inviter.email],
+                subject: "\(get1(conn.data).name) has accepted your Point-Free team invitation!",
+                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: get1(conn.data))))
+                )
+                .run
+                .map(const(unit))
+              }
+              ?? pure(unit)
+      }
+
+      let deleteInvite = parallel
+        <| AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id).run
+
+      zip(sendInviteeAcceptedEmail, deleteInvite).run({ _ in })
+
+      // TODO: subscribe user
+      return conn
+        |> redirect(to: path(to: .account))
 }
+
+
 
 let sendInviteMiddleware =
   requireUser

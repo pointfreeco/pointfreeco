@@ -149,8 +149,6 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
     WHERE "github_user_id" = $1
     LIMIT 1
     """,
-    // TODO: make this fetch by the github id, not access token, since it can change. also maybe build in
-    //       a fetch and update to refresh the token.
     [userId.unwrap]
   )
 }

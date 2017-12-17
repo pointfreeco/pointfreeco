@@ -8,7 +8,6 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
-import UrlFormEncoding
 
 let teamResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   requireUser
