@@ -9,23 +9,17 @@ import Prelude
 import Styleguide
 import Tuple
 
-let teamResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let teamResponse =
   requireUser
-    <| fetchTeamInvites
+    <| { conn in
+      AppEnvironment.current.database.fetchTeamInvites(conn.data.first.id)
+        .run
+        .map { conn.map(const(($0.right ?? []) .*. conn.data)) }
+    }
     >-> writeStatus(.ok)
-    >-> respond(teamView)
+    >-> respond(teamView.contramap(lower))
 
-private func fetchTeamInvites<I>(
-  _ conn: Conn<I, Tuple2<Database.User, Prelude.Unit>>
-  )
-  -> IO<Conn<I, Tuple3<[Database.TeamInvite], Database.User, Prelude.Unit>>> {
-
-    return AppEnvironment.current.database.fetchTeamInvites(conn.data.first.id)
-      .run
-      .map { conn.map(const(($0.right ?? []) .*. conn.data)) }
-}
-
-private let teamView = View<Tuple3<[Database.TeamInvite], Database.User, Prelude.Unit>> { data in
+private let teamView = View<([Database.TeamInvite], Database.User, Prelude.Unit)> { invites, currentUser, _ in
   [
     h1(["Your team"]),
     ul([
@@ -41,7 +35,7 @@ private let teamView = View<Tuple3<[Database.TeamInvite], Database.User, Prelude
 
     h1(["Current invites"]),
     ul(
-      get1(data).map { invite in
+      invites.map { invite in
         li([
           .text(encode(invite.email.unwrap)),
           " ",

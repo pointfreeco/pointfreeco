@@ -9,7 +9,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let accountResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let accountResponse =
   requireUser
     <| writeStatus(.ok)
     >-> respond(accountView)
