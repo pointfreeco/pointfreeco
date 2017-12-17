@@ -39,7 +39,7 @@ let acceptInviteMiddleware =
     <<< requireUser
     <| { conn in
 
-      let sendInviteeAcceptedEmail = parallel
+      let sendInviterEmailOfAcceptance = parallel
         <| AppEnvironment.current.database.fetchUserById(get2(conn.data).inviterUserId)
           .run
           .map(requireSome)
@@ -59,14 +59,12 @@ let acceptInviteMiddleware =
       let deleteInvite = parallel
         <| AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id).run
 
-      zip(sendInviteeAcceptedEmail, deleteInvite).run({ _ in })
+      zip(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
       // TODO: subscribe user
       return conn
         |> redirect(to: path(to: .account))
 }
-
-
 
 let sendInviteMiddleware =
   requireUser
