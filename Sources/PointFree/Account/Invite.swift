@@ -80,18 +80,6 @@ let sendInviteMiddleware =
       }
 }
 
-private func sendInviteEmail(
-  invite: Database.TeamInvite, inviter: Database.User
-  )
-  ->  EitherIO<Prelude.Unit, SendEmailResponse> {
-    
-  return sendEmail(
-    to: [invite.email],
-    subject: "You’re invited to join \(inviter.name)’s team on Point-Free",
-    content: inj2(teamInviteEmailView.view((inviter, invite)))
-  )
-}
-
 private let showInviteView = View<Tuple2<Database.User?, Database.TeamInvite>> { data in
 
   get1(data)
@@ -114,6 +102,15 @@ private let showInviteLoggedInView = View<Tuple2<Database.User, Database.TeamInv
     form([action(path(to: .invite(.accept(get2(data).id)))), method(.post)], [
       input([type(.submit), value("Accept")])
       ])
+  ]
+}
+
+private let inviteNotFound = View<Prelude.Unit> { _ in
+  [
+    p([
+      "We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by the sender."
+      ]),
+    a([href(path(to: .secretHome))], ["Go home"])
   ]
 }
 
@@ -140,11 +137,14 @@ private func requireTeamInvite(
   }
 }
 
-private let inviteNotFound = View<Prelude.Unit> { _ in
-  [
-    p([
-      "We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by the sender."
-      ]),
-    a([href(path(to: .secretHome))], ["Go home"])
-  ]
+private func sendInviteEmail(
+  invite: Database.TeamInvite, inviter: Database.User
+  )
+  ->  EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [invite.email],
+      subject: "You’re invited to join \(inviter.name)’s team on Point-Free",
+      content: inj2(teamInviteEmailView.view((inviter, invite)))
+    )
 }
