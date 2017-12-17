@@ -16,11 +16,9 @@ let accountResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnd
     >-> respond(accountView)
 
 private let accountView = View<Tuple2<Database.User, Prelude.Unit>> { data in
-  ul([
-    li([
-      h1([.text(encode("Welcome \(data.first.name)"))]),
-      a([href(path(to: .team))], ["Your team"])
-      ])
-    ])
+  [
+    h1([.text(encode("Welcome \(data.first.name)"))]),
+    a([href(path(to: .team))], ["Your team"])
+  ]
 }
 

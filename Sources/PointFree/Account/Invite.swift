@@ -59,29 +59,32 @@ let acceptInviteMiddleware =
 
 let sendInviteMiddleware =
   requireUser
-    <| _sendInviteResponse
+    <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
 
-func _sendInviteResponse(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) -> IO<Conn<ResponseEnded, Data>> {
-  guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team)) }
-  let inviter = get1 <| conn.data
+      guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team)) }
+      let inviter = get1 <| conn.data
 
-  return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
-    .run
-    .flatMap { errorOrTeamInvite -> IO<Conn<ResponseEnded, Data>> in
-      switch errorOrTeamInvite {
-      case .left:
-        return conn |> redirect(to: .team)
+      return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
+        .run
+        .flatMap { errorOrTeamInvite -> IO<Conn<ResponseEnded, Data>> in
+          switch errorOrTeamInvite {
+          case .left:
+            return conn |> redirect(to: .team)
 
-      case let .right(invite):
-        parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-          .run({ _ in })
+          case let .right(invite):
+            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+              .run({ _ in })
 
-        return conn |> redirect(to: .team)
+            return conn |> redirect(to: .team)
+          }
       }
-  }
 }
 
-private func sendInviteEmail(invite: Database.TeamInvite, inviter: Database.User) ->  EitherIO<Prelude.Unit, SendEmailResponse> {
+private func sendInviteEmail(
+  invite: Database.TeamInvite, inviter: Database.User
+  )
+  ->  EitherIO<Prelude.Unit, SendEmailResponse> {
+    
   return sendEmail(
     to: [invite.email],
     subject: "You’re invited to join \(inviter.name)’s team on Point-Free",
