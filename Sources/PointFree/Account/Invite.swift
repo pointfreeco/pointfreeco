@@ -14,7 +14,7 @@ let showInviteMiddleware =
   requireTeamInvite
     <| currentUserMiddleware
     >-> writeStatus(.ok)
-    >-> respond(showInviteView)
+    >-> respond(showInviteView.contramap(lower))
 
 let revokeInviteMiddleware =
   requireTeamInvite
@@ -89,11 +89,11 @@ let sendInviteMiddleware =
       }
 }
 
-private let showInviteView = View<Tuple2<Database.User?, Database.TeamInvite>> { data in
+private let showInviteView = View<(Database.User?, Database.TeamInvite)> { currentUser, teamInvite in
 
-  get1(data)
-    .map { showInviteLoggedInView.view($0 .*. get2(data)) }
-    ?? showInviteLoggedOutView.view(get2(data))
+  currentUser
+    .map { showInviteLoggedInView.view(($0, teamInvite)) }
+    ?? showInviteLoggedOutView.view(teamInvite)
 }
 
 private let showInviteLoggedOutView = View<Database.TeamInvite> { invite in
@@ -104,11 +104,11 @@ private let showInviteLoggedOutView = View<Database.TeamInvite> { invite in
     ]
 }
 
-private let showInviteLoggedInView = View<Tuple2<Database.User, Database.TeamInvite>> { data in
+private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite)> { currentUser, teamInvite in
   [
     p(["Do you accept this invite?"]),
 
-    form([action(path(to: .invite(.accept(get2(data).id)))), method(.post)], [
+    form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
       input([type(.submit), value("Accept")])
       ])
   ]
