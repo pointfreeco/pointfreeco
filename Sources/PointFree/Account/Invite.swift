@@ -41,7 +41,7 @@ let acceptInviteMiddleware =
     AppEnvironment.current.database.fetchTeamInvite(conn.data.id)
       .run
       .map(requireSome)
-      .flatMap { errorOrTeamInvite -> IO<Conn<ResponseEnded, Data>> in
+      .flatMap { errorOrTeamInvite in
         switch errorOrTeamInvite {
         case .left:
           // couldn't fetch invite
@@ -66,7 +66,7 @@ let sendInviteMiddleware =
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
         .run
-        .flatMap { errorOrTeamInvite -> IO<Conn<ResponseEnded, Data>> in
+        .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
           case .left:
             return conn |> redirect(to: .team)
