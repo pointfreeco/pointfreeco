@@ -12,26 +12,31 @@ import Tuple
 let teamResponse =
   requireUser
     <| { conn in
-      AppEnvironment.current.database.fetchTeamInvites(conn.data.first.id)
-        .run
-        .map { conn.map(const(($0.right ?? []) .*. conn.data)) }
+      sequential(
+        // Fetch invites and teammates in parallel.
+        zip(
+          parallel(AppEnvironment.current.database.fetchTeamInvites(conn.data.first.id).run)
+            .map { $0.right ?? [] },
+          parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(conn.data.first.id).run)
+            .map { $0.right ?? [] }
+          )
+        )
+        .map { conn.map(const(($0 .*. $1 .*. conn.data))) }
     }
     >-> writeStatus(.ok)
     >-> respond(teamView.contramap(lower))
 
-private let teamView = View<([Database.TeamInvite], Database.User, Prelude.Unit)> { invites, currentUser, _ in
+private let teamView = View<([Database.TeamInvite], [Database.User], Database.User, Prelude.Unit)> { invites, teammates, currentUser, _ in
   [
     h1(["Your team"]),
-    ul([
-      li([
-        "Stephen Celis",
-        a([href("#")], [" Remove "]),
-        ]),
-      li([
-        "Andrew Cornett",
-        a([href("#")], [" Remove "]),
-        ]),
-      ]),
+    ul(
+      teammates.map { teammate in
+        li([
+          .text(encode(teammate.name)),
+          a([href("#")], ["Remove"]),
+          ])
+      }
+    ),
 
     h1(["Current invites"]),
     ul(

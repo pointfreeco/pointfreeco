@@ -24,6 +24,9 @@ extension Database {
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
+    fetchSubscriptionById: const(pure(.some(.mock))),
+    fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
@@ -41,6 +44,14 @@ extension Database.User {
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+  )
+}
+
+extension Database.Subscription {
+  public static let mock = Database.Subscription(
+    id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    stripeSubscriptionId: Stripe.Subscription.mock.id,
+    userId: Database.User.mock.id
   )
 }
 

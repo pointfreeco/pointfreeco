@@ -4,9 +4,12 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
+  var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
+  var fetchSubscriptionById: (Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?>
+  var fetchSubscriptionByOwnerId: (Database.User.Id) -> EitherIO<Error, Database.Subscription?>
+  var fetchSubscriptionTeammatesByOwnerId: (Database.User.Id) -> EitherIO<Error, [Database.User]>
   var fetchTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?>
   var fetchTeamInvites: (Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
@@ -18,6 +21,9 @@ public struct Database {
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
+    fetchSubscriptionById: PointFree.fetchSubscription(id:),
+    fetchSubscriptionByOwnerId: PointFree.fetchSubscription(ownerId:),
+    fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
     fetchTeamInvite: PointFree.fetchTeamInvite,
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
@@ -77,7 +83,7 @@ public struct Database {
   }
 }
 
-private func createSubscription(with stripeSubscription: Stripe.Subscription, for user: Database.User)
+private func createSubscription(with stripeSubscription: Stripe.Subscription, for userId: Database.User.Id)
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
@@ -87,25 +93,65 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       """,
       [
         stripeSubscription.id.unwrap,
-        user.id.unwrap.uuidString,
+        userId.unwrap.uuidString,
         ]
       )
       .flatMap { node in
         execute(
           """
-          UPDATE "users" SET (
-            "subscription_id" = $1,
-            "updated_at" = NOW()
-          )
+          UPDATE "users"
+          SET "subscription_id" = $1, "updated_at" = NOW()
           WHERE "users"."id" = $2
           """,
           [
             node[0, "id"]?.string,
-            user.id.unwrap.uuidString
+            userId.unwrap.uuidString
           ]
         )
       }
       .map(const(unit))
+}
+
+private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?> {
+  return firstRow(
+    """
+    SELECT "id", "user_id", "stripe_subscription_id"
+    FROM "subscriptions"
+    WHERE "id" = $1
+    LIMIT 1
+    """,
+    [id.unwrap.uuidString]
+  )
+}
+
+private func fetchSubscription(ownerId: Database.User.Id) -> EitherIO<Error, Database.Subscription?> {
+  return firstRow(
+    """
+    SELECT "id", "user_id", "stripe_subscription_id"
+    FROM "subscriptions"
+    WHERE "user_id" = $1
+    LIMIT 1
+    """,
+    [ownerId.unwrap.uuidString]
+  )
+}
+
+private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<Error, [Database.User]> {
+  return rows(
+    """
+    SELECT "users"."email",
+           "users"."github_user_id",
+           "users"."github_access_token",
+           "users"."id",
+           "users"."name",
+           "users"."subscription_id"
+    FROM "users"
+    INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
+    WHERE "subscriptions"."user_id" = $1
+    AND "users"."id" != $1
+    """,
+    [ownerId.unwrap.uuidString]
+  )
 }
 
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
@@ -132,7 +178,7 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name"
+    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -144,7 +190,7 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name"
+    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
