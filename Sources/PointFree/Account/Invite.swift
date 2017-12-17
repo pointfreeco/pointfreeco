@@ -37,24 +37,12 @@ let resendInviteMiddleware =
 
 let acceptInviteMiddleware =
   requireTeamInvite <| { conn in
-    // todo: dont need to do this fetch anymore since `requireTeamInvite` takes care of it
-    AppEnvironment.current.database.fetchTeamInvite(conn.data.id)
-      .run
-      .map(requireSome)
-      .flatMap { errorOrTeamInvite in
-        switch errorOrTeamInvite {
-        case .left:
-          // couldn't fetch invite
-          return conn
-            |> redirect(to: path(to: .invite(.show(conn.data.id))))
-
-        case .right:
-          // TODO: subscribe user
-          // TOOD: send email to inviter
-          return conn
-            |> redirect(to: path(to: .account))
-        }
-    }
+    
+    // TODO: subscribe user
+    // TOOD: send email to inviter
+    conn
+      |> redirect(to: path(to: .account))
+    
 }
 
 let sendInviteMiddleware =
