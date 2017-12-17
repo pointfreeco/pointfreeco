@@ -23,6 +23,8 @@ public enum Route: DerivePartialIsos {
 
   public enum Invite: DerivePartialIsos {
     case accept(Database.TeamInvite.Id)
+    case resend(Database.TeamInvite.Id)
+    case revoke(Database.TeamInvite.Id)
     case send(EmailAddress?)
     case show(Database.TeamInvite.Id)
   }
@@ -51,6 +53,12 @@ private let routers: [Router<Route>] = [
     // TODO: double raw representable is needed cause we have to go String -> UUID -> Tagged. Might need
     //       a tagged combinator?
     <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("accept") <% end,
+
+  Route.iso.invite <<< Route.Invite.iso.resend
+    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("resend") <% end,
+
+  Route.iso.invite <<< Route.Invite.iso.revoke
+    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("revoke") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.send
     // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of

@@ -48,15 +48,23 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
 
     case let .invite(.accept(inviteId)):
       return conn.map(const(inviteId))
-        |> acceptInviteResponse
+        |> acceptInviteMiddleware
+
+    case let .invite(.resend(inviteId)):
+      return conn.map(const(inviteId))
+        |> resendInviteMiddleware
+
+    case let .invite(.revoke(inviteId)):
+      return conn.map(const(inviteId))
+        |> revokeInviteMiddleware
 
     case let .invite(.send(email)):
       return conn.map(const(email))
-        |> sendInviteResponse
+        |> sendInviteMiddleware
 
     case let .invite(.show(inviteId)):
       return conn.map(const(inviteId))
-        |> showInviteResponse
+        |> showInviteMiddleware
 
     case let .launchSignup(email):
       return conn.map(const(email))
@@ -123,6 +131,8 @@ private func isProtected(route: Route) -> Bool {
        .episode,
        .gitHubCallback,
        .invite(.accept),
+       .invite(.resend),
+       .invite(.revoke),
        .invite(.send),
        .invite(.show),
        .login,

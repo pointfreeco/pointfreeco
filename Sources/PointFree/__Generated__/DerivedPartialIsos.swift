@@ -135,6 +135,18 @@ import Prelude
               guard case let .accept(result) = $0 else { return nil }
               return result
           })
+          public static let resend = parenthesize <| PartialIso(
+            apply: Route.Invite.resend,
+            unapply: {
+              guard case let .resend(result) = $0 else { return nil }
+              return result
+          })
+          public static let revoke = parenthesize <| PartialIso(
+            apply: Route.Invite.revoke,
+            unapply: {
+              guard case let .revoke(result) = $0 else { return nil }
+              return result
+          })
           public static let send = parenthesize <| PartialIso(
             apply: Route.Invite.send,
             unapply: {

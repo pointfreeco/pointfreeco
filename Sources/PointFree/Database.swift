@@ -5,8 +5,10 @@ import PostgreSQL
 
 public struct Database {
   var createSubscription: (Stripe.Subscription, User) -> EitherIO<Error, Prelude.Unit>
+  var deleteTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
   var fetchTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?>
+  var fetchTeamInvites: (Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
@@ -14,8 +16,10 @@ public struct Database {
 
   static let live = Database(
     createSubscription: PointFree.createSubscription,
+    deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
     fetchTeamInvite: PointFree.fetchTeamInvite,
+    fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
@@ -160,6 +164,29 @@ private func fetchTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Data
     LIMIT 1
     """,
     [id.unwrap.uuidString]
+  )
+}
+
+private func deleteTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    DELETE
+    FROM "team_invites"
+    WHERE "id" = $1
+    """,
+    [id.unwrap.uuidString]
+  )
+  .map(const(unit))
+}
+
+private func fetchTeamInvites(inviterId: Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]> {
+  return rows(
+    """
+    SELECT "created_at", "email", "id", "inviter_user_id"
+    FROM "team_invites"
+    WHERE "inviter_user_id" = $1
+    """,
+    [inviterId.unwrap.uuidString]
   )
 }
 
