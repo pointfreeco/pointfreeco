@@ -92,8 +92,9 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("subscribe") %> formDataBody(SubscribeData.self) <% end,
 
   Route.iso.team <<< Route.Team.iso.remove
-    <¢> post %> lit("account") %> lit("team") %> lit("member")
+    <¢> post %> lit("account") %> lit("team") %> lit("members")
     %> pathParam((._rawRepresentable) >>> (._rawRepresentable))
+    <% lit("remove")
     <% end,
 
   Route.iso.team <<< Route.Team.iso.show

@@ -11,6 +11,7 @@ import Styleguide
 import Tuple
 
 let showInviteMiddleware =
+  // TODO: need to validate that current user doesnt already have a subscription
   requireTeamInvite
     <| currentUserMiddleware
     >-> writeStatus(.ok)
@@ -40,6 +41,7 @@ let acceptInviteMiddleware =
     <| { conn in
 
       // TODO: need to validate that current user is not the inviter
+      // TODO: need to validate that current user doesnt already have a subscription
 
       let sendInviterEmailOfAcceptance = parallel
         <| AppEnvironment.current.database.fetchUserById(get2(conn.data).inviterUserId)
