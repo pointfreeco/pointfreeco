@@ -48,6 +48,7 @@ private let teamView = View<([Database.TeamInvite], [Database.User], Database.Us
     ),
 
     h1(["Current invites"]),
+    p(["These teammates have been invited, but have not yet accepted."]),
     ul(
       invites.map { invite in
         li([
@@ -63,7 +64,7 @@ private let teamView = View<([Database.TeamInvite], [Database.User], Database.Us
     ),
 
     h1(["Invite more"]),
-    p(["You have 10 open slots. Invite a team member below:"]),
+    p(["You have 10 open spots on your team. Invite a team member below:"]),
     form([action(path(to: .invite(.send(nil)))), method(.post)], [
       input([type(.email), name("email")]),
       input([type(.submit), value("Add team member")])

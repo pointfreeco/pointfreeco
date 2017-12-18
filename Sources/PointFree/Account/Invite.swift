@@ -102,9 +102,11 @@ let sendInviteMiddleware =
     <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
 
       // TODO: need to validate that email isnt the same as the inviter
+      // TODO: need to validate that email is unique
 
-      guard let email = get2 <| conn.data else { return conn |> redirect(to: path(to: .team(.show))) }
-      let inviter = get1 <| conn.data
+      let (inviter, optionalEmail) = lower(conn.data)
+
+      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .team(.show))) }
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
         .run
