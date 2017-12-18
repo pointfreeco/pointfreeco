@@ -70,7 +70,7 @@ public struct EnvVars: Codable {
   }
 
   public struct Postgres: Codable {
-    public var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco"
+    public var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_development"
 
     private enum CodingKeys: String, CodingKey {
       case databaseUrl = "DATABASE_URL"

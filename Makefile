@@ -2,32 +2,37 @@ imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 
-bootstrap: xcodeproj postgres-mm
+bootstrap: xcodeproj postgres-mm db
 
 xcodeproj:
 	swift package generate-xcodeproj
 
 sourcery: linux-main route-partial-iso
 
+db:
+	createuser --superuser pointfreeco || true
+	createdb --owner pointfreeco pointfreeco_development || true
+	createdb --owner pointfreeco pointfreeco_test || true
+
 test-linux: sourcery
 	docker build --tag swift-web-test . \
 		&& docker run --rm swift-web-test
 
-test-macos: xcodeproj
+test-macos: xcodeproj db
 	set -o pipefail && \
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="macOS" \
 		| xcpretty
 
-test-ios: xcodeproj
+test-ios: xcodeproj db
 	set -o pipefail && \
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="iOS Simulator,name=iPhone 8,OS=11.2" \
 		| xcpretty
 
-test-swift:
+test-swift: db
 	swift test
 
 test-all: test-linux test-mac test-ios
