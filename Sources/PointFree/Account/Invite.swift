@@ -39,35 +39,59 @@ let acceptInviteMiddleware =
   requireTeamInvite
     <<< requireUser
     <| { conn in
+      let (currentUser, teamInvite) = lower(conn.data)
 
-      // TODO: need to validate that current user is not the inviter
-      // TODO: need to validate that current user doesnt already have a subscription
+      // VERIFY: need to validate that current user doesnt already have a subscription
+      let invitee = pure(currentUser)
+        .flatMap(validateDoesNotHaveSubscription)
 
-      let sendInviterEmailOfAcceptance = parallel
-        <| AppEnvironment.current.database.fetchUserById(get2(conn.data).inviterUserId)
+      // VERIFY: need to validate that current user is not the inviter
+      let inviter = AppEnvironment.current.database
+        .fetchUserById(teamInvite.inviterUserId)
+        .mapExcept(requireSome)
+        .flatMap(validateIsNot(currentUser: currentUser))
+
+      let sendInviterEmailOfAcceptance = parallel(
+        inviter
           .run
-          .map(requireSome)
           .flatMap { errorOrInviter in
             errorOrInviter.right.map { inviter in
               sendEmail(
                 to: [inviter.email],
-                subject: "\(get1(conn.data).name) has accepted your Point-Free team invitation!",
-                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: get1(conn.data))))
+                subject: "\(currentUser.name) has accepted your Point-Free team invitation!",
+                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: currentUser)))
                 )
                 .run
                 .map(const(unit))
               }
               ?? pure(unit)
+      })
+
+      // VERIFY: user is subscribed
+      let subscription = inviter
+        .map(^\.subscriptionId)
+        .mapExcept(requireSome)
+        .flatMap { AppEnvironment.current.database.fetchSubscriptionById($0) }
+        .mapExcept(requireSome)
+        .flatMap { subscription in
+          AppEnvironment.current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
       }
 
-      let deleteInvite = parallel
-        <| AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id).run
+      // VERIFY: only do this if the invite was successfully taken
+      let deleteInvite = parallel(
+        subscription
+          .flatMap { _ in AppEnvironment.current.database.deleteTeamInvite(teamInvite.id) }
+          .run
+      )
 
+      // fire-and-forget email of acceptance and deletion of invite
       zip(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
-      // TODO: subscribe user
-      return conn
-        |> redirect(to: path(to: .account))
+      return subscription
+        .run
+        .flatMap { _ in
+          conn |> redirect(to: path(to: .account))
+      }
 }
 
 let sendInviteMiddleware =
@@ -162,3 +186,18 @@ private func sendInviteEmail(
     content: inj2(teamInviteEmailView.view((inviter, invite)))
   )
 }
+
+private func validateIsNot(currentUser: Database.User) -> (Database.User) -> EitherIO<Error, Database.User> {
+  return { user in
+    user.id.unwrap.uuidString == currentUser.id.unwrap.uuidString
+      ? lift(.left(unit))
+      : lift(.right(user))
+  }
+}
+
+private func validateDoesNotHaveSubscription(user: Database.User) -> EitherIO<Error, Database.User> {
+  return user.subscriptionId != nil
+    ? lift(.left(unit))
+    : lift(.right(user))
+}
+

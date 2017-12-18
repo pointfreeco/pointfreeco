@@ -4,6 +4,7 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
+  var addUserIdToSubscriptionId: (Database.User.Id, Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
@@ -18,6 +19,7 @@ public struct Database {
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
+    addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
@@ -110,6 +112,22 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
         )
       }
       .map(const(unit))
+}
+
+private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    UPDATE "users"
+    SET "subscription_id" = $1,
+        "updated_at" = NOW()
+    WHERE "users"."id" = $2
+    """,
+    [
+      userId.unwrap.uuidString,
+      subscriptionId.unwrap.uuidString,
+    ]
+  )
+  .map(const(unit))
 }
 
 private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?> {
@@ -359,6 +377,14 @@ private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQ
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
 private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, PostgreSQL.Node> {
+
+    print("---------------")
+    print("---------------")
+    print("---------------")
+    print(query)
+    print("---------------")
+    print("---------------")
+    print("---------------")
 
     return conn.flatMap { conn in
       .wrap { try conn.execute(query, representable) }

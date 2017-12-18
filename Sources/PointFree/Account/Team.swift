@@ -29,6 +29,7 @@ let teamResponse =
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User.Id, Data> =
   // TODO: do actual removal of subscription. should prob validate that teammateId is actually a teammate
   //       of current user first.
+  // TODO: validate that member id is on same subscription as current user before removing
   requireUser
     <| redirect(to: .team(.show))
 
