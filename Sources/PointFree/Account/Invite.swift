@@ -12,6 +12,7 @@ import Tuple
 
 let showInviteMiddleware =
   // TODO: need to validate that current user doesnt already have a subscription
+  // TODO: validate that current user is not inviter
   requireTeamInvite
     <| currentUserMiddleware
     >-> writeStatus(.ok)
@@ -21,6 +22,7 @@ let revokeInviteMiddleware =
   requireTeamInvite
     <<< requireUser
     <| { conn in
+      // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .team(.show)))))
@@ -80,6 +82,9 @@ let acceptInviteMiddleware =
       // VERIFY: only do this if the invite was successfully taken
       let deleteInvite = parallel(
         subscription
+          // TODO: should `const` be @autoclosure so that we can do:
+          //       `.flatMap(const(AppEnvironment.current.database.deleteTeamInvite(teamInvite.id)))`
+          //       ?
           .flatMap { _ in AppEnvironment.current.database.deleteTeamInvite(teamInvite.id) }
           .run
       )
@@ -89,9 +94,7 @@ let acceptInviteMiddleware =
 
       return subscription
         .run
-        .flatMap { _ in
-          conn |> redirect(to: path(to: .account))
-      }
+        .flatMap(const(conn |> redirect(to: path(to: .account))))
 }
 
 let sendInviteMiddleware =
