@@ -21,6 +21,7 @@ extension Logger {
 
 extension Database {
   public static let mock = Database(
+    addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
