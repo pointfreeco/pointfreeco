@@ -6,8 +6,6 @@ import SnapshotTesting
 import XCTest
 
 final class DatabaseTests: TestCase {
-  let uuid = UUID()
-
   override func setUp() {
     super.setUp()
 
