@@ -8,10 +8,10 @@ open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
     AppEnvironment.push(const(.mock))
-
+    
     AppEnvironment.push(
       ((\.database) .~ .live)
-      >>> ((\.envVars.postgres.databaseUrl) .~ "postgres://pointfreeco:@0.0.0.0:5432/pointfreeco_test")
+        >>> ((\.envVars.postgres.databaseUrl) .~ "postgres://pointfreeco:@0.0.0.0:5432/pointfreeco_test")
     )
 
     _ = try! execute("DROP SCHEMA public CASCADE;")
