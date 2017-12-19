@@ -4,7 +4,7 @@ import Prelude
 import Tuple
 
 public struct SubscribeData: Codable {
-  public let plan: Stripe.Plan.Id
+  public let pricing: Pricing
   public let token: Stripe.Token.Id
 }
 
@@ -17,7 +17,10 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, Subscr
 
     let (user, subscribeData) = conn.data |> lower
     return AppEnvironment.current.stripe.createCustomer(user, subscribeData.token)
-      .flatMap { AppEnvironment.current.stripe.createSubscription($0.id, subscribeData.plan) }
+      .flatMap {
+        AppEnvironment.current.stripe
+          .createSubscription($0.id, subscribeData.pricing.plan, subscribeData.pricing.quantity)
+      }
       .flatMap { AppEnvironment.current.database.createSubscription($0, user).withExcept(const(unit)) }
       .run
       .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in

@@ -8,22 +8,71 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 
-enum PricingType {
-  case individual(BillingType)
-  case team(count: Int)
+public enum Pricing: Codable {
+  case individual(Billing)
+  case team(Int)
 
-  enum BillingType {
+  public static let `default` = individual(.monthly)
+
+  public enum Billing: String, Codable {
     case monthly
     case yearly
   }
+
+  private enum CodingKeys: String, CodingKey {
+    case individual
+    case team
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    if let billing = try container.decodeIfPresent(Billing.self, forKey: .individual) {
+      self = .individual(billing)
+    } else if let quantity = try container.decodeIfPresent(Int.self, forKey: .team) {
+      self = .team(quantity)
+    } else {
+      throw unit // FIXME
+    }
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case let .individual(billing):
+      try container.encode(billing, forKey: .individual)
+    case let .team(quantity):
+      try container.encode(quantity, forKey: .team)
+    }
+  }
+
+  var plan: Stripe.Plan.Id {
+    switch self {
+    case .individual(.monthly):
+      return .init(unwrap: "individual-monthly")
+    case .individual(.yearly):
+      return .init(unwrap: "individual-yearly")
+    case .team:
+      return .init(unwrap: "team-yearly")
+    }
+  }
+
+  var quantity: Int {
+    switch self {
+    case .individual:
+      return 1
+    case let .team(quantity):
+      return quantity
+    }
+  }
 }
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
+let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Pricing, Database.User?>, Data> =
   writeStatus(.ok)
     >-> respond(pricingView)
 
-private let pricingView = View<Stripe.Plan.Id> { plan in
+private let pricingView = View<Tuple2<Pricing, Database.User?>> { plan in
   document([
     html([
       head([
@@ -97,10 +146,10 @@ private let pricingTabsView = View<Prelude.Unit> { _ in
 
 private let individualPricingRowView: View<Prelude.Unit> =
   (curry(gridRow)([id(selectors.content.0)]) >>> pure)
-    <¢> individualPricingColumnView.contramap(const(PricingType.BillingType.monthly))
-    <> individualPricingColumnView.contramap(const(PricingType.BillingType.yearly))
+    <¢> individualPricingColumnView.contramap(const(Pricing.Billing.monthly))
+    <> individualPricingColumnView.contramap(const(Pricing.Billing.yearly))
 
-private let individualPricingColumnView = View<PricingType.BillingType> { billingType in
+private let individualPricingColumnView = View<Pricing.Billing> { billingType in
 
   gridColumn(sizes: [.mobile: 6], [], [
     label([`for`(radioId(for: billingType)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
@@ -160,7 +209,7 @@ private let pricingFooterView = View<Prelude.Unit> { _ in
     ])
 }
 
-private func title(for type: PricingType.BillingType) -> String {
+private func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "Monthly Plan"
@@ -169,7 +218,7 @@ private func title(for type: PricingType.BillingType) -> String {
   }
 }
 
-private func radioId(for type: PricingType.BillingType) -> String {
+private func radioId(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "monthly"
@@ -178,7 +227,7 @@ private func radioId(for type: PricingType.BillingType) -> String {
   }
 }
 
-private func pricingText(for type: PricingType.BillingType) -> String {
+private func pricingText(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "$17/mo"

@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import Css
 import Either
 import Foundation
@@ -188,7 +189,6 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
 }
 
 // TODO: Move to swift-web
-import ApplicativeRouter
 extension PartialIso {
   public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
     return .init(
