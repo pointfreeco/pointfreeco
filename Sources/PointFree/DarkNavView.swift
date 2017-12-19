@@ -36,52 +36,40 @@ private let newNavBarClass =
     | Class.grid.between(.mobile)
 
 private let loggedInNavItemsView = View<Database.User?> { currentUser in
-  ul([`class`([Class.type.list.reset, Class.grid.end(.mobile), Class.margin([.mobile: [.all: 0]])])], [
-    li([`class`([Class.display.inline])], [
-      a([href(path(to: .about)), `class`([Class.pf.colors.link.green, Class.padding([.mobile: [.right: 3]])])], ["About"])
+  ul([`class`([navListClass])], [
+    li([`class`([navListItemClass])], [
+      a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
       ]),
-    li([`class`([Class.display.inline])], [
-      a([href(path(to: .pricing(nil))), `class`([Class.pf.colors.link.green, Class.padding([.mobile: [.right: 3]])])], ["Subscribe"])
+    li([`class`([navListItemClass])], [
+      a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
       ]),
-    li([`class`([Class.display.inline])], [
-      a([href(path(to: .account)), `class`([Class.pf.colors.link.green, Class.padding([.mobile: [.right: 3]])])], ["Account"])
+    li([`class`([navListItemClass])], [
+      a([href(path(to: .account)), `class`([navLinkClass])], ["Account"])
       ]),
     ])
 }
 
 private let loggedOutNavItemsView = View<Database.User?> { currentUser in
-  ul([`class`([Class.type.list.reset, Class.grid.end(.mobile), Class.margin([.mobile: [.all: 0]])])], [
-    li([`class`([Class.display.inline])], [
-      a([href(path(to: .about)), `class`([Class.pf.colors.link.green, Class.padding([.mobile: [.right: 3]])])], ["About"])
+  ul([`class`([navListClass])], [
+    li([`class`([navListItemClass])], [
+      a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
       ]),
-    li([`class`([Class.display.inline])], [
-      a([href(path(to: .pricing(nil))), `class`([Class.pf.colors.link.green, Class.padding([.mobile: [.right: 3]])])], ["Subscribe"])
+    li([`class`([navListItemClass])], [
+      a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
       ]),
-    li([`class`([Class.display.inline])], [
-      gitHubLink(redirectRoute: .secretHome)
+    li([`class`([navListItemClass])], [
+      gitHubLink(text: "Log in", type: .white, redirectRoute: .secretHome)
       ]),
     ])
 }
 
-private func gitHubLink(redirectRoute: Route) -> Node {
-  return a(
-    [
-      href(path(to: .login(redirect: url(to: redirectRoute)))),
-      `class`([Class.pf.components.buttons.white])
-    ],
-    [
-      img(
-        base64: gitHubSvgBase64(fill: "#000"),
-        mediaType: .image(.svg),
-        alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)]
-      ),
-      span(["Log in"])
-    ]
-  )
-}
+private let navLinkClass =
+  Class.pf.colors.link.green
 
+private let navListItemClass =
+  Class.padding([.mobile: [.left: 3]])
+    | Class.display.inline
+
+private let navListClass =
+  Class.type.list.reset
+    | Class.grid.end(.mobile)

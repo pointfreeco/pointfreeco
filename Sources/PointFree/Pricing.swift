@@ -156,7 +156,7 @@ private let pricingFooterView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-        gitHubLink(redirectRoute: .pricing(nil))
+        gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))
         ])
       ])
     ])
@@ -199,28 +199,6 @@ let pricingExtraStyles: Stylesheet =
     // TODO: swift-web needs to support custom pseudoElem and pseudoClass
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
-
-private func gitHubLink(redirectRoute: Route) -> Node {
-  return a(
-    [
-      href(path(to: .login(redirect: url(to: redirectRoute)))),
-      `class`([Class.pf.components.buttons.black])
-    ],
-    [
-      img(
-        base64: gitHubSvgBase64(fill: "#ffffff"),
-        mediaType: .image(.svg),
-        alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)]
-      ),
-      span(["Sign in with GitHub"])
-    ]
-  )
-}
 
 private let selectors = (
   input: (
