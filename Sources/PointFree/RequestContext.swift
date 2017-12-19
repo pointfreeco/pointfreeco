@@ -42,47 +42,36 @@ public func requireUser<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-
-      let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-        .map(fetchDatabaseUser)
-        ?? pure(nil)
-
-      return currentUser.flatMap { user in
-        user.map { conn.map(const($0 .*. conn.data)) |> middleware }
-          ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
+      (conn |> readSessionCookieMiddleware)
+        .flatMap { c in
+          c.data.first.map { user in
+            c.map(const(user .*. c.data.second))
+              |> middleware
+            }
+            ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
       }
     }
 }
 
-//func currentUserMiddleware<A, I>(
-//  _ conn: Conn<I, A>
-//  ) -> IO<Conn<I, T2<Database.User?, A>>> {
+//public func _requireUser<A>(
+//  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>)
+//  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
 //
-//  let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-//    .map(fetchDatabaseUser)
-//    ?? pure(nil)
-//
-//  return currentUser.map { user in
-//    conn.map(
-//      const(user .*. conn.data)
-//    )
-//  }
+//    return { conn in
+//      conn.data.first.map { user in
+//        conn.map(const(T2(first: user, second: conn.data.second)))
+//        }
+//        .map(middleware)
+//        ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
+//    }
 //}
 
-// todo: maybe do this, maybe not
-//public func .*. <A, B> (lhs: A, rhs: B) -> Tuple<A, B> {
-//  return .init(first: lhs, second: rhs)
-//}
+func currentUserMiddleware<A, I>(
+  _ conn: Conn<I, A>
+  ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
-//func currentRequestMiddleware<A, I>(
-//  _ conn: Conn<I, A>
-//  ) -> IO<Conn<I, T2<URLRequest, A>>> {
-//
-//  return pure <|
-//    conn.map(
-//      const(conn.request .*. conn.data)
-//  )
-//}
+  return conn |> readSessionCookieMiddleware
+}
 
 func requestContextMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
@@ -105,7 +94,7 @@ func requestContextMiddleware<A>(
   }
 }
 
-func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelope? {
+func extractedGitHubUserEnvelope(from request: URLRequest) -> Database.User.Id? {
   return request.cookies[pointFreeUserSession]
     .flatMap {
       ResponseHeader.verifiedValue(
@@ -115,8 +104,7 @@ func extractedGitHubUserEnvelope(from request: URLRequest) -> GitHub.UserEnvelop
   }
 }
 
-private let fetchDatabaseUser: (GitHub.UserEnvelope) -> IO<Database.User?> =
-  ^\.accessToken
-    >>> AppEnvironment.current.database.fetchUserByGitHub
+private let fetchDatabaseUser: (Database.User.Id) -> IO<Database.User?> =
+  AppEnvironment.current.database.fetchUserById
     >>> ^\.run
     >>> map(^\.right >>> flatMap(id))

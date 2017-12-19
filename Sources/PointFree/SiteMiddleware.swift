@@ -21,14 +21,18 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
         >-> render(conn:)
 )
 
-private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
+private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (route, user) = lower <| conn.data
+    let (user, route) = lower <| conn.data
     switch route {
     case .about:
       return conn.map(const(unit))
         |> aboutResponse
+
+    case .account:
+      return conn.map(const(unit))
+        |> accountResponse
 
     case let .episode(param):
       return conn.map(const(param))
@@ -41,6 +45,26 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
     case let .home(signedUpSuccessfully):
       return conn.map(const(signedUpSuccessfully))
         |> homeResponse
+
+    case let .invite(.accept(inviteId)):
+      return conn.map(const(inviteId))
+        |> acceptInviteMiddleware
+
+    case let .invite(.resend(inviteId)):
+      return conn.map(const(inviteId))
+        |> resendInviteMiddleware
+
+    case let .invite(.revoke(inviteId)):
+      return conn.map(const(inviteId))
+        |> revokeInviteMiddleware
+
+    case let .invite(.send(email)):
+      return conn.map(const(email))
+        |> sendInviteMiddleware
+
+    case let .invite(.show(inviteId)):
+      return conn.map(const(inviteId))
+        |> showInviteMiddleware
 
     case let .launchSignup(email):
       return conn.map(const(email))
@@ -66,10 +90,27 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Route, Database.User?>>)
       return conn.map(const(data))
         |> subscribeResponse
 
+    case .team(.show):
+      return conn.map(const(unit))
+        |> teamResponse
+
+    case let .team(.remove(teammateId)):
+      return conn.map(const(teammateId))
+        |> removeTeammateMiddleware
+
     case .terms:
       return conn.map(const(unit))
         |> termsResponse
     }
+}
+
+public func redirect<A>(
+  to route: Route,
+  headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
+  )
+  ->
+  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+    return redirect(to: path(to: route), headersMiddleware: headersMiddleware)
 }
 
 private let canonicalHost = "www.pointfree.co"
@@ -90,13 +131,21 @@ private let allowedInsecureHosts: [String] = [
 private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
+       .account,
        .episode,
        .gitHubCallback,
+       .invite(.accept),
+       .invite(.resend),
+       .invite(.revoke),
+       .invite(.send),
+       .invite(.show),
        .login,
        .logout,
        .pricing,
        .secretHome,
        .subscribe,
+       .team(.show),
+       .team(.remove),
        .terms:
 
     return true
