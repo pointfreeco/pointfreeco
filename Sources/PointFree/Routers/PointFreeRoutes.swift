@@ -50,7 +50,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("home") <% end,
 
   Route.iso.subscribe
-    <¢> post %> lit("subscribe") %> formDataBody(SubscribeData.self) <% end,
+    <¢> post %> lit("subscribe") %> formBody(SubscribeData.self) <% end,
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
