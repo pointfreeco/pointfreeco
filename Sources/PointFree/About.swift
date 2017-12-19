@@ -1,3 +1,4 @@
+import Css
 import Foundation
 import Html
 import HtmlCssSupport
@@ -5,13 +6,14 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
+import Tuple
 
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestContextMiddleware
+  currentUserMiddleware
     >-> writeStatus(.ok)
-    >-> respond(aboutView)
+    >-> respond(aboutView.contramap(lower))
 
-private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
+private let aboutView = View<(Database.User?, Prelude.Unit)> { currentUser, _ in
   document([
     html([
       head([
@@ -19,7 +21,7 @@ private let aboutView = View<RequestContext<Prelude.Unit>> { ctx in
         style(styleguide),
         title("About Us")
         ]),
-      body(navView.view(ctx) + [
+      body(darkNavView.view(currentUser) + [
         gridRow([
           gridColumn(sizes: [.mobile: 12], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [

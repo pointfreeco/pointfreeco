@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 
 enum PricingType {
   case individual(BillingType)
@@ -20,10 +21,11 @@ enum PricingType {
 }
 
 let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
-  writeStatus(.ok)
-    >-> respond(pricingView)
+  currentUserMiddleware
+    >-> writeStatus(.ok)
+    >-> respond(pricingView.contramap(lower))
 
-private let pricingView = View<Stripe.Plan.Id> { plan in
+private let pricingView = View<(Database.User?, Stripe.Plan.Id)> { currentUser, plan in
   document([
     html([
       head([
@@ -34,7 +36,7 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
         ]),
 
       body(
-        headerView.view(unit)
+        darkNavView.view(currentUser)
           + pricingOptionsView.view(unit)
           + footerView.view(unit)
       )
@@ -52,7 +54,7 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
       ),
 
       p(
-        [`class`([Class.pf.colors.fg.green])],
+        [`class`([Class.pf.colors.fg.yellow])],
         ["Unlock full episodes and receive new updates every week."]
       ),
 
@@ -249,7 +251,6 @@ private func tabStyles(
 
     let selectedStyles = idSelectors
       .map { inputSelector, contentSelector -> Stylesheet in
-        let id = (inputSelector.idString ?? "")
         return (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)
         )

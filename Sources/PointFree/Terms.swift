@@ -23,7 +23,7 @@ private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
         title("Terms of Service")
         ]),
       body(
-        navView.view(ctx) + [
+        headerView.view(unit) + [
         gridRow([
           gridColumn(sizes: [.mobile: 12], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [
