@@ -68,7 +68,6 @@ extension GitHub.UserEnvelope {
   )
 }
 
-
 extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.mock)),
