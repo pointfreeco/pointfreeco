@@ -12,7 +12,7 @@ public enum Route: DerivePartialIsos {
   case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
-  case pricing(Pricing?)
+  case pricing(String?, Int?)
   case secretHome
   case subscribe(SubscribeData)
   case terms
@@ -44,7 +44,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("logout") <% end,
 
   Route.iso.pricing
-    <¢> get %> lit("pricing") %> queryParams(Pricing?.self) <% end,
+    <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,

@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-public enum Pricing: Codable {
+public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
   case team(Int)
 
@@ -66,13 +66,31 @@ public enum Pricing: Codable {
       return quantity
     }
   }
+
+  var isIndividual: Bool {
+    switch self {
+    case .individual:
+      return true
+    case .team:
+      return false
+    }
+  }
+
+  var isTeam: Bool {
+    switch self {
+    case .team:
+      return true
+    case .individual:
+      return false
+    }
+  }
 }
 
 let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Pricing, Database.User?>, Data> =
   writeStatus(.ok)
     >-> respond(pricingView)
 
-private let pricingView = View<Tuple2<Pricing, Database.User?>> { plan in
+private let pricingView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser in
   document([
     html([
       head([
@@ -84,14 +102,14 @@ private let pricingView = View<Tuple2<Pricing, Database.User?>> { plan in
 
       body(
         headerView.view(unit)
-          + pricingOptionsView.view(unit)
+          + pricingOptionsView.view(pricingAndUser)
           + footerView.view(unit)
       )
     ])
   ])
 }
 
-let pricingOptionsView = View<Prelude.Unit> { _ in
+let pricingOptionsView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.mobile: [.top: 4, .bottom: 0], .desktop: [.bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
@@ -107,11 +125,11 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
-          div(
-            pricingTabsView.view(unit)
-              + individualPricingRowView.view(unit)
-              + teamPricingRowView.view(unit)
-              + pricingFooterView.view(unit)
+          form(
+            pricingTabsView.view(pricingAndUser |> get1)
+              + individualPricingRowView.view(pricingAndUser |> get1)
+              + teamPricingRowView.view(pricingAndUser |> get1)
+              + pricingFooterView.view(pricingAndUser |> get2)
           )
           ])
         ])
@@ -119,14 +137,14 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let pricingTabsView = View<Prelude.Unit> { _ in
+private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
       `class`([Class.display.none]),
       id(selectors.input.0),
       type(.radio),
       name("tabs"),
-      checked(true)
+      checked(pricing.isIndividual)
       ]),
     label([`for`(selectors.input.0), `class`([Class.pf.components.buttons.pricingTab])], [
       "For you"
@@ -136,7 +154,8 @@ private let pricingTabsView = View<Prelude.Unit> { _ in
       `class`([Class.display.none]),
       id(selectors.input.1),
       type(.radio),
-      name("tabs")
+      name("tabs"),
+//      checked(pricing.isTeam)
       ]),
     label([`for`(selectors.input.1), `class`([Class.pf.components.buttons.pricingTab])], [
       "For your team"
@@ -144,7 +163,7 @@ private let pricingTabsView = View<Prelude.Unit> { _ in
   ]
 }
 
-private let individualPricingRowView: View<Prelude.Unit> =
+private let individualPricingRowView: View<Pricing> =
   (curry(gridRow)([id(selectors.content.0)]) >>> pure)
     <¢> individualPricingColumnView.contramap(const(Pricing.Billing.monthly))
     <> individualPricingColumnView.contramap(const(Pricing.Billing.yearly))
@@ -167,7 +186,7 @@ private let individualPricingColumnView = View<Pricing.Billing> { billingType in
     ])
 }
 
-private let teamPricingRowView = View<Prelude.Unit> { _ in
+private let teamPricingRowView = View<Pricing> { pricing in
   gridRow([id(selectors.content.1)], [
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
@@ -178,7 +197,7 @@ private let teamPricingRowView = View<Prelude.Unit> { _ in
           min(2),
           max(100),
           step(1),
-          value("2"),
+          value(String(pricing.quantity)),
           `class`([numberSpinner, Class.pf.colors.fg.purple])
           ]),
         h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
@@ -199,11 +218,11 @@ private let numberSpinner =
 private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
 
-private let pricingFooterView = View<Prelude.Unit> { _ in
+private let pricingFooterView = View<Database.User?> { user in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-        gitHubLink(redirectRoute: .pricing(nil))
+        user.map { _ in div([]) } ?? gitHubLink(redirectRoute: .pricing(nil, nil))
         ])
       ])
     ])

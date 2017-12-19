@@ -7,6 +7,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
@@ -25,7 +26,7 @@ let secretHomeView = View<Prelude.Unit> { _ in
       body(
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
-          <> pricingOptionsView.view(unit)
+          <> pricingOptionsView.view(.default .*. nil)
           <> footerView.view(unit)
       )
       ])
@@ -52,7 +53,7 @@ let headerView = View<Prelude.Unit> { _ in
         ]),
       gridColumn(sizes: [:], [
         div([
-          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
+          a([href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
           ])
         ])
       ]),

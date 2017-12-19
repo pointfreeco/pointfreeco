@@ -11,7 +11,7 @@ import Optics
 
 class PricingTests: TestCase {
   func testPricing() {
-    let request = URLRequest(url: URL(string: url(to: .pricing(nil)))!)
+    let request = URLRequest(url: URL(string: url(to: .pricing(nil, nil)))!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
