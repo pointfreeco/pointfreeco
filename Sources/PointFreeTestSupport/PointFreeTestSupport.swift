@@ -61,6 +61,14 @@ extension GitHub.User {
   )
 }
 
+extension GitHub.UserEnvelope {
+  public static let mock = GitHub.UserEnvelope(
+    accessToken: .mock,
+    gitHubUser: .mock
+  )
+}
+
+
 extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.mock)),

@@ -213,7 +213,7 @@ private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQ
 }
 
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
-private func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, PostgreSQL.Node> {
 
     return conn.flatMap { conn in
