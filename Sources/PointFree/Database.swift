@@ -99,7 +99,7 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
       envelope.gitHubUser.name
     ]
     )
-    .flatMap { _ in fetchUser(gitHubAccessToken: envelope.accessToken) }
+    .flatMap { _ in AppEnvironment.current.database.fetchUserByGitHub(envelope.accessToken) }
 }
 
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
