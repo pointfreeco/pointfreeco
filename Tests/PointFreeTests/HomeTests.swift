@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import SnapshotTesting
 import Prelude
 import XCTest
