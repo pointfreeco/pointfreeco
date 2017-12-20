@@ -17,6 +17,11 @@ extension AuthTests {
     ("testRegistrationEmail", testRegistrationEmail)
   ]
 }
+extension DatabaseTests {
+  static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
+    ("testCreate", testCreate)
+  ]
+}
 extension EnvVarTests {
   static var allTests: [(String, (EnvVarTests) -> () throws -> Void)] = [
     ("testDecoding", testDecoding)
@@ -77,6 +82,7 @@ extension StyleguideTests {
 // swiftlint:disable trailing_comma
 XCTMain([
   testCase(AuthTests.allTests),
+  testCase(DatabaseTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
