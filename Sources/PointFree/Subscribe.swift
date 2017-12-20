@@ -21,7 +21,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, Subscr
         AppEnvironment.current.stripe
           .createSubscription($0.id, subscribeData.pricing.plan, subscribeData.pricing.quantity)
       }
-      .flatMap { AppEnvironment.current.database.createSubscription($0, user).withExcept(const(unit)) }
+      .flatMap { AppEnvironment.current.database.createSubscription($0.id, user.id).withExcept(const(unit)) }
       .run
       .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in
 

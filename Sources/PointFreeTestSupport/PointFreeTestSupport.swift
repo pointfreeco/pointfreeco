@@ -21,7 +21,15 @@ extension Logger {
 
 extension Database {
   public static let mock = Database(
+    addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
+    deleteTeamInvite: const(pure(unit)),
+    insertTeamInvite: { _, _ in pure(.mock) },
+    fetchSubscriptionById: const(pure(.some(.mock))),
+    fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
+    fetchTeamInvite: const(pure(.mock)),
+    fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     upsertUser: const(pure(.mock)),
@@ -37,6 +45,23 @@ extension Database.User {
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+  )
+}
+
+extension Database.Subscription {
+  public static let mock = Database.Subscription(
+    id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    stripeSubscriptionId: Stripe.Subscription.mock.id,
+    userId: Database.User.mock.id
+  )
+}
+
+extension Database.TeamInvite {
+  public static let mock = Database.TeamInvite(
+    createdAt: Date(timeIntervalSince1970: 1234567890),
+    email: .init(unwrap: "blob@pointfree.co"),
+    id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
+    inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 
@@ -58,6 +83,13 @@ extension GitHub.User {
     email: .init(unwrap: "hello@pointfree.co"),
     id: .init(unwrap: 1),
     name: "Blob"
+  )
+}
+
+extension GitHub.UserEnvelope {
+  public static let mock = GitHub.UserEnvelope(
+    accessToken: .mock,
+    gitHubUser: .mock
   )
 }
 

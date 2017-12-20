@@ -299,6 +299,7 @@ public final class DatabaseDecoder: Decoder {
       where NestedKey: CodingKey {
 
         guard !self.isAtEnd else { throw Error.decodingError("Unkeyed container is at end", self.codingPath) }
+        self.codingPath.append(Key(index: self.currentIndex))
         defer { self.codingPath.removeLast() }
         guard let container = self.container[self.currentIndex].object else {
           throw Error.decodingError("Expected value at \(self.currentIndex), got nil", self.codingPath)
@@ -309,6 +310,7 @@ public final class DatabaseDecoder: Decoder {
 
     mutating func nestedUnkeyedContainer() throws -> UnkeyedDecodingContainer {
       guard !self.isAtEnd else { throw Error.decodingError("Unkeyed container is at end", self.codingPath) }
+      self.codingPath.append(Key(index: self.currentIndex))
       defer { self.codingPath.removeLast() }
       guard let container = self.container[self.currentIndex].array else {
         throw Error.decodingError("Expected value at \(self.currentIndex), got nil", self.codingPath)
@@ -319,6 +321,7 @@ public final class DatabaseDecoder: Decoder {
 
     mutating func superDecoder() throws -> Decoder {
       guard !self.isAtEnd else { throw Error.decodingError("Unkeyed container is at end", self.codingPath) }
+      self.codingPath.append(Key(index: self.currentIndex))
       defer { self.codingPath.removeLast() }
       let container = self.container[self.currentIndex]
       self.currentIndex += 1

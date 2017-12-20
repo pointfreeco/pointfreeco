@@ -63,6 +63,12 @@ import Prelude
               guard case .about = $0 else { return nil }
               return unit
           })
+          public static let account = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.account)),
+            unapply: {
+              guard case .account = $0 else { return nil }
+              return unit
+          })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
             unapply: {
@@ -79,6 +85,12 @@ import Prelude
             apply: Route.home,
             unapply: {
               guard case let .home(result) = $0 else { return nil }
+              return result
+          })
+          public static let invite = parenthesize <| PartialIso(
+            apply: Route.invite,
+            unapply: {
+              guard case let .invite(result) = $0 else { return nil }
               return result
           })
           public static let launchSignup = parenthesize <| PartialIso(
@@ -117,10 +129,66 @@ import Prelude
               guard case let .subscribe(result) = $0 else { return nil }
               return result
           })
+          public static let team = parenthesize <| PartialIso(
+            apply: Route.team,
+            unapply: {
+              guard case let .team(result) = $0 else { return nil }
+              return result
+          })
           public static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.terms)),
             unapply: {
               guard case .terms = $0 else { return nil }
+              return unit
+          })
+    }
+  }
+  extension Route.Invite {
+    enum iso {
+          public static let accept = parenthesize <| PartialIso(
+            apply: Route.Invite.accept,
+            unapply: {
+              guard case let .accept(result) = $0 else { return nil }
+              return result
+          })
+          public static let resend = parenthesize <| PartialIso(
+            apply: Route.Invite.resend,
+            unapply: {
+              guard case let .resend(result) = $0 else { return nil }
+              return result
+          })
+          public static let revoke = parenthesize <| PartialIso(
+            apply: Route.Invite.revoke,
+            unapply: {
+              guard case let .revoke(result) = $0 else { return nil }
+              return result
+          })
+          public static let send = parenthesize <| PartialIso(
+            apply: Route.Invite.send,
+            unapply: {
+              guard case let .send(result) = $0 else { return nil }
+              return result
+          })
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Invite.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Team {
+    enum iso {
+          public static let remove = parenthesize <| PartialIso(
+            apply: Route.Team.remove,
+            unapply: {
+              guard case let .remove(result) = $0 else { return nil }
+              return result
+          })
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
               return unit
           })
     }
