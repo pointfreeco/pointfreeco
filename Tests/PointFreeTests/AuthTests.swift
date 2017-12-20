@@ -70,6 +70,21 @@ class AuthTests: TestCase {
     assertSnapshot(matching: result.perform())
   }
 
+  func testLoginWithRedirect() {
+    let request = router.request(
+      for: .login(redirect: url(to: .episode(.right(42)))),
+      base: URL(string: "http://localhost:8080")!
+      )!
+      |> \.allHTTPHeaderFields .~ [
+        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+    ]
+
+    let conn = connection(from: request)
+    let result = conn |> siteMiddleware
+    
+    assertSnapshot(matching: result.perform())
+  }
+
   func testLogout() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/logout")!)
       |> \.allHTTPHeaderFields .~ [
