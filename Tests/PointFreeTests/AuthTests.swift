@@ -77,7 +77,8 @@ class AuthTests: TestCase {
       )!
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
+      ]
+      |> \.httpMethod .~ "GET"
 
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
