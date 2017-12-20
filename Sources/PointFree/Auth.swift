@@ -204,14 +204,13 @@ private func gitHubAuthTokenMiddleware(
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
-  let tmp = gitHubUrl(
+  return gitHubUrl(
     to: .authorize(
       clientId: AppEnvironment.current.envVars.gitHub.clientId,
       redirectUri: url(to: .gitHubCallback(code: nil, redirect: redirect)),
       scope: "user:email"
     )
   )
-  return tmp
 }
 
 let pointFreeUserSession = "pf_session"
