@@ -37,7 +37,7 @@ let headerView = View<Prelude.Unit> { _ in
     gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)])], [
       gridColumn(sizes: [:], [
         div([
-          a([href("#"), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
+          a([href(path(to: .about)), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
           ])
         ]),
       gridColumn(sizes: [:], [

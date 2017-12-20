@@ -1,0 +1,12 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/login?redirect=http://localhost:8080/episodes/42
+  Authorization: Basic aGVsbG86d29ybGQ=
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: https://www.github.com/login/oauth/authorize?client_id=deadbeef-client-id&redirect_uri=http://localhost:8080/github-auth?redirect%3Dhttp://localhost:8080/episodes/42&scope=user:email

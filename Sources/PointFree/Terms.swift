@@ -10,11 +10,10 @@ import Prelude
 import Styleguide
 
 let termsResponse =
-  requestContextMiddleware
-    >-> writeStatus(.ok)
+  writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
+private let termsView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
@@ -23,7 +22,7 @@ private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
         title("Terms of Service")
         ]),
       body(
-        navView.view(ctx) + [
+        headerView.view(unit) + [
         gridRow([
           gridColumn(sizes: [.mobile: 12], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [

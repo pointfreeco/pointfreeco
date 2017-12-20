@@ -1,5 +1,5 @@
 import Css
-@testable import Html
+import Html
 import Foundation
 import Prelude
 
@@ -64,6 +64,3 @@ public func opacity(_ value: Double) -> Stylesheet {
 public func zIndex(_ n: Int) -> Stylesheet {
   return key("z-index", "\(n)")
 }
-
-public let nbSpace = Node.text(EncodedString("&nbsp;"))
-public let nbHyphen = Node.text(EncodedString("&#8209;"))
