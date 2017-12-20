@@ -24,11 +24,19 @@ public struct GitHub {
   }
 
   public struct User: Codable {
+    public let avatarUrl: String
     public let email: EmailAddress
     public let id: Id
     public let name: String
 
     public typealias Id = Tagged<User, Int>
+
+    private enum CodingKeys: String, CodingKey {
+      case avatarUrl = "avatar_url"
+      case email
+      case id
+      case name
+    }
   }
 
   public struct UserEnvelope: Codable {

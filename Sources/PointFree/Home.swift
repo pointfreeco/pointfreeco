@@ -51,8 +51,8 @@ let headerView = View<Prelude.Unit> { _ in
           ])
         ]),
       gridColumn(sizes: [:], [
-        div([
-          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.buttons.purple])], ["Subscribe"])
+        div([`class`([Class.grid.end(.mobile)])], [
+          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])], ["Subscribe"])
           ])
         ])
       ]),

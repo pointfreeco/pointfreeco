@@ -51,12 +51,6 @@ public let select = CssSelector.elem(selectElement)
 private let textareaElement = CssSelector.Element.other("textarea")
 public let textarea = CssSelector.elem(textareaElement)
 
-// this is just a curried version of `li`. i wasnt able to use `curry(li)` cause the compiler was confused by
-// the `ChildOf` stuff. 
-public func li<T: ContainsList>(_ attribs: [Attribute<Element.Li>]) -> ([Node]) -> ChildOf<T> {
-  return { .init(node("li", attribs, $0)) }
-}
-
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
 }
