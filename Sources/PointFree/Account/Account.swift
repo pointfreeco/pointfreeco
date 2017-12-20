@@ -17,6 +17,7 @@ let accountResponse =
 private let accountView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
   [
     h1([.text(encode("Welcome \(currentUser.name)"))]),
-    a([href(path(to: .team(.show)))], ["Your team"])
+    p([a([href(path(to: .team(.show)))], ["Your team"])]),
+    p([a([href(path(to: .logout))], ["Logout"])]),
   ]
 }

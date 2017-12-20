@@ -19,11 +19,11 @@ enum PricingType {
   }
 }
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
-  writeStatus(.ok)
+let pricingResponse =
+    writeStatus(.ok)
     >-> respond(pricingView)
 
-private let pricingView = View<Stripe.Plan.Id> { plan in
+private let pricingView = View<(Stripe.Plan.Id, Database.User?, Route)> { plan, currentUser, currentRoute in
   document([
     html([
       head([
@@ -34,7 +34,7 @@ private let pricingView = View<Stripe.Plan.Id> { plan in
         ]),
 
       body(
-        headerView.view(unit)
+        darkNavView.view((currentUser, currentRoute))
           + pricingOptionsView.view(unit)
           + footerView.view(unit)
       )
@@ -48,11 +48,11 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
 
       h2(
         [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
-        ["Subscribe to Point", nbHyphen, "Free"]
+        ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
       ),
 
       p(
-        [`class`([Class.pf.colors.fg.green])],
+        [`class`([Class.pf.colors.fg.yellow])],
         ["Unlock full episodes and receive new updates every week."]
       ),
 
@@ -149,12 +149,13 @@ private let numberSpinner =
     | Class.pf.colors.border.gray650
 private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
+    <> maxWidth(.px(200))
 
 private let pricingFooterView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-        gitHubLink(redirectRoute: .pricing(nil))
+        gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))
         ])
       ])
     ])
@@ -198,28 +199,6 @@ let pricingExtraStyles: Stylesheet =
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
-private func gitHubLink(redirectRoute: Route) -> Node {
-  return a(
-    [
-      href(path(to: .login(redirect: url(to: redirectRoute)))),
-      `class`([Class.pf.components.buttons.black])
-    ],
-    [
-      img(
-        base64: gitHubSvgBase64(fill: "#ffffff"),
-        mediaType: .image(.svg),
-        alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)]
-      ),
-      span(["Sign in with GitHub"])
-    ]
-  )
-}
-
 private let selectors = (
   input: (
     CssSelector.id("tab0"),
@@ -249,7 +228,6 @@ private func tabStyles(
 
     let selectedStyles = idSelectors
       .map { inputSelector, contentSelector -> Stylesheet in
-        let id = (inputSelector.idString ?? "")
         return (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)
         )

@@ -40,7 +40,7 @@ public struct Database {
     public let gitHubAccessToken: String
     public let id: Id
     public let name: String
-    public let subscriptionId: Subscription.Id?
+    public private(set) var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
 

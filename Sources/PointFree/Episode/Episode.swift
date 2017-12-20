@@ -10,29 +10,17 @@ import Prelude
 import Styleguide
 
 let episodeResponse =
-  map(episode(for:))
-    >>> (
-      requireSome(notFoundView: episodeNotFoundView)
-        <| requestContextMiddleware
-        >-> writeStatus(.ok)
-        >-> respond(
-          episodeView.map(addHighlightJs >>> addGoogleAnalytics)
-      )
-)
+  require(first(episode(forParam:)) >>> requireFirst, notFoundView: episodeNotFoundView)
+    <| writeStatus(.ok)
+    >-> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
 
-private func episode(for param: Either<String, Int>) -> Episode? {
-  return episodes.first(where: {
-    param.left == .some($0.slug) || param.right == .some($0.id)
-  })
-}
-
-let episodeView = View<RequestContext<Episode>> { ctx in
+let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(ctx.data.sequence): \(ctx.data.title)"),
+        title("Episode #\(episode.sequence): \(episode.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
@@ -41,7 +29,7 @@ let episodeView = View<RequestContext<Episode>> { ctx in
           gridRow([
             gridColumn(
               sizes: [.mobile: 12, .desktop: 7],
-              leftColumnView.view(ctx.data)
+              leftColumnView.view(episode)
             ),
 
             gridColumn(
@@ -50,14 +38,14 @@ let episodeView = View<RequestContext<Episode>> { ctx in
               [
                 div(
                   [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-                  rightColumnView.view(ctx.data)
+                  rightColumnView.view(episode)
                 )
               ]
             ),
 
             ])
           ]
-          <> downloadsAndCredits.view((codeSampleDirectory: ctx.data.codeSampleDirectory, forDesktop: false))
+          <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
           <> footerView.view(unit))
       ])
     ])
@@ -270,7 +258,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   }
 }
 
-private let episodeNotFoundView = View<Prelude.Unit> { _ in
+private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
   document([
     html([
       head([
@@ -278,20 +266,28 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         style(styleguide),
         ]),
       body(
-        minimalNavView.view(unit) <> [
-        gridRow([`class`([Class.grid.center(.mobile)])], [
-          gridColumn(sizes: [:], [
-            div([`class`([Class.padding([.mobile: [.all: 4]])])], [
-              h5([`class`([Class.h5])], ["Episode not found :("]),
-              pre([
-                code([`class`([Class.pf.components.code(lang: "swift")])], [
-                  "f: (Episode) -> Never"
+        darkNavView.view((currentUser, nil))
+          <> [
+            gridRow([`class`([Class.grid.center(.mobile)])], [
+              gridColumn(sizes: [:], [
+                div([style(padding(topBottom: .rem(12)))], [
+                  h5([`class`([Class.h5])], ["Episode not found :("]),
+                  pre([
+                    code([`class`([Class.pf.components.code(lang: "swift")])], [
+                      "f: (Episode) -> Never"
+                      ])
+                    ])
                   ])
                 ])
               ])
-            ])
-          ])
-        ] <> footerView.view(unit))
+          ]
+          <> footerView.view(unit))
       ])
     ])
+}
+
+private func episode(forParam param: Either<String, Int>) -> Episode? {
+  return episodes.first(where: {
+    param.left == .some($0.slug) || param.right == .some($0.id)
+  })
 }
