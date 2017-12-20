@@ -48,7 +48,7 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
 
       h2(
         [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
-        ["Subscribe to Point", nbHyphen, "Free"]
+        ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
       ),
 
       p(
