@@ -10,6 +10,7 @@ extension AuthTests {
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
     ("testLogin", testLogin),
+    ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
     ("testSecretHome_LoggedIn", testSecretHome_LoggedIn),
@@ -48,7 +49,8 @@ extension MetaLayoutTests {
 extension NavViewTests {
   static var allTests: [(String, (NavViewTests) -> () throws -> Void)] = [
     ("testNav_LoggedOut", testNav_LoggedOut),
-    ("testNav_LoggedIn", testNav_LoggedIn)
+    ("testNav_LoggedIn_NonSubscriber", testNav_LoggedIn_NonSubscriber),
+    ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
 }
 extension PricingTests {
