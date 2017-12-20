@@ -16,6 +16,8 @@ public enum Pricing: Codable, DerivePartialIsos {
 
   public static let `default` = individual(.monthly)
 
+  public static let validTeamQuantities = 2..<100
+
   public enum Billing: String, Codable {
     case monthly
     case yearly
@@ -64,6 +66,15 @@ public enum Pricing: Codable, DerivePartialIsos {
       return 1
     case let .team(quantity):
       return quantity
+    }
+  }
+
+  var billing: Billing {
+    switch self {
+    case let .individual(billing):
+      return billing
+    case .team:
+      return .yearly
     }
   }
 
@@ -155,7 +166,7 @@ private let pricingTabsView = View<Pricing> { pricing in
       id(selectors.input.1),
       type(.radio),
       name("tabs"),
-//      checked(pricing.isTeam)
+      checked(pricing.isTeam)
       ]),
     label([`for`(selectors.input.1), `class`([Class.pf.components.buttons.pricingTab])], [
       "For your team"
@@ -165,21 +176,26 @@ private let pricingTabsView = View<Pricing> { pricing in
 
 private let individualPricingRowView: View<Pricing> =
   (curry(gridRow)([id(selectors.content.0)]) >>> pure)
-    <¢> individualPricingColumnView.contramap(const(Pricing.Billing.monthly))
-    <> individualPricingColumnView.contramap(const(Pricing.Billing.yearly))
+    <¢> individualPricingColumnView.contramap { (Pricing.Billing.monthly, $0) }
+    <> individualPricingColumnView.contramap { (Pricing.Billing.yearly, $0) }
 
-private let individualPricingColumnView = View<Pricing.Billing> { billingType in
+private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
+  return pricing.isIndividual
+    ? billing == pricing.billing
+    : billing == .monthly
+}
 
+private let individualPricingColumnView = View<(billing: Pricing.Billing, pricing: Pricing)> {
   gridColumn(sizes: [.mobile: 6], [], [
-    label([`for`(radioId(for: billingType)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
+    label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
-          id(radioId(for: billingType)), name("individual"), type(.radio), checked(billingType == .monthly)]),
+          id(radioId(for: $0.billing)), name("individual"), type(.radio), checked(isChecked($0.billing, $0.pricing))]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: billingType)))]),
+          h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: $0.billing)))]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: billingType)))]),
+          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: $0.billing)))]),
           ]),
         ])
       ])
@@ -194,10 +210,10 @@ private let teamPricingRowView = View<Pricing> { pricing in
         p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
         input([
           type(.number),
-          min(2),
-          max(100),
+          min(Pricing.validTeamQuantities.lowerBound),
+          max(Pricing.validTeamQuantities.upperBound),
           step(1),
-          value(String(pricing.quantity)),
+          value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
           `class`([numberSpinner, Class.pf.colors.fg.purple])
           ]),
         h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
@@ -221,11 +237,15 @@ private let extraSpinnerStyles =
 private let pricingFooterView = View<Database.User?> { user in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-        user.map { _ in div([]) } ?? gitHubLink(redirectRoute: .pricing(nil, nil))
-        ])
+      div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+          user.map(stripeForm.view) ?? [gitHubLink(redirectRoute: .pricing(nil, nil))]
+        )
       ])
     ])
+}
+
+private let stripeForm = View<Database.User> { user in
+  div([])
 }
 
 private func title(for type: Pricing.Billing) -> String {

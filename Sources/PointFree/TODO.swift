@@ -173,6 +173,12 @@ public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)
 // todo: move to prelude
 extension Prelude.Unit: Error {}
 
+public func clamp<T>(_ to: CountableRange<T>) -> (T) -> T {
+  return { element in
+    min(to.upperBound, max(to.lowerBound, element))
+  }
+}
+
 // todo: move to httppipeline
 public func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
   return conn.map { $0.right }
@@ -204,6 +210,20 @@ extension Element {
 
 public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
   return node("hr", attribs, nil)
+}
+
+public func min<T: HasMin>(_ value: Int) -> Attribute<T> {
+  return .init("min", value)
+}
+
+public func max<T: HasMax>(_ value: Int) -> Attribute<T> {
+  return .init("max", value)
+}
+
+public protocol HasIntValue {}
+extension Element.Input: HasIntValue {}
+public func value<T: HasIntValue>(_ value: Int) -> Attribute<T> {
+  return .init("value", value)
 }
 
 extension Array {

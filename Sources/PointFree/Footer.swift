@@ -51,7 +51,7 @@ private let pointFreeView = View<Prelude.Unit> { _ in
       " and ",
       a(
         [href(twitterUrl(to: .stephencelis)), `class`([Class.type.textDecorationNone])],
-        ["Stephen Celis"]
+        [.text(unsafeUnencodedString("Stephen&nbspCelis"))]
       ),
       "."
       ])
