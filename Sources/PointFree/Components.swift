@@ -27,8 +27,8 @@ enum GitHubLinkType {
   }
 }
 
-func gitHubLink(text: String, type: GitHubLinkType, redirectRoute: Route) -> Node {
-  return gitHubLink(text: text, type: type, redirect: url(to: redirectRoute))
+func gitHubLink(text: String, type: GitHubLinkType, redirectRoute: Route?) -> Node {
+  return gitHubLink(text: text, type: type, redirect: redirectRoute.map(url(to:)))
 }
 
 func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {

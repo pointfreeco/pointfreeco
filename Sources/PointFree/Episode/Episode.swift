@@ -20,10 +20,38 @@ let episodeResponse =
       )
 )
 
-private func episode(for param: Either<String, Int>) -> Episode? {
-  return episodes.first(where: {
-    param.left == .some($0.slug) || param.right == .some($0.id)
-  })
+public func require<A, B>(
+  _ f: @escaping (A) -> B?,
+  notFoundView: View<Prelude.Unit> = View { _ in ["Not found"] }
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      return { conn in
+        return f(conn.data)
+          .map { conn.map(const($0)) }
+          .map(middleware)
+          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+      }
+    }
+}
+
+public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
+  return { ac in (a2b(ac.0), ac.1, ac.2) }
+}
+
+func requireFirst<A, B, C>(_ x: (A?, B, C)) -> (A, B, C)? {
+  return x.0.map { ($0, x.1, x.2) }
+}
+
+let _episodeResponse =
+  require(first(episode(for:)) >>> requireFirst, notFoundView: episodeNotFoundView)
+    <| writeStatus(.ok)
+    >-> respond(_episodeView)
+
+private let _episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
+  []
 }
 
 let episodeView = View<RequestContext<Episode>> { ctx in
@@ -294,4 +322,10 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         ] <> footerView.view(unit))
       ])
     ])
+}
+
+private func episode(for param: Either<String, Int>) -> Episode? {
+  return episodes.first(where: {
+    param.left == .some($0.slug) || param.right == .some($0.id)
+  })
 }

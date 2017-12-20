@@ -8,7 +8,7 @@ import Optics
 import Styleguide
 import Prelude
 
-let darkNavView = View<(Database.User?, URLRequest?)> { currentUser, currentRequest in
+let darkNavView = View<(Database.User?, Route?)> { currentUser, currentRoute in
   gridRow([`class`([newNavBarClass])], [
     gridColumn(sizes: [.mobile: 0, .desktop: 5], [
       div([])
@@ -24,7 +24,7 @@ let darkNavView = View<(Database.User?, URLRequest?)> { currentUser, currentRequ
 
     gridColumn(
       sizes: [.mobile: 10, .desktop: 5],
-      currentUser.map(loggedInNavItemsView.view) ?? loggedOutNavItemsView.view(currentRequest)
+      currentUser.map(loggedInNavItemsView.view) ?? loggedOutNavItemsView.view(currentRoute)
     ),
     ])
 }
@@ -49,7 +49,7 @@ private let loggedInNavItemsView = View<Database.User?> { currentUser in
     ])
 }
 
-private let loggedOutNavItemsView = View<URLRequest?> { currentRequest in
+private let loggedOutNavItemsView = View<Route?> { currentRoute in
   ul([`class`([navListClass])], [
     li([`class`([navListItemClass])], [
       a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
@@ -58,7 +58,7 @@ private let loggedOutNavItemsView = View<URLRequest?> { currentRequest in
       a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
       ]),
     li([`class`([navListItemClass])], [
-      gitHubLink(text: "Log in", type: .white, redirect: currentRequest?.url?.absoluteString)
+      gitHubLink(text: "Log in", type: .white, redirectRoute: currentRoute)
       ]),
     ])
 }

@@ -79,7 +79,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> logoutResponse
 
     case let .pricing(value):
-      return conn.map(const(value ?? .monthlyTeam))
+      return conn.map(const((value ?? .monthlyTeam, user, route)))
         |> pricingResponse
 
     case .secretHome:

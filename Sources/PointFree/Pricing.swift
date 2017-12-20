@@ -27,13 +27,11 @@ func currentRequestMiddleware<A>(
   return pure(conn.map(const(T2(first: conn.request, second: conn.data))))
 }
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
-  currentUserMiddleware
-    >-> currentRequestMiddleware
-    >-> writeStatus(.ok)
-    >-> respond(pricingView.contramap(lower))
+let pricingResponse =
+    writeStatus(.ok)
+    >-> respond(pricingView)
 
-private let pricingView = View<(URLRequest, Database.User?, Stripe.Plan.Id)> { currentRequest, currentUser, plan in
+private let pricingView = View<(Stripe.Plan.Id, Database.User?, Route)> { plan, currentUser, currentRoute in
   document([
     html([
       head([
@@ -44,7 +42,7 @@ private let pricingView = View<(URLRequest, Database.User?, Stripe.Plan.Id)> { c
         ]),
 
       body(
-        darkNavView.view((currentUser, nil))
+        darkNavView.view((currentUser, currentRoute))
           + pricingOptionsView.view(unit)
           + footerView.view(unit)
       )
