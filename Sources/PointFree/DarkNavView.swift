@@ -29,38 +29,49 @@ let darkNavView = View<(Database.User?, Route?)> { currentUser, currentRoute in
     ])
 }
 
-private let newNavBarClass =
-  Class.pf.colors.bg.purple150
-    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 3]])
-    | Class.grid.middle(.mobile)
-    | Class.grid.between(.mobile)
-
-private let loggedInNavItemsView = View<Database.User?> { currentUser in
-  ul([`class`([navListClass])], [
-    li([`class`([navListItemClass])], [
-      a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
-      ]),
-    li([`class`([navListItemClass])], [
-      a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
-      ]),
-    li([`class`([navListItemClass])], [
-      a([href(path(to: .account)), `class`([navLinkClass])], ["Account"])
-      ]),
-    ])
+private let loggedInNavItemsView = View<Database.User> { currentUser in
+  navItems(
+    [
+      aboutLinkView,
+      currentUser.subscriptionId == nil ? subscribeLinkView : nil,
+      accountLinkView
+      ]
+      .flatMap(id)
+    )
+    .view(unit)
 }
 
-private let loggedOutNavItemsView = View<Route?> { currentRoute in
-  ul([`class`([navListClass])], [
-    li([`class`([navListItemClass])], [
-      a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
-      ]),
-    li([`class`([navListItemClass])], [
-      a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
-      ]),
-    li([`class`([navListItemClass])], [
-      gitHubLink(text: "Log in", type: .white, redirectRoute: currentRoute)
-      ]),
-    ])
+private let loggedOutNavItemsView = navItems([
+  aboutLinkView.contramap(const(unit)),
+  subscribeLinkView.contramap(const(unit)),
+  logInLinkView
+  ])
+
+private func navItems<A>(_ views: [View<A>]) -> View<A> {
+  return View { a in
+    ul([`class`([navListClass])],
+       views
+        .map { (curry(li)([`class`([navListItemClass])]) >>> pure) <¢> $0 }
+        .concat()
+        .view(a)
+    )
+  }
+}
+
+private let aboutLinkView = View<Prelude.Unit> { _ in
+  a([href(path(to: .about)), `class`([navLinkClass])], ["About"])
+}
+
+private let subscribeLinkView = View<Prelude.Unit> { _ in
+  a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
+}
+
+private let accountLinkView = View<Prelude.Unit> { _ in
+  a([href(path(to: .account)), `class`([navLinkClass])], ["Account"])
+}
+
+private let logInLinkView = View<Route?> { currentRoute in
+  gitHubLink(text: "Log in", type: .white, redirectRoute: currentRoute)
 }
 
 private let navLinkClass =
@@ -73,3 +84,9 @@ private let navListItemClass =
 private let navListClass =
   Class.type.list.reset
     | Class.grid.end(.mobile)
+
+private let newNavBarClass =
+  Class.pf.colors.bg.purple150
+    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 3]])
+    | Class.grid.middle(.mobile)
+    | Class.grid.between(.mobile)

@@ -258,7 +258,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   }
 }
 
-private let episodeNotFoundView = View<Prelude.Unit> { _ in
+private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
   document([
     html([
       head([
@@ -266,20 +266,22 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         style(styleguide),
         ]),
       body(
-        darkNavView.view((nil, nil)) <> [
-        gridRow([`class`([Class.grid.center(.mobile)])], [
-          gridColumn(sizes: [:], [
-            div([`class`([Class.padding([.mobile: [.all: 4]])])], [
-              h5([`class`([Class.h5])], ["Episode not found :("]),
-              pre([
-                code([`class`([Class.pf.components.code(lang: "swift")])], [
-                  "f: (Episode) -> Never"
+        darkNavView.view((currentUser, nil))
+          <> [
+            gridRow([`class`([Class.grid.center(.mobile)])], [
+              gridColumn(sizes: [:], [
+                div([style(padding(topBottom: .rem(12)))], [
+                  h5([`class`([Class.h5])], ["Episode not found :("]),
+                  pre([
+                    code([`class`([Class.pf.components.code(lang: "swift")])], [
+                      "f: (Episode) -> Never"
+                      ])
+                    ])
                   ])
                 ])
               ])
-            ])
-          ])
-        ] <> footerView.view(unit))
+          ]
+          <> footerView.view(unit))
       ])
     ])
 }

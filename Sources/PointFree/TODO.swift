@@ -106,7 +106,7 @@ public func requireSome<A>(
 
 public func require<A, B>(
   _ f: @escaping (A) -> B?,
-  notFoundView: View<Prelude.Unit> = View { _ in ["Not found"] }
+  notFoundView: View<A> = View { _ in ["Not found"] }
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -116,7 +116,7 @@ public func require<A, B>(
         return f(conn.data)
           .map { conn.map(const($0)) }
           .map(middleware)
-          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
+          ?? (conn |> (writeStatus(.notFound) >-> respond(notFoundView)))
       }
     }
 }
