@@ -278,7 +278,7 @@ private let episodeNotFoundView = View<Prelude.Unit> { _ in
         style(styleguide),
         ]),
       body(
-        darkNavView.view(nil) <> [
+        darkNavView.view((nil, nil)) <> [
         gridRow([`class`([Class.grid.center(.mobile)])], [
           gridColumn(sizes: [:], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [

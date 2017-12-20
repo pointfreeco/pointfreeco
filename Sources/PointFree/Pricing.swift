@@ -8,7 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-import Tuple
+@testable import Tuple
 
 enum PricingType {
   case individual(BillingType)
@@ -20,12 +20,20 @@ enum PricingType {
   }
 }
 
+func currentRequestMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<StatusLineOpen, T2<URLRequest, A>>> {
+
+  return pure(conn.map(const(T2(first: conn.request, second: conn.data))))
+}
+
 let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Stripe.Plan.Id, Data> =
   currentUserMiddleware
+    >-> currentRequestMiddleware
     >-> writeStatus(.ok)
     >-> respond(pricingView.contramap(lower))
 
-private let pricingView = View<(Database.User?, Stripe.Plan.Id)> { currentUser, plan in
+private let pricingView = View<(URLRequest, Database.User?, Stripe.Plan.Id)> { currentRequest, currentUser, plan in
   document([
     html([
       head([
@@ -36,7 +44,7 @@ private let pricingView = View<(Database.User?, Stripe.Plan.Id)> { currentUser, 
         ]),
 
       body(
-        darkNavView.view(currentUser)
+        darkNavView.view((currentUser, nil))
           + pricingOptionsView.view(unit)
           + footerView.view(unit)
       )

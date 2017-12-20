@@ -21,7 +21,7 @@ private let aboutView = View<(Database.User?, Prelude.Unit)> { currentUser, _ in
         style(styleguide),
         title("About Us")
         ]),
-      body(darkNavView.view(currentUser) + [
+      body(darkNavView.view((currentUser, nil)) + [
         gridRow([
           gridColumn(sizes: [.mobile: 12], [
             div([`class`([Class.padding([.mobile: [.all: 4]])])], [

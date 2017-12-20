@@ -28,9 +28,13 @@ enum GitHubLinkType {
 }
 
 func gitHubLink(text: String, type: GitHubLinkType, redirectRoute: Route) -> Node {
+  return gitHubLink(text: text, type: type, redirect: url(to: redirectRoute))
+}
+
+func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
   return a(
     [
-      href(path(to: .login(redirect: url(to: redirectRoute)))),
+      href(path(to: .login(redirect: redirect))),
       `class`([type.buttonClass])
     ],
     [
