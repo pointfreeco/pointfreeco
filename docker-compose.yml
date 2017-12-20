@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  db:
+    environment:
+      POSTGRES_DB: pointfreeco_test
+      POSTGRES_USER: pointfreeco
+    image: postgres
+    ports:
+      - '5433:5432'
+
+  tests:
+    build:
+      context: .
+    environment:
+      DATABASE_URL: postgres://pointfreeco:@db:5432/pointfreeco_test

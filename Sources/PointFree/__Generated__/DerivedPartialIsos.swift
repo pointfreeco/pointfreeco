@@ -163,17 +163,17 @@ import Prelude
   }
   extension Route.Team {
     enum iso {
-          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
-            apply: const(.some(.show)),
-            unapply: {
-              guard case .show = $0 else { return nil }
-              return unit
-          })
           public static let remove = parenthesize <| PartialIso(
             apply: Route.Team.remove,
             unapply: {
               guard case let .remove(result) = $0 else { return nil }
               return result
+          })
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
           })
     }
   }
