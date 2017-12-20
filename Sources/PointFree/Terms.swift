@@ -10,11 +10,10 @@ import Prelude
 import Styleguide
 
 let termsResponse =
-  requestContextMiddleware
-    >-> writeStatus(.ok)
+  writeStatus(.ok)
     >-> respond(termsView)
 
-private let termsView = View<RequestContext<Prelude.Unit>> { ctx in
+private let termsView = View<Prelude.Unit> { _ in
   document([
     html([
       head([
