@@ -157,6 +157,7 @@ private let numberSpinner =
     | Class.pf.colors.border.gray650
 private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
+    <> maxWidth(.px(200))
 
 private let pricingFooterView = View<Prelude.Unit> { _ in
   gridRow([

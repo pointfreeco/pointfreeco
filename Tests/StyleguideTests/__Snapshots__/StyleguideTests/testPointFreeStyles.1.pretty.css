@@ -72,6 +72,10 @@ body {
   color : #121212;
 }
 
+.fg-gray300 {
+  color : #555555;
+}
+
 .fg-gray400 {
   color : #666666;
 }
@@ -92,8 +96,20 @@ body {
   color : #974DFF;
 }
 
+.fg-yellow {
+  color : #FFF080;
+}
+
 .fg-white {
   color : #fff;
+}
+
+a:link.pf-link-black {
+  color : #121212;
+}
+
+a:visited.pf-link-black {
+  color : #121212;
 }
 
 a:link.pf-link-gray650 {

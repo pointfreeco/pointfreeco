@@ -4,11 +4,6 @@ import HtmlCssSupport
 import Styleguide
 import Prelude
 
-private let footerClass =
-  Class.grid.row
-    | Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])
-    | Class.pf.colors.bg.black
-
 let footerView =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
@@ -24,7 +19,7 @@ private let linksColumnsView =
     <> moreColumnView.map(gridColumn(sizes: [.mobile: 4, .desktop: 2]) >>> pure)
 
 private let legalView = View<Prelude.Unit> { _ in
-  p([`class`([Class.pf.colors.fg.gray400, Class.pf.type.body.small, Class.padding([.mobile: [.top: 2]])])], [
+  p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
     "The content of this site is license under ",
     a([`class`([Class.pf.colors.link.gray650]), href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
@@ -58,7 +53,7 @@ private let pointFreeView = View<Prelude.Unit> { _ in
 
 private let contentColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([Class.pf.type.title6, Class.pf.colors.fg.white])], ["Content"]),
+    h5([`class`([columnTitleClass])], ["Content"]),
     ol([`class`([Class.type.list.reset])], [
       li([
         a([`class`([footerLinkClass]), href(path(to: .secretHome))], ["Videos"])
@@ -75,7 +70,7 @@ private let contentColumnView = View<Prelude.Unit> { _ in
 
 private let accountColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([Class.pf.type.title6, Class.pf.colors.fg.white])], ["Account"]),
+    h5([`class`([columnTitleClass])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
       li([
         a([`class`([footerLinkClass]), href("#")], ["Subscribe"])
@@ -89,7 +84,7 @@ private let accountColumnView = View<Prelude.Unit> { _ in
 
 private let moreColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([Class.pf.type.title6, Class.pf.colors.fg.white])], ["More"]),
+    h5([`class`([columnTitleClass])], ["More"]),
     ol([`class`([Class.type.list.reset])], [
       li([
         a([`class`([footerLinkClass]), href(twitterUrl(to: .pointfreeco))], ["Twitter"])
@@ -104,4 +99,19 @@ private let moreColumnView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let footerLinkClass = Class.pf.colors.link.purple | Class.pf.type.body.regular
+private let footerClass =
+  Class.grid.row
+    | Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])
+    | Class.pf.colors.bg.black
+
+private let footerLinkClass =
+  Class.pf.colors.link.purple
+    | Class.pf.type.body.regular
+
+private let columnTitleClass =
+  Class.pf.type.title6
+    | Class.pf.colors.fg.white
+
+private let legalClass =
+  Class.pf.colors.fg.gray400
+    | Class.pf.type.body.small
