@@ -10,10 +10,10 @@ xcodeproj:
 sourcery: linux-main route-partial-iso
 
 init-db:
-	psql < Database/init.sql
+	psql < database/init.sql
 
 deinit-db:
-	psql < Database/deinit.sql
+	psql < database/deinit.sql
 
 test-linux: sourcery init-db
 	docker-compose up --abort-on-container-exit --build
