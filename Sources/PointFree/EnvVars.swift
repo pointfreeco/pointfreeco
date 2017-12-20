@@ -119,3 +119,20 @@ extension EnvVars {
     try self.stripe.encode(to: encoder)
   }
 }
+
+extension EnvVars {
+  func assigningValuesFrom(_ env: [String: String]) -> EnvVars {
+    let decoded = (try? encoder.encode(self))
+      .flatMap { try? decoder.decode([String: String].self, from: $0) }
+      ?? [:]
+
+    let assigned = decoded.merging(env, uniquingKeysWith: { $1 })
+
+    return (try? JSONSerialization.data(withJSONObject: assigned))
+      .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
+      ?? self
+  }
+}
+
+private let encoder = JSONEncoder()
+private let decoder = JSONDecoder()

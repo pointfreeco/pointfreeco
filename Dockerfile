@@ -12,5 +12,4 @@ RUN rm -rf /package/.build/debug
 
 RUN swift package resolve
 RUN swift package clean
-RUN make db
 CMD swift test

@@ -9,14 +9,14 @@ xcodeproj:
 
 sourcery: linux-main route-partial-iso
 
-db:
-	createuser --superuser pointfreeco || true
-	createdb --owner pointfreeco pointfreeco_development || true
-	createdb --owner pointfreeco pointfreeco_test || true
+init-db:
+	psql < Database/init.sql
+
+deinit-db:
+	psql < Database/deinit.sql
 
 test-linux: sourcery
-	docker build --tag swift-web-test . \
-		&& docker run --rm swift-web-test
+	docker-compose up --build
 
 test-macos: xcodeproj db
 	set -o pipefail && \

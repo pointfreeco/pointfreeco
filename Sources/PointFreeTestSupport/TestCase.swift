@@ -11,7 +11,7 @@ open class TestCase: XCTestCase {
       const(
         .mock
           |> \.database .~ .live
-          |> \.envVars.postgres.databaseUrl .~ "postgres://pointfreeco:@0.0.0.0:5432/pointfreeco_test"
+          |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
       )
     )
 
