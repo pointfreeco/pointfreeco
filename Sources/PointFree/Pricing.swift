@@ -8,7 +8,6 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-@testable import Tuple
 
 enum PricingType {
   case individual(BillingType)
@@ -18,13 +17,6 @@ enum PricingType {
     case monthly
     case yearly
   }
-}
-
-func currentRequestMiddleware<A>(
-  _ conn: Conn<StatusLineOpen, A>
-  ) -> IO<Conn<StatusLineOpen, T2<URLRequest, A>>> {
-
-  return pure(conn.map(const(T2(first: conn.request, second: conn.data))))
 }
 
 let pricingResponse =
