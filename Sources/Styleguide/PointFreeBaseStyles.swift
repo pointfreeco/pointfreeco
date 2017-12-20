@@ -35,14 +35,17 @@ extension Class {
       }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
+        public static let gray300 = CssSelector.class("fg-gray300")
         public static let gray400 = CssSelector.class("fg-gray400")
         public static let gray650 = CssSelector.class("fg-gray650")
         public static let gray850 = CssSelector.class("fg-gray850")
         public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
+        public static let yellow = CssSelector.class("fg-yellow")
         public static let white = CssSelector.class("fg-white")
       }
       public enum link {
+        public static let black = CssSelector.class("pf-link-black")
         public static let gray650 = CssSelector.class("pf-link-gray650")
         public static let green = CssSelector.class("pf-link-green")
         public static let purple = CssSelector.class("pf-link-purple")
@@ -135,6 +138,11 @@ extension Class.pf {
         base
           | Class.pf.colors.link.white
           | Class.pf.colors.bg.black
+
+      public static let white =
+        base
+          | Class.pf.colors.link.black
+          | Class.pf.colors.bg.white
 
       private static let pricingTabBase =
         Class.layout.fit
@@ -242,13 +250,17 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)
+    <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
     <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
     <> Class.pf.colors.fg.gray650 % color(Colors.gray650)
     <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
     <> Class.pf.colors.fg.green % color(Colors.green)
     <> Class.pf.colors.fg.purple % color(Colors.purple)
+    <> Class.pf.colors.fg.yellow % color(Colors.yellow)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
 
+    <> (a & .pseudo(.link) & Class.pf.colors.link.black) % color(Colors.black)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.black) % color(Colors.black)
     <> (a & .pseudo(.link) & Class.pf.colors.link.gray650) % color(Colors.gray650)
     <> (a & .pseudo(.visited) & Class.pf.colors.link.gray650) % color(Colors.gray650)
     <> (a & .pseudo(.link) & Class.pf.colors.link.green) % color(Colors.green)

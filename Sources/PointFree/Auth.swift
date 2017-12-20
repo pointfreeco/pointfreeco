@@ -123,22 +123,28 @@ private func writeSessionCookieMiddleware(
     )
 }
 
-//public func requireUser<A>(
-//  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
-//  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-//
-//    return { conn in
-//
-//      let currentUser = extractedGitHubUserEnvelope(from: conn.request)
-//        .map(fetchDatabaseUser)
-//        ?? pure(nil)
-//
-//      return currentUser.flatMap { user in
-//        user.map { conn.map(const($0 .*. conn.data .*. unit)) |> middleware }
-//          ?? (conn |> redirect(to: path(to: .login(redirect: conn.request.url?.absoluteString))))
-//      }
-//    }
-//}
+public func requireUser<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { conn in
+      (conn |> readSessionCookieMiddleware)
+        .flatMap { c in
+          c.data.first.map { user in
+            c.map(const(user .*. c.data.second))
+              |> middleware
+            }
+            ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
+      }
+    }
+}
+
+func currentUserMiddleware<A, I>(
+  _ conn: Conn<I, A>
+  ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
+
+  return conn |> readSessionCookieMiddleware
+}
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
