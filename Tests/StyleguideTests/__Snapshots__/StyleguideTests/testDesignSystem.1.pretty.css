@@ -766,6 +766,10 @@
   width : 50%;
 }
 
+.w-100p {
+  width : 100%;
+}
+
 .inline {
   display : inline;
 }
