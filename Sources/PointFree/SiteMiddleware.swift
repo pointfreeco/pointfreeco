@@ -35,7 +35,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> accountResponse
 
     case let .episode(param):
-      return conn.map(const(param))
+      return conn.map(const((param, user, route)))
         |> episodeResponse
 
     case let .gitHubCallback(code, redirect):

@@ -10,57 +10,17 @@ import Prelude
 import Styleguide
 
 let episodeResponse =
-  map(episode(for:))
-    >>> (
-      requireSome(notFoundView: episodeNotFoundView)
-        <| requestContextMiddleware
-        >-> writeStatus(.ok)
-        >-> respond(
-          episodeView.map(addHighlightJs >>> addGoogleAnalytics)
-      )
-)
-
-public func require<A, B>(
-  _ f: @escaping (A) -> B?,
-  notFoundView: View<Prelude.Unit> = View { _ in ["Not found"] }
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-    return { middleware in
-      return { conn in
-        return f(conn.data)
-          .map { conn.map(const($0)) }
-          .map(middleware)
-          ?? (conn.map(const(unit)) |> (writeStatus(.notFound) >-> respond(notFoundView)))
-      }
-    }
-}
-
-public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
-  return { ac in (a2b(ac.0), ac.1, ac.2) }
-}
-
-func requireFirst<A, B, C>(_ x: (A?, B, C)) -> (A, B, C)? {
-  return x.0.map { ($0, x.1, x.2) }
-}
-
-let _episodeResponse =
   require(first(episode(for:)) >>> requireFirst, notFoundView: episodeNotFoundView)
     <| writeStatus(.ok)
-    >-> respond(_episodeView)
+    >-> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
 
-private let _episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
-  []
-}
-
-let episodeView = View<RequestContext<Episode>> { ctx in
+let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
   document([
     html([
       head([
         style(renderedNormalizeCss),
         style(styleguide),
-        title("Episode #\(ctx.data.sequence): \(ctx.data.title)"),
+        title("Episode #\(episode.sequence): \(episode.title)"),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
 
@@ -69,7 +29,7 @@ let episodeView = View<RequestContext<Episode>> { ctx in
           gridRow([
             gridColumn(
               sizes: [.mobile: 12, .desktop: 7],
-              leftColumnView.view(ctx.data)
+              leftColumnView.view(episode)
             ),
 
             gridColumn(
@@ -78,14 +38,14 @@ let episodeView = View<RequestContext<Episode>> { ctx in
               [
                 div(
                   [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-                  rightColumnView.view(ctx.data)
+                  rightColumnView.view(episode)
                 )
               ]
             ),
 
             ])
           ]
-          <> downloadsAndCredits.view((codeSampleDirectory: ctx.data.codeSampleDirectory, forDesktop: false))
+          <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
           <> footerView.view(unit))
       ])
     ])
