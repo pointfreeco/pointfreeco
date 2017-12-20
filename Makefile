@@ -15,24 +15,24 @@ init-db:
 deinit-db:
 	psql < Database/deinit.sql
 
-test-linux: sourcery
-	docker-compose up --build
+test-linux: sourcery init-db
+	docker-compose up --abort-on-container-exit --build
 
-test-macos: xcodeproj db
+test-macos: xcodeproj init-db
 	set -o pipefail && \
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="macOS" \
 		| xcpretty
 
-test-ios: xcodeproj db
+test-ios: xcodeproj init-db
 	set -o pipefail && \
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="iOS Simulator,name=iPhone 8,OS=11.2" \
 		| xcpretty
 
-test-swift: db
+test-swift: init-db
 	swift test
 
 test-all: test-linux test-mac test-ios
