@@ -244,12 +244,16 @@ private let subscriptionInviteMoreRowView = View<Prelude.Unit> { _ in
       div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
         p(["You have 10 open spots on your team. Invite a team member below:"]),
 
-        form([action(path(to: .invite(.send(nil)))), method(.post)], [
+        form([
+          action(path(to: .invite(.send(nil)))), method(.post),
+          `class`([Class.flex.flex])
+          ], [
           input([
+            `class`([smallInputClass, Class.align.middle, Class.size.width100pct]),
+            name("email"),
+            placeholder("blob@example.com"),
             type(.email),
-            `class`([smallInputClass, Class.align.middle]),
-            name("email")]),
-
+            ]),
           input([
             type(.submit),
             `class`([
@@ -278,12 +282,12 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([text(status(for: subscription))]),
           p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
-          p([text("Expires: " + String(card.expMonth) + "/" + String(card.expYear))]),
+          p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
           ])
         ]),
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [
-        div([`class`([Class.grid.end(.mobile)])], [
-          p([
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.mobile)])], [
+          p([`class`([])], [
             a([href("#"), `class`([Class.pf.components.button(color: .purple, size: .small)])], ["Update payment method"])
             ])
           ])
@@ -298,7 +302,7 @@ public func status(for subscription: Stripe.Subscription) -> String {
     let currentPeriodEndString = subscription.currentPeriodEnd
       .map { " " + dateFormatter.string(from: $0) } ?? ""
     let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
-    return "Renewing" + currentPeriodEndString + totalAmountString
+    return "Renews" + currentPeriodEndString + totalAmountString
   case .canceled:
     return subscription.currentPeriodEnd
       .filterOptional { $0 > AppEnvironment.current.date() }
