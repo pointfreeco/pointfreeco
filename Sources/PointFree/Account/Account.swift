@@ -17,7 +17,7 @@ let accountResponse =
 
 func fetchAccountData<I, A>(
   _ conn: Conn<I, Tuple2<Database.User, A>>
-  ) -> IO<Conn<I, Tuple5<Database.User, Database.Subscription?, [Database.TeamInvite], [Database.User], A>>> {
+  ) -> IO<Conn<I, Tuple5<Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], A>>> {
 
   let (user, rest) = lower(conn.data)
 
@@ -25,6 +25,8 @@ func fetchAccountData<I, A>(
     .map {
       AppEnvironment.current.database.fetchSubscriptionById($0)
         .mapExcept(requireSome)
+        .withExcept(const(unit))
+        .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
         .run
         .map(^\.right)
     }
@@ -44,7 +46,7 @@ func fetchAccountData<I, A>(
     .map { conn.map(const(user .*. $0 .*. $1 .*. $2 .*. rest)) }
 }
 
-let accountView = View<(Database.User, Database.Subscription?, [Database.TeamInvite], [Database.User], Prelude.Unit)> { currentUser, subscription, teamInvites, teammates, _ in
+let accountView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], Prelude.Unit)> { currentUser, subscription, teamInvites, teammates, _ in
 
   document([
     html([
@@ -97,7 +99,13 @@ private let profileRowView = View<Database.User> { currentUser in
           input([`class`([blockInputClass]), type(.email), value(currentUser.email.unwrap)]),
 
           label([`class`([Class.display.block])], [
-            input([type(.checkbox), `class`([Class.margin([.mobile: [.right: 1]])])]),
+            input(
+              [
+                type(.checkbox),
+                checked(false), // FIXME
+                `class`([Class.margin([.mobile: [.right: 1]])])
+              ]
+            ),
             "Receive emails from us"
             ]),
 
@@ -112,7 +120,7 @@ private let profileRowView = View<Database.User> { currentUser in
     ])
 }
 
-private let subscriptionRowView = View<(Database.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
+private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
   guard let subscription = subscription else { return [] }
 
   return [
@@ -127,14 +135,21 @@ private let subscriptionRowView = View<(Database.Subscription?, [Database.TeamIn
               <> subscriptionTeamRow.view(teammates)
               <> subscriptionInvitesRowView.view(invites)
               <> subscriptionInviteMoreRowView.view(unit)
-              <> subscriptionPaymentInfoView.view(unit))
+              <> subscriptionPaymentInfoView.view(subscription)
+            )
           ])
         ])
       ])
   ]
 }
 
-private let subscriptionPlanRow = View<Database.Subscription?> { _ in
+private func planName(for subscription: Stripe.Subscription) -> String {
+  return subscription.quantity > 1
+    ? subscription.plan.name + " (×" + String(subscription.quantity) + ")"
+    : subscription.plan.name
+}
+
+private let subscriptionPlanRow = View<Stripe.Subscription> { subscription in
   gridRow([`class`([subscriptionInfoRowClass])], [
     gridColumn(sizes: [.mobile: 2], [
       div([
@@ -143,7 +158,7 @@ private let subscriptionPlanRow = View<Database.Subscription?> { _ in
       ]),
     gridColumn(sizes: [.mobile: 10], [
       div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-        "Yearly Team"
+        text(planName(for: subscription))
         ])
       ])
     ])
@@ -249,29 +264,67 @@ private let subscriptionInviteMoreRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let subscriptionPaymentInfoView = View<Prelude.Unit> { _ in
-  gridRow([`class`([subscriptionInfoRowClass])], [
-    gridColumn(sizes: [.mobile: 3, .desktop: 2], [
-      div([
-        p(["Payment"])
-        ])
-      ]),
-    gridColumn(sizes: [.mobile: 9, .desktop: 5], [
-      div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-        p(["American Express 3*** ****** *2002"]),
-        p(["Expiration: 1/2018"]),
-        p(["Next payment due: 2017-12-24"]),
-        p(["Total Amount: $18.00"])
-        ])
-      ]),
-    gridColumn(sizes: [.mobile: 12, .desktop: 5], [
-      div([`class`([Class.grid.end(.mobile)])], [
-        p([
-          a([href("#"), `class`([Class.pf.components.button(color: .purple, size: .small)])], ["Update payment method"])
+private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscription -> [Node] in
+  guard let card = subscription.customer.sources.data.first else { return [] }
+
+  return [
+    gridRow([`class`([subscriptionInfoRowClass])], [
+      gridColumn(sizes: [.mobile: 3, .desktop: 2], [
+        div([
+          p(["Payment"])
+          ])
+        ]),
+      gridColumn(sizes: [.mobile: 9, .desktop: 5], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          p([text(status(for: subscription))]),
+          p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
+          p([text("Expires: " + String(card.expMonth) + "/" + String(card.expYear))]),
+          ])
+        ]),
+      gridColumn(sizes: [.mobile: 12, .desktop: 5], [
+        div([`class`([Class.grid.end(.mobile)])], [
+          p([
+            a([href("#"), `class`([Class.pf.components.button(color: .purple, size: .small)])], ["Update payment method"])
+            ])
           ])
         ])
       ])
-    ])
+  ]
+}
+
+public func status(for subscription: Stripe.Subscription) -> String {
+  switch subscription.status {
+  case .active:
+    let currentPeriodEndString = subscription.currentPeriodEnd
+      .map { " " + dateFormatter.string(from: $0) } ?? ""
+    let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
+    return "Renewing" + currentPeriodEndString + totalAmountString
+  case .canceled:
+    return subscription.currentPeriodEnd
+      .filterOptional { $0 > AppEnvironment.current.date() }
+      .map { "Cancels " + dateFormatter.string(from: $0) }
+      ?? "Canceled"
+  case .pastDue:
+    return "Past due" // FIXME
+  case .unpaid:
+    return "Unpaid" // FIXME
+  case .trialing:
+    return "In trial" // FIXME
+  }
+}
+
+private let dateFormatter = DateFormatter()
+  |> \.dateStyle .~ .short
+  |> \.timeStyle .~ .none
+  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+private let currencyFormatter = NumberFormatter()
+  |> \.numberStyle .~ .currency
+
+private func totalAmount(for subscription: Stripe.Subscription) -> String? {
+  let totalCents = subscription.plan.amount.rawValue * subscription.quantity
+  let totalDollars = Double(totalCents) / 100
+  return currencyFormatter.string(from: NSNumber(value: totalDollars))
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
