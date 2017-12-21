@@ -21,8 +21,8 @@ enum GitHubLinkType {
 
   fileprivate var buttonClass: CssSelector {
     switch self {
-    case .black:  return Class.pf.components.buttons.black
-    case .white:  return Class.pf.components.buttons.white
+    case .black:  return Class.pf.components.button(color: .black)
+    case .white:  return Class.pf.components.button(color: .white)
     }
   }
 }

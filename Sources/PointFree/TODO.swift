@@ -194,6 +194,14 @@ public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)
   return tuple <¢> lhs <*> rhs
 }
 
+public func zip<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -> Parallel<(A, B, C)> {
+  return tuple3 <¢> a <*> b <*> c
+}
+
+public func tuple3<A, B, C>(_ a: A) -> (B) -> (C) -> (A, B, C) {
+  return { b in { c in (a, b, c) } }
+}
+
 // todo: move to prelude
 extension Prelude.Unit: Error {}
 
