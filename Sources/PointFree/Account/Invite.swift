@@ -25,7 +25,7 @@ let revokeInviteMiddleware =
       // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .team(.show)))))
+        .flatMap(const(conn |> redirect(to: path(to: .account))))
 }
 
 let resendInviteMiddleware =
@@ -34,7 +34,7 @@ let resendInviteMiddleware =
     <| { conn in
       parallel(sendInviteEmail(invite: get2(conn.data), inviter: get1(conn.data)).run)
         .run({ _ in })
-      return conn |> redirect(to: path(to: .team(.show)))
+      return conn |> redirect(to: path(to: .account))
 }
 
 let acceptInviteMiddleware =
@@ -106,20 +106,20 @@ let sendInviteMiddleware =
 
       let (inviter, optionalEmail) = lower(conn.data)
 
-      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .team(.show))) }
+      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account)) }
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
         .run
         .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
           case .left:
-            return conn |> redirect(to: .team(.show))
+            return conn |> redirect(to: .account)
 
           case let .right(invite):
             parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
               .run({ _ in })
 
-            return conn |> redirect(to: .team(.show))
+            return conn |> redirect(to: .account)
           }
       }
 }
