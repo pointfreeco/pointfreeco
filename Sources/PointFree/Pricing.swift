@@ -265,14 +265,32 @@ private let pricingFooterView = View<Database.User?> { user in
     ])
 }
 
+private let stripeInputClass =
+  regularInputClass
+    | Class.flex.column
+    | Class.flex.flex
+    | Class.flex.justify.center
+    | Class.size.width100pct
+
 private let stripeForm = View<Database.User> { user in
-  div([
-    input([name("token"), type(.hidden)]),
-    div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
-    div([id("card-errors"), role(.alert)], []),
-    button(["Subscribe to Point-Free"])
-    ]
-    + stripeScripts)
+  div(
+    [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
+    [
+      input([name("token"), type(.hidden)]),
+      div(
+        [
+          `class`([stripeInputClass]),
+          data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
+          id("card-element")
+        ],
+        []
+      ),
+      div([id("card-errors"), role(.alert)], []),
+      button(
+        [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+        ["Subscribe to Point-Free"])
+      ]
+      + stripeScripts)
 }
 
 private func title(for type: Pricing.Billing) -> String {

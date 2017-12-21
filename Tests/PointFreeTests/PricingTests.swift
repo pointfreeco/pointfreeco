@@ -12,7 +12,6 @@ import Optics
 class PricingTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
     AppEnvironment.push(\.database .~ .mock)
   }
 
