@@ -281,11 +281,18 @@ private let stripeForm = View<Database.User> { user in
         [
           `class`([stripeInputClass]),
           data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
-          id("card-element")
+          id("card-element"),
         ],
         []
       ),
-      div([id("card-errors"), role(.alert)], []),
+      div(
+        [
+          `class`([Class.pf.colors.fg.red]),
+          id("card-errors"),
+          role(.alert),
+        ],
+        []
+      ),
       button(
         [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
         ["Subscribe to Point-Free"])
