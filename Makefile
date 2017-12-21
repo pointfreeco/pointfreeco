@@ -15,7 +15,7 @@ init-db:
 deinit-db:
 	psql template1 < database/deinit.sql
 
-test-linux: sourcery init-db
+test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-macos: xcodeproj init-db

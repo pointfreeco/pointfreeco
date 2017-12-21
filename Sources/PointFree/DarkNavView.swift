@@ -63,7 +63,7 @@ private let aboutLinkView = View<Prelude.Unit> { _ in
 }
 
 private let subscribeLinkView = View<Prelude.Unit> { _ in
-  a([href(path(to: .pricing(nil))), `class`([navLinkClass])], ["Subscribe"])
+  a([href(path(to: .pricing(nil, nil))), `class`([navLinkClass])], ["Subscribe"])
 }
 
 private let accountLinkView = View<Prelude.Unit> { _ in

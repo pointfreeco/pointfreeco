@@ -8,6 +8,7 @@ extension Environment {
   public static let mock = Environment(
     airtableStuff: const(const(pure(unit))),
     database: .mock,
+    date: { .mock },
     envVars: .mock,
     gitHub: .mock,
     logger: .mock,
@@ -66,11 +67,15 @@ extension Database.Subscription {
 
 extension Database.TeamInvite {
   public static let mock = Database.TeamInvite(
-    createdAt: Date(timeIntervalSince1970: 1234567890),
+    createdAt: .mock,
     email: .init(unwrap: "blob@pointfree.co"),
     id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
     inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
+}
+
+extension Date {
+  public static let mock = Date(timeIntervalSince1970: 1517356800)
 }
 
 extension GitHub {
@@ -106,26 +111,50 @@ extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.mock)),
     createCustomer: { _, _ in pure(.mock) },
-    createSubscription: { _, _ in pure(.mock) },
+    createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
-    fetchPlans: pure(.mock),
+    fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
-    fetchSubscription: const(pure(.mock))
+    fetchSubscription: const(pure(.mock)),
+    js: ""
+  )
+}
+
+extension Stripe.Card {
+  public static let mock = Stripe.Card(
+    brand: .visa,
+    customer: .init(unwrap: "cus_test"),
+    expMonth: 1,
+    expYear: 2020,
+    id: .init(unwrap: "card_test"),
+    last4: "4242"
   )
 }
 
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
-    id: .init(unwrap: "cus_test")
+    defaultSource: .init(unwrap: "card_test"),
+    id: .init(unwrap: "cus_test"),
+    sources: .mock([.mock])
   )
+}
+
+extension Stripe.ListEnvelope {
+  public static func mock(_ xs: [A]) -> Stripe.ListEnvelope<A> {
+    return .init(
+      data: xs,
+      hasMore: false,
+      totalCount: xs.count
+    )
+  }
 }
 
 extension Stripe.Plan {
   public static let mock = Stripe.Plan(
     amount: .init(unwrap: 15_00),
-    created: Date(timeIntervalSinceReferenceDate: 0),
+    created: .mock,
     currency: .usd,
-    id: .monthly,
+    id: .individualMonthly,
     interval: .month,
     metadata: [:],
     name: "Monthly",
@@ -133,26 +162,19 @@ extension Stripe.Plan {
   )
 }
 
-extension Stripe.PlansEnvelope {
-  public static let mock = Stripe.PlansEnvelope(
-    data: [.mock],
-    hasMore: false
-  )
-}
-
 extension Stripe.Subscription {
   public static let mock = Stripe.Subscription(
     canceledAt: nil,
     cancelAtPeriodEnd: false,
-    created: Date(timeIntervalSinceReferenceDate: 0),
-    currentPeriodStart: Date(timeIntervalSinceReferenceDate: 0),
-    currentPeriodEnd: Date(timeIntervalSinceReferenceDate: 60 * 60 * 24 * 30),
-    customer: .init(unwrap: "cus_test"),
+    created: .mock,
+    currentPeriodStart: .mock,
+    currentPeriodEnd: Date(timeInterval: 60 * 60 * 24 * 30, since: .mock),
+    customer: .mock,
     endedAt: nil,
     id: .init(unwrap: "sub_test"),
     plan: .mock,
     quantity: 1,
-    start: Date(timeIntervalSinceReferenceDate: 0),
+    start: .mock,
     status: .active
   )
 }

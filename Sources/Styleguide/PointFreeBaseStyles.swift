@@ -14,6 +14,7 @@ public enum Colors {
   public static let mint = Color.other("#79F2B0")
   public static let purple = Color.other("#974DFF")
   public static let purple150 = Color.other("#291a40")
+  public static let red = Color.other("#eb1c26")
   public static let teal = Color.other("#4CCCFF")
   public static let yellow = Color.other("#FFF080")
   public static let white = Color.other("#fff")
@@ -44,6 +45,7 @@ extension Class {
         public static let gray850 = CssSelector.class("fg-gray850")
         public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
+        public static let red = CssSelector.class("fg-red")
         public static let yellow = CssSelector.class("fg-yellow")
         public static let white = CssSelector.class("fg-white")
       }
@@ -300,6 +302,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
     <> Class.pf.colors.fg.green % color(Colors.green)
     <> Class.pf.colors.fg.purple % color(Colors.purple)
+    <> Class.pf.colors.fg.red % color(Colors.red)
     <> Class.pf.colors.fg.yellow % color(Colors.yellow)
     <> Class.pf.colors.fg.white % color(.other("#fff"))
 

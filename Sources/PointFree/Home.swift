@@ -25,7 +25,7 @@ let secretHomeView = View<Prelude.Unit> { _ in
       body(
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
-          <> pricingOptionsView.view(unit)
+          <> pricingOptionsView.view((.default, nil))
           <> footerView.view(unit)
       )
       ])
@@ -52,7 +52,7 @@ let headerView = View<Prelude.Unit> { _ in
         ]),
       gridColumn(sizes: [:], [
         div([`class`([Class.grid.end(.mobile)])], [
-          a([href(path(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])], ["Subscribe"])
+          a([href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])], ["Subscribe"])
           ])
         ])
       ]),

@@ -9,21 +9,110 @@ import Optics
 import Prelude
 import Styleguide
 
-enum PricingType {
-  case individual(BillingType)
-  case team(count: Int)
+public enum Pricing: Codable, DerivePartialIsos {
+  case individual(Billing)
+  case team(Int)
 
-  enum BillingType {
+  public static let `default` = individual(.monthly)
+
+  public static let validTeamQuantities = 2..<100
+
+  public enum Billing: String, Codable {
     case monthly
     case yearly
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case individual
+    case team
+    case lane
+  }
+
+  private enum Lane: String, Codable {
+    case individual
+    case team
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let billing = try container.decodeIfPresent(Billing.self, forKey: .individual)
+    let quantity = try container.decodeIfPresent(Int.self, forKey: .team)
+    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
+
+    if let lane = lane, let billing = billing, let quantity = quantity {
+      self = lane == .individual ? .individual(billing) : .team(quantity)
+    } else if let billing = billing {
+      self = .individual(billing)
+    } else if let quantity = quantity {
+      self = .team(quantity)
+    } else {
+      throw unit // FIXME
+    }
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case let .individual(billing):
+      try container.encode(billing, forKey: .individual)
+    case let .team(quantity):
+      try container.encode(quantity, forKey: .team)
+    }
+  }
+
+  var plan: Stripe.Plan.Id {
+    switch self {
+    case .individual(.monthly):
+      return .init(unwrap: "individual-monthly")
+    case .individual(.yearly):
+      return .init(unwrap: "individual-yearly")
+    case .team:
+      return .init(unwrap: "team-yearly")
+    }
+  }
+
+  var quantity: Int {
+    switch self {
+    case .individual:
+      return 1
+    case let .team(quantity):
+      return quantity
+    }
+  }
+
+  var billing: Billing {
+    switch self {
+    case let .individual(billing):
+      return billing
+    case .team:
+      return .yearly
+    }
+  }
+
+  var isIndividual: Bool {
+    switch self {
+    case .individual:
+      return true
+    case .team:
+      return false
+    }
+  }
+
+  var isTeam: Bool {
+    switch self {
+    case .team:
+      return true
+    case .individual:
+      return false
+    }
   }
 }
 
 let pricingResponse =
-    writeStatus(.ok)
+  writeStatus(.ok)
     >-> respond(pricingView)
 
-private let pricingView = View<(Stripe.Plan.Id, Database.User?, Route)> { plan, currentUser, currentRoute in
+private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user, currentRoute in
   document([
     html([
       head([
@@ -34,16 +123,16 @@ private let pricingView = View<(Stripe.Plan.Id, Database.User?, Route)> { plan, 
         ]),
 
       body(
-        darkNavView.view((currentUser, currentRoute))
-          + pricingOptionsView.view(unit)
+        darkNavView.view((user, currentRoute))
+          + pricingOptionsView.view((pricing, user))
           + footerView.view(unit)
       )
     ])
   ])
 }
 
-let pricingOptionsView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.mobile: [.top: 4, .bottom: 0], .desktop: [.bottom: 4]])])], [
+let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
+  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
       h2(
@@ -58,11 +147,11 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
-          div(
-            pricingTabsView.view(unit)
-              + individualPricingRowView.view(unit)
-              + teamPricingRowView.view(unit)
-              + pricingFooterView.view(unit)
+          form([action(path(to: .subscribe(nil))), id("payment-form"), method(.post)],
+            pricingTabsView.view(pricing)
+              + individualPricingRowView.view(pricing)
+              + teamPricingRowView.view(pricing)
+              + pricingFooterView.view(user)
           )
           ])
         ])
@@ -70,24 +159,27 @@ let pricingOptionsView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let pricingTabsView = View<Prelude.Unit> { _ in
+private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
+      checked(pricing.isIndividual),
       `class`([Class.display.none]),
       id(selectors.input.0),
+      name("pricing[lane]"),
       type(.radio),
-      name("tabs"),
-      checked(true)
+      value("individual"),
       ]),
     label([`for`(selectors.input.0), `class`([Class.pf.components.buttons.pricingTab])], [
       "For you"
       ]),
 
     input([
+      checked(pricing.isTeam),
       `class`([Class.display.none]),
       id(selectors.input.1),
+      name("pricing[lane]"),
       type(.radio),
-      name("tabs")
+      value("team"),
       ]),
     label([`for`(selectors.input.1), `class`([Class.pf.components.buttons.pricingTab])], [
       "For your team"
@@ -95,30 +187,40 @@ private let pricingTabsView = View<Prelude.Unit> { _ in
   ]
 }
 
-private let individualPricingRowView: View<Prelude.Unit> =
+private let individualPricingRowView: View<Pricing> =
   (curry(gridRow)([id(selectors.content.0)]) >>> pure)
-    <¢> individualPricingColumnView.contramap(const(PricingType.BillingType.monthly))
-    <> individualPricingColumnView.contramap(const(PricingType.BillingType.yearly))
+    <¢> individualPricingColumnView.contramap { (Pricing.Billing.monthly, $0) }
+    <> individualPricingColumnView.contramap { (Pricing.Billing.yearly, $0) }
 
-private let individualPricingColumnView = View<PricingType.BillingType> { billingType in
+private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
+  return pricing.isIndividual
+    ? billing == pricing.billing
+    : billing == .monthly
+}
 
+private let individualPricingColumnView = View<(billing: Pricing.Billing, pricing: Pricing)> {
   gridColumn(sizes: [.mobile: 6], [], [
-    label([`for`(radioId(for: billingType)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
+    label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
-          id(radioId(for: billingType)), name("individual"), type(.radio), checked(billingType == .monthly)]),
-        gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: billingType)))]),
+          checked(isChecked($0.billing, $0.pricing)),
+          id(radioId(for: $0.billing)),
+          name("pricing[individual]"),
+          type(.radio),
+          value($0.billing.rawValue),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: billingType)))]),
+          h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: $0.billing)))]),
+          ]),
+        gridColumn(sizes: [.mobile: 12], [], [
+          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: $0.billing)))]),
           ]),
         ])
       ])
     ])
 }
 
-private let teamPricingRowView = View<Prelude.Unit> { _ in
+private let teamPricingRowView = View<Pricing> { pricing in
   gridRow([id(selectors.content.1)], [
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
@@ -126,10 +228,11 @@ private let teamPricingRowView = View<Prelude.Unit> { _ in
         p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
         input([
           type(.number),
-          min(2),
-          max(100),
+          min(Pricing.validTeamQuantities.lowerBound),
+          max(Pricing.validTeamQuantities.upperBound),
+          name("pricing[team]"),
           step(1),
-          value("2"),
+          value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
           `class`([numberSpinner, Class.pf.colors.fg.purple])
           ]),
         h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
@@ -151,17 +254,53 @@ private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
     <> maxWidth(.px(200))
 
-private let pricingFooterView = View<Prelude.Unit> { _ in
+private let pricingFooterView = View<Database.User?> { user in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-        gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))
-        ])
+      div(
+        [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+        user.map(stripeForm.view) ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
+        )
       ])
     ])
 }
 
-private func title(for type: PricingType.BillingType) -> String {
+private let stripeInputClass =
+  regularInputClass
+    | Class.flex.column
+    | Class.flex.flex
+    | Class.flex.justify.center
+    | Class.size.width100pct
+
+private let stripeForm = View<Database.User> { user in
+  div(
+    [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
+    [
+      input([name("token"), type(.hidden)]),
+      div(
+        [
+          `class`([stripeInputClass]),
+          data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
+          id("card-element"),
+        ],
+        []
+      ),
+      div(
+        [
+          `class`([Class.pf.colors.fg.red]),
+          id("card-errors"),
+          role(.alert),
+        ],
+        []
+      ),
+      button(
+        [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+        ["Subscribe to Point-Free"])
+      ]
+      + stripeScripts)
+}
+
+private func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "Monthly Plan"
@@ -170,7 +309,7 @@ private func title(for type: PricingType.BillingType) -> String {
   }
 }
 
-private func radioId(for type: PricingType.BillingType) -> String {
+private func radioId(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "monthly"
@@ -179,7 +318,7 @@ private func radioId(for type: PricingType.BillingType) -> String {
   }
 }
 
-private func pricingText(for type: PricingType.BillingType) -> String {
+private func pricingText(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "$17/mo"
@@ -228,7 +367,7 @@ private func tabStyles(
 
     let selectedStyles = idSelectors
       .map { inputSelector, contentSelector -> Stylesheet in
-        return (inputSelector & .pseudo(.checked) + .star) % (
+        (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)
         )
       }
@@ -240,8 +379,8 @@ private func tabStyles(
         <> selectedStyles
 }
 
-private let stripe = [
-  script([src("https://js.stripe.com/v3/")]),
+private let stripeScripts = [
+  script([src(AppEnvironment.current.stripe.js)]),
   script(
     """
     var apiKey = document.getElementById('card-element').dataset.stripeKey;
