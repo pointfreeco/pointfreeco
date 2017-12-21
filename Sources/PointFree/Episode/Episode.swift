@@ -78,7 +78,7 @@ private let videoView = View<Prelude.Unit> { _ in
       controls(true),
       playsInline(true),
       autoplay(true),
-      poster("https://d2sazdeahkz1yk.cloudfront.net/assets/W1siZiIsIjIwMTcvMDQvMjgvMDcvMzYvNTAvOTg2ZjI0N2UtZTU4YS00MTQzLTk4M2YtOGQxZDRiMDRkNGZhLzQ3IFZpZXcgTW9kZWxzIGF0IEtpY2tzdGFydGVyLmpwZyJdLFsicCIsInRodW1iIiwiMTkyMHgxMDgwIyJdXQ?sha=318940b4f059d474")
+      poster("http://via.placeholder.com/640x360")
     ],
     [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
   )
