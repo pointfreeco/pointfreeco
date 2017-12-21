@@ -310,7 +310,7 @@ public func status(for subscription: Stripe.Subscription) -> String {
     let currentPeriodEndString = subscription.currentPeriodEnd
       .map { " " + dateFormatter.string(from: $0) } ?? ""
     let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
-    return "Renewing" + currentPeriodEndString + totalAmountString
+    return "Renews" + currentPeriodEndString + totalAmountString
   case .canceled:
     return subscription.currentPeriodEnd
       .filterOptional { $0 > AppEnvironment.current.date() }

@@ -403,8 +403,6 @@ private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQ
 func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, PostgreSQL.Node> {
 
-    print(query)
-
     return conn.flatMap { conn in
       .wrap { try conn.execute(query, representable) }
     }
