@@ -15,6 +15,7 @@ public struct Database {
   var fetchTeamInvites: (Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  var removeTeammateUserIdFromSubscriptionId: (Database.User.Id, Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -30,6 +31,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
+    removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
@@ -120,9 +122,9 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
   return execute(
     """
     UPDATE "users"
-    SET "subscription_id" = $1,
+    SET "subscription_id" = $2,
         "updated_at" = NOW()
-    WHERE "users"."id" = $2
+    WHERE "users"."id" = $1
     """,
     [
       userId.unwrap.uuidString,
@@ -130,6 +132,27 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
     ]
   )
   .map(const(unit))
+}
+
+private func remove(
+  teammateUserId: Database.User.Id,
+  fromSubscriptionId subscriptionId: Database.Subscription.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    UPDATE "users"
+    SET "subscription_id" = NULL,
+        "updated_at" = NOW()
+    WHERE "users"."id" = $1
+    AND "users"."subscription_id" = $2
+    """,
+    [
+      teammateUserId.unwrap.uuidString,
+      subscriptionId.unwrap.uuidString,
+      ]
+    )
+    .map(const(unit))
 }
 
 private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?> {
@@ -379,6 +402,8 @@ private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQ
 // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
 func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, PostgreSQL.Node> {
+
+    print(query)
 
     return conn.flatMap { conn in
       .wrap { try conn.execute(query, representable) }
