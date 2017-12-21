@@ -38,6 +38,7 @@ open class TestCase: XCTestCase {
 
   override open func tearDown() {
     super.tearDown()
+    record = false
     AppEnvironment.pop()
   }
 }

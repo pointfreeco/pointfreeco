@@ -227,6 +227,18 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   }
 }
 
+extension Array {
+  func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
+    return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
+  }
+}
+
+extension Optional {
+  func filterOptional(isIncluded: (Wrapped) -> Bool) -> Optional {
+    return self.flatMap { isIncluded($0) ? $0 : nil }
+  }
+}
+
 // TODO: Move to swift-web
 extension PartialIso {
   public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
@@ -257,12 +269,6 @@ public protocol HasIntValue {}
 extension Element.Input: HasIntValue {}
 public func value<T: HasIntValue>(_ value: Int) -> Attribute<T> {
   return .init("value", value)
-}
-
-extension Array {
-  func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
-    return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
-  }
 }
 
 public func onclick<T>(javascript: StaticString) -> Attribute<T> {
