@@ -165,7 +165,7 @@ extension Class.pf {
       case .regular:
         sizeStyles = Class.h5 | Class.padding([.mobile: [.leftRight: 2]])
       case .large:
-        sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 4]])
+        sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 2]])
       }
 
       return base | colorStyles | sizeStyles

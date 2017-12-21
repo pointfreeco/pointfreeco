@@ -4,15 +4,22 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
+public func bgcolor<T>(_ value: String) -> Attribute<T> {
+  return .init("bgcolor", value)
+}
+
 let teamInviteEmailView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
   document([
-    html([
+    html([xmlns("http://www.w3.org/1999/xhtml")], [
       head([
         style(designSystems),
-        style(emailBaseStyles)
+        style(emailBaseStyles),
+        meta(viewport: .width(.deviceWidth), .initialScale(1)),
+        meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
+        title("You’re invited to join \(inviter.name)’s team on Point-Free"),
         ]),
 
-      body([
+      body([bgcolor("#fff")], [
         table([border(0), cellpadding(0), cellspacing(0), height(.pct(100)), width(.pct(100))], [
           tr([
             td([align(.center), valign(.top)],
@@ -39,7 +46,11 @@ private let inviteBodyView = View<(Database.User, Database.TeamInvite)> { invite
           """
           ]),
         p([], [
-          a([href(url(to: .invite(.show(invite.id))))], ["Click here!"])
+          a([
+            href(url(to: .invite(.show(invite.id)))),
+            `class`([Class.pf.components.button(color: .purple)])
+            ],
+            ["Click here to accept!"])
           ])
         ])
       ])
