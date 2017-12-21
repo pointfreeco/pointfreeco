@@ -303,7 +303,7 @@ private let currencyFormatter = NumberFormatter()
 private func totalAmount(for subscription: Stripe.Subscription) -> String? {
   let totalCents = subscription.plan.amount.rawValue * subscription.quantity
   let totalDollars = Double(totalCents) / 100
-  return currencyFormatter.string(from: totalDollars as NSNumber)
+  return currencyFormatter.string(from: NSNumber(value: totalDollars))
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
