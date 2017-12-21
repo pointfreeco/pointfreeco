@@ -39,12 +39,12 @@ private let pointFreeView = View<Prelude.Unit> { _ in
       "A weekly video series on functional programming and the Swift programming language. Hosted by ",
       a(
         [href(twitterUrl(to: .mbrandonw)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
-        ["Brandon Williams"]
+        [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]
       ),
       " and ",
       a(
         [href(twitterUrl(to: .stephencelis)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
-        ["Stephen Celis"]
+        [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]
       ),
       "."
       ]),
