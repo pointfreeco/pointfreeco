@@ -8,7 +8,6 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-import Tuple
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
