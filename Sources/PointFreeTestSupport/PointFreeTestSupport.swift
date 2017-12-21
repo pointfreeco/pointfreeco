@@ -1,13 +1,14 @@
 import Foundation
 import Either
 @testable import PointFree
+import Optics
 import Prelude
 
 extension Environment {
   public static let mock = Environment(
     airtableStuff: const(const(pure(unit))),
     database: .mock,
-    envVars: EnvVars(),
+    envVars: .mock,
     gitHub: .mock,
     logger: .mock,
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
@@ -17,6 +18,14 @@ extension Environment {
 
 extension Logger {
   public static let mock = Logger(level: .debug, logger: { _ in })
+}
+
+extension EnvVars {
+  public static var mock: EnvVars {
+    return EnvVars()
+      |> \.appEnv .~ .development
+      |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+  }
 }
 
 extension Database {
