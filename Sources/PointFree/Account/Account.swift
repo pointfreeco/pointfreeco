@@ -276,9 +276,9 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
         ]),
       gridColumn(sizes: [.mobile: 9, .desktop: 5], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          p([text("Status: " + status(for: subscription))]),
           p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
           p([text("Expires: " + String(card.expMonth) + "/" + String(card.expYear))]),
-          p([text("Subscription status: " + status(for: subscription))]),
           ])
         ]),
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [
