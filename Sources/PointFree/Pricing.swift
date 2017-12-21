@@ -132,7 +132,7 @@ private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user
 }
 
 let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
-  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.mobile: [.top: 4, .bottom: 0], .desktop: [.bottom: 4]])])], [
+  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
       h2(
