@@ -282,7 +282,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([text(status(for: subscription))]),
           p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
-          p([text("Expires: " + String(card.expMonth) + "/" + String(card.expYear))]),
+          p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
           ])
         ]),
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [
@@ -302,7 +302,7 @@ public func status(for subscription: Stripe.Subscription) -> String {
     let currentPeriodEndString = subscription.currentPeriodEnd
       .map { " " + dateFormatter.string(from: $0) } ?? ""
     let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
-    return "Renewing" + currentPeriodEndString + totalAmountString
+    return "Renews" + currentPeriodEndString + totalAmountString
   case .canceled:
     return subscription.currentPeriodEnd
       .filterOptional { $0 > AppEnvironment.current.date() }
