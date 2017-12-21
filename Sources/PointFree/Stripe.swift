@@ -24,12 +24,112 @@ public struct Stripe {
     fetchSubscription: PointFree.fetchSubscription
   )
 
+  public struct Card: Codable {
+    public let brand: Brand
+    public let customer: Customer.Id
+    public let expMonth: Int
+    public let expYear: Int
+    public let id: Id
+    public let last4: String
+
+    public typealias Id = Tagged<Card, String>
+
+    public enum Brand: String, Codable {
+      case visa = "Visa"
+      case americanExpress = "American Express"
+      case masterCard = "MasterCard"
+      case discover = "Discover"
+      case jcb = "JCB"
+      case dinersClub = "Diners Club"
+      case unknown = "Unknown"
+    }
+
+    public enum Funding: String, Codable {
+      case credit
+      case debit
+      case prepaid
+      case unknown
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case brand
+      case customer
+      case expMonth = "exp_month"
+      case expYear = "exp_year"
+      case id
+      case last4
+    }
+  }
+
   public typealias Cents = Tagged<Stripe, Int>
 
   public struct Customer: Codable {
     public let id: Id
+    public let defaultSource: Card.Id
+    public let sources: ListEnvelope<Card>
 
     public typealias Id = Tagged<Customer, String>
+
+    private enum CodingKeys: String, CodingKey {
+      case id
+      case defaultSource = "default_source"
+      case sources
+    }
+  }
+
+  public struct ListEnvelope<A: Codable>: Codable {
+    let data: [A]
+    let hasMore: Bool
+    let totalCount: Int
+
+    private enum CodingKeys: String, CodingKey {
+      case data
+      case hasMore = "has_more"
+      case totalCount = "total_count"
+    }
+  }
+
+  public struct Plan: Codable {
+    public let amount: Cents
+    public let created: Date
+    public let currency: Currency
+    public let id: Id
+    public let interval: Interval
+    public let metadata: [String: String]
+    public let name: String
+    public let statementDescriptor: String?
+
+    private enum CodingKeys: String, CodingKey {
+      case amount
+      case created
+      case currency
+      case id
+      case interval
+      case metadata
+      case name
+      case statementDescriptor = "statement_descriptor"
+    }
+
+    public typealias Id = Tagged<Plan, String>
+
+    public enum Currency: String, Codable {
+      case usd
+    }
+
+    public enum Interval: String, Codable {
+      case month
+      case year
+    }
+  }
+
+  public struct PlansEnvelope: Codable {
+    public let data: [Plan]
+    public let hasMore: Bool
+
+    private enum CodingKeys: String, CodingKey {
+      case data
+      case hasMore = "has_more"
+    }
   }
 
   public struct Subscription: Codable {
@@ -38,7 +138,7 @@ public struct Stripe {
     public let created: Date
     public let currentPeriodStart: Date? // TODO: Audit nullability
     public let currentPeriodEnd: Date? // TODO: Audit nullability
-    public let customer: Customer.Id
+    public let customer: Customer
     public let endedAt: Date?
     public let id: Id
     public let plan: Plan
@@ -69,49 +169,6 @@ public struct Stripe {
       case pastDue = "past_due"
       case canceled
       case unpaid
-    }
-  }
-
-  public struct Plan: Codable {
-    public let amount: Cents
-    public let created: Date
-    public let currency: Currency
-    public let id: Id
-    public let interval: Interval
-    public let metadata: [String: String]
-    public let name: String
-    public let statementDescriptor: String?
-
-    private enum CodingKeys: String, CodingKey {
-      case amount
-      case created
-      case currency
-      case id
-      case interval
-      case metadata
-      case name
-      case statementDescriptor = "statement_descriptor"
-    }
-
-    public enum Interval: String, Codable {
-      case month
-      case year
-    }
-
-    public enum Currency: String, Codable {
-      case usd
-    }
-
-    public typealias Id = Tagged<Plan, String>
-  }
-
-  public struct PlansEnvelope: Codable {
-    public let data: [Plan]
-    public let hasMore: Bool
-
-    private enum CodingKeys: String, CodingKey {
-      case data
-      case hasMore = "has_more"
     }
   }
 
@@ -156,7 +213,7 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id)
 private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.Id, quantity: Int)
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
-    return stripeDataTask("subscriptions", .post([
+    return stripeDataTask("subscriptions?expand[]=customer", .post([
       "customer": customer.rawValue,
       "items[0][plan]": plan.rawValue,
       "items[0][quantity]": String(quantity),
@@ -175,7 +232,7 @@ private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/\(id.unwrap)")
+  return stripeDataTask("subscriptions/\(id.unwrap)?expand[]=customer")
 }
 
 private let stripeJsonDecoder: JSONDecoder = {
@@ -211,7 +268,7 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   where A: Decodable {
 
     return pure(stripeUrlRequest(path, method))
-      .flatMap { jsonDataTask(with: auth <| $0) }
+      .flatMap { jsonDataTask(with: auth <| $0, decoder: stripeJsonDecoder) }
       .map(tap(AppEnvironment.current.logger.debug))
       .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
