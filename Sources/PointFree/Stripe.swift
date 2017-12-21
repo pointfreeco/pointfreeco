@@ -25,12 +25,12 @@ public struct Stripe {
   )
 
   public struct Card: Codable {
-    public let brand: Brand
-    public let customer: Customer.Id
-    public let expMonth: Int
-    public let expYear: Int
-    public let id: Id
-    public let last4: String
+    public private(set) var brand: Brand
+    public private(set) var customer: Customer.Id
+    public private(set) var expMonth: Int
+    public private(set) var expYear: Int
+    public private(set) var id: Id
+    public private(set) var last4: String
 
     public typealias Id = Tagged<Card, String>
 
@@ -64,9 +64,9 @@ public struct Stripe {
   public typealias Cents = Tagged<Stripe, Int>
 
   public struct Customer: Codable {
-    public let defaultSource: Card.Id
-    public let id: Id
-    public let sources: ListEnvelope<Card>
+    public private(set) var defaultSource: Card.Id
+    public private(set) var id: Id
+    public private(set) var sources: ListEnvelope<Card>
 
     public typealias Id = Tagged<Customer, String>
 
@@ -78,9 +78,9 @@ public struct Stripe {
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
-    let data: [A]
-    let hasMore: Bool
-    let totalCount: Int
+    private(set) var data: [A]
+    private(set) var hasMore: Bool
+    private(set) var totalCount: Int
 
     private enum CodingKeys: String, CodingKey {
       case data
@@ -90,14 +90,14 @@ public struct Stripe {
   }
 
   public struct Plan: Codable {
-    public let amount: Cents
-    public let created: Date
-    public let currency: Currency
-    public let id: Id
-    public let interval: Interval
-    public let metadata: [String: String]
-    public let name: String
-    public let statementDescriptor: String?
+    public private(set) var amount: Cents
+    public private(set) var created: Date
+    public private(set) var currency: Currency
+    public private(set) var id: Id
+    public private(set) var interval: Interval
+    public private(set) var metadata: [String: String]
+    public private(set) var name: String
+    public private(set) var statementDescriptor: String?
 
     private enum CodingKeys: String, CodingKey {
       case amount
@@ -123,8 +123,8 @@ public struct Stripe {
   }
 
   public struct PlansEnvelope: Codable {
-    public let data: [Plan]
-    public let hasMore: Bool
+    public private(set) var data: [Plan]
+    public private(set) var hasMore: Bool
 
     private enum CodingKeys: String, CodingKey {
       case data
@@ -133,18 +133,18 @@ public struct Stripe {
   }
 
   public struct Subscription: Codable {
-    public let canceledAt: Date?
-    public let cancelAtPeriodEnd: Bool
-    public let created: Date
-    public let currentPeriodStart: Date? // TODO: Audit nullability
-    public let currentPeriodEnd: Date? // TODO: Audit nullability
-    public let customer: Customer
-    public let endedAt: Date?
-    public let id: Id
-    public let plan: Plan
-    public let quantity: Int
-    public let start: Date
-    public let status: Status
+    public private(set) var canceledAt: Date?
+    public private(set) var cancelAtPeriodEnd: Bool
+    public private(set) var created: Date
+    public private(set) var currentPeriodStart: Date? // TODO: Audit nullability
+    public private(set) var currentPeriodEnd: Date? // TODO: Audit nullability
+    public private(set) var customer: Customer
+    public private(set) var endedAt: Date?
+    public private(set) var id: Id
+    public private(set) var plan: Plan
+    public private(set) var quantity: Int
+    public private(set) var start: Date
+    public private(set) var status: Status
 
     private enum CodingKeys: String, CodingKey {
       case canceledAt = "canceled_at"
@@ -164,16 +164,16 @@ public struct Stripe {
     public typealias Id = Tagged<Subscription, String>
 
     public enum Status: String, Codable {
-      case trialing
       case active
-      case pastDue = "past_due"
       case canceled
+      case pastDue = "past_due"
+      case trialing
       case unpaid
     }
   }
 
   public struct Token: Codable {
-    public let id: Id
+    public private(set) var id: Id
 
     public typealias Id = Tagged<Token, String>
   }

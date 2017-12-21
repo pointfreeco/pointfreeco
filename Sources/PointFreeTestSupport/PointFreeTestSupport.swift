@@ -8,6 +8,7 @@ extension Environment {
   public static let mock = Environment(
     airtableStuff: const(const(pure(unit))),
     database: .mock,
+    date: { .mock },
     envVars: .mock,
     gitHub: .mock,
     logger: .mock,
@@ -71,6 +72,10 @@ extension Database.TeamInvite {
     id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
     inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
+}
+
+extension Date {
+  public static let mock = Date(timeIntervalSince1970: 1517356800)
 }
 
 extension GitHub {

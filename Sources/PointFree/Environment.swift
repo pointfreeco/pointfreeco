@@ -10,6 +10,7 @@ public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmai
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
   public private(set) var database: Database
+  public private(set) var date: () -> Date
   public private(set) var envVars: EnvVars
   public private(set) var gitHub: GitHub
   public private(set) var logger: Logger
@@ -19,6 +20,7 @@ public struct Environment {
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
     database: PointFree.Database = .live,
+    date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
@@ -27,6 +29,7 @@ public struct Environment {
 
     self.airtableStuff = airtableStuff
     self.database = database
+    self.date = date
     self.envVars = envVars
     self.gitHub = gitHub
     self.logger = logger
