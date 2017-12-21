@@ -79,7 +79,8 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> logoutResponse
 
     case .paymentInfo:
-      fatalError()
+      return conn.map(const(unit))
+        |> paymentInfoResponse
 
     case let .pricing(plan, quantity):
       let pricing: Pricing
