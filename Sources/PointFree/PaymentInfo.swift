@@ -9,22 +9,17 @@ import Prelude
 import Styleguide
 import Tuple
 
-let tmp: (Conn<StatusLineOpen, Tuple2<Database.User, Prelude.Unit>>)
-  -> IO<Conn<StatusLineOpen, (Database.User, Stripe.Subscription?)>>
-  = requireUser <<< fetchPaymentInfoData
-
 let paymentInfoResponse =
-//  requireUser
-//    <| fetchPaymentInfoData
-//    >->
-    writeStatus(.ok)
+  requireUser
+    <| fetchPaymentInfoData
+    >-> writeStatus(.ok)
     >-> respond(paymentInfoView)
 
 func fetchPaymentInfoData<I, A>(
   _ conn: Conn<I, Tuple2<Database.User, A>>
-  ) -> IO<Conn<I, (Database.User, Stripe.Subscription?)>> {
+  ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, A)>> {
 
-  let (user, _) = lower(conn.data)
+  let (user, rest) = lower(conn.data)
 
   let subscription = user.subscriptionId
     .map {
@@ -38,11 +33,10 @@ func fetchPaymentInfoData<I, A>(
     ?? pure(nil)
 
   return subscription
-    .map { conn.map(const((user, $0))) }
+    .map { conn.map(const((user, $0, rest))) }
 }
 
-//let paymentInfoView = View<(Database.User, Stripe.Subscription?)> { currentUser, subscription in
-let paymentInfoView = View<Prelude.Unit> { _ in
+let paymentInfoView = View<(Database.User, Stripe.Subscription?, Prelude.Unit)> { currentUser, subscription, _ in
   document([
     html([
       head([
