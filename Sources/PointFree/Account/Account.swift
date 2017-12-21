@@ -302,7 +302,7 @@ private let baseInputClass =
     | Class.border.all
     | Class.pf.colors.border.gray800
 
-private let regularInputClass =
+let regularInputClass =
   baseInputClass
     | Class.size.height(rem: 3)
     | Class.padding([.mobile: [.all: 1]])

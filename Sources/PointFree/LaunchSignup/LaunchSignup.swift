@@ -91,9 +91,9 @@ let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
                 " to see our progress in making the site and learn more about the interesting techniques we are using."
                 ]),
               p([
-                a([href(twitterUrl(to: .mbrandonw))], ["Brandon Williams"]),
+                a([href(twitterUrl(to: .mbrandonw))], [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]),
                 br,
-                a([href(twitterUrl(to: .stephencelis))], ["Stephen Celis"]),
+                a([href(twitterUrl(to: .stephencelis))], [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]),
                 ]),
               p([
                 a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"]),
