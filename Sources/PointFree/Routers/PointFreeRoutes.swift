@@ -1,7 +1,9 @@
 import ApplicativeRouter
 import Foundation
 import Either
+import Optics
 import Prelude
+import UrlFormEncoding
 
 public protocol DerivePartialIsos {}
 
@@ -15,9 +17,9 @@ public enum Route: DerivePartialIsos {
   case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
-  case pricing(Stripe.Plan.Id?)
+  case pricing(String?, Int?)
   case secretHome
-  case subscribe(SubscribeData)
+  case subscribe(SubscribeData?)
   case team(Team)
   case terms
 
@@ -83,13 +85,13 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("logout") <% end,
 
   Route.iso.pricing
-    <¢> get %> lit("pricing") %> queryParam("plan", opt(.iso(.rawRepresentable, default: .monthly))) <% end,
+    <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,
 
   Route.iso.subscribe
-    <¢> post %> lit("subscribe") %> formBody(SubscribeData.self) <% end,
+    <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
   Route.iso.team <<< Route.Team.iso.remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
@@ -104,6 +106,9 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("terms") <% end,
 
 ]
+
+private let formDecoder = UrlFormDecoder()
+  |> \.parsingStrategy .~ .bracketsWithIndices
 
 public let router = routers.reduce(.empty, <|>)
 

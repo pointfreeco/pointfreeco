@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import Css
 import Either
 import Foundation
@@ -205,6 +206,12 @@ public func tuple3<A, B, C>(_ a: A) -> (B) -> (C) -> (A, B, C) {
 // todo: move to prelude
 extension Prelude.Unit: Error {}
 
+public func clamp<T>(_ to: CountableRange<T>) -> (T) -> T {
+  return { element in
+    min(to.upperBound, max(to.lowerBound, element))
+  }
+}
+
 // todo: move to httppipeline
 public func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
   return conn.map { $0.right }
@@ -215,13 +222,12 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   switch e {
   case let .left(e):
     return .left(e)
-  case let .right(user):
-    return user.map(Either.right) ?? .left(unit)
+  case let .right(a):
+    return a.map(Either.right) ?? .left(unit)
   }
 }
 
 // TODO: Move to swift-web
-import ApplicativeRouter
 extension PartialIso {
   public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
     return .init(
@@ -237,6 +243,20 @@ extension Element {
 
 public func hr(_ attribs: [Attribute<Element.Hr>]) -> Node {
   return node("hr", attribs, nil)
+}
+
+public func min<T: HasMin>(_ value: Int) -> Attribute<T> {
+  return .init("min", value)
+}
+
+public func max<T: HasMax>(_ value: Int) -> Attribute<T> {
+  return .init("max", value)
+}
+
+public protocol HasIntValue {}
+extension Element.Input: HasIntValue {}
+public func value<T: HasIntValue>(_ value: Int) -> Attribute<T> {
+  return .init("value", value)
 }
 
 extension Array {

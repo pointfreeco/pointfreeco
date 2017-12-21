@@ -106,7 +106,7 @@ extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.mock)),
     createCustomer: { _, _ in pure(.mock) },
-    createSubscription: { _, _ in pure(.mock) },
+    createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock),
     fetchPlan: const(pure(.mock)),
@@ -125,7 +125,7 @@ extension Stripe.Plan {
     amount: .init(unwrap: 15_00),
     created: Date(timeIntervalSinceReferenceDate: 0),
     currency: .usd,
-    id: .monthly,
+    id: .individualMonthly,
     interval: .month,
     metadata: [:],
     name: "Monthly",

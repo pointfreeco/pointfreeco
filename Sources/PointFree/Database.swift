@@ -5,7 +5,7 @@ import PostgreSQL
 
 public struct Database {
   var addUserIdToSubscriptionId: (Database.User.Id, Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
+  var createSubscription: (Stripe.Subscription.Id, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
   var fetchSubscriptionById: (Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?>
@@ -85,7 +85,9 @@ public struct Database {
   }
 }
 
-private func createSubscription(with stripeSubscription: Stripe.Subscription, for userId: Database.User.Id)
+private func createSubscription(
+  with stripeSubscriptionId: Stripe.Subscription.Id, for userId: Database.User.Id
+  )
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
@@ -94,7 +96,7 @@ private func createSubscription(with stripeSubscription: Stripe.Subscription, fo
       RETURNING "id"
       """,
       [
-        stripeSubscription.id.unwrap,
+        stripeSubscriptionId.unwrap,
         userId.unwrap.uuidString,
         ]
       )
