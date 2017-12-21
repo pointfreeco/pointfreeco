@@ -7,7 +7,6 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-import Tuple
 import UrlFormEncoding
 
 let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
