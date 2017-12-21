@@ -58,20 +58,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database
             .flatMap { x -> EitherIO<Error, Prelude.Unit> in
 
               // Fire-and-forget emails to owner and teammate
-              zip(
-                parallel(sendEmail(
-                  to: [teammate.email],
-                  subject: "You have been removed from Brandon’s Point-Free team",
-                  content: inj1("You have been removed")
-                  )
-                  .run),
-                parallel(sendEmail(
-                  to: [currentUser.email],
-                  subject: "Your teammate BLOB has been removed",
-                  content: inj1("EOM")
-                  )
-                  .run)
-                )
+              sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
                 .run({ _ in })
 
               return pure(x)
@@ -81,6 +68,26 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database
         .map(const(conn.map(const(unit))))
     }
     >-> redirect(to: .account)
+
+private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
+
+  // TODO: make these emails better
+  return zip(
+    parallel(sendEmail(
+      to: [teammate.email],
+      subject: "You have been removed from \(owner.name)’s Point-Free team",
+      content: inj1("You have been removed")
+      )
+      .run),
+    parallel(sendEmail(
+      to: [owner.email],
+      subject: "Your teammate \(teammate.name) has been removed",
+      content: inj1("EOM")
+      )
+      .run)
+  )
+  .map(const(unit))
+}
 
 private let teamView = View<([Database.TeamInvite], [Database.User], Database.User, Prelude.Unit)> { invites, teammates, currentUser, _ in
   [
