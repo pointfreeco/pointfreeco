@@ -4,6 +4,11 @@
 import XCTest
 
 @testable import PointFreeTests; @testable import StyleguideTests;
+extension AccountTests {
+  static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
+    ("testAccount", testAccount)
+  ]
+}
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
     ("testAuth", testAuth),
@@ -81,6 +86,7 @@ extension StyleguideTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
+  testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(EnvVarTests.allTests),
