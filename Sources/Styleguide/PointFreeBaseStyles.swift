@@ -7,6 +7,7 @@ public enum Colors {
   public static let gray300 = Color.other("#555555")
   public static let gray400 = Color.other("#666666")
   public static let gray650 = Color.other("#a8a8a8")
+  public static let gray800 = Color.other("#ccc")
   public static let gray850 = Color.other("#d8d8d8")
   public static let gray900 = Color.other("#f6f6f6")
   public static let green = Color.other("#79F2B0")
@@ -31,6 +32,7 @@ extension Class {
       }
       public enum border {
         public static let gray650 = CssSelector.class("border-gray-650")
+        public static let gray800 = CssSelector.class("border-gray-800")
         public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
@@ -121,29 +123,54 @@ extension Class {
 extension Class.pf {
   public enum components {
 
-    public enum buttons {
-      public static let base =
-        baseButtonClass
-          | Class.type.medium
-          | Class.h5
-          | Class.padding([.mobile: [.leftRight: 2]])
-          | Class.border.rounded.all
+    public enum Color {
+      case black
+      case purple
+      case white
+    }
 
-      public static let purple =
-        base
-          | Class.pf.colors.link.white
-          | Class.pf.colors.bg.purple
+    public enum Size {
+      case small
+      case regular
+      case large
+    }
 
-      public static let black =
-        base
-          | Class.pf.colors.link.white
+    public static func button(color: Color, size: Size = .regular) -> CssSelector {
+      let base = baseButtonClass
+        | Class.type.medium
+        | Class.border.rounded.all
+        | Class.border.none
+
+      let colorStyles: CssSelector
+      switch color {
+      case .black:
+        colorStyles = Class.pf.colors.link.white
+          | Class.pf.colors.fg.white
           | Class.pf.colors.bg.black
-
-      public static let white =
-        base
-          | Class.pf.colors.link.black
+      case .purple:
+        colorStyles = Class.pf.colors.link.white
+          | Class.pf.colors.fg.white
+          | Class.pf.colors.bg.purple
+      case .white:
+        colorStyles = Class.pf.colors.link.black
+          | Class.pf.colors.fg.black
           | Class.pf.colors.bg.white
+      }
 
+      let sizeStyles: CssSelector
+      switch size {
+      case .small:
+        sizeStyles = Class.h6 | Class.padding([.mobile: [.leftRight: 1, .topBottom: 1]])
+      case .regular:
+        sizeStyles = Class.h5 | Class.padding([.mobile: [.leftRight: 2]])
+      case .large:
+        sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 4]])
+      }
+
+      return base | colorStyles | sizeStyles
+    }
+
+    public enum buttons {
       private static let pricingTabBase =
         Class.layout.fit
           | Class.pf.type.title5
@@ -247,6 +274,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
+    <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)    
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)
@@ -325,7 +353,7 @@ private let navBarStyles =
 
 private let baseButtonClass = CssSelector.class("btn")
 private let baseButtonStyles: Stylesheet =
-  (a & .pseudo(.hover) & baseButtonClass) % darken1
+  (baseButtonClass & .pseudo(.hover)) % darken1
     <> (a & .pseudo(.active) & baseButtonClass) % darken3
     <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
     <> baseButtonClass % padding(topBottom: .rem(0.75))

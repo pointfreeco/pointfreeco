@@ -41,7 +41,7 @@ public let pillTagsView = View<[Tag]> { tags in
       .sorted(by: ^\.name)
       .map(
         episodeTagView.view
-          >>> li([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
+          >>> curry(li)([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }

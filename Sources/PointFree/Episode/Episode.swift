@@ -269,7 +269,7 @@ private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Rou
         darkNavView.view((currentUser, nil))
           <> [
             gridRow([`class`([Class.grid.center(.mobile)])], [
-              gridColumn(sizes: [:], [
+              gridColumn(sizes: [.mobile: 6], [
                 div([style(padding(topBottom: .rem(12)))], [
                   h5([`class`([Class.h5])], ["Episode not found :("]),
                   pre([
