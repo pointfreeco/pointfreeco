@@ -4,12 +4,18 @@
 import XCTest
 
 @testable import PointFreeTests; @testable import StyleguideTests;
+extension AccountTests {
+  static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
+    ("testAccount", testAccount)
+  ]
+}
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
     ("testAuth", testAuth),
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
     ("testLogin", testLogin),
+    ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
     ("testSecretHome_LoggedIn", testSecretHome_LoggedIn),
@@ -53,7 +59,8 @@ extension MetaLayoutTests {
 extension NavViewTests {
   static var allTests: [(String, (NavViewTests) -> () throws -> Void)] = [
     ("testNav_LoggedOut", testNav_LoggedOut),
-    ("testNav_LoggedIn", testNav_LoggedIn)
+    ("testNav_LoggedIn_NonSubscriber", testNav_LoggedIn_NonSubscriber),
+    ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
 }
 extension PricingTests {
@@ -79,6 +86,7 @@ extension StyleguideTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
+  testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(EnvVarTests.allTests),

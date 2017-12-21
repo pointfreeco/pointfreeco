@@ -35,7 +35,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> accountResponse
 
     case let .episode(param):
-      return conn.map(const(param))
+      return conn.map(const((param, user, route)))
         |> episodeResponse
 
     case let .gitHubCallback(code, redirect):
@@ -88,7 +88,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         pricing = .default
       }
 
-      return conn.map(const(pricing .*. user))
+      return conn.map(const((pricing, user, route)))
         |> pricingResponse
 
     case .secretHome:

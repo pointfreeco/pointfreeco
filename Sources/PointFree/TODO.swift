@@ -105,6 +105,31 @@ public func requireSome<A>(
     }
 }
 
+public func require<A, B>(
+  _ f: @escaping (A) -> B?,
+  notFoundView: View<A> = View { _ in ["Not found"] }
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      return { conn in
+        return f(conn.data)
+          .map { conn.map(const($0)) }
+          .map(middleware)
+          ?? (conn |> (writeStatus(.notFound) >-> respond(notFoundView)))
+      }
+    }
+}
+
+public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
+  return { ac in (a2b(ac.0), ac.1, ac.2) }
+}
+
+func requireFirst<A, B, C>(_ x: (A?, B, C)) -> (A, B, C)? {
+  return x.0.map { ($0, x.1, x.2) }
+}
+
 extension EitherIO {
   public func `catch`(_ f: @escaping (E) -> EitherIO) -> EitherIO {
     return catchE(self, f)
@@ -168,6 +193,14 @@ private let defaultDecoder = JSONDecoder()
 
 public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
   return tuple <¢> lhs <*> rhs
+}
+
+public func zip<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -> Parallel<(A, B, C)> {
+  return tuple3 <¢> a <*> b <*> c
+}
+
+public func tuple3<A, B, C>(_ a: A) -> (B) -> (C) -> (A, B, C) {
+  return { b in { c in (a, b, c) } }
 }
 
 // todo: move to prelude

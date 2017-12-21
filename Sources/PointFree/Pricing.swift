@@ -109,11 +109,11 @@ public enum Pricing: Codable, DerivePartialIsos {
   }
 }
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Pricing, Database.User?>, Data> =
+let pricingResponse =
   writeStatus(.ok)
     >-> respond(pricingView)
 
-private let pricingView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser in
+private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user, currentRoute in
   document([
     html([
       head([
@@ -124,35 +124,35 @@ private let pricingView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser
         ]),
 
       body(
-        headerView.view(unit)
-          + pricingOptionsView.view(pricingAndUser)
+        darkNavView.view((user, currentRoute))
+          + pricingOptionsView.view((pricing, user))
           + footerView.view(unit)
       )
     ])
   ])
 }
 
-let pricingOptionsView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser in
+let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.mobile: [.top: 4, .bottom: 0], .desktop: [.bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
       h2(
         [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
-        ["Subscribe to Point", nbHyphen, "Free"]
+        ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
       ),
 
       p(
-        [`class`([Class.pf.colors.fg.green])],
+        [`class`([Class.pf.colors.fg.yellow])],
         ["Unlock full episodes and receive new updates every week."]
       ),
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
           form([action(path(to: .subscribe(nil))), id("payment-form"), method(.post)],
-            pricingTabsView.view(pricingAndUser |> get1)
-              + individualPricingRowView.view(pricingAndUser |> get1)
-              + teamPricingRowView.view(pricingAndUser |> get1)
-              + pricingFooterView.view(pricingAndUser |> get2)
+            pricingTabsView.view(pricing)
+              + individualPricingRowView.view(pricing)
+              + teamPricingRowView.view(pricing)
+              + pricingFooterView.view(user)
           )
           ])
         ])
@@ -253,12 +253,14 @@ private let numberSpinner =
     | Class.pf.colors.border.gray650
 private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
+    <> maxWidth(.px(200))
 
 private let pricingFooterView = View<Database.User?> { user in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          user.map(stripeForm.view) ?? [gitHubLink(redirectRoute: .pricing(nil, nil))]
+      div(
+        [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+        user.map(stripeForm.view) ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
         )
       ])
     ])
@@ -311,28 +313,6 @@ let pricingExtraStyles: Stylesheet =
     // TODO: swift-web needs to support custom pseudoElem and pseudoClass
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
-
-private func gitHubLink(redirectRoute: Route) -> Node {
-  return a(
-    [
-      href(path(to: .login(redirect: url(to: redirectRoute)))),
-      `class`([Class.pf.components.buttons.black])
-    ],
-    [
-      img(
-        base64: gitHubSvgBase64(fill: "#ffffff"),
-        mediaType: .image(.svg),
-        alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)]
-      ),
-      span(["Sign in with GitHub"])
-    ]
-  )
-}
 
 private let selectors = (
   input: (

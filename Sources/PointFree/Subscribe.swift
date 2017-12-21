@@ -41,8 +41,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, Subscr
 
         case .right:
           return conn
-            |> writeStatus(.created)
-            >-> respond(text: "Created subscription!")
+            |> redirect(to: path(to: .account))
         }
     }
 }
