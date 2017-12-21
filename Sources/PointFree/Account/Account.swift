@@ -113,8 +113,7 @@ private let profileRowView = View<Database.User> { currentUser in
 }
 
 private let subscriptionRowView = View<(Database.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
-  // TODO: uncomment
-//  guard let subscription = subscription else { return [] }
+  guard let subscription = subscription else { return [] }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
