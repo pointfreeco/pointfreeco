@@ -78,7 +78,7 @@ private let videoView = View<Prelude.Unit> { _ in
       controls(true),
       playsInline(true),
       autoplay(true),
-      poster("http://via.placeholder.com/640x360")
+      poster("")
     ],
     [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
   )
