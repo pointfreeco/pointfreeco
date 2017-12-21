@@ -134,7 +134,7 @@ private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvi
             subscriptionPlanRow.view(subscription)
               <> subscriptionTeamRow.view(teammates)
               <> subscriptionInvitesRowView.view(invites)
-              <> subscriptionInviteMoreRowView.view(unit)
+              <> subscriptionInviteMoreRowView.view((subscription, invites, teammates))
               <> subscriptionPaymentInfoView.view(subscription)
             )
           ])
@@ -233,35 +233,43 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     ])
 }
 
-private let subscriptionInviteMoreRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([subscriptionInfoRowClass])], [
-    gridColumn(sizes: [.mobile: 2], [
-      div([
-        p(["Invite more"])
-        ])
-      ]),
-    gridColumn(sizes: [.mobile: 10], [
-      div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-        p(["You have 10 open spots on your team. Invite a team member below:"]),
+private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
 
-        form([action(path(to: .invite(.send(nil)))), method(.post)], [
-          input([
-            type(.email),
-            `class`([smallInputClass, Class.align.middle]),
-            name("email")]),
+  guard let subscription = subscription else { return [] }
+  guard subscription.quantity > 1 else { return [] }
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count
+  guard invitesRemaining > 0 else { return [] }
 
-          input([
-            type(.submit),
-            `class`([
-              Class.pf.components.button(color: .purple, size: .small),
-              Class.align.middle,
-              Class.margin([.mobile: [.left: 1]])
-              ]),
-            value("Add team member")])
+  return [
+    gridRow([`class`([subscriptionInfoRowClass])], [
+      gridColumn(sizes: [.mobile: 2], [
+        div([
+          p(["Invite more"])
+          ])
+        ]),
+      gridColumn(sizes: [.mobile: 10], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          p([.text(encode("You have \(invitesRemaining) open spots on your team. Invite a team member below:"))]),
+
+          form([action(path(to: .invite(.send(nil)))), method(.post)], [
+            input([
+              type(.email),
+              `class`([smallInputClass, Class.align.middle]),
+              name("email")]),
+
+            input([
+              type(.submit),
+              `class`([
+                Class.pf.components.button(color: .purple, size: .small),
+                Class.align.middle,
+                Class.margin([.mobile: [.left: 1]])
+                ]),
+              value("Add team member")])
+            ])
           ])
         ])
       ])
-    ])
+  ]
 }
 
 private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscription -> [Node] in
