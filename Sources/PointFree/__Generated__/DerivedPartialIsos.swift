@@ -111,6 +111,12 @@ import Prelude
               guard case .logout = $0 else { return nil }
               return unit
           })
+          public static let paymentInfo = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.paymentInfo)),
+            unapply: {
+              guard case .paymentInfo = $0 else { return nil }
+              return unit
+          })
           public static let pricing = parenthesize <| PartialIso(
             apply: Route.pricing,
             unapply: {

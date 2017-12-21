@@ -78,6 +78,9 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> logoutResponse
 
+    case .paymentInfo:
+      fatalError()
+
     case let .pricing(plan, quantity):
       let pricing: Pricing
       if let quantity = quantity {
@@ -150,6 +153,7 @@ private func isProtected(route: Route) -> Bool {
        .invite(.show),
        .login,
        .logout,
+       .paymentInfo,
        .pricing,
        .secretHome,
        .subscribe,

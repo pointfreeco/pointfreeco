@@ -6,7 +6,9 @@ import XCTest
 @testable import PointFreeTests; @testable import StyleguideTests;
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
-    ("testAccount", testAccount)
+    ("testAccount", testAccount),
+    ("testAccountCancelingSubscription", testAccountCancelingSubscription),
+    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
   ]
 }
 extension AuthTests {
