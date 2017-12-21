@@ -116,7 +116,22 @@ extension Stripe {
 
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
-    id: .init(unwrap: "cus_test")
+    defaultSource: .init(unwrap: "card_test"),
+    id: .init(unwrap: "cus_test"),
+    sources: .init(
+      data: [
+        .init(
+          brand: .visa,
+          customer: .init(unwrap: "cus_test"),
+          expMonth: 1,
+          expYear: 2020,
+          id: .init(unwrap: "card_test"),
+          last4: "4242"
+        )
+      ],
+      hasMore: false,
+      totalCount: 1
+    )
   )
 }
 
@@ -147,7 +162,7 @@ extension Stripe.Subscription {
     created: Date(timeIntervalSinceReferenceDate: 0),
     currentPeriodStart: Date(timeIntervalSinceReferenceDate: 0),
     currentPeriodEnd: Date(timeIntervalSinceReferenceDate: 60 * 60 * 24 * 30),
-    customer: .init(unwrap: "cus_test"),
+    customer: .mock,
     endedAt: nil,
     id: .init(unwrap: "sub_test"),
     plan: .mock,

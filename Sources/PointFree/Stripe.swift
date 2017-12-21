@@ -64,15 +64,15 @@ public struct Stripe {
   public typealias Cents = Tagged<Stripe, Int>
 
   public struct Customer: Codable {
-    public let id: Id
     public let defaultSource: Card.Id
+    public let id: Id
     public let sources: ListEnvelope<Card>
 
     public typealias Id = Tagged<Customer, String>
 
     private enum CodingKeys: String, CodingKey {
-      case id
       case defaultSource = "default_source"
+      case id
       case sources
     }
   }
