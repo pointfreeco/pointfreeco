@@ -147,7 +147,7 @@ let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
-          form([action(path(to: .subscribe(nil))), id("payment-form"), method(.post)],
+          form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
             pricingTabsView.view(pricing)
               + individualPricingRowView.view(pricing)
               + teamPricingRowView.view(pricing)
@@ -265,39 +265,16 @@ private let pricingFooterView = View<Database.User?> { user in
     ])
 }
 
-private let stripeInputClass =
-  regularInputClass
-    | Class.flex.column
-    | Class.flex.flex
-    | Class.flex.justify.center
-    | Class.size.width100pct
-
 private let stripeForm = View<Database.User> { user in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    [
-      input([name("token"), type(.hidden)]),
-      div(
-        [
-          `class`([stripeInputClass]),
-          data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
-          id("card-element"),
-        ],
-        []
-      ),
-      div(
-        [
-          `class`([Class.pf.colors.fg.red]),
-          id("card-errors"),
-          role(.alert),
-        ],
-        []
-      ),
+    Stripe.html.elements + [
       button(
         [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-        ["Subscribe to Point-Free"])
-      ]
-      + stripeScripts)
+        ["Subscribe to Point-Free"]
+      )
+    ]
+  )
 }
 
 private func title(for type: Pricing.Billing) -> String {
@@ -378,48 +355,3 @@ private func tabStyles(
         <> showContentStyles
         <> selectedStyles
 }
-
-private let stripeScripts = [
-  script([src(AppEnvironment.current.stripe.js)]),
-  script(
-    """
-    var apiKey = document.getElementById('card-element').dataset.stripeKey;
-    var stripe = Stripe(apiKey);
-    var elements = stripe.elements();
-
-    var style = {
-      base: {
-        color: '#32325d',
-        fontSize: '16px',
-      }
-    };
-
-    var card = elements.create('card', {style: style});
-    card.mount('#card-element');
-
-    card.addEventListener('change', function(event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      stripe.createToken(card).then(function(result) {
-        if (result.error) {
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          form.token.value = result.token.id;
-          form.submit();
-        }
-      });
-    });
-    """
-  )
-]

@@ -45,6 +45,30 @@ let paymentInfoView = View<(Database.User, Stripe.Subscription?, Prelude.Unit)> 
         style(render(config: pretty, css: pricingExtraStyles)),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
+      body(
+        darkNavView.view((currentUser, nil))
+          <> [
+            gridRow([
+              gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],  [
+                div(
+                  [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+                  titleRowView.view(unit)
+                )
+              ])
+            ])
+          ]
+          <> footerView.view(unit)
+      )
     ])
   ])
+}
+
+private let titleRowView = View<Prelude.Unit> { _ in
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12], [
+      div([
+        h1([`class`([Class.pf.type.title2])], ["Payment Info"])
+        ])
+      ])
+    ])
 }
