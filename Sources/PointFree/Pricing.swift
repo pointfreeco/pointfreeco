@@ -380,7 +380,7 @@ private func tabStyles(
 }
 
 private let stripeScripts = [
-  script([src("https://js.stripe.com/v3/")]),
+  script([src(AppEnvironment.current.stripe.js)]),
   script(
     """
     var apiKey = document.getElementById('card-element').dataset.stripeKey;

@@ -251,13 +251,17 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([.text(encode("You have \(invitesRemaining) open spots on your team. Invite a team member below:"))]),
 
-          form([action(path(to: .invite(.send(nil)))), method(.post)], [
-            input([
-              type(.email),
-              `class`([smallInputClass, Class.align.middle]),
-              name("email")]),
-
-            input([
+        form([
+          action(path(to: .invite(.send(nil)))), method(.post),
+          `class`([Class.flex.flex])
+          ], [
+          input([
+            `class`([smallInputClass, Class.align.middle, Class.size.width100pct]),
+            name("email"),
+            placeholder("blob@example.com"),
+            type(.email),
+            ]),
+          input([
               type(.submit),
               `class`([
                 Class.pf.components.button(color: .purple, size: .small),
