@@ -189,8 +189,8 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   switch e {
   case let .left(e):
     return .left(e)
-  case let .right(user):
-    return user.map(Either.right) ?? .left(unit)
+  case let .right(a):
+    return a.map(Either.right) ?? .left(unit)
   }
 }
 

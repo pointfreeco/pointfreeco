@@ -1,3 +1,4 @@
+import Either
 import Foundation
 import HttpPipeline
 import Prelude
@@ -12,14 +13,21 @@ let subscribeResponse =
   requireUser
     <| subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData?>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (user, subscribeData) = conn.data |> lower
-    return AppEnvironment.current.stripe.createCustomer(user, subscribeData.token)
+
+    return pure(subscribeData)
+      .mapExcept(requireSome)
+      .withExcept(const(unit))
+      .flatMap { subscribeData in
+        AppEnvironment.current.stripe.createCustomer(user, subscribeData.token)
+          .map { ($0, subscribeData) }
+      }
       .flatMap {
         AppEnvironment.current.stripe
-          .createSubscription($0.id, subscribeData.pricing.plan, subscribeData.pricing.quantity)
+          .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity)
       }
       .flatMap { AppEnvironment.current.database.createSubscription($0.id, user.id).withExcept(const(unit)) }
       .run

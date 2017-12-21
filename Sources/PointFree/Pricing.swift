@@ -26,13 +26,25 @@ public enum Pricing: Codable, DerivePartialIsos {
   private enum CodingKeys: String, CodingKey {
     case individual
     case team
+    case lane
+  }
+
+  private enum Lane: String, Codable {
+    case individual
+    case team
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    if let billing = try container.decodeIfPresent(Billing.self, forKey: .individual) {
+    let billing = try container.decodeIfPresent(Billing.self, forKey: .individual)
+    let quantity = try container.decodeIfPresent(Int.self, forKey: .team)
+    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
+
+    if let lane = lane, let billing = billing, let quantity = quantity {
+      self = lane == .individual ? .individual(billing) : .team(quantity)
+    } else if let billing = billing {
       self = .individual(billing)
-    } else if let quantity = try container.decodeIfPresent(Int.self, forKey: .team) {
+    } else if let quantity = quantity {
       self = .team(quantity)
     } else {
       throw unit // FIXME
@@ -136,7 +148,7 @@ let pricingOptionsView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser 
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
-          form(
+          form([action(path(to: .subscribe(nil))), id("payment-form"), method(.post)],
             pricingTabsView.view(pricingAndUser |> get1)
               + individualPricingRowView.view(pricingAndUser |> get1)
               + teamPricingRowView.view(pricingAndUser |> get1)
@@ -151,22 +163,24 @@ let pricingOptionsView = View<Tuple2<Pricing, Database.User?>> { pricingAndUser 
 private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
+      checked(pricing.isIndividual),
       `class`([Class.display.none]),
       id(selectors.input.0),
+      name("pricing[lane]"),
       type(.radio),
-      name("tabs"),
-      checked(pricing.isIndividual)
+      value("individual"),
       ]),
     label([`for`(selectors.input.0), `class`([Class.pf.components.buttons.pricingTab])], [
       "For you"
       ]),
 
     input([
+      checked(pricing.isTeam),
       `class`([Class.display.none]),
       id(selectors.input.1),
+      name("pricing[lane]"),
       type(.radio),
-      name("tabs"),
-      checked(pricing.isTeam)
+      value("team"),
       ]),
     label([`for`(selectors.input.1), `class`([Class.pf.components.buttons.pricingTab])], [
       "For your team"
@@ -190,7 +204,12 @@ private let individualPricingColumnView = View<(billing: Pricing.Billing, pricin
     label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
-          id(radioId(for: $0.billing)), name("individual"), type(.radio), checked(isChecked($0.billing, $0.pricing))]),
+          checked(isChecked($0.billing, $0.pricing)),
+          id(radioId(for: $0.billing)),
+          name("pricing[individual]"),
+          type(.radio),
+          value($0.billing.rawValue),
+          ]),
         gridColumn(sizes: [.mobile: 12], [], [
           h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: $0.billing)))]),
           ]),
@@ -212,6 +231,7 @@ private let teamPricingRowView = View<Pricing> { pricing in
           type(.number),
           min(Pricing.validTeamQuantities.lowerBound),
           max(Pricing.validTeamQuantities.upperBound),
+          name("pricing[team]"),
           step(1),
           value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
           `class`([numberSpinner, Class.pf.colors.fg.purple])
@@ -245,7 +265,13 @@ private let pricingFooterView = View<Database.User?> { user in
 }
 
 private let stripeForm = View<Database.User> { user in
-  div([])
+  div([
+    input([name("token"), type(.hidden)]),
+    div([id("card-element"), data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey)], []),
+    div([id("card-errors"), role(.alert)], []),
+    button(["Subscribe to Point-Free"])
+    ]
+    + stripeScripts)
 }
 
 private func title(for type: Pricing.Billing) -> String {
@@ -337,8 +363,7 @@ private func tabStyles(
 
     let selectedStyles = idSelectors
       .map { inputSelector, contentSelector -> Stylesheet in
-        let id = (inputSelector.idString ?? "")
-        return (inputSelector & .pseudo(.checked) + .star) % (
+        (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)
         )
       }
@@ -350,7 +375,7 @@ private func tabStyles(
         <> selectedStyles
 }
 
-private let stripe = [
+private let stripeScripts = [
   script([src("https://js.stripe.com/v3/")]),
   script(
     """
