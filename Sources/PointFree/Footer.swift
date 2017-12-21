@@ -20,7 +20,7 @@ private let linksColumnsView =
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
-    "The content of this site is license under ",
+    "The content of this site is licensed under ",
     a([`class`([Class.pf.colors.link.gray650]), href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
     a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
