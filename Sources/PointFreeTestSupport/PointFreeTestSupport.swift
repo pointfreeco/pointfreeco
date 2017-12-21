@@ -115,7 +115,8 @@ extension Stripe {
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
-    fetchSubscription: const(pure(.mock))
+    fetchSubscription: const(pure(.mock)),
+    js: ""
   )
 }
 
