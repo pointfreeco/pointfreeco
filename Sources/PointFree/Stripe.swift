@@ -13,6 +13,7 @@ public struct Stripe {
   public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var js: String
 
   public static let live = Stripe(
     cancelSubscription: PointFree.cancelSubscription,
@@ -21,7 +22,8 @@ public struct Stripe {
     fetchCustomer: PointFree.fetchCustomer,
     fetchPlans: PointFree.fetchPlans,
     fetchPlan: PointFree.fetchPlan,
-    fetchSubscription: PointFree.fetchSubscription
+    fetchSubscription: PointFree.fetchSubscription,
+    js: "https://js.stripe.com/v3/"
   )
 
   public struct Card: Codable {
