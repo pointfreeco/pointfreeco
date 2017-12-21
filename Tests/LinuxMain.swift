@@ -65,7 +65,8 @@ extension NavViewTests {
 }
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
-    ("testPricing", testPricing)
+    ("testPricing", testPricing),
+    ("testPricingLoggedIn", testPricingLoggedIn)
   ]
 }
 extension SiteMiddlewareTests {
