@@ -276,7 +276,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
         ]),
       gridColumn(sizes: [.mobile: 9, .desktop: 5], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([text("Status: " + status(for: subscription))]),
+          p([text(status(for: subscription))]),
           p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
           p([text("Expires: " + String(card.expMonth) + "/" + String(card.expYear))]),
           ])
@@ -298,18 +298,18 @@ public func status(for subscription: Stripe.Subscription) -> String {
     let currentPeriodEndString = subscription.currentPeriodEnd
       .map { " " + dateFormatter.string(from: $0) } ?? ""
     let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
-    return "renewing" + currentPeriodEndString + totalAmountString
+    return "Renewing" + currentPeriodEndString + totalAmountString
   case .canceled:
-    return subscription.canceledAt
+    return subscription.currentPeriodEnd
       .filterOptional { $0 > AppEnvironment.current.date() }
-      .map { "cancels " + dateFormatter.string(from: $0) }
-      ?? "canceled"
+      .map { "Cancels " + dateFormatter.string(from: $0) }
+      ?? "Canceled"
   case .pastDue:
-    return "past due" // FIXME
+    return "Past due" // FIXME
   case .unpaid:
-    return "unpaid" // FIXME
+    return "Unpaid" // FIXME
   case .trialing:
-    return "in trial" // FIXME
+    return "In trial" // FIXME
   }
 }
 

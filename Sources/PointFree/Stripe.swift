@@ -10,7 +10,7 @@ public struct Stripe {
   public var createCustomer: (Database.User, Token.Id) -> EitherIO<Prelude.Unit, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var fetchPlans: EitherIO<Prelude.Unit, PlansEnvelope>
+  public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
 
@@ -122,16 +122,6 @@ public struct Stripe {
     }
   }
 
-  public struct PlansEnvelope: Codable {
-    public private(set) var data: [Plan]
-    public private(set) var hasMore: Bool
-
-    private enum CodingKeys: String, CodingKey {
-      case data
-      case hasMore = "has_more"
-    }
-  }
-
   public struct Subscription: Codable {
     public private(set) var canceledAt: Date?
     public private(set) var cancelAtPeriodEnd: Bool
@@ -224,7 +214,7 @@ private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Str
   return stripeDataTask("customers/\(id.unwrap)")
 }
 
-private let fetchPlans: EitherIO<Prelude.Unit, Stripe.PlansEnvelope> =
+private let fetchPlans: EitherIO<Prelude.Unit, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
 private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan> {
