@@ -39,6 +39,22 @@ import Prelude
           })
     }
   }
+  extension Pricing {
+    enum iso {
+          public static let individual = parenthesize <| PartialIso(
+            apply: Pricing.individual,
+            unapply: {
+              guard case let .individual(result) = $0 else { return nil }
+              return result
+          })
+          public static let team = parenthesize <| PartialIso(
+            apply: Pricing.team,
+            unapply: {
+              guard case let .team(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
   extension Route {
     enum iso {
           public static let about = parenthesize <| PartialIso<Prelude.Unit, Route>(

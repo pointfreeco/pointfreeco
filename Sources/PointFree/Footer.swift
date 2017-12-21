@@ -20,7 +20,7 @@ private let linksColumnsView =
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
-    "The content of this site is license under ",
+    "The content of this site is licensed under ",
     a([`class`([Class.pf.colors.link.gray650]), href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
     a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
@@ -39,12 +39,12 @@ private let pointFreeView = View<Prelude.Unit> { _ in
       "A weekly video series on functional programming and the Swift programming language. Hosted by ",
       a(
         [href(twitterUrl(to: .mbrandonw)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
-        ["Brandon Williams"]
+        [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]
       ),
       " and ",
       a(
         [href(twitterUrl(to: .stephencelis)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
-        ["Stephen Celis"]
+        [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]
       ),
       "."
       ]),
@@ -76,7 +76,7 @@ private let accountColumnView = View<Prelude.Unit> { _ in
         a([`class`([footerLinkClass]), href("#")], ["Subscribe"])
         ]),
       li([
-        a([`class`([footerLinkClass]), href(path(to: .pricing(nil)))], ["Pricing"])
+        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, nil)))], ["Pricing"])
         ]),
       ])
     ])

@@ -8,7 +8,7 @@ import UrlFormEncoding
 public struct Stripe {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
   public var createCustomer: (Database.User, Token.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Prelude.Unit, Customer>
   public var fetchPlans: EitherIO<Prelude.Unit, PlansEnvelope>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
@@ -102,14 +102,7 @@ public struct Stripe {
       case usd
     }
 
-    public enum Id: String, Codable, RawRepresentable {
-      case yearly
-      case monthly
-      case yearlyTeam = "yearly-team"
-      case monthlyTeam = "monthly-team"
-
-      static let all: [Id] = [.yearly, .monthly, .yearlyTeam, .monthlyTeam]
-    }
+    public typealias Id = Tagged<Plan, String>
   }
 
   public struct PlansEnvelope: Codable {
@@ -129,45 +122,60 @@ public struct Stripe {
   }
 }
 
+extension Tagged where Tag == Stripe.Plan, A == String {
+  static var individualMonthly: Stripe.Plan.Id {
+    return .init(unwrap: "individual-monthly")
+  }
+
+  static var individualYearly: Stripe.Plan.Id {
+    return .init(unwrap: "individual-yearly")
+  }
+
+  static var teamYearly: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly")
+  }
+}
+
 //private let subscriptionPlans = fetchPlans
 //  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id.rawValue)", .delete)
+  return stripeDataTask("subscriptions/\(id.rawValue)", .delete)
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id)
   -> EitherIO<Prelude.Unit, Stripe.Customer> {
 
-    return stripeDataTask("https://api.stripe.com/v1/customers", .post([
+    return stripeDataTask("customers", .post([
       "description": user.id.unwrap.uuidString,
       "email": user.email.unwrap,
       "source": token.unwrap,
       ]))
 }
 
-private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.Id)
+private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.Id, quantity: Int)
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
-    return stripeDataTask("https://api.stripe.com/v1/subscriptions", .post([
+    return stripeDataTask("subscriptions", .post([
       "customer": customer.rawValue,
       "items[0][plan]": plan.rawValue,
+      "items[0][quantity]": String(quantity),
       ]))
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
-  return stripeDataTask("https://api.stripe.com/v1/customers/\(id.unwrap)")
+  return stripeDataTask("customers/\(id.unwrap)")
 }
 
 private let fetchPlans: EitherIO<Prelude.Unit, Stripe.PlansEnvelope> =
-  stripeDataTask("https://api.stripe.com/v1/plans")
+  stripeDataTask("plans")
 
 private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan> {
-  return stripeDataTask("https://api.stripe.com/v1/plans/\(id.rawValue)")
+  return stripeDataTask("plans/\(id.rawValue)")
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("https://api.stripe.com/v1/subscriptions/\(id.unwrap)")
+  return stripeDataTask("subscriptions/\(id.unwrap)")
 }
 
 private let stripeJsonDecoder: JSONDecoder = {
@@ -182,23 +190,27 @@ private enum Method {
   case delete
 }
 
-private func stripeDataTask<A>(_ urlString: String, _ method: Method = .get)
+private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLRequest {
+  var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+
+  switch method {
+  case .get:
+    request.httpMethod = "GET"
+  case let .post(params):
+    request.httpMethod = "POST"
+    request.httpBody = Data(urlFormEncode(value: params).utf8)
+  case .delete:
+    request.httpMethod = "DELETE"
+  }
+
+  return request
+}
+
+private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   -> EitherIO<Prelude.Unit, A>
   where A: Decodable {
 
-    var request = URLRequest(url: URL(string: urlString)!)
-
-    switch method {
-    case .get:
-      request.httpMethod = "GET"
-    case let .post(params):
-      request.httpMethod = "POST"
-      request.httpBody = Data(urlFormEncode(value: params).utf8)
-    case .delete:
-      request.httpMethod = "DELETE"
-    }
-
-    return pure(request)
+    return pure(stripeUrlRequest(path, method))
       .flatMap { jsonDataTask(with: auth <| $0) }
       .map(tap(AppEnvironment.current.logger.debug))
       .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
