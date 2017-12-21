@@ -296,6 +296,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
 private let dueDateFormatter = DateFormatter()
   |> \.dateStyle .~ .short
   |> \.timeStyle .~ .none
+  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
 private let currencyFormatter = NumberFormatter()
   |> \.numberStyle .~ .currency
