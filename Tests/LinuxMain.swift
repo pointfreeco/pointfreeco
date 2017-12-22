@@ -6,7 +6,9 @@ import XCTest
 @testable import PointFreeTests; @testable import StyleguideTests;
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
-    ("testAccount", testAccount)
+    ("testAccount", testAccount),
+    ("testAccountCancelingSubscription", testAccountCancelingSubscription),
+    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
   ]
 }
 extension AuthTests {
@@ -63,6 +65,11 @@ extension NavViewTests {
     ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
 }
+extension PaymentInfoTests {
+  static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
+    ("testRender", testRender)
+  ]
+}
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
@@ -96,6 +103,7 @@ XCTMain([
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
+  testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),

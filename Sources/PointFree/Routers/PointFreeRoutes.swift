@@ -10,6 +10,8 @@ public protocol DerivePartialIsos {}
 public enum Route: DerivePartialIsos {
   case about
   case account
+  case cancel
+  case confirmCancel
   case episode(Either<String, Int>)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
@@ -17,11 +19,13 @@ public enum Route: DerivePartialIsos {
   case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
+  case paymentInfo
   case pricing(String?, Int?)
   case secretHome
   case subscribe(SubscribeData?)
   case team(Team)
   case terms
+  case updateProfile(ProfileData?)
 
   public enum Team: DerivePartialIsos {
     case remove(Database.User.Id)
@@ -84,6 +88,9 @@ private let routers: [Router<Route>] = [
   Route.iso.logout
     <¢> get %> lit("logout") <% end,
 
+  Route.iso.paymentInfo
+    <¢> get %> lit("account") %> lit("payment-info") <% end,
+
   Route.iso.pricing
     <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
 
@@ -105,6 +112,8 @@ private let routers: [Router<Route>] = [
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
 
+  Route.iso.updateProfile
+    <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end
 ]
 
 private let formDecoder = UrlFormDecoder()
