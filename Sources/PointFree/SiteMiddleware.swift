@@ -121,8 +121,9 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> termsResponse
 
-    case .updateProfile:
-      fatalError()
+    case let .updateProfile(data):
+      return conn.map(const(data))
+        |> updateProfileMiddleware
     }
 }
 

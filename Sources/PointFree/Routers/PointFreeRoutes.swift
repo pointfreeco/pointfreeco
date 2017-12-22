@@ -25,7 +25,7 @@ public enum Route: DerivePartialIsos {
   case subscribe(SubscribeData?)
   case team(Team)
   case terms
-  case updateProfile(name: String, email: String)
+  case updateProfile(ProfileData?)
 
   public enum Team: DerivePartialIsos {
     case remove(Database.User.Id)
@@ -112,6 +112,8 @@ private let routers: [Router<Route>] = [
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
 
+  Route.iso.updateProfile
+    <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end
 ]
 
 private let formDecoder = UrlFormDecoder()

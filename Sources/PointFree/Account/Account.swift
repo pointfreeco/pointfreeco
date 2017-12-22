@@ -91,12 +91,12 @@ private let profileRowView = View<Database.User> { currentUser in
       div([
         h2([`class`([Class.pf.type.title4])], ["Profile"]),
 
-        form([action("#"), method(.post)], [
+        form([action(path(to: .updateProfile(nil))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
-          input([`class`([blockInputClass]), type(.text), value(currentUser.name)]),
+          input([`class`([blockInputClass]), name("name"), type(.text), value(currentUser.name)]),
 
           label([`class`([labelClass])], ["Email"]),
-          input([`class`([blockInputClass]), type(.email), value(currentUser.email.unwrap)]),
+          input([`class`([blockInputClass]), name("email"), type(.email), value(currentUser.email.unwrap)]),
 
           label([`class`([Class.display.block])], [
             input(

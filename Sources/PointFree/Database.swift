@@ -15,6 +15,7 @@ public struct Database {
   var fetchTeamInvites: (Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  var updateUser: (User.Id, String, EmailAddress) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -30,6 +31,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
+    updateUser: PointFree.updateUser(withId:name:email:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
@@ -172,6 +174,22 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
     """,
     [ownerId.unwrap.uuidString]
   )
+}
+
+private func updateUser(withId id: Database.User.Id, name: String, email: EmailAddress) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    UPDATE "users"
+    SET "name" = $1, "email" = $2
+    WHERE "id" = $3
+    """,
+    [
+      name,
+      email.unwrap,
+      id.unwrap.uuidString,
+    ]
+    )
+    .map(const(unit))
 }
 
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
