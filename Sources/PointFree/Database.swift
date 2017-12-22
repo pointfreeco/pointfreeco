@@ -124,13 +124,13 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
   return execute(
     """
     UPDATE "users"
-    SET "subscription_id" = $2,
+    SET "subscription_id" = $1,
         "updated_at" = NOW()
-    WHERE "users"."id" = $1
+    WHERE "users"."id" = $2
     """,
     [
-      userId.unwrap.uuidString,
       subscriptionId.unwrap.uuidString,
+      userId.unwrap.uuidString,
     ]
   )
   .map(const(unit))
