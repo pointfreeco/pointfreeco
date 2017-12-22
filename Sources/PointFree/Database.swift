@@ -4,19 +4,20 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var addUserIdToSubscriptionId: (Database.User.Id, Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription.Id, User.Id) -> EitherIO<Error, Prelude.Unit>
-  var deleteTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  var insertTeamInvite: (EmailAddress, Database.User.Id) -> EitherIO<Error, Database.TeamInvite>
-  var fetchSubscriptionById: (Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?>
-  var fetchSubscriptionByOwnerId: (Database.User.Id) -> EitherIO<Error, Database.Subscription?>
-  var fetchSubscriptionTeammatesByOwnerId: (Database.User.Id) -> EitherIO<Error, [Database.User]>
-  var fetchTeamInvite: (Database.TeamInvite.Id) -> EitherIO<Error, Database.TeamInvite?>
-  var fetchTeamInvites: (Database.User.Id) -> EitherIO<Error, [Database.TeamInvite]>
+  var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
+  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
+  var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
+  var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
+  var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
+  var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var removeTeammateUserIdFromSubscriptionId: (Database.User.Id, Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, Database.User?>
+  var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  var updateUser: (User.Id, String, EmailAddress) -> EitherIO<Error, Prelude.Unit>
+  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
@@ -32,6 +33,7 @@ public struct Database {
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
+    updateUser: PointFree.updateUser(withId:name:email:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
@@ -74,7 +76,7 @@ public struct Database {
     let createdAt: Date
     let email: EmailAddress
     let id: Id
-    let inviterUserId: Database.User.Id
+    let inviterUserId: User.Id
 
     public typealias Id = Tagged<TeamInvite, UUID>
 
@@ -195,6 +197,22 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
     """,
     [ownerId.unwrap.uuidString]
   )
+}
+
+private func updateUser(withId id: Database.User.Id, name: String, email: EmailAddress) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    UPDATE "users"
+    SET "name" = $1, "email" = $2
+    WHERE "id" = $3
+    """,
+    [
+      name,
+      email.unwrap,
+      id.unwrap.uuidString,
+    ]
+    )
+    .map(const(unit))
 }
 
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {

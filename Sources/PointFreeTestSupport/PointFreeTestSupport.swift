@@ -42,6 +42,7 @@ extension Database {
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
+    updateUser: { _, _, _ in pure(unit) },
     upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
   )
