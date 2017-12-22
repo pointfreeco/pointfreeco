@@ -9,14 +9,19 @@ import XCTest
 
 class HtmlCssInlinerTests: TestCase {
   func testHtmlCssInliner() {
-    let stylesheet: Stylesheet =
-      p % color(.black)
+    let stylesheet1: Stylesheet =
+      body % fontSize(.px(16))
+        <> p % color(.black)
         <> "#hero" % maxWidth(.pct(100))
         <> "#some-id" % backgroundColor(.red)
-        <> ".bold" % fontWeight(.bold)
+        <> ".p1" % padding(all: .px(16))
+    let stylesheet2: Stylesheet =
+      ".bold" % fontWeight(.bold)
         <> ".leading" % fontSize(.px(18))
         <> (body | html) % height(.pct(100))
         <> ("#footer" | footer | ".footer") % display(.block)
+
+    let stylesheet = stylesheet1 <> stylesheet2
 
     let doc = document([
       html([
@@ -25,8 +30,8 @@ class HtmlCssInlinerTests: TestCase {
             h1(["Point-Free"])
             ]),
 
-          p([
-            "This p tag gets styles from the tag element."
+          p([Html.`class`("p1")], [
+            "This p tag gets styles from the tag element and classes."
             ]),
 
           p([id("some-id"), Html.`class`("bold leading"), style(lineHeight(1.25))], [
