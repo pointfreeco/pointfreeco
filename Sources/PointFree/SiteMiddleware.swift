@@ -34,6 +34,12 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> accountResponse
 
+    case .cancel:
+      fatalError()
+
+    case .confirmCancel:
+      fatalError()
+
     case let .episode(param):
       return conn.map(const((param, user, route)))
         |> episodeResponse
@@ -114,6 +120,9 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
     case .terms:
       return conn.map(const(unit))
         |> termsResponse
+
+    case .updateProfile:
+      fatalError()
     }
 }
 
@@ -145,6 +154,8 @@ private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
        .account,
+       .cancel,
+       .confirmCancel,
        .episode,
        .gitHubCallback,
        .invite(.accept),
@@ -160,7 +171,8 @@ private func isProtected(route: Route) -> Bool {
        .subscribe,
        .team(.show),
        .team(.remove),
-       .terms:
+       .terms,
+       .updateProfile:
 
     return true
 

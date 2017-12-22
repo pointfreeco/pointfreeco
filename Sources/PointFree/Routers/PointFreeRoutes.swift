@@ -10,6 +10,8 @@ public protocol DerivePartialIsos {}
 public enum Route: DerivePartialIsos {
   case about
   case account
+  case cancel
+  case confirmCancel
   case episode(Either<String, Int>)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
@@ -23,6 +25,7 @@ public enum Route: DerivePartialIsos {
   case subscribe(SubscribeData?)
   case team(Team)
   case terms
+  case updateProfile(name: String, email: String)
 
   public enum Team: DerivePartialIsos {
     case remove(Database.User.Id)
