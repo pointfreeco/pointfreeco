@@ -1,4 +1,4 @@
-import Css
+@testable import Css
 import Html
 import HtmlCssSupport
 import Prelude

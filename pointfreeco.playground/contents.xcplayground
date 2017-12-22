@@ -8,5 +8,6 @@
         <page name='Team Invites'/>
         <page name='Account'/>
         <page name='Email Tester'/>
+        <page name='Style Inliner Experiments'/>
     </pages>
 </playground>
