@@ -14,12 +14,15 @@ struct SimpleEmailLayoutData<A> {
   let data: A
 }
 
+let emailStylesheet = styleguide
+  <> a % key("text-decoration", "underline")
+
 func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
   return View { layoutData in
     document([
       html([xmlns("http://www.w3.org/1999/xhtml")], [
         head([
-          style(styleguide),
+          style(emailStylesheet),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
           title(layoutData.title),
@@ -49,7 +52,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
         ])
       ])
     }
-    .map { applyInlineStyles(nodes: $0, stylesheet: styleguide) }
+    .map { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
 }
 
 let bodyTableStyles =
