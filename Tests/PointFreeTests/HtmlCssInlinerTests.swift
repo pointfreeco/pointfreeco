@@ -1,7 +1,6 @@
 import Css
 import Html
 import HtmlCssSupport
-import HtmlPrettyPrint
 import PointFree
 import PointFreeTestSupport
 import Prelude
