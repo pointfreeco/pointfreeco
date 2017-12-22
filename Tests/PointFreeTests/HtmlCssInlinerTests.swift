@@ -9,7 +9,7 @@ import XCTest
 
 class HtmlCssInlinerTests: TestCase {
   func testHtmlCssInliner() {
-    let stylesheet =
+    let stylesheet: Stylesheet =
       body % fontSize(.px(16))
         <> p % color(.black)
         <> "#hero" % maxWidth(.pct(100))
