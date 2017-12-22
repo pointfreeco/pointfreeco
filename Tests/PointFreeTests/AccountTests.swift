@@ -38,22 +38,29 @@ class AccountTests: TestCase {
   }
   
   func testAccount() {
-    let conn = connection(from: request(to: url(to: .account)))
-    let result = conn |> siteMiddleware
+    let subscription = Stripe.Subscription.mock
+      |> \.quantity .~ 5
+      |> \.plan.id .~ .teamYearly
+      |> \.plan.interval .~ .year
 
-    assertSnapshot(matching: result.perform())
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: url(to: .account)))
+      let result = conn |> siteMiddleware
 
-    #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(matching: result.perform())
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
 
-      }
-    #endif
+          webView.frame.size.width = 400
+          assertSnapshot(matching: webView, named: "mobile")
+
+        }
+      #endif
+    }
   }
 
   func testAccountCancelingSubscription() {
