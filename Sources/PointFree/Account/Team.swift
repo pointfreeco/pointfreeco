@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -27,11 +28,66 @@ let teamResponse =
     >-> respond(teamView.contramap(lower))
 
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User.Id, Data> =
-  // TODO: do actual removal of subscription. should prob validate that teammateId is actually a teammate
-  //       of current user first.
-  // TODO: validate that member id is on same subscription as current user before removing
   requireUser
-    <| redirect(to: .team(.show))
+    <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+      let (currentUser, teammateId) = lower(conn.data)
+      guard let currentUserSubscriptionId = currentUser.subscriptionId
+        else { return pure(conn.map(const(unit))) }
+
+      let validateCurrentUserIsSubscriptionOwner = AppEnvironment.current.database
+        .fetchSubscriptionById(currentUserSubscriptionId)
+        .mapExcept(requireSome)
+        .mapExcept { errorOrSubscription in
+          errorOrSubscription.right?.userId.unwrap == .some(currentUser.id.unwrap)
+            ? .right(unit)
+            : .left(unit as Error)
+      }
+
+      return validateCurrentUserIsSubscriptionOwner
+        .flatMap { _ in AppEnvironment.current.database.fetchUserById(teammateId) }
+        .mapExcept(requireSome)
+        .mapExcept { errorOrTeammate in
+          // Validate that the fetched user is in fact the current user's teammate.
+          errorOrTeammate.right?.subscriptionId?.unwrap == .some(currentUserSubscriptionId.unwrap)
+            ? errorOrTeammate
+            : .left(unit)
+        }
+        .flatMap { teammate in
+          AppEnvironment.current.database
+            .removeTeammateUserIdFromSubscriptionId(teammate.id, currentUserSubscriptionId)
+            .flatMap { x -> EitherIO<Error, Prelude.Unit> in
+
+              // Fire-and-forget emails to owner and teammate
+              sendEmailsForTeammateRemoval(owner: currentUser, teammate: teammate)
+                .run({ _ in })
+
+              return pure(x)
+          }
+        }
+        .run
+        .map(const(conn.map(const(unit))))
+    }
+    >-> redirect(to: .account)
+
+private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
+
+  // TODO: make these emails better
+  return zip(
+    parallel(sendEmail(
+      to: [teammate.email],
+      subject: "You have been removed from \(owner.name)’s Point-Free team",
+      content: inj1("You have been removed")
+      )
+      .run),
+    parallel(sendEmail(
+      to: [owner.email],
+      subject: "Your teammate \(teammate.name) has been removed",
+      content: inj1("EOM")
+      )
+      .run)
+  )
+  .map(const(unit))
+}
 
 private let teamView = View<([Database.TeamInvite], [Database.User], Database.User, Prelude.Unit)> { invites, teammates, currentUser, _ in
   [
