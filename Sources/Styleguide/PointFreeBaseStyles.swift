@@ -253,20 +253,6 @@ public let pointFreeBaseStyles =
     <> heroLogoStyles
     <> videoTimeLinkStyles
 
-public let emailBaseStyles =
-  (body | html) % height(.pct(100))
-    <> bodyStyles
-    <> resets
-    <> colorStyles
-    <> codeStyles
-    <> inlineCodeStyles
-    <> opacities
-    <> typeStyles
-    <> baseMarginStyles
-    <> hrReset
-    <> dividerStyles
-    <> baseButtonStyles
-
 private let bodyStyles =
   html % (
     fontSize(.px(14))

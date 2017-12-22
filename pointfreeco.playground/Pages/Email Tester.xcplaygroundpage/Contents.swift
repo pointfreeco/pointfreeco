@@ -8,8 +8,6 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//AppEnvironment.push(const(.mock))
-
 let htmlNodes = teamInviteEmailView.view((.mock, .mock))
 let htmlString = render(htmlNodes, config: pretty)
 
@@ -20,10 +18,9 @@ print(htmlString)
 PlaygroundPage.current.liveView = webView
 
 sendEmail(
-  to: [EmailAddress(unwrap: "saa@shoparc.com")],
-  subject: "Foo 7",
+  to: [.init(unwrap: "mbw234@gmail.com")],
+  subject: "Invite email with image \(arc4random())",
   content: inj2(htmlNodes)
   )
   .run
   .perform()
-//
