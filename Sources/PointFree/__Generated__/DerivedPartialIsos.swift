@@ -69,6 +69,18 @@ import Prelude
               guard case .account = $0 else { return nil }
               return unit
           })
+          public static let cancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.cancel)),
+            unapply: {
+              guard case .cancel = $0 else { return nil }
+              return unit
+          })
+          public static let confirmCancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.confirmCancel)),
+            unapply: {
+              guard case .confirmCancel = $0 else { return nil }
+              return unit
+          })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
             unapply: {
@@ -111,6 +123,12 @@ import Prelude
               guard case .logout = $0 else { return nil }
               return unit
           })
+          public static let paymentInfo = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.paymentInfo)),
+            unapply: {
+              guard case .paymentInfo = $0 else { return nil }
+              return unit
+          })
           public static let pricing = parenthesize <| PartialIso(
             apply: Route.pricing,
             unapply: {
@@ -140,6 +158,12 @@ import Prelude
             unapply: {
               guard case .terms = $0 else { return nil }
               return unit
+          })
+          public static let updateProfile = parenthesize <| PartialIso(
+            apply: Route.updateProfile,
+            unapply: {
+              guard case let .updateProfile(result) = $0 else { return nil }
+              return result
           })
     }
   }
