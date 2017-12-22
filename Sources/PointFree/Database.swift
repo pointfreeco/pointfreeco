@@ -15,6 +15,7 @@ public struct Database {
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateUser: (User.Id, String, EmailAddress) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -31,6 +32,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
+    removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateUser: PointFree.updateUser(withId:name:email:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
@@ -127,11 +129,32 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
     WHERE "users"."id" = $2
     """,
     [
-      userId.unwrap.uuidString,
       subscriptionId.unwrap.uuidString,
+      userId.unwrap.uuidString,
     ]
   )
   .map(const(unit))
+}
+
+private func remove(
+  teammateUserId: Database.User.Id,
+  fromSubscriptionId subscriptionId: Database.Subscription.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    UPDATE "users"
+    SET "subscription_id" = NULL,
+        "updated_at" = NOW()
+    WHERE "users"."id" = $1
+    AND "users"."subscription_id" = $2
+    """,
+    [
+      teammateUserId.unwrap.uuidString,
+      subscriptionId.unwrap.uuidString,
+      ]
+    )
+    .map(const(unit))
 }
 
 private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?> {
