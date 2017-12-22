@@ -58,3 +58,7 @@ public func opacity(_ value: Double) -> Stylesheet {
 public func zIndex(_ n: Int) -> Stylesheet {
   return key("z-index", "\(n)")
 }
+
+public func bgcolor<T>(_ value: String) -> Attribute<T> {
+  return .init("bgcolor", value)
+}

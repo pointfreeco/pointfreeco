@@ -26,7 +26,8 @@ extension Class {
       public enum bg {
         public static let black = CssSelector.class("bg-black")
         public static let dark = CssSelector.class("bg-dark")
-        public static let light = CssSelector.class("bg-light")
+        public static let gray650 = CssSelector.class("bg-gray650")
+        public static let gray900 = CssSelector.class("bg-gray900")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
         public static let white = CssSelector.class("bg-white")
@@ -166,7 +167,7 @@ extension Class.pf {
       case .regular:
         sizeStyles = Class.h5 | Class.padding([.mobile: [.leftRight: 2]])
       case .large:
-        sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 4]])
+        sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 2]])
       }
 
       return base | colorStyles | sizeStyles
@@ -225,7 +226,7 @@ extension Class.pf {
     public static let videoTimeLink =
       videoTimeLinkClass
         | Class.type.textDecorationNone
-        | Class.pf.colors.bg.light
+        | Class.pf.colors.bg.gray650
         | Class.pf.colors.link.white
         | Class.border.rounded.all
         | Class.h6
@@ -270,7 +271,8 @@ private let resets =
 private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
-    <> Class.pf.colors.bg.light % backgroundColor(.other("#888"))
+    <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
+    <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))

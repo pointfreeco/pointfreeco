@@ -38,8 +38,12 @@ body {
   background-color : #121212;
 }
 
-.bg-light {
-  background-color : #888;
+.bg-gray650 {
+  background-color : #a8a8a8;
+}
+
+.bg-gray900 {
+  background-color : #f6f6f6;
 }
 
 .bg-purple {

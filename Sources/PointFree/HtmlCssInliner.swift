@@ -62,10 +62,10 @@ private func applyInlineStyles(element: Element, stylesheet: Stylesheet) -> Elem
     ?? ""
 
   let newStyles = [
-    currentStyles,
-    classStyles,
     elemStyles,
-    idStyles
+    classStyles,
+    idStyles,
+    currentStyles,
     ]
     .filter { !$0.isEmpty }
     .joined(separator: ";")
