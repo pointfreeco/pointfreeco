@@ -131,7 +131,7 @@ private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvi
 
           gridColumn(
             sizes: [.mobile: 12],
-            subscriptionPlanRow.view(subscription)
+            subscriptionPlanRows.view(subscription)
               <> subscriptionTeamRow.view(teammates)
               <> subscriptionInvitesRowView.view(invites)
               <> subscriptionInviteMoreRowView.view(unit)
@@ -149,19 +149,112 @@ private func planName(for subscription: Stripe.Subscription) -> String {
     : subscription.plan.name
 }
 
-private let subscriptionPlanRow = View<Stripe.Subscription> { subscription in
-  gridRow([`class`([subscriptionInfoRowClass])], [
-    gridColumn(sizes: [.mobile: 2], [
-      div([
-        "Plan"
+public func status(for subscription: Stripe.Subscription) -> String {
+  switch subscription.status {
+  case .active:
+    return "Active"
+  case .canceled:
+    return "Canceled"
+  case .pastDue:
+    return "Past due"
+  case .unpaid:
+    return "Unpaid"
+  case .trialing:
+    return "In trial"
+  }
+}
+
+public func nextBilling(for subscription: Stripe.Subscription) -> String {
+  switch subscription.status {
+  case .active:
+    let totalAmountString = totalAmount(for: subscription) ?? ""
+    let currentPeriodEndString = subscription.currentPeriodEnd
+      .map { " on " + dateFormatter.string(from: $0) } ?? ""
+    return totalAmountString + currentPeriodEndString
+  case .canceled:
+    return subscription.currentPeriodEnd
+      .filterOptional { $0 > AppEnvironment.current.date() }
+      .map { "Cancels " + dateFormatter.string(from: $0) }
+      ?? "Canceled"
+  case .pastDue:
+    return "" // FIXME
+  case .unpaid:
+    return "" // FIXME
+  case .trialing:
+    return "" // FIXME
+  }
+}
+
+private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
+  return div([`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])], [
+    gridRow([
+      gridColumn(sizes: [.mobile: 3], [
+        p([div(["Plan"])])
+        ]),
+      gridColumn(sizes: [.mobile: 9], [
+        gridRow([
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+              p([text(planName(for: subscription))])
+              ])
+            ]),
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+              p([
+                a([
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  href("#")
+                  ],
+                  ["Upgrade"])
+                ])
+              ])
+            ])
+          ])
         ])
       ]),
-    gridColumn(sizes: [.mobile: 10], [
-      div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-        text(planName(for: subscription))
+    gridRow([
+      gridColumn(sizes: [.mobile: 3], [
+        p([div(["Status"])])
+        ]),
+      gridColumn(sizes: [.mobile: 9], [
+        gridRow([
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+              p([text(status(for: subscription))])
+              ])
+            ]),
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+              p([
+                a([
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  href("#")
+                  ],
+                  ["Cancel"])
+                ])
+              ])
+            ])
+          ])
         ])
       ])
-    ])
+    ]
+    + (
+      subscription.status == .active
+        ? [
+          gridRow([
+            gridColumn(sizes: [.mobile: 3], [
+              p([div(["Next billing"])])
+              ]),
+            gridColumn(sizes: [.mobile: 9], [
+              div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+                p([text(nextBilling(for: subscription))])
+                ])
+              ])
+            ])
+          ]
+        : []
+    )
+  )
 }
 
 private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
@@ -169,12 +262,12 @@ private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
-      gridColumn(sizes: [.mobile: 2], [
+      gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Team"])
           ])
         ]),
-      gridColumn(sizes: [.mobile: 10], [
+      gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["Your current team:"])]
               <> teammates.flatMap(teammateRowView.view)
@@ -185,13 +278,13 @@ private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
 }
 
 private let teammateRowView = View<Database.User> { teammate in
-  gridRow([`class`([Class.margin([.mobile: [.top: 2]])])], [
-    gridColumn(sizes: [:], [
-      .text(encode("\(teammate.name) (\(teammate.email.unwrap))"))
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+      p([.text(encode("\(teammate.name) (\(teammate.email.unwrap))"))])
       ]),
-    gridColumn(sizes: [:], [`class`([Class.grid.end(.mobile)])], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
-        input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
         ]),
       ])
     ])
@@ -202,12 +295,12 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
-      gridColumn(sizes: [.mobile: 2], [
+      gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Invites"])
           ])
         ]),
-      gridColumn(sizes: [.mobile: 10], [
+      gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["These teammates have been invited, but have not yet accepted."])]
               <> invites.flatMap(inviteRowView.view))
@@ -217,30 +310,30 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 }
 
 private let inviteRowView = View<Database.TeamInvite> { invite in
-  gridRow([`class`([Class.margin([.mobile: [.top: 2]])])], [
-    gridColumn(sizes: [:], [
-      .text(encode(invite.email.unwrap))
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+      p([.text(encode(invite.email.unwrap))])
       ]),
-    gridColumn(sizes: [:], [`class`([Class.grid.end(.mobile)])], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
-        input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
-        ]),
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
+        ])]),
 
-      form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 2]])])], [
-        input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Revoke")])
-        ]),
+      form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Revoke")])
+        ])]),
       ]),
     ])
 }
 
 private let subscriptionInviteMoreRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([subscriptionInfoRowClass])], [
-    gridColumn(sizes: [.mobile: 2], [
+    gridColumn(sizes: [.mobile: 3], [
       div([
         p(["Invite more"])
         ])
       ]),
-    gridColumn(sizes: [.mobile: 10], [
+    gridColumn(sizes: [.mobile: 9], [
       div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
         p(["You have 10 open spots on your team. Invite a team member below:"]),
 
@@ -259,9 +352,9 @@ private let subscriptionInviteMoreRowView = View<Prelude.Unit> { _ in
             `class`([
               Class.pf.components.button(color: .purple, size: .small),
               Class.align.middle,
-              Class.margin([.mobile: [.left: 1]])
+              Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]])
               ]),
-            value("Add team member")])
+            value("Invite")])
           ])
         ])
       ])
@@ -273,61 +366,35 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
-      gridColumn(sizes: [.mobile: 3, .desktop: 2], [
+      gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Payment"])
           ])
         ]),
-      gridColumn(sizes: [.mobile: 9, .desktop: 5], [
-        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([text(status(for: subscription))]),
-          p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
-          p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
-          ])
-        ]),
-      gridColumn(sizes: [.mobile: 12, .desktop: 5], [
-        div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.mobile)])], [
-          p([`class`([])], [
-            a([
-              `class`([Class.pf.components.button(color: .purple, size: .small)]),
-              href(path(to: .paymentInfo)),
-              ],
-              ["Update payment method"])
+      gridColumn(sizes: [.desktop: 9], [
+        gridRow([
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+              p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
+              p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
+              ])
+            ]),
+          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+              p([`class`([])], [
+                a([
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  href(path(to: .paymentInfo)),
+                  ],
+                  ["Update payment method"])
+                ])
+              ])
             ])
           ])
         ])
       ])
   ]
 }
-
-public func status(for subscription: Stripe.Subscription) -> String {
-  switch subscription.status {
-  case .active:
-    let currentPeriodEndString = subscription.currentPeriodEnd
-      .map { " " + dateFormatter.string(from: $0) } ?? ""
-    let totalAmountString = totalAmount(for: subscription).map { " for " + $0 } ?? ""
-    return "Renews" + currentPeriodEndString + totalAmountString
-  case .canceled:
-    return subscription.currentPeriodEnd
-      .filterOptional { $0 > AppEnvironment.current.date() }
-      .map { "Cancels " + dateFormatter.string(from: $0) }
-      ?? "Canceled"
-  case .pastDue:
-    return "Past due" // FIXME
-  case .unpaid:
-    return "Unpaid" // FIXME
-  case .trialing:
-    return "In trial" // FIXME
-  }
-}
-
-private let dateFormatter = DateFormatter()
-  |> \.dateStyle .~ .short
-  |> \.timeStyle .~ .none
-  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
-
-private let currencyFormatter = NumberFormatter()
-  |> \.numberStyle .~ .currency
 
 private func totalAmount(for subscription: Stripe.Subscription) -> String? {
   let totalCents = subscription.plan.amount.rawValue * subscription.quantity
@@ -344,17 +411,17 @@ private let logoutView = View<Prelude.Unit> { _ in
 }
 
 private let subscriptionInfoRowClass =
-  Class.border.bottom
+  Class.border.top
     | Class.pf.colors.border.gray800
-    | Class.padding([.mobile: [.topBottom: 3]])
+    | Class.padding([.mobile: [.top: 2, .bottom: 3]])
 
-private let labelClass =
+let labelClass =
   Class.h5
     | Class.type.bold
     | Class.display.block
     | Class.margin([.mobile: [.bottom: 1]])
 
-private let baseInputClass =
+let baseInputClass =
   Class.type.fontFamilyInherit
     | Class.type.fontFamilyInherit
     | Class.pf.colors.fg.black
@@ -369,12 +436,20 @@ let regularInputClass =
     | Class.padding([.mobile: [.all: 1]])
     | Class.margin([.mobile: [.bottom: 2]])
 
-private let smallInputClass =
+let smallInputClass =
   baseInputClass
     | Class.size.height(rem: 2)
     | Class.padding([.mobile: [.all: 1]])
 
-private let blockInputClass =
+let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
+
+private let currencyFormatter = NumberFormatter()
+  |> \.numberStyle .~ .currency
+
+private let dateFormatter = DateFormatter()
+  |> \.dateStyle .~ .short
+  |> \.timeStyle .~ .none
+  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)

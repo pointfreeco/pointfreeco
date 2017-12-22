@@ -6,7 +6,7 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static var elements: [Node] {
+    public static var cardInput: [Node] {
       return [
         input([name("token"), type(.hidden)]),
         div(
@@ -14,20 +14,22 @@ extension Stripe {
             `class`([stripeInputClass]),
             data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
             id("card-element"),
-            ],
+          ],
           []
-        ),
-        div(
-          [
-            `class`([Class.pf.colors.fg.red]),
-            id("card-errors"),
-            role(.alert),
-            ],
-          []
-        ),
-        ]
-        + scripts
+        )
+      ]
     }
+
+    public static let errors = [
+      div(
+        [
+          `class`([Class.pf.colors.fg.red]),
+          id("card-errors"),
+          role(.alert),
+        ],
+        []
+      )
+    ]
 
     public static var scripts: [Node] {
       return [

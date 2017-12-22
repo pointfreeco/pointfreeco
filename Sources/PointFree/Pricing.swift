@@ -268,11 +268,14 @@ private let pricingFooterView = View<Database.User?> { user in
 private let stripeForm = View<Database.User> { user in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.elements + [
-      button(
-        [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-        ["Subscribe to Point-Free"]
-      )
+    Stripe.html.cardInput
+      <> Stripe.html.errors
+      <> Stripe.html.scripts
+      <> [
+        button(
+          [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+          ["Subscribe to Point-Free"]
+        )
     ]
   )
 }
