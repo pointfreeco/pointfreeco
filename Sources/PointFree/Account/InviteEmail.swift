@@ -8,7 +8,7 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
   .contramap { inviter, invite in
     SimpleEmailLayoutData(
       title: "You’re invited to join \(inviter.name)’s team on Point-Free",
-      preheader: "Your colleage \(inviter.name) has invited you to join their team account on Point-Free.",
+      preheader: "Your colleague \(inviter.name) has invited you to join their team account on Point-Free.",
       data: (inviter, invite)
     )
 }
