@@ -17,10 +17,11 @@ print(htmlString)
 
 PlaygroundPage.current.liveView = webView
 
-sendEmail(
-  to: [.init(unwrap: "mbw234@gmail.com")],
-  subject: "Invite email with image \(arc4random())",
-  content: inj2(htmlNodes)
-  )
-  .run
-  .perform()
+//sendEmail(
+//  to: [.init(unwrap: "mbw234@gmail.com")],
+//  subject: "Invite email with image \(arc4random())",
+//  content: inj2(htmlNodes)
+//  )
+//  .run
+//  .perform()
+

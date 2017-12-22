@@ -4,6 +4,54 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
+/// The data needed to use the simple email layout.
+struct SimpleEmailLayoutData<A> {
+  let title: String
+  /// Content of the hidden preheader tag at the top of the body. Many email clients will render this as a
+  /// preview of the email in the inbox.
+  let preheader: String
+  /// Any other data the email view needs to do its job.
+  let data: A
+}
+
+func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
+  return View { layoutData in
+    document([
+      html([xmlns("http://www.w3.org/1999/xhtml")], [
+        head([
+          style(styleguide),
+          meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
+          title(layoutData.title),
+          ]),
+
+        body([bgcolor("#FFFFFF")], [
+          span([style(preheaderStyles)], [.text(encode(layoutData.preheader))]),
+
+          emailTable([height(.pct(100)), width(.pct(100)), style(bodyTableStyles)], [
+            tr([
+              td([
+                img(
+                  src: "https://s3.amazonaws.com/pointfree.co/email-assets/pf-email-header.png",
+                  alt: "",
+                  [style(maxWidth(.pct(100)))]
+                )
+                ])
+              ]),
+
+            tr([
+              td([align(.center), valign(.top)],
+                 bodyView.view(layoutData.data)
+                  <> emailFooterView.view(unit))
+              ])
+            ])
+          ])
+        ])
+      ])
+    }
+    .map { applyInlineStyles(nodes: $0, stylesheet: styleguide) }
+}
+
 let bodyTableStyles =
   display(.block)
     <> width(.pct(100))
@@ -17,45 +65,7 @@ let contentTableStyles =
     <> margin(topBottom: 0, leftRight: .auto)
     <> display(.block)
 
-func simpleEmailLayout<A>(
-  title: @escaping (A) -> String,
-  preheader: @escaping (A) -> String = { _ in "" },
-  bodyView: View<A>
-  ) -> View<A> {
-
-  return View { data in
-    document([
-      html([xmlns("http://www.w3.org/1999/xhtml")], [
-        head([
-          style(styleguide),
-          meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
-          Html.title(title(data)),
-          ]),
-
-        body([bgcolor("#FFFFFF")], [
-          span([style(preheaderStyles)], [.text(encode(preheader(data)))]),
-
-          emailTable([height(.pct(100)), width(.pct(100)), style(bodyTableStyles)], [
-            tr([
-              td([
-                img(src: "https://s3.amazonaws.com/pointfree.co/email-assets/pf-email-header.png", alt: "", [style(maxWidth(.pct(100)))])
-                ])
-              ]),
-
-            tr([
-              td([align(.center), valign(.top)],
-                 bodyView.view(data)
-                  <> emailFooterView.view(unit))
-              ])
-            ])
-          ])
-        ])
-      ])
-    }
-    .map { applyInlineStyles(nodes: $0, stylesheet: styleguide) }
-}
-
+// TODO: move into a package for html email helpers.
 public func emailTable(_ attribs: [Attribute<Element.Table>], _ content: [ChildOf<Element.Table>]) -> Node {
   return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
 }

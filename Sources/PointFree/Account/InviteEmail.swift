@@ -4,12 +4,16 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
-let teamInviteEmailView: View<(Database.User, Database.TeamInvite)> = simpleEmailLayout(
-  title: { inviter, _ in
-    "You’re invited to join \(inviter.name)’s team on Point-Free"
-}, preheader: { inviter, _ in
-  "Your colleage \(inviter.name) has invited you to join their team account on Point-Free."
-}, bodyView: View { inviter, invite in
+let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
+  .contramap { inviter, invite in
+    SimpleEmailLayoutData(
+      title: "You’re invited to join \(inviter.name)’s team on Point-Free",
+      preheader: "Your colleage \(inviter.name) has invited you to join their team account on Point-Free.",
+      data: (inviter, invite)
+    )
+}
+
+private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -34,34 +38,39 @@ let teamInviteEmailView: View<(Database.User, Database.TeamInvite)> = simpleEmai
         ])
       ])
     ])
-  }
-)
+}
 
-let inviteeAcceptedEmailView: View<(Database.User, Database.User)> = simpleEmailLayout(
-  title: { _ in "Your invitation was accepted!" },
-  bodyView: View { inviter, invitee in
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          h3([`class`([Class.pf.type.title3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
-            "Your invitation was accepted!"
-            ]),
-          p([
-            "Hey ", .text(encode(inviter.name)), "!"
-            ]),
-          p([
-            "Your colleague ",
-            .text(encode(invitee.name)),
-            " has accepted your invitation! They now have full access to everything Point-Free has to offer. "
-            ]),
+let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
+  .contramap { inviter, invitee in
+    SimpleEmailLayoutData(
+      title: "\(invitee.name) has accepted your invitation!",
+      preheader: "",
+      data: (inviter, invitee)
+    )
+}
 
-          p([
-            "To review your who is on your team, ",
-            a([href(url(to: .account))], ["click here"]),
-            "."
-            ])
+private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> { inviter, invitee in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        h3([`class`([Class.pf.type.title3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
+          "Your invitation was accepted!"
+          ]),
+        p([
+          "Hey ", .text(encode(inviter.name)), "!"
+          ]),
+        p([
+          "Your colleague ",
+          .text(encode(invitee.name)),
+          " has accepted your invitation! They now have full access to everything Point-Free has to offer. "
+          ]),
+
+        p([
+          "To review your who is on your team, ",
+          a([href(url(to: .account))], ["click here"]),
+          "."
           ])
         ])
       ])
-  }
-)
+    ])
+}
