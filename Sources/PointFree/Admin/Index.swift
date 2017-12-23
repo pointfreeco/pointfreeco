@@ -90,27 +90,29 @@ func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Uni
           .retry(count: 3)
       }
 
-      zip(
-        newEpisodeEmails
-          .map(^\.run >>> parallel)
-        )
-        .map { results in
-          zip(users, results)
-            .filter { _, result in result.isRight }
-            .map { user, _ in user }
-        }
+      zip(newEpisodeEmails.map(^\.run >>> parallel))
         .sequential
-        .flatMap { erroredUsers in
+        .flatMap { results in
           sendEmail(
             to: adminEmails.map(EmailAddress.init(unwrap:)),
             subject: "New episode email finished sending!",
-            content: inj2(newEpisodeEmailAdminReportEmail.view((erroredUsers, users.count)))
+            content: inj2(
+              newEpisodeEmailAdminReportEmail.view(
+                (
+                  zip(users, results)
+                    .filter(second >>> ^\.isLeft)
+                    .map(first),
+
+                  results.count
+                )
+              )
+            )
             )
             .run
         }
         .parallel
         .run({ _ in })
-      
+
       return throwE(unit)
     }
     .run
