@@ -143,6 +143,7 @@ extension Class.pf {
         | Class.type.medium
         | Class.border.rounded.all
         | Class.border.none
+        | Class.type.textDecorationNone
 
       let colorStyles: CssSelector
       switch color {

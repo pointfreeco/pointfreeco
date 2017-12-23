@@ -8,7 +8,7 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = launchSignupConfirmationEmailView.view(unit)
+let htmlNodes = launchEmailView.view(unit)
 let htmlString = render(htmlNodes, config: pretty)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
@@ -17,11 +17,11 @@ print(htmlString)
 
 PlaygroundPage.current.liveView = webView
 
-sendEmail(
-  to: [.init(unwrap: "saa@shoparc.com")],
-  subject: "Invite email with image \(arc4random())",
-  content: inj2(htmlNodes)
-  )
-  .run
-  .perform()
+//sendEmail(
+//  to: [.init(unwrap: "mbw234@gmail.com")],
+//  subject: "Invite email with image \(arc4random())",
+//  content: inj2(htmlNodes)
+//  )
+//  .run
+//  .perform()
 
