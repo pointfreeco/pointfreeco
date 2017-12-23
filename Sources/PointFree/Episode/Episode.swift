@@ -291,6 +291,6 @@ private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Rou
 
 private func episode(forParam param: Either<String, Int>) -> Episode? {
   return episodes.first(where: {
-    param.left == .some($0.slug) || param.right == .some($0.id)
+    param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
   })
 }

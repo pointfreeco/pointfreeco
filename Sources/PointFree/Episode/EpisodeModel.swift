@@ -1,7 +1,9 @@
+import Prelude
+
 public struct Episode {
   var blurb: String
   var codeSampleDirectory: String
-  var id: Int
+  var id: Id
   var length: Int
   var publishedAt: Double
   var sequence: Int
@@ -9,6 +11,8 @@ public struct Episode {
   var tags: [Tag]
   var title: String
   var transcriptBlocks: [TranscriptBlock]
+
+  public typealias Id = Tagged<Episode, Int>
 
   var slug: String {
     return "ep\(self.sequence)-\(PointFree.slug(for: self.title))"
@@ -68,11 +72,12 @@ let episodes: [Episode] = [proofInFunctions]
 private let proofInFunctions = Episode(
   blurb:
   """
-Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics \
-and computer science
-""",
+  Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics \
+  and computer science. In this episode we explore how we can use Swift’s type system to prove mathematical \
+  theorems, and show how this opens the doors to having the compiler verify properties of your program.
+  """,
   codeSampleDirectory: "ep1-proof-in-functions",
-  id: 1,
+  id: .init(unwrap: 1),
   length: 1080,
   publishedAt: 1_482_192_000,
   sequence: 1,
@@ -162,7 +167,7 @@ private let algebraOfPredicates = Episode(
            and show how they can lead to very composable constructions.
            """,
   codeSampleDirectory: "ep2-sorting-functions",
-  id: 3,
+  id: .init(unwrap: 3),
   length: 1380 ,
   publishedAt: 1_497_960_000,
   sequence: 3,
@@ -217,7 +222,7 @@ field known as algebra. In this article we will link these two worlds together, 
 fundamental piece missing when we only look at the protocol level.
 """,
   codeSampleDirectory: "ep3-algebra",
-  id: 2,
+  id: .init(unwrap: 2),
   length: 1380 ,
   publishedAt: 1_497_960_000,
   sequence: 2,
@@ -289,7 +294,7 @@ private let typeSafeHtml = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep4-type-safe-html",
-  id: 4,
+  id: .init(unwrap: 4),
   length: 1380,
   publishedAt: 1_497_960_000,
   sequence: 4,

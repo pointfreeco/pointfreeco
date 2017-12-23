@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
+@testable import Tuple
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
@@ -227,6 +228,10 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   }
 }
 
+public func convertToUnitError<E, A>(_ e: Either<E, A>) -> Either<Prelude.Unit, A> {
+  return e.bimap(const(unit), id)
+}
+
 extension Array {
   func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
     return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
@@ -312,4 +317,75 @@ extension PartialIso where A == B.RawValue, B: RawRepresentable {
 
 public func mapExcept<E, F, A, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> (EitherIO<E, A>) -> EitherIO<F, B> {
   return { $0.mapExcept(f) }
+}
+
+public protocol TaggedType {
+  associatedtype _Tag
+  associatedtype _A
+
+  var unwrap: _A { get }
+  init(unwrap: _A)
+}
+
+extension Tagged: TaggedType {
+  public typealias _Tag = Tag
+  public typealias _A = A
+}
+
+extension PartialIso where A: Codable, B: TaggedType, A == B._A {
+  public static var tagged: PartialIso<B._A, B> {
+    return PartialIso(
+      apply: B.init(unwrap:),
+      unapply: ^\.unwrap
+    )
+  }
+}
+
+extension PartialIso where A == String, B == UUID {
+  public static var uuid: PartialIso<String, UUID> {
+    return PartialIso(
+      apply: UUID.init(uuidString:),
+      unapply: ^\.uuidString
+    )
+  }
+}
+
+public func lift<A>(_ a: A) -> Tuple1<A> {
+  return Tuple1(first: a, second: unit)
+}
+
+extension IO {
+  public var parallel: Parallel<A> {
+    return Parallel { callback in
+      callback(self.perform())
+    }
+  }
+}
+
+extension EitherIO {
+  func retry(count: Int) -> EitherIO {
+    return (1...(count - 1))
+      .map(const(self))
+      .reduce(self, { $0 <|> $1 })
+  }
+}
+
+func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+
+  return Parallel { callback in
+
+    var completed = 0
+    var results = [A?](repeating: nil, count: parallels.count)
+
+    parallels.enumerated().forEach { idx, parallel in
+      parallel.run { a in
+        results[idx] = a
+        completed += 1
+
+        if completed == parallels.count {
+          callback(results.flatMap(id))
+        }
+      }
+    }
+  }
 }

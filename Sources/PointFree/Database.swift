@@ -15,6 +15,7 @@ public struct Database {
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  var fetchUsersSubscribedToNewEpisodeEmail: () -> EitherIO<Error, [Database.User]>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateUser: (User.Id, String, EmailAddress) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
@@ -32,6 +33,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
+    fetchUsersSubscribedToNewEpisodeEmail: PointFree.fetchUsersSubscribedToNewEpisodeEmail,
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateUser: PointFree.updateUser(withId:name:email:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
@@ -245,6 +247,16 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
     LIMIT 1
     """,
     [id.unwrap.uuidString]
+  )
+}
+
+private func fetchUsersSubscribedToNewEpisodeEmail() -> EitherIO<Error, [Database.User]> {
+  return rows(
+    """
+    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    FROM "users"
+    """
+    // TODO: check email settings
   )
 }
 
