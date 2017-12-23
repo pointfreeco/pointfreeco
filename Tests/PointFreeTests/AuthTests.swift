@@ -133,7 +133,7 @@ class AuthTests: TestCase {
   func testRegistrationEmail() {
     let emailNodes = registrationEmailView.view(.mock)
 
-    assertSnapshot(matching: prettyPrint(nodes: emailNodes), pathExtension: "html")
+    assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
 
     #if !os(Linux)
       if #available(OSX 10.13, *) {

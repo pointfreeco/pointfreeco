@@ -50,7 +50,7 @@ let launchEmailBody = View<Prelude.Unit> { _ in
             ]),
           p([
             """
-            And so much more!
+            And so much more…
             """
             ]),
           p([
