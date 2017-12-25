@@ -6,6 +6,7 @@ import XCTest
 import PointFreeTestSupport
 import HttpPipeline
 import Optics
+import HtmlPrettyPrint
 #if !os(Linux)
   import WebKit
 #endif

@@ -3,7 +3,7 @@ import Foundation
 import HttpPipeline
 import Prelude
 import Styleguide
-@testable import Tuple
+import Tuple
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger { AppEnvironment.current.logger.info($0) }
