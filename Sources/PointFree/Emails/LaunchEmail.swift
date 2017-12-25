@@ -1,6 +1,5 @@
 import CssReset
 import Either
-import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -18,7 +17,7 @@ let launchEmailView = simpleEmailLayout(launchEmailBody)
     )
 }
 
-let launchEmailBody = View<Prelude.Unit> { _ in
+private let launchEmailBody = View<Prelude.Unit> { _ in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -30,7 +29,9 @@ let launchEmailBody = View<Prelude.Unit> { _ in
             in July, and since then we’ve been hard at work building the site in Swift, mostly from scratch.
             In fact, we even
             """,
+            " ",
             a([href("#")], ["open-sourced"]),
+            " ",
             """
             the entire code base of the site, including the code that sent this very email!
             """
@@ -45,7 +46,7 @@ let launchEmailBody = View<Prelude.Unit> { _ in
               li(["Pure functions and side effects"]),
               li(["Code reuse through function composition"]),
               li(["Maximizing the use of the type-system"]),
-              li(["Turning logic problems into algebraic problems"]),
+              li(["Turning programming problems into algebraic problems"]),
               ])
             ]),
           p([

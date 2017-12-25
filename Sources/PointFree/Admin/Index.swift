@@ -12,7 +12,7 @@ import Tuple
 
 private let adminEmails = [
   "mbw234@gmail.com",
-//  "stephen.celis@gmail.com"
+  "stephen.celis@gmail.com"
 ]
 
 func requireAdmin<A>(
@@ -102,7 +102,7 @@ func requireEpisode<A>(
 
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
-  return lift(IO {
+  return lift <| IO {
     // TODO: look into mailgun rate limits. we could batch subscribers and non subscribers at least
     let newEpisodeEmails = users.enumerated().map { idx, user in
       sendEmail(
@@ -138,5 +138,5 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
       .run({ _ in })
 
     return unit
-  })
+  }
 }

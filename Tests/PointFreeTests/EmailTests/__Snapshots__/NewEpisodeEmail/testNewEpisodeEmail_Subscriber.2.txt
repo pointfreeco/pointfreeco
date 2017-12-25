@@ -1,0 +1,28 @@
+
+
+New Point-Free Episode: Proof in Functions
+
+Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics and computer science. In this episode we explore how we can use Swift’s type system to prove mathematical theorems, and show how this opens the doors to having the compiler verify properties of your program.
+
+Episode #1
+Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics and computer science. In this episode we explore how we can use Swift’s type system to prove mathematical theorems, and show how this opens the doors to having the compiler verify properties of your program.
+
+This episode is 23 minutes long.
+Watch now!
+Your hosts,
+Brandon&nbsp;Williams &amp; Stephen&nbsp;Celis
+
+
+
+
+Contact us via email at support@pointfree.co, or on Twitter @pointfreeco.
+Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+

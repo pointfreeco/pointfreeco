@@ -1,0 +1,38 @@
+
+
+Thanks for signing up!
+
+Point-Free will be launching soon, and you’ll be the first to know.
+
+We’ve launched!
+We’re very excited to finally get the series off the ground! We first announced Point-Free back
+in July, and since then we’ve been hard at work building the site in Swift, mostly from scratch.
+In fact, we even open-sourced the entire code base of the site, including the code that sent this very email!
+We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
+Pure functions and side effects
+Code reuse through function composition
+Maximizing the use of the type-system
+Turning programming problems into algebraic problems
+
+
+And so much more…
+If any of that sounds interesting to you, please consider subscribing! We have monthly, yearly and
+team plan to choose from.
+Subscribe to Point-Free!
+Your hosts,
+Brandon&nbsp;Williams &amp; Stephen&nbsp;Celis
+
+
+
+
+Contact us via email at support@pointfree.co, or on Twitter @pointfreeco.
+Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+
