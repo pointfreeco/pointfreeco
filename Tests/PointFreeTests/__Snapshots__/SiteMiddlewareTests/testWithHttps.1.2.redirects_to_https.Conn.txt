@@ -1,0 +1,11 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://www.pointfree.co/episodes
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 301 MOVED PERMANENTLY
+  Location: https://www.pointfree.co/episodes

@@ -12,7 +12,6 @@ import Optics
 
 class LaunchEmailTests: TestCase {
   func testLaunchEmail() {
-    record = true
     let doc = launchEmailView.view(unit).first!
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")

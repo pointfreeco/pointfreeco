@@ -12,7 +12,6 @@ import Optics
 
 class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Subscriber() {
-    record = true
     let doc = newEpisodeEmail.view((episodes.first!, true))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
@@ -31,7 +30,6 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_NonSubscriber() {
-    record = true
     let doc = newEpisodeEmail.view((episodes.first!, false))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
