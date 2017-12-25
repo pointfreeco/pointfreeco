@@ -12,7 +12,7 @@ let launchEmailView = simpleEmailLayout(launchEmailBody)
   .contramap { data in
     SimpleEmailLayoutData(
       title: "Thanks for signing up!",
-      preheader: "Point-Free will be launching soon, and you’ll be the first to know.",
+      preheader: "We’re very excited to finally get the series off the ground!",
       data: data
     )
 }
