@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Css
+import Dispatch
 import Either
 import Foundation
 import Html
