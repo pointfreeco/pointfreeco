@@ -74,11 +74,9 @@ let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<
 
 func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
-  let episode = conn.data
-
   return AppEnvironment.current.database.fetchUsersSubscribedToNewEpisodeEmail()
     .mapExcept(bimap(const(unit), id))
-    .flatMap { users in sendEmail(forNewEpisode: episode, toUsers: users) }
+    .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
     .run
     .map { _ in conn.map(const(unit)) }
 }

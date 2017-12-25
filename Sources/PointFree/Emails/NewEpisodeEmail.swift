@@ -90,13 +90,9 @@ let newEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erro
             "had trouble sending to their emails:"
             ]),
 
-          ul(
-            erroredUsers.map { user in
-              li([
-                .text(encode("\(user.name) (\(user.email.unwrap))"))
-                ])
-            }
-          )
+          ul(erroredUsers.map { user in
+            li([.text(encode("\(user.name) (\(user.email.unwrap))"))])
+          })
           ])
         ])
       ])
