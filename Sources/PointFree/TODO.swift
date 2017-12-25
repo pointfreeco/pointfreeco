@@ -228,7 +228,7 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   }
 }
 
-public func convertToUnitError<E, A>(_ e: Either<E, A>) -> Either<Prelude.Unit, A> {
+public func convertErrorToUnit<E, A>(_ e: Either<E, A>) -> Either<Prelude.Unit, A> {
   return e.bimap(const(unit), id)
 }
 
@@ -363,10 +363,58 @@ extension IO {
 }
 
 extension EitherIO {
-  func retry(count: Int) -> EitherIO {
-    return (1...(count - 1))
-      .map(const(self))
-      .reduce(self, { $0 <|> $1 })
+  func retry(maxRetries: Int) -> EitherIO {
+    return retry(maxRetries: maxRetries, backoff: const(.seconds(0)))
+  }
+
+  func retry(maxRetries: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
+    return self.retry(maxRetries: maxRetries, attempts: 0, backoff: backoff)
+  }
+
+  private func retry(maxRetries: Int, attempts: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
+
+    return self <|> .init(run:
+      self
+        .run
+        .delay(backoff(attempts))
+    )
+  }
+
+  public func delay(_ interval: DispatchTimeInterval) -> EitherIO {
+    return .init(run: self.run.delay(interval))
+  }
+}
+
+extension DispatchTimeInterval {
+  private var nanoseconds: Int? {
+    switch self {
+    case let .seconds(n):
+      return .some(n * 1_000_000_000)
+    case let .milliseconds(n):
+      return .some(n * 1_000_000)
+    case let .microseconds(n):
+      return .some(n * 1_000)
+    case let .nanoseconds(n):
+      return .some(n)
+    case .never:
+      return nil
+    }
+  }
+
+  public static func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
+    return (curry(+) <¢> lhs.nanoseconds <*> rhs.nanoseconds)
+      .map(DispatchTimeInterval.nanoseconds)
+      ?? .never
+  }
+}
+
+extension IO {
+  public func delay(_ interval: DispatchTimeInterval) -> IO {
+    return .init { callback in
+      DispatchQueue.global().asyncAfter(deadline: .now() + interval) {
+        callback(self.perform())
+      }
+    }
   }
 }
 

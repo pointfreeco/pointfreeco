@@ -1,4 +1,4 @@
-import CssReset
+import Css
 import Either
 import Foundation
 import Html
@@ -25,7 +25,7 @@ let newEpisodeEmailContent = View<(Episode, isSubscriber: Bool)> { ep, isSubscri
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
           h3([`class`([Class.pf.type.title3])], [.text(encode("Episode #\(ep.sequence)"))]),
           p([.text(encode(ep.blurb))]),
-          h4([`class`([Class.pf.type.title4])], ["[Insert image still here...]"])
+          img(src: "http://via.placeholder.com/600x340", alt: "", [style(maxWidth(.pct(100)))])
           ]
           <> nonSubscriberCtaView.view(isSubscriber)
           <> subscriberCtaView.view((ep, isSubscriber))

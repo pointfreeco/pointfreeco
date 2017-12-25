@@ -12,7 +12,7 @@ import Tuple
 
 private let adminEmails = [
   "mbw234@gmail.com",
-  "stephen.celis@gmail.com"
+//  "stephen.celis@gmail.com"
 ]
 
 func requireAdmin<A>(
@@ -77,44 +77,8 @@ func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Uni
   let episode = conn.data
 
   return AppEnvironment.current.database.fetchUsersSubscribedToNewEpisodeEmail()
-    .mapExcept(convertToUnitError)
-    .flatMap { users -> EitherIO<Prelude.Unit, SendEmailResponse> in
-
-      // TODO: look into mailgun rate limits
-      let newEpisodeEmails = users.map { user in
-        sendEmail(
-          to: [user.email],
-          subject: "New Point-Free Episode: \(episode.title)",
-          content: inj2(newEpisodeEmail.view((episode, true)))
-          )
-          .retry(count: 3)
-      }
-
-      zip(newEpisodeEmails.map(^\.run >>> parallel))
-        .sequential
-        .flatMap { results in
-          sendEmail(
-            to: adminEmails.map(EmailAddress.init(unwrap:)),
-            subject: "New episode email finished sending!",
-            content: inj2(
-              newEpisodeEmailAdminReportEmail.view(
-                (
-                  zip(users, results)
-                    .filter(second >>> ^\.isLeft)
-                    .map(first),
-
-                  results.count
-                )
-              )
-            )
-            )
-            .run
-        }
-        .parallel
-        .run({ _ in })
-
-      return throwE(unit)
-    }
+    .mapExcept(bimap(const(unit), id))
+    .flatMap { users in sendEmail(forNewEpisode: episode, toUsers: users) }
     .run
     .map { _ in conn.map(const(unit)) }
 }
@@ -134,4 +98,45 @@ func requireEpisode<A>(
           |> middleware
       }
     }
+}
+
+private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+
+  return lift(IO {
+    // TODO: look into mailgun rate limits. we could batch subscribers and non subscribers at least
+    let newEpisodeEmails = users.enumerated().map { idx, user in
+      sendEmail(
+        to: [user.email],
+        subject: "New Point-Free Episode: \(episode.title)",
+        content: inj2(newEpisodeEmail.view((episode, true)))
+        )
+        .delay(.milliseconds(200 * idx))
+        .retry(maxRetries: 3, backoff: { .milliseconds(200 * idx) + .seconds(10 * $0) })
+    }
+
+    zip(newEpisodeEmails.map(^\.run >>> parallel))
+      .sequential
+      .flatMap { results in
+        sendEmail(
+          to: adminEmails.map(EmailAddress.init(unwrap:)),
+          subject: "New episode email finished sending!",
+          content: inj2(
+            newEpisodeEmailAdminReportEmail.view(
+              (
+                zip(users, results)
+                  .filter(second >>> ^\.isLeft)
+                  .map(first),
+
+                results.count
+              )
+            )
+          )
+          )
+          .run
+      }
+      .parallel
+      .run({ _ in })
+
+    return unit
+  })
 }
