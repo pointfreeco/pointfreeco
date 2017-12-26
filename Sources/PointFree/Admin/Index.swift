@@ -70,15 +70,6 @@ let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<
     >-> sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
-func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
-
-  return AppEnvironment.current.database.fetchUsersSubscribedToNewEpisodeEmail()
-    .mapExcept(bimap(const(unit), id))
-    .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
-    .run
-    .map { _ in conn.map(const(unit)) }
-}
-
 func requireEpisode<A>(
   notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data>
   )
@@ -94,6 +85,15 @@ func requireEpisode<A>(
           |> middleware
       }
     }
+}
+
+private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
+
+  return AppEnvironment.current.database.fetchUsersSubscribedToNewEpisodeEmail()
+    .mapExcept(bimap(const(unit), id))
+    .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
+    .run
+    .map { _ in conn.map(const(unit)) }
 }
 
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
