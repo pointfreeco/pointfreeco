@@ -5,6 +5,7 @@ import PackageDescription
 let package = Package(
   name: "PointFree",
   products: [
+    .library(name: "DesignSystems", targets: ["DesignSystems"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
@@ -18,10 +19,17 @@ let package = Package(
   targets: [
     .target(
       name: "Styleguide",
-      dependencies: ["Html", "Css"]),
+      dependencies: ["Css", "Prelude"]),
     .testTarget(
       name: "StyleguideTests",
       dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
+
+    .target(
+      name: "DesignSystems",
+      dependencies: ["Html", "Css"]),
+    .testTarget(
+      name: "DesignSystemsTests",
+      dependencies: ["DesignSystems", "CssTestSupport"]),
 
     .target(
       name: "PointFree",
