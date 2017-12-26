@@ -214,11 +214,6 @@ public func clamp<T>(_ to: CountableRange<T>) -> (T) -> T {
   }
 }
 
-// todo: move to httppipeline
-public func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
-  return conn.map { $0.right }
-}
-
 // better way of doing this? or should we add to Either.swift?
 public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   switch e {
@@ -242,16 +237,6 @@ extension Array {
 extension Optional {
   func filterOptional(isIncluded: (Wrapped) -> Bool) -> Optional {
     return self.flatMap { isIncluded($0) ? $0 : nil }
-  }
-}
-
-// TODO: Move to swift-web
-extension PartialIso {
-  public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
-    return .init(
-      apply: { iso.apply($0) ?? `default` },
-      unapply: iso.unapply
-    )
   }
 }
 
