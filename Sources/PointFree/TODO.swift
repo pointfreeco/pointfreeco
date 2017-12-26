@@ -224,10 +224,6 @@ public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   }
 }
 
-public func convertErrorToUnit<E, A>(_ e: Either<E, A>) -> Either<Prelude.Unit, A> {
-  return e.bimap(const(unit), id)
-}
-
 extension Array {
   func sorted<A: Comparable>(by f: (Element) -> A) -> Array {
     return self.sorted { lhs, rhs in f(lhs) < f(rhs) }
