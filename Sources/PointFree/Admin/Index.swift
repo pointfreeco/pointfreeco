@@ -49,9 +49,7 @@ private let showNewEpisodeView = View<(Database.User, Prelude.Unit)> { currentUs
   ul(
     episodes
       .sorted(by: ^\.sequence)
-      .map { ep in
-        li(newEpisodeEmailRowView.view(ep))
-    }
+      .map(li <<< newEpisodeEmailRowView.view)
     )
 }
 
