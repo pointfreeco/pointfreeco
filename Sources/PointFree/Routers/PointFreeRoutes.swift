@@ -49,6 +49,12 @@ private let routers: [Router<Route>] = [
   Route.iso.account
     <¢> get %> lit("account") <% end,
 
+  Route.iso.cancel
+    <¢> post %> lit("account") <% lit("cancel"),
+
+  Route.iso.confirmCancel
+    <¢> get %> lit("account") <% lit("cancel"),
+
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
 

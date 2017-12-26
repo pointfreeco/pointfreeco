@@ -30,6 +30,7 @@ extension Class {
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
+        public static let red = CssSelector.class("bg-red")
         public static let white = CssSelector.class("bg-white")
       }
       public enum border {
@@ -129,6 +130,7 @@ extension Class.pf {
     public enum Color {
       case black
       case purple
+      case red
       case white
     }
 
@@ -154,6 +156,10 @@ extension Class.pf {
         colorStyles = Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.purple
+      case .red:
+        colorStyles = Class.pf.colors.link.white
+          | Class.pf.colors.fg.white
+          | Class.pf.colors.bg.red
       case .white:
         colorStyles = Class.pf.colors.link.black
           | Class.pf.colors.fg.black
@@ -275,6 +281,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
+    <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)

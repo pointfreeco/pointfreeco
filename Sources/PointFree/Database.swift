@@ -48,7 +48,7 @@ public struct Database {
 
     public typealias Id = Tagged<User, UUID>
 
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
       case email
       case gitHubUserId = "github_user_id"
       case gitHubAccessToken = "github_access_token"

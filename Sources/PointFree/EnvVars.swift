@@ -121,7 +121,7 @@ extension EnvVars {
 }
 
 extension EnvVars {
-  func assigningValuesFrom(_ env: [String: String]) -> EnvVars {
+  public func assigningValuesFrom(_ env: [String: String]) -> EnvVars {
     let decoded = (try? encoder.encode(self))
       .flatMap { try? decoder.decode([String: String].self, from: $0) }
       ?? [:]

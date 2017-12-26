@@ -93,10 +93,20 @@ private let profileRowView = View<Database.User> { currentUser in
 
         form([action(path(to: .updateProfile(nil))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
-          input([`class`([blockInputClass]), name("name"), type(.text), value(currentUser.name)]),
+          input([
+            `class`([blockInputClass]),
+            name(Database.User.CodingKeys.name.stringValue),
+            type(.text),
+            value(currentUser.name),
+            ]),
 
           label([`class`([labelClass])], ["Email"]),
-          input([`class`([blockInputClass]), name("email"), type(.email), value(currentUser.email.unwrap)]),
+          input([
+            `class`([blockInputClass]),
+            name(Database.User.CodingKeys.email.stringValue),
+            type(.email),
+            value(currentUser.email.unwrap)
+            ]),
 
           label([`class`([Class.display.block])], [
             input(
@@ -227,8 +237,8 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
               p([
                 a([
-                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href("#")
+                  `class`([Class.pf.components.button(color: .red, size: .small)]),
+                  href(path(to: .confirmCancel))
                   ],
                   ["Cancel"])
                 ])
