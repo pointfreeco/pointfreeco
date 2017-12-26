@@ -400,9 +400,12 @@ extension IO {
   }
 }
 
+import Dispatch
+
 func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
 
   return Parallel { callback in
+    let queue = DispatchQueue(label: "pointfree.parallel.zip")
 
     var completed = 0
     var results = [A?](repeating: nil, count: parallels.count)
@@ -410,10 +413,12 @@ func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
     parallels.enumerated().forEach { idx, parallel in
       parallel.run { a in
         results[idx] = a
-        completed += 1
 
-        if completed == parallels.count {
-          callback(results.flatMap(id))
+        queue.sync {
+          completed += 1
+          if completed == parallels.count {
+            callback(results.flatMap(id))
+          }
         }
       }
     }
