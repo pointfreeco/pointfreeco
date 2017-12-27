@@ -20,8 +20,7 @@ extension AuthTests {
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
-    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn),
-    ("testRegistrationEmail", testRegistrationEmail)
+    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn)
   ]
 }
 extension CancelTests {
@@ -61,6 +60,11 @@ extension HtmlCssInlinerTests {
     ("testHtmlCssInliner", testHtmlCssInliner)
   ]
 }
+extension LaunchEmailTests {
+  static var allTests: [(String, (LaunchEmailTests) -> () throws -> Void)] = [
+    ("testLaunchEmail", testLaunchEmail)
+  ]
+}
 extension LaunchSignupTests {
   static var allTests: [(String, (LaunchSignupTests) -> () throws -> Void)] = [
     ("testHome", testHome),
@@ -81,6 +85,12 @@ extension NavViewTests {
     ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
 }
+extension NewEpisodeEmailTests {
+  static var allTests: [(String, (NewEpisodeEmailTests) -> () throws -> Void)] = [
+    ("testNewEpisodeEmail_Subscriber", testNewEpisodeEmail_Subscriber),
+    ("testNewEpisodeEmail_NonSubscriber", testNewEpisodeEmail_NonSubscriber)
+  ]
+}
 extension PaymentInfoTests {
   static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
     ("testRender", testRender)
@@ -90,6 +100,11 @@ extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
     ("testPricingLoggedIn", testPricingLoggedIn)
+  ]
+}
+extension RegistrationEmailTests {
+  static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
+    ("testRegistrationEmail", testRegistrationEmail)
   ]
 }
 extension SiteMiddlewareTests {
@@ -119,11 +134,14 @@ XCTMain([
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
+  testCase(LaunchEmailTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
+  testCase(NewEpisodeEmailTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
+  testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
 ])

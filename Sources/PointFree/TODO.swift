@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Css
+import Dispatch
 import Either
 import Foundation
 import Html
@@ -7,6 +8,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
+@testable import Tuple
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
@@ -212,11 +214,6 @@ public func clamp<T>(_ to: CountableRange<T>) -> (T) -> T {
   }
 }
 
-// todo: move to httppipeline
-public func ignoreErrors<I, A>(_ conn: Conn<I, Either<Error, A>>) -> Conn<I, A?> {
-  return conn.map { $0.right }
-}
-
 // better way of doing this? or should we add to Either.swift?
 public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   switch e {
@@ -250,15 +247,6 @@ extension URLRequest {
       }
       .flatMap { tuple <¢> $0.first <*> $0.last }
     return .init(uniqueKeysWithValues: pairs)
-  }
-}
-
-extension PartialIso {
-  public static func iso(_ iso: PartialIso, default: B) -> PartialIso {
-    return .init(
-      apply: { iso.apply($0) ?? `default` },
-      unapply: iso.unapply
-    )
   }
 }
 
@@ -325,4 +313,128 @@ extension PartialIso where A == B.RawValue, B: RawRepresentable {
 
 public func mapExcept<E, F, A, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> (EitherIO<E, A>) -> EitherIO<F, B> {
   return { $0.mapExcept(f) }
+}
+
+public protocol TaggedType {
+  associatedtype _Tag
+  associatedtype _A
+
+  var unwrap: _A { get }
+  init(unwrap: _A)
+}
+
+extension Tagged: TaggedType {
+  public typealias _Tag = Tag
+  public typealias _A = A
+}
+
+extension PartialIso where A: Codable, B: TaggedType, A == B._A {
+  public static var tagged: PartialIso<B._A, B> {
+    return PartialIso(
+      apply: B.init(unwrap:),
+      unapply: ^\.unwrap
+    )
+  }
+}
+
+extension PartialIso where A == String, B == UUID {
+  public static var uuid: PartialIso<String, UUID> {
+    return PartialIso(
+      apply: UUID.init(uuidString:),
+      unapply: ^\.uuidString
+    )
+  }
+}
+
+public func lift<A>(_ a: A) -> Tuple1<A> {
+  return Tuple1(first: a, second: unit)
+}
+
+extension IO {
+  public var parallel: Parallel<A> {
+    return Parallel { callback in
+      callback(self.perform())
+    }
+  }
+}
+
+extension EitherIO {
+  func retry(maxRetries: Int) -> EitherIO {
+    return retry(maxRetries: maxRetries, backoff: const(.seconds(0)))
+  }
+
+  func retry(maxRetries: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
+    return self.retry(maxRetries: maxRetries, attempts: 0, backoff: backoff)
+  }
+
+  private func retry(maxRetries: Int, attempts: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
+
+    return self <|> .init(run:
+      self
+        .run
+        .delay(backoff(attempts))
+    )
+  }
+
+  public func delay(_ interval: DispatchTimeInterval) -> EitherIO {
+    return .init(run: self.run.delay(interval))
+  }
+}
+
+extension DispatchTimeInterval {
+  private var nanoseconds: Int? {
+    switch self {
+    case let .seconds(n):
+      return .some(n * 1_000_000_000)
+    case let .milliseconds(n):
+      return .some(n * 1_000_000)
+    case let .microseconds(n):
+      return .some(n * 1_000)
+    case let .nanoseconds(n):
+      return .some(n)
+    case .never:
+      return nil
+    }
+  }
+
+  public static func + (lhs: DispatchTimeInterval, rhs: DispatchTimeInterval) -> DispatchTimeInterval {
+    return (curry(+) <¢> lhs.nanoseconds <*> rhs.nanoseconds)
+      .map(DispatchTimeInterval.nanoseconds)
+      ?? .never
+  }
+}
+
+extension IO {
+  public func delay(_ interval: DispatchTimeInterval) -> IO {
+    return .init { callback in
+      DispatchQueue.global().asyncAfter(deadline: .now() + interval) {
+        callback(self.perform())
+      }
+    }
+  }
+}
+
+import Dispatch
+
+func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+
+  return Parallel { callback in
+    let queue = DispatchQueue(label: "pointfree.parallel.zip")
+
+    var completed = 0
+    var results = [A?](repeating: nil, count: parallels.count)
+
+    parallels.enumerated().forEach { idx, parallel in
+      parallel.run { a in
+        results[idx] = a
+
+        queue.sync {
+          completed += 1
+          if completed == parallels.count {
+            callback(results.flatMap(id))
+          }
+        }
+      }
+    }
+  }
 }
