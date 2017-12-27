@@ -9,7 +9,7 @@ public struct SubscribeData: Codable {
   public let token: Stripe.Token.Id
 }
 
-let subscribeResponse =
+let subscribeMiddleware =
   _requireUser
     <| subscribe
 

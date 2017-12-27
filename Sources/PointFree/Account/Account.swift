@@ -215,7 +215,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
                   href("#")
                   ],
-                  ["Upgrade"])
+                  ["Upgrade"]) // TODO: disable when subscription.status == .canceled
                 ])
               ])
             ])
@@ -235,13 +235,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([
-                a([
-                  `class`([Class.pf.components.button(color: .red, size: .small)]),
-                  href(path(to: .confirmCancel))
-                  ],
-                  ["Cancel"])
-                ])
+              p([mainAction(for: subscription)])
               ])
             ])
           ])
@@ -249,8 +243,9 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
       ])
     ]
     + (
-      subscription.status == .active
-        ? [
+      subscription.status == .canceled
+        ? []
+        : [
           gridRow([
             gridColumn(sizes: [.mobile: 3], [
               p([div(["Next billing"])])
@@ -262,9 +257,38 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
               ])
             ])
           ]
-        : []
     )
   )
+}
+
+private func mainAction(for subscription: Stripe.Subscription) -> Node {
+  if subscription.cancelAtPeriodEnd {
+    return form(
+      [action(path(to: .reactivate)), method(.post)],
+      [
+        button(
+          [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+          ["Reactivate"]
+        )
+      ]
+    )
+  } else if subscription.status == .canceled {
+    return a(
+      [
+        `class`([Class.pf.components.button(color: .purple, size: .small)]),
+        href(path(to: .pricing(nil, nil)))
+      ],
+      ["Resubscribe"]
+    )
+  } else {
+    return a(
+      [
+        `class`([Class.pf.components.button(color: .red, size: .small)]),
+        href(path(to: .confirmCancel))
+      ],
+      ["Cancel"]
+    )
+  }
 }
 
 private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in

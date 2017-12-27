@@ -13,7 +13,7 @@ let confirmCancelResponse =
   requireUser
     <<< requireSubscription
     <<< requireSubscriptionOwner
-    <<< requireStripeSubscription
+    <<< requireStripeSubscription(^\.status != .canceled)
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
 
@@ -21,12 +21,28 @@ let cancelMiddleware =
   requireUser
     <<< requireSubscription
     <<< requireSubscriptionOwner
-    <<< requireStripeSubscription
+    <<< requireStripeSubscription(^\.status != .canceled)
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
 
       return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
+        .run
+        .map(^\.right)
+        .map(const(conn.map(const(unit))))
+    }
+    >-> redirect(to: .account)
+
+let reactivateMiddleware =
+  requireUser
+    <<< requireSubscription
+    <<< requireSubscriptionOwner
+    <<< requireStripeSubscription(^\.cancelAtPeriodEnd)
+    <| map(lower)
+    >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+      let (subscription, data) = conn.data
+
+      return AppEnvironment.current.stripe.reactivate(subscription)
         .run
         .map(^\.right)
         .map(const(conn.map(const(unit))))
@@ -98,28 +114,29 @@ func requireSubscriptionOwner<A>(
     }
 }
 
-func requireStripeSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
-  )
+func requireStripeSubscription<A>(_ suchThat: @escaping (Stripe.Subscription) -> Bool)
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data> {
 
-    return { conn in
+    return { middleware in
+      { conn in
 
-      let (databaseSub, user, rest) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+        let (databaseSub, user, rest) = (conn.data.first, conn.data.second.first, conn.data.second.second)
 
-      return AppEnvironment.current.stripe.fetchSubscription(databaseSub.stripeSubscriptionId)
-        .run
-        .map(^\.right)
-        .flatMap { sub in
+        return AppEnvironment.current.stripe.fetchSubscription(databaseSub.stripeSubscriptionId)
+          .run
+          .map(^\.right)
+          .flatMap { sub in
 
-          guard let sub = sub else {
-            return conn
-              |> writeStatus(.notFound)
-              >-> respond(text: "Stripe subscription not found :(")
-          }
+            guard let sub = sub, suchThat(sub) else {
+              return conn
+                |> writeStatus(.notFound)
+                >-> respond(text: "Stripe subscription not found :(")
+            }
 
-          return conn.map(const(.init(first: sub, second: .init(first: user, second: rest))))
-            |> middleware
+            return conn.map(const(.init(first: sub, second: .init(first: user, second: rest))))
+              |> middleware
+        }
       }
     }
 }

@@ -103,13 +103,17 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       return conn.map(const((pricing, user, route)))
         |> pricingResponse
 
+    case .reactivate:
+      return conn.map(const(unit))
+        |> reactivateMiddleware
+
     case .secretHome:
       return conn.map(const(unit))
         |> secretHomeResponse
 
     case let .subscribe(data):
       return conn.map(const(data))
-        |> subscribeResponse
+        |> subscribeMiddleware
 
     case .team(.show):
       return conn.map(const(unit))
@@ -170,6 +174,7 @@ private func isProtected(route: Route) -> Bool {
        .logout,
        .paymentInfo,
        .pricing,
+       .reactivate,
        .secretHome,
        .subscribe,
        .team(.show),

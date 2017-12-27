@@ -29,6 +29,12 @@ extension DatabaseTests {
     ("testCreate", testCreate)
   ]
 }
+extension EmailInviteTests {
+  static var allTests: [(String, (EmailInviteTests) -> () throws -> Void)] = [
+    ("testEmailInvite", testEmailInvite),
+    ("testInviteAcceptance", testInviteAcceptance)
+  ]
+}
 extension EnvVarTests {
   static var allTests: [(String, (EnvVarTests) -> () throws -> Void)] = [
     ("testDecoding", testDecoding)
@@ -43,6 +49,11 @@ extension EpisodeTests {
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
     ("testHomepage", testHomepage)
+  ]
+}
+extension HtmlCssInlinerTests {
+  static var allTests: [(String, (HtmlCssInlinerTests) -> () throws -> Void)] = [
+    ("testHtmlCssInliner", testHtmlCssInliner)
   ]
 }
 extension LaunchSignupTests {
@@ -97,9 +108,11 @@ XCTMain([
   testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
+  testCase(HtmlCssInlinerTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
