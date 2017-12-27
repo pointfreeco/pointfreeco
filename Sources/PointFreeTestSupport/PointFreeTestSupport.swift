@@ -111,7 +111,7 @@ extension GitHub.UserEnvelope {
 
 extension Stripe {
   public static let mock = Stripe(
-    cancelSubscription: const(pure(.mock)),
+    cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _ in pure(.mock) },
     createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
@@ -187,7 +187,9 @@ extension Stripe.Subscription {
     |> \.cancelAtPeriodEnd .~ true
 
   public static let canceled = mock
-    |> \.canceledAt .~ Date(timeInterval: 60 * 60 * 24 * 30, since: .mock)
+    |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
 }
 
