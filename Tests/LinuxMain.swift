@@ -24,6 +24,11 @@ extension AuthTests {
     ("testRegistrationEmail", testRegistrationEmail)
   ]
 }
+extension CancelTests {
+  static var allTests: [(String, (CancelTests) -> () throws -> Void)] = [
+    ("testConfirmCancel", testConfirmCancel)
+  ]
+}
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
@@ -107,6 +112,7 @@ extension StyleguideTests {
 XCTMain([
   testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
+  testCase(CancelTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),

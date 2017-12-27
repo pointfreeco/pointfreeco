@@ -158,7 +158,7 @@ let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscriptio
                 div(
                   [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
                   titleRowView.view(unit)
-                    <> formRowView.view(unit)
+                    <> formRowView.view(subscription)
                 )
               ])
           ]
@@ -179,14 +179,27 @@ private let titleRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let formRowView = View<Prelude.Unit> { _ in
+private let formRowView = View<Stripe.Subscription> { subscription in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
+      p([
+        "Your ", text(subscription.plan.name), " subscription is set to renew",
+        text(subscription.currentPeriodEnd.map { " on " + dateFormatter.string(from: $0) } ?? ""),
+        """
+        . Should you choose to cancel your subscription, you will lose access to Point-Free on this date. You
+        will not be billed at the end of the current period. You may reactivate your subscription at any time
+        before the current period ends.
+        """
+        ]),
       form([action(path(to: .cancel)), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel"])
+          ["Cancel My Subscription"])
         ])
       ])
     ])
 }
+
+private let dateFormatter = DateFormatter()
+  |> \.dateStyle .~ .short
+  |> \.timeStyle .~ .none
