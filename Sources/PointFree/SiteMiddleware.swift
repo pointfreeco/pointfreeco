@@ -35,12 +35,12 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> accountResponse
 
     case .cancel:
-      fatalError()
+      return conn.map(const(unit))
+        |> cancelMiddleware
 
     case .confirmCancel:
-      fatalError()
-//      return conn.map(const((unit)))
-//        |> confirmCancelResponse
+      return conn.map(const(unit))
+        |> confirmCancelResponse
 
     case let .episode(param):
       return conn.map(const((param, user, route)))

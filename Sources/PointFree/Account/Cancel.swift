@@ -17,6 +17,22 @@ let confirmCancelResponse =
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
 
+let cancelMiddleware =
+  requireUser
+    <<< requireSubscription
+    <<< requireSubscriptionOwner
+    <<< requireStripeSubscription
+    <| map(lower)
+    >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+      let (subscription, data) = conn.data
+
+      return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
+        .run
+        .map(^\.right)
+        .map(const(conn.map(const(unit))))
+    }
+    >-> redirect(to: .account)
+
 func requireUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>
   )
@@ -108,7 +124,7 @@ func requireStripeSubscription<A>(
     }
 }
 
-let confirmCancelView = View<(Stripe.Subscription, Database.User, Prelude.Unit)> { subscription, currentUser, _ in
+let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
   document([
     html([
       head([
@@ -125,7 +141,7 @@ let confirmCancelView = View<(Stripe.Subscription, Database.User, Prelude.Unit)>
                 div(
                   [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
                   titleRowView.view(unit)
-                    <> [div(["really?"])]
+                    <> formRowView.view(unit)
                 )
               ])
           ]
@@ -141,6 +157,18 @@ private let titleRowView = View<Prelude.Unit> { _ in
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Cancel Subscription?"])
+        ])
+      ])
+    ])
+}
+
+private let formRowView = View<Prelude.Unit> { _ in
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12], [
+      form([action(path(to: .cancel)), method(.post)], [
+        button(
+          [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
+          ["Cancel"])
         ])
       ])
     ])
