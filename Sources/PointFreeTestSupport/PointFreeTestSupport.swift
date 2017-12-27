@@ -118,6 +118,8 @@ extension Stripe {
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
+    reactivateSubscription: const(pure(.mock)),
+    updateSubscription: { _, _, _ in pure(.mock) },
     js: ""
   )
 }
@@ -174,9 +176,19 @@ extension Stripe.Subscription {
     customer: .mock,
     endedAt: nil,
     id: .init(unwrap: "sub_test"),
+    items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
     start: .mock,
     status: .active
+  )
+}
+
+extension Stripe.Subscription.Item {
+  public static let mock = Stripe.Subscription.Item(
+    created: .mock,
+    id: .init(unwrap: "si_test"),
+    plan: .mock,
+    quantity: 1
   )
 }

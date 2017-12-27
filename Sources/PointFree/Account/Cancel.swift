@@ -42,7 +42,7 @@ let reactivateMiddleware =
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
 
-      return AppEnvironment.current.stripe.reactivate(subscription)
+      return AppEnvironment.current.stripe.reactivateSubscription(subscription)
         .run
         .map(^\.right)
         .map(const(conn.map(const(unit))))
