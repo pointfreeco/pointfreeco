@@ -285,7 +285,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   } else {
     return a(
       [
-        `class`([Class.pf.components.button(color: .red, size: .small)]),
+        `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
         href(path(to: .confirmCancel))
       ],
       ["Cancel"]
