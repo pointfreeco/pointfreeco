@@ -182,6 +182,13 @@ extension Stripe.Subscription {
     start: .mock,
     status: .active
   )
+
+  public static let canceling = mock
+    |> \.cancelAtPeriodEnd .~ true
+
+  public static let canceled = mock
+    |> \.canceledAt .~ Date(timeInterval: 60 * 60 * 24 * 30, since: .mock)
+    |> \.status .~ .canceled
 }
 
 extension Stripe.Subscription.Item {
