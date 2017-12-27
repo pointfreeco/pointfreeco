@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  requireUser
+  _requireUser
     <| fetchAccountData
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower))

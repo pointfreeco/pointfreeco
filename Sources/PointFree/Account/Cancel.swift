@@ -14,9 +14,73 @@ let confirmCancelResponse =
     <<< requireSubscription
     <<< requireSubscriptionOwner
     <<< requireStripeSubscription
-    <| { conn in conn.map(const((conn.data.first, conn.data.second.first, conn.data.second.second))) }
-    >-> writeStatus(.ok)
-    >-> respond(confirmCancelView)
+    <| writeStatus(.ok)
+    >-> respond(confirmCancelView.contramap(lower))
+
+func requireUser<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { conn in
+      (conn |> _readSessionCookieMiddleware) // FIXME: should operate on T2, not Tuple2
+        .flatMap {
+          let (optionalUser, rest) = ($0.data.first, $0.data.second.first)
+
+          guard let user = optionalUser else {
+            return $0
+              |> redirect(to: .login(redirect: $0.request.url?.absoluteString))
+          }
+
+          return $0.map(const(.init(first: user, second: rest)))
+            |> middleware
+      }
+    }
+}
+
+func requireSubscription<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return { conn in
+      let (currentUser, rest) = (conn.data.first, conn.data.second)
+      let subscription = currentUser.subscriptionId
+        .map {
+          AppEnvironment.current.database.fetchSubscriptionById($0)
+            .mapExcept(requireSome)
+            .run
+            .map(^\.right)
+        }
+        ?? pure(nil)
+
+      return subscription.flatMap { sub in
+        guard let sub = sub else {
+          return conn
+            |> writeStatus(.notFound)
+            >-> respond(text: "Not subscribed :(")
+        }
+        return conn.map(const(.init(first: sub, second: .init(first: currentUser, second: rest))))
+          |> middleware
+      }
+    }
+}
+
+func requireSubscriptionOwner<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data> {
+
+    return { conn in
+      guard conn.data.first.userId == conn.data.second.first.id else {
+        return conn
+          |> writeStatus(.notFound)
+          >-> respond(text: "Not the subscription owner :(")
+      }
+
+      return conn |> middleware
+    }
+}
 
 func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
@@ -40,49 +104,6 @@ func requireStripeSubscription<A>(
 
           return conn.map(const(.init(first: sub, second: .init(first: user, second: rest))))
             |> middleware
-      }
-    }
-}
-
-func requireSubscriptionOwner<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data> {
-
-    return { conn in
-      guard conn.data.first.userId == conn.data.second.first.id else {
-        return conn
-          |> writeStatus(.notFound)
-          >-> respond(text: "Not the subscription owner :(")
-      }
-
-      return conn |> middleware
-    }
-}
-
-func requireSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
-    return { conn in
-      let (currentUser, rest) = (conn.data.first, conn.data.second)
-      let subscription = currentUser.subscriptionId
-        .map {
-          AppEnvironment.current.database.fetchSubscriptionById($0)
-            .mapExcept(requireSome)
-            .run
-            .map(^\.right)
-        }
-        ?? pure(nil)
-
-      return subscription.flatMap { sub in
-        guard let sub = sub else {
-          return conn
-            |> writeStatus(.notFound)
-            >-> respond(text: "No subscription found :(")
-        }
-        return conn.map(const(.init(first: sub, second: .init(first: currentUser, second: rest))))
-          |> middleware
       }
     }
 }

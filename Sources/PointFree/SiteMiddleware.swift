@@ -17,7 +17,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       protect: isProtected
     )
     <| (
-      readSessionCookieMiddleware
+      _readSessionCookieMiddleware
         >-> render(conn:)
 )
 
@@ -38,8 +38,9 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       fatalError()
 
     case .confirmCancel:
-      return conn.map(const((unit)))
-        |> confirmCancelResponse
+      fatalError()
+//      return conn.map(const((unit)))
+//        |> confirmCancelResponse
 
     case let .episode(param):
       return conn.map(const((param, user, route)))

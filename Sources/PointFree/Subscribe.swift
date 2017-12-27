@@ -10,7 +10,7 @@ public struct SubscribeData: Codable {
 }
 
 let subscribeResponse =
-  requireUser
+  _requireUser
     <| subscribe
 
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData?>>)

@@ -46,7 +46,7 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
     headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
 )
 
-public func readSessionCookieMiddleware<I, A>(
+public func _readSessionCookieMiddleware<I, A>(
   _ conn: Conn<I, A>)
   -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
@@ -109,12 +109,12 @@ private func writeSessionCookieMiddleware(
     )
 }
 
-public func requireUser<A>(
+public func _requireUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      (conn |> readSessionCookieMiddleware)
+      (conn |> _readSessionCookieMiddleware)
         .flatMap { c in
           c.data.first.map { user in
             c.map(const(user .*. c.data.second))
@@ -129,7 +129,7 @@ func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
   ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
-  return conn |> readSessionCookieMiddleware
+  return conn |> _readSessionCookieMiddleware
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
