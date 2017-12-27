@@ -143,6 +143,7 @@ extension Class.pf {
         | Class.type.medium
         | Class.border.rounded.all
         | Class.border.none
+        | Class.type.textDecorationNone
 
       let colorStyles: CssSelector
       switch color {
@@ -173,25 +174,23 @@ extension Class.pf {
       return base | colorStyles | sizeStyles
     }
 
-    public enum buttons {
-      private static let pricingTabBase =
-        Class.layout.fit
-          | Class.pf.type.title5
-          | Class.type.medium
-          | Class.padding([.mobile: [.leftRight: 2]])
-          | Class.padding([.mobile: [.topBottom: 2]])
-          | Class.border.none
-          | Class.size.width50pct
-          | Class.display.inlineBlock
-      public static let pricingTabSelected =
-        pricingTabBase
-          | Class.pf.colors.bg.white
-          | Class.pf.colors.fg.purple
-      public static let pricingTab =
-        pricingTabBase
-          | Class.pf.colors.bg.purple
-          | Class.pf.colors.fg.white
-    }
+    private static let pricingTabBase =
+      Class.layout.fit
+        | Class.pf.type.title5
+        | Class.type.medium
+        | Class.padding([.mobile: [.leftRight: 2]])
+        | Class.padding([.mobile: [.topBottom: 2]])
+        | Class.border.none
+        | Class.size.width50pct
+        | Class.display.inlineBlock
+    public static let pricingTabSelected =
+      pricingTabBase
+        | Class.pf.colors.bg.white
+        | Class.pf.colors.fg.purple
+    public static let pricingTab =
+      pricingTabBase
+        | Class.pf.colors.bg.purple
+        | Class.pf.colors.fg.white
 
     private static let _codeClasses =
       _codeClass

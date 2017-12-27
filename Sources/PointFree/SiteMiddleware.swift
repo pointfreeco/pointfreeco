@@ -34,6 +34,18 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> accountResponse
 
+    case .admin(.index):
+      return conn.map(const(unit))
+        |> adminIndex
+
+    case let .admin(.newEpisodeEmail(.send(episodeId))):
+      return conn.map(const(lift(episodeId)))
+        |> sendNewEpisodeEmailMiddleware
+
+    case .admin(.newEpisodeEmail(.show)):
+      return conn.map(const(unit))
+        |> showNewEpisodeEmailMiddleware
+
     case .cancel:
       fatalError()
 
@@ -154,6 +166,9 @@ private let allowedInsecureHosts: [String] = [
 private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
+       .admin(.index),
+       .admin(.newEpisodeEmail(.send)),
+       .admin(.newEpisodeEmail(.show)),
        .account,
        .cancel,
        .confirmCancel,

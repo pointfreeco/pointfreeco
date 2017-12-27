@@ -73,7 +73,7 @@ private let accountColumnView = View<Prelude.Unit> { _ in
     h5([`class`([columnTitleClass])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
       li([
-        a([`class`([footerLinkClass]), href("#")], ["Subscribe"])
+        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, nil)))], ["Subscribe"])
         ]),
       li([
         a([`class`([footerLinkClass]), href(path(to: .pricing(nil, nil)))], ["Pricing"])
