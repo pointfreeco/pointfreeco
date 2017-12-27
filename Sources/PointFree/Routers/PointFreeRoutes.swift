@@ -10,6 +10,7 @@ public protocol DerivePartialIsos {}
 public enum Route: DerivePartialIsos {
   case about
   case account
+  case admin(Admin)
   case cancel
   case confirmCancel
   case episode(Either<String, Int>)
@@ -27,9 +28,14 @@ public enum Route: DerivePartialIsos {
   case terms
   case updateProfile(ProfileData?)
 
-  public enum Team: DerivePartialIsos {
-    case remove(Database.User.Id)
-    case show
+  public enum Admin: DerivePartialIsos {
+    case index
+    case newEpisodeEmail(NewEpisodeEmail)
+
+    public enum NewEpisodeEmail: DerivePartialIsos {
+      case send(Episode.Id)
+      case show
+    }
   }
 
   public enum Invite: DerivePartialIsos {
@@ -38,6 +44,11 @@ public enum Route: DerivePartialIsos {
     case revoke(Database.TeamInvite.Id)
     case send(EmailAddress?)
     case show(Database.TeamInvite.Id)
+  }
+
+  public enum Team: DerivePartialIsos {
+    case remove(Database.User.Id)
+    case show
   }
 }
 
@@ -48,6 +59,15 @@ private let routers: [Router<Route>] = [
 
   Route.iso.account
     <¢> get %> lit("account") <% end,
+
+  Route.iso.admin <<< Route.Admin.iso.index
+    <¢> get %> lit("admin") <% end,
+
+  Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.send
+    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam((.int) >>> (.tagged)) <% lit("send") <% end,
+
+  Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.show
+    <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
@@ -61,15 +81,13 @@ private let routers: [Router<Route>] = [
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
   Route.iso.invite <<< Route.Invite.iso.accept
-    // TODO: double raw representable is needed cause we have to go String -> UUID -> Tagged. Might need
-    //       a tagged combinator?
-    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("accept") <% end,
+    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("accept") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.resend
-    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("resend") <% end,
+    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("resend") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.revoke
-    <¢> post %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% lit("revoke") <% end,
+    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("revoke") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.send
     // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of

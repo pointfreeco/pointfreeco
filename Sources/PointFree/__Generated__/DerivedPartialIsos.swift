@@ -69,6 +69,12 @@ import Prelude
               guard case .account = $0 else { return nil }
               return unit
           })
+          public static let admin = parenthesize <| PartialIso(
+            apply: Route.admin,
+            unapply: {
+              guard case let .admin(result) = $0 else { return nil }
+              return result
+          })
           public static let cancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.cancel)),
             unapply: {
@@ -164,6 +170,38 @@ import Prelude
             unapply: {
               guard case let .updateProfile(result) = $0 else { return nil }
               return result
+          })
+    }
+  }
+  extension Route.Admin {
+    enum iso {
+          public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Admin>(
+            apply: const(.some(.index)),
+            unapply: {
+              guard case .index = $0 else { return nil }
+              return unit
+          })
+          public static let newEpisodeEmail = parenthesize <| PartialIso(
+            apply: Route.Admin.newEpisodeEmail,
+            unapply: {
+              guard case let .newEpisodeEmail(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Admin.NewEpisodeEmail {
+    enum iso {
+          public static let send = parenthesize <| PartialIso(
+            apply: Route.Admin.NewEpisodeEmail.send,
+            unapply: {
+              guard case let .send(result) = $0 else { return nil }
+              return result
+          })
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.NewEpisodeEmail>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
           })
     }
   }

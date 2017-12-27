@@ -14,12 +14,15 @@ struct SimpleEmailLayoutData<A> {
   let data: A
 }
 
+let emailStylesheet = styleguide
+  <> a % key("text-decoration", "underline")
+
 func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
   return View { layoutData in
     document([
       html([xmlns("http://www.w3.org/1999/xhtml")], [
         head([
-          style(styleguide),
+          style(emailStylesheet),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
           title(layoutData.title),
@@ -49,7 +52,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
         ])
       ])
     }
-    .map { applyInlineStyles(nodes: $0, stylesheet: styleguide) }
+    .map { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
 }
 
 let bodyTableStyles =
@@ -64,33 +67,6 @@ let contentTableStyles =
     <> maxWidth(.px(600))
     <> margin(topBottom: 0, leftRight: .auto)
     <> display(.block)
-
-// TODO: move into a package for html email helpers.
-public func emailTable(_ attribs: [Attribute<Element.Table>], _ content: [ChildOf<Element.Table>]) -> Node {
-  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
-}
-
-private let emailFooterView = View<Prelude.Unit> { _ in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          p([`class`([Class.pf.type.body.small])], [
-            "Contact us via email at ",
-            a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
-            ", or on Twitter ",
-            a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
-            "."
-            ]),
-
-          p([`class`([Class.pf.type.body.small])], [
-            "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
-            ])
-          ])
-        ])
-      ])
-    ])
-}
 
 private let preheaderStyles =
   color(.transparent)

@@ -20,13 +20,18 @@ extension AuthTests {
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
-    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn),
-    ("testRegistrationEmail", testRegistrationEmail)
+    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn)
   ]
 }
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
+  ]
+}
+extension EmailInviteTests {
+  static var allTests: [(String, (EmailInviteTests) -> () throws -> Void)] = [
+    ("testEmailInvite", testEmailInvite),
+    ("testInviteAcceptance", testInviteAcceptance)
   ]
 }
 extension EnvVarTests {
@@ -43,6 +48,16 @@ extension EpisodeTests {
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
     ("testHomepage", testHomepage)
+  ]
+}
+extension HtmlCssInlinerTests {
+  static var allTests: [(String, (HtmlCssInlinerTests) -> () throws -> Void)] = [
+    ("testHtmlCssInliner", testHtmlCssInliner)
+  ]
+}
+extension LaunchEmailTests {
+  static var allTests: [(String, (LaunchEmailTests) -> () throws -> Void)] = [
+    ("testLaunchEmail", testLaunchEmail)
   ]
 }
 extension LaunchSignupTests {
@@ -65,6 +80,12 @@ extension NavViewTests {
     ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
 }
+extension NewEpisodeEmailTests {
+  static var allTests: [(String, (NewEpisodeEmailTests) -> () throws -> Void)] = [
+    ("testNewEpisodeEmail_Subscriber", testNewEpisodeEmail_Subscriber),
+    ("testNewEpisodeEmail_NonSubscriber", testNewEpisodeEmail_NonSubscriber)
+  ]
+}
 extension PaymentInfoTests {
   static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
     ("testRender", testRender)
@@ -74,6 +95,11 @@ extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
     ("testPricingLoggedIn", testPricingLoggedIn)
+  ]
+}
+extension RegistrationEmailTests {
+  static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
+    ("testRegistrationEmail", testRegistrationEmail)
   ]
 }
 extension SiteMiddlewareTests {
@@ -97,14 +123,19 @@ XCTMain([
   testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
+  testCase(HtmlCssInlinerTests.allTests),
+  testCase(LaunchEmailTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
+  testCase(NewEpisodeEmailTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
+  testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
 ])
