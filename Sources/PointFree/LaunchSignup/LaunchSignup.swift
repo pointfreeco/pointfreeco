@@ -71,34 +71,35 @@ let notifyUsView = View<EmailAddress> { email in
     ])
 }
 
-let launchSignupConfirmationEmailView = View<Prelude.Unit> { _ in
-  document([
-    html([
-      head([
-        style(styleguide),
-        ]),
+let launchSignupConfirmationEmailView = simpleEmailLayout(launchSignupConfirmationEmailBody)
+  .contramap { data in
+    SimpleEmailLayoutData(
+      title: "Thanks for signing up!",
+      preheader: "Point-Free will be launching soon, and you’ll be the first to know.",
+      data: data
+    )
+}
 
-      body([
-        gridRow([
-          gridColumn(sizes: [:], [
-            div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-              h3([`class`([Class.h3])], ["Thanks for signing up!"]),
-              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
-                a([href(gitHubUrl(to: .organization))], ["@pointfreeco"]),
-                ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",
-                a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
-                " to see our progress in making the site and learn more about the interesting techniques we are using."
-                ]),
-              p([
-                a([href(twitterUrl(to: .mbrandonw))], [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]),
-                br,
-                a([href(twitterUrl(to: .stephencelis))], [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]),
-                ]),
-              p([
-                a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"]),
-                ])
-              ])
+let launchSignupConfirmationEmailBody = View<Prelude.Unit> { _ in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Thanks for signing up!"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "Point-Free will be launching soon, and you’ll be the first to know. Until then, check out our GitHub organization ",
+            a([href(gitHubUrl(to: .organization))], ["@pointfreeco"]),
+            ", where we have open-sourced all of the code that powers this site. Also, follow us on Twitter ",
+            a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
+            " to see our progress in making the site and learn more about the interesting techniques we are using."
+            ]),
+          p([
+            a([href(twitterUrl(to: .mbrandonw))], [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]),
+            " & ",
+            a([href(twitterUrl(to: .stephencelis))], [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]),
+            ]),
+          p([
+            a([href(url(to: .home(signedUpSuccessfully: nil)))], ["Point-Free"]),
             ])
           ])
         ])

@@ -81,29 +81,6 @@ public func readSessionCookieMiddleware<I, A>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-//private func readSessionCookieMiddleware<I>(
-//  _ conn: Conn<I, Prelude.Unit>
-//  )
-//  -> IO<Conn<I, Database.User?>> {
-//
-//    return (
-//      conn.request.cookies[pointFreeUserSession]
-//        .flatMap {
-//          ResponseHeader
-//            .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-//        }
-//        .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
-//        .map {
-//          AppEnvironment.current.database.fetchUserById($0)
-//            .mapExcept(requireSome)
-//        }
-//        ?? throwE(unit)
-//      )
-//      .run
-//      .map(conn.map <<< const)
-//      .map(ignoreErrors)
-//}
-
 private func writeSessionCookieMiddleware(
   _ conn: Conn<HeadersOpen, Database.User>
   )
@@ -220,26 +197,3 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
 }
 
 let pointFreeUserSession = "pf_session"
-
-let registrationEmailView = View<GitHub.User> { _ in
-  document([
-    html([
-      head([
-        style(styleguide),
-        ]),
-
-      body([
-        gridRow([
-          gridColumn(sizes: [:], [
-            div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-              h3([`class`([Class.h3])], ["Thanks for signing up!"]),
-              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                "You’re one step closer to our weekly video series!",
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
-    ])
-}
