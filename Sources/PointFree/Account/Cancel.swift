@@ -199,7 +199,3 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       ])
     ])
 }
-
-private let dateFormatter = DateFormatter()
-  |> \.dateStyle .~ .short
-  |> \.timeStyle .~ .none

@@ -489,11 +489,3 @@ let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
-
-private let currencyFormatter = NumberFormatter()
-  |> \.numberStyle .~ .currency
-
-private let dateFormatter = DateFormatter()
-  |> \.dateStyle .~ .short
-  |> \.timeStyle .~ .none
-  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
