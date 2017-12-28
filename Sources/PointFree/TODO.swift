@@ -130,13 +130,6 @@ public func filterMap<A, B>(
     }
 }
 
-//public func filterMap<A, B>(_ f: @escaping (A) -> B?, notFoundView: View<A>)
-//  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
-//  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-//
-//    return filterMap(f, notFoundMiddleware: writeStatus(.notFound) >-> respond(notFoundView))
-//}
-
 public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
   return { ac in (a2b(ac.0), ac.1, ac.2) }
 }
