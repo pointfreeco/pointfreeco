@@ -19,7 +19,7 @@ func fetchAccountData<I>(
   _ conn: Conn<I, T2<Database.User, Prelude.Unit>>
   ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])>> {
 
-  let (user, rest) = (conn.data.first, conn.data.second)
+  let (user, _) = (conn.data.first, conn.data.second)
 
   let subscription = user.subscriptionId
     .map {
