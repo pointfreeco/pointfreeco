@@ -15,9 +15,9 @@ let accountResponse =
     >-> writeStatus(.ok)
     >-> respond(accountView)
 
-func fetchAccountData<I, A>(
-  _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], A)>> {
+func fetchAccountData<I>(
+  _ conn: Conn<I, T2<Database.User, Prelude.Unit>>
+  ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])>> {
 
   let (user, rest) = (conn.data.first, conn.data.second)
 
@@ -43,10 +43,10 @@ func fetchAccountData<I, A>(
         .map { $0.right ?? [] }
     )
     )
-    .map { conn.map(const((user, $0, $1, $2, rest))) }
+    .map { conn.map(const((user, $0, $1, $2))) }
 }
 
-let accountView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], Prelude.Unit)> { currentUser, subscription, teamInvites, teammates, _ in
+let accountView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { currentUser, subscription, teamInvites, teammates in
 
   document([
     html([
