@@ -26,12 +26,12 @@ func requireAdmin<A>(
 }
 
 let adminIndex =
-  _requireUser
+  filterMap(require1, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
 
-private let adminIndexView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
+private let adminIndexView = View<Database.User> { currentUser in
   ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"])
@@ -40,12 +40,12 @@ private let adminIndexView = View<(Database.User, Prelude.Unit)> { currentUser, 
 }
 
 let showNewEpisodeEmailMiddleware =
-  _requireUser
+  filterMap(require1, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
 
-private let showNewEpisodeView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
+private let showNewEpisodeView = View<Database.User> { currentUser in
   ul(
     episodes
       .sorted(by: ^\.sequence)
@@ -64,9 +64,9 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
 
 let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, Prelude.Unit>, Data> =
   requireEpisode(notFoundMiddleware: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <<< _requireUser
+    <<< requireUser
     <<< requireAdmin
-    <| { conn in pure(conn.map(const((conn.data.second.first.first)))) }
+    <| { conn in pure(conn.map(get2)) }
     >-> sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 

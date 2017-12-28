@@ -59,16 +59,14 @@ func requireUser<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      (conn |> _readSessionCookieMiddleware) // FIXME: should operate on T2, not Tuple2
+      (conn |> readSessionCookieMiddleware)
         .flatMap {
-          let (optionalUser, rest) = ($0.data.first, $0.data.second.first)
-
-          guard let user = optionalUser else {
+          guard let user = get1($0.data) else {
             return $0
               |> redirect(to: .login(redirect: $0.request.url?.absoluteString))
           }
 
-          return $0.map(const(.init(first: user, second: rest)))
+          return $0.map(over1(const(user)))
             |> middleware
       }
     }
