@@ -54,6 +54,10 @@ body {
   background-color : #291a40;
 }
 
+.bg-red {
+  background-color : #eb1c26;
+}
+
 .bg-white {
   background-color : #fff;
 }
@@ -149,6 +153,14 @@ a:link.pf-link-purple {
 
 a:visited.pf-link-purple {
   color : #974DFF;
+}
+
+a:link.pf-link-red {
+  color : #eb1c26;
+}
+
+a:visited.pf-link-red {
+  color : #eb1c26;
 }
 
 a:link.pf-link-white {

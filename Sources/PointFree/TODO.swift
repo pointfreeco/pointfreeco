@@ -231,8 +231,22 @@ extension Array {
 }
 
 extension Optional {
-  func filterOptional(isIncluded: (Wrapped) -> Bool) -> Optional {
+  func filterOptional(_ isIncluded: (Wrapped) -> Bool) -> Optional {
     return self.flatMap { isIncluded($0) ? $0 : nil }
+  }
+}
+
+// TODO: Move to swift-web
+extension URLRequest {
+  public var cookies: [String: String] {
+    let pairs = (self.allHTTPHeaderFields?["Cookie"] ?? "")
+      .components(separatedBy: "; ")
+      .map {
+        $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+          .map(String.init)
+      }
+      .flatMap { tuple <¢> $0.first <*> $0.last }
+    return .init(uniqueKeysWithValues: pairs)
   }
 }
 

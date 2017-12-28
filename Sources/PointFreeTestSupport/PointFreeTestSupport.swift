@@ -112,13 +112,15 @@ extension GitHub.UserEnvelope {
 
 extension Stripe {
   public static let mock = Stripe(
-    cancelSubscription: const(pure(.mock)),
+    cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _ in pure(.mock) },
     createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
+    reactivateSubscription: const(pure(.mock)),
+    updateSubscription: { _, _, _ in pure(.mock) },
     js: ""
   )
 }
@@ -175,9 +177,28 @@ extension Stripe.Subscription {
     customer: .mock,
     endedAt: nil,
     id: .init(unwrap: "sub_test"),
+    items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
     start: .mock,
     status: .active
+  )
+
+  public static let canceling = mock
+    |> \.cancelAtPeriodEnd .~ true
+
+  public static let canceled = mock
+    |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
+    |> \.status .~ .canceled
+}
+
+extension Stripe.Subscription.Item {
+  public static let mock = Stripe.Subscription.Item(
+    created: .mock,
+    id: .init(unwrap: "si_test"),
+    plan: .mock,
+    quantity: 1
   )
 }
