@@ -9,8 +9,8 @@ public struct SubscribeData: Codable {
   public let token: Stripe.Token.Id
 }
 
-let subscribeResponse =
-  requireUser
+let subscribeMiddleware =
+  _requireUser
     <| subscribe
 
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData?>>)

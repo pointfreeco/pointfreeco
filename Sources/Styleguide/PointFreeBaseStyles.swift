@@ -30,6 +30,7 @@ extension Class {
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
+        public static let red = CssSelector.class("bg-red")
         public static let white = CssSelector.class("bg-white")
       }
       public enum border {
@@ -54,6 +55,7 @@ extension Class {
         public static let gray650 = CssSelector.class("pf-link-gray650")
         public static let green = CssSelector.class("pf-link-green")
         public static let purple = CssSelector.class("pf-link-purple")
+        public static let red = CssSelector.class("pf-link-red")
         public static let white = CssSelector.class("pf-link-white")
         public static let yellow = CssSelector.class("pf-link-yellow")
       }
@@ -129,6 +131,7 @@ extension Class.pf {
     public enum Color {
       case black
       case purple
+      case red
       case white
     }
 
@@ -138,27 +141,61 @@ extension Class.pf {
       case large
     }
 
-    public static func button(color: Color, size: Size = .regular) -> CssSelector {
-      let base = baseButtonClass
-        | Class.type.medium
-        | Class.border.rounded.all
-        | Class.border.none
-        | Class.type.textDecorationNone
+    public enum Style {
+      case normal
+      case outline
+      case underline
+    }
+
+    public static func button(color: Color, size: Size = .regular, style: Style = .normal) -> CssSelector {
+      let baseStyles = Class.type.medium
+
+      let borderStyles: CssSelector
+      switch style {
+      case .normal:
+        borderStyles = baseButtonClass
+          | Class.border.rounded.all
+          | Class.border.none
+          | Class.type.textDecorationNone
+      case .outline:
+        borderStyles = Class.border.rounded.all
+          | Class.border.none
+          | Class.type.textDecorationNone
+      case .underline:
+        borderStyles = Class.border.none
+          | Class.type.underline
+      }
 
       let colorStyles: CssSelector
-      switch color {
-      case .black:
+      switch (style, color) {
+      case (.normal, .black):
         colorStyles = Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.black
-      case .purple:
+      case (.normal, .purple):
         colorStyles = Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.purple
-      case .white:
+      case (.normal, .red):
+        colorStyles = Class.pf.colors.link.white
+          | Class.pf.colors.fg.white
+          | Class.pf.colors.bg.red
+      case (.normal, .white):
         colorStyles = Class.pf.colors.link.black
           | Class.pf.colors.fg.black
           | Class.pf.colors.bg.white
+      case (.outline, .black), (.underline, .black):
+        colorStyles = Class.pf.colors.link.black
+          | Class.pf.colors.fg.black
+      case (.outline, .purple), (.underline, .purple):
+        colorStyles = Class.pf.colors.link.purple
+          | Class.pf.colors.fg.purple
+      case (.outline, .red), (.underline, .red):
+        colorStyles = Class.pf.colors.link.red
+          | Class.pf.colors.fg.red
+      case (.outline, .white), (.underline, .white):
+        colorStyles = Class.pf.colors.link.white
+          | Class.pf.colors.fg.white
       }
 
       let sizeStyles: CssSelector
@@ -171,7 +208,7 @@ extension Class.pf {
         sizeStyles = Class.h4 | Class.padding([.mobile: [.leftRight: 2]])
       }
 
-      return base | colorStyles | sizeStyles
+      return baseStyles | borderStyles | colorStyles | sizeStyles
     }
 
     private static let pricingTabBase =
@@ -274,6 +311,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
+    <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
@@ -299,6 +337,8 @@ private let colorStyles: Stylesheet =
     <> (a & .pseudo(.visited) & Class.pf.colors.link.green) % color(Colors.green)
     <> (a & .pseudo(.link) & Class.pf.colors.link.purple) % color(Colors.purple)
     <> (a & .pseudo(.visited) & Class.pf.colors.link.purple) % color(Colors.purple)
+    <> (a & .pseudo(.link) & Class.pf.colors.link.red) % color(Colors.red)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.red) % color(Colors.red)
     <> (a & .pseudo(.link) & Class.pf.colors.link.white) % color(Colors.white)
     <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
     <> (a & .pseudo(.link) & Class.pf.colors.link.yellow) % color(Colors.yellow)

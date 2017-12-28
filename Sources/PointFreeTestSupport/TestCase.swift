@@ -16,10 +16,10 @@ open class TestCase: XCTestCase {
       )
     )
 
-    _ = try! execute("DROP SCHEMA public CASCADE;")
-      .flatMap(const(execute("CREATE SCHEMA public;")))
-      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO pointfreeco;")))
-      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO public;")))
+    _ = try! execute("DROP SCHEMA public CASCADE")
+      .flatMap(const(execute("CREATE SCHEMA public")))
+      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO pointfreeco")))
+      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO public")))
       .flatMap(const(AppEnvironment.current.database.migrate()))
       .flatMap(const(execute("CREATE SEQUENCE test_uuids")))
       .flatMap(const(execute(

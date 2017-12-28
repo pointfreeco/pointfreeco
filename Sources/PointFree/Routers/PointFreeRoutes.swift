@@ -22,6 +22,7 @@ public enum Route: DerivePartialIsos {
   case logout
   case paymentInfo
   case pricing(String?, Int?)
+  case reactivate
   case secretHome
   case subscribe(SubscribeData?)
   case team(Team)
@@ -69,6 +70,12 @@ private let routers: [Router<Route>] = [
   Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
 
+  Route.iso.cancel
+    <¢> post %> lit("account") <% lit("cancel"),
+
+  Route.iso.confirmCancel
+    <¢> get %> lit("account") <% lit("cancel"),
+
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
 
@@ -111,6 +118,9 @@ private let routers: [Router<Route>] = [
 
   Route.iso.pricing
     <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
+
+  Route.iso.reactivate
+    <¢> post %> lit("account") <% lit("reactivate"),
 
   Route.iso.secretHome
     <¢> get %> lit("home") <% end,

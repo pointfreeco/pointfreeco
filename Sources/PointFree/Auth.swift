@@ -46,21 +46,7 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
     headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
 )
 
-// todo: move to swift-web
-extension URLRequest {
-  public var cookies: [String: String] {
-    let pairs = (self.allHTTPHeaderFields?["Cookie"] ?? "")
-      .components(separatedBy: "; ")
-      .map {
-        $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
-          .map(String.init)
-      }
-      .flatMap { tuple <¢> $0.first <*> $0.last }
-    return .init(uniqueKeysWithValues: pairs)
-  }
-}
-
-public func readSessionCookieMiddleware<I, A>(
+public func _readSessionCookieMiddleware<I, A>(
   _ conn: Conn<I, A>)
   -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
@@ -100,12 +86,12 @@ private func writeSessionCookieMiddleware(
     )
 }
 
-public func requireUser<A>(
+public func _requireUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      (conn |> readSessionCookieMiddleware)
+      (conn |> _readSessionCookieMiddleware)
         .flatMap { c in
           c.data.first.map { user in
             c.map(const(user .*. c.data.second))
@@ -120,17 +106,14 @@ func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
   ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
 
-  return conn |> readSessionCookieMiddleware
+  return conn |> _readSessionCookieMiddleware
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
   return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)
-    .flatMap { user in
-      EitherIO(run: IO { user.map(Either.right) ?? .left(unit) })
-        .catch(const(registerUser(env: env)))
-    }
-    .mapExcept(bimap(const(unit), id))
+    .flatMap { user in user.map(pure) ?? registerUser(env: env) }
+    .withExcept(const(unit))
 }
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {

@@ -26,7 +26,7 @@ func requireAdmin<A>(
 }
 
 let adminIndex =
-  requireUser
+  _requireUser
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
@@ -40,7 +40,7 @@ private let adminIndexView = View<(Database.User, Prelude.Unit)> { currentUser, 
 }
 
 let showNewEpisodeEmailMiddleware =
-  requireUser
+  _requireUser
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
@@ -64,7 +64,7 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
 
 let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, Prelude.Unit>, Data> =
   requireEpisode(notFoundMiddleware: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <<< requireUser
+    <<< _requireUser
     <<< requireAdmin
     <| { conn in pure(conn.map(const((conn.data.second.first.first)))) }
     >-> sendNewEpisodeEmails
