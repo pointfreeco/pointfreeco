@@ -26,6 +26,8 @@ let cancelMiddleware =
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
 
+      // TODO: send emails
+
       return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
         .run
         .map(^\.right)
@@ -41,6 +43,8 @@ let reactivateMiddleware =
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
+
+      // TODO: send emails
 
       return AppEnvironment.current.stripe.reactivateSubscription(subscription)
         .run
