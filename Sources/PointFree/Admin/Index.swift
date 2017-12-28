@@ -21,17 +21,17 @@ func requireAdmin<A>(
 
   return { conn in
     conn
-      |> (adminEmails.contains(get1(conn.data).email.unwrap) ? middleware : redirect(to: .secretHome))
+      |> (adminEmails.contains(conn.data.first.email.unwrap) ? middleware : redirect(to: .secretHome))
   }
 }
 
 let adminIndex =
-  _requireUser
+  requireUser
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
 
-private let adminIndexView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
+private let adminIndexView = View<Database.User> { currentUser in
   ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"])
@@ -40,12 +40,12 @@ private let adminIndexView = View<(Database.User, Prelude.Unit)> { currentUser, 
 }
 
 let showNewEpisodeEmailMiddleware =
-  _requireUser
+  requireUser
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
 
-private let showNewEpisodeView = View<(Database.User, Prelude.Unit)> { currentUser, _ in
+private let showNewEpisodeView = View<Database.User> { currentUser in
   ul(
     episodes
       .sorted(by: ^\.sequence)
@@ -64,9 +64,9 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
 
 let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, Prelude.Unit>, Data> =
   requireEpisode(notFoundMiddleware: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <<< _requireUser
+    <<< requireUser
     <<< requireAdmin
-    <| { conn in pure(conn.map(const((conn.data.second.first.first)))) }
+    <| { conn in pure(conn.map(const(conn.data.second.first))) }
     >-> sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
@@ -77,7 +77,7 @@ func requireEpisode<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data> {
 
     return { middleware in
-      return { conn in
+      { conn in
         guard let episode = episodes.first(where: { $0.id.unwrap == get1(conn.data).unwrap })
           else { return conn |> notFoundMiddleware }
 
@@ -93,7 +93,7 @@ private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pre
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
     .run
-    .map { _ in conn.map(const(unit)) }
+    .map(const(conn.map(const(unit))))
 }
 
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {

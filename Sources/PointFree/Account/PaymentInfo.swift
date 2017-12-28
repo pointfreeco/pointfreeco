@@ -10,16 +10,16 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  _requireUser
+  requireUser
     <| fetchPaymentInfoData
     >-> writeStatus(.ok)
     >-> respond(paymentInfoView)
 
 func fetchPaymentInfoData<I, A>(
-  _ conn: Conn<I, Tuple2<Database.User, A>>
+  _ conn: Conn<I, T2<Database.User, A>>
   ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, A)>> {
 
-  let (user, rest) = lower(conn.data)
+  let (user, rest) = (conn.data.first, conn.data.second)
 
   let subscription = user.subscriptionId
     .map {
