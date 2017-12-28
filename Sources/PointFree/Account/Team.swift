@@ -11,7 +11,7 @@ import Styleguide
 import Tuple
 
 let teamResponse =
-  filterMap(require1)
+  filterMap(require1, or: loginAndRedirect)
     <| { conn in
       sequential(
         // Fetch invites and teammates in parallel.
@@ -28,7 +28,7 @@ let teamResponse =
     >-> respond(teamView.contramap(lower))
 
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
-  filterMap(require2)
+  filterMap(require2, or: loginAndRedirect)
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (teammateId, currentUser) = lower(conn.data)
       guard let currentUserSubscriptionId = currentUser.subscriptionId

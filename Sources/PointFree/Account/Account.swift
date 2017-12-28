@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  filterMap(require1)
+  filterMap(require1, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower))

@@ -115,7 +115,7 @@ public func __notFoundMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<
 
 public func filterMap<A, B>(
   _ f: @escaping (A) -> B?,
-  notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data> = __notFoundMiddleware
+  or notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -130,15 +130,12 @@ public func filterMap<A, B>(
     }
 }
 
-public func filterMap<A, B>(
-  _ f: @escaping (A) -> B?,
-  notFoundView: View<A> = View { _ in ["Not found"] }
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-    return filterMap(f, notFoundMiddleware: writeStatus(.notFound) >-> respond(notFoundView))
-}
+//public func filterMap<A, B>(_ f: @escaping (A) -> B?, notFoundView: View<A>)
+//  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
+//  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+//
+//    return filterMap(f, notFoundMiddleware: writeStatus(.notFound) >-> respond(notFoundView))
+//}
 
 public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
   return { ac in (a2b(ac.0), ac.1, ac.2) }

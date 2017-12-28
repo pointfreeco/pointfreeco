@@ -26,7 +26,7 @@ func requireAdmin<A>(
 }
 
 let adminIndex =
-  filterMap(require1)
+  filterMap(require1, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
@@ -40,7 +40,7 @@ private let adminIndexView = View<Database.User> { currentUser in
 }
 
 let showNewEpisodeEmailMiddleware =
-  filterMap(require1)
+  filterMap(require1, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
