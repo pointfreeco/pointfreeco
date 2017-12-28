@@ -107,9 +107,15 @@ public func requireSome<A>(
     }
 }
 
-public func require<A, B>(
+public func __notFoundMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
+  return conn
+    |> writeStatus(.notFound)
+    >-> respond(text: "\(A.self) not found")
+}
+
+public func filterMap<A, B>(
   _ f: @escaping (A) -> B?,
-  notFoundView: View<A> = View { _ in ["Not found"] }
+  or notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -119,7 +125,7 @@ public func require<A, B>(
         return f(conn.data)
           .map { conn.map(const($0)) }
           .map(middleware)
-          ?? (conn |> (writeStatus(.notFound) >-> respond(notFoundView)))
+          ?? (conn |> notFoundMiddleware)
       }
     }
 }
@@ -437,4 +443,16 @@ func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
       }
     }
   }
+}
+
+public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {
+  return get1(x).map { over1(const($0)) <| x }
+}
+
+public func require2<A, B, Z>(_ x: T3<A, B?, Z>) -> T3<A, B, Z>? {
+  return get2(x).map { over2(const($0)) <| x }
+}
+
+public func lower<A>(_ tuple: Tuple1<A>) -> A {
+  return get1(tuple)
 }

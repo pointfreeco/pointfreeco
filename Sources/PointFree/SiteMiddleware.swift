@@ -17,25 +17,25 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       protect: isProtected
     )
     <| (
-      _readSessionCookieMiddleware
+      readSessionCookieMiddleware
         >-> render(conn:)
 )
 
-private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (user, route) = lower <| conn.data
+    let (user, route) = (conn.data.first, conn.data.second)
     switch route {
     case .about:
       return conn.map(const(unit))
         |> aboutResponse
 
     case .account:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> accountResponse
 
     case .admin(.index):
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> adminIndex
 
     case let .admin(.newEpisodeEmail(.send(episodeId))):
@@ -43,7 +43,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> sendNewEpisodeEmailMiddleware
 
     case .admin(.newEpisodeEmail(.show)):
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
 
     case .cancel:
@@ -67,23 +67,23 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> homeResponse
 
     case let .invite(.accept(inviteId)):
-      return conn.map(const(inviteId))
+      return conn.map(const(inviteId .*. user .*. unit))
         |> acceptInviteMiddleware
 
     case let .invite(.resend(inviteId)):
-      return conn.map(const(inviteId))
+      return conn.map(const(inviteId .*. user .*. unit))
         |> resendInviteMiddleware
 
     case let .invite(.revoke(inviteId)):
-      return conn.map(const(inviteId))
+      return conn.map(const(inviteId .*. user .*. unit))
         |> revokeInviteMiddleware
 
     case let .invite(.send(email)):
-      return conn.map(const(email))
+      return conn.map(const(email .*. user .*. unit))
         |> sendInviteMiddleware
 
     case let .invite(.show(inviteId)):
-      return conn.map(const(inviteId))
+      return conn.map(const(inviteId .*. user .*. unit))
         |> showInviteMiddleware
 
     case let .launchSignup(email):
@@ -99,7 +99,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> logoutResponse
 
     case .paymentInfo:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit .*. unit)) // <- TODO: get rid of extra unit
         |> paymentInfoResponse
 
     case let .pricing(plan, quantity):
@@ -124,15 +124,15 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> secretHomeResponse
 
     case let .subscribe(data):
-      return conn.map(const(data))
+      return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
     case .team(.show):
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> teamResponse
 
     case let .team(.remove(teammateId)):
-      return conn.map(const(teammateId))
+      return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
 
     case .terms:
@@ -140,7 +140,7 @@ private func render(conn: Conn<StatusLineOpen, Tuple2<Database.User?, Route>>)
         |> termsResponse
 
     case let .updateProfile(data):
-      return conn.map(const(data))
+      return conn.map(const(data .*. user .*. unit))
         |> updateProfileMiddleware
     }
 }

@@ -150,7 +150,7 @@ private let formDecoder = UrlFormDecoder()
 public let router = routers.reduce(.empty, <|>)
 
 public func path(to route: Route) -> String {
-  return router.absoluteString(for: route)
+  return router.absoluteString(for: route) ?? "/"
 }
 
 public func url(to route: Route) -> String {
