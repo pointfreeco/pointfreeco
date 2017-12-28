@@ -7,13 +7,108 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-import Tuple
+@testable import Tuple
+
+struct Flash: Codable {
+  enum Priority: String, Codable {
+    case error
+    case notice
+    case warning
+  }
+
+  let priority: Priority
+  let message: String
+}
+
+extension Response.Header {
+  public static func setCookie<A: Encodable>
+    (_ name: String, encoding value: A, _ options: Set<Response.Header.CookieOption> = [])
+    -> Response.Header {
+
+      let encodedValue = (try? jsonEncoder.encode(value))
+        .map { String(decoding: $0, as: UTF8.self) }
+        ?? ""
+
+      return .setCookie(name, encodedValue, options)
+  }
+}
+
+private let jsonEncoder = JSONEncoder()
+
+func writeFlash<A>(_ priority: Flash.Priority, _ message: String)
+  -> (Conn<HeadersOpen, A>)
+  -> IO<Conn<HeadersOpen, A>> {
+
+    return writeHeader(.setCookie("flash", encoding: Flash(priority: priority, message: message)))
+}
+
+func readFlash<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<StatusLineOpen, T2<Flash?, A>>> {
+
+  let cs = conn.request.cookies
+
+  fatalError()
+}
+
+struct SimplePageLayoutData<A> {
+  let currentUser: Database.User?
+  let data: A
+  let flash: [Flash.Priority: [Node]]
+  let title: String
+}
+
+//func respond<A>(_ view: View<A>, layout: @escaping (View<A>) -> View<SimplePageLayoutData<A>>)
+//  -> Middleware<HeadersOpen, ResponseEnded, SimpleA, Data> {
+//
+//    return { conn in
+//      conn |> respond(body: view.rendered(with: conn.data), contentType: .html)
+//    }
+//}
+
+func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+  return View { layoutData in
+    document([
+      html([
+        head([
+          title(layoutData.title),
+          style(renderedNormalizeCss),
+          style(styleguide),
+          style(render(config: pretty, css: pricingExtraStyles)),
+          meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          ]),
+        body(
+          darkNavView.view((layoutData.currentUser, nil))
+            <> [
+              gridRow([
+                gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+                  div(
+                    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+                    contentView.view(layoutData.data)
+                  )
+                  ])
+                ])
+            ]
+            <> footerView.view(unit)
+        )
+        ])
+      ])
+  }
+}
+
+let wrappedAccountView = simplePageLayout(accountView)
+  .contramap { subscription, teamInvites, teammates, currentUser in
+    SimplePageLayoutData(
+      currentUser: currentUser,
+      data: (subscription, teamInvites, teammates, currentUser),
+      flash: [:],
+      title: "Account"
+    )
+}
 
 let accountResponse =
   filterMap(require1, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> respond(accountView.contramap(lower))
+    >-> respond(wrappedAccountView.contramap(lower))
 
 func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
@@ -48,31 +143,10 @@ func fetchAccountData<I, A>(
 
 let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User)> { subscription, teamInvites, teammates, currentUser in
 
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(render(config: pretty, css: pricingExtraStyles)),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([
-              gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],  [
-                div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                    titleRowView.view(unit)
-                      <> profileRowView.view(currentUser)
-                      <> subscriptionRowView.view((subscription, teamInvites, teammates))
-                      <> logoutView.view(unit))
-                ])
-              ])
-          ]
-          <> footerView.view(unit)
-      )
-      ])
-    ])
+  titleRowView.view(unit)
+    <> profileRowView.view(currentUser)
+    <> subscriptionRowView.view((subscription, teamInvites, teammates))
+    <> logoutView.view(unit)
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
