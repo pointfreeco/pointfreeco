@@ -10,16 +10,16 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  _requireUser
+  require(require1)
     <| fetchAccountData
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower))
 
 func fetchAccountData<I, A>(
-  _ conn: Conn<I, Tuple2<Database.User, A>>
-  ) -> IO<Conn<I, Tuple5<Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], A>>> {
+  _ conn: Conn<I, T2<Database.User, A>>
+  ) -> IO<Conn<I, T5<Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User, A>>> {
 
-  let (user, rest) = lower(conn.data)
+  let user = get1(conn.data)
 
   let subscription = user.subscriptionId
     .map {
@@ -43,10 +43,10 @@ func fetchAccountData<I, A>(
         .map { $0.right ?? [] }
     )
     )
-    .map { conn.map(const(user .*. $0 .*. $1 .*. $2 .*. rest)) }
+    .map { conn.map(const($0 .*. $1 .*. $2 .*. conn.data)) }
 }
 
-let accountView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User], Prelude.Unit)> { currentUser, subscription, teamInvites, teammates, _ in
+let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User)> { subscription, teamInvites, teammates, currentUser in
 
   document([
     html([

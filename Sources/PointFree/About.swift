@@ -8,12 +8,16 @@ import Prelude
 import Styleguide
 import Tuple
 
+public func lower<A>(_ tuple: Tuple1<A>) -> A {
+  return get1(tuple)
+}
+
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   currentUserMiddleware
     >-> writeStatus(.ok)
     >-> respond(aboutView.contramap(lower))
 
-private let aboutView = View<(Database.User?, Prelude.Unit)> { currentUser, _ in
+private let aboutView = View<Database.User?> { currentUser in
   document([
     html([
       head([

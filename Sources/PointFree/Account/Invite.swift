@@ -10,38 +10,37 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showInviteMiddleware =
+let showInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   // TODO: need to validate that current user doesnt already have a subscription
   // TODO: validate that current user is not inviter
   requireTeamInvite
-    <| currentUserMiddleware
-    >-> writeStatus(.ok)
+    <| writeStatus(.ok)
     >-> respond(showInviteView.contramap(lower))
 
-let revokeInviteMiddleware =
+let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< _requireUser
-    <| { conn in
+    <<< require(require2)
+    <| { conn -> IO<Conn<ResponseEnded, Data>> in
       // TODO: validate that current user owns team invite
-      AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
+      AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .account))))
 }
 
-let resendInviteMiddleware =
+let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< _requireUser
+    <<< require(require2)
     <| { conn in
-      parallel(sendInviteEmail(invite: get2(conn.data), inviter: get1(conn.data)).run)
+      parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
         .run({ _ in })
       return conn |> redirect(to: path(to: .account))
 }
 
-let acceptInviteMiddleware =
+let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< _requireUser
+    <<< require(require2)
     <| { conn in
-      let (currentUser, teamInvite) = lower(conn.data)
+      let (teamInvite, currentUser) = (get1(conn.data), get2(conn.data))
 
       // VERIFY: need to validate that current user doesnt already have a subscription
       let invitee = pure(currentUser)
@@ -98,13 +97,13 @@ let acceptInviteMiddleware =
 }
 
 let sendInviteMiddleware =
-  _requireUser
-    <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
+  require(require2)
+    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress?, Database.User>>) in
 
       // TODO: need to validate that email isnt the same as the inviter
       // TODO: need to validate that email is unique
 
-      let (inviter, optionalEmail) = lower(conn.data)
+      let (optionalEmail, inviter) = lower(conn.data)
 
       guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account)) }
 
@@ -124,7 +123,7 @@ let sendInviteMiddleware =
       }
 }
 
-private let showInviteView = View<(Database.User?, Database.TeamInvite)> { currentUser, teamInvite in
+private let showInviteView = View<(Database.TeamInvite, Database.User?)> { teamInvite, currentUser in
 
   currentUser
     .map { showInviteLoggedInView.view(($0, teamInvite)) }
@@ -158,12 +157,14 @@ private let inviteNotFound = View<Prelude.Unit> { _ in
   ]
 }
 
-private func requireTeamInvite(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.TeamInvite, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Database.TeamInvite.Id, Data> {
+private func requireTeamInvite<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite, A>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite.Id, A>, Data> {
 
   return { conn in
-    AppEnvironment.current.database.fetchTeamInvite(conn.data)
+    let teamInviteId = get1(conn.data)
+
+    return AppEnvironment.current.database.fetchTeamInvite(teamInviteId)
       .run
       .map(requireSome)
       .flatMap { errorOrTeamInvite in
@@ -174,7 +175,7 @@ private func requireTeamInvite(
             >-> respond(inviteNotFound)
 
         case let .right(teamInvite):
-          return conn.map(const(teamInvite))
+          return conn.map(over1(const(teamInvite)))
             |> middleware
         }
     }

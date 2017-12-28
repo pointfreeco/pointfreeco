@@ -43,16 +43,16 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(key: pointFreeUserSession))
+    headersMiddleware: writeHeader(.clearCookie(pointFreeUserSession))
 )
 
-public func _readSessionCookieMiddleware<I, A>(
+public func readSessionCookieMiddleware<I, A>(
   _ conn: Conn<I, A>)
-  -> IO<Conn<I, Tuple2<Database.User?, A>>> {
+  -> IO<Conn<I, T2<Database.User?, A>>> {
 
     let user = conn.request.cookies[pointFreeUserSession]
       .flatMap {
-        ResponseHeader
+        Response.Header
           .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
       }
       .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
@@ -74,7 +74,7 @@ private func writeSessionCookieMiddleware(
 
     return conn |> writeHeaders(
       [
-        ResponseHeader.setSignedCookie(
+        Response.Header.setSignedCookie(
           key: pointFreeUserSession,
           value: conn.data.id.unwrap.uuidString,
           options: [],
@@ -86,27 +86,11 @@ private func writeSessionCookieMiddleware(
     )
 }
 
-public func _requireUser<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-    return { conn in
-      (conn |> _readSessionCookieMiddleware)
-        .flatMap { c in
-          c.data.first.map { user in
-            c.map(const(user .*. c.data.second))
-              |> middleware
-            }
-            ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
-      }
-    }
-}
-
 func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
-  ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {
+  ) -> IO<Conn<I, T2<Database.User?, A>>> {
 
-  return conn |> _readSessionCookieMiddleware
+  return conn |> readSessionCookieMiddleware
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
