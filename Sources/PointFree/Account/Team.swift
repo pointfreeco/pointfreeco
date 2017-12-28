@@ -30,7 +30,7 @@ let teamResponse =
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
   require(require2)
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
-      let (teammateId, currentUser) = (get1(conn.data), get2(conn.data))
+      let (teammateId, currentUser) = lower(conn.data)
       guard let currentUserSubscriptionId = currentUser.subscriptionId
         else { return pure(conn.map(const(unit))) }
 

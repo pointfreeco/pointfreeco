@@ -8,10 +8,6 @@ import Prelude
 import Styleguide
 import Tuple
 
-public func lower<A>(_ tuple: Tuple1<A>) -> A {
-  return get1(tuple)
-}
-
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   currentUserMiddleware
     >-> writeStatus(.ok)

@@ -446,3 +446,7 @@ public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {
 public func require2<A, B, Z>(_ x: T3<A, B?, Z>) -> T3<A, B, Z>? {
   return get2(x).map { over2(const($0)) <| x }
 }
+
+public func lower<A>(_ tuple: Tuple1<A>) -> A {
+  return get1(tuple)
+}

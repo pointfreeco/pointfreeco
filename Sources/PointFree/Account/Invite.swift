@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
+let showInviteMiddleware =
   // TODO: need to validate that current user doesnt already have a subscription
   // TODO: validate that current user is not inviter
   requireTeamInvite
@@ -20,7 +20,7 @@ let showInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
     <<< require(require2)
-    <| { conn -> IO<Conn<ResponseEnded, Data>> in
+    <| { conn in
       // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
         .run
@@ -40,7 +40,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
   requireTeamInvite
     <<< require(require2)
     <| { conn in
-      let (teamInvite, currentUser) = (get1(conn.data), get2(conn.data))
+      let (teamInvite, currentUser) = lower(conn.data)
 
       // VERIFY: need to validate that current user doesnt already have a subscription
       let invitee = pure(currentUser)
@@ -162,9 +162,7 @@ private func requireTeamInvite<A>(
   ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite.Id, A>, Data> {
 
   return { conn in
-    let teamInviteId = get1(conn.data)
-
-    return AppEnvironment.current.database.fetchTeamInvite(teamInviteId)
+    AppEnvironment.current.database.fetchTeamInvite(get1(conn.data))
       .run
       .map(requireSome)
       .flatMap { errorOrTeamInvite in
@@ -206,4 +204,3 @@ private func validateDoesNotHaveSubscription(user: Database.User) -> EitherIO<Er
     ? lift(.left(unit))
     : lift(.right(user))
 }
-
