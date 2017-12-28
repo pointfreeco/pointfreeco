@@ -13,7 +13,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
     >-> writeStatus(.ok)
     >-> respond(aboutView.contramap(lower))
 
-private let aboutView = View<(Database.User?, Prelude.Unit)> { currentUser, _ in
+private let aboutView = View<Database.User?> { currentUser in
   document([
     html([
       head([
