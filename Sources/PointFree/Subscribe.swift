@@ -10,7 +10,7 @@ public struct SubscribeData: Codable {
 }
 
 let subscribeMiddleware =
-  require(require2)
+  filterMap(require2)
     <| subscribe
 
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Database.User>>)

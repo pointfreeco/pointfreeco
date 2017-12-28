@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  require(require1)
+  filterMap(require1)
     <| fetchPaymentInfoData
     >-> writeStatus(.ok)
     >-> respond(paymentInfoView)

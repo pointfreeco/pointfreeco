@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  require(require1)
+  filterMap(require1)
     <| fetchAccountData
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower))

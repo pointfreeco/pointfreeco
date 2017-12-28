@@ -107,9 +107,15 @@ public func requireSome<A>(
     }
 }
 
-public func require<A, B>(
+public func __notFoundMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
+  return conn
+    |> writeStatus(.notFound)
+    >-> respond(text: "\(A.self) not found")
+}
+
+public func filterMap<A, B>(
   _ f: @escaping (A) -> B?,
-  notFoundView: View<A> = View { _ in ["Not found"] }
+  notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data> = __notFoundMiddleware
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
@@ -119,9 +125,19 @@ public func require<A, B>(
         return f(conn.data)
           .map { conn.map(const($0)) }
           .map(middleware)
-          ?? (conn |> (writeStatus(.notFound) >-> respond(notFoundView)))
+          ?? (conn |> notFoundMiddleware)
       }
     }
+}
+
+public func filterMap<A, B>(
+  _ f: @escaping (A) -> B?,
+  notFoundView: View<A> = View { _ in ["Not found"] }
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return filterMap(f, notFoundMiddleware: writeStatus(.notFound) >-> respond(notFoundView))
 }
 
 public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
