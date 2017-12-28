@@ -86,22 +86,6 @@ private func writeSessionCookieMiddleware(
     )
 }
 
-public func _requireUser<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-    return { conn in
-      (conn |> _readSessionCookieMiddleware)
-        .flatMap { c in
-          c.data.first.map { user in
-            c.map(const(user .*. c.data.second))
-              |> middleware
-            }
-            ?? (conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString)))
-      }
-    }
-}
-
 func currentUserMiddleware<A, I>(
   _ conn: Conn<I, A>
   ) -> IO<Conn<I, Tuple2<Database.User?, A>>> {

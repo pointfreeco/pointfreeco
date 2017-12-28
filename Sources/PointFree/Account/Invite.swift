@@ -20,28 +20,28 @@ let showInviteMiddleware =
 
 let revokeInviteMiddleware =
   requireTeamInvite
-    <<< _requireUser
+    <<< requireUser
     <| { conn in
       // TODO: validate that current user owns team invite
-      AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
+      AppEnvironment.current.database.deleteTeamInvite(conn.data.second.id)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .account))))
 }
 
 let resendInviteMiddleware =
   requireTeamInvite
-    <<< _requireUser
+    <<< requireUser
     <| { conn in
-      parallel(sendInviteEmail(invite: get2(conn.data), inviter: get1(conn.data)).run)
+      parallel(sendInviteEmail(invite: conn.data.second, inviter: conn.data.first).run)
         .run({ _ in })
       return conn |> redirect(to: path(to: .account))
 }
 
 let acceptInviteMiddleware =
   requireTeamInvite
-    <<< _requireUser
+    <<< requireUser
     <| { conn in
-      let (currentUser, teamInvite) = lower(conn.data)
+      let (currentUser, teamInvite) = (conn.data.first, conn.data.second)
 
       // VERIFY: need to validate that current user doesnt already have a subscription
       let invitee = pure(currentUser)
@@ -98,13 +98,13 @@ let acceptInviteMiddleware =
 }
 
 let sendInviteMiddleware =
-  _requireUser
-    <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
+  requireUser
+    <| { (conn: Conn<StatusLineOpen, T2<Database.User, EmailAddress?>>) in
 
       // TODO: need to validate that email isnt the same as the inviter
       // TODO: need to validate that email is unique
 
-      let (inviter, optionalEmail) = lower(conn.data)
+      let (inviter, optionalEmail) = (conn.data.first, conn.data.second)
 
       guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account)) }
 

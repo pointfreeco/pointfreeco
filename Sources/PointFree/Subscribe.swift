@@ -10,13 +10,14 @@ public struct SubscribeData: Codable {
 }
 
 let subscribeMiddleware =
-  _requireUser
-    <| subscribe
+  requireUser
+    <| map { ($0.first, $0.second) }
+    >>> subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<Database.User, SubscribeData?>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, (Database.User, SubscribeData?)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (user, subscribeData) = conn.data |> lower
+    let (user, subscribeData) = conn.data
 
     return pure(subscribeData)
       .mapExcept(requireSome)

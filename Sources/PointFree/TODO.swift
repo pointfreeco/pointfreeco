@@ -350,6 +350,10 @@ public func lift<A>(_ a: A) -> Tuple1<A> {
   return Tuple1(first: a, second: unit)
 }
 
+public func lower<A>(_ a: Tuple1<A>) -> A {
+  return a.first
+}
+
 extension IO {
   public var parallel: Parallel<A> {
     return Parallel { callback in

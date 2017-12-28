@@ -10,9 +10,9 @@ public struct ProfileData: Codable {
 }
 
 let updateProfileMiddleware =
-  _requireUser
-    <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, ProfileData?>>) -> IO<Conn<ResponseEnded, Data>> in
-      let (user, data) = lower(conn.data)
+  requireUser
+    <| { (conn: Conn<StatusLineOpen, T2<Database.User, ProfileData?>>) -> IO<Conn<ResponseEnded, Data>> in
+      let (user, data) = (conn.data.first, conn.data.second)
 
       return pure(data)
         .mapExcept(requireSome)
