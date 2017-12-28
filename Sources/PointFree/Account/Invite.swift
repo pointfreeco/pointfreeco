@@ -20,7 +20,7 @@ let showInviteMiddleware =
 
 let revokeInviteMiddleware =
   requireTeamInvite
-    <<< requireUser
+    <<< _requireUser
     <| { conn in
       // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get2(conn.data).id)
@@ -30,7 +30,7 @@ let revokeInviteMiddleware =
 
 let resendInviteMiddleware =
   requireTeamInvite
-    <<< requireUser
+    <<< _requireUser
     <| { conn in
       parallel(sendInviteEmail(invite: get2(conn.data), inviter: get1(conn.data)).run)
         .run({ _ in })
@@ -39,7 +39,7 @@ let resendInviteMiddleware =
 
 let acceptInviteMiddleware =
   requireTeamInvite
-    <<< requireUser
+    <<< _requireUser
     <| { conn in
       let (currentUser, teamInvite) = lower(conn.data)
 
@@ -98,7 +98,7 @@ let acceptInviteMiddleware =
 }
 
 let sendInviteMiddleware =
-  requireUser
+  _requireUser
     <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, EmailAddress?>>) in
 
       // TODO: need to validate that email isnt the same as the inviter

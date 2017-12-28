@@ -10,7 +10,7 @@ public struct ProfileData: Codable {
 }
 
 let updateProfileMiddleware =
-  requireUser
+  _requireUser
     <| { (conn: Conn<StatusLineOpen, Tuple2<Database.User, ProfileData?>>) -> IO<Conn<ResponseEnded, Data>> in
       let (user, data) = lower(conn.data)
 

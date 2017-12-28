@@ -64,9 +64,7 @@ class AccountTests: TestCase {
   }
 
   func testAccountCancelingSubscription() {
-    let subscription = Stripe.Subscription.mock
-      |> \.canceledAt .~ Date(timeInterval: 60 * 60 * 24 * 15, since: .mock)
-      |> \.status .~ .canceled
+    let subscription = Stripe.Subscription.canceling
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: url(to: .account)))
@@ -89,10 +87,7 @@ class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    let subscription = Stripe.Subscription.mock
-      |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-      |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 15, since: .mock)
-      |> \.status .~ .canceled
+    let subscription = Stripe.Subscription.canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: url(to: .account)))

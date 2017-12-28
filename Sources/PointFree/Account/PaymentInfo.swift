@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  requireUser
+  _requireUser
     <| fetchPaymentInfoData
     >-> writeStatus(.ok)
     >-> respond(paymentInfoView)

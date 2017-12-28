@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  requireUser
+  _requireUser
     <| fetchAccountData
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower))
@@ -93,10 +93,20 @@ private let profileRowView = View<Database.User> { currentUser in
 
         form([action(path(to: .updateProfile(nil))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
-          input([`class`([blockInputClass]), name("name"), type(.text), value(currentUser.name)]),
+          input([
+            `class`([blockInputClass]),
+            name(Database.User.CodingKeys.name.stringValue),
+            type(.text),
+            value(currentUser.name),
+            ]),
 
           label([`class`([labelClass])], ["Email"]),
-          input([`class`([blockInputClass]), name("email"), type(.email), value(currentUser.email.unwrap)]),
+          input([
+            `class`([blockInputClass]),
+            name(Database.User.CodingKeys.email.stringValue),
+            type(.email),
+            value(currentUser.email.unwrap)
+            ]),
 
           label([`class`([Class.display.block])], [
             input(
@@ -152,7 +162,9 @@ private func planName(for subscription: Stripe.Subscription) -> String {
 public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
-    return "Active"
+    let currentPeriodEndString = subscription.currentPeriodEnd
+      .map { subscription.cancelAtPeriodEnd ? " through " + dateFormatter.string(from: $0) : "" } ?? ""
+    return "Active" + currentPeriodEndString
   case .canceled:
     return "Canceled"
   case .pastDue:
@@ -205,7 +217,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
                   href("#")
                   ],
-                  ["Upgrade"])
+                  ["Upgrade"]) // TODO: disable when subscription.status == .canceled
                 ])
               ])
             ])
@@ -225,13 +237,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([
-                a([
-                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href("#")
-                  ],
-                  ["Cancel"])
-                ])
+              p([mainAction(for: subscription)])
               ])
             ])
           ])
@@ -239,8 +245,9 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
       ])
     ]
     + (
-      subscription.status == .active
-        ? [
+      subscription.cancelAtPeriodEnd || subscription.status == .canceled
+        ? []
+        : [
           gridRow([
             gridColumn(sizes: [.mobile: 3], [
               p([div(["Next billing"])])
@@ -252,9 +259,38 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
               ])
             ])
           ]
-        : []
     )
   )
+}
+
+private func mainAction(for subscription: Stripe.Subscription) -> Node {
+  if subscription.cancelAtPeriodEnd {
+    return form(
+      [action(path(to: .reactivate)), method(.post)],
+      [
+        button(
+          [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+          ["Reactivate"]
+        )
+      ]
+    )
+  } else if subscription.status == .canceled {
+    return a(
+      [
+        `class`([Class.pf.components.button(color: .purple, size: .small)]),
+        href(path(to: .pricing(nil, nil)))
+      ],
+      ["Resubscribe"]
+    )
+  } else {
+    return a(
+      [
+        `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
+        href(path(to: .confirmCancel))
+      ],
+      ["Cancel"]
+    )
+  }
 }
 
 private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
@@ -453,11 +489,3 @@ let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
-
-private let currencyFormatter = NumberFormatter()
-  |> \.numberStyle .~ .currency
-
-private let dateFormatter = DateFormatter()
-  |> \.dateStyle .~ .short
-  |> \.timeStyle .~ .none
-  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)

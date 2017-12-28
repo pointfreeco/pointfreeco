@@ -141,6 +141,12 @@ import Prelude
               guard case let .pricing(result) = $0 else { return nil }
               return result
           })
+          public static let reactivate = parenthesize <| PartialIso<Prelude.Unit, Route>(
+            apply: const(.some(.reactivate)),
+            unapply: {
+              guard case .reactivate = $0 else { return nil }
+              return unit
+          })
           public static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.secretHome)),
             unapply: {

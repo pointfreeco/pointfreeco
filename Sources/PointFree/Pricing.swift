@@ -274,7 +274,7 @@ private let stripeForm = View<Database.User> { user in
       <> [
         button(
           [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-          ["Subscribe to Point-Free"]
+          ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
         )
     ]
   )

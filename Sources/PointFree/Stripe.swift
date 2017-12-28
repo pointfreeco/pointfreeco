@@ -13,6 +13,8 @@ public struct Stripe {
   public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var reactivateSubscription: (Subscription) -> EitherIO<Prelude.Unit, Subscription>
+  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var js: String
 
   public static let live = Stripe(
@@ -23,6 +25,8 @@ public struct Stripe {
     fetchPlans: PointFree.fetchPlans,
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
+    reactivateSubscription: PointFree.reactivateSubscription,
+    updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
   )
 
@@ -133,6 +137,7 @@ public struct Stripe {
     public private(set) var customer: Customer
     public private(set) var endedAt: Date?
     public private(set) var id: Id
+    public private(set) var items: ListEnvelope<Item>
     public private(set) var plan: Plan
     public private(set) var quantity: Int
     public private(set) var start: Date
@@ -147,6 +152,7 @@ public struct Stripe {
       case currentPeriodStart = "current_period_start"
       case endedAt = "ended_at"
       case id
+      case items
       case plan
       case quantity
       case start
@@ -154,6 +160,15 @@ public struct Stripe {
     }
 
     public typealias Id = Tagged<Subscription, String>
+
+    public struct Item: Codable {
+      public private(set) var created: Date
+      public private(set) var id: Id
+      public private(set) var plan: Plan
+      public private(set) var quantity: Int
+
+      public typealias Id = Tagged<Item, String>
+    }
 
     public enum Status: String, Codable {
       case active
@@ -189,7 +204,7 @@ extension Tagged where Tag == Stripe.Plan, A == String {
 //  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/\(id.rawValue)", .delete)
+  return stripeDataTask("subscriptions/" + id.rawValue, .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id)
@@ -213,18 +228,40 @@ private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
-  return stripeDataTask("customers/\(id.unwrap)")
+  return stripeDataTask("customers/" + id.unwrap)
 }
 
 private let fetchPlans: EitherIO<Prelude.Unit, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
 private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan> {
-  return stripeDataTask("plans/\(id.rawValue)")
+  return stripeDataTask("plans/" + id.rawValue)
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/\(id.unwrap)?expand[]=customer")
+  return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer")
+}
+
+private func reactivateSubscription(_ subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+
+    guard
+      subscription.cancelAtPeriodEnd,
+      let item = subscription.items.data.first
+      else { return throwE(unit) }
+
+    return updateSubscription(subscription, item.plan.id, item.quantity)
+}
+
+private func updateSubscription(_ subscription: Stripe.Subscription, _ plan: Stripe.Plan.Id, _ quantity: Int)
+  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+
+    guard let item = subscription.items.data.first else { return throwE(unit) }
+    return stripeDataTask("subscriptions/" + subscription.id.unwrap + "?expand[]=customer", .post([
+      "items[0][id]": item.id.unwrap,
+      "items[0][plan]": plan.rawValue,
+      "items[0][quantity]": String(quantity),
+      ]))
 }
 
 private let stripeJsonDecoder: JSONDecoder = {
@@ -236,7 +273,7 @@ private let stripeJsonDecoder: JSONDecoder = {
 private enum Method {
   case get
   case post([String: String])
-  case delete
+  case delete([String: String])
 }
 
 private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLRequest {
@@ -248,8 +285,9 @@ private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLReq
   case let .post(params):
     request.httpMethod = "POST"
     request.httpBody = Data(urlFormEncode(value: params).utf8)
-  case .delete:
+  case let .delete(params):
     request.httpMethod = "DELETE"
+    request.httpBody = Data(urlFormEncode(value: params).utf8)
   }
 
   return request
