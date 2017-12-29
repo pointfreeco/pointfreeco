@@ -108,7 +108,7 @@ let wrappedAccountView = simplePageLayout(accountView)
 }
 
 let accountResponse =
-  filterMap(require1, or: loginAndRedirect)
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> readFlash
     >-> writeStatus(.ok)

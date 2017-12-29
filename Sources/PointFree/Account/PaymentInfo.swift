@@ -10,7 +10,7 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  filterMap(require1, or: loginAndRedirect)
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchPaymentInfoData
     >-> writeStatus(.ok)
     >-> respond(paymentInfoView)

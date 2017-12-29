@@ -10,7 +10,7 @@ public struct ProfileData: Codable {
 }
 
 let updateProfileMiddleware =
-  filterMap(require2, or: loginAndRedirect)
+  filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData?, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
       let (data, user) = lower(conn.data)
 

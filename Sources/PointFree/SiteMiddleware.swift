@@ -52,7 +52,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> adminIndex
 
     case let .admin(.newEpisodeEmail(.send(episodeId))):
-      return conn.map(const(lift(episodeId)))
+      return conn.map(const(user .*. episodeId .*. unit))
         |> sendNewEpisodeEmailMiddleware
 
     case .admin(.newEpisodeEmail(.show)):
@@ -60,11 +60,11 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> showNewEpisodeEmailMiddleware
 
     case .cancel:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
     case .confirmCancel:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> confirmCancelResponse
 
     case let .episode(param):
@@ -129,7 +129,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> pricingResponse
 
     case .reactivate:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> reactivateMiddleware
 
     case .secretHome:
