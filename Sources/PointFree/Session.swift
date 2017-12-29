@@ -8,11 +8,6 @@ public struct Session: Codable {
   public var userId: Database.User.Id?
 
   public static let empty = Session(flash: nil, userId: nil)
-
-  private enum CodingKeys: String, CodingKey {
-    case userId = "user_id"
-    case flash
-  }
 }
 
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
@@ -45,4 +40,3 @@ extension URLRequest {
 }
 
 private let pointFreeUserSession = "pf_session"
-
