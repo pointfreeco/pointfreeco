@@ -19,7 +19,7 @@ let showInviteMiddleware =
 
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< filterMap(require2, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
@@ -29,7 +29,7 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< filterMap(require2, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
         .run({ _ in })
@@ -38,7 +38,7 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
-    <<< filterMap(require2, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       let (teamInvite, currentUser) = lower(conn.data)
 
@@ -97,7 +97,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 }
 
 let sendInviteMiddleware =
-  filterMap(require2, or: loginAndRedirect)
+  filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress?, Database.User>>) in
 
       // TODO: need to validate that email isnt the same as the inviter

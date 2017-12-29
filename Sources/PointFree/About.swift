@@ -8,9 +8,8 @@ import Prelude
 import Styleguide
 import Tuple
 
-let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  currentUserMiddleware
-    >-> writeStatus(.ok)
+let aboutResponse =
+  writeStatus(.ok)
     >-> respond(aboutView.contramap(lower))
 
 private let aboutView = View<Database.User?> { currentUser in

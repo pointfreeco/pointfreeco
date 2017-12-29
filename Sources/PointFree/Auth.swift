@@ -43,59 +43,12 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(pointFreeUserSession))
+    headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
 )
-
-public func readSessionCookieMiddleware<I, A>(
-  _ conn: Conn<I, A>)
-  -> IO<Conn<I, T2<Database.User?, A>>> {
-
-    let user = conn.request.cookies[pointFreeUserSession]
-      .flatMap {
-        Response.Header
-          .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-      }
-      .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
-      .map {
-        AppEnvironment.current.database.fetchUserById($0)
-          .run
-          .map(either(const(nil), id))
-      }
-      ?? pure(nil)
-
-    return user
-      .map { conn.map(const($0 .*. conn.data)) }
-}
-
-private func writeSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, Database.User>
-  )
-  -> IO<Conn<HeadersOpen, Database.User>> {
-
-    return conn |> writeHeaders(
-      [
-        Response.Header.setSignedCookie(
-          key: pointFreeUserSession,
-          value: conn.data.id.unwrap.uuidString,
-          options: [],
-          secret: AppEnvironment.current.envVars.appSecret,
-          encrypt: true
-        )
-        ]
-        |> catOptionals
-    )
-}
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   return conn
     |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
-}
-
-func currentUserMiddleware<A, I>(
-  _ conn: Conn<I, A>
-  ) -> IO<Conn<I, T2<Database.User?, A>>> {
-
-  return conn |> readSessionCookieMiddleware
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
@@ -152,7 +105,7 @@ private func gitHubAuthTokenMiddleware(
           return conn.map(const(user))
             |> redirect(
               to: conn.data.redirect ?? path(to: .secretHome),
-              headersMiddleware: writeSessionCookieMiddleware
+              headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }
     }
@@ -167,5 +120,3 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
     )
   )
 }
-
-let pointFreeUserSession = "pf_session"

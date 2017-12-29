@@ -10,7 +10,7 @@ import Styleguide
 @testable import Tuple
 
 let confirmCancelResponse =
-  requireUser
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireSubscription
     <<< requireSubscriptionOwner
     <<< requireStripeSubscription(^\.status != .canceled)
@@ -18,7 +18,7 @@ let confirmCancelResponse =
     >-> respond(confirmCancelView.contramap(lower))
 
 let cancelMiddleware =
-  requireUser
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireSubscription
     <<< requireSubscriptionOwner
     <<< requireStripeSubscription(^\.status != .canceled)
@@ -36,7 +36,7 @@ let cancelMiddleware =
     >-> redirect(to: .account)
 
 let reactivateMiddleware =
-  requireUser
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireSubscription
     <<< requireSubscriptionOwner
     <<< requireStripeSubscription(^\.cancelAtPeriodEnd)
@@ -52,25 +52,6 @@ let reactivateMiddleware =
         .map(const(conn.map(const(unit))))
     }
     >-> redirect(to: .account)
-
-func requireUser<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-    return { conn in
-      (conn |> readSessionCookieMiddleware)
-        .flatMap {
-          guard let user = get1($0.data) else {
-            return $0
-              |> redirect(to: .login(redirect: $0.request.url?.absoluteString))
-          }
-
-          return $0.map(over1(const(user)))
-            |> middleware
-      }
-    }
-}
 
 func requireSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
