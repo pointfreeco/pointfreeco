@@ -91,13 +91,6 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
     |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
-func currentUserMiddleware<A, I>(
-  _ conn: Conn<I, A>
-  ) -> IO<Conn<I, T2<Database.User?, A>>> {
-
-  return conn |> readSessionCookieMiddleware
-}
-
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
   return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)

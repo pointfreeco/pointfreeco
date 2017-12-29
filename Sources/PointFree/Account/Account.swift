@@ -42,11 +42,14 @@ func writeFlash<A>(_ priority: Flash.Priority, _ message: String)
     return writeHeader(.setCookie("flash", encoding: Flash(priority: priority, message: message)))
 }
 
-func readFlash<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<StatusLineOpen, T2<Flash?, A>>> {
+func readFlash<I, A>(_ conn: Conn<I, A>)
+  -> IO<Conn<I, A>> {
+//  -> IO<Conn<I, T2<Flash?, A>>> {
 
   let cs = conn.request.cookies
 
-  fatalError()
+//  fatalError()
+  return pure(conn)
 }
 
 struct SimplePageLayoutData<A> {
@@ -107,6 +110,7 @@ let wrappedAccountView = simplePageLayout(accountView)
 let accountResponse =
   filterMap(require1, or: loginAndRedirect)
     <| fetchAccountData
+    >-> readFlash
     >-> writeStatus(.ok)
     >-> respond(wrappedAccountView.contramap(lower))
 
