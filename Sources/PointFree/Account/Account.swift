@@ -9,11 +9,69 @@ import Prelude
 import Styleguide
 import Tuple
 
+public struct Flash: Codable {
+  public enum Priority: String, Codable {
+    case error
+    case notice
+    case warning
+  }
+
+  public let priority: Priority
+  public let message: String
+}
+
+struct SimplePageLayoutData<A> {
+  let currentUser: Database.User?
+  let data: A
+  let flash: [Flash.Priority: [Node]]
+  let title: String
+}
+
+func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+  return View { layoutData in
+    document([
+      html([
+        head([
+          title(layoutData.title),
+          style(renderedNormalizeCss),
+          style(styleguide),
+          style(render(config: pretty, css: pricingExtraStyles)),
+          meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          ]),
+        body(
+          darkNavView.view((layoutData.currentUser, nil))
+            <> [
+              gridRow([
+                gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+                  div(
+                    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+                    contentView.view(layoutData.data)
+                  )
+                  ])
+                ])
+            ]
+            <> footerView.view(unit)
+        )
+        ])
+      ])
+  }
+}
+
+let wrappedAccountView = simplePageLayout(accountView)
+  .contramap { subscription, teamInvites, teammates, currentUser in
+    SimplePageLayoutData(
+      currentUser: currentUser,
+      data: (subscription, teamInvites, teammates, currentUser),
+      flash: [:],
+      title: "Account"
+    )
+}
+
 let accountResponse =
-  filterMap(require1, or: loginAndRedirect)
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> respond(accountView.contramap(lower))
+    >-> respond(wrappedAccountView.contramap(lower))
 
 func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
@@ -48,31 +106,10 @@ func fetchAccountData<I, A>(
 
 let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User)> { subscription, teamInvites, teammates, currentUser in
 
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(render(config: pretty, css: pricingExtraStyles)),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([
-              gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],  [
-                div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                    titleRowView.view(unit)
-                      <> profileRowView.view(currentUser)
-                      <> subscriptionRowView.view((subscription, teamInvites, teammates))
-                      <> logoutView.view(unit))
-                ])
-              ])
-          ]
-          <> footerView.view(unit)
-      )
-      ])
-    ])
+  titleRowView.view(unit)
+    <> profileRowView.view(currentUser)
+    <> subscriptionRowView.view((subscription, teamInvites, teammates))
+    <> logoutView.view(unit)
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
