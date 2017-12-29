@@ -46,27 +46,6 @@ let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnde
     headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
 )
 
-public func readSessionCookieMiddleware<I, A>(
-  _ conn: Conn<I, A>)
-  -> IO<Conn<I, T2<Database.User?, A>>> {
-
-    let user = conn.request.cookies[pointFreeUserSession]
-      .flatMap {
-        Response.Header
-          .verifiedString(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
-      }
-      .flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
-      .map {
-        AppEnvironment.current.database.fetchUserById($0)
-          .run
-          .map(either(const(nil), id))
-      }
-      ?? pure(nil)
-
-    return user
-      .map { conn.map(const($0 .*. conn.data)) }
-}
-
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   return conn
     |> redirect(to: .login(redirect: conn.request.url?.absoluteString))

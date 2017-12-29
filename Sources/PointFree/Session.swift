@@ -15,12 +15,6 @@ public struct Session: Codable {
   }
 }
 
-//public func _readSessionCookieMiddleware<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, T2<Session, A>>> {
-//
-//  return pure(conn.request.session)
-//    .map { conn.map(const($0 .*. conn.data)) }
-//}
-
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {

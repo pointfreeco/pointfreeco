@@ -20,52 +20,12 @@ public struct Flash: Codable {
   public let message: String
 }
 
-extension Response.Header {
-  public static func setCookie<A: Encodable>
-    (_ name: String, encoding value: A, _ options: Set<Response.Header.CookieOption> = [])
-    -> Response.Header {
-
-      let encodedValue = (try? jsonEncoder.encode(value))
-        .map { String(decoding: $0, as: UTF8.self) }
-        ?? ""
-
-      return .setCookie(name, encodedValue, options)
-  }
-}
-
-private let jsonEncoder = JSONEncoder()
-
-func writeFlash<A>(_ priority: Flash.Priority, _ message: String)
-  -> (Conn<HeadersOpen, A>)
-  -> IO<Conn<HeadersOpen, A>> {
-
-    return writeHeader(.setCookie("flash", encoding: Flash(priority: priority, message: message)))
-}
-
-func readFlash<I, A>(_ conn: Conn<I, A>)
-  -> IO<Conn<I, A>> {
-//  -> IO<Conn<I, T2<Flash?, A>>> {
-
-  let cs = conn.request.cookies
-
-//  fatalError()
-  return pure(conn)
-}
-
 struct SimplePageLayoutData<A> {
   let currentUser: Database.User?
   let data: A
   let flash: [Flash.Priority: [Node]]
   let title: String
 }
-
-//func respond<A>(_ view: View<A>, layout: @escaping (View<A>) -> View<SimplePageLayoutData<A>>)
-//  -> Middleware<HeadersOpen, ResponseEnded, SimpleA, Data> {
-//
-//    return { conn in
-//      conn |> respond(body: view.rendered(with: conn.data), contentType: .html)
-//    }
-//}
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   return View { layoutData in
