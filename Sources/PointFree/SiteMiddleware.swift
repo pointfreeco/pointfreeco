@@ -1,4 +1,5 @@
 import ApplicativeRouterHttpPipelineSupport
+import Either
 import Foundation
 import HttpPipeline
 import Prelude
@@ -16,10 +17,22 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       realm: "Point-Free",
       protect: isProtected
     )
-    <| (
-      readSessionCookieMiddleware
-        >-> render(conn:)
-)
+    <| fetchUser
+    >-> render(conn:)
+
+private func fetchUser<A>(_ conn: Conn<StatusLineOpen, A>)
+  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+
+    let user = conn.request.session.userId
+      .flatMap {
+        AppEnvironment.current.database.fetchUserById($0)
+          .run
+          .map(either(const(nil), id))
+      }
+      ?? pure(nil)
+
+    return user.map { conn.map(const($0 .*. conn.data)) }
+}
 
 private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {

@@ -15,11 +15,11 @@ public struct Session: Codable {
   }
 }
 
-public func _readSessionCookieMiddleware<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, T2<Session, A>>> {
-
-  return pure(conn.request.session)
-    .map { conn.map(const($0 .*. conn.data)) }
-}
+//public func _readSessionCookieMiddleware<I, A>(_ conn: Conn<I, A>) -> IO<Conn<I, T2<Session, A>>> {
+//
+//  return pure(conn.request.session)
+//    .map { conn.map(const($0 .*. conn.data)) }
+//}
 
 private func _writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
@@ -39,7 +39,7 @@ private func _writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> S
     }
 }
 
-private extension URLRequest {
+extension URLRequest {
   var session: Session {
     return self.cookies[pointFreeUserSession]
       .flatMap {
