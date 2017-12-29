@@ -120,5 +120,3 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
     )
   )
 }
-
-let pointFreeUserSession = "pf_session"

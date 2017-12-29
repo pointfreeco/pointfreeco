@@ -7,7 +7,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-@testable import Tuple
+import Tuple
 
 public struct Flash: Codable {
   public enum Priority: String, Codable {
@@ -70,7 +70,6 @@ let wrappedAccountView = simplePageLayout(accountView)
 let accountResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
-    >-> readFlash
     >-> writeStatus(.ok)
     >-> respond(wrappedAccountView.contramap(lower))
 

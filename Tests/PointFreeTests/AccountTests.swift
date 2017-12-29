@@ -12,18 +12,6 @@ import XCTest
   import WebKit
 #endif
 
-func request(to urlString: String) -> URLRequest {
-  let sessionCookie = """
-  abbd7a92dc68670cf5fa6fc578d8dafba5081594009dfcd467c5ae3992be775a477fc2687855da47077ce7f8062834f09d77b2caa756d83dac24d2fdc51273dc8cebbcaa6cccecebc6cab36ea863caedc3cafa84beea59a49a0ab549479753f57b4355516ed7411e457c317a447677956e948506df705d991d0d07f1fcd967cf
-  """
-
-  return URLRequest(url: URL(string: urlString)!)
-    |> \.allHTTPHeaderFields .~ [
-      "Cookie": "pf_session=\(sessionCookie)",
-      "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-  ]
-}
-
 class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -42,7 +30,7 @@ class AccountTests: TestCase {
       |> \.plan.interval .~ .year
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: request(to: url(to: .account)))
+      let conn = connection(from: authedRequest(to: url(to: .account)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -65,7 +53,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceling
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: request(to: url(to: .account)))
+      let conn = connection(from: authedRequest(to: url(to: .account)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -88,7 +76,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: request(to: url(to: .account)))
+      let conn = connection(from: authedRequest(to: url(to: .account)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())

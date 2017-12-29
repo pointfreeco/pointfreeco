@@ -44,4 +44,5 @@ extension URLRequest {
   }
 }
 
-//private let pointFreeUserSession = "pf_session"
+private let pointFreeUserSession = "pf_session"
+

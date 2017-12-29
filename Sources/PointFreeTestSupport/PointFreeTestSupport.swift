@@ -202,3 +202,18 @@ extension Stripe.Subscription.Item {
     quantity: 1
   )
 }
+
+public func authedRequest(to urlString: String) -> URLRequest {
+  let sessionCookie = """
+  abbd7a92dc68670cf5fa6fc578d8dafba5081594009dfcd467c5ae3992be775a\
+  477fc2687855da47077ce7f8062834f09d77b2caa756d83dac24d2fdc51273dc\
+  8cebbcaa6cccecebc6cab36ea863caedc3cafa84beea59a49a0ab549479753f5\
+  7b4355516ed7411e457c317a447677956e948506df705d991d0d07f1fcd967cf
+  """
+
+  return URLRequest(url: URL(string: urlString)!)
+    |> \.allHTTPHeaderFields .~ [
+      "Cookie": "pf_session=\(sessionCookie)",
+      "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+  ]
+}

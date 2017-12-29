@@ -112,7 +112,7 @@ class AuthTests: TestCase {
   }
 
   func testSecretHome_LoggedIn() {
-    let conn = connection(from: request(to: "http://localhost:8080/home"))
+    let conn = connection(from: authedRequest(to: "http://localhost:8080/home"))
     let result = conn |> siteMiddleware 
 
     assertSnapshot(matching: result.perform())
