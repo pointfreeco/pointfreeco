@@ -9,15 +9,15 @@ import Prelude
 import Styleguide
 @testable import Tuple
 
-struct Flash: Codable {
-  enum Priority: String, Codable {
+public struct Flash: Codable {
+  public enum Priority: String, Codable {
     case error
     case notice
     case warning
   }
 
-  let priority: Priority
-  let message: String
+  public let priority: Priority
+  public let message: String
 }
 
 extension Response.Header {

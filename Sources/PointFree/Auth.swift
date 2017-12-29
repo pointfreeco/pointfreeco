@@ -43,7 +43,7 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .secretHome),
-    headersMiddleware: writeHeader(.clearCookie(pointFreeUserSession))
+    headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
 )
 
 public func readSessionCookieMiddleware<I, A>(
@@ -65,25 +65,6 @@ public func readSessionCookieMiddleware<I, A>(
 
     return user
       .map { conn.map(const($0 .*. conn.data)) }
-}
-
-private func writeSessionCookieMiddleware(
-  _ conn: Conn<HeadersOpen, Database.User>
-  )
-  -> IO<Conn<HeadersOpen, Database.User>> {
-
-    return conn |> writeHeaders(
-      [
-        Response.Header.setSignedCookie(
-          key: pointFreeUserSession,
-          value: conn.data.id.unwrap.uuidString,
-          options: [],
-          secret: AppEnvironment.current.envVars.appSecret,
-          encrypt: true
-        )
-        ]
-        |> catOptionals
-    )
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -145,7 +126,7 @@ private func gitHubAuthTokenMiddleware(
           return conn.map(const(user))
             |> redirect(
               to: conn.data.redirect ?? path(to: .secretHome),
-              headersMiddleware: writeSessionCookieMiddleware
+              headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }
     }

@@ -4,8 +4,8 @@ import Prelude
 import Tuple
 
 public struct Session: Codable {
-  let flash: Flash?
-  let userId: Database.User.Id?
+  public var flash: Flash?
+  public var userId: Database.User.Id?
 
   public static let empty = Session(flash: nil, userId: nil)
 
@@ -21,7 +21,7 @@ public struct Session: Codable {
 //    .map { conn.map(const($0 .*. conn.data)) }
 //}
 
-private func _writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
+public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {
 
