@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 
 let episodeResponse =
-  filterMap(first(episode(forParam:)) >>> requireFirst, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
+  filterMap(first(episode(forParam:)) >>> requireFirst >>> pure, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
     <| writeStatus(.ok)
     >-> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
 

@@ -1,4 +1,5 @@
 import ApplicativeRouterHttpPipelineSupport
+import Either
 import Foundation
 import HttpPipeline
 import Prelude
@@ -16,10 +17,22 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       realm: "Point-Free",
       protect: isProtected
     )
-    <| (
-      readSessionCookieMiddleware
-        >-> render(conn:)
-)
+    <| fetchUser
+    >-> render(conn:)
+
+private func fetchUser<A>(_ conn: Conn<StatusLineOpen, A>)
+  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+
+    let user = conn.request.session.userId
+      .flatMap {
+        AppEnvironment.current.database.fetchUserById($0)
+          .run
+          .map(either(const(nil), id))
+      }
+      ?? pure(nil)
+
+    return user.map { conn.map(const($0 .*. conn.data)) }
+}
 
 private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -27,7 +40,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     let (user, route) = (conn.data.first, conn.data.second)
     switch route {
     case .about:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> aboutResponse
 
     case .account:
@@ -39,7 +52,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> adminIndex
 
     case let .admin(.newEpisodeEmail(.send(episodeId))):
-      return conn.map(const(lift(episodeId)))
+      return conn.map(const(user .*. episodeId .*. unit))
         |> sendNewEpisodeEmailMiddleware
 
     case .admin(.newEpisodeEmail(.show)):
@@ -47,11 +60,11 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> showNewEpisodeEmailMiddleware
 
     case .cancel:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
     case .confirmCancel:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> confirmCancelResponse
 
     case let .episode(param):
@@ -116,7 +129,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> pricingResponse
 
     case .reactivate:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> reactivateMiddleware
 
     case .secretHome:

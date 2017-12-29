@@ -26,7 +26,7 @@ func requireAdmin<A>(
 }
 
 let adminIndex =
-  filterMap(require1, or: loginAndRedirect)
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
@@ -40,7 +40,7 @@ private let adminIndexView = View<Database.User> { currentUser in
 }
 
 let showNewEpisodeEmailMiddleware =
-  filterMap(require1, or: loginAndRedirect)
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
@@ -62,29 +62,18 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
     ])
 }
 
-let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, Prelude.Unit>, Data> =
-  requireEpisode(notFoundMiddleware: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <<< requireUser
+let sendNewEpisodeEmailMiddleware =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireAdmin
+    <<< filterMap(fetchEpisode >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
     <| { conn in pure(conn.map(get2)) }
     >-> sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
-func requireEpisode<A>(
-  notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data>
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Episode, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data> {
+func fetchEpisode(_ data: Tuple2<Database.User, Episode.Id>) -> Tuple2<Database.User, Episode>? {
 
-    return { middleware in
-      return { conn in
-        guard let episode = episodes.first(where: { $0.id.unwrap == get1(conn.data).unwrap })
-          else { return conn |> notFoundMiddleware }
-
-        return conn.map(over1(const(episode)))
-          |> middleware
-      }
-    }
+  return episodes.first(where: { $0.id.unwrap == get2(data).unwrap })
+    .map { data |> over2(const($0)) }
 }
 
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {

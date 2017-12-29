@@ -52,19 +52,7 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn() {
-    let sessionCookie = """
-    e78e522838eb96eb96253b60dca1f4afc46adfc6f2e8f6700f03b2b7df656c6d\
-    bacd144a80672f96a0a077faf1b63f0de0ba20e2c6bfaaa321853ab5bfb20e8d\
-    e3212f5827ef1f51d4542ee4e6920dbcc991459f02f1bdb778782d4a88a7abce
-    """
-
-    let request = URLRequest(url: URL(string: url(to: .pricing(nil, nil)))!)
-      |> \.allHTTPHeaderFields .~ [
-        "Cookie": "pf_session=\(sessionCookie)",
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-
-    let conn = connection(from: request)
+    let conn = connection(from: authedRequest(to: url(to: .pricing(nil, nil))))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
