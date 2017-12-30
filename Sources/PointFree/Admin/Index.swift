@@ -15,19 +15,22 @@ private let adminEmails = [
   "stephen.celis@gmail.com"
 ]
 
+func isAdmin(_ user: Database.User) -> Bool {
+  return adminEmails.contains(user.email.unwrap)
+}
+
 func requireAdmin<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
 
-  return { conn in
-    conn
-      |> (adminEmails.contains(get1(conn.data).email.unwrap) ? middleware : redirect(to: .secretHome))
-  }
+    return filterMap(require1 >>> pure, or: loginAndRedirect)
+      <<< filter(get1 >>> isAdmin, or: redirect(to: .secretHome))
+      <| middleware
 }
 
 let adminIndex =
-  filterMap(require1, or: loginAndRedirect)
-    <<< requireAdmin
+  requireAdmin
     <| writeStatus(.ok)
     >-> respond(adminIndexView.contramap(lower))
 
@@ -40,8 +43,7 @@ private let adminIndexView = View<Database.User> { currentUser in
 }
 
 let showNewEpisodeEmailMiddleware =
-  filterMap(require1, or: loginAndRedirect)
-    <<< requireAdmin
+  requireAdmin
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
 
@@ -62,29 +64,15 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
     ])
 }
 
-let sendNewEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, Prelude.Unit>, Data> =
-  requireEpisode(notFoundMiddleware: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <<< requireUser
-    <<< requireAdmin
-    <| { conn in pure(conn.map(get2)) }
-    >-> sendNewEpisodeEmails
+let sendNewEpisodeEmailMiddleware:
+  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
+  requireAdmin
+    <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
+    <| sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
-func requireEpisode<A>(
-  notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data>
-  )
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Episode, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Episode.Id, A>, Data> {
-
-    return { middleware in
-      return { conn in
-        guard let episode = episodes.first(where: { $0.id.unwrap == get1(conn.data).unwrap })
-          else { return conn |> notFoundMiddleware }
-
-        return conn.map(over1(const(episode)))
-          |> middleware
-      }
-    }
+func fetchEpisode(_ id: Episode.Id) -> Episode? {
+  return episodes.first(where: { $0.id.unwrap == id.unwrap })
 }
 
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {

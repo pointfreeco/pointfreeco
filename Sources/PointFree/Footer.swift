@@ -8,15 +8,23 @@ let footerView =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
 
+private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
+  return gridColumn(sizes: sizes) >>> pure
+}
+
+private let footerInfoColumn = column(sizes: [.mobile: 12, .desktop: 6])
+
 private let footerInfoColumnsView =
-  pointFreeView.map(gridColumn(sizes: [.mobile: 12, .desktop: 6]) >>> pure)
+  pointFreeView.map(footerInfoColumn)
     <> linksColumnsView
-    <> legalView.map(gridColumn(sizes: [.mobile: 12, .desktop: 6]) >>> pure)
+    <> legalView.map(footerInfoColumn)
+
+private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
 private let linksColumnsView =
-  contentColumnView.map(gridColumn(sizes: [.mobile: 4, .desktop: 2]) >>> pure)
-    <> accountColumnView.map(gridColumn(sizes: [.mobile: 4, .desktop: 2]) >>> pure)
-    <> moreColumnView.map(gridColumn(sizes: [.mobile: 4, .desktop: 2]) >>> pure)
+  contentColumnView.map(linksColumn)
+    <> accountColumnView.map(linksColumn)
+    <> moreColumnView.map(linksColumn)
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [

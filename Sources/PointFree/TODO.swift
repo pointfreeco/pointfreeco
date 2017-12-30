@@ -83,27 +83,32 @@ public func requireSome<A>(
     }
 }
 
-public func __notFoundMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  return conn
-    |> writeStatus(.notFound)
-    >-> respond(text: "\(A.self) not found")
-}
-
 public func filterMap<A, B>(
-  _ f: @escaping (A) -> B?,
+  _ f: @escaping (A) -> IO<B?>,
   or notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, B, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { middleware in
-      return { conn in
-        return f(conn.data)
-          .map { conn.map(const($0)) }
-          .map(middleware)
-          ?? (conn |> notFoundMiddleware)
+      { conn in
+
+        f(conn.data).flatMap { result in
+          result.map(middleware <<< conn.map <<< const)
+            ?? notFoundMiddleware(conn)
+        }
       }
     }
+}
+
+public func filter<A>(
+  _ p: @escaping (A) -> Bool,
+  or notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return filterMap({ p($0) ? $0 : nil } >>> pure, or: notFoundMiddleware)
 }
 
 public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
@@ -241,7 +246,9 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { tuple <¢> $0.first <*> $0.last }
+      .flatMap { (pair: [String]) -> (String, String) in
+        (pair[0], pair.count == 2 ? pair[1] : "")
+    }
     return .init(uniqueKeysWithValues: pairs)
   }
 }

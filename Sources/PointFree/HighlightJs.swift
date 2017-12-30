@@ -12,9 +12,11 @@ public func addHighlightJs(_ nodes: [Node]) -> [Node] {
     case let .document(doc):
       return .document(addHighlightJs(doc))
     case let .element(element):
-      return element.name == "head"
-        ? .element(element |> \.content %~ { ($0 ?? []) + highlightJsHead.map(^\.node) })
-        : .element(element |> \.content %~ map(addHighlightJs))
+      if element.name == "head" {
+        return .element(element |> \.content %~ { ($0 ?? []) + highlightJsHead.map(^\.node) })
+      } else {
+        return .element(element |> \.content %~ map(addHighlightJs))
+      }
     case .text:
       return node
     }

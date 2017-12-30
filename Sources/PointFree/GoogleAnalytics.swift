@@ -10,9 +10,11 @@ public func addGoogleAnalytics(_ nodes: [Node]) -> [Node] {
     case let .document(doc):
       return .document(addGoogleAnalytics(doc))
     case let .element(element):
-      return element.name == "head"
-        ? .element(element |> \.content %~ { ($0 ?? []) + [googleAnalytics] })
-        : .element(element |> \.content %~ map(addGoogleAnalytics))
+      if element.name == "head" {
+        return .element(element |> \.content %~ { ($0 ?? []) + [googleAnalytics] })
+      } else {
+        return .element(element |> \.content %~ map(addGoogleAnalytics))
+      }
     case .text:
       return node
     }
