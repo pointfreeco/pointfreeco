@@ -58,10 +58,10 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
 }
 
 let wrappedAccountView = simplePageLayout(accountView)
-  .contramap { subscription, teamInvites, teammates, currentUser in
+  .contramap { subscription, teamInvites, teammates, emailSettings, currentUser in
     SimplePageLayoutData(
       currentUser: currentUser,
-      data: (subscription, teamInvites, teammates, currentUser),
+      data: (subscription, teamInvites, teammates, emailSettings, currentUser),
       flash: [:],
       title: "Account"
     )
