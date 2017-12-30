@@ -256,7 +256,9 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { tuple <¢> $0.first <*> $0.last }
+      .flatMap { (pair: [String]) -> (String, String) in
+        (pair[0], pair.count == 2 ? pair[1] : "")
+    }
     return .init(uniqueKeysWithValues: pairs)
   }
 }
