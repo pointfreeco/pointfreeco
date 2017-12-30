@@ -153,18 +153,15 @@ let responsiveSuccessStyle =
     <> bottom(0)
 
 let responsiveStyle = queryOnly(screen, [minWidth(.px(800))]) {
-  ".hero, .signup, .success" % (
-    columnStyle
-    )
-    <> ".success" % (
-      responsiveSuccessStyle
-    )
-    <> "html, body, .hero" % (
-      height(.pct(100))
-    )
-    <> ".logo" % (
-      margin(bottom: .px(40))
-    )
+  let heroSignupSuccessStyle =  ".hero, .signup, .success" % columnStyle
+  let successStyle = ".success" % responsiveSuccessStyle
+  let htmlBodyHeroStyle = "html, body, .hero" % height(.pct(100))
+  let logoStyle = ".logo" % margin(bottom: .px(40))
+
+  return heroSignupSuccessStyle
+    <> successStyle
+    <> htmlBodyHeroStyle
+    <> logoStyle
     <> responsiveHeroStyle
     <> responsiveSuccessContainer
 }

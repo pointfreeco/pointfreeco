@@ -55,14 +55,20 @@ private let lineHeightStyles: Stylesheet =
   [1.15, 1.25, 1.45, 1.5].enumerated().map { Class.type.lineHeight($0) % lineHeight($1) }.concat()
     <> [1, 2, 3, 4].map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }.concat()
 
+private let italicStyle = Class.type.italic % fontStyle(.italic)
+private let lightStyle = Class.type.light % fontWeight(.w300)
+private let lighterStyle = Class.type.lighter % fontWeight(.lighter)
+private let normalStyle = Class.type.normal % fontWeight(.normal)
+private let underlineStyle = Class.type.underline % key("text-decoration", "underline")
+
 private let emphasisStyles: Stylesheet =
   boldStyles
     <> capsStyles
-    <> Class.type.italic % fontStyle(.italic)
-    <> Class.type.light % fontWeight(.w300)
-    <> Class.type.lighter % fontWeight(.lighter)
-    <> Class.type.normal % fontWeight(.normal)
-    <> Class.type.underline % key("text-decoration", "underline")
+    <> italicStyle
+    <> lightStyle
+    <> lighterStyle
+    <> normalStyle
+    <> underlineStyle
 
 private let capsStyles =
   Class.type.caps % (

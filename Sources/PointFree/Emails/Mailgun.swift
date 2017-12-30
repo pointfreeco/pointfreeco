@@ -47,20 +47,17 @@ public struct SendEmailResponse: Decodable {
 
 func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
 
-  let params = [
-    "from": email.from.unwrap,
-    "to": email.to.map(^\.unwrap).joined(separator: ","),
-    "cc": email.cc.map(map(^\.unwrap) >>> joined(separator: ",")),
-    "bcc": email.bcc.map(map(^\.unwrap) >>> joined(separator: ",")),
-    "subject": email.subject,
-    "text": email.text,
-    "html": email.html,
-    "tracking": email.tracking?.rawValue,
-    "tracking-clicks": email.trackingClicks?.rawValue,
-    "tracking-opens": email.trackingOpens?.rawValue
-    ]
-    |> compact
-
+  var params: [String: String] = [:]
+  params["from"] = email.from.unwrap
+  params["to"] = email.to.map(^\.unwrap).joined(separator: ",")
+  params["cc"] = email.cc.map(map(^\.unwrap) >>> joined(separator: ","))
+  params["bcc"] = email.bcc.map(map(^\.unwrap) >>> joined(separator: ","))
+  params["subject"] = email.subject
+  params["text"] = email.text
+  params["html"] = email.html
+  params["tracking"] = email.tracking?.rawValue
+  params["tracking-clicks"] = email.trackingClicks?.rawValue
+  params["tracking-opens"] = email.trackingOpens?.rawValue
 
   let request = URLRequest(
     url: URL(string: "https://api.mailgun.net/v3/\(AppEnvironment.current.envVars.mailgun.domain)/messages")!

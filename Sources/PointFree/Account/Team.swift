@@ -12,7 +12,7 @@ import Tuple
 
 let teamResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <| { conn in
+    <| { conn -> IO<Conn<StatusLineOpen, Tuple3<[Database.TeamInvite], [Database.User], Database.User>>> in
       sequential(
         // Fetch invites and teammates in parallel.
         zip(

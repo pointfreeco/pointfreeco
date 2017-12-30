@@ -5,7 +5,7 @@ imports = \
 bootstrap: xcodeproj postgres-mm db
 
 xcodeproj:
-	swift package generate-xcodeproj
+	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 
 sourcery: linux-main route-partial-iso
 
