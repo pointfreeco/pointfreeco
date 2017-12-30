@@ -9,26 +9,15 @@ import Prelude
 import Styleguide
 @testable import Tuple
 
-func requireSubscriptionAndOwner<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
-
-    return filterMap(require1 >>> pure, or: loginAndRedirect)
-      <<< requireSubscription
-      <<< requireSubscriptionOwner
-      <| middleware
-}
-
 let confirmCancelResponse =
-  requireSubscriptionAndOwner
-    <<< requireStripeSubscription(^\.status != .canceled)
+  requireStripeSubscription
+    <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
 
 let cancelMiddleware =
-  requireSubscriptionAndOwner
-    <<< requireStripeSubscription(^\.status != .canceled)
+  requireStripeSubscription
+    <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
@@ -43,8 +32,8 @@ let cancelMiddleware =
     >-> redirect(to: .account)
 
 let reactivateMiddleware =
-  requireSubscriptionAndOwner
-    <<< requireStripeSubscription(^\.cancelAtPeriodEnd)
+  requireStripeSubscription
+    <<< filter(get1 >>> ^\.cancelAtPeriodEnd, or: redirect(to: .account)) // TODO: flash
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (subscription, data) = conn.data
@@ -58,14 +47,36 @@ let reactivateMiddleware =
     }
     >-> redirect(to: .account)
 
-func requireSubscription<A>(
+private func requireStripeSubscription<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+    
+    return filterMap(require1 >>> pure, or: loginAndRedirect)
+      <<< requireSubscriptionAndOwner
+      <<< fetchStripeSubscription
+      <<< filterMap(require1 >>> pure, or: redirect(to: .account)) // TODO: flash
+      <| middleware
+}
+
+private func requireSubscriptionAndOwner<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
 
+    return fetchSubscription
+      <<< filterMap(require1 >>> pure, or: redirect(to: .account)) // TODO: flash
+      <<< filter(isSubscriptionOwner, or: redirect(to: .account)) // TODO: flash
+      <| middleware
+}
+
+private func fetchSubscription<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription?, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
     return { conn in
-      let (currentUser, rest) = (conn.data.first, conn.data.second)
-      let subscription = currentUser.subscriptionId
+      let subscription = get1(conn.data).subscriptionId
         .map {
           AppEnvironment.current.database.fetchSubscriptionById($0)
             .mapExcept(requireSome)
@@ -74,58 +85,24 @@ func requireSubscription<A>(
         }
         ?? pure(nil)
 
-      return subscription.flatMap { sub in
-        guard let sub = sub else {
-          return conn
-            |> writeStatus(.notFound)
-            >-> respond(text: "Not subscribed :(")
-        }
-        return conn.map(const(.init(first: sub, second: .init(first: currentUser, second: rest))))
-          |> middleware
-      }
+      return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
     }
 }
 
-func requireSubscriptionOwner<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
+private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Database.Subscription, Database.User, A>) -> Bool {
+  return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
+}
+
+private func fetchStripeSubscription<A>(
+  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>)
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.Subscription, A>, Data> {
 
     return { conn in
-      guard conn.data.first.userId == conn.data.second.first.id else {
-        return conn
-          |> writeStatus(.notFound)
-          >-> respond(text: "Not the subscription owner :(")
-      }
-
-      return conn |> middleware
-    }
-}
-
-func requireStripeSubscription<A>(_ suchThat: @escaping (Stripe.Subscription) -> Bool)
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data> {
-
-    return { middleware in
-      { conn in
-
-        let (databaseSub, user, rest) = (conn.data.first, conn.data.second.first, conn.data.second.second)
-
-        return AppEnvironment.current.stripe.fetchSubscription(databaseSub.stripeSubscriptionId)
-          .run
-          .map(^\.right)
-          .flatMap { sub in
-
-            guard let sub = sub, suchThat(sub) else {
-              return conn
-                |> writeStatus(.notFound)
-                >-> respond(text: "Stripe subscription not found :(")
-            }
-
-            return conn.map(const(.init(first: sub, second: .init(first: user, second: rest))))
-              |> middleware
-        }
-      }
+      AppEnvironment.current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
+        .run
+        .map(^\.right)
+        .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
     }
 }
 
