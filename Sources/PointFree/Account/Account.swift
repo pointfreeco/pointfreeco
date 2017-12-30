@@ -9,55 +9,6 @@ import Prelude
 import Styleguide
 import Tuple
 
-func simplePageLayout<A>(title titleString: String, currentUser: @escaping (A) -> Database.User?)
-  -> (Flash?, View<A>)
-  -> View<A> {
-  return { flash, contentView in
-    return View { data in
-      document([
-        html([
-          head([
-            title(titleString),
-            style(renderedNormalizeCss),
-            style(styleguide),
-            style(render(config: pretty, css: pricingExtraStyles)),
-            meta(viewport: .width(.deviceWidth), .initialScale(1)),
-            ]),
-          body(
-            (flash.map { [div([text($0.message)])] } ?? [])
-              <> darkNavView.view((currentUser(data), nil))
-              <> [
-                gridRow([
-                  gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-                    div(
-                      [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                      contentView.view(data)
-                    )
-                    ])
-                  ])
-              ]
-              <> footerView.view(unit)
-          )
-          ])
-        ])
-    }
-  }
-}
-
-func respond<A>(_ view: View<A>, layout: @escaping (Flash?, View<A>) -> View<A>)
-  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
-
-    return { conn in
-      conn
-        |> writeSessionCookieMiddleware(\.flash .~ nil)
-        >-> respond(layout(conn.request.session.flash, view))
-    }
-}
-
-func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<HeadersOpen, HeadersOpen, A, A> {
-  return writeSessionCookieMiddleware(\.flash .~ Flash(priority: priority, message: message))
-}
-
 let accountResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
