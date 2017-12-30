@@ -125,6 +125,16 @@ public func filterMap<A, B>(
     }
 }
 
+public func filter<A>(
+  _ p: @escaping (A) -> Bool,
+  or notFoundMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return filterMap({ p($0) ? $0 : nil } >>> pure, or: notFoundMiddleware)
+}
+
 public func first<A, B, C, D>(_ a2b: @escaping (A) -> B) -> ((A, C, D)) -> (B, C, D) {
   return { ac in (a2b(ac.0), ac.1, ac.2) }
 }

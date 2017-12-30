@@ -9,18 +9,25 @@ import Prelude
 import Styleguide
 @testable import Tuple
 
+func requireSubscriptionAndOwner<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+
+    return filterMap(require1 >>> pure, or: loginAndRedirect)
+      <<< requireSubscription
+      <<< requireSubscriptionOwner
+      <| middleware
+}
+
 let confirmCancelResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireSubscription
-    <<< requireSubscriptionOwner
+  requireSubscriptionAndOwner
     <<< requireStripeSubscription(^\.status != .canceled)
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
 
 let cancelMiddleware =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireSubscription
-    <<< requireSubscriptionOwner
+  requireSubscriptionAndOwner
     <<< requireStripeSubscription(^\.status != .canceled)
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
@@ -36,9 +43,7 @@ let cancelMiddleware =
     >-> redirect(to: .account)
 
 let reactivateMiddleware =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireSubscription
-    <<< requireSubscriptionOwner
+  requireSubscriptionAndOwner
     <<< requireStripeSubscription(^\.cancelAtPeriodEnd)
     <| map(lower)
     >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
