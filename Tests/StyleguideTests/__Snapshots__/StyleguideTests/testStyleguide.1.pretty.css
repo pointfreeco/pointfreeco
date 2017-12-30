@@ -46,6 +46,10 @@ body {
   background-color : #f6f6f6;
 }
 
+.bg-green {
+  background-color : #79F2B0;
+}
+
 .bg-purple {
   background-color : #974DFF;
 }
@@ -60,6 +64,10 @@ body {
 
 .bg-white {
   background-color : #fff;
+}
+
+.bg-yellow {
+  background-color : #FFF080;
 }
 
 .border-gray-650 {
