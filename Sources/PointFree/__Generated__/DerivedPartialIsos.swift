@@ -93,6 +93,12 @@ import Prelude
               guard case let .episode(result) = $0 else { return nil }
               return result
           })
+          public static let expressUnsubscribe = parenthesize <| PartialIso(
+            apply: Route.expressUnsubscribe,
+            unapply: {
+              guard case let .expressUnsubscribe(result) = $0 else { return nil }
+              return result
+          })
           public static let gitHubCallback = parenthesize <| PartialIso(
             apply: Route.gitHubCallback,
             unapply: {

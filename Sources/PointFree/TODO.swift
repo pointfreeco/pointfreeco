@@ -207,8 +207,22 @@ public func zip<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -
   return tuple3 <¢> a <*> b <*> c
 }
 
+public func zip<A, B, C, D>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>
+  ) -> Parallel<(A, B, C, D)> {
+
+  return tuple4 <¢> a <*> b <*> c <*> d
+}
+
 public func tuple3<A, B, C>(_ a: A) -> (B) -> (C) -> (A, B, C) {
   return { b in { c in (a, b, c) } }
+}
+
+public func tuple4<A, B, C, D>(_ a: A) -> (B) -> (C) -> (D) -> (A, B, C, D) {
+  return { b in { c in { d in (a, b, c, d) } } }
 }
 
 // todo: move to prelude
@@ -422,10 +436,11 @@ extension IO {
 
 import Dispatch
 
-func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+func sequence<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+  guard !parallels.isEmpty else { return Parallel { $0([])} }
 
   return Parallel { callback in
-    let queue = DispatchQueue(label: "pointfree.parallel.zip")
+    let queue = DispatchQueue(label: "pointfree.parallel.sequence")
 
     var completed = 0
     var results = [A?](repeating: nil, count: parallels.count)
@@ -443,6 +458,24 @@ func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
       }
     }
   }
+}
+
+func sequence<A>(_ xs: [IO<A>]) -> IO<[A]> {
+  return sequence(xs.map(^\.parallel))
+    .sequential
+}
+
+func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
+  var ys: [A] = []
+  for x in xs {
+    switch x {
+    case let .left(e):
+      return .left(e)
+    case let .right(y):
+      ys.append(y)
+    }
+  }
+  return .right(ys)
 }
 
 public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {

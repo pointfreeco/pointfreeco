@@ -110,8 +110,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
         .retry(maxRetries: 3, backoff: { .milliseconds(200 * idx) + .seconds(10 * $0) })
     }
 
-    zip(newEpisodeEmails.map(^\.run >>> parallel))
-      .sequential
+    sequence(newEpisodeEmails.map(^\.run))
       .flatMap { results in
         sendEmail(
           to: adminEmails.map(EmailAddress.init(unwrap:)),

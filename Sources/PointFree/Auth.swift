@@ -107,7 +107,7 @@ private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.U
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
 
-  return AppEnvironment.current.database.upsertUser(env)
+  return AppEnvironment.current.database.registerUser(env)
     .mapExcept(requireSome)
     .flatMap { user in
       EitherIO(run: IO { () -> Either<Error, Database.User> in

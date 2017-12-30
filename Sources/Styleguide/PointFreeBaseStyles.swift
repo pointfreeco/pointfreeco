@@ -28,6 +28,7 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
+        public static let inherit = CssSelector.class("bg-inherit")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
         public static let red = CssSelector.class("bg-red")
@@ -148,7 +149,9 @@ extension Class.pf {
     }
 
     public static func button(color: Color, size: Size = .regular, style: Style = .normal) -> CssSelector {
-      let baseStyles = Class.type.medium
+      let baseStyles =
+        Class.type.medium
+          | Class.cursor.pointer
 
       let borderStyles: CssSelector
       switch style {
@@ -169,33 +172,45 @@ extension Class.pf {
       let colorStyles: CssSelector
       switch (style, color) {
       case (.normal, .black):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.black
       case (.normal, .purple):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.purple
       case (.normal, .red):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.red
       case (.normal, .white):
-        colorStyles = Class.pf.colors.link.black
+        colorStyles =
+          Class.pf.colors.link.black
           | Class.pf.colors.fg.black
           | Class.pf.colors.bg.white
       case (.outline, .black), (.underline, .black):
-        colorStyles = Class.pf.colors.link.black
+        colorStyles =
+          Class.pf.colors.link.black
           | Class.pf.colors.fg.black
+          | Class.pf.colors.bg.inherit
       case (.outline, .purple), (.underline, .purple):
-        colorStyles = Class.pf.colors.link.purple
+        colorStyles =
+          Class.pf.colors.link.purple
           | Class.pf.colors.fg.purple
+          | Class.pf.colors.bg.inherit
       case (.outline, .red), (.underline, .red):
-        colorStyles = Class.pf.colors.link.red
+        colorStyles =
+          Class.pf.colors.link.red
           | Class.pf.colors.fg.red
+          | Class.pf.colors.bg.inherit
       case (.outline, .white), (.underline, .white):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
+          | Class.pf.colors.bg.inherit
       }
 
       let sizeStyles: CssSelector
@@ -309,6 +324,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
+    <> Class.pf.colors.bg.inherit % backgroundColor(.inherit)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
