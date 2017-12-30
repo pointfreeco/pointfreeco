@@ -13,19 +13,28 @@ import Styleguide
 
 let confirmCancelResponse =
   requireStripeSubscription
-    <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
+    <<< filter(
+      get1 >>> isActive,
+      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+    )
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
 
 let cancelMiddleware =
   requireStripeSubscription
-    <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
+    <<< filter(
+      get1 >>> isActive,
+      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+    )
     <| cancel
     >-> redirect(to: .account)
 
 let reactivateMiddleware =
   requireStripeSubscription
-    <<< filter(get1 >>> ^\.cancelAtPeriodEnd, or: redirect(to: .account)) // TODO: flash
+    <<< filter(
+      get1 >>> ^\.cancelAtPeriodEnd,
+      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription can't be reactivated!"))
+    )
     <| reactivate
     >-> redirect(to: .account)
 
@@ -59,8 +68,15 @@ private func requireStripeSubscription<A>(
     return filterMap(require1 >>> pure, or: loginAndRedirect)
       <<< requireSubscriptionAndOwner
       <<< fetchStripeSubscription
-      <<< filterMap(require1 >>> pure, or: redirect(to: .account)) // TODO: flash
+      <<< filterMap(
+        require1 >>> pure,
+        or: redirect(to: .account, headersMiddleware: flash(.error, "Subscription not found in Stripe!"))
+      )
       <| middleware
+}
+
+private func isActive(_ subscription: Stripe.Subscription) -> Bool {
+  return subscription.status != .canceled && !subscription.cancelAtPeriodEnd
 }
 
 private func requireSubscriptionAndOwner<A>(
@@ -69,8 +85,14 @@ private func requireSubscriptionAndOwner<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
 
     return fetchSubscription
-      <<< filterMap(require1 >>> pure, or: redirect(to: .account)) // TODO: flash
-      <<< filter(isSubscriptionOwner, or: redirect(to: .account)) // TODO: flash
+      <<< filterMap(
+        require1 >>> pure,
+        or: redirect(to: .account, headersMiddleware: flash(.error, "You don't have a subscription!"))
+      )
+      <<< filter(
+        isSubscriptionOwner,
+        or: redirect(to: .account, headersMiddleware: flash(.error, "You aren't the subscription owner!"))
+      )
       <| middleware
 }
 
