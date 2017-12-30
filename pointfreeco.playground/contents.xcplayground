@@ -7,5 +7,7 @@
         <page name='Signup Email'/>
         <page name='Team Invites'/>
         <page name='Account'/>
+        <page name='Email Tester'/>
+        <page name='Router'/>
     </pages>
 </playground>

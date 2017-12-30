@@ -228,8 +228,8 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
 
 private func updateUser(
   withId userId: Database.User.Id,
-  name: String,
-  email: EmailAddress,
+  name: String?,
+  email: EmailAddress?,
   emailSettings: [Database.EmailSetting.Newsletter]
   ) -> EitherIO<Error, Prelude.Unit> {
 
@@ -263,12 +263,13 @@ private func updateUser(
   return execute(
     """
     UPDATE "users"
-    SET "name" = $1, "email" = $2
+    SET "name" = COALESCE($1, "name"),
+        "email" = COALESCE($2, "email")
     WHERE "id" = $3
     """,
     [
       name,
-      email.unwrap,
+      email?.unwrap,
       userId.unwrap.uuidString,
     ]
     )

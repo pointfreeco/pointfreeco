@@ -59,7 +59,8 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> episodeResponse
 
     case let .expressUnsubscribe(userId, newsletter):
-      fatalError()
+      return conn.map(const(user .*. userId .*. newsletter .*. unit))
+        |> expressUnsubscribeMiddleware
 
     case let .gitHubCallback(code, redirect):
       return conn.map(const((code, redirect)))

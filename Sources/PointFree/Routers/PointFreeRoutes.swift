@@ -54,16 +54,6 @@ public enum Route: DerivePartialIsos {
   }
 }
 
-let tmp: Router<(Database.User.Id, Database.EmailSetting.Newsletter)> =
-//  Route.iso.expressUnsubscribe
-//    <¢> get %>
-    //    lit("newsletters") %> pathParam((.uuid) >>> (.tagged)) <% lit("unsubscribe") <% lit("express")
-    //  <%>
-    lit("newsletters") %> pathParam((.uuid) >>> (.tagged)) <%> lit("unsubscribe") %> lit("express")
-    %>
-    queryParam("user_id", ._rawRepresentable)
-    <% end
-
 private let routers: [Router<Route>] = [
 
   Route.iso.about
@@ -90,10 +80,10 @@ private let routers: [Router<Route>] = [
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
 
-//  Route.iso.expressUnsubscribe
-//    <¢> get %> lit("newsletters") %> pathParam((.uuid) >>> (.tagged)) <% lit("unsubscribe") <% lit("express")
-//    %> queryParam("user_id", .rawRepresentable)
-//    <% end,
+  Route.iso.expressUnsubscribe
+    <¢> get %> lit("newsletters") %> pathParam((.appDecrypted) >>> (.uuid) >>> (.tagged))
+    <%> lit("express-unsubscribe") %> queryParam("user_id", (.appDecrypted) >>> (._rawRepresentable))
+    <% end,
 
   Route.iso.gitHubCallback
     <¢> get %> lit("github-auth")

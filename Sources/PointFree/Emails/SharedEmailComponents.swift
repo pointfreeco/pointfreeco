@@ -1,5 +1,6 @@
 import Html
 import HtmlCssSupport
+import Foundation
 import Styleguide
 import Prelude
 
@@ -16,8 +17,10 @@ let hostSignOffView = View<Prelude.Unit> { _ in
   ]
 }
 
-let emailFooterView = View<Prelude.Unit> { _ in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
+let emailFooterView = View<(Database.User, Database.EmailSetting.Newsletter)?> { optionalUserAndNewsletter -> Node in
+//  let (.some(user), .some(new))
+
+  return emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -31,6 +34,10 @@ let emailFooterView = View<Prelude.Unit> { _ in
 
           p([`class`([Class.pf.type.body.small])], [
             "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
+            ]),
+
+          p([
+            a([href(url(to: .expressUnsubscribe(userId: Database.User.Id(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!), newsletter: .newEpisode)))], ["Unsubscribe"])
             ])
           ])
         ])

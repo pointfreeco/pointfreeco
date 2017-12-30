@@ -34,6 +34,7 @@ extension Database {
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
+    fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
@@ -42,8 +43,9 @@ extension Database {
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewEpisodeEmail: { pure([.mock]) },
+    registerUser: const(pure(.some(.mock))),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
-    updateUser: { _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _ in pure(unit) },
     upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
   )
@@ -74,6 +76,13 @@ extension Database.TeamInvite {
     email: .init(unwrap: "blob@pointfree.co"),
     id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
     inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+  )
+}
+
+extension Database.EmailSetting {
+  public static let mock = Database.EmailSetting(
+    newsletter: .newEpisode,
+    userId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 

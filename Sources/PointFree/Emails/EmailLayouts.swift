@@ -45,7 +45,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
             tr([
               td([align(.center), valign(.top)],
                  bodyView.view(layoutData.data)
-                  <> emailFooterView.view(unit))
+                  <> emailFooterView.view(nil))
               ])
             ])
           ])
