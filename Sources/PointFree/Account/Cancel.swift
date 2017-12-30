@@ -9,6 +9,8 @@ import Prelude
 import Styleguide
 @testable import Tuple
 
+// MARK: Middleware
+
 let confirmCancelResponse =
   requireStripeSubscription
     <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
@@ -18,34 +20,36 @@ let confirmCancelResponse =
 let cancelMiddleware =
   requireStripeSubscription
     <<< filter({ get1($0).status != .canceled }, or: redirect(to: .account)) // TODO: flash
-    <| map(lower)
-    >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
-      let (subscription, data) = conn.data
-
-      // TODO: send emails
-
-      return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
-        .run
-        .map(^\.right)
-        .map(const(conn.map(const(unit))))
-    }
+    <| cancel
     >-> redirect(to: .account)
 
 let reactivateMiddleware =
   requireStripeSubscription
     <<< filter(get1 >>> ^\.cancelAtPeriodEnd, or: redirect(to: .account)) // TODO: flash
-    <| map(lower)
-    >>> { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
-      let (subscription, data) = conn.data
-
-      // TODO: send emails
-
-      return AppEnvironment.current.stripe.reactivateSubscription(subscription)
-        .run
-        .map(^\.right)
-        .map(const(conn.map(const(unit))))
-    }
+    <| reactivate
     >-> redirect(to: .account)
+
+// MARK: -
+
+private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
+  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+
+    // TODO: send emails
+    return AppEnvironment.current.stripe.cancelSubscription(get1(conn.data).id)
+      .run
+      .map(const(conn.map(const(unit))))
+}
+
+private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
+  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+
+  // TODO: send emails
+  return AppEnvironment.current.stripe.reactivateSubscription(get1(conn.data))
+    .run
+    .map(const(conn.map(const(unit))))
+}
+
+// MARK: - Transformers
 
 private func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
@@ -105,6 +109,8 @@ private func fetchStripeSubscription<A>(
         .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
     }
 }
+
+// MARK: - Views
 
 let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
   document([
