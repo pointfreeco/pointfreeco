@@ -27,16 +27,16 @@ let cancelMiddleware =
       or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| cancel
-    >-> redirect(to: .account)
+    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve canceled your subscription."))
 
 let reactivateMiddleware =
   requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
-      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription can't be reactivated!"))
+      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
     )
     <| reactivate
-    >-> redirect(to: .account)
+    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve reactivated your subscription."))
 
 // MARK: -
 
@@ -87,11 +87,11 @@ private func requireSubscriptionAndOwner<A>(
     return fetchSubscription
       <<< filterMap(
         require1 >>> pure,
-        or: redirect(to: .account, headersMiddleware: flash(.error, "You don't have a subscription!"))
+        or: redirect(to: .account, headersMiddleware: flash(.error, "You don’t have a subscription!"))
       )
       <<< filter(
         isSubscriptionOwner,
-        or: redirect(to: .account, headersMiddleware: flash(.error, "You aren't the subscription owner!"))
+        or: redirect(to: .account, headersMiddleware: flash(.error, "You aren’t the subscription owner!"))
       )
       <| middleware
 }
