@@ -60,7 +60,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription,
 
 // MARK: - Transformers
 
-private func requireStripeSubscription<A>(
+func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
