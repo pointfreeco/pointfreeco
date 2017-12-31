@@ -13,7 +13,7 @@ let accountResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get4))
+    >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get5))
 
 func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
