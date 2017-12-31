@@ -10,58 +10,16 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <| fetchPaymentInfoData
-    >-> writeStatus(.ok)
-    >-> respond(paymentInfoView)
+  requireStripeSubscription
+    <| writeStatus(.ok)
+    >-> respond(
+      paymentInfoView.contramap(lower),
+      layout: simplePageLayout(title: "Update Payment Info", currentUser: get2)
+)
 
-func fetchPaymentInfoData<I, A>(
-  _ conn: Conn<I, Tuple2<Database.User, A>>
-  ) -> IO<Conn<I, (Database.User, Stripe.Subscription?, A)>> {
-
-  let (user, rest) = lower(conn.data)
-
-  let subscription = user.subscriptionId
-    .map {
-      AppEnvironment.current.database.fetchSubscriptionById($0)
-        .mapExcept(requireSome)
-        .withExcept(const(unit))
-        .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-        .run
-        .map(^\.right)
-    }
-    ?? pure(nil)
-
-  return subscription
-    .map { conn.map(const((user, $0, rest))) }
-}
-
-let paymentInfoView = View<(Database.User, Stripe.Subscription?, Prelude.Unit)> { currentUser, subscription, _ in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(render(config: pretty, css: pricingExtraStyles)),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([
-              gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],  [
-                div(
-                  [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                  titleRowView.view(unit)
-                    <> updatePaymentInfoRowView.view(unit)
-                )
-              ])
-            ])
-          ]
-          <> footerView.view(unit)
-      )
-    ])
-  ])
+let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
+  titleRowView.view(unit)
+    <> updatePaymentInfoRowView.view(unit)
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in

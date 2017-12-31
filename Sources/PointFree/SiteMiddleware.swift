@@ -112,7 +112,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> logoutResponse
 
     case .paymentInfo:
-      return conn.map(const(user .*. unit .*. unit)) // <- TODO: get rid of extra unit
+      return conn.map(const(user .*. unit))
         |> paymentInfoResponse
 
     case let .pricing(plan, quantity):
