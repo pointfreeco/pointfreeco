@@ -540,10 +540,6 @@ func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = 
 
     return conn.flatMap { conn in
       return .wrap {
-        print("----------------------------")
-        print(query)
-        print(representable)
-        print("----------------------------")
         return try conn.execute(query, representable)
       }
     }

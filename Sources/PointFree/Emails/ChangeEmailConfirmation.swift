@@ -23,13 +23,13 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
           h3([`class`([Class.pf.type.title3])], ["Confirm email change"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "We received a request to change your email on Point-Free. Your current email is ",
-            span([], [.text(encode(user.email.unwrap))]),
+            span([`class`([Class.type.semiBold])], [.text(encode(user.email.unwrap))]),
             ", and the new email is ",
-            span([], [.text(encode(newEmailAddress.unwrap))]),
+            span([`class`([Class.type.semiBold])], [.text(encode(newEmailAddress.unwrap))]),
             ". If you want to make this change, just click the confirmation link below:"
             ]),
 
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
             a(
               [ href(url(to: .confirmEmailChange(userId: user.id, emailAddress: newEmailAddress))),
                 `class`([Class.pf.components.button(color: .purple)]) ],

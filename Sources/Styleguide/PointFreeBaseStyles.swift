@@ -158,7 +158,7 @@ extension Class.pf {
       let borderStyles: CssSelector
       switch style {
       case .normal:
-        borderStyles = baseButtonClass
+        borderStyles = baseNormalButtonClass
           | Class.border.rounded.all
           | Class.border.none
           | Class.type.textDecorationNone
@@ -167,7 +167,8 @@ extension Class.pf {
           | Class.border.none
           | Class.type.textDecorationNone
       case .underline:
-        borderStyles = Class.border.none
+        borderStyles = baseUnderlineButtonClass
+          | Class.border.none
           | Class.type.underline
       }
 
@@ -415,12 +416,21 @@ private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
   ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
 
-private let baseButtonClass = CssSelector.class("btn")
-private let baseButtonStyles: Stylesheet =
-  (baseButtonClass & .pseudo(.hover)) % darken1
-    <> (a & .pseudo(.active) & baseButtonClass) % darken3
-    <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
-    <> baseButtonClass % padding(topBottom: .rem(0.75))
+private let baseButtonStyles =
+  baseNormalButtonStyles
+    <> baseUnderlineButtonStyles
+
+private let baseNormalButtonClass = CssSelector.class("btn-normal")
+private let baseNormalButtonStyles: Stylesheet =
+  (baseNormalButtonClass & .pseudo(.hover)) % darken1
+    <> (a & .pseudo(.active) & baseNormalButtonClass) % darken3
+    <> (a & .pseudo(.link) & baseNormalButtonClass) % key("text-decoration", "none")
+    <> baseNormalButtonClass % padding(topBottom: .rem(0.75))
+
+private let baseUnderlineButtonClass = CssSelector.class("btn-outline")
+private let baseUnderlineButtonStyles: Stylesheet =
+  (baseUnderlineButtonClass & .pseudo(.hover)) % key("text-decoration", "none !important")
+    <> baseUnderlineButtonClass % key("text-decoration", "underline !important")
 
 private let darken1 = boxShadow(
   stroke: .inset,

@@ -3,7 +3,7 @@ import Foundation
 public struct EnvVars: Codable {
   public var airtable = Airtable()
   public var appEnv = AppEnv.development
-  public var appSecret = "f4f3d301b0593391b13836d401b65ce4"
+  public var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
   public var baseUrl = URL(string: "http://localhost:8080")!
   public var basicAuth = BasicAuth()
   public var gitHub = GitHub()

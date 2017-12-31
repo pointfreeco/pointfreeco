@@ -43,9 +43,7 @@ func fetchAccountData<I, A>(
         .map { $0.right ?? [] },
 
       parallel(AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run)
-        .map { x in
-          x.right ?? []
-      }
+        .map { $0.right ?? [] }
       )
       .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. conn.data)) }
       .sequential
@@ -127,9 +125,9 @@ private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmai
 private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> String {
   switch type {
   case .announcements:
-    return "New announcements, e.g. books!"
+    return "New announcements (very infrequently)"
   case .newEpisode:
-    return "New episode is available"
+    return "New episode is available (once a week)"
   }
 }
 

@@ -43,7 +43,7 @@ extension Database {
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
-    fetchUsersSubscribedToNewEpisodeEmail: { pure([.mock]) },
+    fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     registerUser: const(pure(.some(.mock))),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateUser: { _, _, _, _ in pure(unit) },
