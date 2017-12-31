@@ -50,7 +50,14 @@ let updateProfileMiddleware =
 
       return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account))))
+        .flatMap(
+          const(
+            conn |> redirect(
+              to: path(to: .account),
+              headersMiddleware: flash(.notice, "We’ve updated your profile!")
+            )
+        )
+      )
 }
 
 

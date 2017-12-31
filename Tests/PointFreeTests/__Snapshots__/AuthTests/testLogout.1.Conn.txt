@@ -11,4 +11,3 @@
 ▿ Response
   Status 302 FOUND
   Location: /home
-  Set-Cookie: pf_session=c2948cc75285e1659edd076c902ed136379580fe06c7e5008adff686d97b1ee44083c29d17fcfe22de8a89f1b6203747b7477b99ffb28b03e524459ae0b991b6; HttpOnly

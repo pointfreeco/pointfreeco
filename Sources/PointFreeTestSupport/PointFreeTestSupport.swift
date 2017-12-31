@@ -1,3 +1,4 @@
+import Cryptor
 import Foundation
 import Either
 @testable import PointFree
@@ -212,17 +213,52 @@ extension Stripe.Subscription.Item {
   )
 }
 
-public func authedRequest(to urlString: String) -> URLRequest {
-  let sessionCookie = """
-  be847b5f12f9571a96252587105c91f788704838959a4818df9555a7dbb636e0\
-  9146d686873dfde259849eb38151c9f448d718ff57b50f22d67cc9c37c9acca2\
-  b8da4c3e919a230d2b2d4222dedc4e9c354d84975c9e5f532503e6be65314e30\
-  0f74e793d154bf8f3c85054ae8df44717e856dc441f24a070cad129b4072a87a
-  """
+extension Session {
+  public static let mock = empty
+    |> \.userId .~ Database.User.mock.id
+}
 
-  return URLRequest(url: URL(string: urlString)!)
+public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
+  let request = URLRequest(url: URL(string: url(to: route))!)
+
+  guard
+    let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
+    case let secret = AppEnvironment.current.envVars.appSecret,
+    let computedDigest = digest(value: encodedValue, secret: secret),
+    let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
+    else { return request }
+
+  return request
     |> \.allHTTPHeaderFields .~ [
       "Cookie": "pf_session=\(sessionCookie)",
       "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
   ]
+}
+
+// TODO: expose methods from http-pipeline
+
+private let jsonEncoder = JSONEncoder()
+
+private func digest(value: String, secret: String) -> String? {
+  let keyBytes = CryptoUtils.byteArray(fromHex: secret)
+  let valueBytes = CryptoUtils.byteArray(from: value)
+  let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
+  return digestBytes.map { Data(bytes: $0).base64EncodedString() }
+}
+
+private func encrypted(text plainText: String, secret: String) -> String? {
+  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
+  let iv = [UInt8](repeating: 0, count: secretBytes.count)
+  let plainTextBytes = CryptoUtils.byteArray(from: plainText)
+
+  let blockSize = Cryptor.Algorithm.aes.blockSize
+  let paddedPlainTextBytes = plainTextBytes.count % blockSize != 0
+    ? CryptoUtils.zeroPad(byteArray: plainTextBytes, blockSize: blockSize)
+    : plainTextBytes
+
+  let cipherText = Cryptor(operation: .encrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
+    .update(byteArray: paddedPlainTextBytes)?
+    .final()
+
+  return cipherText.map { CryptoUtils.hexString(from: $0) }
 }
