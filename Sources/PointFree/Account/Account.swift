@@ -15,7 +15,7 @@ let accountResponse =
     >-> writeStatus(.ok)
     >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get5))
 
-func fetchAccountData<I, A>(
+private func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
   ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
 

@@ -50,6 +50,10 @@ body {
   background-color : #79F2B0;
 }
 
+.bg-inherit {
+  background-color : inherit;
+}
+
 .bg-purple {
   background-color : #974DFF;
 }
@@ -265,7 +269,7 @@ hr {
   color : #fff;
 }
 
-.btn:hover {
+.btn-normal:hover {
   -webkit-box-shadow : inset 0 0 0 20rem rgba(0,0,0,0.1);
   -moz-box-shadow    : inset 0 0 0 20rem rgba(0,0,0,0.1);
   -ms-box-shadow     : inset 0 0 0 20rem rgba(0,0,0,0.1);
@@ -273,7 +277,7 @@ hr {
   box-shadow         : inset 0 0 0 20rem rgba(0,0,0,0.1);
 }
 
-a:active.btn {
+a:active.btn-normal {
   -webkit-box-shadow : inset 0 0 0 20rem rgba(0,0,0,0.3);
   -moz-box-shadow    : inset 0 0 0 20rem rgba(0,0,0,0.3);
   -ms-box-shadow     : inset 0 0 0 20rem rgba(0,0,0,0.3);
@@ -281,13 +285,21 @@ a:active.btn {
   box-shadow         : inset 0 0 0 20rem rgba(0,0,0,0.3);
 }
 
-a:link.btn {
+a:link.btn-normal {
   text-decoration : none;
 }
 
-.btn {
+.btn-normal {
   padding-top    : 0.75rem;
   padding-bottom : 0.75rem;
+}
+
+.btn-outline:hover {
+  text-decoration : none !important;
+}
+
+.btn-outline {
+  text-decoration : underline !important;
 }
 
 .vid-time-link {

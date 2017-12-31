@@ -219,7 +219,7 @@ extension Session {
 }
 
 public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
-  let request = URLRequest(url: URL(string: url(to: route))!)
+  let request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   guard
     let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),

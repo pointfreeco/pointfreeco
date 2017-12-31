@@ -4,24 +4,26 @@ import HttpPipeline
 import Prelude
 import Tuple
 
-// NB: change this `Codable` to `Decodable` to get a runtime crash
-public struct ProfileData: Codable {
+// NB: remove this `Encodable` to get a runtime crash
+public struct ProfileData: Encodable {
   public let email: EmailAddress
   public let name: String
   public let emailSettings: [String: String]
 
+  public enum CodingKeys: String, CodingKey {
+    case email
+    case name
+    case emailSettings
+  }
+}
+
+extension ProfileData: Decodable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.email = try container.decode(EmailAddress.self, forKey: .email)
     self.name = try container.decode(String.self, forKey: .name)
     self.emailSettings = (try? container.decode([String: String].self, forKey: .emailSettings)) ?? [:]
-  }
-
-  public enum CodingKeys: String, CodingKey {
-    case email
-    case name
-    case emailSettings
   }
 }
 
