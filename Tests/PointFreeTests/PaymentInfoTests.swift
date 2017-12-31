@@ -24,7 +24,7 @@ class PaymentInfoTests: TestCase {
   }
 
   func testRender() {
-    let conn = connection(from: authedRequest(to: url(to: .paymentInfo)))
+    let conn = connection(from: authedRequest(to: .paymentInfo))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
