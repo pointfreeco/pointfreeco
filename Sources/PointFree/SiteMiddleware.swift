@@ -43,9 +43,33 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(user .*. unit))
         |> aboutResponse
 
-    case .account:
+    case .account(.index):
       return conn.map(const(user .*. unit))
         |> accountResponse
+
+    case .account(.paymentInfo(.show)):
+      return conn.map(const(user .*. unit))
+        |> paymentInfoResponse
+
+    case let .account(.paymentInfo(.update(token))):
+      return conn.map(const(user .*. token .*. unit))
+        |> updatePaymentInfoMiddleware
+
+    case .account(.subscription(.cancel(.show))):
+      return conn.map(const(user .*. unit))
+        |> confirmCancelResponse
+
+    case .account(.subscription(.cancel(.update))):
+      return conn.map(const(user .*. unit))
+        |> cancelMiddleware
+
+    case .account(.subscription(.reactivate)):
+      return conn.map(const(user .*. unit))
+        |> reactivateMiddleware
+
+    case let .account(.update(data)):
+      return conn.map(const(data .*. user .*. unit))
+        |> updateProfileMiddleware
 
     case .admin(.index):
       return conn.map(const(user .*. unit))
@@ -58,14 +82,6 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     case .admin(.newEpisodeEmail(.show)):
       return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
-
-    case .cancel:
-      return conn.map(const(user .*. unit))
-        |> cancelMiddleware
-
-    case .confirmCancel:
-      return conn.map(const(user .*. unit))
-        |> confirmCancelResponse
 
     case let .episode(param):
       return conn.map(const((param, user, route)))
@@ -111,10 +127,6 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> logoutResponse
 
-    case .paymentInfo:
-      return conn.map(const(user .*. unit))
-        |> paymentInfoResponse
-
     case let .pricing(plan, quantity):
       let pricing: Pricing
       if let quantity = quantity {
@@ -127,10 +139,6 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
 
       return conn.map(const((pricing, user, route)))
         |> pricingResponse
-
-    case .reactivate:
-      return conn.map(const(user .*. unit))
-        |> reactivateMiddleware
 
     case .secretHome:
       return conn.map(const(unit))
@@ -151,14 +159,6 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     case .terms:
       return conn.map(const(unit))
         |> termsResponse
-
-    case let .updatePaymentInfo(token):
-      return conn.map(const(user .*. token .*. unit))
-        |> updatePaymentInfoMiddleware
-
-    case let .updateProfile(data):
-      return conn.map(const(data .*. user .*. unit))
-        |> updateProfileMiddleware
     }
 }
 
@@ -189,31 +189,18 @@ private let allowedInsecureHosts: [String] = [
 private func isProtected(route: Route) -> Bool {
   switch route {
   case .about,
-       .admin(.index),
-       .admin(.newEpisodeEmail(.send)),
-       .admin(.newEpisodeEmail(.show)),
+       .admin,
        .account,
-       .cancel,
-       .confirmCancel,
        .episode,
        .gitHubCallback,
-       .invite(.accept),
-       .invite(.resend),
-       .invite(.revoke),
-       .invite(.send),
-       .invite(.show),
+       .invite,
        .login,
        .logout,
-       .paymentInfo,
        .pricing,
-       .reactivate,
        .secretHome,
        .subscribe,
-       .team(.show),
-       .team(.remove),
-       .terms,
-       .updatePaymentInfo,
-       .updateProfile:
+       .team,
+       .terms:
 
     return true
 

@@ -63,29 +63,17 @@ import Prelude
               guard case .about = $0 else { return nil }
               return unit
           })
-          public static let account = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.account)),
+          public static let account = parenthesize <| PartialIso(
+            apply: Route.account,
             unapply: {
-              guard case .account = $0 else { return nil }
-              return unit
+              guard case let .account(result) = $0 else { return nil }
+              return result
           })
           public static let admin = parenthesize <| PartialIso(
             apply: Route.admin,
             unapply: {
               guard case let .admin(result) = $0 else { return nil }
               return result
-          })
-          public static let cancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.cancel)),
-            unapply: {
-              guard case .cancel = $0 else { return nil }
-              return unit
-          })
-          public static let confirmCancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.confirmCancel)),
-            unapply: {
-              guard case .confirmCancel = $0 else { return nil }
-              return unit
           })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
@@ -129,23 +117,11 @@ import Prelude
               guard case .logout = $0 else { return nil }
               return unit
           })
-          public static let paymentInfo = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.paymentInfo)),
-            unapply: {
-              guard case .paymentInfo = $0 else { return nil }
-              return unit
-          })
           public static let pricing = parenthesize <| PartialIso(
             apply: Route.pricing,
             unapply: {
               guard case let .pricing(result) = $0 else { return nil }
               return result
-          })
-          public static let reactivate = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.reactivate)),
-            unapply: {
-              guard case .reactivate = $0 else { return nil }
-              return unit
           })
           public static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
             apply: const(.some(.secretHome)),
@@ -171,17 +147,81 @@ import Prelude
               guard case .terms = $0 else { return nil }
               return unit
           })
-          public static let updatePaymentInfo = parenthesize <| PartialIso(
-            apply: Route.updatePaymentInfo,
+    }
+  }
+  extension Route.Account {
+    enum iso {
+          public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Account>(
+            apply: const(.some(.index)),
             unapply: {
-              guard case let .updatePaymentInfo(result) = $0 else { return nil }
+              guard case .index = $0 else { return nil }
+              return unit
+          })
+          public static let paymentInfo = parenthesize <| PartialIso(
+            apply: Route.Account.paymentInfo,
+            unapply: {
+              guard case let .paymentInfo(result) = $0 else { return nil }
               return result
           })
-          public static let updateProfile = parenthesize <| PartialIso(
-            apply: Route.updateProfile,
+          public static let subscription = parenthesize <| PartialIso(
+            apply: Route.Account.subscription,
             unapply: {
-              guard case let .updateProfile(result) = $0 else { return nil }
+              guard case let .subscription(result) = $0 else { return nil }
               return result
+          })
+          public static let update = parenthesize <| PartialIso(
+            apply: Route.Account.update,
+            unapply: {
+              guard case let .update(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Account.PaymentInfo {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.PaymentInfo>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let update = parenthesize <| PartialIso(
+            apply: Route.Account.PaymentInfo.update,
+            unapply: {
+              guard case let .update(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Account.Subscription {
+    enum iso {
+          public static let cancel = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.cancel,
+            unapply: {
+              guard case let .cancel(result) = $0 else { return nil }
+              return result
+          })
+          public static let reactivate = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription>(
+            apply: const(.some(.reactivate)),
+            unapply: {
+              guard case .reactivate = $0 else { return nil }
+              return unit
+          })
+    }
+  }
+  extension Route.Account.Subscription.Cancel {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Cancel>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Cancel>(
+            apply: const(.some(.update)),
+            unapply: {
+              guard case .update = $0 else { return nil }
+              return unit
           })
     }
   }

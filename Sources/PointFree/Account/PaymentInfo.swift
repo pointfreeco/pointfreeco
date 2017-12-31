@@ -22,7 +22,7 @@ let updatePaymentInfoMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Stripe.Token.Id?>, Data> =
   filterMap(
     require2 >>> pure,
-    or: redirect(to: .paymentInfo, headersMiddleware: flash(.error, "An error occurred!"))
+    or: redirect(to: .account(.paymentInfo(.show)), headersMiddleware: flash(.error, "An error occurred!"))
     )
     <<< requireStripeSubscription
     <| { conn in
@@ -32,7 +32,7 @@ let updatePaymentInfoMiddleware:
         .run
         .flatMap {
           conn |> redirect(
-            to: .paymentInfo,
+            to: .account(.paymentInfo(.show)),
             headersMiddleware: $0.isLeft
               ? flash(.error, "There was an error updating your payment info!")
               : flash(.notice, "We’ve updated your payment info!")
@@ -74,7 +74,7 @@ private let updatePaymentInfoRowView = View<Prelude.Unit> { _ in
       div([
         h2([`class`([Class.pf.type.title4])], ["Update"]),
         form(
-          [action(path(to: .updatePaymentInfo(nil))), id(Stripe.html.formId), method(.post)],
+          [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
           Stripe.html.cardInput
             <> Stripe.html.errors
             <> Stripe.html.scripts
