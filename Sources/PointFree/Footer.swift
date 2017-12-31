@@ -38,7 +38,7 @@ private let legalView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let pointFreeView = View<Prelude.Unit> { _ in
+private let pointFreeView = View<Prelude.Unit> { _ -> Node in
   div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
     h4([`class`([Class.pf.type.title4, Class.margin([.mobile: [.bottom: 0]])])], [
       a([href(path(to: .secretHome)), `class`([Class.pf.colors.link.white])], ["Point-Free"])

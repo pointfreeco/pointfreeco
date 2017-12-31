@@ -18,5 +18,12 @@ let updateProfileMiddleware =
         .mapExcept(requireSome)
         .flatMap { AppEnvironment.current.database.updateUser(user.id, $0.name, $0.email) }
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account))))
+        .flatMap(
+          const(
+            conn |> redirect(
+              to: path(to: .account),
+              headersMiddleware: flash(.notice, "We’ve updated your profile!")
+            )
+        )
+      )
 }

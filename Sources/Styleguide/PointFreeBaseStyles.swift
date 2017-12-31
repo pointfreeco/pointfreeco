@@ -28,10 +28,12 @@ extension Class {
         public static let dark = CssSelector.class("bg-dark")
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
+        public static let green = CssSelector.class("bg-green")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
         public static let red = CssSelector.class("bg-red")
         public static let white = CssSelector.class("bg-white")
+        public static let yellow = CssSelector.class("bg-yellow")
       }
       public enum border {
         public static let gray650 = CssSelector.class("border-gray-650")
@@ -47,8 +49,8 @@ extension Class {
         public static let green = CssSelector.class("fg-green")
         public static let purple = CssSelector.class("fg-purple")
         public static let red = CssSelector.class("fg-red")
-        public static let yellow = CssSelector.class("fg-yellow")
         public static let white = CssSelector.class("fg-white")
+        public static let yellow = CssSelector.class("fg-yellow")
       }
       public enum link {
         public static let black = CssSelector.class("pf-link-black")
@@ -309,10 +311,12 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
+    <> Class.pf.colors.bg.green % backgroundColor(Colors.green)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
     <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
+    <> Class.pf.colors.bg.yellow % backgroundColor(Colors.yellow)
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
     <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)    
