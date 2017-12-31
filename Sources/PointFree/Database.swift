@@ -16,7 +16,7 @@ public struct Database {
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var fetchUsersSubscribedToNewEpisodeEmail: () -> EitherIO<Error, [Database.User]>
+  var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
   var registerUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
@@ -36,7 +36,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
-    fetchUsersSubscribedToNewEpisodeEmail: PointFree.fetchUsersSubscribedToNewEpisodeEmail,
+    fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
@@ -329,13 +329,19 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
   )
 }
 
-private func fetchUsersSubscribedToNewEpisodeEmail() -> EitherIO<Error, [Database.User]> {
+private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]> {
   return rows(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
-    FROM "users"
-    """
-    // TODO: check email settings
+    SELECT "users"."email",
+           "users"."github_user_id",
+           "users"."github_access_token",
+           "users"."id",
+           "users"."name",
+           "users"."subscription_id"
+    FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+    WHERE "email_settings"."newsletter" = $1
+    """,
+    [newsletter.rawValue]
   )
 }
 

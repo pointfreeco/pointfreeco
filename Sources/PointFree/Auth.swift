@@ -51,6 +51,28 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
     |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
 }
 
+public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
+  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+
+    let user = conn.request.session.userId
+      .flatMap {
+        AppEnvironment.current.database.fetchUserById($0)
+          .run
+          .map(either(const(nil), id))
+      }
+      ?? pure(nil)
+
+    return user.map { conn.map(const($0 .*. conn.data)) }
+}
+
+public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
+  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+
+    return AppEnvironment.current.database.fetchUserById(get1(conn.data))
+      .run
+      .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
+}
+
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
 
   return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)

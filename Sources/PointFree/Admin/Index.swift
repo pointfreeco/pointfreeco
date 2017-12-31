@@ -77,7 +77,7 @@ func fetchEpisode(_ id: Episode.Id) -> Episode? {
 
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
-  return AppEnvironment.current.database.fetchUsersSubscribedToNewEpisodeEmail()
+  return AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
     .run
@@ -87,7 +87,6 @@ private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pre
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
   return lift <| IO {
-    // TODO: look into mailgun rate limits. we could batch subscribers and non subscribers at least
     let newEpisodeEmails = users.enumerated().map { idx, user in
       sendEmail(
         to: [user.email],

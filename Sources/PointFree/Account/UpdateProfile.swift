@@ -36,7 +36,9 @@ let updateProfileMiddleware =
 
       // TODO: validate email?
 
+      let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {
+        updateFlash = flash(.warning, "We’ve sent an email to \(data.email.unwrap) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],
@@ -46,19 +48,27 @@ let updateProfileMiddleware =
             .run
           )
           .run({ _ in })
+      } else {
+        updateFlash = flash(.notice, "We’ve updated your profile!")
       }
 
       return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings)
         .run
         .flatMap(
           const(
-            conn |> redirect(
-              to: path(to: .account),
-              headersMiddleware: flash(.notice, "We’ve updated your profile!")
-            )
-        )
+            conn.map(const(unit))
+              |> redirect(to: path(to: .account), headersMiddleware: updateFlash)
+          )
       )
 }
 
 
+let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, EmailAddress>, Data> =
 
+  { conn in
+    let (userId, emailAddress) = lower(conn.data)
+
+    return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
+      .run
+      .flatMap(const(conn |> redirect(to: .account)))
+}
