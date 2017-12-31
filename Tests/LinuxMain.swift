@@ -7,6 +7,9 @@ import XCTest
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testAccountWithFlashNotice", testAccountWithFlashNotice),
+    ("testAccountWithFlashWarning", testAccountWithFlashWarning),
+    ("testAccountWithFlashError", testAccountWithFlashError),
     ("testAccountCancelingSubscription", testAccountCancelingSubscription),
     ("testAccountCanceledSubscription", testAccountCanceledSubscription)
   ]

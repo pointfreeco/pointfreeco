@@ -171,6 +171,12 @@ import Prelude
               guard case .terms = $0 else { return nil }
               return unit
           })
+          public static let updatePaymentInfo = parenthesize <| PartialIso(
+            apply: Route.updatePaymentInfo,
+            unapply: {
+              guard case let .updatePaymentInfo(result) = $0 else { return nil }
+              return result
+          })
           public static let updateProfile = parenthesize <| PartialIso(
             apply: Route.updateProfile,
             unapply: {

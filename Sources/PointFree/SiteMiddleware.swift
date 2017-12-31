@@ -34,6 +34,11 @@ private func fetchUser<A>(_ conn: Conn<StatusLineOpen, A>)
     return user.map { conn.map(const($0 .*. conn.data)) }
 }
 
+private func fetchSubscriptionStatus(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
+  -> IO<Conn<StatusLineOpen, T3<Stripe.Subscription?, Database.User?, Route>>> {
+    fatalError()
+}
+
 private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
@@ -152,6 +157,10 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(unit))
         |> termsResponse
 
+    case let .updatePaymentInfo(token):
+      return conn.map(const(user .*. token .*. unit))
+        |> updatePaymentInfoMiddleware
+
     case let .updateProfile(data):
       return conn.map(const(data .*. user .*. unit))
         |> updateProfileMiddleware
@@ -208,6 +217,7 @@ private func isProtected(route: Route) -> Bool {
        .team(.show),
        .team(.remove),
        .terms,
+       .updatePaymentInfo,
        .updateProfile:
 
     return true

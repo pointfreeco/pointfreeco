@@ -14,6 +14,7 @@ public struct Stripe {
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
   public var reactivateSubscription: (Subscription) -> EitherIO<Prelude.Unit, Subscription>
+  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Prelude.Unit, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var js: String
 
@@ -26,6 +27,7 @@ public struct Stripe {
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
     reactivateSubscription: PointFree.reactivateSubscription,
+    updateCustomer: PointFree.updateCustomer,
     updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
   )
@@ -251,6 +253,16 @@ private func reactivateSubscription(_ subscription: Stripe.Subscription)
       else { return throwE(unit) }
 
     return updateSubscription(subscription, item.plan.id, item.quantity)
+}
+
+private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.Id)
+  -> EitherIO<Prelude.Unit, Stripe.Customer> {
+
+    print("updating customer \(customer) with token \(token.unwrap)")
+
+    return stripeDataTask("customers/" + customer.id.unwrap, .post([
+      "source": token.unwrap,
+      ]))
 }
 
 private func updateSubscription(_ subscription: Stripe.Subscription, _ plan: Stripe.Plan.Id, _ quantity: Int)

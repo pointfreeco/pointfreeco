@@ -27,7 +27,7 @@ let cancelMiddleware =
       or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| cancel
-    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve canceled your subscription."))
+    >-> redirect(to: .account, headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
 let reactivateMiddleware =
   requireStripeSubscription
@@ -36,7 +36,7 @@ let reactivateMiddleware =
       or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
     )
     <| reactivate
-    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve reactivated your subscription."))
+    >-> redirect(to: .account, headersMiddleware: flash(.notice, "We’ve reactivated your subscription."))
 
 // MARK: -
 
@@ -187,7 +187,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       form([action(path(to: .cancel)), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel My Subscription"])
+          ["Cancel my subscription"])
         ])
       ])
     ])

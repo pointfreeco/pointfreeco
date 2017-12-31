@@ -27,6 +27,7 @@ public enum Route: DerivePartialIsos {
   case subscribe(SubscribeData?)
   case team(Team)
   case terms
+  case updatePaymentInfo(Stripe.Token.Id?)
   case updateProfile(ProfileData?)
 
   public enum Admin: DerivePartialIsos {
@@ -65,7 +66,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("admin") <% end,
 
   Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.send
-    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam((.int) >>> (.tagged)) <% lit("send") <% end,
+    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
 
   Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
@@ -88,13 +89,13 @@ private let routers: [Router<Route>] = [
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
   Route.iso.invite <<< Route.Invite.iso.accept
-    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("accept") <% end,
+    <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("accept") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.resend
-    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("resend") <% end,
+    <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("resend") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.revoke
-    <¢> post %> lit("invites") %> pathParam((.uuid) >>> (.tagged)) <% lit("revoke") <% end,
+    <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("revoke") <% end,
 
   Route.iso.invite <<< Route.Invite.iso.send
     // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
@@ -102,7 +103,7 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
   Route.iso.invite <<< Route.Invite.iso.show
-    <¢> get %> lit("invites") %> pathParam((._rawRepresentable) >>> (._rawRepresentable)) <% end,
+    <¢> get %> lit("invites") %> pathParam(._rawRepresentable >>> ._rawRepresentable) <% end,
 
   Route.iso.launchSignup
     <¢> post %> formField("email", .rawRepresentable) <% lit("launch-signup") <% end,
@@ -130,7 +131,7 @@ private let routers: [Router<Route>] = [
 
   Route.iso.team <<< Route.Team.iso.remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
-    %> pathParam((._rawRepresentable) >>> (._rawRepresentable))
+    %> pathParam(._rawRepresentable >>> ._rawRepresentable)
     <% lit("remove")
     <% end,
 
@@ -139,6 +140,11 @@ private let routers: [Router<Route>] = [
 
   Route.iso.terms
     <¢> get %> lit("terms") <% end,
+
+  Route.iso.updatePaymentInfo
+    <¢> post %> lit("account") %> lit("payment-info")
+    %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
+    <% end,
 
   Route.iso.updateProfile
     <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end
