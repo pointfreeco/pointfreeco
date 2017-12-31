@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
@@ -108,11 +109,11 @@ public enum Pricing: Codable, DerivePartialIsos {
   }
 }
 
-let pricingResponse =
+let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Pricing, Route>, Data> =
   writeStatus(.ok)
-    >-> respond(pricingView)
+    >-> respond(pricingView.contramap(lower))
 
-private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user, currentRoute in
+private let pricingView = View<(Database.User?, Pricing, Route)> { user, pricing, currentRoute in
   document([
     html([
       head([
@@ -124,14 +125,14 @@ private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user
 
       body(
         darkNavView.view((user, currentRoute))
-          + pricingOptionsView.view((pricing, user))
+          + pricingOptionsView.view((user, pricing))
           + footerView.view(unit)
       )
     ])
   ])
 }
 
-let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
+let pricingOptionsView = View<(Database.User?, Pricing)> { user, pricing in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
