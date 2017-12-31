@@ -34,11 +34,6 @@ private func fetchUser<A>(_ conn: Conn<StatusLineOpen, A>)
     return user.map { conn.map(const($0 .*. conn.data)) }
 }
 
-private func fetchSubscriptionStatus(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
-  -> IO<Conn<StatusLineOpen, T3<Stripe.Subscription?, Database.User?, Route>>> {
-    fatalError()
-}
-
 private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
