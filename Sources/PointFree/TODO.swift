@@ -524,11 +524,11 @@ public func decrypted(text encryptedText: String, secret: String) -> String? {
     .flatMap { String.init(data: $0, encoding: .utf8) }
 }
 
-/// Combines to partial iso's into one, and encrypts the
+/// Combines two partial iso's into one by concatenating their results into a single string.
 public func payload<A, B>(
   _ iso1: PartialIso<String, A>,
   _ iso2: PartialIso<String, B>,
-  separator: String = "--"
+  separator: String = "--POINT-FREE-BOUNDARY--"
   )
   -> PartialIso<String, (A, B)> {
 
@@ -546,15 +546,4 @@ public func payload<A, B>(
           else { return nil }
         return "\(first)\(separator)\(second)"
     })
-}
-
-public func decryptedPayload<A, B>(
-  _ iso1: PartialIso<String, A>,
-  _ iso2: PartialIso<String, B>,
-  secret: String,
-  separator: String = "--"
-  )
-  -> PartialIso<String, (A, B)> {
-
-    return (PartialIso.decrypted(withSecret: secret)) >>> payload(iso1, iso2, separator: separator)
 }

@@ -18,11 +18,3 @@ let expressUnsubscribeMiddleware =
     .map(const(conn.map(const(unit))))
   }
   >-> redirect(to: .secretHome)
-
-var decryptedUserIdAndNewsletterPartialIso: PartialIso<String, (Database.User.Id, Database.EmailSetting.Newsletter)> {
-  return decryptedPayload(
-    (.uuid) >>> (.tagged),
-    ._rawRepresentable,
-    secret: AppEnvironment.current.envVars.appSecret
-  )
-}
