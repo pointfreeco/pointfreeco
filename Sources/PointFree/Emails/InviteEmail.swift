@@ -7,6 +7,8 @@ import Styleguide
 let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
   .contramap { inviter, invite in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "You’re invited to join \(inviter.name)’s team on Point-Free",
       preheader: "Your colleague \(inviter.name) has invited you to join their team account on Point-Free.",
       data: (inviter, invite)
@@ -43,6 +45,8 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
 let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
   .contramap { inviter, invitee in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "\(invitee.name) has accepted your invitation!",
       preheader: "",
       data: (inviter, invitee)

@@ -11,6 +11,8 @@ import Styleguide
 let launchEmailView = simpleEmailLayout(launchEmailBody)
   .contramap { data in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "We’re very excited to finally get the series off the ground!",
       data: data

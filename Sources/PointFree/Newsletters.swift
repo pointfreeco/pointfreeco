@@ -1,19 +1,28 @@
+import ApplicativeRouter
 import HttpPipeline
 import Foundation
 import Prelude
 import Tuple
 
-let expressUnsubscribeMiddleware: Middleware<StatusLineOpen, ResponseEnded, T4<Database.User?, Database.User.Id, Database.EmailSetting.Newsletter, Prelude.Unit>, Data> =
+let expressUnsubscribeMiddleware =
+{ (conn: Conn<StatusLineOpen, T4<Database.User?, Database.User.Id, Database.EmailSetting.Newsletter, Prelude.Unit>>) -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
 
-  { conn in
+  let (_, userId, newsletter) = lower(conn.data)
 
-    let (_, userId, newsletter) = lower(conn.data)
+  return AppEnvironment.current.database.fetchEmailSettingsForUserId(userId)
+    .map { settings in settings.filter(^\.newsletter != newsletter) }
+    .flatMap { settings in
+      AppEnvironment.current.database.updateUser(userId, nil, nil, settings.map(^\.newsletter))
+    }
+    .run
+    .map(const(conn.map(const(unit))))
+  }
+  >-> redirect(to: .secretHome)
 
-    let tmp = AppEnvironment.current.database.fetchEmailSettingsForUserId(userId)
-      .map { settings in
-        settings.filter(^\.newsletter != newsletter)
-      }
-//      .flatMap { }
-
-    fatalError()
+var decryptedUserIdAndNewsletterPartialIso: PartialIso<String, (Database.User.Id, Database.EmailSetting.Newsletter)> {
+  return decryptedPayload(
+    (.uuid) >>> (.tagged),
+    ._rawRepresentable,
+    secret: AppEnvironment.current.envVars.appSecret
+  )
 }

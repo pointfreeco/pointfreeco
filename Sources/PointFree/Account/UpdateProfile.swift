@@ -26,23 +26,32 @@ public struct ProfileData: Codable {
 }
 
 let updateProfileMiddleware =
-  filterMap(require2 >>> pure, or: loginAndRedirect)
-    <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData?, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
+  filterMap(require1 >>> pure, or: redirect(to: .account))
+    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+    <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
       let (data, user) = lower(conn.data)
 
-      let emailSettings = Array((data?.emailSettings ?? [:]).keys)
+      let emailSettings = data.emailSettings.keys
         .flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
 
-      if data?.email.unwrap != .some(user.email.unwrap) {
-        // TODO: confirm email change
+      // TODO: validate email?
+
+      if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {
+        parallel(
+          sendEmail(
+            to: [user.email],
+            subject: "Email change confirmation",
+            content: inj2(confirmEmailChangeEmailView.view((user, data.email)))
+            )
+            .run
+          )
+          .run({ _ in })
       }
 
-      return pure(data)
-        .mapExcept(requireSome)
-        .flatMap { AppEnvironment.current.database.updateUser(user.id, $0.name, $0.email, emailSettings) }
+      return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .account))))
 }
 
-//let confirm
+
 

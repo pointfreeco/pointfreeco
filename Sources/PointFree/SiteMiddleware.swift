@@ -67,6 +67,9 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(user .*. unit))
         |> confirmCancelResponse
 
+    case let .confirmEmailChange(userId, emailAddress):
+      fatalError()
+
     case let .episode(param):
       return conn.map(const((param, user, route)))
         |> episodeResponse
@@ -195,6 +198,7 @@ private func isProtected(route: Route) -> Bool {
        .account,
        .cancel,
        .confirmCancel,
+       .confirmEmailChange,
        .expressUnsubscribe,
        .episode,
        .gitHubCallback,

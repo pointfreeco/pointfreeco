@@ -10,8 +10,10 @@ import Prelude
 import Styleguide
 
 let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
-  .contramap { ep, isSubscriber in
+  .contramap { ep, user, isSubscriber in
     SimpleEmailLayoutData(
+      user: user,
+      newsletter: .newEpisode,
       title: "New Point-Free Episode: \(ep.title)",
       preheader: ep.blurb,
       data: (ep, isSubscriber)
@@ -69,6 +71,8 @@ private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSub
 let newEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminReportEmailContent)
   .contramap { erroredUsers, totalAttempted in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "New episode email finished sending!",
       preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
       data: (erroredUsers, totalAttempted)

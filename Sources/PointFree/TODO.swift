@@ -461,6 +461,11 @@ func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
   return .right(ys)
 }
 
+func sequence<A, E>(_ xs: [EitherIO<E, A>]) -> EitherIO<E, [A]> {
+  return EitherIO.init(run:)
+    <| sequence(xs.map(^\.run)).map(sequence)
+}
+
 public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {
   return get1(x).map { over1(const($0)) <| x }
 }
@@ -473,7 +478,7 @@ public func lower<A>(_ tuple: Tuple1<A>) -> A {
   return get1(tuple)
 }
 
-
+import Cryptor
 
 extension PartialIso where A == String, B == String {
   public static func decrypted(withSecret secret: String) -> PartialIso<String, String> {
@@ -487,8 +492,6 @@ extension PartialIso where A == String, B == String {
     return .decrypted(withSecret: AppEnvironment.current.envVars.appSecret)
   }
 }
-
-import Cryptor
 
 public func encrypted(text plainText: String, secret: String) -> String? {
   let secretBytes = CryptoUtils.byteArray(fromHex: secret)
@@ -519,4 +522,39 @@ public func decrypted(text encryptedText: String, secret: String) -> String? {
   return decryptedText
     .map { Data($0.filter { $0 != 0 }) }
     .flatMap { String.init(data: $0, encoding: .utf8) }
+}
+
+/// Combines to partial iso's into one, and encrypts the
+public func payload<A, B>(
+  _ iso1: PartialIso<String, A>,
+  _ iso2: PartialIso<String, B>,
+  separator: String = "--"
+  )
+  -> PartialIso<String, (A, B)> {
+
+    return PartialIso<String, (A, B)>(
+      apply: { payload in
+        let parts = payload.components(separatedBy: separator)
+        let first = parts.first.flatMap(iso1.apply)
+        let second = parts.last.flatMap(iso2.apply)
+        return tuple <¢> first <*> second
+    },
+      unapply: { first, second in
+        guard
+          let first = iso1.unapply(first),
+          let second = iso2.unapply(second)
+          else { return nil }
+        return "\(first)\(separator)\(second)"
+    })
+}
+
+public func decryptedPayload<A, B>(
+  _ iso1: PartialIso<String, A>,
+  _ iso2: PartialIso<String, B>,
+  secret: String,
+  separator: String = "--"
+  )
+  -> PartialIso<String, (A, B)> {
+
+    return (PartialIso.decrypted(withSecret: secret)) >>> payload(iso1, iso2, separator: separator)
 }

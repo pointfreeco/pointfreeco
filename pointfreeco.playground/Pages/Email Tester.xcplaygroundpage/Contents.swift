@@ -8,7 +8,7 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = launchEmailView.view(unit)
+let htmlNodes = newEpisodeEmail.view((episodes.first!, .some(.mock), true))
 let htmlString = render(htmlNodes, config: pretty)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
@@ -24,4 +24,3 @@ PlaygroundPage.current.liveView = webView
 //  )
 //  .run
 //  .perform()
-

@@ -87,6 +87,12 @@ import Prelude
               guard case .confirmCancel = $0 else { return nil }
               return unit
           })
+          public static let confirmEmailChange = parenthesize <| PartialIso(
+            apply: Route.confirmEmailChange,
+            unapply: {
+              guard case let .confirmEmailChange(result) = $0 else { return nil }
+              return result
+          })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
             unapply: {

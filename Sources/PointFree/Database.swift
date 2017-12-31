@@ -19,7 +19,7 @@ public struct Database {
   var fetchUsersSubscribedToNewEpisodeEmail: () -> EitherIO<Error, [Database.User]>
   var registerUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateUser: (User.Id, String, EmailAddress, [Database.EmailSetting.Newsletter]) -> EitherIO<Error, Prelude.Unit>
+  var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -230,35 +230,8 @@ private func updateUser(
   withId userId: Database.User.Id,
   name: String?,
   email: EmailAddress?,
-  emailSettings: [Database.EmailSetting.Newsletter]
+  emailSettings: [Database.EmailSetting.Newsletter]?
   ) -> EitherIO<Error, Prelude.Unit> {
-
-  let updateEmailSettings = EitherIO.init(run:) <| sequence(
-    emailSettings.map { type in
-      execute(
-        """
-        INSERT INTO "email_settings" ("newsletter", "user_id")
-        VALUES ($1, $2)
-        """,
-        [
-          type.rawValue,
-          userId.unwrap.uuidString
-        ]
-      )
-      }
-      .map(^\.run)
-    )
-    .map(sequence)
-
-  let deleteEmailSettings = execute(
-    """
-    DELETE FROM "email_settings"
-    WHERE "user_id" = $1
-    """,
-    [
-      userId.unwrap.uuidString
-    ]
-  )
 
   return execute(
     """
@@ -273,55 +246,54 @@ private func updateUser(
       userId.unwrap.uuidString,
     ]
     )
-    .flatMap(const(deleteEmailSettings))
-    .flatMap(const(updateEmailSettings))
-    .map(const(unit))
+    .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
 }
 
 private func registerUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return upsertUser(withGitHubEnvelope: envelope)
-    .flatMap { optionalUser -> EitherIO<Error, Database.User?> in
+    .flatMap { optionalUser in 
       guard let user = optionalUser else { return pure(optionalUser) }
 
-      return (EitherIO(run: sequence(
-        Database.EmailSetting.Newsletter.allNewsletters.map { type in
-          execute(
-            """
-            INSERT INTO "email_settings" ("newsletter", "user_id")
-            VALUES ($1, $2)
-            """,
-            [
-              type.rawValue,
-              user.id.unwrap.uuidString
-            ]
-          )
-          }
-          .map(^\.run)
-        )
-        .map(sequence)))
+      return updateEmailSettings(settings: Database.EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
         .map(const(optionalUser))
   }
 }
 
-private func updateEmailSettings(settings: [Database.EmailSetting.Newsletter], forUserId userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
+private func updateEmailSettings(
+  settings: [Database.EmailSetting.Newsletter]?,
+  forUserId userId: Database.User.Id
+  )
+  -> EitherIO<Error, Prelude.Unit> {
 
-  return (EitherIO.init(run:) <| sequence(
-    settings.map { type in
-      execute(
-        """
-        INSERT INTO "email_settings" ("newsletter", "user_id")
-        VALUES ($1, $2)
-        """,
-        [
-          type.rawValue,
-          userId.unwrap.uuidString
-        ]
+    guard let settings = settings else { return pure(unit) }
+
+    let deleteEmailSettings = execute(
+      """
+      DELETE FROM "email_settings"
+      WHERE "user_id" = $1
+      """,
+      [userId.unwrap.uuidString]
       )
+      .map(const(unit))
+
+    let updateEmailSettings = sequence(
+      settings.map { type in
+        execute(
+          """
+          INSERT INTO "email_settings" ("newsletter", "user_id")
+          VALUES ($1, $2)
+          """,
+          [
+            type.rawValue,
+            userId.unwrap.uuidString
+          ]
+        )
       }
-      .map(^\.run)
     )
-    .map(sequence))
     .map(const(unit))
+
+    return sequence([deleteEmailSettings, updateEmailSettings])
+      .map(const(unit))
 }
 
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
