@@ -48,8 +48,8 @@ class AccountTests: TestCase {
     }
   }
 
-  #if !os(Linux)
-    func testAccountWithFlashNotice() {
+  func testAccountWithFlashNotice() {
+    #if !os(Linux)
       let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
       let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
@@ -65,9 +65,11 @@ class AccountTests: TestCase {
         webView.frame.size.width = 400
         assertSnapshot(matching: webView, named: "mobile")
       }
-    }
+    #endif
+  }
 
-    func testAccountWithFlashWarning() {
+  func testAccountWithFlashWarning() {
+    #if !os(Linux)
       let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
       let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
@@ -83,9 +85,11 @@ class AccountTests: TestCase {
         webView.frame.size.width = 400
         assertSnapshot(matching: webView, named: "mobile")
       }
-    }
+    #endif
+  }
 
-    func testAccountWithFlashError() {
+  func testAccountWithFlashError() {
+    #if !os(Linux)
       let flash = Flash(priority: .error, message: "An error has occurred!")
 
       let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
@@ -101,8 +105,8 @@ class AccountTests: TestCase {
         webView.frame.size.width = 400
         assertSnapshot(matching: webView, named: "mobile")
       }
-    }
-  #endif
+    #endif
+  }
 
   func testAccountCancelingSubscription() {
     let subscription = Stripe.Subscription.canceling
