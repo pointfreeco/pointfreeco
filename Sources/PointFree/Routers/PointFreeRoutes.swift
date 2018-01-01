@@ -80,7 +80,7 @@ private let routers: [Router<Route>] = [
 
   Route.iso.confirmEmailChange
     <¢> get %> lit("account") %> lit("confirm-email-change")
-    %> queryParam("payload", (.appDecrypted) >>> payload((.uuid) >>> (.tagged), .tagged))
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
     <% end,
 
   Route.iso.episode
@@ -88,7 +88,7 @@ private let routers: [Router<Route>] = [
 
   Route.iso.expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
-    %> queryParam("payload", (.appDecrypted) >>> payload((.uuid) >>> (.tagged), ._rawRepresentable))
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
     <% end,
 
   Route.iso.gitHubCallback

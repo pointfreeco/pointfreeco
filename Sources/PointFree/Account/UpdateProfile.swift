@@ -66,12 +66,13 @@ let updateProfileMiddleware =
 }
 
 
-let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, EmailAddress>, Data> =
+let confirmEmailChangeMiddleware =
+{ (conn: Conn<StatusLineOpen, Tuple2<Database.User.Id, EmailAddress>>) -> IO<Conn<ResponseEnded, Data>> in
+  let (userId, emailAddress) = lower(conn.data)
 
-  { conn in
-    let (userId, emailAddress) = lower(conn.data)
+  // TODO: confirm that currentUser.id == userId
 
-    return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
-      .run
-      .flatMap(const(conn |> redirect(to: .account)))
+  return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
+    .run
+    .flatMap(const(conn |> redirect(to: .account)))
 }
