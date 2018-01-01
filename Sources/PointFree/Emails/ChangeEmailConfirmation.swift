@@ -31,7 +31,7 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
 
           p([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
             a(
-              [ href(url(to: .confirmEmailChange(userId: user.id, emailAddress: newEmailAddress))),
+              [ href(url(to: .account(.confirmEmailChange(userId: user.id, emailAddress: newEmailAddress)))),
                 `class`([Class.pf.components.button(color: .purple)]) ],
               ["Confirm email change"]
             )

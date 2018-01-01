@@ -11,7 +11,6 @@ public enum Route: DerivePartialIsos {
   case about
   case account(Account)
   case admin(Admin)
-  case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
   case episode(Either<String, Int>)
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
   case gitHubCallback(code: String?, redirect: String?)
@@ -27,6 +26,7 @@ public enum Route: DerivePartialIsos {
   case terms
 
   public enum Account: DerivePartialIsos {
+    case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
     case index
     case paymentInfo(PaymentInfo)
     case subscription(Subscription)
@@ -77,6 +77,11 @@ private let routers: [Router<Route>] = [
   Route.iso.about
     <¢> get %> lit("about") <% end,
 
+  Route.iso.account <<< Route.Account.iso.confirmEmailChange
+    <¢> get %> lit("account") %> lit("confirm-email-change")
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
+    <% end,
+
   Route.iso.account <<< Route.Account.iso.index
     <¢> get %> lit("account") <% end,
 
@@ -110,17 +115,6 @@ private let routers: [Router<Route>] = [
 
   Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
-
-  Route.iso.cancel
-    <¢> post %> lit("account") <% lit("cancel"),
-
-  Route.iso.confirmCancel
-    <¢> get %> lit("account") <% lit("cancel"),
-
-  Route.iso.confirmEmailChange
-    <¢> get %> lit("account") %> lit("confirm-email-change")
-    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
-    <% end,
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,

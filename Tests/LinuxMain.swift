@@ -31,6 +31,11 @@ extension CancelTests {
     ("testConfirmCancel", testConfirmCancel)
   ]
 }
+extension ChangeEmailConfirmationTests {
+  static var allTests: [(String, (ChangeEmailConfirmationTests) -> () throws -> Void)] = [
+    ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail)
+  ]
+}
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
@@ -94,6 +99,11 @@ extension NewEpisodeEmailTests {
     ("testNewEpisodeEmail_NonSubscriber", testNewEpisodeEmail_NonSubscriber)
   ]
 }
+extension NewslettersTests {
+  static var allTests: [(String, (NewslettersTests) -> () throws -> Void)] = [
+    ("testExpressUnsubscribe", testExpressUnsubscribe)
+  ]
+}
 extension PaymentInfoTests {
   static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
     ("testRender", testRender)
@@ -125,12 +135,19 @@ extension StyleguideTests {
     ("testPointFreeStyles", testPointFreeStyles)
   ]
 }
+extension UpdateProfileTests {
+  static var allTests: [(String, (UpdateProfileTests) -> () throws -> Void)] = [
+    ("testUpdateNameAndEmail", testUpdateNameAndEmail),
+    ("testUpdateEmailSettings", testUpdateEmailSettings)
+  ]
+}
 
 // swiftlint:disable trailing_comma
 XCTMain([
   testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
+  testCase(ChangeEmailConfirmationTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
@@ -142,10 +159,12 @@ XCTMain([
   testCase(MetaLayoutTests.allTests),
   testCase(NavViewTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),
+  testCase(NewslettersTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
+  testCase(UpdateProfileTests.allTests),
 ])
 // swiftlint:enable trailing_comma

@@ -29,6 +29,10 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(user .*. unit))
         |> aboutResponse
 
+    case let .account(.confirmEmailChange(userId, emailAddress)):
+      return conn.map(const(userId .*. emailAddress .*. unit))
+        |> confirmEmailChangeMiddleware
+
     case .account(.index):
       return conn.map(const(user .*. unit))
         |> accountResponse
@@ -68,10 +72,6 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     case .admin(.newEpisodeEmail(.show)):
       return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
-
-    case let .confirmEmailChange(userId, emailAddress):
-      return conn.map(const(userId .*. emailAddress .*. unit))
-        |> confirmEmailChangeMiddleware
 
     case let .episode(param):
       return conn.map(const((param, user, route)))
@@ -185,7 +185,6 @@ private func isProtected(route: Route) -> Bool {
   case .about,
        .admin,
        .account,
-       .confirmEmailChange,
        .expressUnsubscribe,
        .episode,
        .gitHubCallback,

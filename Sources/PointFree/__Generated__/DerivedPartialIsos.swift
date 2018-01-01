@@ -75,24 +75,6 @@ import Prelude
               guard case let .admin(result) = $0 else { return nil }
               return result
           })
-          public static let cancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.cancel)),
-            unapply: {
-              guard case .cancel = $0 else { return nil }
-              return unit
-          })
-          public static let confirmCancel = parenthesize <| PartialIso<Prelude.Unit, Route>(
-            apply: const(.some(.confirmCancel)),
-            unapply: {
-              guard case .confirmCancel = $0 else { return nil }
-              return unit
-          })
-          public static let confirmEmailChange = parenthesize <| PartialIso(
-            apply: Route.confirmEmailChange,
-            unapply: {
-              guard case let .confirmEmailChange(result) = $0 else { return nil }
-              return result
-          })
           public static let episode = parenthesize <| PartialIso(
             apply: Route.episode,
             unapply: {
@@ -175,6 +157,12 @@ import Prelude
   }
   extension Route.Account {
     enum iso {
+          public static let confirmEmailChange = parenthesize <| PartialIso(
+            apply: Route.Account.confirmEmailChange,
+            unapply: {
+              guard case let .confirmEmailChange(result) = $0 else { return nil }
+              return result
+          })
           public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Account>(
             apply: const(.some(.index)),
             unapply: {

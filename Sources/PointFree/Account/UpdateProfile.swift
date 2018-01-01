@@ -28,7 +28,7 @@ extension ProfileData: Decodable {
 }
 
 let updateProfileMiddleware =
-  filterMap(require1 >>> pure, or: redirect(to: .account))
+  filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
       let (data, user) = lower(conn.data)
@@ -75,5 +75,5 @@ let confirmEmailChangeMiddleware =
 
   return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
     .run
-    .flatMap(const(conn |> redirect(to: .account)))
+    .flatMap(const(conn |> redirect(to: .account(.index))))
 }

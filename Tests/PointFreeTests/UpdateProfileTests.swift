@@ -23,7 +23,7 @@ class UpdateProfileTests: TestCase {
     )
 
     let request = authedRequest(
-      to: .updateProfile(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:])),
+      to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
     )
 
@@ -57,7 +57,7 @@ class UpdateProfileTests: TestCase {
     )
 
     let request = authedRequest(
-      to: .updateProfile(.init(email: .init(unwrap: ""), name: "", emailSettings: ["newEpisode": "on"])),
+      to: .account(.update(.init(email: .init(unwrap: ""), name: "", emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
     )
 
