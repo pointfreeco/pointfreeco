@@ -36,7 +36,6 @@ let updateProfileMiddleware =
       let emailSettings = data.emailSettings.keys
         .flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
 
-      // TODO: make sure email doesn't already exist?!
       // TODO: validate email?
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>

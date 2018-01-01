@@ -449,6 +449,7 @@ func sequence<A>(_ xs: [IO<A>]) -> IO<[A]> {
   }
 }
 
+/// Returns first `left` value in array of `Either`'s, or an array of `right` values if there are no `left`s.
 func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
   var ys: [A] = []
   for x in xs {
@@ -462,9 +463,10 @@ func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
   return .right(ys)
 }
 
+// Sequence's an array of `EitherIO`'s by first sequencing the `IO` values, and then sequencing the `Either`
+// vaues.
 func sequence<A, E>(_ xs: [EitherIO<E, A>]) -> EitherIO<E, [A]> {
-  return EitherIO.init(run:)
-    <| sequence(xs.map(^\.run)).map(sequence)
+  return EitherIO(run: sequence(xs.map(^\.run)).map(sequence))
 }
 
 public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {
