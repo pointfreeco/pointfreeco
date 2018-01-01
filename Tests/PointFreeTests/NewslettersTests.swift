@@ -17,12 +17,7 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let request = router.request(
-      for: .expressUnsubscribe(userId: user.id, newsletter: .announcements),
-      base: URL(string: "http://localhost:8080")!)!
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
+    let request = authedRequest(to: .expressUnsubscribe(userId: user.id, newsletter: .announcements))
 
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)

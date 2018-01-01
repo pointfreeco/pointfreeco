@@ -232,7 +232,9 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
     |> \.allHTTPHeaderFields .~ [
       "Cookie": "pf_session=\(sessionCookie)",
       "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-  ]
+    ]
+    // Force capitalize method for consistency across Darwin and Linux.
+    |> \.httpMethod %~ { $0?.uppercased() }
 }
 
 // TODO: expose methods from http-pipeline
