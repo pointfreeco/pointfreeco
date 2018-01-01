@@ -73,7 +73,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
       div([
         h2([`class`([Class.pf.type.title4])], ["Profile"]),
 
-        form([action(path(to: .updateProfile(nil))), method(.post)], [
+        form([action(path(to: .account(.update(nil)))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
           input([
             `class`([blockInputClass]),
@@ -267,7 +267,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
   if subscription.cancelAtPeriodEnd {
     return form(
-      [action(path(to: .reactivate)), method(.post)],
+      [action(path(to: .account(.subscription(.reactivate)))), method(.post)],
       [
         button(
           [`class`([Class.pf.components.button(color: .purple, size: .small)])],
@@ -287,7 +287,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return a(
       [
         `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
-        href(path(to: .confirmCancel))
+        href(path(to: .account(.subscription(.cancel(.show)))))
       ],
       ["Cancel"]
     )
@@ -429,7 +429,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
               p([`class`([])], [
                 a([
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href(path(to: .paymentInfo)),
+                  href(path(to: .account(.paymentInfo(.show)))),
                   ],
                   ["Update payment method"])
                 ])

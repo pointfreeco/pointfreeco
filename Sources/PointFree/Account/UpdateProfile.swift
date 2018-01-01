@@ -60,7 +60,7 @@ let updateProfileMiddleware =
         .flatMap(
           const(
             conn.map(const(unit))
-              |> redirect(to: path(to: .account), headersMiddleware: updateFlash)
+              |> redirect(to: path(to: .account(.index)), headersMiddleware: updateFlash)
           )
       )
 }

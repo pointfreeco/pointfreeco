@@ -15,7 +15,7 @@ let confirmCancelResponse =
   requireStripeSubscription
     <<< filter(
       get1 >>> isActive,
-      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| writeStatus(.ok)
     >-> respond(confirmCancelView.contramap(lower))
@@ -24,19 +24,19 @@ let cancelMiddleware =
   requireStripeSubscription
     <<< filter(
       get1 >>> isActive,
-      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| cancel
-    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve canceled your subscription."))
+    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
 let reactivateMiddleware =
   requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
-      or: redirect(to: .account, headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
     )
     <| reactivate
-    >-> redirect(to: .account, headersMiddleware: flash(.notice, "You’ve reactivated your subscription."))
+    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve reactivated your subscription."))
 
 // MARK: -
 
@@ -60,7 +60,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription,
 
 // MARK: - Transformers
 
-private func requireStripeSubscription<A>(
+func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
@@ -70,7 +70,7 @@ private func requireStripeSubscription<A>(
       <<< fetchStripeSubscription
       <<< filterMap(
         require1 >>> pure,
-        or: redirect(to: .account, headersMiddleware: flash(.error, "Subscription not found in Stripe!"))
+        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Subscription not found in Stripe!"))
       )
       <| middleware
 }
@@ -87,11 +87,11 @@ private func requireSubscriptionAndOwner<A>(
     return fetchSubscription
       <<< filterMap(
         require1 >>> pure,
-        or: redirect(to: .account, headersMiddleware: flash(.error, "You don’t have a subscription!"))
+        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You don’t have a subscription!"))
       )
       <<< filter(
         isSubscriptionOwner,
-        or: redirect(to: .account, headersMiddleware: flash(.error, "You aren’t the subscription owner!"))
+        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You aren’t the subscription owner!"))
       )
       <| middleware
 }
@@ -184,10 +184,10 @@ private let formRowView = View<Stripe.Subscription> { subscription in
         before the current period ends.
         """
         ]),
-      form([action(path(to: .cancel)), method(.post)], [
+      form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel My Subscription"])
+          ["Cancel my subscription"])
         ])
       ])
     ])

@@ -24,7 +24,7 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account))))
+        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
@@ -33,7 +33,7 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
     <| { conn in
       parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
         .run({ _ in })
-      return conn |> redirect(to: path(to: .account))
+      return conn |> redirect(to: path(to: .account(.index)))
 }
 
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
@@ -93,7 +93,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
       return subscription
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account))))
+        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
 let sendInviteMiddleware =
@@ -105,20 +105,20 @@ let sendInviteMiddleware =
 
       let (optionalEmail, inviter) = lower(conn.data)
 
-      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account)) }
+      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account(.index))) }
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
         .run
         .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
           case .left:
-            return conn |> redirect(to: .account)
+            return conn |> redirect(to: .account(.index))
 
           case let .right(invite):
             parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
               .run({ _ in })
 
-            return conn |> redirect(to: .account)
+            return conn |> redirect(to: .account(.index))
           }
       }
 }
