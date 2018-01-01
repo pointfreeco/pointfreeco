@@ -21,7 +21,7 @@ let updateProfileMiddleware =
         .flatMap(
           const(
             conn |> redirect(
-              to: path(to: .account),
+              to: path(to: .account(.index)),
               headersMiddleware: flash(.notice, "We’ve updated your profile!")
             )
         )
