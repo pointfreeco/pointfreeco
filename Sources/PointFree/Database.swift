@@ -539,8 +539,6 @@ func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = 
   -> EitherIO<Error, PostgreSQL.Node> {
 
     return conn.flatMap { conn in
-      return .wrap {
-        return try conn.execute(query, representable)
-      }
+      return .wrap { return try conn.execute(query, representable) }
     }
 }
