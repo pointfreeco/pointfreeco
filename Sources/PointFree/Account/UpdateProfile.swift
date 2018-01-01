@@ -71,6 +71,7 @@ let confirmEmailChangeMiddleware =
   let (userId, emailAddress) = lower(conn.data)
 
   // TODO: confirm that currentUser.id == userId
+  // TODO: send email saying that email has been changed
 
   return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
     .run

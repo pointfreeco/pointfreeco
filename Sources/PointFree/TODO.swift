@@ -444,8 +444,9 @@ func sequence<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
 }
 
 func sequence<A>(_ xs: [IO<A>]) -> IO<[A]> {
-  return sequence(xs.map(^\.parallel))
-    .sequential
+  return IO {
+    xs.map { $0.perform() }
+  }
 }
 
 func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
