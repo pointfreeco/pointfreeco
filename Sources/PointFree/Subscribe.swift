@@ -41,7 +41,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Datab
 
         case .right:
           return conn
-            |> redirect(to: path(to: .account))
+            |> redirect(to: path(to: .account(.index)))
         }
     }
 }

@@ -67,7 +67,7 @@ private let subscribeLinkView = View<Prelude.Unit> { _ in
 }
 
 private let accountLinkView = View<Prelude.Unit> { _ in
-  a([href(path(to: .account)), `class`([navLinkClass])], ["Account"])
+  a([href(path(to: .account(.index))), `class`([navLinkClass])], ["Account"])
 }
 
 private let logInLinkView = View<Route?> { currentRoute in

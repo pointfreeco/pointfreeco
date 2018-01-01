@@ -30,7 +30,7 @@ class AccountTests: TestCase {
       |> \.plan.interval .~ .year
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account))
+      let conn = connection(from: authedRequest(to: .account(.index)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -49,14 +49,14 @@ class AccountTests: TestCase {
   }
 
   func testAccountWithFlashNotice() {
-    let flash = Flash(priority: .notice, message: "You’ve subscribed!")
-
-    let conn = connection(from: authedRequest(to: .account, session: .mock |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result.perform())
-
     #if !os(Linux)
+      let flash = Flash(priority: .notice, message: "You’ve subscribed!")
+
+      let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
       if #available(OSX 10.13, *) {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
@@ -69,14 +69,14 @@ class AccountTests: TestCase {
   }
 
   func testAccountWithFlashWarning() {
-    let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
-
-    let conn = connection(from: authedRequest(to: .account, session: .mock |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result.perform())
-
     #if !os(Linux)
+      let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
+
+      let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
       if #available(OSX 10.13, *) {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
@@ -89,14 +89,14 @@ class AccountTests: TestCase {
   }
 
   func testAccountWithFlashError() {
-    let flash = Flash(priority: .error, message: "An error has occurred!")
-
-    let conn = connection(from: authedRequest(to: .account, session: .mock |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result.perform())
-
     #if !os(Linux)
+      let flash = Flash(priority: .error, message: "An error has occurred!")
+
+      let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
       if #available(OSX 10.13, *) {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
@@ -112,7 +112,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceling
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account))
+      let conn = connection(from: authedRequest(to: .account(.index)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -134,7 +134,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account))
+      let conn = connection(from: authedRequest(to: .account(.index)))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
