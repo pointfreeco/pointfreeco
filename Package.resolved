@@ -69,8 +69,17 @@
         "repositoryURL": "https://github.com/bkase/DoctorPretty.git",
         "state": {
           "branch": null,
-          "revision": "2d0370ade8098dd1e24c08460edc1606eb81a54f",
-          "version": "0.3.0"
+          "revision": "7e1b0fea76e8e81d5e08ccd603d6bbcbdad9931c",
+          "version": "0.4.1"
+        }
+      },
+      {
+        "package": "FileCheck",
+        "repositoryURL": "https://github.com/trill-lang/FileCheck.git",
+        "state": {
+          "branch": null,
+          "revision": "1c966580c83cf2e41be802992d46fe2edfc5c95f",
+          "version": "0.0.5"
         }
       },
       {
@@ -87,8 +96,8 @@
         "repositoryURL": "https://github.com/typelift/Operadics.git",
         "state": {
           "branch": null,
-          "revision": "fcacc621d00449c2cc0cb7227756928566370d28",
-          "version": "0.2.2"
+          "revision": "c2a14919b3653a39a9bf268c1ae0bf71ad6833fe",
+          "version": "0.3.0"
         }
       },
       {
@@ -119,20 +128,29 @@
         }
       },
       {
+        "package": "SwiftCheck",
+        "repositoryURL": "https://github.com/typelift/SwiftCheck.git",
+        "state": {
+          "branch": null,
+          "revision": "df82fb889864945c64458f38846702af729b3ee4",
+          "version": "0.9.1"
+        }
+      },
+      {
         "package": "Swiftx",
         "repositoryURL": "https://github.com/typelift/Swiftx.git",
         "state": {
           "branch": null,
-          "revision": "0d481bbe0617c38bb816c9cbbf54ab93edb813b9",
-          "version": "0.5.2"
+          "revision": "140f1510ecb8597970c58c5a41a32bda72310d31",
+          "version": "0.6.0"
         }
       },
       {
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "220fb72",
-          "revision": "220fb72ba1683544b0d33a24a60d992cc3cd5892",
+          "branch": "d483620",
+          "revision": "d48362028433bad983f7ce9c87cb3b95104344c8",
           "version": null
         }
       }
