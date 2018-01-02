@@ -249,6 +249,7 @@ private func updateUser(
     .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
 }
 
+// TODO: This should return a non-optional user
 private func registerUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return upsertUser(withGitHubEnvelope: envelope)
     .flatMap { optionalUser in 
@@ -296,6 +297,7 @@ private func updateEmailSettings(
       .map(const(unit))
 }
 
+// TODO: This should return a non-optional user
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
   return execute(
     """

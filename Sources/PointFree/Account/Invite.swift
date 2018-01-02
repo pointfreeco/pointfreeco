@@ -13,9 +13,13 @@ import Tuple
 let showInviteMiddleware =
   redirectCurrentSubscribers
     <<< requireTeamInvite
-    <<< filter(validateCurrentUserIsNotInviter, or: redirect(to: .account(.index)))
+    <<< filter(
+      validateCurrentUserIsNotInviter,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.warning, "You cannot view your own team invite."))
+    )
+    <<< filterMap(fetchTeamInviter, or: redirect(to: .secretHome))
     <| writeStatus(.ok)
-    >-> respond(showInviteView.contramap(lower))
+    >-> respond(showInviteView.contramap(lower), layout: simplePageLayout(title: "Accept Team Invite?", currentUser: get3))
 
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
@@ -40,7 +44,11 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
     <| { conn in
       parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
         .run({ _ in })
-      return conn |> redirect(to: path(to: .account(.index)))
+      return conn
+        |> redirect(
+          to: .account(.index),
+          headersMiddleware: flash(.notice, "Invite sent to \(get1(conn.data).email.unwrap).")
+      )
 }
 
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
@@ -129,43 +137,97 @@ let sendInviteMiddleware =
             parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
               .run({ _ in })
 
-            return conn |> redirect(to: .account(.index))
+            return conn
+              |> redirect(
+                to: .account(.index),
+                headersMiddleware: flash(.notice, "Invite sent to \(invite.email.unwrap).")
+            )
           }
       }
 }
 
-private let showInviteView = View<(Database.TeamInvite, Database.User?)> { teamInvite, currentUser in
+let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> { teamInvite, inviter, currentUser in
 
   currentUser
-    .map { showInviteLoggedInView.view(($0, teamInvite)) }
-    ?? showInviteLoggedOutView.view(teamInvite)
+    .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
+    ?? showInviteLoggedOutView.view((teamInvite, inviter))
 }
 
-private let showInviteLoggedOutView = View<Database.TeamInvite> { invite in
-  [
-    p(["You must be logged in to accept this invitation. Would you like to log in with GitHub?"]),
+private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
+  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12], [
+      div([
+        h3([`class`([Class.pf.type.title3])], ["You’ve been invited!"]),
 
-    a([href(url(to: .login(redirect: url(to: .invite(.show(invite.id))))))], ["Sign up with GitHub"]),
-    ]
-}
+        p([
+          "Your colleague ",
+          a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name))]),
+          """
+           has invited you to join their team account on Point-Free, a weekly video series exploring
+          functional programming concepts using the Swift programming language. Accepting this invitation
+          gives you access to all of the videos, transcripts and code samples on this site.
+          """
+          ]),
 
-private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite)> { currentUser, teamInvite in
-  [
-    p(["Do you accept this invite?"]),
+        p([
+          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
+          ]),
 
-    form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
-      input([type(.submit), value("Accept")])
+        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+          gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
+          ])
+        ])
       ])
-  ]
+    ])
 }
 
-private let inviteNotFound = View<Prelude.Unit> { _ in
-  [
-    p([
-      "We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by the sender."
-      ]),
-    a([href(path(to: .secretHome))], ["Go home"])
-  ]
+private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, Database.User)> { currentUser, teamInvite, inviter in
+  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12], [
+      div([
+        h3([`class`([Class.pf.type.title3])], ["You’ve been invited!"]),
+
+        p([
+          "Your colleague ",
+          a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name))]),
+          """
+           has invited you to join their team account on Point-Free, a weekly video series exploring
+          functional programming concepts using the Swift programming language. Accepting this invitation
+          gives you access to all of the videos, transcripts and code samples on this site.
+          """
+          ]),
+
+        form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
+          input([
+              type(.submit),
+              value("Accept"),
+              `class`([Class.pf.components.button(color: .purple)])
+            ])
+          ])
+        ])
+      ])
+    ])
+}
+
+private let inviteNotFoundView = View<Prelude.Unit> { _ in
+  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12], [
+      div([
+        h3([`class`([Class.pf.type.title3])], ["Invite not found"]),
+
+        p([
+          """
+          Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
+          the sender. To see subscription plans available, click the link below:
+          """
+          ]),
+
+        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+          a([href(path(to: .pricing(nil, nil)))], ["Subscribe"])
+          ])
+        ])
+      ])
+    ])
 }
 
 private func requireTeamInvite<A>(
@@ -181,7 +243,7 @@ private func requireTeamInvite<A>(
         case .left:
           return conn.map(const(unit))
             |> writeStatus(.notFound)
-            >-> respond(inviteNotFound)
+            >-> respond(inviteNotFoundView)
 
         case let .right(teamInvite):
           return conn.map(over1(const(teamInvite)))
@@ -258,4 +320,12 @@ private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Dat
 private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {
   let (email, inviter) = (get1(data), get2(data))
   return email.unwrap.lowercased() != inviter.email.unwrap.lowercased()
+}
+
+private func fetchTeamInviter<A>(_ data: T2<Database.TeamInvite, A>) -> IO<T3<Database.TeamInvite, Database.User, A>?> {
+
+  return AppEnvironment.current.database.fetchUserById(get1(data).inviterUserId)
+    .mapExcept(requireSome)
+    .run
+    .map { $0.right.map { get1(data) .*. $0 .*. data.second } }
 }
