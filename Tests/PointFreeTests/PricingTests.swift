@@ -74,9 +74,11 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn_Subscriber() {
-    let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
-    let result = conn |> siteMiddleware
-
-    assertSnapshot(matching: result.perform())
+    #if !os(Linux)
+      let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
+      let result = conn |> siteMiddleware
+      
+      assertSnapshot(matching: result.perform())
+    #endif
   }
 }
