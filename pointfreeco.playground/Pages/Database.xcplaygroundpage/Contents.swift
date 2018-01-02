@@ -12,20 +12,16 @@ AppEnvironment.current.database.migrate().run.perform()
 //  .perform()
 
 AppEnvironment.current.database
-  .registerUser(.init(accessToken: .init(accessToken: "deadbeef"), gitHubUser: .init(avatarUrl: "", email: .init(unwrap: "me@pointfree.co"), id: .init(unwrap: 123), name: "Blob")))
-//  .run
-//  .perform()
-
-AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobby@pointfree.co"), .init(unwrap: UUID(uuidString: "09d24b2e-f003-11e7-99e6-7b2c2cf94951")!))
+  .upsertUser(.init(accessToken: .init(accessToken: "deadbeef"), gitHubUser: .init(avatarUrl: "", email: .init(unwrap: "me@pointfree.co"), id: .init(unwrap: 123), name: "Blob")))
   .run
   .perform()
 
-//AppEnvironment.current.database.addUserIdToSubscriptionId(
-//  .init(unwrap: UUID(uuidString: "0e74ece2-e665-11e7-9c23-4b6dbc10be70")!),
-//  .init(unwrap: UUID(uuidString: "5dda18fa-e662-11e7-b1dd-fb29b9a4f405")!)
-//)
-//.run
-//.perform()
+AppEnvironment.current.database.addUserIdToSubscriptionId(
+  .init(unwrap: UUID(uuidString: "0e74ece2-e665-11e7-9c23-4b6dbc10be70")!),
+  .init(unwrap: UUID(uuidString: "5dda18fa-e662-11e7-b1dd-fb29b9a4f405")!)
+)
+.run
+.perform()
 
 //AppEnvironment.current.database
 //  .insertTeamInvite(
@@ -40,5 +36,5 @@ AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobby@pointfree
 //  .run
 //  .perform()
 //
-1
+//1
 
