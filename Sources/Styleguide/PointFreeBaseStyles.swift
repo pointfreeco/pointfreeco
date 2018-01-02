@@ -403,7 +403,7 @@ private let typeStyles =
   bodyLeadingClass % fontSize(.rem(1.1875))
 
 private let hrReset =
-  hr % (borderColor(all: .none) <> borderStyle(all: .none) <> borderWidth(all: .none))
+  hr % (borderColor(all: .transparent) <> borderStyle(all: .none) <> borderWidth(all: 0))
 
 private let dividerClass = CssSelector.class("pf-divider")
 private let dividerStyles =
