@@ -74,6 +74,8 @@ let notifyUsView = View<EmailAddress> { email in
 let launchSignupConfirmationEmailView = simpleEmailLayout(launchSignupConfirmationEmailBody)
   .contramap { data in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "Point-Free will be launching soon, and you’ll be the first to know.",
       data: data

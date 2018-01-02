@@ -450,7 +450,7 @@
   font-weight : 700;
 }
 
-.bold {
+.bolder {
   font-weight : bolder;
 }
 
@@ -792,6 +792,10 @@
 
 .table-cell {
   display : table-cell;
+}
+
+.cursor-pointer {
+  cursor : pointer;
 }
 
 @media only screen and (max-width: 831px) {

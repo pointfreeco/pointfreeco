@@ -17,22 +17,8 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       realm: "Point-Free",
       protect: isProtected
     )
-    <| fetchUser
+    <| currentUserMiddleware
     >-> render(conn:)
-
-private func fetchUser<A>(_ conn: Conn<StatusLineOpen, A>)
-  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
-
-    let user = conn.request.session.userId
-      .flatMap {
-        AppEnvironment.current.database.fetchUserById($0)
-          .run
-          .map(either(const(nil), id))
-      }
-      ?? pure(nil)
-
-    return user.map { conn.map(const($0 .*. conn.data)) }
-}
 
 private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -42,6 +28,10 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     case .about:
       return conn.map(const(user .*. unit))
         |> aboutResponse
+
+    case let .account(.confirmEmailChange(userId, emailAddress)):
+      return conn.map(const(userId .*. emailAddress .*. unit))
+        |> confirmEmailChangeMiddleware
 
     case .account(.index):
       return conn.map(const(user .*. unit))
@@ -86,6 +76,10 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     case let .episode(param):
       return conn.map(const((param, user, route)))
         |> episodeResponse
+
+    case let .expressUnsubscribe(userId, newsletter):
+      return conn.map(const(user .*. userId .*. newsletter .*. unit))
+        |> expressUnsubscribeMiddleware
 
     case let .gitHubCallback(code, redirect):
       return conn.map(const((code, redirect)))
@@ -191,6 +185,7 @@ private func isProtected(route: Route) -> Bool {
   case .about,
        .admin,
        .account,
+       .expressUnsubscribe,
        .episode,
        .gitHubCallback,
        .invite,

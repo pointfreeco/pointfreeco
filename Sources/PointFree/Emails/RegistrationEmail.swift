@@ -7,6 +7,8 @@ import Styleguide
 let registrationEmailView = simpleEmailLayout(registrationEmailBody)
   .contramap { user in
     SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "",
       data: user

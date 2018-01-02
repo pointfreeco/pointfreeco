@@ -14,3 +14,4 @@ public let designSystems =
     <> alignStyles
     <> sizeStyles
     <> displayStyles
+    <> cursorStyles

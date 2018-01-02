@@ -12,32 +12,8 @@ import Styleguide
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
-public func array<A>(_ tuple: (A, A)) -> [A] {
-  return [tuple.0, tuple.1]
-}
-public func array<A>(_ tuple: (A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2]
-}
-public func array<A>(_ tuple: (A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3]
-}
-public func array<A>(_ tuple: (A, A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4]
-}
-public func array<A>(_ tuple: (A, A, A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5]
-}
-public func array<A>(_ tuple: (A, A, A, A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6]
-}
-public func array<A>(_ tuple: (A, A, A, A, A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7]
-}
 public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8]
-}
-public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A, A)) -> [A] {
-  return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8, tuple.9]
 }
 
 // todo: HasPlaysInline
@@ -212,8 +188,22 @@ public func zip<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -
   return tuple3 <¢> a <*> b <*> c
 }
 
+public func zip<A, B, C, D>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>
+  ) -> Parallel<(A, B, C, D)> {
+
+  return tuple4 <¢> a <*> b <*> c <*> d
+}
+
 public func tuple3<A, B, C>(_ a: A) -> (B) -> (C) -> (A, B, C) {
   return { b in { c in (a, b, c) } }
+}
+
+public func tuple4<A, B, C, D>(_ a: A) -> (B) -> (C) -> (D) -> (A, B, C, D) {
+  return { b in { c in { d in (a, b, c, d) } } }
 }
 
 // todo: move to prelude
@@ -429,10 +419,11 @@ extension IO {
 
 import Dispatch
 
-func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+func sequence<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
+  guard !parallels.isEmpty else { return Parallel { $0([])} }
 
   return Parallel { callback in
-    let queue = DispatchQueue(label: "pointfree.parallel.zip")
+    let queue = DispatchQueue(label: "pointfree.parallel.sequence")
 
     var completed = 0
     var results = [A?](repeating: nil, count: parallels.count)
@@ -452,6 +443,32 @@ func zip<A>(_ parallels: [Parallel<A>]) -> Parallel<[A]> {
   }
 }
 
+func sequence<A>(_ xs: [IO<A>]) -> IO<[A]> {
+  return IO {
+    xs.map { $0.perform() }
+  }
+}
+
+/// Returns first `left` value in array of `Either`'s, or an array of `right` values if there are no `left`s.
+func sequence<A, E>(_ xs: [Either<E, A>]) -> Either<E, [A]> {
+  var ys: [A] = []
+  for x in xs {
+    switch x {
+    case let .left(e):
+      return .left(e)
+    case let .right(y):
+      ys.append(y)
+    }
+  }
+  return .right(ys)
+}
+
+// Sequence's an array of `EitherIO`'s by first sequencing the `IO` values, and then sequencing the `Either`
+// vaues.
+func sequence<A, E>(_ xs: [EitherIO<E, A>]) -> EitherIO<E, [A]> {
+  return EitherIO(run: sequence(xs.map(^\.run)).map(sequence))
+}
+
 public func require1<A, Z>(_ x: T2<A?, Z>) -> T2<A, Z>? {
   return get1(x).map { over1(const($0)) <| x }
 }
@@ -466,4 +483,74 @@ public func require3<A, B, C, Z>(_ x: T4<A, B, C?, Z>) -> T4<A, B, C, Z>? {
 
 public func lower<A>(_ tuple: Tuple1<A>) -> A {
   return get1(tuple)
+}
+
+import Cryptor
+
+extension PartialIso where A == String, B == String {
+  public static func decrypted(withSecret secret: String) -> PartialIso<String, String> {
+    return PartialIso(
+      apply: { PointFree.decrypted(text: $0, secret: secret) },
+      unapply: { PointFree.encrypted(text: $0, secret: secret) }
+    )
+  }
+
+  public static var appDecrypted: PartialIso<String, String> {
+    return .decrypted(withSecret: AppEnvironment.current.envVars.appSecret)
+  }
+}
+
+public func encrypted(text plainText: String, secret: String) -> String? {
+  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
+  let iv = [UInt8](repeating: 0, count: secretBytes.count)
+  let plainTextBytes = CryptoUtils.byteArray(from: plainText)
+
+  let blockSize = Cryptor.Algorithm.aes.blockSize
+  let paddedPlainTextBytes = plainTextBytes.count % blockSize != 0
+    ? CryptoUtils.zeroPad(byteArray: plainTextBytes, blockSize: blockSize)
+    : plainTextBytes
+
+  let cipherText = Cryptor(operation: .encrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
+    .update(byteArray: paddedPlainTextBytes)?
+    .final()
+
+  return cipherText.map { CryptoUtils.hexString(from: $0) }
+}
+
+public func decrypted(text encryptedText: String, secret: String) -> String? {
+  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
+  let iv = [UInt8](repeating: 0, count: secretBytes.count)
+  let encryptedTextBytes = CryptoUtils.byteArray(fromHex: encryptedText)
+
+  let decryptedText = Cryptor(operation: .decrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
+    .update(byteArray: encryptedTextBytes)?
+    .final()
+
+  return decryptedText
+    .map { Data($0.filter { $0 != 0 }) }
+    .flatMap { String.init(data: $0, encoding: .utf8) }
+}
+
+/// Combines two partial iso's into one by concatenating their results into a single string.
+public func payload<A, B>(
+  _ iso1: PartialIso<String, A>,
+  _ iso2: PartialIso<String, B>,
+  separator: String = "--POINT-FREE-BOUNDARY--"
+  )
+  -> PartialIso<String, (A, B)> {
+
+    return PartialIso<String, (A, B)>(
+      apply: { payload in
+        let parts = payload.components(separatedBy: separator)
+        let first = parts.first.flatMap(iso1.apply)
+        let second = parts.last.flatMap(iso2.apply)
+        return tuple <¢> first <*> second
+    },
+      unapply: { first, second in
+        guard
+          let first = iso1.unapply(first),
+          let second = iso2.unapply(second)
+          else { return nil }
+        return "\(first)\(separator)\(second)"
+    })
 }

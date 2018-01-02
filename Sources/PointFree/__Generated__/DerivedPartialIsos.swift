@@ -81,6 +81,12 @@ import Prelude
               guard case let .episode(result) = $0 else { return nil }
               return result
           })
+          public static let expressUnsubscribe = parenthesize <| PartialIso(
+            apply: Route.expressUnsubscribe,
+            unapply: {
+              guard case let .expressUnsubscribe(result) = $0 else { return nil }
+              return result
+          })
           public static let gitHubCallback = parenthesize <| PartialIso(
             apply: Route.gitHubCallback,
             unapply: {
@@ -151,6 +157,12 @@ import Prelude
   }
   extension Route.Account {
     enum iso {
+          public static let confirmEmailChange = parenthesize <| PartialIso(
+            apply: Route.Account.confirmEmailChange,
+            unapply: {
+              guard case let .confirmEmailChange(result) = $0 else { return nil }
+              return result
+          })
           public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Account>(
             apply: const(.some(.index)),
             unapply: {

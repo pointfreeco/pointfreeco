@@ -29,6 +29,7 @@ extension Class {
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let green = CssSelector.class("bg-green")
+        public static let inherit = CssSelector.class("bg-inherit")
         public static let purple = CssSelector.class("bg-purple")
         public static let purple150 = CssSelector.class("bg-purple150")
         public static let red = CssSelector.class("bg-red")
@@ -150,12 +151,14 @@ extension Class.pf {
     }
 
     public static func button(color: Color, size: Size = .regular, style: Style = .normal) -> CssSelector {
-      let baseStyles = Class.type.medium
+      let baseStyles =
+        Class.type.medium
+          | Class.cursor.pointer
 
       let borderStyles: CssSelector
       switch style {
       case .normal:
-        borderStyles = baseButtonClass
+        borderStyles = baseNormalButtonClass
           | Class.border.rounded.all
           | Class.border.none
           | Class.type.textDecorationNone
@@ -164,40 +167,53 @@ extension Class.pf {
           | Class.border.none
           | Class.type.textDecorationNone
       case .underline:
-        borderStyles = Class.border.none
+        borderStyles = baseUnderlineButtonClass
+          | Class.border.none
           | Class.type.underline
       }
 
       let colorStyles: CssSelector
       switch (style, color) {
       case (.normal, .black):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.black
       case (.normal, .purple):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.purple
       case (.normal, .red):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
           | Class.pf.colors.bg.red
       case (.normal, .white):
-        colorStyles = Class.pf.colors.link.black
+        colorStyles =
+          Class.pf.colors.link.black
           | Class.pf.colors.fg.black
           | Class.pf.colors.bg.white
       case (.outline, .black), (.underline, .black):
-        colorStyles = Class.pf.colors.link.black
+        colorStyles =
+          Class.pf.colors.link.black
           | Class.pf.colors.fg.black
+          | Class.pf.colors.bg.inherit
       case (.outline, .purple), (.underline, .purple):
-        colorStyles = Class.pf.colors.link.purple
+        colorStyles =
+          Class.pf.colors.link.purple
           | Class.pf.colors.fg.purple
+          | Class.pf.colors.bg.inherit
       case (.outline, .red), (.underline, .red):
-        colorStyles = Class.pf.colors.link.red
+        colorStyles =
+          Class.pf.colors.link.red
           | Class.pf.colors.fg.red
+          | Class.pf.colors.bg.inherit
       case (.outline, .white), (.underline, .white):
-        colorStyles = Class.pf.colors.link.white
+        colorStyles =
+          Class.pf.colors.link.white
           | Class.pf.colors.fg.white
+          | Class.pf.colors.bg.inherit
       }
 
       let sizeStyles: CssSelector
@@ -312,6 +328,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
     <> Class.pf.colors.bg.green % backgroundColor(Colors.green)
+    <> Class.pf.colors.bg.inherit % backgroundColor(.inherit)
     <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
     <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
     <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
@@ -399,12 +416,21 @@ private let _navBar = CssSelector.class("pf-navbar")
 private let navBarStyles =
   ((_navBar ** a) | (_navBar ** a & .pseudo(.link))) % color(.other("#fff"))
 
-private let baseButtonClass = CssSelector.class("btn")
-private let baseButtonStyles: Stylesheet =
-  (baseButtonClass & .pseudo(.hover)) % darken1
-    <> (a & .pseudo(.active) & baseButtonClass) % darken3
-    <> (a & .pseudo(.link) & baseButtonClass) % key("text-decoration", "none")
-    <> baseButtonClass % padding(topBottom: .rem(0.75))
+private let baseButtonStyles =
+  baseNormalButtonStyles
+    <> baseUnderlineButtonStyles
+
+private let baseNormalButtonClass = CssSelector.class("btn-normal")
+private let baseNormalButtonStyles: Stylesheet =
+  (baseNormalButtonClass & .pseudo(.hover)) % darken1
+    <> (a & .pseudo(.active) & baseNormalButtonClass) % darken3
+    <> (a & .pseudo(.link) & baseNormalButtonClass) % key("text-decoration", "none")
+    <> baseNormalButtonClass % padding(topBottom: .rem(0.75))
+
+private let baseUnderlineButtonClass = CssSelector.class("btn-outline")
+private let baseUnderlineButtonStyles: Stylesheet =
+  (baseUnderlineButtonClass & .pseudo(.hover)) % key("text-decoration", "none !important")
+    <> baseUnderlineButtonClass % key("text-decoration", "underline !important")
 
 private let darken1 = boxShadow(
   stroke: .inset,
