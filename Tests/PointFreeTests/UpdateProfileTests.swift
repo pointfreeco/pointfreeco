@@ -60,7 +60,7 @@ class UpdateProfileTests: TestCase {
     )
 
     let request = authedRequest(
-      to: .account(.update(.init(email: .init(unwrap: ""), name: "", emailSettings: ["newEpisode": "on"]))),
+      to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
       )
 

@@ -6,9 +6,9 @@
   Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-  name=&emailSettings[newEpisode]=on&email=
+  name=Blob&emailSettings[newEpisode]=on&email=hello@pointfree.co
 
 ▿ Response
   Status 302 FOUND
   Location: /account
-  Set-Cookie: pf_session={"flash":{"message":"We’ve sent an email to  to confirm this change.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/
+  Set-Cookie: pf_session={"flash":{"message":"We’ve updated your profile!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/
