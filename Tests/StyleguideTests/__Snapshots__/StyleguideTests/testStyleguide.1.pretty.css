@@ -246,18 +246,18 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
 }
 
 hr {
-  border-top-color    : none;
-  border-right-color  : none;
-  border-bottom-color : none;
-  border-left-color   : none;
+  border-top-color    : transparent;
+  border-right-color  : transparent;
+  border-bottom-color : transparent;
+  border-left-color   : transparent;
   border-top-style    : none;
   border-right-style  : none;
   border-bottom-style : none;
   border-left-style   : none;
-  border-top-width    : none;
-  border-right-width  : none;
-  border-bottom-width : none;
-  border-left-width   : none;
+  border-top-width    : 0;
+  border-right-width  : 0;
+  border-bottom-width : 0;
+  border-left-width   : 0;
 }
 
 .pf-divider {
@@ -339,7 +339,7 @@ a:link.btn-normal {
   height   : 1px;
   width    : 1px;
   overflow : hidden;
-  clip     : rect(1px1px1px1px);
+  clip     : rect(1px,1px,1px,1px);
 }
 
 .flex {
