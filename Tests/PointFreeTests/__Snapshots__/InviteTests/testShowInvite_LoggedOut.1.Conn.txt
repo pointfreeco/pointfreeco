@@ -1,0 +1,15 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+  Authorization: Basic aGVsbG86d29ybGQ=
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 200 OK
+  Content-Length: 230
+  Content-Type: text/html; charset=utf-8
+
+  <p>You must be logged in to accept this invitation. Would you like to log in with GitHub?</p><a href="http://localhost:8080/login?redirect=http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF">Sign up with GitHub</a>
