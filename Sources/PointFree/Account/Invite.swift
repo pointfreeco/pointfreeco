@@ -99,12 +99,8 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
           }
       }
 
-      // VERIFY: only do this if the invite was successfully taken
       let deleteInvite = parallel(
         subscription
-          // TODO: should `const` be @autoclosure so that we can do:
-          //       `.flatMap(const(AppEnvironment.current.database.deleteTeamInvite(teamInvite.id)))`
-          //       ?
           .flatMap { _ in AppEnvironment.current.database.deleteTeamInvite(teamInvite.id) }
           .run
       )
