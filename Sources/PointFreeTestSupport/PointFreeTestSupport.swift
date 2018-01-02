@@ -236,12 +236,12 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
   request.httpMethod = request.httpMethod?.uppercased()
 
   guard
-    let encodedData = try? jsonEncoder.encode(session),
-    let encodedString = String(data: encodedData, encoding: .utf8)
+    let sessionData = try? jsonEncoder.encode(session),
+    let sessionCookie = String(data: sessionData, encoding: .utf8)
     else { return request }
 
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(encodedString)"], uniquingKeysWith: { $1 })
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
 }
