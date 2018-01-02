@@ -11,25 +11,32 @@ import Styleguide
 import Tuple
 
 let showInviteMiddleware =
-  // TODO: need to validate that current user doesnt already have a subscription
-  // TODO: validate that current user is not inviter
-  requireTeamInvite
+  redirectCurrentSubscribers
+    <<< requireTeamInvite
+    <<< filter(validateCurrentUserIsNotInviter, or: redirect(to: .account(.index)))
     <| writeStatus(.ok)
     >-> respond(showInviteView.contramap(lower))
 
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+    <<< filter(
+      validateCurrentUserIsInviter,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You must be the invite owner to perform that action."))
+    )
     <| { conn in
-      // TODO: validate that current user owns team invite
       AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
-  requireTeamInvite
-    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+  filterMap(require2 >>> pure, or: loginAndRedirect)
+    <<< requireTeamInvite
+    <<< filter(
+      validateCurrentUserIsInviter,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You must be the invite owner to perform that action."))
+    )
     <| { conn in
       parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
         .run({ _ in })
@@ -37,20 +44,19 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 }
 
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
-  requireTeamInvite
+  redirectCurrentSubscribers
+    <<< requireTeamInvite
+    <<< filter(
+      validateCurrentUserIsNotInviter,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.warning, "You cannot accept your own team invite."))
+    )
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       let (teamInvite, currentUser) = lower(conn.data)
 
-      // VERIFY: need to validate that current user doesnt already have a subscription
-      let invitee = pure(currentUser)
-        .flatMap(validateDoesNotHaveSubscription)
-
-      // VERIFY: need to validate that current user is not the inviter
       let inviter = AppEnvironment.current.database
         .fetchUserById(teamInvite.inviterUserId)
         .mapExcept(requireSome)
-        .flatMap(validateIsNot(currentUser: currentUser))
 
       let sendInviterEmailOfAcceptance = parallel(
         inviter
@@ -75,7 +81,12 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
         .flatMap { AppEnvironment.current.database.fetchSubscriptionById($0) }
         .mapExcept(requireSome)
         .flatMap { subscription in
-          AppEnvironment.current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+          AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+            .mapExcept(validateActiveStripeSubscription)
+            .bimap(const(unit as Error), id)
+            .flatMap { _ in
+              AppEnvironment.current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+          }
       }
 
       // VERIFY: only do this if the invite was successfully taken
@@ -98,14 +109,14 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
-    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress?, Database.User>>) in
+    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+    <<< filter(validateEmailDoesNotBelongToInviter, or: redirect(to: .account(.index)))
+    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
       // TODO: need to validate that email isnt the same as the inviter
       // TODO: need to validate that email is unique
 
-      let (optionalEmail, inviter) = lower(conn.data)
-
-      guard let email = optionalEmail else { return conn |> redirect(to: path(to: .account(.index))) }
+      let (email, inviter) = lower(conn.data)
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
         .run
@@ -199,8 +210,52 @@ private func validateIsNot(currentUser: Database.User) -> (Database.User) -> Eit
   }
 }
 
-private func validateDoesNotHaveSubscription(user: Database.User) -> EitherIO<Error, Database.User> {
-  return user.subscriptionId != nil
-    ? lift(.left(unit))
-    : lift(.right(user))
+private func validateActiveStripeSubscription(
+  _ errorOrSubscription: Either<Prelude.Unit, Stripe.Subscription>
+  )
+  -> Either<Prelude.Unit, Stripe.Subscription> {
+
+    return errorOrSubscription.flatMap { stripeSubscription in
+      stripeSubscription.status != .active ? .left(unit) : .right(stripeSubscription)
+    }
+}
+
+private func redirectCurrentSubscribers<A, B>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<A, Database.User?, B>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<A, Database.User?, B>, Data> {
+
+  return { conn in
+    guard
+      let user = get2(conn.data),
+      let subscriptionId = user.subscriptionId
+      else { return middleware(conn) }
+
+    let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+      .mapExcept(requireSome)
+      .bimap(const(unit), id)
+      .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .run
+      .map { $0.right?.status == .some(.active) }
+
+    return hasActiveSubscription.flatMap {
+      $0
+        ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription. If you want to accept this team invite you must cancel your current subscription.")))
+        : middleware(conn)
+    }
+  }
+}
+
+private func validateCurrentUserIsNotInviter<A>(_ data: T3<Database.TeamInvite, Database.User?, A>) -> Bool {
+  let (teamInvite, currentUser) = (get1(data), get2(data))
+  return currentUser?.id.unwrap != .some(teamInvite.inviterUserId.unwrap)
+}
+
+private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Database.User, A>) -> Bool {
+  let (teamInvite, currentUser) = (get1(data), get2(data))
+  return currentUser.id.unwrap == teamInvite.inviterUserId.unwrap
+}
+
+private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {
+  let (email, inviter) = (get1(data), get2(data))
+  return email.unwrap.lowercased() != inviter.email.unwrap.lowercased()
 }

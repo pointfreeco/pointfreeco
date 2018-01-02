@@ -66,11 +66,11 @@ public struct Database {
   }
 
   public struct User: Decodable {
-    public let email: EmailAddress
-    public let gitHubUserId: GitHub.User.Id
-    public let gitHubAccessToken: String
-    public let id: Id
-    public let name: String
+    public internal(set) var email: EmailAddress
+    public internal(set) var gitHubUserId: GitHub.User.Id
+    public internal(set) var gitHubAccessToken: String
+    public internal(set) var id: Id
+    public internal(set) var name: String
     public private(set) var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
@@ -100,10 +100,10 @@ public struct Database {
   }
 
   public struct TeamInvite: Decodable {
-    let createdAt: Date
-    let email: EmailAddress
-    let id: Id
-    let inviterUserId: User.Id
+    var createdAt: Date
+    var email: EmailAddress
+    var id: Id
+    var inviterUserId: User.Id
 
     public typealias Id = Tagged<TeamInvite, UUID>
 

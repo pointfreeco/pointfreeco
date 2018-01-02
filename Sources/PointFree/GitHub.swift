@@ -24,10 +24,10 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-    public let avatarUrl: String
-    public let email: EmailAddress
-    public let id: Id
-    public let name: String
+    public private(set) var avatarUrl: String
+    public private(set) var email: EmailAddress
+    public private(set) var id: Id
+    public private(set) var name: String
 
     public typealias Id = Tagged<User, Int>
 
@@ -40,8 +40,8 @@ public struct GitHub {
   }
 
   public struct UserEnvelope: Codable {
-    public let accessToken: AccessToken
-    public let gitHubUser: User
+    public private(set) var accessToken: AccessToken
+    public private(set) var gitHubUser: User
   }
 }
 
