@@ -222,17 +222,7 @@ extension Session {
 private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
 
 public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
-  var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
-
-  // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
-  //     if you edit fields on the request.
-  //     See: https://bugs.swift.org/browse/SR-6687
-  let httpBody = request.httpBody
-  request.httpBody = httpBody
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(authorizationHeader, uniquingKeysWith: { $1 })
-  request.httpMethod = request.httpMethod?.uppercased()
+  var request = unauthedRequest(to: route)
 
   guard
     let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
