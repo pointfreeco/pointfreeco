@@ -27,9 +27,6 @@ class UpdateProfileTests: TestCase {
       to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
       )
-      // NB: We are explicitly setting the body here even though the request already has it's body set from
-      //     the route printer in order to fix its order.
-      |> \.httpBody .~ Data("name=Blobby%20McBlob&&email=blobby@blob.co".utf8)
 
     let output = connection(from: request)
       |> siteMiddleware
@@ -66,9 +63,6 @@ class UpdateProfileTests: TestCase {
       to: .account(.update(.init(email: .init(unwrap: ""), name: "", emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
       )
-      // NB: We are explicitly setting the body here even though the request already has it's body set from
-      //     the route printer in order to fix its order.
-      |> \.httpBody .~ Data("name=&emailSettings[newEpisode]=on&email=".utf8)
 
     let output = connection(from: request)
       |> siteMiddleware
