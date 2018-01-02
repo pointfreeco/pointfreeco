@@ -11,7 +11,6 @@ import Optics
 #endif
 
 class InviteTests: TestCase {
-
   func testShowInvite_LoggedOut() {
     AppEnvironment.with(\.database .~ .mock) {
       let request = unauthedRequest(to: .invite(.show(Database.TeamInvite.mock.id)))
