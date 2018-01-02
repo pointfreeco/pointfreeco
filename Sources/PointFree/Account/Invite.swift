@@ -123,9 +123,6 @@ let sendInviteMiddleware =
     <<< filter(validateEmailDoesNotBelongToInviter, or: redirect(to: .account(.index)))
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
-      // TODO: need to validate that email isnt the same as the inviter
-      // TODO: need to validate that email is unique
-
       let (email, inviter) = lower(conn.data)
 
       return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
