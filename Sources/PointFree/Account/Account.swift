@@ -13,11 +13,11 @@ let accountResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get4))
+    >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get5))
 
-func fetchAccountData<I, A>(
+private func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, T5<Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User, A>>> {
+  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
 
   let user = get1(conn.data)
 
@@ -32,7 +32,7 @@ func fetchAccountData<I, A>(
     }
     ?? pure(nil)
 
-  return sequential(
+  return
     zip(
       parallel(subscription),
 
@@ -40,16 +40,19 @@ func fetchAccountData<I, A>(
         .map { $0.right ?? [] },
 
       parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
+        .map { $0.right ?? [] },
+
+      parallel(AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run)
         .map { $0.right ?? [] }
-    )
-    )
-    .map { conn.map(const($0 .*. $1 .*. $2 .*. conn.data)) }
+      )
+      .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. conn.data)) }
+      .sequential
 }
 
-let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], Database.User)> { subscription, teamInvites, teammates, currentUser in
+let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User)> { subscription, teamInvites, teammates, emailSettings, currentUser in
 
   titleRowView.view(unit)
-    <> profileRowView.view(currentUser)
+    <> profileRowView.view((currentUser, emailSettings))
     <> subscriptionRowView.view((subscription, teamInvites, teammates))
     <> logoutView.view(unit)
 }
@@ -64,7 +67,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let profileRowView = View<Database.User> { currentUser in
+private let profileRowView = View<(Database.User, [Database.EmailSetting])> { currentUser, currentEmailSettings in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
@@ -74,7 +77,7 @@ private let profileRowView = View<Database.User> { currentUser in
           label([`class`([labelClass])], ["Name"]),
           input([
             `class`([blockInputClass]),
-            name(Database.User.CodingKeys.name.stringValue),
+            name(ProfileData.CodingKeys.name.stringValue),
             type(.text),
             value(currentUser.name),
             ]),
@@ -82,21 +85,12 @@ private let profileRowView = View<Database.User> { currentUser in
           label([`class`([labelClass])], ["Email"]),
           input([
             `class`([blockInputClass]),
-            name(Database.User.CodingKeys.email.stringValue),
+            name(ProfileData.CodingKeys.email.stringValue),
             type(.email),
             value(currentUser.email.unwrap)
             ]),
 
-          label([`class`([Class.display.block])], [
-            input(
-              [
-                type(.checkbox),
-                checked(false), // FIXME
-                `class`([Class.margin([.mobile: [.right: 1]])])
-              ]
-            ),
-            "Receive emails from us"
-            ]),
+          ] + emailSettingCheckboxes.view(currentEmailSettings) + [
 
           input([
             type(.submit),
@@ -107,6 +101,34 @@ private let profileRowView = View<Database.User> { currentUser in
         ])
       ])
     ])
+}
+
+private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmailSettings in
+  [
+    p(["Receive email when:"]),
+    p([`class`([Class.padding([.mobile: [.left: 1]])])], Database.EmailSetting.Newsletter.allNewsletters.map { newsletter in
+      label([`class`([Class.display.block])], [
+        input(
+          [
+            type(.checkbox),
+            name("emailSettings[\(newsletter.rawValue)]"),
+            checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
+            `class`([Class.margin([.mobile: [.right: 1]])])
+          ]
+        ),
+        .text(encode(newsletterDescription(newsletter)))
+        ])
+    })
+  ]
+}
+
+private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> String {
+  switch type {
+  case .announcements:
+    return "New announcements (very infrequently)"
+  case .newEpisode:
+    return "New episode is available (once a week)"
+  }
 }
 
 private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
@@ -335,7 +357,7 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
         ])]),
 
       form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
-        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Revoke")])
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
         ])]),
       ]),
     ])

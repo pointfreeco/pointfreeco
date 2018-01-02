@@ -78,7 +78,7 @@ private let capsStyles =
 
 private let boldStyles =
   Class.type.bold % fontWeight(.w700)
-    <> Class.type.bold % fontWeight(.bolder)
+    <> Class.type.bolder % fontWeight(.bolder)
     <> Class.type.medium % fontWeight(.w500)
     <> Class.type.semiBold % fontWeight(.w600)
 

@@ -8,6 +8,7 @@ public struct Database {
   var createSubscription: (Stripe.Subscription.Id, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  var fetchEmailSettingsForUserId: (Database.User.Id) -> EitherIO<Error, [Database.EmailSetting]>
   var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
@@ -15,9 +16,10 @@ public struct Database {
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var fetchUsersSubscribedToNewEpisodeEmail: () -> EitherIO<Error, [Database.User]>
+  var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
+  var registerUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateUser: (User.Id, String, EmailAddress) -> EitherIO<Error, Prelude.Unit>
+  var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -26,6 +28,7 @@ public struct Database {
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
+    fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
     fetchSubscriptionById: PointFree.fetchSubscription(id:),
     fetchSubscriptionByOwnerId: PointFree.fetchSubscription(ownerId:),
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
@@ -33,12 +36,34 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
-    fetchUsersSubscribedToNewEpisodeEmail: PointFree.fetchUsersSubscribedToNewEpisodeEmail,
+    fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
+    registerUser: PointFree.registerUser(withGitHubEnvelope:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
-    updateUser: PointFree.updateUser(withId:name:email:),
+    updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
   )
+
+  public struct EmailSetting: Codable, Equatable {
+    public let newsletter: Newsletter
+    public let userId: Database.User.Id
+
+    public enum CodingKeys: String, CodingKey {
+      case newsletter
+      case userId = "user_id"
+    }
+
+    public enum Newsletter: String, RawRepresentable, Codable {
+      case announcements
+      case newEpisode
+
+      public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
+    }
+
+    public static func ==(lhs: Database.EmailSetting, rhs: Database.EmailSetting) -> Bool {
+      return lhs.newsletter == rhs.newsletter && lhs.userId.unwrap == rhs.userId.unwrap
+    }
+  }
 
   public struct User: Decodable {
     public let email: EmailAddress
@@ -201,20 +226,74 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
   )
 }
 
-private func updateUser(withId id: Database.User.Id, name: String, email: EmailAddress) -> EitherIO<Error, Prelude.Unit> {
+private func updateUser(
+  withId userId: Database.User.Id,
+  name: String?,
+  email: EmailAddress?,
+  emailSettings: [Database.EmailSetting.Newsletter]?
+  ) -> EitherIO<Error, Prelude.Unit> {
+
   return execute(
     """
     UPDATE "users"
-    SET "name" = $1, "email" = $2
+    SET "name" = COALESCE($1, "name"),
+        "email" = COALESCE($2, "email")
     WHERE "id" = $3
     """,
     [
       name,
-      email.unwrap,
-      id.unwrap.uuidString,
+      email?.unwrap,
+      userId.unwrap.uuidString,
     ]
     )
+    .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
+}
+
+private func registerUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
+  return upsertUser(withGitHubEnvelope: envelope)
+    .flatMap { optionalUser in 
+      guard let user = optionalUser else { return pure(optionalUser) }
+
+      return updateEmailSettings(settings: Database.EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
+        .map(const(optionalUser))
+  }
+}
+
+private func updateEmailSettings(
+  settings: [Database.EmailSetting.Newsletter]?,
+  forUserId userId: Database.User.Id
+  )
+  -> EitherIO<Error, Prelude.Unit> {
+
+    guard let settings = settings else { return pure(unit) }
+
+    let deleteEmailSettings = execute(
+      """
+      DELETE FROM "email_settings"
+      WHERE "user_id" = $1
+      """,
+      [userId.unwrap.uuidString]
+      )
+      .map(const(unit))
+
+    let updateEmailSettings = sequence(
+      settings.map { type in
+        execute(
+          """
+          INSERT INTO "email_settings" ("newsletter", "user_id")
+          VALUES ($1, $2)
+          """,
+          [
+            type.rawValue,
+            userId.unwrap.uuidString
+          ]
+        )
+      }
+    )
     .map(const(unit))
+
+    return sequence([deleteEmailSettings, updateEmailSettings])
+      .map(const(unit))
 }
 
 private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
@@ -250,13 +329,19 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
   )
 }
 
-private func fetchUsersSubscribedToNewEpisodeEmail() -> EitherIO<Error, [Database.User]> {
+private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]> {
   return rows(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
-    FROM "users"
-    """
-    // TODO: check email settings
+    SELECT "users"."email",
+           "users"."github_user_id",
+           "users"."github_access_token",
+           "users"."id",
+           "users"."name",
+           "users"."subscription_id"
+    FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+    WHERE "email_settings"."newsletter" = $1
+    """,
+    [newsletter.rawValue]
   )
 }
 
@@ -287,8 +372,7 @@ private func fetchTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Data
 private func deleteTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
-    DELETE
-    FROM "team_invites"
+    DELETE FROM "team_invites"
     WHERE "id" = $1
     """,
     [id.unwrap.uuidString]
@@ -333,6 +417,18 @@ private func insertTeamInvite(
         )
         ?? throwE(unit)
     }
+}
+
+private func fetchEmailSettings(forUserId userId: Database.User.Id) -> EitherIO<Error, [Database.EmailSetting]> {
+
+  return rows(
+    """
+    SELECT "newsletter", "user_id"
+    FROM "email_settings"
+    WHERE "user_id" = $1
+    """,
+    [userId.unwrap.uuidString]
+  )
 }
 
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
@@ -386,6 +482,15 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       )
       """
     )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE IF NOT EXISTS "email_settings" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "newsletter" character varying,
+        "user_id" uuid REFERENCES "users" ("id") NOT NULL
+      )
+      """
+    )))
     .map(const(unit))
 }
 
@@ -434,6 +539,6 @@ func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = 
   -> EitherIO<Error, PostgreSQL.Node> {
 
     return conn.flatMap { conn in
-      .wrap { try conn.execute(query, representable) }
+      return .wrap { return try conn.execute(query, representable) }
     }
 }

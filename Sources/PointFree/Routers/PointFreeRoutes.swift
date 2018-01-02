@@ -12,6 +12,7 @@ public enum Route: DerivePartialIsos {
   case account(Account)
   case admin(Admin)
   case episode(Either<String, Int>)
+  case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case invite(Invite)
@@ -25,6 +26,7 @@ public enum Route: DerivePartialIsos {
   case terms
 
   public enum Account: DerivePartialIsos {
+    case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
     case index
     case paymentInfo(PaymentInfo)
     case subscription(Subscription)
@@ -75,6 +77,11 @@ private let routers: [Router<Route>] = [
   Route.iso.about
     <¢> get %> lit("about") <% end,
 
+  Route.iso.account <<< Route.Account.iso.confirmEmailChange
+    <¢> get %> lit("account") %> lit("confirm-email-change")
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
+    <% end,
+
   Route.iso.account <<< Route.Account.iso.index
     <¢> get %> lit("account") <% end,
 
@@ -111,6 +118,11 @@ private let routers: [Router<Route>] = [
 
   Route.iso.episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+
+  Route.iso.expressUnsubscribe
+    <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
+    <% end,
 
   Route.iso.gitHubCallback
     <¢> get %> lit("github-auth")

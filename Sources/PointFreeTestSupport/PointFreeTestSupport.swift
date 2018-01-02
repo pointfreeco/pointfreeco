@@ -35,6 +35,7 @@ extension Database {
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
+    fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
@@ -42,9 +43,10 @@ extension Database {
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
-    fetchUsersSubscribedToNewEpisodeEmail: { pure([.mock]) },
+    fetchUsersSubscribedToNewsletter: const(pure([.mock])),
+    registerUser: const(pure(.some(.mock))),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
-    updateUser: { _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _ in pure(unit) },
     upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
   )
@@ -75,6 +77,13 @@ extension Database.TeamInvite {
     email: .init(unwrap: "blob@pointfree.co"),
     id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
     inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+  )
+}
+
+extension Database.EmailSetting {
+  public static let mock = Database.EmailSetting(
+    newsletter: .newEpisode,
+    userId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 
@@ -210,8 +219,20 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
+private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
+
 public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
-  let request = URLRequest(url: URL(string: url(to: route))!)
+  var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
+
+  // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
+  //     if you edit fields on the request.
+  //     See: https://bugs.swift.org/browse/SR-6687
+  let httpBody = request.httpBody
+  request.httpBody = httpBody
+
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(authorizationHeader, uniquingKeysWith: { $1 })
+  request.httpMethod = request.httpMethod?.uppercased()
 
   guard
     let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
@@ -220,11 +241,10 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
     let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
     else { return request }
 
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
+
   return request
-    |> \.allHTTPHeaderFields .~ [
-      "Cookie": "pf_session=\(sessionCookie)",
-      "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-  ]
 }
 
 // TODO: expose methods from http-pipeline
