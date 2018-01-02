@@ -42,12 +42,14 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You must be the invite owner to perform that action."))
     )
     <| { conn in
-      parallel(sendInviteEmail(invite: get1(conn.data), inviter: get2(conn.data)).run)
+      let (invite, inviter) = lower(conn.data)
+
+      parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
         .run({ _ in })
       return conn
         |> redirect(
           to: .account(.index),
-          headersMiddleware: flash(.notice, "Invite sent to \(get1(conn.data).email.unwrap).")
+          headersMiddleware: flash(.notice, "Invite sent to \(invite.email.unwrap).")
       )
 }
 
