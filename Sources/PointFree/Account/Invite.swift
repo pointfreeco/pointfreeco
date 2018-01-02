@@ -116,7 +116,10 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <<< filter(validateEmailDoesNotBelongToInviter, or: redirect(to: .account(.index)))
+    <<< filter(
+      validateEmailDoesNotBelongToInviter,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You can’t invite yourself."))
+    )
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
       let (email, inviter) = lower(conn.data)
