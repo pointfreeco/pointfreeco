@@ -4,11 +4,11 @@
 ▿ Request
   POST http://localhost:8080/account
   Authorization: Basic aGVsbG86d29ybGQ=
-  Cookie: pf_session=be847b5f12f9571a96252587105c91f788704838959a4818df9555a7dbb636e09146d686873dfde259849eb38151c9f448d718ff57b50f22d67cc9c37c9acca2b8da4c3e919a230d2b2d4222dedc4e9c354d84975c9e5f532503e6be65314e300f74e793d154bf8f3c85054ae8df44717e856dc441f24a070cad129b4072a87a
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
   name=Blobby%20McBlob&&email=blobby@blob.co
 
 ▿ Response
   Status 302 FOUND
   Location: /account
-  Set-Cookie: pf_session=2e2e083b6dbb81835625f1b89f635da6c10f6d821f655192f7f23bd3854e145c95004ce096a5a07374b35276f89f0a4c3ddc69b1ffc6967f6b4c1cc13b1fe119ca537d4e093580289f3b99e865762cfef06c1dcdef9f3736646fd8e45bb054f2e932b75dfc29efb9e50007c8db4b971b4945b7d8b502eb99ea45885f335069dfee00ec62ae4753c2d79bc02eee56fed51ff9c8703ddb6e34c25b2e292c6e3fc978d2af51d77e26e756e60d2ca76a77b4980b7a77477e9506b095b6c7fa9fabf4285b69b8ddd7af0815736e4cdf1340fd178de4b47cdc3f4e66d39428728cb96ac393070972f963f77902af522e37e1f32eb059b2622d62634e6509e307144ec8; HttpOnly; Path=/
+  Set-Cookie: pf_session={"flash":{"message":"We’ve sent an email to blobby@blob.co to confirm this change.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/

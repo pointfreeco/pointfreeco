@@ -11,13 +11,10 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Ses
     return { conn in
       let value = update(conn.request.session)
       guard value != conn.request.session else { return pure(conn) }
-      return Response.Header
-        .setSignedCookie(
+      return setCookie(
           key: pointFreeUserSession,
           value: value,
-          options: [.path("/")],
-          secret: AppEnvironment.current.envVars.appSecret,
-          encrypt: true
+          options: [.path("/")]
         )
         .map { conn |> writeHeader($0) }
         ?? pure(conn)
@@ -31,9 +28,14 @@ public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middlewar
 extension URLRequest {
   var session: Session {
     return self.cookies[pointFreeUserSession]
-      .flatMap {
-        Response.Header
-          .verifiedValue(signedCookieValue: $0, secret: AppEnvironment.current.envVars.appSecret)
+      .flatMap { value in
+        switch AppEnvironment.current.cookieTransform {
+        case .plaintext:
+          return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
+        case .encrypted:
+          return Response.Header
+            .verifiedValue(signedCookieValue: value, secret: AppEnvironment.current.envVars.appSecret)
+        }
       }
       ?? .empty
   }
@@ -70,3 +72,22 @@ extension Flash: Equatable {
 }
 
 private let pointFreeUserSession = "pf_session"
+
+private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
+  switch AppEnvironment.current.cookieTransform {
+  case .plaintext:
+    return (try? JSONEncoder().encode(value))
+      .flatMap { String(data: $0, encoding: .utf8) }
+      .map { Response.Header.setCookie(key, $0, options) }
+
+  case .encrypted:
+    return Response.Header
+      .setSignedCookie(
+        key: key,
+        value: value,
+        options: options,
+        secret: AppEnvironment.current.envVars.appSecret,
+        encrypt: true
+    )
+  }
+}
