@@ -485,6 +485,10 @@ public func lower<A>(_ tuple: Tuple1<A>) -> A {
   return get1(tuple)
 }
 
+func isNil<A>(_ x: A?) -> Bool {
+  return x == nil
+}
+
 import Cryptor
 
 extension PartialIso where A == String, B == String {

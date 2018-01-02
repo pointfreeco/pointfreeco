@@ -108,11 +108,14 @@ public enum Pricing: Codable, DerivePartialIsos {
   }
 }
 
-let pricingResponse =
-  writeStatus(.ok)
-    >-> respond(pricingView)
+import Tuple
 
-private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user, currentRoute in
+let pricingResponse =
+  redirectCurrentSubscribers
+    <| writeStatus(.ok)
+    >-> respond(pricingView.contramap(lower))
+
+private let pricingView = View<(Database.User?, Pricing, Route)> { user, pricing, currentRoute in
   document([
     html([
       head([
@@ -357,4 +360,29 @@ private func tabStyles(
       hideContentStyles
         <> showContentStyles
         <> selectedStyles
+}
+
+private func redirectCurrentSubscribers<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+
+  return { conn in
+    guard
+      let user = get1(conn.data),
+      let subscriptionId = user.subscriptionId
+      else { return middleware(conn) }
+
+    let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+      .mapExcept(requireSome)
+      .bimap(const(unit), id)
+      .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .run
+      .map { $0.right?.status == .some(.active) }
+
+    return hasActiveSubscription.flatMap {
+      $0
+        ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription.")))
+        : middleware(conn)
+    }
+  }
 }
