@@ -6,6 +6,8 @@ import Styleguide
 
 /// The data needed to use the simple email layout.
 struct SimpleEmailLayoutData<A> {
+  let user: Database.User?
+  let newsletter: Database.EmailSetting.Newsletter?
   let title: String
   /// Content of the hidden preheader tag at the top of the body. Many email clients will render this as a
   /// preview of the email in the inbox.
@@ -45,7 +47,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
             tr([
               td([align(.center), valign(.top)],
                  bodyView.view(layoutData.data)
-                  <> emailFooterView.view(unit))
+                  <> emailFooterView.view((layoutData.user, layoutData.newsletter)))
               ])
             ])
           ])
