@@ -227,7 +227,7 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
   var request = unauthedRequest(to: route)
 
   guard
-    let sessionData = try? jsonEncoder.encode(session),
+    let sessionData = try? cookieJsonEncoder.encode(session),
     let sessionCookie = String(data: sessionData, encoding: .utf8)
     else { return request }
 
@@ -253,4 +253,12 @@ public func unauthedRequest(to route: Route) -> URLRequest {
   return request
 }
 
-private let jsonEncoder = JSONEncoder()
+private let cookieJsonEncoder: JSONEncoder = { () in
+  let encoder = JSONEncoder()
+
+  if #available(OSX 10.13, *) {
+    encoder.outputFormatting = [.sortedKeys]
+  }
+
+  return encoder
+}()
