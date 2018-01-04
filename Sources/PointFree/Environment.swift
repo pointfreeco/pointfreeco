@@ -3,12 +3,18 @@ import Foundation
 import Optics
 import Prelude
 
+public enum CookieTransform: String, Codable {
+  case plaintext
+  case encrypted
+}
+
 public typealias AirtableCreateRow = (_ email: EmailAddress) -> (_ baseId: String)
   -> EitherIO<Prelude.Unit, Prelude.Unit>
 public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
+  public private(set) var cookieTransform: CookieTransform
   public private(set) var database: Database
   public private(set) var date: () -> Date
   public private(set) var envVars: EnvVars
@@ -19,6 +25,7 @@ public struct Environment {
 
   init(
     airtableStuff: @escaping AirtableCreateRow = createRow,
+    cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
@@ -28,6 +35,7 @@ public struct Environment {
     stripe: Stripe = .live) {
 
     self.airtableStuff = airtableStuff
+    self.cookieTransform = cookieTransform
     self.database = database
     self.date = date
     self.envVars = envVars

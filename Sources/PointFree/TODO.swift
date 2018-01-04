@@ -490,45 +490,14 @@ import Cryptor
 extension PartialIso where A == String, B == String {
   public static func decrypted(withSecret secret: String) -> PartialIso<String, String> {
     return PartialIso(
-      apply: { PointFree.decrypted(text: $0, secret: secret) },
-      unapply: { PointFree.encrypted(text: $0, secret: secret) }
+      apply: { HttpPipeline.decrypted(text: $0, secret: secret) },
+      unapply: { encrypted(text: $0, secret: secret) }
     )
   }
 
   public static var appDecrypted: PartialIso<String, String> {
     return .decrypted(withSecret: AppEnvironment.current.envVars.appSecret)
   }
-}
-
-public func encrypted(text plainText: String, secret: String) -> String? {
-  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
-  let iv = [UInt8](repeating: 0, count: secretBytes.count)
-  let plainTextBytes = CryptoUtils.byteArray(from: plainText)
-
-  let blockSize = Cryptor.Algorithm.aes.blockSize
-  let paddedPlainTextBytes = plainTextBytes.count % blockSize != 0
-    ? CryptoUtils.zeroPad(byteArray: plainTextBytes, blockSize: blockSize)
-    : plainTextBytes
-
-  let cipherText = Cryptor(operation: .encrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
-    .update(byteArray: paddedPlainTextBytes)?
-    .final()
-
-  return cipherText.map { CryptoUtils.hexString(from: $0) }
-}
-
-public func decrypted(text encryptedText: String, secret: String) -> String? {
-  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
-  let iv = [UInt8](repeating: 0, count: secretBytes.count)
-  let encryptedTextBytes = CryptoUtils.byteArray(fromHex: encryptedText)
-
-  let decryptedText = Cryptor(operation: .decrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
-    .update(byteArray: encryptedTextBytes)?
-    .final()
-
-  return decryptedText
-    .map { Data($0.filter { $0 != 0 }) }
-    .flatMap { String.init(data: $0, encoding: .utf8) }
 }
 
 /// Combines two partial iso's into one by concatenating their results into a single string.
