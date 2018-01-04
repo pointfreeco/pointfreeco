@@ -227,10 +227,8 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
   var request = unauthedRequest(to: route)
 
   guard
-    let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
-    case let secret = AppEnvironment.current.envVars.appSecret,
-    let computedDigest = digest(value: encodedValue, secret: secret),
-    let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
+    let sessionData = try? jsonEncoder.encode(session),
+    let sessionCookie = String(data: sessionData, encoding: .utf8)
     else { return request }
 
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
