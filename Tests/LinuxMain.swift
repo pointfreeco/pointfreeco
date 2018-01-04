@@ -112,7 +112,8 @@ extension PaymentInfoTests {
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
-    ("testPricingLoggedIn", testPricingLoggedIn)
+    ("testPricingLoggedIn_NonSubscriber", testPricingLoggedIn_NonSubscriber),
+    ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber)
   ]
 }
 extension RegistrationEmailTests {
