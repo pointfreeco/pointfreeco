@@ -114,7 +114,7 @@ let pricingResponse =
     <| writeStatus(.ok)
     >-> respond(pricingView.contramap(lower))
 
-private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, currentUser, currentRoute in
+private let pricingView = View<(Database.User?, Pricing, Route)> { currentUser, pricing, currentRoute in
   document([
     html([
       head([
