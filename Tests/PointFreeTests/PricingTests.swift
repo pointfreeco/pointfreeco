@@ -1,3 +1,4 @@
+import Either
 import SnapshotTesting
 import Prelude
 import XCTest
@@ -51,22 +52,33 @@ class PricingTests: TestCase {
     #endif
   }
 
-  func testPricingLoggedIn() {
-    let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
-    let result = conn |> siteMiddleware
+  func testPricingLoggedIn_NonSubscriber() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
 
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1200))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 400
+          assertSnapshot(matching: webView, named: "mobile")
+
+        }
+      #endif
+    }
+  }
+
+  func testPricingLoggedIn_Subscriber() {
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1200))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
-
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-
-      }
+      let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
+      let result = conn |> siteMiddleware
+      
+      assertSnapshot(matching: result.perform())
     #endif
   }
 }
