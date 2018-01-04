@@ -7,7 +7,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-@testable import Tuple
+import Tuple
 
 // MARK: Middleware
 
