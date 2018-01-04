@@ -16,6 +16,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("d483620")),
     .package(url: "https://github.com/mbrandonw/episodes.git", .revision("6b9c3e2f")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+    .package(url: "https://github.com/IBM-Swift/CommonCrypto.git", from: "0.1.5"),
     ],
   targets: [
     .target(
