@@ -30,7 +30,6 @@ class UpdateProfileTests: TestCase {
     let output = connection(from: request)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
     
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchUserById(user.id)
@@ -39,6 +38,10 @@ class UpdateProfileTests: TestCase {
         .right!!,
       named: "user_after_update"
     )
+
+    #if !os(Linux)
+      assertSnapshot(matching: output)
+    #endif
   }
   
   func testUpdateEmailSettings() {
@@ -64,7 +67,6 @@ class UpdateProfileTests: TestCase {
     let output = connection(from: request)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
     
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
@@ -73,5 +75,9 @@ class UpdateProfileTests: TestCase {
         .right!,
       named: "email_settings_after_update"
     )
+
+    #if !os(Linux)
+      assertSnapshot(matching: output)
+    #endif
   }
 }
