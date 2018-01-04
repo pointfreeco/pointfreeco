@@ -135,8 +135,8 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> pricingResponse
 
     case .secretHome:
-      return conn.map(const(unit))
-        |> secretHomeResponse
+      return conn.map(const(user))
+        |> secretHomeMiddleware
 
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))

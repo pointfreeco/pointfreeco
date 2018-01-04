@@ -58,7 +58,7 @@ let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.U
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Account"])
