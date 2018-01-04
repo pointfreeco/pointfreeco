@@ -9,11 +9,11 @@ import Prelude
 import Styleguide
 import UrlFormEncoding
 
-let secretHomeResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
+let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> respond(secretHomeView.map(addGoogleAnalytics))
 
-let secretHomeView = View<Prelude.Unit> { _ in
+let secretHomeView = View<Database.User?> { currentUser in
   document([
     html([
       head([
@@ -25,8 +25,8 @@ let secretHomeView = View<Prelude.Unit> { _ in
       body(
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
-          <> pricingOptionsView.view((.default, nil))
-          <> footerView.view(unit)
+          <> pricingOptionsView.view((.default, currentUser))
+          <> footerView.view(currentUser)
       )
       ])
     ])

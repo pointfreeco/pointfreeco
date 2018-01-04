@@ -35,7 +35,7 @@ private let termsView = View<Prelude.Unit> { _ in
               ])
             ])
           ])
-        ] + footerView.view(unit))
+        ] + footerView.view(nil))
       ])
     ])
 }

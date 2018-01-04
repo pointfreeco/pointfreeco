@@ -155,7 +155,7 @@ let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscriptio
                 )
               ])
           ]
-          <> footerView.view(unit)
+          <> footerView.view(nil)
       )
       ])
     ])
@@ -163,7 +163,7 @@ let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscriptio
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Cancel Subscription?"])
@@ -187,7 +187,15 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel my subscription"])
+          ["Cancel my subscription"]
+        ),
+        a(
+          [
+            href(path(to: .account(.index))),
+            `class`([Class.pf.components.button(color: .black, style: .underline)])
+          ],
+          ["Nevermind"]
+        )
         ])
       ])
     ])
