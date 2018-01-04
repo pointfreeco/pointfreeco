@@ -1,6 +1,16 @@
 // swift-tools-version:4.0
 
+import Foundation
 import PackageDescription
+
+//https://github.com/mbrandonw/episode-transcripts
+
+let transcriptsDependency: Package.Dependency
+if ProcessInfo.processInfo.environment["TRANSCRIPT"] == "live" {
+  transcriptsDependency = Package.Dependency.package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("9a635ce"))
+} else {
+  transcriptsDependency = Package.Dependency.package(url: "https://github.com/pointfreeco/episode-transcripts-oss", .revision("9a635ce"))
+}
 
 let package = Package(
   name: "PointFree",
@@ -13,6 +23,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9a635ce")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("d483620")),
+    transcriptsDependency
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
     ],
   targets: [
