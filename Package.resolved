@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
         "state": {
           "branch": null,
-          "revision": "16f9c7ddcbe11bbd32106a791ebef2108a4e9183",
-          "version": "0.8.21"
+          "revision": "1de800d80f22a930e617f7c551a692475f92a23d",
+          "version": "0.8.22"
         }
       },
       {
@@ -149,8 +149,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "d483620",
-          "revision": "d48362028433bad983f7ce9c87cb3b95104344c8",
+          "branch": "eda7887",
+          "revision": "eda7887fb046499ec22de2be78b83831accd37e9",
           "version": null
         }
       }
