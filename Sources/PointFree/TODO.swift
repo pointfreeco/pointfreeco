@@ -8,7 +8,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
-@testable import Tuple
+import Tuple
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
@@ -347,10 +347,6 @@ extension PartialIso where A == String, B == UUID {
       unapply: ^\.uuidString
     )
   }
-}
-
-public func lift<A>(_ a: A) -> Tuple1<A> {
-  return Tuple1(first: a, second: unit)
 }
 
 extension IO {
