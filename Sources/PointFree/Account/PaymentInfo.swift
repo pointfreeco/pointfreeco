@@ -47,7 +47,7 @@ let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription,
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Payment Info"])
@@ -57,7 +57,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
 }
 
 private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.title4])], ["Current Payment Info"]),
@@ -82,6 +82,13 @@ private let updatePaymentInfoRowView = View<Prelude.Unit> { _ in
               button(
                 [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
                 ["Update payment info"]
+              ),
+              a(
+                [
+                  href(path(to: .account(.index))),
+                  `class`([Class.pf.components.button(color: .black, style: .underline)])
+                ],
+                ["Cancel"]
               )
           ]
         )

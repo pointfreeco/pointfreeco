@@ -46,7 +46,7 @@ let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser
             ])
           ]
           <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
-          <> footerView.view(unit))
+          <> footerView.view(nil))
       ])
     ])
 }
@@ -284,7 +284,7 @@ private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Rou
                 ])
               ])
           ]
-          <> footerView.view(unit))
+          <> footerView.view(nil))
       ])
     ])
 }
