@@ -29,7 +29,7 @@ private let linksColumnsView = View<Database.User?> { currentUser in
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
-    "© 2018 Point-Free, Inc. all rights are reserved for the videos and transcripts on this site. ",
+    "© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. ",
     "All other content is licensed under ",
     a([`class`([Class.pf.colors.link.gray650]),
        href("https://creativecommons.org/licenses/by-nc-sa/4.0/")],
