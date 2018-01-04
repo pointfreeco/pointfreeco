@@ -114,7 +114,7 @@ let pricingResponse =
     <| writeStatus(.ok)
     >-> respond(pricingView.contramap(lower))
 
-private let pricingView = View<(Database.User?, Pricing, Route)> { user, pricing, currentRoute in
+private let pricingView = View<(Database.User?, Pricing, Route)> { currentUser, pricing, currentRoute in
   document([
     html([
       head([
@@ -125,15 +125,15 @@ private let pricingView = View<(Database.User?, Pricing, Route)> { user, pricing
         ]),
 
       body(
-        darkNavView.view((user, currentRoute))
-          + pricingOptionsView.view((pricing, user))
-          + footerView.view(unit)
+        darkNavView.view((currentUser, currentRoute))
+          + pricingOptionsView.view((pricing, currentUser))
+          + footerView.view(currentUser)
       )
     ])
   ])
 }
 
-let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
+let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, currentUser in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
@@ -153,7 +153,7 @@ let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
             pricingTabsView.view(pricing)
               + individualPricingRowView.view(pricing)
               + teamPricingRowView.view(pricing)
-              + pricingFooterView.view(user)
+              + pricingFooterView.view(currentUser)
           )
           ])
         ])
@@ -256,18 +256,20 @@ private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
     <> maxWidth(.px(200))
 
-private let pricingFooterView = View<Database.User?> { user in
+private let pricingFooterView = View<Database.User?> { currentUser in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-        user.map(stripeForm.view) ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
+        currentUser
+          .map(const(unit) >>> stripeForm.view)
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<Database.User> { user in
+private let stripeForm = View<Prelude.Unit> { _ in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
     Stripe.html.cardInput

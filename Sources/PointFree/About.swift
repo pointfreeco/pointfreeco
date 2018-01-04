@@ -35,7 +35,7 @@ private let aboutView = View<Database.User?> { currentUser in
               ])
             ])
           ])
-        ] + footerView.view(unit))
+        ] + footerView.view(nil))
       ])
     ])
 }

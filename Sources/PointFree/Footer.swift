@@ -15,26 +15,29 @@ private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
 private let footerInfoColumn = column(sizes: [.mobile: 12, .desktop: 6])
 
 private let footerInfoColumnsView =
-  pointFreeView.map(footerInfoColumn)
+  pointFreeView.map(footerInfoColumn).contramap(const(unit))
     <> linksColumnsView
-    <> legalView.map(footerInfoColumn)
+    <> legalView.map(footerInfoColumn).contramap(const(unit))
 
 private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
-private let linksColumnsView =
-  contentColumnView.map(linksColumn)
-    <> accountColumnView.map(linksColumn)
-    <> moreColumnView.map(linksColumn)
+private let linksColumnsView = View<Database.User?> { currentUser in
+  contentColumnView.map(linksColumn).view(unit)
+    <> (currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [])
+    <> moreColumnView.map(linksColumn).view(unit)
+}
 
 private let legalView = View<Prelude.Unit> { _ in
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
-    "The content of this site is licensed under ",
-    a([`class`([Class.pf.colors.link.gray650]), href("https://creativecommons.org/licenses/by-nc-sa/4.0/")], ["CC BY-NC-SA 4.0"]),
+    "© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. ",
+    "All other content is licensed under ",
+    a([`class`([Class.pf.colors.link.gray650]),
+       href("https://creativecommons.org/licenses/by-nc-sa/4.0/")],
+      ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
     a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
     " to run this site is licensed under the ",
-    a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .license))], ["MIT license"]),
-    ". Point-Free, Inc 2018."
+    a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .license))], ["MIT license"])
     ])
 }
 

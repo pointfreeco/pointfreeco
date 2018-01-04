@@ -46,7 +46,7 @@ func simplePageLayout<A>(title titleString: String, currentUser: @escaping (A) -
                       ])
                     ])
                 ]
-                <> footerView.view(unit)
+                <> footerView.view(currentUser(data))
             )
             ])
           ])
