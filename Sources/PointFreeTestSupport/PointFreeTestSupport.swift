@@ -222,6 +222,22 @@ extension Session {
 private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
 
 public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
+  var request = unauthedRequest(to: route)
+
+  guard
+    let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
+    case let secret = AppEnvironment.current.envVars.appSecret,
+    let computedDigest = digest(value: encodedValue, secret: secret),
+    let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
+    else { return request }
+
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
+
+  return request
+}
+
+public func unauthedRequest(to route: Route) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
@@ -233,16 +249,6 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
     .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
-
-  guard
-    let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
-    case let secret = AppEnvironment.current.envVars.appSecret,
-    let computedDigest = digest(value: encodedValue, secret: secret),
-    let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
-    else { return request }
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
 }
