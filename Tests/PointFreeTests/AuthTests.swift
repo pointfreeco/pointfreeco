@@ -14,62 +14,57 @@ import XCTest
 
 class AuthTests: TestCase {
   func testAuth() {
-    // NB: It seems that the result of OpenSSL crypto on Linux is not deterministic, although its decryption
-    //     is, so we cannot do snapshot tests on encrypted values :/ We will still run these tests on
-    //     macOS at least.
-    #if !os(Linux)
-      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
-        |> \.allHTTPHeaderFields .~ [
-          "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-      ]
-
-      let conn = connection(from: request)
-      let result = conn |> siteMiddleware
-
-      assertSnapshot(matching: result.perform())
-    #endif
+    let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
+      |> \.allHTTPHeaderFields .~ [
+        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+    ]
+    
+    let conn = connection(from: request)
+    let result = conn |> siteMiddleware
+    
+    assertSnapshot(matching: result.perform())
   }
-
+  
   func testAuth_WithFetchAuthTokenFailure() {
     AppEnvironment.with(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const)) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
       ]
-
+      
       let conn = connection(from: request)
       let result = conn |> siteMiddleware
-
+      
       assertSnapshot(matching: result.perform())
     }
   }
-
+  
   func testAuth_WithFetchUserFailure() {
     AppEnvironment.with(\.gitHub.fetchUser .~ (unit |> throwE >>> const)) {
       let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
         |> \.allHTTPHeaderFields .~ [
           "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
       ]
-
+      
       let conn = connection(from: request)
       let result = conn |> siteMiddleware
-
+      
       assertSnapshot(matching: result.perform())
     }
   }
-
+  
   func testLogin() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/login")!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
-
+    
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
-
+    
     assertSnapshot(matching: result.perform())
   }
-
+  
   func testLoginWithRedirect() {
     let request = router.request(
       for: .login(redirect: url(to: .episode(.right(42)))),
@@ -79,42 +74,42 @@ class AuthTests: TestCase {
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
       ]
       |> \.httpMethod .~ "GET"
-
+    
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
   }
-
+  
   func testLogout() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/logout")!)
       |> \.allHTTPHeaderFields .~ [
         "Cookie": "github_session=deadbeef; HttpOnly; Secure",
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
-
+    
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
-
+    
     assertSnapshot(matching: result.perform())
   }
-
+  
   func testSecretHome_LoggedOut() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/home")!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
-
+    
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
-
+    
     assertSnapshot(matching: result.perform())
   }
-
+  
   func testSecretHome_LoggedIn() {
     let conn = connection(from: authedRequest(to: .secretHome))
     let result = conn |> siteMiddleware 
-
+    
     assertSnapshot(matching: result.perform())
   }
 }

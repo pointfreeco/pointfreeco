@@ -4,7 +4,7 @@
 ▿ Request
   GET http://localhost:8080/account/subscription/cancel
   Authorization: Basic aGVsbG86d29ybGQ=
-  Cookie: pf_session=be847b5f12f9571a96252587105c91f788704838959a4818df9555a7dbb636e09146d686873dfde259849eb38151c9f4d23819086d02dc0e7bf948441b5e73380dfda4c6e77aaa52c7d9e5d23eef28b3c4520f773d736dddff2d2f6f02048e8629f7faf219707bc7478183b3b400e3ec1373f51f8ce623ceb17e8056b22cbd49
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
   (Data, 0 bytes)
 

@@ -12,27 +12,25 @@ import Optics
 
 class UpdateProfileTests: TestCase {
   func testUpdateNameAndEmail() {
-    #if !os(Linux)
     let user = AppEnvironment.current.database.registerUser(.mock)
       .run
       .perform()
       .right!!
-
+    
     assertSnapshot(
       matching: user,
       named: "user_before_update"
     )
-
+    
     let request = authedRequest(
       to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
-      )
-
+    )
+    
     let output = connection(from: request)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
-
+    
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchUserById(user.id)
         .run
@@ -40,11 +38,13 @@ class UpdateProfileTests: TestCase {
         .right!!,
       named: "user_after_update"
     )
+
+    #if !os(Linux)
+      assertSnapshot(matching: output)
     #endif
   }
-
+  
   func testUpdateEmailSettings() {
-    #if !os(Linux)
     let user = AppEnvironment.current.database.registerUser(.mock)
       .run
       .perform()
@@ -53,22 +53,21 @@ class UpdateProfileTests: TestCase {
       .run
       .perform()
       .right!
-
+    
     assertSnapshot(
       matching: emailSettings,
       named: "email_settings_before_update"
     )
-
+    
     let request = authedRequest(
-      to: .account(.update(.init(email: .init(unwrap: ""), name: "", emailSettings: ["newEpisode": "on"]))),
+      to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
-      )
-
+    )
+    
     let output = connection(from: request)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
-
+    
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
         .run
@@ -76,6 +75,9 @@ class UpdateProfileTests: TestCase {
         .right!,
       named: "email_settings_after_update"
     )
+
+    #if !os(Linux)
+      assertSnapshot(matching: output)
     #endif
   }
 }
