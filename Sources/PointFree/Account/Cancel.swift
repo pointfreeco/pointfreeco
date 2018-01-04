@@ -194,7 +194,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
             href(path(to: .account(.index))),
             `class`([Class.pf.components.button(color: .black, style: .underline)])
           ],
-          ["Nevermind"]
+          ["Never mind"]
         )
         ])
       ])
