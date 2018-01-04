@@ -76,7 +76,7 @@ private let pointFreeUserSession = "pf_session"
 private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
   switch AppEnvironment.current.cookieTransform {
   case .plaintext:
-    return (try? JSONEncoder().encode(value))
+    return (try? cookieJsonEncoder.encode(value))
       .flatMap { String(data: $0, encoding: .utf8) }
       .map { Response.Header.setCookie(key, $0, options) }
 
@@ -91,3 +91,13 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
     )
   }
 }
+
+private let cookieJsonEncoder: JSONEncoder = { () in
+  let encoder = JSONEncoder()
+
+  if #available(OSX 10.13, *) {
+    encoder.outputFormatting = [.sortedKeys]
+  }
+
+  return encoder
+}()

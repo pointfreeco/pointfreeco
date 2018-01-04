@@ -72,7 +72,7 @@ class PricingTests: TestCase {
       #endif
     }
   }
-  
+
   func testPricingLoggedIn_Subscriber() {
     let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
     let result = conn |> siteMiddleware
