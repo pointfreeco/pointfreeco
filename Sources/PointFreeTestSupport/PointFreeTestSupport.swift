@@ -252,13 +252,3 @@ public func unauthedRequest(to route: Route) -> URLRequest {
 
   return request
 }
-
-private let cookieJsonEncoder: JSONEncoder = { () in
-  let encoder = JSONEncoder()
-
-  if #available(OSX 10.13, *) {
-    encoder.outputFormatting = [.sortedKeys]
-  }
-
-  return encoder
-}()

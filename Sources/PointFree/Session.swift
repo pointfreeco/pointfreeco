@@ -92,7 +92,7 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
   }
 }
 
-private let cookieJsonEncoder: JSONEncoder = { () in
+public let cookieJsonEncoder: JSONEncoder = { () in
   let encoder = JSONEncoder()
 
   if #available(OSX 10.13, *) {
@@ -101,4 +101,3 @@ private let cookieJsonEncoder: JSONEncoder = { () in
 
   return encoder
 }()
-
