@@ -1,8 +1,9 @@
 import Cryptor
-import Foundation
 import Either
-@testable import PointFree
+import Foundation
+import HttpPipeline
 import Optics
+@testable import PointFree
 import Prelude
 
 extension Environment {
@@ -250,14 +251,6 @@ public func unauthedRequest(to route: Route) -> URLRequest {
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
     .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
-
-  guard
-    let sessionData = try? jsonEncoder.encode(session),
-    let sessionCookie = String(data: sessionData, encoding: .utf8)
-    else { return request }
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
 }
