@@ -19,6 +19,7 @@ let episodeResponse =
           currentRoute: route,
           currentUser: currentUser,
           data: (episode, currentUser, route),
+          showTopNav: false,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
         )
