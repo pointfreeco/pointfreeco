@@ -53,9 +53,27 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
+    case .account(.subscription(.changeSeats(.show))):
+      fatalError()
+
+    case .account(.subscription(.changeSeats(.update))):
+      fatalError()
+
+    case .account(.subscription(.downgrade(.show))):
+      fatalError()
+
+    case .account(.subscription(.downgrade(.update))):
+      fatalError()
+
     case .account(.subscription(.reactivate)):
       return conn.map(const(user .*. unit))
         |> reactivateMiddleware
+
+    case .account(.subscription(.upgrade(.show))):
+      fatalError()
+
+    case .account(.subscription(.upgrade(.update))):
+      fatalError()
 
     case let .account(.update(data)):
       return conn.map(const(data .*. user .*. unit))
