@@ -13,7 +13,17 @@ let accountResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> respond(accountView.contramap(lower), layout: simplePageLayout(title: "Account", currentUser: get5))
+    >-> map(lower)
+    >>> respond(
+      view: accountView,
+      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (subscription, teamInvites, teammates, emailSettings, currentUser),
+          title: "Account"
+        )
+    }
+)
 
 private func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
@@ -51,10 +61,16 @@ private func fetchAccountData<I, A>(
 
 let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User)> { subscription, teamInvites, teammates, emailSettings, currentUser in
 
-  titleRowView.view(unit)
-    <> profileRowView.view((currentUser, emailSettings))
-    <> subscriptionRowView.view((subscription, teamInvites, teammates))
-    <> logoutView.view(unit)
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          titleRowView.view(unit)
+            <> profileRowView.view((currentUser, emailSettings))
+            <> subscriptionRowView.view((subscription, teamInvites, teammates))
+            <> logoutView.view(unit)
+      )
+      ])
+    ])
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in

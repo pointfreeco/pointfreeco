@@ -9,49 +9,88 @@ import Prelude
 import Styleguide
 import Tuple
 
-func respond<A>(_ view: View<A>, layout: @escaping (Flash?, View<A>) -> View<A>)
+struct SimplePageLayoutData<A> {
+  private(set) var currentRoute: Route?
+  private(set) var currentUser: Database.User?
+  private(set) var extraStyles: Stylesheet
+  private(set) var data: A
+  private(set) var flash: Flash?
+  private(set) var showTopNav: Bool
+  private(set) var title: String
+  private(set) var useHighlightJs: Bool
+
+  init(
+    currentRoute: Route? = nil,
+    currentUser: Database.User?,
+    data: A,
+    extraStyles: Stylesheet = .empty,
+    showTopNav: Bool = true,
+    title: String,
+    useHighlightJs: Bool = false
+    ) {
+
+    self.currentRoute = currentRoute
+    self.currentUser = currentUser
+    self.data = data
+    self.extraStyles = extraStyles
+    self.flash = nil
+    self.showTopNav = showTopNav
+    self.title = title
+    self.useHighlightJs = useHighlightJs
+  }
+}
+
+func respond<A, B>(
+  view: View<B>,
+  layoutData: @escaping (A) -> SimplePageLayoutData<B>
+  )
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      conn
+      let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
+
+      return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
-        >-> respond(layout(conn.request.session.flash, view))
+        >-> respond(
+          body: simplePageLayout(view).rendered(with: newLayoutData),
+          contentType: .html
+      )
     }
 }
 
-func simplePageLayout<A>(title titleString: String, currentUser: @escaping (A) -> Database.User?)
-  -> (Flash?, View<A>)
-  -> View<A> {
-    return { flash, contentView in
-      return View { data in
-        document([
-          html([
-            head([
-              title(titleString),
-              style(renderedNormalizeCss),
-              style(styleguide),
-              style(render(config: pretty, css: pricingExtraStyles)),
-              meta(viewport: .width(.deviceWidth), .initialScale(1)),
-              ]),
-            body(
-              (flash.map(flashView.view) ?? [])
-                <> darkNavView.view((currentUser(data), nil))
-                <> [
-                  gridRow([
-                    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-                      div(
-                        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                        contentView.view(data)
-                      )
-                      ])
-                    ])
-                ]
-                <> footerView.view(currentUser(data))
-            )
-            ])
-          ])
-      }
-    }
+func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+  return View { layoutData in
+    return document([
+      html([
+        head([
+          title(layoutData.title),
+          style(renderedNormalizeCss),
+          style(styleguide),
+          style(render(config: inline, css: pricingExtraStyles)),
+          style(layoutData.extraStyles),
+          meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          script(
+            """
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\
+            ga('create', 'UA-106218876-1', 'auto');\
+            ga('send', 'pageview');
+            """
+          )
+          ]
+          <> (layoutData.useHighlightJs ? highlightJsHead : [])
+        ),
+        body(
+          (layoutData.flash.map(flashView.view) ?? [])
+            <> (layoutData.showTopNav ? darkNavView.view((layoutData.currentUser, layoutData.currentRoute)) : [])
+            <> contentView.view(layoutData.data)
+            <> footerView.view(layoutData.currentUser)
+        )
+        ])
+      ])
+  }
 }
 
 let flashView = View<Flash> { flash in
@@ -79,3 +118,11 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
       | Class.pf.colors.bg.red
   }
 }
+
+private let highlightJsHead: [ChildOf<Element.Head>] = [
+  link(
+    [rel(.stylesheet), href("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css")]
+  ),
+  script([src("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js")]),
+  script("hljs.initHighlightingOnLoad();")
+]
