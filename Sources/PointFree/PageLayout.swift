@@ -89,56 +89,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
   }
 }
 
-func flashMiddleware<A>(_ conn: Conn<HeadersOpen, A>) -> IO<Conn<HeadersOpen, T2<Flash?, A>>> {
-  return conn.map(const(conn.request.session.flash .*. conn.data))
-    |> writeSessionCookieMiddleware(\.flash .~ nil)
-}
-
-func respond<A>(_ view: View<A>, layout: @escaping (Flash?, View<A>) -> View<A>)
-  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
-
-    return { conn in
-      conn
-        |> writeSessionCookieMiddleware(\.flash .~ nil)
-        >-> respond(layout(conn.request.session.flash, view))
-    }
-}
-
-func simplePageLayout<A>(title titleString: String, currentUser: @escaping (A) -> Database.User?)
-  -> (Flash?, View<A>)
-  -> View<A> {
-    return { flash, contentView in
-      return View { data in
-        document([
-          html([
-            head([
-              title(titleString),
-              style(renderedNormalizeCss),
-              style(styleguide),
-              style(render(config: pretty, css: pricingExtraStyles)),
-              meta(viewport: .width(.deviceWidth), .initialScale(1)),
-              ]),
-            body(
-              (flash.map(flashView.view) ?? [])
-                <> darkNavView.view((currentUser(data), nil))
-                <> [
-                  gridRow([
-                    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-                      div(
-                        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                        contentView.view(data)
-                      )
-                      ])
-                    ])
-                ]
-                <> footerView.view(currentUser(data))
-            )
-            ])
-          ])
-      }
-    }
-}
-
 let flashView = View<Flash> { flash in
   gridRow([`class`([flashClass(for: flash.priority)])], [
     gridColumn(sizes: [.mobile: 12], [text(flash.message)])
