@@ -12,14 +12,14 @@ import UrlFormEncoding
 let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> respond(
-      view: secretHomeView.map(addGoogleAnalytics),
+      view: secretHomeView,
       layoutData: { currentUser in
         SimplePageLayoutData(
           currentUser: currentUser,
           data: currentUser,
+          extraStyles: pricingExtraStyles,
           showTopNav: false,
-          title: "Point-Free: A weekly video series on functional programming and the Swift programming language.",
-          useHighlightJs: false
+          title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
         )
     }
 )
@@ -27,7 +27,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<Resp
 let secretHomeView = View<Database.User?> { currentUser in
   headerView.view(unit)
     <> episodesListView.view(episodes.reversed())
-    <> pricingOptionsView.view((.default, currentUser))
+    <> pricingOptionsView.view((currentUser, .default))
 }
 
 let headerView = View<Prelude.Unit> { _ in

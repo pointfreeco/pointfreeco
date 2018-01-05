@@ -25,9 +25,7 @@ let confirmCancelResponse =
         SimplePageLayoutData(
           currentUser: currentUser,
           data: (subscription, currentUser),
-          showTopNav: true,
-          title: "Cancel your subscription?",
-          useHighlightJs: false
+          title: "Cancel your subscription?"
         )
     }
 )

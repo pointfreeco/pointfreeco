@@ -12,15 +12,9 @@ let aboutResponse =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
-      view: aboutView.map(addGoogleAnalytics),
+      view: aboutView,
       layoutData: { currentUser in
-        SimplePageLayoutData(
-          currentUser: currentUser,
-          data: currentUser,
-          showTopNav: true,
-          title: "About Us",
-          useHighlightJs: false
-        )
+        SimplePageLayoutData(currentUser: currentUser, data: currentUser, title: "About Us")
     }
 )
 
@@ -35,7 +29,6 @@ private let aboutView = View<Database.User?> { currentUser in
         p(["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."]),
         p(["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."]),
         p(["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."])
-
         ])
       ])
     ])

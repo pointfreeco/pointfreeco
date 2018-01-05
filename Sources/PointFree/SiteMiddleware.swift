@@ -131,7 +131,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         pricing = .default
       }
 
-      return conn.map(const(user .*. pricing .*. route .*. unit))
+      return conn.map(const(user .*. pricing .*. unit))
         |> pricingResponse
 
     case .secretHome:
@@ -151,7 +151,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> removeTeammateMiddleware
 
     case .terms:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> termsResponse
     }
 }

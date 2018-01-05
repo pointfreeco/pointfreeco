@@ -18,7 +18,6 @@ let episodeResponse =
         SimplePageLayoutData(
           currentUser: currentUser,
           data: (episode, currentUser, route),
-          showTopNav: true,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
         )
@@ -259,30 +258,27 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   }
 }
 
-private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([`class`([Class.grid.center(.mobile)])], [
-              gridColumn(sizes: [.mobile: 6], [
-                div([style(padding(topBottom: .rem(12)))], [
-                  h5([`class`([Class.h5])], ["Episode not found :("]),
-                  pre([
-                    code([`class`([Class.pf.components.code(lang: "swift")])], [
-                      "f: (Episode) -> Never"
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-          ]
-          <> footerView.view(nil))
+private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
+  .contramap { param, user, route in
+    SimplePageLayoutData(
+      currentUser: user,
+      data: (param, user, route),
+      title: "Episode not found :("
+    )
+}
+
+private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
+
+  gridRow([`class`([Class.grid.center(.mobile)])], [
+    gridColumn(sizes: [.mobile: 6], [
+      div([style(padding(topBottom: .rem(12)))], [
+        h5([`class`([Class.h5])], ["Episode not found :("]),
+        pre([
+          code([`class`([Class.pf.components.code(lang: "swift")])], [
+            "f: (Episode) -> Never"
+            ])
+          ])
+        ])
       ])
     ])
 }
