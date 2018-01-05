@@ -27,16 +27,22 @@ extension ProfileData: Decodable {
   }
 }
 
+func isValidEmail(_ email: EmailAddress) -> Bool {
+  return email.unwrap.range(of: "^.@.$", options: .regularExpression) != nil
+}
+
 let updateProfileMiddleware =
-  filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <<< filterMap(require2 >>> pure, or: loginAndRedirect)
+  filterMap(require2 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+    <<< filter(
+      get1 >>> ^\.email >>> isValidEmail,
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
+    )
     <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
       let (data, user) = lower(conn.data)
 
       let emailSettings = data.emailSettings.keys
         .flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
-
-      // TODO: validate email?
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {
