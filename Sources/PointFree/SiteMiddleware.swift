@@ -26,7 +26,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
     let (user, route) = (conn.data.first, conn.data.second)
     switch route {
     case .about:
-      return conn.map(const(user))
+      return conn.map(const(user .*. unit))
         |> aboutResponse
 
     case let .account(.confirmEmailChange(userId, emailAddress)):

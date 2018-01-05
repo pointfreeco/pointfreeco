@@ -14,6 +14,7 @@ struct SimplePageLayoutData<A> {
   let data: A
   let showTopNav: Bool
   let title: String
+  let useHighlightJs: Bool
 }
 
 func respond<A>(view: View<A>, layoutData: @escaping (A) -> SimplePageLayoutData<A>) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
@@ -38,7 +39,19 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<(Flash?, SimplePageLayo
           style(styleguide),
           style(render(config: inline, css: pricingExtraStyles)),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          ]),
+          script(
+            """
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\
+            ga('create', 'UA-106218876-1', 'auto');\
+            ga('send', 'pageview');
+            """
+          )
+          ]
+//          <> (layoutData.useHighlightJs ? highlightJsHead : [])
+        ),
         body(
           (flash.map(flashView.view) ?? [])
             <> (layoutData.showTopNav ? darkNavView.view((layoutData.currentUser, nil)) : [])
@@ -59,6 +72,37 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<(Flash?, SimplePageLayo
       ])
   }
 }
+
+private let headView = View<SimplePageLayoutData<Any>> { layoutData in
+  head([
+    title(layoutData.title),
+    style(renderedNormalizeCss),
+    style(styleguide),
+    style(render(config: inline, css: pricingExtraStyles)),
+    meta(viewport: .width(.deviceWidth), .initialScale(1)),
+    script(
+      """
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\
+            ga('create', 'UA-106218876-1', 'auto');\
+            ga('send', 'pageview');
+            """
+    )
+    ]
+    //          <> (layoutData.useHighlightJs ? highlightJsHead : [])
+  ).node
+}
+
+private let highlightJsHead: [Node] = []
+//  link(
+//    [rel(.stylesheet), href("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css")]
+//  ),
+//  script([src("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js")]),
+//  script("hljs.initHighlightingOnLoad();")
+//  ]
+//  .map(^.node)
 
 func flashMiddleware<A>(_ conn: Conn<HeadersOpen, A>) -> IO<Conn<HeadersOpen, T2<Flash?, A>>> {
   return conn.map(const(conn.request.session.flash .*. conn.data))

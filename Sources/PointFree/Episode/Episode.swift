@@ -12,43 +12,41 @@ import Styleguide
 let episodeResponse =
   filterMap(first(episode(forParam:)) >>> requireFirst >>> pure, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
     <| writeStatus(.ok)
-    >-> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
+    >-> respond(
+      view: episodeView,
+      layoutData: { episode, currentUser, route in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (episode, currentUser, route),
+          showTopNav: true,
+          title: "Episode #\(episode.sequence): \(episode.title)",
+          useHighlightJs: true
+        )
+    }
+)
 
 let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        title("Episode #\(episode.sequence): \(episode.title)"),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
+  [
+    gridRow([
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 7],
+        leftColumnView.view(episode)
+      ),
 
-      body(
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 5],
+        [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
-          gridRow([
-            gridColumn(
-              sizes: [.mobile: 12, .desktop: 7],
-              leftColumnView.view(episode)
-            ),
+          div(
+            [`class`([Class.position.sticky(.desktop), Class.position.top0])],
+            rightColumnView.view(episode)
+          )
+        ]
+      ),
 
-            gridColumn(
-              sizes: [.mobile: 12, .desktop: 5],
-              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
-              [
-                div(
-                  [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-                  rightColumnView.view(episode)
-                )
-              ]
-            ),
-
-            ])
-          ]
-          <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
-          <> footerView.view(nil))
       ])
-    ])
+    ]
+    <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
 }
 
 private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {

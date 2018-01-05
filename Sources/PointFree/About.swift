@@ -10,10 +10,17 @@ import Tuple
 
 let aboutResponse =
   writeStatus(.ok)
-    >-> respond(
+    >-> map(lower)
+    >>> respond(
       view: aboutView.map(addGoogleAnalytics),
       layoutData: { currentUser in
-        SimplePageLayoutData(currentUser: currentUser, data: currentUser, showTopNav: true, title: "About Us")
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: currentUser,
+          showTopNav: true,
+          title: "About Us",
+          useHighlightJs: false
+        )
     }
 )
 

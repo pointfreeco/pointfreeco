@@ -18,27 +18,16 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<Resp
           currentUser: currentUser,
           data: currentUser,
           showTopNav: false,
-          title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
+          title: "Point-Free: A weekly video series on functional programming and the Swift programming language.",
+          useHighlightJs: false
         )
     }
 )
 
 let secretHomeView = View<Database.User?> { currentUser in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(render(config: pretty, css: pricingExtraStyles)),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        headerView.view(unit)
-          <> episodesListView.view(episodes.reversed())
-          <> pricingOptionsView.view((.default, currentUser))
-      )
-      ])
-    ])
+  headerView.view(unit)
+    <> episodesListView.view(episodes.reversed())
+    <> pricingOptionsView.view((.default, currentUser))
 }
 
 let headerView = View<Prelude.Unit> { _ in
