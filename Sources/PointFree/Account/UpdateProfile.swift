@@ -28,7 +28,7 @@ extension ProfileData: Decodable {
 }
 
 func isValidEmail(_ email: EmailAddress) -> Bool {
-  return email.unwrap.range(of: "^.@.$", options: .regularExpression) != nil
+  return email.unwrap.range(of: "^.+@.+$", options: .regularExpression) != nil
 }
 
 let updateProfileMiddleware =
