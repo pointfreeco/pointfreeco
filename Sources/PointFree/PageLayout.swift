@@ -40,18 +40,22 @@ struct SimplePageLayoutData<A> {
   }
 }
 
-func respond<A, B>(view: View<B>, layoutData: @escaping (A) -> SimplePageLayoutData<B>) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+func respond<A, B>(
+  view: View<B>,
+  layoutData: @escaping (A) -> SimplePageLayoutData<B>
+  )
+  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
-  return { conn in
-    let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
+    return { conn in
+      let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
 
-    return conn
-      |> writeSessionCookieMiddleware(\.flash .~ nil)
-      >-> respond(
-        body: simplePageLayout(view).rendered(with: newLayoutData),
-        contentType: .html
-    )
-  }
+      return conn
+        |> writeSessionCookieMiddleware(\.flash .~ nil)
+        >-> respond(
+          body: simplePageLayout(view).rendered(with: newLayoutData),
+          contentType: .html
+      )
+    }
 }
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
