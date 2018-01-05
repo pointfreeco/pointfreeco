@@ -11,7 +11,17 @@ import UrlFormEncoding
 
 let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
-    >-> respond(secretHomeView.map(addGoogleAnalytics))
+    >-> respond(
+      view: secretHomeView.map(addGoogleAnalytics),
+      layoutData: { currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: currentUser,
+          showTopNav: false,
+          title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
+        )
+    }
+)
 
 let secretHomeView = View<Database.User?> { currentUser in
   document([
@@ -26,7 +36,6 @@ let secretHomeView = View<Database.User?> { currentUser in
         headerView.view(unit)
           <> episodesListView.view(episodes.reversed())
           <> pricingOptionsView.view((.default, currentUser))
-          <> footerView.view(currentUser)
       )
       ])
     ])
