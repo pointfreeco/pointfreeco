@@ -19,7 +19,17 @@ let showInviteMiddleware =
     )
     <<< filterMap(fetchTeamInviter, or: redirect(to: .secretHome))
     <| writeStatus(.ok)
-    >-> respond(showInviteView.contramap(lower), layout: simplePageLayout(title: "Accept Team Invite?", currentUser: get3))
+    >-> map(lower)
+    >>> respond(
+      view: showInviteView,
+      layoutData: { teamInvite, inviter, currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (teamInvite, inviter, currentUser),
+          title: "Accept Team Invite?"
+        )
+    }
+)
 
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
@@ -146,9 +156,15 @@ let sendInviteMiddleware =
 
 let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> { teamInvite, inviter, currentUser in
 
-  currentUser
-    .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
-    ?? showInviteLoggedOutView.view((teamInvite, inviter))
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          currentUser
+            .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
+            ?? showInviteLoggedOutView.view((teamInvite, inviter))
+      )
+      ])
+    ])
 }
 
 private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
@@ -208,9 +224,10 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
 }
 
 private let inviteNotFoundView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
+
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
         h3([`class`([Class.pf.type.title3])], ["Invite not found"]),
 
         p([
@@ -221,7 +238,12 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
           ]),
 
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          a([href(path(to: .pricing(nil, nil)))], ["Subscribe"])
+          a(
+            [
+              href(path(to: .pricing(nil, nil))),
+              `class`([Class.pf.components.button(color: .purple)])
+            ],
+            ["Subscribe"])
           ])
         ])
       ])
@@ -241,7 +263,16 @@ private func requireTeamInvite<A>(
         case .left:
           return conn.map(const(unit))
             |> writeStatus(.notFound)
-            >-> respond(inviteNotFoundView)
+            >-> respond(
+              view: inviteNotFoundView,
+              layoutData: { data in
+                SimplePageLayoutData(
+                  currentUser: nil,
+                  data: data,
+                  title: "Invite not found"
+                )
+            }
+          )
 
         case let .right(teamInvite):
           return conn.map(over1(const(teamInvite)))
