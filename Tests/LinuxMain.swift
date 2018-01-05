@@ -68,6 +68,21 @@ extension HtmlCssInlinerTests {
     ("testHtmlCssInliner", testHtmlCssInliner)
   ]
 }
+extension InviteTests {
+  static var allTests: [(String, (InviteTests) -> () throws -> Void)] = [
+    ("testShowInvite_LoggedOut", testShowInvite_LoggedOut),
+    ("testShowInvite_LoggedIn_NonSubscriber", testShowInvite_LoggedIn_NonSubscriber),
+    ("testShowInvite_LoggedIn_Subscriber", testShowInvite_LoggedIn_Subscriber),
+    ("testResendInvite_HappyPath", testResendInvite_HappyPath),
+    ("testResendInvite_CurrentUserIsNotInviter", testResendInvite_CurrentUserIsNotInviter),
+    ("testRevokeInvite_HappyPath", testRevokeInvite_HappyPath),
+    ("testRevokeInvite_CurrentUserIsNotInviter", testRevokeInvite_CurrentUserIsNotInviter),
+    ("testAcceptInvitation_HappyPath", testAcceptInvitation_HappyPath),
+    ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
+    ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
+    ("testAcceptInvitation_CurrentUserIsInviter", testAcceptInvitation_CurrentUserIsInviter)
+  ]
+}
 extension LaunchEmailTests {
   static var allTests: [(String, (LaunchEmailTests) -> () throws -> Void)] = [
     ("testLaunchEmail", testLaunchEmail)
@@ -155,6 +170,7 @@ XCTMain([
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
+  testCase(InviteTests.allTests),
   testCase(LaunchEmailTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),

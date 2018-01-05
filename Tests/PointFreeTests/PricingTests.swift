@@ -54,7 +54,7 @@ class PricingTests: TestCase {
   
   func testPricingLoggedIn_NonSubscriber() {
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
-      let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
+      let conn = connection(from: request(to: .pricing(nil, nil), session: .loggedIn))
       let result = conn |> siteMiddleware
       
       assertSnapshot(matching: result.perform())
@@ -74,7 +74,7 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn_Subscriber() {
-    let conn = connection(from: authedRequest(to: .pricing(nil, nil)))
+    let conn = connection(from: request(to: .pricing(nil, nil), session: .loggedIn))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())

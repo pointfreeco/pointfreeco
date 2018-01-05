@@ -22,12 +22,12 @@ class UpdateProfileTests: TestCase {
       named: "user_before_update"
     )
     
-    let request = authedRequest(
+    let update = request(
       to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
     )
     
-    let output = connection(from: request)
+    let output = connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
     
@@ -59,12 +59,12 @@ class UpdateProfileTests: TestCase {
       named: "email_settings_before_update"
     )
     
-    let request = authedRequest(
+    let update = request(
       to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
     )
     
-    let output = connection(from: request)
+    let output = connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
     

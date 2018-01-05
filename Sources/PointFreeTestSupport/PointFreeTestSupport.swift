@@ -217,27 +217,15 @@ extension Stripe.Subscription.Item {
 }
 
 extension Session {
-  public static let mock = empty
+  public static let loggedOut = empty
+
+  public static let loggedIn = loggedOut
     |> \.userId .~ Database.User.mock.id
 }
 
 private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
 
-public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
-  var request = unauthedRequest(to: route)
-
-  guard
-    let sessionData = try? cookieJsonEncoder.encode(session),
-    let sessionCookie = String(data: sessionData, encoding: .utf8)
-    else { return request }
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
-
-  return request
-}
-
-public func unauthedRequest(to route: Route) -> URLRequest {
+public func request(to route: Route, session: Session = .loggedOut) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
@@ -249,6 +237,14 @@ public func unauthedRequest(to route: Route) -> URLRequest {
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
     .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
+
+  guard
+    let sessionData = try? cookieJsonEncoder.encode(session),
+    let sessionCookie = String(data: sessionData, encoding: .utf8)
+    else { return request }
+
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
 }
