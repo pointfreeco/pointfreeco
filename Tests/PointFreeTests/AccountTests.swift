@@ -30,7 +30,7 @@ class AccountTests: TestCase {
       |> \.plan.interval .~ .year
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account(.index)))
+      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -51,7 +51,7 @@ class AccountTests: TestCase {
   func testAccountWithFlashNotice() {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
-    let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -71,7 +71,7 @@ class AccountTests: TestCase {
   func testAccountWithFlashWarning() {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -92,7 +92,7 @@ class AccountTests: TestCase {
   func testAccountWithFlashError() {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: authedRequest(to: .account(.index), session: .mock |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -114,7 +114,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceling
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account(.index)))
+      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
@@ -136,7 +136,7 @@ class AccountTests: TestCase {
     let subscription = Stripe.Subscription.canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: authedRequest(to: .account(.index)))
+      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
