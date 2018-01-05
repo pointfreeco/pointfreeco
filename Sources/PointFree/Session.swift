@@ -43,9 +43,10 @@ extension URLRequest {
 
 public struct Session: Codable {
   public var flash: Flash?
+  public var subscriptionStatus: Stripe.Subscription.Status?
   public var userId: Database.User.Id?
 
-  public static let empty = Session(flash: nil, userId: nil)
+  public static let empty = Session(flash: nil, subscriptionStatus: nil, userId: nil)
 }
 
 public struct Flash: Codable {

@@ -18,12 +18,20 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       protect: isProtected
     )
     <| currentUserMiddleware
+    >-> currentSubscriptionMiddleware
     >-> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
+private func currentSubscriptionMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, T2<Database.User?, A>>
+  ) -> IO<Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, Database.User?, A>>> {
+
+  fatalError()
+}
+
+private func render(conn: Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (user, route) = (conn.data.first, conn.data.second)
+    let (subscriptionStatus, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     switch route {
     case .about:
       return conn.map(const(user .*. unit))
