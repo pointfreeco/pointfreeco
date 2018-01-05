@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import EpisodeTranscripts
 import Foundation
 import Either
 import Optics

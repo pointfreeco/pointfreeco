@@ -13,6 +13,7 @@ extension Environment {
     database: .mock,
     date: { .mock },
     envVars: .mock,
+    episodes: { [.mock] },
     gitHub: .mock,
     logger: .mock,
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
@@ -252,3 +253,8 @@ public func unauthedRequest(to route: Route) -> URLRequest {
 
   return request
 }
+
+
+
+
+

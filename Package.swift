@@ -3,15 +3,6 @@
 import Foundation
 import PackageDescription
 
-//https://github.com/mbrandonw/episode-transcripts
-
-let transcriptsDependency: Package.Dependency
-if ProcessInfo.processInfo.environment["TRANSCRIPT"] == "live" {
-  transcriptsDependency = Package.Dependency.package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("9a635ce"))
-} else {
-  transcriptsDependency = Package.Dependency.package(url: "https://github.com/pointfreeco/episode-transcripts-oss", .revision("9a635ce"))
-}
-
 let package = Package(
   name: "PointFree",
   products: [
@@ -23,8 +14,11 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9a635ce")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("54412eb")),
-    transcriptsDependency
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+
+    ProcessInfo.processInfo.environment["TRANSCRIPT"] == "live"
+      ? .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("4514506"))
+      : .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("23a1619"))
     ],
   targets: [
     .target(
@@ -42,6 +36,7 @@ let package = Package(
         "Css",
         "CssReset",
         "Either",
+        "EpisodeTranscripts",
         "Html",
         "HtmlCssSupport",
         "HttpPipeline",
@@ -68,6 +63,7 @@ let package = Package(
       name: "PointFreeTestSupport",
       dependencies: [
         "Either",
+        "EpisodeTranscripts",
         "PointFree",
         "Prelude",
         "SnapshotTesting"

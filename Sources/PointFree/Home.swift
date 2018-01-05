@@ -1,4 +1,5 @@
 import Css
+import EpisodeTranscripts
 import Foundation
 import Html
 import HtmlCssSupport
@@ -26,7 +27,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<Resp
 
 let secretHomeView = View<Database.User?> { currentUser in
   headerView.view(unit)
-    <> episodesListView.view(episodes.reversed())
+    <> episodesListView.view(AppEnvironment.current.episodes().reversed())
     <> pricingOptionsView.view((currentUser, .default))
 }
 

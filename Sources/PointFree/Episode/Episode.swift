@@ -1,5 +1,6 @@
 import Css
 import Either
+import EpisodeTranscripts
 import Foundation
 import Html
 import HtmlCssSupport
@@ -286,7 +287,8 @@ private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Ro
 }
 
 private func episode(forParam param: Either<String, Int>) -> Episode? {
-  return episodes.first(where: {
-    param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
+  return AppEnvironment.current.episodes()
+    .first(where: {
+      param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
   })
 }
