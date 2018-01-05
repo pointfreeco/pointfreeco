@@ -24,7 +24,7 @@ class CancelTests: TestCase {
   }
 
   func testConfirmCancel() {
-    let conn = connection(from: authedRequest(to: .account(.subscription(.cancel(.show)))))
+    let conn = connection(from: request(to: .account(.subscription(.cancel(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
