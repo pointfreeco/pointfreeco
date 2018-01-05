@@ -13,9 +13,16 @@ import Tuple
 let paymentInfoResponse =
   requireStripeSubscription
     <| writeStatus(.ok)
-    >-> respond(
-      paymentInfoView.contramap(lower),
-      layout: simplePageLayout(title: "Update Payment Info", currentUser: get2)
+    >-> map(lower)
+    >>> respond(
+      view: paymentInfoView,
+      layoutData: { subscription, currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (subscription, currentUser),
+          title: "Update Payment Info"
+        )
+    }
 )
 
 let updatePaymentInfoMiddleware:
@@ -41,9 +48,16 @@ let updatePaymentInfoMiddleware:
 }
 
 let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
-  titleRowView.view(unit)
-    <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-    <> updatePaymentInfoRowView.view(unit)
+  
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          titleRowView.view(unit)
+            <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
+            <> updatePaymentInfoRowView.view(unit)
+      )
+      ])
+    ])
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in

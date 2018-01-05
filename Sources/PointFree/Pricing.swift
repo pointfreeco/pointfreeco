@@ -112,28 +112,21 @@ public enum Pricing: Codable, DerivePartialIsos {
 let pricingResponse =
   redirectCurrentSubscribers
     <| writeStatus(.ok)
-    >-> respond(pricingView.contramap(lower))
+    >-> map(lower)
+    >>> respond(
+      view: pricingOptionsView,
+      layoutData: { currentUser, pricing, route in
+        SimplePageLayoutData(
+          currentRoute: route,
+          currentUser: currentUser,
+          data: (currentUser, pricing),
+          extraStyles: pricingExtraStyles,
+          title: "Subscribe to Point-Free"
+        )
+    }
+)
 
-private let pricingView = View<(Database.User?, Pricing, Route)> { currentUser, pricing, currentRoute in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(pricingExtraStyles),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-
-      body(
-        darkNavView.view((currentUser, currentRoute))
-          + pricingOptionsView.view((pricing, currentUser))
-          + footerView.view(currentUser)
-      )
-    ])
-  ])
-}
-
-let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, currentUser in
+let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
