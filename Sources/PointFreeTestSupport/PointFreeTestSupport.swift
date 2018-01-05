@@ -1,13 +1,15 @@
 import Cryptor
-import Foundation
 import Either
-@testable import PointFree
+import Foundation
+import HttpPipeline
 import Optics
+@testable import PointFree
 import Prelude
 
 extension Environment {
   public static let mock = Environment(
     airtableStuff: const(const(pure(unit))),
+    cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
     envVars: .mock,
@@ -222,6 +224,20 @@ extension Session {
 private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
 
 public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
+  var request = unauthedRequest(to: route)
+
+  guard
+    let sessionData = try? cookieJsonEncoder.encode(session),
+    let sessionCookie = String(data: sessionData, encoding: .utf8)
+    else { return request }
+
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
+
+  return request
+}
+
+public func unauthedRequest(to route: Route) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
@@ -234,43 +250,5 @@ public func authedRequest(to route: Route, session: Session = .mock) -> URLReque
     .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
 
-  guard
-    let encodedValue = (try? jsonEncoder.encode(session))?.base64EncodedString(),
-    case let secret = AppEnvironment.current.envVars.appSecret,
-    let computedDigest = digest(value: encodedValue, secret: secret),
-    let sessionCookie = encrypted(text: encodedValue + "--" + computedDigest, secret: secret)
-    else { return request }
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
-
   return request
-}
-
-// TODO: expose methods from http-pipeline
-
-private let jsonEncoder = JSONEncoder()
-
-private func digest(value: String, secret: String) -> String? {
-  let keyBytes = CryptoUtils.byteArray(fromHex: secret)
-  let valueBytes = CryptoUtils.byteArray(from: value)
-  let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
-  return digestBytes.map { Data(bytes: $0).base64EncodedString() }
-}
-
-private func encrypted(text plainText: String, secret: String) -> String? {
-  let secretBytes = CryptoUtils.byteArray(fromHex: secret)
-  let iv = [UInt8](repeating: 0, count: secretBytes.count)
-  let plainTextBytes = CryptoUtils.byteArray(from: plainText)
-
-  let blockSize = Cryptor.Algorithm.aes.blockSize
-  let paddedPlainTextBytes = plainTextBytes.count % blockSize != 0
-    ? CryptoUtils.zeroPad(byteArray: plainTextBytes, blockSize: blockSize)
-    : plainTextBytes
-
-  let cipherText = Cryptor(operation: .encrypt, algorithm: .aes, options: .none, key: secretBytes, iv: iv)
-    .update(byteArray: paddedPlainTextBytes)?
-    .final()
-
-  return cipherText.map { CryptoUtils.hexString(from: $0) }
 }

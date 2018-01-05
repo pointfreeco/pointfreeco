@@ -1,0 +1,14 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000007/resend
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /account
+  Set-Cookie: pf_session={"flash":{"message":"You must be the invite owner to perform that action.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/

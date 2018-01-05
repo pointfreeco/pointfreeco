@@ -7,7 +7,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
-@testable import Tuple
+import Tuple
 
 // MARK: Middleware
 
@@ -18,7 +18,17 @@ let confirmCancelResponse =
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| writeStatus(.ok)
-    >-> respond(confirmCancelView.contramap(lower))
+    >-> map(lower)
+    >>> respond(
+      view: confirmCancelView,
+      layoutData: { subscription, currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (subscription, currentUser),
+          title: "Cancel your subscription?"
+        )
+    }
+)
 
 let cancelMiddleware =
   requireStripeSubscription
@@ -135,35 +145,19 @@ private func fetchStripeSubscription<A>(
 // MARK: - Views
 
 let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(render(config: pretty, css: pricingExtraStyles)),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([
-              gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-                div(
-                  [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-                  titleRowView.view(unit)
-                    <> formRowView.view(subscription)
-                )
-              ])
-          ]
-          <> footerView.view(unit)
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div(
+        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        titleRowView.view(unit)
+          <> formRowView.view(subscription)
       )
       ])
     ])
-  ])
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Cancel Subscription?"])
@@ -187,7 +181,15 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel my subscription"])
+          ["Cancel my subscription"]
+        ),
+        a(
+          [
+            href(path(to: .account(.index))),
+            `class`([Class.pf.components.button(color: .black, style: .underline)])
+          ],
+          ["Never mind"]
+        )
         ])
       ])
     ])

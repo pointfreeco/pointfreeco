@@ -13,9 +13,16 @@ import Tuple
 let paymentInfoResponse =
   requireStripeSubscription
     <| writeStatus(.ok)
-    >-> respond(
-      paymentInfoView.contramap(lower),
-      layout: simplePageLayout(title: "Update Payment Info", currentUser: get2)
+    >-> map(lower)
+    >>> respond(
+      view: paymentInfoView,
+      layoutData: { subscription, currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (subscription, currentUser),
+          title: "Update Payment Info"
+        )
+    }
 )
 
 let updatePaymentInfoMiddleware:
@@ -41,13 +48,20 @@ let updatePaymentInfoMiddleware:
 }
 
 let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
-  titleRowView.view(unit)
-    <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-    <> updatePaymentInfoRowView.view(unit)
+  
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          titleRowView.view(unit)
+            <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
+            <> updatePaymentInfoRowView.view(unit)
+      )
+      ])
+    ])
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.title2])], ["Payment Info"])
@@ -57,7 +71,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
 }
 
 private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.title4])], ["Current Payment Info"]),
@@ -82,6 +96,13 @@ private let updatePaymentInfoRowView = View<Prelude.Unit> { _ in
               button(
                 [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
                 ["Update payment info"]
+              ),
+              a(
+                [
+                  href(path(to: .account(.index))),
+                  `class`([Class.pf.components.button(color: .black, style: .underline)])
+                ],
+                ["Cancel"]
               )
           ]
         )

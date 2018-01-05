@@ -37,7 +37,6 @@ class CancelTests: TestCase {
 
         webView.frame.size.width = 400
         assertSnapshot(matching: webView, named: "mobile")
-
       }
     #endif
   }

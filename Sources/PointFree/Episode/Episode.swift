@@ -12,43 +12,42 @@ import Styleguide
 let episodeResponse =
   filterMap(first(episode(forParam:)) >>> requireFirst >>> pure, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
     <| writeStatus(.ok)
-    >-> respond(episodeView.map(addHighlightJs >>> addGoogleAnalytics))
+    >-> respond(
+      view: episodeView,
+      layoutData: { episode, currentUser, route in
+        SimplePageLayoutData(
+          currentRoute: route,
+          currentUser: currentUser,
+          data: (episode, currentUser, route),
+          showTopNav: false,
+          title: "Episode #\(episode.sequence): \(episode.title)",
+          useHighlightJs: true
+        )
+    }
+)
 
 let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        title("Episode #\(episode.sequence): \(episode.title)"),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
+  [
+    gridRow([
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 7],
+        leftColumnView.view(episode)
+      ),
 
-      body(
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 5],
+        [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
-          gridRow([
-            gridColumn(
-              sizes: [.mobile: 12, .desktop: 7],
-              leftColumnView.view(episode)
-            ),
+          div(
+            [`class`([Class.position.sticky(.desktop), Class.position.top0])],
+            rightColumnView.view(episode)
+          )
+        ]
+      ),
 
-            gridColumn(
-              sizes: [.mobile: 12, .desktop: 5],
-              [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
-              [
-                div(
-                  [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-                  rightColumnView.view(episode)
-                )
-              ]
-            ),
-
-            ])
-          ]
-          <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
-          <> footerView.view(unit))
       ])
-    ])
+    ]
+    <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
 }
 
 private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {
@@ -261,30 +260,27 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   }
 }
 
-private let episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        ]),
-      body(
-        darkNavView.view((currentUser, nil))
-          <> [
-            gridRow([`class`([Class.grid.center(.mobile)])], [
-              gridColumn(sizes: [.mobile: 6], [
-                div([style(padding(topBottom: .rem(12)))], [
-                  h5([`class`([Class.h5])], ["Episode not found :("]),
-                  pre([
-                    code([`class`([Class.pf.components.code(lang: "swift")])], [
-                      "f: (Episode) -> Never"
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-          ]
-          <> footerView.view(unit))
+private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
+  .contramap { param, user, route in
+    SimplePageLayoutData(
+      currentUser: user,
+      data: (param, user, route),
+      title: "Episode not found :("
+    )
+}
+
+private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
+
+  gridRow([`class`([Class.grid.center(.mobile)])], [
+    gridColumn(sizes: [.mobile: 6], [
+      div([style(padding(topBottom: .rem(12)))], [
+        h5([`class`([Class.h5])], ["Episode not found :("]),
+        pre([
+          code([`class`([Class.pf.components.code(lang: "swift")])], [
+            "f: (Episode) -> Never"
+            ])
+          ])
+        ])
       ])
     ])
 }

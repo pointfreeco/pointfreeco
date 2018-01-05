@@ -1,4 +1,4 @@
-@testable import Css
+import Css
 import Html
 import Optics
 import Prelude
@@ -92,7 +92,7 @@ private func inlineStyles(for selector: CssSelector, stylesheet: Stylesheet) -> 
 private func inlineStyles(for selector: CssSelector, rule: Rule) -> String {
   switch rule {
   case let .property(key, value):
-    return Css.rule(inline, [], [(key, value)])
+    return Css.renderRule(inline, [], [(key, value)])
 
   case let .nested(app, rules):
     if doesApp(app, contain: selector) {

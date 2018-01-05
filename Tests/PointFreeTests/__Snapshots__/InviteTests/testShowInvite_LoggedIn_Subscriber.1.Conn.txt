@@ -1,0 +1,14 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /account
+  Set-Cookie: pf_session={"flash":{"message":"You already have an active subscription. If you want to accept this team invite you must cancel your current subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/

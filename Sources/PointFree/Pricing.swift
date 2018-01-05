@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
@@ -109,29 +110,23 @@ public enum Pricing: Codable, DerivePartialIsos {
 }
 
 let pricingResponse =
-  writeStatus(.ok)
-    >-> respond(pricingView)
+  redirectCurrentSubscribers
+    <| writeStatus(.ok)
+    >-> map(lower)
+    >>> respond(
+      view: pricingOptionsView,
+      layoutData: { currentUser, pricing, route in
+        SimplePageLayoutData(
+          currentRoute: route,
+          currentUser: currentUser,
+          data: (currentUser, pricing),
+          extraStyles: pricingExtraStyles,
+          title: "Subscribe to Point-Free"
+        )
+    }
+)
 
-private let pricingView = View<(Pricing, Database.User?, Route)> { pricing, user, currentRoute in
-  document([
-    html([
-      head([
-        style(renderedNormalizeCss),
-        style(styleguide),
-        style(pricingExtraStyles),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-
-      body(
-        darkNavView.view((user, currentRoute))
-          + pricingOptionsView.view((pricing, user))
-          + footerView.view(unit)
-      )
-    ])
-  ])
-}
-
-let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
+let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
 
@@ -151,7 +146,7 @@ let pricingOptionsView = View<(Pricing, Database.User?)> { pricing, user in
             pricingTabsView.view(pricing)
               + individualPricingRowView.view(pricing)
               + teamPricingRowView.view(pricing)
-              + pricingFooterView.view(user)
+              + pricingFooterView.view(currentUser)
           )
           ])
         ])
@@ -254,18 +249,20 @@ private let extraSpinnerStyles =
   numberSpinnerClass % padding(left: .px(20))
     <> maxWidth(.px(200))
 
-private let pricingFooterView = View<Database.User?> { user in
+private let pricingFooterView = View<Database.User?> { currentUser in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-        user.map(stripeForm.view) ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
+        currentUser
+          .map(const(unit) >>> stripeForm.view)
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<Database.User> { user in
+private let stripeForm = View<Prelude.Unit> { _ in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
     Stripe.html.cardInput
@@ -357,4 +354,29 @@ private func tabStyles(
       hideContentStyles
         <> showContentStyles
         <> selectedStyles
+}
+
+private func redirectCurrentSubscribers<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+
+  return { conn in
+    guard
+      let user = get1(conn.data),
+      let subscriptionId = user.subscriptionId
+      else { return middleware(conn) }
+
+    let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+      .mapExcept(requireSome)
+      .bimap(const(unit), id)
+      .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .run
+      .map { $0.right?.status == .some(.active) }
+
+    return hasActiveSubscription.flatMap {
+      $0
+        ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription.")))
+        : middleware(conn)
+    }
+  }
 }
