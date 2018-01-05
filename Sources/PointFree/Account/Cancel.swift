@@ -37,16 +37,16 @@ let cancelMiddleware =
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| cancel
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
+    >-> redirect(to: .account(.index), headersMiddleware: cancelRedirectHeadersMiddleware)
 
-let reactivateMiddleware =
+let reactivateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
   requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
     )
     <| reactivate
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve reactivated your subscription."))
+    >-> redirect(to: .account(.index), headersMiddleware: reactivateRedirectHeadersMiddleware)
 
 // MARK: -
 
@@ -59,13 +59,33 @@ private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Dat
       .map(const(conn.map(const(unit))))
 }
 
-private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+private func cancelRedirectHeadersMiddleware<A>(_ conn: Conn<HeadersOpen, A>) -> IO<Conn<HeadersOpen, A>> {
+
+  return conn
+    |> writeSessionCookieMiddleware(
+      ((\Session.subscriptionStatus) .~ nil)
+        <> ((\Session.flash) .~ Flash(priority: .notice, message: "We’ve canceled your subscription."))
+    )
+}
+
+private func reactivate<A>(_ conn: Conn<StatusLineOpen, T2<Stripe.Subscription, A>>)
+  -> IO<Conn<StatusLineOpen, T2<Stripe.Subscription, A>>> {
 
   // TODO: send emails
   return AppEnvironment.current.stripe.reactivateSubscription(get1(conn.data))
     .run
-    .map(const(conn.map(const(unit))))
+    .map(const(conn))
+}
+
+private func reactivateRedirectHeadersMiddleware<A>(
+  _ conn: Conn<HeadersOpen, T2<Stripe.Subscription, A>>
+  ) -> IO<Conn<HeadersOpen, T2<Stripe.Subscription, A>>> {
+
+  return conn
+    |> writeSessionCookieMiddleware(
+      ((\Session.subscriptionStatus) .~ get1(conn.data).status)
+        <> ((\Session.flash) .~ Flash(priority: .notice, message: "We’ve reactivated your subscription."))
+  )
 }
 
 // MARK: - Transformers

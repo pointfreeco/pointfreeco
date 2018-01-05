@@ -2,6 +2,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
+import Optics
 import Prelude
 import Styleguide
 import Tuple
@@ -18,20 +19,14 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       protect: isProtected
     )
     <| currentUserMiddleware
-    >-> currentSubscriptionMiddleware
     >-> render(conn:)
 
-private func currentSubscriptionMiddleware<A>(
-  _ conn: Conn<StatusLineOpen, T2<Database.User?, A>>
-  ) -> IO<Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, Database.User?, A>>> {
-
-  fatalError()
-}
-
-private func render(conn: Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, Database.User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscriptionStatus, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+    let subscriptionStatus = conn.request.session.subscriptionStatus
+    let (user, route) = (conn.data.first, conn.data.second)
+
     switch route {
     case .about:
       return conn.map(const(user .*. unit))
@@ -42,7 +37,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, D
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriptionStatus .*. unit))
         |> accountResponse
 
     case .account(.paymentInfo(.show)):
@@ -90,8 +85,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, D
         |> expressUnsubscribeMiddleware
 
     case let .gitHubCallback(code, redirect):
-      return conn.map(const((code, redirect)))
+      return conn.map(const(code .*. redirect .*. unit))
         |> gitHubCallbackResponse
+
+      // todo
+      //        |> writeSessionCookieMiddleware(\.subscriptionStatus .~ nil)
 
     case let .home(signedUpSuccessfully):
       return conn.map(const(signedUpSuccessfully))
@@ -143,7 +141,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Stripe.Subscription.Status?, D
         |> pricingResponse
 
     case .secretHome:
-      return conn.map(const(user))
+      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> secretHomeMiddleware
 
     case let .subscribe(data):

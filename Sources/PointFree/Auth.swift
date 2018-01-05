@@ -12,24 +12,8 @@ import UrlFormEncoding
 import Tuple
 
 let gitHubCallbackResponse =
-  extractGitHubAuthCode
+  filterMap(require1 >>> pure, or: const(unit) >¢< missingGitHubAuthCodeMiddleware)
     <| gitHubAuthTokenMiddleware
-
-/// Middleware transformer to convert the optional GitHub code to a non-optional. In the `nil` case we show
-/// a 400 Bad Request page.
-private func extractGitHubAuthCode(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
-
-    return { conn in
-      conn.data.code
-        .map { (code: $0, redirect: conn.data.redirect) }
-        .map(conn.map <<< const)
-        .map(middleware)
-        ?? (conn |> const(unit) >¢< missingGitHubAuthCodeMiddleware)
-    }
-}
 
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
@@ -105,33 +89,76 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
 
 /// Exchanges a github code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
-  _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
+  _ conn: Conn<StatusLineOpen, Tuple2<String, String?>>
   )
   -> IO<Conn<ResponseEnded, Data>> {
+    let (code, redirect) = lower(conn.data)
 
-    return AppEnvironment.current.gitHub.fetchAuthToken(conn.data.code)
+    return AppEnvironment.current.gitHub.fetchAuthToken(code)
       .flatMap { token in
         AppEnvironment.current.gitHub.fetchUser(token)
           .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .flatMap(fetchOrRegisterUser(env:))
+      .flatMap { user in
+        fetchStripeSubscription(for: user)
+          .map { (user, $0) }
+      }
       .run
-      .flatMap {
-        switch $0 {
+      .flatMap { errorOrData in
+        switch errorOrData {
         case .left:
           return conn
             // TODO: Handle errors.
-            |> redirect(to: path(to: .secretHome))
+            |> PointFree.redirect(
+              to: .secretHome,
+              headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
+          )
 
-        case let .right(user):
+        case let .right(user, subscription):
           return conn.map(const(user))
-            |> redirect(
-              to: conn.data.redirect ?? path(to: .secretHome),
-              headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
+            |> HttpPipeline.redirect(
+              to: redirect ?? path(to: .secretHome),
+              headersMiddleware: writeSessionCookieMiddleware(
+                ((\Session.userId) .~ user.id)
+                  <> (\.subscriptionStatus .~ subscription?.status)
+              )
           )
         }
     }
 }
+
+private func fetchStripeSubscription(for user: Database.User) -> EitherIO<Prelude.Unit, Stripe.Subscription?> {
+
+  return user.subscriptionId
+    .map {
+      AppEnvironment.current.database.fetchSubscriptionById($0)
+        .bimap(const(unit), id)
+        .flatMap { optionalSubscription in
+          optionalSubscription.map {
+            AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId)
+              .map(Optional.some)
+            }
+            ?? pure(nil)
+      }
+    }
+    ?? pure(nil)
+}
+
+//  if let subscriptionId = currentUser?.subscriptionId {
+//    return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+//      .map(map(^\.stripeSubscriptionId))
+//      .mapExcept(requireSome)
+//      .flatMap {
+//        AppEnvironment.current.stripe.fetchSubscription($0)
+//          .bimap(const(unit as Error), id)
+//      }
+//      .map(^\.status)
+//      .run
+//      .map(^\.right)
+//      .map { conn.map(const($0 .*. conn.data)) }
+//  }
+
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return gitHubUrl(

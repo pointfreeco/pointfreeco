@@ -88,6 +88,7 @@ public struct Database {
   public struct Subscription: Decodable {
     let id: Id
     let stripeSubscriptionId: Stripe.Subscription.Id
+    let stripeSubscriptionStatus: Stripe.Subscription.Status
     let userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
@@ -95,6 +96,7 @@ public struct Database {
     private enum CodingKeys: String, CodingKey {
       case id
       case stripeSubscriptionId = "stripe_subscription_id"
+      case stripeSubscriptionStatus = "stripe_subscription_status"
       case userId = "user_id"
     }
   }
@@ -491,6 +493,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "newsletter" character varying,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "subscriptions"
+      ADD COLUMN IF NOT EXISTS
+      "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
       """
     )))
     .map(const(unit))

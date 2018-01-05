@@ -16,8 +16,9 @@ let accountResponse =
     >-> map(lower)
     >>> respond(
       view: accountView,
-      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser in
+      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (subscription, teamInvites, teammates, emailSettings, currentUser),
           title: "Account"

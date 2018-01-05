@@ -62,7 +62,9 @@ public struct Flash: Codable {
 
 extension Session: Equatable {
   public static func ==(lhs: Session, rhs: Session) -> Bool {
-    return lhs.flash == rhs.flash && lhs.userId?.rawValue == rhs.userId?.rawValue
+    return lhs.flash == rhs.flash
+      && lhs.subscriptionStatus?.rawValue == rhs.subscriptionStatus?.rawValue
+      && lhs.userId?.rawValue == rhs.userId?.rawValue
   }
 }
 
