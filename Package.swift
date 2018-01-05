@@ -16,9 +16,9 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("54412eb")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
 
-    ProcessInfo.processInfo.environment["TRANSCRIPT"] == "live"
-      ? .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("4514506"))
-      : .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("23a1619"))
+    ProcessInfo.processInfo.environment["OSS"] == "1"
+      ? .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("23a1619"))
+      : .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("4514506"))
     ],
   targets: [
     .target(
