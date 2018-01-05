@@ -14,11 +14,11 @@ let aboutResponse =
     >>> respond(
       view: aboutView,
       layoutData: { currentUser in
-        SimplePageLayoutData(currentUser: currentUser, data: currentUser, title: "About Us")
+        SimplePageLayoutData(currentUser: currentUser, data: unit, title: "About Us")
     }
 )
 
-private let aboutView = View<Database.User?> { currentUser in
+private let aboutView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [
       div([`class`([Class.padding([.mobile: [.all: 4]])])], [

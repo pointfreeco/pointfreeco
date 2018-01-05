@@ -115,8 +115,9 @@ let pricingResponse =
     >-> map(lower)
     >>> respond(
       view: pricingOptionsView,
-      layoutData: { currentUser, pricing in
+      layoutData: { currentUser, pricing, route in
         SimplePageLayoutData(
+          currentRoute: route,
           currentUser: currentUser,
           data: (currentUser, pricing),
           extraStyles: pricingExtraStyles,

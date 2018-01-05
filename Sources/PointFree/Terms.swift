@@ -15,15 +15,11 @@ let termsResponse =
     >>> respond(
       view: termsView,
       layoutData: { currentUser in
-        SimplePageLayoutData(
-          currentUser: currentUser,
-          data: nil,
-          title: "Terms of Service"
-        )
+        SimplePageLayoutData(currentUser: currentUser, data: unit, title: "Terms of Service")
     }
 )
 
-private let termsView = View<Database.User?> { _ in
+private let termsView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [
       div([`class`([Class.padding([.mobile: [.all: 4]])])], [

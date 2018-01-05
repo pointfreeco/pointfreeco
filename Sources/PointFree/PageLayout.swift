@@ -10,6 +10,7 @@ import Styleguide
 import Tuple
 
 struct SimplePageLayoutData<A> {
+  private(set) var currentRoute: Route?
   private(set) var currentUser: Database.User?
   private(set) var extraStyles: Stylesheet
   private(set) var data: A
@@ -19,6 +20,7 @@ struct SimplePageLayoutData<A> {
   private(set) var useHighlightJs: Bool
 
   init(
+    currentRoute: Route? = nil,
     currentUser: Database.User?,
     data: A,
     extraStyles: Stylesheet = .empty,
@@ -27,6 +29,7 @@ struct SimplePageLayoutData<A> {
     useHighlightJs: Bool = false
     ) {
 
+    self.currentRoute = currentRoute
     self.currentUser = currentUser
     self.data = data
     self.extraStyles = extraStyles
@@ -37,7 +40,7 @@ struct SimplePageLayoutData<A> {
   }
 }
 
-func respond<A>(view: View<A>, layoutData: @escaping (A) -> SimplePageLayoutData<A>) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+func respond<A, B>(view: View<B>, layoutData: @escaping (A) -> SimplePageLayoutData<B>) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
   return { conn in
     let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
@@ -77,7 +80,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ),
         body(
           (layoutData.flash.map(flashView.view) ?? [])
-            <> (layoutData.showTopNav ? darkNavView.view((layoutData.currentUser, nil)) : [])
+            <> (layoutData.showTopNav ? darkNavView.view((layoutData.currentUser, layoutData.currentRoute)) : [])
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
         )

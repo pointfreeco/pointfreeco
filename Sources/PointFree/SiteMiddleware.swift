@@ -131,7 +131,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         pricing = .default
       }
 
-      return conn.map(const(user .*. pricing .*. unit))
+      return conn.map(const(user .*. pricing .*. route .*. unit))
         |> pricingResponse
 
     case .secretHome:

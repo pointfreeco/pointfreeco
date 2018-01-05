@@ -16,6 +16,7 @@ let episodeResponse =
       view: episodeView,
       layoutData: { episode, currentUser, route in
         SimplePageLayoutData(
+          currentRoute: route,
           currentUser: currentUser,
           data: (episode, currentUser, route),
           title: "Episode #\(episode.sequence): \(episode.title)",
