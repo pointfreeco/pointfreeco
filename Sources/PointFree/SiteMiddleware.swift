@@ -151,7 +151,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> removeTeammateMiddleware
 
     case .terms:
-      return conn.map(const(unit))
+      return conn.map(const(user .*. unit))
         |> termsResponse
     }
 }
