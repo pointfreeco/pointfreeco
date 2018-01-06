@@ -23,6 +23,7 @@ let confirmCancelResponse =
       view: confirmCancelView,
       layoutData: { subscription, currentUser in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
           data: (subscription, currentUser),
           title: "Cancel your subscription?"

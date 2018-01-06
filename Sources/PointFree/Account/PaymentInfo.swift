@@ -18,6 +18,7 @@ let paymentInfoResponse =
       view: paymentInfoView,
       layoutData: { subscription, currentUser in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
           data: (subscription, currentUser),
           title: "Update Payment Info"

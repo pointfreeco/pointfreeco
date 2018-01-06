@@ -49,6 +49,24 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
     return user.map { conn.map(const($0 .*. conn.data)) }
 }
 
+public func currentSubscriptionMiddleware<A, I>(
+  _ conn: Conn<I, T2<Database.User?, A>>
+  ) -> IO<Conn<I, T3<Database.Subscription?, Database.User?, A>>> {
+
+  return conn.data.first
+    .map { user in
+      guard let subscriptionId = user.subscriptionId
+        else { return pure(conn.map(const(nil .*. conn.data))) }
+
+      return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+        .mapExcept(requireSome)
+        .run
+        .map(^\.right)
+        .map { conn.map(const($0 .*. conn.data)) }
+    }
+    ?? pure(conn.map(const(nil .*. conn.data)))
+}
+
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
   -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
 
