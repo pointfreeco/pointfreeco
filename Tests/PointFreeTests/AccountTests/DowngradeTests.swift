@@ -25,7 +25,7 @@ final class DowngradeTests: TestCase {
 
   func testConfirmDowngrade() {
     AppEnvironment.with(
-      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan.id .~ .individualYearly))
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly))
     ) {
       let conn = connection(from: request(to: .account(.subscription(.downgrade(.show))), session: .loggedIn))
       let result = conn |> siteMiddleware

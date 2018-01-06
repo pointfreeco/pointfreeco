@@ -25,7 +25,7 @@ final class UpgradeTests: TestCase {
 
   func testConfirmUpgrade() {
     AppEnvironment.with(
-      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan.id .~ .individualMonthly))
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly))
     ) {
       let conn = connection(from: request(to: .account(.subscription(.upgrade(.show))), session: .loggedIn))
       let result = conn |> siteMiddleware

@@ -105,6 +105,12 @@ private let titleRowView = View<Prelude.Unit> { _ in
 private let formRowView = View<Stripe.Subscription> { subscription in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
+      p([
+        "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
+        "downgrade your subscription, you will begin to be billed monthly at the end of the current billing ",
+        "cycle", text(subscription.currentPeriodEnd.map { ": " + dateFormatter.string(from: $0) } ?? ""),
+        "."
+        ]),
       form([action(path(to: .account(.subscription(.downgrade(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],

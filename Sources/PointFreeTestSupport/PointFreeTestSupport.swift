@@ -174,9 +174,21 @@ extension Stripe.Plan {
     id: .individualMonthly,
     interval: .month,
     metadata: [:],
-    name: "Monthly",
+    name: "Individual Monthly",
     statementDescriptor: nil
   )
+
+  public static let individualMonthly = mock
+
+  public static let individualYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .individualYearly
+    |> \.name .~ "Individual Yearly"
+
+  public static let teamYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .teamYearly
+    |> \.name .~ "Team Yearly"
 }
 
 extension Stripe.Subscription {
