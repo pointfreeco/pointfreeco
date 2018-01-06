@@ -33,17 +33,6 @@ class NavViewTests: TestCase {
     let doc = testDocView.view((nil, nil, .pricing(nil, nil)))
 
     assertSnapshot(matching: doc.first!)
-
-    #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 168))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
-
-        webView.frame.size.width = 500
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-    #endif
   }
 
   func testNav_LoggedIn_NonSubscriber() {
