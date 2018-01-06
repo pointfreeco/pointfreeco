@@ -12,7 +12,7 @@ import UrlFormEncoding
 import Tuple
 
 let gitHubCallbackResponse =
-  filterMap(require1 >>> pure, or: const(unit) >¢< missingGitHubAuthCodeMiddleware)
+  filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
     <| gitHubAuthTokenMiddleware
 
 /// Middleware to run when the GitHub auth code is missing.
@@ -101,12 +101,12 @@ private func gitHubAuthTokenMiddleware(
       }
       .flatMap(fetchOrRegisterUser(env:))
       .flatMap { user in
-        fetchStripeSubscription(for: user)
-          .map { (user, $0) }
+        refreshStripeSubscription(for: user)
+          .map(const(user))
       }
       .run
-      .flatMap { errorOrData in
-        switch errorOrData {
+      .flatMap { errorOrUser in
+        switch errorOrUser {
         case .left:
           return conn
             // TODO: Handle errors.
@@ -115,50 +115,30 @@ private func gitHubAuthTokenMiddleware(
               headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
           )
 
-        case let .right(user, subscription):
+        case let .right(user):
           return conn.map(const(user))
             |> HttpPipeline.redirect(
               to: redirect ?? path(to: .secretHome),
-              headersMiddleware: writeSessionCookieMiddleware(
-                ((\Session.userId) .~ user.id)
-                  <> (\.subscriptionStatus .~ subscription?.status)
-              )
+              headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }
     }
 }
 
-private func fetchStripeSubscription(for user: Database.User) -> EitherIO<Prelude.Unit, Stripe.Subscription?> {
+private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+  guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return user.subscriptionId
-    .map {
-      AppEnvironment.current.database.fetchSubscriptionById($0)
-        .bimap(const(unit), id)
-        .flatMap { optionalSubscription in
-          optionalSubscription.map {
-            AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId)
-              .map(Optional.some)
-            }
-            ?? pure(nil)
-      }
+  return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+    .mapExcept(requireSome)
+    .flatMap { subscription in
+      AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        .bimap(const(unit as Error), id)
+        .flatMap { stripeSubscription in
+          AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
+        }
     }
-    ?? pure(nil)
+    .bimap(const(unit), id)
 }
-
-//  if let subscriptionId = currentUser?.subscriptionId {
-//    return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
-//      .map(map(^\.stripeSubscriptionId))
-//      .mapExcept(requireSome)
-//      .flatMap {
-//        AppEnvironment.current.stripe.fetchSubscription($0)
-//          .bimap(const(unit as Error), id)
-//      }
-//      .map(^\.status)
-//      .run
-//      .map(^\.right)
-//      .map { conn.map(const($0 .*. conn.data)) }
-//  }
-
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return gitHubUrl(

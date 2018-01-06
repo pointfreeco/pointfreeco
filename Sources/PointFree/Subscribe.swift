@@ -31,7 +31,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Datab
           .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity)
       }
       .flatMap { stripeSubscription in
-        AppEnvironment.current.database.createSubscription(stripeSubscription.id, user.id)
+        AppEnvironment.current.database.createSubscription(stripeSubscription, user.id)
           .withExcept(const(unit))
           .map(const(stripeSubscription))
       }

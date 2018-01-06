@@ -18,14 +18,41 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       realm: "Point-Free",
       protect: isProtected
     )
-    <| currentUserMiddleware
+    <| currentUserAndSubscriptionMiddleware
     >-> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
+
+public func currentUserAndSubscriptionMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
+  -> IO<Conn<StatusLineOpen, T3<Database.User?, Database.Subscription?, A>>> {
+
+    let user = conn.request.session.userId
+      .map {
+        AppEnvironment.current.database.fetchUserById($0)
+          .mapExcept(requireSome)
+          .run
+          .map(^\.right)
+      }
+      ?? pure(nil)
+
+    return user
+      .flatMap { user in
+        guard let subscriptionId = user?.subscriptionId
+          else { return pure(conn.map(const(user .*. nil .*. conn.data))) }
+
+        return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+          .mapExcept(requireSome)
+          .run
+          .map(^\.right)
+          .map { conn.map(const(user .*. $0 .*. conn.data)) }
+    }
+}
+
+
+private func render(conn: Conn<StatusLineOpen, T3<Database.User?, Database.Subscription?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let subscriptionStatus = conn.request.session.subscriptionStatus
-    let (user, route) = (conn.data.first, conn.data.second)
+    let (user, subscription, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+    let subscriptionStatus = subscription?.stripeSubscriptionStatus
 
     switch route {
     case .about:
