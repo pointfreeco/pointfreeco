@@ -45,6 +45,46 @@ final class UpgradeTests: TestCase {
     }
   }
 
+  func testConfirmUpgradeLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.upgrade(.show)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testConfirmUpgradeNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.upgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmUpgradeInvalidSubscription() {
+    AppEnvironment.with(
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly))
+    ) {
+      let conn = connection(from: request(to: .account(.subscription(.upgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmUpgradeCanceledSubscription() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .individualMonthly
+      |> \.status .~ .canceled
+
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: .account(.subscription(.upgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testUpgrade() {
     AppEnvironment.with(
       (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly)))
@@ -53,6 +93,50 @@ final class UpgradeTests: TestCase {
       let conn = connection(
         from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
       )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testUpgradeLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.upgrade(.update)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testUpgradeNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testUpgradeInvalidSubscription() {
+    AppEnvironment.with(
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly))
+    ) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testUpgradeCanceledSubscription() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .individualMonthly
+      |> \.status .~ .canceled
+
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())

@@ -45,6 +45,46 @@ final class DowngradeTests: TestCase {
     }
   }
 
+  func testConfirmDowngradeLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.downgrade(.show)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testConfirmDowngradeNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.downgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmDowngradeInvalidSubscription() {
+    AppEnvironment.with(
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly))
+    ) {
+      let conn = connection(from: request(to: .account(.subscription(.downgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmDowngradeCanceledSubscription() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .individualYearly
+      |> \.status .~ .canceled
+
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: .account(.subscription(.downgrade(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testDowngrade() {
     AppEnvironment.with(
       (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly)))
@@ -53,6 +93,50 @@ final class DowngradeTests: TestCase {
       let conn = connection(
         from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn)
       )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testDowngradeLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.downgrade(.update)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testDowngradeNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testDowngradeInvalidSubscription() {
+    AppEnvironment.with(
+      \.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly))
+    ) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testDowngradeCanceledSubscription() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .individualYearly
+      |> \.status .~ .canceled
+
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
