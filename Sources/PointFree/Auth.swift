@@ -12,24 +12,8 @@ import UrlFormEncoding
 import Tuple
 
 let gitHubCallbackResponse =
-  extractGitHubAuthCode
+  filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
     <| gitHubAuthTokenMiddleware
-
-/// Middleware transformer to convert the optional GitHub code to a non-optional. In the `nil` case we show
-/// a 400 Bad Request page.
-private func extractGitHubAuthCode(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (code: String, redirect: String?), Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, (code: String?, redirect: String?), Data> {
-
-    return { conn in
-      conn.data.code
-        .map { (code: $0, redirect: conn.data.redirect) }
-        .map(conn.map <<< const)
-        .map(middleware)
-        ?? (conn |> const(unit) >¢< missingGitHubAuthCodeMiddleware)
-    }
-}
 
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
@@ -63,6 +47,24 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
       ?? pure(nil)
 
     return user.map { conn.map(const($0 .*. conn.data)) }
+}
+
+public func currentSubscriptionMiddleware<A, I>(
+  _ conn: Conn<I, T2<Database.User?, A>>
+  ) -> IO<Conn<I, T3<Database.Subscription?, Database.User?, A>>> {
+
+  return conn.data.first
+    .map { user in
+      guard let subscriptionId = user.subscriptionId
+        else { return pure(conn.map(const(nil .*. conn.data))) }
+
+      return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+        .mapExcept(requireSome)
+        .run
+        .map(^\.right)
+        .map { conn.map(const($0 .*. conn.data)) }
+    }
+    ?? pure(conn.map(const(nil .*. conn.data)))
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
@@ -105,32 +107,55 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
 
 /// Exchanges a github code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
-  _ conn: Conn<StatusLineOpen, (code: String, redirect: String?)>
+  _ conn: Conn<StatusLineOpen, Tuple2<String, String?>>
   )
   -> IO<Conn<ResponseEnded, Data>> {
+    let (code, redirect) = lower(conn.data)
 
-    return AppEnvironment.current.gitHub.fetchAuthToken(conn.data.code)
+    return AppEnvironment.current.gitHub.fetchAuthToken(code)
       .flatMap { token in
         AppEnvironment.current.gitHub.fetchUser(token)
           .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       }
       .flatMap(fetchOrRegisterUser(env:))
+      .flatMap { user in
+        refreshStripeSubscription(for: user)
+          .map(const(user))
+      }
       .run
-      .flatMap {
-        switch $0 {
+      .flatMap { errorOrUser in
+        switch errorOrUser {
         case .left:
           return conn
             // TODO: Handle errors.
-            |> redirect(to: path(to: .secretHome))
+            |> PointFree.redirect(
+              to: .secretHome,
+              headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
+          )
 
         case let .right(user):
           return conn.map(const(user))
-            |> redirect(
-              to: conn.data.redirect ?? path(to: .secretHome),
+            |> HttpPipeline.redirect(
+              to: redirect ?? path(to: .secretHome),
               headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }
     }
+}
+
+private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+  guard let subscriptionId = user.subscriptionId else { return pure(unit) }
+
+  return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+    .mapExcept(requireSome)
+    .flatMap { subscription in
+      AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        .bimap(const(unit as Error), id)
+        .flatMap { stripeSubscription in
+          AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
+        }
+    }
+    .bimap(const(unit), id)
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {

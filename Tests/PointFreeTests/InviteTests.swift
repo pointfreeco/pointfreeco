@@ -190,7 +190,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = AppEnvironment.current.database.createSubscription(Stripe.Subscription.mock.id, inviterUser.id)
+    _ = AppEnvironment.current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
       .run
       .perform()
 
@@ -276,7 +276,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = AppEnvironment.current.database.createSubscription(Stripe.Subscription.mock.id, inviterUser.id)
+    _ = AppEnvironment.current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
       .run
       .perform()
 

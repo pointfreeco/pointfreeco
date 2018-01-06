@@ -22,6 +22,7 @@ let confirmDowngradeResponse =
       view: confirmDowngradeView,
       layoutData: { subscription, currentUser in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
           data: (subscription, currentUser),
           title: "Downgrade to monthly billing?"

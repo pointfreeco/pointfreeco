@@ -13,7 +13,7 @@ import SnapshotTesting
 
 class NavViewTests: TestCase {
   func testNav_LoggedOut() {
-    let doc = testDocView.view((nil, nil))
+    let doc = testDocView.view((nil, nil, nil))
 
     assertSnapshot(matching: doc.first!)
 
@@ -29,8 +29,14 @@ class NavViewTests: TestCase {
     #endif
   }
 
+  func testNav_LoggedOut_WithCurrentRoute() {
+    let doc = testDocView.view((nil, nil, .pricing(nil, nil)))
+
+    assertSnapshot(matching: doc.first!)
+  }
+
   func testNav_LoggedIn_NonSubscriber() {
-    let doc = testDocView.view((.mock |> \.subscriptionId .~ nil, nil))
+    let doc = testDocView.view((.mock, nil, nil))
 
     assertSnapshot(matching: doc.first!)
 
@@ -47,7 +53,7 @@ class NavViewTests: TestCase {
   }
 
   func testNav_LoggedIn_Subscriber() {
-    let doc = testDocView.view((.mock, nil))
+    let doc = testDocView.view((.mock, .active, nil))
 
     assertSnapshot(matching: doc.first!)
 
@@ -64,14 +70,14 @@ class NavViewTests: TestCase {
   }
 }
 
-private let testDocView = View<(Database.User?, Route?)> { currentUser, currentRoute in
+private let testDocView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
   document([
     html([
       head([
         style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
-      body(darkNavView.view((currentUser, currentRoute)))
+      body(darkNavView.view((currentUser, currentSubscriptionStatus, currentRoute)))
       ])
     ])
 }
