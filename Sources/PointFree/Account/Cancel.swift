@@ -12,9 +12,10 @@ import Tuple
 // MARK: Middleware
 
 let confirmCancelResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
-      get1 >>> isActive,
+      get1 >>> ^\.isRenewing,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| writeStatus(.ok)
@@ -31,20 +32,23 @@ let confirmCancelResponse =
 )
 
 let cancelMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
-      get1 >>> isActive,
+      get1 >>> ^\.isRenewing,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
     )
     <| cancel
     >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
 let reactivateMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
     )
+    <<< requireSubscriptionItem
     <| reactivate
     >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve reactivated your subscription."))
 
@@ -59,34 +63,43 @@ private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Dat
       .map(const(conn.map(const(unit))))
 }
 
-private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
+private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.Item, Stripe.Subscription, Database.User>>)
   -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
 
-  // TODO: send emails
-  return AppEnvironment.current.stripe.reactivateSubscription(get1(conn.data))
-    .run
-    .map(const(conn.map(const(unit))))
+    let (item, subscription, _) = lower(conn.data)
+
+    // TODO: send emails
+    return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+      .run
+      .map(const(conn.map(const(unit))))
 }
 
 // MARK: - Transformers
 
+func requireSubscriptionItem<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription.Item, Stripe.Subscription, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data> {
+
+    return filterMap(
+      { data in pure(data.first.items.data.first.map { $0 .*. data }) },
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Invalid subscription."))
+      )
+      <| middleware
+}
+
 func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
-    
-    return filterMap(require1 >>> pure, or: loginAndRedirect)
-      <<< requireSubscriptionAndOwner
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return requireSubscriptionAndOwner
       <<< fetchStripeSubscription
       <<< filterMap(
         require1 >>> pure,
         or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Subscription not found in Stripe!"))
       )
       <| middleware
-}
-
-private func isActive(_ subscription: Stripe.Subscription) -> Bool {
-  return subscription.status != .canceled && !subscription.cancelAtPeriodEnd
 }
 
 private func requireSubscriptionAndOwner<A>(
