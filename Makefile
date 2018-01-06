@@ -50,7 +50,7 @@ route-partial-iso:
 	mkdir -p ./Sources/PointFree/__Generated__
 	sourcery \
 		--sources ./Sources/PointFree/ \
-		--templates ./.sourcery-templates/RoutePartialIsos.stencil \
+		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
 		--output ./Sources/PointFree/__Generated__/DerivedPartialIsos.swift
 
 postgres-mm:

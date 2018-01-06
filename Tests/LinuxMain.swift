@@ -29,12 +29,35 @@ extension AuthTests {
 extension CancelTests {
   static var allTests: [(String, (CancelTests) -> () throws -> Void)] = [
     ("testConfirmCancel", testConfirmCancel),
-    ("testCancel", testCancel)
+    ("testConfirmCancelLoggedOut", testConfirmCancelLoggedOut),
+    ("testConfirmCancelNoSubscription", testConfirmCancelNoSubscription),
+    ("testConfirmCancelCancelingSubscription", testConfirmCancelCancelingSubscription),
+    ("testConfirmCancelCanceledSubscription", testConfirmCancelCanceledSubscription),
+    ("testCancel", testCancel),
+    ("testCancelLoggedOut", testCancelLoggedOut),
+    ("testCancelNoSubscription", testCancelNoSubscription),
+    ("testCancelCancelingSubscription", testCancelCancelingSubscription),
+    ("testCancelCanceledSubscription", testCancelCanceledSubscription)
   ]
 }
 extension ChangeEmailConfirmationTests {
   static var allTests: [(String, (ChangeEmailConfirmationTests) -> () throws -> Void)] = [
     ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail)
+  ]
+}
+extension ChangeSeatsTests {
+  static var allTests: [(String, (ChangeSeatsTests) -> () throws -> Void)] = [
+    ("testConfirmChangeSeats", testConfirmChangeSeats),
+    ("testConfirmChangeSeatsLoggedOut", testConfirmChangeSeatsLoggedOut),
+    ("testConfirmChangeSeatsNoSubscription", testConfirmChangeSeatsNoSubscription),
+    ("testConfirmChangeSeatsCanceledSubscription", testConfirmChangeSeatsCanceledSubscription),
+    ("testConfirmChangeSeatsInvalidPlan", testConfirmChangeSeatsInvalidPlan),
+    ("testChangeSeats", testChangeSeats),
+    ("testChangeSeatsLoggedOut", testChangeSeatsLoggedOut),
+    ("testChangeSeatsNoSubscription", testChangeSeatsNoSubscription),
+    ("testChangeSeatsCanceledSubscription", testChangeSeatsCanceledSubscription),
+    ("testChangeSeatsInvalidPlan", testChangeSeatsInvalidPlan),
+    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats)
   ]
 }
 extension DatabaseTests {
@@ -45,7 +68,15 @@ extension DatabaseTests {
 extension DowngradeTests {
   static var allTests: [(String, (DowngradeTests) -> () throws -> Void)] = [
     ("testConfirmDowngrade", testConfirmDowngrade),
-    ("testDowngrade", testDowngrade)
+    ("testConfirmDowngradeLoggedOut", testConfirmDowngradeLoggedOut),
+    ("testConfirmDowngradeNoSubscription", testConfirmDowngradeNoSubscription),
+    ("testConfirmDowngradeInvalidSubscription", testConfirmDowngradeInvalidSubscription),
+    ("testConfirmDowngradeCanceledSubscription", testConfirmDowngradeCanceledSubscription),
+    ("testDowngrade", testDowngrade),
+    ("testDowngradeLoggedOut", testDowngradeLoggedOut),
+    ("testDowngradeNoSubscription", testDowngradeNoSubscription),
+    ("testDowngradeInvalidSubscription", testDowngradeInvalidSubscription),
+    ("testDowngradeCanceledSubscription", testDowngradeCanceledSubscription)
   ]
 }
 extension EmailInviteTests {
@@ -167,7 +198,15 @@ extension UpdateProfileTests {
 extension UpgradeTests {
   static var allTests: [(String, (UpgradeTests) -> () throws -> Void)] = [
     ("testConfirmUpgrade", testConfirmUpgrade),
-    ("testUpgrade", testUpgrade)
+    ("testConfirmUpgradeLoggedOut", testConfirmUpgradeLoggedOut),
+    ("testConfirmUpgradeNoSubscription", testConfirmUpgradeNoSubscription),
+    ("testConfirmUpgradeInvalidSubscription", testConfirmUpgradeInvalidSubscription),
+    ("testConfirmUpgradeCanceledSubscription", testConfirmUpgradeCanceledSubscription),
+    ("testUpgrade", testUpgrade),
+    ("testUpgradeLoggedOut", testUpgradeLoggedOut),
+    ("testUpgradeNoSubscription", testUpgradeNoSubscription),
+    ("testUpgradeInvalidSubscription", testUpgradeInvalidSubscription),
+    ("testUpgradeCanceledSubscription", testUpgradeCanceledSubscription)
   ]
 }
 
@@ -177,6 +216,7 @@ XCTMain([
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
+  testCase(ChangeSeatsTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(DowngradeTests.allTests),
   testCase(EmailInviteTests.allTests),

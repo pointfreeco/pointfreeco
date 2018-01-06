@@ -92,135 +92,127 @@ public enum Route: DerivePartialIsos {
 
 private let routers: [Router<Route>] = [
 
-  Route.iso.about
+  .about
     <¢> get %> lit("about") <% end,
 
-  Route.iso.account <<< Route.Account.iso.confirmEmailChange
+  .account <<< .confirmEmailChange
     <¢> get %> lit("account") %> lit("confirm-email-change")
     %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
     <% end,
 
-  Route.iso.account <<< Route.Account.iso.index
+  .account <<< .index
     <¢> get %> lit("account") <% end,
 
-  Route.iso.account <<< Route.Account.iso.paymentInfo <<< Route.Account.PaymentInfo.iso.show
+  .account <<< .paymentInfo <<< .show
     <¢> get %> lit("account") %> lit("payment-info") <% end,
 
-  Route.iso.account <<< Route.Account.iso.paymentInfo <<< Route.Account.PaymentInfo.iso.update
+  .account <<< .paymentInfo <<< .update
     <¢> post %> lit("account") %> lit("payment-info")
     %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
     <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.cancel
-    <<< Route.Account.Subscription.Cancel.iso.show
+  .account <<< .subscription <<< .cancel <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.cancel
-    <<< Route.Account.Subscription.Cancel.iso.update
+  .account <<< .subscription <<< .cancel <<< .update
     <¢> post %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.changeSeats
-    <<< Route.Account.Subscription.ChangeSeats.iso.show
+  .account <<< .subscription <<< .changeSeats <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("change-seats") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.changeSeats
-    <<< Route.Account.Subscription.ChangeSeats.iso.update
+  .account <<< .subscription <<< .changeSeats <<< .update
     <¢> post %> lit("account") %> lit("subscription") %> lit("change-seats")
     %> formField("quantity", Optional.iso.some >>> opt(.int))
     <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.downgrade
-    <<< Route.Account.Subscription.Downgrade.iso.show
+  .account <<< .subscription <<< .downgrade <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("downgrade") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.downgrade
-    <<< Route.Account.Subscription.Downgrade.iso.update
+  .account <<< .subscription <<< .downgrade <<< .update
     <¢> post %> lit("account") %> lit("subscription") %> lit("downgrade") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.reactivate
+  .account <<< .subscription <<< .reactivate
     <¢> post %> lit("account") %> lit("subscription") %> lit("reactivate") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.upgrade
-    <<< Route.Account.Subscription.Upgrade.iso.show
+  .account <<< .subscription <<< .upgrade <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("upgrade") <% end,
 
-  Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.upgrade
-    <<< Route.Account.Subscription.Upgrade.iso.update
+  .account <<< .subscription <<< .upgrade <<< .update
     <¢> post %> lit("account") %> lit("subscription") %> lit("upgrade") <% end,
 
-  Route.iso.account <<< Route.Account.iso.update
+  .account <<< .update
     <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
 
-  Route.iso.admin <<< Route.Admin.iso.index
+  .admin <<< .index
     <¢> get %> lit("admin") <% end,
 
-  Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.send
+  .admin <<< .newEpisodeEmail <<< .send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
 
-  Route.iso.admin <<< Route.Admin.iso.newEpisodeEmail <<< Route.Admin.NewEpisodeEmail.iso.show
+  .admin <<< .newEpisodeEmail <<< .show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
 
-  Route.iso.episode
+  .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
 
-  Route.iso.expressUnsubscribe
+  .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
     %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
     <% end,
 
-  Route.iso.gitHubCallback
+  .gitHubCallback
     <¢> get %> lit("github-auth")
     %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
     <% end,
 
-  Route.iso.home
+  .home
     <¢> get %> queryParam("success", opt(.bool)) <% end,
 
-  Route.iso.invite <<< Route.Invite.iso.accept
+  .invite <<< .accept
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("accept") <% end,
 
-  Route.iso.invite <<< Route.Invite.iso.resend
+  .invite <<< .resend
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("resend") <% end,
 
-  Route.iso.invite <<< Route.Invite.iso.revoke
+  .invite <<< .revoke
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("revoke") <% end,
 
-  Route.iso.invite <<< Route.Invite.iso.send
+  .invite <<< .send
     // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
     //       `(String?) -> A` like it is for `queryParam`.
     <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
-  Route.iso.invite <<< Route.Invite.iso.show
+  .invite <<< .show
     <¢> get %> lit("invites") %> pathParam(._rawRepresentable >>> ._rawRepresentable) <% end,
 
-  Route.iso.launchSignup
+  .launchSignup
     <¢> post %> formField("email", .rawRepresentable) <% lit("launch-signup") <% end,
 
-  Route.iso.login
+  .login
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
 
-  Route.iso.logout
+  .logout
     <¢> get %> lit("logout") <% end,
 
-  Route.iso.pricing
+  .pricing
     <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
 
-  Route.iso.secretHome
+  .secretHome
     <¢> get %> lit("home") <% end,
 
-  Route.iso.subscribe
+  .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
-  Route.iso.team <<< Route.Team.iso.remove
+  .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
     %> pathParam(._rawRepresentable >>> ._rawRepresentable)
     <% lit("remove")
     <% end,
 
-  Route.iso.team <<< Route.Team.iso.show
+  .team <<< .show
     <¢> get %> lit("account") %> lit("team") <% end,
 
-  Route.iso.terms
+  .terms
     <¢> get %> lit("terms") <% end,
 ]
 
