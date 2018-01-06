@@ -166,7 +166,7 @@ private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seats
       form([action(path(to: .account(.subscription(.changeSeats(.update(nil)))))), method(.post)], [
         input([
           type(.number),
-          min(seatsTaken),
+          min(max(Pricing.validTeamQuantities.lowerBound, seatsTaken)),
           max(Pricing.validTeamQuantities.upperBound),
           name("quantity"),
           step(1),
