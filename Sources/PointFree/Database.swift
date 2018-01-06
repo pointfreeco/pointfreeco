@@ -219,7 +219,7 @@ private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, 
 private func fetchSubscription(ownerId: Database.User.Id) -> EitherIO<Error, Database.Subscription?> {
   return firstRow(
     """
-    SELECT "id", "user_id", "stripe_subscription_id"
+    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "user_id" = $1
     LIMIT 1
