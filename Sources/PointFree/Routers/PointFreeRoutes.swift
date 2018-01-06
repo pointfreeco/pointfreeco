@@ -134,8 +134,7 @@ private let routers: [Router<Route>] = [
   .account <<< .subscription <<< .reactivate
     <¢> post %> lit("account") %> lit("subscription") %> lit("reactivate") <% end,
 
-  .account <<< .subscription <<< .upgrade
-    <<< .show
+  .account <<< .subscription <<< .upgrade <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("upgrade") <% end,
 
   .account <<< .subscription <<< .upgrade <<< .update
