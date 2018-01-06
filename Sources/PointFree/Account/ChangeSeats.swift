@@ -24,6 +24,7 @@ let confirmChangeSeatsResponse =
       view: confirmChangeSeatsView,
       layoutData: { subscription, currentUser, seatsTaken in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
           data: (subscription, currentUser, seatsTaken),
           title: "Add or remove seats?"

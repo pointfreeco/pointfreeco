@@ -11,6 +11,7 @@ import Tuple
 
 struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
+  private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
   private(set) var currentUser: Database.User?
   private(set) var extraStyles: Stylesheet
   private(set) var data: A
@@ -21,6 +22,7 @@ struct SimplePageLayoutData<A> {
 
   init(
     currentRoute: Route? = nil,
+    currentSubscriptionStatus: Stripe.Subscription.Status? = nil,
     currentUser: Database.User?,
     data: A,
     extraStyles: Stylesheet = .empty,
@@ -30,6 +32,7 @@ struct SimplePageLayoutData<A> {
     ) {
 
     self.currentRoute = currentRoute
+    self.currentSubscriptionStatus = currentSubscriptionStatus
     self.currentUser = currentUser
     self.data = data
     self.extraStyles = extraStyles
@@ -84,7 +87,9 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ),
         body(
           (layoutData.flash.map(flashView.view) ?? [])
-            <> (layoutData.showTopNav ? darkNavView.view((layoutData.currentUser, layoutData.currentRoute)) : [])
+            <> (layoutData.showTopNav
+              ? darkNavView.view((layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute))
+              : [])
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
         )

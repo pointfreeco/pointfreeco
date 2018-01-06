@@ -48,6 +48,7 @@ extension Database {
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     registerUser: const(pure(.some(.mock))),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
+    updateSubscription: { _, _ in pure(unit) },
     updateUser: { _, _, _, _ in pure(unit) },
     upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
@@ -74,6 +75,7 @@ extension Database.Subscription {
   public static let mock = Database.Subscription(
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     stripeSubscriptionId: Stripe.Subscription.mock.id,
+    stripeSubscriptionStatus: .active,
     userId: Database.User.mock.id
   )
 }
