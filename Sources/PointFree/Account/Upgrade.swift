@@ -14,7 +14,7 @@ import Tuple
 let confirmUpgradeResponse =
   requireStripeSubscription
     <<< requireActiveSubscription
-    <<< requireIndividualYearlySubscription
+    <<< requireIndividualMonthlySubscription
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
@@ -31,7 +31,7 @@ let confirmUpgradeResponse =
 let upgradeMiddleware =
   requireStripeSubscription
     <<< requireActiveSubscription
-    <<< requireIndividualYearlySubscription
+    <<< requireIndividualMonthlySubscription
     <| upgrade
     >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ll start billing you yearly!"))
 
@@ -48,7 +48,7 @@ private func upgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Da
 
 // MARK: - Transformers
 
-func requireIndividualMonthlySubscription<A>(
+private func requireIndividualMonthlySubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {

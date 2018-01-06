@@ -63,7 +63,7 @@ func requireActiveSubscription<A>(
       <| middleware
 }
 
-func requireIndividualYearlySubscription<A>(
+private func requireIndividualYearlySubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {
