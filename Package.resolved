@@ -74,15 +74,6 @@
         }
       },
       {
-        "package": "EpisodeTranscripts",
-        "repositoryURL": "https://github.com/mbrandonw/episode-transcripts.git",
-        "state": {
-          "branch": "4514506",
-          "revision": "45145068a5758fc5c8172bea18bb22b6cc8e5007",
-          "version": null
-        }
-      },
-      {
         "package": "FileCheck",
         "repositoryURL": "https://github.com/trill-lang/FileCheck.git",
         "state": {
