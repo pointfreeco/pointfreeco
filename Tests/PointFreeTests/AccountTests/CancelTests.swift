@@ -12,7 +12,7 @@ import XCTest
   import WebKit
 #endif
 
-class CancelTests: TestCase {
+final class CancelTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.push(\.database .~ .mock)
@@ -39,5 +39,12 @@ class CancelTests: TestCase {
         assertSnapshot(matching: webView, named: "mobile")
       }
     #endif
+  }
+
+  func testCancel() {
+    let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 }
