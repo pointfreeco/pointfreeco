@@ -56,7 +56,7 @@ let changeSeatsMiddleware =
 private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription, Database.User, Int, Int>>)
   -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
 
-    let (subscription, _, seatsTaken, quantity) = lower(conn.data)
+    let (subscription, _, _, quantity) = lower(conn.data)
 
     // TODO: send emails
     return  AppEnvironment.current.stripe.updateSubscription(subscription, .teamYearly, quantity)
