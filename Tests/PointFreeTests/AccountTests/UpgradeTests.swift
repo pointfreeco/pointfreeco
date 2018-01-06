@@ -73,9 +73,8 @@ final class UpgradeTests: TestCase {
   }
 
   func testConfirmUpgradeCanceledSubscription() {
-    let subscription = Stripe.Subscription.mock
+    let subscription = Stripe.Subscription.canceled
       |> \.plan .~ .individualMonthly
-      |> \.status .~ .canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: .account(.subscription(.upgrade(.show))), session: .loggedIn))
@@ -131,9 +130,8 @@ final class UpgradeTests: TestCase {
   }
 
   func testUpgradeCanceledSubscription() {
-    let subscription = Stripe.Subscription.mock
+    let subscription = Stripe.Subscription.canceled
       |> \.plan .~ .individualMonthly
-      |> \.status .~ .canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn))

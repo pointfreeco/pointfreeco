@@ -41,10 +41,78 @@ final class CancelTests: TestCase {
     #endif
   }
 
+  func testConfirmCancelLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.cancel(.show)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testConfirmCancelNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmCancelCancelingSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceling))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmCancelCanceledSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceled))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testCancel() {
     let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
+  }
+
+  func testCancelLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.cancel(.update)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testCancelNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testCancelCancelingSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceling))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testCancelCanceledSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceled))) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
   }
 }

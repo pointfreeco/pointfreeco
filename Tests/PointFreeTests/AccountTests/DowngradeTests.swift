@@ -73,9 +73,8 @@ final class DowngradeTests: TestCase {
   }
 
   func testConfirmDowngradeCanceledSubscription() {
-    let subscription = Stripe.Subscription.mock
+    let subscription = Stripe.Subscription.canceled
       |> \.plan .~ .individualYearly
-      |> \.status .~ .canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: .account(.subscription(.downgrade(.show))), session: .loggedIn))
@@ -131,9 +130,8 @@ final class DowngradeTests: TestCase {
   }
 
   func testDowngradeCanceledSubscription() {
-    let subscription = Stripe.Subscription.mock
+    let subscription = Stripe.Subscription.canceled
       |> \.plan .~ .individualYearly
-      |> \.status .~ .canceled
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
       let conn = connection(from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn))
