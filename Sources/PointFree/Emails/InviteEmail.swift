@@ -70,7 +70,7 @@ private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> 
           ]),
 
         p([
-          "To review your who is on your team, ",
+          "To review who is on your team, ",
           a([href(url(to: .account(.index)))], ["click here"]),
           "."
           ])
