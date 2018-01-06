@@ -19,25 +19,25 @@ public enum GitHubRoute: DerivePartialIsos {
 
 let gitHubRouter = [
 
-  GitHubRoute.iso.authorize
+  PartialIso.authorize
     <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
     %> queryParam("client_id", .string)
     <%> queryParam("redirect_uri", opt(.string))
     <%> queryParam("scope", .string)
     <% end,
 
-  GitHubRoute.iso.episodeCodeSample
+  .episodeCodeSample
     <¢> lit("pointfreeco") %> lit("episode-code-samples") %> lit("tree") %> lit("master")
     %> pathParam(.string)
     <% end,
 
-  GitHubRoute.iso.license
+  .license
     <¢> lit("pointfreeco") %> lit("pointfreeco") %> lit("blob") %> lit("master") %> lit("LICENSE") %> end,
 
-  GitHubRoute.iso.organization
+  .organization
     <¢> get <% lit("pointfreeco") <% end,
 
-  GitHubRoute.iso.repo
+  .repo
     <¢> get %> lit("pointfreeco") %> pathParam(.rawRepresentable) <% end,
 
   ]
