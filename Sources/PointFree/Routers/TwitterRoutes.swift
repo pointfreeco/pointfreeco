@@ -10,13 +10,13 @@ public enum TwitterRoute: DerivePartialIsos {
 
 let twitterRouter = [
 
-  TwitterRoute.iso.mbrandonw
+  .mbrandonw
     <¢> get %> lit("mbrandonw") <% end,
 
-  TwitterRoute.iso.pointfreeco
+  .pointfreeco
     <¢> get %> lit("pointfreeco") <% end,
 
-  TwitterRoute.iso.stephencelis
+  .stephencelis
     <¢> get %> lit("stephencelis") <% end,
 
   ]

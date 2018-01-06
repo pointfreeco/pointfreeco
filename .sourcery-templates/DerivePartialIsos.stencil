@@ -1,0 +1,41 @@
+import ApplicativeRouter
+import Either
+import Prelude
+
+{% for enum in types.implementing.DerivePartialIsos|enum %}
+  {% for case in enum.cases %}
+
+    {% if case.hasAssociatedValue %}
+
+      extension PartialIso where A == (
+        {% for value in case.associatedValues %}
+          {% if value.type %}
+            {{ value.type.globalName }}{% if value.typeName.isOptional %}?{% endif %}
+          {% else %}
+            {{ value.typeName }}
+          {% endif %}
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}), B == {{ enum.name }} {
+
+          {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso(
+            apply: {{ enum.name }}.{{ case.name }},
+            unapply: {
+              guard case let .{{ case.name }}(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+    {% else %}
+
+      extension PartialIso where A == Prelude.Unit, B == {{ enum.name }} {
+        {{ enum.accessLevel }} static let {{ case.name }} = parenthesize <| PartialIso<Prelude.Unit, {{ enum.name }}>(
+          apply: const(.some(.{{ case.name }})),
+          unapply: {
+            guard case .{{ case.name }} = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+    {% endif %}
+  {% endfor %}
+{% endfor %}
