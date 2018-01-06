@@ -44,4 +44,18 @@ final class UpgradeTests: TestCase {
       #endif
     }
   }
+
+  func testUpgrade() {
+    AppEnvironment.with(
+      (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly)))
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in pure(.mock |> \.plan .~ .individualYearly) })
+    ) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
 }
