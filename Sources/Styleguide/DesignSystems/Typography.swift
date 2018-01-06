@@ -30,6 +30,9 @@ extension Class {
     public static let fontSizeInherit = CssSelector.class("font-size-inherit")
     public static let textDecorationNone = CssSelector.class("text-decoration-none")
 
+    public static let breakWord = CssSelector.class("break-word")
+    public static let nowrap = CssSelector.class("nowrap")
+
     public enum list {
       public static let styleNone = CssSelector.class("list-style-none")
       public static let reset = CssSelector.class("list-reset")
@@ -50,6 +53,7 @@ public let typography: Stylesheet =
     <> miscStyles
     <> listStyles
     <> _alignStyles
+    <> wrapRules
 
 private let lineHeightStyles: Stylesheet =
   [1.15, 1.25, 1.45, 1.5].enumerated().map { Class.type.lineHeight($0) % lineHeight($1) }.concat()
@@ -100,10 +104,10 @@ private let _alignStyles =
     <> Class.type.align.end % textAlign(.end)
     <> Class.type.align.justify % textAlign(.justify)
 
-//
-//.nowrap { white-space: nowrap }
-//.break-word { word-wrap: break-word }
-//
+private let wrapRules =
+  Class.type.nowrap % key("white-space", "nowrap")
+    <> Class.type.breakWord % key("word-wrap", "break-word")
+
 //.truncate {
 //  max-width: 100%;
 //  overflow: hidden;
