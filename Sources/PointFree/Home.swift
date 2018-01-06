@@ -29,17 +29,16 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Su
 )
 
 let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
-  headerView.view(unit)
+  headerView.view((currentUser, currentSubscriptionStatus, nil))
     <> episodesListView.view(episodes.reversed())
     <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
 
-let headerView = View<Prelude.Unit> { _ in
+let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
   [
     gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)])], [
       gridColumn(sizes: [:], [
         div([
-          a([href(path(to: .about)), `class`([Class.type.bold, Class.pf.colors.link.gray650])], ["About"])
           ])
         ]),
       gridColumn(sizes: [:], [
@@ -53,9 +52,10 @@ let headerView = View<Prelude.Unit> { _ in
           ])
         ]),
       gridColumn(sizes: [:], [
-        div([`class`([Class.grid.end(.mobile)])], [
-          a([href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])], ["Subscribe"])
-          ])
+        div(
+          [`class`([Class.grid.end(.mobile)])],
+          headerLinks.view((currentUser, currentSubscriptionStatus, currentRoute))
+        )
         ])
       ]),
 
@@ -77,6 +77,21 @@ let headerView = View<Prelude.Unit> { _ in
 
       ])
   ]
+}
+
+private let headerLinks = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+  [
+    a([href(path(to: .about)), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["About"]),
+
+    currentSubscriptionStatus == .some(.active)
+      ? nil
+      : a([href(path(to: .pricing(nil, nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"]),
+
+    currentUser == nil
+      ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)
+      : a([href(path(to: .account(.index))), `class`([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
+    ]
+    .flatMap(id)
 }
 
 private let episodesListView = View<[Episode]> { eps in
