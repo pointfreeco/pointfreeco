@@ -12,34 +12,38 @@ import Tuple
 // MARK: Middleware
 
 let confirmChangeSeatsResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< fetchSeatsTaken
+    <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireTeamYearlySubscription
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: confirmChangeSeatsView,
-      layoutData: { subscription, currentUser in
+      layoutData: { subscription, currentUser, seatsTaken in
         SimplePageLayoutData(
           currentUser: currentUser,
-          data: (subscription, currentUser),
+          data: (subscription, currentUser, seatsTaken),
           title: "Add or remove seats?"
         )
     }
 )
 
 let changeSeatsMiddleware =
-  filterMap(
-    require2 >>> pure,
-    or: redirect(
-      to: .account(.subscription(.changeSeats(.show))),
-      headersMiddleware: flash(.error, "Couldn’t change the number of seats on your subscription.")
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(
+      require2 >>> pure,
+      or: redirect(
+        to: .account(.subscription(.changeSeats(.show))),
+        headersMiddleware: flash(.error, "Couldn’t change the number of seats on your subscription.")
+      )
     )
-    )
-    // TODO: Get min/max number of seats
+    <<< fetchSeatsTaken
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireTeamYearlySubscription
+    <<< requireValidSeating
     <| changeSeats
     >-> redirect(
       to: .account(.index),
@@ -48,22 +52,21 @@ let changeSeatsMiddleware =
 
 // MARK: -
 
-private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, Database.User, Int>>)
+private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription, Database.User, Int, Int>>)
   -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
 
-    // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .teamYearly, get3(conn.data))
-      .run
-      .map(const(conn.map(const(unit))))
-}
-
-private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.Item, Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
-
-    let (item, subscription, _) = lower(conn.data)
+    let (subscription, _, seatsTaken, quantity) = lower(conn.data)
 
     // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
+    return  AppEnvironment.current.stripe.updateSubscription(subscription, .teamYearly, quantity)
+      .map { sub -> Stripe.Subscription in
+        if sub.quantity > subscription.quantity {
+          parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
+            .run({ _ in })
+        }
+
+        return sub
+      }
       .run
       .map(const(conn.map(const(unit))))
 }
@@ -85,15 +88,57 @@ private func requireTeamYearlySubscription<A>(
       <| middleware
 }
 
+private func fetchSeatsTaken<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.User, Int, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return { conn -> IO<Conn<ResponseEnded, Data>> in
+      let user = conn.data.first
+
+      let invitesAndTeammates = sequence([
+        parallel(AppEnvironment.current.database.fetchTeamInvites(user.id).run)
+          .map { $0.right?.count ?? 0 },
+        parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
+          .map { $0.right?.count ?? 0 }
+        ])
+
+      return invitesAndTeammates
+        .sequential
+        .flatMap { middleware(conn.map(const(user .*. $0.reduce(0, +) .*. conn.data.second))) }
+    }
+}
+
+private func requireValidSeating(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, Database.User, Int, Int>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, Database.User, Int, Int>, Data> {
+
+    return filter(
+      seatsAvailable,
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "Can’t reduce number of seats that low.")
+      )
+      )
+      <| middleware
+}
+
+private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, Database.User, Int, Int>) -> Bool {
+  let (_, _, seatsTaken, quantity) = lower(data)
+
+  return quantity >= seatsTaken
+}
+
 // MARK: - Views
 
-let confirmChangeSeatsView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
+let confirmChangeSeatsView = View<(Stripe.Subscription, Database.User, Int)> { subscription, currentUser, seatsTaken in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         titleRowView.view(unit)
-          <> formRowView.view(subscription)
+          <> formRowView.view((subscription, seatsTaken))
       )
       ])
     ])
@@ -109,21 +154,36 @@ private let titleRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let formRowView = View<Stripe.Subscription> { subscription in
+private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
+      p([
+        "You are currently using ", text(String(seatsTaken)), " of ",
+        text(String(subscription.quantity)), " seats available."
+        ]),
       form([action(path(to: .account(.subscription(.changeSeats(.update(nil)))))), method(.post)], [
-        button(
-          [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Change number of seats"]
-        ),
-        a(
-          [
-            href(path(to: .account(.index))),
-            `class`([Class.pf.components.button(color: .black, style: .underline)])
-          ],
-          ["Never mind"]
-        )
+        input([
+          type(.number),
+          min(seatsTaken),
+          max(Pricing.validTeamQuantities.upperBound),
+          name("quantity"),
+          step(1),
+          value(clamp(Pricing.validTeamQuantities) <| subscription.quantity),
+          `class`([numberSpinner, Class.pf.colors.fg.purple])
+          ]),
+        div([
+          button(
+            [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+            ["Change number of seats"]
+          ),
+          a(
+            [
+              href(path(to: .account(.index))),
+              `class`([Class.pf.components.button(color: .black, style: .underline)])
+            ],
+            ["Never mind"]
+          )
+          ])
         ])
       ])
     ])

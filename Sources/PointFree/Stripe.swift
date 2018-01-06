@@ -13,6 +13,7 @@ public struct Stripe {
   public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
+  public var invoiceCustomer: (Customer) -> EitherIO<Prelude.Unit, Invoice>
   public var updateCustomer: (Customer, Token.Id) -> EitherIO<Prelude.Unit, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var js: String
@@ -25,6 +26,7 @@ public struct Stripe {
     fetchPlans: PointFree.fetchPlans,
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
+    invoiceCustomer: PointFree.invoiceCustomer,
     updateCustomer: PointFree.updateCustomer,
     updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
@@ -81,6 +83,12 @@ public struct Stripe {
       case id
       case sources
     }
+  }
+
+  public struct Invoice: Codable {
+    public private(set) var id: Id
+
+    public typealias Id = Tagged<Invoice, String>
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
@@ -246,10 +254,16 @@ private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.U
   return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer")
 }
 
+private func invoiceCustomer(_ customer: Stripe.Customer)
+  -> EitherIO<Prelude.Unit, Stripe.Invoice> {
+
+    return stripeDataTask("invoices", .post([
+      "customer": customer.id.unwrap,
+      ]))
+}
+
 private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.Id)
   -> EitherIO<Prelude.Unit, Stripe.Customer> {
-
-    print("updating customer \(customer) with token \(token.unwrap)")
 
     return stripeDataTask("customers/" + customer.id.unwrap, .post([
       "source": token.unwrap,

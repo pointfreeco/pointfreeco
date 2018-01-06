@@ -12,7 +12,8 @@ import Tuple
 // MARK: Middleware
 
 let confirmDowngradeResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualYearlySubscription
     <| writeStatus(.ok)
@@ -29,7 +30,8 @@ let confirmDowngradeResponse =
 )
 
 let downgradeMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualYearlySubscription
     <| downgrade
@@ -57,7 +59,7 @@ func requireActiveSubscription<A>(
       get1 >>> (^\.status == .active),
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "You don't have an active subscription!")
+        headersMiddleware: flash(.error, "You don’t have an active subscription!")
       )
       )
       <| middleware
@@ -72,7 +74,7 @@ private func requireIndividualYearlySubscription<A>(
       get1 >>> (^\.plan.id.unwrap == Stripe.Plan.Id.individualYearly.unwrap),
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "Your subscription can't be downgraded.")
+        headersMiddleware: flash(.error, "Your subscription can’t be downgraded.")
       )
       )
       <| middleware

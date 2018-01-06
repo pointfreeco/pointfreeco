@@ -12,7 +12,8 @@ import Tuple
 // MARK: Middleware
 
 let confirmCancelResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.isRenewing,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
@@ -31,7 +32,8 @@ let confirmCancelResponse =
 )
 
 let cancelMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.isRenewing,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
@@ -40,7 +42,8 @@ let cancelMiddleware =
     >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
 let reactivateMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
@@ -88,10 +91,9 @@ func requireSubscriptionItem<A>(
 func requireStripeSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
-    
-    return filterMap(require1 >>> pure, or: loginAndRedirect)
-      <<< requireSubscriptionAndOwner
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return requireSubscriptionAndOwner
       <<< fetchStripeSubscription
       <<< filterMap(
         require1 >>> pure,

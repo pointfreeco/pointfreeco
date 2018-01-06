@@ -12,7 +12,8 @@ import Tuple
 // MARK: Middleware
 
 let confirmUpgradeResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualMonthlySubscription
     <| writeStatus(.ok)
@@ -29,7 +30,8 @@ let confirmUpgradeResponse =
 )
 
 let upgradeMiddleware =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualMonthlySubscription
     <| upgrade
@@ -57,7 +59,7 @@ private func requireIndividualMonthlySubscription<A>(
       get1 >>> (^\.plan.id.unwrap == Stripe.Plan.Id.individualMonthly.unwrap),
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "Your subscription can't be upgraded.")
+        headersMiddleware: flash(.error, "Your subscription can’t be upgraded.")
       )
       )
       <| middleware
@@ -98,7 +100,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
         ]),
       form([action(path(to: .account(.subscription(.upgrade(.update))))), method(.post)], [
         button(
-          [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
+          [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
           ["Bill me yearly"]
         ),
         a(

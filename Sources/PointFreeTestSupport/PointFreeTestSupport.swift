@@ -131,6 +131,7 @@ extension Stripe {
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
+    invoiceCustomer: const(pure(.mock)),
     updateCustomer: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _ in pure(.mock) },
     js: ""
@@ -153,6 +154,12 @@ extension Stripe.Customer {
     defaultSource: .init(unwrap: "card_test"),
     id: .init(unwrap: "cus_test"),
     sources: .mock([.mock])
+  )
+}
+
+extension Stripe.Invoice {
+  public static let mock = Stripe.Invoice(
+    id: .init(unwrap: "in_test")
   )
 }
 

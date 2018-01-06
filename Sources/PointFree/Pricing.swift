@@ -238,7 +238,7 @@ private let teamPricingRowView = View<Pricing> { pricing in
 
 // TODO: move to point free base styles
 private let numberSpinnerClass = CssSelector.class("num-spinner")
-private let numberSpinner =
+let numberSpinner =
   numberSpinnerClass
     | Class.type.align.center
     | Class.pf.type.title1
