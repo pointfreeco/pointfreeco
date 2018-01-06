@@ -46,10 +46,9 @@ extension URLRequest {
 
 public struct Session: Codable {
   public var flash: Flash?
-  public var subscriptionStatus: Stripe.Subscription.Status?
   public var userId: Database.User.Id?
 
-  public static let empty = Session(flash: nil, subscriptionStatus: nil, userId: nil)
+  public static let empty = Session(flash: nil, userId: nil)
 }
 
 public struct Flash: Codable {
@@ -66,7 +65,6 @@ public struct Flash: Codable {
 extension Session: Equatable {
   public static func ==(lhs: Session, rhs: Session) -> Bool {
     return lhs.flash == rhs.flash
-      && lhs.subscriptionStatus?.rawValue == rhs.subscriptionStatus?.rawValue
       && lhs.userId?.rawValue == rhs.userId?.rawValue
   }
 }

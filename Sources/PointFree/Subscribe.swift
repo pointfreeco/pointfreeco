@@ -44,13 +44,9 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Datab
             |> writeStatus(.internalServerError)
             >-> respond(text: "Error creating subscription!")
 
-        case let .right(stripeSubscription):
+        case .right:
           return conn
-            |> redirect(to: .account(.index), headersMiddleware:
-              // todo
-              writeSessionCookieMiddleware(\.subscriptionStatus .~ stripeSubscription.status)
-                >-> flash(.notice, "You are now subscribed to Point-Free!")
-          )
+            |> redirect(to: .account(.index), headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!"))
         }
     }
 }

@@ -115,9 +115,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.User?, Database.Subsc
       return conn.map(const(code .*. redirect .*. unit))
         |> gitHubCallbackResponse
 
-      // todo
-      //        |> writeSessionCookieMiddleware(\.subscriptionStatus .~ nil)
-
     case let .home(signedUpSuccessfully):
       return conn.map(const(signedUpSuccessfully))
         |> homeResponse

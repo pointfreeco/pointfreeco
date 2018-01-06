@@ -71,7 +71,7 @@ private let testDocView = View<(Database.User?, Route?)> { currentUser, currentR
         style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
-      body(darkNavView.view((currentUser, currentRoute)))
+      body(darkNavView.view((currentUser, nil, currentRoute)))
       ])
     ])
 }
