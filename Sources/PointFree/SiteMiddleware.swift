@@ -2,6 +2,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
+import Optics
 import Prelude
 import Styleguide
 import Tuple
@@ -18,12 +19,15 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
       protect: isProtected
     )
     <| currentUserMiddleware
+    >-> currentSubscriptionMiddleware
     >-> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (user, route) = (conn.data.first, conn.data.second)
+    let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+    let subscriptionStatus = subscription?.stripeSubscriptionStatus
+
     switch route {
     case .about:
       return conn.map(const(user .*. unit))
@@ -34,7 +38,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriptionStatus .*. unit))
         |> accountResponse
 
     case .account(.paymentInfo(.show)):
@@ -106,7 +110,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> expressUnsubscribeMiddleware
 
     case let .gitHubCallback(code, redirect):
-      return conn.map(const((code, redirect)))
+      return conn.map(const(code .*. redirect .*. unit))
         |> gitHubCallbackResponse
 
     case let .home(signedUpSuccessfully):
@@ -159,7 +163,7 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
         |> pricingResponse
 
     case .secretHome:
-      return conn.map(const(user))
+      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> secretHomeMiddleware
 
     case let .subscribe(data):

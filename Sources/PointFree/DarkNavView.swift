@@ -8,7 +8,7 @@ import Optics
 import Styleguide
 import Prelude
 
-let darkNavView = View<(Database.User?, Route?)> { currentUser, currentRoute in
+let darkNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
   gridRow([`class`([newNavBarClass])], [
     gridColumn(sizes: [.mobile: 0, .desktop: 5], [
       div([])
@@ -24,16 +24,17 @@ let darkNavView = View<(Database.User?, Route?)> { currentUser, currentRoute in
 
     gridColumn(
       sizes: [.mobile: 10, .desktop: 5],
-      currentUser.map(loggedInNavItemsView.view) ?? loggedOutNavItemsView.view(currentRoute)
+      currentUser.map { loggedInNavItemsView.view(($0, currentSubscriptionStatus)) }
+        ?? loggedOutNavItemsView.view(currentRoute)
     ),
     ])
 }
 
-private let loggedInNavItemsView = View<Database.User> { currentUser in
+private let loggedInNavItemsView = View<(Database.User, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
   navItems(
     [
       aboutLinkView,
-      currentUser.subscriptionId == nil ? subscribeLinkView : nil,
+      currentSubscriptionStatus == .some(.active) ? nil : subscribeLinkView,
       accountLinkView
       ]
       .flatMap(id)
