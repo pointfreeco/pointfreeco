@@ -149,8 +149,8 @@
         "package": "Web",
         "repositoryURL": "https://github.com/pointfreeco/swift-web.git",
         "state": {
-          "branch": "54412eb",
-          "revision": "54412ebbf6e900abb8caee8fd62471546ac2fb58",
+          "branch": "1cd0e80",
+          "revision": "1cd0e807d60cfa6a401c230b78f29616e03041c9",
           "version": null
         }
       }
