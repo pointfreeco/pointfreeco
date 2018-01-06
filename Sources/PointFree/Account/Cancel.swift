@@ -39,7 +39,7 @@ let cancelMiddleware =
     <| cancel
     >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
-let reactivateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
+let reactivateMiddleware =
   requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
@@ -59,13 +59,13 @@ private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Dat
       .map(const(conn.map(const(unit))))
 }
 
-private func reactivate<A>(_ conn: Conn<StatusLineOpen, T2<Stripe.Subscription, A>>)
-  -> IO<Conn<StatusLineOpen, T2<Stripe.Subscription, A>>> {
+private func reactivate(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
+  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
 
   // TODO: send emails
   return AppEnvironment.current.stripe.reactivateSubscription(get1(conn.data))
     .run
-    .map(const(conn))
+    .map(const(conn.map(const(unit))))
 }
 
 // MARK: - Transformers
