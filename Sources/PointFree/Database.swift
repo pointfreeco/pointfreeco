@@ -5,7 +5,7 @@ import PostgreSQL
 
 public struct Database {
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var createSubscription: (Stripe.Subscription.Id, User.Id) -> EitherIO<Error, Prelude.Unit>
+  var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   var fetchEmailSettingsForUserId: (Database.User.Id) -> EitherIO<Error, [Database.EmailSetting]>
@@ -19,6 +19,7 @@ public struct Database {
   var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
   var registerUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  var updateSubscription: (Database.Subscription, Stripe.Subscription) -> EitherIO<Error, Prelude.Unit>
   var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -39,6 +40,7 @@ public struct Database {
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
+    updateSubscription: PointFree.update(subscription:with:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
     migrate: PointFree.migrate
@@ -88,6 +90,7 @@ public struct Database {
   public struct Subscription: Decodable {
     let id: Id
     let stripeSubscriptionId: Stripe.Subscription.Id
+    let stripeSubscriptionStatus: Stripe.Subscription.Status
     let userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
@@ -95,6 +98,7 @@ public struct Database {
     private enum CodingKeys: String, CodingKey {
       case id
       case stripeSubscriptionId = "stripe_subscription_id"
+      case stripeSubscriptionStatus = "stripe_subscription_status"
       case userId = "user_id"
     }
   }
@@ -117,17 +121,18 @@ public struct Database {
 }
 
 private func createSubscription(
-  with stripeSubscriptionId: Stripe.Subscription.Id, for userId: Database.User.Id
+  with stripeSubscription: Stripe.Subscription, for userId: Database.User.Id
   )
   -> EitherIO<Error, Prelude.Unit> {
     return execute(
       """
-      INSERT INTO "subscriptions" ("stripe_subscription_id", "user_id")
-      VALUES ($1, $2)
+      INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
+      VALUES ($1, $2, $3)
       RETURNING "id"
       """,
       [
-        stripeSubscriptionId.unwrap,
+        stripeSubscription.id.unwrap,
+        stripeSubscription.status.rawValue,
         userId.unwrap.uuidString,
         ]
       )
@@ -145,6 +150,21 @@ private func createSubscription(
         )
       }
       .map(const(unit))
+}
+
+private func update(subscription: Database.Subscription, with stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    UPDATE "subscriptions"
+    SET "stripe_subscription_status" = $1
+    WHERE "subscriptions"."id" = $2
+    """,
+    [
+      stripeSubscription.status.rawValue,
+      subscription.id.unwrap
+    ]
+    )
+    .map(const(unit))
 }
 
 private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit> {
@@ -187,7 +207,7 @@ private func remove(
 private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, Database.Subscription?> {
   return firstRow(
     """
-    SELECT "id", "user_id", "stripe_subscription_id"
+    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "id" = $1
     LIMIT 1
@@ -199,7 +219,7 @@ private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, 
 private func fetchSubscription(ownerId: Database.User.Id) -> EitherIO<Error, Database.Subscription?> {
   return firstRow(
     """
-    SELECT "id", "user_id", "stripe_subscription_id"
+    SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "user_id" = $1
     LIMIT 1
@@ -490,6 +510,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "newsletter" character varying,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "subscriptions"
+      ADD COLUMN IF NOT EXISTS
+      "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
       """
     )))
     .map(const(unit))
