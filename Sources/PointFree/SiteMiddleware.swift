@@ -60,20 +60,24 @@ private func render(conn: Conn<StatusLineOpen, T2<Database.User?, Route>>)
       fatalError()
 
     case .account(.subscription(.downgrade(.show))):
-      fatalError()
+      return conn.map(const(user .*. unit))
+        |> confirmDowngradeResponse
 
     case .account(.subscription(.downgrade(.update))):
-      fatalError()
+      return conn.map(const(user .*. unit))
+        |> downgradeMiddleware
 
     case .account(.subscription(.reactivate)):
       return conn.map(const(user .*. unit))
         |> reactivateMiddleware
 
     case .account(.subscription(.upgrade(.show))):
-      fatalError()
+      return conn.map(const(user .*. unit))
+        |> confirmUpgradeResponse
 
     case .account(.subscription(.upgrade(.update))):
-      fatalError()
+      return conn.map(const(user .*. unit))
+        |> upgradeMiddleware
 
     case let .account(.update(data)):
       return conn.map(const(data .*. user .*. unit))
