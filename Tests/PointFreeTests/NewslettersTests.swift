@@ -17,7 +17,10 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let request = authedRequest(to: .expressUnsubscribe(userId: user.id, newsletter: .announcements))
+    let unsubscribe = request(
+      to: .expressUnsubscribe(userId: user.id, newsletter: .announcements),
+      session: .loggedIn
+    )
 
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
@@ -27,7 +30,7 @@ class NewslettersTests: TestCase {
       named: "email_settings_before_unsubscribe"
     )
 
-    let output = connection(from: request)
+    let output = connection(from: unsubscribe)
       |> siteMiddleware
       |> Prelude.perform
     assertSnapshot(matching: output)

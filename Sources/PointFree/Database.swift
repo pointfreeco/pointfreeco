@@ -240,7 +240,6 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
     FROM "users"
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
-    AND "users"."id" != $1
     """,
     [ownerId.unwrap.uuidString]
   )

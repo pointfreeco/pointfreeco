@@ -13,8 +13,8 @@ import Optics
 class InviteTests: TestCase {
   func testShowInvite_LoggedOut() {
     AppEnvironment.with(\.database .~ .mock) {
-      let request = unauthedRequest(to: .invite(.show(Database.TeamInvite.mock.id)))
-      let conn = connection(from: request)
+      let showInvite = request(to: .invite(.show(Database.TeamInvite.mock.id)))
+      let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
 
       assertSnapshot(matching: result.perform())
@@ -34,8 +34,8 @@ class InviteTests: TestCase {
       |> \.fetchSubscriptionById .~ const(pure(nil))
 
     AppEnvironment.with(\.database .~ db) {
-      let request = authedRequest(to: .invite(.show(invite.id)))
-      let conn = connection(from: request)
+      let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+      let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
 
       assertSnapshot(matching: result.perform())
@@ -58,8 +58,8 @@ class InviteTests: TestCase {
       |> \.fetchSubscription .~ const(pure(.mock |> \.status .~ .active))
 
     AppEnvironment.with((\.database .~ db) <> (\.stripe .~ stripe)) {
-      let request = authedRequest(to: .invite(.show(invite.id)))
-      let conn = connection(from: request)
+      let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+      let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
 
       assertSnapshot(matching: result.perform())
@@ -77,8 +77,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: resendInvite))
 
     assertSnapshot(matching: result.perform())
   }
@@ -106,8 +106,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: resendInvite))
 
     assertSnapshot(matching: result.perform())
   }
@@ -123,8 +123,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: revokeInvite))
 
     assertSnapshot(matching: result.perform())
 
@@ -159,8 +159,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: revokeInvite))
 
     assertSnapshot(matching: result.perform())
 
@@ -199,8 +199,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: acceptInvite))
 
     assertSnapshot(matching: result.perform())
 
@@ -244,8 +244,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: acceptInvite))
 
     assertSnapshot(matching: result.perform())
 
@@ -289,8 +289,8 @@ class InviteTests: TestCase {
       |> (\Stripe.fetchSubscription) .~ const(pure(.mock |> \.status .~ .canceled))
 
     AppEnvironment.with(\.stripe .~ stripe) {
-      let request = authedRequest(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-      let result = siteMiddleware(connection(from: request))
+      let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+      let result = siteMiddleware(connection(from: acceptInvite))
       
       assertSnapshot(matching: result.perform())
 
@@ -315,8 +315,8 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    let request = authedRequest(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: request))
+    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let result = siteMiddleware(connection(from: acceptInvite))
 
     assertSnapshot(matching: result.perform())
 
