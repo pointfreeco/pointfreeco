@@ -40,7 +40,7 @@ extension Database {
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.teammate])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
@@ -63,6 +63,11 @@ extension Database.User {
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
+
+  public static let owner = mock
+
+  public static let teammate = mock
+    |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
 }
 
 extension Database.Subscription {
@@ -131,7 +136,7 @@ extension Stripe {
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
-    reactivateSubscription: const(pure(.mock)),
+    invoiceCustomer: const(pure(.mock)),
     updateCustomer: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _ in pure(.mock) },
     js: ""
@@ -157,6 +162,12 @@ extension Stripe.Customer {
   )
 }
 
+extension Stripe.Invoice {
+  public static let mock = Stripe.Invoice(
+    id: .init(unwrap: "in_test")
+  )
+}
+
 extension Stripe.ListEnvelope {
   public static func mock(_ xs: [A]) -> Stripe.ListEnvelope<A> {
     return .init(
@@ -175,9 +186,21 @@ extension Stripe.Plan {
     id: .individualMonthly,
     interval: .month,
     metadata: [:],
-    name: "Monthly",
+    name: "Individual Monthly",
     statementDescriptor: nil
   )
+
+  public static let individualMonthly = mock
+
+  public static let individualYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .individualYearly
+    |> \.name .~ "Individual Yearly"
+
+  public static let teamYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .teamYearly
+    |> \.name .~ "Team Yearly"
 }
 
 extension Stripe.Subscription {

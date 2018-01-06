@@ -213,11 +213,29 @@ import Prelude
               guard case let .cancel(result) = $0 else { return nil }
               return result
           })
+          public static let changeSeats = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.changeSeats,
+            unapply: {
+              guard case let .changeSeats(result) = $0 else { return nil }
+              return result
+          })
+          public static let downgrade = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.downgrade,
+            unapply: {
+              guard case let .downgrade(result) = $0 else { return nil }
+              return result
+          })
           public static let reactivate = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription>(
             apply: const(.some(.reactivate)),
             unapply: {
               guard case .reactivate = $0 else { return nil }
               return unit
+          })
+          public static let upgrade = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.upgrade,
+            unapply: {
+              guard case let .upgrade(result) = $0 else { return nil }
+              return result
           })
     }
   }
@@ -230,6 +248,54 @@ import Prelude
               return unit
           })
           public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Cancel>(
+            apply: const(.some(.update)),
+            unapply: {
+              guard case .update = $0 else { return nil }
+              return unit
+          })
+    }
+  }
+  extension Route.Account.Subscription.ChangeSeats {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.ChangeSeats>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let update = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.ChangeSeats.update,
+            unapply: {
+              guard case let .update(result) = $0 else { return nil }
+              return result
+          })
+    }
+  }
+  extension Route.Account.Subscription.Downgrade {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Downgrade>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Downgrade>(
+            apply: const(.some(.update)),
+            unapply: {
+              guard case .update = $0 else { return nil }
+              return unit
+          })
+    }
+  }
+  extension Route.Account.Subscription.Upgrade {
+    enum iso {
+          public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Upgrade>(
+            apply: const(.some(.show)),
+            unapply: {
+              guard case .show = $0 else { return nil }
+              return unit
+          })
+          public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Upgrade>(
             apply: const(.some(.update)),
             unapply: {
               guard case .update = $0 else { return nil }

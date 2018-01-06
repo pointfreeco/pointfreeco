@@ -1,0 +1,13 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/account/subscription/change-seats
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  quantity=10
+
+▿ Response
+  Status 302 FOUND
+  Location: /login?redirect=http://localhost:8080/account/subscription/change-seats
