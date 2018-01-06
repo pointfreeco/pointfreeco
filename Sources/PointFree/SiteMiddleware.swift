@@ -110,7 +110,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> expressUnsubscribeMiddleware
 
     case let .gitHubCallback(code, redirect):
-      return conn.map(const(code .*. redirect .*. unit))
+      return conn.map(const(user .*. code .*. redirect .*. unit))
         |> gitHubCallbackResponse
 
     case let .home(signedUpSuccessfully):
@@ -142,7 +142,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> signupResponse
 
     case let .login(redirect):
-      return conn.map(const(redirect))
+      return conn.map(const(user .*. redirect .*. unit))
         |> loginResponse
 
     case .logout:
