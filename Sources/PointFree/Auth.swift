@@ -12,7 +12,8 @@ import UrlFormEncoding
 import Tuple
 
 let gitHubCallbackResponse =
-  filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
+  requireLoggedOutUser
+    <<< filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
     <| gitHubAuthTokenMiddleware
 
 /// Middleware to run when the GitHub auth code is missing.
@@ -21,8 +22,9 @@ private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, Response
     >-> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: Middleware<StatusLineOpen, ResponseEnded, String?, Data> =
-  { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
+let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, String?>, Data> =
+  requireLoggedOutUser
+    <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
@@ -47,6 +49,20 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
       ?? pure(nil)
 
     return user.map { conn.map(const($0 .*. conn.data)) }
+}
+
+public func requireLoggedOutUser<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+
+  return { conn in
+    return conn.map(const(conn.data.second))
+      |> (
+        get1(conn.data) == nil
+          ? middleware
+          : redirect(to: .account(.index), headersMiddleware: flash(.warning, "You’re already logged in."))
+    )
+  }
 }
 
 public func currentSubscriptionMiddleware<A, I>(
