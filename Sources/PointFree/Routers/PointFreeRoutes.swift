@@ -51,7 +51,7 @@ public enum Route: DerivePartialIsos {
 
       public enum ChangeSeats: DerivePartialIsos {
         case show
-        case update
+        case update(Int?)
       }
 
       public enum Downgrade: DerivePartialIsos {
@@ -125,7 +125,9 @@ private let routers: [Router<Route>] = [
 
   Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.changeSeats
     <<< Route.Account.Subscription.ChangeSeats.iso.update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("change-seats") <% end,
+    <¢> post %> lit("account") %> lit("subscription") %> lit("change-seats")
+    %> formField("quantity", Optional.iso.some >>> opt(.int))
+    <% end,
 
   Route.iso.account <<< Route.Account.iso.subscription <<< Route.Account.Subscription.iso.downgrade
     <<< Route.Account.Subscription.Downgrade.iso.show

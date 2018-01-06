@@ -28,7 +28,8 @@ extension AuthTests {
 }
 extension CancelTests {
   static var allTests: [(String, (CancelTests) -> () throws -> Void)] = [
-    ("testConfirmCancel", testConfirmCancel)
+    ("testConfirmCancel", testConfirmCancel),
+    ("testCancel", testCancel)
   ]
 }
 extension ChangeEmailConfirmationTests {
@@ -39,6 +40,12 @@ extension ChangeEmailConfirmationTests {
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
+  ]
+}
+extension DowngradeTests {
+  static var allTests: [(String, (DowngradeTests) -> () throws -> Void)] = [
+    ("testConfirmDowngrade", testConfirmDowngrade),
+    ("testDowngrade", testDowngrade)
   ]
 }
 extension EmailInviteTests {
@@ -157,6 +164,12 @@ extension UpdateProfileTests {
     ("testUpdateEmailSettings", testUpdateEmailSettings)
   ]
 }
+extension UpgradeTests {
+  static var allTests: [(String, (UpgradeTests) -> () throws -> Void)] = [
+    ("testConfirmUpgrade", testConfirmUpgrade),
+    ("testUpgrade", testUpgrade)
+  ]
+}
 
 // swiftlint:disable trailing_comma
 XCTMain([
@@ -165,6 +178,7 @@ XCTMain([
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(DowngradeTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
@@ -183,5 +197,6 @@ XCTMain([
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(UpdateProfileTests.allTests),
+  testCase(UpgradeTests.allTests),
 ])
 // swiftlint:enable trailing_comma

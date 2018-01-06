@@ -263,11 +263,11 @@ import Prelude
               guard case .show = $0 else { return nil }
               return unit
           })
-          public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.ChangeSeats>(
-            apply: const(.some(.update)),
+          public static let update = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.ChangeSeats.update,
             unapply: {
-              guard case .update = $0 else { return nil }
-              return unit
+              guard case let .update(result) = $0 else { return nil }
+              return result
           })
     }
   }
