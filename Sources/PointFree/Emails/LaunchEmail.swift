@@ -32,7 +32,7 @@ private let launchEmailBody = View<Prelude.Unit> { _ in
             In fact, we even
             """,
             " ",
-            a([href("#")], ["open-sourced"]),
+            a([href(gitHubUrl(to: .repo(.pointfreeco)))], ["open-sourced"]),
             " ",
             """
             the entire code base of the site, including the code that sent this very email!
