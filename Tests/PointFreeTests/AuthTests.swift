@@ -52,19 +52,30 @@ class AuthTests: TestCase {
       assertSnapshot(matching: result.perform())
     }
   }
-  
+
   func testLogin() {
     let request = URLRequest(url: URL(string: "http://localhost:8080/login")!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
-    
+
     let conn = connection(from: request)
     let result = conn |> siteMiddleware
-    
+
     assertSnapshot(matching: result.perform())
   }
   
+  func testLogin_AlreadyLoggedIn() {
+    AppEnvironment.with(\.database .~ .mock) {
+      let request = PointFreeTestSupport.request(to: .login(redirect: nil), session: .loggedIn)
+      
+      let conn = connection(from: request)
+      let result = conn |> siteMiddleware
+      
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testLoginWithRedirect() {
     let request = router.request(
       for: .login(redirect: url(to: .episode(.right(42)))),
