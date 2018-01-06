@@ -40,7 +40,7 @@ extension Database {
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.teammate])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
@@ -63,6 +63,11 @@ extension Database.User {
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
+
+  public static let owner = mock
+
+  public static let teammate = mock
+    |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
 }
 
 extension Database.Subscription {

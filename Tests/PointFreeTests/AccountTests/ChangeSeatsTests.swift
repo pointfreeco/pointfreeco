@@ -47,18 +47,109 @@ final class ChangeSeatsTests: TestCase {
     }
   }
 
+  func testConfirmChangeSeatsLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.changeSeats(.show)))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testConfirmChangeSeatsNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmChangeSeatsCanceledSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testConfirmChangeSeatsInvalidPlan() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.show))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testChangeSeats() {
     let subscription = Stripe.Subscription.mock
       |> \.plan .~ .teamYearly
       |> \.quantity .~ 5
 
     AppEnvironment.with(
-      (\.stripe.fetchSubscription .~ const(pure(subscription)))
+        (\.stripe.fetchSubscription .~ const(pure(subscription)))
         >>> (\.stripe.updateSubscription .~ { _, _, _ in pure(subscription |> \.quantity .~ 10) })
     ) {
       let conn = connection(
         from: request(to: .account(.subscription(.changeSeats(.update(10)))), session: .loggedIn)
       )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testChangeSeatsLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.changeSeats(.update(10))))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testChangeSeatsNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.update(10)))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testChangeSeatsCanceledSubscription() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .teamYearly
+      |> \.quantity .~ 5
+      |> \.status .~ .canceled
+
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.update(10)))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testChangeSeatsInvalidPlan() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly))) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.update(10)))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testChangeSeatsInvalidSeats() {
+    let subscription = Stripe.Subscription.mock
+      |> \.plan .~ .teamYearly
+      |> \.quantity .~ 5
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])))
+        >>> (\.database.fetchTeamInvites .~ const(pure([.mock, .mock])))
+        >>> (\.stripe.fetchSubscription .~ const(pure(subscription)))
+
+    AppEnvironment.with(env) {
+      let conn = connection(from: request(to: .account(.subscription(.changeSeats(.update(3)))), session: .loggedIn))
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())

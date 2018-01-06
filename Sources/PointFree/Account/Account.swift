@@ -66,7 +66,7 @@ let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.U
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> profileRowView.view((currentUser, emailSettings))
-            <> subscriptionRowView.view((subscription, teamInvites, teammates))
+            <> subscriptionRowView.view((currentUser, subscription, teamInvites, teammates))
             <> logoutView.view(unit)
       )
       ])
@@ -147,8 +147,10 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   }
 }
 
-private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
+private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { currentUser, subscription, invites, allTeammates -> [Node] in
   guard let subscription = subscription else { return [] }
+
+  let teammates = allTeammates.filter(^\.id.unwrap != currentUser.id.unwrap)
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [

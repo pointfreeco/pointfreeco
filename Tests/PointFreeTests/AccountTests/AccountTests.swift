@@ -12,7 +12,7 @@ import XCTest
   import WebKit
 #endif
 
-class AccountTests: TestCase {
+final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.push(\.database .~ .mock)
