@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -59,13 +60,13 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription
 
     // TODO: send emails
     return  AppEnvironment.current.stripe.updateSubscription(subscription, .teamYearly, quantity)
-      .map { sub -> Stripe.Subscription in
+      .flatMap { sub -> EitherIO<Prelude.Unit, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {
           parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
             .run({ _ in })
         }
 
-        return sub
+        return pure(sub)
       }
       .run
       .map(const(conn.map(const(unit))))
