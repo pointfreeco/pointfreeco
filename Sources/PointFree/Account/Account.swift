@@ -481,7 +481,10 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
 }
 
 private func totalAmount(for subscription: Stripe.Subscription) -> String? {
-  let totalCents = subscription.plan.amount.rawValue * subscription.quantity
+  let totalCents = subscription.plan.amount.rawValue
+    * subscription.quantity
+    * (100 - (subscription.discount?.coupon.percentOff ?? 0))
+    / 100
   let totalDollars = Double(totalCents) / 100
   return currencyFormatter.string(from: NSNumber(value: totalDollars))
 }

@@ -81,6 +81,21 @@ public enum Pricing: Codable, DerivePartialIsos {
     }
   }
 
+  var coupon: Stripe.Coupon.Id? {
+    switch self {
+    case .individual:
+      return nil
+    case .team(5...10):
+      return .init(unwrap: "5-percent")
+    case .team(11...20):
+      return .init(unwrap: "10-percent")
+    case .team(21...):
+      return .init(unwrap: "15-percent")
+    case .team:
+      return nil
+    }
+  }
+
   var billing: Billing {
     switch self {
     case let .individual(billing):

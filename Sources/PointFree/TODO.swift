@@ -16,6 +16,27 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8]
 }
 
+func filterMapValues<Key, Value, NewValue>(
+  _ f: @escaping (Value) -> NewValue?
+  )
+  -> ([Key: Value])
+  -> [Key: NewValue] {
+
+    return { dict in
+      var newDict = [Key: NewValue](minimumCapacity: dict.capacity)
+      for (key, value) in dict {
+        if let newValue = f(value) {
+          newDict[key] = newValue
+        }
+      }
+      return newDict
+    }
+}
+
+func filteredValues<Key, Value>(_ dict: [Key: Value?]) -> [Key: Value] {
+  return filterMapValues({ $0 })(dict)
+}
+
 // todo: HasPlaysInline
 public func playsInline<T>(_ value: Bool) -> Attribute<T> {
   return .init("playsinline", value)

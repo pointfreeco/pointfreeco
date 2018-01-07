@@ -115,4 +115,64 @@ final class CancelTests: TestCase {
       assertSnapshot(matching: result.perform())
     }
   }
+
+  func testCancelStripeFailure() {
+    AppEnvironment.with(\.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) }) {
+      let conn = connection(from: request(to: .account(.subscription(.cancel(.update))), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  //
+  func testReactivate() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceling))) {
+      let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testReactivateLoggedOut() {
+    let conn = connection(from: request(to: .account(.subscription(.reactivate))))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testReactivateNoSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(throwE(unit))) {
+      let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testReactivateActiveSubscription() {
+    let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
+
+  func testReactivateCanceledSubscription() {
+    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.canceled))) {
+      let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testReactivateStripeFailure() {
+    AppEnvironment.with(\.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) }) {
+      let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
 }

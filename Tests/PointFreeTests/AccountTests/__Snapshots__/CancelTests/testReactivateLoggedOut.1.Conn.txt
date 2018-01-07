@@ -1,0 +1,13 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/account/subscription/reactivate
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /login?redirect=http://localhost:8080/account/subscription/reactivate

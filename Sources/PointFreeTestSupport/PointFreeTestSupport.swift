@@ -134,14 +134,14 @@ extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _ in pure(.mock) },
-    createSubscription: { _, _, _ in pure(.mock) },
+    createSubscription: { _, _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
     invoiceCustomer: const(pure(.mock)),
     updateCustomer: { _, _ in pure(.mock) },
-    updateSubscription: { _, _, _ in pure(.mock) },
+    updateSubscription: { _, _, _, _ in pure(.mock) },
     js: ""
   )
 }
@@ -214,6 +214,7 @@ extension Stripe.Subscription {
     currentPeriodStart: .mock,
     currentPeriodEnd: Date(timeInterval: 60 * 60 * 24 * 30, since: .mock),
     customer: .mock,
+    discount: nil,
     endedAt: nil,
     id: .init(unwrap: "sub_test"),
     items: .mock([.mock]),
