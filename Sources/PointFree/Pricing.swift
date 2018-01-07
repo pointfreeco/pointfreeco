@@ -10,6 +10,16 @@ import Prelude
 import Styleguide
 import Tuple
 
+public let teamMinDiscountAt = 5
+public let teamMidDiscountAt = 10
+public let teamMaxDiscountAt = 20
+
+// FIXME: Fetch from Stripe?
+public let teamBaseSeatPriceMonthly = 13
+public let teamMinDiscountRate = 0.95
+public let teamMidDiscountRate = 0.9
+public let teamMaxDiscountRate = 0.85
+
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
   case team(Int)
@@ -85,11 +95,11 @@ public enum Pricing: Codable, DerivePartialIsos {
     switch self {
     case .individual:
       return nil
-    case .team(5...10):
+    case .team(teamMinDiscountAt..<teamMidDiscountAt):
       return .init(unwrap: "5-percent")
-    case .team(11...20):
+    case .team(teamMidDiscountAt..<teamMaxDiscountAt):
       return .init(unwrap: "10-percent")
-    case .team(21...):
+    case .team(teamMaxDiscountAt...):
       return .init(unwrap: "15-percent")
     case .team:
       return nil
@@ -237,18 +247,54 @@ private let teamPricingRowView = View<Pricing> { pricing in
         h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
         p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
         input([
-          type(.number),
-          min(Pricing.validTeamQuantities.lowerBound),
+          `class`([numberSpinner, Class.pf.colors.fg.purple]),
           max(Pricing.validTeamQuantities.upperBound),
+          min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
+          onchange(
+            """
+            var seatBase = \(teamBaseSeatPriceMonthly);\
+            var quantity = +this.value;\
+            var discounted = quantity >= \(teamMaxDiscountAt)\
+              ? \(teamMaxDiscountRate)\
+              : quantity >= \(teamMidDiscountAt)\
+                ? \(teamMidDiscountRate)\
+                : quantity >= \(teamMinDiscountAt)\
+                  ? \(teamMinDiscountRate)\
+                  : 1;\
+            var rate = Math.floor(seatBase * quantity * discounted);\
+            document.getElementById("team-about").style.display = quantity >= \(teamMinDiscountAt)\
+              ? "inline"\
+              : "none";\
+            document.getElementById("team-rate").textContent = rate;
+            """
+          ),
           step(1),
+          type(.number),
           value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
-          `class`([numberSpinner, Class.pf.colors.fg.purple])
           ]),
-        h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
+        h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], [
+          span([`class`([Class.display.none]), id("team-about")], ["About "]),
+          "$",
+          span([id("team-rate")], [text(String(13 * Pricing.validTeamQuantities.lowerBound))]),
+          "/mo"
+          ]),
+        p(
+          [`class`([Class.pf.type.title6, Class.type.normal, Class.pf.colors.fg.gray650])],
+          ["(Billed annually)"]
+        )
         ])
       ])
     ])
+}
+
+// TODO: swift-web
+public protocol HasOnchange {}
+
+extension Element.Input: HasOnchange {}
+
+public func onchange<T: HasOnchange>(_ script: String) -> Attribute<T> {
+  return attribute("onchange", script)
 }
 
 // TODO: move to point free base styles
