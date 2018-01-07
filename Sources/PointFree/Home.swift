@@ -34,9 +34,26 @@ let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { curre
     <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
 
+private let _styles: Stylesheet =
+  key("background", "rgba(128,219,255,1)")
+    <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+    <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,1)), color-stop(100%, rgba(128,219,255,0)))")
+    <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+    <> key("background", "-o-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+    <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+    <> key("background", "linear-gradient(to bottom, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+
+private let reflect: Stylesheet =
+  key("transform", "scaleX(-1)")
+//  -webkit-transform: scaleY(-1);
+//-moz-transform: scaleY(-1);
+//-o-transform: scaleY(-1);
+//-ms-transform: scaleY(-1);
+//transform: scaleY(-1);
+
 let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
   [
-    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 2]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)])], [
+    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile)]), style(_styles)], [
       gridColumn(sizes: [:], [
         div([
           ])
@@ -62,7 +79,7 @@ let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { c
     gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
       gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-        img(base64: heroLeftMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
+        img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
         ]),
 
       gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
@@ -72,7 +89,7 @@ let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { c
         ]),
 
       gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-        img(base64: heroRightMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
+        img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100)), style(reflect)])
         ]),
 
       ])
