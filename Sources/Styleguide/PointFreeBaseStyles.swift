@@ -154,6 +154,7 @@ extension Class.pf {
       let baseStyles =
         Class.type.medium
           | Class.cursor.pointer
+          | Class.type.nowrap
 
       let borderStyles: CssSelector
       switch style {
