@@ -28,7 +28,12 @@ private let privacyView = View<Prelude.Unit> { _ in
         [`class`([Class.padding([.mobile: [.all: 4]])])],
         [h1([`class`([Class.h1])], [text(title)])]
           <> privacyPolicy
-          <> ["This document was last updated on January 7, 2018."]
+          <> [
+            p(
+              [`class`(Class.padding([.mobile: [.top: 2]]))],
+              ["This document was last updated on January 7, 2018."]
+            )
+        ]
       )
       ])
     ])
@@ -46,7 +51,9 @@ private let privacyPolicy =
     <> contactingUs
 
 private let personalIdentificationInformation = [
-  h2([`class`([Class.h2])], ["Personal identification information"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["Personal identification information"]),
   p([
     """
     We collect email addresses of registered Users and any other information voluntarily entered into
@@ -56,7 +63,9 @@ private let personalIdentificationInformation = [
 ]
 
 private let nonPersonalIdentificationInformation = [
-  h2([`class`([Class.h2])], ["Non-personal identification information"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["Non-personal identification information"]),
   p([
     """
     We may collect non-personal identification information about Users whenever they interact with the
@@ -66,7 +75,9 @@ private let nonPersonalIdentificationInformation = [
 ]
 
 private let webBrowserCookies = [
-  h2([`class`([Class.h2])], ["Web browser cookies"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["Web browser cookies"]),
   p([
     """
     The Site may use “cookies” to enhance User experience. Users may choose to set their web browser to
@@ -76,7 +87,9 @@ private let webBrowserCookies = [
 ]
 
 private let howWeUseCollectedInformation = [
-  h2([`class`([Class.h2])], ["How we use collected information"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["How we use collected information"]),
   p([
     """
     Point-Free, Inc. collects and uses Users personal information for the following purposes:
@@ -104,7 +117,9 @@ private let howWeUseCollectedInformation = [
 ]
 
 private let howWeProtectYourInformation = [
-  h2([`class`([Class.h2])], ["How we protect your information"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["How we protect your information"]),
   p([
     """
     We adopt appropriate data collection, storage and processing practices and security measures to
@@ -119,7 +134,9 @@ private let howWeProtectYourInformation = [
 ]
 
 private let sharingYourPersonalInformation = [
-  h2([`class`([Class.h2])], ["Sharing your personal information"]),
+  h2(
+    [`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])],
+    ["Sharing your personal information"]),
   p([
     """
     We do not sell, trade, or rent Users' personal identification information to others. We may share
@@ -130,7 +147,7 @@ private let sharingYourPersonalInformation = [
 ]
 
 private let complianceWithChildrensOnlinePrivacyProtectionAct = [
-  h2([`class`([Class.h2])], ["Compliance with children's online privacy protection act"]),
+  h2([`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])], ["Compliance with children's online privacy protection act"]),
   p([
     """
     Protecting the privacy of the very young is especially important. For that reason, we never collect
@@ -140,7 +157,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct = [
 ]
 
 private let changesToThisPrivacyPolicy = [
-  h2([`class`([Class.h2])], ["Changes to this privacy policy"]),
+  h2([`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])], ["Changes to this privacy policy"]),
   p([
     """
     Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will
@@ -149,7 +166,7 @@ private let changesToThisPrivacyPolicy = [
 ]
 
 private let contactingUs = [
-  h2([`class`([Class.h2])], ["Contacting us"]),
+  h2([`class`([Class.h3, Class.padding([.mobile: [.top: 2]])])], ["Contacting us"]),
   p([
     "Questions about this policy can be sent to ",
     a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
