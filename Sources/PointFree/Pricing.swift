@@ -240,8 +240,11 @@ private let individualPricingColumnView = View<(billing: Pricing.Billing, pricin
     ])
 }
 
-private let teamPricingRowView = View<Pricing> { pricing in
-  gridRow([id(selectors.content.1)], [
+private let teamPricingRowView = View<Pricing> { pricing -> Node in
+
+  let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
+
+  return gridRow([id(selectors.content.1)], [
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
         h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
@@ -271,12 +274,15 @@ private let teamPricingRowView = View<Pricing> { pricing in
           ),
           step(1),
           type(.number),
-          value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
+          value(quantity),
           ]),
         h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], [
           span([`class`([Class.display.none]), id("team-about")], ["About "]),
           "$",
-          span([id("team-rate")], [text(String(13 * Pricing.validTeamQuantities.lowerBound))]),
+          span(
+            [id("team-rate")],
+            [text(String(13 * quantity))]
+          ),
           "/mo"
           ]),
         p(
