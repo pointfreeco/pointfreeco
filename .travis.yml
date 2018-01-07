@@ -12,7 +12,7 @@ install:
 script:
   - psql template1 < database/deinit.sql
       && psql template1 < database/init.sql
-      && swift test
+      && OSS=1 swift test
 services:
   - postgresql
 addons:

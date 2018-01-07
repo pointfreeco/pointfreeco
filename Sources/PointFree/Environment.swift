@@ -1,4 +1,5 @@
 import Either
+import EpisodeTranscripts
 import Foundation
 import Optics
 import Prelude
@@ -18,6 +19,7 @@ public struct Environment {
   public private(set) var database: Database
   public private(set) var date: () -> Date
   public private(set) var envVars: EnvVars
+  public private(set) var episodes: () -> [Episode]
   public private(set) var gitHub: GitHub
   public private(set) var logger: Logger
   public private(set) var sendEmail: SendEmail
@@ -29,6 +31,7 @@ public struct Environment {
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
+    episodes: @escaping () -> [Episode] = { EpisodeTranscripts.allEpisodes },
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
     sendEmail: @escaping SendEmail = PointFree.mailgunSend,
@@ -39,6 +42,7 @@ public struct Environment {
     self.database = database
     self.date = date
     self.envVars = envVars
+    self.episodes = episodes
     self.gitHub = gitHub
     self.logger = logger
     self.sendEmail = sendEmail

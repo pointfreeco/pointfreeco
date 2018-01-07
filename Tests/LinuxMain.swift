@@ -20,6 +20,7 @@ extension AuthTests {
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
     ("testLogin", testLogin),
+    ("testLogin_AlreadyLoggedIn", testLogin_AlreadyLoggedIn),
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
@@ -142,6 +143,7 @@ extension MetaLayoutTests {
 extension NavViewTests {
   static var allTests: [(String, (NavViewTests) -> () throws -> Void)] = [
     ("testNav_LoggedOut", testNav_LoggedOut),
+    ("testNav_LoggedOut_WithCurrentRoute", testNav_LoggedOut_WithCurrentRoute),
     ("testNav_LoggedIn_NonSubscriber", testNav_LoggedIn_NonSubscriber),
     ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
   ]
