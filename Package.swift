@@ -17,8 +17,8 @@ let package = Package(
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
 
     ProcessInfo.processInfo.environment["OSS"] == "1"
-      ? .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("23a1619"))
-      : .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("4514506"))
+      ? .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("2a6472f"))
+      : .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("5d786e7"))
     ],
   targets: [
     .target(
