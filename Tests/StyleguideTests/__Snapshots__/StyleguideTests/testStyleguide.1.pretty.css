@@ -867,6 +867,14 @@ a:link.btn-normal {
   text-align : justify;
 }
 
+.nowrap {
+  white-space : nowrap;
+}
+
+.break-word {
+  word-wrap : break-word;
+}
+
 .overflow-hidden {
   overflow : hidden;
 }
