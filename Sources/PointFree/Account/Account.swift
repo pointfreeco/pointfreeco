@@ -16,8 +16,9 @@ let accountResponse =
     >-> map(lower)
     >>> respond(
       view: accountView,
-      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser in
+      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (subscription, teamInvites, teammates, emailSettings, currentUser),
           title: "Account"
@@ -66,7 +67,7 @@ let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.U
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> profileRowView.view((currentUser, emailSettings))
-            <> subscriptionRowView.view((subscription, teamInvites, teammates))
+            <> subscriptionRowView.view((currentUser, subscription, teamInvites, teammates))
             <> logoutView.view(unit)
       )
       ])
@@ -147,8 +148,10 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   }
 }
 
-private let subscriptionRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
+private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { currentUser, subscription, invites, allTeammates -> [Node] in
   guard let subscription = subscription else { return [] }
+
+  let teammates = allTeammates.filter(^\.id.unwrap != currentUser.id.unwrap)
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -229,13 +232,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([
-                a([
-                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href("#")
-                  ],
-                  ["Upgrade"]) // TODO: disable when subscription.status == .canceled
-                ])
+              p(changeAction(for: subscription))
               ])
             ])
           ])
@@ -308,6 +305,32 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       ["Cancel"]
     )
   }
+}
+
+private func changeAction(for subscription: Stripe.Subscription) -> [Node] {
+  guard subscription.status == .active else { return [] }
+
+  let (action, route): (String, Route)
+  switch subscription.plan.id.unwrap {
+  case Stripe.Plan.Id.individualMonthly.unwrap:
+    (action, route) = ("Upgrade", .account(.subscription(.upgrade(.show))))
+  case Stripe.Plan.Id.individualYearly.unwrap:
+    (action, route) = ("Downgrade", .account(.subscription(.downgrade(.show))))
+  case Stripe.Plan.Id.teamYearly.unwrap:
+    (action, route) = ("Add/Remove Seats", .account(.subscription(.changeSeats(.show))))
+  default:
+    return []
+  }
+
+  return [
+    a(
+      [
+        `class`([Class.pf.components.button(color: .purple, size: .small)]),
+        href(path(to: route))
+      ],
+      [text(action)]
+    )
+  ]
 }
 
 private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in

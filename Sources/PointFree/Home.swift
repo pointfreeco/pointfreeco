@@ -8,16 +8,20 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 import UrlFormEncoding
 
-let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<ResponseEnded, Data>> =
+let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
-    >-> respond(
+    >-> map(lower)
+    >>> respond(
       view: secretHomeView,
-      layoutData: { currentUser in
+      layoutData: { currentUser, currentSubscriptionStatus, currentRoute in
         SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriptionStatus: currentSubscriptionStatus,
           currentUser: currentUser,
-          data: currentUser,
+          data: (currentUser, currentSubscriptionStatus),
           extraStyles: pricingExtraStyles,
           showTopNav: false,
           title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
@@ -25,10 +29,10 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Database.User?>) -> IO<Conn<Resp
     }
 )
 
-let secretHomeView = View<Database.User?> { currentUser in
+let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
   headerView.view(unit)
     <> episodesListView.view(AppEnvironment.current.episodes().reversed())
-    <> pricingOptionsView.view((currentUser, .default))
+    <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
 
 let headerView = View<Prelude.Unit> { _ in

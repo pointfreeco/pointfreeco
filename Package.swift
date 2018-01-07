@@ -13,7 +13,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9a635ce")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("54412eb")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("35421ef")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
 
     ProcessInfo.processInfo.environment["OSS"] == "1"

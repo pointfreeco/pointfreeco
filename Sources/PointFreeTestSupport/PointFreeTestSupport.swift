@@ -41,7 +41,7 @@ extension Database {
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.teammate])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([.mock])),
     fetchUserByGitHub: const(pure(.mock)),
@@ -49,6 +49,7 @@ extension Database {
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     registerUser: const(pure(.some(.mock))),
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
+    updateSubscription: { _, _ in pure(unit) },
     updateUser: { _, _, _, _ in pure(unit) },
     upsertUser: const(pure(.mock)),
     migrate: { pure(unit) }
@@ -64,12 +65,18 @@ extension Database.User {
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
+
+  public static let owner = mock
+
+  public static let teammate = mock
+    |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
 }
 
 extension Database.Subscription {
   public static let mock = Database.Subscription(
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     stripeSubscriptionId: Stripe.Subscription.mock.id,
+    stripeSubscriptionStatus: .active,
     userId: Database.User.mock.id
   )
 }
@@ -132,7 +139,7 @@ extension Stripe {
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
-    reactivateSubscription: const(pure(.mock)),
+    invoiceCustomer: const(pure(.mock)),
     updateCustomer: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _ in pure(.mock) },
     js: ""
@@ -158,6 +165,12 @@ extension Stripe.Customer {
   )
 }
 
+extension Stripe.Invoice {
+  public static let mock = Stripe.Invoice(
+    id: .init(unwrap: "in_test")
+  )
+}
+
 extension Stripe.ListEnvelope {
   public static func mock(_ xs: [A]) -> Stripe.ListEnvelope<A> {
     return .init(
@@ -176,9 +189,21 @@ extension Stripe.Plan {
     id: .individualMonthly,
     interval: .month,
     metadata: [:],
-    name: "Monthly",
+    name: "Individual Monthly",
     statementDescriptor: nil
   )
+
+  public static let individualMonthly = mock
+
+  public static let individualYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .individualYearly
+    |> \.name .~ "Individual Yearly"
+
+  public static let teamYearly = mock
+    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.id .~ .teamYearly
+    |> \.name .~ "Team Yearly"
 }
 
 extension Stripe.Subscription {
@@ -218,27 +243,15 @@ extension Stripe.Subscription.Item {
 }
 
 extension Session {
-  public static let mock = empty
+  public static let loggedOut = empty
+
+  public static let loggedIn = loggedOut
     |> \.userId .~ Database.User.mock.id
 }
 
 private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
 
-public func authedRequest(to route: Route, session: Session = .mock) -> URLRequest {
-  var request = unauthedRequest(to: route)
-
-  guard
-    let sessionData = try? cookieJsonEncoder.encode(session),
-    let sessionCookie = String(data: sessionData, encoding: .utf8)
-    else { return request }
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
-
-  return request
-}
-
-public func unauthedRequest(to route: Route) -> URLRequest {
+public func request(to route: Route, session: Session = .loggedOut) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
@@ -250,6 +263,14 @@ public func unauthedRequest(to route: Route) -> URLRequest {
   request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
     .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
+
+  guard
+    let sessionData = try? cookieJsonEncoder.encode(session),
+    let sessionCookie = String(data: sessionData, encoding: .utf8)
+    else { return request }
+
+  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
 }

@@ -28,7 +28,16 @@ extension AuthTests {
 }
 extension CancelTests {
   static var allTests: [(String, (CancelTests) -> () throws -> Void)] = [
-    ("testConfirmCancel", testConfirmCancel)
+    ("testConfirmCancel", testConfirmCancel),
+    ("testConfirmCancelLoggedOut", testConfirmCancelLoggedOut),
+    ("testConfirmCancelNoSubscription", testConfirmCancelNoSubscription),
+    ("testConfirmCancelCancelingSubscription", testConfirmCancelCancelingSubscription),
+    ("testConfirmCancelCanceledSubscription", testConfirmCancelCanceledSubscription),
+    ("testCancel", testCancel),
+    ("testCancelLoggedOut", testCancelLoggedOut),
+    ("testCancelNoSubscription", testCancelNoSubscription),
+    ("testCancelCancelingSubscription", testCancelCancelingSubscription),
+    ("testCancelCanceledSubscription", testCancelCanceledSubscription)
   ]
 }
 extension ChangeEmailConfirmationTests {
@@ -36,9 +45,38 @@ extension ChangeEmailConfirmationTests {
     ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail)
   ]
 }
+extension ChangeSeatsTests {
+  static var allTests: [(String, (ChangeSeatsTests) -> () throws -> Void)] = [
+    ("testConfirmChangeSeats", testConfirmChangeSeats),
+    ("testConfirmChangeSeatsLoggedOut", testConfirmChangeSeatsLoggedOut),
+    ("testConfirmChangeSeatsNoSubscription", testConfirmChangeSeatsNoSubscription),
+    ("testConfirmChangeSeatsCanceledSubscription", testConfirmChangeSeatsCanceledSubscription),
+    ("testConfirmChangeSeatsInvalidPlan", testConfirmChangeSeatsInvalidPlan),
+    ("testChangeSeats", testChangeSeats),
+    ("testChangeSeatsLoggedOut", testChangeSeatsLoggedOut),
+    ("testChangeSeatsNoSubscription", testChangeSeatsNoSubscription),
+    ("testChangeSeatsCanceledSubscription", testChangeSeatsCanceledSubscription),
+    ("testChangeSeatsInvalidPlan", testChangeSeatsInvalidPlan),
+    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats)
+  ]
+}
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
+  ]
+}
+extension DowngradeTests {
+  static var allTests: [(String, (DowngradeTests) -> () throws -> Void)] = [
+    ("testConfirmDowngrade", testConfirmDowngrade),
+    ("testConfirmDowngradeLoggedOut", testConfirmDowngradeLoggedOut),
+    ("testConfirmDowngradeNoSubscription", testConfirmDowngradeNoSubscription),
+    ("testConfirmDowngradeInvalidSubscription", testConfirmDowngradeInvalidSubscription),
+    ("testConfirmDowngradeCanceledSubscription", testConfirmDowngradeCanceledSubscription),
+    ("testDowngrade", testDowngrade),
+    ("testDowngradeLoggedOut", testDowngradeLoggedOut),
+    ("testDowngradeNoSubscription", testDowngradeNoSubscription),
+    ("testDowngradeInvalidSubscription", testDowngradeInvalidSubscription),
+    ("testDowngradeCanceledSubscription", testDowngradeCanceledSubscription)
   ]
 }
 extension EmailInviteTests {
@@ -66,6 +104,21 @@ extension HomeTests {
 extension HtmlCssInlinerTests {
   static var allTests: [(String, (HtmlCssInlinerTests) -> () throws -> Void)] = [
     ("testHtmlCssInliner", testHtmlCssInliner)
+  ]
+}
+extension InviteTests {
+  static var allTests: [(String, (InviteTests) -> () throws -> Void)] = [
+    ("testShowInvite_LoggedOut", testShowInvite_LoggedOut),
+    ("testShowInvite_LoggedIn_NonSubscriber", testShowInvite_LoggedIn_NonSubscriber),
+    ("testShowInvite_LoggedIn_Subscriber", testShowInvite_LoggedIn_Subscriber),
+    ("testResendInvite_HappyPath", testResendInvite_HappyPath),
+    ("testResendInvite_CurrentUserIsNotInviter", testResendInvite_CurrentUserIsNotInviter),
+    ("testRevokeInvite_HappyPath", testRevokeInvite_HappyPath),
+    ("testRevokeInvite_CurrentUserIsNotInviter", testRevokeInvite_CurrentUserIsNotInviter),
+    ("testAcceptInvitation_HappyPath", testAcceptInvitation_HappyPath),
+    ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
+    ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
+    ("testAcceptInvitation_CurrentUserIsInviter", testAcceptInvitation_CurrentUserIsInviter)
   ]
 }
 extension LaunchEmailTests {
@@ -142,6 +195,20 @@ extension UpdateProfileTests {
     ("testUpdateEmailSettings", testUpdateEmailSettings)
   ]
 }
+extension UpgradeTests {
+  static var allTests: [(String, (UpgradeTests) -> () throws -> Void)] = [
+    ("testConfirmUpgrade", testConfirmUpgrade),
+    ("testConfirmUpgradeLoggedOut", testConfirmUpgradeLoggedOut),
+    ("testConfirmUpgradeNoSubscription", testConfirmUpgradeNoSubscription),
+    ("testConfirmUpgradeInvalidSubscription", testConfirmUpgradeInvalidSubscription),
+    ("testConfirmUpgradeCanceledSubscription", testConfirmUpgradeCanceledSubscription),
+    ("testUpgrade", testUpgrade),
+    ("testUpgradeLoggedOut", testUpgradeLoggedOut),
+    ("testUpgradeNoSubscription", testUpgradeNoSubscription),
+    ("testUpgradeInvalidSubscription", testUpgradeInvalidSubscription),
+    ("testUpgradeCanceledSubscription", testUpgradeCanceledSubscription)
+  ]
+}
 
 // swiftlint:disable trailing_comma
 XCTMain([
@@ -149,12 +216,15 @@ XCTMain([
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
+  testCase(ChangeSeatsTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(DowngradeTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
+  testCase(InviteTests.allTests),
   testCase(LaunchEmailTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
@@ -167,5 +237,6 @@ XCTMain([
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(UpdateProfileTests.allTests),
+  testCase(UpgradeTests.allTests),
 ])
 // swiftlint:enable trailing_comma

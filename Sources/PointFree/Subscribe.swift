@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import HttpPipeline
+import Optics
 import Prelude
 import Tuple
 
@@ -29,11 +30,15 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Datab
         AppEnvironment.current.stripe
           .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity)
       }
-      .flatMap { AppEnvironment.current.database.createSubscription($0.id, user.id).withExcept(const(unit)) }
+      .flatMap { stripeSubscription in
+        AppEnvironment.current.database.createSubscription(stripeSubscription, user.id)
+          .withExcept(const(unit))
+          .map(const(stripeSubscription))
+      }
       .run
-      .flatMap { subscription -> IO<Conn<ResponseEnded, Data>> in
+      .flatMap { errorOrStripeSubscription -> IO<Conn<ResponseEnded, Data>> in
 
-        switch subscription {
+        switch errorOrStripeSubscription {
         case .left:
           return conn
             |> writeStatus(.internalServerError)
@@ -41,7 +46,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData?, Datab
 
         case .right:
           return conn
-            |> redirect(to: path(to: .account(.index)))
+            |> redirect(to: .account(.index), headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!"))
         }
     }
 }

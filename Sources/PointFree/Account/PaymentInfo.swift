@@ -11,13 +11,15 @@ import Styleguide
 import Tuple
 
 let paymentInfoResponse =
-  requireStripeSubscription
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: paymentInfoView,
       layoutData: { subscription, currentUser in
         SimplePageLayoutData(
+          currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
           data: (subscription, currentUser),
           title: "Update Payment Info"
@@ -27,9 +29,10 @@ let paymentInfoResponse =
 
 let updatePaymentInfoMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Stripe.Token.Id?>, Data> =
-  filterMap(
-    require2 >>> pure,
-    or: redirect(to: .account(.paymentInfo(.show)), headersMiddleware: flash(.error, "An error occurred!"))
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(
+      require2 >>> pure,
+      or: redirect(to: .account(.paymentInfo(.show)), headersMiddleware: flash(.error, "An error occurred!"))
     )
     <<< requireStripeSubscription
     <| { conn in
