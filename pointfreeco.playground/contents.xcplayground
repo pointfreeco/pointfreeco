@@ -10,6 +10,5 @@
         <page name='Email Tester'/>
         <page name='Router'/>
         <page name='Team Invites'/>
-        <page name='About'/>
     </pages>
 </playground>
