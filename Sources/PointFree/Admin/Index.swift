@@ -1,5 +1,6 @@
 import Css
 import Either
+import EpisodeTranscripts
 import Foundation
 import Html
 import HtmlCssSupport
@@ -49,7 +50,7 @@ let showNewEpisodeEmailMiddleware =
 
 private let showNewEpisodeView = View<Database.User> { currentUser in
   ul(
-    episodes
+    AppEnvironment.current.episodes()
       .sorted(by: ^\.sequence)
       .map(li <<< newEpisodeEmailRowView.view)
     )
@@ -72,7 +73,7 @@ let sendNewEpisodeEmailMiddleware:
     >-> redirect(to: .admin(.index))
 
 func fetchEpisode(_ id: Episode.Id) -> Episode? {
-  return episodes.first(where: { $0.id.unwrap == id.unwrap })
+  return AppEnvironment.current.episodes().first(where: { $0.id.unwrap == id.unwrap })
 }
 
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {

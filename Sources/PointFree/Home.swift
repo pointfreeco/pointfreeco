@@ -1,4 +1,5 @@
 import Css
+import EpisodeTranscripts
 import Foundation
 import Html
 import HtmlCssSupport
@@ -30,7 +31,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Su
 
 let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
   headerView.view((currentUser, currentSubscriptionStatus, nil))
-    <> episodesListView.view(episodes.reversed())
+    <> episodesListView.view(AppEnvironment.current.episodes().reversed())
     <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
 

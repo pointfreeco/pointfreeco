@@ -26,12 +26,12 @@ jobs:
 
       - run:
           name: Run macOS tests
-          command: make test-macos
+          command: OSS=1 make test-macos
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
 
       - run:
           name: Run Swift tests
-          command: make test-swift
+          command: OSS=1 make test-swift
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
