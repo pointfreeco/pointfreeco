@@ -69,7 +69,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           title(layoutData.title),
           style(renderedNormalizeCss),
           style(styleguide),
-          style(render(config: inline, css: pricingExtraStyles)),
           style(layoutData.extraStyles),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           script(
