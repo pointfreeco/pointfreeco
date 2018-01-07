@@ -56,69 +56,6 @@ let heroMountainSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let heroRightMountainSvgBase64 = base64EncodedString <| """
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="724px" height="234px" viewBox="0 0 724 234" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <rect id="path-1" x="73.7269344" y="73.7269344" width="355.98513" height="355.98513"></rect>
-        <rect id="path-3" x="73.7269344" y="73.7269344" width="355.98513" height="355.98513"></rect>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="mountains-copy" transform="translate(-1.000000, 11.000000)">
-            <rect id="Mask" fill="#FFF080" transform="translate(578.000000, 221.000000) rotate(-315.000000) translate(-578.000000, -221.000000) " x="475" y="118" width="206" height="206"></rect>
-            <rect id="rect" fill="#79F2B0" transform="translate(223.500000, 221.500000) rotate(-315.000000) translate(-223.500000, -221.500000) " x="67" y="65" width="313" height="313"></rect>
-            <rect id="rect-copy-2" fill="#4CCCFF" transform="translate(333.500000, 186.500000) rotate(-315.000000) translate(-333.500000, -186.500000) " x="222" y="75" width="223" height="223"></rect>
-            <rect id="rect-copy" fill="#FFF080" transform="translate(183.000000, 223.000000) rotate(-315.000000) translate(-183.000000, -223.000000) " x="54" y="94" width="258" height="258"></rect>
-            <g id="bg-square-2" transform="translate(189.000000, 62.000000)">
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <use id="Mask" fill="#79F2B0" transform="translate(251.719500, 251.719500) rotate(-315.000000) translate(-251.719500, -251.719500) " xlink:href="#path-1"></use>
-            </g>
-            <g id="Group" transform="translate(35.000000, 76.000000)">
-                <mask id="mask-4" fill="white">
-                    <use xlink:href="#path-3"></use>
-                </mask>
-                <use id="Mask" fill="#974DFF" transform="translate(251.719500, 251.719500) rotate(-315.000000) translate(-251.719500, -251.719500) " xlink:href="#path-3"></use>
-                <rect id="Rectangle-6-Copy" fill="#FFFFFF" mask="url(#mask-4)" transform="translate(322.049123, 194.628362) rotate(-315.000000) translate(-322.049123, -194.628362) " x="233.525766" y="106.105005" width="177.046714" height="177.046714"></rect>
-            </g>
-        </g>
-    </g>
-</svg>
-"""
-
-let heroLeftMountainSvgBase64 = base64EncodedString <| """
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="724px" height="234px" viewBox="0 0 724 234" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <rect id="path-1" x="73.7269344" y="73.7269344" width="355.98513" height="355.98513"></rect>
-        <rect id="path-3" x="73.7269344" y="73.7269344" width="355.98513" height="355.98513"></rect>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="mountains" transform="translate(-85.000000, 0.000000)">
-            <rect id="Mask" fill="#FFF080" transform="translate(518.000000, 234.000000) rotate(-315.000000) translate(-518.000000, -234.000000) " x="353" y="69" width="330" height="330"></rect>
-            <rect id="rect" fill="#FFF080" transform="translate(223.500000, 252.500000) rotate(-315.000000) translate(-223.500000, -252.500000) " x="112" y="141" width="223" height="223"></rect>
-            <rect id="rect-copy-2" fill="#974DFF" transform="translate(273.500000, 231.500000) rotate(-315.000000) translate(-273.500000, -231.500000) " x="162" y="120" width="223" height="223"></rect>
-            <rect id="rect-copy" fill="#974DFF" transform="translate(183.000000, 318.000000) rotate(-315.000000) translate(-183.000000, -318.000000) " x="54" y="189" width="258" height="258"></rect>
-            <g id="bg-square-2" transform="translate(169.000000, 30.000000)">
-                <mask id="mask-2" fill="white">
-                    <use xlink:href="#path-1"></use>
-                </mask>
-                <use id="Mask" fill="#79F2B0" transform="translate(251.719500, 251.719500) rotate(-315.000000) translate(-251.719500, -251.719500) " xlink:href="#path-1"></use>
-                <rect id="Mask-Copy" fill="#FFF080" mask="url(#mask-2)" transform="translate(48.761405, 283.570801) rotate(-315.000000) translate(-48.761405, -283.570801) " x="-210.476749" y="24.3326461" width="518.476309" height="518.476309"></rect>
-            </g>
-            <g id="Group" transform="translate(138.000000, 61.000000)">
-                <mask id="mask-4" fill="white">
-                    <use xlink:href="#path-3"></use>
-                </mask>
-                <use id="Mask" fill-opacity="0" fill="#FFF080" transform="translate(251.719500, 251.719500) rotate(-315.000000) translate(-251.719500, -251.719500) " xlink:href="#path-3"></use>
-                <rect id="Rectangle-6-Copy" fill="#FFFFFF" mask="url(#mask-4)" transform="translate(135.049123, 199.628362) rotate(-315.000000) translate(-135.049123, -199.628362) " x="46.5257657" y="111.105005" width="177.046714" height="177.046714"></rect>
-            </g>
-        </g>
-    </g>
-</svg>
-"""
-
 let pointFreeHeroSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="424px" height="112px" viewBox="0 0 424 112" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
