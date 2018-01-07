@@ -26,7 +26,7 @@ jobs:
 
       - run:
           name: Run macOS tests
-          command: OSS=1 rm Package.resolved && swift package reset && swift package clean && make test-macos
+          command: OSS=1 swift package reset && swift package clean && make test-macos
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
 
