@@ -1,18 +1,19 @@
-import SnapshotTesting
+import EpisodeTranscripts
 import Html
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
 import HttpPipeline
 import Optics
+@testable import PointFree
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
 #if !os(Linux)
   import WebKit
 #endif
+import XCTest
 
 class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Subscriber() {
-    let doc = newEpisodeEmail.view((episodes.first!, .mock, true))
+    let doc = newEpisodeEmail.view((AppEnvironment.current.episodes().first!, .mock, true))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
@@ -30,7 +31,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_NonSubscriber() {
-    let doc = newEpisodeEmail.view((episodes.first!, .mock, false))
+    let doc = newEpisodeEmail.view((AppEnvironment.current.episodes().first!, .mock, false))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
