@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Either
+import EpisodeTranscripts
 import Prelude
 
 {% for enum in types.implementing.DerivePartialIsos|enum %}

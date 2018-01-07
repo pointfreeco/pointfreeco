@@ -1,5 +1,6 @@
 import Css
 import Either
+import EpisodeTranscripts
 import Foundation
 import Html
 import HtmlCssSupport

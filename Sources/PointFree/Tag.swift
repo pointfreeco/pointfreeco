@@ -63,3 +63,7 @@ private let episodeTagView = View<Tag> { tag in
     [.text(encode(tag.name))]
   )
 }
+
+func slug(for string: String) -> String {
+  return string.lowercased().replacingOccurrences(of: " ", with: "-")
+}

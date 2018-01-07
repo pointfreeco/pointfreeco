@@ -1,5 +1,6 @@
 // swift-tools-version:4.0
 
+import Foundation
 import PackageDescription
 
 let package = Package(
@@ -14,6 +15,10 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("35421ef")),
     .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+
+    ProcessInfo.processInfo.environment["OSS"] == "1"
+      ? .package(url: "https://github.com/pointfreeco/episode-transcripts-oss.git", .revision("2a6472f"))
+      : .package(url: "https://github.com/mbrandonw/episode-transcripts.git", .revision("5d786e7"))
     ],
   targets: [
     .target(
@@ -31,6 +36,7 @@ let package = Package(
         "Css",
         "CssReset",
         "Either",
+        "EpisodeTranscripts",
         "Html",
         "HtmlCssSupport",
         "HttpPipeline",
@@ -57,6 +63,7 @@ let package = Package(
       name: "PointFreeTestSupport",
       dependencies: [
         "Either",
+        "EpisodeTranscripts",
         "PointFree",
         "Prelude",
         "SnapshotTesting"
