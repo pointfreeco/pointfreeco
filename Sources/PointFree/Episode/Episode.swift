@@ -259,7 +259,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
     return p([
       a(
         timestampLinkAttributes(block.timestamp ?? 0) + [
-          `class`([Class.pf.components.videoTimeLink])
+          `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
         ],
         [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
       ),
