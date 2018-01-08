@@ -30,7 +30,7 @@ private let privacyView = View<Prelude.Unit> { _ in
           <> privacyPolicy
           <> [
             p(
-              [`class`(Class.padding([.mobile: [.top: 2]]))],
+              [`class`([Class.padding([.mobile: [.top: 2]])])],
               ["This document was last updated on January 7, 2018."]
             )
         ]
