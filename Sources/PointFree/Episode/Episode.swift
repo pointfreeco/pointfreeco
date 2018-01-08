@@ -1,3 +1,4 @@
+import Ccmark
 import Css
 import Either
 import EpisodeTranscripts
@@ -244,6 +245,17 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .paragraph:
+    let cString = cmark_markdown_to_html(block.content, block.content.utf8.count, 0)!
+    defer { free(cString) }
+    let html = String(cString: cString)
+    print("=======================")
+    print("=======================")
+    print("=======================")
+    print(html)
+    print("=======================")
+    print("=======================")
+    print("=======================")
+
     return p([
       a(
         timestampLinkAttributes(block.timestamp ?? 0) + [
@@ -251,7 +263,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         ],
         [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
       ),
-      .text(encode(block.content))
+      .text(unsafeUnencodedString(html))
       ])
 
   case .title:

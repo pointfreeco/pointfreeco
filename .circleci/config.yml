@@ -17,6 +17,10 @@ jobs:
           command: brew install postgresql
 
       - run:
+          name: Install CommonMark
+          command: brew install cmark
+
+      - run:
           name: Start Postgres
           command: brew services start postgresql
 

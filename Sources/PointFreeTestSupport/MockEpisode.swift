@@ -20,9 +20,9 @@ private let proofInFunctions = Episode(
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: """
-      Swift’s generic functions allow us to explore a beautiful idea that straddles the line between \
-      mathematics and computer science. If you write down and implement a function using only generic data \
-      types, there is a corresponding mathematical theorem that you have proven true. There are a lot of \
+      Swift’s generic `functions` allow us to **explore** a beautiful idea that straddles the line between \
+      __mathematics__ and computer science. If you write down and implement a function using only generic data \
+      types, there is a corresponding [mathematical](https://www.github.com) theorem that you have proven true. There are a lot of \
       pieces to that statement, but by the end of this short article you will understand what that means, \
       and we will have constructed a computer proof of De Morgan’s law.
       """,
@@ -61,7 +61,7 @@ private let proofInFunctions = Episode(
     ),
     Episode.TranscriptBlock(
       content: """
-      It’s a function that takes an x in some type A (can be any type) and needs to return something in A. \
+      It’s a function that takes an x in some type `A` (can be any type) and needs to return something in A. \
       We have absolutely no knowledge of A. No way of constructing a value in that type. For example, we \
       can’t even do something like A() to construct a value, for we have no way of knowing if A has an \
       initializer of that form. Even worse, there’s a chance that A cannot be instantiated, i.e. A has no \
