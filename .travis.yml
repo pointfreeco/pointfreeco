@@ -13,10 +13,10 @@ script:
   - sudo apt-get install cmake
   - git clone https://github.com/commonmark/cmark
   - cd cmark
-  - make INSTALL_PREFIX=/usr/bin
+  - make INSTALL_PREFIX=/usr
   - sudo make install
-  - EXPORT /usr/local/bin/
   - cd ./../
+  
   - psql template1 < database/deinit.sql
   - psql template1 < database/init.sql
   - OSS=1 swift test
