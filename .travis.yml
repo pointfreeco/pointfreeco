@@ -12,7 +12,8 @@ install:
 script:
   - git clone https://github.com/commonmark/cmark
   - cd cmark
-  - make install
+  - sudo make install
+  - cd ./../
   - psql template1 < database/deinit.sql
   - psql template1 < database/init.sql
   - OSS=1 swift test
