@@ -162,6 +162,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. pricing .*. route .*. unit))
         |> pricingResponse
 
+    case .privacy:
+      return conn.map(const(user .*. unit))
+        |> privacyResponse
+
     case .secretHome:
       return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> secretHomeMiddleware
@@ -177,10 +181,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
-
-    case .terms:
-      return conn.map(const(user .*. unit))
-        |> termsResponse
     }
 }
 
@@ -220,10 +220,10 @@ private func isProtected(route: Route) -> Bool {
        .login,
        .logout,
        .pricing,
+       .privacy,
        .secretHome,
        .subscribe,
-       .team,
-       .terms:
+       .team:
 
     return true
 
