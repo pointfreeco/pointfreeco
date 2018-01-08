@@ -13,7 +13,9 @@ script:
   - sudo apt-get install cmake
   - git clone https://github.com/commonmark/cmark
   - cd cmark
+  - make INSTALL_PREFIX=/usr/bin
   - sudo make install
+  - EXPORT /usr/local/bin/
   - cd ./../
   - psql template1 < database/deinit.sql
   - psql template1 < database/init.sql
