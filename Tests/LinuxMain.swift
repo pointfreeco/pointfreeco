@@ -171,6 +171,11 @@ extension PricingTests {
     ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber)
   ]
 }
+extension PrivacyTests {
+  static var allTests: [(String, (PrivacyTests) -> () throws -> Void)] = [
+    ("testPrivacy", testPrivacy)
+  ]
+}
 extension RegistrationEmailTests {
   static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
     ("testRegistrationEmail", testRegistrationEmail)
@@ -235,6 +240,7 @@ XCTMain([
   testCase(NewslettersTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
+  testCase(PrivacyTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
