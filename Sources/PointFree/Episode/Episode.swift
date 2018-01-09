@@ -319,7 +319,7 @@ private let markdownBlockStyles: Stylesheet =
     )
 )
 
-private func markdownBlock(from markdown: String) -> Node {
+func markdownBlock(from markdown: String) -> Node {
   return div([`class`([markdownContainerClass])], [
     .text(unsafeUnencodedString(unsafeMark(from: markdown)))
     ])
