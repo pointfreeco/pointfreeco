@@ -9,5 +9,6 @@
         <page name='Account'/>
         <page name='Email Tester'/>
         <page name='Router'/>
+        <page name='Team Invites'/>
     </pages>
 </playground>

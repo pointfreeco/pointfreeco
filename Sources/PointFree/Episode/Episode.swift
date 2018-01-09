@@ -1,3 +1,4 @@
+import Ccmark
 import Css
 import Either
 import EpisodeTranscripts
@@ -20,6 +21,7 @@ let episodeResponse =
           currentRoute: route,
           currentUser: currentUser,
           data: (episode, currentUser, route),
+          extraStyles: markdownBlockStyles,
           showTopNav: false,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
@@ -138,7 +140,7 @@ private let tocChapterView = View<(content: String, timestamp: Int)> { content, 
 }
 
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4, .top: 3]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3], .desktop: [.leftRight: 4]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -162,7 +164,7 @@ private let downloadsView = View<String> { codeSampleDirectory in
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding([.mobile: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -204,7 +206,7 @@ private let leftColumnView =
 
 private let episodeInfoView = View<Episode> { ep in
   div(
-    [`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
+    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
   )
 }
@@ -219,7 +221,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
       [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
     ),
-    p([`class`([Class.pf.type.body.regular])], [.text(encode(ep.blurb))]),
+    markdownBlock(from: ep.blurb)
     ]
 }
 
@@ -228,7 +230,7 @@ let dividerView = View<Prelude.Unit> { _ in
 }
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 4]]), Class.pf.colors.bg.white])],
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
       blocks.flatMap(transcriptBlockView.view)
   )
 }
@@ -244,21 +246,29 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .paragraph:
-    return p([
-      a(
-        timestampLinkAttributes(block.timestamp ?? 0) + [
-          `class`([Class.pf.components.videoTimeLink])
-        ],
-        [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
-      ),
-      .text(encode(block.content))
-      ])
+    return div(
+      timestampLinkView.view(block.timestamp)
+        + [markdownBlock(from: block.content)]
+    )
 
   case .title:
     return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
       .text(encode(block.content))
       ])
   }
+}
+
+private let timestampLinkView = View<Int?> { timestamp -> [Node] in
+  guard let timestamp = timestamp else { return [] }
+
+  return  [
+    a(
+      timestampLinkAttributes(timestamp) + [
+        `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
+      ],
+      [.text(encode(timestampLabel(for: timestamp)))]
+    )
+  ]
 }
 
 private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
@@ -291,4 +301,33 @@ private func episode(forParam param: Either<String, Int>) -> Episode? {
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
   })
+}
+
+private let markdownContainerClass = CssSelector.class("md-ctn")
+private let markdownBlockStyles: Stylesheet =
+  markdownContainerClass % (
+    (markdownContainerClass ** a) % key("text-decoration", "underline")
+      <> (a & .pseudo(.link)) % color(Colors.purple)
+      <> (a & .pseudo(.visited)) % color(Colors.purple)
+      <> (a & .pseudo(.hover)) % color(Colors.purple150)
+      <> code % (
+        fontFamily(["monospace"])
+          <> padding(topBottom: .px(1), leftRight: .px(5))
+          <> borderWidth(all: .px(1))
+          <> borderRadius(all: .px(3))
+          <> backgroundColor(Color.other("#f7f7f7"))
+    )
+)
+
+func markdownBlock(from markdown: String) -> Node {
+  return div([`class`([markdownContainerClass])], [
+    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
+    ])
+}
+
+private func unsafeMark(from markdown: String) -> String {
+  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, 0)
+    else { return markdown }
+  defer { free(cString) }
+  return String(cString: cString)
 }

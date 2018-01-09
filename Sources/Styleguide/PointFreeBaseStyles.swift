@@ -469,5 +469,5 @@ private let videoTimeLinkClass = CssSelector.class("vid-time-link")
 private let videoTimeLinkStyles =
   videoTimeLinkClass % (
     padding(all: .rem(0.25))
-      <> margin(right: .rem(0.25))
+      <> margin(top: .px(1), right: .rem(0.25))
 )
