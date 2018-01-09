@@ -319,8 +319,14 @@ let markdownBlockStyles: Stylesheet =
     )
 )
 
-func markdownBlock<T>(_ attribs: [Attribute<T>] = [], _ markdown: String) -> Node {
+func markdownBlock(_ markdown: String) -> Node {
   return div([`class`([markdownContainerClass])], [
+    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
+    ])
+}
+
+func markdownBlock(_ attribs: [Attribute<Element.Div>] = [], _ markdown: String) -> Node {
+  return div(addClasses([markdownContainerClass], to: attribs), [
     .text(unsafeUnencodedString(unsafeMark(from: markdown)))
     ])
 }

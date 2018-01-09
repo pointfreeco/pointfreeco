@@ -114,19 +114,24 @@ let pricingResponse =
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
-      view: pricingOptionsView,
+      view: pricingView,
       layoutData: { currentUser, pricing, route in
         SimplePageLayoutData(
           currentRoute: route,
           currentUser: currentUser,
           data: (currentUser, pricing),
-          extraStyles: pricingExtraStyles,
+          extraStyles: pricingExtraStyles <> whatToExpectStyles,
           title: "Subscribe to Point-Free"
         )
     }
 )
 
+private let pricingView =
+  pricingOptionsView
+    <> faqView.contramap(const(unit))
+
 let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
+
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
 
@@ -137,19 +142,6 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
 
       p([`class`([Class.pf.colors.fg.yellow])],
         ["Unlock full episodes and explore a new functional programming concept each week."]),
-//        ["""
-//         Unlock full episodes and explore a new functional programming concept each week. Here’s just a
-//         small sample of what we’re excited to talk about:
-//         """]
-
-
-//      ul(
-//        [`class`([Class.pf.colors.fg.yellow, Class.type.align.start])], [
-//        li(["Pure functions and side effects"]),
-//        li(["Code reuse through function composition"]),
-//        li(["Maximizing the use of the type-system"]),
-//        li(["Turning programming problems into algebraic problems"]),
-//        ]),
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
@@ -160,24 +152,132 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
               + pricingFooterView.view(currentUser)
           )
           ])
-        ]),
-
-      gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
-        gridColumn(sizes: [.mobile: 12], [], [
-          h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
-             [.text(unsafeUnencodedString("What to expect?"))]),
-
-          markdownBlock(
-            [`class`([Class.type.align.start, Class.pf.colors.fg.white])],
-            """
-            Quality weekly video content dissecting some of the
-            """
-          )
-          ])
         ])
       ])
     ])
 }
+
+private let _whatToExpectBoxClass = CssSelector.class("what-to-expect")
+private let whatToExpectBoxClass =
+  _whatToExpectBoxClass
+    | Class.type.align.start
+    | Class.padding([.mobile: [.all: 2], .desktop: [.all: 3]])
+    | Class.margin([.mobile: [.all: 2], .desktop: [.all: 0]])
+    | Class.border.all
+    | Class.border.rounded.all
+
+private let whatToExpectStyles =
+  _whatToExpectBoxClass % (
+    backgroundColor(.rgba(0, 0, 0, 0.2))
+)
+
+private let whatToExpect = View<Prelude.Unit> { _ in
+  [
+    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
+       [.text(unsafeUnencodedString("What to expect?"))]),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      ["""
+       Quality weekly video content dissecting some of the most important topics in functional
+       programming. Each episode is transcribed for easy searching and reference, and comes with a fully
+       functioning Swift playground so that you can experiment with the concepts discussed.
+       """]
+    )
+  ]
+}
+
+private let topicsView = View<Prelude.Unit> { _ in
+  [
+    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+       [.text(unsafeUnencodedString("What kind of topics will you cover?"))]),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      ["""
+       We will of course cover all of the classic topics such as functors, monads and applicatives (oh
+       my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
+       of some of the things we’re excited to talk about
+       """]
+    ),
+
+    ul(
+      [`class`([Class.pf.colors.fg.green, Class.type.align.start])], [
+        li(["Pure functions and side effects"]),
+        li(["Code reuse through function composition"]),
+        li(["Maximizing use of the type-system"]),
+        li(["Turning programming problems into algebraic problems"]),
+        ])
+  ]
+}
+
+private let suggestATopic = View<Prelude.Unit> { _ in
+  [
+    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+       [.text(unsafeUnencodedString("Can I suggest a topic?"))]),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      [
+        "Sure thing! Send us an ",
+        a(
+          [mailto("support@pointfree.co"), style(faqLinkStyles)],
+          ["email"]
+        ),
+        "."
+      ]
+    )
+  ]
+}
+
+private let whoAreYou = View<Prelude.Unit> { _ in
+  [
+    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+       [.text(unsafeUnencodedString("Who are you?"))]),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      [
+        "We’re ",
+        a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], ["Brandon Williams"]),
+        " and ",
+        a([href("http://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
+        ". We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of ",
+        "talks on various topics. Check out some of our talks here:"
+      ]
+    ),
+
+    ul(
+      [`class`([Class.pf.colors.fg.blue, Class.type.align.start])], [
+        li([
+          a([href("http://www.fewbutripe.com/talks/"), style(faqLinkStyles)],
+            ["Brandon’s talks"])
+          ]),
+
+        li([
+          a([href("http://www.stephencelis.com"), style(faqLinkStyles)],
+            ["Stephen’s talks"])
+          ])
+      ])
+  ]
+}
+
+private let faqView = View<Prelude.Unit> { _ in
+  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.bottom: 4]])])], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
+      div([`class`([whatToExpectBoxClass])],
+          whatToExpect.view(unit)
+            + topicsView.view(unit)
+            + suggestATopic.view(unit)
+            + whoAreYou.view(unit)
+      )
+      ])
+    ])
+}
+
+private let faqLinkStyles =
+  color(Colors.blue)
+    <> key("text-decoration", "underline")
 
 private let pricingTabsView = View<Pricing> { pricing in
   [
