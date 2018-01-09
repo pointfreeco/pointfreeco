@@ -246,21 +246,29 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       ])
 
   case .paragraph:
-    return div([
-      a(
-        timestampLinkAttributes(block.timestamp ?? 0) + [
-          `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
-        ],
-        [.text(encode(timestampLabel(for: block.timestamp ?? 0)))]
-      ),
-      markdownBlock(from: block.content)
-      ])
+    return div(
+      timestampLinkView.view(block.timestamp)
+        + [markdownBlock(from: block.content)]
+    )
 
   case .title:
     return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
       .text(encode(block.content))
       ])
   }
+}
+
+private let timestampLinkView = View<Int?> { timestamp -> [Node] in
+  guard let timestamp = timestamp else { return [] }
+
+  return  [
+    a(
+      timestampLinkAttributes(timestamp) + [
+        `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
+      ],
+      [.text(encode(timestampLabel(for: timestamp)))]
+    )
+  ]
 }
 
 private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
@@ -313,11 +321,11 @@ private let markdownBlockStyles: Stylesheet =
 
 private func markdownBlock(from markdown: String) -> Node {
   return div([`class`([markdownContainerClass])], [
-    .text(unsafeUnencodedString(unsafeHtml(from: markdown)))
+    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
     ])
 }
 
-private func unsafeHtml(from markdown: String) -> String {
+private func unsafeMark(from markdown: String) -> String {
   guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, 0)
     else { return markdown }
   defer { free(cString) }
