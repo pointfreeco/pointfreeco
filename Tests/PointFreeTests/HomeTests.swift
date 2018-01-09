@@ -10,8 +10,6 @@ import Optics
   import WebKit
 #endif
 
-import Ccmark
-
 class HomeTests: TestCase {
   func testHomepage() {
     let request = URLRequest(url: URL(string: url(to: .secretHome))!)
