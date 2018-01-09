@@ -14,14 +14,19 @@ let aboutResponse =
     >>> respond(
       view: aboutView,
       layoutData: { currentUser in
-        SimplePageLayoutData(currentUser: currentUser, data: unit, title: "About Us")
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: unit,
+          extraStyles: markdownBlockStyles,
+          title: "About Us"
+        )
     }
 )
 
 private let aboutView = View<Prelude.Unit> { _ in
   gridRow([
-    gridColumn(sizes: [.mobile: 12], [
-      div([`class`([Class.padding([.mobile: [.all: 4]])])],
+    gridColumn(sizes: [.mobile: 12, .desktop: 9], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           aboutSectionView.view(unit)
             + openSourceSection.view(unit)
             + hostsSection.view(unit)
@@ -33,22 +38,16 @@ private let aboutView = View<Prelude.Unit> { _ in
 let aboutSectionView = View<Prelude.Unit> { _ in
   [
     h1([`class`([Class.pf.type.title2])], ["About"]),
-    p([
-      """
+    markdownBlock(from: """
       Point-Free is a weekly video series discussing functional programming and the Swift programming
       language. Episodes are between 20 and 30 minutes long, covering a topic that may seem complex and
       academic at first, but turns out to be quite simple. At the end of each episode we’ll ask
-      """,
-      " ", em(["“what’s the point?!”"]),
-      """
-      , so that we can bring the concepts back down to earth and show how these ideas can improve the
-      quality of your code today.
-      """]),
+      _“what’s the point?!”_, so that we can bring the concepts back down to earth and show how these ideas
+      can improve the quality of your code today.
 
-    p([
-      """
       We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
-      """]),
+      """
+    ),
 
     p([
       ul([`class`([Class.padding([.mobile: [.left: 3]])])], [
@@ -86,78 +85,47 @@ let aboutSectionView = View<Prelude.Unit> { _ in
 
         li([
           h5([`class`([bulletPointTitleClass])], ["Turning programming problems into algebraic problems"]),
-          p([
-            """
+          markdownBlock(from: """
             Algebraic problems are nice because they carry structure that can be manipulated in
             predictable and understandable ways. For example, if you have ever simplified a complicated
-            boolean expression that looked like
-            """,
-            span([`class`([Class.pf.inlineCode, Class.type.nowrap])], ["a && b || a && c"]),
-            " to look like ",
-            span([`class`([Class.pf.inlineCode, Class.type.nowrap])], ["a && (b || c)"]),
-            ", you were exploiting the algebraic stucture that ",
-            span([`class`([Class.pf.inlineCode, Class.type.nowrap])], ["||"]),
-            " and ",
-            span([`class`([Class.pf.inlineCode, Class.type.nowrap])], ["&&"]),
+            boolean expression that looked like `a && b || a && c` to look like `a && (b || c)`,
+            you were exploiting the algebraic stucture that `||` and `&&` have. Many programming problems can
+            be given an algebraic structure that allows one to manipulate the problem in the same way you
+            factored out the `a &&` from that expression.
             """
-             have. Many programming problems can be given an algebraic structure that allows one to
-            manipulate the problem in the same way you factored out the
-            """,
-            span([`class`([Class.pf.inlineCode, Class.type.nowrap])], ["a &&"]),
-            " from that expression."])
+          )
           ]),
         ])
       ]),
-    p([
-      """
-      And so much more…
-      """
-      ]),
+    p(["And so much more…"]),
     ]
 }
 
 let openSourceSection = View<Prelude.Unit> { _ in
   [
     h1([`class`([Class.pf.type.title3, Class.padding([.mobile: [.top: 2]])])], ["Open source"]),
-    p([
-      "When we ",
-      a(
-        [
-          `class`([Class.type.underline]),
-          href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")
-        ], ["open-sourced"]
-      ),
-      " the entire ",
-      a([`class`([Class.type.underline]), href("http://github.com/kickstarter/ios-oss")], ["iOS"]),
-      " and ",
-      a([`class`([Class.type.underline]), href("http://github.com/kickstarter/android-oss")], ["Android"]),
-      " codebases at ",
-      a([`class`([Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
-      """
-      , we saw that it was one of the best resources to show people how to build a large application in
-      the functional style. It transcended any talks about the theoretical benefits or proposed
-      simplifications. We could just show directly how embracing pure functions allowed us to write code
-      that was understandable in isolation, and enabled us to write tests for every subtle edge case.
-      """]),
+    markdownBlock(from: """
+      When we [open-sourced](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd)
+      the entire [iOS](http://github.com/kickstarter/ios-oss) and
+      [Android](http://github.com/kickstarter/android-oss) codebases at
+      [Kickstarter](https://www.kickstarter.com), we saw that it was one of the best resources to show people
+      how to build a large application in the functional style. It transcended any talks about the theoretical
+      benefits or proposed simplifications. We could just show directly how embracing pure functions allowed
+      us to write code that was understandable in isolation, and enabled us to write tests for every subtle
+      edge case.
 
-    p([
-      """
       We wanted to be able to do that again, but this time we’d build an entire website in server-side
       Swift, all in the functional style! This meant we had to build nearly everything from scratch,
       from server middleware and routing to HTML views and CSS.
-      """]),
 
-    p([
-      """
       We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in
       an iterative fashion, and came to the conclusion that server-side Swift will soon be a viable
       backend language rivaling almost every other language out there.
-      """]),
 
-    p([
-      "You can view the entire source code to this site on our GitHub organization, ",
-      a([href(gitHubUrl(to: .organization))], [text(gitHubUrl(to: .organization))]),
-      "."])
+      You can view the entire source code to this site on our GitHub organization,
+      [https://www.github.com/pointfreeco](https://www.github.com/pointfreeco).
+      """
+    )
   ]
 }
 

@@ -128,17 +128,28 @@ let pricingResponse =
 
 let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
   gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
-    gridColumn(sizes: [.desktop: 6, .mobile: 12], [], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
 
       h2(
         [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
-        ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
+        [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
       ),
 
-      p(
-        [`class`([Class.pf.colors.fg.yellow])],
-        ["Unlock full episodes and receive new updates every week."]
-      ),
+      p([`class`([Class.pf.colors.fg.yellow])],
+        ["Unlock full episodes and explore a new functional programming concept each week."]),
+//        ["""
+//         Unlock full episodes and explore a new functional programming concept each week. Here’s just a
+//         small sample of what we’re excited to talk about:
+//         """]
+
+
+//      ul(
+//        [`class`([Class.pf.colors.fg.yellow, Class.type.align.start])], [
+//        li(["Pure functions and side effects"]),
+//        li(["Code reuse through function composition"]),
+//        li(["Maximizing the use of the type-system"]),
+//        li(["Turning programming problems into algebraic problems"]),
+//        ]),
 
       gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
@@ -149,7 +160,20 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
               + pricingFooterView.view(currentUser)
           )
           ])
+        ]),
+
+      gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
+        gridColumn(sizes: [.mobile: 12], [], [
+
+
+          h3(
+            [`class`([Class.pf.colors.fg.white, Class.pf.type.title3])],
+            [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+          ),
+
+          ])
         ])
+
       ])
     ])
 }
@@ -182,10 +206,18 @@ private let pricingTabsView = View<Pricing> { pricing in
   ]
 }
 
-private let individualPricingRowView: View<Pricing> =
-  (curry(gridRow)([id(selectors.content.0)]) >>> pure)
-    <¢> individualPricingColumnView.contramap { (Pricing.Billing.monthly, $0) }
-    <> individualPricingColumnView.contramap { (Pricing.Billing.yearly, $0) }
+private let individualPricingRowView = View<Pricing> { pricing in
+  gridRow([id(selectors.content.0)], [
+    gridColumn(sizes: [.mobile: 12], [`class`([Class.padding([.mobile: [.top: 3]])])], [
+      h5([`class`([Class.pf.type.title5])], ["Invest in your career!"]),
+
+      gridRow(
+        individualPricingColumnView.view((.monthly, pricing))
+          <> individualPricingColumnView.view((.yearly, pricing))
+      ),
+      ])
+    ])
+}
 
 private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
   return pricing.isIndividual
@@ -216,21 +248,29 @@ private let individualPricingColumnView = View<(billing: Pricing.Billing, pricin
 }
 
 private let teamPricingRowView = View<Pricing> { pricing in
+
   gridRow([id(selectors.content.1)], [
-    gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
-        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
-        p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
-        input([
-          type(.number),
-          min(Pricing.validTeamQuantities.lowerBound),
-          max(Pricing.validTeamQuantities.upperBound),
-          name("pricing[team]"),
-          step(1),
-          value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
-          `class`([numberSpinner, Class.pf.colors.fg.purple])
-          ]),
-        h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
+    gridColumn(sizes: [.mobile: 12], [`class`([Class.padding([.mobile: [.top: 3]])])], [
+      h5([`class`([Class.pf.type.title5])], ["Invest in your team!"]),
+
+      gridRow([
+        gridColumn(sizes: [.mobile: 12], [
+
+          div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
+            h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
+            p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
+            input([
+              type(.number),
+              min(Pricing.validTeamQuantities.lowerBound),
+              max(Pricing.validTeamQuantities.upperBound),
+              name("pricing[team]"),
+              step(1),
+              value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
+              `class`([numberSpinner, Class.pf.colors.fg.purple])
+              ]),
+            h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
+            ])
+          ])
         ])
       ])
     ])
