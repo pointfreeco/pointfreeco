@@ -162,18 +162,19 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
           ])
         ]),
 
-      gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
+      gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
         gridColumn(sizes: [.mobile: 12], [], [
+          h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
+             [.text(unsafeUnencodedString("What to expect?"))]),
 
-
-          h3(
-            [`class`([Class.pf.colors.fg.white, Class.pf.type.title3])],
-            [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
-          ),
-
+          markdownBlock(
+            [`class`([Class.type.align.start, Class.pf.colors.fg.white])],
+            """
+            Quality weekly video content dissecting some of the
+            """
+          )
           ])
         ])
-
       ])
     ])
 }

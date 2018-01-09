@@ -221,7 +221,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
       [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
     ),
-    markdownBlock(from: ep.blurb)
+    markdownBlock(ep.blurb)
     ]
 }
 
@@ -248,7 +248,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case .paragraph:
     return div(
       timestampLinkView.view(block.timestamp)
-        + [markdownBlock(from: block.content)]
+        + [markdownBlock(block.content)]
     )
 
   case .title:
@@ -319,7 +319,7 @@ let markdownBlockStyles: Stylesheet =
     )
 )
 
-func markdownBlock(from markdown: String) -> Node {
+func markdownBlock<T>(_ attribs: [Attribute<T>] = [], _ markdown: String) -> Node {
   return div([`class`([markdownContainerClass])], [
     .text(unsafeUnencodedString(unsafeMark(from: markdown)))
     ])

@@ -38,7 +38,7 @@ private let aboutView = View<Prelude.Unit> { _ in
 let aboutSectionView = View<Prelude.Unit> { _ in
   [
     h1([`class`([Class.pf.type.title2])], ["About"]),
-    markdownBlock(from: """
+    markdownBlock("""
       Point-Free is a weekly video series discussing functional programming and the Swift programming
       language. Episodes are between 20 and 30 minutes long, covering a topic that may seem complex and
       academic at first, but turns out to be quite simple. At the end of each episode we’ll ask
@@ -85,7 +85,7 @@ let aboutSectionView = View<Prelude.Unit> { _ in
 
         li([
           h5([`class`([bulletPointTitleClass])], ["Turning programming problems into algebraic problems"]),
-          markdownBlock(from: """
+          markdownBlock("""
             Algebraic problems are nice because they carry structure that can be manipulated in
             predictable and understandable ways. For example, if you have ever simplified a complicated
             boolean expression that looked like `a && b || a && c` to look like `a && (b || c)`,
@@ -104,7 +104,7 @@ let aboutSectionView = View<Prelude.Unit> { _ in
 let openSourceSection = View<Prelude.Unit> { _ in
   [
     h1([`class`([Class.pf.type.title3, Class.padding([.mobile: [.top: 2]])])], ["Open source"]),
-    markdownBlock(from: """
+    markdownBlock("""
       When we [open-sourced](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd)
       the entire [iOS](http://github.com/kickstarter/ios-oss) and
       [Android](http://github.com/kickstarter/android-oss) codebases at
