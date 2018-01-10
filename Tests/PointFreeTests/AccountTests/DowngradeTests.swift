@@ -140,4 +140,18 @@ final class DowngradeTests: TestCase {
       assertSnapshot(matching: result.perform())
     }
   }
+
+  func testDowngradeStripeError() {
+    AppEnvironment.with(
+      (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly)))
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit) })
+    ) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
 }

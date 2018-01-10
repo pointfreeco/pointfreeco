@@ -207,13 +207,18 @@ extension Tagged where Tag == Stripe.Plan, A == String {
     return .init(unwrap: "individual-yearly")
   }
 
-  static var teamYearly: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly")
+  static var teamYearlyTier1: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-1")
+  }
+
+  static var teamYearlyTier2: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-2")
+  }
+
+  static var teamYearlyTier3: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-3")
   }
 }
-
-//private let subscriptionPlans = fetchPlans
-//  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
   return stripeDataTask("subscriptions/" + id.rawValue, .delete(["at_period_end": "true"]))
@@ -229,12 +234,16 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id)
       ]))
 }
 
-private func createSubscription(customer: Stripe.Customer.Id, plan: Stripe.Plan.Id, quantity: Int)
+private func createSubscription(
+  customer: Stripe.Customer.Id,
+  plan: Stripe.Plan.Id,
+  quantity: Int
+  )
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
     return stripeDataTask("subscriptions?expand[]=customer", .post([
-      "customer": customer.rawValue,
-      "items[0][plan]": plan.rawValue,
+      "customer": customer.unwrap,
+      "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
       ]))
 }
@@ -270,13 +279,17 @@ private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.I
       ]))
 }
 
-private func updateSubscription(_ subscription: Stripe.Subscription, _ plan: Stripe.Plan.Id, _ quantity: Int)
+private func updateSubscription(
+  _ subscription: Stripe.Subscription,
+  _ plan: Stripe.Plan.Id,
+  _ quantity: Int
+  )
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
     guard let item = subscription.items.data.first else { return throwE(unit) }
     return stripeDataTask("subscriptions/" + subscription.id.unwrap + "?expand[]=customer", .post([
       "items[0][id]": item.id.unwrap,
-      "items[0][plan]": plan.rawValue,
+      "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
       ]))
 }

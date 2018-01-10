@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -36,17 +37,31 @@ let downgradeMiddleware =
     <<< requireActiveSubscription
     <<< requireIndividualYearlySubscription
     <| downgrade
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ll start billing you monthly!"))
 
 // MARK: -
 
 private func downgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     // TODO: send emails
     return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualMonthly, 1)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.downgrade(.show))),
+              headersMiddleware: flash(.error, "We couldn’t change your subscription at this time.")
+            )
+          ),
+          const(
+            conn |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "We’ll start billing you monthly!")
+            )
+          )
+        )
+    )
 }
 
 // MARK: - Transformers
