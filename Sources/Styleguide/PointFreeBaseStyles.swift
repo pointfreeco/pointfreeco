@@ -294,6 +294,9 @@ extension Class.pf {
         | Class.h6
 
     public static let heroLogo = CssSelector.class("hero-logo")
+
+    public static let blueGradient = CssSelector.class("blue-gradient")
+    public static let reflectX = CssSelector.class("reflect-x")
   }
 }
 
@@ -314,6 +317,8 @@ public let pointFreeBaseStyles =
     <> baseButtonStyles
     <> heroLogoStyles
     <> videoTimeLinkStyles
+    <> blueGradientStyles
+    <> reflectStyles
 
 private let bodyStyles =
   html % (
@@ -479,4 +484,24 @@ private let videoTimeLinkStyles =
   videoTimeLinkClass % (
     padding(all: .rem(0.25))
       <> margin(top: .px(1), right: .rem(0.25))
+)
+
+private let blueGradientStyles =
+  Class.pf.components.blueGradient % (
+    key("background", "rgba(128,219,255,0.85)")
+      <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)))")
+      <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+)
+
+private let reflectStyles =
+  Class.pf.components.reflectX % (
+    key("transform", "scaleX(-1)")
+      <> key("-webkit-transform", "scaleX(-1)")
+      <> key("-moz-transform", "scaleX(-1)")
+      <> key("-o-transform", "scaleX(-1)")
+      <> key("-ms-transform", "scaleX(-1)")
 )

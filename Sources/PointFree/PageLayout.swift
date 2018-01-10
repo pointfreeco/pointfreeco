@@ -10,8 +10,13 @@ import Styleguide
 import Tuple
 
 enum NavStyle {
-  case dark
-  case light
+  case minimal(MinimalStyle)
+  case mountains
+
+  enum MinimalStyle {
+    case dark
+    case light
+  }
 }
 
 struct SimplePageLayoutData<A> {
@@ -22,7 +27,6 @@ struct SimplePageLayoutData<A> {
   private(set) var data: A
   private(set) var flash: Flash?
   private(set) var navStyle: NavStyle?
-  private(set) var showTopNav: Bool
   private(set) var title: String
   private(set) var useHighlightJs: Bool
 
@@ -32,8 +36,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     extraStyles: Stylesheet = .empty,
-    navStyle: NavStyle? = .some(.light),
-    showTopNav: Bool = true,
+    navStyle: NavStyle? = .some(.minimal(.light)),
     title: String,
     useHighlightJs: Bool = false
     ) {
@@ -45,7 +48,6 @@ struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.navStyle = navStyle
-    self.showTopNav = showTopNav
     self.title = title
     self.useHighlightJs = useHighlightJs
   }
@@ -106,10 +108,10 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
 private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
 
   switch navStyle {
-  case .dark:
-    return darkNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
-  case .light:
-    return lightNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
+  case .mountains:
+    return mountainNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
+  case let .minimal(minimalStyle):
+    return minimalNavView.view((minimalStyle, currentUser, currentSubscriptionStatus, currentRoute))
   }
 }
 

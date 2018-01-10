@@ -22,7 +22,7 @@ let episodeResponse =
           currentUser: currentUser,
           data: (episode, currentUser, route),
           extraStyles: markdownBlockStyles,
-          navStyle: .light,
+          navStyle: currentUser == nil ? .mountains : .minimal(.light),
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
         )
