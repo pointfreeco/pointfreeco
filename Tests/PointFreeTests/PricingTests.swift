@@ -42,6 +42,9 @@ class PricingTests: TestCase {
           """
           document.getElementById("tab0").checked = false;
           document.getElementById("tab1").checked = true;
+          var quantity = document.getElementsByName("pricing[team]")[0];
+          quantity.value = 10;
+          quantity.onchange();
           """, completionHandler: nil)
         assertSnapshot(matching: webView, named: "desktop-team")
         
