@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -36,17 +37,31 @@ let upgradeMiddleware =
     <<< requireActiveSubscription
     <<< requireIndividualMonthlySubscription
     <| upgrade
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ll start billing you yearly!"))
 
 // MARK: -
 
 private func upgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     // TODO: send emails
     return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualYearly, 1)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.upgrade(.show))),
+              headersMiddleware: flash(.error, "We couldn’t change your subscription at this time.")
+            )
+          ),
+          const(
+            conn |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "We’ll start billing you yearly!")
+            )
+          )
+        )
+    )
 }
 
 // MARK: - Transformers

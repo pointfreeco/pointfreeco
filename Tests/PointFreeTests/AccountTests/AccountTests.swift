@@ -25,8 +25,8 @@ final class AccountTests: TestCase {
   
   func testAccount() {
     let subscription = Stripe.Subscription.mock
-      |> \.quantity .~ 5
-      |> \.plan.id .~ .teamYearly
+      |> \.quantity .~ 4
+      |> \.plan.id .~ .teamYearlyTier1
       |> \.plan.interval .~ .year
 
     AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
