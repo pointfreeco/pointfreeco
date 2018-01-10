@@ -126,7 +126,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       p([
         "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
         "downgrade your subscription, you will begin to be billed monthly at the end of the current billing ",
-        "cycle", text(subscription.currentPeriodEnd.map { ": " + dateFormatter.string(from: $0) } ?? ""),
+        "cycle: ", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         "."
         ]),
       form([action(path(to: .account(.subscription(.downgrade(.update))))), method(.post)], [

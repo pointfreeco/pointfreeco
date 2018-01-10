@@ -182,9 +182,7 @@ private func planName(for subscription: Stripe.Subscription) -> String {
 public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
-    let currentPeriodEndString = subscription.currentPeriodEnd
-      .map { subscription.cancelAtPeriodEnd ? " through " + dateFormatter.string(from: $0) : "" } ?? ""
-    return "Active" + currentPeriodEndString
+    return "Active through " + dateFormatter.string(from: subscription.currentPeriodEnd)
   case .canceled:
     return "Canceled"
   case .pastDue:
@@ -199,15 +197,13 @@ public func status(for subscription: Stripe.Subscription) -> String {
 public func nextBilling(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
-    let totalAmountString = totalAmount(for: subscription) ?? ""
-    let currentPeriodEndString = subscription.currentPeriodEnd
-      .map { " on " + dateFormatter.string(from: $0) } ?? ""
-    return totalAmountString + currentPeriodEndString
+    return totalAmount(for: subscription)
+      + " on "
+      + dateFormatter.string(from: subscription.currentPeriodEnd)
   case .canceled:
-    return subscription.currentPeriodEnd
-      .filterOptional { $0 > AppEnvironment.current.date() }
-      .map { "Cancels " + dateFormatter.string(from: $0) }
-      ?? "Canceled"
+    return subscription.currentPeriodEnd > AppEnvironment.current.date()
+      ? "Cancels " + dateFormatter.string(from: subscription.currentPeriodEnd)
+      : "Canceled"
   case .pastDue:
     return "" // FIXME
   case .unpaid:
@@ -480,10 +476,12 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
   ]
 }
 
-private func totalAmount(for subscription: Stripe.Subscription) -> String? {
+private func totalAmount(for subscription: Stripe.Subscription) -> String {
   let totalCents = subscription.plan.amount.rawValue * subscription.quantity
-  let totalDollars = Double(totalCents) / 100
-  return currencyFormatter.string(from: NSNumber(value: totalDollars))
+  let totalDollars = NSNumber(value: Double(totalCents) / 100)
+  return currencyFormatter.string(from: totalDollars)
+    ?? NumberFormatter.localizedString(from: totalDollars, number: .currency)
+
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
