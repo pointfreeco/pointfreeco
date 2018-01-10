@@ -93,10 +93,22 @@ extension Class {
           | Class.h3
           | Class.type.lineHeight(2)
 
+      public static let responsiveTitle3 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
+          | Class.type.lineHeight(2)
+
       public static let title4 =
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h4
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle4 =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+          | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
           | Class.type.lineHeight(2)
 
       public static let title5 =

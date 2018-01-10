@@ -30,7 +30,6 @@ struct SimplePageLayoutData<A> {
   private(set) var image: String?
   private(set) var navStyle: NavStyle?
   private(set) var openGraphType: OpenGraphType
-  private(set) var showTopNav: Bool
   private(set) var title: String
   private(set) var twitterCard: TwitterCard
   private(set) var useHighlightJs: Bool
@@ -45,7 +44,6 @@ struct SimplePageLayoutData<A> {
     image: String? = nil,
     navStyle: NavStyle? = .some(.minimal(.light)),
     openGraphType: OpenGraphType = .website,
-    showTopNav: Bool = true,
     title: String,
     twitterCard: TwitterCard = .summaryLargeImage,
     useHighlightJs: Bool = false
@@ -61,7 +59,6 @@ struct SimplePageLayoutData<A> {
     self.image = image
     self.navStyle = navStyle
     self.openGraphType = openGraphType
-    self.showTopNav = showTopNav
     self.title = title
     self.twitterCard = twitterCard
     self.useHighlightJs = useHighlightJs

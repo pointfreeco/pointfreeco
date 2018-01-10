@@ -10,68 +10,73 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import Tuple
 
-let episodeResponse =
-  filterMap(first(episode(forParam:)) >>> requireFirst >>> pure, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
+let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    )
     <| writeStatus(.ok)
-    >-> respond(
+    >-> map(lower)
+    >>> respond(
       view: episodeView,
-      layoutData: { episode, currentUser, route in
-        SimplePageLayoutData(
-          currentRoute: route,
+      layoutData: { episode, currentUser, subscriptionStatus, currentRoute in
+        let isEpisodeViewable = !episode.subscriberOnly || subscriptionStatus == .some(.active)
+        let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
+
+        return SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (episode, currentUser, route),
-          extraStyles: markdownBlockStyles,
-          navStyle: currentUser == nil ? .mountains : .minimal(.light),
+          data: (episode, isEpisodeViewable),
+          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
         )
     }
 )
 
-let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
+let episodeView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
   [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
+        div(episodeInfoView.view(episode))
+        ])
+      ]),
+
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view(episode)
+        leftColumnView.view((episode, isEpisodeViewable))
       ),
 
       gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
-        [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
+        [`class`([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
           div(
             [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-            rightColumnView.view(episode)
+            rightColumnView.view((episode, isEpisodeViewable))
           )
         ]
-      ),
-
+      )
       ])
-    ]
-    <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
+  ]
 }
 
-private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {
+private let downloadsAndCredits =
+  downloadsView
+    <> creditsView.contramap(const(unit))
 
-  div(
-    [
-      `class`([
-        Class.pf.colors.bg.dark,
-        $0.forDesktop ? Class.hide(.mobile) : Class.hide(.desktop)
-        ])
-    ],
+private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
 
-    downloadsView.view($0.codeSampleDirectory)
-      <> creditsView.view(unit)
-  )
+  videoView.view(unit)
+    <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
+    <> downloadsAndCredits.view(episode.codeSampleDirectory)
 }
-
-private let rightColumnView: View<Episode> =
-  videoView.contramap(const(unit))
-    <> episodeTocView.contramap(^\.transcriptBlocks)
-    <> downloadsAndCredits.contramap({ ($0.codeSampleDirectory, forDesktop: true) })
 
 private let videoView = View<Prelude.Unit> { _ in
   video(
@@ -86,8 +91,8 @@ private let videoView = View<Prelude.Unit> { _ in
   )
 }
 
-private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4, .bottom: 0]])])],
+private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -97,7 +102,7 @@ private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
         <> blocks
           .filter { $0.type == .title && $0.timestamp != nil }
           .flatMap { block in
-            tocChapterView.view((block.content, block.timestamp ?? 0))
+            tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
     }
   )
 }
@@ -117,30 +122,38 @@ private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>]
   ]
 }
 
-private let tocChapterView = View<(content: String, timestamp: Int)> { content, timestamp in
-  gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
+private let tocChapterView = View<(title: String, timestamp: Int, isEpisodeViewable: Bool)> { title, timestamp, isEpisodeViewable in
+  gridRow([
     gridColumn(sizes: [.mobile: 10], [
-      div([
-        a(
-          timestampLinkAttributes(timestamp) + [
-            `class`([Class.pf.colors.link.green, Class.type.textDecorationNone])
-          ],
-          [.text(encode(content))]
-        ),
-        ])
+      div(tocChapterLinkView.view((title, timestamp, isEpisodeViewable)))
       ]),
 
     gridColumn(sizes: [.mobile: 2], [
       div(
         [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
-        [.text(encode(timestampLabel(for: timestamp)))]
+        [text(timestampLabel(for: timestamp))]
       )
       ])
     ])
 }
 
+private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bool)> { title, timestamp, active -> Node in
+  if active {
+    return a(
+      timestampLinkAttributes(timestamp) +
+        [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
+      [text(title)]
+    )
+  }
+
+  return div(
+    [`class`([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
+    [text(title)]
+    )
+}
+
 private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3], .desktop: [.leftRight: 4]])])],
+  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
         h6(
           [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -198,11 +211,37 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView =
-  (curry(div)([]) >>> pure)
-    <¢> episodeInfoView
-    <> dividerView.contramap(const(unit))
-    <> transcriptView.contramap(^\.transcriptBlocks)
+private let leftColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
+  div(
+    [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
+      + dividerView.view(unit)
+      + (isEpisodeViewable
+        ? transcriptView.view(episode.transcriptBlocks)
+        : subscribeView.view(unit)
+    )
+  )
+}
+
+private let subscribeView = View<Prelude.Unit> { _ in
+  div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.gray900])], [
+
+    h3(
+      [`class`([Class.pf.type.responsiveTitle4])],
+      [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+    ),
+
+    p(
+      [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+      ["Unlock full episodes and explore a new functional programming concept each week."]
+    ),
+
+    a(
+      [href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])],
+      ["See subscription options"]
+    )
+
+    ])
+}
 
 private let episodeInfoView = View<Episode> { ep in
   div(
@@ -272,15 +311,16 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
 }
 
 private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
-  .contramap { param, user, route in
+  .contramap { param, user, subscriptionStatus, route in
     SimplePageLayoutData(
+      currentSubscriptionStatus: subscriptionStatus,
       currentUser: user,
-      data: (param, user, route),
+      data: (param, user, subscriptionStatus, route),
       title: "Episode not found :("
     )
 }
 
-private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
+private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?)> { _, _, _, _ in
 
   gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
