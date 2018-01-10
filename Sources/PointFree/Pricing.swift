@@ -18,7 +18,7 @@ public let teamTier1PriceMonthly = 13
 public let teamTier2PriceMonthly = 12
 public let teamTier3PriceMonthly = 11
 
-public func monthlyTeamRate(for quantity: Int) -> Int {
+private func monthlyTeamRate(for quantity: Int) -> Int {
   switch quantity {
   case teamMaxDiscountAt...:
     return quantity * teamTier3PriceMonthly
@@ -28,6 +28,16 @@ public func monthlyTeamRate(for quantity: Int) -> Int {
     return quantity * teamTier1PriceMonthly
   }
 }
+
+private let monthlyTeamRateJs = """
+var seatBase = quantity >= \(teamMaxDiscountAt)
+  ? \(teamTier3PriceMonthly)
+  : quantity >= \(teamMinDiscountAt)
+    ? \(teamTier2PriceMonthly)
+    : \(teamTier1PriceMonthly);
+var rate = seatBase * quantity;
+document.getElementById("team-rate").textContent = rate;
+"""
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
@@ -252,17 +262,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           max(Pricing.validTeamQuantities.upperBound),
           min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
-          onchange(
-            """
-            var seatBase = quantity >= \(teamMaxDiscountAt)
-              ? \(teamTier3PriceMonthly)
-              : quantity >= \(teamMinDiscountAt)
-                ? \(teamTier2PriceMonthly)
-                : \(teamTier1PriceMonthly);
-            var rate = seatBase * quantity;
-            document.getElementById("team-rate").textContent = rate;
-            """
-          ),
+          onchange(monthlyTeamRateJs),
           step(1),
           type(.number),
           value(quantity),
