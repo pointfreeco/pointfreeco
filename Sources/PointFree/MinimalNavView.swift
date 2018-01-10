@@ -10,26 +10,28 @@ import Prelude
 
 let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { style, currentUser, currentSubscriptionStatus, currentRoute in
   gridRow([`class`([newNavBarClass(for: style)])], [
-    gridColumn(sizes: [.mobile: 0, .desktop: 5], [
-      div([])
+    gridColumn(sizes: [:], [
+      div([`class`([Class.hide(.desktop)])], [
+        a([href(path(to: .secretHome))], [
+          img(
+            base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
+            mediaType: .image(.svg),
+            alt: "",
+            [`class`([Class.hide(.desktop)])]
+          )
+          ])
+        ])
       ]),
 
-    gridColumn(sizes: [.mobile: 2], [
+    gridColumn(sizes: [:], [
       div([`class`([Class.grid.center(.mobile)])], [
-        div([
+        div([`class`([Class.hide(.mobile)])], [
           a([href(path(to: .secretHome))], [
             img(
               base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
               mediaType: .image(.svg),
               alt: "",
               [`class`([Class.hide(.mobile)])]
-            ),
-
-            img(
-              base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
-              mediaType: .image(.svg),
-              alt: "",
-              [`class`([Class.hide(.desktop)])]
             )
             ])
           ])
@@ -37,7 +39,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscri
       ]),
 
     gridColumn(
-      sizes: [.mobile: 10, .desktop: 5],
+      sizes: [:],
       currentUser.map { loggedInNavItemsView.view((style, $0, currentSubscriptionStatus)) }
         ?? loggedOutNavItemsView.view((style, currentRoute))
     ),

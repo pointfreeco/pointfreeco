@@ -91,17 +91,16 @@ private let videoView = View<Prelude.Unit> { _ in
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Chapters"]
-        ),
-        ]
-        <> blocks
-          .filter { $0.type == .title && $0.timestamp != nil }
-          .flatMap { block in
-            tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4]])])], [
+    h6(
+      [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+      ["Chapters"]
+    ),
+    ]
+    <> blocks
+      .filter { $0.type == .title && $0.timestamp != nil }
+      .flatMap { block in
+        tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
     }
   )
 }
@@ -383,4 +382,3 @@ private func unsafeMark(from markdown: String) -> String {
   defer { free(cString) }
   return String(cString: cString)
 }
-

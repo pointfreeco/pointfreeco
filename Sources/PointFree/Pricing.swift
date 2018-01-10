@@ -167,8 +167,7 @@ private let pricingView =
 private let pricingOptionsRowClass =
   Class.pf.colors.bg.purple150
     | Class.grid.center(.mobile)
-    | Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])
-    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.leftRight: 0]])
+    | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
 let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
 
@@ -180,8 +179,10 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
           [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
         ),
 
-        p([`class`([Class.pf.colors.fg.yellow])],
-          ["Unlock full episodes and explore a new functional programming concept each week."]),
+        p(
+          [`class`([Class.pf.colors.fg.yellow])],
+          ["Unlock full episodes and explore a new functional programming concept each week."]
+        ),
 
         gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
           gridColumn(sizes: [.mobile: 12], [], [
@@ -213,8 +214,10 @@ private let whatToExpectStyles =
 
 private let whatToExpect = View<Prelude.Unit> { _ in
   [
-    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
-       [.text(unsafeUnencodedString("What to expect?"))]),
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
+      [.text(unsafeUnencodedString("What to expect?"))]
+    ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
@@ -229,8 +232,10 @@ private let whatToExpect = View<Prelude.Unit> { _ in
 
 private let topicsView = View<Prelude.Unit> { _ in
   [
-    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
-       [.text(unsafeUnencodedString("What kind of topics will you cover?"))]),
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [.text(unsafeUnencodedString("What kind of topics will you cover?"))]
+    ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
@@ -253,8 +258,10 @@ private let topicsView = View<Prelude.Unit> { _ in
 
 private let suggestATopic = View<Prelude.Unit> { _ in
   [
-    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
-       [.text(unsafeUnencodedString("Can I suggest a topic?"))]),
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [.text(unsafeUnencodedString("Can I suggest a topic?"))]
+    ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
@@ -272,8 +279,10 @@ private let suggestATopic = View<Prelude.Unit> { _ in
 
 private let whoAreYou = View<Prelude.Unit> { _ in
   [
-    h4([`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
-       [.text(unsafeUnencodedString("Who are you?"))]),
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [.text(unsafeUnencodedString("Who are you?"))]
+    ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
