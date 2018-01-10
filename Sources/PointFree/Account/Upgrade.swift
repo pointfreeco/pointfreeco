@@ -111,7 +111,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       p([
         "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
         "upgrade your subscription, you will begin to be billed yearly at the end of the current billing ",
-        "cycle", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+        "cycle: ", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         "."
         ]),
       form([action(path(to: .account(.subscription(.upgrade(.update))))), method(.post)], [

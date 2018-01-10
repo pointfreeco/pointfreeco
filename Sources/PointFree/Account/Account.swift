@@ -182,7 +182,10 @@ private func planName(for subscription: Stripe.Subscription) -> String {
 public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
-    return "Active through " + dateFormatter.string(from: subscription.currentPeriodEnd)
+    let currentPeriodEndString = subscription.cancelAtPeriodEnd
+        ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
+        : ""
+    return "Active" + currentPeriodEndString
   case .canceled:
     return "Canceled"
   case .pastDue:
