@@ -359,9 +359,9 @@ let launchSignupView =
         description: "A weekly video series on Swift and functional programming. Each week we discuss a topic and then ask: “What’s the point!?”",
         image: "https://s3.amazonaws.com/pointfree.co/twitter-card-large.png",
         title: "Point-Free",
-        twitterCard: "summary_large_image",
+        twitterCard: .summaryLargeImage,
         twitterSite: "@pointfreeco",
-        type: "website",
+        type: .website,
         url: "https://www.pointfree.co"
       )
 )
