@@ -1,333 +1,246 @@
-import Ccmark
-import Css
-import Either
-import EpisodeTranscripts
 import Foundation
-import Html
-import HtmlCssSupport
-import HttpPipeline
-import HttpPipelineHtmlSupport
-import Optics
 import Prelude
-import Styleguide
 
-let episodeResponse =
-  filterMap(first(episode(forParam:)) >>> requireFirst >>> pure, or: writeStatus(.notFound) >-> respond(episodeNotFoundView))
-    <| writeStatus(.ok)
-    >-> respond(
-      view: episodeView,
-      layoutData: { episode, currentUser, route in
-        SimplePageLayoutData(
-          currentRoute: route,
-          currentUser: currentUser,
-          data: (episode, currentUser, route),
-          extraStyles: markdownBlockStyles,
-          showTopNav: false,
-          title: "Episode #\(episode.sequence): \(episode.title)",
-          useHighlightJs: true
-        )
+public struct Episode {
+  public private(set) var blurb: String
+  public private(set) var codeSampleDirectory: String
+  public private(set) var id: Id
+  public private(set) var length: Int
+  public private(set) var publishedAt: Double
+  public private(set) var sequence: Int
+  public private(set) var subscriberOnly: Bool
+  public private(set) var title: String
+  public private(set) var transcriptBlocks: [TranscriptBlock]
+
+  public typealias Id = Tagged<Episode, Int>
+
+  public var slug: String {
+    return "ep\(self.sequence)-\(PointFree.slug(for: self.title))"
+  }
+
+  public struct TranscriptBlock {
+    public private(set) var content: String
+    public private(set) var timestamp: Int?
+    public private(set) var type: BlockType
+
+    public enum BlockType: Equatable {
+      case code(lang: CodeLang)
+      case paragraph
+      case title
+
+      public enum CodeLang: Equatable {
+        case html
+        case other(String)
+        case swift
+
+        public var identifier: String {
+          switch self {
+          case .html:
+            return "html"
+          case let .other(other):
+            return other
+          case .swift:
+            return "swift"
+          }
+        }
+
+        public static func ==(lhs: CodeLang, rhs: CodeLang) -> Bool {
+          switch (lhs, rhs) {
+          case (.html, .html), (.swift, .swift):
+            return true
+          case let (.other(lhs), .other(rhs)):
+            return lhs == rhs
+          case (.html, _), (.other, _), (.swift, _):
+            return false
+          }
+        }
+      }
+
+      public static func ==(lhs: Episode.TranscriptBlock.BlockType, rhs: Episode.TranscriptBlock.BlockType) -> Bool {
+        switch (lhs, rhs) {
+        case let (.code(lhs), .code(rhs)):
+          return lhs == rhs
+        case (.paragraph, .paragraph), (.title, .title):
+          return true
+        case (.code, _), (.paragraph, _), (.title, _):
+          return false
+        }
+      }
     }
-)
-
-let episodeView = View<(Episode, Database.User?, Route?)> { episode, currentUser, currentRoute in
-  [
-    gridRow([
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view(episode)
-      ),
-
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 5],
-        [`class`([Class.pf.colors.bg.dark, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
-        [
-          div(
-            [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-            rightColumnView.view(episode)
-          )
-        ]
-      ),
-
-      ])
-    ]
-    <> downloadsAndCredits.view((episode.codeSampleDirectory, forDesktop: false))
-}
-
-private let downloadsAndCredits = View<(codeSampleDirectory: String, forDesktop: Bool)> {
-
-  div(
-    [
-      `class`([
-        Class.pf.colors.bg.dark,
-        $0.forDesktop ? Class.hide(.mobile) : Class.hide(.desktop)
-        ])
-    ],
-    
-    downloadsView.view($0.codeSampleDirectory)
-      <> creditsView.view(unit)
-  )
-}
-
-private let rightColumnView: View<Episode> =
-  videoView.contramap(const(unit))
-    <> episodeTocView.contramap(^\.transcriptBlocks)
-    <> downloadsAndCredits.contramap({ ($0.codeSampleDirectory, forDesktop: true) })
-
-private let videoView = View<Prelude.Unit> { _ in
-  video(
-    [
-      `class`([Class.layout.fit]),
-      controls(true),
-      playsInline(true),
-      autoplay(true),
-      poster("")
-    ],
-    [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
-  )
-}
-
-private let episodeTocView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4, .bottom: 0]])])],
-    [
-      h6(
-        [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-        ["Chapters"]
-      ),
-      ]
-      <> blocks
-        .filter { $0.type == .title && $0.timestamp != nil }
-        .flatMap { block in
-          tocChapterView.view((block.content, block.timestamp ?? 0))
-    }
-  )
-}
-
-private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>] {
-  return [
-    href(""),
-
-    onclick(javascript: """
-    var video = document.getElementsByTagName("video")[0];
-    video.currentTime = event.target.dataset.t;
-    video.play();
-    event.preventDefault();
-    """),
-
-    data("t", "\(timestamp)")
-  ]
-}
-
-private let tocChapterView = View<(content: String, timestamp: Int)> { content, timestamp in
-  gridRow([`class`([Class.margin([.mobile: [.bottom: 1]])])], [
-    gridColumn(sizes: [.mobile: 10], [
-      div([
-        a(
-          timestampLinkAttributes(timestamp) + [
-            `class`([Class.pf.colors.link.green, Class.type.textDecorationNone])
-          ],
-          [.text(encode(content))]
-        ),
-        ])
-      ]),
-
-    gridColumn(sizes: [.mobile: 2], [
-      div(
-        [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
-        [.text(encode(timestampLabel(for: timestamp)))]
-      )
-      ])
-    ])
-}
-
-private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3], .desktop: [.leftRight: 4]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Downloads"]
-        ),
-        img(
-          base64: gitHubSvgBase64(fill: "#FFF080"),
-          mediaType: .image(.svg),
-          alt: "",
-          [`class`([Class.align.middle]), width(20), height(20)]
-        ),
-        a(
-          [
-            href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
-          ],
-          [.text(encode("\(codeSampleDirectory).playground"))]
-        )
-    ]
-  )
-}
-
-private let creditsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Credits"]
-        ),
-        p(
-          [`class`([Class.pf.colors.fg.gray850])],
-          [
-            "Hosted by ",
-            a(
-              [`class`([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
-              [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]
-            ),
-            " and ",
-            a(
-              [`class`([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")],
-              [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]
-            ),
-            ". Recorded in Brooklyn, NY."
-          ]
-        )
-    ]
-  )
-}
-
-private func timestampLabel(for timestamp: Int) -> String {
-  let minute = Int(timestamp / 60)
-  let second = Int(timestamp) % 60
-  let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
-  let secondString = second >= 10 ? "\(second)" : "0\(second)"
-  return "\(minuteString):\(secondString)"
-}
-
-private let leftColumnView =
-  (curry(div)([]) >>> pure)
-    <¢> episodeInfoView
-    <> dividerView.contramap(const(unit))
-    <> transcriptView.contramap(^\.transcriptBlocks)
-
-private let episodeInfoView = View<Episode> { ep in
-  div(
-    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view(ep)
-  )
-}
-
-let topLevelEpisodeInfoView = View<Episode> { ep in
-  [
-    strong(
-      [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
-      [.text(encode("Episode \(ep.sequence)"))]
-    ),
-    h1(
-      [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
-      [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
-    ),
-    markdownBlock(from: ep.blurb)
-    ]
-}
-
-let dividerView = View<Prelude.Unit> { _ in
-  hr([`class`([Class.pf.components.divider])])
-}
-
-private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      blocks.flatMap(transcriptBlockView.view)
-  )
-}
-
-private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
-  switch block.type {
-  case let .code(lang):
-    return pre([
-      code(
-        [`class`([Class.pf.components.code(lang: lang.identifier)])],
-        [.text(encode(block.content))]
-      )
-      ])
-
-  case .paragraph:
-    return div(
-      timestampLinkView.view(block.timestamp)
-        + [markdownBlock(from: block.content)]
-    )
-
-  case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
-      .text(encode(block.content))
-      ])
   }
 }
 
-private let timestampLinkView = View<Int?> { timestamp -> [Node] in
-  guard let timestamp = timestamp else { return [] }
-
-  return  [
-    a(
-      timestampLinkAttributes(timestamp) + [
-        `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
-      ],
-      [.text(encode(timestampLabel(for: timestamp)))]
-    )
-  ]
+let typeSafeHtml = Episode(
+  blurb:
+  """
+As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+""",
+  codeSampleDirectory: "ep4-type-safe-html",
+  id: .init(unwrap: 4),
+  length: 1380,
+  publishedAt: 1_497_960_000,
+  sequence: 4,
+  subscriberOnly: false,
+  title: "Type-Safe HTML in Swift",
+  transcriptBlocks: [
+    Episode.TranscriptBlock(
+      content: """
+As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.
+""",
+      timestamp: 1,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Template Languages",
+      timestamp: 0,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:
+""",
+      timestamp: 2,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "<h1>{{title}}</h1>",
+      timestamp: 3,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: "and here is a Leaf template:",
+      timestamp: 4,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "<h1>#(title)</h1>",
+      timestamp: 5,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: """
+You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. ["title": "Hello World!"], and then it will generate HTML that can be sent to the browser:
+""",
+      timestamp: 6,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "<h1>Hello World!</h1>",
+      timestamp: 7,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:
+""",
+      timestamp: 8,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content:
+      """
+{{#if show}}
+  <span>I’m here!</span>
+{{/if}}
+""",
+      timestamp: 9,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content:
+      """
+#if(show) {
+  <span>I’m here!</span>
 }
+""",
+      timestamp: 10,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: """
+The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.
+""",
+      timestamp: 11,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: """
+The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.
+""",
+      timestamp: 12,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.
+""",
+      timestamp: 13,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: """
+We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.
+""",
+      timestamp: 14,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Embedded Domain Specific Language",
+      timestamp: 3,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:
+""",
+      timestamp: 15,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content:
+      """
+<header>
+  <h1 id="welcome">Welcome!</h1>
+  <p>
+    Welcome to you, who has come here. See <a href="/more">more</a>.
+  </p>
+</header>
+""",
+      timestamp: 2,
+      type: .code(lang: .html)
+    ),
+    Episode.TranscriptBlock(
+      content: "Making the EDSL easier to use",
+      timestamp: 7,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!
+""",
+      timestamp: 3,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Safer Attributes",
+      timestamp: 9,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
+Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width="foo". We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.
+""",
+      timestamp: 4,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: """
+We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. "id", "href", etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:
+""",
+      timestamp: 6,
+      type: .paragraph
+    ),
 
-private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
-  .contramap { param, user, route in
-    SimplePageLayoutData(
-      currentUser: user,
-      data: (param, user, route),
-      title: "Episode not found :("
-    )
-}
 
-private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Route?)> { _, currentUser, _ in
-
-  gridRow([`class`([Class.grid.center(.mobile)])], [
-    gridColumn(sizes: [.mobile: 6], [
-      div([style(padding(topBottom: .rem(12)))], [
-        h5([`class`([Class.h5])], ["Episode not found :("]),
-        pre([
-          code([`class`([Class.pf.components.code(lang: "swift")])], [
-            "f: (Episode) -> Never"
-            ])
-          ])
-        ])
-      ])
-    ])
-}
-
-private func episode(forParam param: Either<String, Int>) -> Episode? {
-  return AppEnvironment.current.episodes()
-    .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
-  })
-}
-
-private let markdownContainerClass = CssSelector.class("md-ctn")
-private let markdownBlockStyles: Stylesheet =
-  markdownContainerClass % (
-    (markdownContainerClass ** a) % key("text-decoration", "underline")
-      <> (a & .pseudo(.link)) % color(Colors.purple)
-      <> (a & .pseudo(.visited)) % color(Colors.purple)
-      <> (a & .pseudo(.hover)) % color(Colors.purple150)
-      <> code % (
-        fontFamily(["monospace"])
-          <> padding(topBottom: .px(1), leftRight: .px(5))
-          <> borderWidth(all: .px(1))
-          <> borderRadius(all: .px(3))
-          <> backgroundColor(Color.other("#f7f7f7"))
-    )
+    ]
 )
-
-func markdownBlock(from markdown: String) -> Node {
-  return div([`class`([markdownContainerClass])], [
-    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
-    ])
-}
-
-private func unsafeMark(from markdown: String) -> String {
-  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, 0)
-    else { return markdown }
-  defer { free(cString) }
-  return String(cString: cString)
-}
