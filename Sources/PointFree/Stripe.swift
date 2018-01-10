@@ -8,14 +8,14 @@ import UrlFormEncoding
 public struct Stripe {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
   public var createCustomer: (Database.User, Token.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Prelude.Unit, Subscription>
+  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Prelude.Unit, Customer>
   public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
   public var invoiceCustomer: (Customer) -> EitherIO<Prelude.Unit, Invoice>
   public var updateCustomer: (Customer, Token.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int, Coupon.Id?) -> EitherIO<Prelude.Unit, Subscription>
+  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
   public var js: String
 
   public static let live = Stripe(
@@ -71,18 +71,6 @@ public struct Stripe {
 
   public typealias Cents = Tagged<Stripe, Int>
 
-  public struct Coupon: Codable {
-    public private(set) var id: Id
-    public private(set) var percentOff: Int?
-
-    public typealias Id = Tagged<Coupon, String>
-
-    private enum CodingKeys: String, CodingKey {
-      case id
-      case percentOff = "percent_off"
-    }
-  }
-
   public struct Customer: Codable {
     public private(set) var defaultSource: Card.Id
     public private(set) var id: Id
@@ -95,10 +83,6 @@ public struct Stripe {
       case id
       case sources
     }
-  }
-
-  public struct Discount: Codable {
-    public private(set) var coupon: Coupon
   }
 
   public struct Invoice: Codable {
@@ -159,7 +143,6 @@ public struct Stripe {
     public private(set) var currentPeriodStart: Date? // TODO: Audit nullability
     public private(set) var currentPeriodEnd: Date? // TODO: Audit nullability
     public private(set) var customer: Customer
-    public private(set) var discount: Discount?
     public private(set) var endedAt: Date?
     public private(set) var id: Id
     public private(set) var items: ListEnvelope<Item>
@@ -179,7 +162,6 @@ public struct Stripe {
       case created
       case currentPeriodEnd = "current_period_end"
       case currentPeriodStart = "current_period_start"
-      case discount
       case endedAt = "ended_at"
       case id
       case items
@@ -225,13 +207,18 @@ extension Tagged where Tag == Stripe.Plan, A == String {
     return .init(unwrap: "individual-yearly")
   }
 
-  static var teamYearly: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly")
+  static var teamYearlyTier1: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-1")
+  }
+
+  static var teamYearlyTier2: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-2")
+  }
+
+  static var teamYearlyTier3: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly-3")
   }
 }
-
-//private let subscriptionPlans = fetchPlans
-//  .map(^\.data >>> filter(StripeSubscriptionPlan.Id.all.contains <<< ^\.id))
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
   return stripeDataTask("subscriptions/" + id.rawValue, .delete(["at_period_end": "true"]))
@@ -250,13 +237,11 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id)
 private func createSubscription(
   customer: Stripe.Customer.Id,
   plan: Stripe.Plan.Id,
-  quantity: Int,
-  coupon: Stripe.Coupon.Id?
+  quantity: Int
   )
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
     return stripeDataTask("subscriptions?expand[]=customer", .post([
-      "coupon": coupon?.unwrap,
       "customer": customer.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
@@ -297,14 +282,12 @@ private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.I
 private func updateSubscription(
   _ subscription: Stripe.Subscription,
   _ plan: Stripe.Plan.Id,
-  _ quantity: Int,
-  _ coupon: Stripe.Coupon.Id?
+  _ quantity: Int
   )
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
     guard let item = subscription.items.data.first else { return throwE(unit) }
     return stripeDataTask("subscriptions/" + subscription.id.unwrap + "?expand[]=customer", .post([
-      "coupon": coupon?.unwrap,
       "items[0][id]": item.id.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),

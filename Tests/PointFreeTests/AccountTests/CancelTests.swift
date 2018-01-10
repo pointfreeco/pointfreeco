@@ -167,7 +167,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateStripeFailure() {
-    AppEnvironment.with(\.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) }) {
+    AppEnvironment.with(\.stripe.updateSubscription .~ { _, _, _ in throwE(unit) }) {
       let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
       let result = conn |> siteMiddleware
 

@@ -56,8 +56,8 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription
     let (subscription, _, _, quantity) = lower(conn.data)
 
     // TODO: send emails
-    let coupon = Pricing.team(quantity).coupon
-    return AppEnvironment.current.stripe.updateSubscription(subscription, .teamYearly, quantity, coupon)
+    let plan = Pricing.team(quantity).plan
+    return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity)
       .flatMap { sub -> EitherIO<Prelude.Unit, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {
           parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
@@ -93,7 +93,7 @@ private func requireTeamYearlySubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {
 
     return filter(
-      get1 >>> (^\.plan.id.unwrap == Stripe.Plan.Id.teamYearly.unwrap),
+      get1 >>> (^\.quantity > 1),
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "You aren’t enrolled in a team subscription.")

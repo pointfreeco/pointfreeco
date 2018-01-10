@@ -44,7 +44,7 @@ private func upgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Da
   -> IO<Conn<ResponseEnded, Data>> {
 
     // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualYearly, 1, nil)
+    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualYearly, 1)
       .run
       .flatMap(
         either(

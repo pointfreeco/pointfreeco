@@ -90,7 +90,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.
     let (item, subscription, _) = lower(conn.data)
 
     // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity, nil)
+    return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
       .run
       .flatMap(
         either(

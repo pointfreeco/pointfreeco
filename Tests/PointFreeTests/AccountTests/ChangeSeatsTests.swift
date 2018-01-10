@@ -88,7 +88,7 @@ final class ChangeSeatsTests: TestCase {
 
     AppEnvironment.with(
         (\.stripe.fetchSubscription .~ const(pure(subscription)))
-        >>> (\.stripe.updateSubscription .~ { _, _, _, _ in pure(subscription |> \.quantity .~ 10) })
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in pure(subscription |> \.quantity .~ 10) })
     ) {
       let conn = connection(
         from: request(to: .account(.subscription(.changeSeats(.update(10)))), session: .loggedIn)

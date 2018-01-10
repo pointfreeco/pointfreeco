@@ -311,12 +311,12 @@ private func changeAction(for subscription: Stripe.Subscription) -> [Node] {
   guard subscription.status == .active else { return [] }
 
   let (action, route): (String, Route)
-  switch subscription.plan.id.unwrap {
-  case Stripe.Plan.Id.individualMonthly.unwrap:
+  switch (subscription.plan.id.unwrap, subscription.quantity) {
+  case (Stripe.Plan.Id.individualMonthly.unwrap, _):
     (action, route) = ("Upgrade", .account(.subscription(.upgrade(.show))))
-  case Stripe.Plan.Id.individualYearly.unwrap:
+  case (Stripe.Plan.Id.individualYearly.unwrap, _):
     (action, route) = ("Downgrade", .account(.subscription(.downgrade(.show))))
-  case Stripe.Plan.Id.teamYearly.unwrap:
+  case (_, 2...):
     (action, route) = ("Add/Remove Seats", .account(.subscription(.changeSeats(.show))))
   default:
     return []
@@ -481,10 +481,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
 }
 
 private func totalAmount(for subscription: Stripe.Subscription) -> String? {
-  let totalCents = subscription.plan.amount.rawValue
-    * subscription.quantity
-    * (100 - (subscription.discount?.coupon.percentOff ?? 0))
-    / 100
+  let totalCents = subscription.plan.amount.rawValue * subscription.quantity
   let totalDollars = Double(totalCents) / 100
   return currencyFormatter.string(from: NSNumber(value: totalDollars))
 }

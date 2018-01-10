@@ -44,7 +44,7 @@ private func downgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, 
   -> IO<Conn<ResponseEnded, Data>> {
 
     // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualMonthly, 1, nil)
+    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualMonthly, 1)
       .run
       .flatMap(
         either(

@@ -11,14 +11,23 @@ import Styleguide
 import Tuple
 
 public let teamMinDiscountAt = 5
-public let teamMidDiscountAt = 10
 public let teamMaxDiscountAt = 20
 
 // FIXME: Fetch from Stripe?
-public let teamBaseSeatPriceMonthly = 13
-public let teamMinDiscountRate = 0.95
-public let teamMidDiscountRate = 0.9
-public let teamMaxDiscountRate = 0.85
+public let teamTier1PriceMonthly = 13
+public let teamTier2PriceMonthly = 12
+public let teamTier3PriceMonthly = 11
+
+public func monthlyTeamRate(for quantity: Int) -> Int {
+  switch quantity {
+  case teamMaxDiscountAt...:
+    return quantity * teamTier3PriceMonthly
+  case teamMinDiscountAt...:
+    return quantity * teamTier2PriceMonthly
+  default:
+    return quantity * teamTier1PriceMonthly
+  }
+}
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
@@ -74,11 +83,15 @@ public enum Pricing: Codable, DerivePartialIsos {
   var plan: Stripe.Plan.Id {
     switch self {
     case .individual(.monthly):
-      return .init(unwrap: "individual-monthly")
+      return .individualMonthly
     case .individual(.yearly):
-      return .init(unwrap: "individual-yearly")
+      return .individualYearly
+    case .team(20...):
+      return .teamYearlyTier3
+    case .team(5...19):
+      return .teamYearlyTier2
     case .team:
-      return .init(unwrap: "team-yearly")
+      return .teamYearlyTier1
     }
   }
 
@@ -88,21 +101,6 @@ public enum Pricing: Codable, DerivePartialIsos {
       return 1
     case let .team(quantity):
       return quantity
-    }
-  }
-
-  var coupon: Stripe.Coupon.Id? {
-    switch self {
-    case .individual:
-      return nil
-    case .team(teamMinDiscountAt..<teamMidDiscountAt):
-      return .init(unwrap: "5-percent")
-    case .team(teamMidDiscountAt..<teamMaxDiscountAt):
-      return .init(unwrap: "10-percent")
-    case .team(teamMaxDiscountAt...):
-      return .init(unwrap: "15-percent")
-    case .team:
-      return nil
     }
   }
 
@@ -256,19 +254,12 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           name("pricing[team]"),
           onchange(
             """
-            var seatBase = \(teamBaseSeatPriceMonthly);\
-            var quantity = +this.value;\
-            var discounted = quantity >= \(teamMaxDiscountAt)\
-              ? \(teamMaxDiscountRate)\
-              : quantity >= \(teamMidDiscountAt)\
-                ? \(teamMidDiscountRate)\
-                : quantity >= \(teamMinDiscountAt)\
-                  ? \(teamMinDiscountRate)\
-                  : 1;\
-            var rate = Math.floor(seatBase * quantity * discounted);\
-            document.getElementById("team-about").style.display = quantity >= \(teamMinDiscountAt)\
-              ? "inline"\
-              : "none";\
+            var seatBase = quantity >= \(teamMaxDiscountAt)
+              ? \(teamTier3PriceMonthly)
+              : quantity >= \(teamMinDiscountAt)
+                ? \(teamTier2PriceMonthly)
+                : \(teamTier1PriceMonthly);
+            var rate = seatBase * quantity;
             document.getElementById("team-rate").textContent = rate;
             """
           ),
@@ -277,11 +268,10 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           value(quantity),
           ]),
         h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], [
-          span([`class`([Class.display.none]), id("team-about")], ["About "]),
           "$",
           span(
             [id("team-rate")],
-            [text(String(13 * quantity))]
+            [text(String(monthlyTeamRate(for: quantity)))]
           ),
           "/mo"
           ]),
