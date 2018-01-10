@@ -245,7 +245,7 @@ private func createSubscription(
       "customer": customer.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
-      ])
+      ]))
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
