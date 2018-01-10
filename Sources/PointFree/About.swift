@@ -14,7 +14,11 @@ let aboutResponse =
     >>> respond(
       view: aboutView,
       layoutData: { currentUser in
-        SimplePageLayoutData(currentUser: currentUser, data: unit, title: "About Us")
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: unit,
+          title: "About Us"
+        )
     }
 )
 
