@@ -140,8 +140,8 @@ public struct Stripe {
     public private(set) var canceledAt: Date?
     public private(set) var cancelAtPeriodEnd: Bool
     public private(set) var created: Date
-    public private(set) var currentPeriodStart: Date? // TODO: Audit nullability
-    public private(set) var currentPeriodEnd: Date? // TODO: Audit nullability
+    public private(set) var currentPeriodStart: Date
+    public private(set) var currentPeriodEnd: Date
     public private(set) var customer: Customer
     public private(set) var endedAt: Date?
     public private(set) var id: Id
