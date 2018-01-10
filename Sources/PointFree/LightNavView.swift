@@ -8,7 +8,7 @@ import Optics
 import Styleguide
 import Prelude
 
-let darkNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+let lightNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
   gridRow([`class`([newNavBarClass])], [
     gridColumn(sizes: [.mobile: 0, .desktop: 5], [
       div([])
@@ -17,7 +17,7 @@ let darkNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { 
     gridColumn(sizes: [.mobile: 2], [
       div([`class`([Class.grid.center(.mobile)])], [
         a([href(path(to: .secretHome))], [
-          img(base64: pointFreeTextLogoSvgBase64(color: "#ffffff"), mediaType: .image(.svg), alt: "", [])
+          img(base64: pointFreeTextLogoSvgBase64(color: "#121212"), mediaType: .image(.svg), alt: "", [])
           ])
         ])
       ]),
@@ -72,11 +72,11 @@ private let accountLinkView = View<Prelude.Unit> { _ in
 }
 
 private let logInLinkView = View<Route?> { currentRoute in
-  gitHubLink(text: "Log in", type: .white, redirectRoute: currentRoute)
+  gitHubLink(text: "Log in", type: .black, redirectRoute: currentRoute)
 }
 
 private let navLinkClass =
-  Class.pf.colors.link.green
+  Class.pf.colors.link.black
 
 private let navListItemClass =
   Class.padding([.mobile: [.left: 3]])
@@ -87,7 +87,7 @@ private let navListClass =
     | Class.grid.end(.mobile)
 
 private let newNavBarClass =
-  Class.pf.colors.bg.purple150
+  Class.pf.colors.bg.blue900
     | Class.padding([.mobile: [.leftRight: 2, .topBottom: 3]])
     | Class.grid.middle(.mobile)
     | Class.grid.between(.mobile)

@@ -23,7 +23,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Su
           currentUser: currentUser,
           data: (currentUser, currentSubscriptionStatus),
           extraStyles: pricingExtraStyles <> blueGradientStyles <> reflectStyles,
-          showTopNav: false,
+          navStyle: nil,
           title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
         )
     }
@@ -35,52 +35,65 @@ let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { curre
     <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
 
-let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
-  [
-    gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), blueGradientClass])], [
-      gridColumn(sizes: [:], [
-        div([
-          ])
-        ]),
-      gridColumn(sizes: [:], [
-        a([href(path(to: .secretHome))], [
-          img(
-            base64: pointFreeHeroSvgBase64,
-            mediaType: .image(.svg),
-            alt: "",
-            [`class`([Class.pf.components.heroLogo])]
+private let menuAndLogoHeaderView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+
+  gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), blueGradientClass])], [
+
+    gridColumn(sizes: [.mobile: 12], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 0, .desktop: 6], [
+          div([
+            ])
+          ]),
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div(
+            [`class`([Class.grid.end(.mobile)])],
+            headerLinks.view((currentUser, currentSubscriptionStatus, currentRoute))
           )
           ])
         ]),
-      gridColumn(sizes: [:], [
-        div(
-          [`class`([Class.grid.end(.mobile)])],
-          headerLinks.view((currentUser, currentSubscriptionStatus, currentRoute))
-        )
-        ])
-      ]),
 
-    gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
-
-      gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-        img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
-        ]),
-
-      gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
-        div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
-          "A new weekly Swift video series exploring functional programming and more."
+      gridRow([`class`([Class.grid.center(.mobile), Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 0]])])], [
+        gridColumn(sizes: [:], [
+          a([href(path(to: .secretHome))], [
+            img(
+              base64: pointFreeHeroSvgBase64,
+              mediaType: .image(.svg),
+              alt: "",
+              [`class`([Class.pf.components.heroLogo])]
+            )
+            ])
           ])
-        ]),
-
-      gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-        img(
-          base64: heroMountainSvgBase64,
-          mediaType: .image(.svg),
-          alt: "",
-          [width(.pct(100)), `class`([reflectXClass])]
-        )
-        ]),
+        ])
       ])
+    ])
+}
+
+let headerView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+
+  menuAndLogoHeaderView.view((currentUser, currentSubscriptionStatus, currentRoute))
+    + [
+      gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
+
+        gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
+          img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
+          ]),
+
+        gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
+          div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
+            "A new weekly Swift video series exploring functional programming and more."
+            ])
+          ]),
+
+        gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
+          img(
+            base64: heroMountainSvgBase64,
+            mediaType: .image(.svg),
+            alt: "",
+            [width(.pct(100)), `class`([reflectXClass])]
+          )
+          ]),
+        ])
   ]
 }
 
@@ -106,9 +119,9 @@ private let episodesListView = View<[Episode]> { eps in
 private let episodeRowView = View<Episode> { ep in
   dividerView.view(unit) + [
     gridRow([
-      gridColumn(sizes: [.mobile: 7], episodeInfoColumnView.view(ep)),
+      gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
-      gridColumn(sizes: [.mobile: 5], [
+      gridColumn(sizes: [.mobile: 12, .desktop: 5], [`class`([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
         div([style(lineHeight(0))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
@@ -119,7 +132,7 @@ private let episodeRowView = View<Episode> { ep in
             ])
           ])
         ])
-      ]),
+      ])
   ]
 }
 
@@ -148,13 +161,13 @@ private let episodeInfoColumnView = View<Episode> { ep in
 private let blueGradientClass = CssSelector.class("blue-gradient")
 private let blueGradientStyles =
   blueGradientClass % (
-    key("background", "rgba(128,219,255,1)")
-      <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,1)), color-stop(100%, rgba(128,219,255,0)))")
-      <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-o-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
-      <> key("background", "linear-gradient(to bottom, rgba(128,219,255,1) 0%, rgba(128,219,255,0) 100%)")
+    key("background", "rgba(128,219,255,0.85)")
+      <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)))")
+      <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
 )
 
 private let reflectXClass = CssSelector.class("reflect-x")

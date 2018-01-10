@@ -22,7 +22,7 @@ let episodeResponse =
           currentUser: currentUser,
           data: (episode, currentUser, route),
           extraStyles: markdownBlockStyles,
-          showTopNav: false,
+          navStyle: .light,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
         )

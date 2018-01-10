@@ -4,6 +4,7 @@ import Prelude
 public enum Colors {
   public static let black = Color.other("#121212")
   public static let blue = Color.other("#4CCCFF")
+  public static let blue900 = Color.other("#E6F8FF")
   public static let gray300 = Color.other("#555555")
   public static let gray400 = Color.other("#666666")
   public static let gray650 = Color.other("#a8a8a8")
@@ -23,6 +24,7 @@ extension Class {
     public enum colors {
       public enum bg {
         public static let black = CssSelector.class("bg-black")
+        public static let blue900 = CssSelector.class("bg-blue900")
         public static let dark = CssSelector.class("bg-dark")
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
@@ -330,6 +332,7 @@ private let resets =
 
 private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900)
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
@@ -468,7 +471,7 @@ private let darken3 = boxShadow(
 
 private let heroLogoStyles =
   Breakpoint.mobile.query(only: screen) {
-    Class.pf.components.heroLogo % maxWidth(.px(160))
+    Class.pf.components.heroLogo % maxWidth(.px(260))
 }
 
 private let videoTimeLinkClass = CssSelector.class("vid-time-link")

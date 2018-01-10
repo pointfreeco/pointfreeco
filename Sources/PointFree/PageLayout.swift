@@ -9,6 +9,11 @@ import Prelude
 import Styleguide
 import Tuple
 
+enum NavStyle {
+  case dark
+  case light
+}
+
 struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
   private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
@@ -16,6 +21,7 @@ struct SimplePageLayoutData<A> {
   private(set) var extraStyles: Stylesheet
   private(set) var data: A
   private(set) var flash: Flash?
+  private(set) var navStyle: NavStyle?
   private(set) var showTopNav: Bool
   private(set) var title: String
   private(set) var useHighlightJs: Bool
@@ -26,6 +32,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     extraStyles: Stylesheet = .empty,
+    navStyle: NavStyle? = .some(.light),
     showTopNav: Bool = true,
     title: String,
     useHighlightJs: Bool = false
@@ -37,6 +44,7 @@ struct SimplePageLayoutData<A> {
     self.data = data
     self.extraStyles = extraStyles
     self.flash = nil
+    self.navStyle = navStyle
     self.showTopNav = showTopNav
     self.title = title
     self.useHighlightJs = useHighlightJs
@@ -86,14 +94,22 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ),
         body(
           (layoutData.flash.map(flashView.view) ?? [])
-            <> (layoutData.showTopNav
-              ? darkNavView.view((layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute))
-              : [])
+            <> (layoutData.navStyle.map { navView.view(($0, layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute)) } ?? [])
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
         )
         ])
       ])
+  }
+}
+
+private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
+
+  switch navStyle {
+  case .dark:
+    return darkNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
+  case .light:
+    return lightNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
   }
 }
 

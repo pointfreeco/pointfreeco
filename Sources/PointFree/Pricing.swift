@@ -121,6 +121,7 @@ let pricingResponse =
           currentUser: currentUser,
           data: (currentUser, pricing),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
+          navStyle: .dark,
           title: "Subscribe to Point-Free"
         )
     }
@@ -140,7 +141,7 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
 
   gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
-      div([ //`class`([Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.leftRight: 0]])])], [
+      div([
         h2(
           [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
           [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
@@ -169,7 +170,6 @@ private let whatToExpectBoxClass =
   _whatToExpectBoxClass
     | Class.type.align.start
     | Class.padding([.mobile: [.all: 2], .desktop: [.all: 3]])
-    | Class.margin([.mobile: [.all: 2], .desktop: [.all: 0]])
     | Class.border.all
     | Class.border.rounded.all
 
