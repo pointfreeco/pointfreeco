@@ -34,6 +34,10 @@ body {
   background-color : #121212;
 }
 
+.bg-blue900 {
+  background-color : #E6F8FF;
+}
+
 .bg-dark {
   background-color : #121212;
 }
@@ -97,6 +101,10 @@ body {
 
 .fg-black {
   color : #121212;
+}
+
+.fg-blue {
+  color : #4CCCFF;
 }
 
 .fg-gray300 {
@@ -311,6 +319,24 @@ a:link.btn-normal {
   margin-right   : 0.25rem;
 }
 
+.blue-gradient {
+  background : rgba(128,219,255,0.85);
+  background : -moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)));
+  background : -webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+}
+
+.reflect-x {
+  transform         : scaleX(-1);
+  -webkit-transform : scaleX(-1);
+  -moz-transform    : scaleX(-1);
+  -o-transform      : scaleX(-1);
+  -ms-transform     : scaleX(-1);
+}
+
 .h1 {
   font-size : 4rem;
 }
@@ -332,6 +358,38 @@ a:link.btn-normal {
 }
 
 .h6 {
+  font-size : 0.75rem;
+}
+
+.ts-m-r4 {
+  font-size : 4rem;
+}
+
+.ts-m-r3 {
+  font-size : 3rem;
+}
+
+.ts-m-r2 {
+  font-size : 2rem;
+}
+
+.ts-m-r1_5 {
+  font-size : 1.5rem;
+}
+
+.ts-m-r1_25 {
+  font-size : 1.25rem;
+}
+
+.ts-m-r1 {
+  font-size : 1rem;
+}
+
+.ts-m-r0_875 {
+  font-size : 0.875rem;
+}
+
+.ts-m-r0_75 {
   font-size : 0.75rem;
 }
 
@@ -1090,6 +1148,10 @@ a:link.btn-normal {
   width : 100%;
 }
 
+.h-100p {
+  height : 100%;
+}
+
 .inline {
   display : inline;
 }
@@ -1128,7 +1190,42 @@ html {
 @media only screen and (max-width: 831px) {
 
 .hero-logo {
-  max-width : 160px;
+  max-width : 260px;
+}
+
+}
+@media only screen and (min-width: 832px) {
+
+.ts-d-r4 {
+  font-size : 4rem;
+}
+
+.ts-d-r3 {
+  font-size : 3rem;
+}
+
+.ts-d-r2 {
+  font-size : 2rem;
+}
+
+.ts-d-r1_5 {
+  font-size : 1.5rem;
+}
+
+.ts-d-r1_25 {
+  font-size : 1.25rem;
+}
+
+.ts-d-r1 {
+  font-size : 1rem;
+}
+
+.ts-d-r0_875 {
+  font-size : 0.875rem;
+}
+
+.ts-d-r0_75 {
+  font-size : 0.75rem;
 }
 
 }

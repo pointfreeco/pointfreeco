@@ -13,8 +13,6 @@ import XCTest
 
 class MinimalNavViewTests: TestCase {
   func testNav_LoggedOut() {
-    record = true
-
     let states: [String: (NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?)] = [
       "dark_logged-out_no-route": (.dark, nil, nil, nil),
       "dark_logged-out_route": (.dark, nil, nil, .pricing(nil, nil)),
