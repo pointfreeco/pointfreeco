@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -37,42 +38,76 @@ let cancelMiddleware =
     <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.isRenewing,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "Your subscription is already canceled!")
+      )
     )
     <| cancel
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve canceled your subscription."))
 
 let reactivateMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.cancelAtPeriodEnd,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription can’t be reactivated!"))
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "Your subscription can’t be reactivated!")
+      )
     )
     <<< requireSubscriptionItem
     <| reactivate
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ve reactivated your subscription."))
 
 // MARK: -
 
 private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     // TODO: send emails
     return AppEnvironment.current.stripe.cancelSubscription(get1(conn.data).id)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.changeSeats(.show))),
+              headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
+            )
+          ),
+          const(
+            conn |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
+            )
+          )
+        )
+    )
 }
 
 private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.Item, Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     let (item, subscription, _) = lower(conn.data)
 
     // TODO: send emails
     return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.changeSeats(.show))),
+              headersMiddleware: flash(.error, "We couldn’t reactivate your subscription at this time.")
+            )
+          ),
+          const(
+            conn |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
+            )
+          )
+        )
+    )
 }
 
 // MARK: - Transformers
@@ -98,7 +133,10 @@ func requireStripeSubscription<A>(
       <<< fetchStripeSubscription
       <<< filterMap(
         require1 >>> pure,
-        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Subscription not found in Stripe!"))
+        or: redirect(
+          to: .account(.index),
+          headersMiddleware: flash(.error, "Subscription not found in Stripe!")
+        )
       )
       <| middleware
 }
@@ -111,11 +149,17 @@ private func requireSubscriptionAndOwner<A>(
     return fetchSubscription
       <<< filterMap(
         require1 >>> pure,
-        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You don’t have a subscription!"))
+        or: redirect(
+          to: .account(.index),
+          headersMiddleware: flash(.error, "You don’t have a subscription!")
+        )
       )
       <<< filter(
         isSubscriptionOwner,
-        or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You aren’t the subscription owner!"))
+        or: redirect(
+          to: .account(.index),
+          headersMiddleware: flash(.error, "You aren’t the subscription owner!")
+        )
       )
       <| middleware
 }
@@ -139,8 +183,10 @@ private func fetchSubscription<A>(
     }
 }
 
-private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Database.Subscription, Database.User, A>) -> Bool {
-  return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
+private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Database.Subscription, Database.User, A>)
+  -> Bool {
+
+    return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
 }
 
 private func fetchStripeSubscription<A>(
