@@ -484,7 +484,6 @@ private func totalAmount(for subscription: Stripe.Subscription) -> String {
   let totalDollars = NSNumber(value: Double(totalCents) / 100)
   return currencyFormatter.string(from: totalDollars)
     ?? NumberFormatter.localizedString(from: totalDollars, number: .currency)
-
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
