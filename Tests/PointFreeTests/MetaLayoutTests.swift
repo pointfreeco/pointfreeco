@@ -34,9 +34,9 @@ class MetaLayoutTests: TestCase {
             image: "http://www.example.com/image.jpg",
             rest: unit,
             title: "Point-Free",
-            twitterCard: "summary_large_image",
+            twitterCard: .summaryLargeImage,
             twitterSite: "pointfreeco",
-            type: "website",
+            type: .website,
             url: "http://www.pointfree.co"
           )
         )
