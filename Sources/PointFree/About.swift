@@ -8,17 +8,18 @@ import Prelude
 import Styleguide
 import Tuple
 
-let aboutResponse =
+let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: aboutView,
-      layoutData: { currentUser in
+      layoutData: { currentUser, subscriptionStatus, currentRoute in
         SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: unit,
-          extraStyles: markdownBlockStyles,
-          title: "About Us"
+          title: "About"
         )
     }
 )

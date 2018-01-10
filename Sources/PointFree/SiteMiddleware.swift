@@ -30,7 +30,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
 
     switch route {
     case .about:
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> aboutResponse
 
     case let .account(.confirmEmailChange(userId, emailAddress)):
@@ -163,7 +163,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> pricingResponse
 
     case .privacy:
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> privacyResponse
 
     case .secretHome:

@@ -8,16 +8,23 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
+import Tuple
 
 private let title = "Privacy Policy"
 
-let privacyResponse =
+let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: privacyView,
-      layoutData: { currentUser in
-        SimplePageLayoutData(currentUser: currentUser, data: unit, title: title)
+      layoutData: { currentUser, subscriptionStatus, currentRoute in
+        SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriptionStatus: subscriptionStatus,
+          currentUser: currentUser,
+          data: unit,
+          title: title
+        )
     }
 )
 
