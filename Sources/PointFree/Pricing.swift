@@ -10,6 +10,35 @@ import Prelude
 import Styleguide
 import Tuple
 
+public let teamMinDiscountAt = 5
+public let teamMaxDiscountAt = 20
+
+// FIXME: Fetch from Stripe?
+public let teamTier1PriceMonthly = 13
+public let teamTier2PriceMonthly = 12
+public let teamTier3PriceMonthly = 11
+
+private func monthlyTeamRate(for quantity: Int) -> Int {
+  switch quantity {
+  case teamMaxDiscountAt...:
+    return quantity * teamTier3PriceMonthly
+  case teamMinDiscountAt...:
+    return quantity * teamTier2PriceMonthly
+  default:
+    return quantity * teamTier1PriceMonthly
+  }
+}
+
+private let monthlyTeamRateJs = """
+var seatBase = quantity >= \(teamMaxDiscountAt)
+  ? \(teamTier3PriceMonthly)
+  : quantity >= \(teamMinDiscountAt)
+    ? \(teamTier2PriceMonthly)
+    : \(teamTier1PriceMonthly);
+var rate = seatBase * quantity;
+document.getElementById("team-rate").textContent = rate;
+"""
+
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
   case team(Int)
@@ -64,11 +93,15 @@ public enum Pricing: Codable, DerivePartialIsos {
   var plan: Stripe.Plan.Id {
     switch self {
     case .individual(.monthly):
-      return .init(unwrap: "individual-monthly")
+      return .individualMonthly
     case .individual(.yearly):
-      return .init(unwrap: "individual-yearly")
+      return .individualYearly
+    case .team(20...):
+      return .teamYearlyTier3
+    case .team(5...19):
+      return .teamYearlyTier2
     case .team:
-      return .init(unwrap: "team-yearly")
+      return .teamYearlyTier1
     }
   }
 
@@ -355,30 +388,37 @@ private let individualPricingColumnView = View<(billing: Pricing.Billing, pricin
     ])
 }
 
-private let teamPricingRowView = View<Pricing> { pricing in
+private let teamPricingRowView = View<Pricing> { pricing -> Node in
 
-  gridRow([id(selectors.content.1)], [
-    gridColumn(sizes: [.mobile: 12], [`class`([Class.padding([.mobile: [.top: 3]])])], [
-      h5([`class`([Class.pf.type.title5])], ["Invest in your team!"]),
+  let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
 
-      gridRow([
-        gridColumn(sizes: [.mobile: 12], [
-
-          div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
-            h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
-            p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
-            input([
-              type(.number),
-              min(Pricing.validTeamQuantities.lowerBound),
-              max(Pricing.validTeamQuantities.upperBound),
-              name("pricing[team]"),
-              step(1),
-              value(clamp(Pricing.validTeamQuantities) <| pricing.quantity),
-              `class`([numberSpinner, Class.pf.colors.fg.purple])
-              ]),
-            h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], ["$60/mo"])
-            ])
-          ])
+  return gridRow([id(selectors.content.1)], [
+    gridColumn(sizes: [.mobile: 12], [], [
+      div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
+        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
+        p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
+        input([
+          `class`([numberSpinner, Class.pf.colors.fg.purple]),
+          max(Pricing.validTeamQuantities.upperBound),
+          min(Pricing.validTeamQuantities.lowerBound),
+          name("pricing[team]"),
+          onchange(monthlyTeamRateJs),
+          step(1),
+          type(.number),
+          value(quantity),
+          ]),
+        h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], [
+          "$",
+          span(
+            [id("team-rate")],
+            [text(String(monthlyTeamRate(for: quantity)))]
+          ),
+          "/mo"
+          ]),
+        p(
+          [`class`([Class.pf.type.title6, Class.type.normal, Class.pf.colors.fg.gray650])],
+          ["(Billed annually)"]
+        )
         ])
       ])
     ])
