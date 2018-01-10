@@ -1,5 +1,4 @@
 import Either
-import EpisodeTranscripts
 import Foundation
 import Optics
 import Prelude
@@ -31,7 +30,7 @@ public struct Environment {
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
-    episodes: @escaping () -> [Episode] = { EpisodeTranscripts.allEpisodes },
+    episodes: @escaping () -> [Episode] = { [typeSafeHtml] },
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
     sendEmail: @escaping SendEmail = PointFree.mailgunSend,
