@@ -30,6 +30,7 @@ private func monthlyTeamRate(for quantity: Int) -> Int {
 }
 
 private let monthlyTeamRateJs = """
+var quantity = +this.value;
 var seatBase = quantity >= \(teamMaxDiscountAt)
   ? \(teamTier3PriceMonthly)
   : quantity >= \(teamMinDiscountAt)
