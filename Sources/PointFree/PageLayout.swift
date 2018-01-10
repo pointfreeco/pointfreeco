@@ -23,11 +23,16 @@ struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
   private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
   private(set) var currentUser: Database.User?
-  private(set) var extraStyles: Stylesheet
   private(set) var data: A
+  private(set) var description: String?
+  private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
+  private(set) var image: String?
   private(set) var navStyle: NavStyle?
+  private(set) var openGraphType: OpenGraphType
+  private(set) var showTopNav: Bool
   private(set) var title: String
+  private(set) var twitterCard: TwitterCard
   private(set) var useHighlightJs: Bool
 
   init(
@@ -35,9 +40,14 @@ struct SimplePageLayoutData<A> {
     currentSubscriptionStatus: Stripe.Subscription.Status? = nil,
     currentUser: Database.User?,
     data: A,
+    description: String? = nil,
     extraStyles: Stylesheet = .empty,
+    image: String? = nil,
     navStyle: NavStyle? = .some(.minimal(.light)),
+    openGraphType: OpenGraphType = .website,
+    showTopNav: Bool = true,
     title: String,
+    twitterCard: TwitterCard = .summaryLargeImage,
     useHighlightJs: Bool = false
     ) {
 
@@ -45,10 +55,15 @@ struct SimplePageLayoutData<A> {
     self.currentSubscriptionStatus = currentSubscriptionStatus
     self.currentUser = currentUser
     self.data = data
+    self.description = description
     self.extraStyles = extraStyles
     self.flash = nil
+    self.image = image
     self.navStyle = navStyle
+    self.openGraphType = openGraphType
+    self.showTopNav = showTopNav
     self.title = title
+    self.twitterCard = twitterCard
     self.useHighlightJs = useHighlightJs
   }
 }
@@ -61,11 +76,24 @@ func respond<A, B>(
 
     return { conn in
       let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
+      let pageLayout = metaLayout(simplePageLayout(view))
+        .map(addGoogleAnalytics)
+        .contramap(
+          Metadata.create(
+            description: newLayoutData.description,
+            image: newLayoutData.image,
+            title: newLayoutData.title,
+            twitterCard: newLayoutData.twitterCard,
+            twitterSite: "@pointfreeco",
+            type: newLayoutData.openGraphType,
+            url: newLayoutData.currentRoute.map(url(to:))
+          )
+      )
 
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >-> respond(
-          body: simplePageLayout(view).rendered(with: newLayoutData),
+          body: pageLayout.rendered(with: newLayoutData),
           contentType: .html
       )
     }
@@ -73,7 +101,7 @@ func respond<A, B>(
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   return View { layoutData in
-    return document([
+    document([
       html([
         head([
           title(layoutData.title),
@@ -81,16 +109,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           style(styleguide),
           style(layoutData.extraStyles),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          script(
-            """
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\
-            ga('create', 'UA-106218876-1', 'auto');\
-            ga('send', 'pageview');
-            """
-          )
           ]
           <> (layoutData.useHighlightJs ? highlightJsHead : [])
         ),
