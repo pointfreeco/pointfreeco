@@ -284,15 +284,6 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
     ])
 }
 
-// TODO: swift-web
-public protocol HasOnchange {}
-
-extension Element.Input: HasOnchange {}
-
-public func onchange<T: HasOnchange>(_ script: String) -> Attribute<T> {
-  return attribute("onchange", script)
-}
-
 // TODO: move to point free base styles
 private let numberSpinnerClass = CssSelector.class("num-spinner")
 let numberSpinner =

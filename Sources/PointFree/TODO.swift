@@ -274,6 +274,14 @@ extension URLRequest {
   }
 }
 
+public protocol HasOnchange {}
+
+extension Element.Input: HasOnchange {}
+
+public func onchange<T: HasOnchange>(_ script: String) -> Attribute<T> {
+  return attribute("onchange", script)
+}
+
 extension Element {
   public enum Hr {}
 }
