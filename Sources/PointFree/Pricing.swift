@@ -130,27 +130,34 @@ private let pricingView =
   pricingOptionsView
     <> faqView.contramap(const(unit))
 
+private let pricingOptionsRowClass =
+  Class.pf.colors.bg.purple150
+    | Class.grid.center(.mobile)
+    | Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])
+    | Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.leftRight: 0]])
+
 let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
 
-  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.top: 4, .bottom: 4]])])], [
+  gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
+      div([ //`class`([Class.padding([.mobile: [.leftRight: 2, .topBottom: 2], .desktop: [.leftRight: 0]])])], [
+        h2(
+          [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
+          [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+        ),
 
-      h2(
-        [`class`([Class.pf.colors.fg.white, Class.pf.type.title2])],
-        [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
-      ),
+        p([`class`([Class.pf.colors.fg.yellow])],
+          ["Unlock full episodes and explore a new functional programming concept each week."]),
 
-      p([`class`([Class.pf.colors.fg.yellow])],
-        ["Unlock full episodes and explore a new functional programming concept each week."]),
-
-      gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
-        gridColumn(sizes: [.mobile: 12], [], [
-          form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
-            pricingTabsView.view(pricing)
-              + individualPricingRowView.view(pricing)
-              + teamPricingRowView.view(pricing)
-              + pricingFooterView.view(currentUser)
-          )
+        gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
+          gridColumn(sizes: [.mobile: 12], [], [
+            form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
+                 pricingTabsView.view(pricing)
+                  + individualPricingRowView.view(pricing)
+                  + teamPricingRowView.view(pricing)
+                  + pricingFooterView.view(currentUser)
+            )
+            ])
           ])
         ])
       ])
@@ -263,7 +270,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
 }
 
 private let faqView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.pf.colors.bg.purple150, Class.grid.center(.mobile), Class.padding([.desktop: [.bottom: 4]])])], [
+  gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)

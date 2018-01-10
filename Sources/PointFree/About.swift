@@ -50,7 +50,7 @@ let aboutSectionView = View<Prelude.Unit> { _ in
     ),
 
     p([
-      ul([`class`([Class.padding([.mobile: [.left: 3]])])], [
+      ul([`class`([Class.padding([.mobile: [.left: 3, .topBottom: 2]])])], [
         li([
           h5([`class`([bulletPointTitleClass])], ["Pure functions and side effects"]),
           p([
