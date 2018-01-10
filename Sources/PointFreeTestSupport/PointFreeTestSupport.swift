@@ -202,7 +202,7 @@ extension Stripe.Plan {
 
   public static let teamYearly = mock
     |> \.amount .~ .init(unwrap: 150_00)
-    |> \.id .~ .teamYearly
+    |> \.id .~ .teamYearlyTier1
     |> \.name .~ "Team Yearly"
 }
 

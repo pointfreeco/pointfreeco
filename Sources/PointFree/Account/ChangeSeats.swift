@@ -47,20 +47,17 @@ let changeSeatsMiddleware =
     <<< requireTeamYearlySubscription
     <<< requireValidSeating
     <| changeSeats
-    >-> redirect(
-      to: .account(.index),
-      headersMiddleware: flash(.notice, "We’ve changed the number of seats on your subscription.")
-)
 
 // MARK: -
 
 private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription, Database.User, Int, Int>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+  -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, _, _, quantity) = lower(conn.data)
 
     // TODO: send emails
-    return  AppEnvironment.current.stripe.updateSubscription(subscription, .teamYearly, quantity)
+    let plan = Pricing.team(quantity).plan
+    return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity)
       .flatMap { sub -> EitherIO<Prelude.Unit, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {
           parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
@@ -70,7 +67,22 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription
         return pure(sub)
       }
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.changeSeats(.show))),
+              headersMiddleware: flash(.error, "We couldn’t change the number of seats at this time.")
+            )
+          ),
+          const(
+            conn |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "We’ve changed the number of seats on your subscription.")
+            )
+          )
+        )
+    )
 }
 
 // MARK: - Transformers
@@ -81,7 +93,7 @@ private func requireTeamYearlySubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {
 
     return filter(
-      get1 >>> (^\.plan.id.unwrap == Stripe.Plan.Id.teamYearly.unwrap),
+      get1 >>> (^\.quantity > 1),
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "You aren’t enrolled in a team subscription.")

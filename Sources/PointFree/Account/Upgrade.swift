@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -35,18 +36,35 @@ let upgradeMiddleware =
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualMonthlySubscription
-    <| upgrade
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ll start billing you yearly!"))
+    <| map(lower)
+    >>> upgrade
 
 // MARK: -
 
-private func upgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+private func upgrade(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User)>)
+  -> IO<Conn<ResponseEnded, Data>> {
 
-    // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualYearly, 1)
+    let (subscription, user) = conn.data
+    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualYearly, 1)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.upgrade(.show))),
+              headersMiddleware: flash(.error, "We couldn’t change your subscription at this time.")
+            )
+          )
+        ) { _ in
+          parallel(sendUpgradeEmail(to: user, for: subscription).run)
+            .run { _ in }
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.notice, "We’ll start billing you yearly!")
+          )
+        }
+    )
 }
 
 // MARK: - Transformers
@@ -96,7 +114,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       p([
         "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
         "upgrade your subscription, you will begin to be billed yearly at the end of the current billing ",
-        "cycle", text(subscription.currentPeriodEnd.map { ": " + dateFormatter.string(from: $0) } ?? ""),
+        "cycle: ", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         "."
         ]),
       form([action(path(to: .account(.subscription(.upgrade(.update))))), method(.post)], [
@@ -111,6 +129,47 @@ private let formRowView = View<Stripe.Subscription> { subscription in
           ],
           ["Never mind"]
         )
+        ])
+      ])
+    ])
+}
+
+// MARK: - Emails
+
+private func sendUpgradeEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "You’ve upgraded to Point-Free Yearly",
+      content: inj2(upgradeEmailView.view((owner, subscription)))
+    )
+}
+
+let upgradeEmailView = simpleEmailLayout(upgradeEmailBodyView)
+  .contramap { owner, subscription in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You’ve upgraded to Point-Free Yearly",
+      preheader: "You will automatically move to yearly billing on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      data: (owner, subscription)
+    )
+}
+
+private let upgradeEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Welcome to Point-Free Yearly"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "Thanks for becoming a yearly subscriber! ",
+            "You will automatically move to yearly billing on ",
+            text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            "."
+            ])
+          ])
         ])
       ])
     ])

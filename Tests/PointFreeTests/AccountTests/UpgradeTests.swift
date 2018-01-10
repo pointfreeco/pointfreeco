@@ -140,4 +140,36 @@ final class UpgradeTests: TestCase {
       assertSnapshot(matching: result.perform())
     }
   }
+
+  func testUpgradeStripeError() {
+    AppEnvironment.with(
+      (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly)))
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit) })
+    ) {
+      let conn = connection(
+        from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testUpgradeEmail() {
+    let doc = upgradeEmailView.view((.mock, .mock)).first!
+
+    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: plainText(for: doc))
+
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView)
+
+        webView.frame.size = .init(width: 400, height: 700)
+        assertSnapshot(matching: webView)
+      }
+    #endif
+  }
 }

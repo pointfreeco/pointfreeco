@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -35,18 +36,35 @@ let downgradeMiddleware =
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireIndividualYearlySubscription
-    <| downgrade
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "We’ll start billing you monthly!"))
+    <| map(lower)
+    >>> downgrade
 
 // MARK: -
 
-private func downgrade(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
-  -> IO<Conn<StatusLineOpen, Prelude.Unit>> {
+private func downgrade(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User)>)
+  -> IO<Conn<ResponseEnded, Data>> {
 
-    // TODO: send emails
-    return AppEnvironment.current.stripe.updateSubscription(get1(conn.data), .individualMonthly, 1)
+    let (subscription, user) = conn.data
+    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualMonthly, 1)
       .run
-      .map(const(conn.map(const(unit))))
+      .flatMap(
+        either(
+          const(
+            conn |> redirect(
+              to: .account(.subscription(.downgrade(.show))),
+              headersMiddleware: flash(.error, "We couldn’t change your subscription at this time.")
+            )
+          )
+        ) { _ in
+          parallel(sendDowngradeEmail(to: user, for: subscription).run)
+            .run { _ in }
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.notice, "We’ll start billing you monthly!")
+          )
+        }
+    )
 }
 
 // MARK: - Transformers
@@ -111,7 +129,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
       p([
         "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
         "downgrade your subscription, you will begin to be billed monthly at the end of the current billing ",
-        "cycle", text(subscription.currentPeriodEnd.map { ": " + dateFormatter.string(from: $0) } ?? ""),
+        "cycle: ", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         "."
         ]),
       form([action(path(to: .account(.subscription(.downgrade(.update))))), method(.post)], [
@@ -126,6 +144,47 @@ private let formRowView = View<Stripe.Subscription> { subscription in
           ],
           ["Never mind"]
         )
+        ])
+      ])
+    ])
+}
+
+// MARK: - Emails
+
+private func sendDowngradeEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "Point-Free Subscription Change",
+      content: inj2(upgradeEmailView.view((owner, subscription)))
+    )
+}
+
+let downgradeEmailView = simpleEmailLayout(downgradeEmailBodyView)
+  .contramap { owner, subscription in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Point-Free Subscription Change",
+      preheader: "You will automatically move to monthly billing on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      data: (owner, subscription)
+    )
+}
+
+private let downgradeEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Point-Free Monthly"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "We’ve downgraded your subscription to monthly billing. ",
+            "This change will take effect at the end of the current billing cycle, on ",
+            text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            "."
+            ])
+          ])
         ])
       ])
     ])
