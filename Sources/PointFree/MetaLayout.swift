@@ -4,24 +4,36 @@ import Prelude
 
 // TODO: extract to swift-web
 
+// https://developers.facebook.com/docs/reference/opengraph#object-type
+public enum OpenGraphType: String {
+  case website
+}
+
+public enum TwitterCard: String {
+  case app
+  case player
+  case summary
+  case summaryLargeImage = "summary_large_image"
+}
+
 public struct Metadata<A> {
   public let description: String?
   public let image: String?
   public let rest: A
   public let title: String?
-  public let twitterCard: String?
+  public let twitterCard: TwitterCard?
   /// @username of website. Either twitter:site or twitter:site:id is required.
   public let twitterSite: String?
-  public let type: String?
+  public let type: OpenGraphType?
   public let url: String?
 
   public static func create(
     description: String? = nil,
     image: String? = nil,
     title: String? = nil,
-    twitterCard: String? = nil,
+    twitterCard: TwitterCard? = nil,
     twitterSite: String? = nil,
-    type: String? = nil,
+    type: OpenGraphType? = nil,
     url: String? = nil
     )
     -> (A) -> Metadata<A> {
@@ -53,9 +65,9 @@ public struct Metadata<A> {
       self.title.map { meta(property: "og:title", content: $0) },
       self.title.map { meta(name: "twitter:title", content: $0) },
 
-      self.type.map { meta(property: "og:type", content: $0) },
+      self.type.map { meta(property: "og:type", content: $0.rawValue) },
 
-      self.twitterCard.map { meta(name: "twitter:card", content: $0) },
+      self.twitterCard.map { meta(name: "twitter:card", content: $0.rawValue) },
       self.twitterSite.map { meta(name: "twitter:site", content: $0) },
 
       self.url.map { meta(property: "og:url", content: $0) },
