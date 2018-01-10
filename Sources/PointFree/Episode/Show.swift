@@ -254,7 +254,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
-      [.text(encode("Episode \(ep.sequence)"))]
+      [text("Episode \(ep.sequence)")]
     ),
     h1(
       [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
