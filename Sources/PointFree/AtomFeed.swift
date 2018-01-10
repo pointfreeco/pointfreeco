@@ -6,7 +6,7 @@ import Prelude
 
 let atomFeedResponse =
   writeStatus(.ok)
-    >-> respond(pointFreeFeed, contentType: .html)
+    >-> respond(pointFreeFeed, contentType: .application(.atom))
 
 let pointFreeFeed = View<[Episode]> { episodes in
   atomLayout.view(
@@ -17,13 +17,17 @@ let pointFreeFeed = View<[Episode]> { episodes in
       ),
       entries: episodes.map(atomEntry(for:)),
       atomUrl: url(to: .feed(.atom)),
-      siteUrl: "/", // FIXME url(to: .root),
+      siteUrl: url(to: .secretHome),
       title: "Point-Free"
     )
   )
 }
 
 // TODO: swift-web
+public extension Application {
+  public static var atom = Application("atom+xml")
+}
+
 public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn |> respond(body: view.rendered(with: conn.data), contentType: contentType)
@@ -35,6 +39,6 @@ private func atomEntry(for episode: Episode) -> AtomEntry {
     title: episode.title,
     siteUrl: url(to: .episode(.left(episode.slug))),
     updated: episode.publishedAt,
-    content: []
+    content: [text(episode.blurb)]
   )
 }

@@ -161,7 +161,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
 
   .feed <<< .atom
-    <¢> get %> lit("feed") %> lit("atom") <% end,
+    <¢> get %> lit("feed") %> lit("atom.xml") <% end,
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")

@@ -1,5 +1,6 @@
 import Foundation
 import Html
+import Optics
 import Prelude
 
 public struct AtomAuthor {
@@ -24,7 +25,13 @@ public struct AtomFeed {
 
 public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
   return [
-    //<?xml version="1.0" encoding="utf-8"?>
+    .text(
+      unsafeUnencodedString(
+        """
+        <?xml version="1.0" encoding="utf-8"?>
+        """
+      )
+    ),
     feed(
       [xmlns("http://www.w3.org/2005/Atom")],
       [
@@ -111,4 +118,6 @@ public func type(_ type: String) -> Attribute<Element.Content> {
   return attribute("type", type)
 }
 
-private let atomDateFormatter = DateFormatter() // FIXME
+private let atomDateFormatter = DateFormatter()
+  |> \.dateFormat .~ "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+  |> \.locale .~ Locale(identifier: "en_US_POSIX")
