@@ -38,17 +38,19 @@ private let episodesListView = View<[Episode]> { eps in
 }
 
 private let episodeRowView = View<Episode> { ep in
+
   dividerView.view(unit) + [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [`class`([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
-        div([style(lineHeight(0))], [
+        div([`class`([Class.size.height100pct]), style(lineHeight(0))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
               src: "https://waltpaper.com/wp-content/uploads/2017/06/6c7b04501f6e98ab94982a2743ede747-1024x768.jpeg",
               alt: "",
-              [style(objectFit(.contain) <> width(.pct(100)) <> height(.pct(100)))]
+              [`class`([Class.size.width100pct, Class.size.height100pct]),
+               style(objectFit(.cover))]
             )
             ])
           ])
@@ -61,7 +63,7 @@ private let episodeInfoColumnView = View<Episode> { ep in
   div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep) + [
-      div([`class`([Class.margin([.mobile: [.top: 2]])])], [
+      div([`class`([Class.margin([.mobile: [.top: 3]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug)))), `class`([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
           [

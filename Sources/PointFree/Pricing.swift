@@ -348,16 +348,11 @@ private let pricingTabsView = View<Pricing> { pricing in
 }
 
 private let individualPricingRowView = View<Pricing> { pricing in
-  gridRow([id(selectors.content.0)], [
-    gridColumn(sizes: [.mobile: 12], [`class`([Class.padding([.mobile: [.top: 3]])])], [
-      h5([`class`([Class.pf.type.title5])], ["Invest in your career!"]),
-
-      gridRow(
-        individualPricingColumnView.view((.monthly, pricing))
-          <> individualPricingColumnView.view((.yearly, pricing))
-      ),
-      ])
-    ])
+  gridRow(
+    [id(selectors.content.0)],
+    individualPricingColumnView.view((.monthly, pricing))
+      <> individualPricingColumnView.view((.yearly, pricing))
+  )
 }
 
 private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {

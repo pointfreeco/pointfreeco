@@ -10,6 +10,7 @@ extension Class {
 
     public static let width50pct = CssSelector.class("w-50p")
     public static let width100pct = CssSelector.class("w-100p")
+    public static let height100pct = CssSelector.class("h-100p")
   }
 }
 
@@ -23,3 +24,4 @@ private let heightStyles: Stylesheet =
 private let widthStyles =
   Class.size.width50pct % width(.pct(50))
     <> Class.size.width100pct % width(.pct(100))
+    <> Class.size.height100pct % height(.pct(100))

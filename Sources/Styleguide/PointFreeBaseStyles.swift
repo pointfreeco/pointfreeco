@@ -81,34 +81,16 @@ extension Class {
           | Class.h2
           | Class.type.lineHeight(2)
 
-      public static let responsiveTitle2 =
-        Class.pf.colors.fg.black
-          | Class.type.bold
-          | Class.typeScale([.mobile: .r1_5, .desktop: .r3])
-          | Class.type.lineHeight(2)
-
       public static let title3 =
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h3
           | Class.type.lineHeight(2)
 
-      public static let responsiveTitle3 =
-        Class.pf.colors.fg.black
-          | Class.type.bold
-          | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
-          | Class.type.lineHeight(2)
-
       public static let title4 =
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h4
-          | Class.type.lineHeight(2)
-
-      public static let responsiveTitle4 =
-        Class.pf.colors.fg.black
-          | Class.type.bold
-          | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
           | Class.type.lineHeight(2)
 
       public static let title5 =
@@ -121,6 +103,52 @@ extension Class {
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h6
+          | Class.type.lineHeight(1)
+          | Class.type.caps
+
+      private static let titleBase =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+
+      public static let responsiveTitle1 =
+        titleBase
+          | Class.typeScale([.mobile: .r3, .desktop: .r4])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle2 =
+        titleBase
+          | Class.typeScale([.mobile: .r2, .desktop: .r3])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle3 =
+        titleBase
+          | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle4 =
+        titleBase
+          | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle5 =
+        titleBase
+          | Class.typeScale([.mobile: .r1, .desktop: .r1_25])
+          | Class.type.lineHeight(1)
+
+      public static let responsiveTitle6 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_875, .desktop: .r1])
+          | Class.type.lineHeight(1)
+
+      public static let responsiveTitle7 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_75, .desktop: .r0_875])
+          | Class.type.lineHeight(1)
+          | Class.type.caps
+
+      public static let responsiveTitle8 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_75])
           | Class.type.lineHeight(1)
           | Class.type.caps
 

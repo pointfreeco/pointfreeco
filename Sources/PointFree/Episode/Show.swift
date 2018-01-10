@@ -95,7 +95,7 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
   div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4]])])],
       [
         h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
           ["Chapters"]
         ),
         ]
@@ -156,7 +156,7 @@ private let downloadsView = View<String> { codeSampleDirectory in
   div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
         h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
           ["Downloads"]
         ),
         img(
@@ -180,7 +180,7 @@ private let creditsView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
-          [`class`([Class.pf.type.title6, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
           ["Credits"]
         ),
         p(
@@ -217,12 +217,12 @@ private let leftColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode,
       + dividerView.view(unit)
       + (isEpisodeViewable
         ? transcriptView.view(episode.transcriptBlocks)
-        : subscribeView.view(unit)
+        : subscribeView.view(episode)
     )
   )
 }
 
-private let subscribeView = View<Prelude.Unit> { _ in
+private let subscribeView = View<Episode> { episode in
   div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.gray900])], [
 
     h3(
@@ -238,8 +238,15 @@ private let subscribeView = View<Prelude.Unit> { _ in
     a(
       [href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["See subscription options"]
+    ),
+    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+    a(
+      [
+        href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
+        `class`([Class.pf.components.button(color: .black, style: .underline)])
+      ],
+      ["Log in"]
     )
-
     ])
 }
 
@@ -253,14 +260,14 @@ private let episodeInfoView = View<Episode> { ep in
 let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
-      [`class`([Class.h6, Class.type.caps, Class.type.lineHeight(4)])],
-      [text("Episode \(ep.sequence)")]
+      [`class`([Class.pf.type.responsiveTitle8])],
+      [text(episodeDateFormatter.string(from: Date(timeIntervalSince1970: ep.publishedAt)))]
     ),
     h1(
-      [`class`([Class.pf.type.title4, Class.margin([.mobile: [.top: 0]])])],
-      [a([href(path(to: .episode(.left(ep.slug))))], [.text(encode(ep.title))])]
+      [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
+      [a([href(path(to: .episode(.left(ep.slug))))], [text(ep.title)])]
     ),
-    markdownBlock(ep.blurb)
+    p([`class`([Class.pf.type.body.leading])], [text(ep.blurb)])
   ]
 }
 
