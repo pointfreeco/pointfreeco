@@ -43,7 +43,8 @@ let cancelMiddleware =
         headersMiddleware: flash(.error, "Your subscription is already canceled!")
       )
     )
-    <| cancel
+    <| map(lower)
+    >>> cancel
 
 let reactivateMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -56,15 +57,16 @@ let reactivateMiddleware =
       )
     )
     <<< requireSubscriptionItem
-    <| reactivate
+    <| map(lower)
+    >>> reactivate
 
 // MARK: -
 
-private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Database.User>>)
+private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    // TODO: send emails
-    return AppEnvironment.current.stripe.cancelSubscription(get1(conn.data).id)
+    let (subscription, user) = conn.data
+    return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
       .run
       .flatMap(
         either(
@@ -73,23 +75,23 @@ private func cancel(_ conn: Conn<StatusLineOpen, Tuple2<Stripe.Subscription, Dat
               to: .account(.subscription(.changeSeats(.show))),
               headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
             )
-          ),
-          const(
-            conn |> redirect(
-              to: .account(.index),
-              headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
-            )
           )
-        )
+        ) { _ in
+          parallel(sendCancelEmail(to: user, for: subscription).run)
+            .run { _ in }
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.notice, "We’ve canceled your subscription.")
+          )
+        }
     )
 }
 
-private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.Item, Stripe.Subscription, Database.User>>)
+private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, Stripe.Subscription, Database.User)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (item, subscription, _) = lower(conn.data)
-
-    // TODO: send emails
+    let (item, subscription, user) = conn.data
     return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity)
       .run
       .flatMap(
@@ -99,14 +101,16 @@ private func reactivate(_ conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription.
               to: .account(.subscription(.changeSeats(.show))),
               headersMiddleware: flash(.error, "We couldn’t reactivate your subscription at this time.")
             )
-          ),
-          const(
-            conn |> redirect(
-              to: .account(.index),
-              headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
-            )
           )
-        )
+        ) { _ in
+          parallel(sendReactivateEmail(to: user, for: subscription).run)
+            .run { _ in }
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.notice, "We’ve reactivated your subscription.")
+          )
+        }
     )
 }
 
@@ -230,8 +234,8 @@ private let formRowView = View<Stripe.Subscription> { subscription in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       p([
-        "Your ", text(subscription.plan.name), " subscription is set to renew",
-        text(subscription.currentPeriodEnd.map { " on " + dateFormatter.string(from: $0) } ?? ""),
+        "Your ", text(subscription.plan.name), " subscription is set to renew on ",
+        text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         """
         . Should you choose to cancel your subscription, you will lose access to Point-Free on this date. You
         will not be billed at the end of the current period. You may reactivate your subscription at any time
@@ -250,6 +254,90 @@ private let formRowView = View<Stripe.Subscription> { subscription in
           ],
           ["Never mind"]
         )
+        ])
+      ])
+    ])
+}
+
+// MARK: - Emails
+
+private func sendCancelEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "Your subscription has been canceled",
+      content: inj2(cancelEmailView.view((owner, subscription)))
+    )
+}
+
+let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
+  .contramap { owner, subscription in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your subscription has been canceled",
+      preheader: "Your \(subscription.plan.name) subscription has been canceled and will remain active through \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      data: (owner, subscription)
+    )
+}
+
+private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Subscription canceled"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "Your ",
+            strong([text(subscription.plan.name)]),
+            " subscription has been canceled and will remain active through ",
+            text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            ". If you change your mind before then, you can reactivate from ",
+            a([href(url(to: .account(.index)))], ["your account page"]),
+            "."
+            ])
+          ])
+        ])
+      ])
+    ])
+}
+
+private func sendReactivateEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "Your subscription has been reactivated",
+      content: inj2(reactivateEmailView.view((owner, subscription)))
+    )
+}
+
+let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
+  .contramap { owner, subscription in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your subscription has been reactivated",
+      preheader: "Your \(subscription.plan.name) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      data: (owner, subscription)
+    )
+}
+
+private let reactivateEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Subscription reactivated"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "Thanks for sticking with us! Your ",
+            strong([text(subscription.plan.name)]),
+            " subscription has been reactivated and will renew on ",
+            text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            "."
+            ])
+          ])
         ])
       ])
     ])
