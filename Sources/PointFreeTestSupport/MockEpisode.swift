@@ -1,4 +1,4 @@
-@testable import EpisodeTranscripts
+@testable import PointFree
 
 extension Episode {
   public static let mock = paidEpisode
