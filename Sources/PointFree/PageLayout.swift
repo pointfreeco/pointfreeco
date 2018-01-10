@@ -112,33 +112,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
   }
 }
 
-func metaTags<A>(_ data: SimplePageLayoutData<A>) -> [ChildOf<Element.Head>] {
-
-  let link = data.currentRoute.map(url(to:))
-
-  return [
-    data.description.map { meta(name: "description", content: $0) },
-    data.description.map { meta(property: "og:description", content: $0) },
-    data.description.map { meta(name: "twitter:description", content: $0) },
-
-    data.image.map { meta(name: "twitter:image", content: $0) },
-    data.image.map { meta(property: "og:image", content: $0) },
-
-    meta(name: "title", content: data.title),
-    meta(property: "og:title", content: data.title),
-    meta(name: "twitter:title", content: data.title),
-
-    meta(property: "og:type", content: data.openGraphType.rawValue),
-
-    meta(name: "twitter:card", content: data.twitterCard.rawValue),
-    meta(name: "twitter:site", content: "@pointfreeco"),
-
-    link.map { meta(property: "og:url", content: $0) },
-    link.map { meta(name: "twitter:url", content: $0) },
-    ]
-    |> catOptionals
-}
-
 let flashView = View<Flash> { flash in
   gridRow([`class`([flashClass(for: flash.priority)])], [
     gridColumn(sizes: [.mobile: 12], [text(flash.message)])
