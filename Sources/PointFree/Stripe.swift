@@ -245,7 +245,7 @@ private func createSubscription(
       "customer": customer.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
-      ] |> filteredValues))
+      ])
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
@@ -291,7 +291,7 @@ private func updateSubscription(
       "items[0][id]": item.id.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
-      ] |> filteredValues))
+      ]))
 }
 
 private let stripeJsonDecoder: JSONDecoder = {
