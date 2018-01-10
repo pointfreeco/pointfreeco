@@ -17,6 +17,10 @@ jobs:
           command: brew install postgresql
 
       - run:
+          name: Install CommonMark
+          command: brew install cmark
+
+      - run:
           name: Start Postgres
           command: brew services start postgresql
 
@@ -26,12 +30,12 @@ jobs:
 
       - run:
           name: Run macOS tests
-          command: OSS=1 make test-macos
+          command: make test-macos
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
 
       - run:
           name: Run Swift tests
-          command: OSS=1 make test-swift
+          command: make test-swift
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS

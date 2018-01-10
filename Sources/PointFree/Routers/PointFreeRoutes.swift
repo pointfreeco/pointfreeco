@@ -1,5 +1,4 @@
 import ApplicativeRouter
-import EpisodeTranscripts
 import Foundation
 import Either
 import Optics
@@ -21,10 +20,10 @@ public enum Route: DerivePartialIsos {
   case login(redirect: String?)
   case logout
   case pricing(String?, Int?)
+  case privacy
   case secretHome
   case subscribe(SubscribeData?)
   case team(Team)
-  case terms
 
   public enum Account: DerivePartialIsos {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
@@ -198,6 +197,9 @@ private let routers: [Router<Route>] = [
   .pricing
     <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
 
+  .privacy
+    <¢> get %> lit("privacy") <% end,
+
   .secretHome
     <¢> get %> lit("home") <% end,
 
@@ -212,9 +214,6 @@ private let routers: [Router<Route>] = [
 
   .team <<< .show
     <¢> get %> lit("account") %> lit("team") <% end,
-
-  .terms
-    <¢> get %> lit("terms") <% end,
 ]
 
 private let formDecoder = UrlFormDecoder()

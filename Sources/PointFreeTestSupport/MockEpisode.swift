@@ -1,14 +1,14 @@
-@testable import EpisodeTranscripts
+@testable import PointFree
 
 extension Episode {
-  public static let mock = proofInFunctions
+  public static let mock = paidEpisode
 }
 
-private let proofInFunctions = Episode(
+private let paidEpisode = Episode(
   blurb: """
-  Swift’s generic functions allow us to explore a beautiful idea that straddles the line between mathematics \
-  and computer science. In this episode we explore how we can use Swift’s type system to prove mathematical \
-  theorems, and show how this opens the doors to having the compiler verify properties of your program.
+  This is a short blurb to give a high-level overview of what the episode is about. It supports basic
+  markdown, such as inline code (`f(x) = x`), **bolded** words, _italicized_ words, and
+  [links](https://www.pointfree.co).
   """,
   codeSampleDirectory: "ep1-proof-in-functions",
   id: .init(unwrap: 1),
@@ -20,80 +20,78 @@ private let proofInFunctions = Episode(
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: """
-      Swift’s generic functions allow us to explore a beautiful idea that straddles the line between \
-      mathematics and computer science. If you write down and implement a function using only generic data \
-      types, there is a corresponding mathematical theorem that you have proven true. There are a lot of \
-      pieces to that statement, but by the end of this short article you will understand what that means, \
-      and we will have constructed a computer proof of De Morgan’s law.
+      This is a `paragraph` transcript block. It just contains some markdown text. A paragraph block can
+      also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
+      that timestamp jumps the video to that spot.
+
+      You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+      However, you cannot associate a timestamp with this paragraph.
       """,
       timestamp: 0,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
-      All of the code samples in this article are contained in a Swift playground available for download here.
+      Here we have created a whole new transcript block so that we can associate a timestamp with it.
       """,
       timestamp: 30,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: "Generic Functions",
+      content: """
+      It is also possible to create a `paragraph` block and use `nil` for the timestamp to omit the rendered
+      time at the beginning of the text. That’s what we have done here.
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Title Block",
       timestamp: 60,
       type: .title
     ),
     Episode.TranscriptBlock(
       content: """
-      Let’s start with some exercises to prepare our brains for this kind of thinking. If someone handed you \
-      the following function declaration, which doesn’t currently compile, and asked you to fill it out so \
-      that it compiles, could you?
+      That block above is called a `title` transcript block. It allows you to break up the transcript into
+      chapters. All of the `title` blocks are gathered up and rendered as a “table of contents” under the
+      episode video.
+
+      Next up we are going to show off a `code` block. It allows you to render a multiline, syntax
+      highlighted snippet of code:
       """,
-      timestamp: 30,
+      timestamp: 60,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
       content: """
-      func f <A> (x: A) -> A {
-        ???
+      infix operator |>
+
+      func |> <A, B>(x: A, f: (A) -> B) -> B {
+        return f(x)
       }
       """,
-      timestamp: 30,
+      timestamp: nil,
       type: .code(lang: .swift)
     ),
     Episode.TranscriptBlock(
       content: """
-      It’s a function that takes an x in some type A (can be any type) and needs to return something in A. \
-      We have absolutely no knowledge of A. No way of constructing a value in that type. For example, we \
-      can’t even do something like A() to construct a value, for we have no way of knowing if A has an \
-      initializer of that form. Even worse, there’s a chance that A cannot be instantiated, i.e. A has no \
-      values! For example, an enum with no cases cannot be instantiated:
+      You can write as much code as you want in that block, and you can specify the language of the code
+      so that its syntax is highlighted nicely.
       """,
-      timestamp: 30,
+      timestamp: 90,
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: """
-      enum Empty {
-        // no cases!
-      }
-      """,
-      timestamp: 30,
-      type: .code(lang: .swift)
+      content: "Another Title",
+      timestamp: 120,
+      type: .title
     ),
     Episode.TranscriptBlock(
       content: """
-      This type is valid and compiles just fine, but no instance of it can ever be created. Kind of bizarre, \
-      but it will be useful later. Some languages call this type Bottom (⊥).
+      That was another title. See how the title create the “table of contents” under the video?
       """,
-      timestamp: 30,
+      timestamp: 120,
       type: .paragraph
-    ),
-    Episode.TranscriptBlock(
-      content: """
-      So, back to that function f. How can we implement it so that the compiler says everything is A-Ok? \
-      Well, we really have no choice but to just return x, i.e. it’s the identity function:
-      """,
-      timestamp: 30,
-      type: .paragraph
-    ),
+    )
     ]
 )

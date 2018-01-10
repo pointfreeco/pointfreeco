@@ -9,10 +9,14 @@ install:
   - if [ $TRAVIS_OS_NAME = linux ]; then
       eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)";
     fi
+  - sudo apt-get install cmake
+  - git clone https://github.com/commonmark/cmark
+  - make -C cmark INSTALL_PREFIX=/usr
+  - sudo make -C cmark install
 script:
   - psql template1 < database/deinit.sql
-      && psql template1 < database/init.sql
-      && OSS=1 swift test
+  - psql template1 < database/init.sql
+  - swift test
 services:
   - postgresql
 addons:

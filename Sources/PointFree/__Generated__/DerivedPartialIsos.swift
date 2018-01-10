@@ -4,7 +4,6 @@
 
 import ApplicativeRouter
 import Either
-import EpisodeTranscripts
 import Prelude
 
 
@@ -274,6 +273,17 @@ import Prelude
 
 
       extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let privacy = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.privacy)),
+          unapply: {
+            guard case .privacy = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route {
         public static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.secretHome)),
           unapply: {
@@ -308,17 +318,6 @@ import Prelude
               guard case let .team(result) = $0 else { return nil }
               return .some(result)
           })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let terms = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.terms)),
-          unapply: {
-            guard case .terms = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
       }
 
 
