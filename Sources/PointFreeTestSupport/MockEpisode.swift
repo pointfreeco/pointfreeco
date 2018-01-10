@@ -1,3 +1,4 @@
+import Foundation
 @testable import PointFree
 
 extension Episode {
@@ -13,7 +14,7 @@ private let paidEpisode = Episode(
   codeSampleDirectory: "ep1-proof-in-functions",
   id: .init(unwrap: 1),
   length: 1080,
-  publishedAt: 1_482_192_000,
+  publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 1,
   subscriberOnly: true,
   title: "Proof in Functions",

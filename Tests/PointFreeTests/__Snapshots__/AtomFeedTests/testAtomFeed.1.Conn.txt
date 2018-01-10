@@ -1,0 +1,16 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/feed/atom
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 200 OK
+  Content-Length: 509
+  Content-Type: text/html; charset=utf-8
+
+  <feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free</title><link href="http://localhost:8080/feed/atom" rel="self"></link><link href="/"></link><updated></updated><id>/</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Proof in Functions</title><link href="http://localhost:8080/episodes/ep1-proof-in-functions"></link><updated></updated><id>http://localhost:8080/episodes/ep1-proof-in-functions</id><content type="html"><![CDATA[]]></content></entry></feed>

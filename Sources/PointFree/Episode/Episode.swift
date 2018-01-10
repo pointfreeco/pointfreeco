@@ -6,7 +6,7 @@ public struct Episode {
   public private(set) var codeSampleDirectory: String
   public private(set) var id: Id
   public private(set) var length: Int
-  public private(set) var publishedAt: Double
+  public private(set) var publishedAt: Date
   public private(set) var sequence: Int
   public private(set) var subscriberOnly: Bool
   public private(set) var title: String
@@ -78,7 +78,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   codeSampleDirectory: "ep4-type-safe-html",
   id: .init(unwrap: 4),
   length: 1380,
-  publishedAt: 1_497_960_000,
+  publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
   subscriberOnly: false,
   title: "Type-Safe HTML in Swift",
@@ -240,7 +240,5 @@ We start by creating a type specifically to model keys that can be used in attri
       timestamp: 6,
       type: .paragraph
     ),
-
-
     ]
 )

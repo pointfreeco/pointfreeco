@@ -9,7 +9,7 @@ public struct AtomAuthor {
 
 public struct AtomEntry {
   public var title: String
-  public var siteUrl: URL
+  public var siteUrl: String
   public var updated: Date
   public var content: [Node]
 }
@@ -17,8 +17,8 @@ public struct AtomEntry {
 public struct AtomFeed {
   public var author: AtomAuthor
   public var entries: [AtomEntry]
-  public var atomUrl: URL
-  public var siteUrl: URL
+  public var atomUrl: String
+  public var siteUrl: String
   public var title: String
 }
 
@@ -29,10 +29,10 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
       [xmlns("http://www.w3.org/2005/Atom")],
       [
         title(atomFeed.title),
-        link([href(atomFeed.atomUrl.absoluteString), rel(.self)]),
-        link([href(atomFeed.siteUrl.absoluteString)]),
+        link([href(atomFeed.atomUrl), rel(.self)]),
+        link([href(atomFeed.siteUrl)]),
         updated(Date()),
-        id(atomFeed.siteUrl.absoluteString),
+        id(atomFeed.siteUrl),
         author([
           name(atomFeed.author.name),
           email(atomFeed.author.email)
@@ -46,9 +46,9 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
 public let atomEntry = View<AtomEntry> { atomEntry in
   return entry([
     title(atomEntry.title),
-    link([href(atomEntry.siteUrl.absoluteString)]),
+    link([href(atomEntry.siteUrl)]),
     updated(atomEntry.updated),
-    id(atomEntry.siteUrl.absoluteString),
+    id(atomEntry.siteUrl),
     content([type("html")], atomEntry.content)
     ])
 }
