@@ -10,9 +10,9 @@ import Optics
   import WebKit
 #endif
 
-class ChangeEmailConfirmationTests: TestCase {
-  func testChangeEmailConfirmationEmail() {
-    let emailNodes = confirmEmailChangeEmailView.view((.mock, .init(unwrap: "blobby@blob.co")))
+class TeamEmailsTests: TestCase {
+  func testYouHaveBeenRemovedEmailView() {
+    let emailNodes = youHaveBeenRemovedEmailView.view((.mock, .mock))
 
     assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
 
@@ -26,8 +26,8 @@ class ChangeEmailConfirmationTests: TestCase {
     #endif
   }
 
-  func testChangedEmail() {
-    let emailNodes = emailChangedEmailView.view((.mock, .init(unwrap: "blobby@blob.co")))
+  func testTeammateRemovedEmailView() {
+    let emailNodes = teammateRemovedEmailView.view((.mock, .mock))
 
     assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
 
