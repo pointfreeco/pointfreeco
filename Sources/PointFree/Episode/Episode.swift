@@ -80,7 +80,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
-  subscriberOnly: false,
+  subscriberOnly: true,
   title: "Type-Safe HTML in Swift",
   transcriptBlocks: [
     Episode.TranscriptBlock(

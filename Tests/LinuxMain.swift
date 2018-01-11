@@ -4,6 +4,11 @@
 import XCTest
 
 @testable import PointFreeTests; @testable import StyleguideTests;
+extension AboutTests {
+  static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
+    ("testAbout", testAbout)
+  ]
+}
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
@@ -38,7 +43,16 @@ extension CancelTests {
     ("testCancelLoggedOut", testCancelLoggedOut),
     ("testCancelNoSubscription", testCancelNoSubscription),
     ("testCancelCancelingSubscription", testCancelCancelingSubscription),
-    ("testCancelCanceledSubscription", testCancelCanceledSubscription)
+    ("testCancelCanceledSubscription", testCancelCanceledSubscription),
+    ("testCancelStripeFailure", testCancelStripeFailure),
+    ("testCancelEmail", testCancelEmail),
+    ("testReactivate", testReactivate),
+    ("testReactivateLoggedOut", testReactivateLoggedOut),
+    ("testReactivateNoSubscription", testReactivateNoSubscription),
+    ("testReactivateActiveSubscription", testReactivateActiveSubscription),
+    ("testReactivateCanceledSubscription", testReactivateCanceledSubscription),
+    ("testReactivateStripeFailure", testReactivateStripeFailure),
+    ("testReactivateEmail", testReactivateEmail)
   ]
 }
 extension ChangeEmailConfirmationTests {
@@ -77,7 +91,9 @@ extension DowngradeTests {
     ("testDowngradeLoggedOut", testDowngradeLoggedOut),
     ("testDowngradeNoSubscription", testDowngradeNoSubscription),
     ("testDowngradeInvalidSubscription", testDowngradeInvalidSubscription),
-    ("testDowngradeCanceledSubscription", testDowngradeCanceledSubscription)
+    ("testDowngradeCanceledSubscription", testDowngradeCanceledSubscription),
+    ("testDowngradeStripeError", testDowngradeStripeError),
+    ("testDowngradeEmail", testDowngradeEmail)
   ]
 }
 extension EmailInviteTests {
@@ -140,12 +156,10 @@ extension MetaLayoutTests {
     ("testMetaTagsWithStyleTag", testMetaTagsWithStyleTag)
   ]
 }
-extension NavViewTests {
-  static var allTests: [(String, (NavViewTests) -> () throws -> Void)] = [
-    ("testNav_LoggedOut", testNav_LoggedOut),
-    ("testNav_LoggedOut_WithCurrentRoute", testNav_LoggedOut_WithCurrentRoute),
-    ("testNav_LoggedIn_NonSubscriber", testNav_LoggedIn_NonSubscriber),
-    ("testNav_LoggedIn_Subscriber", testNav_LoggedIn_Subscriber)
+extension MinimalNavViewTests {
+  static var allTests: [(String, (MinimalNavViewTests) -> () throws -> Void)] = [
+    ("testNav_Html", testNav_Html),
+    ("testNav_Screenshots", testNav_Screenshots)
   ]
 }
 extension NewEpisodeEmailTests {
@@ -213,12 +227,15 @@ extension UpgradeTests {
     ("testUpgradeLoggedOut", testUpgradeLoggedOut),
     ("testUpgradeNoSubscription", testUpgradeNoSubscription),
     ("testUpgradeInvalidSubscription", testUpgradeInvalidSubscription),
-    ("testUpgradeCanceledSubscription", testUpgradeCanceledSubscription)
+    ("testUpgradeCanceledSubscription", testUpgradeCanceledSubscription),
+    ("testUpgradeStripeError", testUpgradeStripeError),
+    ("testUpgradeEmail", testUpgradeEmail)
   ]
 }
 
 // swiftlint:disable trailing_comma
 XCTMain([
+  testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
@@ -235,7 +252,7 @@ XCTMain([
   testCase(LaunchEmailTests.allTests),
   testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
-  testCase(NavViewTests.allTests),
+  testCase(MinimalNavViewTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),
   testCase(NewslettersTests.allTests),
   testCase(PaymentInfoTests.allTests),

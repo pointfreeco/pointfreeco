@@ -4,6 +4,7 @@ import Prelude
 public enum Colors {
   public static let black = Color.other("#121212")
   public static let blue = Color.other("#4CCCFF")
+  public static let blue900 = Color.other("#E6F8FF")
   public static let gray300 = Color.other("#555555")
   public static let gray400 = Color.other("#666666")
   public static let gray650 = Color.other("#a8a8a8")
@@ -11,11 +12,9 @@ public enum Colors {
   public static let gray850 = Color.other("#d8d8d8")
   public static let gray900 = Color.other("#f6f6f6")
   public static let green = Color.other("#79F2B0")
-  public static let mint = Color.other("#79F2B0")
   public static let purple = Color.other("#974DFF")
   public static let purple150 = Color.other("#291a40")
   public static let red = Color.other("#eb1c26")
-  public static let teal = Color.other("#4CCCFF")
   public static let yellow = Color.other("#FFF080")
   public static let white = Color.other("#fff")
 }
@@ -25,6 +24,7 @@ extension Class {
     public enum colors {
       public enum bg {
         public static let black = CssSelector.class("bg-black")
+        public static let blue900 = CssSelector.class("bg-blue900")
         public static let dark = CssSelector.class("bg-dark")
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
@@ -43,6 +43,7 @@ extension Class {
       }
       public enum fg {
         public static let black = CssSelector.class("fg-black")
+        public static let blue = CssSelector.class("fg-blue")
         public static let gray300 = CssSelector.class("fg-gray300")
         public static let gray400 = CssSelector.class("fg-gray400")
         public static let gray650 = CssSelector.class("fg-gray650")
@@ -102,6 +103,52 @@ extension Class {
         Class.pf.colors.fg.black
           | Class.type.bold
           | Class.h6
+          | Class.type.lineHeight(1)
+          | Class.type.caps
+
+      private static let titleBase =
+        Class.pf.colors.fg.black
+          | Class.type.bold
+
+      public static let responsiveTitle1 =
+        titleBase
+          | Class.typeScale([.mobile: .r3, .desktop: .r4])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle2 =
+        titleBase
+          | Class.typeScale([.mobile: .r2, .desktop: .r3])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle3 =
+        titleBase
+          | Class.typeScale([.mobile: .r1_5, .desktop: .r2])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle4 =
+        titleBase
+          | Class.typeScale([.mobile: .r1_25, .desktop: .r1_5])
+          | Class.type.lineHeight(2)
+
+      public static let responsiveTitle5 =
+        titleBase
+          | Class.typeScale([.mobile: .r1, .desktop: .r1_25])
+          | Class.type.lineHeight(1)
+
+      public static let responsiveTitle6 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_875, .desktop: .r1])
+          | Class.type.lineHeight(1)
+
+      public static let responsiveTitle7 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_75, .desktop: .r0_875])
+          | Class.type.lineHeight(1)
+          | Class.type.caps
+
+      public static let responsiveTitle8 =
+        titleBase
+          | Class.typeScale([.mobile: .r0_75])
           | Class.type.lineHeight(1)
           | Class.type.caps
 
@@ -287,6 +334,9 @@ extension Class.pf {
         | Class.h6
 
     public static let heroLogo = CssSelector.class("hero-logo")
+
+    public static let blueGradient = CssSelector.class("blue-gradient")
+    public static let reflectX = CssSelector.class("reflect-x")
   }
 }
 
@@ -307,6 +357,8 @@ public let pointFreeBaseStyles =
     <> baseButtonStyles
     <> heroLogoStyles
     <> videoTimeLinkStyles
+    <> blueGradientStyles
+    <> reflectStyles
 
 private let bodyStyles =
   html % (
@@ -325,6 +377,7 @@ private let resets =
 
 private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900)
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
@@ -341,6 +394,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)
+    <> Class.pf.colors.fg.blue % color(Colors.blue)
     <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
     <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
     <> Class.pf.colors.fg.gray650 % color(Colors.gray650)
@@ -462,7 +516,7 @@ private let darken3 = boxShadow(
 
 private let heroLogoStyles =
   Breakpoint.mobile.query(only: screen) {
-    Class.pf.components.heroLogo % maxWidth(.px(160))
+    Class.pf.components.heroLogo % maxWidth(.px(260))
 }
 
 private let videoTimeLinkClass = CssSelector.class("vid-time-link")
@@ -470,4 +524,24 @@ private let videoTimeLinkStyles =
   videoTimeLinkClass % (
     padding(all: .rem(0.25))
       <> margin(top: .px(1), right: .rem(0.25))
+)
+
+private let blueGradientStyles =
+  Class.pf.components.blueGradient % (
+    key("background", "rgba(128,219,255,0.85)")
+      <> key("background", "-moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)))")
+      <> key("background", "-webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "-ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+      <> key("background", "linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%)")
+)
+
+private let reflectStyles =
+  Class.pf.components.reflectX % (
+    key("transform", "scaleX(-1)")
+      <> key("-webkit-transform", "scaleX(-1)")
+      <> key("-moz-transform", "scaleX(-1)")
+      <> key("-o-transform", "scaleX(-1)")
+      <> key("-ms-transform", "scaleX(-1)")
 )
