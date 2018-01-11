@@ -42,8 +42,6 @@ private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> {
     ])
 }
 
-
-
 let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody)
   .contramap { teamOwner, teammate in
     SimpleEmailLayoutData(
@@ -63,7 +61,7 @@ private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { te
           h3([`class`([Class.pf.type.title3])], ["Team removal"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             text("""
-              You have removed from \(teammate.name) from your Point-Free team, which means they no longer
+              You have removed \(teammate.name) from your Point-Free team, which means they no longer
               have access to full episodes and transcripts. You can add them back anytime from your account
               settings.
               """)
