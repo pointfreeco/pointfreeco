@@ -70,15 +70,24 @@ let updateProfileMiddleware =
       )
 }
 
+let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, EmailAddress>, Data> = { conn in
+  let (userId, newEmailAddress) = lower(conn.data)
 
-let confirmEmailChangeMiddleware =
-{ (conn: Conn<StatusLineOpen, Tuple2<Database.User.Id, EmailAddress>>) -> IO<Conn<ResponseEnded, Data>> in
-  let (userId, emailAddress) = lower(conn.data)
+  parallel(
+    AppEnvironment.current.database.fetchUserById(userId)
+      .bimap(const(unit), id)
+      .flatMap { user in
+        sendEmail(
+          to: [newEmailAddress],
+          subject: "Email change confirmation",
+          content: inj2(emailChangedEmailView.view((user, newEmailAddress)))
+        )
+      }
+      .run
+    )
+    .run({ _ in })
 
-  // TODO: confirm that currentUser.id == userId
-  // TODO: send email saying that email has been changed
-
-  return AppEnvironment.current.database.updateUser(userId, nil, emailAddress, nil)
+  return AppEnvironment.current.database.updateUser(userId, nil, newEmailAddress, nil)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }
