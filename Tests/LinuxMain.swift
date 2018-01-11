@@ -158,7 +158,8 @@ extension MetaLayoutTests {
 }
 extension MinimalNavViewTests {
   static var allTests: [(String, (MinimalNavViewTests) -> () throws -> Void)] = [
-    ("testNav_LoggedOut", testNav_LoggedOut)
+    ("testNav_Html", testNav_Html),
+    ("testNav_Screenshots", testNav_Screenshots)
   ]
 }
 extension NewEpisodeEmailTests {
