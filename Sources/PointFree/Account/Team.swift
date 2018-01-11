@@ -81,7 +81,7 @@ private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Databa
     parallel(sendEmail(
       to: [owner.email],
       subject: "Your teammate \(teammate.name) has been removed",
-      content: inj2(youHaveBeenRemovedEmailView.view((owner, teammate)))
+      content: inj2(teammateRemovedEmailBody.view((owner, teammate)))
       )
       .run)
   )
