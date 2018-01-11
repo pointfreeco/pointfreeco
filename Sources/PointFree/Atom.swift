@@ -24,7 +24,7 @@ public struct AtomFeed {
 }
 
 public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
-  return [
+  [
     .text(
       unsafeUnencodedString(
         """
@@ -38,7 +38,7 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
         title(atomFeed.title),
         link([href(atomFeed.atomUrl), rel(.self)]),
         link([href(atomFeed.siteUrl)]),
-        updated(Date()),
+        atomFeed.entries.map(^\.updated).max().map(updated),
         id(atomFeed.siteUrl),
         author([
           name(atomFeed.author.name),
@@ -46,6 +46,7 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
           ]),
         ]
         <> atomFeed.entries.flatMap(atomEntry.view)
+        |> catOptionals
     )
   ]
 }
