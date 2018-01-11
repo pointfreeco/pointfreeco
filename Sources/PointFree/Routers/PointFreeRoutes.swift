@@ -13,6 +13,7 @@ public enum Route: DerivePartialIsos {
   case admin(Admin)
   case episode(Either<String, Int>)
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
+  case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
   case invite(Invite)
@@ -74,6 +75,10 @@ public enum Route: DerivePartialIsos {
       case send(Episode.Id)
       case show
     }
+  }
+
+  public enum Feed: DerivePartialIsos {
+    case atom
   }
 
   public enum Invite: DerivePartialIsos {
@@ -154,6 +159,9 @@ private let routers: [Router<Route>] = [
 
   .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+
+  .feed <<< .atom
+    <¢> get %> lit("feed") %> lit("atom.xml") <% end,
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
