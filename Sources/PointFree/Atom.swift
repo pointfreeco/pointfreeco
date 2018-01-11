@@ -122,3 +122,4 @@ public func type(_ type: String) -> Attribute<Element.Content> {
 private let atomDateFormatter = DateFormatter()
   |> \.dateFormat .~ "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
   |> \.locale .~ Locale(identifier: "en_US_POSIX")
+  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
