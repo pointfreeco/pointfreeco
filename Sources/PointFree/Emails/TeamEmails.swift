@@ -81,18 +81,3 @@ private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { te
       ])
     ])
 }
-
-
-//parallel(sendEmail(
-//  to: [teammate.email],
-//  subject: "You have been removed from \(owner.name)’s Point-Free team",
-//  content: inj1("You have been removed")
-//  )
-//  .run),
-//parallel(sendEmail(
-//to: [owner.email],
-//subject: "Your teammate \(teammate.name) has been removed",
-//content: inj1("EOM")
-//)
-//.run)
-
