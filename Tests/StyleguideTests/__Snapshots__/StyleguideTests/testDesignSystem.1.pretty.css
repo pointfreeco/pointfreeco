@@ -23,6 +23,38 @@
   font-size : 0.75rem;
 }
 
+.ts-m-r4 {
+  font-size : 4rem;
+}
+
+.ts-m-r3 {
+  font-size : 3rem;
+}
+
+.ts-m-r2 {
+  font-size : 2rem;
+}
+
+.ts-m-r1_5 {
+  font-size : 1.5rem;
+}
+
+.ts-m-r1_25 {
+  font-size : 1.25rem;
+}
+
+.ts-m-r1 {
+  font-size : 1rem;
+}
+
+.ts-m-r0_875 {
+  font-size : 0.875rem;
+}
+
+.ts-m-r0_75 {
+  font-size : 0.75rem;
+}
+
 .hide-all {
   position : absolute;
   height   : 1px;
@@ -778,6 +810,10 @@
   width : 100%;
 }
 
+.h-100p {
+  height : 100%;
+}
+
 .inline {
   display : inline;
 }
@@ -806,6 +842,41 @@
   cursor : pointer;
 }
 
+@media only screen and (min-width: 832px) {
+
+.ts-d-r4 {
+  font-size : 4rem;
+}
+
+.ts-d-r3 {
+  font-size : 3rem;
+}
+
+.ts-d-r2 {
+  font-size : 2rem;
+}
+
+.ts-d-r1_5 {
+  font-size : 1.5rem;
+}
+
+.ts-d-r1_25 {
+  font-size : 1.25rem;
+}
+
+.ts-d-r1 {
+  font-size : 1rem;
+}
+
+.ts-d-r0_875 {
+  font-size : 0.875rem;
+}
+
+.ts-d-r0_75 {
+  font-size : 0.75rem;
+}
+
+}
 @media only screen and (max-width: 831px) {
 
 .hide-m {

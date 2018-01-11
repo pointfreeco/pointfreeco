@@ -2,9 +2,8 @@
 
 ### Episode #1
 
-This is a short blurb to give a high-level overview of what the episode is about. It supports basic
-markdown, such as inline code (`f(x) = x`), **bolded** words, _italicized_ words, and
-[links](https://www.pointfree.co).
+This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
 
 This episode is 23 minutes long.
 

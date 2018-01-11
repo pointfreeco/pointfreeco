@@ -30,7 +30,7 @@ public struct Environment {
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
-    episodes: @escaping () -> [Episode] = { [typeSafeHtml] },
+    episodes: @escaping () -> [Episode] = { [typeSafeHtml, typeSafeHtml, typeSafeHtml] },
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
     sendEmail: @escaping SendEmail = PointFree.mailgunSend,
