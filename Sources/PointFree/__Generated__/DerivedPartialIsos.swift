@@ -174,6 +174,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Route.Feed
+        ), B == Route {
+
+          public static let feed = parenthesize <| PartialIso(
+            apply: Route.feed,
+            unapply: {
+              guard case let .feed(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             String?
           , 
             String?
@@ -618,6 +632,17 @@ import Prelude
           apply: const(.some(.show)),
           unapply: {
             guard case .show = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Feed {
+        public static let atom = parenthesize <| PartialIso<Prelude.Unit, Route.Feed>(
+          apply: const(.some(.atom)),
+          unapply: {
+            guard case .atom = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
