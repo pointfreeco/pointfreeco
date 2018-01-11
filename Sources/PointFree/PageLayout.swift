@@ -106,6 +106,12 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           style(styleguide),
           style(layoutData.extraStyles),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          link([
+            href(url(to: .feed(.atom))),
+            rel(.alternate),
+            title("Point-Free Episodes"),
+            type(.application(.atom)),
+            ])
           ]
           <> (layoutData.useHighlightJs ? highlightJsHead : [])
         ),
