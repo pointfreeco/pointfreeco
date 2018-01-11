@@ -31,7 +31,7 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.D
 
 // todo: where should this live?
 // todo: render `CssSelector.union` better
-private func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
+public func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
   return guaranteeClassAttributeExists(attributes)
     .map { attribute in
       guard attribute.attrib.key == "class" else { return attribute }

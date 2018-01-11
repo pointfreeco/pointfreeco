@@ -23,9 +23,12 @@ class EpisodeTests: TestCase {
 
     #if !os(Linux)
       if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1800))
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView)
+        assertSnapshot(matching: webView, named: "desktop")
+
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
       }
     #endif
   }
@@ -43,7 +46,7 @@ class EpisodeTests: TestCase {
 
     #if !os(Linux)
       if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 800))
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1000))
         webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
         assertSnapshot(matching: webView)
       }
