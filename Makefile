@@ -20,11 +20,9 @@ test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-macos: xcodeproj init-db
-	set -o pipefail && \
 	xcodebuild test \
 		-scheme PointFree-Package \
-		-destination platform="macOS" \
-		| xcpretty
+		-destination platform="macOS"
 
 test-ios: xcodeproj init-db
 	set -o pipefail && \
