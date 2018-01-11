@@ -6,9 +6,8 @@ extension Episode {
 
 private let paidEpisode = Episode(
   blurb: """
-  This is a short blurb to give a high-level overview of what the episode is about. It supports basic
-  markdown, such as inline code (`f(x) = x`), **bolded** words, _italicized_ words, and
-  [links](https://www.pointfree.co).
+  This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+  text, no markdown allowed. Here is some more text just to have some filler.
   """,
   codeSampleDirectory: "ep1-proof-in-functions",
   id: .init(unwrap: 1),

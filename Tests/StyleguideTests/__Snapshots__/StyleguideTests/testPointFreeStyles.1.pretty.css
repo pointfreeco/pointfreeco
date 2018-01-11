@@ -34,6 +34,10 @@ body {
   background-color : #121212;
 }
 
+.bg-blue900 {
+  background-color : #E6F8FF;
+}
+
 .bg-dark {
   background-color : #121212;
 }
@@ -97,6 +101,10 @@ body {
 
 .fg-black {
   color : #121212;
+}
+
+.fg-blue {
+  color : #4CCCFF;
 }
 
 .fg-gray300 {
@@ -311,6 +319,24 @@ a:link.btn-normal {
   margin-right   : 0.25rem;
 }
 
+.blue-gradient {
+  background : rgba(128,219,255,0.85);
+  background : -moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)));
+  background : -webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : -ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+  background : linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
+}
+
+.reflect-x {
+  transform         : scaleX(-1);
+  -webkit-transform : scaleX(-1);
+  -moz-transform    : scaleX(-1);
+  -o-transform      : scaleX(-1);
+  -ms-transform     : scaleX(-1);
+}
+
 @media only screen and (min-width: 832px) {
 
 html {
@@ -321,7 +347,7 @@ html {
 @media only screen and (max-width: 831px) {
 
 .hero-logo {
-  max-width : 160px;
+  max-width : 260px;
 }
 
 }

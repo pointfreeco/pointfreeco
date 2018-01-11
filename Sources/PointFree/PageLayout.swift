@@ -9,6 +9,16 @@ import Prelude
 import Styleguide
 import Tuple
 
+enum NavStyle {
+  case minimal(MinimalStyle)
+  case mountains
+
+  enum MinimalStyle {
+    case dark
+    case light
+  }
+}
+
 struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
   private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
@@ -18,8 +28,8 @@ struct SimplePageLayoutData<A> {
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
+  private(set) var navStyle: NavStyle?
   private(set) var openGraphType: OpenGraphType
-  private(set) var showTopNav: Bool
   private(set) var title: String
   private(set) var twitterCard: TwitterCard
   private(set) var useHighlightJs: Bool
@@ -32,8 +42,8 @@ struct SimplePageLayoutData<A> {
     description: String? = nil,
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
+    navStyle: NavStyle? = .some(.minimal(.light)),
     openGraphType: OpenGraphType = .website,
-    showTopNav: Bool = true,
     title: String,
     twitterCard: TwitterCard = .summaryLargeImage,
     useHighlightJs: Bool = false
@@ -47,8 +57,8 @@ struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
+    self.navStyle = navStyle
     self.openGraphType = openGraphType
-    self.showTopNav = showTopNav
     self.title = title
     self.twitterCard = twitterCard
     self.useHighlightJs = useHighlightJs
@@ -101,14 +111,22 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ),
         body(
           (layoutData.flash.map(flashView.view) ?? [])
-            <> (layoutData.showTopNav
-              ? darkNavView.view((layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute))
-              : [])
+            <> (layoutData.navStyle.map { navView.view(($0, layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute)) } ?? [])
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
         )
         ])
       ])
+  }
+}
+
+private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
+
+  switch navStyle {
+  case .mountains:
+    return mountainNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
+  case let .minimal(minimalStyle):
+    return minimalNavView.view((minimalStyle, currentUser, currentSubscriptionStatus, currentRoute))
   }
 }
 
