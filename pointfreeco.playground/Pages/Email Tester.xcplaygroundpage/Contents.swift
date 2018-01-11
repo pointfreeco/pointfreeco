@@ -8,7 +8,7 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = confirmEmailChangeEmailView.view((.mock, .init(unwrap: "blob@blob.co")))
+let htmlNodes = teammateRemovedEmailView.view((.mock, .mock))
 let htmlString = render(htmlNodes, config: compact)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
