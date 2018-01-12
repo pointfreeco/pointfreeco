@@ -20,4 +20,3 @@ private let connectToPostgres =
     .flatMap { _ in AppEnvironment.current.database.migrate() }
     .flatMap(const(print(message: "Connected to PostgreSQL!")))
     .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
-
