@@ -392,13 +392,16 @@ extension EitherIO {
   }
 
   func retry(maxRetries: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
-    return self.retry(maxRetries: maxRetries, attempts: 0, backoff: backoff)
+    return self.retry(maxRetries: maxRetries, attempts: 1, backoff: backoff)
   }
 
   private func retry(maxRetries: Int, attempts: Int, backoff: @escaping (Int) -> DispatchTimeInterval) -> EitherIO {
 
+    guard attempts < maxRetries else { return self }
+
     return self <|> .init(run:
       self
+        .retry(maxRetries: maxRetries, attempts: attempts + 1, backoff: backoff)
         .run
         .delay(backoff(attempts))
     )
