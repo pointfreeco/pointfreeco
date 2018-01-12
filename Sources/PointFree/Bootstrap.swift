@@ -5,7 +5,6 @@ public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
 
   return print(message: "Bootstrapping PointFree...")
     .flatMap(const(connectToPostgres))
-    .flatMap(const(syncronizeMailgunNewsletterRoutes))
     .flatMap(const(print(message: "PointFree Bootstrapped!")))
 }
 
