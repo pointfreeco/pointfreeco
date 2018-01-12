@@ -38,6 +38,7 @@ public struct Email {
   var trackingClicks: TrackingClicks? = nil
   var trackingOpens: TrackingOpens? = nil
   var domain: String
+  var headers: [(String, String)] = []
 }
 
 public struct SendEmailResponse: Decodable {
@@ -58,6 +59,9 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
   params["tracking"] = email.tracking?.rawValue
   params["tracking-clicks"] = email.trackingClicks?.rawValue
   params["tracking-opens"] = email.trackingOpens?.rawValue
+  email.headers.forEach { key, value in
+    params["h:\(key)"] = value
+  }
 
   let request = URLRequest(
     url: URL(string: "https://api.mailgun.net/v3/\(AppEnvironment.current.envVars.mailgun.domain)/messages")!
