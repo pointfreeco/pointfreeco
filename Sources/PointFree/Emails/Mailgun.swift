@@ -6,6 +6,42 @@ import Optics
 import Prelude
 import UrlFormEncoding
 
+public struct Mailgun {
+  public var createNewsletterRoute: (Database.EmailSetting.Newsletter) -> EitherIO<Prelude.Unit, Prelude.Unit>
+  public var deleteRoute: (String) -> EitherIO<Prelude.Unit, Prelude.Unit>
+  public var fetchRoutes: () -> EitherIO<Prelude.Unit, RoutesEnvelope>
+  public var sendEmail: (Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
+  public var updateNewsletterRoute: (String, Database.EmailSetting.Newsletter) -> EitherIO<Prelude.Unit, Prelude.Unit>
+
+  public static let live = Mailgun(
+    createNewsletterRoute: createRoute(newsletter:),
+    deleteRoute: hole,
+    fetchRoutes: PointFree.fetchRoutes,
+    sendEmail: mailgunSend,
+    updateNewsletterRoute: hole
+  )
+
+  public struct Route: Codable {
+    public let description: String
+    public let id: String
+  }
+
+  public struct RoutesEnvelope: Codable {
+    public let items: [Route]
+    public let totalCount: Int
+
+    private enum CodingKeys: String, CodingKey {
+      case items
+      case totalCount = "total_count"
+    }
+  }
+
+  public struct SendEmailResponse: Decodable {
+    public let id: String
+    public let message: String
+  }
+}
+
 public typealias EmailAddress = Tagged<Email, String>
 
 enum Tracking: String {
@@ -41,12 +77,7 @@ public struct Email {
   var headers: [(String, String)] = []
 }
 
-public struct SendEmailResponse: Decodable {
-  let id: String
-  let message: String
-}
-
-func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
+func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
 
   var params: [String: String] = [:]
   params["from"] = email.from.unwrap
@@ -74,8 +105,35 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
     .withExcept(const(unit))
 }
 
-public func mailto<T: HasHref>(_ address: String) -> Attribute<T> {
-  return href("mailto:" + address)
+private func createRoute(newsletter: Database.EmailSetting.Newsletter) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+
+  var params: [String: String] = [:]
+  params["priority"] = "0"
+  params["description"] = routeDescription(for: newsletter)
+  params["expression"] = unsubscribeEmail(for: newsletter)
+  params["action"] = forwardAction(for: newsletter)
+
+  let request = URLRequest(
+    url: URL(string: "https://api.mailgun.net/v3/routes")!
+    )
+    |> \.httpMethod .~ "POST"
+    |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
+    |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
+
+  return dataTask(with: request)
+    .bimap(const(unit), const(unit))
+}
+
+private func fetchRoutes() -> EitherIO<Prelude.Unit, Mailgun.RoutesEnvelope> {
+
+  let request = URLRequest(
+    url: URL(string: "https://api.mailgun.net/v3/routes")!
+    )
+    |> \.httpMethod .~ "GET"
+    |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
+
+  return jsonDataTask(with: request)
+    .withExcept(const(unit))
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
@@ -84,14 +142,16 @@ private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [Stri
     |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
-// TODO: move to swift-prelude
-private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
-  var result = [K: V]()
-  for (key, value) in xs {
-    if let value = value {
-      result[key] = value
-    }
-  }
-  return result
+private let generatedToken = "Generated for Newsletters"
+
+func routeDescription(for newsletter: Database.EmailSetting.Newsletter) -> String {
+  return "[\(generatedToken)] Unsubscribe \(newsletter.rawValue)"
 }
 
+private func unsubscribeEmail(for newsletter: Database.EmailSetting.Newsletter) -> String {
+  return "unsubscribe-\(newsletter.rawValue)@pointfree.co"
+}
+
+private func forwardAction(for newsletter: Database.EmailSetting.Newsletter) -> String {
+  return "forward(\"" + url(to: .expressUnsubscribeReply) + "\")"
+}

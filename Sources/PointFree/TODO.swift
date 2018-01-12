@@ -551,3 +551,19 @@ public func payload<A, B>(
         return "\(first)\(separator)\(second)"
     })
 }
+
+public func mailto<T: HasHref>(_ address: String) -> Attribute<T> {
+  return href("mailto:" + address)
+}
+
+public func hole<A, B>(_ a: A) -> B {
+  fatalError()
+}
+
+public func hole<A, B, C>(_ a: A, _ b: B) -> C {
+  fatalError()
+}
+
+public func hole<B>() -> B {
+  fatalError()
+}

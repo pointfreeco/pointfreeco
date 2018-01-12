@@ -60,6 +60,10 @@ public struct Database {
       case newEpisode
 
       public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
+
+      public var unsubscribeEmail: String {
+        return "expression-unsubscribe-\(self.rawValue)@pointfree.co"
+      }
     }
 
     public static func ==(lhs: Database.EmailSetting, rhs: Database.EmailSetting) -> Bool {

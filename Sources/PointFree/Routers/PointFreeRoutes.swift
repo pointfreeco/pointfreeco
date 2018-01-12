@@ -13,6 +13,7 @@ public enum Route: DerivePartialIsos {
   case admin(Admin)
   case episode(Either<String, Int>)
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
+  case expressUnsubscribeReply
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
@@ -166,6 +167,11 @@ private let routers: [Router<Route>] = [
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
     %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
+    <% end,
+
+  .expressUnsubscribeReply
+    <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
+//    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
     <% end,
 
   .gitHubCallback

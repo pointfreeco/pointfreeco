@@ -137,7 +137,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
 // MARK: - Emails
 
 private func sendUpgradeEmail(to owner: Database.User, for subscription: Stripe.Subscription)
-  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+  -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],

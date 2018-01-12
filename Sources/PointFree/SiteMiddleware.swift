@@ -109,6 +109,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. userId .*. newsletter .*. unit))
         |> expressUnsubscribeMiddleware
 
+    case .expressUnsubscribeReply:
+      fatalError()
+
     case .feed(.atom):
       return conn.map(const(AppEnvironment.current.episodes()))
         |> atomFeedResponse
@@ -218,6 +221,7 @@ private func isProtected(route: Route) -> Bool {
        .admin,
        .account,
        .expressUnsubscribe,
+       .expressUnsubscribeReply,
        .episode,
        .feed,
        .gitHubCallback,

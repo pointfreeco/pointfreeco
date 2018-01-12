@@ -9,7 +9,7 @@ func sendEmail(
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = "mg.pointfree.co"
   )
-  -> EitherIO<Unit, SendEmailResponse> {
+  -> EitherIO<Unit, Mailgun.SendEmailResponse> {
 
     let (plain, html): (String, String?) =
       destructure(
