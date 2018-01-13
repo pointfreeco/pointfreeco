@@ -20,13 +20,16 @@ func sendEmail(
         second(render)
     )
 
-    let unsubscribeHeader = unsubscribeData
+    let headers: [(String, String)] = unsubscribeData
       .map { userId, newsletter in
-        [
+        guard let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter)
+          else { return [] }
+
+        return [
           (
             "List-Unsubscribe",
             """
-            <mailto:\(newsletter.unsubscribeEmail)>, \
+            <mailto:\(unsubEmail)>, \
             <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
             """
           )
@@ -50,7 +53,7 @@ func sendEmail(
         trackingClicks: nil,
         trackingOpens: nil,
         domain: domain,
-        headers: unsubscribeHeader
+        headers: headers
       )
     )
 }

@@ -21,7 +21,7 @@ private func requireUserAndNewsletter(
 
   return { conn in
 
-    guard let newsletter = Database.EmailSetting.Newsletter(unsubscribeEmail: conn.data.recipient.unwrap)
+    guard let (_userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
       else {
         return conn
           |> writeStatus(.notAcceptable)

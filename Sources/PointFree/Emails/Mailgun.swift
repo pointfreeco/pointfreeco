@@ -94,6 +94,43 @@ func routeDescription(for newsletter: Database.EmailSetting.Newsletter) -> Strin
   return "[\(generatedToken)] Unsubscribe \(newsletter.rawValue)"
 }
 
+import HttpPipeline
+
+func unsubscribeEmail(
+  fromUserId userId: Database.User.Id,
+  andNewsletter newsletter: Database.EmailSetting.Newsletter,
+  boundary: String = "--"
+  ) -> EmailAddress? {
+
+  guard let payload = encrypted(
+    text: "\(userId.unwrap.uuidString)\(boundary)\(newsletter.rawValue)",
+    secret: AppEnvironment.current.envVars.appSecret
+    ) else { return nil }
+
+  return .init(unwrap: "unsub-\(payload)@pointfree.co")
+}
+
+func userIdAndNewsletter(
+  fromUnsubscribeEmail email: EmailAddress,
+  boundary: String = "--"
+  ) -> (Database.User.Id, Database.EmailSetting.Newsletter)? {
+
+  let payload = email.unwrap
+    .components(separatedBy: "unsub-")
+    .last
+    .flatMap({ $0.split(separator: "@").first })
+    .map(String.init)
+
+  return payload
+    .flatMap { decrypted(text: $0, secret: AppEnvironment.current.envVars.appSecret) }
+    .map { $0.components(separatedBy: boundary) }
+    .flatMap {
+      tuple
+        <¢> $0.first.flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
+        <*> $0.last.flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
+  }
+}
+
 private func forwardAction(for newsletter: Database.EmailSetting.Newsletter) -> String {
   let route = Route.expressUnsubscribeReply(
     MailgunForwardPayload(

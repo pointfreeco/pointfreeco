@@ -50,10 +50,12 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
+    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
         .init(
-          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
+          recipient: unsubEmail,
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
           sender: user.email,

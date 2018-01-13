@@ -173,7 +173,6 @@ private let routers: [Router<Route>] = [
   .expressUnsubscribeReply
     <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
     %> formBody(MailgunForwardPayload.self, decoder: formDecoder).map(.signatureVerification)
-//    <% mailgunForwardSignatureVerification
     <% end,
 
   .gitHubCallback
@@ -254,15 +253,6 @@ extension PartialIso where A == String, B == Tag {
   }
 }
 
-extension PartialIso where A == String, B == Database.EmailSetting.Newsletter {
-  public static var unsubscribeNewsletter: PartialIso {
-    return PartialIso(
-      apply: Database.EmailSetting.Newsletter.init(unsubscribeEmail:),
-      unapply: ^\.unsubscribeEmail
-    )
-  }
-}
-
 public struct MailgunForwardPayload: Codable {
   public let recipient: EmailAddress
   public let timestamp: Int
@@ -274,9 +264,9 @@ public struct MailgunForwardPayload: Codable {
 extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayload {
   fileprivate static var signatureVerification: PartialIso {
     return PartialIso(
-      apply: {
-        verify(payload: $0) ? .some($0) : nil
-    }, unapply: { $0 })
+      apply: { verify(payload: $0) ? .some($0) : nil },
+      unapply: { $0 }
+    )
   }
 }
 

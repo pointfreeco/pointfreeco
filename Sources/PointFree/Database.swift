@@ -62,21 +62,6 @@ public struct Database {
       case newEpisode
 
       public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
-
-      public var unsubscribeEmail: String {
-        return "express-unsubscribe-\(self.rawValue)@pointfree.co"
-      }
-
-      public init?(unsubscribeEmail: String) {
-        let optionalNewsletter = unsubscribeEmail
-          .split(separator: "-")
-          .last
-          .flatMap { $0.split(separator: "@").first }
-          .flatMap(String.init >>> Newsletter.init(rawValue:))
-
-        guard let newsletter = optionalNewsletter else { return nil }
-        self = newsletter
-      }
     }
 
     public static func ==(lhs: Database.EmailSetting, rhs: Database.EmailSetting) -> Bool {
