@@ -90,19 +90,22 @@ class NewslettersTests: TestCase {
   }
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
+
     let user = AppEnvironment.current.database.registerUser(.mock)
       .run
       .perform()
       .right!!
 
+    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
         .init(
-          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
+          recipient: unsubEmail,
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
           sender: user.email,
-          signature: "this is an incorrect signature"
+          signature: "this is an invalid signature"
         )
       ),
       session: .loggedOut
@@ -136,10 +139,16 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
+    let payload = encrypted(
+      text: "\(user.id.unwrap.uuidString)--unknown",
+      secret: AppEnvironment.current.envVars.appSecret
+    )!
+    let unsubEmail = EmailAddress(unwrap: "unsub-\(payload)@pointfree.co")
+
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
         .init(
-          recipient: .init(unwrap: "express-unsubscribe-unknown@pointfree.co"),
+          recipient: unsubEmail,
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
           sender: user.email,
@@ -172,10 +181,15 @@ class NewslettersTests: TestCase {
   }
 
   func testExpressUnsubscribeReply_UnknownEmail() {
+    let unsubEmail = unsubscribeEmail(
+      fromUserId: .init(unwrap: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!),
+      andNewsletter: .announcements
+    )!
+
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
         .init(
-          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
+          recipient: unsubEmail,
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
           sender: .init(unwrap: "who-dis@pointfree.co"),

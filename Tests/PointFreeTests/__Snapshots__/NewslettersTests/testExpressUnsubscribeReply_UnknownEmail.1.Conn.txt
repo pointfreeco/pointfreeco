@@ -6,7 +6,7 @@
   Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={}
 
-  sender=who-dis@pointfree.co&recipient=express-unsubscribe-announcements@pointfree.co&timestamp=1517356800&token=deadbeef&signature=ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9
+  sender=who-dis@pointfree.co&recipient=unsub-96194ec41e1b962c516711f966088a6d37cf9548d89e1de4fc6563b185a020ee0420ef8422f918a3c7066d005b13e288a1fda29cc9b41edc12df81d31d5608b9@pointfree.co&timestamp=1517356800&token=deadbeef&signature=ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9
 
 ▿ Response
   Status 406 NOT ACCEPTABLE

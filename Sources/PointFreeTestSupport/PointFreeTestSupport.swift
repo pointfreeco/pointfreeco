@@ -16,7 +16,7 @@ extension Environment {
     episodes: { [.mock] },
     gitHub: .mock,
     logger: .mock,
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
+    mailgun: .mock,
     stripe: .mock
   )
 }
@@ -30,6 +30,12 @@ extension EnvVars {
     return EnvVars()
       |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
   }
+}
+
+extension Mailgun {
+  public static let mock = Mailgun(
+    sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
+  )
 }
 
 extension Database {

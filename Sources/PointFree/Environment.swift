@@ -10,7 +10,6 @@ public enum CookieTransform: String, Codable {
 
 public typealias AirtableCreateRow = (_ email: EmailAddress) -> (_ baseId: String)
   -> EitherIO<Prelude.Unit, Prelude.Unit>
-public typealias SendEmail = (_ email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
@@ -22,7 +21,6 @@ public struct Environment {
   public private(set) var gitHub: GitHub
   public private(set) var logger: Logger
   public private(set) var mailgun: Mailgun
-  public private(set) var sendEmail: SendEmail
   public private(set) var stripe: Stripe
 
   init(
@@ -46,7 +44,6 @@ public struct Environment {
     self.gitHub = gitHub
     self.logger = logger
     self.mailgun = mailgun
-    self.sendEmail = sendEmail
     self.stripe = stripe
   }
 }
