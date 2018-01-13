@@ -278,11 +278,20 @@ public struct MailgunForwardPayload: Codable {
 //    .map(.signatureVerification)
 //}
 
+import Cryptor
+
+public func hexDigest(value: String, asciiSecret: String) -> String? {
+  let keyBytes = CryptoUtils.byteArray(from: asciiSecret)
+  let valueBytes = CryptoUtils.byteArray(from: value)
+  let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
+  return digestBytes.map { $0.map { String(format: "%02x", $0) }.joined() }
+}
+
 extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayload {
   fileprivate static var signatureVerification: PartialIso {
     return PartialIso(
       apply: {
-        return $0.signature == digest(value: "\($0.timestamp)\($0.token)", secret: AppEnvironment.current.envVars.mailgun.apiKey)
+        return $0.signature == hexDigest(value: "\($0.timestamp)\($0.token)", asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey)
           ? .some($0)
           : nil
     }, unapply: { $0 }

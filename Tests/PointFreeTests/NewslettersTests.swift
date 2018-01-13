@@ -59,7 +59,7 @@ class NewslettersTests: TestCase {
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
           sender: "express-unsubscribe-announcements@pointfree.co",
-          signature: "94df20262fa6ac5a6611a6b48490784a38876ffc2767c47e4e2bdb2b0ca649e6"
+          signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
         )
       ),
       session: .loggedIn
