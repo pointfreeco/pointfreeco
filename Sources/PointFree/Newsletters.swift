@@ -21,27 +21,15 @@ private func requireUserAndNewsletter(
 
   return { conn in
 
-    guard let (_userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
+    guard let (userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
       else {
         return conn
           |> writeStatus(.notAcceptable)
           >-> respond(text: "Not acceptable")
     }
 
-    return AppEnvironment.current.database.fetchUserByEmail(conn.data.sender)
-      .mapExcept(requireSome)
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> writeStatus(.notAcceptable)
-              >-> respond(text: "Not acceptable")
-          ),
-
-          { user in conn.map(const(user.id .*. newsletter .*. unit)) |> middleware }
-        )
-    )
+    return conn.map(const(userId .*. newsletter .*. unit))
+      |> middleware
   }
 }
 

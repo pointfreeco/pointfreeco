@@ -343,7 +343,7 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
 private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    SELECT "github_user_id", "github_access_token", "id", "name", "subscription_id"
     FROM "users"
     WHERE "email" = $1
     LIMIT 1

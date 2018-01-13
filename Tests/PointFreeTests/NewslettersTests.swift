@@ -179,29 +179,4 @@ class NewslettersTests: TestCase {
       named: "email_settings_after_unsubscribe"
     )
   }
-
-  func testExpressUnsubscribeReply_UnknownEmail() {
-    let unsubEmail = unsubscribeEmail(
-      fromUserId: .init(unwrap: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!),
-      andNewsletter: .announcements
-    )!
-
-    let unsubscribe = request(
-      to: .expressUnsubscribeReply(
-        .init(
-          recipient: unsubEmail,
-          timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
-          token: "deadbeef",
-          sender: .init(unwrap: "who-dis@pointfree.co"),
-          signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
-        )
-      ),
-      session: .loggedOut
-    )
-
-    let output = connection(from: unsubscribe)
-      |> siteMiddleware
-      |> Prelude.perform
-    assertSnapshot(matching: output)
-  }
 }
