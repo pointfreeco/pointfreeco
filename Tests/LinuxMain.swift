@@ -183,7 +183,10 @@ extension NewEpisodeEmailTests {
 extension NewslettersTests {
   static var allTests: [(String, (NewslettersTests) -> () throws -> Void)] = [
     ("testExpressUnsubscribe", testExpressUnsubscribe),
-    ("testExpressUnsubscribeReply", testExpressUnsubscribeReply)
+    ("testExpressUnsubscribeReply", testExpressUnsubscribeReply),
+    ("testExpressUnsubscribeReply_IncorrectSignature", testExpressUnsubscribeReply_IncorrectSignature),
+    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter),
+    ("testExpressUnsubscribeReply_UnknownEmail", testExpressUnsubscribeReply_UnknownEmail)
   ]
 }
 extension PaymentInfoTests {

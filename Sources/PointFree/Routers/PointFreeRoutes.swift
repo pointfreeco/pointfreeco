@@ -277,10 +277,3 @@ private func verify(payload: MailgunForwardPayload) -> Bool {
   )
   return payload.signature == digest
 }
-
-private func flatten<A, B, C>() -> PartialIso<(A, (B, C)), (A, B, C)> {
-  return .init(
-    apply: { ($0.0, $0.1.0, $0.1.1) },
-    unapply: { ($0, ($1, $2)) }
-  )
-}
