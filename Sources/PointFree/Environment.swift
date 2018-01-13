@@ -35,7 +35,6 @@ public struct Environment {
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
     mailgun: Mailgun = .live,
-    sendEmail: @escaping SendEmail = PointFree.mailgunSend,
     stripe: Stripe = .live) {
 
     self.airtableStuff = airtableStuff

@@ -37,7 +37,7 @@ func sendEmail(
       }
       ?? []
 
-    return AppEnvironment.current.sendEmail(
+    return AppEnvironment.current.mailgun.sendEmail(
       Email(
         from: from,
         to: to,

@@ -54,7 +54,7 @@ public struct Email {
   var headers: [(String, String)] = []
 }
 
-func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+private func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
 
   var params: [String: String] = [:]
   params["from"] = email.from.unwrap
@@ -87,14 +87,6 @@ private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [Stri
   return (headers ?? [:])
     |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
-
-private let generatedToken = "Generated for Newsletters"
-
-func routeDescription(for newsletter: Database.EmailSetting.Newsletter) -> String {
-  return "[\(generatedToken)] Unsubscribe \(newsletter.rawValue)"
-}
-
-import HttpPipeline
 
 func unsubscribeEmail(
   fromUserId userId: Database.User.Id,
@@ -129,17 +121,4 @@ func userIdAndNewsletter(
         <¢> $0.first.flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
         <*> $0.last.flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
   }
-}
-
-private func forwardAction(for newsletter: Database.EmailSetting.Newsletter) -> String {
-  let route = Route.expressUnsubscribeReply(
-    MailgunForwardPayload(
-      recipient: .init(unwrap: ""),
-      timestamp: 0,
-      token: "",
-      sender: .init(unwrap: ""),
-      signature: ""
-    )
-  )
-  return "forward(\"" + url(to: route) + "\")"
 }
