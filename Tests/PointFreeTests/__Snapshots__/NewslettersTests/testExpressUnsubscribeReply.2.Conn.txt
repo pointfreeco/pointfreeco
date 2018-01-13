@@ -1,0 +1,16 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/newsletters/express-unsubscribe-reply
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+  sender=express-unsubscribe-announcements@pointfree.co&recipient=hello@pointfree.co&timestamp=1517356800&token=deadbeef&signature=deadbeef
+
+▿ Response
+  Status 200 OK
+  Content-Length: 11
+  Content-Type: text/plain
+
+  unsubscribe

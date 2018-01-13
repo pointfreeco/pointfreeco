@@ -110,7 +110,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> expressUnsubscribeMiddleware
 
     case .expressUnsubscribeReply:
-      fatalError()
+      return conn
+        |> writeStatus(.ok)
+        >-> respond(text: "unsubscribe")
 
     case .feed(.atom):
       return conn.map(const(AppEnvironment.current.episodes()))

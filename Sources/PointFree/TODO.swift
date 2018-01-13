@@ -564,6 +564,10 @@ public func hole<A, B, C>(_ a: A, _ b: B) -> C {
   fatalError()
 }
 
+public func hole<A, B, C, D>(_ a: A, _ b: B, _ c: C) -> D {
+  fatalError()
+}
+
 public func hole<B>() -> B {
   fatalError()
 }

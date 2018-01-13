@@ -173,13 +173,16 @@ import Prelude
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let expressUnsubscribeReply = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.expressUnsubscribeReply)),
-          unapply: {
-            guard case .expressUnsubscribeReply = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
+      extension PartialIso where A == (
+            MailgunForwardPayload
+        ), B == Route {
+
+          public static let expressUnsubscribeReply = parenthesize <| PartialIso(
+            apply: Route.expressUnsubscribeReply,
+            unapply: {
+              guard case let .expressUnsubscribeReply(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 

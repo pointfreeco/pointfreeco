@@ -182,7 +182,8 @@ extension NewEpisodeEmailTests {
 }
 extension NewslettersTests {
   static var allTests: [(String, (NewslettersTests) -> () throws -> Void)] = [
-    ("testExpressUnsubscribe", testExpressUnsubscribe)
+    ("testExpressUnsubscribe", testExpressUnsubscribe),
+    ("testExpressUnsubscribeReply", testExpressUnsubscribeReply)
   ]
 }
 extension PaymentInfoTests {
