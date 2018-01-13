@@ -64,7 +64,7 @@ public struct Database {
       public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
 
       public var unsubscribeEmail: String {
-        return "expression-unsubscribe-\(self.rawValue)@pointfree.co"
+        return "express-unsubscribe-\(self.rawValue)@pointfree.co"
       }
 
       public init?(unsubscribeEmail: String) {

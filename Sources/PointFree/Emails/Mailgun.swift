@@ -94,10 +94,6 @@ func routeDescription(for newsletter: Database.EmailSetting.Newsletter) -> Strin
   return "[\(generatedToken)] Unsubscribe \(newsletter.rawValue)"
 }
 
-private func unsubscribeEmail(for newsletter: Database.EmailSetting.Newsletter) -> String {
-  return "unsubscribe-\(newsletter.rawValue)@pointfree.co"
-}
-
 private func forwardAction(for newsletter: Database.EmailSetting.Newsletter) -> String {
   let route = Route.expressUnsubscribeReply(
     MailgunForwardPayload(

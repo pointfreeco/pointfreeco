@@ -6,6 +6,7 @@ func sendEmail(
   from: EmailAddress = .init(unwrap: "Point-Free <support@pointfree.co>"),
   to: [EmailAddress],
   subject: String,
+  unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = "mg.pointfree.co"
   )
@@ -18,6 +19,20 @@ func sendEmail(
         { nodes in (plainText(for: nodes), render(nodes)) },
         second(render)
     )
+
+    let unsubscribeHeader = unsubscribeData
+      .map { userId, newsletter in
+        [
+          (
+            "List-Unsubscribe",
+            """
+            <mailto:\(newsletter.unsubscribeEmail)>, \
+            <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
+            """
+          )
+        ]
+      }
+      ?? []
 
     return AppEnvironment.current.sendEmail(
       Email(
@@ -35,7 +50,7 @@ func sendEmail(
         trackingClicks: nil,
         trackingOpens: nil,
         domain: domain,
-        headers: []
+        headers: unsubscribeHeader
       )
     )
 }
