@@ -46,14 +46,15 @@ let changeSeatsMiddleware =
     <<< requireActiveSubscription
     <<< requireTeamYearlySubscription
     <<< requireValidSeating
-    <| changeSeats
+    <| map(lower)
+    >>> changeSeats
 
 // MARK: -
 
-private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription, Database.User, Int, Int>>)
+private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User, Int, Int)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscription, _, _, quantity) = lower(conn.data)
+    let (subscription, user, _, quantity) = conn.data
 
     // TODO: send emails
     let plan = Pricing.team(quantity).plan
@@ -74,14 +75,16 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription
               to: .account(.subscription(.changeSeats(.show))),
               headersMiddleware: flash(.error, "We couldn’t change the number of seats at this time.")
             )
-          ),
-          const(
-            conn |> redirect(
-              to: .account(.index),
-              headersMiddleware: flash(.notice, "We’ve changed the number of seats on your subscription.")
-            )
           )
-        )
+        ) { _ in
+          parallel(sendChangeSeatsEmail(to: user, for: subscription).run)
+            .run { _ in }
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.notice, "We’ve changed the number of seats on your subscription.")
+          )
+        }
     )
 }
 
@@ -197,6 +200,44 @@ private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seats
             ],
             ["Never mind"]
           )
+          ])
+        ])
+      ])
+    ])
+}
+
+// MARK: - Emails
+
+private func sendChangeSeatsEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+  -> EitherIO<Prelude.Unit, SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "Subscription change",
+      content: inj2(upgradeEmailView.view((owner, subscription)))
+    )
+}
+
+let changeSeatsEmailView = simpleEmailLayout(changeSeatsEmailBodyView)
+  .contramap { owner, subscription in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Subscription change",
+      preheader: "You’ve made changes to your Point-Free subscription.",
+      data: (owner, subscription)
+    )
+}
+
+private let changeSeatsEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Subscription change"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "You’ve made changes to your Point-Free subscription."
+            ])
           ])
         ])
       ])

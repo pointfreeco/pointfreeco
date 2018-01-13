@@ -44,4 +44,4 @@ private let floatStyles =
     <> Class.layout.right % float(.right)
 
 private let widthStyles =
-  Class.layout.fit % maxWidth(.pct(100))
+  Class.layout.fit % width(.pct(100))
