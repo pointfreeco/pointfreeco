@@ -44,6 +44,7 @@ extension Database {
     fetchSubscriptionTeammatesByOwnerId: const(pure([.teammate])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([.mock])),
+    fetchUserByEmail: const(pure(.mock)),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),

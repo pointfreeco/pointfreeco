@@ -100,7 +100,13 @@ private func unsubscribeEmail(for newsletter: Database.EmailSetting.Newsletter) 
 
 private func forwardAction(for newsletter: Database.EmailSetting.Newsletter) -> String {
   let route = Route.expressUnsubscribeReply(
-    MailgunForwardPayload(recipient: "", timestamp: 0, token: "", sender: "", signature: "")
+    MailgunForwardPayload(
+      recipient: .init(unwrap: ""),
+      timestamp: 0,
+      token: "",
+      sender: .init(unwrap: ""),
+      signature: ""
+    )
   )
   return "forward(\"" + url(to: route) + "\")"
 }

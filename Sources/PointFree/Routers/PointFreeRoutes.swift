@@ -264,39 +264,28 @@ extension PartialIso where A == String, B == Database.EmailSetting.Newsletter {
 }
 
 public struct MailgunForwardPayload: Codable {
-  public let recipient: String
+  public let recipient: EmailAddress
   public let timestamp: Int
   public let token: String
-  public let sender: String
+  public let sender: EmailAddress
   public let signature: String
-}
-
-//private var mailgunForwardSignatureVerification: Router<Prelude.Unit> {
-//
-//  return (formField("timestamp", .int) <%> formField("token", .string) <%> formField("signature", .string))
-//    .map(flatten())
-//    .map(.signatureVerification)
-//}
-
-import Cryptor
-
-public func hexDigest(value: String, asciiSecret: String) -> String? {
-  let keyBytes = CryptoUtils.byteArray(from: asciiSecret)
-  let valueBytes = CryptoUtils.byteArray(from: value)
-  let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
-  return digestBytes.map { $0.map { String(format: "%02x", $0) }.joined() }
 }
 
 extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayload {
   fileprivate static var signatureVerification: PartialIso {
     return PartialIso(
       apply: {
-        return $0.signature == hexDigest(value: "\($0.timestamp)\($0.token)", asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey)
-          ? .some($0)
-          : nil
-    }, unapply: { $0 }
-    )
+        verify(payload: $0) ? .some($0) : nil
+    }, unapply: { $0 })
   }
+}
+
+private func verify(payload: MailgunForwardPayload) -> Bool {
+  let digest = hexDigest(
+    value: "\(payload.timestamp)\(payload.token)",
+    asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey
+  )
+  return payload.signature == digest
 }
 
 private func flatten<A, B, C>() -> PartialIso<(A, (B, C)), (A, B, C)> {

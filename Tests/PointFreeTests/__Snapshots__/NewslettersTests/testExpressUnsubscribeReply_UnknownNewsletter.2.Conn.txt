@@ -1,0 +1,16 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/newsletters/express-unsubscribe-reply
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  sender=hello@pointfree.co&recipient=express-unsubscribe-unknown@pointfree.co&timestamp=1517356800&token=deadbeef&signature=ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9
+
+▿ Response
+  Status 406 NOT ACCEPTABLE
+  Content-Length: 14
+  Content-Type: text/plain
+
+  Not acceptable

@@ -14,6 +14,7 @@ public struct Database {
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
   var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
+  var fetchUserByEmail: (EmailAddress) -> EitherIO<Error, User?>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
@@ -35,6 +36,7 @@ public struct Database {
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
     fetchTeamInvite: PointFree.fetchTeamInvite,
     fetchTeamInvites: PointFree.fetchTeamInvites,
+    fetchUserByEmail: PointFree.fetchUser(byEmail:),
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
@@ -351,6 +353,18 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
       AppEnvironment.current.database
         .fetchUserByGitHub(envelope.gitHubUser.id)
   }
+}
+
+private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
+  return firstRow(
+    """
+    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    FROM "users"
+    WHERE "email" = $1
+    LIMIT 1
+    """,
+    [email.unwrap]
+  )
 }
 
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {

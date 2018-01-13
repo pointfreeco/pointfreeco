@@ -106,13 +106,12 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> episodeResponse
 
     case let .expressUnsubscribe(userId, newsletter):
-      return conn.map(const(user .*. userId .*. newsletter .*. unit))
+      return conn.map(const(userId .*. newsletter .*. unit))
         |> expressUnsubscribeMiddleware
 
-    case .expressUnsubscribeReply:
-      return conn
-        |> writeStatus(.ok)
-        >-> respond(text: "unsubscribe")
+    case let .expressUnsubscribeReply(payload):
+      return conn.map(const(payload))
+        |> expressUnsubscribeReplyMiddleware
 
     case .feed(.atom):
       return conn.map(const(AppEnvironment.current.episodes()))

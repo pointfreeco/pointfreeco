@@ -1,0 +1,16 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/newsletters/express-unsubscribe-reply
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  sender=hello@pointfree.co&recipient=express-unsubscribe-announcements@pointfree.co&timestamp=1517356800&token=deadbeef&signature=this%20is%20an%20incorrect%20signature
+
+▿ Response
+  Status 404 NOT FOUND
+  Content-Length: 9
+  Content-Type: text/plain
+
+  Not Found

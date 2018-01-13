@@ -45,8 +45,6 @@ class NewslettersTests: TestCase {
   }
 
   func testExpressUnsubscribeReply() {
-    record = true
-
     let user = AppEnvironment.current.database.registerUser(.mock)
       .run
       .perform()
@@ -55,14 +53,14 @@ class NewslettersTests: TestCase {
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
         .init(
-          recipient: user.email.unwrap,
+          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
           timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
           token: "deadbeef",
-          sender: "express-unsubscribe-announcements@pointfree.co",
+          sender: user.email,
           signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
         )
       ),
-      session: .loggedIn
+      session: .loggedOut
     )
 
     assertSnapshot(
@@ -85,5 +83,107 @@ class NewslettersTests: TestCase {
         .right!,
       named: "email_settings_after_unsubscribe"
     )
+  }
+
+  func testExpressUnsubscribeReply_IncorrectSignature() {
+    let user = AppEnvironment.current.database.registerUser(.mock)
+      .run
+      .perform()
+      .right!!
+
+    let unsubscribe = request(
+      to: .expressUnsubscribeReply(
+        .init(
+          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
+          timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+          token: "deadbeef",
+          sender: user.email,
+          signature: "this is an incorrect signature"
+        )
+      ),
+      session: .loggedOut
+    )
+
+    assertSnapshot(
+      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        .run
+        .perform()
+        .right!,
+      named: "email_settings_before_unsubscribe"
+    )
+
+    let output = connection(from: unsubscribe)
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: output)
+
+    assertSnapshot(
+      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        .run
+        .perform()
+        .right!,
+      named: "email_settings_after_unsubscribe"
+    )
+  }
+
+  func testExpressUnsubscribeReply_UnknownNewsletter() {
+    let user = AppEnvironment.current.database.registerUser(.mock)
+      .run
+      .perform()
+      .right!!
+
+    let unsubscribe = request(
+      to: .expressUnsubscribeReply(
+        .init(
+          recipient: .init(unwrap: "express-unsubscribe-unknown@pointfree.co"),
+          timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+          token: "deadbeef",
+          sender: user.email,
+          signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
+        )
+      ),
+      session: .loggedOut
+    )
+
+    assertSnapshot(
+      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        .run
+        .perform()
+        .right!,
+      named: "email_settings_before_unsubscribe"
+    )
+
+    let output = connection(from: unsubscribe)
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: output)
+
+    assertSnapshot(
+      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        .run
+        .perform()
+        .right!,
+      named: "email_settings_after_unsubscribe"
+    )
+  }
+
+  func testExpressUnsubscribeReply_UnknownEmail() {
+    let unsubscribe = request(
+      to: .expressUnsubscribeReply(
+        .init(
+          recipient: .init(unwrap: "express-unsubscribe-announcements@pointfree.co"),
+          timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+          token: "deadbeef",
+          sender: .init(unwrap: "who-dis@pointfree.co"),
+          signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
+        )
+      ),
+      session: .loggedOut
+    )
+
+    let output = connection(from: unsubscribe)
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: output)
   }
 }
