@@ -185,8 +185,7 @@ extension NewslettersTests {
     ("testExpressUnsubscribe", testExpressUnsubscribe),
     ("testExpressUnsubscribeReply", testExpressUnsubscribeReply),
     ("testExpressUnsubscribeReply_IncorrectSignature", testExpressUnsubscribeReply_IncorrectSignature),
-    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter),
-    ("testExpressUnsubscribeReply_UnknownEmail", testExpressUnsubscribeReply_UnknownEmail)
+    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter)
   ]
 }
 extension PaymentInfoTests {
