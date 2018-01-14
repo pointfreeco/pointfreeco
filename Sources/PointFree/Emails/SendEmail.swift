@@ -34,7 +34,8 @@ func sendEmail(
         tracking: nil,
         trackingClicks: nil,
         trackingOpens: nil,
-        domain: domain
+        domain: domain,
+        headers: []
       )
     )
 }

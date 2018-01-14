@@ -12,6 +12,28 @@ public struct Episode {
   public private(set) var title: String
   public private(set) var transcriptBlocks: [TranscriptBlock]
 
+  public init(
+    blurb: String,
+    codeSampleDirectory: String,
+    id: Id,
+    length: Int,
+    publishedAt: Date,
+    sequence: Int,
+    subscriberOnly: Bool,
+    title: String,
+    transcriptBlocks: [TranscriptBlock]) {
+
+    self.blurb = blurb
+    self.codeSampleDirectory = codeSampleDirectory
+    self.id = id
+    self.length = length
+    self.publishedAt = publishedAt
+    self.sequence = sequence
+    self.subscriberOnly = subscriberOnly
+    self.title = title
+    self.transcriptBlocks = transcriptBlocks
+  }
+
   public typealias Id = Tagged<Episode, Int>
 
   public var slug: String {
@@ -22,6 +44,12 @@ public struct Episode {
     public private(set) var content: String
     public private(set) var timestamp: Int?
     public private(set) var type: BlockType
+
+    public init(content: String, timestamp: Int?, type: BlockType) {
+      self.content = content
+      self.timestamp = timestamp
+      self.type = type
+    }
 
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
@@ -70,7 +98,7 @@ public struct Episode {
   }
 }
 
-let typeSafeHtml = Episode(
+public let typeSafeHtml = Episode(
   blurb:
   """
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
