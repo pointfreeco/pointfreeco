@@ -15,7 +15,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("35421ef")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(url: "https://github.com/vapor/postgresql.git", from: "2.0.0"),
+    .package(url: "https://github.com/vapor-community/postgresql.git", .exact(.init(2, 1, 1))),
     ],
   targets: [
     .target(
