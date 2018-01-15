@@ -44,10 +44,10 @@ private let episodeRowView = View<Episode> { ep in
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [`class`([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
-        div([`class`([Class.size.height100pct]), style(lineHeight(0))], [
+        div([`class`([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
-              src: "https://waltpaper.com/wp-content/uploads/2017/06/6c7b04501f6e98ab94982a2743ede747-1024x768.jpeg",
+              src: "",
               alt: "",
               [`class`([Class.size.width100pct, Class.size.height100pct]),
                style(objectFit(.cover))]
@@ -80,3 +80,6 @@ private let episodeInfoColumnView = View<Episode> { ep in
     ]
   )
 }
+
+private let gradient =
+  key("background", "linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%)")
