@@ -26,10 +26,9 @@ final class AccountTests: TestCase {
   func testAccount() {
     let subscription = Stripe.Subscription.mock
       |> \.quantity .~ 4
-      |> \.plan.id .~ .teamYearlyTier1
-      |> \.plan.interval .~ .year
+      |> \.plan .~ .teamYearly
 
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
+    AppEnvironment.with(const(.teamYearly)) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -76,7 +75,6 @@ final class AccountTests: TestCase {
 
     assertSnapshot(matching: result.perform())
 
-
     #if !os(Linux)
       if #available(OSX 10.13, *) {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
@@ -96,7 +94,6 @@ final class AccountTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
-
 
     #if !os(Linux)
       if #available(OSX 10.13, *) {

@@ -19,6 +19,11 @@ extension Environment {
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
     stripe: .mock
   )
+
+  public static let teamYearly = mock
+    |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
+    |> \.database.fetchTeamInvites .~ const(pure([.mock]))
+    |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
 }
 
 extension Logger {
@@ -41,9 +46,9 @@ extension Database {
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([.teammate])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([])),
     fetchTeamInvite: const(pure(.mock)),
-    fetchTeamInvites: const(pure([.mock])),
+    fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
@@ -183,7 +188,7 @@ extension Stripe.ListEnvelope {
 
 extension Stripe.Plan {
   public static let mock = Stripe.Plan(
-    amount: .init(unwrap: 15_00),
+    amount: .init(unwrap: 17_00),
     created: .mock,
     currency: .usd,
     id: .individualMonthly,
@@ -196,13 +201,13 @@ extension Stripe.Plan {
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.amount .~ .init(unwrap: 150_00)
+    |> \.amount .~ .init(unwrap: 170_00)
     |> \.id .~ .individualYearly
     |> \.name .~ "Individual Yearly"
 
   public static let teamYearly = mock
-    |> \.amount .~ .init(unwrap: 150_00)
-    |> \.id .~ .teamYearlyTier1
+    |> \.amount .~ .init(unwrap: 160_00)
+    |> \.id .~ .teamYearly
     |> \.name .~ "Team Yearly"
 }
 
@@ -231,6 +236,10 @@ extension Stripe.Subscription {
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
+
+  public static let teamYearly = mock
+    |> \.plan .~ .teamYearly
+    |> \.quantity .~ 4
 }
 
 extension Stripe.Subscription.Item {
