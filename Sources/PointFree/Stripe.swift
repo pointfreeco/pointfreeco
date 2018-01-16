@@ -207,21 +207,13 @@ extension Tagged where Tag == Stripe.Plan, A == String {
     return .init(unwrap: "individual-yearly")
   }
 
-  static var teamYearlyTier1: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly-1")
-  }
-
-  static var teamYearlyTier2: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly-2")
-  }
-
-  static var teamYearlyTier3: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly-3")
+  static var teamYearly: Stripe.Plan.Id {
+    return .init(unwrap: "team-yearly")
   }
 }
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.rawValue, .delete(["at_period_end": "true"]))
+  return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id)
@@ -256,7 +248,7 @@ private let fetchPlans: EitherIO<Prelude.Unit, Stripe.ListEnvelope<Stripe.Plan>>
   stripeDataTask("plans")
 
 private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan> {
-  return stripeDataTask("plans/" + id.rawValue)
+  return stripeDataTask("plans/" + id.unwrap)
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
