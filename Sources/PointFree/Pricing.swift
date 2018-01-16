@@ -10,41 +10,13 @@ import Prelude
 import Styleguide
 import Tuple
 
-public let teamMinDiscountAt = 5
-public let teamMaxDiscountAt = 20
-
-// FIXME: Fetch from Stripe?
-public let teamTier1PriceMonthly = 13
-public let teamTier2PriceMonthly = 12
-public let teamTier3PriceMonthly = 11
-
-private func monthlyTeamRate(for quantity: Int) -> Int {
-  switch quantity {
-  case teamMaxDiscountAt...:
-    return quantity * teamTier3PriceMonthly
-  case teamMinDiscountAt...:
-    return quantity * teamTier2PriceMonthly
-  default:
-    return quantity * teamTier1PriceMonthly
-  }
-}
-
-private let monthlyTeamRateJs = """
-var quantity = this.valueAsNumber;
-var seatBase = quantity >= \(teamMaxDiscountAt)
-  ? \(teamTier3PriceMonthly)
-  : quantity >= \(teamMinDiscountAt)
-    ? \(teamTier2PriceMonthly)
-    : \(teamTier1PriceMonthly);
-var rate = seatBase * quantity;
-document.getElementById("team-rate").textContent = rate;
-"""
-
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
   case team(Int)
 
   public static let `default` = individual(.monthly)
+
+  public static let teamYearlyBase = 160
 
   public static let validTeamQuantities = 2..<100
 
@@ -97,12 +69,8 @@ public enum Pricing: Codable, DerivePartialIsos {
       return .individualMonthly
     case .individual(.yearly):
       return .individualYearly
-    case .team(20...):
-      return .teamYearlyTier3
-    case .team(5...19):
-      return .teamYearlyTier2
     case .team:
-      return .teamYearlyTier1
+      return .teamYearly
     }
   }
 
@@ -407,7 +375,13 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           max(Pricing.validTeamQuantities.upperBound),
           min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
-          onchange(monthlyTeamRateJs),
+          onchange(
+            """
+            document.getElementById('team-rate').textContent = (
+              this.valueAsNumber * \(Pricing.teamYearlyBase)
+            ).toString().replace(/(?=([0-9]{3})+(?![0-9]))/g, ',')
+            """
+          ),
           step(1),
           type(.number),
           value(quantity),
@@ -416,13 +390,13 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           "$",
           span(
             [id("team-rate")],
-            [text(String(monthlyTeamRate(for: quantity)))]
+            [text(String(format: "%d", Pricing.teamYearlyBase * quantity))]
           ),
-          "/mo"
+          "/yr"
           ]),
         p(
           [`class`([Class.pf.type.title6, Class.type.normal, Class.pf.colors.fg.gray650])],
-          ["(Billed annually)"]
+          ["10% off individual yearly"]
         )
         ])
       ])
@@ -493,7 +467,7 @@ private func pricingText(for type: Pricing.Billing) -> String {
   case .monthly:
     return "$17/mo"
   case .yearly:
-    return "$13/mo"
+    return "$170/yr"
   }
 }
 
