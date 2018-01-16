@@ -80,7 +80,7 @@ private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode
 private let videoView = View<Prelude.Unit> { _ in
   video(
     [
-      `class`([Class.layout.fit]),
+      `class`([Class.size.width100pct]),
       controls(true),
       playsInline(true),
       autoplay(true),

@@ -972,7 +972,7 @@ a:link.btn-normal {
 }
 
 .fit {
-  width : 100%;
+  max-width : 100%;
 }
 
 .border-box {
