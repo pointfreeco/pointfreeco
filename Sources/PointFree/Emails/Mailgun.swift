@@ -6,6 +6,19 @@ import Optics
 import Prelude
 import UrlFormEncoding
 
+public struct Mailgun {
+  public var sendEmail: (Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
+
+  public static let live = Mailgun(
+    sendEmail: mailgunSend
+  )
+
+  public struct SendEmailResponse: Decodable {
+    public let id: String
+    public let message: String
+  }
+}
+
 public typealias EmailAddress = Tagged<Email, String>
 
 enum Tracking: String {
@@ -41,12 +54,7 @@ public struct Email {
   var headers: [(String, String)] = []
 }
 
-public struct SendEmailResponse: Decodable {
-  let id: String
-  let message: String
-}
-
-func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
+private func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
 
   var params: [String: String] = [:]
   params["from"] = email.from.unwrap
@@ -74,24 +82,43 @@ func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, SendEmailResponse> {
     .withExcept(const(unit))
 }
 
-public func mailto<T: HasHref>(_ address: String) -> Attribute<T> {
-  return href("mailto:" + address)
-}
-
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
   let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
   return (headers ?? [:])
     |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
-// TODO: move to swift-prelude
-private func compact<K, V>(_ xs: [K: V?]) -> [K: V] {
-  var result = [K: V]()
-  for (key, value) in xs {
-    if let value = value {
-      result[key] = value
-    }
-  }
-  return result
+func unsubscribeEmail(
+  fromUserId userId: Database.User.Id,
+  andNewsletter newsletter: Database.EmailSetting.Newsletter,
+  boundary: String = "--"
+  ) -> EmailAddress? {
+
+  guard let payload = encrypted(
+    text: "\(userId.unwrap.uuidString)\(boundary)\(newsletter.rawValue)",
+    secret: AppEnvironment.current.envVars.appSecret
+    ) else { return nil }
+
+  return .init(unwrap: "unsub-\(payload)@pointfree.co")
 }
 
+func userIdAndNewsletter(
+  fromUnsubscribeEmail email: EmailAddress,
+  boundary: String = "--"
+  ) -> (Database.User.Id, Database.EmailSetting.Newsletter)? {
+
+  let payload = email.unwrap
+    .components(separatedBy: "unsub-")
+    .last
+    .flatMap({ $0.split(separator: "@").first })
+    .map(String.init)
+
+  return payload
+    .flatMap { decrypted(text: $0, secret: AppEnvironment.current.envVars.appSecret) }
+    .map { $0.components(separatedBy: boundary) }
+    .flatMap {
+      tuple
+        <¢> $0.first.flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
+        <*> $0.last.flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
+  }
+}

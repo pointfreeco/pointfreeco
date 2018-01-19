@@ -3,9 +3,9 @@ import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
 
-  return print(message: "Bootstrapping PointFree...")
+  return print(message: "⚠️ Bootstrapping PointFree...")
     .flatMap(const(connectToPostgres))
-    .flatMap(const(print(message: "PointFree Bootstrapped!")))
+    .flatMap(const(print(message: "✅ PointFree Bootstrapped!")))
 }
 
 private func print(message: String) -> EitherIO<Error, Prelude.Unit> {
@@ -15,8 +15,11 @@ private func print(message: String) -> EitherIO<Error, Prelude.Unit> {
   })
 }
 
+private let stepDivider = print(message: "  -----------------------------")
+
 private let connectToPostgres =
-  print(message: "Connecting to PostgreSQL...")
+  print(message: "  ⚠️ Connecting to PostgreSQL...")
     .flatMap { _ in AppEnvironment.current.database.migrate() }
-    .flatMap(const(print(message: "Connected to PostgreSQL!")))
     .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
+    .flatMap(const(print(message: "  ✅ Connected to PostgreSQL!")))
+    .flatMap(const(stepDivider))

@@ -16,7 +16,7 @@ extension Environment {
     episodes: { [.mock] },
     gitHub: .mock,
     logger: .mock,
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
+    mailgun: .mock,
     stripe: .mock
   )
 
@@ -37,6 +37,12 @@ extension EnvVars {
   }
 }
 
+extension Mailgun {
+  public static let mock = Mailgun(
+    sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
+  )
+}
+
 extension Database {
   public static let mock = Database(
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
@@ -49,6 +55,7 @@ extension Database {
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
+    fetchUserByEmail: const(pure(.mock)),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),

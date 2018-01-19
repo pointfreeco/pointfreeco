@@ -1,6 +1,7 @@
 import ApplicativeRouter
 import Foundation
 import Either
+import HttpPipeline
 import Optics
 import Prelude
 import UrlFormEncoding
@@ -13,6 +14,7 @@ public enum Route: DerivePartialIsos {
   case admin(Admin)
   case episode(Either<String, Int>)
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
+  case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
   case home(signedUpSuccessfully: Bool?)
@@ -168,6 +170,11 @@ private let routers: [Router<Route>] = [
     %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
     <% end,
 
+  .expressUnsubscribeReply
+    <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
+    %> formBody(MailgunForwardPayload.self, decoder: formDecoder).map(.signatureVerification)
+    <% end,
+
   .gitHubCallback
     <¢> get %> lit("github-auth")
     %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
@@ -244,4 +251,29 @@ extension PartialIso where A == String, B == Tag {
       unapply: ^\.name
     )
   }
+}
+
+public struct MailgunForwardPayload: Codable {
+  public let recipient: EmailAddress
+  public let timestamp: Int
+  public let token: String
+  public let sender: EmailAddress
+  public let signature: String
+}
+
+extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayload {
+  fileprivate static var signatureVerification: PartialIso {
+    return PartialIso(
+      apply: { verify(payload: $0) ? .some($0) : nil },
+      unapply: { $0 }
+    )
+  }
+}
+
+private func verify(payload: MailgunForwardPayload) -> Bool {
+  let digest = hexDigest(
+    value: "\(payload.timestamp)\(payload.token)",
+    asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey
+  )
+  return payload.signature == digest
 }

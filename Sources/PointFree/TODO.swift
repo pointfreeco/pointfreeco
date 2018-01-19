@@ -1,4 +1,5 @@
 import ApplicativeRouter
+import Cryptor
 import Css
 import Dispatch
 import Either
@@ -550,4 +551,39 @@ public func payload<A, B>(
           else { return nil }
         return "\(first)\(separator)\(second)"
     })
+}
+
+public func mailto<T: HasHref>(_ address: String) -> Attribute<T> {
+  return href("mailto:" + address)
+}
+
+public func hole<A, B>(_ a: A) -> B {
+  fatalError()
+}
+
+public func hole<A, B, C>(_ a: A, _ b: B) -> C {
+  fatalError()
+}
+
+public func hole<A, B, C, D>(_ a: A, _ b: B, _ c: C) -> D {
+  fatalError()
+}
+
+public func hole<B>() -> B {
+  fatalError()
+}
+
+// TODO: improve swift-web's digest to use `CryptoUtils.byteArray(from:)`
+public func hexDigest(value: String, asciiSecret: String) -> String? {
+  let keyBytes = CryptoUtils.byteArray(from: asciiSecret)
+  let valueBytes = CryptoUtils.byteArray(from: value)
+  let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
+  return digestBytes.map { $0.map { String(format: "%02x", $0) }.joined() }
+}
+
+public func head<A>(_ status: HttpPipeline.Status)
+  -> (Conn<StatusLineOpen, A>)
+  -> IO<Conn<ResponseEnded, Data>> {
+
+    return writeStatus(status) >-> end
 }
