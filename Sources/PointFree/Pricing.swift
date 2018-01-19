@@ -377,9 +377,10 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           name("pricing[team]"),
           onchange(
             """
-            document.getElementById('team-rate').textContent = (
-              this.valueAsNumber * \(Pricing.teamYearlyBase)
-            ).toString().replace(/(?=([0-9]{3})+(?![0-9]))/g, ',')
+            document.getElementById('team-rate').textContent =
+              (this.valueAsNumber * \(Pricing.teamYearlyBase))
+              .toString()
+              .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ",");
             """
           ),
           step(1),
