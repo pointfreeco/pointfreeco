@@ -19,6 +19,11 @@ extension AccountTests {
     ("testAccountCanceledSubscription", testAccountCanceledSubscription)
   ]
 }
+extension AtomFeedTests {
+  static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
+    ("testAtomFeed", testAtomFeed)
+  ]
+}
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
     ("testAuth", testAuth),
@@ -57,7 +62,8 @@ extension CancelTests {
 }
 extension ChangeEmailConfirmationTests {
   static var allTests: [(String, (ChangeEmailConfirmationTests) -> () throws -> Void)] = [
-    ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail)
+    ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail),
+    ("testChangedEmail", testChangedEmail)
   ]
 }
 extension ChangeSeatsTests {
@@ -94,6 +100,12 @@ extension DowngradeTests {
     ("testDowngradeCanceledSubscription", testDowngradeCanceledSubscription),
     ("testDowngradeStripeError", testDowngradeStripeError),
     ("testDowngradeEmail", testDowngradeEmail)
+  ]
+}
+extension EitherIOTests {
+  static var allTests: [(String, (EitherIOTests) -> () throws -> Void)] = [
+    ("testRetry_Fails", testRetry_Fails),
+    ("testRetry_Succeeds", testRetry_Succeeds)
   ]
 }
 extension EmailInviteTests {
@@ -170,7 +182,10 @@ extension NewEpisodeEmailTests {
 }
 extension NewslettersTests {
   static var allTests: [(String, (NewslettersTests) -> () throws -> Void)] = [
-    ("testExpressUnsubscribe", testExpressUnsubscribe)
+    ("testExpressUnsubscribe", testExpressUnsubscribe),
+    ("testExpressUnsubscribeReply", testExpressUnsubscribeReply),
+    ("testExpressUnsubscribeReply_IncorrectSignature", testExpressUnsubscribeReply_IncorrectSignature),
+    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter)
   ]
 }
 extension PaymentInfoTests {
@@ -210,6 +225,12 @@ extension StyleguideTests {
     ("testPointFreeStyles", testPointFreeStyles)
   ]
 }
+extension TeamEmailsTests {
+  static var allTests: [(String, (TeamEmailsTests) -> () throws -> Void)] = [
+    ("testYouHaveBeenRemovedEmailView", testYouHaveBeenRemovedEmailView),
+    ("testTeammateRemovedEmailView", testTeammateRemovedEmailView)
+  ]
+}
 extension UpdateProfileTests {
   static var allTests: [(String, (UpdateProfileTests) -> () throws -> Void)] = [
     ("testUpdateNameAndEmail", testUpdateNameAndEmail),
@@ -237,12 +258,14 @@ extension UpgradeTests {
 XCTMain([
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
+  testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
   testCase(ChangeSeatsTests.allTests),
   testCase(DatabaseTests.allTests),
   testCase(DowngradeTests.allTests),
+  testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EpisodeTests.allTests),
@@ -261,6 +284,7 @@ XCTMain([
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
+  testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(UpgradeTests.allTests),
 ])

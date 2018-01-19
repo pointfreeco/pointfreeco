@@ -8,7 +8,7 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = teammateRemovedEmailView.view((.mock, .mock))
+let htmlNodes = newEpisodeEmail.view((typeSafeHtml, .mock, true))
 let htmlString = render(htmlNodes, config: compact)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
@@ -17,10 +17,12 @@ print(htmlString)
 
 PlaygroundPage.current.liveView = webView
 
-//sendEmail(
-//  to: [.init(unwrap: "mbw234@gmail.com")],
-//  subject: "Invite email with image \(arc4random())",
-//  content: inj2(htmlNodes)
-//  )
-//  .run
-//  .perform()
+sendEmail(
+  to: [.init(unwrap: "mbw234@gmail.com")],
+  subject: "Email test: \(arc4random())",
+  unsubscribeData: (.init(unwrap: UUID()), .newEpisode),
+  content: inj2(htmlNodes)
+  )
+  .run
+  .perform()
+
