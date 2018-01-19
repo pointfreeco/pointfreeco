@@ -12,8 +12,7 @@ let expressUnsubscribeMiddleware =
 let expressUnsubscribeReplyMiddleware =
   requireUserAndNewsletter
     <| unsubscribeMiddleware
-    >-> writeStatus(.ok)
-    >-> respond(text: "OK")
+    >-> head(.ok)
 
 private func requireUserAndNewsletter(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>, Data>
@@ -24,8 +23,7 @@ private func requireUserAndNewsletter(
     guard let (userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
       else {
         return conn
-          |> writeStatus(.notAcceptable)
-          >-> respond(text: "Not acceptable")
+          |> head(.notAcceptable)
     }
 
     return conn.map(const(userId .*. newsletter .*. unit))

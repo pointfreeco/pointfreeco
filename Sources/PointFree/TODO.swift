@@ -580,3 +580,10 @@ public func hexDigest(value: String, asciiSecret: String) -> String? {
   let digestBytes = HMAC(using: .sha256, key: keyBytes).update(byteArray: valueBytes)?.final()
   return digestBytes.map { $0.map { String(format: "%02x", $0) }.joined() }
 }
+
+public func head<A>(_ status: HttpPipeline.Status)
+  -> (Conn<StatusLineOpen, A>)
+  -> IO<Conn<ResponseEnded, Data>> {
+
+    return writeStatus(status) >-> end
+}

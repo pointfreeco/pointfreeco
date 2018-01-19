@@ -10,7 +10,3 @@
 
 ▿ Response
   Status 200 OK
-  Content-Length: 2
-  Content-Type: text/plain
-
-  OK
