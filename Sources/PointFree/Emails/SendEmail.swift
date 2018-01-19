@@ -6,10 +6,11 @@ func sendEmail(
   from: EmailAddress = .init(unwrap: "Point-Free <support@pointfree.co>"),
   to: [EmailAddress],
   subject: String,
+  unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = "mg.pointfree.co"
   )
-  -> EitherIO<Unit, SendEmailResponse> {
+  -> EitherIO<Unit, Mailgun.SendEmailResponse> {
 
     let (plain, html): (String, String?) =
       destructure(
@@ -19,7 +20,24 @@ func sendEmail(
         second(render)
     )
 
-    return AppEnvironment.current.sendEmail(
+    let headers: [(String, String)] = unsubscribeData
+      .map { userId, newsletter in
+        guard let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter)
+          else { return [] }
+
+        return [
+          (
+            "List-Unsubscribe",
+            """
+            <mailto:\(unsubEmail)>, \
+            <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
+            """
+          )
+        ]
+      }
+      ?? []
+
+    return AppEnvironment.current.mailgun.sendEmail(
       Email(
         from: from,
         to: to,
@@ -35,7 +53,7 @@ func sendEmail(
         trackingClicks: nil,
         trackingOpens: nil,
         domain: domain,
-        headers: []
+        headers: headers
       )
     )
 }

@@ -91,6 +91,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
       sendEmail(
         to: [user.email],
         subject: "New Point-Free Episode: \(episode.title)",
+        unsubscribeData: (user.id, .newEpisode),
         content: inj2(newEpisodeEmail.view((episode, user, true)))
         )
         .delay(.milliseconds(200 * idx))

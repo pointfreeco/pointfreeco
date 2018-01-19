@@ -1,13 +1,41 @@
 import ApplicativeRouter
+import Either
 import HttpPipeline
 import Foundation
 import Prelude
 import Tuple
 
 let expressUnsubscribeMiddleware =
-{ (conn: Conn<StatusLineOpen, T4<Database.User?, Database.User.Id, Database.EmailSetting.Newsletter, Prelude.Unit>>) -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+  unsubscribeMiddleware
+    >-> redirect(to: .secretHome, headersMiddleware: flash(.error, "You’re now unsubscribed."))
 
-  let (_, userId, newsletter) = lower(conn.data)
+let expressUnsubscribeReplyMiddleware =
+  requireUserAndNewsletter
+    <| unsubscribeMiddleware
+    >-> head(.ok)
+
+private func requireUserAndNewsletter(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
+
+  return { conn in
+
+    guard let (userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
+      else {
+        return conn
+          |> head(.notAcceptable)
+    }
+
+    return conn.map(const(userId .*. newsletter .*. unit))
+      |> middleware
+  }
+}
+
+private func unsubscribeMiddleware<I>(
+  _ conn: Conn<I, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>>
+  ) -> IO<Conn<I, Prelude.Unit>> {
+
+  let (userId, newsletter) = lower(conn.data)
 
   return AppEnvironment.current.database.fetchEmailSettingsForUserId(userId)
     .map { settings in settings.filter(^\.newsletter != newsletter) }
@@ -16,5 +44,4 @@ let expressUnsubscribeMiddleware =
     }
     .run
     .map(const(conn.map(const(unit))))
-  }
-  >-> redirect(to: .secretHome)
+}

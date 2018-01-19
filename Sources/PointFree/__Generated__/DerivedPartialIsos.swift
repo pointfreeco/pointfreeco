@@ -174,6 +174,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            MailgunForwardPayload
+        ), B == Route {
+
+          public static let expressUnsubscribeReply = parenthesize <| PartialIso(
+            apply: Route.expressUnsubscribeReply,
+            unapply: {
+              guard case let .expressUnsubscribeReply(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Feed
         ), B == Route {
 
