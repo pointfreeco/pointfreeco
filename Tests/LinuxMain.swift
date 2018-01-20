@@ -9,6 +9,16 @@ extension AboutTests {
     ("testAbout", testAbout)
   ]
 }
+extension AccountTests {
+  static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
+    ("testAccount", testAccount),
+    ("testAccountWithFlashNotice", testAccountWithFlashNotice),
+    ("testAccountWithFlashWarning", testAccountWithFlashWarning),
+    ("testAccountWithFlashError", testAccountWithFlashError),
+    ("testAccountCancelingSubscription", testAccountCancelingSubscription),
+    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
+  ]
+}
 extension AtomFeedTests {
   static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
     ("testAtomFeed", testAtomFeed)
@@ -218,6 +228,15 @@ extension StyleguideTests {
 }
 extension SubscribeTests {
   static var allTests: [(String, (SubscribeTests) -> () throws -> Void)] = [
+    ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly),
+    ("testNotLoggedIn_IndividualYearly", testNotLoggedIn_IndividualYearly),
+    ("testNotLoggedIn_Team", testNotLoggedIn_Team),
+    ("testCurrentSubscribers", testCurrentSubscribers),
+    ("testInvalidQuantity", testInvalidQuantity),
+    ("testHappyPath", testHappyPath),
+    ("testCreateCustomerFailure", testCreateCustomerFailure),
+    ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
+    ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure)
   ]
 }
 extension TeamEmailsTests {
@@ -252,6 +271,7 @@ extension UpgradeTests {
 // swiftlint:disable trailing_comma
 XCTMain([
   testCase(AboutTests.allTests),
+  testCase(AccountTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
