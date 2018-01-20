@@ -222,9 +222,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("home") <% end,
 
   .subscribe
-    <¢> post %> lit("subscribe")
-    %> formBody(SubscribeData.self, decoder: formDecoder).map(Optional.iso.some)
-    <% end,
+    <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
   .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")

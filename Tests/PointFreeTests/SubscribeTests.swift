@@ -20,8 +20,24 @@ final class SubscribeTests: TestCase {
     AppEnvironment.pop()
   }
 
-  func testNotLoggedIn() {
+  func testNotLoggedIn_IndividualMonthly() {
     let conn = connection(from: request(to: .subscribe(.some(.individualMonthly))))
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: conn)
+  }
+
+  func testNotLoggedIn_IndividualYearly() {
+    let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: conn)
+  }
+
+  func testNotLoggedIn_Team() {
+    let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
       |> siteMiddleware
       |> Prelude.perform
 

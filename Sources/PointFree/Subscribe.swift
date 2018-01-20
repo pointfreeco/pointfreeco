@@ -11,22 +11,17 @@ public struct SubscribeData: Codable {
 }
 
 let subscribeMiddleware =
-  // TODO: this redirect will come back to the page without a POST, and so will 404. Should prob go back to /pricing
-  filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< redirectActiveSubscribers(user: get2)
-    <<< filterMap(
-      require1 >>> pure,
-      or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "Error creating subscription!"))
+  filterMap(
+    require1 >>> pure,
+    or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "Error creating subscription!"))
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
       or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
     )
+    <<< redirectActiveSubscribers(user: get2)
+    <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
     <| subscribe
-
-private func validateQuantity(_ pricing: Pricing) -> Bool {
-  return !pricing.isTeam || Pricing.validTeamQuantities.contains(pricing.quantity)
-}
 
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Database.User>>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -69,4 +64,17 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
           )
         )
       )
+}
+
+private func validateQuantity(_ pricing: Pricing) -> Bool {
+  return !pricing.isTeam || Pricing.validTeamQuantities.contains(pricing.quantity)
+}
+
+private func loginAndRedirectToPricing<A>(
+  _ conn: Conn<StatusLineOpen, T2<SubscribeData, A>>
+  )
+  -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn
+    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing))))
 }
