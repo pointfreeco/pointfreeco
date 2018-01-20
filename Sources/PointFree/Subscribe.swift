@@ -13,7 +13,7 @@ public struct SubscribeData: Codable {
 let subscribeMiddleware =
   // TODO: this redirect will come back to the page without a POST, and so will 404. Should prob go back to /pricing
   filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< redirectCurrentSubscribers(user: get2)
+    <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(
       require1 >>> pure,
       or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "Error creating subscription!"))

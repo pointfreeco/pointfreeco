@@ -112,7 +112,7 @@ public enum Pricing: Codable, DerivePartialIsos {
 }
 
 let pricingResponse =
-  redirectCurrentSubscribers(user: get1)
+  redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
@@ -525,7 +525,7 @@ private func tabStyles(
 }
 
 
-func redirectCurrentSubscribers<A>(
+func redirectActiveSubscribers<A>(
   user: @escaping (A) -> Database.User?
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
@@ -540,10 +540,8 @@ func redirectCurrentSubscribers<A>(
 
         let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
           .mapExcept(requireSome)
-          .bimap(const(unit), id)
-          .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
           .run
-          .map { $0.right?.status == .some(.active) }
+          .map { $0.right?.stripeSubscriptionStatus == .some(.active) }
 
         return hasActiveSubscription.flatMap {
           $0
