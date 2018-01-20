@@ -30,4 +30,15 @@ class EitherIOTests: TestCase {
 
     XCTAssertTrue(result.isRight)
   }
+
+  func testRetry_MaxRetriesZero() {
+    let thing = EitherIO<Prelude.Unit, Prelude.Unit>(run: IO {
+      return .right(unit)
+    })
+      .retry(maxRetries: 0)
+
+    let result = thing.run.perform()
+
+    XCTAssertTrue(result.isRight)
+  }
 }
