@@ -212,7 +212,7 @@ private let routers: [Router<Route>] = [
   .pricing
     <¢> get %> lit("pricing")
     %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
-      .map(PartialIso._pricing >>> Optional.iso.some)
+      .map(PartialIso.pricing >>> Optional.iso.some)
     <% end,
 
   .privacy
@@ -284,7 +284,7 @@ private func verify(payload: MailgunForwardPayload) -> Bool {
 }
 
 extension PartialIso where A == (String?, Int?), B == Pricing {
-  fileprivate static var _pricing: PartialIso {
+  fileprivate static var pricing: PartialIso {
     return PartialIso(
       apply: { plan, quantity in
         let pricing: Pricing
