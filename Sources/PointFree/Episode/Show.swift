@@ -234,7 +234,7 @@ private let subscribeView = View<Episode> { episode in
     ),
 
     a(
-      [href(path(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])],
+      [href(path(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["See subscription options"]
     ),
     span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),

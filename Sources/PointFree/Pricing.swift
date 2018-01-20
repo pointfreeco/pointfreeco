@@ -112,7 +112,7 @@ public enum Pricing: Codable, DerivePartialIsos {
 }
 
 let pricingResponse =
-  redirectCurrentSubscribers
+  redirectCurrentSubscribers(user: get1)
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(
@@ -424,7 +424,7 @@ private let pricingFooterView = View<Database.User?> { currentUser in
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
           .map(const(unit) >>> stripeForm.view)
-          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, nil))]
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))]
         )
       ])
     ])
@@ -524,27 +524,32 @@ private func tabStyles(
         <> selectedStyles
 }
 
-private func redirectCurrentSubscribers<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
 
-  return { conn in
-    guard
-      let user = get1(conn.data),
-      let subscriptionId = user.subscriptionId
-      else { return middleware(conn) }
+func redirectCurrentSubscribers<A>(
+  user: @escaping (A) -> Database.User?
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
-    let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
-      .mapExcept(requireSome)
-      .bimap(const(unit), id)
-      .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-      .run
-      .map { $0.right?.status == .some(.active) }
+    return { middleware in
+      return { conn in
+        guard
+          let user = user(conn.data),
+          let subscriptionId = user.subscriptionId
+          else { return middleware(conn) }
 
-    return hasActiveSubscription.flatMap {
-      $0
-        ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription.")))
-        : middleware(conn)
+        let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+          .mapExcept(requireSome)
+          .bimap(const(unit), id)
+          .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+          .run
+          .map { $0.right?.status == .some(.active) }
+
+        return hasActiveSubscription.flatMap {
+          $0
+            ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription.")))
+            : middleware(conn)
+        }
+      }
     }
-  }
 }

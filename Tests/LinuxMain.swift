@@ -9,16 +9,6 @@ extension AboutTests {
     ("testAbout", testAbout)
   ]
 }
-extension AccountTests {
-  static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
-    ("testAccount", testAccount),
-    ("testAccountWithFlashNotice", testAccountWithFlashNotice),
-    ("testAccountWithFlashWarning", testAccountWithFlashWarning),
-    ("testAccountWithFlashError", testAccountWithFlashError),
-    ("testAccountCancelingSubscription", testAccountCancelingSubscription),
-    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
-  ]
-}
 extension AtomFeedTests {
   static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
     ("testAtomFeed", testAtomFeed)
@@ -78,7 +68,8 @@ extension ChangeSeatsTests {
     ("testChangeSeatsNoSubscription", testChangeSeatsNoSubscription),
     ("testChangeSeatsCanceledSubscription", testChangeSeatsCanceledSubscription),
     ("testChangeSeatsInvalidPlan", testChangeSeatsInvalidPlan),
-    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats)
+    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats),
+    ("testChangeSeatsEmail", testChangeSeatsEmail)
   ]
 }
 extension DatabaseTests {
@@ -225,6 +216,10 @@ extension StyleguideTests {
     ("testPointFreeStyles", testPointFreeStyles)
   ]
 }
+extension SubscribeTests {
+  static var allTests: [(String, (SubscribeTests) -> () throws -> Void)] = [
+  ]
+}
 extension TeamEmailsTests {
   static var allTests: [(String, (TeamEmailsTests) -> () throws -> Void)] = [
     ("testYouHaveBeenRemovedEmailView", testYouHaveBeenRemovedEmailView),
@@ -257,7 +252,6 @@ extension UpgradeTests {
 // swiftlint:disable trailing_comma
 XCTMain([
   testCase(AboutTests.allTests),
-  testCase(AccountTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
@@ -284,6 +278,7 @@ XCTMain([
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
+  testCase(SubscribeTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(UpgradeTests.allTests),
