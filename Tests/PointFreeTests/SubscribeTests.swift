@@ -35,7 +35,9 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    assertSnapshot(matching: conn)
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   func testNotLoggedIn_Team() {
