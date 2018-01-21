@@ -17,7 +17,11 @@ func createRow(email: EmailAddress)
       ]
 
       return dataTask(with: request)
-        .map(tap(AppEnvironment.current.logger.debug) >>> const(unit))
-        .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+//        .map(tap(AppEnvironment.current.logger.debug) >>> const(unit))
+//        .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+        .flatMap { x in lift <| AppEnvironment.current.logger.logIO(.debug, x) }
+        .map(const(unit))
+//        .catch { x in throwE <| AppEnvironment.current.logger.logIO(.error, x) }
+        .withExcept(const(unit))
     }
 }

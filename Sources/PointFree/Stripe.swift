@@ -321,8 +321,9 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
 
     return pure(stripeUrlRequest(path, method))
       .flatMap { jsonDataTask(with: auth <| $0, decoder: stripeJsonDecoder) }
-      .map(tap(AppEnvironment.current.logger.debug))
-      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+//      .map(tap(AppEnvironment.current.logger.debug))
+//      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+      .withExcept(const(unit))
 }
 
 private func auth(_ request: URLRequest) -> URLRequest {
