@@ -25,7 +25,9 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    assertSnapshot(matching: conn)
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   func testNotLoggedIn_IndividualYearly() {
@@ -41,7 +43,9 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    assertSnapshot(matching: conn)
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   func testCurrentSubscribers() {
@@ -51,7 +55,9 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    assertSnapshot(matching: conn)
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   // TODO: dont know how to get this route to recognize.
@@ -72,7 +78,9 @@ final class SubscribeTests: TestCase {
         |> siteMiddleware
         |> Prelude.perform
 
-      assertSnapshot(matching: conn, named: "too_high")
+      #if !os(Linux)
+        assertSnapshot(matching: conn, named: "too_high")
+      #endif
     }
 
     AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(nil))) {
@@ -82,7 +90,9 @@ final class SubscribeTests: TestCase {
         |> siteMiddleware
         |> Prelude.perform
 
-      assertSnapshot(matching: conn, named: "too_low")
+      #if !os(Linux)
+        assertSnapshot(matching: conn, named: "too_low")
+      #endif
     }
   }
 
@@ -100,14 +110,18 @@ final class SubscribeTests: TestCase {
         |> siteMiddleware
         |> Prelude.perform
 
-      assertSnapshot(matching: conn)
+      #if !os(Linux)
+        assertSnapshot(matching: conn)
+      #endif
 
       let subscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(user.id)
         .run
         .perform()
         .right!!
 
-      assertSnapshot(matching: subscription)
+      #if !os(Linux)
+        assertSnapshot(matching: subscription)
+      #endif
     }
   }
 
@@ -122,7 +136,9 @@ final class SubscribeTests: TestCase {
         |> siteMiddleware
         |> Prelude.perform
 
-      assertSnapshot(matching: conn)
+      #if !os(Linux)
+        assertSnapshot(matching: conn)
+      #endif
     }
   }
 
@@ -137,7 +153,9 @@ final class SubscribeTests: TestCase {
         |> siteMiddleware
         |> Prelude.perform
 
-      assertSnapshot(matching: conn)
+      #if !os(Linux)
+        assertSnapshot(matching: conn)
+      #endif
     }
   }
 
@@ -151,8 +169,10 @@ final class SubscribeTests: TestCase {
         )
         |> siteMiddleware
         |> Prelude.perform
-
-      assertSnapshot(matching: conn)
+      
+      #if !os(Linux)
+        assertSnapshot(matching: conn)
+      #endif
     }
   }
 }
