@@ -1,3 +1,5 @@
+import Either
+import Prelude
 #if os(Linux)
   import Glibc
 #else
@@ -13,31 +15,48 @@ public struct Logger {
     self.logger = logger
   }
 
-  public func log<A>(_ level: Level, _ message: @autoclosure () -> A) {
+  public func log<A>(_ level: Level, _ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
     if level.rawValue >= self.level.rawValue {
-//      self.logger(String(describing: message()))
-//      fflush(stdout)
+      let fileName = String(describing: file).split(separator: "/").last ?? "Unknown.swift"
+      self.logger("[\(level):\(fileName):\(line)] \(message())")
+      fflush(stdout)
     }
   }
 
-  public func debug<A>(_ message: @autoclosure () -> A) {
-    self.log(.debug, message)
+  public func logEitherIO<A, E>(_ level: Level, _ message: @escaping @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) -> EitherIO<E, A> {
+    return EitherIO(run: IO {
+      let value = message()
+      self.log(level, value, file: file, line: line)
+      return .right(value)
+    })
   }
 
-  public func info<A>(_ message: @autoclosure () -> A) {
-    self.log(.info, message)
+  public func logIO<A>(_ level: Level, _ message: @escaping @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) -> IO<A> {
+    return IO {
+      let value = message()
+      self.log(level, value, file: file, line: line)
+      return value
+    }
   }
 
-  public func warn<A>(_ message: @autoclosure () -> A) {
-    self.log(.warn, message)
+  public func debug<A>(_ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
+    self.log(.debug, message, file: file, line: line)
   }
 
-  public func error<A>(_ message: @autoclosure () -> A) {
-    self.log(.error, message)
+  public func info<A>(_ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
+    self.log(.info, message, file: file, line: line)
   }
 
-  public func fatal<A>(_ message: @autoclosure () -> A) {
-    self.log(.fatal, message)
+  public func warn<A>(_ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
+    self.log(.warn, message, file: file, line: line)
+  }
+
+  public func error<A>(_ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
+    self.log(.error, message, file: file, line: line)
+  }
+
+  public func fatal<A>(_ message: @autoclosure () -> A, file: StaticString = #file, line: UInt = #line) {
+    self.log(.fatal, message, file: file, line: line)
   }
 
   public enum Level: Int {
