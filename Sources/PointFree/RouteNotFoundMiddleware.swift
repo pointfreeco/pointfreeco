@@ -8,7 +8,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let routeNotFoundMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
+let routeNotFoundMiddleware =
   currentUserMiddleware
     >-> currentSubscriptionMiddleware
     >-> writeStatus(.notFound)
