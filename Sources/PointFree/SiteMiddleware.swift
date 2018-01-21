@@ -11,7 +11,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
-    <<< route(router: router)
+    <<< route(router: router, notFound: routeNotFoundMiddleware)
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
       password: AppEnvironment.current.envVars.basicAuth.password,
@@ -239,7 +239,7 @@ private func isProtected(route: Route) -> Bool {
 
   case .home,
        .launchSignup:
-    
+
     return false
   }
 }
