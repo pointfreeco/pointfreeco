@@ -307,6 +307,7 @@ private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLReq
   case let .post(params):
     request.httpMethod = "POST"
     request.httpBody = Data(urlFormEncode(value: params).utf8)
+    request.allHTTPHeaderFields = ["Idempotency-Key": UUID().uuidString]
   case let .delete(params):
     request.httpMethod = "DELETE"
     request.httpBody = Data(urlFormEncode(value: params).utf8)
@@ -319,10 +320,17 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   -> EitherIO<Prelude.Unit, A>
   where A: Decodable {
 
-    return pure(stripeUrlRequest(path, method))
+    let task: EitherIO<Prelude.Unit, A> = pure(stripeUrlRequest(path, method))
       .flatMap { jsonDataTask(with: auth <| $0, decoder: stripeJsonDecoder) }
       .map(tap(AppEnvironment.current.logger.debug))
       .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+
+    switch method {
+    case .delete, .get:
+      return task
+    case .post:
+      return task.retry(maxRetries: 10)
+    }
 }
 
 private func auth(_ request: URLRequest) -> URLRequest {
