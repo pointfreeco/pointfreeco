@@ -285,9 +285,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            String?
-          , 
-            Int?
+            Pricing?
         ), B == Route {
 
           public static let pricing = parenthesize <| PartialIso(

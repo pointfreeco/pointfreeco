@@ -258,6 +258,25 @@ extension Stripe.Subscription.Item {
   )
 }
 
+extension SubscribeData {
+  public static let individualMonthly = SubscribeData(
+    pricing: .individual(.monthly),
+    token: .init(unwrap: "stripe-deadbeef")
+  )
+
+  public static let individualYearly = SubscribeData(
+    pricing: .individual(.yearly),
+    token: .init(unwrap: "stripe-deadbeef")
+  )
+
+  public static func teamYearly(quantity: Int) -> SubscribeData {
+    return .init(
+      pricing: .team(quantity),
+      token: .init(unwrap: "stripe-deadbeef")
+    )
+  }
+}
+
 extension Session {
   public static let loggedOut = empty
 

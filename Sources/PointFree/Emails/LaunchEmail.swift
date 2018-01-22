@@ -63,7 +63,7 @@ private let launchEmailBody = View<Prelude.Unit> { _ in
             """
             ]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .pricing(nil, nil))), `class`([Class.pf.components.button(color: .purple)])],
+            a([href(url(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
               ["Subscribe to Point-Free!"])
             ]),
           p([`class`([Class.padding([.mobile: [.top: 2]])])], [

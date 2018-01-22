@@ -240,7 +240,7 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
           a(
             [
-              href(path(to: .pricing(nil, nil))),
+              href(path(to: .pricing(nil))),
               `class`([Class.pf.components.button(color: .purple)])
             ],
             ["Subscribe"])

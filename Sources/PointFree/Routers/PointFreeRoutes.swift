@@ -22,7 +22,7 @@ public enum Route: DerivePartialIsos {
   case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
-  case pricing(String?, Int?)
+  case pricing(Pricing?)
   case privacy
   case secretHome
   case subscribe(SubscribeData?)
@@ -210,7 +210,10 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("logout") <% end,
 
   .pricing
-    <¢> get %> lit("pricing") %> queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)) <% end,
+    <¢> get %> lit("pricing")
+    %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
+      .map(PartialIso.pricing >>> Optional.iso.some)
+    <% end,
 
   .privacy
     <¢> get %> lit("privacy") <% end,
@@ -276,4 +279,25 @@ private func verify(payload: MailgunForwardPayload) -> Bool {
     asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey
   )
   return payload.signature == digest
+}
+
+extension PartialIso where A == (String?, Int?), B == Pricing {
+  fileprivate static var pricing: PartialIso {
+    return PartialIso(
+      apply: { plan, quantity in
+        let pricing: Pricing
+        if let quantity = quantity {
+          pricing = .team(quantity)
+        } else if let plan = plan, let billing = Pricing.Billing(rawValue: plan) {
+          pricing = .individual(billing)
+        } else {
+          pricing = .default
+        }
+        return pricing
+    }, unapply: { pricing -> (String?, Int?) in
+      pricing.isTeam
+        ? (.some(pricing.billing.rawValue), pricing.quantity)
+        : (.some(pricing.billing.rawValue), nil)
+    })
+  }
 }
