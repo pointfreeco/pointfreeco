@@ -1,0 +1,13 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/subscribe
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+
+  pricing[team]=5&token=stripe-deadbeef
+
+▿ Response
+  Status 302 FOUND
+  Location: /login?redirect=http://localhost:8080/pricing?plan%3Dyearly%26quantity%3D5

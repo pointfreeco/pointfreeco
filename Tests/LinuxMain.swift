@@ -78,7 +78,8 @@ extension ChangeSeatsTests {
     ("testChangeSeatsNoSubscription", testChangeSeatsNoSubscription),
     ("testChangeSeatsCanceledSubscription", testChangeSeatsCanceledSubscription),
     ("testChangeSeatsInvalidPlan", testChangeSeatsInvalidPlan),
-    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats)
+    ("testChangeSeatsInvalidSeats", testChangeSeatsInvalidSeats),
+    ("testChangeSeatsEmail", testChangeSeatsEmail)
   ]
 }
 extension DatabaseTests {
@@ -225,6 +226,19 @@ extension StyleguideTests {
     ("testPointFreeStyles", testPointFreeStyles)
   ]
 }
+extension SubscribeTests {
+  static var allTests: [(String, (SubscribeTests) -> () throws -> Void)] = [
+    ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly),
+    ("testNotLoggedIn_IndividualYearly", testNotLoggedIn_IndividualYearly),
+    ("testNotLoggedIn_Team", testNotLoggedIn_Team),
+    ("testCurrentSubscribers", testCurrentSubscribers),
+    ("testInvalidQuantity", testInvalidQuantity),
+    ("testHappyPath", testHappyPath),
+    ("testCreateCustomerFailure", testCreateCustomerFailure),
+    ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
+    ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure)
+  ]
+}
 extension TeamEmailsTests {
   static var allTests: [(String, (TeamEmailsTests) -> () throws -> Void)] = [
     ("testYouHaveBeenRemovedEmailView", testYouHaveBeenRemovedEmailView),
@@ -284,6 +298,7 @@ XCTMain([
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StyleguideTests.allTests),
+  testCase(SubscribeTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(UpgradeTests.allTests),
