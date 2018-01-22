@@ -1,0 +1,14 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/subscribe
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+  pricing[individual]=monthly&token=stripe-deadbeef
+
+▿ Response
+  Status 302 FOUND
+  Location: /account
+  Set-Cookie: pf_session={"flash":{"message":"You already have an active subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/
