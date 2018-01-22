@@ -296,11 +296,6 @@ private enum Method {
   case get
   case post([String: String])
   case delete([String: String])
-
-  var isPost: Bool {
-    if case .post = self { return true }
-    return false
-  }
 }
 
 private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLRequest {
@@ -330,9 +325,12 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
       .map(tap(AppEnvironment.current.logger.debug))
       .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 
-    return method.isPost
-      ? task.retry(maxRetries: 10)
-      : task
+    switch method {
+    case .delete, .get:
+      return task
+    case .post(_):
+      return task.retry(maxRetries: 10)
+    }
 }
 
 private func auth(_ request: URLRequest) -> URLRequest {
