@@ -41,4 +41,27 @@ final class NotFoundMiddlewareTests: TestCase {
       }
     #endif
   }
+
+
+  func testNotFound_LoggedIn() {
+    let result = connection(
+      from: request(to: .secretHome, session: .loggedIn)
+        |> (over(\.url) <<< map) %~ { $0.appendingPathComponent("404") }
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: result)
+
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
+        webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
+
+        webView.frame.size.width = 400
+        assertSnapshot(matching: webView, named: "mobile")
+      }
+    #endif
+  }
 }
