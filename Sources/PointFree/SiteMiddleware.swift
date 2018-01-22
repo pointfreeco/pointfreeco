@@ -157,17 +157,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(unit))
         |> logoutResponse
 
-    case let .pricing(plan, quantity):
-      let pricing: Pricing
-      if let quantity = quantity {
-        pricing = .team(quantity)
-      } else if let plan = plan, let billing = Pricing.Billing(rawValue: plan) {
-        pricing = .individual(billing)
-      } else {
-        pricing = .default
-      }
-
-      return conn.map(const(user .*. pricing .*. route .*. unit))
+    case let .pricing(pricing):
+      return conn.map(const(user .*. (pricing ?? .default) .*. route .*. unit))
         |> pricingResponse
 
     case .privacy:
