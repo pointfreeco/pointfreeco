@@ -1,0 +1,8 @@
+▿ PointFree.Database.Subscription
+  ▿ id: Prelude.Tagged<PointFree.Database.Subscription, Foundation.UUID>
+    - unwrap: 00000000-0000-0000-0000-000000000002
+  ▿ stripeSubscriptionId: Prelude.Tagged<PointFree.Stripe.Subscription, Swift.String>
+    - unwrap: "sub_test"
+  - stripeSubscriptionStatus: PointFree.Stripe.Subscription.Status.active
+  ▿ userId: Prelude.Tagged<PointFree.Database.User, Foundation.UUID>
+    - unwrap: 00000000-0000-0000-0000-000000000001

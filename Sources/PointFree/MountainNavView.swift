@@ -76,7 +76,7 @@ private let headerLinks = View<(Database.User?, Stripe.Subscription.Status?, Rou
 
     currentSubscriptionStatus == .some(.active)
       ? nil
-      : a([href(path(to: .pricing(nil, nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"]),
+      : a([href(path(to: .pricing(nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"]),
 
     currentUser == nil
       ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)

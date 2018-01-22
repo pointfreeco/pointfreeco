@@ -16,6 +16,8 @@ init-db:
 deinit-db:
 	psql template1 < database/deinit.sql
 
+reset-db: deinit-db init-db
+
 test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
