@@ -47,7 +47,7 @@ private let episodeRowView = View<Episode> { ep in
         div([`class`([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
-              src: "",
+              src: ep.media.poster,
               alt: "",
               [`class`([Class.size.width100pct, Class.size.height100pct]),
                style(objectFit(.cover))]

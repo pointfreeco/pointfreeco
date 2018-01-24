@@ -6,6 +6,7 @@ public struct Episode {
   public private(set) var codeSampleDirectory: String
   public private(set) var id: Id
   public private(set) var length: Int
+  public private(set) var media: Media
   public private(set) var publishedAt: Date
   public private(set) var sequence: Int
   public private(set) var subscriberOnly: Bool
@@ -17,6 +18,7 @@ public struct Episode {
     codeSampleDirectory: String,
     id: Id,
     length: Int,
+    media: Media,
     publishedAt: Date,
     sequence: Int,
     subscriberOnly: Bool,
@@ -27,6 +29,7 @@ public struct Episode {
     self.codeSampleDirectory = codeSampleDirectory
     self.id = id
     self.length = length
+    self.media = media
     self.publishedAt = publishedAt
     self.sequence = sequence
     self.subscriberOnly = subscriberOnly
@@ -38,6 +41,16 @@ public struct Episode {
 
   public var slug: String {
     return "ep\(self.sequence)-\(PointFree.slug(for: self.title))"
+  }
+
+  public struct Media {
+    public private(set) var poster: String
+    public private(set) var video: String
+
+    public init(poster: String, video: String) {
+      self.poster = poster
+      self.video = video
+    }
   }
 
   public struct TranscriptBlock {
@@ -106,6 +119,10 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   codeSampleDirectory: "ep4-type-safe-html",
   id: .init(unwrap: 4),
   length: 1380,
+  media: Episode.Media(
+    poster: "http://d1hf1soyumxcgv.cloudfront.net/000x-dry-run/thumb-640x360-00001.png",
+    video: "http://d1hf1soyumxcgv.cloudfront.net/000x-dry-run/hls.m3u8"
+  ),
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
   subscriberOnly: true,
