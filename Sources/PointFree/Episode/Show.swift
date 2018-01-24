@@ -72,21 +72,21 @@ private let downloadsAndCredits =
 
 private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
 
-  videoView.view(unit)
+  videoView.view(episode.media)
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
     <> downloadsAndCredits.view(episode.codeSampleDirectory)
 }
 
-private let videoView = View<Prelude.Unit> { _ in
+private let videoView = View<Episode.Media> { media in
   video(
     [
       `class`([Class.size.width100pct]),
       controls(true),
       playsInline(true),
       autoplay(true),
-      poster("")
+      poster(media.poster)
     ],
-    [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
+    [source(src: media.video)]
   )
 }
 
