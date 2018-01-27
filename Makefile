@@ -1,4 +1,4 @@
-bootstrap: check-postgres postgres-mm webkit-snapshot-mm init-db xcodeproj
+bootstrap: check-postgres commoncrypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
 
 imports = \
 	@testable import PointFreeTests; \
@@ -68,6 +68,10 @@ route-partial-iso:
 
 # module maps
 
+common-crypto-mm:
+	-@sudo mkdir -p "$(COMMON_CRYPTO_PATH)"
+	-@echo "$$COMMON_CRYPTO_MODULE_MAP" | sudo tee "$(COMMON_CRYPTO_MODULE_MAP_PATH)" > /dev/null
+
 postgres-mm:
 	-@sudo mkdir -p "$(POSTGRES_PATH)"
 	-@echo "$$POSTGRES_MODULE_MAP" | sudo tee "$(POSTGRES_PATH)/module.map" > /dev/null
@@ -78,7 +82,19 @@ webkit-snapshot-mm:
 	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" | sudo tee "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map" > /dev/null
 
 SDK_PATH = $(shell xcrun --show-sdk-path)
-POSTGRES_PATH = $(SDK_PATH)/System/Library/Frameworks/CPostgreSQL.framework
+FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
+COMMON_CRYPTO_PATH = $(FRAMEWORKS_PATH)/CommonCrypto.framework
+COMMON_CRYPTO_MODULE_MAP_PATH = $(COMMON_CRYPTO_PATH)/module.map
+define COMMON_CRYPTO_MODULE_MAP
+module CommonCrypto [system] {
+  header "$(SDK_PATH)/usr/include/CommonCrypto/CommonCrypto.h"
+  header "$(SDK_PATH)/usr/include/CommonCrypto/CommonRandom.h"
+  export *
+}
+endef
+export COMMON_CRYPTO_MODULE_MAP
+
+POSTGRES_PATH = $(FRAMEWORKS_PATH)/CPostgreSQL.framework
 define POSTGRES_MODULE_MAP
 module CPostgreSQL [system] {
     header "shim.h"
@@ -99,7 +115,7 @@ define POSTGRES_SHIM_H
 endef
 export POSTGRES_SHIM_H
 
-WEBKIT_SNAPSHOT_CONFIGURATION_PATH = $(SDK_PATH)/System/Library/Frameworks/WKSnapshotConfigurationShim.framework
+WEBKIT_SNAPSHOT_CONFIGURATION_PATH = $(FRAMEWORKS_PATH)/WKSnapshotConfigurationShim.framework
 define WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP
 module WKSnapshotConfigurationShim [system] {
   header "$(SDK_PATH)/System/Library/Frameworks/WebKit.framework/Headers/WKSnapshotConfiguration.h"
