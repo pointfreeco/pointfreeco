@@ -29,11 +29,8 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
     ```
 
   * With everything bootstrapped and the project open in Xcode, you can:
-
       - Build: Command+B
-  
-      - Run tests: Command+U
-  
+      - Run tests: Command+U  
       - Open a playground!
 
 ## Some fun things to explore
