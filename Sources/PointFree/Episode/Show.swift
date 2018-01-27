@@ -305,10 +305,13 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
 private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   guard let timestamp = timestamp else { return [] }
 
-  return  [
+  return [
     a(
       timestampLinkAttributes(timestamp) + [
-        `class`([Class.pf.components.videoTimeLink, Class.layout.left, Class.type.lineHeight(1)])
+        `class`([
+          Class.display.block,
+          Class.pf.components.videoTimeLink,
+          ])
       ],
       [.text(encode(timestampLabel(for: timestamp)))]
     )
@@ -377,7 +380,7 @@ func markdownBlock(_ attribs: [Attribute<Element.Div>] = [], _ markdown: String)
 }
 
 private func unsafeMark(from markdown: String) -> String {
-  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, 0)
+  guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, CMARK_OPT_SMART)
     else { return markdown }
   defer { free(cString) }
   return String(cString: cString)
