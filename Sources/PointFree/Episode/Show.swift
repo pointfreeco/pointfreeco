@@ -30,6 +30,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (episode, isEpisodeViewable),
+          description: episode.blurb,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
