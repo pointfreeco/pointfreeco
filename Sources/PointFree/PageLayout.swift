@@ -101,6 +101,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
     document([
       html([
         head([
+          meta([charset(.utf8)]),
           title(layoutData.title),
           style(renderedNormalizeCss),
           style(styleguide),
