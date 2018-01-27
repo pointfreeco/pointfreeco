@@ -1,14 +1,21 @@
+bootstrap: check-postgres postgres-mm webkit-snapshot-mm init-db xcodeproj
+
 imports = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
-
-bootstrap: xcodeproj postgres-mm db
 
 xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
 
-sourcery: linux-main route-partial-iso
+# db
+
+check-postgres:
+	@psql template1 -c '' \
+		|| ( \
+			echo "Please make sure Postgres is installed/running!" \
+				&& exit 1 \
+	)
 
 init-db:
 	psql template1 < database/init.sql
@@ -17,6 +24,10 @@ deinit-db:
 	psql template1 < database/deinit.sql
 
 reset-db: deinit-db init-db
+
+# tests
+
+test-all: test-linux test-mac test-ios
 
 test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
@@ -36,7 +47,9 @@ test-ios: xcodeproj init-db
 test-swift: init-db
 	swift test
 
-test-all: test-linux test-mac test-ios
+# sourcery
+
+sourcery: linux-main route-partial-iso
 
 linux-main:
 	sourcery \
@@ -52,6 +65,8 @@ route-partial-iso:
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
 		--output ./Sources/PointFree/__Generated__/DerivedPartialIsos.swift
+
+# module maps
 
 postgres-mm:
 	-@sudo mkdir -p "$(POSTGRES_PATH)"
