@@ -8,7 +8,7 @@ This repo contains the application code for the [Point-Free](http://www.pointfre
 
 ## Getting started
 
-The repo contains an extensive test suite and some playgrounds to explore. You can get this running by.
+The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
   * Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
 
