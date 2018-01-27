@@ -328,9 +328,7 @@ extension Class.pf {
     public static let videoTimeLink =
       videoTimeLinkClass
         | Class.type.textDecorationNone
-        | Class.pf.colors.bg.gray650
-        | Class.pf.colors.link.white
-        | Class.border.rounded.all
+        | Class.pf.colors.link.gray650
         | Class.h6
 
     public static let heroLogo = CssSelector.class("hero-logo")
@@ -522,8 +520,7 @@ private let heroLogoStyles =
 private let videoTimeLinkClass = CssSelector.class("vid-time-link")
 private let videoTimeLinkStyles =
   videoTimeLinkClass % (
-    padding(all: .rem(0.25))
-      <> margin(top: .px(1), right: .rem(0.25))
+    padding(top: .rem(0.25))
 )
 
 private let blueGradientStyles =
