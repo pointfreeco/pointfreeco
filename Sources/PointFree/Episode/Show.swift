@@ -221,7 +221,7 @@ private let leftColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode,
 }
 
 private let subscribeView = View<Episode> { episode in
-  div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.gray900])], [
+  div([`class`([Class.type.align.center, Class.margin([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
 
     h3(
       [`class`([Class.pf.type.responsiveTitle4])],
@@ -230,7 +230,12 @@ private let subscribeView = View<Episode> { episode in
 
     p(
       [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-      ["Unlock full episodes and explore a new functional programming concept each week."]
+      [
+        """
+        This episode is for subscribers only. To access it, and all past and future episodes, become a
+        subscriber today!
+        """
+      ]
     ),
 
     a(

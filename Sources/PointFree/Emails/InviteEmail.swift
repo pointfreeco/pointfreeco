@@ -25,8 +25,8 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
             "Your colleague ",
             .text(encode(inviter.name)),
             """
-             has invited you to join their team account on Point-Free, a weekly video series discussing
-            functional programming and the Swift programming language. To accept, simply click the link below!
+             has invited you to join their team account on Point-Free, a video series about functional
+            programming and the Swift programming language. To accept, simply click the link below!
             """
             ]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
