@@ -149,7 +149,7 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
         ),
 
         p(
-          [`class`([Class.pf.colors.fg.yellow])],
+          [`class`([Class.pf.colors.fg.green])],
           [
             """
             Become a subscriber to unlock every full episode and explore new functional programming concepts
@@ -376,9 +376,10 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
 
   return gridRow([id(selectors.content.1)], [
     gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
-        h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.purple])], ["Yearly Plan"]),
-        p([`class`([Class.pf.colors.fg.purple])], ["How many in your team?"]),
+      div([`class`([Class.padding([.mobile: [.all: 3]])])], [
+
+        p([`class`([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
+        
         input([
           `class`([numberSpinner, Class.pf.colors.fg.purple]),
           max(Pricing.validTeamQuantities.upperBound),
@@ -396,17 +397,41 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           type(.number),
           value(quantity),
           ]),
-        h6([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.purple])], [
-          "$",
-          span(
-            [id("team-rate")],
-            [text(String(format: "%d", Pricing.teamYearlyBase * quantity))]
-          ),
-          "/yr"
+
+        hr([
+          `class`([
+            Class.pf.components.divider,
+            Class.margin([.mobile: [.topBottom: 3]])
+            ]),
           ]),
-        p(
-          [`class`([Class.pf.type.title6, Class.type.normal, Class.pf.colors.fg.gray650])],
-          ["10% off individual yearly"]
+
+        h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.black])], ["Yearly Plan"]),
+
+        h6([
+          `class`([
+            Class.pf.type.responsiveTitle1,
+            Class.type.light,
+            Class.pf.colors.fg.black,
+            Class.margin([.mobile: [.bottom: 0]])
+            ])
+          ], [
+            "$",
+            span(
+              [id("team-rate")],
+              [text(String(format: "%d", Pricing.teamYearlyBase * quantity))]
+            ),
+            "/yr"
+          ]),
+
+        p([
+          `class`([
+            Class.pf.type.body.small,
+            Class.type.normal,
+            Class.pf.colors.fg.gray400,
+            Class.margin([.mobile: [.top: 0]])
+            ])
+          ],
+          ["20% off individual monthly"]
         )
         ])
       ])
@@ -419,12 +444,15 @@ let numberSpinner =
   numberSpinnerClass
     | Class.type.align.center
     | Class.pf.type.title1
-    | Class.border.pill
-    | Class.border.all
-    | Class.pf.colors.border.gray650
 private let extraSpinnerStyles =
-  numberSpinnerClass % padding(left: .px(20))
-    <> maxWidth(.px(200))
+  numberSpinnerClass % (
+    padding(left: .px(20))
+      <> maxWidth(.px(160))
+      <> key("border", "0")
+      <> borderStyle(top: .none, right: .none, bottom: .solid, left: .none)
+      <> borderColor(top: .none, right: .none, bottom: Colors.gray650, left: .none)
+      <> borderWidth(top: .none, right: .none, bottom: .px(1), left: .none)
+)
 
 private let pricingFooterView = View<Database.User?> { currentUser in
   gridRow([
