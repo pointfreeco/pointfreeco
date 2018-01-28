@@ -23,7 +23,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Su
           data: (currentUser, currentSubscriptionStatus),
           extraStyles: pricingExtraStyles,
           navStyle: .mountains,
-          title: "Point-Free: A weekly video series on functional programming and the Swift programming language."
+          title: "Point-Free: A video series on functional programming and the Swift programming language."
         )
     }
 )

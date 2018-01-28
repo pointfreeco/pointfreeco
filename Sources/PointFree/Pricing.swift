@@ -150,7 +150,12 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
 
         p(
           [`class`([Class.pf.colors.fg.yellow])],
-          ["Unlock full episodes and explore a new functional programming concept each week."]
+          [
+            """
+            Become a subscriber to unlock every full episode and explore new functional programming concepts
+            as episodes are released.
+            """
+          ]
         ),
 
         gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
@@ -190,11 +195,13 @@ private let whatToExpect = View<Prelude.Unit> { _ in
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      ["""
-       Quality weekly video content dissecting some of the most important topics in functional
-       programming. Each episode is transcribed for easy searching and reference, and comes with a fully
-       functioning Swift playground so that you can experiment with the concepts discussed.
-       """]
+      [
+        """
+        Quality video content dissecting some of the most important topics in functional programming. Each
+        episode is transcribed for easy searching and reference, and comes with a fully-functioning Swift
+        playground so that you can experiment with the concepts discussed.
+        """
+      ]
     )
   ]
 }
@@ -208,11 +215,13 @@ private let topicsView = View<Prelude.Unit> { _ in
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      ["""
-       We will of course cover all of the classic topics such as functors, monads and applicatives (oh
-       my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
-       of some of the things we’re excited to talk about
-       """]
+      [
+        """
+        We will of course cover all of the classic topics such as functors, monads and applicatives (oh
+        my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
+        of some of the things we’re excited to talk about
+        """
+      ]
     ),
 
     ul(
@@ -545,7 +554,9 @@ func redirectActiveSubscribers<A>(
 
         return hasActiveSubscription.flatMap {
           $0
-            ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription.")))
+            ? (conn |> redirect(to: .account(.index),
+                                headersMiddleware: flash(.warning, "You already have an active subscription."))
+              )
             : middleware(conn)
         }
       }

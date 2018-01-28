@@ -22,7 +22,7 @@ private let registrationEmailBody = View<GitHub.User> { user in
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
           h3([`class`([Class.pf.type.title3])], ["Thanks for signing up!"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            "You’re one step closer to our weekly video series!"
+            "You’re one step closer to our video series!"
             ]),
           
           p([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
