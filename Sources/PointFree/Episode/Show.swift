@@ -31,6 +31,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           currentUser: currentUser,
           data: (episode, isEpisodeViewable),
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
           useHighlightJs: true
@@ -107,13 +108,12 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
 
 private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>] {
   return [
-    href(""),
+    href("#t\(timestamp)"),
 
     onclick(javascript: """
     var video = document.getElementsByTagName("video")[0];
     video.currentTime = event.target.dataset.t;
     video.play();
-    event.preventDefault();
     """),
 
     data("t", "\(timestamp)")
@@ -296,8 +296,16 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
     )
 
   case .title:
-    return h2([`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])], [
-      .text(encode(block.content))
+    return h2(
+      [
+        `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
+        block.timestamp.map { id("t\($0)") }
+        ]
+        .flatMap { $0 },
+      [
+        a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
+          text(block.content)
+          ])
       ])
   }
 }
@@ -306,15 +314,13 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   guard let timestamp = timestamp else { return [] }
 
   return [
-    a(
-      timestampLinkAttributes(timestamp) + [
-        `class`([
-          Class.display.block,
-          Class.pf.components.videoTimeLink,
-          ])
-      ],
-      [.text(encode(timestampLabel(for: timestamp)))]
-    )
+    div([id("t\(timestamp)"), `class`([Class.display.block])], [
+      a(
+        timestampLinkAttributes(timestamp) + [
+          `class`([Class.pf.components.videoTimeLink])
+        ],
+        [text(timestampLabel(for: timestamp))])
+      ])
   ]
 }
 
