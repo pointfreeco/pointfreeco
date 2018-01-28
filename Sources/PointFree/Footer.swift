@@ -47,7 +47,7 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
       a([href(path(to: .secretHome)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
       ]),
     p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white])], [
-      "A weekly video series on functional programming and the Swift programming language. Hosted by ",
+      "A video series on functional programming and the Swift programming language. Hosted by ",
       a(
         [href(twitterUrl(to: .mbrandonw)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
         [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]

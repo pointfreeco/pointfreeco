@@ -45,7 +45,7 @@ private let nonSubscriberCtaView = View<Bool> { isSubscriber -> [Node] in
   return [
     p([
       """
-      This episode is for subscribers only. To access to it, and all past and future episodes, become a
+      This episode is for subscribers only. To access it, and all past and future episodes, become a
       subscriber today!
       """
       ]),

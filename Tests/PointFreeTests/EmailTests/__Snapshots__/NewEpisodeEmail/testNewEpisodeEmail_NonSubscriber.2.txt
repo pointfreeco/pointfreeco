@@ -5,7 +5,7 @@
 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.
 
-This episode is for subscribers only. To access to it, and all past and future episodes, become a
+This episode is for subscribers only. To access it, and all past and future episodes, become a
 subscriber today!
 
 Subscribe to Point-Free! <http://localhost:8080/pricing>

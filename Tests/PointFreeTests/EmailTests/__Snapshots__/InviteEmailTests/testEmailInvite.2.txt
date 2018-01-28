@@ -2,8 +2,8 @@
 
 ### You’re invited!
 
-Your colleague Blob has invited you to join their team account on Point-Free, a weekly video series discussing
-functional programming and the Swift programming language. To accept, simply click the link below!
+Your colleague Blob has invited you to join their team account on Point-Free, a video series about functional
+programming and the Swift programming language. To accept, simply click the link below!
 
 Click here to accept! <http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF>
 
