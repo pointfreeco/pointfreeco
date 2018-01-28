@@ -93,7 +93,6 @@ public enum Route: DerivePartialIsos {
 
   public enum Team: DerivePartialIsos {
     case remove(Database.User.Id)
-    case show
   }
 }
 
@@ -229,9 +228,6 @@ private let routers: [Router<Route>] = [
     %> pathParam(._rawRepresentable >>> ._rawRepresentable)
     <% lit("remove")
     <% end,
-
-  .team <<< .show
-    <¢> get %> lit("account") %> lit("team") <% end,
 ]
 
 private let formDecoder = UrlFormDecoder()

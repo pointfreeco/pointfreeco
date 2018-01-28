@@ -27,12 +27,20 @@ let paymentInfoResponse =
     }
 )
 
+private let genericPaymentInfoError = """
+We couldn’t update your payment info at this time. Please try again later or contact
+<support@pointfree.co>.
+"""
+
 let updatePaymentInfoMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Stripe.Token.Id?>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,
-      or: redirect(to: .account(.paymentInfo(.show)), headersMiddleware: flash(.error, "An error occurred!"))
+      or: redirect(
+        to: .account(.paymentInfo(.show)),
+        headersMiddleware: flash(.error, genericPaymentInfoError)
+      )
     )
     <<< requireStripeSubscription
     <| { conn in
@@ -44,8 +52,8 @@ let updatePaymentInfoMiddleware:
           conn |> redirect(
             to: .account(.paymentInfo(.show)),
             headersMiddleware: $0.isLeft
-              ? flash(.error, "There was an error updating your payment info!")
-              : flash(.notice, "We’ve updated your payment info!")
+              ? flash(.error, genericPaymentInfoError)
+              : flash(.notice, "Your payment information has been updated.")
           )
       }
 }

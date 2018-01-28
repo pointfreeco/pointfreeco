@@ -390,7 +390,7 @@ func markdownBlock(_ attribs: [Attribute<Element.Div>] = [], _ markdown: String)
     ])
 }
 
-private func unsafeMark(from markdown: String) -> String {
+func unsafeMark(from markdown: String) -> String {
   guard let cString = cmark_markdown_to_html(markdown, markdown.utf8.count, CMARK_OPT_SMART)
     else { return markdown }
   defer { free(cString) }

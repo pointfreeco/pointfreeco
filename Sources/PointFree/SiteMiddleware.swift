@@ -173,10 +173,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case .team(.show):
-      return conn.map(const(user .*. unit))
-        |> teamResponse
-
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
