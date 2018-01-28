@@ -35,7 +35,7 @@ body {
 }
 
 .bg-blue900 {
-  background-color : #E6F8FF;
+  background-color : #e6f8ff;
 }
 
 .bg-dark {
@@ -51,7 +51,7 @@ body {
 }
 
 .bg-green {
-  background-color : #79F2B0;
+  background-color : #79f2b0;
 }
 
 .bg-inherit {
@@ -59,7 +59,7 @@ body {
 }
 
 .bg-purple {
-  background-color : #974DFF;
+  background-color : #974dff;
 }
 
 .bg-purple150 {
@@ -75,7 +75,7 @@ body {
 }
 
 .bg-yellow {
-  background-color : #FFF080;
+  background-color : #fff080;
 }
 
 .border-gray-650 {
@@ -104,7 +104,7 @@ body {
 }
 
 .fg-blue {
-  color : #4CCCFF;
+  color : #4cccff;
 }
 
 .fg-gray300 {
@@ -124,11 +124,11 @@ body {
 }
 
 .fg-green {
-  color : #79F2B0;
+  color : #79f2b0;
 }
 
 .fg-purple {
-  color : #974DFF;
+  color : #974dff;
 }
 
 .fg-red {
@@ -136,7 +136,7 @@ body {
 }
 
 .fg-yellow {
-  color : #FFF080;
+  color : #fff080;
 }
 
 .fg-white {
@@ -160,19 +160,19 @@ a:visited.pf-link-gray650 {
 }
 
 a:link.pf-link-green {
-  color : #79F2B0;
+  color : #79f2b0;
 }
 
 a:visited.pf-link-green {
-  color : #79F2B0;
+  color : #79f2b0;
 }
 
 a:link.pf-link-purple {
-  color : #974DFF;
+  color : #974dff;
 }
 
 a:visited.pf-link-purple {
-  color : #974DFF;
+  color : #974dff;
 }
 
 a:link.pf-link-red {
@@ -192,7 +192,7 @@ a:visited.pf-link-white {
 }
 
 a:link.pf-link-yellow {
-  color : #FFF080;
+  color : #fff080;
 }
 
 a:visited.pf-link-white {
@@ -201,10 +201,12 @@ a:visited.pf-link-white {
 
 .code {
   background-color : #fafafa;
+  color            : #24292e;
   font-family      : monospace;
 }
 
 .inline-code {
+  color                      : #24292e;
   font-family                : monospace;
   padding-top                : 1px;
   padding-bottom             : 1px;
@@ -330,6 +332,34 @@ a:link.btn-normal {
   -moz-transform    : scaleX(-1);
   -o-transform      : scaleX(-1);
   -ms-transform     : scaleX(-1);
+}
+
+.token.builtin {
+  color : #6f42c1;
+}
+
+.token.comment {
+  color : #6a737d;
+}
+
+.token.function {
+  color : #005cc5;
+}
+
+.token.keyword {
+  color : #d73a49;
+}
+
+.token.number {
+  color : #a963ff;
+}
+
+.token.operator {
+  color : #d73a49;
+}
+
+.token.string {
+  color : #032f62;
 }
 
 @media only screen and (min-width: 832px) {
