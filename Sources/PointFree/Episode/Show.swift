@@ -34,7 +34,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
-          useHighlightJs: true
+          usePrismJs: true
         )
     }
 )

@@ -3,19 +3,19 @@ import Prelude
 
 public enum Colors {
   public static let black = Color.other("#121212")
-  public static let blue = Color.other("#4CCCFF")
-  public static let blue900 = Color.other("#E6F8FF")
+  public static let blue = Color.other("#4cccff")
+  public static let blue900 = Color.other("#e6f8ff")
   public static let gray300 = Color.other("#555555")
   public static let gray400 = Color.other("#666666")
   public static let gray650 = Color.other("#a8a8a8")
   public static let gray800 = Color.other("#ccc")
   public static let gray850 = Color.other("#d8d8d8")
   public static let gray900 = Color.other("#f6f6f6")
-  public static let green = Color.other("#79F2B0")
-  public static let purple = Color.other("#974DFF")
+  public static let green = Color.other("#79f2b0")
+  public static let purple = Color.other("#974dff")
   public static let purple150 = Color.other("#291a40")
   public static let red = Color.other("#eb1c26")
-  public static let yellow = Color.other("#FFF080")
+  public static let yellow = Color.other("#fff080")
   public static let white = Color.other("#fff")
 }
 
@@ -301,7 +301,7 @@ extension Class.pf {
         | Class.padding([.mobile: [.all: 3]])
         | Class.layout.overflowAuto(.x)
     public static func code(lang: String?) -> CssSelector {
-      return _codeClasses | .class(lang ?? "")
+      return _codeClasses | .class(lang.map { "language-\($0)" } ?? "")
     }
 
     public static let divider = dividerClass
@@ -357,6 +357,7 @@ public let pointFreeBaseStyles =
     <> videoTimeLinkStyles
     <> blueGradientStyles
     <> reflectStyles
+    <> prismJsTheme
 
 private let bodyStyles =
   html % (
@@ -422,17 +423,30 @@ private let _codeClass = CssSelector.class("code")
 private let codeStyles =
   _codeClass % (
     backgroundColor(.other("#fafafa"))
+      <> color(.other("#24292e"))
       <> fontFamily(["monospace"])
 )
 
 private let inlineCodeStyles =
   Class.pf.inlineCode % (
-    fontFamily(["monospace"])
+    color(.other("#24292e"))
+      <> fontFamily(["monospace"])
       <> padding(topBottom: .px(1), leftRight: .px(5))
       <> borderWidth(all: .px(1))
       <> borderRadius(all: .px(3))
       <> backgroundColor(Color.other("#fafafa"))
 )
+
+private let token = CssSelector.class("token")
+
+private let prismJsTheme =
+  (token & CssSelector.class("builtin")) % color(.other("#6f42c1"))
+    <> (token & CssSelector.class("comment")) % color(.other("#6a737d"))
+    <> (token & CssSelector.class("function")) % color(.other("#005cc5"))
+    <> (token & CssSelector.class("keyword")) % color(.other("#d73a49"))
+    <> (token & CssSelector.class("number")) % color(.other("#a963ff"))
+    <> (token & CssSelector.class("operator")) % color(.other("#d73a49"))
+    <> (token & CssSelector.class("string")) % color(.other("#032f62"))
 
 private let opacities =
   Class.pf.opacity25 % opacity(0.25)
