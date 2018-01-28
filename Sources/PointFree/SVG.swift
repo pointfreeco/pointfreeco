@@ -97,7 +97,7 @@ func rightArrowSvgBase64(fill: String) -> String {
   <?xml version="1.0" encoding="UTF-8"?>
   <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-  <polygon id="right" fill="#974DFF" points="9.57421875 0 19.3828125 9.80859375 9.57421875 19.6171875 8.23828125 18.2929688 15.7851562 10.7460938 0 10.7460938 0 8.87109375 15.7851562 8.87109375 8.23828125 1.32421875"></polygon>
+  <polygon id="right" fill="\(fill)" points="9.57421875 0 19.3828125 9.80859375 9.57421875 19.6171875 8.23828125 18.2929688 15.7851562 10.7460938 0 10.7460938 0 8.87109375 15.7851562 8.87109375 8.23828125 1.32421875"></polygon>
   </g>
   </svg>
   """

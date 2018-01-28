@@ -19,6 +19,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: unit,
+          extraStyles: hostImgStyles,
           title: "About"
         )
     }
@@ -26,19 +27,87 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
 
 private let aboutView = View<Prelude.Unit> { _ in
   gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 9], [style(margin(leftRight: .auto))], [
+    gridColumn(sizes: [.mobile: 12, .desktop: 7], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           aboutSectionView.view(unit)
             + openSourceSection.view(unit)
-            + hostsSection.view(unit)
+      )
+      ]),
+
+
+    gridColumn(sizes: [.mobile: 12, .desktop: 5], [
+      div(
+        [
+          `class`([
+            Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+            Class.pf.colors.bg.purple150
+            ])
+        ],
+        hostsView.view(unit)
       )
       ])
     ])
 }
 
-let aboutSectionView = View<Prelude.Unit> { _ in
+private let hostsView = View<Prelude.Unit> { _ in
   [
-    h1([`class`([Class.pf.type.title2])], ["About"]),
+    h1(
+      [
+        `class`([
+          Class.pf.type.responsiveTitle3,
+          Class.pf.colors.fg.white,
+          Class.padding([.mobile: [.bottom: 2]])
+          ])
+      ],
+      [
+        "Your hosts"
+      ]
+    )
+    ]
+    + hostView.view(.brandon)
+    + hostView.view(.stephen)
+}
+
+private let hostView = View<Host> { host in
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 3]])])], [
+    gridColumn(sizes: [.mobile: 5, .desktop: 5], [
+      img(
+        src: host.image,
+        alt: "Photo of \(host.name)",
+        [`class`([hostImgClass])]
+      )
+      ]),
+
+    gridColumn(sizes: [.mobile: 7, .desktop: 7], [
+      div([
+        p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular, Class.type.bold])], [text(host.name)]),
+        p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [text(host.bio)]),
+        a(
+          [
+            href(twitterUrl(to: host.twitterRoute)),
+            `class`([
+              Class.pf.colors.link.white,
+              Class.padding([.mobile: [.top: 2]])
+              ])
+          ],
+          [
+            "Twitter",
+            img(
+              base64: rightArrowSvgBase64(fill: "#ffffff"),
+              mediaType: .image(.svg),
+              alt: "",
+              [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
+            )
+          ]
+        )
+        ])
+      ])
+    ])
+}
+
+private let aboutSectionView = View<Prelude.Unit> { _ in
+  [
+    h1([`class`([Class.pf.type.responsiveTitle3])], ["About"]),
     markdownBlock("""
       Point-Free is a video series about functional programming and the Swift programming language. Each
       episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
@@ -102,9 +171,9 @@ let aboutSectionView = View<Prelude.Unit> { _ in
     ]
 }
 
-let openSourceSection = View<Prelude.Unit> { _ in
+private let openSourceSection = View<Prelude.Unit> { _ in
   [
-    h1([`class`([Class.pf.type.title3, Class.padding([.mobile: [.top: 2]])])], ["Open source"]),
+    h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])], ["Open source"]),
     markdownBlock("""
       When we [open-sourced](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd)
       the entire [iOS](http://github.com/kickstarter/ios-oss) and
@@ -130,27 +199,43 @@ let openSourceSection = View<Prelude.Unit> { _ in
   ]
 }
 
-let hostsSection = View<Prelude.Unit> { _ in
-  [
-    h1([`class`([Class.pf.type.title3, Class.padding([.mobile: [.top: 2]])])], ["The hosts"]),
+private let bulletPointTitleClass =
+  Class.pf.type.responsiveTitle5
 
-    gridRow([
-      gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
-        img(
-          src: "https://pbs.twimg.com/profile_images/441388783624155136/LSggwlQ1_400x400.jpeg",
-          alt: "Photo of Brandon Williams",
-          [`class`([Class.border.circle]), style(width(.px(100)))])
-        ]),
+private struct Host {
+  let bio: String
+  let image: String
+  let name: String
+  let twitterRoute: TwitterRoute
 
-      gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
-        img(
-          src: "https://pbs.twimg.com/profile_images/444191920/Photo_on_2009-09-29_at_21.20_400x400.jpg",
-          alt: "Photo of Stephen Celis",
-          [`class`([Class.border.circle]), style(width(.px(100)))]),
-        ])
-      ])
-  ]
+  static let brandon = Host(
+    bio: """
+Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
+better our craft as engineers.
+""",
+    image: "https://s3.amazonaws.com/pointfreeco-production/about-us/brando.jpg",
+    name: "Brandon Williams",
+    twitterRoute: .mbrandonw
+  )
+
+  static let stephen = Host(
+    bio: """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec massa euismod, posuere erat sed, mollis
+leo. Phasellus et mauris.
+""",
+    image: "https://s3.amazonaws.com/pointfreeco-production/about-us/stephen.jpg",
+    name: "Stephen Celis",
+    twitterRoute: .stephencelis
+  )
 }
 
-private let bulletPointTitleClass =
-  Class.pf.type.title4
+private let hostImgClass = CssSelector.class("host-img")
+private let hostImgStyles: Stylesheet =
+  hostImgClass % (
+    width(.px(160)) <> height(.px(160))
+    )
+    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
+      hostImgClass % (
+        width(.px(100)) <> height(.px(100))
+      )
+}
