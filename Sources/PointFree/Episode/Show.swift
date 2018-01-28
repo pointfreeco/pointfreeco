@@ -33,7 +33,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
-          useHighlightJs: true
+          usePrismJs: true
         )
     }
 )
