@@ -5,6 +5,7 @@ public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
   public private(set) var id: Id
+  public private(set) var image: String
   public private(set) var length: Int
   public private(set) var publishedAt: Date
   public private(set) var sequence: Int
@@ -16,6 +17,7 @@ public struct Episode {
     blurb: String,
     codeSampleDirectory: String,
     id: Id,
+    image: String,
     length: Int,
     publishedAt: Date,
     sequence: Int,
@@ -26,6 +28,7 @@ public struct Episode {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.id = id
+    self.image = image
     self.length = length
     self.publishedAt = publishedAt
     self.sequence = sequence
@@ -105,6 +108,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
 """,
   codeSampleDirectory: "ep4-type-safe-html",
   id: .init(unwrap: 4),
+  image: "",
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
