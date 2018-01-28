@@ -221,7 +221,7 @@ private let view: View<Bool?> = View { success in
         [
           head(
             [
-              title("Point-Free — A weekly video series on Swift and functional programming."),
+              title("Point-Free — A video series on Swift and functional programming."),
               style(reset <> stylesheet),
               meta(viewport: .width(.deviceWidth), .initialScale(1))
             ]
@@ -247,7 +247,7 @@ private let headerNode = header(
           [href("/")],
           [img(base64: logoSvgBase64, mediaType: .image(.svg), alt: "Point Free", [`class`("logo")])]
         ),
-        h1(["A new weekly Swift video series exploring functional programming and more."]),
+        h1(["A new Swift video series exploring functional programming and more."]),
         h2(["Coming really, really soon."]),
         footer(
           [
@@ -333,7 +333,7 @@ private let defaultSectionNode = section(
 private let twitterShareHref = { () -> String in
   var components = URLComponents(string: "https://twitter.com/intent/tweet")!
   components.queryItems = [
-    URLQueryItem(name: "text", value: "A new weekly video series on Swift and functional programming is coming soon!"),
+    URLQueryItem(name: "text", value: "A new video series on Swift and functional programming is coming soon!"),
     URLQueryItem(name: "url", value: "http://www.pointfree.co"),
     URLQueryItem(name: "via", value: "pointfreeco"),
   ]
@@ -356,7 +356,7 @@ let launchSignupView =
   metaLayout(view.map(addGoogleAnalytics))
     .contramap(
       Metadata.create(
-        description: "A weekly video series on Swift and functional programming. Each week we discuss a topic and then ask: “What’s the point!?”",
+        description: "A video series on Swift and functional programming. Each week we discuss a topic and then ask: “What’s the point!?”",
         image: "https://s3.amazonaws.com/pointfree.co/twitter-card-large.png",
         title: "Point-Free",
         twitterCard: .summaryLargeImage,

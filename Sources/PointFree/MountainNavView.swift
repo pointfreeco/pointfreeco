@@ -20,7 +20,7 @@ let mountainNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)
 
         gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
           div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
-            "A new weekly Swift video series exploring functional programming and more."
+            "A new Swift video series exploring functional programming and more."
             ])
           ]),
 
