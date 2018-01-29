@@ -38,7 +38,13 @@ let changeSeatsMiddleware =
       require2 >>> pure,
       or: redirect(
         to: .account(.subscription(.changeSeats(.show))),
-        headersMiddleware: flash(.error, "Couldn’t change the number of seats on your subscription.")
+        headersMiddleware: flash(
+          .error,
+          """
+          We couldn’t change the number of seats on your subscription. If you need customer service, please
+          contact <support@pointfree.co>.
+          """
+        )
       )
     )
     <<< fetchSeatsTaken
@@ -73,7 +79,13 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Data
           const(
             conn |> redirect(
               to: .account(.subscription(.changeSeats(.show))),
-              headersMiddleware: flash(.error, "We couldn’t change the number of seats at this time.")
+              headersMiddleware: flash(
+                .error,
+                """
+                We couldn’t change the number of seats at this time. Please try again later or contact
+                <support@pointfree.co>
+                """
+              )
             )
           )
         ) { _ in
@@ -135,7 +147,10 @@ private func requireValidSeating(
       seatsAvailable,
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "Can’t reduce number of seats that low.")
+        headersMiddleware: flash(
+          .error,
+          "We can’t reduce the number of seats below the number that are active."
+        )
       )
       )
       <| middleware
@@ -165,7 +180,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Add or remove seats?"])
+        h1([`class`([Class.pf.type.title3])], ["Add or remove seats?"])
         ])
       ])
     ])

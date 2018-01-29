@@ -10,23 +10,6 @@ import Prelude
 import Styleguide
 import Tuple
 
-let teamResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <| { conn -> IO<Conn<StatusLineOpen, Tuple3<[Database.TeamInvite], [Database.User], Database.User>>> in
-      sequential(
-        // Fetch invites and teammates in parallel.
-        zip(
-          parallel(AppEnvironment.current.database.fetchTeamInvites(conn.data.first.id).run)
-            .map { $0.right ?? [] },
-          parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(conn.data.first.id).run)
-            .map { $0.right ?? [] }
-          )
-        )
-        .map { conn.map(const(($0 .*. $1 .*. conn.data))) }
-    }
-    >-> writeStatus(.ok)
-    >-> respond(teamView.contramap(lower))
-
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
@@ -86,43 +69,4 @@ private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Databa
       .run)
   )
   .map(const(unit))
-}
-
-private let teamView = View<([Database.TeamInvite], [Database.User], Database.User)> { invites, teammates, currentUser in
-  [
-    h1(["Your team"]),
-    ul(
-      teammates.map { teammate in
-        li([
-          .text(encode(teammate.name)),
-          form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
-            input([type(.submit), value("Remove")])
-            ]),
-          ])
-      }
-    ),
-
-    h1(["Current invites"]),
-    p(["These teammates have been invited, but have not yet accepted."]),
-    ul(
-      invites.map { invite in
-        li([
-          .text(encode(invite.email.unwrap)),
-          form([action(path(to: .invite(.resend(invite.id)))), method(.post)], [
-            input([type(.submit), value("Resend")])
-            ]),
-          form([action(path(to: .invite(.revoke(invite.id)))), method(.post)], [
-            input([type(.submit), value("Revoke")])
-            ]),
-          ])
-      }
-    ),
-
-    h1(["Invite more"]),
-    p(["You have 10 open spots on your team. Invite a team member below:"]),
-    form([action(path(to: .invite(.send(nil)))), method(.post)], [
-      input([type(.email), name("email")]),
-      input([type(.submit), value("Add team member")])
-      ])
-  ]
 }

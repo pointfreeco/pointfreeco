@@ -106,7 +106,9 @@ extension DowngradeTests {
 extension EitherIOTests {
   static var allTests: [(String, (EitherIOTests) -> () throws -> Void)] = [
     ("testRetry_Fails", testRetry_Fails),
-    ("testRetry_Succeeds", testRetry_Succeeds)
+    ("testRetry_Succeeds", testRetry_Succeeds),
+    ("testRetry_MaxRetriesZero_Success", testRetry_MaxRetriesZero_Success),
+    ("testRetry_MaxRetriesZero_Failure", testRetry_MaxRetriesZero_Failure)
   ]
 }
 extension EmailInviteTests {
@@ -123,6 +125,7 @@ extension EnvVarTests {
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
     ("testEpisodePage", testEpisodePage),
+    ("testEpisodePageSubscriber", testEpisodePageSubscriber),
     ("testEpisodeNotFound", testEpisodeNotFound)
   ]
 }
@@ -187,6 +190,12 @@ extension NewslettersTests {
     ("testExpressUnsubscribeReply", testExpressUnsubscribeReply),
     ("testExpressUnsubscribeReply_IncorrectSignature", testExpressUnsubscribeReply_IncorrectSignature),
     ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter)
+  ]
+}
+extension NotFoundMiddlewareTests {
+  static var allTests: [(String, (NotFoundMiddlewareTests) -> () throws -> Void)] = [
+    ("testNotFound", testNotFound),
+    ("testNotFound_LoggedIn", testNotFound_LoggedIn)
   ]
 }
 extension PaymentInfoTests {
@@ -292,6 +301,7 @@ XCTMain([
   testCase(MinimalNavViewTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),
   testCase(NewslettersTests.allTests),
+  testCase(NotFoundMiddlewareTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
   testCase(PrivacyTests.allTests),

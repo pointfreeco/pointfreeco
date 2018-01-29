@@ -745,17 +745,6 @@ import Prelude
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route.Team {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
       extension PartialIso where A == Prelude.Unit, B == TwitterRoute {
         public static let mbrandonw = parenthesize <| PartialIso<Prelude.Unit, TwitterRoute>(
           apply: const(.some(.mbrandonw)),
