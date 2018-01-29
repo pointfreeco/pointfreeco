@@ -298,30 +298,36 @@ private enum Method {
   case delete([String: String])
 }
 
-private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLRequest {
-  var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URLRequest> {
+  return IO {
+    var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+    let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
+    var headers = ["Authorization": "Basic " + secret]
 
-  switch method {
-  case .get:
-    request.httpMethod = "GET"
-  case let .post(params):
-    request.httpMethod = "POST"
-    request.httpBody = Data(urlFormEncode(value: params).utf8)
-    request.allHTTPHeaderFields = ["Idempotency-Key": UUID().uuidString]
-  case let .delete(params):
-    request.httpMethod = "DELETE"
-    request.httpBody = Data(urlFormEncode(value: params).utf8)
+    switch method {
+    case .get:
+      request.httpMethod = "GET"
+    case let .post(params):
+      let httpBody = Data(urlFormEncode(value: params).utf8)
+      request.httpMethod = "POST"
+      headers["Idempotency-Key"] = UUID().uuidString
+      request.httpBody = httpBody
+    case let .delete(params):
+      request.httpMethod = "DELETE"
+      request.httpBody = Data(urlFormEncode(value: params).utf8)
+    }
+    request.allHTTPHeaderFields = headers
+
+    return request
   }
-
-  return request
 }
 
 private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   -> EitherIO<Prelude.Unit, A>
   where A: Decodable {
 
-    let task: EitherIO<Prelude.Unit, A> = pure(stripeUrlRequest(path, method))
-      .flatMap { jsonDataTask(with: auth <| $0, decoder: stripeJsonDecoder) }
+    let task: EitherIO<Prelude.Unit, A> = lift(stripeUrlRequest(path, method))
+      .flatMap { jsonDataTask(with: $0, decoder: stripeJsonDecoder) }
       .map(tap(AppEnvironment.current.logger.debug))
       .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 
@@ -331,16 +337,6 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
     case .post:
       return task.retry(maxRetries: 10)
     }
-}
-
-private func auth(_ request: URLRequest) -> URLRequest {
-  return request |> \.allHTTPHeaderFields %~ attachStripeAuthorization
-}
-
-private func attachStripeAuthorization(_ headers: [String: String]?) -> [String: String] {
-  let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
-  return (headers ?? [:])
-    |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
 // FIXME???
