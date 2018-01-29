@@ -73,26 +73,26 @@ private let downloadsAndCredits =
 
 private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
 
-  videoView.view(unit)
+  videoView.view(episode)
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
     <> downloadsAndCredits.view(episode.codeSampleDirectory)
 }
 
-private let videoView = View<Prelude.Unit> { _ in
+private let videoView = View<Episode> { episode in
   video(
     [
       `class`([Class.size.width100pct]),
       controls(true),
       playsInline(true),
       autoplay(true),
-      poster("")
+      poster(episode.image)
     ],
-    [source(src: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4")]
+    [source(src: episode.m3u)]
   )
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .top: 4]])])], [
+  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
     h6(
       [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
       ["Chapters"]
