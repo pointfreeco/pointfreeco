@@ -67,7 +67,7 @@ class InviteTests: TestCase {
   }
 
   func testResendInvite_HappyPath() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock)
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
       .run
       .perform()
       .right!!
@@ -86,7 +86,9 @@ class InviteTests: TestCase {
   func testResendInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1)
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+
+      EmailAddress(unwrap: "hello@pointfree.co")
       )
       .run
       .perform()
@@ -94,8 +96,8 @@ class InviteTests: TestCase {
 
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.email .~ .init(unwrap: "inviter@pointfree.co")
-        |> \.gitHubUser.id .~ .init(unwrap: 2)
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -113,7 +115,7 @@ class InviteTests: TestCase {
   }
 
   func testRevokeInvite_HappyPath() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock)
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
       .run
       .perform()
       .right!!
@@ -139,7 +141,8 @@ class InviteTests: TestCase {
   func testRevokeInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1)
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+      EmailAddress(unwrap: "hello@pointfree.co")
       )
       .run
       .perform()
@@ -147,8 +150,8 @@ class InviteTests: TestCase {
 
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.email .~ .init(unwrap: "inviter@pointfree.co")
-        |> \.gitHubUser.id .~ .init(unwrap: 2)
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -175,7 +178,8 @@ class InviteTests: TestCase {
   func testAcceptInvitation_HappyPath() {
     let currentUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1)
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+      EmailAddress(unwrap: "hello@pointfree.co")
       )
       .run
       .perform()
@@ -183,8 +187,8 @@ class InviteTests: TestCase {
 
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.email .~ .init(unwrap: "inviter@pointfree.co")
-        |> \.gitHubUser.id .~ .init(unwrap: 2)
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -224,7 +228,8 @@ class InviteTests: TestCase {
   func testAcceptInvitation_InviterIsNotSubscriber() {
     let currentUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1)
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+      EmailAddress(unwrap: "hello@pointfree.co")
       )
       .run
       .perform()
@@ -232,8 +237,8 @@ class InviteTests: TestCase {
 
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.email .~ .init(unwrap: "inviter@pointfree.co")
-        |> \.gitHubUser.id .~ .init(unwrap: 2)
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -261,7 +266,8 @@ class InviteTests: TestCase {
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     let currentUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1)
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+      EmailAddress(unwrap: "hello@pointfree.co")
       )
       .run
       .perform()
@@ -269,8 +275,8 @@ class InviteTests: TestCase {
 
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
-        |> \.gitHubUser.email .~ .init(unwrap: "inviter@pointfree.co")
-        |> \.gitHubUser.id .~ .init(unwrap: 2)
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -305,7 +311,7 @@ class InviteTests: TestCase {
   }
 
   func testAcceptInvitation_CurrentUserIsInviter() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock)
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
       .run
       .perform()
       .right!!
