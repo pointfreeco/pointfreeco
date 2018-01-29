@@ -9,11 +9,11 @@ public struct Episode {
   public private(set) var length: Int
   public private(set) var publishedAt: Date
   public private(set) var sequence: Int
+  public private(set) var sourcesFull: [String]
+  public private(set) var sourcesTrailer: [String]
   public private(set) var subscriberOnly: Bool
   public private(set) var title: String
   public private(set) var transcriptBlocks: [TranscriptBlock]
-  public private(set) var video: String
-  public private(set) var videoTrailer: String
 
   public init(
     blurb: String,
@@ -23,11 +23,11 @@ public struct Episode {
     length: Int,
     publishedAt: Date,
     sequence: Int,
+    sourcesFull: [String],
+    sourcesTrailer: [String],
     subscriberOnly: Bool,
     title: String,
-    transcriptBlocks: [TranscriptBlock],
-    video: String,
-    videoTrailer: String) {
+    transcriptBlocks: [TranscriptBlock]) {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
@@ -36,11 +36,11 @@ public struct Episode {
     self.length = length
     self.publishedAt = publishedAt
     self.sequence = sequence
+    self.sourcesFull = sourcesFull
+    self.sourcesTrailer = sourcesTrailer
     self.subscriberOnly = subscriberOnly
     self.title = title
     self.transcriptBlocks = transcriptBlocks
-    self.video = video
-    self.videoTrailer = videoTrailer
   }
 
   public typealias Id = Tagged<Episode, Int>
@@ -118,6 +118,8 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
+  sourcesFull: ["https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8"],
+  sourcesTrailer: [],
   subscriberOnly: true,
   title: "Type-Safe HTML in Swift",
   transcriptBlocks: [
@@ -278,7 +280,5 @@ We start by creating a type specifically to model keys that can be used in attri
       timestamp: 6,
       type: .paragraph
     ),
-    ],
-  video: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8",
-  videoTrailer: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8"
+  ]
 )
