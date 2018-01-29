@@ -43,7 +43,7 @@ let episodeView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeV
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
-        div(episodeInfoView.view(episode))
+        div(episodeInfoView.view((episode, isEpisodeViewable)))
         ])
       ]),
 
@@ -78,7 +78,7 @@ private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode
     <> downloadsAndCredits.view(episode.codeSampleDirectory)
 }
 
-private let videoView = View<Episode> { episode in
+private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
   video(
     [
       `class`([Class.size.width100pct]),
