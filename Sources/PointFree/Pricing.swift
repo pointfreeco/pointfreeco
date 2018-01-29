@@ -381,7 +381,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
         p([`class`([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
         
         input([
-          `class`([numberSpinner, Class.pf.colors.fg.purple]),
+          `class`([numberSpinner, Class.pf.colors.fg.black]),
           max(Pricing.validTeamQuantities.upperBound),
           min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
