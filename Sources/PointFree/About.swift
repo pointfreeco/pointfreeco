@@ -263,8 +263,8 @@ better our craft as engineers.
 
   static let stephen = Host(
     bio: """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec massa euismod, posuere erat sed, mollis
-leo. Phasellus et mauris.
+Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a
+functional convert and believer after years of objects.
 """,
     image: "https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg",
     name: "Stephen Celis",
