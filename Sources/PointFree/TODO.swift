@@ -190,13 +190,15 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 
     return dataTask(with: request)
       .map(
-        first >>> {
-          AppEnvironment.current.logger.debug(String(decoding: $0, as: UTF8.self))
-          return $0
+        first >>> { x in
+          print("[jsonDataTask]", x)
+          print("[jsonDataTask]", String(decoding: x, as: UTF8.self))
+          AppEnvironment.current.logger.debug(String(decoding: x, as: UTF8.self))
+          return x
         }
       )
       .flatMap { data in
-        .wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+        return .wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
     }
 }
 

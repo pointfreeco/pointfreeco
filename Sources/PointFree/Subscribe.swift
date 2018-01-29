@@ -26,7 +26,10 @@ let subscribeMiddleware =
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Database.User>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
+
     let (subscribeData, user) = conn.data |> lower
+    print("[subscribeData]", subscribeData)
+    print("[user]", user)
 
     return pure(subscribeData)
       .withExcept(const(unit))
@@ -48,13 +51,14 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
       .run
       .flatMap(
         either(
-          const(
-            conn
+          { x in
+            print("[subscribe]", x)
+            return conn
               |> redirect(
                 to: .pricing(subscribeData.pricing),
                 headersMiddleware: flash(.error, "Error creating subscription!")
             )
-          ),
+        },
           const(
             conn
               |> redirect(

@@ -213,11 +213,16 @@ extension Tagged where Tag == Stripe.Plan, A == String {
 }
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
+  return stripeDataTask(
+    "subscriptions/" + id.unwrap + "?expand[]=customer",
+    .delete(["at_period_end": "true"])
+  )
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id)
   -> EitherIO<Prelude.Unit, Stripe.Customer> {
+
+    print("[createCustomer]", user, token)
 
     return stripeDataTask("customers", .post([
       "description": user.id.unwrap.uuidString,
@@ -233,11 +238,14 @@ private func createSubscription(
   )
   -> EitherIO<Prelude.Unit, Stripe.Subscription> {
 
+    print("[createSubscription]", customer, plan, quantity)
+
+
     return stripeDataTask("subscriptions?expand[]=customer", .post([
       "customer": customer.unwrap,
       "items[0][plan]": plan.unwrap,
-      "items[0][quantity]": String(quantity),
-      ]))
+      "items[0][quantity]": String(quantity)
+        ]))
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
@@ -307,11 +315,33 @@ private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> URLReq
   case let .post(params):
     request.httpMethod = "POST"
     request.httpBody = Data(urlFormEncode(value: params).utf8)
-    request.allHTTPHeaderFields = ["Idempotency-Key": UUID().uuidString]
+      request.allHTTPHeaderFields = [
+//        "Idempotency-Key": UUID().uuidString,
+        "Content-Type": "application/x-www-form-urlencoded"
+    ]
+
+    print("[stripeUrlRequest]", request)
+
+    print(
+      "[stripeUrlRequest.body]",
+      request.httpBody.map { String.init(decoding: $0, as: UTF8.self) }
+    )
+    print(
+      "[stripeUrlRequest.headers]",
+      request.allHTTPHeaderFields
+    )
+
+//    fatalError()
+
+
+
   case let .delete(params):
     request.httpMethod = "DELETE"
     request.httpBody = Data(urlFormEncode(value: params).utf8)
   }
+
+
+  dump(request)
 
   return request
 }
@@ -321,15 +351,22 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   where A: Decodable {
 
     let task: EitherIO<Prelude.Unit, A> = pure(stripeUrlRequest(path, method))
-      .flatMap { jsonDataTask(with: auth <| $0, decoder: stripeJsonDecoder) }
-      .map(tap(AppEnvironment.current.logger.debug))
-      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+      .flatMap { x in
+        print("[stripeDataTask]", x)
+        return jsonDataTask(with: auth <| x, decoder: stripeJsonDecoder)
+      }
+      .withExcept { x in
+        print("[stripeDataTask.mapExcept]", x)
+        return unit
+      }
+//      .map(tap(AppEnvironment.current.logger.debug))
+//      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 
     switch method {
     case .delete, .get:
       return task
     case .post:
-      return task.retry(maxRetries: 10)
+      return task //.retry(maxRetries: 10)
     }
 }
 

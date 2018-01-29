@@ -29,6 +29,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     let subscriptionStatus = subscription?.stripeSubscriptionStatus
 
     switch route {
+    case .wtf:
+      // todo more
+      print(conn.request)
+      fatalError()
+
     case .about:
       return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> aboutResponse
