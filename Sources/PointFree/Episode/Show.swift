@@ -73,7 +73,7 @@ private let downloadsAndCredits =
 
 private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
 
-  videoView.view(episode)
+  videoView.view((episode, isEpisodeViewable))
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
     <> downloadsAndCredits.view(episode.codeSampleDirectory)
 }
@@ -87,7 +87,7 @@ private let videoView = View<Episode> { episode in
       autoplay(true),
       poster(episode.image)
     ],
-    [source(src: episode.m3u)]
+    [source(src: isEpisodeViewable ? episode.video : episode.videoTrailer)]
   )
 }
 
