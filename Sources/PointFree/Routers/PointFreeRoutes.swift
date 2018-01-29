@@ -17,14 +17,12 @@ public enum Route: DerivePartialIsos {
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
-  case home(signedUpSuccessfully: Bool?)
   case invite(Invite)
-  case launchSignup(EmailAddress)
   case login(redirect: String?)
   case logout
   case pricing(Pricing?)
   case privacy
-  case secretHome
+  case home
   case subscribe(SubscribeData?)
   case team(Team)
 
@@ -180,7 +178,7 @@ private let routers: [Router<Route>] = [
     <% end,
 
   .home
-    <¢> get %> queryParam("success", opt(.bool)) <% end,
+    <¢> get <% end,
 
   .invite <<< .accept
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("accept") <% end,
@@ -199,9 +197,6 @@ private let routers: [Router<Route>] = [
   .invite <<< .show
     <¢> get %> lit("invites") %> pathParam(._rawRepresentable >>> ._rawRepresentable) <% end,
 
-  .launchSignup
-    <¢> post %> formField("email", .rawRepresentable) <% lit("launch-signup") <% end,
-
   .login
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
 
@@ -216,9 +211,6 @@ private let routers: [Router<Route>] = [
 
   .privacy
     <¢> get %> lit("privacy") <% end,
-
-  .secretHome
-    <¢> get %> lit("home") <% end,
 
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,

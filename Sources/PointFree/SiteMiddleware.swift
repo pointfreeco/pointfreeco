@@ -121,10 +121,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. code .*. redirect .*. unit))
         |> gitHubCallbackResponse
 
-    case let .home(signedUpSuccessfully):
-      return conn.map(const(signedUpSuccessfully))
-        |> homeResponse
-
     case let .invite(.accept(inviteId)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> acceptInviteMiddleware
@@ -145,10 +141,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(inviteId .*. user .*. unit))
         |> showInviteMiddleware
 
-    case let .launchSignup(email):
-      return conn.map(const(email))
-        |> signupResponse
-
     case let .login(redirect):
       return conn.map(const(user .*. redirect .*. unit))
         |> loginResponse
@@ -165,9 +157,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
         |> privacyResponse
 
-    case .secretHome:
+    case .home:
       return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
-        |> secretHomeMiddleware
+        |> homeMiddleware
 
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))
@@ -218,14 +210,9 @@ private func isProtected(route: Route) -> Bool {
        .logout,
        .pricing,
        .privacy,
-       .secretHome,
+       .home,
        .subscribe,
        .team:
-
-    return true
-
-  case .home,
-       .launchSignup:
 
     return false
   }

@@ -417,7 +417,7 @@ private let colorStyles: Stylesheet =
     <> (a & .pseudo(.link) & Class.pf.colors.link.white) % color(Colors.white)
     <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
     <> (a & .pseudo(.link) & Class.pf.colors.link.yellow) % color(Colors.yellow)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
+    <> (a & .pseudo(.visited) & Class.pf.colors.link.yellow) % color(Colors.yellow)
 
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =

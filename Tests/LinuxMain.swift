@@ -33,8 +33,8 @@ extension AuthTests {
     ("testLogin_AlreadyLoggedIn", testLogin_AlreadyLoggedIn),
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
-    ("testSecretHome_LoggedOut", testSecretHome_LoggedOut),
-    ("testSecretHome_LoggedIn", testSecretHome_LoggedIn)
+    ("testHome_LoggedOut", testHome_LoggedOut),
+    ("testHome_LoggedIn", testHome_LoggedIn)
   ]
 }
 extension CancelTests {
@@ -157,14 +157,6 @@ extension InviteTests {
 extension LaunchEmailTests {
   static var allTests: [(String, (LaunchEmailTests) -> () throws -> Void)] = [
     ("testLaunchEmail", testLaunchEmail)
-  ]
-}
-extension LaunchSignupTests {
-  static var allTests: [(String, (LaunchSignupTests) -> () throws -> Void)] = [
-    ("testHome", testHome),
-    ("testHome_SuccessfulSignup", testHome_SuccessfulSignup),
-    ("testSignup", testSignup),
-    ("testConfirmationEmail", testConfirmationEmail)
   ]
 }
 extension MetaLayoutTests {
@@ -296,7 +288,6 @@ XCTMain([
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
   testCase(LaunchEmailTests.allTests),
-  testCase(LaunchSignupTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(MinimalNavViewTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),

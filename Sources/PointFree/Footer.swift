@@ -44,7 +44,7 @@ private let legalView = View<Prelude.Unit> { _ in
 private let pointFreeView = View<Prelude.Unit> { _ -> Node in
   div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
     h4([`class`([Class.pf.type.title4, Class.margin([.mobile: [.bottom: 0]])])], [
-      a([href(path(to: .secretHome)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
+      a([href(path(to: .home)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
       ]),
     p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white])], [
       "A video series on functional programming and the Swift programming language. Hosted by ",
@@ -67,7 +67,7 @@ private let contentColumnView = View<Prelude.Unit> { _ in
     h5([`class`([columnTitleClass])], ["Content"]),
     ol([`class`([Class.type.list.reset])], [
       li([
-        a([`class`([footerLinkClass]), href(path(to: .secretHome))], ["Videos"])
+        a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
         ]),
       li([
         a([`class`([footerLinkClass]), href("http://www.fewbutripe.com")], ["Few, but ripe…"])

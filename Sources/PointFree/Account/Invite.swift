@@ -20,7 +20,7 @@ let showInviteMiddleware =
         headersMiddleware: flash(.warning, "You can’t view your own team invite!")
       )
     )
-    <<< filterMap(fetchTeamInviter, or: redirect(to: .secretHome))
+    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
     <| writeStatus(.ok)
     >-> map(lower)
     >>> respond(

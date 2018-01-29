@@ -9,4 +9,4 @@
 
 ▿ Response
   Status 302 FOUND
-  Location: https://www.github.com/login/oauth/authorize?client_id=deadbeef-client-id&redirect_uri=http://localhost:8080/github-auth?redirect%3Dhttp://localhost:8080/episodes/42&scope=user:email
+  Location: https://github.com/login/oauth/authorize?client_id=deadbeef-client-id&redirect_uri=http://localhost:8080/github-auth?redirect%3Dhttp://localhost:8080/episodes/42&scope=user:email
