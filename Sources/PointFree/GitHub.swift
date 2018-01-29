@@ -24,7 +24,6 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-    public private(set) var avatarUrl: String
     public private(set) var email: EmailAddress
     public private(set) var id: Id
     public private(set) var name: String
@@ -32,7 +31,6 @@ public struct GitHub {
     public typealias Id = Tagged<User, Int>
 
     private enum CodingKeys: String, CodingKey {
-      case avatarUrl = "avatar_url"
       case email
       case id
       case name
