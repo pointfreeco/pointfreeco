@@ -33,8 +33,8 @@ extension AuthTests {
     ("testLogin_AlreadyLoggedIn", testLogin_AlreadyLoggedIn),
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
-    ("testhome_LoggedOut", testhome_LoggedOut),
-    ("testhome_LoggedIn", testhome_LoggedIn)
+    ("testHome_LoggedOut", testHome_LoggedOut),
+    ("testHome_LoggedIn", testHome_LoggedIn)
   ]
 }
 extension CancelTests {
