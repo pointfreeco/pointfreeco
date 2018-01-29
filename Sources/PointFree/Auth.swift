@@ -91,11 +91,10 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
       .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Prelude.Unit, Database.User> {
+private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
 
   return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)
     .flatMap { user in user.map(pure) ?? registerUser(env: env) }
-    .withExcept(const(unit))
 }
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
@@ -141,10 +140,21 @@ private func gitHubAuthTokenMiddleware(
       .run
       .flatMap { errorOrUser in
         switch errorOrUser {
-        case .left:
+        case let .left(error):
           return conn
             // TODO: Handle errors.
-            |> PointFree.redirect(
+            |> { _ -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
+              // Fire-and-forget github auth failure to track down pesky bug
+              _ = sendEmail(
+                to: adminEmails.map(EmailAddress.init(unwrap:)),
+                subject: "GitHub auth failed",
+                content: inj1("\(error)")
+                )
+                .run
+                .perform()
+              return pure(conn.map(const(unit)))
+            }
+            >-> PointFree.redirect(
               to: .home,
               headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
           )
@@ -159,7 +169,7 @@ private func gitHubAuthTokenMiddleware(
     }
 }
 
-private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
   return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
@@ -171,7 +181,6 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Prel
           AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
         }
     }
-    .bimap(const(unit), id)
 }
 
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
