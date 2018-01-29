@@ -47,18 +47,18 @@ public struct GitHub {
 
 private func fetchAuthToken(with code: String) -> EitherIO<Error, GitHub.AccessToken> {
 
-  let request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
-    |> \.httpMethod .~ "POST"
-    |> \.httpBody .~ (try? JSONEncoder().encode(
-      [
-        "client_id": AppEnvironment.current.envVars.gitHub.clientId,
-        "client_secret": AppEnvironment.current.envVars.gitHub.clientSecret,
-        "code": code,
-        "accept": "json"
-      ]))
-    |> \.allHTTPHeaderFields .~ [
-      "Content-Type": "application/json",
-      "Accept": "application/json"
+  var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
+  request.httpMethod = "POST"
+  request.httpBody = (try? JSONEncoder().encode(
+    [
+      "client_id": AppEnvironment.current.envVars.gitHub.clientId,
+      "client_secret": AppEnvironment.current.envVars.gitHub.clientSecret,
+      "code": code,
+      "accept": "json"
+    ]))
+  request.allHTTPHeaderFields = [
+    "Content-Type": "application/json",
+    "Accept": "application/json"
   ]
 
   return jsonDataTask(with: request)
