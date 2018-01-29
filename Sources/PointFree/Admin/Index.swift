@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-private let adminEmails = [
+let adminEmails = [
   "mbw234@gmail.com",
   "stephen.celis@gmail.com"
 ]

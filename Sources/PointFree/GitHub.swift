@@ -5,10 +5,10 @@ import Prelude
 
 public struct GitHub {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  public var fetchAuthToken: (String) -> EitherIO<Prelude.Unit, AccessToken>
+  public var fetchAuthToken: (String) -> EitherIO<Error, AccessToken>
 
   /// Fetches a GitHub user from an access token.
-  public var fetchUser: (AccessToken) -> EitherIO<Prelude.Unit, User>
+  public var fetchUser: (AccessToken) -> EitherIO<Error, User>
 
   static let live = GitHub(
     fetchAuthToken: PointFree.fetchAuthToken,
@@ -45,7 +45,7 @@ public struct GitHub {
   }
 }
 
-private func fetchAuthToken(with code: String) -> EitherIO<Prelude.Unit, GitHub.AccessToken> {
+private func fetchAuthToken(with code: String) -> EitherIO<Error, GitHub.AccessToken> {
 
   let request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
     |> \.httpMethod .~ "POST"
@@ -62,11 +62,9 @@ private func fetchAuthToken(with code: String) -> EitherIO<Prelude.Unit, GitHub.
   ]
 
   return jsonDataTask(with: request)
-    .map(tap(AppEnvironment.current.logger.debug))
-    .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
 
-private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude.Unit, GitHub.User> {
+private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Error, GitHub.User> {
 
   let request = URLRequest(url: URL(string: "https://api.github.com/user")!)
     |> \.allHTTPHeaderFields .~ [
@@ -75,6 +73,4 @@ private func fetchUser(with accessToken: GitHub.AccessToken) -> EitherIO<Prelude
   ]
 
   return jsonDataTask(with: request)
-    .map(tap(AppEnvironment.current.logger.debug))
-    .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 }
