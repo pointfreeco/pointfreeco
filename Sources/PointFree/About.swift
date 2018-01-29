@@ -34,7 +34,6 @@ private let aboutView = View<Prelude.Unit> { _ in
       )
       ]),
 
-
     gridColumn(
       sizes: [.mobile: 12, .desktop: 5],
       [`class`([Class.pf.colors.bg.purple150])],
@@ -78,23 +77,6 @@ private let hostsView = View<Prelude.Unit> { _ in
     ]
     + hostView.view(.brandon)
     + hostView.view(.stephen)
-}
-
-private let hostImgClass = CssSelector.class("host-img")
-private let hostBioClass = CssSelector.class("host-bio")
-private let hostImgStyles =
-  hostImgClass % (
-    float(.left) <> width(.px(160)) <> height(.px(160))
-    )
-    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
-      hostImgClass % (
-        width(.px(100)) <> height(.px(100))
-      )
-}
-private let hostBioStyles =
-  hostBioClass % margin(left: .px(180))
-    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
-      hostBioClass % margin(left: .px(120))
 }
 
 private let hostView = View<Host> { host in
@@ -148,60 +130,6 @@ private let hostView = View<Host> { host in
       )
     ]
   )
-}
-
-private let _hostView = View<Host> { host in
-  gridRow([`class`([Class.padding([.mobile: [.top: 3]]), Class.grid.middle(.mobile), Class.grid.start(.mobile)])], [
-    gridColumn(sizes: [:], [
-      img(
-        src: host.image,
-        alt: "Photo of \(host.name)",
-        [style(width(.px(100)) <> height(.px(100)))]
-      )
-      ]),
-
-    gridColumn(sizes: [:], [
-      div([
-        a(
-          [
-            href(host.website),
-            `class`([
-              Class.pf.colors.link.white,
-              Class.pf.type.body.leading,
-              Class.type.bold
-              ])
-          ],
-          [
-            text(host.name)
-          ]
-        ),
-        ])
-      ]),
-
-    gridColumn(sizes: [.mobile: 12, .desktop: 12], [
-      div([
-        p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [text(host.bio)]),
-        a(
-          [
-            href(twitterUrl(to: host.twitterRoute)),
-            `class`([
-              Class.pf.colors.link.white,
-              Class.padding([.mobile: [.top: 2]])
-              ])
-          ],
-          [
-            "Twitter",
-            img(
-              base64: rightArrowSvgBase64(fill: "#ffffff"),
-              mediaType: .image(.svg),
-              alt: "",
-              [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
-            )
-          ]
-        )
-        ])
-      ])
-    ])
 }
 
 private let aboutSectionView = View<Prelude.Unit> { _ in
@@ -343,4 +271,21 @@ leo. Phasellus et mauris.
     twitterRoute: .stephencelis,
     website: "http://www.stephencelis.com"
   )
+}
+
+private let hostImgClass = CssSelector.class("host-img")
+private let hostBioClass = CssSelector.class("host-bio")
+private let hostImgStyles =
+  hostImgClass % (
+    float(.left) <> width(.px(160)) <> height(.px(160))
+    )
+    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
+      hostImgClass % (
+        width(.px(100)) <> height(.px(100))
+      )
+}
+private let hostBioStyles =
+  hostBioClass % margin(left: .px(180))
+    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
+      hostBioClass % margin(left: .px(120))
 }
