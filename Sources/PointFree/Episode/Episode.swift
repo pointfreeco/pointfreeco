@@ -7,12 +7,13 @@ public struct Episode {
   public private(set) var id: Id
   public private(set) var image: String
   public private(set) var length: Int
-  public private(set) var m3u: String
   public private(set) var publishedAt: Date
   public private(set) var sequence: Int
   public private(set) var subscriberOnly: Bool
   public private(set) var title: String
   public private(set) var transcriptBlocks: [TranscriptBlock]
+  public private(set) var video: String
+  public private(set) var videoTrailer: String
 
   public init(
     blurb: String,
@@ -20,24 +21,26 @@ public struct Episode {
     id: Id,
     image: String,
     length: Int,
-    m3u: String,
     publishedAt: Date,
     sequence: Int,
     subscriberOnly: Bool,
     title: String,
-    transcriptBlocks: [TranscriptBlock]) {
+    transcriptBlocks: [TranscriptBlock],
+    video: String,
+    videoTrailer: String) {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.id = id
     self.image = image
     self.length = length
-    self.m3u = m3u
     self.publishedAt = publishedAt
     self.sequence = sequence
     self.subscriberOnly = subscriberOnly
     self.title = title
     self.transcriptBlocks = transcriptBlocks
+    self.video = video
+    self.videoTrailer = videoTrailer
   }
 
   public typealias Id = Tagged<Episode, Int>
@@ -113,7 +116,6 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   id: .init(unwrap: 4),
   image: "",
   length: 1380,
-  m3u: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4",
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
   subscriberOnly: true,
@@ -276,5 +278,7 @@ We start by creating a type specifically to model keys that can be used in attri
       timestamp: 6,
       type: .paragraph
     ),
-    ]
+    ],
+  video: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4",
+  videoTrailer: ""
 )
