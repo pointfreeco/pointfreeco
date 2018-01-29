@@ -6,12 +6,14 @@ import Prelude
 public struct GitHub {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
   public var fetchAuthToken: (String) -> EitherIO<Error, AccessToken>
+  public var fetchEmails: (AccessToken) -> EitherIO<Error, [GitHub.User.Email]>
 
   /// Fetches a GitHub user from an access token.
   public var fetchUser: (AccessToken) -> EitherIO<Error, User>
 
   static let live = GitHub(
     fetchAuthToken: PointFree.fetchAuthToken,
+    fetchEmails: PointFree.fetchEmails,
     fetchUser: PointFree.fetchUser
   )
 
@@ -24,14 +26,19 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-    public private(set) var email: EmailAddress
+//    public private(set) var email: EmailAddress?
+//    public private(set) var emails: [Email]
     public private(set) var id: Id
-    public private(set) var name: String
+    public private(set) var name: String?
+
+    public struct Email: Codable {
+      public private(set) var email: EmailAddress
+      public private(set) var primary: Bool
+    }
 
     public typealias Id = Tagged<User, Int>
 
     private enum CodingKeys: String, CodingKey {
-      case email
       case id
       case name
     }
@@ -41,6 +48,17 @@ public struct GitHub {
     public private(set) var accessToken: AccessToken
     public private(set) var gitHubUser: User
   }
+}
+
+private func fetchEmails(token: GitHub.AccessToken) -> EitherIO<Error, [GitHub.User.Email]> {
+
+  let request = URLRequest(url: URL(string: "https://api.github.com/user/emails")!)
+    |> \.allHTTPHeaderFields .~ [
+      "Authorization": "token \(token.accessToken)",
+      "Accept": "application/vnd.github.v3+json"
+  ]
+
+  return jsonDataTask(with: request)
 }
 
 private func fetchAuthToken(with code: String) -> EitherIO<Error, GitHub.AccessToken> {

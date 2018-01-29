@@ -18,11 +18,11 @@ public struct Database {
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
-  var registerUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
+  var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateSubscription: (Database.Subscription, Stripe.Subscription) -> EitherIO<Error, Prelude.Unit>
   var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
-  var upsertUser: (GitHub.UserEnvelope) -> EitherIO<Error, User?>
+  var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
@@ -40,11 +40,11 @@ public struct Database {
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
-    registerUser: PointFree.registerUser(withGitHubEnvelope:),
+    registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateSubscription: PointFree.update(subscription:with:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
-    upsertUser: PointFree.upsertUser(withGitHubEnvelope:),
+    upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
     migrate: PointFree.migrate
   )
 
@@ -271,8 +271,12 @@ private func updateUser(
 }
 
 // TODO: This should return a non-optional user
-private func registerUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
-  return upsertUser(withGitHubEnvelope: envelope)
+private func registerUser(
+  withGitHubEnvelope envelope: GitHub.UserEnvelope,
+  email: EmailAddress
+  ) -> EitherIO<Error, Database.User?> {
+
+  return upsertUser(withGitHubEnvelope: envelope, email: email)
     .flatMap { optionalUser in 
       guard let user = optionalUser else { return pure(optionalUser) }
 
@@ -319,7 +323,11 @@ private func updateEmailSettings(
 }
 
 // TODO: This should return a non-optional user
-private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> EitherIO<Error, Database.User?> {
+private func upsertUser(
+  withGitHubEnvelope envelope: GitHub.UserEnvelope,
+  email: EmailAddress
+  ) -> EitherIO<Error, Database.User?> {
+
   return execute(
     """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
@@ -328,7 +336,7 @@ private func upsertUser(withGitHubEnvelope envelope: GitHub.UserEnvelope) -> Eit
     SET "github_access_token" = $3, "name" = $4
     """,
     [
-      envelope.gitHubUser.email.unwrap,
+      email.unwrap,
       envelope.gitHubUser.id.unwrap,
       envelope.accessToken.accessToken,
       envelope.gitHubUser.name

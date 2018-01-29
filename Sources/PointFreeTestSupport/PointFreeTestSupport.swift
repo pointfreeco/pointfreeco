@@ -59,11 +59,11 @@ extension Database {
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
-    registerUser: const(pure(.some(.mock))),
+    registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateSubscription: { _, _ in pure(unit) },
     updateUser: { _, _, _, _ in pure(unit) },
-    upsertUser: const(pure(.mock)),
+    upsertUser: { _, _ in pure(.some(.mock)) },
     migrate: { pure(unit) }
   )
 }
@@ -116,7 +116,15 @@ extension Date {
 extension GitHub {
   public static let mock = GitHub(
     fetchAuthToken: const(pure(.mock)),
+    fetchEmails: const(pure([.mock])),
     fetchUser: const(pure(.mock))
+  )
+}
+
+extension GitHub.User.Email {
+  public static let mock = GitHub.User.Email(
+    email: EmailAddress(unwrap: "hello@pointfree.co"),
+    primary: true
   )
 }
 
@@ -128,7 +136,6 @@ extension GitHub.AccessToken {
 
 extension GitHub.User {
   public static let mock = GitHub.User(
-    email: .init(unwrap: "hello@pointfree.co"),
     id: .init(unwrap: 1),
     name: "Blob"
   )
