@@ -43,7 +43,7 @@ let gitHubRouter = [
   ]
   .reduce(.empty, <|>)
 
-private let gitHubBaseUrl = URL(string: "https://www.github.com")!
+private let gitHubBaseUrl = URL(string: "https://github.com")!
 
 func gitHubUrl(to route: GitHubRoute) -> String {
   return gitHubRouter.url(for: route, base: gitHubBaseUrl)?.absoluteString ?? ""
