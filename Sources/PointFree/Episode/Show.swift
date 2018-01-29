@@ -43,7 +43,7 @@ let episodeView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeV
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
-        div(episodeInfoView.view((episode, isEpisodeViewable)))
+        div(episodeInfoView.view(episode))
         ])
       ]),
 
