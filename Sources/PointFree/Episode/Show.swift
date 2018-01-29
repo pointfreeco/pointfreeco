@@ -152,28 +152,32 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
     )
 }
 
-private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Downloads"]
-        ),
-        img(
-          base64: gitHubSvgBase64(fill: "#FFF080"),
-          mediaType: .image(.svg),
-          alt: "",
-          [`class`([Class.align.middle]), width(20), height(20)]
-        ),
-        a(
-          [
-            href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
-          ],
-          [.text(encode("\(codeSampleDirectory).playground"))]
-        )
-    ]
-  )
+private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
+  guard !codeSampleDirectory.isEmpty else { return [] }
+
+  return [
+    div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+        [
+          h6(
+            [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+            ["Downloads"]
+          ),
+          img(
+            base64: gitHubSvgBase64(fill: "#FFF080"),
+            mediaType: .image(.svg),
+            alt: "",
+            [`class`([Class.align.middle]), width(20), height(20)]
+          ),
+          a(
+            [
+              href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
+              `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+            ],
+            [.text(encode("\(codeSampleDirectory).playground"))]
+          )
+      ]
+    )
+  ]
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
