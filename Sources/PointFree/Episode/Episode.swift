@@ -114,7 +114,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
 """,
   codeSampleDirectory: "ep4-type-safe-html",
   id: .init(unwrap: 4),
-  image: "",
+  image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg",
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 4,
@@ -279,6 +279,6 @@ We start by creating a type specifically to model keys that can be used in attri
       type: .paragraph
     ),
     ],
-  video: "https://www.videvo.net/videvo_files/converted/2017_08/videos/170724_15_Setangibeach.mp486212.mp4",
-  videoTrailer: ""
+  video: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8",
+  videoTrailer: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8"
 )
