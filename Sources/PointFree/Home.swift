@@ -23,7 +23,7 @@ let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscrip
           data: (currentUser, currentSubscriptionStatus),
           description: "Point-Free is a video series exploring functional programming and Swift.",
           extraStyles: pricingExtraStyles,
-          image: "https://d3rccdn33rt8ze.cloudfront.net/pointfreeco-production/social-assets/twitter-card-large.png",
+          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
           navStyle: .mountains,
           openGraphType: .website,
           title: "Point-Free: A video series on functional programming and the Swift programming language.",
