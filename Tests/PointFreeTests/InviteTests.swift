@@ -97,7 +97,7 @@ class InviteTests: TestCase {
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
         |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
@@ -151,7 +151,7 @@ class InviteTests: TestCase {
     let inviterUser = AppEnvironment.current.database.registerUser(
       .mock
         |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      EmailAddress(unwrap: "inviter@pointfree.co")
       )
       .run
       .perform()
