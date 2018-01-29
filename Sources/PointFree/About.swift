@@ -19,7 +19,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: unit,
-          extraStyles: hostImgStyles,
+          extraStyles: hostImgStyles <> hostBioStyles,
           title: "About"
         )
     }
@@ -35,16 +35,19 @@ private let aboutView = View<Prelude.Unit> { _ in
       ]),
 
 
-    gridColumn(sizes: [.mobile: 12, .desktop: 5], [
-      div(
-        [
-          `class`([
-            Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-            Class.pf.colors.bg.purple150
-            ])
-        ],
-        hostsView.view(unit)
-      )
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 5],
+      [`class`([Class.pf.colors.bg.purple150])],
+      [
+        div(
+          [
+            `class`([
+              Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+              Class.pf.colors.bg.purple150
+              ])
+          ],
+          hostsView.view(unit)
+        )
       ])
     ])
 }
@@ -62,25 +65,121 @@ private let hostsView = View<Prelude.Unit> { _ in
       [
         "Your hosts"
       ]
-    )
+    ),
+    p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
+      "Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped ",
+      "build and ",
+      a([`class`([Class.pf.colors.link.white, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
+        ["open source"]),
+      " the ",
+      a([`class`([Class.pf.colors.link.white, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
+      " mobile apps."
+      ])
     ]
     + hostView.view(.brandon)
     + hostView.view(.stephen)
 }
 
+private let hostImgClass = CssSelector.class("host-img")
+private let hostBioClass = CssSelector.class("host-bio")
+private let hostImgStyles =
+  hostImgClass % (
+    float(.left) <> width(.px(160)) <> height(.px(160))
+    )
+    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
+      hostImgClass % (
+        width(.px(100)) <> height(.px(100))
+      )
+}
+private let hostBioStyles =
+  hostBioClass % margin(left: .px(180))
+    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
+      hostBioClass % margin(left: .px(120))
+}
+
 private let hostView = View<Host> { host in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 3]])])], [
-    gridColumn(sizes: [.mobile: 5, .desktop: 5], [
+  div(
+    [`class`([Class.padding([.mobile: [.bottom: 3]])])],
+    [
       img(
         src: host.image,
         alt: "Photo of \(host.name)",
         [`class`([hostImgClass])]
+      ),
+
+      div(
+        [`class`([hostBioClass])],
+        [
+          a(
+            [
+              href(host.website),
+              `class`([
+                Class.pf.colors.link.white,
+                Class.h5,
+                Class.type.bold
+                ])
+            ],
+            [
+              text(host.name)
+            ]
+          ),
+
+          p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [text(host.bio)]),
+
+          a(
+            [
+              href(twitterUrl(to: host.twitterRoute)),
+              `class`([
+                Class.pf.colors.link.white,
+                Class.padding([.mobile: [.top: 2]])
+                ])
+            ],
+            [
+              "Twitter",
+              img(
+                base64: rightArrowSvgBase64(fill: "#ffffff"),
+                mediaType: .image(.svg),
+                alt: "",
+                [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
+              )
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+
+private let _hostView = View<Host> { host in
+  gridRow([`class`([Class.padding([.mobile: [.top: 3]]), Class.grid.middle(.mobile), Class.grid.start(.mobile)])], [
+    gridColumn(sizes: [:], [
+      img(
+        src: host.image,
+        alt: "Photo of \(host.name)",
+        [style(width(.px(100)) <> height(.px(100)))]
       )
       ]),
 
-    gridColumn(sizes: [.mobile: 7, .desktop: 7], [
+    gridColumn(sizes: [:], [
       div([
-        p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular, Class.type.bold])], [text(host.name)]),
+        a(
+          [
+            href(host.website),
+            `class`([
+              Class.pf.colors.link.white,
+              Class.pf.type.body.leading,
+              Class.type.bold
+              ])
+          ],
+          [
+            text(host.name)
+          ]
+        ),
+        ])
+      ]),
+
+    gridColumn(sizes: [.mobile: 12, .desktop: 12], [
+      div([
         p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [text(host.bio)]),
         a(
           [
@@ -119,10 +218,10 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
     ),
 
     p([
-      ul([`class`([Class.padding([.mobile: [.left: 3, .topBottom: 2]])])], [
+      ul([`class`([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])], [
         li([
           h5([`class`([bulletPointTitleClass])], ["Pure functions and side effects"]),
-          p([
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             Side effects are one of the greatest sources of complexity in an application, and every program
             has this in common. After giving a proper definition of side effects and pure functions, we will
@@ -133,7 +232,7 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
 
         li([
           h5([`class`([bulletPointTitleClass])], ["Code reuse through function composition"]),
-          p([
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             The most basic unit of code reusability comes in the form of simple function composition. We will
             show how that by focusing on small atomic units that compose well, we can build large complex
@@ -143,7 +242,7 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
 
         li([
           h5([`class`([bulletPointTitleClass])], ["Maximizing the use of the type system"]),
-          p([
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally
             add an integer to a string, or call a method on a “null” value, but it can do so much more. You
@@ -173,40 +272,55 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
 
 private let openSourceSection = View<Prelude.Unit> { _ in
   [
-    h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])], ["Open source"]),
-    markdownBlock("""
-      When we [open-sourced](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd)
-      the entire [iOS](http://github.com/kickstarter/ios-oss) and
-      [Android](http://github.com/kickstarter/android-oss) codebases at
-      [Kickstarter](https://www.kickstarter.com), we saw that it was one of the best resources to show people
-      how to build a large application in the functional style. It transcended any talks about the
-      theoretical benefits or proposed simplifications. We could just show directly how embracing pure
-      functions allowed us to write code that was understandable in isolation, and enabled us to write tests
-      for every subtle edge case.
+    h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], ["Open source"]),
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+      "When we ",
+      a([href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"), `class`([Class.pf.colors.link.purple])], ["open-sourced"]),
+      " the entire ",
+      a([href("http://github.com/kickstarter/ios-oss"), `class`([Class.pf.colors.link.purple])], ["iOS"]),
+      " and ",
+      a([href("http://github.com/kickstarter/android-oss"), `class`([Class.pf.colors.link.purple])], ["Android"]),
+      " codebases at ",
+      a([href("http://www.kickstarter.com"), `class`([Class.pf.colors.link.purple])], ["Kickstarter"]),
+      """
+      , we saw that it was one of the best resources to show people how to build a large application in
+      the functional style. It transcended any talks about the theoretical benefits or proposed
+      simplifications. We could just show directly how embracing pure functions allowed us to write code that
+      was understandable in isolation, and enabled us to write tests for every subtle edge case.
+      """
+      ]),
 
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+      """
       We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift,
       all in the functional style! This meant we had to build nearly everything from scratch, from server
       middleware and routing to HTML views and CSS.
+      """]),
 
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+      """
       We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an
       iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend
       language rivaling almost every other language out there.
+      """]),
 
-      You can view the entire source code to this site on our GitHub organization,
-      [https://www.github.com/pointfreeco](https://www.github.com/pointfreeco).
-      """
-    )
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+      "You can view the entire source code to this site on our GitHub organization, ",
+      a([href("https://www.github.com/pointfreeco"), `class`([Class.pf.colors.link.purple])], ["https://www.github.com/pointfreeco"]),
+      "."
+      ])
   ]
 }
 
 private let bulletPointTitleClass =
-  Class.pf.type.responsiveTitle5
+  Class.pf.type.responsiveTitle6
 
 private struct Host {
   let bio: String
   let image: String
   let name: String
   let twitterRoute: TwitterRoute
+  let website: String
 
   static let brandon = Host(
     bio: """
@@ -215,7 +329,8 @@ better our craft as engineers.
 """,
     image: "https://s3.amazonaws.com/pointfreeco-production/about-us/brando.jpg",
     name: "Brandon Williams",
-    twitterRoute: .mbrandonw
+    twitterRoute: .mbrandonw,
+    website: "http://www.fewbutripe.com"
   )
 
   static let stephen = Host(
@@ -225,17 +340,7 @@ leo. Phasellus et mauris.
 """,
     image: "https://s3.amazonaws.com/pointfreeco-production/about-us/stephen.jpg",
     name: "Stephen Celis",
-    twitterRoute: .stephencelis
+    twitterRoute: .stephencelis,
+    website: "http://www.stephencelis.com"
   )
-}
-
-private let hostImgClass = CssSelector.class("host-img")
-private let hostImgStyles: Stylesheet =
-  hostImgClass % (
-    width(.px(160)) <> height(.px(160))
-    )
-    <> queryOnly(screen, [minWidth(.px(832)), maxWidth(.px(1300))]) {
-      hostImgClass % (
-        width(.px(100)) <> height(.px(100))
-      )
 }
