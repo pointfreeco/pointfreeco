@@ -102,7 +102,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Upgrade Subscription?"])
+        h1([`class`([Class.pf.type.title3])], ["Upgrade yout subscription?"])
         ])
       ])
     ])
