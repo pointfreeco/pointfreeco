@@ -255,7 +255,7 @@ private struct Host {
 Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
 better our craft as engineers.
 """,
-    image: "https://s3.amazonaws.com/pointfreeco-production/about-us/brando.jpg",
+    image: "https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg",
     name: "Brandon Williams",
     twitterRoute: .mbrandonw,
     website: "http://www.fewbutripe.com"
@@ -266,7 +266,7 @@ better our craft as engineers.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec massa euismod, posuere erat sed, mollis
 leo. Phasellus et mauris.
 """,
-    image: "https://s3.amazonaws.com/pointfreeco-production/about-us/stephen.jpg",
+    image: "https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg",
     name: "Stephen Celis",
     twitterRoute: .stephencelis,
     website: "http://www.stephencelis.com"

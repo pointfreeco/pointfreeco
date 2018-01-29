@@ -37,7 +37,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
             tr([
               td([
                 img(
-                  src: "https://s3.amazonaws.com/pointfree.co/email-assets/pf-email-header.png",
+                  src: "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png",
                   alt: "",
                   [style(maxWidth(.pct(100)))]
                 )
