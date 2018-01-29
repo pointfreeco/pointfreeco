@@ -100,7 +100,7 @@ final class SubscribeTests: TestCase {
 
   func testHappyPath() {
     AppEnvironment.with(\.database .~ .live) {
-      let user = AppEnvironment.current.database.upsertUser(.mock)
+      let user = AppEnvironment.current.database.upsertUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
         .run
         .perform()
         .right!!

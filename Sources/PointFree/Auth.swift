@@ -99,24 +99,30 @@ private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Da
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
 
-  return AppEnvironment.current.database.registerUser(env)
-    .mapExcept(requireSome)
-    .flatMap { user in
-      EitherIO(run: IO { () -> Either<Error, Database.User> in
+  return AppEnvironment.current.gitHub.fetchEmails(env.accessToken)
+    .map { emails in emails.first(where: { $0.primary }) }
+    .mapExcept(requireSome) // todo: better error messaging
+    .flatMap { email in
 
-        // Fire-and-forget notify user that they signed up
-        parallel(
-          sendEmail(
-            to: [env.gitHubUser.email],
-            subject: "Point-Free Registration",
-            content: inj2(registrationEmailView.view(env.gitHubUser))
-            )
-            .run
-          )
-          .run({ _ in })
+      AppEnvironment.current.database.registerUser(env, email.email)
+        .mapExcept(requireSome)
+        .flatMap { user in
+          EitherIO(run: IO { () -> Either<Error, Database.User> in
 
-        return .right(user)
-      })
+            // Fire-and-forget notify user that they signed up
+            parallel(
+              sendEmail(
+                to: [email.email],
+                subject: "Point-Free Registration",
+                content: inj2(registrationEmailView.view(env.gitHubUser))
+                )
+                .run
+              )
+              .run({ _ in })
+
+            return .right(user)
+          })
+      }
   }
 }
 
