@@ -14,6 +14,7 @@ private let paidEpisode = Episode(
   id: .init(unwrap: 1),
   image: "",
   length: 1080,
+  m3u: "",
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 1,
   subscriberOnly: true,
