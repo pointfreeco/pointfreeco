@@ -11,4 +11,4 @@
 ▿ Response
   Status 302 FOUND
   Location: /account
-  Set-Cookie: pf_session={"flash":{"message":"You cannot accept your own team invite.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/
+  Set-Cookie: pf_session={"flash":{"message":"You can’t accept your own team invite!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Path=/

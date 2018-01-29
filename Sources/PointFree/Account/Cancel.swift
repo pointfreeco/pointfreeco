@@ -17,7 +17,10 @@ let confirmCancelResponse =
     <<< requireStripeSubscription
     <<< filter(
       get1 >>> ^\.isRenewing,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Your subscription is already canceled!"))
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "You’ve already canceled your subscription!")
+      )
     )
     <| writeStatus(.ok)
     >-> map(lower)
@@ -98,8 +101,14 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
         either(
           const(
             conn |> redirect(
-              to: .account(.subscription(.changeSeats(.show))),
-              headersMiddleware: flash(.error, "We couldn’t reactivate your subscription at this time.")
+              to: .account(.index),
+              headersMiddleware: flash(
+                .error,
+                """
+                We were unable to reactivate your subscription at this time. Please contact
+                <support@pointfree.co> or subscribe from our pricing page.
+                """
+              )
             )
           )
         ) { _ in
@@ -116,6 +125,11 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
 
 // MARK: - Transformers
 
+let genericSubscriptionError = """
+We were unable to locate all of your subscription information. Please contact <support@pointfree.co> and let
+us know how we can help!
+"""
+
 func requireSubscriptionItem<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription.Item, Stripe.Subscription, A>, Data>
   )
@@ -123,7 +137,7 @@ func requireSubscriptionItem<A>(
 
     return filterMap(
       { data in pure(data.first.items.data.first.map { $0 .*. data }) },
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Invalid subscription."))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericSubscriptionError))
       )
       <| middleware
 }
@@ -139,7 +153,7 @@ func requireStripeSubscription<A>(
         require1 >>> pure,
         or: redirect(
           to: .account(.index),
-          headersMiddleware: flash(.error, "Subscription not found in Stripe!")
+          headersMiddleware: flash(.error, genericSubscriptionError)
         )
       )
       <| middleware
@@ -154,15 +168,15 @@ private func requireSubscriptionAndOwner<A>(
       <<< filterMap(
         require1 >>> pure,
         or: redirect(
-          to: .account(.index),
-          headersMiddleware: flash(.error, "You don’t have a subscription!")
+          to: .pricing(nil),
+          headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
         )
       )
       <<< filter(
         isSubscriptionOwner,
         or: redirect(
           to: .account(.index),
-          headersMiddleware: flash(.error, "You aren’t the subscription owner!")
+          headersMiddleware: flash(.error, "Only subscription owners can make subscription changes.")
         )
       )
       <| middleware
@@ -224,7 +238,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Cancel Subscription?"])
+        h1([`class`([Class.pf.type.title3])], ["Cancel your subscription?"])
         ])
       ])
     ])
@@ -234,18 +248,18 @@ private let formRowView = View<Stripe.Subscription> { subscription in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       p([
-        "Your ", text(subscription.plan.name), " subscription is set to renew on ",
+        "Your ", text(subscription.plan.name), " subscription is currently set to renew on ",
         text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         """
-        . Should you choose to cancel your subscription, you will lose access to Point-Free on this date. You
-        will not be billed at the end of the current period. You may reactivate your subscription at any time
-        before the current period ends.
+        . If you cancel your subscription, you’ll lose access to Point-Free on this date and you won’t be
+        billed again. If you change your mind, you may reactivate your subscription at any time before the
+        current period ends.
         """
         ]),
       form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Cancel my subscription"]
+          ["Yes, cancel my subscription"]
         ),
         a(
           [
@@ -277,7 +291,10 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
       user: nil,
       newsletter: nil,
       title: "Your subscription has been canceled",
-      preheader: "Your \(subscription.plan.name) subscription has been canceled and will remain active through \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      preheader: """
+      Your \(subscription.plan.name) subscription has been canceled and will remain active through
+      \(dateFormatter.string(from: subscription.currentPeriodEnd)).
+      """,
       data: (owner, subscription)
     )
 }

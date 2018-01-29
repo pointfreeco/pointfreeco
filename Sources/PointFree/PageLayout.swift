@@ -139,7 +139,7 @@ private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status
 
 let flashView = View<Flash> { flash in
   gridRow([`class`([flashClass(for: flash.priority)])], [
-    gridColumn(sizes: [.mobile: 12], [text(flash.message)])
+    gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
     ])
 }
 
