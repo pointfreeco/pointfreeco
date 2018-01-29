@@ -357,7 +357,7 @@ let launchSignupView =
     .contramap(
       Metadata.create(
         description: "A video series on Swift and functional programming. Each week we discuss a topic and then ask: “What’s the point!?”",
-        image: "https://s3.amazonaws.com/pointfree.co/twitter-card-large.png",
+        image: "https://s3.d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
         title: "Point-Free",
         twitterCard: .summaryLargeImage,
         twitterSite: "@pointfreeco",
