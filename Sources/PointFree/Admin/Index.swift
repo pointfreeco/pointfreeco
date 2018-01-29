@@ -25,7 +25,7 @@ func requireAdmin<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
 
     return filterMap(require1 >>> pure, or: loginAndRedirect)
-      <<< filter(get1 >>> isAdmin, or: redirect(to: .secretHome))
+      <<< filter(get1 >>> isAdmin, or: redirect(to: .home))
       <| middleware
 }
 

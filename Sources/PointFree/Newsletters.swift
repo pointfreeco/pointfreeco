@@ -7,7 +7,7 @@ import Tuple
 
 let expressUnsubscribeMiddleware =
   unsubscribeMiddleware
-    >-> redirect(to: .secretHome, headersMiddleware: flash(.error, "You’re now unsubscribed."))
+    >-> redirect(to: .home, headersMiddleware: flash(.error, "You’re now unsubscribed."))
 
 let expressUnsubscribeReplyMiddleware =
   requireUserAndNewsletter

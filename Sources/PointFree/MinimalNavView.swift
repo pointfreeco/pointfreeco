@@ -12,7 +12,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscri
   gridRow([`class`([newNavBarClass(for: style)])], [
     gridColumn(sizes: [:], [
       div([`class`([Class.hide(.desktop)])], [
-        a([href(path(to: .secretHome))], [
+        a([href(path(to: .home))], [
           img(
             base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
             mediaType: .image(.svg),
@@ -26,7 +26,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscri
     gridColumn(sizes: [:], [
       div([`class`([Class.grid.center(.mobile)])], [
         div([`class`([Class.hide(.mobile)])], [
-          a([href(path(to: .secretHome))], [
+          a([href(path(to: .home))], [
             img(
               base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
               mediaType: .image(.svg),

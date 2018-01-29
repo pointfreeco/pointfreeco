@@ -221,7 +221,7 @@ private let leftColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode,
 }
 
 private let subscribeView = View<Episode> { episode in
-  div([`class`([Class.type.align.center, Class.margin([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
+  div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 4], .desktop: [.all: 4]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
 
     h3(
       [`class`([Class.pf.type.responsiveTitle4])],

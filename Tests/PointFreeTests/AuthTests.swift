@@ -105,8 +105,8 @@ class AuthTests: TestCase {
     assertSnapshot(matching: result.perform())
   }
   
-  func testSecretHome_LoggedOut() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/home")!)
+  func testHome_LoggedOut() {
+    let request = URLRequest(url: URL(string: "http://localhost:8080")!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]
@@ -117,8 +117,8 @@ class AuthTests: TestCase {
     assertSnapshot(matching: result.perform())
   }
   
-  func testSecretHome_LoggedIn() {
-    let conn = connection(from: request(to: .secretHome, session: .loggedIn))
+  func testHome_LoggedIn() {
+    let conn = connection(from: request(to: .home, session: .loggedIn))
     let result = conn |> siteMiddleware 
     
     assertSnapshot(matching: result.perform())
