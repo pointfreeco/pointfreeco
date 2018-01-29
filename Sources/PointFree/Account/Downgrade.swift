@@ -52,7 +52,13 @@ private func downgrade(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Databa
           const(
             conn |> redirect(
               to: .account(.subscription(.downgrade(.show))),
-              headersMiddleware: flash(.error, "We couldn’t change your subscription at this time.")
+              headersMiddleware: flash(
+                .error,
+                """
+                We couldn’t change your subscription at this time. Please try again later or contact
+                <support@pointfree.co>.
+                """
+              )
             )
           )
         ) { _ in
@@ -77,8 +83,11 @@ func requireActiveSubscription<A>(
     return filter(
       get1 >>> (^\.status == .active),
       or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.error, "You don’t have an active subscription!")
+        to: .pricing(nil),
+        headersMiddleware: flash(
+          .error,
+          "You don’t have an active subscription. Would you like to subscribe?"
+        )
       )
       )
       <| middleware
@@ -93,7 +102,13 @@ private func requireIndividualYearlySubscription<A>(
       get1 >>> (^\.plan.id.unwrap == Stripe.Plan.Id.individualYearly.unwrap),
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "Your subscription can’t be downgraded.")
+        headersMiddleware: flash(
+          .error,
+          """
+          Your current subscription can’t be downgraded. For more information, please contact
+          <support@pointfree.co>.
+          """
+        )
       )
       )
       <| middleware
@@ -117,7 +132,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Downgrade Subscription?"])
+        h1([`class`([Class.pf.type.title3])], ["Downgrade your subscription?"])
         ])
       ])
     ])
@@ -127,15 +142,15 @@ private let formRowView = View<Stripe.Subscription> { subscription in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       p([
-        "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you choose to ",
-        "downgrade your subscription, you will begin to be billed monthly at the end of the current billing ",
-        "cycle: ", text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+        "You are currently enrolled in the ", text(subscription.plan.name), " plan. If you downgrade your ",
+        "subscription, you’ll begin to be billed monthly at the end of your current billing cycle: ",
+        text(dateFormatter.string(from: subscription.currentPeriodEnd)),
         "."
         ]),
       form([action(path(to: .account(.subscription(.downgrade(.update))))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Bill me monthly"]
+          ["Yes, bill me monthly"]
         ),
         a(
           [

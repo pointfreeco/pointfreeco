@@ -15,7 +15,10 @@ let showInviteMiddleware =
     <<< requireTeamInvite
     <<< filter(
       validateCurrentUserIsNotInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.warning, "You cannot view your own team invite."))
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.warning, "You can’t view your own team invite!")
+      )
     )
     <<< filterMap(fetchTeamInviter, or: redirect(to: .secretHome))
     <| writeStatus(.ok)
@@ -31,12 +34,14 @@ let showInviteMiddleware =
     }
 )
 
+private let genericInviteError = "You need to be the inviter to do that!"
+
 let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filter(
       validateCurrentUserIsInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You must be the invite owner to perform that action."))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericInviteError))
     )
     <| { conn in
       AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
@@ -49,7 +54,7 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
     <<< requireTeamInvite
     <<< filter(
       validateCurrentUserIsInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You must be the invite owner to perform that action."))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericInviteError))
     )
     <| { conn in
       let (invite, inviter) = lower(conn.data)
@@ -68,7 +73,10 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
     <<< requireTeamInvite
     <<< filter(
       validateCurrentUserIsNotInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.warning, "You cannot accept your own team invite."))
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.warning, "You can’t accept your own team invite!")
+      )
     )
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
@@ -128,7 +136,7 @@ let sendInviteMiddleware =
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
       validateEmailDoesNotBelongToInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You can’t invite yourself."))
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You can’t invite yourself :/"))
     )
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
@@ -177,9 +185,9 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
           "Your colleague ",
           a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name))]),
           """
-           has invited you to join their team account on Point-Free, a video series exploring
-          functional programming concepts using the Swift programming language. Accepting this invitation
-          gives you access to all of the videos, transcripts and code samples on this site.
+           has invited you to join their team on Point-Free, a video series exploring functional programming
+          concepts using the Swift programming language. Accepting this invitation gives you access to all of
+          the videos, transcripts, and code samples on this site.
           """
           ]),
 
@@ -205,9 +213,9 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
           "Your colleague ",
           a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name))]),
           """
-           has invited you to join their team account on Point-Free, a video series exploring
-          functional programming concepts using the Swift programming language. Accepting this invitation
-          gives you access to all of the videos, transcripts and code samples on this site.
+           has invited you to join their team account on Point-Free, a video series exploring functional
+          programming concepts using the Swift programming language. Accepting this invitation gives you
+          access to all of the videos, transcripts, and code samples on this site.
           """
           ]),
 
@@ -330,7 +338,17 @@ private func redirectCurrentSubscribers<A, B>(
 
     return hasActiveSubscription.flatMap {
       $0
-        ? (conn |> redirect(to: .account(.index), headersMiddleware: flash(.warning, "You already have an active subscription. If you want to accept this team invite you must cancel your current subscription.")))
+        ? conn
+          |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(
+              .warning,
+              """
+                You already have an active subscription. If you want to accept this team invite you need to
+                cancel your current subscription.
+                """
+            )
+          )
         : middleware(conn)
     }
   }
