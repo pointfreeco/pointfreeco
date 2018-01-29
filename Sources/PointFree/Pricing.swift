@@ -568,6 +568,15 @@ func redirectActiveSubscribers<A>(
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
+    var req = URLRequest(url: URL(string: "http://localhost:8080")!)
+    req.httpMethod = "POST"
+    req.httpBody = Data(urlFormEncode(value: ["a": "1"]).utf8)
+    dataTask(with: req)
+      .run
+      .perform()
+
+    return id
+
     return { middleware in
       return { conn in
         guard

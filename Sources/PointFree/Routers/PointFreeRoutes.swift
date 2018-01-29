@@ -26,6 +26,8 @@ public enum Route: DerivePartialIsos {
   case subscribe(SubscribeData?)
   case team(Team)
 
+  case wtf
+
   public enum Account: DerivePartialIsos {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
     case index
@@ -95,6 +97,9 @@ public enum Route: DerivePartialIsos {
 }
 
 private let routers: [Router<Route>] = [
+
+  .wtf
+    <¢> post <% end,
 
   .about
     <¢> get %> lit("about") <% end,
