@@ -16,6 +16,8 @@ private let paidEpisode = Episode(
   length: 1080,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 1,
+  sourcesFull: [""],
+  sourcesTrailer: [""],
   subscriberOnly: true,
   title: "Proof in Functions",
   transcriptBlocks: [
@@ -94,7 +96,5 @@ private let paidEpisode = Episode(
       timestamp: 120,
       type: .paragraph
     )
-  ],
-  video: "",
-  videoTrailer: ""
+  ]
 )

@@ -87,7 +87,9 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       autoplay(true),
       poster(episode.image)
     ],
-    [source(src: isEpisodeViewable ? episode.video : episode.videoTrailer)]
+    isEpisodeViewable
+      ? episode.sourcesFull.map { source(src: $0) }
+      : episode.sourcesTrailer.map { source(src: $0) }
   )
 }
 
