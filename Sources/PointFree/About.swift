@@ -69,10 +69,10 @@ private let hostsView = View<Prelude.Unit> { _ in
     p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
       "Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped ",
       "build and ",
-      a([`class`([Class.pf.colors.link.white, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
+      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
         ["open source"]),
       " the ",
-      a([`class`([Class.pf.colors.link.white, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
+      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
       " mobile apps."
       ])
     ]
