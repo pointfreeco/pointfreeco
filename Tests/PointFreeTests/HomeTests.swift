@@ -12,7 +12,7 @@ import Optics
 
 class HomeTests: TestCase {
   func testHomepage() {
-    let request = URLRequest(url: URL(string: url(to: .secretHome))!)
+    let request = URLRequest(url: URL(string: url(to: .home))!)
       |> \.allHTTPHeaderFields .~ [
         "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
     ]

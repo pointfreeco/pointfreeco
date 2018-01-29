@@ -17,7 +17,7 @@ let pointFreeFeed = View<[Episode]> { episodes in
       ),
       entries: episodes.map(atomEntry(for:)),
       atomUrl: url(to: .feed(.atom)),
-      siteUrl: url(to: .secretHome),
+      siteUrl: url(to: .home),
       title: "Point-Free"
     )
   )

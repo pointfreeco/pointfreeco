@@ -28,7 +28,7 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.Use
 
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
-    to: path(to: .secretHome),
+    to: path(to: .home),
     headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
 )
 
@@ -145,14 +145,14 @@ private func gitHubAuthTokenMiddleware(
           return conn
             // TODO: Handle errors.
             |> PointFree.redirect(
-              to: .secretHome,
+              to: .home,
               headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
           )
 
         case let .right(user):
           return conn.map(const(user))
             |> HttpPipeline.redirect(
-              to: redirect ?? path(to: .secretHome),
+              to: redirect ?? path(to: .home),
               headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }

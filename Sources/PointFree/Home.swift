@@ -10,11 +10,11 @@ import Styleguide
 import Tuple
 import UrlFormEncoding
 
-let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
-      view: secretHomeView,
+      view: homeView,
       layoutData: { currentUser, currentSubscriptionStatus, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
@@ -28,7 +28,7 @@ let secretHomeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Su
     }
 )
 
-let secretHomeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
+let homeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
   episodesListView.view(AppEnvironment.current.episodes().reversed())
     <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
 }
