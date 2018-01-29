@@ -4,7 +4,7 @@
 
 We’re very excited to finally get the series off the ground! We first announced Point-Free back
 in July, and since then we’ve been hard at work building the site in Swift, mostly from scratch.
-In fact, we even open-sourced <https://www.github.com/pointfreeco/pointfreeco> the entire code base of the site, including the code that sent this very email!
+In fact, we even open-sourced <https://github.com/pointfreeco/pointfreeco> the entire code base of the site, including the code that sent this very email!
 
 We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
 

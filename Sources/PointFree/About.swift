@@ -234,7 +234,7 @@ private let openSourceSection = View<Prelude.Unit> { _ in
 
     p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
       "You can view the entire source code to this site on our GitHub organization, ",
-      a([href("https://www.github.com/pointfreeco"), `class`([Class.pf.colors.link.purple])], ["https://www.github.com/pointfreeco"]),
+      a([href(gitHubUrl(to: .organization)), `class`([Class.pf.colors.link.purple])], [text(gitHubUrl(to: .organization))]),
       "."
       ])
   ]

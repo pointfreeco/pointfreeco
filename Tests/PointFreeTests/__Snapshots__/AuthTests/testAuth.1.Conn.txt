@@ -9,5 +9,5 @@
 
 ▿ Response
   Status 302 FOUND
-  Location: /home
+  Location: /
   Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}; Path=/

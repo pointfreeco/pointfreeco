@@ -56,7 +56,7 @@ private let menuAndLogoHeaderView = View<(Database.User?, Stripe.Subscription.St
 
       gridRow([`class`([Class.grid.center(.mobile), Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 0]])])], [
         gridColumn(sizes: [:], [
-          a([href(path(to: .secretHome))], [
+          a([href(path(to: .home))], [
             img(
               base64: pointFreeHeroSvgBase64,
               mediaType: .image(.svg),
