@@ -128,7 +128,6 @@ extension GitHub.AccessToken {
 
 extension GitHub.User {
   public static let mock = GitHub.User(
-    avatarUrl: "http://www.blob.com/pic.jpg",
     email: .init(unwrap: "hello@pointfree.co"),
     id: .init(unwrap: 1),
     name: "Blob"
