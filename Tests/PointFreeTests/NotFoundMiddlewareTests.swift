@@ -45,7 +45,7 @@ final class NotFoundMiddlewareTests: TestCase {
 
   func testNotFound_LoggedIn() {
     let result = connection(
-      from: request(to: .secretHome, session: .loggedIn)
+      from: request(to: .home, session: .loggedIn)
         |> (over(\.url) <<< map) %~ { $0.appendingPathComponent("404") }
       )
       |> siteMiddleware

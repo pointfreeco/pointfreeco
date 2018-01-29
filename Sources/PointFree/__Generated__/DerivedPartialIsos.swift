@@ -218,20 +218,6 @@ import Prelude
 
 
       extension PartialIso where A == (
-            Bool?
-        ), B == Route {
-
-          public static let home = parenthesize <| PartialIso(
-            apply: Route.home,
-            unapply: {
-              guard case let .home(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == (
             Route.Invite
         ), B == Route {
 
@@ -239,20 +225,6 @@ import Prelude
             apply: Route.invite,
             unapply: {
               guard case let .invite(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == (
-            EmailAddress
-        ), B == Route {
-
-          public static let launchSignup = parenthesize <| PartialIso(
-            apply: Route.launchSignup,
-            unapply: {
-              guard case let .launchSignup(result) = $0 else { return nil }
               return .some(result)
           })
       }
@@ -310,10 +282,10 @@ import Prelude
 
 
       extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let secretHome = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.secretHome)),
+        public static let home = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.home)),
           unapply: {
-            guard case .secretHome = $0 else { return nil }
+            guard case .home = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
