@@ -180,7 +180,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title3])], ["Add or remove seats?"])
+        h1([`class`([Class.pf.type.responsiveTitle3])], ["Add or remove seats?"])
         ])
       ])
     ])
