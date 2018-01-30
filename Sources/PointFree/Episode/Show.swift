@@ -29,7 +29,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           currentRoute: currentRoute,
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (episode, isEpisodeViewable),
+          data: (currentUser, episode, isEpisodeViewable),
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
           navStyle: navStyle,
@@ -39,7 +39,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
     }
 )
 
-let episodeView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
+let episodeView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { user, episode, isEpisodeViewable in
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
@@ -50,7 +50,7 @@ let episodeView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeV
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view((episode, isEpisodeViewable))
+        leftColumnView.view((user, episode, isEpisodeViewable))
       ),
 
       gridColumn(
@@ -152,28 +152,32 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
     )
 }
 
-private let downloadsView = View<String> { codeSampleDirectory in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Downloads"]
-        ),
-        img(
-          base64: gitHubSvgBase64(fill: "#FFF080"),
-          mediaType: .image(.svg),
-          alt: "",
-          [`class`([Class.align.middle]), width(20), height(20)]
-        ),
-        a(
-          [
-            href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
-          ],
-          [.text(encode("\(codeSampleDirectory).playground"))]
-        )
-    ]
-  )
+private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
+  guard !codeSampleDirectory.isEmpty else { return [] }
+
+  return [
+    div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+        [
+          h6(
+            [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+            ["Downloads"]
+          ),
+          img(
+            base64: gitHubSvgBase64(fill: "#FFF080"),
+            mediaType: .image(.svg),
+            alt: "",
+            [`class`([Class.align.middle]), width(20), height(20)]
+          ),
+          a(
+            [
+              href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
+              `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+            ],
+            [.text(encode("\(codeSampleDirectory).playground"))]
+          )
+      ]
+    )
+  ]
 }
 
 private let creditsView = View<Prelude.Unit> { _ in
@@ -211,18 +215,19 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
+private let leftColumnView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { user, episode, isEpisodeViewable in
   div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
       + (isEpisodeViewable
         ? transcriptView.view(episode.transcriptBlocks)
-        : subscribeView.view(episode)
+        : subscribeView.view((user, episode))
     )
   )
 }
 
-private let subscribeView = View<Episode> { episode in
+private let subscribeView = View<(Database.User?, Episode)> { user, episode -> Node in
+
   div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 4], .desktop: [.all: 4]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
 
     h3(
@@ -243,16 +248,21 @@ private let subscribeView = View<Episode> { episode in
     a(
       [href(path(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["See subscription options"]
-    ),
-    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
-    a(
-      [
-        href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
-        `class`([Class.pf.components.button(color: .black, style: .underline)])
-      ],
-      ["Log in"]
     )
-    ])
+    ]
+    + (user == nil
+      ?
+        [span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+         a(
+          [
+            href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
+            `class`([Class.pf.components.button(color: .black, style: .underline)])
+          ],
+          ["Log in"]
+          )
+        ]
+      : [])
+  )
 }
 
 private let episodeInfoView = View<Episode> { ep in
@@ -266,7 +276,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [`class`([Class.pf.type.responsiveTitle8])],
-      [text(episodeDateFormatter.string(from: ep.publishedAt))]
+      [text("#\(String(ep.sequence)) • \(episodeDateFormatter.string(from: ep.publishedAt))")]
     ),
     h1(
       [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],

@@ -7,7 +7,7 @@ import Tuple
 // NB: remove this `Encodable` to get a runtime crash
 public struct ProfileData: Encodable {
   public let email: EmailAddress
-  public let name: String
+  public let name: String?
   public let emailSettings: [String: String]
 
   public enum CodingKeys: String, CodingKey {
@@ -22,7 +22,7 @@ extension ProfileData: Decodable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.email = try container.decode(EmailAddress.self, forKey: .email)
-    self.name = try container.decode(String.self, forKey: .name)
+    self.name = try container.decodeIfPresent(String.self, forKey: .name)
     self.emailSettings = (try? container.decode([String: String].self, forKey: .emailSettings)) ?? [:]
   }
 }
