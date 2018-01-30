@@ -26,8 +26,6 @@ public struct GitHub {
   }
 
   public struct User: Codable {
-//    public private(set) var email: EmailAddress?
-//    public private(set) var emails: [Email]
     public private(set) var id: Id
     public private(set) var name: String?
 
