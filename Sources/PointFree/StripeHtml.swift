@@ -76,11 +76,11 @@ extension Stripe {
             setFormEnabled(form, false);
 
             stripe.createToken(card).then(function(result) {
+              setFormEnabled(form, true);
+
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
-
-                setFormEnabled(form, true);
               } else {
                 form.token.value = result.token.id;
                 form.submit();
