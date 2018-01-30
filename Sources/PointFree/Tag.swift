@@ -65,5 +65,8 @@ private let episodeTagView = View<Tag> { tag in
 }
 
 func slug(for string: String) -> String {
-  return string.lowercased().replacingOccurrences(of: " ", with: "-")
+  return string
+    .lowercased()
+    .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
+    .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
 }
