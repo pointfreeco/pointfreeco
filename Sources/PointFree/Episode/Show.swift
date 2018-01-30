@@ -270,7 +270,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [`class`([Class.pf.type.responsiveTitle8])],
-      [text(episodeDateFormatter.string(from: ep.publishedAt))]
+      [text("#\(String(ep.sequence)) • \(episodeDateFormatter.string(from: ep.publishedAt))")]
     ),
     h1(
       [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
