@@ -158,7 +158,7 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
           ]
         ),
 
-        gridRow([`class`([Class.pf.colors.bg.white, Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
+        gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
           gridColumn(sizes: [.mobile: 12], [], [
             form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
                  pricingTabsView.view(pricing)
@@ -316,9 +316,11 @@ private let pricingTabsView = View<Pricing> { pricing in
       type(.radio),
       value("individual"),
       ]),
-    label([`for`(selectors.input.0), `class`([Class.pf.components.pricingTab])], [
+    label([`for`(selectors.input.0), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For you"
       ]),
+
+    span([`class`([Class.padding([.mobile: [.leftRight: 2]]), Class.pf.colors.fg.gray850])], ["or"]),
 
     input([
       checked(pricing.isTeam),
@@ -328,7 +330,7 @@ private let pricingTabsView = View<Pricing> { pricing in
       type(.radio),
       value("team"),
       ]),
-    label([`for`(selectors.input.1), `class`([Class.pf.components.pricingTab])], [
+    label([`for`(selectors.input.1), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For your team"
       ])
   ]
@@ -336,7 +338,7 @@ private let pricingTabsView = View<Pricing> { pricing in
 
 private let individualPricingRowView = View<Pricing> { pricing in
   gridRow(
-    [id(selectors.content.0)],
+    [id(selectors.content.0), `class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])],
     individualPricingColumnView.view((.monthly, pricing))
       <> individualPricingColumnView.view((.yearly, pricing))
   )
@@ -349,8 +351,8 @@ private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
 }
 
 private let individualPricingColumnView = View<(billing: Pricing.Billing, pricing: Pricing)> {
-  gridColumn(sizes: [.mobile: 6], [], [
-    label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.padding([.mobile: [.all: 3]])])], [
+  gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
+    label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
           checked(isChecked($0.billing, $0.pricing)),
@@ -374,7 +376,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
 
   let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
 
-  return gridRow([id(selectors.content.1)], [
+  return gridRow([id(selectors.content.1), `class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div([`class`([Class.padding([.mobile: [.all: 3]])])], [
 
@@ -455,7 +457,7 @@ private let extraSpinnerStyles =
 )
 
 private let pricingFooterView = View<Database.User?> { currentUser in
-  gridRow([
+  gridRow([`class`([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
@@ -485,9 +487,9 @@ private let stripeForm = View<Prelude.Unit> { _ in
 private func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
-    return "Monthly Plan"
+    return "Monthly Individual Plan"
   case .yearly:
-    return "Yearly Plan"
+    return "Yearly Individual Plan"
   }
 }
 
@@ -590,3 +592,13 @@ func redirectActiveSubscribers<A>(
       }
     }
 }
+
+private let extraTabStyles: Stylesheet =
+  boxShadow(
+    hShadow: .px(0),
+    vShadow: .px(0),
+    blurRadius: .px(5),
+    spreadRadius: .px(5),
+    color: Color.rgba(0, 0, 0, 0.1)
+    )
+    <> width(.pct(35))
