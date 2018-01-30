@@ -284,8 +284,8 @@ extension Class.pf {
         | Class.padding([.mobile: [.leftRight: 2]])
         | Class.padding([.mobile: [.topBottom: 2]])
         | Class.border.none
-        | Class.size.width50pct
         | Class.display.inlineBlock
+        | Class.border.rounded.all
     public static let pricingTabSelected =
       pricingTabBase
         | Class.pf.colors.bg.white
