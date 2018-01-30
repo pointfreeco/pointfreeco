@@ -9,8 +9,8 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "You’re invited to join \(inviter.name)’s team on Point-Free",
-      preheader: "Your colleague \(inviter.name) has invited you to join their team account on Point-Free.",
+      title: "You’re invited to join \(inviter.name ?? inviter.email.unwrap)’s team on Point-Free",
+      preheader: "Your colleague \(inviter.name ?? inviter.email.unwrap) has invited you to join their team account on Point-Free.",
       data: (inviter, invite)
     )
 }
@@ -23,7 +23,7 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
           h3([`class`([Class.pf.type.title3])], ["You’re invited!"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your colleague ",
-            .text(encode(inviter.name)),
+            .text(encode(inviter.name ?? inviter.email.unwrap)),
             """
              has invited you to join their team account on Point-Free, a video series about functional
             programming and the Swift programming language. To accept, simply click the link below!
@@ -47,7 +47,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "\(invitee.name) has accepted your invitation!",
+      title: "\(invitee.name ?? invitee.email.unwrap) has accepted your invitation!",
       preheader: "",
       data: (inviter, invitee)
     )
@@ -61,11 +61,11 @@ private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> 
           "Your invitation was accepted!"
           ]),
         p([
-          "Hey ", .text(encode(inviter.name)), "!"
+          "Hey ", .text(encode(inviter.name ?? inviter.email.unwrap)), "!"
           ]),
         p([
           "Your colleague ",
-          .text(encode(invitee.name)),
+          .text(encode(invitee.name ?? invitee.email.unwrap)),
           " has accepted your invitation! They now have full access to everything Point-Free has to offer. "
           ]),
 

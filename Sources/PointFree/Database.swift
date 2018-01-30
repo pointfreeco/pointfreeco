@@ -74,7 +74,7 @@ public struct Database {
     public internal(set) var gitHubUserId: GitHub.User.Id
     public internal(set) var gitHubAccessToken: String
     public internal(set) var id: Id
-    public internal(set) var name: String
+    public internal(set) var name: String?
     public private(set) var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>

@@ -6,5 +6,6 @@
   - gitHubAccessToken: "deadbeef"
   ▿ id: Prelude.Tagged<PointFree.Database.User, Foundation.UUID>
     - unwrap: 00000000-0000-0000-0000-000000000001
-  - name: "Blobby McBlob"
+  ▿ name: Optional("Blobby McBlob")
+    - some: "Blobby McBlob"
   - subscriptionId: nil

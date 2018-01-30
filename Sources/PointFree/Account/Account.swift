@@ -96,7 +96,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
             `class`([blockInputClass]),
             name(ProfileData.CodingKeys.name.stringValue),
             type(.text),
-            value(currentUser.name),
+            value(currentUser.name ?? ""),
             ]),
 
           label([`class`([labelClass])], ["Email"]),
@@ -355,7 +355,7 @@ private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
 private let teammateRowView = View<Database.User> { teammate in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(encode("\(teammate.name) (\(teammate.email.unwrap))"))])
+      p([.text(encode("\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"))])
       ]),
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
