@@ -68,7 +68,7 @@ Explore more of our open-source on the [Point-Free](https://github.com/pointfree
 
 ## Find this interesting?
 
-Then check out [Point-Free](https://www.pointfree.co), a soon-to-be-launching weekly video series exploring Swift and functional programming!
+Then check out [Point-Free](https://www.pointfree.co)!
 
 ## License
 
