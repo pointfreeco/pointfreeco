@@ -36,6 +36,16 @@ extension Stripe {
         script([src(AppEnvironment.current.stripe.js)]),
         script(
           """
+          function setFormEnabled(form, isEnabled) {
+            for (var idx = 0; idx < form.length; idx++) {
+              var formElement = form[idx];
+              formElement.disabled = !isEnabled;
+              if (formElement.tagName == 'BUTTON') {
+                formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
+              }
+            }
+          }
+
           var apiKey = document.getElementById('card-element').dataset.stripeKey;
           var stripe = Stripe(apiKey);
           var elements = stripe.elements();
@@ -63,10 +73,14 @@ extension Stripe {
           form.addEventListener('submit', function(event) {
             event.preventDefault();
 
+            setFormEnabled(form, false);
+
             stripe.createToken(card).then(function(result) {
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
+
+                setFormEnabled(form, true);
               } else {
                 form.token.value = result.token.id;
                 form.submit();
