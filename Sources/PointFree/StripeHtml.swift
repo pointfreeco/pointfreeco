@@ -63,6 +63,15 @@ extension Stripe {
           form.addEventListener('submit', function(event) {
             event.preventDefault();
 
+            for (var idx = 0; idx < form.length; idx++) {
+              var formElement = form.length[idx];
+              form.length[idx].disabled = true;
+              if (formElement.tagName == 'BUTTON') {
+                formElement.textContent = 'Subscribing…';
+              }
+            }
+            var button = document.getElementBy
+
             stripe.createToken(card).then(function(result) {
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
