@@ -95,7 +95,7 @@ let newEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erro
             ]),
 
           ul(erroredUsers.map { user in
-            li([.text(encode("\(user.name) (\(user.email.unwrap))"))])
+            li([.text(encode(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap))])
           })
           ])
         ])
