@@ -66,6 +66,15 @@ Point-Free uses a bunch of interesting open-source software:
 
 Explore more of our open-source on the [Point-Free](https://github.com/pointfreeco) organization.
 
+## Learn More
+
+Brandon gave a talk about most of the core ideas that went into this project at [Swift Summit 2017](http://www.swiftsummit.com).
+
+<a href="https://www.skilled.io/u/swiftsummit/server-side-swift-from-scratch">
+  <img src=".github/serve-side-swift-from-scratch.jpg" width="560" style="max-width: 100%;" alt="The two sides of writing testable code" />
+</a>
+
+
 ## Find this interesting?
 
 Then check out [Point-Free](https://www.pointfree.co)!
