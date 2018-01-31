@@ -335,7 +335,7 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
     case .delete, .get:
       return task
     case .post:
-      return task.retry(maxRetries: 10)
+      return task.retry(maxRetries: 3)
     }
 }
 
