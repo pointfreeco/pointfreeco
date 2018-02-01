@@ -144,7 +144,7 @@ final class DowngradeTests: TestCase {
   func testDowngradeStripeError() {
     AppEnvironment.with(
       (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualYearly)))
-        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit) })
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit as Error) })
     ) {
       let conn = connection(
         from: request(to: .account(.subscription(.downgrade(.update))), session: .loggedIn)
