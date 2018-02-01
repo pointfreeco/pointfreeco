@@ -315,6 +315,7 @@ private let pricingTabsView = View<Pricing> { pricing in
       name("pricing[lane]"),
       type(.radio),
       value("individual"),
+      role(.button)
       ]),
     label([`for`(selectors.input.0), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For you"
@@ -329,6 +330,7 @@ private let pricingTabsView = View<Pricing> { pricing in
       name("pricing[lane]"),
       type(.radio),
       value("team"),
+      role(.button)
       ]),
     label([`for`(selectors.input.1), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For your team"
