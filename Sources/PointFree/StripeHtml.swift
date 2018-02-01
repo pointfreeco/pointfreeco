@@ -39,7 +39,7 @@ extension Stripe {
           function setFormEnabled(form, isEnabled, elementsMatching) {
             for (var idx = 0; idx < form.length; idx++) {
               var formElement = form[idx];
-              if (elementsMatching(formElement) {
+              if (elementsMatching(formElement)) {
                 formElement.disabled = !isEnabled;
                 if (formElement.tagName == 'BUTTON') {
                   formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
