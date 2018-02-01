@@ -110,26 +110,21 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
 
 private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Element.A>] {
 
-  let jsUsingAnchors: StaticString = """
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = event.target.dataset.t;
-  video.play();
-  """
-  let jsNotUsingAnchors: StaticString = """
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = event.target.dataset.t;
-  video.play();
-  event.preventDefault();
-  """
-
   return [
     useAnchors
       ? href("#t\(timestamp)")
       : href("#"),
 
-    useAnchors
-      ? onclick(javascript: jsUsingAnchors)
-      : onclick(javascript: jsNotUsingAnchors),
+    onclick(unsafeJavascript: """
+      var video = document.getElementsByTagName("video")[0];
+      video.currentTime = event.target.dataset.t;
+      video.play();
+      """
+      + (useAnchors
+        ? ""
+        : "event.preventDefault();"
+      )
+    ),
 
     data("t", "\(timestamp)")
   ]
