@@ -65,7 +65,7 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Data
     // TODO: send emails
     let plan = Pricing.team(quantity).plan
     return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity)
-      .flatMap { sub -> EitherIO<Prelude.Unit, Stripe.Subscription> in
+      .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {
           parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
             .run({ _ in })
