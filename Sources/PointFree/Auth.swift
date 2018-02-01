@@ -182,7 +182,6 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Erro
     .mapExcept(requireSome)
     .flatMap { subscription in
       AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-        .bimap(const(unit as Error), id)
         .flatMap { stripeSubscription in
           AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
         }

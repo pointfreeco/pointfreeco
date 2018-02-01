@@ -144,7 +144,7 @@ final class UpgradeTests: TestCase {
   func testUpgradeStripeError() {
     AppEnvironment.with(
       (\.stripe.fetchSubscription .~ const(pure(.mock |> \.plan .~ .individualMonthly)))
-        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit) })
+        >>> (\.stripe.updateSubscription .~ { _, _, _ in throwE(unit as Error) })
     ) {
       let conn = connection(
         from: request(to: .account(.subscription(.upgrade(.update))), session: .loggedIn)
