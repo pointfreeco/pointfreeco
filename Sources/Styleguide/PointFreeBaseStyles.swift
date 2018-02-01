@@ -286,10 +286,13 @@ extension Class.pf {
         | Class.border.none
         | Class.display.inlineBlock
         | Class.border.rounded.all
+        | Class.cursor.pointer
+
     public static let pricingTabSelected =
       pricingTabBase
         | Class.pf.colors.bg.white
         | Class.pf.colors.fg.purple
+
     public static let pricingTab =
       pricingTabBase
         | Class.pf.colors.bg.purple
@@ -300,6 +303,7 @@ extension Class.pf {
         | Class.display.block
         | Class.padding([.mobile: [.all: 3]])
         | Class.layout.overflowAuto(.x)
+
     public static func code(lang: String?) -> CssSelector {
       return _codeClasses | .class(lang.map { "language-\($0)" } ?? "")
     }
