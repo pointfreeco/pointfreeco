@@ -1,4 +1,4 @@
-bootstrap: check-postgres commoncrypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+bootstrap: check-postgres common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
 
 imports = \
 	@testable import PointFreeTests; \
