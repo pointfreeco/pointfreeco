@@ -108,15 +108,23 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
   )
 }
 
-private func timestampLinkAttributes(_ timestamp: Int) -> [Attribute<Element.A>] {
-  return [
-    href("#t\(timestamp)"),
+private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Element.A>] {
 
-    onclick(javascript: """
-    var video = document.getElementsByTagName("video")[0];
-    video.currentTime = event.target.dataset.t;
-    video.play();
-    """),
+  return [
+    useAnchors
+      ? href("#t\(timestamp)")
+      : href("#"),
+
+    onclick(unsafeJavascript: """
+      var video = document.getElementsByTagName("video")[0];
+      video.currentTime = event.target.dataset.t;
+      video.play();
+      """
+      + (useAnchors
+        ? ""
+        : "event.preventDefault();"
+      )
+    ),
 
     data("t", "\(timestamp)")
   ]
@@ -137,19 +145,34 @@ private let tocChapterView = View<(title: String, timestamp: Int, isEpisodeViewa
     ])
 }
 
-private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bool)> { title, timestamp, active -> Node in
+private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bool)> { title, timestamp, active -> [Node] in
   if active {
-    return a(
-      timestampLinkAttributes(timestamp) +
-        [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
-      [text(title)]
-    )
+    return
+      [
+        div([`class`([Class.hide(.mobile)])], [
+          a(
+            timestampLinkAttributes(timestamp: timestamp, useAnchors: true) +
+              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
+            [text(title)]
+          )
+          ]),
+
+        div([`class`([Class.hide(.desktop)])], [
+          a(
+            timestampLinkAttributes(timestamp: timestamp, useAnchors: false) +
+              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
+            [text(title)]
+          )
+          ]),
+    ]
   }
 
-  return div(
-    [`class`([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
-    [text(title)]
+  return [
+    div(
+      [`class`([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
+      [text(title)]
     )
+  ]
 }
 
 private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
@@ -323,7 +346,8 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
           text(block.content)
           ])
-      ])
+      ]
+    )
   }
 }
 
@@ -333,7 +357,7 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   return [
     div([id("t\(timestamp)"), `class`([Class.display.block])], [
       a(
-        timestampLinkAttributes(timestamp) + [
+        timestampLinkAttributes(timestamp: timestamp, useAnchors: false) + [
           `class`([Class.pf.components.videoTimeLink])
         ],
         [text(timestampLabel(for: timestamp))])

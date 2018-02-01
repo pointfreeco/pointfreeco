@@ -1,9 +1,5 @@
 bootstrap: check-postgres common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
 
-imports = \
-	@testable import PointFreeTests; \
-	@testable import StyleguideTests;
-
 xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
@@ -48,6 +44,10 @@ test-swift: init-db
 	swift test
 
 # sourcery
+
+imports = \
+	@testable import PointFreeTests; \
+	@testable import StyleguideTests;
 
 sourcery: linux-main route-partial-iso
 
