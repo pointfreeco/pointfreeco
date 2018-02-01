@@ -41,8 +41,6 @@ class EpisodeTests: TestCase {
   }
 
   func testEpisodePageSubscriber() {
-
-
     let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
 
     let conn = connection(from: episode)
