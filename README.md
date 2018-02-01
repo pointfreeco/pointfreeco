@@ -12,6 +12,11 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
 
   * Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
 
+  * Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
+    ``` sh
+    brew install cmark # or your preferred installation method
+    ```
+
   * Make sure [Postgres](https://www.postgresql.org) is installed and running. It's our database of choice. You can install it with Homebrew:
     ``` sh
     brew install postgres # or your preferred installation method

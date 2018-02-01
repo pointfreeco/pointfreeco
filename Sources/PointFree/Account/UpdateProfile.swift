@@ -46,7 +46,7 @@ let updateProfileMiddleware =
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {
-        updateFlash = flash(.warning, "We’ve sent an email to \(data.email.unwrap) to confirm this change.")
+        updateFlash = flash(.warning, "We’ve sent an email to \(user.email.unwrap) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],
