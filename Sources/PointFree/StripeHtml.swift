@@ -36,12 +36,14 @@ extension Stripe {
         script([src(AppEnvironment.current.stripe.js)]),
         script(
           """
-          function setFormEnabled(form, isEnabled) {
+          function setFormEnabled(form, isEnabled, elementsMatching) {
             for (var idx = 0; idx < form.length; idx++) {
               var formElement = form[idx];
-              formElement.disabled = !isEnabled;
-              if (formElement.tagName == 'BUTTON') {
-                formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
+              if (elementsMatching(formElement)) {
+                formElement.disabled = !isEnabled;
+                if (formElement.tagName == 'BUTTON') {
+                  formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
+                }
               }
             }
           }
@@ -73,10 +75,14 @@ extension Stripe {
           form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            setFormEnabled(form, false);
+            setFormEnabled(form, false, function() {
+              return true;
+            });
 
             stripe.createToken(card).then(function(result) {
-              setFormEnabled(form, true);
+              setFormEnabled(form, true, function(el) {
+                return el.tagName != 'BUTTON'
+              });
 
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
