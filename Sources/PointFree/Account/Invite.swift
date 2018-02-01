@@ -310,9 +310,9 @@ private func validateIsNot(currentUser: Database.User) -> (Database.User) -> Eit
 }
 
 private func validateActiveStripeSubscription(
-  _ errorOrSubscription: Either<Prelude.Unit, Stripe.Subscription>
+  _ errorOrSubscription: Either<Error, Stripe.Subscription>
   )
-  -> Either<Prelude.Unit, Stripe.Subscription> {
+  -> Either<Error, Stripe.Subscription> {
 
     return errorOrSubscription.flatMap { stripeSubscription in
       stripeSubscription.status != .active ? .left(unit) : .right(stripeSubscription)

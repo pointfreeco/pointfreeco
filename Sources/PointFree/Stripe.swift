@@ -6,16 +6,16 @@ import Optics
 import UrlFormEncoding
 
 public struct Stripe {
-  public var cancelSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
-  public var createCustomer: (Database.User, Token.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
-  public var fetchCustomer: (Customer.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var fetchPlans: EitherIO<Prelude.Unit, ListEnvelope<Plan>>
-  public var fetchPlan: (Plan.Id) -> EitherIO<Prelude.Unit, Plan>
-  public var fetchSubscription: (Subscription.Id) -> EitherIO<Prelude.Unit, Subscription>
-  public var invoiceCustomer: (Customer) -> EitherIO<Prelude.Unit, Invoice>
-  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Prelude.Unit, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Prelude.Unit, Subscription>
+  public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
+  public var createCustomer: (Database.User, Token.Id) -> EitherIO<Error, Customer>
+  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Error, Subscription>
+  public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
+  public var fetchPlans: EitherIO<Error, ListEnvelope<Plan>>
+  public var fetchPlan: (Plan.Id) -> EitherIO<Error, Plan>
+  public var fetchSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
+  public var invoiceCustomer: (Customer) -> EitherIO<Error, Invoice>
+  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Error, Customer>
+  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
   public var js: String
 
   public static let live = Stripe(
@@ -72,7 +72,7 @@ public struct Stripe {
   public typealias Cents = Tagged<Stripe, Int>
 
   public struct Customer: Codable {
-    public private(set) var defaultSource: Card.Id
+    public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
     public private(set) var sources: ListEnvelope<Card>
 
@@ -212,12 +212,12 @@ extension Tagged where Tag == Stripe.Plan, A == String {
   }
 }
 
-private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
   return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id)
-  -> EitherIO<Prelude.Unit, Stripe.Customer> {
+  -> EitherIO<Error, Stripe.Customer> {
 
     return stripeDataTask("customers", .post([
       "description": user.id.unwrap.uuidString,
@@ -231,7 +231,7 @@ private func createSubscription(
   plan: Stripe.Plan.Id,
   quantity: Int
   )
-  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+  -> EitherIO<Error, Stripe.Subscription> {
 
     return stripeDataTask("subscriptions?expand[]=customer", .post([
       "customer": customer.unwrap,
@@ -240,23 +240,23 @@ private func createSubscription(
       ]))
 }
 
-private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Prelude.Unit, Stripe.Customer> {
+private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Customer> {
   return stripeDataTask("customers/" + id.unwrap)
 }
 
-private let fetchPlans: EitherIO<Prelude.Unit, Stripe.ListEnvelope<Stripe.Plan>> =
+private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
-private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Prelude.Unit, Stripe.Plan> {
+private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Error, Stripe.Plan> {
   return stripeDataTask("plans/" + id.unwrap)
 }
 
-private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
   return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer")
 }
 
 private func invoiceCustomer(_ customer: Stripe.Customer)
-  -> EitherIO<Prelude.Unit, Stripe.Invoice> {
+  -> EitherIO<Error, Stripe.Invoice> {
 
     return stripeDataTask("invoices", .post([
       "customer": customer.id.unwrap,
@@ -264,7 +264,7 @@ private func invoiceCustomer(_ customer: Stripe.Customer)
 }
 
 private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.Id)
-  -> EitherIO<Prelude.Unit, Stripe.Customer> {
+  -> EitherIO<Error, Stripe.Customer> {
 
     return stripeDataTask("customers/" + customer.id.unwrap, .post([
       "source": token.unwrap,
@@ -276,7 +276,7 @@ private func updateSubscription(
   _ plan: Stripe.Plan.Id,
   _ quantity: Int
   )
-  -> EitherIO<Prelude.Unit, Stripe.Subscription> {
+  -> EitherIO<Error, Stripe.Subscription> {
 
     guard let item = subscription.items.data.first else { return throwE(unit) }
     return stripeDataTask("subscriptions/" + subscription.id.unwrap + "?expand[]=customer", .post([
@@ -323,13 +323,11 @@ private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URL
 }
 
 private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
-  -> EitherIO<Prelude.Unit, A>
+  -> EitherIO<Error, A>
   where A: Decodable {
 
-    let task: EitherIO<Prelude.Unit, A> = lift(stripeUrlRequest(path, method))
+    let task: EitherIO<Error, A> = lift(stripeUrlRequest(path, method))
       .flatMap { jsonDataTask(with: $0, decoder: stripeJsonDecoder) }
-      .map(tap(AppEnvironment.current.logger.debug))
-      .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
 
     switch method {
     case .delete, .get:
