@@ -1,17 +1,28 @@
-bootstrap: check-postgres common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+bootstrap: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
 
 xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
 
-# db
+# dependencies
+
+check-dependencies: check-cmark check-postgres
+
+check-cmark:
+	@command -v cmark > /dev/null \
+		|| ( \
+			echo "Please make sure cmark is installed!\n\n\$ brew install cmark" \
+				&& exit 1 \
+	)
 
 check-postgres:
 	@psql template1 -c '' \
 		|| ( \
-			echo "Please make sure Postgres is installed/running!" \
+			echo "Please make sure Postgres is installed/running!\n\n\$ brew install postgres" \
 				&& exit 1 \
 	)
+
+# db
 
 init-db:
 	psql template1 < database/init.sql
