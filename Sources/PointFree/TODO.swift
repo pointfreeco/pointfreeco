@@ -309,6 +309,10 @@ public func onclick<T>(javascript: StaticString) -> Attribute<T> {
   return .init("onclick", "javascript:\(javascript)")
 }
 
+public func onclick<T>(unsafeJavascript: String) -> Attribute<T> {
+  return .init("onclick", "javascript:\(unsafeJavascript)")
+}
+
 // FIXME: Move to swift-web
 public func data<T>(_ name: StaticString, _ value: String) -> Attribute<T> {
   return .init("data-\(name)", value)
