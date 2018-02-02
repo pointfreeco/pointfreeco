@@ -160,11 +160,17 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
 
         gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
           gridColumn(sizes: [.mobile: 12], [], [
-            form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
-                 pricingTabsView.view(pricing)
-                  + individualPricingRowView.view(pricing)
-                  + teamPricingRowView.view(pricing)
-                  + pricingFooterView.view(currentUser)
+            form(
+              [
+                action(path(to: .subscribe(nil))),
+                id(Stripe.html.formId),
+                method(.post),
+                onsubmit(javascript: "return false")
+              ],
+              pricingTabsView.view(pricing)
+                + individualPricingRowView.view(pricing)
+                + teamPricingRowView.view(pricing)
+                + pricingFooterView.view(currentUser)
             )
             ])
           ])
@@ -559,10 +565,18 @@ private func tabStyles(
       }
       .concat()
 
+    let tmp = idSelectors
+      .map { inputSelector, contentSelector in
+        (inputSelector & .pseudo(.checked) & .pseudo(.hover) + .star) % backgroundColor(Color.rgba(230, 230, 230, 1))
+//          <> (inputSelector & .pseudo(.hover) + .star) % backgroundColor(Color.rgba(50, 50, 50, 1))
+    }
+    .concat()
+
     return
       hideContentStyles
         <> showContentStyles
         <> selectedStyles
+        <> tmp
 }
 
 
