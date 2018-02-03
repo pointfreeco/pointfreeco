@@ -143,6 +143,17 @@ import Prelude
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let appleDeveloperMerchantIdDomainAssociation = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.appleDeveloperMerchantIdDomainAssociation)),
+          unapply: {
+            guard case .appleDeveloperMerchantIdDomainAssociation = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == (
             Either<String, Int>
         ), B == Route {
