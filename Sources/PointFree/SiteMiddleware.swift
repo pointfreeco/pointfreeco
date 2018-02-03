@@ -190,7 +190,8 @@ private let allowedHosts: [String] = [
   AppEnvironment.current.envVars.baseUrl.host ?? canonicalHost,
   "127.0.0.1",
   "0.0.0.0",
-  "localhost"
+  "localhost",
+  "31bc04ea.ngrok.io"
 ]
 
 private let allowedInsecureHosts: [String] = [

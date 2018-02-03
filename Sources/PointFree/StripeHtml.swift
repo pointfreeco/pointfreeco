@@ -16,6 +16,10 @@ extension Stripe {
             id("card-element"),
           ],
           []
+        ),
+        div(
+          [id("payment-request-button")],
+          []
         )
       ]
     }
@@ -51,6 +55,27 @@ extension Stripe {
           var apiKey = document.getElementById('card-element').dataset.stripeKey;
           var stripe = Stripe(apiKey);
           var elements = stripe.elements();
+
+          var paymentRequest = stripe.paymentRequest({
+            country: 'US',
+            currency: 'usd',
+            total: {
+              label: 'Monthy Individual Subscription',
+              amount: 1700,
+            },
+          });
+
+          var prButton = elements.create('paymentRequestButton', {
+            paymentRequest: paymentRequest,
+          });
+
+          paymentRequest.canMakePayment().then(function(result) {
+            if (result) {
+              prButton.mount('#payment-request-button');
+            } else {
+              document.getElementById('payment-request-button').style.display = 'none';
+            }
+          });
 
           var style = {
             base: {
