@@ -608,3 +608,11 @@ public func head<A>(_ status: HttpPipeline.Status)
 
     return writeStatus(status) >-> end
 }
+
+public func sizes<T>(_ value: String) -> Attribute<T> {
+  return .init("sizes", value)
+}
+
+public func type<T>(_ value: String) -> Attribute<T> {
+  return .init("type", value)
+}
