@@ -101,6 +101,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
 
+    case .appleDeveloperMerchantIdDomainAssociation:
+      return conn.map(const(unit))
+        |> appleDeveloperMerchantIdDomainAssociationMiddleware
+
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriptionStatus .*. route .*. unit))
         |> episodeResponse
@@ -200,6 +204,7 @@ private func isProtected(route: Route) -> Bool {
   case .about,
        .admin,
        .account,
+       .appleDeveloperMerchantIdDomainAssociation,
        .expressUnsubscribe,
        .expressUnsubscribeReply,
        .episode,

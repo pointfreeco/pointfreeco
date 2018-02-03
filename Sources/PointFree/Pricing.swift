@@ -160,11 +160,17 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
 
         gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
           gridColumn(sizes: [.mobile: 12], [], [
-            form([action(path(to: .subscribe(nil))), id(Stripe.html.formId), method(.post)],
-                 pricingTabsView.view(pricing)
-                  + individualPricingRowView.view(pricing)
-                  + teamPricingRowView.view(pricing)
-                  + pricingFooterView.view(currentUser)
+            form(
+              [
+                action(path(to: .subscribe(nil))),
+                id(Stripe.html.formId),
+                method(.post),
+                onsubmit(javascript: "event.preventDefault();")
+              ],
+              pricingTabsView.view(pricing)
+                + individualPricingRowView.view(pricing)
+                + teamPricingRowView.view(pricing)
+                + pricingFooterView.view(currentUser)
             )
             ])
           ])

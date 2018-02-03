@@ -313,6 +313,23 @@ public func onclick<T>(unsafeJavascript: String) -> Attribute<T> {
   return .init("onclick", "javascript:\(unsafeJavascript)")
 }
 
+public func onkeypress<T>(javascript: StaticString) -> Attribute<T> {
+  return .init("onkeypress", "\(javascript)")
+}
+
+public func onkeypress<T>(unsafeJavascript: String) -> Attribute<T> {
+  return .init("onkeypress", "\(unsafeJavascript)")
+}
+
+public protocol HasOnsubmit {}
+extension Element.Form: HasOnsubmit {}
+public func onsubmit<T: HasOnsubmit>(javascript: String) -> Attribute<T> {
+  return .init("onsubmit", "\(javascript)")
+}
+public func onsubmit<T: HasOnsubmit>(unsafeJavascript: String) -> Attribute<T> {
+  return .init("onsubmit", "\(unsafeJavascript)")
+}
+
 // FIXME: Move to swift-web
 public func data<T>(_ name: StaticString, _ value: String) -> Attribute<T> {
   return .init("data-\(name)", value)
