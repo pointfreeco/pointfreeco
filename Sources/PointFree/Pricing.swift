@@ -165,7 +165,7 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
                 action(path(to: .subscribe(nil))),
                 id(Stripe.html.formId),
                 method(.post),
-                onsubmit(javascript: "return false")
+                onsubmit(javascript: "event.preventDefault();")
               ],
               pricingTabsView.view(pricing)
                 + individualPricingRowView.view(pricing)
