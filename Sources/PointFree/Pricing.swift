@@ -565,18 +565,10 @@ private func tabStyles(
       }
       .concat()
 
-    let tmp = idSelectors
-      .map { inputSelector, contentSelector in
-        (inputSelector & .pseudo(.checked) & .pseudo(.hover) + .star) % backgroundColor(Color.rgba(230, 230, 230, 1))
-//          <> (inputSelector & .pseudo(.hover) + .star) % backgroundColor(Color.rgba(50, 50, 50, 1))
-    }
-    .concat()
-
     return
       hideContentStyles
         <> showContentStyles
         <> selectedStyles
-        <> tmp
 }
 
 
