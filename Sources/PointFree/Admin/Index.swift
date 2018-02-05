@@ -59,6 +59,7 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
   p([
     .text(encode(ep.title)),
     form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id))))), method(.post)], [
+      textarea([name("extra_blurb"), rows(4), cols(10)]),
       input([type(.submit), value("Send email!")])
       ])
     ])
@@ -92,7 +93,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
         to: [user.email],
         subject: "New Point-Free Episode: \(episode.title)",
         unsubscribeData: (user.id, .newEpisode),
-        content: inj2(newEpisodeEmail.view((episode, user, true)))
+        content: inj2(newEpisodeEmail.view((episode, user, true, nil)))
         )
         .delay(.milliseconds(200 * idx))
         .retry(maxRetries: 3, backoff: { .milliseconds(200 * idx) + .seconds(10 * $0) })
