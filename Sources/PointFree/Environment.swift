@@ -9,7 +9,7 @@ public enum CookieTransform: String, Codable {
 }
 
 public typealias AirtableCreateRow = (_ email: EmailAddress) -> (_ baseId: String)
-  -> EitherIO<Prelude.Unit, Prelude.Unit>
+  -> EitherIO<Error, Prelude.Unit>
 
 public struct Environment {
   public private(set) var airtableStuff: AirtableCreateRow
