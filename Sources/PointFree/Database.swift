@@ -90,10 +90,10 @@ public struct Database {
   }
 
   public struct Subscription: Decodable {
-    let id: Id
-    let stripeSubscriptionId: Stripe.Subscription.Id
-    let stripeSubscriptionStatus: Stripe.Subscription.Status
-    let userId: User.Id
+    var id: Id
+    var stripeSubscriptionId: Stripe.Subscription.Id
+    var stripeSubscriptionStatus: Stripe.Subscription.Status
+    var userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
 
