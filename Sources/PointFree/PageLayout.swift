@@ -118,7 +118,8 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           <> favicons
         ),
         body(
-          (layoutData.flash.map(flashView.view) ?? [])
+          pastDueBanner(layoutData.currentSubscriptionStatus)
+            <> (layoutData.flash.map(flashView.view) ?? [])
             <> (layoutData.navStyle.map { navView.view(($0, layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute)) } ?? [])
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
@@ -126,6 +127,21 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ])
       ])
   }
+}
+
+func pastDueBanner(_ subscriptionStatus: Stripe.Subscription.Status?) -> [Node] {
+  guard subscriptionStatus == .some(.pastDue) else { return [] }
+
+  return flashView.view(
+    .init(
+      priority: .warning,
+      message: """
+      Your subscription is past-due! Please
+      [update your payment info](\(path(to: .account(.paymentInfo(.show))))) to ensure access to
+      Point-Free!
+      """
+    )
+  )
 }
 
 private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
