@@ -276,7 +276,7 @@ private let formRowView = View<Stripe.Subscription> { subscription in
 // MARK: - Emails
 
 private func sendCancelEmail(to owner: Database.User, for subscription: Stripe.Subscription)
-  -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],
@@ -321,7 +321,7 @@ private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { u
 }
 
 private func sendReactivateEmail(to owner: Database.User, for subscription: Stripe.Subscription)
-  -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],
