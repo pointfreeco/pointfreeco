@@ -74,6 +74,7 @@ extension Database.User {
     gitHubUserId: .init(unwrap: 1),
     gitHubAccessToken: "deadbeef",
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    isAdmin: false,
     name: "Blob",
     subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
