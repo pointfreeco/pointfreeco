@@ -224,7 +224,7 @@ private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seats
 // MARK: - Emails
 
 private func sendChangeSeatsEmail(to owner: Database.User, for subscription: Stripe.Subscription)
-  -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],

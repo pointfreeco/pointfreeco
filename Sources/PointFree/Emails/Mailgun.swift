@@ -7,7 +7,7 @@ import Prelude
 import UrlFormEncoding
 
 public struct Mailgun {
-  public var sendEmail: (Email) -> EitherIO<Prelude.Unit, SendEmailResponse>
+  public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
 
   public static let live = Mailgun(
     sendEmail: mailgunSend
@@ -54,7 +54,7 @@ public struct Email {
   var headers: [(String, String)] = []
 }
 
-private func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
   var params: [String: String] = [:]
   params["from"] = email.from.unwrap
@@ -79,7 +79,6 @@ private func mailgunSend(email: Email) -> EitherIO<Prelude.Unit, Mailgun.SendEma
     |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
 
   return jsonDataTask(with: request)
-    .withExcept(const(unit))
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
