@@ -157,6 +157,14 @@ extension EitherIO {
   }
 }
 
+public func >-> <E, A, B, C>(f: @escaping (A) -> Either<E, B>, g: @escaping (B) -> Either<E, C>) -> (A) -> Either<E, C> {
+  return f >>> flatMap(g)
+}
+
+public func >-> <E, A, B, C>(f: @escaping (A) -> EitherIO<E, B>, g: @escaping (B) -> EitherIO<E, C>) -> (A) -> EitherIO<E, C> {
+  return f >>> flatMap(g)
+}
+
 extension EitherIO {
   public func bimap<F, B>(_ f: @escaping (E) -> F, _ g: @escaping (A) -> B) -> EitherIO<F, B> {
     return .init(run: self.run.map { $0.bimap(f, g) })
@@ -348,8 +356,20 @@ extension PartialIso where A == B.RawValue, B: RawRepresentable {
   }
 }
 
+public func map<E, A, B>(_ f: @escaping (A) -> B) -> (EitherIO<E, A>) -> EitherIO<E, B> {
+  return { $0.map(f) }
+}
+
+public func flatMap<E, A, B>(_ f: @escaping (A) -> EitherIO<E, B>) -> (EitherIO<E, A>) -> EitherIO<E, B> {
+  return { $0.flatMap(f) }
+}
+
 public func mapExcept<E, F, A, B>(_ f: @escaping (Either<E, A>) -> Either<F, B>) -> (EitherIO<E, A>) -> EitherIO<F, B> {
   return { $0.mapExcept(f) }
+}
+
+public func withExcept<E, F, A>(_ f: @escaping (E) -> F) -> (EitherIO<E, A>) -> EitherIO<F, A> {
+  return { $0.withExcept(f) }
 }
 
 public protocol TaggedType {
