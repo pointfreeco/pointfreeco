@@ -22,14 +22,13 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
     >>> respond(
       view: episodeView,
       layoutData: { episode, currentUser, subscriptionStatus, currentRoute in
-        let isEpisodeViewable = !episode.subscriberOnly || subscriptionStatus == .some(.active)
         let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (currentUser, episode, isEpisodeViewable),
+          data: (currentUser, subscriptionStatus, episode),
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
           navStyle: navStyle,
@@ -39,7 +38,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
     }
 )
 
-let episodeView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { user, episode, isEpisodeViewable in
+let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> { user, subscriptionStatus, episode in
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
@@ -50,7 +49,7 @@ let episodeView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { use
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view((user, episode, isEpisodeViewable))
+        leftColumnView.view((user, subscriptionStatus, episode))
       ),
 
       gridColumn(
@@ -59,7 +58,7 @@ let episodeView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { use
         [
           div(
             [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-            rightColumnView.view((episode, isEpisodeViewable))
+            rightColumnView.view((episode, isEpisodeViewable(episode, subscriptionStatus)))
           )
         ]
       )
@@ -67,11 +66,15 @@ let episodeView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { use
   ]
 }
 
+private func isEpisodeViewable(_ episode: Episode, _ subscriptionStatus: Stripe.Subscription.Status?) -> Bool {
+  return !episode.subscriberOnly || subscriptionStatus == .some(.active)
+}
+
 private let downloadsAndCredits =
   downloadsView
     <> creditsView.contramap(const(unit))
 
-private let rightColumnView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
+private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable in
 
   videoView.view((episode, isEpisodeViewable))
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
@@ -238,13 +241,19 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(Database.User?, Episode, isEpisodeViewable: Bool)> { user, episode, isEpisodeViewable in
+private let leftColumnView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> { user, subscriptionStatus, episode in
   div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
-      + (isEpisodeViewable
-        ? transcriptView.view(episode.transcriptBlocks)
-        : subscribeView.view((user, episode))
+      + (
+        subscriptionStatus != .some(.active)
+          ? subscribeView.view((user, episode))
+          : []
+      )
+      + (
+        isEpisodeViewable(episode, subscriptionStatus)
+          ? transcriptView.view(episode.transcriptBlocks)
+          : []
     )
   )
 }
@@ -261,10 +270,15 @@ private let subscribeView = View<(Database.User?, Episode)> { user, episode -> N
     p(
       [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
       [
-        """
-        This episode is for subscribers only. To access it, and all past and future episodes, become a
-        subscriber today!
-        """
+        episode.subscriberOnly
+          ? """
+            This episode is for subscribers only. To access it, and all past and future episodes, become a
+            subscriber today!
+            """
+          : """
+            This episode is free to all users. To get access to all past and future episodes, become a
+            subscriber today!
+            """
       ]
     ),
 
