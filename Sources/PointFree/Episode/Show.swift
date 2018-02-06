@@ -295,11 +295,21 @@ private let episodeInfoView = View<Episode> { ep in
   )
 }
 
+private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
+  return [
+      "#\(ep.sequence)",
+      episodeDateFormatter.string(from: ep.publishedAt),
+      ep.subscriberOnly ? "Subscriber-only" : nil
+    ]
+    .flatMap { $0 }
+    .joined(separator: " • ")
+}
+
 let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [`class`([Class.pf.type.responsiveTitle8])],
-      [text("#\(String(ep.sequence)) • \(episodeDateFormatter.string(from: ep.publishedAt))")]
+      [text(topLevelEpisodeMetadata(ep))]
     ),
     h1(
       [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
