@@ -311,7 +311,7 @@ class InviteTests: TestCase {
   }
 
   func testAcceptInvitation_CurrentUserIsInviter() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, .init(unwrap: "hello@pointfree.co"))
       .run
       .perform()
       .right!!
