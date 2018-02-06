@@ -276,7 +276,8 @@ private let subscribeView = View<(Database.User?, Episode)> { user, episode -> N
             subscriber today!
             """
           : """
-            Subscribe today and unlock all episodes!
+            This episode is free to all users. To get access to all past and future episodes, become a
+            subscriber today!
             """
       ]
     ),
