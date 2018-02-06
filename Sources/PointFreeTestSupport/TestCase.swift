@@ -16,7 +16,7 @@ open class TestCase: XCTestCase {
       )
     )
 
-    _ = try! execute("DROP SCHEMA public CASCADE")
+    _ = try! execute("DROP SCHEMA IF EXISTS public CASCADE")
       .flatMap(const(execute("CREATE SCHEMA public")))
       .flatMap(const(execute("GRANT ALL ON SCHEMA public TO pointfreeco")))
       .flatMap(const(execute("GRANT ALL ON SCHEMA public TO public")))
