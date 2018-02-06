@@ -33,14 +33,16 @@ private func fetchAccountData<I, A>(
   let user = get1(conn.data)
 
   let subscription = user.subscriptionId
-    .map {
-      AppEnvironment.current.database.fetchSubscriptionById($0)
-        .mapExcept(requireSome)
-        .withExcept(const(unit))
-        .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
-        .run
-        .map(^\.right)
-    }
+    .map(
+      (
+        AppEnvironment.current.database.fetchSubscriptionById
+          >>> mapExcept(requireSome)
+          >>> map(^\.stripeSubscriptionId)
+          >-> AppEnvironment.current.stripe.fetchSubscription
+        )
+        >>> ^\.run
+        >>> map(^\.right)
+    )
     ?? pure(nil)
 
   return
