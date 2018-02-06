@@ -5,7 +5,7 @@ import Prelude
 
 func createRow(email: EmailAddress)
   -> (_ baseId: String)
-  -> EitherIO<Prelude.Unit, Prelude.Unit> {
+  -> EitherIO<Error, Prelude.Unit> {
     return { baseId in
 
       let request = URLRequest(url: URL(string: "https://api.airtable.com/v0/\(baseId)/Emails")!)
@@ -17,7 +17,6 @@ func createRow(email: EmailAddress)
       ]
 
       return dataTask(with: request)
-        .map(tap(AppEnvironment.current.logger.debug) >>> const(unit))
-        .withExcept(tap(AppEnvironment.current.logger.error) >>> const(unit))
+        .map(const(unit))
     }
 }

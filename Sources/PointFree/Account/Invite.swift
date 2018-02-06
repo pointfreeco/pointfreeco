@@ -292,7 +292,7 @@ private func requireTeamInvite<A>(
 
 private func sendInviteEmail(
   invite: Database.TeamInvite, inviter: Database.User
-  ) ->  EitherIO<Prelude.Unit, Mailgun.SendEmailResponse> {
+  ) ->  EitherIO<Error, Mailgun.SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],
