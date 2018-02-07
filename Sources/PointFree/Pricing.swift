@@ -484,10 +484,45 @@ private let stripeForm = View<Prelude.Unit> { _ in
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [
-        button(
-          [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-          ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
-        )
+        div(
+          [
+            `class`(
+              [
+                Class.flex.flex,
+                Class.flex.justify.center,
+                Class.margin([.mobile: [.top: 3]]),
+                Class.flex.wrap
+              ]
+            )
+          ], [
+            button(
+              [
+                `class`(
+                  [
+                    Class.pf.components.button(color: .purple),
+                    Class.grid.col(.mobile, 7),
+                    Class.grid.col(.desktop, 5),
+                  ]
+                ),
+                style(height(.px(40)))
+              ],
+              ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
+            ),
+
+            div(
+              [
+                id("payment-request-button"),
+                `class`(
+                  [
+                    Class.grid.col(.mobile, 7),
+                    Class.grid.col(.desktop, 5),
+                    Class.margin([.mobile: [.top: 2], .desktop: [.left: 2, .top: 0]]),
+                  ]
+                )
+              ],
+              []
+            )
+          ])
     ]
   )
 }

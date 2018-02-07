@@ -16,10 +16,6 @@ extension Stripe {
             id("card-element"),
           ],
           []
-        ),
-        div(
-          [id("payment-request-button")],
-          []
         )
       ]
     }

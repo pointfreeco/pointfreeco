@@ -11,14 +11,14 @@ public struct EnvVars: Codable {
   public var port = 8080
   public var postgres = Postgres()
   public var stripe = Stripe()
-  public var useSsl = false
+  public var locallyUseSsl = "0"
 
   private enum CodingKeys: String, CodingKey {
     case appEnv = "APP_ENV"
     case appSecret = "APP_SECRET"
     case baseUrl = "BASE_URL"
     case port = "PORT"
-    case useSsl = "USE_SSL"
+    case locallyUseSsl = "LOCALLY_USE_SSL"
   }
 
   public struct Airtable: Codable {
