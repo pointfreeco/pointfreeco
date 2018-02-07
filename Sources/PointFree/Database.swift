@@ -74,6 +74,7 @@ public struct Database {
     public internal(set) var gitHubUserId: GitHub.User.Id
     public internal(set) var gitHubAccessToken: String
     public internal(set) var id: Id
+    public internal(set) var isAdmin: Bool
     public internal(set) var name: String?
     public private(set) var subscriptionId: Subscription.Id?
 
@@ -84,16 +85,17 @@ public struct Database {
       case gitHubUserId = "github_user_id"
       case gitHubAccessToken = "github_access_token"
       case id
+      case isAdmin = "is_admin"
       case name
       case subscriptionId = "subscription_id"
     }
   }
 
   public struct Subscription: Decodable {
-    let id: Id
-    let stripeSubscriptionId: Stripe.Subscription.Id
-    let stripeSubscriptionStatus: Stripe.Subscription.Status
-    let userId: User.Id
+    var id: Id
+    var stripeSubscriptionId: Stripe.Subscription.Id
+    var stripeSubscriptionStatus: Stripe.Subscription.Status
+    var userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
 
@@ -237,6 +239,7 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
            "users"."github_user_id",
            "users"."github_access_token",
            "users"."id",
+           "users"."is_admin",
            "users"."name",
            "users"."subscription_id"
     FROM "users"
@@ -351,7 +354,7 @@ private func upsertUser(
 private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
     FROM "users"
     WHERE "email" = $1
     LIMIT 1
@@ -363,7 +366,7 @@ private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -379,6 +382,7 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
            "users"."github_user_id",
            "users"."github_access_token",
            "users"."id",
+           "users"."is_admin",
            "users"."name",
            "users"."subscription_id"
     FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
@@ -391,7 +395,7 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "name", "subscription_id"
+    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -539,6 +543,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       ALTER TABLE "subscriptions"
       ADD COLUMN IF NOT EXISTS
       "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "is_admin" boolean NOT NULL DEFAULT FALSE 
       """
     )))
     .map(const(unit))
