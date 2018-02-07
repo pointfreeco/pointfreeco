@@ -10,7 +10,7 @@ import Tuple
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
-    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
+    <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
@@ -190,9 +190,13 @@ private let allowedHosts: [String] = [
   AppEnvironment.current.envVars.baseUrl.host ?? canonicalHost,
   "127.0.0.1",
   "0.0.0.0",
-  "localhost",
-  "31bc04ea.ngrok.io"
+  "localhost"
 ]
+
+private func isAllowed(host: String) -> Bool {
+  return allowedHosts.contains(host)
+    || host.suffix(8) == "ngrok.io"
+}
 
 private let allowedInsecureHosts: [String] = [
   "127.0.0.1",
