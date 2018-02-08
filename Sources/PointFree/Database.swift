@@ -554,9 +554,8 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE UNIQUE INDEX "index_subscriptions_on_stripe_subscription_id"
-      ON "subscriptions"
-      ("stripe_subscription_id")
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
+      ON "subscriptions" ("stripe_subscription_id")
       """
     )))
     .map(const(unit))

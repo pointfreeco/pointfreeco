@@ -7,42 +7,58 @@ let stripeSubscriptionWebhookMiddleware: Middleware<StatusLineOpen, ResponseEnde
   validateStripeSignature
     <| updateStripeSubscription
 
-private let tolerance: TimeInterval = 5 * 60
-
 private func validateStripeSignature<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature").map {
-        $0.split(separator: ",")
-          .flatMap { pair -> (String, String)? in
-            let pair = pair.split(separator: "=", maxSplits: 1).map(String.init)
-            return tuple <¢> pair.first <*> (pair.count == 2 ? pair.last : nil)
-        }
-      }
-      let components = pairs
-        .map(Dictionary.init)
-        .flatMap { tuple3 <¢> $0["v1"] <*> $0["t"].flatMap(Int.init) <*> conn.request.httpBody }
+      let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+        .map(keysWithAllValues(separator: ","))
+        ?? []
 
-      let signatureValid = components
-        .map { signature, timestamp, payload -> Bool in
-          Date(timeIntervalSince1970: TimeInterval(timestamp))
-            > AppEnvironment.current.date().addingTimeInterval(-tolerance)
-            && signature == hexDigest(
-              value: "\(timestamp).\(payload)",
-              asciiSecret: AppEnvironment.current.envVars.stripe.endpointSecret
-          )
-        }
-        ?? false
+      let params = Dictionary(pairs, uniquingKeysWith: +)
 
-      if signatureValid {
-        return conn |> middleware
-      } else {
-        return conn |> writeStatus(.badRequest) >-> end
-      }
+      guard
+        let timestamp = params["t"].flatMap(^\.first >-> Int.init).map(TimeInterval.init),
+        shouldTolerate(timestamp),
+        let signatures = params["v1"],
+        let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
+        signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
+        else { return conn |> writeStatus(.badRequest) >-> end }
+
+      return conn |> middleware
     }
+}
+
+private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
+  return { signature in
+    let secret = AppEnvironment.current.envVars.stripe.endpointSecret
+    guard let digest = hexDigest(value: "\(timestamp).\(payload)", asciiSecret: secret) else { return false }
+
+    let constantTimeSignature =
+      signature.count == digest.count
+        ? signature
+        : String(repeating: " ", count: digest.count)
+
+    // NB: constant-time equality check
+    return zip(constantTimeSignature.utf8, digest.utf8).reduce(true) { $0 && $1.0 == $1.1 }
+  }
+}
+
+private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
+  return Date(timeIntervalSince1970: timestamp)
+    > AppEnvironment.current.date().addingTimeInterval(-tolerance)
+}
+
+private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
+  return { string in
+    string.split(separator: ",")
+      .flatMap { pair -> (String, [String])? in
+        let pair = pair.split(separator: "=", maxSplits: 1).map(String.init)
+        return tuple <¢> pair.first <*> (pair.count == 2 ? [pair[1]] : nil)
+    }
+  }
 }
 
 private func updateStripeSubscription(
