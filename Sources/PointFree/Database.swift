@@ -549,7 +549,14 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
-      "is_admin" boolean NOT NULL DEFAULT FALSE 
+      "is_admin" boolean NOT NULL DEFAULT FALSE
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX "index_subscriptions_on_stripe_subscription_id"
+      ON "subscriptions"
+      ("stripe_subscription_id")
       """
     )))
     .map(const(unit))
