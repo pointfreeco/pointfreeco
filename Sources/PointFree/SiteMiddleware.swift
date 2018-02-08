@@ -209,5 +209,10 @@ private let allowedInsecureHosts: [String] = [
 ]
 
 private func isProtected(route: Route) -> Bool {
-  return false
+  switch route {
+  case .webhooks(.stripe):
+    return true
+  default:
+    return false
+  }
 }
