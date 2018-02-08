@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.10.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 import XCTest
@@ -15,8 +15,14 @@ extension AccountTests {
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
     ("testAccountWithFlashError", testAccountWithFlashError),
+    ("testAccountWithPastDue", testAccountWithPastDue),
     ("testAccountCancelingSubscription", testAccountCancelingSubscription),
     ("testAccountCanceledSubscription", testAccountCanceledSubscription)
+  ]
+}
+extension AppleDeveloperMerchantIdDomainAssociationTests {
+  static var allTests: [(String, (AppleDeveloperMerchantIdDomainAssociationTests) -> () throws -> Void)] = [
+    ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly)
   ]
 }
 extension AtomFeedTests {
@@ -126,6 +132,8 @@ extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
     ("testEpisodePage", testEpisodePage),
     ("testEpisodePageSubscriber", testEpisodePageSubscriber),
+    ("testFreeEpisodePage", testFreeEpisodePage),
+    ("testFreeEpisodePageSubscriber", testFreeEpisodePageSubscriber),
     ("testEpisodeNotFound", testEpisodeNotFound)
   ]
 }
@@ -220,6 +228,12 @@ extension SiteMiddlewareTests {
     ("testWithHttps", testWithHttps)
   ]
 }
+extension StripeHookTests {
+  static var allTests: [(String, (StripeHookTests) -> () throws -> Void)] = [
+    ("testValidHook", testValidHook),
+    ("testInvalidHook", testInvalidHook)
+  ]
+}
 extension StyleguideTests {
   static var allTests: [(String, (StyleguideTests) -> () throws -> Void)] = [
     ("testStyleguide", testStyleguide),
@@ -273,6 +287,7 @@ extension UpgradeTests {
 XCTMain([
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
+  testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
   testCase(CancelTests.allTests),
@@ -298,6 +313,7 @@ XCTMain([
   testCase(PrivacyTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
+  testCase(StripeHookTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
   testCase(TeamEmailsTests.allTests),

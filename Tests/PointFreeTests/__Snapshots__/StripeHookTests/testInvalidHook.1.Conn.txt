@@ -1,0 +1,13 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/webhooks/stripe
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+  Stripe-Signature: t=1517356800,v1=deadbeef
+
+  {"id":"evt_test","data":{"object":{"status":"active","quantity":1,"start":1517356800,"id":"sub_test","cancel_at_period_end":false,"created":1517356800,"current_period_end":1519948800,"plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"currency":"usd","metadata":{},"interval":"month"},"customer":{"id":"cus_test","default_source":"card_test","sources":{"has_more":false,"data":[{"exp_year":2020,"brand":"Visa","customer":"cus_test","id":"card_test","exp_month":1,"last4":"4242"}],"total_count":1}},"current_period_start":1517356800,"items":{"has_more":false,"data":[{"quantity":1,"created":1517356800,"id":"si_test","plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"currency":"usd","metadata":{},"interval":"month"}}],"total_count":1}}}}
+
+▿ Response
+  Status 400 BAD REQUEST

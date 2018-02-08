@@ -24,10 +24,6 @@ final class AccountTests: TestCase {
   }
   
   func testAccount() {
-    let subscription = Stripe.Subscription.mock
-      |> \.quantity .~ 4
-      |> \.plan .~ .teamYearly
-
     AppEnvironment.with(const(.teamYearly)) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware

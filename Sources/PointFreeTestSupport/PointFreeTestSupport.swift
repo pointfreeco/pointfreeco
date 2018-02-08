@@ -61,7 +61,7 @@ extension Database {
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
-    updateSubscription: { _, _ in pure(unit) },
+    updateStripeSubscription: const(pure(unit)),
     updateUser: { _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) },
     migrate: { pure(unit) }
@@ -182,6 +182,15 @@ extension Stripe.Customer {
     id: .init(unwrap: "cus_test"),
     sources: .mock([.mock])
   )
+}
+
+extension Stripe.Event where T == Stripe.Subscription {
+  public static var mock: Stripe.Event<Stripe.Subscription> {
+    return .init(
+      data: .init(object: .mock),
+      id: .init(unwrap: "evt_test")
+    )
+  }
 }
 
 extension Stripe.Invoice {

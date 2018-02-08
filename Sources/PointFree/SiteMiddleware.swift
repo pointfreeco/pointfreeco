@@ -172,6 +172,15 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
+
+    case let .webhooks(.stripe(.subscription(event))):
+      return conn.map(const(event))
+        |> stripeSubscriptionWebhookMiddleware
+
+    case .webhooks(.stripe(.fallthrough)):
+      return conn
+        |> writeStatus(.ok)
+        >-> end
     }
 }
 
@@ -200,25 +209,5 @@ private let allowedInsecureHosts: [String] = [
 ]
 
 private func isProtected(route: Route) -> Bool {
-  switch route {
-  case .about,
-       .admin,
-       .account,
-       .appleDeveloperMerchantIdDomainAssociation,
-       .expressUnsubscribe,
-       .expressUnsubscribeReply,
-       .episode,
-       .feed,
-       .gitHubCallback,
-       .invite,
-       .login,
-       .logout,
-       .pricing,
-       .privacy,
-       .home,
-       .subscribe,
-       .team:
-
-    return false
-  }
+  return false
 }

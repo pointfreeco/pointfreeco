@@ -85,6 +85,17 @@ public struct Stripe {
     }
   }
 
+  public struct Event<T: Codable>: Codable {
+    public private(set) var data: Data
+    public private(set) var id: Id
+
+    public typealias Id = Tagged<Event, String>
+
+    public struct Data: Codable {
+      public private(set) var object: T
+    }
+  }
+
   public struct Invoice: Codable {
     public private(set) var id: Id
 
@@ -286,10 +297,16 @@ private func updateSubscription(
       ]))
 }
 
-private let stripeJsonDecoder: JSONDecoder = {
+let stripeJsonDecoder: JSONDecoder = {
   let decoder = JSONDecoder()
   decoder.dateDecodingStrategy = .secondsSince1970
   return decoder
+}()
+
+let stripeJsonEncoder: JSONEncoder = {
+  let encoder = JSONEncoder()
+  encoder.dateEncodingStrategy = .secondsSince1970
+  return encoder
 }()
 
 private enum Method {

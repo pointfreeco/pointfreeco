@@ -183,7 +183,7 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Erro
     .flatMap { subscription in
       AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
-          AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
+          AppEnvironment.current.database.updateStripeSubscription(stripeSubscription)
         }
     }
 }
