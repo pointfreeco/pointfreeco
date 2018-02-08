@@ -50,7 +50,8 @@ private func updateStripeSubscription(
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let subscription = conn.data.data.object
+    let event = conn.data
+    let subscription = event.data.object
 
     return AppEnvironment.current.database.updateStripeSubscription(subscription)
       .run

@@ -188,7 +188,8 @@ extension Stripe.Event where T == Stripe.Subscription {
   public static var mock: Stripe.Event<Stripe.Subscription> {
     return .init(
       data: .init(object: .mock),
-      id: .init(unwrap: "evt_test")
+      id: .init(unwrap: "evt_test"),
+      type: .customerSubscriptionUpdated
     )
   }
 }

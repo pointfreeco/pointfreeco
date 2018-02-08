@@ -88,11 +88,16 @@ public struct Stripe {
   public struct Event<T: Codable>: Codable {
     public private(set) var data: Data
     public private(set) var id: Id
+    public private(set) var type: `Type`
 
     public typealias Id = Tagged<Event, String>
 
     public struct Data: Codable {
       public private(set) var object: T
+    }
+
+    public enum `Type`: String, Codable {
+      case customerSubscriptionUpdated = "customer.subscription.updated"
     }
   }
 
