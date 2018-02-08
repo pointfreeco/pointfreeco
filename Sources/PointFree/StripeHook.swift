@@ -7,6 +7,8 @@ let stripeSubscriptionWebhookMiddleware: Middleware<StatusLineOpen, ResponseEnde
   validateStripeSignature
     <| updateStripeSubscription
 
+private let tolerance: TimeInterval = 5 * 60
+
 private func validateStripeSignature<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
   )
@@ -22,13 +24,15 @@ private func validateStripeSignature<A>(
       }
       let components = pairs
         .map(Dictionary.init)
-        .flatMap { tuple3 <¢> $0["v1"] <*> $0["t"] <*> conn.request.httpBody }
+        .flatMap { tuple3 <¢> $0["v1"] <*> $0["t"].flatMap(Int.init) <*> conn.request.httpBody }
 
       let signatureValid = components
         .map { signature, timestamp, payload -> Bool in
-          signature == hexDigest(
-            value: "\(timestamp).\(payload)",
-            asciiSecret: AppEnvironment.current.envVars.stripe.endpointSecret
+          Date(timeIntervalSince1970: TimeInterval(timestamp))
+            > AppEnvironment.current.date().addingTimeInterval(-tolerance)
+            && signature == hexDigest(
+              value: "\(timestamp).\(payload)",
+              asciiSecret: AppEnvironment.current.envVars.stripe.endpointSecret
           )
         }
         ?? false

@@ -33,6 +33,21 @@ final class StripeHookTests: TestCase {
     #endif
   }
 
+  func testStaleHook() {
+    #if !os(Linux)
+      var hook = request(to: .webhooks(.stripe(.subscription(.mock))))
+      hook.addValue(
+        "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=d53ffe5df1bf3b813ea0f8c00e5da472446030f7578ddb267449c6f942444171",
+        forHTTPHeaderField: "Stripe-Signature"
+      )
+
+      let conn = connection(from: hook)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    #endif
+  }
+
   func testInvalidHook() {
     #if !os(Linux)
       var hook = request(to: .webhooks(.stripe(.subscription(.mock))))
