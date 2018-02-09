@@ -75,6 +75,7 @@ private func handleFailedPayment(
       .map(^\.userId)
       .flatMap(AppEnvironment.current.database.fetchUserById)
       .mapExcept(requireSome)
+      .withExcept(notifyError(subject: "Stripe Hook failed for \(invoice.subscription.unwrap)"))
       .run
       .flatMap(
         either(const(conn |> writeStatus(.badRequest) >-> end)) { user in
