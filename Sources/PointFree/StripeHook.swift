@@ -20,7 +20,7 @@ private func validateStripeSignature<A>(
       let params = Dictionary(pairs, uniquingKeysWith: +)
 
       guard
-        let timestamp = params["t"].flatMap(^\.first >-> Int.init).map(TimeInterval.init),
+        let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
         shouldTolerate(timestamp),
         let signatures = params["v1"],
         let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
