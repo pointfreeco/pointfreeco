@@ -53,7 +53,7 @@ private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval =
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
   return { string in
-    string.split(separator: ",")
+    string.split(separator: separator)
       .flatMap { pair -> (String, [String])? in
         let pair = pair.split(separator: "=", maxSplits: 1).map(String.init)
         return tuple <¢> pair.first <*> (pair.count == 2 ? [pair[1]] : nil)
