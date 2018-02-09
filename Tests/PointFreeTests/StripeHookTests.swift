@@ -10,7 +10,6 @@ import Optics
 final class StripeHookTests: TestCase {
   override func setUp() {
     super.setUp()
-    record = true
     AppEnvironment.push(\.database .~ .mock)
   }
 
