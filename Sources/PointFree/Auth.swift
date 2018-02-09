@@ -184,6 +184,7 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Erro
       AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
           AppEnvironment.current.database.updateStripeSubscription(stripeSubscription)
+            .map(const(unit)) // FIXME: mapExcept(requireSome) / handle failure?
         }
     }
 }

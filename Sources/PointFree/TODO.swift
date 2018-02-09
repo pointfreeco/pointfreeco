@@ -7,6 +7,7 @@ import Foundation
 import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Optics
 import Prelude
 import Styleguide
 import Tuple
@@ -635,4 +636,26 @@ public func sizes<T>(_ value: String) -> Attribute<T> {
 
 public func type<T>(_ value: String) -> Attribute<T> {
   return .init("type", value)
+}
+
+public func redirectUnrelatedHosts<A>(
+  isAllowedHost: @escaping (String) -> Bool,
+  canonicalHost: String
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      { conn in
+        conn.request.url
+          .filterOptional { !isAllowedHost($0.host ?? "") }
+          .flatMap {
+            URLComponents(url: $0, resolvingAgainstBaseURL: false)
+              |> map(\.host .~ canonicalHost)
+          }
+          .flatMap(^\.url)
+          .map { conn |> redirect(to: $0.absoluteString, status: .movedPermanently) }
+          ?? middleware(conn)
+      }
+    }
 }

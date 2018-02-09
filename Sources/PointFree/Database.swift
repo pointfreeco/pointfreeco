@@ -20,7 +20,7 @@ public struct Database {
   var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Prelude.Unit>
+  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Database.Subscription?>
   var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -156,19 +156,19 @@ private func createSubscription(
       .map(const(unit))
 }
 
-private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
-  return execute(
+private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Database.Subscription?> {
+  return firstRow(
     """
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
     WHERE "subscriptions"."stripe_subscription_id" = $2
+    RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
     """,
     [
       stripeSubscription.status.rawValue,
       stripeSubscription.id.unwrap
     ]
-    )
-    .map(const(unit))
+  )
 }
 
 private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit> {

@@ -3,9 +3,9 @@ import Foundation
 import HttpPipeline
 import Prelude
 
-let stripeSubscriptionWebhookMiddleware: Middleware<StatusLineOpen, ResponseEnded, Stripe.Event<Stripe.Subscription>, Data> =
+let stripeInvoiceWebhookMiddleware =
   validateStripeSignature
-    <| updateStripeSubscription
+    <| handleFailedPayment
 
 private func validateStripeSignature<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
@@ -61,21 +61,24 @@ private func keysWithAllValues(separator: Character) -> (String) -> [(String, [S
   }
 }
 
-private func updateStripeSubscription(
-  _ conn: Conn<StatusLineOpen, Stripe.Event<Stripe.Subscription>>
+private func handleFailedPayment(
+  _ conn: Conn<StatusLineOpen, Stripe.Event<Stripe.Invoice>>
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
     let event = conn.data
-    let subscription = event.data.object
+    let invoice = event.data.object
 
-    return AppEnvironment.current.database.updateStripeSubscription(subscription)
+    return AppEnvironment.current.stripe.fetchSubscription(invoice.subscription)
+      .flatMap(AppEnvironment.current.database.updateStripeSubscription)
+      .mapExcept(requireSome)
+      .map(^\.userId)
+      .flatMap(AppEnvironment.current.database.fetchUserById)
+      .mapExcept(requireSome)
       .run
       .flatMap(
-        either(const(conn |> writeStatus(.badRequest) >-> end)) { _ in
-          if subscription.status == .pastDue {
-            // TODO: Send email
-          }
+        either(const(conn |> writeStatus(.badRequest) >-> end)) { user in
+          // TODO: notify user.email of past-due status
 
           return conn |> writeStatus(.ok) >-> end
         }

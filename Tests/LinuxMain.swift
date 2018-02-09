@@ -231,6 +231,7 @@ extension SiteMiddlewareTests {
 extension StripeHookTests {
   static var allTests: [(String, (StripeHookTests) -> () throws -> Void)] = [
     ("testValidHook", testValidHook),
+    ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook)
   ]
 }

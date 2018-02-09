@@ -757,13 +757,13 @@ import Prelude
 
 
       extension PartialIso where A == (
-            PointFree.Stripe.Event<PointFree.Stripe.Subscription>
+            PointFree.Stripe.Event<PointFree.Stripe.Invoice>
         ), B == Route.Webhooks.Stripe {
 
-          public static let subscription = parenthesize <| PartialIso(
-            apply: Route.Webhooks.Stripe.subscription,
+          public static let invoice = parenthesize <| PartialIso(
+            apply: Route.Webhooks.Stripe.invoice,
             unapply: {
-              guard case let .subscription(result) = $0 else { return nil }
+              guard case let .invoice(result) = $0 else { return nil }
               return .some(result)
           })
       }

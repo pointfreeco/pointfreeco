@@ -10,6 +10,7 @@ import Optics
 final class StripeHookTests: TestCase {
   override func setUp() {
     super.setUp()
+    record = true
     AppEnvironment.push(\.database .~ .mock)
   }
 
@@ -20,9 +21,9 @@ final class StripeHookTests: TestCase {
 
   func testValidHook() {
     #if !os(Linux)
-      var hook = request(to: .webhooks(.stripe(.subscription(.mock))))
+      var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
       hook.addValue(
-        "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=396c649804f91d7788c86f8571ea1e4ed7b768b71cb1e7a2ffceab312d35a3b5",
+        "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=369d17483762d03d2a55fe5facdfe8624e19959a5660c580b8857890281dcc0e",
         forHTTPHeaderField: "Stripe-Signature"
       )
 
@@ -35,9 +36,9 @@ final class StripeHookTests: TestCase {
 
   func testStaleHook() {
     #if !os(Linux)
-      var hook = request(to: .webhooks(.stripe(.subscription(.mock))))
+      var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
       hook.addValue(
-        "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=d53ffe5df1bf3b813ea0f8c00e5da472446030f7578ddb267449c6f942444171",
+        "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=f8f0e64e46cf1048071f070954258894d6cd9bf9f295fe6ad2874614d8a84114",
         forHTTPHeaderField: "Stripe-Signature"
       )
 
@@ -50,7 +51,7 @@ final class StripeHookTests: TestCase {
 
   func testInvalidHook() {
     #if !os(Linux)
-      var hook = request(to: .webhooks(.stripe(.subscription(.mock))))
+      var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
       hook.addValue(
         "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=deadbeef",
         forHTTPHeaderField: "Stripe-Signature"

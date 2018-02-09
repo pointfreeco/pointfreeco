@@ -10,7 +10,7 @@ import Tuple
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
-    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
+    <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
@@ -173,9 +173,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
 
-    case let .webhooks(.stripe(.subscription(event))):
+    case let .webhooks(.stripe(.invoice(event))):
       return conn.map(const(event))
-        |> stripeSubscriptionWebhookMiddleware
+        |> stripeInvoiceWebhookMiddleware
 
     case .webhooks(.stripe(.fallthrough)):
       return conn
@@ -201,6 +201,11 @@ private let allowedHosts: [String] = [
   "0.0.0.0",
   "localhost"
 ]
+
+private func isAllowed(host: String) -> Bool {
+  return allowedHosts.contains(host)
+    || host.suffix(8) == "ngrok.io"
+}
 
 private let allowedInsecureHosts: [String] = [
   "127.0.0.1",

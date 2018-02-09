@@ -97,14 +97,24 @@ public struct Stripe {
     }
 
     public enum `Type`: String, Codable {
-      case customerSubscriptionUpdated = "customer.subscription.updated"
+      case invoicePaymentFailed = "invoice.payment_failed"
     }
   }
 
   public struct Invoice: Codable {
+    public private(set) var amountDue: Cents
+    public private(set) var customer: Customer.Id
     public private(set) var id: Id
+    public private(set) var subscription: Subscription.Id
 
     public typealias Id = Tagged<Invoice, String>
+
+    private enum CodingKeys: String, CodingKey {
+      case amountDue = "amount_due"
+      case customer
+      case id
+      case subscription
+    }
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
