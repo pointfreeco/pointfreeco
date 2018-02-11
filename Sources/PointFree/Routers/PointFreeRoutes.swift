@@ -26,6 +26,7 @@ public enum Route: DerivePartialIsos {
   case home
   case subscribe(SubscribeData?)
   case team(Team)
+  case webhooks(Webhooks)
 
   public enum Account: DerivePartialIsos {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
@@ -92,6 +93,15 @@ public enum Route: DerivePartialIsos {
 
   public enum Team: DerivePartialIsos {
     case remove(Database.User.Id)
+  }
+
+  public enum Webhooks: DerivePartialIsos {
+    case stripe(Stripe)
+
+    public enum Stripe: DerivePartialIsos {
+      case invoice(PointFree.Stripe.Event<PointFree.Stripe.Invoice>)
+      case `fallthrough`
+    }
   }
 }
 
@@ -224,6 +234,14 @@ private let routers: [Router<Route>] = [
     %> pathParam(._rawRepresentable >>> ._rawRepresentable)
     <% lit("remove")
     <% end,
+
+  .webhooks <<< .stripe <<< .invoice
+    <¢> post %> lit("webhooks") %> lit("stripe")
+    %> jsonBody(Stripe.Event<Stripe.Invoice>.self, encoder: stripeJsonEncoder, decoder: stripeJsonDecoder)
+    <% end,
+
+  .webhooks <<< .stripe <<< .fallthrough
+    <¢> post %> lit("webhooks") %> lit("stripe") <% end,
 ]
 
 private let formDecoder = UrlFormDecoder()

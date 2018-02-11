@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.10.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -325,6 +325,20 @@ import Prelude
             apply: Route.team,
             unapply: {
               guard case let .team(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            Route.Webhooks
+        ), B == Route {
+
+          public static let webhooks = parenthesize <| PartialIso(
+            apply: Route.webhooks,
+            unapply: {
+              guard case let .webhooks(result) = $0 else { return nil }
               return .some(result)
           })
       }
@@ -724,6 +738,45 @@ import Prelude
               guard case let .remove(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == (
+            Route.Webhooks.Stripe
+        ), B == Route.Webhooks {
+
+          public static let stripe = parenthesize <| PartialIso(
+            apply: Route.Webhooks.stripe,
+            unapply: {
+              guard case let .stripe(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            PointFree.Stripe.Event<PointFree.Stripe.Invoice>
+        ), B == Route.Webhooks.Stripe {
+
+          public static let invoice = parenthesize <| PartialIso(
+            apply: Route.Webhooks.Stripe.invoice,
+            unapply: {
+              guard case let .invoice(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Webhooks.Stripe {
+        public static let `fallthrough` = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks.Stripe>(
+          apply: const(.some(.`fallthrough`)),
+          unapply: {
+            guard case .`fallthrough` = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 

@@ -78,10 +78,12 @@ public struct EnvVars: Codable {
   }
 
   public struct Stripe: Codable {
+    public var endpointSecret = "whsec_test"
     public var publishableKey = "pk_test"
     public var secretKey = "sk_test"
 
     private enum CodingKeys: String, CodingKey {
+      case endpointSecret = "STRIPE_ENDPOINT_SECRET"
       case publishableKey = "STRIPE_PUBLISHABLE_KEY"
       case secretKey = "STRIPE_SECRET_KEY"
     }
