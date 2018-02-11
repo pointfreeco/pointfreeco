@@ -20,7 +20,7 @@ public struct Database {
   var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateSubscription: (Database.Subscription, Stripe.Subscription) -> EitherIO<Error, Prelude.Unit>
+  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Database.Subscription?>
   var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
@@ -42,7 +42,7 @@ public struct Database {
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
-    updateSubscription: PointFree.update(subscription:with:),
+    updateStripeSubscription: PointFree.update(stripeSubscription:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
     migrate: PointFree.migrate
@@ -156,19 +156,19 @@ private func createSubscription(
       .map(const(unit))
 }
 
-private func update(subscription: Database.Subscription, with stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Prelude.Unit> {
-  return execute(
+private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Database.Subscription?> {
+  return firstRow(
     """
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
-    WHERE "subscriptions"."id" = $2
+    WHERE "subscriptions"."stripe_subscription_id" = $2
+    RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
     """,
     [
       stripeSubscription.status.rawValue,
-      subscription.id.unwrap
+      stripeSubscription.id.unwrap
     ]
-    )
-    .map(const(unit))
+  )
 }
 
 private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Database.Subscription.Id) -> EitherIO<Error, Prelude.Unit> {
@@ -549,7 +549,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
-      "is_admin" boolean NOT NULL DEFAULT FALSE 
+      "is_admin" boolean NOT NULL DEFAULT FALSE
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
+      ON "subscriptions" ("stripe_subscription_id")
       """
     )))
     .map(const(unit))

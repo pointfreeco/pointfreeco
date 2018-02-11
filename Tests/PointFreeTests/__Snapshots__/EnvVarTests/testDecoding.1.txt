@@ -1,4 +1,4 @@
-▿ 17 elements
+▿ 18 elements
   ▿ (2 elements)
     - key: "AIRTABLE_BASE_1"
     - value: "deadbeef-base-1"
@@ -44,6 +44,9 @@
   ▿ (2 elements)
     - key: "PORT"
     - value: "8080"
+  ▿ (2 elements)
+    - key: "STRIPE_ENDPOINT_SECRET"
+    - value: "whsec_test"
   ▿ (2 elements)
     - key: "STRIPE_PUBLISHABLE_KEY"
     - value: "pk_test"

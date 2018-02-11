@@ -58,20 +58,16 @@ func sendEmail(
     )
 }
 
-// TODO: move to swift-prelude
-private func destructure<A, B, C, D>(
-  _ either: Either3<A, B, C>,
-  _ a2d: (A) -> D,
-  _ b2d: (B) -> D,
-  _ c2d: (C) -> D
-  )
-  -> D {
-    switch either {
-    case let .left(a):
-      return a2d(a)
-    case let .right(.left(b)):
-      return b2d(b)
-    case let .right(.right(.left(c))):
-      return c2d(c)
-    }
+func notifyError(subject: String) -> (Error) -> Prelude.Unit {
+  return { error in
+    parallel(
+      sendEmail(
+        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        subject: "[PointFree Error] \(subject)",
+        content: inj1("\(error)")
+        ).run
+      ).run { _ in }
+
+    return unit
+  }
 }
