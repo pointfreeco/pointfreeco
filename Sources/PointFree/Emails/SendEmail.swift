@@ -60,13 +60,13 @@ func sendEmail(
 
 func notifyError(subject: String) -> (Error) -> Prelude.Unit {
   return { error in
-    _ = sendEmail(
-      to: adminEmails.map(EmailAddress.init(unwrap:)),
-      subject: "[PointFree Error] \(subject)",
-      content: inj1("\(error)")
-      )
-      .run
-      .perform()
+    parallel(
+      sendEmail(
+        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        subject: "[PointFree Error] \(subject)",
+        content: inj1("\(error)")
+        ).run
+      ).run { _ in }
 
     return unit
   }

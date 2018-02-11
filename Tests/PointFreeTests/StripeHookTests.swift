@@ -1,11 +1,16 @@
 import Either
-import SnapshotTesting
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
+@testable import PointFree
 import Optics
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
+import XCTest
+#if !os(Linux)
+  import WebKit
+#endif
 
 final class StripeHookTests: TestCase {
   override func setUp() {
@@ -60,6 +65,24 @@ final class StripeHookTests: TestCase {
       let result = conn |> siteMiddleware
 
       assertSnapshot(matching: result.perform())
+    #endif
+  }
+
+  func testPastDueEmail() {
+    let doc = pastDueEmailView.view(unit).first!
+
+    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: plainText(for: doc))
+
+    #if !os(Linux)
+      if #available(OSX 10.13, *) {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView)
+
+        webView.frame.size = .init(width: 400, height: 700)
+        assertSnapshot(matching: webView)
+      }
     #endif
   }
 }

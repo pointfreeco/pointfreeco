@@ -1,7 +1,12 @@
+import Css
 import Either
 import Foundation
+import Html
+import HtmlCssSupport
 import HttpPipeline
+import HttpPipelineHtmlSupport
 import Prelude
+import Styleguide
 
 let stripeInvoiceWebhookMiddleware =
   validateStripeSignature
@@ -72,16 +77,70 @@ private func handleFailedPayment(
     return AppEnvironment.current.stripe.fetchSubscription(invoice.subscription)
       .flatMap(AppEnvironment.current.database.updateStripeSubscription)
       .mapExcept(requireSome)
-      .map(^\.userId)
-      .flatMap(AppEnvironment.current.database.fetchUserById)
-      .mapExcept(requireSome)
+      .flatMap { subscription in
+        AppEnvironment.current.database.fetchUserById(subscription.userId)
+          .mapExcept(requireSome)
+          .map { ($0, subscription) }
+      }
       .withExcept(notifyError(subject: "Stripe Hook failed for \(invoice.subscription.unwrap)"))
       .run
       .flatMap(
-        either(const(conn |> writeStatus(.badRequest) >-> end)) { user in
-          // TODO: notify user.email of past-due status
+        either(const(conn |> writeStatus(.badRequest) >-> end)) { user, subscription in
+          if subscription.stripeSubscriptionStatus == .pastDue {
+            parallel(sendPastDueEmail(to: user).run)
+              .run { _ in }
+          }
 
           return conn |> writeStatus(.ok) >-> end
         }
     )
+}
+
+private func sendPastDueEmail(to owner: Database.User)
+  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+
+    return sendEmail(
+      to: [owner.email],
+      subject: "Your subscription is past-due",
+      content: inj2(pastDueEmailView.view(unit))
+    )
+}
+
+let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView)
+  .contramap { unit in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "Your subscription is past-due",
+      preheader: "Your most recent payment was declined.",
+      data: unit
+    )
+}
+
+private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.title3])], ["Payment failed"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            """
+            Your most recent subscription payment was declined. This could be due to a change in your card
+            number, your card expiring, cancellation of your credit card, or the card issuer not recognizing
+            the payment and therefore taking action to prevent it.
+            """
+            ]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            """
+            Please update your payment info to ensure uninterrupted access to Point-Free!
+            """
+            ]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .account(.paymentInfo(.show)))), `class`([Class.pf.components.button(color: .purple)])],
+              ["Update payment info"])
+            ])
+          ])
+        ])
+      ])
+    ])
 }
