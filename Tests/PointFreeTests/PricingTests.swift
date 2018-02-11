@@ -22,12 +22,7 @@ class PricingTests: TestCase {
   }
   
   func testPricing() {
-    let request = URLRequest(url: URL(string: url(to: .pricing(nil)))!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-    
-    let conn = connection(from: request)
+    let conn = connection(from: request(to: .pricing(nil)))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())

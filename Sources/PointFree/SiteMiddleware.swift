@@ -12,12 +12,6 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
-    <<< basicAuth(
-      user: AppEnvironment.current.envVars.basicAuth.username,
-      password: AppEnvironment.current.envVars.basicAuth.password,
-      realm: "Point-Free",
-      protect: isProtected
-    )
     <| currentUserMiddleware
     >-> currentSubscriptionMiddleware
     >-> render(conn:)
@@ -212,12 +206,3 @@ private let allowedInsecureHosts: [String] = [
   "0.0.0.0",
   "localhost"
 ]
-
-private func isProtected(route: Route) -> Bool {
-  switch route {
-  case .webhooks(.stripe):
-    return true
-  default:
-    return false
-  }
-}

@@ -3,7 +3,6 @@
 
 ▿ Request
   GET http://localhost:8080/episodes/ep1-proof-in-functions
-  Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={}
 
   (Data, 0 bytes)
