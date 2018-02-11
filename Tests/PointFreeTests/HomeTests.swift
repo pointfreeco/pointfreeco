@@ -12,12 +12,7 @@ import Optics
 
 class HomeTests: TestCase {
   func testHomepage() {
-    let request = URLRequest(url: URL(string: url(to: .home))!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-
-    let conn = connection(from: request)
+    let conn = connection(from: request(to: .home))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())

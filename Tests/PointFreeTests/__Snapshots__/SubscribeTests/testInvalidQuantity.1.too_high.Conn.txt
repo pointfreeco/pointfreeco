@@ -3,7 +3,6 @@
 
 ▿ Request
   POST http://localhost:8080/subscribe
-  Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
   pricing[team]=200&token=stripe-deadbeef
