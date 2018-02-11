@@ -8,7 +8,6 @@ import Prelude
 
 extension Environment {
   public static let mock = Environment(
-    airtableStuff: const(const(pure(unit))),
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },

@@ -1,7 +1,6 @@
 import Foundation
 
 public struct EnvVars: Codable {
-  public var airtable = Airtable()
   public var appEnv = AppEnv.development
   public var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
   public var baseUrl = URL(string: "http://localhost:8080")!
@@ -17,20 +16,6 @@ public struct EnvVars: Codable {
     case appSecret = "APP_SECRET"
     case baseUrl = "BASE_URL"
     case port = "PORT"
-  }
-
-  public struct Airtable: Codable {
-    public var base1 = "deadbeef-base-1"
-    public var base2 = "deadbeef-base-2"
-    public var base3 = "deadbeef-base-3"
-    public var bearer = "deadbeef-bearer"
-
-    private enum CodingKeys: String, CodingKey {
-      case base1 = "AIRTABLE_BASE_1"
-      case base2 = "AIRTABLE_BASE_2"
-      case base3 = "AIRTABLE_BASE_3"
-      case bearer = "AIRTABLE_BEARER"
-    }
   }
 
   public enum AppEnv: String, Codable {
@@ -94,7 +79,6 @@ extension EnvVars {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.airtable = try .init(from: decoder)
     self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
     self.appSecret = try values.decode(String.self, forKey: .appSecret)
     self.baseUrl = try values.decode(URL.self, forKey: .baseUrl)
@@ -109,7 +93,6 @@ extension EnvVars {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
 
-    try self.airtable.encode(to: encoder)
     try container.encode(self.appEnv, forKey: .appEnv)
     try container.encode(self.appSecret, forKey: .appSecret)
     try container.encode(self.baseUrl, forKey: .baseUrl)

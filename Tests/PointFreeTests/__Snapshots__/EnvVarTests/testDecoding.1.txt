@@ -1,16 +1,4 @@
-▿ 18 elements
-  ▿ (2 elements)
-    - key: "AIRTABLE_BASE_1"
-    - value: "deadbeef-base-1"
-  ▿ (2 elements)
-    - key: "AIRTABLE_BASE_2"
-    - value: "deadbeef-base-2"
-  ▿ (2 elements)
-    - key: "AIRTABLE_BASE_3"
-    - value: "deadbeef-base-3"
-  ▿ (2 elements)
-    - key: "AIRTABLE_BEARER"
-    - value: "deadbeef-bearer"
+▿ 14 elements
   ▿ (2 elements)
     - key: "APP_ENV"
     - value: "development"

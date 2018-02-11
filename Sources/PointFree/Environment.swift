@@ -8,11 +8,7 @@ public enum CookieTransform: String, Codable {
   case encrypted
 }
 
-public typealias AirtableCreateRow = (_ email: EmailAddress) -> (_ baseId: String)
-  -> EitherIO<Error, Prelude.Unit>
-
 public struct Environment {
-  public private(set) var airtableStuff: AirtableCreateRow
   public private(set) var cookieTransform: CookieTransform
   public private(set) var database: Database
   public private(set) var date: () -> Date
@@ -24,7 +20,6 @@ public struct Environment {
   public private(set) var stripe: Stripe
 
   init(
-    airtableStuff: @escaping AirtableCreateRow = createRow,
     cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
@@ -35,7 +30,6 @@ public struct Environment {
     mailgun: Mailgun = .live,
     stripe: Stripe = .live) {
 
-    self.airtableStuff = airtableStuff
     self.cookieTransform = cookieTransform
     self.database = database
     self.date = date
