@@ -339,8 +339,23 @@ let dividerView = View<Prelude.Unit> { _ in
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
   div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      blocks.flatMap(transcriptBlockView.view)
+      blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
+        + exercisesView.view(blocks.filter(^\.type.isExercise))
   )
+}
+
+private let exercisesView = View<[Episode.TranscriptBlock]> { exercises in
+  guard !exercise.isEmpty else { return [] }
+
+  return [
+    h2(
+      [`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+      ["Exercises"]
+    ),
+    ol(
+      exercises.map { li(transcriptBlockView.view($0)) }
+    )
+  ]
 }
 
 private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
@@ -352,6 +367,12 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         [.text(encode(block.content))]
       )
       ])
+
+  case .exercise:
+    return div(
+      timestampLinkView.view(block.timestamp)
+        + [markdownBlock(block.content)]
+    )
 
   case .paragraph:
     return div(
