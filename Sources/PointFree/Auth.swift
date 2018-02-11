@@ -143,36 +143,26 @@ private func gitHubAuthTokenMiddleware(
         refreshStripeSubscription(for: user)
           .map(const(user))
       }
+      .withExcept(notifyError(subject: "GitHub Auth Failed"))
       .run
-      .flatMap { errorOrUser in
-        switch errorOrUser {
-        case let .left(error):
-          return conn
-            // TODO: Handle errors.
-            |> { _ -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
-              // Fire-and-forget github auth failure to track down pesky bug
-              _ = sendEmail(
-                to: adminEmails.map(EmailAddress.init(unwrap:)),
-                subject: "GitHub auth failed",
-                content: inj1("\(error)")
-                )
-                .run
-                .perform()
-              return pure(conn.map(const(unit)))
-            }
-            >-> PointFree.redirect(
+      .flatMap(
+        either(
+          const(
+            conn |> PointFree.redirect(
               to: .home,
-              headersMiddleware: flash(.error, "We were not able to log you in with GitHub. Please try again.")
+              headersMiddleware: flash(
+                .error,
+                "We were not able to log you in with GitHub. Please try again."
+              )
+            )
           )
-
-        case let .right(user):
-          return conn.map(const(user))
-            |> HttpPipeline.redirect(
-              to: redirect ?? path(to: .home),
-              headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
+        ) { user in
+          conn |> HttpPipeline.redirect(
+            to: redirect ?? path(to: .home),
+            headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
           )
         }
-    }
+    )
 }
 
 private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Error, Prelude.Unit> {
@@ -183,7 +173,8 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Erro
     .flatMap { subscription in
       AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
-          AppEnvironment.current.database.updateSubscription(subscription, stripeSubscription)
+          AppEnvironment.current.database.updateStripeSubscription(stripeSubscription)
+            .map(const(unit)) // FIXME: mapExcept(requireSome) / handle failure?
         }
     }
 }

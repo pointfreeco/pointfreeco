@@ -1,0 +1,13 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  POST http://localhost:8080/webhooks/stripe
+  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={}
+  Stripe-Signature: t=1517356200,v1=f8f0e64e46cf1048071f070954258894d6cd9bf9f295fe6ad2874614d8a84114
+
+  {"id":"evt_test","data":{"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}},"type":"invoice.payment_failed"}
+
+▿ Response
+  Status 400 BAD REQUEST

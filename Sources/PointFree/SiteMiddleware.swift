@@ -10,7 +10,7 @@ import Tuple
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger { AppEnvironment.current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
-    <<< redirectUnrelatedHosts(allowedHosts: allowedHosts, canonicalHost: canonicalHost)
+    <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
     <<< basicAuth(
       user: AppEnvironment.current.envVars.basicAuth.username,
@@ -172,6 +172,15 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
+
+    case let .webhooks(.stripe(.invoice(event))):
+      return conn.map(const(event))
+        |> stripeInvoiceWebhookMiddleware
+
+    case .webhooks(.stripe(.fallthrough)):
+      return conn
+        |> writeStatus(.ok)
+        >-> end
     }
 }
 
@@ -193,6 +202,11 @@ private let allowedHosts: [String] = [
   "localhost"
 ]
 
+private func isAllowed(host: String) -> Bool {
+  return allowedHosts.contains(host)
+    || host.suffix(8) == "ngrok.io"
+}
+
 private let allowedInsecureHosts: [String] = [
   "127.0.0.1",
   "0.0.0.0",
@@ -201,24 +215,9 @@ private let allowedInsecureHosts: [String] = [
 
 private func isProtected(route: Route) -> Bool {
   switch route {
-  case .about,
-       .admin,
-       .account,
-       .appleDeveloperMerchantIdDomainAssociation,
-       .expressUnsubscribe,
-       .expressUnsubscribeReply,
-       .episode,
-       .feed,
-       .gitHubCallback,
-       .invite,
-       .login,
-       .logout,
-       .pricing,
-       .privacy,
-       .home,
-       .subscribe,
-       .team:
-
+  case .webhooks(.stripe):
+    return true
+  default:
     return false
   }
 }

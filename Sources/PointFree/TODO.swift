@@ -7,6 +7,7 @@ import Foundation
 import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Optics
 import Prelude
 import Styleguide
 import Tuple
@@ -635,4 +636,44 @@ public func sizes<T>(_ value: String) -> Attribute<T> {
 
 public func type<T>(_ value: String) -> Attribute<T> {
   return .init("type", value)
+}
+
+public func redirectUnrelatedHosts<A>(
+  isAllowedHost: @escaping (String) -> Bool,
+  canonicalHost: String
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      { conn in
+        conn.request.url
+          .filterOptional { !isAllowedHost($0.host ?? "") }
+          .flatMap {
+            URLComponents(url: $0, resolvingAgainstBaseURL: false)
+              |> map(\.host .~ canonicalHost)
+          }
+          .flatMap(^\.url)
+          .map { conn |> redirect(to: $0.absoluteString, status: .movedPermanently) }
+          ?? middleware(conn)
+      }
+    }
+}
+
+// TODO: move to swift-prelude
+public func destructure<A, B, C, D>(
+  _ either: Either3<A, B, C>,
+  _ a2d: (A) -> D,
+  _ b2d: (B) -> D,
+  _ c2d: (C) -> D
+  )
+  -> D {
+    switch either {
+    case let .left(a):
+      return a2d(a)
+    case let .right(.left(b)):
+      return b2d(b)
+    case let .right(.right(.left(c))):
+      return c2d(c)
+    }
 }
