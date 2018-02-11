@@ -14,12 +14,9 @@ import XCTest
 
 class AuthTests: TestCase {
   func testAuth() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-    
-    let conn = connection(from: request)
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+
+    let conn = connection(from: auth)
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
@@ -27,12 +24,9 @@ class AuthTests: TestCase {
   
   func testAuth_WithFetchAuthTokenFailure() {
     AppEnvironment.with(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const)) {
-      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
-        |> \.allHTTPHeaderFields .~ [
-          "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-      ]
-      
-      let conn = connection(from: request)
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+
+      let conn = connection(from: auth)
       let result = conn |> siteMiddleware
       
       assertSnapshot(matching: result.perform())
@@ -41,12 +35,9 @@ class AuthTests: TestCase {
   
   func testAuth_WithFetchUserFailure() {
     AppEnvironment.with(\.gitHub.fetchUser .~ (unit |> throwE >>> const)) {
-      let request = URLRequest(url: URL(string: "http://localhost:8080/github-auth?code=deadbeef")!)
-        |> \.allHTTPHeaderFields .~ [
-          "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-      ]
-      
-      let conn = connection(from: request)
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+
+      let conn = connection(from: auth)
       let result = conn |> siteMiddleware
       
       assertSnapshot(matching: result.perform())
@@ -54,12 +45,9 @@ class AuthTests: TestCase {
   }
 
   func testLogin() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/login")!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
+    let login = request(to: .login(redirect: nil))
 
-    let conn = connection(from: request)
+    let conn = connection(from: login)
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -67,9 +55,9 @@ class AuthTests: TestCase {
   
   func testLogin_AlreadyLoggedIn() {
     AppEnvironment.with(\.database .~ .mock) {
-      let request = PointFreeTestSupport.request(to: .login(redirect: nil), session: .loggedIn)
+      let login = request(to: .login(redirect: nil), session: .loggedIn)
       
-      let conn = connection(from: request)
+      let conn = connection(from: login)
       let result = conn |> siteMiddleware
       
       assertSnapshot(matching: result.perform())
@@ -77,41 +65,23 @@ class AuthTests: TestCase {
   }
 
   func testLoginWithRedirect() {
-    let request = router.request(
-      for: .login(redirect: url(to: .episode(.right(42)))),
-      base: URL(string: "http://localhost:8080")!
-      )!
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-      ]
-      |> \.httpMethod .~ "GET"
-    
-    let conn = connection(from: request)
+    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
+
+    let conn = connection(from: login)
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
   }
   
   func testLogout() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080/logout")!)
-      |> \.allHTTPHeaderFields .~ [
-        "Cookie": "github_session=deadbeef; HttpOnly; Secure",
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-    
-    let conn = connection(from: request)
+    let conn = connection(from: request(to: .logout))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
   }
   
   func testHome_LoggedOut() {
-    let request = URLRequest(url: URL(string: "http://localhost:8080")!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
-    
-    let conn = connection(from: request)
+    let conn = connection(from: request(to: .home, session: .loggedOut))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())

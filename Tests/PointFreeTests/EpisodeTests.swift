@@ -111,12 +111,9 @@ class EpisodeTests: TestCase {
   }
 
   func testEpisodeNotFound() {
-    let request = URLRequest(url: URL(string: url(to: .episode(.left("object-oriented-programming"))))!)
-      |> \.allHTTPHeaderFields .~ [
-        "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-    ]
+    let episode = request(to: .episode(.left("object-oriented-programming")))
 
-    let conn = connection(from: request)
+    let conn = connection(from: episode)
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())

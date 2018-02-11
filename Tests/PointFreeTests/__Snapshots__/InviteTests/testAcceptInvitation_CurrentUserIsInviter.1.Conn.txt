@@ -3,7 +3,6 @@
 
 ▿ Request
   POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000004/accept
-  Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
   (Data, 0 bytes)
