@@ -3,7 +3,6 @@
 
 ▿ Request
   POST http://localhost:8080/webhooks/stripe
-  Authorization: Basic aGVsbG86d29ybGQ=
   Cookie: pf_session={}
   Stripe-Signature: t=1517356200,v1=f8f0e64e46cf1048071f070954258894d6cd9bf9f295fe6ad2874614d8a84114
 

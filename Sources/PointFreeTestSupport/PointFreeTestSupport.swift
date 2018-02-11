@@ -8,7 +8,6 @@ import Prelude
 
 extension Environment {
   public static let mock = Environment(
-    airtableStuff: const(const(pure(unit))),
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
@@ -304,8 +303,6 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
-private let authorizationHeader = ["Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()]
-
 public func request(to route: Route, session: Session = .loggedOut) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
@@ -314,9 +311,6 @@ public func request(to route: Route, session: Session = .loggedOut) -> URLReques
   //     See: https://bugs.swift.org/browse/SR-6687
   let httpBody = request.httpBody
   request.httpBody = httpBody
-
-  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
-    .merging(authorizationHeader, uniquingKeysWith: { $1 })
   request.httpMethod = request.httpMethod?.uppercased()
 
   guard

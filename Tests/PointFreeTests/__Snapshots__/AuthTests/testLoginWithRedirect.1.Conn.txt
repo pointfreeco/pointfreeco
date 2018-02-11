@@ -3,7 +3,7 @@
 
 ▿ Request
   GET http://localhost:8080/login?redirect=http://localhost:8080/episodes/42
-  Authorization: Basic aGVsbG86d29ybGQ=
+  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
   (Data, 0 bytes)
 
