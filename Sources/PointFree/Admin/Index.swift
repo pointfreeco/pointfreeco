@@ -88,10 +88,10 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
         to: [user.email],
         subject: "New Point-Free Episode: \(episode.title)",
         unsubscribeData: (user.id, .newEpisode),
-        content: inj2(newEpisodeEmail.view((episode, user, true)))
+        content: inj2(newEpisodeEmail.view((episode, user)))
         )
-        .delay(.milliseconds(200 * idx))
-        .retry(maxRetries: 3, backoff: { .milliseconds(200 * idx) + .seconds(10 * $0) })
+        .delay(.milliseconds(100))
+        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
     }
 
     sequence(newEpisodeEmails.map(^\.run))
