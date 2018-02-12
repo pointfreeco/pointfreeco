@@ -83,7 +83,7 @@ private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pre
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
   return lift <| IO {
-    let newEpisodeEmails = users.enumerated().map { idx, user in
+    let newEpisodeEmails = users.map { user in
       sendEmail(
         to: [user.email],
         subject: "New Point-Free Episode: \(episode.title)",
