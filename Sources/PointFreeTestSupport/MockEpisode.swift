@@ -13,7 +13,7 @@ private let paidEpisode = Episode(
   codeSampleDirectory: "ep1-proof-in-functions",
   id: .init(unwrap: 1),
   image: "",
-  length: 1080,
+  length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 1,
   sourcesFull: [""],
