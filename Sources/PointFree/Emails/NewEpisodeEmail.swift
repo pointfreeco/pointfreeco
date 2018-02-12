@@ -72,7 +72,7 @@ private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSub
   guard isSubscriber else { return [] }
 
   return [
-    p([.text(encode("This episode is 23 minutes long."))]),
+    p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
       a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
         ["Watch now!"])
