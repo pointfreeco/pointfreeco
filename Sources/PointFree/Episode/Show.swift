@@ -345,7 +345,7 @@ private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
 }
 
 private let exercisesView = View<[Episode.TranscriptBlock]> { exercises -> [Node] in
-  guard !exercise.isEmpty else { return [] }
+  guard !exercises.isEmpty else { return [] }
 
   return [
     h2(
