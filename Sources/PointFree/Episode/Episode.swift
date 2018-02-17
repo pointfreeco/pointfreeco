@@ -62,8 +62,14 @@ public struct Episode {
 
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
+      case exercise
       case paragraph
       case title
+
+      public var isExercise: Bool {
+        guard case .exercise = self else { return false }
+        return true
+      }
 
       public enum CodeLang: Equatable {
         case html
@@ -97,9 +103,9 @@ public struct Episode {
         switch (lhs, rhs) {
         case let (.code(lhs), .code(rhs)):
           return lhs == rhs
-        case (.paragraph, .paragraph), (.title, .title):
+        case (.exercise, .exercise), (.paragraph, .paragraph), (.title, .title):
           return true
-        case (.code, _), (.paragraph, _), (.title, _):
+        case (.code, _), (.exercise, _), (.paragraph, _), (.title, _):
           return false
         }
       }
