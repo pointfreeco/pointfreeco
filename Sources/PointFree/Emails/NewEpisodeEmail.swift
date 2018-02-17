@@ -10,13 +10,13 @@ import Prelude
 import Styleguide
 
 let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
-  .contramap { ep, user, isSubscriber in
+  .contramap { ep, user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
       title: "New Point-Free Episode: \(ep.title)",
       preheader: ep.blurb,
-      data: (ep, isSubscriber)
+      data: (ep, user.subscriptionId != nil)
     )
 }
 
@@ -25,13 +25,17 @@ let newEpisodeEmailContent = View<(Episode, isSubscriber: Bool)> { ep, isSubscri
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], [.text(encode("Episode #\(ep.sequence)"))]),
+          a([href(url(to: .episode(.left(ep.slug))))], [
+            h3([`class`([Class.pf.type.responsiveTitle3])], [text("#\(ep.sequence): \(ep.title)")]),
+            ]),
           p([.text(encode(ep.blurb))]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            img(src: ep.image, alt: "", [style(maxWidth(.pct(100)))])
+            a([href(url(to: .episode(.left(ep.slug))))], [
+              img(src: ep.image, alt: "", [style(maxWidth(.pct(100)))])
+              ])
             ])
           ]
-          <> nonSubscriberCtaView.view(isSubscriber)
+          <> nonSubscriberCtaView.view((ep, isSubscriber))
           <> subscriberCtaView.view((ep, isSubscriber))
           <> hostSignOffView.view(unit))
         ])
@@ -39,7 +43,7 @@ let newEpisodeEmailContent = View<(Episode, isSubscriber: Bool)> { ep, isSubscri
     ])
 }
 
-private let nonSubscriberCtaView = View<Bool> { isSubscriber -> [Node] in
+private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber -> [Node] in
   guard !isSubscriber else { return [] }
 
   return [
@@ -51,7 +55,15 @@ private let nonSubscriberCtaView = View<Bool> { isSubscriber -> [Node] in
       ]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
       a([href(url(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Subscribe to Point-Free!"])
+        ["Subscribe to Point-Free!"]
+      ),
+      a(
+        [
+          href(url(to: .episode(.left(ep.slug)))),
+          `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
+        ],
+        [" Watch preview"]
+      )
       ])
   ]
 }
@@ -60,7 +72,7 @@ private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSub
   guard isSubscriber else { return [] }
 
   return [
-    p([.text(encode("This episode is 23 minutes long."))]),
+    p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
       a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
         ["Watch now!"])
