@@ -84,14 +84,17 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
 
   return lift <| IO {
     let newEpisodeEmails = users.map { user in
-      sendEmail(
-        to: [user.email],
-        subject: "New Point-Free Episode: \(episode.title)",
-        unsubscribeData: (user.id, .newEpisode),
-        content: inj2(newEpisodeEmail.view((episode, user)))
-        )
-        .delay(.milliseconds(100))
-        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+      lift(IO { inj2(newEpisodeEmail.view((episode, user))) })
+        .flatMap { nodes in
+          sendEmail(
+            to: [user.email],
+            subject: "New Point-Free Episode: \(episode.title)",
+            unsubscribeData: (user.id, .newEpisode),
+            content: nodes
+            )
+            .delay(.milliseconds(100))
+            .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+      }
     }
 
     sequence(newEpisodeEmails.map(^\.run))
