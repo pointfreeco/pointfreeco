@@ -6,9 +6,16 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static var cardInput: [Node] {
+    public static func cardInput(billingName: String) -> [Node] {
       return [
         input([name("token"), type(.hidden)]),
+        input([
+          `class`([blockInputClass]),
+          name("billing-name"),
+          placeholder("Billing Name"),
+          type(.text),
+          value(billingName),
+          ]),
         div(
           [
             `class`([stripeInputClass]),
@@ -79,7 +86,7 @@ extension Stripe {
               return true;
             });
 
-            stripe.createToken(card).then(function(result) {
+            stripe.createToken(card, { name: form['billing-name'].value }).then(function(result) {
               setFormEnabled(form, true, function(el) {
                 return el.tagName != 'BUTTON'
               });

@@ -65,7 +65,7 @@ let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription,
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-            <> updatePaymentInfoRowView.view(unit)
+            <> updatePaymentInfoRowView.view(currentUser.name)
       )
       ])
     ])
@@ -93,14 +93,14 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
     ])
 }
 
-private let updatePaymentInfoRowView = View<Prelude.Unit> { _ in
+private let updatePaymentInfoRowView = View<String?> { billingName in
   return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.title4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput
+          Stripe.html.cardInput(billingName: billingName ?? "")
             <> Stripe.html.errors
             <> Stripe.html.scripts
             <> [
