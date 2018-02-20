@@ -75,7 +75,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.
         either(
           const(
             conn |> redirect(
-              to: .account(.subscription(.changeSeats(.show))),
+              to: .account(.index),
               headersMiddleware: flash(.error, "We couldn’t cancel your subscription at this time.")
             )
           )
