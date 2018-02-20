@@ -470,17 +470,17 @@ private let pricingFooterView = View<Database.User?> { currentUser in
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map(const(unit) >>> stripeForm.view)
+          .map(^\.name >>> stripeForm.view)
           ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<Prelude.Unit> { _ in
+private let stripeForm = View<String?> { billingName in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput
+    Stripe.html.cardInput(billingName: billingName ?? "")
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [
