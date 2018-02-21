@@ -24,7 +24,7 @@ extension Stripe {
             type(.text),
             ]),
           gridRow([
-            gridColumn(sizes: [.desktop: 6], [
+            gridColumn(sizes: [.mobile: 12, .desktop: 6], [
               div([`class`([Class.padding([.desktop: [.right: 1]])])], [
                 input([
                   `class`([blockInputClass]),
@@ -34,7 +34,7 @@ extension Stripe {
                   ])
                 ])
               ]),
-            gridColumn(sizes: [.desktop: 3], [
+            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
               div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
                   `class`([blockInputClass]),
@@ -44,7 +44,7 @@ extension Stripe {
                   ])
                 ])
               ]),
-            gridColumn(sizes: [.desktop: 3], [
+            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
               div([`class`([Class.padding([.desktop: [.left: 1]])])], [
                 input([
                   `class`([blockInputClass]),
