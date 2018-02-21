@@ -22,7 +22,7 @@ class PricingTests: TestCase {
   }
   
   func testPricing() {
-    let conn = connection(from: request(to: .pricing(nil)))
+    let conn = connection(from: request(to: .pricing(nil, expand: nil)))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
@@ -52,7 +52,7 @@ class PricingTests: TestCase {
   
   func testPricingLoggedIn_NonSubscriber() {
     AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(nil))) {
-      let conn = connection(from: request(to: .pricing(nil), session: .loggedIn))
+      let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
       let result = conn |> siteMiddleware
       
       assertSnapshot(matching: result.perform())
@@ -72,7 +72,7 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn_Subscriber() {
-    let conn = connection(from: request(to: .pricing(nil), session: .loggedIn))
+    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
     
     assertSnapshot(matching: result.perform())
