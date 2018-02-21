@@ -151,7 +151,7 @@ extension GitHub.UserEnvelope {
 extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.canceling)),
-    createCustomer: { _, _ in pure(.mock) },
+    createCustomer: { _, _, _ in pure(.mock) },
     createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchPlans: pure(.mock([.mock])),
@@ -280,18 +280,21 @@ extension Stripe.Subscription.Item {
 extension SubscribeData {
   public static let individualMonthly = SubscribeData(
     pricing: .individual(.monthly),
-    token: .init(unwrap: "stripe-deadbeef")
+    token: .init(unwrap: "stripe-deadbeef"),
+    vatNumber: ""
   )
 
   public static let individualYearly = SubscribeData(
     pricing: .individual(.yearly),
-    token: .init(unwrap: "stripe-deadbeef")
+    token: .init(unwrap: "stripe-deadbeef"),
+    vatNumber: ""
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
       pricing: .team(quantity),
-      token: .init(unwrap: "stripe-deadbeef")
+      token: .init(unwrap: "stripe-deadbeef"),
+      vatNumber: ""
     )
   }
 }
