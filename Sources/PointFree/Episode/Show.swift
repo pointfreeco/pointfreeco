@@ -283,7 +283,7 @@ private let subscribeView = View<(Database.User?, Episode)> { user, episode -> N
     ),
 
     a(
-      [href(path(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
+      [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["See subscription options"]
     )
     ]
