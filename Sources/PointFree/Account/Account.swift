@@ -509,7 +509,6 @@ let labelClass =
 
 let baseInputClass =
   Class.type.fontFamilyInherit
-    | Class.type.fontFamilyInherit
     | Class.pf.colors.fg.black
     | ".border-box"
     | Class.border.rounded.all
@@ -531,3 +530,11 @@ let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
+
+let blockSelectClass =
+  Class.display.block
+    | Class.margin([.mobile: [.bottom: 2]])
+    | Class.size.height(rem: 3)
+    | Class.size.width100pct
+    | Class.pf.colors.border.gray800
+    | Class.type.fontFamilyInherit
