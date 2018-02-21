@@ -100,7 +100,7 @@ private let updatePaymentInfoRowView = View<String?> { billingName in
         h2([`class`([Class.pf.type.title4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(billingName: billingName ?? "")
+          Stripe.html.cardInput(billingName: billingName ?? "", expand: true)
             <> Stripe.html.errors
             <> Stripe.html.scripts
             <> [

@@ -6,15 +6,61 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(billingName: String) -> [Node] {
+    public static func cardInput(billingName: String, expand: Bool) -> [Node] {
       return [
         input([name("token"), type(.hidden)]),
         input([
           `class`([blockInputClass]),
-          name("billing-name"),
+          name("stripe_name"),
           placeholder("Billing Name"),
           type(.text),
           value(billingName),
+          ]),
+        div([`class`(expand ? [] : [Class.display.none])], [
+          input([
+            `class`([blockInputClass]),
+            name("stripe_address_line1"),
+            placeholder("Address"),
+            type(.text),
+            ]),
+          gridRow([
+            gridColumn(sizes: [.desktop: 6], [
+              div([`class`([Class.padding([.desktop: [.right: 1]])])], [
+                input([
+                  `class`([blockInputClass]),
+                  name("stripe_address_city"),
+                  placeholder("City"),
+                  type(.text),
+                  ])
+                ])
+              ]),
+            gridColumn(sizes: [.desktop: 3], [
+              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+                input([
+                  `class`([blockInputClass]),
+                  name("stripe_address_state"),
+                  placeholder("State"),
+                  type(.text),
+                  ])
+                ])
+              ]),
+            gridColumn(sizes: [.desktop: 3], [
+              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
+                input([
+                  `class`([blockInputClass]),
+                  name("stripe_address_zip"),
+                  placeholder("Zip"),
+                  type(.text),
+                  ]),
+                ])
+              ])
+            ]),
+          input([
+            `class`([blockInputClass]),
+            name("business_vat_id"),
+            placeholder("VAT Number (Optional)"),
+            type(.text),
+            ]),
           ]),
         div(
           [
@@ -86,7 +132,17 @@ extension Stripe {
               return true;
             });
 
-            stripe.createToken(card, { name: form['billing-name'].value }).then(function(result) {
+            stripe.createToken(
+              card,
+              {
+                name: form.stripe_name.value,
+                address_line1: form.stripe_address_line1.value,
+                address_city: form.stripe_address_city.value,
+                address_state: form.stripe_address_state.value,
+                address_zip: form.stripe_address_zip.value,
+                address_country: form.stripe_address_country.value
+              }
+            ).then(function(result) {
               setFormEnabled(form, true, function(el) {
                 return el.tagName != 'BUTTON'
               });

@@ -41,7 +41,7 @@ class MinimalNavViewTests: TestCase {
 
 private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?))] = [
   ("dark_logged-out_no-route", (.dark, nil, nil, nil)),
-  ("dark_logged-out_route", (.dark, nil, nil, .pricing(nil))),
+  ("dark_logged-out_route", (.dark, nil, nil, .pricing(nil, expand: nil))),
   ("dark_logged-in_non-subscriber", (.dark, .mock, nil, nil)),
   ("dark_logged-in_inactive-subscriber", (.dark, .mock, .canceled, nil)),
   ("dark_logged-in_active-subscriber", (.dark, .mock, .active, nil)),

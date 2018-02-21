@@ -54,7 +54,7 @@ private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isS
       """
       ]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
+      a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
         ["Subscribe to Point-Free!"]
       ),
       a(

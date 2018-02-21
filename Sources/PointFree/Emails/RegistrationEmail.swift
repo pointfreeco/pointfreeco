@@ -33,7 +33,7 @@ private let registrationEmailBody = View<GitHub.User> { user in
             ]),
           
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .pricing(nil))), `class`([Class.pf.components.button(color: .purple)])],
+            a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
               ["Choose a subscription plan!"])
             ])
           ])

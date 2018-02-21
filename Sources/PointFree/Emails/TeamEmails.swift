@@ -31,7 +31,7 @@ private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> {
 
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
-              href(url(to: .pricing(nil))),
+              href(url(to: .pricing(nil, expand: nil))),
               `class`([Class.pf.components.button(color: .purple)])
               ],
               ["See subscription plans"])

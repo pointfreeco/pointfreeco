@@ -83,7 +83,7 @@ func requireActiveSubscription<A>(
     return filter(
       get1 >>> (^\.status == .active),
       or: redirect(
-        to: .pricing(nil),
+        to: .pricing(nil, expand: nil),
         headersMiddleware: flash(
           .error,
           "You don’t have an active subscription. Would you like to subscribe?"
