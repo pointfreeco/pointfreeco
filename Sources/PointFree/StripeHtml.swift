@@ -24,7 +24,7 @@ extension Stripe {
             type(.text),
             ]),
           gridRow([
-            gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+            gridColumn(sizes: [.mobile: 12, .desktop: 5], [
               div([`class`([Class.padding([.desktop: [.right: 1]])])], [
                 input([
                   `class`([blockInputClass]),
@@ -44,8 +44,8 @@ extension Stripe {
                   ])
                 ])
               ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
+            gridColumn(sizes: [.mobile: 12, .desktop: 2], [
+              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
                   `class`([blockInputClass]),
                   name("stripe_address_zip"),
@@ -53,11 +53,21 @@ extension Stripe {
                   type(.text),
                   ]),
                 ])
-              ])
+              ]),
+            gridColumn(sizes: [.mobile: 12, .desktop: 2], [
+              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
+                input([
+                  `class`([blockInputClass]),
+                  name("stripe_address_country"),
+                  placeholder("Country"),
+                  type(.text),
+                  ])
+                ])
+              ]),
             ]),
           input([
             `class`([blockInputClass]),
-            name("business_vat_id"),
+            name("vatNumber"),
             placeholder("VAT Number (Optional)"),
             type(.text),
             ]),

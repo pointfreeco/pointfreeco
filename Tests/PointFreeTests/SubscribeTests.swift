@@ -129,7 +129,7 @@ final class SubscribeTests: TestCase {
 
   func testCreateCustomerFailure() {
     AppEnvironment.with(
-      (\.stripe.createCustomer .~ { _, _ in throwE(unit as Error) })
+      (\.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) })
         <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
     ) {
       let conn = connection(
