@@ -293,7 +293,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return a(
       [
         `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: .pricing(nil)))
+        href(path(to: .pricing(nil, expand: nil)))
       ],
       ["Resubscribe"]
     )

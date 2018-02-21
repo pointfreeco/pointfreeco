@@ -13,11 +13,11 @@ public struct SubscribeData: Codable {
 let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
-    or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "Error creating subscription!"))
+    or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "Error creating subscription!"))
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
-      or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
+      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
     )
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
@@ -51,7 +51,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
           const(
             conn
               |> redirect(
-                to: .pricing(subscribeData.pricing),
+                to: .pricing(subscribeData.pricing, expand: nil),
                 headersMiddleware: flash(.error, "Error creating subscription!")
             )
           ),
@@ -76,5 +76,5 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
   return conn
-    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing))))
+    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing, expand: nil))))
 }
