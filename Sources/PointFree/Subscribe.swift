@@ -8,6 +8,7 @@ import Tuple
 public struct SubscribeData: Codable {
   public let pricing: Pricing
   public let token: Stripe.Token.Id
+  public let vatNumber: String
 }
 
 let subscribeMiddleware =
@@ -32,7 +33,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
       .withExcept(const(unit))
       .flatMap { subscribeData in
         AppEnvironment.current.stripe
-          .createCustomer(user, subscribeData.token)
+          .createCustomer(user, subscribeData.token, subscribeData.vatNumber.isEmpty ? nil : subscribeData.vatNumber)
           .map { ($0, subscribeData) }
       }
       .flatMap {

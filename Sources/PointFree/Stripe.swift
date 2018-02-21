@@ -7,7 +7,7 @@ import UrlFormEncoding
 
 public struct Stripe {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var createCustomer: (Database.User, Token.Id) -> EitherIO<Error, Customer>
+  public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Error, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
   public var fetchPlans: EitherIO<Error, ListEnvelope<Plan>>
@@ -242,10 +242,11 @@ private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, S
   return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
 }
 
-private func createCustomer(user: Database.User, token: Stripe.Token.Id)
+private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
   -> EitherIO<Error, Stripe.Customer> {
 
-    return stripeDataTask("customers", .post([
+    return stripeDataTask("customers", .post(filteredValues <| [
+      "business_vat_id": vatNumber,
       "description": user.id.unwrap.uuidString,
       "email": user.email.unwrap,
       "source": token.unwrap,
