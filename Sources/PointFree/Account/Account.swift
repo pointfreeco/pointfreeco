@@ -407,7 +407,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
-  let invitesRemaining = subscription.quantity - invites.count - teammates.count
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count - 1
   guard invitesRemaining > 0 else { return [] }
 
   return [
