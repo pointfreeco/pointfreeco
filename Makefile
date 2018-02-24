@@ -1,8 +1,27 @@
-bootstrap: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+oss: .env Sources/pointfreeco/Transcripts/
+	swift run
 
 xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
+
+# bootstrap
+
+bootstrap-oss: mock-env mock-transcripts check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+
+bootstrap: submodules check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+
+mock-env:
+	test -f .env \
+		|| cp .env.example .env
+
+mock-transcripts:
+	test -d Sources/pointfreeco/Transcripts/ \
+		|| cp -r Transcripts.example/ Sources/pointfreeco/Transcripts/
+
+submodules:
+	git submodule sync --recursive || true
+	git submodule update --init --recursive || true
 
 # dependencies
 
@@ -23,6 +42,11 @@ check-postgres:
 	)
 
 # db
+
+db:
+	createuser --superuser pointfreeco || true
+	createdb --owner pointfreeco pointfreeco_development || true
+	createdb --owner pointfreeco pointfreeco_test || true
 
 init-db:
 	psql template1 < database/init.sql
@@ -53,6 +77,37 @@ test-ios: xcodeproj init-db
 
 test-swift: init-db
 	swift test
+
+# deploy
+
+deploy-production:
+	heroku container:push web -a pointfreeco
+
+deploy-staging:
+	heroku container:push web -a pointfreeco-staging
+
+deploy-local:
+	heroku container:push web -a pointfreeco-local
+
+# local development
+
+linux-start:
+	test -f .env \
+		|| make local-config
+	test -d Packages \
+		|| swift package edit PointFree
+	docker-compose up --build
+
+local-config:
+	heroku config --json -a pointfreeco-local > ./.env
+
+# linux helpers
+
+install-cmark:
+	apt-get -y install cmake
+	git clone https://github.com/commonmark/cmark
+	make -C cmark INSTALL_PREFIX=/usr
+	make -C cmark install
 
 # sourcery
 

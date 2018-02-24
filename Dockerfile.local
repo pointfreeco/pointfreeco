@@ -7,13 +7,17 @@ RUN apt-get install -y postgresql libpq-dev
 
 WORKDIR /app
 
+COPY .build/dependencies-state.json ./.build/dependencies-state.json
+COPY .env ./
+COPY Packages ./Packages
+
 COPY Makefile ./
 RUN make install-cmark
 
 COPY Package.swift ./
-RUN swift package update
+RUN OSS=1 swift package update
 
 COPY Sources ./Sources
-RUN swift build --configuration release
+RUN OSS=1 swift build --configuration release
 
 CMD ./.build/release/pointfreeco

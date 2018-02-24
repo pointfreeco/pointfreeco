@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
   name: "PointFree",
   products: [
+    .executable(name: "Server", targets: ["Server"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
@@ -16,6 +17,8 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("dc1c5b7")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact(.init(2, 1, 1))),
+    .package(url: "https://github.com/IBM-Swift/Kitura.git", .exact("2.1.0")),
+    .package(url: "https://github.com/IBM-Swift/Kitura-Compression", .exact("2.1.0")),
     ],
   targets: [
     .target(
@@ -63,6 +66,15 @@ let package = Package(
         "Prelude",
         "SnapshotTesting"
       ]),
+    
+    .target(
+      name: "Server",
+      dependencies: [
+        "Kitura",
+        "KituraCompression",
+        "PointFree",
+        ]
+    ),
     ],
   swiftLanguageVersions: [4]
 )
