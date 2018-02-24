@@ -1,4 +1,4 @@
-oss: .env Sources/pointfreeco/Transcripts/
+run-oss: mock-env mock-transcripts
 	swift run
 
 xcodeproj:
@@ -16,8 +16,8 @@ mock-env:
 		|| cp .env.example .env
 
 mock-transcripts:
-	test -d Sources/pointfreeco/Transcripts/ \
-		|| cp -r Transcripts.example/ Sources/pointfreeco/Transcripts/
+	test -d Sources/Server/Transcripts/ \
+		|| cp -r Transcripts.example/ Sources/Server/Transcripts/
 
 submodules:
 	git submodule sync --recursive || true
