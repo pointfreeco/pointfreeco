@@ -12,16 +12,13 @@ COPY .env ./
 COPY Packages ./Packages
 
 COPY Makefile ./
-RUN make install-cmark
+RUN make linux-install-cmark
 
 COPY Package.swift ./
 RUN OSS=1 swift package update
 
 COPY Sources ./Sources
-#COPY Tests ./Tests
-RUN mkdir Tests
-RUN mkdir Tests/StyleguideTests
-RUN mkdir Tests/PointFreeTests
+COPY Tests ./Tests
 RUN OSS=1 swift build --configuration release
 
 CMD ./.build/release/Server

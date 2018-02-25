@@ -101,7 +101,7 @@ local-config:
 
 # linux helpers
 
-install-cmark:
+linux-install-cmark:
 	apt-get -y install cmake
 	git clone https://github.com/commonmark/cmark
 	make -C cmark INSTALL_PREFIX=/usr
