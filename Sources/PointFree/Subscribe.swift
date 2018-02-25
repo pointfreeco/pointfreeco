@@ -8,16 +8,17 @@ import Tuple
 public struct SubscribeData: Codable {
   public let pricing: Pricing
   public let token: Stripe.Token.Id
+  public let vatNumber: String
 }
 
 let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
-    or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "Error creating subscription!"))
+    or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "Error creating subscription!"))
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
-      or: redirect(to: .pricing(nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
+      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
     )
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
@@ -26,13 +27,14 @@ let subscribeMiddleware =
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Database.User>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscribeData, user) = conn.data |> lower
+    let (subscribeData, user) = conn.data
+      |> lower
 
-    return pure(subscribeData)
+    let subscriptionOrError = (pure(subscribeData) as EitherIO<Error, SubscribeData>)
       .withExcept(const(unit))
       .flatMap { subscribeData in
         AppEnvironment.current.stripe
-          .createCustomer(user, subscribeData.token)
+          .createCustomer(user, subscribeData.token, subscribeData.vatNumber.isEmpty ? nil : subscribeData.vatNumber)
           .map { ($0, subscribeData) }
       }
       .flatMap {
@@ -46,24 +48,25 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
           .map(const(stripeSubscription))
       }
       .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .pricing(subscribeData.pricing),
-                headersMiddleware: flash(.error, "Error creating subscription!")
-            )
-          ),
-          const(
-            conn
-              |> redirect(
-                to: .account(.index),
-                headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-            )
+
+    return subscriptionOrError.flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .pricing(subscribeData.pricing, expand: nil),
+              headersMiddleware: flash(.error, "Error creating subscription!")
+          )
+        ),
+        const(
+          conn
+            |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
           )
         )
       )
+    )
 }
 
 private func validateQuantity(_ pricing: Pricing) -> Bool {
@@ -76,5 +79,5 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
   return conn
-    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing))))
+    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing, expand: nil))))
 }

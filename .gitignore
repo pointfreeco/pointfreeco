@@ -70,3 +70,7 @@ fastlane/test_output
 Packages/*
 *.xcodeproj/*
 Package.resolved
+.env
+Sources/Server/Transcripts
+.ssl/*
+bin/*

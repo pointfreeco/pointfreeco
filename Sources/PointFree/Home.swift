@@ -34,7 +34,7 @@ let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscrip
 
 let homeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
   episodesListView.view(AppEnvironment.current.episodes().reversed())
-    <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default)))
+    <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default, false)))
 }
 
 private let episodesListView = View<[Episode]> { eps in

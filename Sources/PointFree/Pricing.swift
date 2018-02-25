@@ -117,11 +117,11 @@ let pricingResponse =
     >-> map(lower)
     >>> respond(
       view: pricingView,
-      layoutData: { currentUser, pricing, route in
+      layoutData: { currentUser, pricing, expand, route in
         SimplePageLayoutData(
           currentRoute: route,
           currentUser: currentUser,
-          data: (currentUser, pricing),
+          data: (currentUser, pricing, expand),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
           navStyle: .minimal(.dark),
           title: "Subscribe to Point-Free"
@@ -138,7 +138,7 @@ private let pricingOptionsRowClass =
     | Class.grid.center(.mobile)
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
-let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing in
+let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pricing, expand in
 
   gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
@@ -170,7 +170,7 @@ let pricingOptionsView = View<(Database.User?, Pricing)> { currentUser, pricing 
               pricingTabsView.view(pricing)
                 + individualPricingRowView.view(pricing)
                 + teamPricingRowView.view(pricing)
-                + pricingFooterView.view(currentUser)
+                + pricingFooterView.view((currentUser, expand))
             )
             ])
           ])
@@ -396,7 +396,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
           onchange(
-            """
+            unsafeJavascript: """
             document.getElementById('team-rate').textContent =
               (this.valueAsNumber * \(Pricing.teamYearlyBase))
               .toString()
@@ -464,23 +464,23 @@ private let extraSpinnerStyles =
       <> borderWidth(top: .none, right: .none, bottom: .px(1), left: .none)
 )
 
-private let pricingFooterView = View<Database.User?> { currentUser in
+private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expand in
   gridRow([`class`([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map(const(unit) >>> stripeForm.view)
-          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil))]
+          .map { stripeForm.view(($0.name, expand)) }
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: nil))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<Prelude.Unit> { _ in
+private let stripeForm = View<(String?, Bool)> { billingName, expand in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput
+    Stripe.html.cardInput(billingName: billingName ?? "", expand: expand)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [

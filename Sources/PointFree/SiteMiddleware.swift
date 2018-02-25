@@ -147,8 +147,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(unit))
         |> logoutResponse
 
-    case let .pricing(pricing):
-      return conn.map(const(user .*. (pricing ?? .default) .*. route .*. unit))
+    case let .pricing(pricing, expand):
+      return conn.map(const(user .*. (pricing ?? .default) .*. (expand ?? false) .*. route .*. unit))
         |> pricingResponse
 
     case .privacy:

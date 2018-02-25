@@ -46,7 +46,7 @@ let showNewEpisodeEmailMiddleware =
 private let showNewEpisodeView = View<Database.User> { currentUser in
   ul(
     AppEnvironment.current.episodes()
-      .sorted(by: ^\.sequence)
+      .sorted(by: their(^\.sequence))
       .map(li <<< newEpisodeEmailRowView.view)
     )
 }

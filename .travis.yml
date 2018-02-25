@@ -1,3 +1,5 @@
+git:
+  submodules: false
 os:
   - linux
 env:
@@ -13,6 +15,7 @@ install:
   - git clone https://github.com/commonmark/cmark
   - make -C cmark INSTALL_PREFIX=/usr
   - sudo make -C cmark install
+  - make mock-all-episodes
 script:
   - psql template1 < database/deinit.sql
   - psql template1 < database/init.sql

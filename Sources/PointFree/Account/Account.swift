@@ -1,4 +1,5 @@
 import Css
+import Either
 import Foundation
 import Html
 import HtmlCssSupport
@@ -111,11 +112,11 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
 
           ] + emailSettingCheckboxes.view(currentEmailSettings) + [
 
-          input([
-            type(.submit),
-            `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
-            value("Update profile")
-            ])
+            input([
+              type(.submit),
+              `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
+              value("Update profile")
+              ])
           ])
         ])
       ])
@@ -168,7 +169,7 @@ private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Da
               <> subscriptionInvitesRowView.view(invites)
               <> subscriptionInviteMoreRowView.view((subscription, invites, teammates))
               <> subscriptionPaymentInfoView.view(subscription)
-            )
+          )
           ])
         ])
       ])
@@ -185,8 +186,8 @@ public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
     let currentPeriodEndString = subscription.cancelAtPeriodEnd
-        ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
-        : ""
+      ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
+      : ""
     return "Active" + currentPeriodEndString
   case .canceled:
     return "Canceled"
@@ -273,7 +274,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
                 ])
               ])
             ])
-          ]
+      ]
     )
   )
 }
@@ -293,7 +294,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return a(
       [
         `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: .pricing(nil)))
+        href(path(to: .pricing(nil, expand: nil)))
       ],
       ["Resubscribe"]
     )
@@ -394,11 +395,11 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
-        ])]),
+          ])]),
 
       form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
-        ])]),
+          ])]),
       ]),
     ])
 }
@@ -407,7 +408,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
-  let invitesRemaining = subscription.quantity - invites.count - teammates.count
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count - 1
   guard invitesRemaining > 0 else { return [] }
 
   return [
@@ -509,7 +510,6 @@ let labelClass =
 
 let baseInputClass =
   Class.type.fontFamilyInherit
-    | Class.type.fontFamilyInherit
     | Class.pf.colors.fg.black
     | ".border-box"
     | Class.border.rounded.all
@@ -531,3 +531,11 @@ let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
+
+let blockSelectClass =
+  Class.display.block
+    | Class.margin([.mobile: [.bottom: 2]])
+    | Class.size.height(rem: 3)
+    | Class.size.width100pct
+    | Class.pf.colors.border.gray800
+    | Class.type.fontFamilyInherit
