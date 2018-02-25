@@ -13,7 +13,7 @@ func sendEmail(
   -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     let (plain, html): (String, String?) =
-      destructure(
+      either3(
         content,
         { plain in (plain, nil) },
         { nodes in (plainText(for: nodes), render(nodes)) },

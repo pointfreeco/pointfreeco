@@ -182,8 +182,8 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
 
 private let favicons: [ChildOf<Element.Head>] = [
   link([rel(.value("apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
-  link([rel(.value("icon")), type("image/png"), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
-  link([rel(.value("icon")), type("image/png"), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
+  link([rel(.value("icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
+  link([rel(.value("icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
   link([rel(.value("manifest")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")]),
   link([rel(.value("mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]
