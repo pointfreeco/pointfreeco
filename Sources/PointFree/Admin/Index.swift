@@ -48,7 +48,7 @@ private let showNewEpisodeView = View<Database.User> { currentUser in
     AppEnvironment.current.episodes()
       .sorted(by: their(^\.sequence))
       .map(li <<< newEpisodeEmailRowView.view)
-    )
+  )
 }
 
 private let newEpisodeEmailRowView = View<Episode> { ep in
@@ -82,40 +82,49 @@ private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pre
 
 private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
-  return lift <| IO {
-    let newEpisodeEmails = users.map { user in
-      sendEmail(
-        to: [user.email],
-        subject: "New Point-Free Episode: \(episode.title)",
-        unsubscribeData: (user.id, .newEpisode),
-        content: inj2(newEpisodeEmail.view((episode, user)))
-        )
-        .delay(.milliseconds(100))
-        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-    }
-
-    sequence(newEpisodeEmails.map(^\.run))
-      .flatMap { results in
+  // A personalized email to send to each user.
+  let newEpisodeEmails = users.map { user in
+    lift(IO { inj2(newEpisodeEmail.view((episode, user))) })
+      .flatMap { nodes in
         sendEmail(
-          to: adminEmails.map(EmailAddress.init(unwrap:)),
-          subject: "New episode email finished sending!",
-          content: inj2(
-            newEpisodeEmailAdminReportEmail.view(
-              (
-                zip(users, results)
-                  .filter(second >>> ^\.isLeft)
-                  .map(first),
+          to: [user.email],
+          subject: "New Point-Free Episode: \(episode.title)",
+          unsubscribeData: (user.id, .newEpisode),
+          content: nodes
+          )
+          .delay(.milliseconds(5000))
+          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+    }
+  }
 
-                results.count
-              )
+  // An email to send to admins once all user emails are sent
+  let newEpisodeEmailReport = sequence(newEpisodeEmails.map(^\.run))
+    .flatMap { results in
+      sendEmail(
+        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        subject: "New episode email finished sending!",
+        content: inj2(
+          newEpisodeEmailAdminReportEmail.view(
+            (
+              zip(users, results)
+                .filter(second >>> ^\.isLeft)
+                .map(first),
+
+              results.count
             )
           )
-          )
-          .run
-      }
+        )
+        )
+        .run
+  }
+
+  let fireAndForget = IO { () -> Prelude.Unit in
+    newEpisodeEmailReport
+      .map(const(unit))
       .parallel
       .run({ _ in })
-
     return unit
   }
+
+  return lift(fireAndForget)
 }
