@@ -112,11 +112,11 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
 
           ] + emailSettingCheckboxes.view(currentEmailSettings) + [
 
-          input([
-            type(.submit),
-            `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
-            value("Update profile")
-            ])
+            input([
+              type(.submit),
+              `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
+              value("Update profile")
+              ])
           ])
         ])
       ])
@@ -169,7 +169,7 @@ private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Da
               <> subscriptionInvitesRowView.view(invites)
               <> subscriptionInviteMoreRowView.view((subscription, invites, teammates))
               <> subscriptionPaymentInfoView.view(subscription)
-            )
+          )
           ])
         ])
       ])
@@ -186,8 +186,8 @@ public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
     let currentPeriodEndString = subscription.cancelAtPeriodEnd
-        ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
-        : ""
+      ? " through " + dateFormatter.string(from: subscription.currentPeriodEnd)
+      : ""
     return "Active" + currentPeriodEndString
   case .canceled:
     return "Canceled"
@@ -274,7 +274,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
                 ])
               ])
             ])
-          ]
+      ]
     )
   )
 }
@@ -395,11 +395,11 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
-        ])]),
+          ])]),
 
       form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
-        ])]),
+          ])]),
       ]),
     ])
 }

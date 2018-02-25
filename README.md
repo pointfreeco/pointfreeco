@@ -2,41 +2,49 @@
 
 macOS [![CircleCI](https://circleci.com/gh/pointfreeco/pointfreeco.svg?style=svg)](https://circleci.com/gh/pointfreeco/pointfreeco) Linux [![Build Status](https://travis-ci.org/pointfreeco/pointfreeco.svg?branch=master)](https://travis-ci.org/pointfreeco/pointfreeco)
 
-This repo contains the application code for the [Point-Free](http://www.pointfree.co) website, a video series exploring Swift and functional programming. It's responsible for routing requests, loading data and serving HTML. If you're interested in running it locally, check out the [server code](https://github.com/pointfreeco/pointfreeco-server), which is responsible for connecting a bare bones Kitura server to this code.
+This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a video series exploring Swift and functional programming. The codebase is split into 3 pieces:
+
+* `PointFree`: This is the core application, and is responsible for routing requests, loading data and rendering HTML and CSS.
+* `Styleguide`: This library contains functions and data types for creating a consistent style across the entire website.
+* `Server`: This is the actual executable server. It uses [Kitura](http://kitura.io) to handle the low level server responsibilities, and hands everything else over to the `PointFree` package.
 
 ![Point-Free Homepage](.github/pointfreeco-announcement-homepage.png)
 
-## Getting started
+## Getting Started
 
 The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
-  * Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
+* Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
 
-  * Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
-    ``` sh
-    brew install cmark # or your preferred installation method
-    ```
+* Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
+  ``` sh
+  brew install cmark # or your preferred installation method
+  ```
 
-  * Make sure [Postgres](https://www.postgresql.org) is installed and running. It's our database of choice. You can install it with Homebrew:
-    ``` sh
-    brew install postgres # or your preferred installation method
-    ```
+* Make sure [Postgres](https://www.postgresql.org) is installed and running. It's our database of choice. You can install it with Homebrew:
+  ``` sh
+  brew install postgres # or your preferred installation method
+  ```
 
-  * Open up a terminal window and grab the code:
-    ``` sh
-    git clone https://github.com/pointfreeco/pointfreeco.git
-    cd pointfreeco
-    ```
+* Open up a terminal window and grab the code:
+  ``` sh
+  git clone https://github.com/pointfreeco/pointfreeco.git
+  cd pointfreeco
+  ```
 
-  * Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make CommonCrypto, WebKit's WKSnapshotConfiguration, and Postgres headers available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
-    ``` sh
-    make
-    ```
+* Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make CommonCrypto, WebKit's WKSnapshotConfiguration, and Postgres headers available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
+  ``` sh
+  make bootstrap
+  ```
 
-  * With everything bootstrapped and the project open in Xcode, you can:
-      - Build: Command+B
-      - Run tests: Command+U  
-      - Open a playground!
+* With everything bootstrapped and the project open in Xcode, you can:
+  * Build: Command+B
+  * Run the site locally:
+    * Select `Server` target
+    * Run Command+R
+    * Visit `http://localhost:8080`
+  * Run tests: Command+U  
+  * Open a playground! Requires building `Server` first.
 
 ## Some fun things to explore
 
