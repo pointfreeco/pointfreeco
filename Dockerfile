@@ -1,5 +1,7 @@
 FROM swift:4.0
 
+ENV SKIP_TESTS 1
+
 RUN swift --version
 
 RUN apt-get update

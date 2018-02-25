@@ -5,35 +5,36 @@ import PackageDescription
 
 let extraProducts: [Product]
 let extraTargets: [Target]
-#if !os(Linux)
-extraProducts = [.library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"])]
-extraTargets = [
-  .testTarget(
-    name: "StyleguideTests",
-    dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
-  .testTarget(
-    name: "PointFreeTests",
-    dependencies: [
-      "CssTestSupport",
-      "HtmlTestSupport",
-      "HttpPipelineTestSupport",
-      "PointFree",
-      "PointFreeTestSupport"
-    ]
-  ),
-  .target(
-    name: "PointFreeTestSupport",
-    dependencies: [
-      "Either",
-      "PointFree",
-      "Prelude",
-      "SnapshotTesting"
-    ]),
-]
-#else
-extraProducts = []
-extraTargets = []
-#endif
+let skipTests = ProcessInfo.processInfo.environment["SKIP_TESTS"].map { $0.uppercased() }
+if skipTests == nil || skipTests == .some("0") || skipTests == .some("F") || skipTests == .some("FALSE") {
+  extraProducts = [.library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"])]
+  extraTargets = [
+    .testTarget(
+      name: "StyleguideTests",
+      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
+    .testTarget(
+      name: "PointFreeTests",
+      dependencies: [
+        "CssTestSupport",
+        "HtmlTestSupport",
+        "HttpPipelineTestSupport",
+        "PointFree",
+        "PointFreeTestSupport"
+      ]
+    ),
+    .target(
+      name: "PointFreeTestSupport",
+      dependencies: [
+        "Either",
+        "PointFree",
+        "Prelude",
+        "SnapshotTesting"
+      ]),
+  ]
+} else {
+  extraProducts = []
+  extraTargets = []
+}
 
 let package = Package(
   name: "PointFree",
