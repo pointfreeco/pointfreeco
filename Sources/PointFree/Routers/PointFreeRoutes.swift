@@ -178,7 +178,7 @@ private let routers: [Router<Route>] = [
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
-    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, ._rawRepresentable))
+    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .rawRepresentable))
     <% end,
 
   .expressUnsubscribeReply
@@ -209,7 +209,7 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
   .invite <<< .show
-    <¢> get %> lit("invites") %> pathParam(._rawRepresentable >>> ._rawRepresentable) <% end,
+    <¢> get %> lit("invites") %> pathParam(.rawRepresentable >>> .rawRepresentable) <% end,
 
   .login
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
@@ -232,7 +232,7 @@ private let routers: [Router<Route>] = [
 
   .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
-    %> pathParam(._rawRepresentable >>> ._rawRepresentable)
+    %> pathParam(.rawRepresentable >>> .rawRepresentable)
     <% lit("remove")
     <% end,
 
