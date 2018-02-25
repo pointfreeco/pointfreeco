@@ -94,8 +94,6 @@ deploy-local:
 linux-start:
 	test -f .env \
 		|| make local-config
-	test -d Packages \
-		|| swift package edit PointFree
 	docker-compose up --build
 
 local-config:
