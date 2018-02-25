@@ -72,7 +72,7 @@ test-macos: mock-all-episodes xcodeproj init-db
 		-scheme PointFree-Package \
 		-destination platform="macOS"
 
-test-swift: init-db
+test-swift: mock-all-episodes init-db
 	swift test
 
 # deploy
