@@ -86,7 +86,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       `class`([Class.size.width100pct]),
       controls(true),
-      playsInline(true),
+      playsinline(true),
       autoplay(true),
       poster(episode.image)
     ],
