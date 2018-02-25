@@ -3,14 +3,20 @@ version: '2.1'
 services:
   db:
     environment:
-      POSTGRES_DB: pointfreeco_test
+      POSTGRES_DB: pointfreeco_development
       POSTGRES_USER: pointfreeco
     image: postgres
     ports:
       - '5433:5432'
+    restart: always
 
-  tests:
+  web:
     build:
       context: .
+      dockerfile: Dockerfile.local
+    depends_on:
+      - db
     environment:
-      DATABASE_URL: postgres://pointfreeco:@db:5432/pointfreeco_test
+      DATABASE_URL: postgres://pointfreeco:@db:5432/pointfreeco_development
+    ports:
+      - '8080:8080'

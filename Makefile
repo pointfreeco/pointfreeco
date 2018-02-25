@@ -1,8 +1,31 @@
-bootstrap: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+run-oss: mock-env mock-transcripts
+	swift run
 
 xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
+
+# bootstrap
+
+bootstrap-oss: mock-env mock-transcripts check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+
+bootstrap: submodules check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+
+mock-all-episodes:
+	test -f Sources/Server/Transcripts/AllEpisodes.swift \
+		|| echo "import PointFree; public func allEpisodes() -> [Episode] { return [] }" > Sources/Server/Transcripts/AllEpisodes.swift
+
+mock-env:
+	test -f .env \
+		|| cp .env.example .env
+
+mock-transcripts:
+	test -d Sources/Server/Transcripts/ \
+		|| cp -r Transcripts.example/ Sources/Server/Transcripts/
+
+submodules:
+	git submodule sync --recursive || true
+	git submodule update --init --recursive || true
 
 # dependencies
 
@@ -24,6 +47,11 @@ check-postgres:
 
 # db
 
+db:
+	createuser --superuser pointfreeco || true
+	createdb --owner pointfreeco pointfreeco_development || true
+	createdb --owner pointfreeco pointfreeco_test || true
+
 init-db:
 	psql template1 < database/init.sql
 
@@ -36,23 +64,45 @@ reset-db: deinit-db init-db
 
 test-all: test-linux test-mac test-ios
 
-test-linux: sourcery
+test-linux: mock-all-episodes sourcery
 	docker-compose up --abort-on-container-exit --build
 
-test-macos: xcodeproj init-db
+test-macos: mock-all-episodes xcodeproj init-db
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="macOS"
 
-test-ios: xcodeproj init-db
-	set -o pipefail && \
-	xcodebuild test \
-		-scheme PointFree-Package \
-		-destination platform="iOS Simulator,name=iPhone 8,OS=11.2" \
-		| xcpretty
-
-test-swift: init-db
+test-swift: mock-all-episodes init-db
 	swift test
+
+# deploy
+
+deploy-production:
+	heroku container:push web -a pointfreeco
+
+deploy-staging:
+	heroku container:push web -a pointfreeco-staging
+
+deploy-local:
+	heroku container:push web -a pointfreeco-local
+
+# local development
+
+linux-start:
+	test -f .env \
+		|| make local-config
+	docker-compose up --build
+
+local-config:
+	heroku config --json -a pointfreeco-local > ./.env
+
+# linux helpers
+
+linux-install-cmark:
+	apt-get -y install cmake
+	git clone https://github.com/commonmark/cmark
+	make -C cmark INSTALL_PREFIX=/usr
+	make -C cmark install
 
 # sourcery
 
