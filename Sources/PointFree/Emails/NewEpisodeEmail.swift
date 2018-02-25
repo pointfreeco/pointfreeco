@@ -24,7 +24,7 @@ let newEpisodeEmailContent = View<(Episode, isSubscriber: Bool)> { ep, isSubscri
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           a([href(url(to: .episode(.left(ep.slug))))], [
             h3([`class`([Class.pf.type.responsiveTitle3])], [text("#\(ep.sequence): \(ep.title)")]),
             ]),
@@ -95,7 +95,7 @@ let newEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erro
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
           h3([`class`([Class.pf.type.title3])], ["New episode email report"]),
           p([
             "A total of ",
