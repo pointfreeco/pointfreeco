@@ -11,6 +11,10 @@ bootstrap-oss: mock-env mock-transcripts check-dependencies common-crypto-mm pos
 
 bootstrap: submodules check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
 
+mock-all-episodes:
+	test -f Sources/Server/Transcripts/AllEpisodes.swift \
+		|| echo "import PointFree; public func allEpisodes() -> [Episode] { return [] }" > Sources/Server/Transcripts/AllEpisodes.swift
+
 mock-env:
 	test -f .env \
 		|| cp .env.example .env
@@ -60,20 +64,13 @@ reset-db: deinit-db init-db
 
 test-all: test-linux test-mac test-ios
 
-test-linux: sourcery
+test-linux: mock-all-episodes sourcery
 	docker-compose up --abort-on-container-exit --build
 
-test-macos: xcodeproj init-db
+test-macos: mock-all-episodes xcodeproj init-db
 	xcodebuild test \
 		-scheme PointFree-Package \
 		-destination platform="macOS"
-
-test-ios: xcodeproj init-db
-	set -o pipefail && \
-	xcodebuild test \
-		-scheme PointFree-Package \
-		-destination platform="iOS Simulator,name=iPhone 8,OS=11.2" \
-		| xcpretty
 
 test-swift: init-db
 	swift test
