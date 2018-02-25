@@ -11,9 +11,9 @@ let package = Package(
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9a635ce")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("45bb2cc")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("dc1c5b7")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("37c7d8e")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact(.init(2, 1, 1))),
     ],

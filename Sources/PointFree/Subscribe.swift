@@ -27,9 +27,10 @@ let subscribeMiddleware =
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Database.User>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscribeData, user) = conn.data |> lower
+    let (subscribeData, user) = conn.data
+      |> lower
 
-    return pure(subscribeData)
+    let subscriptionOrError = (pure(subscribeData) as EitherIO<Error, SubscribeData>)
       .withExcept(const(unit))
       .flatMap { subscribeData in
         AppEnvironment.current.stripe
@@ -47,24 +48,25 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
           .map(const(stripeSubscription))
       }
       .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .pricing(subscribeData.pricing, expand: nil),
-                headersMiddleware: flash(.error, "Error creating subscription!")
-            )
-          ),
-          const(
-            conn
-              |> redirect(
-                to: .account(.index),
-                headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-            )
+
+    return subscriptionOrError.flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .pricing(subscribeData.pricing, expand: nil),
+              headersMiddleware: flash(.error, "Error creating subscription!")
+          )
+        ),
+        const(
+          conn
+            |> redirect(
+              to: .account(.index),
+              headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
           )
         )
       )
+    )
 }
 
 private func validateQuantity(_ pricing: Pricing) -> Bool {
