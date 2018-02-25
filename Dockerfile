@@ -1,15 +1,21 @@
 FROM swift:4.0
 
+ENV SKIP_TESTS 1
+
+RUN swift --version
+
 RUN apt-get update
 RUN apt-get install -y postgresql libpq-dev
 
-WORKDIR /package
+WORKDIR /app
 
-COPY . ./
+COPY Makefile ./
+RUN make install-cmark
 
-# Helps with: https://bugs.swift.org/browse/SR-6500
-RUN rm -rf /package/.build/debug
+COPY Package.swift ./
+RUN swift package update
 
-RUN swift package resolve
-RUN swift package clean
-CMD swift test
+COPY Sources ./Sources
+RUN swift build --configuration release
+
+CMD ./.build/release/pointfreeco
