@@ -3,14 +3,46 @@
 import Foundation
 import PackageDescription
 
+let extraProducts: [Product]
+let extraTargets: [Target]
+#if !os(Linux)
+extraProducts = [.library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"])]
+extraTargets = [
+  .testTarget(
+    name: "StyleguideTests",
+    dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
+  .testTarget(
+    name: "PointFreeTests",
+    dependencies: [
+      "CssTestSupport",
+      "HtmlTestSupport",
+      "HttpPipelineTestSupport",
+      "PointFree",
+      "PointFreeTestSupport"
+    ]
+  ),
+  .target(
+    name: "PointFreeTestSupport",
+    dependencies: [
+      "Either",
+      "PointFree",
+      "Prelude",
+      "SnapshotTesting"
+    ]),
+]
+#else
+extraProducts = []
+extraTargets = []
+#endif
+
 let package = Package(
   name: "PointFree",
   products: [
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
-    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
-    ],
+    ]
+    + extraProducts,
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9a635ce")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
@@ -24,9 +56,6 @@ let package = Package(
     .target(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
-    .testTarget(
-      name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
 
     .target(
       name: "PointFree",
@@ -47,26 +76,7 @@ let package = Package(
         "UrlFormEncoding"
       ]
     ),
-    .testTarget(
-      name: "PointFreeTests",
-      dependencies: [
-        "CssTestSupport",
-        "HtmlTestSupport",
-        "HttpPipelineTestSupport",
-        "PointFree",
-        "PointFreeTestSupport"
-      ]
-    ),
 
-    .target(
-      name: "PointFreeTestSupport",
-      dependencies: [
-        "Either",
-        "PointFree",
-        "Prelude",
-        "SnapshotTesting"
-      ]),
-    
     .target(
       name: "Server",
       dependencies: [
@@ -75,6 +85,7 @@ let package = Package(
         "PointFree",
         ]
     ),
-    ],
+    ]
+    + extraTargets,
   swiftLanguageVersions: [4]
 )

@@ -18,6 +18,10 @@ COPY Package.swift ./
 RUN OSS=1 swift package update
 
 COPY Sources ./Sources
+#COPY Tests ./Tests
+RUN mkdir Tests
+RUN mkdir Tests/StyleguideTests
+RUN mkdir Tests/PointFreeTests
 RUN OSS=1 swift build --configuration release
 
-CMD ./.build/release/pointfreeco
+CMD ./.build/release/Server
