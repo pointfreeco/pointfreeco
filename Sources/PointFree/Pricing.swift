@@ -396,7 +396,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           min(Pricing.validTeamQuantities.lowerBound),
           name("pricing[team]"),
           onchange(
-            """
+            unsafeJavascript: """
             document.getElementById('team-rate').textContent =
               (this.valueAsNumber * \(Pricing.teamYearlyBase))
               .toString()
