@@ -10,4 +10,4 @@
 ▿ Response
   Status 302 FOUND
   Location: /pricing?plan=monthly
-  Set-Cookie: pf_session={"flash":{"message":"Error creating subscription!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/
+  Set-Cookie: pf_session={"flash":{"message":"Your card has insufficient funds.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/
