@@ -44,20 +44,20 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
       .flatMap { stripeSubscription in
         AppEnvironment.current.database
           .createSubscription(stripeSubscription, user.id)
-          .withExcept(const(unit))
-          .map(const(stripeSubscription))
       }
       .run
 
     return subscriptionOrError.flatMap(
       either(
-        const(
-          conn
+        { error in
+          let errorMessage = (error as? Stripe.ErrorEnvelope)?.error.message
+            ?? "Error creating subscription!"
+          return conn
             |> redirect(
               to: .pricing(subscribeData.pricing, expand: nil),
-              headersMiddleware: flash(.error, "Error creating subscription!")
+              headersMiddleware: flash(.error, errorMessage)
           )
-        ),
+      },
         const(
           conn
             |> redirect(

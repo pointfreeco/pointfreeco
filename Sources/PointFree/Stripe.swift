@@ -6,16 +6,16 @@ import Optics
 import UrlFormEncoding
 
 public struct Stripe {
-  public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Error, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Error, Subscription>
-  public var fetchCustomer: (Customer.Id) -> EitherIO<Error, Customer>
-  public var fetchPlans: EitherIO<Error, ListEnvelope<Plan>>
-  public var fetchPlan: (Plan.Id) -> EitherIO<Error, Plan>
-  public var fetchSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>
-  public var invoiceCustomer: (Customer) -> EitherIO<Error, Invoice>
-  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Error, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Error, Subscription>
+  public var cancelSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
+  public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Swift.Error, Customer>
+  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
+  public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
+  public var fetchPlans: EitherIO<Swift.Error, ListEnvelope<Plan>>
+  public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
+  public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
+  public var invoiceCustomer: (Customer) -> EitherIO<Swift.Error, Invoice>
+  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Swift.Error, Customer>
+  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
   public var js: String
 
   public static let live = Stripe(
@@ -83,6 +83,14 @@ public struct Stripe {
       case id
       case sources
     }
+  }
+
+  public struct ErrorEnvelope: Codable, Swift.Error {
+    let error: Error
+  }
+
+  public struct Error: Codable {
+    let message: String
   }
 
   public struct Event<T: Codable>: Codable {
@@ -360,7 +368,20 @@ private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
   where A: Decodable {
 
     let task: EitherIO<Error, A> = lift(stripeUrlRequest(path, method))
-      .flatMap { jsonDataTask(with: $0, decoder: stripeJsonDecoder) }
+      .flatMap {
+        dataTask(with: $0)
+          .map(first)
+          .flatMap { data in
+            .wrap {
+              do {
+                return try stripeJsonDecoder.decode(A.self, from: data)
+              } catch {
+                throw (try? stripeJsonDecoder.decode(Stripe.ErrorEnvelope.self, from: data))
+                  ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
+              }
+            }
+        }
+    }
 
     switch method {
     case .delete, .get:
