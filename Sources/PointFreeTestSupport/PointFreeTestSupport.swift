@@ -183,6 +183,18 @@ extension Stripe.Customer {
   )
 }
 
+extension Stripe.Error {
+  public static let mock = Stripe.Error(
+    message: "Your card has insufficient funds."
+  )
+}
+
+extension Stripe.ErrorEnvelope {
+  public static let mock = Stripe.ErrorEnvelope(
+    error: .mock
+  )
+}
+
 extension Stripe.Event where T == Stripe.Invoice {
   public static var mock: Stripe.Event<Stripe.Invoice> {
     return .init(
