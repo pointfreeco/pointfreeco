@@ -10,7 +10,7 @@ RUN apt-get install -y postgresql libpq-dev
 WORKDIR /app
 
 COPY Makefile ./
-RUN make install-cmark
+RUN make linux-install-cmark
 
 COPY Package.swift ./
 RUN swift package update
@@ -18,4 +18,4 @@ RUN swift package update
 COPY Sources ./Sources
 RUN swift build --configuration release
 
-CMD ./.build/release/pointfreeco
+CMD ./.build/release/Server
