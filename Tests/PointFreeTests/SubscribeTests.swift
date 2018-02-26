@@ -146,7 +146,7 @@ final class SubscribeTests: TestCase {
 
   func testCreateStripeSubscriptionFailure() {
     AppEnvironment.with(
-      (\.stripe.createSubscription .~ { _, _, _ in throwE(unit as Error) })
+      (\.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) })
         <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
     ) {
       let conn = connection(
