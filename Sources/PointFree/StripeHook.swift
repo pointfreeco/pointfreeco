@@ -67,12 +67,12 @@ private func keysWithAllValues(separator: Character) -> (String) -> [(String, [S
 }
 
 private func handleFailedPayment(
-  _ conn: Conn<StatusLineOpen, Stripe.Event<Stripe.Invoice>>
+  _ conn: Conn<StatusLineOpen, Stripe.Event<Stripe.Invoice>.Data>
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
     let event = conn.data
-    let invoice = event.data.object
+    let invoice = event.object
 
     return AppEnvironment.current.stripe.fetchSubscription(invoice.subscription)
       .flatMap(AppEnvironment.current.database.updateStripeSubscription)
