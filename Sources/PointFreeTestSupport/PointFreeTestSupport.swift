@@ -198,16 +198,10 @@ extension Stripe.ErrorEnvelope {
 extension Stripe.Event where T == Stripe.Invoice {
   public static var mock: Stripe.Event<Stripe.Invoice> {
     return .init(
-      data: .mock,
+      data: .init(object: .mock),
       id: .init(unwrap: "evt_test"),
       type: .invoicePaymentFailed
     )
-  }
-}
-
-extension Stripe.Event.Data where T == Stripe.Invoice {
-  public static var mock: Stripe.Event<Stripe.Invoice>.Data {
-    return .init(object: .mock)
   }
 }
 
