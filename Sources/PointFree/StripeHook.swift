@@ -18,19 +18,37 @@ private func validateStripeSignature<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
-        .map(keysWithAllValues(separator: ","))
-        ?? []
-
+      let stripeSignature = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+      let now = AppEnvironment.current.date()
+      let pairs = stripeSignature.map(keysWithAllValues(separator: ",")) ?? []
       let params = Dictionary(pairs, uniquingKeysWith: +)
-
-      guard
-        let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
-        shouldTolerate(timestamp),
-        let signatures = params["v1"],
-        let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
+      let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init)
+      let toleratedTimestamp = timestamp.map(shouldTolerate(at: now))
+      let signatures = params["v1"] ?? []
+      let payload = conn.request.httpBody.map { String(decoding: $0, as: UTF8.self) }
+      let hasValidSignature = (tuple <¢> timestamp <*> payload).map { timestamp, payload in
         signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
-        else { return conn |> writeStatus(.badRequest) >-> end }
+      }
+
+      guard toleratedTimestamp == .some(true), hasValidSignature == .some(true) else {
+        var dataDump = ""
+        dump(
+          (
+            stripeSignature: stripeSignature,
+            now: now.timeIntervalSince1970,
+            pairs: pairs,
+            params: params,
+            timestamp: timestamp,
+            toleratedTimestamp: toleratedTimestamp,
+            signatures: signatures,
+            payload: payload,
+            hasValidSignature: hasValidSignature
+          ),
+          to: &dataDump
+        )
+
+        return conn |> writeStatus(.badRequest) >-> respond(text: dataDump)
+      }
 
       return conn |> middleware
     }
@@ -51,9 +69,12 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
   }
 }
 
-private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
-  return Date(timeIntervalSince1970: timestamp)
-    > AppEnvironment.current.date().addingTimeInterval(-tolerance)
+private let tolerance: TimeInterval = 5 * 60
+
+private func shouldTolerate(at now: Date) -> (TimeInterval) -> Bool {
+  return { timestamp in
+    Date(timeIntervalSince1970: timestamp) > now.addingTimeInterval(-tolerance)
+  }
 }
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
