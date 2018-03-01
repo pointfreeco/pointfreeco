@@ -99,7 +99,7 @@ public enum Route: DerivePartialIsos {
     case stripe(Stripe)
 
     public enum Stripe: DerivePartialIsos {
-      case invoice(PointFree.Stripe.Event<PointFree.Stripe.Invoice>.Data)
+      case invoice(PointFree.Stripe.Event<PointFree.Stripe.Invoice>)
       case `fallthrough`
     }
   }
@@ -238,7 +238,7 @@ private let routers: [Router<Route>] = [
 
   .webhooks <<< .stripe <<< .invoice
     <¢> post %> lit("webhooks") %> lit("stripe")
-    %> jsonBody(Stripe.Event<Stripe.Invoice>.Data.self, encoder: stripeJsonEncoder, decoder: stripeJsonDecoder)
+    %> jsonBody(Stripe.Event<Stripe.Invoice>.self, encoder: stripeJsonEncoder, decoder: stripeJsonDecoder)
     <% end,
 
   .webhooks <<< .stripe <<< .fallthrough

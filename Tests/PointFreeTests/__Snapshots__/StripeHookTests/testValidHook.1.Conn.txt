@@ -6,7 +6,7 @@
   Cookie: pf_session={}
   Stripe-Signature: t=1517356800,v1=369d17483762d03d2a55fe5facdfe8624e19959a5660c580b8857890281dcc0e
 
-  {"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}}
+  {"id":"evt_test","data":{"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
 ▿ Response
-  Status 400 BAD REQUEST
+  Status 200 OK
