@@ -6,7 +6,7 @@
   Cookie: pf_session={}
   Stripe-Signature: t=1517356800,v1=deadbeef
 
-  {"id":"evt_test","data":{"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}},"type":"invoice.payment_failed"}
+  {"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}}
 
 ▿ Response
   Status 400 BAD REQUEST
