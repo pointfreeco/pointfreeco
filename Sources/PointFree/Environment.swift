@@ -20,7 +20,7 @@ public struct Environment {
   public private(set) var stripe: Stripe
 
   init(
-    cookieTransform: CookieTransform = .encrypted,
+    cookieTransform: CookieTransform = .plaintext,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),

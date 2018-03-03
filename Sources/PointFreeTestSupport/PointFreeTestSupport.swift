@@ -44,11 +44,13 @@ extension Mailgun {
 
 extension Database {
   public static let mock = Database(
+    addEpisodePromo: { _, _ in hole() },
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
     fetchEmailSettingsForUserId: const(pure([.mock])),
+    fetchEpisodePromos: { _ in hole() },
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),

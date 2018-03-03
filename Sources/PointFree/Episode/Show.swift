@@ -11,7 +11,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+let episodeResponse =//: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
 
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
@@ -37,6 +37,29 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
         )
     }
 )
+
+enum EpisodePermission {
+  case loggedOutAccessNEV
+  case noAcess
+  case nonSubscriberAccess
+  case promoAccess
+  case subscriberAccess
+}
+
+//func userEpisodePermission<I, Z>(_ conn: Conn<I, T3<Episode, Database.User?, Z>>) -> IO<Conn<I, T4<EpisodePermission, Episode, Database.User, Z>>> {
+//
+//  let (episode, currentUser) = (conn.data.first, conn.data.second.first)
+//
+//  guard let user = currentUser else {
+//    return conn.map(const((episode.subscriberOnly ? .noAccess : .nonSubscriberAccess)
+//  }
+//
+//
+////  AppEnvironment.current.database
+////    .fetchEpisodePromos
+//
+//  fatalError()
+//}
 
 let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> { user, subscriptionStatus, episode in
   [
