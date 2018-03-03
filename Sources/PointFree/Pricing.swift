@@ -12,7 +12,7 @@ import Tuple
 
 public enum Pricing: Codable, DerivePartialIsos {
   case individual(Billing)
-  case team(Int)
+  case team(Billing, Int)
 
   public static let `default` = individual(.monthly)
 
@@ -26,8 +26,8 @@ public enum Pricing: Codable, DerivePartialIsos {
   }
 
   private enum CodingKeys: String, CodingKey {
-    case individual
-    case team
+    case billing
+    case quantity
     case lane
   }
 
@@ -38,16 +38,16 @@ public enum Pricing: Codable, DerivePartialIsos {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let billing = try container.decodeIfPresent(Billing.self, forKey: .individual)
-    let quantity = try container.decodeIfPresent(Int.self, forKey: .team)
+    let billing = try container.decodeIfPresent(Billing.self, forKey: .billing)
+    let quantity = try container.decodeIfPresent(Int.self, forKey: .quantity)
     let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
 
     if let lane = lane, let billing = billing, let quantity = quantity {
-      self = lane == .individual ? .individual(billing) : .team(quantity)
+      self = lane == .individual ? .individual(billing) : .team(billing, quantity)
+    } else if let quantity = quantity {
+      self = .team(.yearly, quantity)
     } else if let billing = billing {
       self = .individual(billing)
-    } else if let quantity = quantity {
-      self = .team(quantity)
     } else {
       throw unit // FIXME
     }
@@ -57,9 +57,10 @@ public enum Pricing: Codable, DerivePartialIsos {
     var container = encoder.container(keyedBy: CodingKeys.self)
     switch self {
     case let .individual(billing):
-      try container.encode(billing, forKey: .individual)
-    case let .team(quantity):
-      try container.encode(quantity, forKey: .team)
+      try container.encode(billing, forKey: .billing)
+    case let .team(billing, quantity):
+      try container.encode(billing, forKey: .billing)
+      try container.encode(quantity, forKey: .quantity)
     }
   }
 
@@ -69,7 +70,9 @@ public enum Pricing: Codable, DerivePartialIsos {
       return .individualMonthly
     case .individual(.yearly):
       return .individualYearly
-    case .team:
+    case .team(.monthly, _):
+      return .teamMonthly
+    case .team(.yearly, _):
       return .teamYearly
     }
   }
@@ -78,7 +81,7 @@ public enum Pricing: Codable, DerivePartialIsos {
     switch self {
     case .individual:
       return 1
-    case let .team(quantity):
+    case let .team(_, quantity):
       return quantity
     }
   }
@@ -87,8 +90,8 @@ public enum Pricing: Codable, DerivePartialIsos {
     switch self {
     case let .individual(billing):
       return billing
-    case .team:
-      return .yearly
+    case let .team(billing, _):
+      return billing
     }
   }
 

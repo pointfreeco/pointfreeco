@@ -299,9 +299,11 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
     return PartialIso(
       apply: { plan, quantity in
         let pricing: Pricing
-        if let quantity = quantity {
-          pricing = .team(quantity)
-        } else if let plan = plan, let billing = Pricing.Billing(rawValue: plan) {
+        if let quantity = quantity, let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) {
+          pricing = quantity == 1
+            ? .individual(billing)
+            : .team(billing, quantity)
+        } else if let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) {
           pricing = .individual(billing)
         } else {
           pricing = .default

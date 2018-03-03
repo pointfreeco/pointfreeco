@@ -304,7 +304,7 @@ extension SubscribeData {
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
-      pricing: .team(quantity),
+      pricing: .team(.yearly, quantity),
       token: .init(unwrap: "stripe-deadbeef"),
       vatNumber: ""
     )

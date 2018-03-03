@@ -5,7 +5,7 @@
   POST http://localhost:8080/subscribe
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-  pricing[individual]=monthly&token=stripe-deadbeef&vatNumber=
+  pricing[billing]=monthly&token=stripe-deadbeef&vatNumber=
 
 ▿ Response
   Status 302 FOUND

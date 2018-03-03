@@ -91,6 +91,8 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Pricing.Billing
+          , 
             Int
         ), B == Pricing {
 
