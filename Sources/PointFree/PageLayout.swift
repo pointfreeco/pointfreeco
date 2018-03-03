@@ -137,7 +137,7 @@ func pastDueBanner(_ subscriptionStatus: Stripe.Subscription.Status?) -> [Node] 
       priority: .warning,
       message: """
       Your subscription is past-due! Please
-      [update your payment info](\(path(to: .account(.paymentInfo(.show(expand: nil))))) to ensure access to
+      [update your payment info](\(path(to: .account(.paymentInfo(.show(expand: nil)))))) to ensure access to
       Point-Free!
       """
     )
