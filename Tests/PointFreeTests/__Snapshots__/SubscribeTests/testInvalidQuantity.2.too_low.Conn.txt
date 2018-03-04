@@ -9,5 +9,5 @@
 
 ▿ Response
   Status 302 FOUND
-  Location: /pricing
-  Set-Cookie: pf_session={"flash":{"message":"An invalid subscription quantity was used.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/
+  Location: /account
+  Set-Cookie: pf_session={"flash":{"message":"You are now subscribed to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Path=/

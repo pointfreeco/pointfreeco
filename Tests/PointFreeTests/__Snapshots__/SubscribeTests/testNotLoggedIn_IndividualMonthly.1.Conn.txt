@@ -5,8 +5,8 @@
   POST http://localhost:8080/subscribe
   Cookie: pf_session={}
 
-  pricing[billing]=monthly&token=stripe-deadbeef&vatNumber=
+  pricing[billing]=monthly&pricing[quantity]=1&token=stripe-deadbeef&vatNumber=
 
 ▿ Response
   Status 302 FOUND
-  Location: /login?redirect=http://localhost:8080/pricing?plan%3Dmonthly
+  Location: /login?redirect=http://localhost:8080/pricing?plan%3Dmonthly%26quantity%3D1

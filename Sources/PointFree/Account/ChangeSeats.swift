@@ -63,7 +63,7 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Data
     let (subscription, user, _, quantity) = conn.data
 
     // TODO: send emails
-    let plan = Pricing.team(.yearly, quantity).plan
+    let plan = Pricing(billing: .yearly, quantity: quantity).plan
     return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {

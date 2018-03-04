@@ -291,20 +291,20 @@ extension Stripe.Subscription.Item {
 
 extension SubscribeData {
   public static let individualMonthly = SubscribeData(
-    pricing: .individual(.monthly),
+    pricing: .init(billing: .monthly, quantity: 1),
     token: .init(unwrap: "stripe-deadbeef"),
     vatNumber: ""
   )
 
   public static let individualYearly = SubscribeData(
-    pricing: .individual(.yearly),
+    pricing: .init(billing: .yearly, quantity: 1),
     token: .init(unwrap: "stripe-deadbeef"),
     vatNumber: ""
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
-      pricing: .team(.yearly, quantity),
+      pricing: .init(billing: .yearly, quantity: quantity),
       token: .init(unwrap: "stripe-deadbeef"),
       vatNumber: ""
     )

@@ -298,21 +298,13 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
   fileprivate static var pricing: PartialIso {
     return PartialIso(
       apply: { plan, quantity in
-        let pricing: Pricing
-        if let quantity = quantity, let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) {
-          pricing = quantity == 1
-            ? .individual(billing)
-            : .team(billing, quantity)
-        } else if let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) {
-          pricing = .individual(billing)
+        if let billing = plan.flatMap(Pricing.Billing.init(rawValue:)), let quantity = quantity {
+          return Pricing(billing: billing, quantity: quantity)
         } else {
-          pricing = .default
+          return .default
         }
-        return pricing
     }, unapply: { pricing -> (String?, Int?) in
-      pricing.isTeam
-        ? (.some(pricing.billing.rawValue), pricing.quantity)
-        : (.some(pricing.billing.rawValue), nil)
+      (pricing.billing.rawValue, pricing.quantity)
     })
   }
 }

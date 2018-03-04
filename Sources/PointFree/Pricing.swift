@@ -10,11 +10,11 @@ import Prelude
 import Styleguide
 import Tuple
 
-public enum Pricing: Codable, DerivePartialIsos {
-  case individual(Billing)
-  case team(Billing, Int)
+public struct Pricing {
+  let billing: Billing
+  let quantity: Int
 
-  public static let `default` = individual(.monthly)
+  public static let `default` = Pricing(billing: .monthly, quantity: 1)
 
   public static let teamYearlyBase = 160
 
@@ -28,89 +28,42 @@ public enum Pricing: Codable, DerivePartialIsos {
   private enum CodingKeys: String, CodingKey {
     case billing
     case quantity
-    case lane
-  }
-
-  private enum Lane: String, Codable {
-    case individual
-    case team
-  }
-
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    let billing = try container.decodeIfPresent(Billing.self, forKey: .billing)
-    let quantity = try container.decodeIfPresent(Int.self, forKey: .quantity)
-    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
-
-    if let lane = lane, let billing = billing, let quantity = quantity {
-      self = lane == .individual ? .individual(billing) : .team(billing, quantity)
-    } else if let quantity = quantity {
-      self = .team(.yearly, quantity)
-    } else if let billing = billing {
-      self = .individual(billing)
-    } else {
-      throw unit // FIXME
-    }
-  }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    switch self {
-    case let .individual(billing):
-      try container.encode(billing, forKey: .billing)
-    case let .team(billing, quantity):
-      try container.encode(billing, forKey: .billing)
-      try container.encode(quantity, forKey: .quantity)
-    }
   }
 
   var plan: Stripe.Plan.Id {
-    switch self {
-    case .individual(.monthly):
+    switch (self.billing, self.quantity) {
+    case (.monthly, 1):
       return .individualMonthly
-    case .individual(.yearly):
+    case (.yearly, 1):
       return .individualYearly
-    case .team(.monthly, _):
+    case (.monthly, _):
       return .teamMonthly
-    case .team(.yearly, _):
+    case (.yearly, _):
       return .teamYearly
     }
   }
 
-  var quantity: Int {
-    switch self {
-    case .individual:
-      return 1
-    case let .team(_, quantity):
-      return quantity
-    }
-  }
-
-  var billing: Billing {
-    switch self {
-    case let .individual(billing):
-      return billing
-    case let .team(billing, _):
-      return billing
-    }
-  }
-
   var isIndividual: Bool {
-    switch self {
-    case .individual:
-      return true
-    case .team:
-      return false
-    }
+    return self.quantity == 1
   }
 
   var isTeam: Bool {
-    switch self {
-    case .team:
-      return true
-    case .individual:
-      return false
-    }
+    return !self.isIndividual
+  }
+}
+
+extension Pricing: Codable {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let billing = try container.decode(Billing.self, forKey: .billing)
+    let quantity = try container.decode(Int.self, forKey: .quantity)
+    self.init(billing: billing, quantity: quantity)
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(billing, forKey: .billing)
+    try container.encode(quantity, forKey: .quantity)
   }
 }
 
