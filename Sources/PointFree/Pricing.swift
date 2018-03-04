@@ -230,7 +230,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
         "We’re ",
         a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], ["Brandon Williams"]),
         " and ",
-        a([href("http://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
+        a([href("https://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
         ". We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of ",
         "talks on various topics. Check out some of our talks here:"
       ]
@@ -244,7 +244,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
           ]),
 
         li([
-          a([href("http://www.stephencelis.com"), style(faqLinkStyles)],
+          a([href("https://www.stephencelis.com"), style(faqLinkStyles)],
             ["Stephen’s talks"])
           ])
       ])
@@ -256,9 +256,9 @@ private let faqView = View<Prelude.Unit> { _ in
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)
-            + topicsView.view(unit)
-            + suggestATopic.view(unit)
-            + whoAreYou.view(unit)
+            <> topicsView.view(unit)
+            <> suggestATopic.view(unit)
+            <> whoAreYou.view(unit)
       )
       ])
     ])
@@ -321,7 +321,7 @@ private let individualPricingColumnView = View<(billing: Pricing.Billing, pricin
         input([
           checked(isChecked($0.billing, $0.pricing)),
           id(radioId(for: $0.billing)),
-          name("pricing[individual]"),
+          name("pricing[billing]"),
           type(.radio),
           value($0.billing.rawValue),
           ]),
@@ -350,7 +350,7 @@ private let teamPricingRowView = View<Pricing> { pricing -> Node in
           `class`([numberSpinner, Class.pf.colors.fg.black]),
           max(Pricing.validTeamQuantities.upperBound),
           min(Pricing.validTeamQuantities.lowerBound),
-          name("pricing[team]"),
+          name("pricing[quantity]"),
           onchange(
             unsafeJavascript: """
             document.getElementById('team-rate').textContent =
