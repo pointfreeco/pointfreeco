@@ -12,30 +12,6 @@ import Tuple
 
 // MARK: Middleware
 
-let confirmCancelResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireStripeSubscription
-    <<< filter(
-      get1 >>> ^\.isRenewing,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.error, "You’ve already canceled your subscription!")
-      )
-    )
-    <| writeStatus(.ok)
-    >-> map(lower)
-    >>> respond(
-      view: confirmCancelView,
-      layoutData: { subscription, currentUser in
-        SimplePageLayoutData(
-          currentSubscriptionStatus: subscription.status,
-          currentUser: currentUser,
-          data: (subscription, currentUser),
-          title: "Cancel your subscription?"
-        )
-    }
-)
-
 let cancelMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
@@ -218,59 +194,6 @@ private func fetchStripeSubscription<A>(
         .map(^\.right)
         .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
     }
-}
-
-// MARK: - Views
-
-let confirmCancelView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div(
-        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        titleRowView.view(unit)
-          <> formRowView.view(subscription)
-      )
-      ])
-    ])
-}
-
-private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([`class`([Class.pf.type.title3])], ["Cancel your subscription?"])
-        ])
-      ])
-    ])
-}
-
-private let formRowView = View<Stripe.Subscription> { subscription in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      p([
-        "Your ", text(subscription.plan.name), " subscription is currently set to renew on ",
-        text(dateFormatter.string(from: subscription.currentPeriodEnd)),
-        """
-        . If you cancel your subscription, you’ll lose access to Point-Free on this date and you won’t be
-        billed again. If you change your mind, you may reactivate your subscription at any time before the
-        current period ends.
-        """
-        ]),
-      form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
-        button(
-          [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Yes, cancel my subscription"]
-        ),
-        a(
-          [
-            href(path(to: .account(.index))),
-            `class`([Class.pf.components.button(color: .black, style: .underline)])
-          ],
-          ["Never mind"]
-        )
-        ])
-      ])
-    ])
 }
 
 // MARK: - Emails

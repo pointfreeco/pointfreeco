@@ -43,11 +43,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. token .*. unit))
         |> updatePaymentInfoMiddleware
 
-    case .account(.subscription(.cancel(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmCancelResponse
-
-    case .account(.subscription(.cancel(.update))):
+    case .account(.subscription(.cancel)):
       return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
@@ -59,33 +55,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. pricing .*. unit))
         |> subscriptionChangeMiddleware
 
-    case .account(.subscription(.changeSeats(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmChangeSeatsResponse
-
-    case let .account(.subscription(.changeSeats(.update(quantity)))):
-      return conn.map(const(user .*. quantity .*. unit))
-        |> changeSeatsMiddleware
-
-    case .account(.subscription(.downgrade(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmDowngradeResponse
-
-    case .account(.subscription(.downgrade(.update))):
-      return conn.map(const(user .*. unit))
-        |> downgradeMiddleware
-
     case .account(.subscription(.reactivate)):
       return conn.map(const(user .*. unit))
         |> reactivateMiddleware
-
-    case .account(.subscription(.upgrade(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmUpgradeResponse
-
-    case .account(.subscription(.upgrade(.update))):
-      return conn.map(const(user .*. unit))
-        |> upgradeMiddleware
 
     case let .account(.update(data)):
       return conn.map(const(data .*. user .*. unit))

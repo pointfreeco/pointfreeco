@@ -56,8 +56,10 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
 
     let (currentSubscription, user, _, newPricing) = conn.data
 
-    let newPrice = defaultPricing(for: newPricing.lane, billing: newPricing.billing)
-    let prorate = newPrice > currentSubscription.plan.amount.rawValue
+    let newPrice = defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100
+    let currentPrice = currentSubscription.plan.amount.rawValue
+
+    let prorate = newPrice > currentPrice
 
     return AppEnvironment.current.stripe.updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, prorate)
       .run
@@ -84,6 +86,24 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
           )
         }
     )
+}
+
+func requireActiveSubscription<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {
+
+    return filter(
+      get1 >>> (^\.status == .active),
+      or: redirect(
+        to: .pricing(nil, expand: nil),
+        headersMiddleware: flash(
+          .error,
+          "You don’t have an active subscription. Would you like to subscribe?"
+        )
+      )
+      )
+      <| middleware
 }
 
 private func requireValidSeating(
@@ -332,7 +352,7 @@ private let cancelRowView = View<Stripe.Subscription> { subscription -> Node in
         subscription at any time before this period ends.
         """
         ]),
-      form([action(path(to: .account(.subscription(.cancel(.update))))), method(.post)], [
+      form([action(path(to: .account(.subscription(.cancel)))), method(.post)], [
         button(
           [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
           ["Yes, cancel my subscription"]
