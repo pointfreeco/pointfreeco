@@ -76,6 +76,11 @@ public struct Database {
   public struct EpisodePromo: Decodable {
     public internal(set) var episodeSequence: Int
     public internal(set) var userId: User.Id
+
+    public enum CodingKeys: String, CodingKey {
+      case episodeSequence = "episode_sequence"
+      case userId = "user_id"
+    }
   }
 
   public struct User: Decodable {
