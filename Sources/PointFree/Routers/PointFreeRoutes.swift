@@ -298,11 +298,9 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
   fileprivate static var pricing: PartialIso {
     return PartialIso(
       apply: { plan, quantity in
-        if let billing = plan.flatMap(Pricing.Billing.init(rawValue:)), let quantity = quantity {
-          return Pricing(billing: billing, quantity: quantity)
-        } else {
-          return .default
-        }
+        let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) ?? .monthly
+        let quantity = clamp(1..<Pricing.validTeamQuantities.upperBound) <| (quantity ?? 1)
+        return Pricing(billing: billing, quantity: quantity)
     }, unapply: { pricing -> (String?, Int?) in
       (pricing.billing.rawValue, pricing.quantity)
     })
