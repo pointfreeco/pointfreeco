@@ -416,13 +416,16 @@ import Prelude
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.PaymentInfo {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.PaymentInfo>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
+      extension PartialIso where A == (
+            Bool?
+        ), B == Route.Account.PaymentInfo {
+
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Account.PaymentInfo.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 
