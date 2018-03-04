@@ -36,7 +36,7 @@ public enum Route: DerivePartialIsos {
     case update(ProfileData?)
 
     public enum PaymentInfo: DerivePartialIsos {
-      case show
+      case show(expand: Bool?)
       case update(Stripe.Token.Id?)
     }
 
@@ -119,7 +119,9 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("account") <% end,
 
   .account <<< .paymentInfo <<< .show
-    <¢> get %> lit("account") %> lit("payment-info") <% end,
+    <¢> get %> lit("account") %> lit("payment-info")
+    %> queryParam("expand", opt(.bool))
+    <% end,
 
   .account <<< .paymentInfo <<< .update
     <¢> post %> lit("account") %> lit("payment-info")
