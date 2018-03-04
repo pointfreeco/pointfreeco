@@ -16,8 +16,6 @@ public struct Pricing {
 
   public static let `default` = Pricing(billing: .monthly, quantity: 1)
 
-  public static let teamYearlyBase = 160
-
   public static let validTeamQuantities = 2..<100
 
   public enum Billing: String, Codable {
