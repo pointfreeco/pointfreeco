@@ -431,6 +431,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Route.Account.Subscription.Change
+        ), B == Route.Account.Subscription {
+
+          public static let change = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.change,
+            unapply: {
+              guard case let .change(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Account.Subscription.ChangeSeats
         ), B == Route.Account.Subscription {
 
@@ -501,6 +515,31 @@ import Prelude
             guard case .update = $0 else { return nil }
             return .some(Prelude.unit)
         })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Change {
+        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Change>(
+          apply: const(.some(.show)),
+          unapply: {
+            guard case .show = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == (
+            Pricing?
+        ), B == Route.Account.Subscription.Change {
+
+          public static let update = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.Change.update,
+            unapply: {
+              guard case let .update(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 

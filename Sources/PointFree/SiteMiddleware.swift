@@ -51,6 +51,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
+    case .account(.subscription(.change(.show))):
+      return conn.map(const(user .*. unit))
+        |> subscriptionChangeShowResponse
+
+    case let .account(.subscription(.change(.update(pricing)))):
+      return conn.map(const(user .*. pricing .*. unit))
+        |> subscriptionChangeMiddleware
+
     case .account(.subscription(.changeSeats(.show))):
       return conn.map(const(user .*. unit))
         |> confirmChangeSeatsResponse

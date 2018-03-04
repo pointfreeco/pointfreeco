@@ -62,9 +62,8 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Data
 
     let (subscription, user, _, quantity) = conn.data
 
-    // TODO: send emails
     let plan = Pricing(billing: .yearly, quantity: quantity).plan
-    return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity)
+    return AppEnvironment.current.stripe.updateSubscription(subscription, plan, quantity, nil)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if sub.quantity > subscription.quantity {
           parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
@@ -83,7 +82,7 @@ private func changeSeats(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Data
                 .error,
                 """
                 We couldn’t change the number of seats at this time. Please try again later or contact
-                <support@pointfree.co>
+                <support@pointfree.co>.
                 """
               )
             )

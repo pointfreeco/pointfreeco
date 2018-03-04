@@ -45,7 +45,7 @@ private func downgrade(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Databa
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user) = conn.data
-    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualMonthly, 1)
+    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualMonthly, 1, nil)
       .run
       .flatMap(
         either(

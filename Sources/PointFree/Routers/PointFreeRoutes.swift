@@ -42,6 +42,7 @@ public enum Route: DerivePartialIsos {
 
     public enum Subscription: DerivePartialIsos {
       case cancel(Cancel)
+      case change(Change)
       case changeSeats(ChangeSeats)
       case downgrade(Downgrade)
       case reactivate
@@ -50,6 +51,11 @@ public enum Route: DerivePartialIsos {
       public enum Cancel: DerivePartialIsos {
         case show
         case update
+      }
+
+      public enum Change: DerivePartialIsos {
+        case show
+        case update(Pricing?)
       }
 
       public enum ChangeSeats: DerivePartialIsos {
@@ -133,6 +139,14 @@ private let routers: [Router<Route>] = [
 
   .account <<< .subscription <<< .cancel <<< .update
     <¢> post %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
+
+  .account <<< .subscription <<< .change <<< .show
+    <¢> get %> lit("account") %> lit("subscription") %> lit("change") <% end,
+
+  .account <<< .subscription <<< .change <<< .update
+    <¢> post %> lit("account") %> lit("subscription") %> lit("change")
+    %> formBody(Pricing?.self, decoder: formDecoder)
+    <% end,
 
   .account <<< .subscription <<< .changeSeats <<< .show
     <¢> get %> lit("account") %> lit("subscription") %> lit("change-seats") <% end,

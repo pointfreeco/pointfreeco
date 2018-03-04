@@ -65,9 +65,9 @@ public struct Pricing {
 extension Pricing: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let lane = try container.decode(Lane.self, forKey: .lane)
+    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
     let billing = try container.decode(Billing.self, forKey: .billing)
-    if lane == .individual {
+    if lane == .some(.individual) {
       self.init(billing: billing, quantity: 1)
     } else {
       let quantity = try container.decode(Int.self, forKey: .quantity)
@@ -341,22 +341,20 @@ private let pricingIntervalRowView = View<Pricing> { pricing in
   )
 }
 
-private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
-  return pricing.isIndividual
-    ? billing == pricing.billing
-    : billing == .monthly
+func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
+  return billing == pricing.billing
 }
 
-private let teamPriceClass = CssSelector.class("team-price")
+let teamPriceClass = CssSelector.class("team-price")
 
 private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
 return
   gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
-    label([`for`(radioId(for: billing)), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
+    label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
           checked(isChecked(billing, pricing)),
-          id(radioId(for: billing)),
+          id(billing.rawValue),
           name("pricing[billing]"),
           type(.radio),
           value(billing.rawValue),
@@ -438,7 +436,7 @@ let numberSpinner =
   numberSpinnerClass
     | Class.type.align.center
     | Class.pf.type.title1
-private let extraSpinnerStyles =
+let extraSpinnerStyles =
   numberSpinnerClass % (
     padding(left: .px(20))
       <> maxWidth(.px(160))
@@ -446,7 +444,9 @@ private let extraSpinnerStyles =
       <> borderStyle(top: .none, right: .none, bottom: .solid, left: .none)
       <> borderColor(top: .none, right: .none, bottom: Colors.gray650, left: .none)
       <> borderWidth(top: .none, right: .none, bottom: .px(1), left: .none)
-)
+    )
+    <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
+    <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
 private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expand in
   gridRow([`class`([Class.pf.colors.bg.white])], [
@@ -476,7 +476,7 @@ private let stripeForm = View<Bool> { expand in
   )
 }
 
-private func title(for type: Pricing.Billing) -> String {
+func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "Monthly Plan"
@@ -485,16 +485,7 @@ private func title(for type: Pricing.Billing) -> String {
   }
 }
 
-private func radioId(for type: Pricing.Billing) -> String {
-  switch type {
-  case .monthly:
-    return "monthly"
-  case .yearly:
-    return "yearly"
-  }
-}
-
-private func individualPricingText(for type: Pricing.Billing) -> String {
+func individualPricingText(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "$17/" + pricingInterval(for: type)
@@ -512,7 +503,7 @@ private func defaultTeamPricing(for type: Pricing.Billing) -> Int {
   }
 }
 
-private func pricingInterval(for type: Pricing.Billing) -> String {
+func pricingInterval(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
     return "mo"
@@ -527,10 +518,6 @@ let pricingExtraStyles: Stylesheet =
     <> input % margin(leftRight: .auto)
     <> tabStyles(selectors: [(selectors.input.0, selectors.content.0), (selectors.input.1, selectors.content.1)])
     <> extraSpinnerStyles
-
-    // TODO: swift-web needs to support custom pseudoElem and pseudoClass
-    <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
-    <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
 private let selectors = (
   input: (

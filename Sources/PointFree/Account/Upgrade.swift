@@ -45,7 +45,7 @@ private func upgrade(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user) = conn.data
-    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualYearly, 1)
+    return AppEnvironment.current.stripe.updateSubscription(subscription, .individualYearly, 1, nil)
       .run
       .flatMap(
         either(
