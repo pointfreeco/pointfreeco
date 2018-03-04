@@ -6,17 +6,16 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(billingName: String, expand: Bool) -> [Node] {
+    public static func cardInput(expand: Bool) -> [Node] {
       return [
         input([name("token"), type(.hidden)]),
-        input([
-          `class`([blockInputClass]),
-          name("stripe_name"),
-          placeholder("Billing Name"),
-          type(.text),
-          value(billingName),
-          ]),
         div([`class`(expand ? [] : [Class.display.none])], [
+          input([
+            `class`([blockInputClass]),
+            name("stripe_name"),
+            placeholder("Billing Name"),
+            type(.text),
+            ]),
           input([
             `class`([blockInputClass]),
             name("stripe_address_line1"),

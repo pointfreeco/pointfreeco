@@ -470,17 +470,17 @@ private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expa
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map { stripeForm.view(($0.name, expand)) }
-          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: nil))]
+          .map(const(stripeForm.view(expand)))
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: expand))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<(String?, Bool)> { billingName, expand in
+private let stripeForm = View<Bool> { expand in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(billingName: billingName ?? "", expand: expand)
+    Stripe.html.cardInput(expand: expand)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [

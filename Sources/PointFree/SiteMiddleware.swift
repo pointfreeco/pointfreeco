@@ -35,8 +35,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriptionStatus .*. unit))
         |> accountResponse
 
-    case .account(.paymentInfo(.show)):
-      return conn.map(const(user .*. unit))
+    case let .account(.paymentInfo(.show(expand))):
+      return conn.map(const(user .*. (expand ?? false) .*. unit))
         |> paymentInfoResponse
 
     case let .account(.paymentInfo(.update(token))):

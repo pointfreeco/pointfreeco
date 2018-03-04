@@ -17,11 +17,11 @@ let paymentInfoResponse =
     >-> map(lower)
     >>> respond(
       view: paymentInfoView,
-      layoutData: { subscription, currentUser in
+      layoutData: { subscription, currentUser, expand in
         SimplePageLayoutData(
           currentSubscriptionStatus: subscription.status,
           currentUser: currentUser,
-          data: (subscription, currentUser),
+          data: (subscription, expand),
           title: "Update Payment Info"
         )
     }
@@ -38,7 +38,7 @@ let updatePaymentInfoMiddleware:
     <<< filterMap(
       require2 >>> pure,
       or: redirect(
-        to: .account(.paymentInfo(.show)),
+        to: .account(.paymentInfo(.show(expand: nil))),
         headersMiddleware: flash(.error, genericPaymentInfoError)
       )
     )
@@ -50,7 +50,7 @@ let updatePaymentInfoMiddleware:
         .run
         .flatMap {
           conn |> redirect(
-            to: .account(.paymentInfo(.show)),
+            to: .account(.paymentInfo(.show(expand: nil))),
             headersMiddleware: $0.isLeft
               ? flash(.error, genericPaymentInfoError)
               : flash(.notice, "Your payment information has been updated.")
@@ -58,14 +58,14 @@ let updatePaymentInfoMiddleware:
       }
 }
 
-let paymentInfoView = View<(Stripe.Subscription, Database.User)> { subscription, currentUser in
+let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand in
   
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-            <> updatePaymentInfoRowView.view(currentUser.name)
+            <> updatePaymentInfoRowView.view(expand)
       )
       ])
     ])
@@ -93,14 +93,14 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
     ])
 }
 
-private let updatePaymentInfoRowView = View<String?> { billingName in
+private let updatePaymentInfoRowView = View<Bool> { expand in
   return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.title4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(billingName: billingName ?? "", expand: true)
+          Stripe.html.cardInput(expand: expand)
             <> Stripe.html.errors
             <> Stripe.html.scripts
             <> [

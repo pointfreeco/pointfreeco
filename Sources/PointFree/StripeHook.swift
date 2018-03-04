@@ -136,7 +136,7 @@ private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
             """
             ]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .account(.paymentInfo(.show)))), `class`([Class.pf.components.button(color: .purple)])],
+            a([href(url(to: .account(.paymentInfo(.show(expand: nil))))), `class`([Class.pf.components.button(color: .purple)])],
               ["Update payment info"])
             ])
           ])
