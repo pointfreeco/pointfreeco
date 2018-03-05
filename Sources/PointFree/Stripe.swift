@@ -241,6 +241,10 @@ extension Tagged where Tag == Stripe.Plan, A == String {
     return .init(unwrap: "individual-yearly")
   }
 
+  static var teamMonthly: Stripe.Plan.Id {
+    return .init(unwrap: "team-monthly")
+  }
+
   static var teamYearly: Stripe.Plan.Id {
     return .init(unwrap: "team-yearly")
   }

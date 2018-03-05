@@ -35,9 +35,9 @@ class PricingTests: TestCase {
         
         webView.evaluateJavaScript(
           """
-          document.getElementById("tab0").checked = false;
-          document.getElementById("tab1").checked = true;
-          var quantity = document.getElementsByName("pricing[team]")[0];
+          document.getElementById('tab0').checked = false;
+          document.getElementById('tab1').checked = true;
+          var quantity = document.getElementsByName('pricing[quantity]')[0];
           quantity.value = 10;
           quantity.onchange();
           """, completionHandler: nil)
