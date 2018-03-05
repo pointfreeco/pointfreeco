@@ -179,9 +179,14 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
         h1([`class`([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
         p([
           "You are currently enrolled in the ", strong([text(subscription.plan.name)]), " plan. ",
-          "You will renew on ",
+          "Your subscription will ",
+          subscription.isRenewing ? "renew" : "end",
+          " on ",
           strong([text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
-          "."
+          ".",
+          subscription.isRenewing
+            ? ""
+            : " Reactivate your subscription by submitting the form below."
           ]),
         ])
       ])
@@ -275,7 +280,7 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
       ),
       button(
         [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-        ["Modify my subscription"]
+        [subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"]
       ),
       a(
         [
@@ -339,34 +344,38 @@ private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) ->
   }
 }
 
-private let cancelRowView = View<Stripe.Subscription> { subscription -> Node in
+private let cancelRowView = View<Stripe.Subscription> { subscription -> [Node] in
 
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      h3([`class`([Class.pf.type.responsiveTitle4])], ["Cancel your subscription?"]),
-      p([
-        "If you cancel your subscription, you’ll lose access to Point-Free on ",
-        strong([text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
-        """
-         and you won’t be billed again. If you change your mind, you may reactivate your
-        subscription at any time before this period ends.
-        """
-        ]),
-      form([action(path(to: .account(.subscription(.cancel)))), method(.post)], [
-        button(
-          [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-          ["Yes, cancel my subscription"]
-        ),
-        a(
-          [
-            href(path(to: .account(.index))),
-            `class`([Class.pf.components.button(color: .black, style: .underline)])
-          ],
-          ["Never mind"]
-        )
+  guard subscription.isRenewing else { return [] }
+
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        h3([`class`([Class.pf.type.responsiveTitle4])], ["Cancel your subscription?"]),
+        p([
+          "If you cancel your subscription, you’ll lose access to Point-Free on ",
+          strong([text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
+          """
+           and you won’t be billed again. If you change your mind, you may reactivate your
+          subscription at any time before this period ends.
+          """
+          ]),
+        form([action(path(to: .account(.subscription(.cancel)))), method(.post)], [
+          button(
+            [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
+            ["Yes, cancel my subscription"]
+          ),
+          a(
+            [
+              href(path(to: .account(.index))),
+              `class`([Class.pf.components.button(color: .black, style: .underline)])
+            ],
+            ["Never mind"]
+          )
+          ])
         ])
       ])
-    ])
+  ]
 }
 
 private func pricing(for subscription: Stripe.Subscription) -> Pricing {

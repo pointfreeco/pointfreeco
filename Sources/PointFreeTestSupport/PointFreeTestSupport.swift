@@ -148,6 +148,26 @@ extension GitHub.UserEnvelope {
   )
 }
 
+extension Pricing {
+  public static let mock = `default`
+
+  public static let individualMonthly = mock
+    |> \.billing .~ .monthly
+    |> \.quantity .~ 1
+
+  public static let individualYearly = mock
+    |> \.billing .~ .yearly
+    |> \.quantity .~ 1
+
+  public static let teamMonthly = mock
+    |> \.billing .~ .monthly
+    |> \.quantity .~ 4
+
+  public static let teamYearly = mock
+    |> \.billing .~ .yearly
+    |> \.quantity .~ 4
+}
+
 extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.canceling)),
@@ -243,6 +263,11 @@ extension Stripe.Plan {
     |> \.id .~ .individualYearly
     |> \.name .~ "Individual Yearly"
 
+  public static let teamMonthly = mock
+    |> \.amount .~ .init(unwrap: 16_00)
+    |> \.id .~ .teamMonthly
+    |> \.name .~ "Team Monthly"
+
   public static let teamYearly = mock
     |> \.amount .~ .init(unwrap: 160_00)
     |> \.id .~ .teamYearly
@@ -266,6 +291,22 @@ extension Stripe.Subscription {
     status: .active
   )
 
+  public static let individualMonthly = mock
+    |> \.plan .~ .individualMonthly
+    |> \.quantity .~ 1
+
+  public static let individualYearly = mock
+    |> \.plan .~ .individualYearly
+    |> \.quantity .~ 1
+
+  public static let teamMonthly = mock
+    |> \.plan .~ .teamMonthly
+    |> \.quantity .~ 4
+
+  public static let teamYearly = mock
+    |> \.plan .~ .teamYearly
+    |> \.quantity .~ 4
+
   public static let canceling = mock
     |> \.cancelAtPeriodEnd .~ true
 
@@ -274,10 +315,6 @@ extension Stripe.Subscription {
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
-
-  public static let teamYearly = mock
-    |> \.plan .~ .teamYearly
-    |> \.quantity .~ 4
 }
 
 extension Stripe.Subscription.Item {

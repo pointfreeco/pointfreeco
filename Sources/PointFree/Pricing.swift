@@ -11,8 +11,8 @@ import Styleguide
 import Tuple
 
 public struct Pricing {
-  let billing: Billing
-  let quantity: Int
+  var billing: Billing
+  var quantity: Int
 
   public static let `default` = Pricing(billing: .monthly, quantity: 1)
 
