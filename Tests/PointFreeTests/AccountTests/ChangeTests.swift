@@ -87,90 +87,106 @@ final class ChangeTests: TestCase {
   }
 
   func testChangeUpdateUpgradeIndividualPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateDowngradeIndividualPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateUpgradeTeamPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateDowngradeTeamPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateAddSeatsIndividualPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateAddSeatsTeamPlan() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateRemoveSeats() {
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
+    #if !os(Linux)
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
 
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity -~ 1)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity -~ 1)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 
   func testChangeUpdateRemoveSeatsInvalidNumber() {
-    let subscription = Stripe.Subscription.mock
-      |> \.plan .~ .teamYearly
-      |> \.quantity .~ 5
+    #if !os(Linux)
+      let subscription = Stripe.Subscription.mock
+        |> \.plan .~ .teamYearly
+        |> \.quantity .~ 5
 
-    let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])))
-        >>> (\.database.fetchTeamInvites .~ const(pure([.mock, .mock])))
-        >>> (\.stripe.fetchSubscription .~ const(pure(subscription)))
+      let env: (Environment) -> Environment =
+        (\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])))
+          >>> (\.database.fetchTeamInvites .~ const(pure([.mock, .mock])))
+          >>> (\.stripe.fetchSubscription .~ const(pure(subscription)))
 
-    AppEnvironment.with(env) {
-      let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))
-      let result = conn |> siteMiddleware
+      AppEnvironment.with(env) {
+        let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))
+        let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
-    }
+        assertSnapshot(matching: result.perform())
+      }
+    #endif
   }
 }
