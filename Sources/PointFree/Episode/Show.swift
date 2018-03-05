@@ -11,8 +11,87 @@ import Prelude
 import Styleguide
 import Tuple
 
-let episodeResponse =//: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+let useCreditResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    )
+    <<< { userEpisodePermission >-> $0 } // <<< lift(userEpisodePermission)
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
+    <<< validateCreditRequest
+    <| applyCreditMiddleware
 
+private func applyCreditMiddleware<Z>(
+  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, Database.User, Z>>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  let (episode, user) = (get2(conn.data), get3(conn.data))
+
+  guard user.episodePromoCount > 0 else {
+    return conn
+      |> redirect(
+        to: .episode(.left(episode.slug)),
+        headersMiddleware: flash(.error, "You do not have any credits to use.")
+    )
+  }
+
+  return AppEnvironment.current.database.addEpisodePromo(episode.sequence, user.id)
+    .flatMap { _ in
+      AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodePromoCount - 1)
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> redirect(to: .home, headersMiddleware: flash(.warning, "Something went wrong."))
+        ),
+        const(
+          conn
+            |> redirect(to: .home, headersMiddleware: flash(.notice, "You now have access to this episode!"))
+        )
+      )
+  )
+}
+
+private func validateCreditRequest<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data> {
+
+  return { conn in
+    let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
+
+    guard user.episodePromoCount > 0 else {
+      return conn
+        |> redirect(
+          to: .episode(.left(episode.slug)),
+          headersMiddleware: flash(.error, "You do not have any credits to use.")
+      )
+    }
+
+    guard isEpisodeViewable(for: permission) else {
+      return middleware(conn)
+    }
+
+    return conn
+      |> redirect(
+        to: .episode(.left(episode.slug)),
+        headersMiddleware: flash(.warning, "This episode is already available to you.")
+    )
+  }
+}
+
+// todo: what is the name of precomposing with kleisli arrow?!
+func lift<I, J, A, B, C>(
+  _ middleware: @escaping Middleware<I, I, A, B>
+  )
+  -> (@escaping Middleware<I, J, B, C>)
+  -> Middleware<I, J, A, C> {
+
+    return { middleware >-> $0 }
+}
+
+let episodeResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
@@ -47,9 +126,12 @@ private func userEpisodePermission<I, Z>(
     let (episode, currentUser) = (conn.data.first, conn.data.second.first)
 
     guard let user = currentUser else {
-      let permission: EpisodePermission = episode.subscriberOnly ? .noAccess : .loggedOutAccess
+      let permission: EpisodePermission = .loggedOut(isSubscriberOnly: episode.subscriberOnly)
       return pure(conn.map(const(permission .*. conn.data)))
     }
+
+    // TODO: remove
+//    return pure(conn.map(const(EpisodePermission.loggedIn(user: user, subscriptionPermission: .isNotSubscriber(promoPermission: .isNotPromo(isSubscriberOnly: true))) .*. conn.data)))
 
     let userHasEpisodePromo = AppEnvironment.current.database.fetchEpisodePromos(user.id)
       .map { promos in promos.contains { $0.episodeSequence == episode.sequence } }
@@ -59,7 +141,7 @@ private func userEpisodePermission<I, Z>(
     // todo: can get rid of subscription status fetch and use what is available to the above middleware
     let userIsSubscribed = (
       user.subscriptionId
-        .flatMap { id -> EitherIO<Error, Bool> in
+        .flatMap { id in
           AppEnvironment.current.database.fetchSubscriptionById(id)
             .map { $0?.stripeSubscriptionStatus == .active }
         }
@@ -70,23 +152,24 @@ private func userEpisodePermission<I, Z>(
 
     let permission = zip(userHasEpisodePromo.parallel, userIsSubscribed.parallel)
       .map { (hasPromo, isSubscribed) -> EpisodePermission in
-        switch (hasPromo, isSubscribed, episode.subscriberOnly) {
-        case (_, true, _):
-          return .subscriberAccess
-        case (true, false, _):
-          return .promoAccess
-        case (false, false, false):
-          return .nonSubscriberAccess
-        case (false, false, true):
-          return .noAccess
+        switch (hasPromo, isSubscribed) {
+        case (_, true):
+          return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
+        case (true, false):
+          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(promoPermission: .isPromo))
+        case (false, false):
+          return .loggedIn(
+            user: user,
+            subscriptionPermission: .isNotSubscriber(
+              promoPermission: .isNotPromo(isSubscriberOnly: episode.subscriberOnly)
+            )
+          )
         }
     }
 
     return permission
       .sequential
-      .map {
-        conn.map(const($0 .*. conn.data))
-    }
+      .map { conn.map(const($0 .*. conn.data)) }
 }
 
 private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscription.Status?, Episode)> {
@@ -112,7 +195,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscr
           div(
             [`class`([Class.position.sticky(.desktop), Class.position.top0])],
             rightColumnView.view(
-              (episode, permission != .noAccess)
+              (episode, isEpisodeViewable(for: permission))
             )
           )
         ]
@@ -298,89 +381,144 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Stripe.Sub
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
       + (
-        subscriptionStatus != .some(.active)
+        isSubscribeBannerVisible(for: permission)
           ? subscribeView.view((permission, user, episode))
           : []
       )
       + (
-        permission == .noAccess
-          ? []
-          : transcriptView.view(episode.transcriptBlocks)
+        isEpisodeViewable(for: permission)
+          ? transcriptView.view(episode.transcriptBlocks)
+          : []
     )
   )
 }
 
-
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   switch permission {
-  case .loggedOutAccess:
-    fatalError()
-  case .noAccess:
-    fatalError()
-  case .nonSubscriberAccess:
-    fatalError()
-  case .promoAccess:
+  case .loggedIn(_, .isSubscriber):
+    fatalError("This should never be called.")
+
+  case .loggedIn(_, .isNotSubscriber(.isPromo)):
     return """
-    You have access to this episode because you chose it as a promotional episode. To get access to all past
-    and future episodes, become a subscriber today!
+    You have access to this episode because you used a promotional credit. To get access to all past and
+    future episodes, become a subscriber today!
     """
-  case .subscriberAccess:
-    fatalError()
+
+  case .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly: true))):
+    return """
+    This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+    today!
+    """
+
+  case .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly: false))):
+    return """
+    This episode is free to all users. To get access to all past and future episodes, become a
+    subscriber today!
+    """
+
+  case .loggedOut(isSubscriberOnly: true):
+    return """
+    This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+    today!
+    """
+
+  case .loggedOut(isSubscriberOnly: false):
+    return """
+    This episode is free to all users. To get access to all past and future episodes, become a
+    subscriber today!
+    """
   }
 }
 
-private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
+private let promoBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+  guard
+    case let .loggedIn(user, .isNotSubscriber(.isNotPromo(true))) = permission,
+    user.episodePromoCount > 0
+    else { return [] }
 
-//  return []
-
-//  case loggedOutAccess
-//  case noAccess
-//  case nonSubscriberAccess
-//  case promoAccess
-//  case subscriberAccess
-
-  [
-    div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 4], .desktop: [.all: 4]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
-
-      h3(
-        [`class`([Class.pf.type.responsiveTitle4])],
-        [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
-      ),
-
-      p(
-        [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-        [
-          episode.subscriberOnly
-            ? """
-            This episode is for subscribers only. To access it, and all past and future episodes, become a
-            subscriber today!
-            """
-            : """
-          This episode is free to all users. To get access to all past and future episodes, become a
-          subscriber today!
-          """
-        ]
-      ),
-
-      a(
-        [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-        ["See subscription options"]
-      )
-      ]
-      + (user == nil
-        ?
-          [span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
-           a(
-            [
-              href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
-              `class`([Class.pf.components.button(color: .black, style: .underline)])
-            ],
-            ["Log in"]
-            )
+  return [
+    p(
+      [
+        `class`(
+          [
+            Class.pf.type.body.regular,
+            Class.padding([.mobile: [.top: 4, .bottom: 2]])
           ]
-        : [])
+        )
+      ],
+      [
+        """
+        You currently have 1 episode credit available. Do you want to use it to view this episode for free
+        right now?
+        """
+      ]
+    ),
 
+    form(
+      [action(path(to: .useEpisodeCredit(episode.id))), method(.post)],
+      [
+        input(
+          [
+            type(.submit),
+            `class`(
+              [
+                Class.pf.components.button(color: .purple, size: .small)
+              ]
+            ),
+            value("Use an episode credit")
+          ]
+        )
+      ]
     )
+  ]
+}
+
+// TODO
+//      + (user == nil
+//        ?
+//          [span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+//           a(
+//            [
+//              href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
+//              `class`([Class.pf.components.button(color: .black, style: .underline)])
+//            ],
+//            ["Log in"]
+//            )
+//          ]
+//        : [])
+
+private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
+  [
+    div(
+      [
+        `class`(
+          [
+            Class.type.align.center,
+            Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]),
+            Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]),
+            Class.pf.colors.bg.gray900
+          ]
+        )
+      ],
+      [
+        h3(
+          [`class`([Class.pf.type.responsiveTitle4])],
+          [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+        ),
+
+        p(
+          [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+          [.text(encode(String(describing: subscribeBlurb(for: permission))))]
+        ),
+
+        a(
+          [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+          ["See subscription options"]
+        )
+      ]
+      <> promoBlurb.view((permission, episode))
+    ),
+    divider
   ]
 }
 
@@ -415,9 +553,8 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   ]
 }
 
-let dividerView = View<Prelude.Unit> { _ in
-  hr([`class`([Class.pf.components.divider])])
-}
+let divider = hr([`class`([Class.pf.components.divider])])
+let dividerView = View<Prelude.Unit>(const(divider))
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
   div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
@@ -465,7 +602,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case .title:
     return h2(
       [
-        `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
+        `class`([Class.h4, Class.type.lineHeight(3)]),
         block.timestamp.map { id("t\($0)") }
         ]
         .flatMap { $0 },
@@ -560,32 +697,88 @@ func unsafeMark(from markdown: String) -> String {
   return String(cString: cString)
 }
 
-private enum EpisodePermission: Int /* 4.1 TODO: remove Int when auto-equatable synthesis is available */ {
-  case loggedOutAccess
-  case noAccess
-  case nonSubscriberAccess
-  case promoAccess
-  case subscriberAccess
-}
-
 private func isEpisodeViewable(
   _ permission: EpisodePermission,
   _ episode: Episode,
   _ subscriptionStatus: Stripe.Subscription.Status?
   ) -> Bool {
 
-//  switch permission {
-//  case .loggedOutAccess:
-//    <#code#>
-//  case .noAccess:
-//    <#code#>
-//  case .nonSubscriberAccess:
-//    <#code#>
-//  case .promoAccess:
-//    <#code#>
-//  case .subscriberAccess:
-//    <#code#>
-//  }
-
   return !episode.subscriberOnly || subscriptionStatus == .some(.active)
+}
+
+private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    return true
+  case .loggedIn(_, .isNotSubscriber(.isPromo)):
+    return true
+  case let .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly))):
+    return !isSubscriberOnly
+  case let .loggedOut(isSubscriberOnly):
+    return !isSubscriberOnly
+  }
+}
+
+private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    return false
+  case .loggedIn(_, _), .loggedOut(_):
+    return true
+  }
+}
+
+// TODO: rename promo to credit?
+private enum EpisodePermission {
+  case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
+  case loggedOut(isSubscriberOnly: Bool)
+
+  enum SubscriptionPermission {
+    case isSubscriber
+    case isNotSubscriber(promoPermission: PromoPermission)
+
+    enum PromoPermission {
+      case isPromo
+      case isNotPromo(isSubscriberOnly: Bool)
+    }
+  }
+}
+
+extension EpisodePermission: Equatable {
+  static func == (lhs: EpisodePermission, rhs: EpisodePermission) -> Bool {
+    switch (lhs, rhs) {
+    case let (.loggedIn(lhsUser, lhsPermission), .loggedIn(rhsUser, rhsPermission)):
+      return lhsUser.id.unwrap == rhsUser.id.unwrap && lhsPermission == rhsPermission
+    case let (.loggedOut(lhs), .loggedOut(rhs)):
+      return lhs == rhs
+    case (.loggedIn, _), (.loggedOut, _):
+      return false
+    }
+  }
+}
+
+extension EpisodePermission.SubscriptionPermission: Equatable {
+  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission, rhs: EpisodePermission.SubscriptionPermission) -> Bool {
+    switch (lhs, rhs) {
+    case (.isSubscriber, .isSubscriber):
+      return true
+    case let (.isNotSubscriber(lhs), .isNotSubscriber(rhs)):
+      return lhs == rhs
+    case (.isSubscriber, _), (.isNotSubscriber, _):
+      return false
+    }
+  }
+}
+
+extension EpisodePermission.SubscriptionPermission.PromoPermission: Equatable {
+  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission.PromoPermission, rhs: EpisodePermission.SubscriptionPermission.PromoPermission) -> Bool {
+    switch (lhs, rhs) {
+    case (.isPromo, .isPromo):
+      return true
+    case let (.isNotPromo(lhs), .isNotPromo(rhs)):
+      return lhs == rhs
+    case (.isPromo, _), (.isNotPromo, _):
+      return false
+    }
+  }
 }

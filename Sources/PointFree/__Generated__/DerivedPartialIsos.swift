@@ -334,6 +334,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Episode.Id
+        ), B == Route {
+
+          public static let useEpisodeCredit = parenthesize <| PartialIso(
+            apply: Route.useEpisodeCredit,
+            unapply: {
+              guard case let .useEpisodeCredit(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Webhooks
         ), B == Route {
 

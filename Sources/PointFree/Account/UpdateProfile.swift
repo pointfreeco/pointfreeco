@@ -60,7 +60,7 @@ let updateProfileMiddleware =
         updateFlash = flash(.notice, "We’ve updated your profile!")
       }
 
-      return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings)
+      return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
         .run
         .flatMap(
           const(
@@ -87,7 +87,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
     )
     .run({ _ in })
 
-  return AppEnvironment.current.database.updateUser(userId, nil, newEmailAddress, nil)
+  return AppEnvironment.current.database.updateUser(userId, nil, newEmailAddress, nil, nil)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }

@@ -130,7 +130,9 @@ extension URLRequest {
       .flatMap { (pair: [String]) -> (String, String) in
         (pair[0], pair.count == 2 ? pair[1] : "")
     }
-    return .init(uniqueKeysWithValues: pairs)
+    // TODO: WHAT?!
+    return [String: String].init(pairs, uniquingKeysWith: { $1 })
+//    return .init(uniqueKeysWithValues: pairs)
   }
 }
 

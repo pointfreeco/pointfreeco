@@ -26,6 +26,7 @@ public enum Route: DerivePartialIsos {
   case home
   case subscribe(SubscribeData?)
   case team(Team)
+  case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
 
   public enum Account: DerivePartialIsos {
@@ -232,9 +233,12 @@ private let routers: [Router<Route>] = [
 
   .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
-    %> pathParam(.rawRepresentable >>> .rawRepresentable)
+    %> pathParam(.uuid >>> .tagged)
     <% lit("remove")
     <% end,
+
+  .useEpisodeCredit
+    <¢> post %> lit("episodes") %> pathParam(.int >>> .tagged) <% lit("credit") <% end,
 
   .webhooks <<< .stripe <<< .invoice
     <¢> post %> lit("webhooks") %> lit("stripe")

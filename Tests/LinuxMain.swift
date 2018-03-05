@@ -128,6 +128,11 @@ extension EnvVarTests {
     ("testDecoding", testDecoding)
   ]
 }
+extension EnvironmentTests {
+  static var allTests: [(String, (EnvironmentTests) -> () throws -> Void)] = [
+    ("testDefault", testDefault)
+  ]
+}
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
     ("testEpisodePage", testEpisodePage),
@@ -300,6 +305,7 @@ XCTMain([
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
+  testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),

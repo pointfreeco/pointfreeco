@@ -23,7 +23,7 @@ public struct Database {
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
-  var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
+  var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
@@ -47,7 +47,7 @@ public struct Database {
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
-    updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
+    updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodePromoCount:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
     migrate: PointFree.migrate
   )
@@ -85,6 +85,7 @@ public struct Database {
 
   public struct User: Decodable {
     public internal(set) var email: EmailAddress
+    public internal(set) var episodePromoCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
     public internal(set) var gitHubAccessToken: String
     public internal(set) var id: Id
@@ -96,6 +97,7 @@ public struct Database {
 
     public enum CodingKeys: String, CodingKey {
       case email
+      case episodePromoCount = "episode_promo_count"
       case gitHubUserId = "github_user_id"
       case gitHubAccessToken = "github_access_token"
       case id
@@ -268,20 +270,23 @@ private func updateUser(
   withId userId: Database.User.Id,
   name: String?,
   email: EmailAddress?,
-  emailSettings: [Database.EmailSetting.Newsletter]?
+  emailSettings: [Database.EmailSetting.Newsletter]?,
+  episodePromoCount: Int?
   ) -> EitherIO<Error, Prelude.Unit> {
 
   return execute(
     """
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
-        "email" = COALESCE($2, "email")
-    WHERE "id" = $3
+        "email" = COALESCE($2, "email"),
+        "episode_promo_count" = COALESCE($3, "episode_promo_count")
+    WHERE "id" = $4
     """,
     [
       name,
       email?.unwrap,
       userId.unwrap.uuidString,
+      episodePromoCount
     ]
     )
     .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
@@ -368,8 +373,14 @@ private func upsertUser(
 private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
-    FROM "users"
+    SELECT "email",
+           "episode_promo_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
     WHERE "email" = $1
     LIMIT 1
     """,
@@ -380,7 +391,14 @@ private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
+    SELECT "email",
+           "episode_promo_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -409,7 +427,14 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
+    SELECT "email",
+           "episode_promo_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -610,6 +635,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_promos_on_episode_sequence_and_user_id"
       ON "episode_promos" ("episode_sequence", "user_id")
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "episode_promo_count" integer NOT NULL DEFAULT 0
       """
     )))
     .map(const(unit))
