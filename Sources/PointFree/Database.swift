@@ -285,8 +285,8 @@ private func updateUser(
     [
       name,
       email?.unwrap,
-      userId.unwrap.uuidString,
-      episodePromoCount
+      episodePromoCount,
+      userId.unwrap.uuidString
     ]
     )
     .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))

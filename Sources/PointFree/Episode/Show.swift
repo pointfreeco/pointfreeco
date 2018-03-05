@@ -44,11 +44,17 @@ private func applyCreditMiddleware<Z>(
       either(
         const(
           conn
-            |> redirect(to: .home, headersMiddleware: flash(.warning, "Something went wrong."))
+            |> redirect(
+              to: .episode(.left(episode.slug)),
+              headersMiddleware: flash(.warning, "Something went wrong.")
+          )
         ),
         const(
           conn
-            |> redirect(to: .home, headersMiddleware: flash(.notice, "You now have access to this episode!"))
+            |> redirect(
+              to: .episode(.left(episode.slug)),
+              headersMiddleware: flash(.notice, "You now have access to this episode!")
+          )
         )
       )
   )
