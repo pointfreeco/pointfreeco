@@ -83,6 +83,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(data .*. user .*. unit))
         |> updateProfileMiddleware
 
+    case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
+      return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
+        |> addEpisodeCreditMiddleware
+
+    case .admin(.episodeCredits(.show)):
+      return conn.map(const(user .*. unit))
+        |> showEpisodeCreditsMiddleware
+
     case .admin(.index):
       return conn.map(const(user .*. unit))
         |> adminIndex

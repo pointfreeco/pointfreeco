@@ -613,6 +613,20 @@ import Prelude
 
 
 
+      extension PartialIso where A == (
+            Route.Admin.EpisodeCredit
+        ), B == Route.Admin {
+
+          public static let episodeCredits = parenthesize <| PartialIso(
+            apply: Route.Admin.episodeCredits,
+            unapply: {
+              guard case let .episodeCredits(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Route.Admin {
         public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Admin>(
           apply: const(.some(.index)),
@@ -634,6 +648,33 @@ import Prelude
               guard case let .newEpisodeEmail(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == (
+            String?
+          , 
+            Int?
+        ), B == Route.Admin.EpisodeCredit {
+
+          public static let add = parenthesize <| PartialIso(
+            apply: Route.Admin.EpisodeCredit.add,
+            unapply: {
+              guard case let .add(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Admin.EpisodeCredit {
+        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.EpisodeCredit>(
+          apply: const(.some(.show)),
+          unapply: {
+            guard case .show = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
