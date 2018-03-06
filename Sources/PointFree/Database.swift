@@ -4,13 +4,13 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var addEpisodePromo: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
+  var addEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
-  var fetchEpisodePromos: (User.Id) -> EitherIO<Error, [EpisodePromo]>
+  var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
   var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
@@ -28,13 +28,13 @@ public struct Database {
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
-    addEpisodePromo: PointFree.addEpisodePromo(episodeSequence:userId:),
+    addEpisodeCredit: PointFree.addEpisodeCredit(episodeSequence:userId:),
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
-    fetchEpisodePromos: PointFree.fetchEpisodePromos(for:),
+    fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
     fetchSubscriptionById: PointFree.fetchSubscription(id:),
     fetchSubscriptionByOwnerId: PointFree.fetchSubscription(ownerId:),
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
@@ -47,7 +47,7 @@ public struct Database {
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
-    updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodePromoCount:),
+    updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
     migrate: PointFree.migrate
   )
@@ -73,7 +73,7 @@ public struct Database {
     }
   }
 
-  public struct EpisodePromo: Decodable {
+  public struct EpisodeCredit: Decodable {
     public internal(set) var episodeSequence: Int
     public internal(set) var userId: User.Id
 
@@ -85,7 +85,7 @@ public struct Database {
 
   public struct User: Decodable {
     public internal(set) var email: EmailAddress
-    public internal(set) var episodePromoCount: Int
+    public internal(set) var episodeCreditCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
     public internal(set) var gitHubAccessToken: String
     public internal(set) var id: Id
@@ -97,7 +97,7 @@ public struct Database {
 
     public enum CodingKeys: String, CodingKey {
       case email
-      case episodePromoCount = "episode_promo_count"
+      case episodeCreditCount = "episode_credit_count"
       case gitHubUserId = "github_user_id"
       case gitHubAccessToken = "github_access_token"
       case id
@@ -271,7 +271,7 @@ private func updateUser(
   name: String?,
   email: EmailAddress?,
   emailSettings: [Database.EmailSetting.Newsletter]?,
-  episodePromoCount: Int?
+  episodeCreditCount: Int?
   ) -> EitherIO<Error, Prelude.Unit> {
 
   return execute(
@@ -279,13 +279,13 @@ private func updateUser(
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
         "email" = COALESCE($2, "email"),
-        "episode_promo_count" = COALESCE($3, "episode_promo_count")
+        "episode_credit_count" = COALESCE($3, "episode_credit_count")
     WHERE "id" = $4
     """,
     [
       name,
       email?.unwrap,
-      episodePromoCount,
+      episodeCreditCount,
       userId.unwrap.uuidString
     ]
     )
@@ -374,7 +374,7 @@ private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.
   return firstRow(
     """
     SELECT "email",
-           "episode_promo_count",
+           "episode_credit_count",
            "github_user_id",
            "github_access_token",
            "id",
@@ -392,7 +392,7 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
   return firstRow(
     """
     SELECT "email",
-           "episode_promo_count",
+           "episode_credit_count",
            "github_user_id",
            "github_access_token",
            "id",
@@ -428,7 +428,7 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
   return firstRow(
     """
     SELECT "email",
-           "episode_promo_count",
+           "episode_credit_count",
            "github_user_id",
            "github_access_token",
            "id",
@@ -517,22 +517,22 @@ private func fetchEmailSettings(forUserId userId: Database.User.Id) -> EitherIO<
   )
 }
 
-private func fetchEpisodePromos(for userId: Database.User.Id) -> EitherIO<Error, [Database.EpisodePromo]> {
+private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error, [Database.EpisodeCredit]> {
   return rows(
     """
     SELECT "episode_sequence", "user_id"
-    FROM "episode_promos"
+    FROM "episode_credits"
     WHERE "user_id" = $1
     """,
     [userId.unwrap.uuidString]
   )
 }
 
-private func addEpisodePromo(episodeSequence: Int, userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
+private func addEpisodeCredit(episodeSequence: Int, userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
   return execute(
     """
-    INSERT INTO "episode_promos" ("episode_sequence", "user_id")
+    INSERT INTO "episode_credits" ("episode_sequence", "user_id")
     VALUES ($1, $2)
     """,
     [
@@ -625,7 +625,7 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE TABLE IF NOT EXISTS "episode_promos" (
+      CREATE TABLE IF NOT EXISTS "episode_credits" (
         "episode_sequence" integer,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
@@ -633,15 +633,15 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
     )))
     .flatMap(const(execute(
       """
-      CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_promos_on_episode_sequence_and_user_id"
-      ON "episode_promos" ("episode_sequence", "user_id")
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
+      ON "episode_credits" ("episode_sequence", "user_id")
       """
     )))
     .flatMap(const(execute(
       """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
-      "episode_promo_count" integer NOT NULL DEFAULT 0
+      "episode_credit_count" integer NOT NULL DEFAULT 0
       """
     )))
     .map(const(unit))

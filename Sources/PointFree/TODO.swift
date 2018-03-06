@@ -108,6 +108,30 @@ public func zip<A, B, C, D>(
   return tuple4 <¢> a <*> b <*> c <*> d
 }
 
+public func zip5<A, B, C, D, E>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>
+  ) -> Parallel<(A, B, C, D, E)> {
+
+  return tuple5 <¢> a <*> b <*> c <*> d <*> e
+}
+
+public func tuple5<A, B, C, D, E>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (A, B, C, D, E) {
+  return { b in { c in { d in { e in (a, b, c, d, e) } } } }
+}
+
+public typealias T8<A, B, C, D, E, F, G, Z> = Tuple<A, T7<B, C, D, E, F, G, Z>>
+public typealias Tuple7<A, B, C, D, E, F, G> = T8<A, B, C, D, E, F, G, Prelude.Unit>
+public func get7<A, B, C, D, E, F, G, Z>(_ t: T8<A, B, C, D, E, F, G, Z>) -> G {
+  return t.second.second.second.second.second.second.first
+}
+public func lower<A, B, C, D, E, F, G>(_ tuple: Tuple7<A, B, C, D, E, F, G>) -> (A, B, C, D, E, F, G) {
+  return (get1(tuple), get2(tuple), get3(tuple), get4(tuple), get5(tuple), get6(tuple), get7(tuple))
+}
+
 // better way of doing this? or should we add to Either.swift?
 public func requireSome<A>(_ e: Either<Error, A?>) -> Either<Error, A> {
   switch e {

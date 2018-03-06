@@ -27,7 +27,7 @@ private func applyCreditMiddleware<Z>(
 
   let (episode, user) = (get2(conn.data), get3(conn.data))
 
-  guard user.episodePromoCount > 0 else {
+  guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
         to: .episode(.left(episode.slug)),
@@ -35,9 +35,9 @@ private func applyCreditMiddleware<Z>(
     )
   }
 
-  return AppEnvironment.current.database.addEpisodePromo(episode.sequence, user.id)
+  return AppEnvironment.current.database.addEpisodeCredit(episode.sequence, user.id)
     .flatMap { _ in
-      AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodePromoCount - 1)
+      AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
     }
     .run
     .flatMap(
@@ -67,7 +67,7 @@ private func validateCreditRequest<Z>(
   return { conn in
     let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-    guard user.episodePromoCount > 0 else {
+    guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
           to: .episode(.left(episode.slug)),
@@ -136,11 +136,8 @@ private func userEpisodePermission<I, Z>(
       return pure(conn.map(const(permission .*. conn.data)))
     }
 
-    // TODO: remove
-//    return pure(conn.map(const(EpisodePermission.loggedIn(user: user, subscriptionPermission: .isNotSubscriber(promoPermission: .isNotPromo(isSubscriberOnly: true))) .*. conn.data)))
-
-    let userHasEpisodePromo = AppEnvironment.current.database.fetchEpisodePromos(user.id)
-      .map { promos in promos.contains { $0.episodeSequence == episode.sequence } }
+    let userHasEpisodeCredit = AppEnvironment.current.database.fetchEpisodeCredits(user.id)
+      .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
       .run
       .map { $0.right ?? false }
 
@@ -156,18 +153,18 @@ private func userEpisodePermission<I, Z>(
       .run
       .map { $0.right ?? false }
 
-    let permission = zip(userHasEpisodePromo.parallel, userIsSubscribed.parallel)
-      .map { (hasPromo, isSubscribed) -> EpisodePermission in
-        switch (hasPromo, isSubscribed) {
+    let permission = zip(userHasEpisodeCredit.parallel, userIsSubscribed.parallel)
+      .map { (hasCredit, isSubscribed) -> EpisodePermission in
+        switch (hasCredit, isSubscribed) {
         case (_, true):
           return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
         case (true, false):
-          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(promoPermission: .isPromo))
+          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(creditPermission: .isCredit))
         case (false, false):
           return .loggedIn(
             user: user,
             subscriptionPermission: .isNotSubscriber(
-              promoPermission: .isNotPromo(isSubscriberOnly: episode.subscriberOnly)
+              creditPermission: .isNotCredit(isSubscriberOnly: episode.subscriberOnly)
             )
           )
         }
@@ -404,19 +401,19 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   case .loggedIn(_, .isSubscriber):
     fatalError("This should never be called.")
 
-  case .loggedIn(_, .isNotSubscriber(.isPromo)):
+  case .loggedIn(_, .isNotSubscriber(.isCredit)):
     return """
-    You have access to this episode because you used a promotional credit. To get access to all past and
+    You have access to this episode because you used a free episode credit. To get access to all past and
     future episodes, become a subscriber today!
     """
 
-  case .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly: true))):
+  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: true))):
     return """
     This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
     today!
     """
 
-  case .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly: false))):
+  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: false))):
     return """
     This episode is free to all users. To get access to all past and future episodes, become a
     subscriber today!
@@ -436,10 +433,10 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   }
 }
 
-private let promoBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
   guard
-    case let .loggedIn(user, .isNotSubscriber(.isNotPromo(true))) = permission,
-    user.episodePromoCount > 0
+    case let .loggedIn(user, .isNotSubscriber(.isNotCredit(true))) = permission,
+    user.episodeCreditCount > 0
     else { return [] }
 
   return [
@@ -522,7 +519,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
           ["See subscription options"]
         )
       ]
-      <> promoBlurb.view((permission, episode))
+      <> creditBlurb.view((permission, episode))
     ),
     divider
   ]
@@ -716,9 +713,9 @@ private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
   switch permission {
   case .loggedIn(_, .isSubscriber):
     return true
-  case .loggedIn(_, .isNotSubscriber(.isPromo)):
+  case .loggedIn(_, .isNotSubscriber(.isCredit)):
     return true
-  case let .loggedIn(_, .isNotSubscriber(.isNotPromo(isSubscriberOnly))):
+  case let .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly))):
     return !isSubscriberOnly
   case let .loggedOut(isSubscriberOnly):
     return !isSubscriberOnly
@@ -734,18 +731,17 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
   }
 }
 
-// TODO: rename promo to credit?
 private enum EpisodePermission {
   case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
   case loggedOut(isSubscriberOnly: Bool)
 
   enum SubscriptionPermission {
     case isSubscriber
-    case isNotSubscriber(promoPermission: PromoPermission)
+    case isNotSubscriber(creditPermission: CreditPermission)
 
-    enum PromoPermission {
-      case isPromo
-      case isNotPromo(isSubscriberOnly: Bool)
+    enum CreditPermission {
+      case isCredit
+      case isNotCredit(isSubscriberOnly: Bool)
     }
   }
 }
@@ -776,14 +772,14 @@ extension EpisodePermission.SubscriptionPermission: Equatable {
   }
 }
 
-extension EpisodePermission.SubscriptionPermission.PromoPermission: Equatable {
-  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission.PromoPermission, rhs: EpisodePermission.SubscriptionPermission.PromoPermission) -> Bool {
+extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
+  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission.CreditPermission, rhs: EpisodePermission.SubscriptionPermission.CreditPermission) -> Bool {
     switch (lhs, rhs) {
-    case (.isPromo, .isPromo):
+    case (.isCredit, .isCredit):
       return true
-    case let (.isNotPromo(lhs), .isNotPromo(rhs)):
+    case let (.isNotCredit(lhs), .isNotCredit(rhs)):
       return lhs == rhs
-    case (.isPromo, _), (.isNotPromo, _):
+    case (.isCredit, _), (.isNotCredit, _):
       return false
     }
   }
