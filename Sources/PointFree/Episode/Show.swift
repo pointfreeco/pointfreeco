@@ -11,6 +11,33 @@ import Prelude
 import Styleguide
 import Tuple
 
+let episodeResponse =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    )
+    <| writeStatus(.ok)
+    >-> userEpisodePermission
+    >-> map(lower)
+    >>> respond(
+      view: episodeView,
+      layoutData: { permission, episode, currentUser, subscriptionStatus, currentRoute in
+        let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
+
+        return SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriptionStatus: subscriptionStatus,
+          currentUser: currentUser,
+          data: (permission, currentUser, subscriptionStatus, episode),
+          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          image: episode.image,
+          navStyle: navStyle,
+          title: "Episode #\(episode.sequence): \(episode.title)",
+          usePrismJs: true
+        )
+    }
+)
+
 let useCreditResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
@@ -86,33 +113,6 @@ private func validateCreditRequest<Z>(
     )
   }
 }
-
-let episodeResponse =
-  filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
-    )
-    <| writeStatus(.ok)
-    >-> userEpisodePermission
-    >-> map(lower)
-    >>> respond(
-      view: episodeView,
-      layoutData: { permission, episode, currentUser, subscriptionStatus, currentRoute in
-        let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
-
-        return SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriptionStatus: subscriptionStatus,
-          currentUser: currentUser,
-          data: (permission, currentUser, subscriptionStatus, episode),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
-          image: episode.image,
-          navStyle: navStyle,
-          title: "Episode #\(episode.sequence): \(episode.title)",
-          usePrismJs: true
-        )
-    }
-)
 
 private func userEpisodePermission<I, Z>(
   _ conn: Conn<I, T4<Episode, Database.User?, Stripe.Subscription.Status?, Z>>
@@ -541,9 +541,17 @@ let divider = hr([`class`([Class.pf.components.divider])])
 let dividerView = View<Prelude.Unit>(const(divider))
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
-        + exercisesView.view(blocks.filter(^\.type.isExercise))
+  div(
+    [
+      `class`(
+        [
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+          Class.pf.colors.bg.white
+        ]
+      )
+    ],
+    blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
+      <> exercisesView.view(blocks.filter(^\.type.isExercise))
   )
 }
 
@@ -586,7 +594,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
   case .title:
     return h2(
       [
-        `class`([Class.h4, Class.type.lineHeight(3)]),
+        `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
         ]
         .flatMap { $0 },

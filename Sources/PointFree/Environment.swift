@@ -21,7 +21,7 @@ public struct Environment {
 
   init(
     // TODO: CHANGE BACK TO PLAIN TEXT
-    cookieTransform: CookieTransform = .plaintext,
+    cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),

@@ -15,8 +15,8 @@ public struct Logger {
 
   public func log<A>(_ level: Level, _ message: @autoclosure () -> A) {
     if level.rawValue >= self.level.rawValue {
-      self.logger(String(describing: message()))
-      fflush(stdout)
+//      self.logger(String(describing: message()))
+//      fflush(stdout)
     }
   }
 

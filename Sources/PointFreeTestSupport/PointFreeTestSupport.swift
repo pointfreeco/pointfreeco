@@ -50,7 +50,7 @@ extension Database {
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
     fetchEmailSettingsForUserId: const(pure([.mock])),
-    fetchEpisodeCredits: { _ in hole() },
+    fetchEpisodeCredits: const(pure([])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),
@@ -63,7 +63,7 @@ extension Database {
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
-    updateUser: { _, _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) },
     migrate: { pure(unit) }
   )
@@ -72,6 +72,7 @@ extension Database {
 extension Database.User {
   public static let mock = Database.User(
     email: .init(unwrap: "hello@pointfree.co"),
+    episodeCreditCount: 0,
     gitHubUserId: .init(unwrap: 1),
     gitHubAccessToken: "deadbeef",
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
