@@ -37,7 +37,7 @@ public enum Route: DerivePartialIsos {
     case update(ProfileData?)
 
     public enum PaymentInfo: DerivePartialIsos {
-      case show
+      case show(expand: Bool?)
       case update(Stripe.Token.Id?)
     }
 
@@ -126,7 +126,9 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("account") <% end,
 
   .account <<< .paymentInfo <<< .show
-    <¢> get %> lit("account") %> lit("payment-info") <% end,
+    <¢> get %> lit("account") %> lit("payment-info")
+    %> queryParam("expand", opt(.bool))
+    <% end,
 
   .account <<< .paymentInfo <<< .update
     <¢> post %> lit("account") %> lit("payment-info")
@@ -317,19 +319,11 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
   fileprivate static var pricing: PartialIso {
     return PartialIso(
       apply: { plan, quantity in
-        let pricing: Pricing
-        if let quantity = quantity {
-          pricing = .team(quantity)
-        } else if let plan = plan, let billing = Pricing.Billing(rawValue: plan) {
-          pricing = .individual(billing)
-        } else {
-          pricing = .default
-        }
-        return pricing
+        let billing = plan.flatMap(Pricing.Billing.init(rawValue:)) ?? .monthly
+        let quantity = clamp(1..<Pricing.validTeamQuantities.upperBound) <| (quantity ?? 1)
+        return Pricing(billing: billing, quantity: quantity)
     }, unapply: { pricing -> (String?, Int?) in
-      pricing.isTeam
-        ? (.some(pricing.billing.rawValue), pricing.quantity)
-        : (.some(pricing.billing.rawValue), nil)
+      (pricing.billing.rawValue, pricing.quantity)
     })
   }
 }

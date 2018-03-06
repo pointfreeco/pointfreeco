@@ -72,19 +72,24 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
   )
 }
 
+enum JSONError: Error {
+  case error(String, Error)
+}
+
 public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = nil)
   -> EitherIO<Error, A>
   where A: Decodable {
 
     return dataTask(with: request)
-      .map(
-        first >>> {
-          AppEnvironment.current.logger.debug(String(decoding: $0, as: UTF8.self))
-          return $0
-        }
-      )
+      .map(first)
       .flatMap { data in
-        .wrap { try (decoder ?? defaultDecoder).decode(A.self, from: data) }
+        .wrap {
+          do {
+            return try (decoder ?? defaultDecoder).decode(A.self, from: data)
+          } catch {
+            throw JSONError.error(String(decoding: data, as: UTF8.self), error)
+          }
+        }
     }
 }
 

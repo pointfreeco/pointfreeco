@@ -671,9 +671,7 @@ let markdownBlockStyles: Stylesheet =
 )
 
 func markdownBlock(_ markdown: String) -> Node {
-  return div([`class`([markdownContainerClass])], [
-    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
-    ])
+  return markdownBlock([], markdown)
 }
 
 func markdownBlock(_ attribs: [Attribute<Element.Div>] = [], _ markdown: String) -> Node {

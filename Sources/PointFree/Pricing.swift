@@ -10,13 +10,11 @@ import Prelude
 import Styleguide
 import Tuple
 
-public enum Pricing: Codable, DerivePartialIsos {
-  case individual(Billing)
-  case team(Int)
+public struct Pricing {
+  let billing: Billing
+  let quantity: Int
 
-  public static let `default` = individual(.monthly)
-
-  public static let teamYearlyBase = 160
+  public static let `default` = Pricing(billing: .monthly, quantity: 1)
 
   public static let validTeamQuantities = 2..<100
 
@@ -25,89 +23,63 @@ public enum Pricing: Codable, DerivePartialIsos {
     case yearly
   }
 
+  enum Lane: String, Codable {
+    case individual
+    case team
+  }
+
   private enum CodingKeys: String, CodingKey {
-    case individual
-    case team
     case lane
+    case billing
+    case quantity
   }
 
-  private enum Lane: String, Codable {
-    case individual
-    case team
+  var plan: Stripe.Plan.Id {
+    switch (self.billing, self.quantity) {
+    case (.monthly, 1):
+      return .individualMonthly
+    case (.yearly, 1):
+      return .individualYearly
+    case (.monthly, _):
+      return .teamMonthly
+    case (.yearly, _):
+      return .teamYearly
+    }
   }
 
+  var lane: Lane {
+    return self.quantity == 1
+      ? .individual
+      : .team
+  }
+
+  var isIndividual: Bool {
+    return self.lane == .individual
+  }
+
+  var isTeam: Bool {
+    return self.lane == .team
+  }
+}
+
+extension Pricing: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let billing = try container.decodeIfPresent(Billing.self, forKey: .individual)
-    let quantity = try container.decodeIfPresent(Int.self, forKey: .team)
-    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
-
-    if let lane = lane, let billing = billing, let quantity = quantity {
-      self = lane == .individual ? .individual(billing) : .team(quantity)
-    } else if let billing = billing {
-      self = .individual(billing)
-    } else if let quantity = quantity {
-      self = .team(quantity)
+    let lane = try container.decode(Lane.self, forKey: .lane)
+    let billing = try container.decode(Billing.self, forKey: .billing)
+    if lane == .individual {
+      self.init(billing: billing, quantity: 1)
     } else {
-      throw unit // FIXME
+      let quantity = try container.decode(Int.self, forKey: .quantity)
+      self.init(billing: billing, quantity: quantity)
     }
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    switch self {
-    case let .individual(billing):
-      try container.encode(billing, forKey: .individual)
-    case let .team(quantity):
-      try container.encode(quantity, forKey: .team)
-    }
-  }
-
-  var plan: Stripe.Plan.Id {
-    switch self {
-    case .individual(.monthly):
-      return .individualMonthly
-    case .individual(.yearly):
-      return .individualYearly
-    case .team:
-      return .teamYearly
-    }
-  }
-
-  var quantity: Int {
-    switch self {
-    case .individual:
-      return 1
-    case let .team(quantity):
-      return quantity
-    }
-  }
-
-  var billing: Billing {
-    switch self {
-    case let .individual(billing):
-      return billing
-    case .team:
-      return .yearly
-    }
-  }
-
-  var isIndividual: Bool {
-    switch self {
-    case .individual:
-      return true
-    case .team:
-      return false
-    }
-  }
-
-  var isTeam: Bool {
-    switch self {
-    case .team:
-      return true
-    case .individual:
-      return false
-    }
+    try container.encode(self.lane, forKey: .lane)
+    try container.encode(self.billing, forKey: .billing)
+    try container.encode(self.quantity, forKey: .quantity)
   }
 }
 
@@ -165,12 +137,13 @@ let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pr
                 action(path(to: .subscribe(nil))),
                 id(Stripe.html.formId),
                 method(.post),
-                onsubmit(javascript: "event.preventDefault();")
+                onsubmit(javascript: "event.preventDefault()")
               ],
               pricingTabsView.view(pricing)
-                + individualPricingRowView.view(pricing)
-                + teamPricingRowView.view(pricing)
-                + pricingFooterView.view((currentUser, expand))
+                <> [div([`class`([Class.margin([.mobile: [.bottom: 3]])])], [])]
+                <> quantityRowView.view(pricing)
+                <> pricingIntervalRowView.view(pricing)
+                <> pricingFooterView.view((currentUser, expand))
             )
             ])
           ])
@@ -274,7 +247,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
         "We’re ",
         a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], ["Brandon Williams"]),
         " and ",
-        a([href("http://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
+        a([href("https://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
         ". We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of ",
         "talks on various topics. Check out some of our talks here:"
       ]
@@ -288,7 +261,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
           ]),
 
         li([
-          a([href("http://www.stephencelis.com"), style(faqLinkStyles)],
+          a([href("https://www.stephencelis.com"), style(faqLinkStyles)],
             ["Stephen’s talks"])
           ])
       ])
@@ -300,9 +273,9 @@ private let faqView = View<Prelude.Unit> { _ in
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)
-            + topicsView.view(unit)
-            + suggestATopic.view(unit)
-            + whoAreYou.view(unit)
+            <> topicsView.view(unit)
+            <> suggestATopic.view(unit)
+            <> whoAreYou.view(unit)
       )
       ])
     ])
@@ -344,11 +317,27 @@ private let pricingTabsView = View<Pricing> { pricing in
   ]
 }
 
-private let individualPricingRowView = View<Pricing> { pricing in
+private let pricingIntervalRowView = View<Pricing> { pricing in
   gridRow(
-    [id(selectors.content.0), `class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])],
+    [`class`([Class.pf.colors.bg.white])],
     individualPricingColumnView.view((.monthly, pricing))
       <> individualPricingColumnView.view((.yearly, pricing))
+      <> [
+        gridColumn(sizes: [.mobile: 12], [`class`([Class.pf.colors.bg.white])], [
+          p([
+            `class`([
+              selectors.content.1,
+              Class.padding([.mobile: [.bottom: 1]]),
+              Class.pf.colors.fg.gray400,
+              Class.pf.type.body.small,
+              Class.size.width100pct,
+              Class.type.align.center,
+              Class.type.normal,
+              ])
+            ],
+            ["Up to 20% off the Individual Monthly plan"])
+          ])
+    ]
   )
 }
 
@@ -358,91 +347,86 @@ private func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
     : billing == .monthly
 }
 
-private let individualPricingColumnView = View<(billing: Pricing.Billing, pricing: Pricing)> {
+private let teamPriceClass = CssSelector.class("team-price")
+
+private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
+return
   gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
-    label([`for`(radioId(for: $0.billing)), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
+    label([`for`(radioId(for: billing)), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
-          checked(isChecked($0.billing, $0.pricing)),
-          id(radioId(for: $0.billing)),
-          name("pricing[individual]"),
+          checked(isChecked(billing, pricing)),
+          id(radioId(for: billing)),
+          name("pricing[billing]"),
           type(.radio),
-          value($0.billing.rawValue),
+          value(billing.rawValue),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.title2, Class.type.light, Class.pf.colors.fg.gray650])], [.text(encode(pricingText(for: $0.billing)))]),
+          h2([`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
+            span([`class`([selectors.content.0])], [
+              text(individualPricingText(for: billing)),
+              ]),
+            span([`class`([selectors.content.1])], [
+              "$",
+              span(
+                [`class`([teamPriceClass]), data("price", String(defaultTeamPricing(for: billing)))],
+                [text(String(defaultTeamPricing(for: billing) * clamp(Pricing.validTeamQuantities)(pricing.quantity)))]
+              ),
+              "/",
+              text(pricingInterval(for: billing)),
+              ]),
+            ]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650])], [.text(encode(title(for: $0.billing)))]),
+          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650, Class.display.inline])], [
+            text(title(for: billing))
+            ]),
           ]),
-        ])
+        ]),
       ])
     ])
 }
 
-private let teamPricingRowView = View<Pricing> { pricing -> Node in
+private let quantityRowView = View<Pricing> { pricing -> Node in
 
   let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
 
-  return gridRow([id(selectors.content.1), `class`([Class.pf.colors.bg.white, Class.margin([.mobile: [.top: 3]])])], [
-    gridColumn(sizes: [.mobile: 12], [], [
-      div([`class`([Class.padding([.mobile: [.all: 3]])])], [
+  return div([`class`([Class.flex.flex])], [
+    gridRow([`class`([selectors.content.1, Class.pf.colors.bg.white, Class.size.width100pct])], [
+      gridColumn(sizes: [.mobile: 12], [], [
+        div([`class`([Class.padding([.mobile: [.top: 3, .left: 3, .right: 3]])])], [
 
-        p([`class`([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
-        
-        input([
-          `class`([numberSpinner, Class.pf.colors.fg.black]),
-          max(Pricing.validTeamQuantities.upperBound),
-          min(Pricing.validTeamQuantities.lowerBound),
-          name("pricing[team]"),
-          onchange(
-            unsafeJavascript: """
-            document.getElementById('team-rate').textContent =
-              (this.valueAsNumber * \(Pricing.teamYearlyBase))
-              .toString()
-              .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ",");
-            """
-          ),
-          step(1),
-          type(.number),
-          value(quantity),
-          ]),
+          p([`class`([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
 
-        hr([
-          `class`([
-            Class.pf.components.divider,
-            Class.margin([.mobile: [.topBottom: 3]])
-            ]),
-          ]),
-
-        h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.black])], ["Yearly Plan"]),
-
-        h6([
-          `class`([
-            Class.pf.type.responsiveTitle1,
-            Class.type.light,
-            Class.pf.colors.fg.black,
-            Class.margin([.mobile: [.bottom: 0]])
-            ])
-          ], [
-            "$",
-            span(
-              [id("team-rate")],
-              [text(String(format: "%d", Pricing.teamYearlyBase * quantity))]
+          input([
+            `class`([numberSpinner, Class.pf.colors.fg.black]),
+            max(Pricing.validTeamQuantities.upperBound),
+            min(Pricing.validTeamQuantities.lowerBound),
+            name("pricing[quantity]"),
+            onchange(
+              unsafeJavascript: """
+              var multiplier = this.valueAsNumber;
+              var elements = document.getElementsByClassName('team-price');
+              for (var idx = 0; idx < elements.length; idx++) {
+                var element = elements[idx];
+                element.textContent = (multiplier * element.dataset.price)
+                  .toString()
+                  .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+              }
+              """
             ),
-            "/yr"
-          ]),
+            step(1),
+            type(.number),
+            value(quantity),
+            ]),
 
-        p([
-          `class`([
-            Class.pf.type.body.small,
-            Class.type.normal,
-            Class.pf.colors.fg.gray400,
-            Class.margin([.mobile: [.top: 0]])
-            ])
-          ],
-          ["20% off individual monthly"]
-        )
+          hr([
+            `class`([
+              Class.pf.components.divider,
+              Class.margin([.mobile: [.top: 3]])
+              ]),
+            ]),
+          ])
         ])
       ])
     ])
@@ -470,17 +454,17 @@ private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expa
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map { stripeForm.view(($0.name, expand)) }
-          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: nil))]
+          .map(const(stripeForm.view(expand)))
+          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: expand))]
         )
       ])
     ])
 }
 
-private let stripeForm = View<(String?, Bool)> { billingName, expand in
+private let stripeForm = View<Bool> { expand in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(billingName: billingName ?? "", expand: expand)
+    Stripe.html.cardInput(expand: expand)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [
@@ -495,9 +479,9 @@ private let stripeForm = View<(String?, Bool)> { billingName, expand in
 private func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
-    return "Monthly Individual Plan"
+    return "Monthly Plan"
   case .yearly:
-    return "Yearly Individual Plan"
+    return "Yearly Plan"
   }
 }
 
@@ -510,12 +494,30 @@ private func radioId(for type: Pricing.Billing) -> String {
   }
 }
 
-private func pricingText(for type: Pricing.Billing) -> String {
+private func individualPricingText(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
-    return "$17/mo"
+    return "$17/" + pricingInterval(for: type)
   case .yearly:
-    return "$170/yr"
+    return "$170/" + pricingInterval(for: type)
+  }
+}
+
+private func defaultTeamPricing(for type: Pricing.Billing) -> Int {
+  switch type {
+  case .monthly:
+    return 16
+  case .yearly:
+    return 160
+  }
+}
+
+private func pricingInterval(for type: Pricing.Billing) -> String {
+  switch type {
+  case .monthly:
+    return "mo"
+  case .yearly:
+    return "yr"
   }
 }
 
@@ -523,7 +525,7 @@ let pricingExtraStyles: Stylesheet =
   ((".block" ** input & .pseudo(.checked) ~ .star) > .star) % color(Colors.purple)
     <> input % color(Colors.gray650)
     <> input % margin(leftRight: .auto)
-    <> tabStyles(idSelectors: [(selectors.input.0, selectors.content.0), (selectors.input.1, selectors.content.1)])
+    <> tabStyles(selectors: [(selectors.input.0, selectors.content.0), (selectors.input.1, selectors.content.1)])
     <> extraSpinnerStyles
 
     // TODO: swift-web needs to support custom pseudoElem and pseudoClass
@@ -536,28 +538,28 @@ private let selectors = (
     CssSelector.id("tab1")
   ),
   content: (
-    CssSelector.id("content0"),
-    CssSelector.id("content1")
+    CssSelector.class("content0"),
+    CssSelector.class("content1")
   )
 )
 
 private func tabStyles(
-  idSelectors: [(input: CssSelector, content: CssSelector)],
-  showTabStyles: Stylesheet = display(.flex)
+  selectors: [(input: CssSelector, content: CssSelector)],
+  showTabStyles: Stylesheet = display(.inherit)
   )
   -> Stylesheet {
 
-    let hideContentStyles = idSelectors
+    let hideContentStyles = selectors
       .map { _, contentSelector in contentSelector % display(.none) }
       .concat()
 
-    let showContentStyles = idSelectors
+    let showContentStyles = selectors
       .map { inputSelector, contentSelector in
-        (inputSelector & .pseudo(.checked) ~ contentSelector) % showTabStyles
+        (inputSelector & .pseudo(.checked) ~ .star ** contentSelector) % showTabStyles
       }
       .concat()
 
-    let selectedStyles = idSelectors
+    let selectedStyles = selectors
       .map { inputSelector, contentSelector -> Stylesheet in
         (inputSelector & .pseudo(.checked) + .star) % (
           color(Colors.purple) <> backgroundColor(Colors.white)

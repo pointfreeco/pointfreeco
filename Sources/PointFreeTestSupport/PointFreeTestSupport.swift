@@ -186,6 +186,18 @@ extension Stripe.Customer {
   )
 }
 
+extension Stripe.Error {
+  public static let mock = Stripe.Error(
+    message: "Your card has insufficient funds."
+  )
+}
+
+extension Stripe.ErrorEnvelope {
+  public static let mock = Stripe.ErrorEnvelope(
+    error: .mock
+  )
+}
+
 extension Stripe.Event where T == Stripe.Invoice {
   public static var mock: Stripe.Event<Stripe.Invoice> {
     return .init(
@@ -282,20 +294,20 @@ extension Stripe.Subscription.Item {
 
 extension SubscribeData {
   public static let individualMonthly = SubscribeData(
-    pricing: .individual(.monthly),
+    pricing: .init(billing: .monthly, quantity: 1),
     token: .init(unwrap: "stripe-deadbeef"),
     vatNumber: ""
   )
 
   public static let individualYearly = SubscribeData(
-    pricing: .individual(.yearly),
+    pricing: .init(billing: .yearly, quantity: 1),
     token: .init(unwrap: "stripe-deadbeef"),
     vatNumber: ""
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
-      pricing: .team(quantity),
+      pricing: .init(billing: .yearly, quantity: quantity),
       token: .init(unwrap: "stripe-deadbeef"),
       vatNumber: ""
     )

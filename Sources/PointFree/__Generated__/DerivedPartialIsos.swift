@@ -76,34 +76,6 @@ import Prelude
 
 
 
-      extension PartialIso where A == (
-            Pricing.Billing
-        ), B == Pricing {
-
-          public static let individual = parenthesize <| PartialIso(
-            apply: Pricing.individual,
-            unapply: {
-              guard case let .individual(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == (
-            Int
-        ), B == Pricing {
-
-          public static let team = parenthesize <| PartialIso(
-            apply: Pricing.team,
-            unapply: {
-              guard case let .team(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
       extension PartialIso where A == Prelude.Unit, B == Route {
         public static let about = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.about)),
@@ -430,13 +402,16 @@ import Prelude
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.PaymentInfo {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.PaymentInfo>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
+      extension PartialIso where A == (
+            Bool?
+        ), B == Route.Account.PaymentInfo {
+
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Account.PaymentInfo.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 

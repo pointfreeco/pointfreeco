@@ -95,7 +95,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
           unsubscribeData: (user.id, .newEpisode),
           content: nodes
           )
-          .delay(.milliseconds(5000))
+          .delay(.milliseconds(200))
           .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
     }
   }

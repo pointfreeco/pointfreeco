@@ -551,7 +551,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
               p([`class`([])], [
                 a([
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href(path(to: .account(.paymentInfo(.show)))),
+                  href(path(to: .account(.paymentInfo(.show(expand: nil))))),
                   ],
                   ["Update payment method"])
                 ])
