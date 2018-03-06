@@ -11,12 +11,12 @@ import Prelude
 import Styleguide
 import Tuple
 
-let useCreditResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+let useCreditResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
     )
-    <<< { userEpisodePermission >-> $0 } // <<< lift(userEpisodePermission)
+    <<< { userEpisodePermission >-> $0 } // Is there a name for this and/or do we want to introduce someting like "lift" to do it?
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
     <| applyCreditMiddleware
@@ -87,16 +87,6 @@ private func validateCreditRequest<Z>(
   }
 }
 
-// todo: what is the name of precomposing with kleisli arrow?!
-func lift<I, J, A, B, C>(
-  _ middleware: @escaping Middleware<I, I, A, B>
-  )
-  -> (@escaping Middleware<I, J, B, C>)
-  -> Middleware<I, J, A, C> {
-
-    return { middleware >-> $0 }
-}
-
 let episodeResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
@@ -125,36 +115,26 @@ let episodeResponse =
 )
 
 private func userEpisodePermission<I, Z>(
-  _ conn: Conn<I, T3<Episode, Database.User?, Z>>
+  _ conn: Conn<I, T4<Episode, Database.User?, Stripe.Subscription.Status?, Z>>
   )
-  -> IO<Conn<I, T4<EpisodePermission, Episode, Database.User?, Z>>> {
+  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, Stripe.Subscription.Status?, Z>>> {
 
-    let (episode, currentUser) = (conn.data.first, conn.data.second.first)
+    let (episode, currentUser, subscriptionStatus) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
     guard let user = currentUser else {
       let permission: EpisodePermission = .loggedOut(isSubscriberOnly: episode.subscriberOnly)
       return pure(conn.map(const(permission .*. conn.data)))
     }
 
-    let userHasEpisodeCredit = AppEnvironment.current.database.fetchEpisodeCredits(user.id)
+    let hasCredit = AppEnvironment.current.database.fetchEpisodeCredits(user.id)
       .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
       .run
       .map { $0.right ?? false }
 
-    // todo: can get rid of subscription status fetch and use what is available to the above middleware
-    let userIsSubscribed = (
-      user.subscriptionId
-        .flatMap { id in
-          AppEnvironment.current.database.fetchSubscriptionById(id)
-            .map { $0?.stripeSubscriptionStatus == .active }
-        }
-        ?? lift(.right(false))
-      )
-      .run
-      .map { $0.right ?? false }
+    let isSubscribed = subscriptionStatus == .some(.active)
 
-    let permission = zip(userHasEpisodeCredit.parallel, userIsSubscribed.parallel)
-      .map { (hasCredit, isSubscribed) -> EpisodePermission in
+    let permission = hasCredit
+      .map { hasCredit -> EpisodePermission in
         switch (hasCredit, isSubscribed) {
         case (_, true):
           return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
@@ -171,7 +151,6 @@ private func userEpisodePermission<I, Z>(
     }
 
     return permission
-      .sequential
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
@@ -207,15 +186,15 @@ private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscr
   ]
 }
 
-private let downloadsAndCredits =
+private let downloadsAndHosts =
   downloadsView
-    <> creditsView.contramap(const(unit))
+    <> hostsView.contramap(const(unit))
 
 private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable in
 
   videoView.view((episode, isEpisodeViewable))
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
-    <> downloadsAndCredits.view(episode.codeSampleDirectory)
+    <> downloadsAndHosts.view(episode.codeSampleDirectory)
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
@@ -343,7 +322,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   ]
 }
 
-private let creditsView = View<Prelude.Unit> { _ in
+private let hostsView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
@@ -476,20 +455,6 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
   ]
 }
 
-// TODO
-//      + (user == nil
-//        ?
-//          [span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
-//           a(
-//            [
-//              href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
-//              `class`([Class.pf.components.button(color: .black, style: .underline)])
-//            ],
-//            ["Log in"]
-//            )
-//          ]
-//        : [])
-
 private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
   [
     div(
@@ -518,10 +483,26 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
           [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
           ["See subscription options"]
         )
-      ]
-      <> creditBlurb.view((permission, episode))
+        ]
+        <> loginLink.view((user, episode))
+        <> creditBlurb.view((permission, episode))
     ),
     divider
+  ]
+}
+
+private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
+  guard user == nil else { return [] }
+
+  return [
+    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+    a(
+      [
+        href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
+        `class`([Class.pf.components.button(color: .black, style: .underline)])
+      ],
+      ["Log in"]
+    )
   ]
 }
 
