@@ -101,7 +101,11 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
               .text(encode("subscription. You currently have \(currentUser.episodeCreditCount) credits ")),
               "remaining."
               ]),
-            p(["To get all past and future episodes, become a subscriber today!"])
+            p([
+              "To get all past and future episodes, ",
+              a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+              " a subscriber today!"
+              ])
             ]
             <> episodeCreditsView.view(credits)
         )
