@@ -207,6 +207,12 @@ extension PartialIso where A == String, B == String {
   }
 }
 
+public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
+  return IO {
+    return t |> over2(perform)
+  }
+}
+
 /// Combines two partial iso's into one by concatenating their results into a single string.
 public func payload<A, B>(
   _ iso1: PartialIso<String, A>,

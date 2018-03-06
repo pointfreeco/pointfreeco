@@ -17,19 +17,30 @@ let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
 
 let addEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, String?, Int?>, Data> =
   requireAdmin
-//    <<< filterMap(
-//      get2 >>> fetchUser(uuidString:),
-//      or: redirect(to: .admin(.episodeCredits(.show)))
-//    )
     <<< filterMap(
-      over3(fetchEpisode(bySequence:)) >>> pure,
-      or: redirect(to: .admin(.episodeCredits(.show)))
+      over2(fetchUser(uuidString:)) >>> sequence2 >>> map(require2),
+      or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
     )
-    <| { conn in hole(conn) }
+    <<< filterMap(
+      over3(fetchEpisode(bySequence:)) >>> require3 >>> pure,
+      or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that episode."))
+    )
+    <| creditUserMiddleware
 
-private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
-  guard let sequence = sequence else { return nil }
-  fatalError()
+private func creditUserMiddleware(
+  _ conn: Conn<StatusLineOpen, Tuple3<Database.User, Database.User, Episode>>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  let (user, episode) = (get2(conn.data), get3(conn.data))
+
+  return AppEnvironment.current.database.addEpisodeCredit(episode.sequence, user.id)
+    .run
+    .flatMap(
+      const(
+        conn
+          |> redirect(to: .admin(.episodeCredits(.show)))
+      )
+  )
 }
 
 private func fetchUser(uuidString: String?) -> IO<Database.User?> {
@@ -41,6 +52,12 @@ private func fetchUser(uuidString: String?) -> IO<Database.User?> {
     .mapExcept(requireSome)
     .run
     .map(^\.right)
+}
+
+private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
+  guard let sequence = sequence else { return nil }
+  return AppEnvironment.current.episodes()
+    .first(where: { $0.sequence == sequence })
 }
 
 private let showEpisodeCreditsView = View<Prelude.Unit> { _ in
