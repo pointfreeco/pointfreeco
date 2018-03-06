@@ -124,28 +124,30 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
     ),
 
     ul(
-      credits.map { credit in
-        li(episodeCreditView.view(credit))
-      }
+      episodes(from: credits)
+        .reversed()
+        .map { ep in li(episodeLinkView.view(ep)) }
     )
   ]
 }
 
-private let episodeCreditView = View<Database.EpisodeCredit> { credit -> [Node] in
-  guard let episode = episode(atSequence: credit.episodeSequence) else { return [] }
-  return [
-    a(
-      [
-        href(path(to: .episode(.left(episode.slug)))),
-        `class`(
-          [
-            Class.pf.colors.link.purple
-          ]
-        )
-      ],
-      [.text(encode(episode.title))]
-    )
-  ]
+private let episodeLinkView = View<Episode> { episode in
+  a(
+    [
+      href(path(to: .episode(.left(episode.slug)))),
+      `class`(
+        [
+          Class.pf.colors.link.purple
+        ]
+      )
+    ],
+    [.text(encode("#\(episode.sequence): \(episode.title)"))]
+  )
+}
+
+private func episodes(from credits: [Database.EpisodeCredit]) -> [Episode] {
+  return AppEnvironment.current.episodes()
+    .filter { ep in credits.contains(where: { $0.episodeSequence == ep.sequence }) }
 }
 
 private func episode(atSequence sequence: Int) -> Episode? {
