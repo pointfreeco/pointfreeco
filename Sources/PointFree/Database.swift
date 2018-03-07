@@ -502,7 +502,7 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "github_user_id" integer UNIQUE,
         "github_access_token" character varying,
         "name" character varying,
-        "subscription_id" uuid,
+        "subscription_id" uuid REFERENCES "subscriptions" ("id") NOT NULL,
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
       )
