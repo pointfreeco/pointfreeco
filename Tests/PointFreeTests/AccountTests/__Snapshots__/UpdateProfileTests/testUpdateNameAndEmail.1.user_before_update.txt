@@ -1,6 +1,7 @@
 ▿ PointFree.Database.User
   ▿ email: Prelude.Tagged<PointFree.Email, Swift.String>
     - unwrap: "hello@pointfree.co"
+  - episodeCreditCount: 0
   ▿ gitHubUserId: Prelude.Tagged<PointFree.GitHub.User, Swift.Int>
     - unwrap: 1
   - gitHubAccessToken: "deadbeef"
