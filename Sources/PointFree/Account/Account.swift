@@ -83,12 +83,8 @@ let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.U
 private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.EpisodeCredit])> {
   subscription, currentUser, credits -> [Node] in
 
-  guard subscription?.status != .some(.active) else {
-    return []
-  }
-  guard currentUser.episodeCreditCount > 0 || credits.count > 0 else {
-    return []
-  }
+  guard subscription?.status != .some(.active) else { return [] }
+  guard currentUser.episodeCreditCount > 0 || credits.count > 0 else { return [] }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [

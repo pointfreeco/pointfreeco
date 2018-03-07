@@ -112,6 +112,13 @@ extension Database.EmailSetting {
   )
 }
 
+extension Database.EpisodeCredit {
+  public static let mock = Database.EpisodeCredit(
+    episodeSequence: 1,
+    userId: Database.User.mock.id
+  )
+}
+
 extension Date {
   public static let mock = Date(timeIntervalSince1970: 1517356800)
 }
