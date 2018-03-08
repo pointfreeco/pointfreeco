@@ -22,6 +22,11 @@ private let paidEpisode = Episode(
   title: "Proof in Functions",
   transcriptBlocks: [
     Episode.TranscriptBlock(
+      content: "Introduction",
+      timestamp: 0,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
       content: """
       This is a `paragraph` transcript block. It just contains some markdown text. A paragraph block can
       also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking

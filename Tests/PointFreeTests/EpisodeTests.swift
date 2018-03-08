@@ -1,13 +1,16 @@
+import Either
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreeTestSupport
 import Prelude
+import Optics
 import SnapshotTesting
+import XCTest
 #if !os(Linux)
   import WebKit
 #endif
-import XCTest
 
 class EpisodeTests: TestCase {
   override func setUp() {
@@ -125,5 +128,107 @@ class EpisodeTests: TestCase {
         assertSnapshot(matching: webView)
       }
     #endif
+  }
+
+  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let freeEpisode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ false
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([freeEpisode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+
+    AppEnvironment.with(env) {
+      let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+
+      let conn = connection(from: episode)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let freeEpisode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([freeEpisode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+
+    AppEnvironment.with(env) {
+      let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+
+      let conn = connection(from: episode)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let freeEpisode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([freeEpisode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+
+    AppEnvironment.with(env) {
+      let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+
+      let conn = connection(from: episode)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
   }
 }

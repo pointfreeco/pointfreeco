@@ -241,3 +241,11 @@ public func payload<A, B>(
         return "\(first)\(separator)\(second)"
     })
 }
+
+public func zurry<A>(_ f: () -> A) -> A {
+  return f()
+}
+
+public func unzurry<A>(_ a: A) -> () -> A {
+  return { a }
+}
