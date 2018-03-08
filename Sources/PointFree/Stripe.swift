@@ -251,7 +251,7 @@ extension Tagged where Tag == Stripe.Plan, A == String {
 }
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
+  return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer", .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)

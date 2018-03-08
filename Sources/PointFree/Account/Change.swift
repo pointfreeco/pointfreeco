@@ -89,9 +89,9 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
 }
 
 func requireActiveSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data> {
 
     return filter(
       get1 >>> (^\.status == .active),
