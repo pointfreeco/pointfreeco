@@ -41,30 +41,13 @@ public enum Route: DerivePartialIsos {
     }
 
     public enum Subscription: DerivePartialIsos {
-      case cancel(Cancel)
-      case changeSeats(ChangeSeats)
-      case downgrade(Downgrade)
+      case cancel
+      case change(Change)
       case reactivate
-      case upgrade(Upgrade)
 
-      public enum Cancel: DerivePartialIsos {
+      public enum Change: DerivePartialIsos {
         case show
-        case update
-      }
-
-      public enum ChangeSeats: DerivePartialIsos {
-        case show
-        case update(Int?)
-      }
-
-      public enum Downgrade: DerivePartialIsos {
-        case show
-        case update
-      }
-
-      public enum Upgrade: DerivePartialIsos {
-        case show
-        case update
+        case update(Pricing?)
       }
     }
   }
@@ -128,34 +111,19 @@ private let routers: [Router<Route>] = [
     %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
     <% end,
 
-  .account <<< .subscription <<< .cancel <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
-
-  .account <<< .subscription <<< .cancel <<< .update
+  .account <<< .subscription <<< .cancel
     <¢> post %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
 
-  .account <<< .subscription <<< .changeSeats <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("change-seats") <% end,
+  .account <<< .subscription <<< .change <<< .show
+    <¢> get %> lit("account") %> lit("subscription") %> lit("change") <% end,
 
-  .account <<< .subscription <<< .changeSeats <<< .update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("change-seats")
-    %> formField("quantity", Optional.iso.some >>> opt(.int))
+  .account <<< .subscription <<< .change <<< .update
+    <¢> post %> lit("account") %> lit("subscription") %> lit("change")
+    %> formBody(Pricing?.self, decoder: formDecoder)
     <% end,
-
-  .account <<< .subscription <<< .downgrade <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("downgrade") <% end,
-
-  .account <<< .subscription <<< .downgrade <<< .update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("downgrade") <% end,
 
   .account <<< .subscription <<< .reactivate
     <¢> post %> lit("account") %> lit("subscription") %> lit("reactivate") <% end,
-
-  .account <<< .subscription <<< .upgrade <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("upgrade") <% end,
-
-  .account <<< .subscription <<< .upgrade <<< .update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("upgrade") <% end,
 
   .account <<< .update
     <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
