@@ -416,42 +416,25 @@ import Prelude
 
 
 
-      extension PartialIso where A == (
-            Route.Account.Subscription.Cancel
-        ), B == Route.Account.Subscription {
-
-          public static let cancel = parenthesize <| PartialIso(
-            apply: Route.Account.Subscription.cancel,
-            unapply: {
-              guard case let .cancel(result) = $0 else { return nil }
-              return .some(result)
-          })
+      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription {
+        public static let cancel = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription>(
+          apply: const(.some(.cancel)),
+          unapply: {
+            guard case .cancel = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
 
       extension PartialIso where A == (
-            Route.Account.Subscription.ChangeSeats
+            Route.Account.Subscription.Change
         ), B == Route.Account.Subscription {
 
-          public static let changeSeats = parenthesize <| PartialIso(
-            apply: Route.Account.Subscription.changeSeats,
+          public static let change = parenthesize <| PartialIso(
+            apply: Route.Account.Subscription.change,
             unapply: {
-              guard case let .changeSeats(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == (
-            Route.Account.Subscription.Downgrade
-        ), B == Route.Account.Subscription {
-
-          public static let downgrade = parenthesize <| PartialIso(
-            apply: Route.Account.Subscription.downgrade,
-            unapply: {
-              guard case let .downgrade(result) = $0 else { return nil }
+              guard case let .change(result) = $0 else { return nil }
               return .some(result)
           })
       }
@@ -469,44 +452,8 @@ import Prelude
 
 
 
-      extension PartialIso where A == (
-            Route.Account.Subscription.Upgrade
-        ), B == Route.Account.Subscription {
-
-          public static let upgrade = parenthesize <| PartialIso(
-            apply: Route.Account.Subscription.upgrade,
-            unapply: {
-              guard case let .upgrade(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Cancel {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Cancel>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Cancel {
-        public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Cancel>(
-          apply: const(.some(.update)),
-          unapply: {
-            guard case .update = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.ChangeSeats {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.ChangeSeats>(
+      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Change {
+        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Change>(
           apply: const(.some(.show)),
           unapply: {
             guard case .show = $0 else { return nil }
@@ -517,59 +464,15 @@ import Prelude
 
 
       extension PartialIso where A == (
-            Int?
-        ), B == Route.Account.Subscription.ChangeSeats {
+            Pricing?
+        ), B == Route.Account.Subscription.Change {
 
           public static let update = parenthesize <| PartialIso(
-            apply: Route.Account.Subscription.ChangeSeats.update,
+            apply: Route.Account.Subscription.Change.update,
             unapply: {
               guard case let .update(result) = $0 else { return nil }
               return .some(result)
           })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Downgrade {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Downgrade>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Downgrade {
-        public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Downgrade>(
-          apply: const(.some(.update)),
-          unapply: {
-            guard case .update = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Upgrade {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Upgrade>(
-          apply: const(.some(.show)),
-          unapply: {
-            guard case .show = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route.Account.Subscription.Upgrade {
-        public static let update = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Subscription.Upgrade>(
-          apply: const(.some(.update)),
-          unapply: {
-            guard case .update = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
       }
 
 
