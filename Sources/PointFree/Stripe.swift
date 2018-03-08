@@ -15,7 +15,7 @@ public struct Stripe {
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
   public var invoiceCustomer: (Customer) -> EitherIO<Swift.Error, Invoice>
   public var updateCustomer: (Customer, Token.Id) -> EitherIO<Swift.Error, Customer>
-  public var updateSubscription: (Subscription, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
+  public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Swift.Error, Subscription>
   public var js: String
 
   public static let live = Stripe(
@@ -251,7 +251,7 @@ extension Tagged where Tag == Stripe.Plan, A == String {
 }
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.unwrap, .delete(["at_period_end": "true"]))
+  return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer", .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
@@ -311,17 +311,20 @@ private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.I
 }
 
 private func updateSubscription(
-  _ subscription: Stripe.Subscription,
+  _ currentSubscription: Stripe.Subscription,
   _ plan: Stripe.Plan.Id,
-  _ quantity: Int
+  _ quantity: Int,
+  _ prorate: Bool?
   )
   -> EitherIO<Error, Stripe.Subscription> {
 
-    guard let item = subscription.items.data.first else { return throwE(unit) }
-    return stripeDataTask("subscriptions/" + subscription.id.unwrap + "?expand[]=customer", .post([
+    guard let item = currentSubscription.items.data.first else { return throwE(unit) }
+
+    return stripeDataTask("subscriptions/" + currentSubscription.id.unwrap + "?expand[]=customer", .post(filteredValues <| [
       "items[0][id]": item.id.unwrap,
       "items[0][plan]": plan.unwrap,
       "items[0][quantity]": String(quantity),
+      "prorate": prorate.map(String.init(describing:)),
       ]))
 }
 
