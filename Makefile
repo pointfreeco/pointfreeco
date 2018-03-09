@@ -184,3 +184,9 @@ module WKSnapshotConfigurationShim [system] {
 }
 endef
 export WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP
+
+# colortheme
+
+colortheme:
+	mkdir -p $(HOME)/Library/Developer/Xcode/UserData/FontAndColorThemes
+	cp -r .PointFree.xccolortheme $(HOME)/Library/Developer/Xcode/UserData/FontAndColorThemes/Point-Free.xccolortheme

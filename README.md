@@ -69,6 +69,10 @@ There're a lot of fun things to explore in this repo. For example:
   Location: /?success=true
 ```
 
+## Xcode Color Theme
+
+Like the color theme we use in our episodes? Run `make colortheme` to install locally!
+
 ## Related projects
 
 Point-Free uses a bunch of interesting open-source software:
