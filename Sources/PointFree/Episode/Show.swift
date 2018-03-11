@@ -29,7 +29,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (currentUser, subscriptionStatus, episode),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
@@ -66,13 +66,15 @@ let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> {
 
     script(
       """
-      var hasPlayed = false;
       var video = document.getElementsByTagName('video')[0];
+      video.addEventListener('click', function () {
+        video.focus();
+      });
       video.addEventListener('play', function () {
-        hasPlayed = true;
+        video.focus();
       });
       document.addEventListener('keypress', function (event) {
-        if (hasPlayed && event.key === ' ') {
+        if (document.activeElement === video && event.key === ' ') {
           if (video.paused) {
             video.play();
           } else {
@@ -104,11 +106,12 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
   video(
     [
+      autoplay(true),
       `class`([Class.size.width100pct]),
       controls(true),
       playsinline(true),
-      autoplay(true),
-      poster(episode.image)
+      poster(episode.image),
+      tabindex(0)
     ],
     isEpisodeViewable
       ? episode.sourcesFull.map { source(src: $0) }
@@ -495,3 +498,6 @@ func unsafeMark(from markdown: String) -> String {
   defer { free(cString) }
   return String(cString: cString)
 }
+
+private let videoExtraStyles: Stylesheet =
+  (video & .pseudo(.focus)) % outlineStyle(all: .none)
