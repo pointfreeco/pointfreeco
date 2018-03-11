@@ -62,7 +62,27 @@ let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> {
           )
         ]
       )
-      ])
+      ]),
+
+    script(
+      """
+      var hasPlayed = false;
+      var video = document.getElementsByTagName('video')[0];
+      video.addEventListener('play', function () {
+        hasPlayed = true;
+      });
+      document.addEventListener('keypress', function (event) {
+        if (hasPlayed && event.key === ' ') {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+          event.preventDefault();
+        }
+      });
+      """
+    )
   ]
 }
 
