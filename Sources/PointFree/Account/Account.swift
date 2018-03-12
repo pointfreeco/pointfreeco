@@ -315,7 +315,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p(changeAction(for: subscription))
+              p([mainAction(for: subscription)])
               ])
             ])
           ])
@@ -330,11 +330,6 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
               p([text(status(for: subscription))])
-              ])
-            ]),
-          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([mainAction(for: subscription)])
               ])
             ])
           ])
@@ -382,38 +377,12 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   } else {
     return a(
       [
-        `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
-        href(path(to: .account(.subscription(.cancel(.show)))))
-      ],
-      ["Cancel"]
-    )
-  }
-}
-
-private func changeAction(for subscription: Stripe.Subscription) -> [Node] {
-  guard subscription.status == .active else { return [] }
-
-  let (action, route): (String, Route)
-  switch (subscription.plan.id.unwrap, subscription.quantity) {
-  case (Stripe.Plan.Id.individualMonthly.unwrap, _):
-    (action, route) = ("Upgrade", .account(.subscription(.upgrade(.show))))
-  case (Stripe.Plan.Id.individualYearly.unwrap, _):
-    (action, route) = ("Downgrade", .account(.subscription(.downgrade(.show))))
-  case (_, 2...):
-    (action, route) = ("Add/Remove Seats", .account(.subscription(.changeSeats(.show))))
-  default:
-    return []
-  }
-
-  return [
-    a(
-      [
         `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: route))
+        href(path(to: .account(.subscription(.change(.show)))))
       ],
-      [text(action)]
+      ["Modify subscription"]
     )
-  ]
+  }
 }
 
 private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
