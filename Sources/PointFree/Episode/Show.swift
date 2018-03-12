@@ -29,7 +29,7 @@ let episodeResponse =
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (permission, currentUser, subscriptionStatus, episode),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
@@ -182,7 +182,29 @@ private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscr
           )
         ]
       )
-      ])
+      ]),
+
+    script(
+      """
+      var video = document.getElementsByTagName('video')[0];
+      video.addEventListener('click', function () {
+        video.focus();
+      });
+      video.addEventListener('play', function () {
+        video.focus();
+      });
+      document.addEventListener('keypress', function (event) {
+        if (document.activeElement === video && event.key === ' ') {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+          event.preventDefault();
+        }
+      });
+      """
+    )
   ]
 }
 
@@ -771,3 +793,6 @@ extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
     }
   }
 }
+
+private let videoExtraStyles: Stylesheet =
+  (video & .pseudo(.focus)) % outlineStyle(all: .none)
