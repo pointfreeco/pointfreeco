@@ -17,7 +17,9 @@ extension AccountTests {
     ("testAccountWithFlashError", testAccountWithFlashError),
     ("testAccountWithPastDue", testAccountWithPastDue),
     ("testAccountCancelingSubscription", testAccountCancelingSubscription),
-    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
+    ("testAccountCanceledSubscription", testAccountCanceledSubscription),
+    ("testEpisodeCredits_1Credit_NoneChosen", testEpisodeCredits_1Credit_NoneChosen),
+    ("testEpisodeCredits_1Credit_1Chosen", testEpisodeCredits_1Credit_1Chosen)
   ]
 }
 extension AppleDeveloperMerchantIdDomainAssociationTests {
@@ -119,7 +121,10 @@ extension EpisodeTests {
     ("testEpisodePageSubscriber", testEpisodePageSubscriber),
     ("testFreeEpisodePage", testFreeEpisodePage),
     ("testFreeEpisodePageSubscriber", testFreeEpisodePageSubscriber),
-    ("testEpisodeNotFound", testEpisodeNotFound)
+    ("testEpisodeNotFound", testEpisodeNotFound),
+    ("testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit)
   ]
 }
 extension HomeTests {
