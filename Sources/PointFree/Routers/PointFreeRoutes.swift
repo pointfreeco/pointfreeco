@@ -29,46 +29,6 @@ public enum Route: DerivePartialIsos {
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
 
-  public enum Account: DerivePartialIsos {
-    case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
-    case index
-    case paymentInfo(PaymentInfo)
-    case subscription(Subscription)
-    case update(ProfileData?)
-
-    public enum PaymentInfo: DerivePartialIsos {
-      case show(expand: Bool?)
-      case update(Stripe.Token.Id?)
-    }
-
-    public enum Subscription: DerivePartialIsos {
-      case cancel
-      case change(Change)
-      case reactivate
-
-      public enum Change: DerivePartialIsos {
-        case show
-        case update(Pricing?)
-      }
-    }
-  }
-
-  public enum Admin: DerivePartialIsos {
-    case episodeCredits(EpisodeCredit)
-    case index
-    case newEpisodeEmail(NewEpisodeEmail)
-
-    public enum EpisodeCredit: DerivePartialIsos {
-      case add(userId: Database.User.Id?, episodeSequence: Int?)
-      case show
-    }
-
-    public enum NewEpisodeEmail: DerivePartialIsos {
-      case send(Episode.Id)
-      case show
-    }
-  }
-
   public enum Feed: DerivePartialIsos {
     case atom
   }
@@ -100,58 +60,9 @@ private let routers: [Router<Route>] = [
   .about
     <¢> get %> lit("about") <% end,
 
-  .account <<< .confirmEmailChange
-    <¢> get %> lit("account") %> lit("confirm-email-change")
-    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
-    <% end,
-
-  .account <<< .index
-    <¢> get %> lit("account") <% end,
-
-  .account <<< .paymentInfo <<< .show
-    <¢> get %> lit("account") %> lit("payment-info")
-    %> queryParam("expand", opt(.bool))
-    <% end,
-
-  .account <<< .paymentInfo <<< .update
-    <¢> post %> lit("account") %> lit("payment-info")
-    %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
-    <% end,
-
-  .account <<< .subscription <<< .cancel
-    <¢> post %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
-
-  .account <<< .subscription <<< .change <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("change") <% end,
-
-  .account <<< .subscription <<< .change <<< .update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("change")
-    %> formBody(Pricing?.self, decoder: formDecoder)
-    <% end,
-
-  .account <<< .subscription <<< .reactivate
-    <¢> post %> lit("account") %> lit("subscription") %> lit("reactivate") <% end,
-
-  .account <<< .update
-    <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
-
-  .admin <<< .episodeCredits <<< .add
-    <¢> post %> lit("admin") %> lit("episode-credits") %> lit("add")
-    %> formField("user_id", Optional.iso.some >>> opt(.uuid >>> .tagged))
-    <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
-    <% end,
-
-  .admin <<< .episodeCredits <<< .show
-    <¢> get %> lit("admin") %> lit("episode-credits") %> end,
-
-  .admin <<< .index
-    <¢> get %> lit("admin") <% end,
-
-  .admin <<< .newEpisodeEmail <<< .send
-    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
-
-  .admin <<< .newEpisodeEmail <<< .show
-    <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
+  accountRouter,
+  
+  adminRouter,
 
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
