@@ -49,9 +49,9 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("c510e7d")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("37c7d8e")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(url: "https://github.com/vapor-community/postgresql.git", .exact(.init(2, 1, 1))),
-    .package(url: "https://github.com/IBM-Swift/Kitura.git", .exact("2.1.0")),
-    .package(url: "https://github.com/IBM-Swift/Kitura-Compression", .exact("2.1.0")),
+    .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
+    .package(url: "https://github.com/IBM-Swift/Kitura.git", .exact("2.2.0")),
+    .package(url: "https://github.com/IBM-Swift/Kitura-Compression", .exact("2.1.1")),
     ],
   targets: [
     .target(
