@@ -17,7 +17,9 @@ extension AccountTests {
     ("testAccountWithFlashError", testAccountWithFlashError),
     ("testAccountWithPastDue", testAccountWithPastDue),
     ("testAccountCancelingSubscription", testAccountCancelingSubscription),
-    ("testAccountCanceledSubscription", testAccountCanceledSubscription)
+    ("testAccountCanceledSubscription", testAccountCanceledSubscription),
+    ("testEpisodeCredits_1Credit_NoneChosen", testEpisodeCredits_1Credit_NoneChosen),
+    ("testEpisodeCredits_1Credit_1Chosen", testEpisodeCredits_1Credit_1Chosen)
   ]
 }
 extension AppleDeveloperMerchantIdDomainAssociationTests {
@@ -108,13 +110,21 @@ extension EnvVarTests {
     ("testDecoding", testDecoding)
   ]
 }
+extension EnvironmentTests {
+  static var allTests: [(String, (EnvironmentTests) -> () throws -> Void)] = [
+    ("testDefault", testDefault)
+  ]
+}
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
     ("testEpisodePage", testEpisodePage),
     ("testEpisodePageSubscriber", testEpisodePageSubscriber),
     ("testFreeEpisodePage", testFreeEpisodePage),
     ("testFreeEpisodePageSubscriber", testFreeEpisodePageSubscriber),
-    ("testEpisodeNotFound", testEpisodeNotFound)
+    ("testEpisodeNotFound", testEpisodeNotFound),
+    ("testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits", testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits)
   ]
 }
 extension HomeTests {
@@ -263,6 +273,7 @@ XCTMain([
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
+  testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
