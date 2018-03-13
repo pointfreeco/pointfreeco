@@ -306,6 +306,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Episode.Id
+        ), B == Route {
+
+          public static let useEpisodeCredit = parenthesize <| PartialIso(
+            apply: Route.useEpisodeCredit,
+            unapply: {
+              guard case let .useEpisodeCredit(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Webhooks
         ), B == Route {
 
@@ -478,6 +492,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Route.Admin.EpisodeCredit
+        ), B == Route.Admin {
+
+          public static let episodeCredits = parenthesize <| PartialIso(
+            apply: Route.Admin.episodeCredits,
+            unapply: {
+              guard case let .episodeCredits(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Admin.FreeEpisodeEmail
         ), B == Route.Admin {
 
@@ -512,6 +540,33 @@ import Prelude
               guard case let .newEpisodeEmail(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == (
+            Database.User.Id?
+          , 
+            Int?
+        ), B == Route.Admin.EpisodeCredit {
+
+          public static let add = parenthesize <| PartialIso(
+            apply: Route.Admin.EpisodeCredit.add,
+            unapply: {
+              guard case let .add(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Admin.EpisodeCredit {
+        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.EpisodeCredit>(
+          apply: const(.some(.show)),
+          unapply: {
+            guard case .show = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
