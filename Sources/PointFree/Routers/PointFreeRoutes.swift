@@ -26,6 +26,7 @@ public enum Route: DerivePartialIsos {
   case home
   case subscribe(SubscribeData?)
   case team(Team)
+  case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
 
   public enum Account: DerivePartialIsos {
@@ -53,8 +54,14 @@ public enum Route: DerivePartialIsos {
   }
 
   public enum Admin: DerivePartialIsos {
+    case episodeCredits(EpisodeCredit)
     case index
     case newEpisodeEmail(NewEpisodeEmail)
+
+    public enum EpisodeCredit: DerivePartialIsos {
+      case add(userId: Database.User.Id?, episodeSequence: Int?)
+      case show
+    }
 
     public enum NewEpisodeEmail: DerivePartialIsos {
       case send(Episode.Id)
@@ -127,6 +134,15 @@ private let routers: [Router<Route>] = [
 
   .account <<< .update
     <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
+
+  .admin <<< .episodeCredits <<< .add
+    <¢> post %> lit("admin") %> lit("episode-credits") %> lit("add")
+    %> formField("user_id", Optional.iso.some >>> opt(.uuid >>> .tagged))
+    <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
+    <% end,
+
+  .admin <<< .episodeCredits <<< .show
+    <¢> get %> lit("admin") %> lit("episode-credits") %> end,
 
   .admin <<< .index
     <¢> get %> lit("admin") <% end,
@@ -202,9 +218,12 @@ private let routers: [Router<Route>] = [
 
   .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")
-    %> pathParam(.rawRepresentable >>> .rawRepresentable)
+    %> pathParam(.uuid >>> .tagged)
     <% lit("remove")
     <% end,
+
+  .useEpisodeCredit
+    <¢> post %> lit("episodes") %> pathParam(.int >>> .tagged) <% lit("credit") <% end,
 
   .webhooks <<< .stripe <<< .invoice
     <¢> post %> lit("webhooks") %> lit("stripe")
