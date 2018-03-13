@@ -11,25 +11,26 @@ import Prelude
 import Styleguide
 import Tuple
 
-let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
-
+let episodeResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
     )
     <| writeStatus(.ok)
+    >-> userEpisodePermission
     >-> map(lower)
     >>> respond(
       view: episodeView,
-      layoutData: { episode, currentUser, subscriptionStatus, currentRoute in
+      layoutData: { permission, episode, currentUser, subscriptionStatus, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (currentUser, subscriptionStatus, episode),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          data: (permission, currentUser, subscriptionStatus, episode),
+          description: episode.blurb,
+          extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
@@ -38,7 +39,125 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
     }
 )
 
-let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> { user, subscriptionStatus, episode in
+let useCreditResponse =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    )
+    <<< { userEpisodePermission >-> $0 }
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
+    <<< validateCreditRequest
+    <| applyCreditMiddleware
+
+private func applyCreditMiddleware<Z>(
+  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, Database.User, Z>>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  let (episode, user) = (get2(conn.data), get3(conn.data))
+
+  guard user.episodeCreditCount > 0 else {
+    return conn
+      |> redirect(
+        to: .episode(.left(episode.slug)),
+        headersMiddleware: flash(.error, "You do not have any credits to use.")
+    )
+  }
+
+  return AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id)
+    .flatMap { _ in
+      AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
+    }
+    .run
+    .flatMap(
+      either(
+        const(
+          conn
+            |> redirect(
+              to: .episode(.left(episode.slug)),
+              headersMiddleware: flash(.warning, "Something went wrong.")
+          )
+        ),
+        const(
+          conn
+            |> redirect(
+              to: .episode(.left(episode.slug)),
+              headersMiddleware: flash(.notice, "You now have access to this episode!")
+          )
+        )
+      )
+  )
+}
+
+private func validateCreditRequest<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data> {
+
+  return { conn in
+    let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
+
+    guard user.episodeCreditCount > 0 else {
+      return conn
+        |> redirect(
+          to: .episode(.left(episode.slug)),
+          headersMiddleware: flash(.error, "You do not have any credits to use.")
+      )
+    }
+
+    guard isEpisodeViewable(for: permission) else {
+      return middleware(conn)
+    }
+
+    return conn
+      |> redirect(
+        to: .episode(.left(episode.slug)),
+        headersMiddleware: flash(.warning, "This episode is already available to you.")
+    )
+  }
+}
+
+private func userEpisodePermission<I, Z>(
+  _ conn: Conn<I, T4<Episode, Database.User?, Stripe.Subscription.Status?, Z>>
+  )
+  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, Stripe.Subscription.Status?, Z>>> {
+
+    let (episode, currentUser, subscriptionStatus) = (get1(conn.data), get2(conn.data), get3(conn.data))
+
+    guard let user = currentUser else {
+      let permission: EpisodePermission = .loggedOut(isSubscriberOnly: episode.subscriberOnly)
+      return pure(conn.map(const(permission .*. conn.data)))
+    }
+
+    let hasCredit = AppEnvironment.current.database.fetchEpisodeCredits(user.id)
+      .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
+      .run
+      .map { $0.right ?? false }
+
+    let isSubscribed = subscriptionStatus == .some(.active)
+
+    let permission = hasCredit
+      .map { hasCredit -> EpisodePermission in
+        switch (hasCredit, isSubscribed) {
+        case (_, true):
+          return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
+        case (true, false):
+          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(creditPermission: .isCredit))
+        case (false, false):
+          return .loggedIn(
+            user: user,
+            subscriptionPermission: .isNotSubscriber(
+              creditPermission: .isNotCredit(isSubscriberOnly: episode.subscriberOnly)
+            )
+          )
+        }
+    }
+
+    return permission
+      .map { conn.map(const($0 .*. conn.data)) }
+}
+
+private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscription.Status?, Episode)> {
+  permission, user, subscriptionStatus, episode in
+
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
@@ -49,7 +168,7 @@ let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> {
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view((user, subscriptionStatus, episode))
+        leftColumnView.view((permission, user, subscriptionStatus, episode))
       ),
 
       gridColumn(
@@ -58,27 +177,47 @@ let episodeView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> {
         [
           div(
             [`class`([Class.position.sticky(.desktop), Class.position.top0])],
-            rightColumnView.view((episode, isEpisodeViewable(episode, subscriptionStatus)))
+            rightColumnView.view(
+              (episode, isEpisodeViewable(for: permission))
+            )
           )
         ]
       )
-      ])
+      ]),
+
+    script(
+      """
+      var video = document.getElementsByTagName('video')[0];
+      video.addEventListener('click', function () {
+        video.focus();
+      });
+      video.addEventListener('play', function () {
+        video.focus();
+      });
+      document.addEventListener('keypress', function (event) {
+        if (document.activeElement === video && event.key === ' ') {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+          event.preventDefault();
+        }
+      });
+      """
+    )
   ]
 }
 
-private func isEpisodeViewable(_ episode: Episode, _ subscriptionStatus: Stripe.Subscription.Status?) -> Bool {
-  return !episode.subscriberOnly || subscriptionStatus == .some(.active)
-}
-
-private let downloadsAndCredits =
+private let downloadsAndHosts =
   downloadsView
-    <> creditsView.contramap(const(unit))
+    <> hostsView.contramap(const(unit))
 
 private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable in
 
   videoView.view((episode, isEpisodeViewable))
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
-    <> downloadsAndCredits.view(episode.codeSampleDirectory)
+    <> downloadsAndHosts.view(episode.codeSampleDirectory)
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
@@ -87,8 +226,8 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       `class`([Class.size.width100pct]),
       controls(true),
       playsinline(true),
-      autoplay(true),
-      poster(episode.image)
+      poster(episode.image),
+      tabindex(0)
     ],
     isEpisodeViewable
       ? episode.sourcesFull.map { source(src: $0) }
@@ -206,7 +345,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   ]
 }
 
-private let creditsView = View<Prelude.Unit> { _ in
+private let hostsView = View<Prelude.Unit> { _ in
   div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
@@ -241,65 +380,153 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(Database.User?, Stripe.Subscription.Status?, Episode)> { user, subscriptionStatus, episode in
+private let leftColumnView = View<(EpisodePermission, Database.User?, Stripe.Subscription.Status?, Episode)> {
+  permission, user, subscriptionStatus, episode in
   div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
       + (
-        subscriptionStatus != .some(.active)
-          ? subscribeView.view((user, episode))
+        isSubscribeBannerVisible(for: permission)
+          ? subscribeView.view((permission, user, episode))
           : []
       )
       + (
-        isEpisodeViewable(episode, subscriptionStatus)
+        isEpisodeViewable(for: permission)
           ? transcriptView.view(episode.transcriptBlocks)
           : []
     )
   )
 }
 
-private let subscribeView = View<(Database.User?, Episode)> { user, episode -> Node in
+private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    fatalError("This should never be called.")
 
-  div([`class`([Class.type.align.center, Class.margin([.mobile: [.all: 4], .desktop: [.all: 4]]), Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]), Class.pf.colors.bg.gray900])], [
+  case .loggedIn(_, .isNotSubscriber(.isCredit)):
+    return """
+    You have access to this episode because you used a free episode credit. To get access to all past and
+    future episodes, become a subscriber today!
+    """
 
-    h3(
-      [`class`([Class.pf.type.responsiveTitle4])],
-      [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
-    ),
+  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: true))):
+    return """
+    This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+    today!
+    """
 
+  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: false))):
+    return """
+    This episode is free to all users. To get access to all past and future episodes, become a
+    subscriber today!
+    """
+
+  case .loggedOut(isSubscriberOnly: true):
+    return """
+    This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+    today!
+    """
+
+  case .loggedOut(isSubscriberOnly: false):
+    return """
+    This episode is free to all users. To get access to all past and future episodes, become a
+    subscriber today!
+    """
+  }
+}
+
+private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+  guard
+    case let .loggedIn(user, .isNotSubscriber(.isNotCredit(true))) = permission,
+    user.episodeCreditCount > 0
+    else { return [] }
+
+  return [
     p(
-      [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
       [
-        episode.subscriberOnly
-          ? """
-            This episode is for subscribers only. To access it, and all past and future episodes, become a
-            subscriber today!
-            """
-          : """
-            This episode is free to all users. To get access to all past and future episodes, become a
-            subscriber today!
-            """
+        `class`(
+          [
+            Class.pf.type.body.regular,
+            Class.padding([.mobile: [.top: 4, .bottom: 2]])
+          ]
+        )
+      ],
+      [
+        text("""
+        You currently have \(user.episodeCreditCount) episode credit available. Do you want to use it to
+        view this episode for free right now?
+        """)
       ]
     ),
 
-    a(
-      [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-      ["See subscription options"]
-    )
-    ]
-    + (user == nil
-      ?
-        [span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
-         a(
+    form(
+      [action(path(to: .useEpisodeCredit(episode.id))), method(.post)],
+      [
+        input(
           [
-            href(path(to: .login(redirect: url(to: .episode(.left(episode.slug)))))),
-            `class`([Class.pf.components.button(color: .black, style: .underline)])
-          ],
-          ["Log in"]
-          )
+            type(.submit),
+            `class`(
+              [
+                Class.pf.components.button(color: .purple, size: .small)
+              ]
+            ),
+            value("Use an episode credit")
+          ]
+        )
+      ]
+    )
+  ]
+}
+
+private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
+  [
+    div(
+      [
+        `class`(
+          [
+            Class.type.align.center,
+            Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]),
+            Class.padding([.mobile: [.top: 1, .leftRight: 1, .bottom: 3], .desktop: [.top: 2, .leftRight: 2]]),
+            Class.pf.colors.bg.gray900
+          ]
+        )
+      ],
+      [
+        h3(
+          [`class`([Class.pf.type.responsiveTitle4])],
+          [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+        ),
+
+        p(
+          [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+          [.text(encode(String(describing: subscribeBlurb(for: permission))))]
+        ),
+
+        a(
+          [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+          ["See subscription options"]
+        )
         ]
-      : [])
-  )
+        <> loginLink.view((user, episode))
+        <> creditBlurb.view((permission, episode))
+    ),
+    divider
+  ]
+}
+
+private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
+  guard user == nil else { return [] }
+
+  return [
+    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+    a(
+      [
+        href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
+        `class`([Class.pf.components.button(color: .black, style: .underline)])
+      ],
+      ["Log in"]
+    )
+  ]
 }
 
 private let episodeInfoView = View<Episode> { ep in
@@ -333,14 +560,21 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   ]
 }
 
-let dividerView = View<Prelude.Unit> { _ in
-  hr([`class`([Class.pf.components.divider])])
-}
+let divider = hr([`class`([Class.pf.components.divider])])
+let dividerView = View<Prelude.Unit>(const(divider))
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
-        + exercisesView.view(blocks.filter(^\.type.isExercise))
+  div(
+    [
+      `class`(
+        [
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+          Class.pf.colors.bg.white
+        ]
+      )
+    ],
+    blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
+      <> exercisesView.view(blocks.filter(^\.type.isExercise))
   )
 }
 
@@ -475,3 +709,91 @@ func unsafeMark(from markdown: String) -> String {
   defer { free(cString) }
   return String(cString: cString)
 }
+
+private func isEpisodeViewable(
+  _ permission: EpisodePermission,
+  _ episode: Episode,
+  _ subscriptionStatus: Stripe.Subscription.Status?
+  ) -> Bool {
+
+  return !episode.subscriberOnly || subscriptionStatus == .some(.active)
+}
+
+private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    return true
+  case .loggedIn(_, .isNotSubscriber(.isCredit)):
+    return true
+  case let .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly))):
+    return !isSubscriberOnly
+  case let .loggedOut(isSubscriberOnly):
+    return !isSubscriberOnly
+  }
+}
+
+private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    return false
+  case .loggedIn(_, _), .loggedOut(_):
+    return true
+  }
+}
+
+private enum EpisodePermission {
+  case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
+  case loggedOut(isSubscriberOnly: Bool)
+
+  enum SubscriptionPermission {
+    case isSubscriber
+    case isNotSubscriber(creditPermission: CreditPermission)
+
+    enum CreditPermission {
+      case isCredit
+      case isNotCredit(isSubscriberOnly: Bool)
+    }
+  }
+}
+
+extension EpisodePermission: Equatable {
+  static func == (lhs: EpisodePermission, rhs: EpisodePermission) -> Bool {
+    switch (lhs, rhs) {
+    case let (.loggedIn(lhsUser, lhsPermission), .loggedIn(rhsUser, rhsPermission)):
+      return lhsUser.id.unwrap == rhsUser.id.unwrap && lhsPermission == rhsPermission
+    case let (.loggedOut(lhs), .loggedOut(rhs)):
+      return lhs == rhs
+    case (.loggedIn, _), (.loggedOut, _):
+      return false
+    }
+  }
+}
+
+extension EpisodePermission.SubscriptionPermission: Equatable {
+  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission, rhs: EpisodePermission.SubscriptionPermission) -> Bool {
+    switch (lhs, rhs) {
+    case (.isSubscriber, .isSubscriber):
+      return true
+    case let (.isNotSubscriber(lhs), .isNotSubscriber(rhs)):
+      return lhs == rhs
+    case (.isSubscriber, _), (.isNotSubscriber, _):
+      return false
+    }
+  }
+}
+
+extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
+  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission.CreditPermission, rhs: EpisodePermission.SubscriptionPermission.CreditPermission) -> Bool {
+    switch (lhs, rhs) {
+    case (.isCredit, .isCredit):
+      return true
+    case let (.isNotCredit(lhs), .isNotCredit(rhs)):
+      return lhs == rhs
+    case (.isCredit, _), (.isNotCredit, _):
+      return false
+    }
+  }
+}
+
+private let videoExtraStyles: Stylesheet =
+  (video & .pseudo(.focus)) % outlineStyle(all: .none)

@@ -95,15 +95,15 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 
 private let defaultDecoder = JSONDecoder()
 
-public func zip<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
+public func zip2<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
   return tuple <¢> lhs <*> rhs
 }
 
-public func zip<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -> Parallel<(A, B, C)> {
+public func zip3<A, B, C>(_ a: Parallel<A>, _ b: Parallel<B>, _ c: Parallel<C>) -> Parallel<(A, B, C)> {
   return tuple3 <¢> a <*> b <*> c
 }
 
-public func zip<A, B, C, D>(
+public func zip4<A, B, C, D>(
   _ a: Parallel<A>,
   _ b: Parallel<B>,
   _ c: Parallel<C>,
@@ -111,6 +111,30 @@ public func zip<A, B, C, D>(
   ) -> Parallel<(A, B, C, D)> {
 
   return tuple4 <¢> a <*> b <*> c <*> d
+}
+
+public func zip5<A, B, C, D, E>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>
+  ) -> Parallel<(A, B, C, D, E)> {
+
+  return tuple5 <¢> a <*> b <*> c <*> d <*> e
+}
+
+public func tuple5<A, B, C, D, E>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (A, B, C, D, E) {
+  return { b in { c in { d in { e in (a, b, c, d, e) } } } }
+}
+
+public typealias T8<A, B, C, D, E, F, G, Z> = Tuple<A, T7<B, C, D, E, F, G, Z>>
+public typealias Tuple7<A, B, C, D, E, F, G> = T8<A, B, C, D, E, F, G, Prelude.Unit>
+public func get7<A, B, C, D, E, F, G, Z>(_ t: T8<A, B, C, D, E, F, G, Z>) -> G {
+  return t.second.second.second.second.second.second.first
+}
+public func lower<A, B, C, D, E, F, G>(_ tuple: Tuple7<A, B, C, D, E, F, G>) -> (A, B, C, D, E, F, G) {
+  return (get1(tuple), get2(tuple), get3(tuple), get4(tuple), get5(tuple), get6(tuple), get7(tuple))
 }
 
 // better way of doing this? or should we add to Either.swift?
@@ -186,6 +210,12 @@ extension PartialIso where A == String, B == String {
   }
 }
 
+public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
+  return IO {
+    return t |> over2(perform)
+  }
+}
+
 /// Combines two partial iso's into one by concatenating their results into a single string.
 public func payload<A, B>(
   _ iso1: PartialIso<String, A>,
@@ -208,4 +238,12 @@ public func payload<A, B>(
           else { return nil }
         return "\(first)\(separator)\(second)"
     })
+}
+
+public func zurry<A>(_ f: () -> A) -> A {
+  return f()
+}
+
+public func unzurry<A>(_ a: A) -> () -> A {
+  return { a }
 }

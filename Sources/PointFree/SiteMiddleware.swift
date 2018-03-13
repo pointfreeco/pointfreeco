@@ -43,45 +43,33 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. token .*. unit))
         |> updatePaymentInfoMiddleware
 
-    case .account(.subscription(.cancel(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmCancelResponse
-
-    case .account(.subscription(.cancel(.update))):
+    case .account(.subscription(.cancel)):
       return conn.map(const(user .*. unit))
         |> cancelMiddleware
 
-    case .account(.subscription(.changeSeats(.show))):
+    case .account(.subscription(.change(.show))):
       return conn.map(const(user .*. unit))
-        |> confirmChangeSeatsResponse
+        |> subscriptionChangeShowResponse
 
-    case let .account(.subscription(.changeSeats(.update(quantity)))):
-      return conn.map(const(user .*. quantity .*. unit))
-        |> changeSeatsMiddleware
-
-    case .account(.subscription(.downgrade(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmDowngradeResponse
-
-    case .account(.subscription(.downgrade(.update))):
-      return conn.map(const(user .*. unit))
-        |> downgradeMiddleware
+    case let .account(.subscription(.change(.update(pricing)))):
+      return conn.map(const(user .*. pricing .*. unit))
+        |> subscriptionChangeMiddleware
 
     case .account(.subscription(.reactivate)):
       return conn.map(const(user .*. unit))
         |> reactivateMiddleware
 
-    case .account(.subscription(.upgrade(.show))):
-      return conn.map(const(user .*. unit))
-        |> confirmUpgradeResponse
-
-    case .account(.subscription(.upgrade(.update))):
-      return conn.map(const(user .*. unit))
-        |> upgradeMiddleware
-
     case let .account(.update(data)):
       return conn.map(const(data .*. user .*. unit))
         |> updateProfileMiddleware
+
+    case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
+      return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
+        |> redeemEpisodeCreditMiddleware
+
+    case .admin(.episodeCredits(.show)):
+      return conn.map(const(user .*. unit))
+        |> showEpisodeCreditsMiddleware
 
     case .admin(.index):
       return conn.map(const(user .*. unit))
@@ -166,6 +154,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
+
+    case let .useEpisodeCredit(episodeId):
+      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriptionStatus .*. route .*. unit))
+        |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):
       return conn.map(const(event))

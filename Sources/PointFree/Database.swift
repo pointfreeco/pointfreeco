@@ -4,46 +4,48 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
+  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
-  var fetchEmailSettingsForUserId: (Database.User.Id) -> EitherIO<Error, [Database.EmailSetting]>
+  var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
+  var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
   var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
   var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
-  var fetchUserByEmail: (EmailAddress) -> EitherIO<Error, User?>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var fetchUsersSubscribedToNewsletter: (Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]>
+  var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Database.Subscription?>
-  var updateUser: (User.Id, String?, EmailAddress?, [Database.EmailSetting.Newsletter]?) -> EitherIO<Error, Prelude.Unit>
+  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
+  var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
+    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
+    fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
     fetchSubscriptionById: PointFree.fetchSubscription(id:),
     fetchSubscriptionByOwnerId: PointFree.fetchSubscription(ownerId:),
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
     fetchTeamInvite: PointFree.fetchTeamInvite,
     fetchTeamInvites: PointFree.fetchTeamInvites,
-    fetchUserByEmail: PointFree.fetchUser(byEmail:),
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
-    updateUser: PointFree.updateUser(withId:name:email:emailSettings:),
+    updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
     upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
     migrate: PointFree.migrate
   )
@@ -69,8 +71,24 @@ public struct Database {
     }
   }
 
+  public struct EpisodeCredit: Decodable, Equatable {
+    public internal(set) var episodeSequence: Int
+    public internal(set) var userId: User.Id
+
+    public enum CodingKeys: String, CodingKey {
+      case episodeSequence = "episode_sequence"
+      case userId = "user_id"
+    }
+
+    public static func == (lhs: EpisodeCredit, rhs: EpisodeCredit) -> Bool {
+      return lhs.episodeSequence == rhs.episodeSequence
+        && lhs.userId == rhs.userId
+    }
+  }
+
   public struct User: Decodable {
     public internal(set) var email: EmailAddress
+    public internal(set) var episodeCreditCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
     public internal(set) var gitHubAccessToken: String
     public internal(set) var id: Id
@@ -82,6 +100,7 @@ public struct Database {
 
     public enum CodingKeys: String, CodingKey {
       case email
+      case episodeCreditCount = "episode_credit_count"
       case gitHubUserId = "github_user_id"
       case gitHubAccessToken = "github_access_token"
       case id
@@ -254,20 +273,23 @@ private func updateUser(
   withId userId: Database.User.Id,
   name: String?,
   email: EmailAddress?,
-  emailSettings: [Database.EmailSetting.Newsletter]?
+  emailSettings: [Database.EmailSetting.Newsletter]?,
+  episodeCreditCount: Int?
   ) -> EitherIO<Error, Prelude.Unit> {
 
   return execute(
     """
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
-        "email" = COALESCE($2, "email")
-    WHERE "id" = $3
+        "email" = COALESCE($2, "email"),
+        "episode_credit_count" = COALESCE($3, "episode_credit_count")
+    WHERE "id" = $4
     """,
     [
       name,
       email?.unwrap,
-      userId.unwrap.uuidString,
+      episodeCreditCount,
+      userId.unwrap.uuidString
     ]
     )
     .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
@@ -351,22 +373,17 @@ private func upsertUser(
   }
 }
 
-private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
-  return firstRow(
-    """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
-    FROM "users"
-    WHERE "email" = $1
-    LIMIT 1
-    """,
-    [email.unwrap]
-  )
-}
-
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
+    SELECT "email",
+           "episode_credit_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -395,7 +412,14 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
-    SELECT "email", "github_user_id", "github_access_token", "id", "is_admin", "name", "subscription_id"
+    SELECT "email",
+           "episode_credit_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -478,6 +502,32 @@ private func fetchEmailSettings(forUserId userId: Database.User.Id) -> EitherIO<
   )
 }
 
+private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error, [Database.EpisodeCredit]> {
+  return rows(
+    """
+    SELECT "episode_sequence", "user_id"
+    FROM "episode_credits"
+    WHERE "user_id" = $1
+    """,
+    [userId.unwrap.uuidString]
+  )
+}
+
+private func redeemEpisodeCredit(episodeSequence: Int, userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    INSERT INTO "episode_credits" ("episode_sequence", "user_id")
+    VALUES ($1, $2)
+    """,
+    [
+      episodeSequence,
+      userId.unwrap.uuidString
+    ]
+    )
+    .map(const(unit))
+}
+
 private func migrate() -> EitherIO<Error, Prelude.Unit> {
   return execute(
     """
@@ -556,6 +606,27 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
       ON "subscriptions" ("stripe_subscription_id")
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE IF NOT EXISTS "episode_credits" (
+        "episode_sequence" integer,
+        "user_id" uuid REFERENCES "users" ("id") NOT NULL
+      )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
+      ON "episode_credits" ("episode_sequence", "user_id")
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "episode_credit_count" integer NOT NULL DEFAULT 0
       """
     )))
     .map(const(unit))
