@@ -71,13 +71,18 @@ public struct Database {
     }
   }
 
-  public struct EpisodeCredit: Decodable {
+  public struct EpisodeCredit: Decodable, Equatable {
     public internal(set) var episodeSequence: Int
     public internal(set) var userId: User.Id
 
     public enum CodingKeys: String, CodingKey {
       case episodeSequence = "episode_sequence"
       case userId = "user_id"
+    }
+
+    public static func == (lhs: EpisodeCredit, rhs: EpisodeCredit) -> Bool {
+      return lhs.episodeSequence == rhs.episodeSequence
+        && lhs.userId == rhs.userId
     }
   }
 
