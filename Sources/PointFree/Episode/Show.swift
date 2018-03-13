@@ -29,6 +29,7 @@ let episodeResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<Str
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
           data: (currentUser, subscriptionStatus, episode),
+          description: episode.blurb,
           extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
           navStyle: navStyle,
