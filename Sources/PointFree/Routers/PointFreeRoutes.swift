@@ -59,7 +59,7 @@ public enum Route: DerivePartialIsos {
     case newEpisodeEmail(NewEpisodeEmail)
 
     public enum EpisodeCredit: DerivePartialIsos {
-      case add(userId: String?, episodeSequence: Int?)
+      case add(userId: Database.User.Id?, episodeSequence: Int?)
       case show
     }
 
@@ -137,7 +137,7 @@ private let routers: [Router<Route>] = [
 
   .admin <<< .episodeCredits <<< .add
     <¢> post %> lit("admin") %> lit("episode-credits") %> lit("add")
-    %> formField("user_id", Optional.iso.some >>> opt(.string))
+    %> formField("user_id", Optional.iso.some >>> opt(.uuid >>> .tagged))
     <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
     <% end,
 

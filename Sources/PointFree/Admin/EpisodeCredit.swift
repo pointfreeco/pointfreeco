@@ -15,10 +15,10 @@ let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
     <| writeStatus(.ok)
     >-> respond(showEpisodeCreditsView.contramap(const(unit)))
 
-let addEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, String?, Int?>, Data> =
+let addEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Database.User.Id?, Int?>, Data> =
   requireAdmin
     <<< filterMap(
-      over2(fetchUser(uuidString:)) >>> sequence2 >>> map(require2),
+      over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
       or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
     )
     <<< filterMap(
@@ -43,12 +43,10 @@ private func creditUserMiddleware(
   )
 }
 
-private func fetchUser(uuidString: String?) -> IO<Database.User?> {
-  guard let uuid = uuidString.flatMap(UUID.init(uuidString:)) else {
-    return pure(nil)
-  }
+private func fetchUser(id: Database.User.Id?) -> IO<Database.User?> {
+  guard let id = id else { return pure(nil) }
 
-  return AppEnvironment.current.database.fetchUserById(.init(unwrap: uuid))
+  return AppEnvironment.current.database.fetchUserById(id)
     .mapExcept(requireSome)
     .run
     .map(^\.right)

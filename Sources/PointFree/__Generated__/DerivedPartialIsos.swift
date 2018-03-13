@@ -531,7 +531,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            String?
+            Database.User.Id?
           , 
             Int?
         ), B == Route.Admin.EpisodeCredit {
