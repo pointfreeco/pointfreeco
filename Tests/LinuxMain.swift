@@ -124,7 +124,7 @@ extension EpisodeTests {
     ("testEpisodeNotFound", testEpisodeNotFound),
     ("testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit),
     ("testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit),
-    ("testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit)
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits", testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits)
   ]
 }
 extension HomeTests {

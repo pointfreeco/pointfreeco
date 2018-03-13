@@ -225,7 +225,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       `class`([Class.size.width100pct]),
       controls(true),
       playsinline(true),
-      autoplay(true),
+      tabindex(0),
       poster(episode.image)
     ],
     isEpisodeViewable
