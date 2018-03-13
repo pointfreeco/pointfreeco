@@ -53,8 +53,14 @@ public enum Route: DerivePartialIsos {
   }
 
   public enum Admin: DerivePartialIsos {
+    case freeEpisodeEmail(FreeEpisodeEmail)
     case index
     case newEpisodeEmail(NewEpisodeEmail)
+
+    public enum FreeEpisodeEmail: DerivePartialIsos {
+      case send(Episode.Id)
+      case index
+    }
 
     public enum NewEpisodeEmail: DerivePartialIsos {
       case send(Episode.Id)
@@ -130,6 +136,12 @@ private let routers: [Router<Route>] = [
 
   .admin <<< .index
     <¢> get %> lit("admin") <% end,
+
+  .admin <<< .freeEpisodeEmail <<< .send
+    <¢> post %> lit("admin") %> lit("free-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
+
+  .admin <<< .freeEpisodeEmail <<< .index
+    <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
 
   .admin <<< .newEpisodeEmail <<< .send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,

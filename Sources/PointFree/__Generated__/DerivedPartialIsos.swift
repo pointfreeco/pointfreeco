@@ -477,6 +477,20 @@ import Prelude
 
 
 
+      extension PartialIso where A == (
+            Route.Admin.FreeEpisodeEmail
+        ), B == Route.Admin {
+
+          public static let freeEpisodeEmail = parenthesize <| PartialIso(
+            apply: Route.Admin.freeEpisodeEmail,
+            unapply: {
+              guard case let .freeEpisodeEmail(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Route.Admin {
         public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Admin>(
           apply: const(.some(.index)),
@@ -498,6 +512,31 @@ import Prelude
               guard case let .newEpisodeEmail(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == (
+            Episode.Id
+        ), B == Route.Admin.FreeEpisodeEmail {
+
+          public static let send = parenthesize <| PartialIso(
+            apply: Route.Admin.FreeEpisodeEmail.send,
+            unapply: {
+              guard case let .send(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Admin.FreeEpisodeEmail {
+        public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.FreeEpisodeEmail>(
+          apply: const(.some(.index)),
+          unapply: {
+            guard case .index = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
