@@ -63,6 +63,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(data .*. user .*. unit))
         |> updateProfileMiddleware
 
+    case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
+      return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
+        |> redeemEpisodeCreditMiddleware
+
+    case .admin(.episodeCredits(.show)):
+      return conn.map(const(user .*. unit))
+        |> showEpisodeCreditsMiddleware
+
     case .admin(.index):
       return conn.map(const(user .*. unit))
         |> adminIndex
@@ -150,6 +158,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
+
+    case let .useEpisodeCredit(episodeId):
+      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriptionStatus .*. route .*. unit))
+        |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):
       return conn.map(const(event))

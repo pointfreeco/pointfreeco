@@ -44,24 +44,25 @@ extension Mailgun {
 
 extension Database {
   public static let mock = Database(
+    redeemEpisodeCredit: { _, _ in pure(unit) },
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
     fetchEmailSettingsForUserId: const(pure([.mock])),
+    fetchEpisodeCredits: const(pure([])),
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
-    fetchUserByEmail: const(pure(.mock)),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
-    updateUser: { _, _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) },
     migrate: { pure(unit) }
   )
@@ -70,6 +71,7 @@ extension Database {
 extension Database.User {
   public static let mock = Database.User(
     email: .init(unwrap: "hello@pointfree.co"),
+    episodeCreditCount: 0,
     gitHubUserId: .init(unwrap: 1),
     gitHubAccessToken: "deadbeef",
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
@@ -106,6 +108,13 @@ extension Database.EmailSetting {
   public static let mock = Database.EmailSetting(
     newsletter: .newEpisode,
     userId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+  )
+}
+
+extension Database.EpisodeCredit {
+  public static let mock = Database.EpisodeCredit(
+    episodeSequence: 1,
+    userId: Database.User.mock.id
   )
 }
 

@@ -12,5 +12,6 @@
         <page name='Team Invites'/>
         <page name='About'/>
         <page name='Subscribe'/>
+        <page name='Session'/>
     </pages>
 </playground>

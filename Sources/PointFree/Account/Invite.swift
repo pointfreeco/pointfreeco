@@ -124,7 +124,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       )
 
       // fire-and-forget email of acceptance and deletion of invite
-      zip(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
+      zip2(sendInviterEmailOfAcceptance, deleteInvite).run({ _ in })
 
       return subscription
         .run
