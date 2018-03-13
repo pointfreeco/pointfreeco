@@ -44,7 +44,7 @@ let useCreditResponse =
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
     )
-    <<< { userEpisodePermission >-> $0 } // Is there a name for this and/or do we want to introduce someting like "lift" to do it?
+    <<< { userEpisodePermission >-> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
     <| applyCreditMiddleware
@@ -63,7 +63,7 @@ private func applyCreditMiddleware<Z>(
     )
   }
 
-  return AppEnvironment.current.database.addEpisodeCredit(episode.sequence, user.id)
+  return AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .flatMap { _ in
       AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
     }
@@ -226,8 +226,8 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       `class`([Class.size.width100pct]),
       controls(true),
       playsinline(true),
-      tabindex(0),
-      poster(episode.image)
+      poster(episode.image),
+      tabindex(0)
     ],
     isEpisodeViewable
       ? episode.sourcesFull.map { source(src: $0) }
@@ -452,10 +452,10 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
         )
       ],
       [
-        """
-        You currently have 1 episode credit available. Do you want to use it to view this episode for free
-        right now?
-        """
+        text("""
+        You currently have \(user.episodeCreditCount) episode credit available. Do you want to use it to
+        view this episode for free right now?
+        """)
       ]
     ),
 

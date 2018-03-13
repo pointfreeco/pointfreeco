@@ -65,7 +65,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
 
     case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
       return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
-        |> addEpisodeCreditMiddleware
+        |> redeemEpisodeCreditMiddleware
 
     case .admin(.episodeCredits(.show)):
       return conn.map(const(user .*. unit))

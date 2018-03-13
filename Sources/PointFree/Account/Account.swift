@@ -94,7 +94,7 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
             h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              .text(encode("subscription. You currently have \(currentUser.episodeCreditCount) credits ")),
+              text("subscription. You currently have \(currentUser.episodeCreditCount) credits "),
               "remaining."
               ]),
             p([

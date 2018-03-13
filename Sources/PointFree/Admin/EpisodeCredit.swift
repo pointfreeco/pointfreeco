@@ -15,7 +15,7 @@ let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
     <| writeStatus(.ok)
     >-> respond(showEpisodeCreditsView.contramap(const(unit)))
 
-let addEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Database.User.Id?, Int?>, Data> =
+let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Database.User.Id?, Int?>, Data> =
   requireAdmin
     <<< filterMap(
       over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
@@ -33,7 +33,7 @@ private func creditUserMiddleware(
 
   let (user, episode) = (get2(conn.data), get3(conn.data))
 
-  return AppEnvironment.current.database.addEpisodeCredit(episode.sequence, user.id)
+  return AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .run
     .flatMap(
       const(

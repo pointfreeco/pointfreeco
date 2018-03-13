@@ -4,7 +4,7 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var addEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
+  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
@@ -16,7 +16,6 @@ public struct Database {
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
   var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
-  var fetchUserByEmail: (EmailAddress) -> EitherIO<Error, User?>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
@@ -28,7 +27,7 @@ public struct Database {
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
-    addEpisodeCredit: PointFree.addEpisodeCredit(episodeSequence:userId:),
+    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
@@ -40,7 +39,6 @@ public struct Database {
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
     fetchTeamInvite: PointFree.fetchTeamInvite,
     fetchTeamInvites: PointFree.fetchTeamInvites,
-    fetchUserByEmail: PointFree.fetchUser(byEmail:),
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
@@ -370,24 +368,6 @@ private func upsertUser(
   }
 }
 
-private func fetchUser(byEmail email: EmailAddress) -> EitherIO<Error, Database.User?> {
-  return firstRow(
-    """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id"
-    WHERE "email" = $1
-    LIMIT 1
-    """,
-    [email.unwrap]
-  )
-}
-
 private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Database.User?> {
   return firstRow(
     """
@@ -528,7 +508,7 @@ private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error
   )
 }
 
-private func addEpisodeCredit(episodeSequence: Int, userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
+private func redeemEpisodeCredit(episodeSequence: Int, userId: Database.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
   return execute(
     """

@@ -44,7 +44,7 @@ extension Mailgun {
 
 extension Database {
   public static let mock = Database(
-    addEpisodeCredit: { _, _ in hole() },
+    redeemEpisodeCredit: { _, _ in pure(unit) },
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
@@ -56,7 +56,6 @@ extension Database {
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
-    fetchUserByEmail: const(pure(.mock)),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
