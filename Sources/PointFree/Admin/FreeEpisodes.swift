@@ -31,7 +31,7 @@ private let freeEpisodeView = View<Database.User> { _ in
 private let freeEpisodeEmailRowView = View<Episode> { ep in
   [
     p([
-      .text(encode(ep.title)),
+      text(ep.title),
       form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)], [
         input([type(.submit), value("Send email!")])
         ])
