@@ -552,7 +552,6 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "github_user_id" integer UNIQUE,
         "github_access_token" character varying,
         "name" character varying,
-        "subscription_id" uuid,
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
       )
@@ -567,6 +566,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
       );
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "subscription_id" uuid REFERENCES "subscriptions" ("id")
       """
     )))
     .flatMap(const(execute(
