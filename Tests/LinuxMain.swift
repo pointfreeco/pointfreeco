@@ -131,6 +131,11 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited)
   ]
 }
+extension FreeEpisodeEmailTests {
+  static var allTests: [(String, (FreeEpisodeEmailTests) -> () throws -> Void)] = [
+    ("testFreeEpisodeEmail", testFreeEpisodeEmail)
+  ]
+}
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
     ("testHomepage", testHomepage)
@@ -279,6 +284,7 @@ XCTMain([
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
+  testCase(FreeEpisodeEmailTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
