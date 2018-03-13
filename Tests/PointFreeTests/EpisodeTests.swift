@@ -1,13 +1,16 @@
+import Either
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreeTestSupport
 import Prelude
+import Optics
 import SnapshotTesting
+import XCTest
 #if !os(Linux)
   import WebKit
 #endif
-import XCTest
 
 class EpisodeTests: TestCase {
   override func setUp() {
@@ -125,5 +128,231 @@ class EpisodeTests: TestCase {
         assertSnapshot(matching: webView)
       }
     #endif
+  }
+
+  func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let episode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ false
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([episode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+
+    AppEnvironment.with(env) {
+      let conn = connection(
+        from: request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let episode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([episode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+
+    AppEnvironment.with(env) {
+      let conn = connection(
+        from: request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let episode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.episodes .~ unzurry([episode]))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+
+    AppEnvironment.with(env) {
+      let conn = connection(
+        from: request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 500
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testRedeemEpisodeCredit_HappyPath() {
+    let episode = Episode.mock
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database .~ .live)
+        <> (\.episodes .~ unzurry([episode]))
+
+    AppEnvironment.with(env) {
+      let user = AppEnvironment.current.database
+        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .run.perform().right!!
+      _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+
+      let credit = Database.EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+
+      let conn = connection(
+        from: request(
+          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
+        )
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      XCTAssertEqual(
+        [credit],
+        AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+    }
+  }
+
+  func testRedeemEpisodeCredit_NotEnoughCredits() {
+    let episode = Episode.mock
+      |> \.subscriberOnly .~ true
+
+    let env: (Environment) -> Environment =
+      (\.database .~ .live)
+        <> (\.episodes .~ unzurry([episode]))
+
+    AppEnvironment.with(env) {
+      let user = AppEnvironment.current.database
+        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .run.perform().right!!
+
+      let conn = connection(
+        from: request(
+          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
+        )
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      XCTAssertEqual(
+        [],
+        AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+    }
+  }
+
+  func testRedeemEpisodeCredit_PublicEpisode() {
+    let episode = Episode.mock
+      |> \.subscriberOnly .~ false
+
+    let env: (Environment) -> Environment =
+      (\.database .~ .live)
+        <> (\.episodes .~ unzurry([episode]))
+
+    AppEnvironment.with(env) {
+      let user = AppEnvironment.current.database
+        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .run.perform().right!!
+      _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+
+      let conn = connection(
+        from: request(
+          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
+        )
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      XCTAssertEqual(
+        [],
+        AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+    }
+  }
+
+  func testRedeemEpisodeCredit_AlreadyCredited() {
+    let episode = Episode.mock
+      |> \.subscriberOnly .~ false
+
+    let env: (Environment) -> Environment =
+      (\.database .~ .live)
+        <> (\.episodes .~ unzurry([episode]))
+
+    AppEnvironment.with(env) {
+      let user = AppEnvironment.current.database
+        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .run.perform().right!!
+      _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+      _ = AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
+
+      let credit = Database.EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+
+      let conn = connection(
+        from: request(
+          to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
+        )
+      )
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      XCTAssertEqual(
+        [credit],
+        AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+    }
   }
 }

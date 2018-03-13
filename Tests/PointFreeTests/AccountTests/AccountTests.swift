@@ -144,7 +144,7 @@ final class AccountTests: TestCase {
       #endif
     }
   }
-  
+
   func testAccountCanceledSubscription() {
     let subscription = Stripe.Subscription.canceled
 
@@ -157,6 +157,62 @@ final class AccountTests: TestCase {
       #if !os(Linux)
         if #available(OSX 10.13, *) {
           let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 400
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredits_1Credit_NoneChosen() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+
+    AppEnvironment.with(env) {
+      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
+          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+          assertSnapshot(matching: webView, named: "desktop")
+
+          webView.frame.size.width = 400
+          assertSnapshot(matching: webView, named: "mobile")
+        }
+      #endif
+    }
+  }
+
+  func testEpisodeCredits_1Credit_1Chosen() {
+    let user = Database.User.mock
+      |> \.subscriptionId .~ nil
+      |> \.episodeCreditCount .~ 1
+
+    let env: (Environment) -> Environment =
+      (\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+
+    AppEnvironment.with(env) {
+      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+        if #available(OSX 10.13, *) {
+          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
           webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
           assertSnapshot(matching: webView, named: "desktop")
 

@@ -14,16 +14,13 @@ import SnapshotTesting
 
 AppEnvironment.push(const(.mock))
 
-var request = URLRequest(url: URL(string: "http://localhost:8080/episodes/1")!)
-  |> \.allHTTPHeaderFields .~ [
-    "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
-]
+var request = URLRequest(url: URL(string: "http://localhost:8080")!)
 
 let conn = connection(from: request)
 let result = (conn |> siteMiddleware).perform()
 let htmlStr = String(data: result.response.body, encoding: .utf8) ?? ""
 
-let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 750))
+let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 750))
 webView.loadHTMLString(htmlStr, baseURL: nil)
 
 print(htmlStr)

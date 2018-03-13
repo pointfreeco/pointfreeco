@@ -17,11 +17,11 @@ let accountResponse =
     >-> map(lower)
     >>> respond(
       view: accountView,
-      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
+      layoutData: { subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser, subscriptionStatus in
         SimplePageLayoutData(
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (subscription, teamInvites, teammates, emailSettings, currentUser),
+          data: (subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser),
           title: "Account"
         )
     }
@@ -29,7 +29,7 @@ let accountResponse =
 
 private func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
+  ) -> IO<Conn<I, T7<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], [Database.EpisodeCredit], Database.User, A>>> {
 
   let user = get1(conn.data)
 
@@ -46,24 +46,26 @@ private func fetchAccountData<I, A>(
     )
     ?? pure(nil)
 
-  return
-    zip(
-      parallel(subscription),
+  return zip5(
+    subscription.parallel,
 
-      parallel(AppEnvironment.current.database.fetchTeamInvites(user.id).run)
-        .map { $0.right ?? [] },
+    AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
+      .map { $0.right ?? [] },
 
-      parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
-        .map { $0.right ?? [] },
+    AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
+      .map { $0.right ?? [] },
 
-      parallel(AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run)
-        .map { $0.right ?? [] }
-      )
-      .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. conn.data)) }
-      .sequential
+    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+      .map { $0.right ?? [] },
+
+    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
+      .map { $0.right ?? [] }
+    )
+    .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. $4 .*. conn.data)) }
+    .sequential
 }
 
-let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User)> { subscription, teamInvites, teammates, emailSettings, currentUser in
+let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], [Database.EpisodeCredit], Database.User)> { subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
@@ -71,10 +73,89 @@ let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.U
           titleRowView.view(unit)
             <> profileRowView.view((currentUser, emailSettings))
             <> subscriptionRowView.view((currentUser, subscription, teamInvites, teammates))
+            <> creditsView.view((subscription, currentUser, episodeCredits))
             <> logoutView.view(unit)
       )
       ])
     ])
+}
+
+private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.EpisodeCredit])> {
+  subscription, currentUser, credits -> [Node] in
+
+  guard subscription?.status != .some(.active) else { return [] }
+  guard currentUser.episodeCreditCount > 0 || credits.count > 0 else { return [] }
+
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div(
+          [
+            h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
+            p([
+              "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
+              text("subscription. You currently have \(currentUser.episodeCreditCount) credits "),
+              "remaining."
+              ]),
+            p([
+              "To get all past and future episodes, ",
+              a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+              " a subscriber today!"
+              ])
+            ]
+            <> episodeCreditsView.view(credits)
+        )
+        ])
+      ])
+  ]
+}
+
+private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [Node] in
+  guard credits.count > 0 else { return [] }
+
+  return [
+    h3(
+      [
+        `class`(
+          [
+            Class.pf.type.title5,
+            Class.padding([.mobile: [.top: 2]])
+          ]
+        ),
+      ],
+      ["Chosen episodes"]
+    ),
+
+    ul(
+      episodes(from: credits)
+        .reversed()
+        .map { ep in li(episodeLinkView.view(ep)) }
+    )
+  ]
+}
+
+private let episodeLinkView = View<Episode> { episode in
+  a(
+    [
+      href(path(to: .episode(.left(episode.slug)))),
+      `class`(
+        [
+          Class.pf.colors.link.purple
+        ]
+      )
+    ],
+    [.text(encode("#\(episode.sequence): \(episode.title)"))]
+  )
+}
+
+private func episodes(from credits: [Database.EpisodeCredit]) -> [Episode] {
+  return AppEnvironment.current.episodes()
+    .filter { ep in credits.contains(where: { $0.episodeSequence == ep.sequence }) }
+}
+
+private func episode(atSequence sequence: Int) -> Episode? {
+  return AppEnvironment.current.episodes()
+    .first(where: { $0.sequence == sequence })
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in

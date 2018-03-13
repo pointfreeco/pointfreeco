@@ -34,7 +34,10 @@ private let adminIndexView = View<Database.User> { currentUser in
   ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"])
-      ])
+      ]),
+    li([
+      a([href(path(to: .admin(.episodeCredits(.show))))], ["Send episode credits"])
+      ]),
     ])
 }
 

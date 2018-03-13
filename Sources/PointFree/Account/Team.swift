@@ -54,7 +54,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
 
 private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
 
-  return zip(
+  return zip2(
     parallel(sendEmail(
       to: [teammate.email],
       subject: "You have been removed from \(owner.name ?? owner.email.unwrap)’s Point-Free team",
