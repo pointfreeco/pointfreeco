@@ -198,7 +198,7 @@ class EpisodeTests: TestCase {
     }
   }
 
-  func testEpisodeCredit_SubscriberEpisode_NonSubscriber_UsedCredit() {
+  func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
     let user = Database.User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
