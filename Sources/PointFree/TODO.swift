@@ -247,3 +247,10 @@ public func zurry<A>(_ f: () -> A) -> A {
 public func unzurry<A>(_ a: A) -> () -> A {
   return { a }
 }
+
+public func optional<A, B>(_ f: PartialIso<A, B>) -> PartialIso<A, B?> {
+  return PartialIso(
+    apply: f.apply >>> Optional.some,
+    unapply: { $0.flatMap(f.unapply) }
+  )
+}
