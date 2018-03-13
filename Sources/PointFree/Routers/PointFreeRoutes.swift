@@ -144,8 +144,6 @@ private let routers: [Router<Route>] = [
   .admin <<< .episodeCredits <<< .show
     <¢> get %> lit("admin") %> lit("episode-credits") %> end,
 
-  //admin(.episodeCredits(.add
-
   .admin <<< .index
     <¢> get %> lit("admin") <% end,
 
