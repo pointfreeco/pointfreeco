@@ -11,6 +11,7 @@ public struct Database {
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
   var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
+  var fetchFreeEpisodeUsers: () -> EitherIO<Error, [User]>
   var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
   var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
@@ -34,6 +35,7 @@ public struct Database {
     insertTeamInvite: PointFree.insertTeamInvite,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
     fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
+    fetchFreeEpisodeUsers: PointFree.fetchFreeEpisodeUsers,
     fetchSubscriptionById: PointFree.fetchSubscription(id:),
     fetchSubscriptionByOwnerId: PointFree.fetchSubscription(ownerId:),
     fetchSubscriptionTeammatesByOwnerId: PointFree.fetchSubscriptionTeammates(ownerId:),
@@ -510,6 +512,33 @@ private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error
     WHERE "user_id" = $1
     """,
     [userId.unwrap.uuidString]
+  )
+}
+
+private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Database.User]> {
+  return rows(
+    """
+    SELECT "email",
+           "episode_credit_count",
+           "github_user_id",
+           "github_access_token",
+           "id",
+           "is_admin",
+           "name",
+           "subscription_id"
+    FROM "users"
+    LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
+    LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"
+    WHERE (
+      "subscriptions"."stripe_subscription_status" IS NULL
+        OR "subscriptions"."stripe_subscription_status" != $1
+    )
+    AND "email_settings"."newsletter" = $2;
+    """,
+    [
+      Stripe.Subscription.Status.active.rawValue,
+      Database.EmailSetting.Newsletter.newEpisode.rawValue
+    ]
   )
 }
 

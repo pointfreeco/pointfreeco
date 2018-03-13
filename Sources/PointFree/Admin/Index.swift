@@ -51,25 +51,11 @@ let showNewEpisodeEmailMiddleware =
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
 
-let indexFreeEpisodeEmailMiddleware =
-  requireAdmin
-    <| writeStatus(.ok)
-    >-> respond(freeNewEpisodeView.contramap(lower))
-
 private let showNewEpisodeView = View<Database.User> { _ in
   ul(
     AppEnvironment.current.episodes()
       .sorted(by: their(^\.sequence))
       .map(li <<< newEpisodeEmailRowView.view)
-  )
-}
-
-private let freeNewEpisodeView = View<Database.User> { _ in
-  ul(
-    AppEnvironment.current.episodes()
-      .filter((!) <<< ^\.subscriberOnly)
-      .sorted(by: their(^\.sequence))
-      .map(li <<< freeEpisodeEmailRowView.view)
   )
 }
 
@@ -82,15 +68,6 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
     ])
 }
 
-private let freeEpisodeEmailRowView = View<Episode> { ep in
-  p([
-    .text(encode(ep.title)),
-    form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)], [
-      input([type(.submit), value("Send email!")])
-      ])
-    ])
-}
-
 let sendNewEpisodeEmailMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
   requireAdmin
@@ -98,27 +75,7 @@ let sendNewEpisodeEmailMiddleware:
     <| sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
-let sendFreeEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
-  requireAdmin
-    <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
-    <| sendFreeEpisodeEmails
-    >-> redirect(to: .admin(.index))
-
-func fetchEpisode(_ id: Episode.Id) -> Episode? {
-  return AppEnvironment.current.episodes().first(where: { $0.id.unwrap == id.unwrap })
-}
-
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
-
-  return AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
-    .mapExcept(bimap(const(unit), id))
-    .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
-    .run
-    .map { _ in conn.map(const(unit)) }
-}
-
-private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
   return AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
     .mapExcept(bimap(const(unit), id))
