@@ -9,75 +9,74 @@ import Optics
 import Prelude
 import Styleguide
 
-let freeEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
+let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent)
   .contramap { ep, user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
-      title: "New Point-Free Episode: \(ep.title)",
-      preheader: ep.blurb,
-      data: (ep, user.subscriptionId != nil)
+      title: "Free Point-Free Episode: \(ep.title)",
+      preheader: freeEpisodeBlurb,
+      data: ep
     )
 }
 
-let freeEpisodeEmailContent = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber in
+let freeEpisodeBlurb = """
+Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
+"""
+
+let freeEpisodeEmailContent = View<Episode> { ep in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+          blockquote(
+            [
+              `class`(
+                [
+                  Class.padding([.mobile: [.all: 2]]),
+                  Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
+                  Class.pf.colors.bg.blue900,
+                  Class.type.italic
+                ]
+              )
+            ],
+            [
+              text(freeEpisodeBlurb),
+              " Please consider ",
+              a([href(url(to: .pricing(nil, expand: nil)))], ["supporting us"]),
+              " so that we can keep new episodes coming!"
+            ]
+          ),
+
           a([href(url(to: .episode(.left(ep.slug))))], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], [text("#\(ep.sequence): \(ep.title)")]),
+            h3(
+              [`class`([Class.pf.type.responsiveTitle3])],
+              [text("Episode #\(ep.sequence) is now free!")]
+            )
             ]),
+
+          h4(
+            [`class`([Class.pf.type.responsiveTitle5])],
+            [text(ep.title)]
+          ),
+
           p([.text(encode(ep.blurb))]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .episode(.left(ep.slug))))], [
               img(src: ep.image, alt: "", [style(maxWidth(.pct(100)))])
               ])
+            ]),
+
+          p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
+              ["Watch now!"])
             ])
           ]
-          <> nonSubscriberCtaView.view((ep, isSubscriber))
-          <> subscriberCtaView.view((ep, isSubscriber))
           <> hostSignOffView.view(unit))
         ])
       ])
     ])
-}
-
-private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber -> [Node] in
-  guard !isSubscriber else { return [] }
-
-  return [
-    p([
-      """
-      This episode is for subscribers only. To access it, and all past and future episodes, become a
-      subscriber today!
-      """
-      ]),
-    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Subscribe to Point-Free!"]
-      ),
-      a(
-        [
-          href(url(to: .episode(.left(ep.slug)))),
-          `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
-        ],
-        [" Watch preview"]
-      )
-      ])
-  ]
-}
-
-private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSubscriber) -> [Node] in
-  guard isSubscriber else { return [] }
-
-  return [
-    p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
-    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Watch now!"])
-      ])
-  ]
 }
 
 let freeEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminReportEmailContent)
@@ -85,7 +84,7 @@ let freeEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminRep
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "New episode email finished sending!",
+      title: "Free episode email finished sending!",
       preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
       data: (erroredUsers, totalAttempted)
     )

@@ -261,6 +261,10 @@ class EpisodeTests: TestCase {
         [credit],
         AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
       )
+      XCTAssertEqual(
+        0,
+        AppEnvironment.current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
+      )
     }
   }
 
@@ -289,6 +293,10 @@ class EpisodeTests: TestCase {
       XCTAssertEqual(
         [],
         AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+      XCTAssertEqual(
+        0,
+        AppEnvironment.current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
       )
     }
   }
@@ -319,6 +327,10 @@ class EpisodeTests: TestCase {
       XCTAssertEqual(
         [],
         AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+      XCTAssertEqual(
+        1,
+        AppEnvironment.current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
       )
     }
   }
@@ -352,6 +364,10 @@ class EpisodeTests: TestCase {
       XCTAssertEqual(
         [credit],
         AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.perform().right!
+      )
+      XCTAssertEqual(
+        1,
+        AppEnvironment.current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
       )
     }
   }

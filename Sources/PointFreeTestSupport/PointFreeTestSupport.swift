@@ -51,6 +51,7 @@ extension Database {
     insertTeamInvite: { _, _ in pure(.mock) },
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
+    fetchFreeEpisodeUsers: { hole() },
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
     fetchSubscriptionTeammatesByOwnerId: const(pure([])),

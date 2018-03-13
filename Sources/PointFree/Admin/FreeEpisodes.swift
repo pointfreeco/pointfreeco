@@ -54,7 +54,9 @@ private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pr
 
   return AppEnvironment.current.database.fetchFreeEpisodeUsers()
     .mapExcept(bimap(const(unit), id))
-    .flatMap { users in sendEmail(forFreeEpisode: conn.data, toUsers: users) }
+    .flatMap { users in
+      sendEmail(forFreeEpisode: conn.data, toUsers: users)
+    }
     .run
     .map { _ in conn.map(const(unit)) }
 }

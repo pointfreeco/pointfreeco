@@ -518,14 +518,14 @@ private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error
 private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Database.User]> {
   return rows(
     """
-    SELECT "email",
-           "episode_credit_count",
-           "github_user_id",
-           "github_access_token",
-           "id",
-           "is_admin",
-           "name",
-           "subscription_id"
+    SELECT "users"."email",
+           "users"."episode_credit_count",
+           "users"."github_user_id",
+           "users"."github_access_token",
+           "users"."id",
+           "users"."is_admin",
+           "users"."name",
+           "users"."subscription_id"
     FROM "users"
     LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
     LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"
