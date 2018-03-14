@@ -29,9 +29,20 @@ extension Route {
   }
 }
 
+let tmp: Router<Route> =
+  lit("account") %>
+    (.account <<< .index <¢> get <% end)
+let tmp1: Router<Route> =
+    (.account <<< .index <¢> get %> lit("account") %> end)
+
 let accountRouter =
-  lit("account")
-    %> accountRouters.reduce(.empty, <|>)
+//  lit("account")
+    namespace("account") <| accountRouters.reduce(.empty, <|>)
+
+
+//  accountRouters
+//    .map { x in lit("account") %> x }
+//    .reduce(.empty, <|>)
 
 private let accountRouters: [Router<Route>] = [
 

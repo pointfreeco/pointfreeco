@@ -15,12 +15,36 @@ import XCTest
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
+    record = true
     AppEnvironment.push(\.database .~ .mock)
   }
 
   override func tearDown() {
     super.tearDown()
     AppEnvironment.pop()
+  }
+
+  func testRouter() {
+
+    XCTAssertEqual(
+      "/account",
+      router.absoluteString(for: Route.account(.index))
+    )
+
+    XCTAssertEqual(
+      "/account/payment-info?expand=true",
+      router.absoluteString(for: Route.account(Route.Account.paymentInfo(Route.Account.PaymentInfo.show(expand: true))))
+    )
+
+    XCTAssertEqual(
+      "logout",
+      "\(router.match(string: "/logout")!)"
+    )
+
+    XCTAssertEqual(
+      "/logout",
+      router.absoluteString(for: Route.logout)
+    )
   }
   
   func testAccount() {
