@@ -33,11 +33,16 @@ let adminIndex =
 private let adminIndexView = View<Database.User> { currentUser in
   ul([
     li([
-      a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"])
+      a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
       ]),
+
     li([
       a([href(path(to: .admin(.episodeCredits(.show))))], ["Send episode credits"])
       ]),
+
+    li([
+      a([href(path(to: .admin(.freeEpisodeEmail(.index))))], ["Send free episode email"]),
+      ])
     ])
 }
 
@@ -46,7 +51,7 @@ let showNewEpisodeEmailMiddleware =
     <| writeStatus(.ok)
     >-> respond(showNewEpisodeView.contramap(lower))
 
-private let showNewEpisodeView = View<Database.User> { currentUser in
+private let showNewEpisodeView = View<Database.User> { _ in
   ul(
     AppEnvironment.current.episodes()
       .sorted(by: their(^\.sequence))
@@ -69,10 +74,6 @@ let sendNewEpisodeEmailMiddleware:
     <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
     <| sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
-
-func fetchEpisode(_ id: Episode.Id) -> Episode? {
-  return AppEnvironment.current.episodes().first(where: { $0.id.unwrap == id.unwrap })
-}
 
 private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
