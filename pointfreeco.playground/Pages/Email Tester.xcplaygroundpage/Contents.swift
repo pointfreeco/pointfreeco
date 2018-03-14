@@ -8,12 +8,10 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = freeEpisodeEmail.view((typeSafeHtml, .mock))
+let htmlNodes = newEpisodeEmail.view((typeSafeHtml, .mock, true))
 let htmlString = render(htmlNodes, config: compact)
 
-let webView = WKWebView(
-  frame: .init(x: 0, y: 0, width: 400, height: 750)
-)
+let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
 webView.loadHTMLString(htmlString, baseURL: nil)
 print(htmlString)
 
@@ -27,3 +25,4 @@ sendEmail(
   )
   .run
   .perform()
+
