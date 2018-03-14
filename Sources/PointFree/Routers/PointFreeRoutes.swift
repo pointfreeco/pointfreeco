@@ -62,7 +62,7 @@ private let routers: [Router<Route>] = [
 
   accountRouter,
   
-  adminRouter,
+//  adminRouter,
 
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
@@ -94,6 +94,7 @@ private let routers: [Router<Route>] = [
   .invite <<< .accept
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("accept") <% end,
 
+  
   .invite <<< .resend
     <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("resend") <% end,
 

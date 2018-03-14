@@ -20,8 +20,16 @@ extension Route {
 }
 
 let adminRouter =
-  lit("admin")
-    %> adminRouters.reduce(.empty, <|>)
+//  lit("admin")
+//    %>
+//    adminRouters.reduce(.empty, <|>)
+
+
+  adminRouters
+    .map { lit("admin") %> $0 }
+    .reduce(.empty, <|>)
+
+
 
 private let adminRouters: [Router<Route>] = [
 
