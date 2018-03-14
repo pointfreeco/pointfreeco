@@ -6,22 +6,12 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 AppEnvironment.current.database.migrate().run.perform()
 
-//AppEnvironment.current.database
-//  .fetchUserById(Database.User.Id(unwrap: UUID(uuidString: "df73ae7c-e12f-11e7-82c0-afa1915eb872")!))
-//  .run
-//  .perform()
-
-AppEnvironment.current.database
-  .upsertUser(.init(accessToken: .init(accessToken: "deadbeef"), gitHubUser: .init(avatarUrl: "", email: .init(unwrap: "me@pointfree.co"), id: .init(unwrap: 123), name: "Blob")))
+AppEnvironment.current.database.fetchFreeEpisodeUsers()
   .run
   .perform()
+  .right!
 
-AppEnvironment.current.database.addUserIdToSubscriptionId(
-  .init(unwrap: UUID(uuidString: "0e74ece2-e665-11e7-9c23-4b6dbc10be70")!),
-  .init(unwrap: UUID(uuidString: "5dda18fa-e662-11e7-b1dd-fb29b9a4f405")!)
-)
-.run
-.perform()
+
 
 //AppEnvironment.current.database
 //  .insertTeamInvite(
