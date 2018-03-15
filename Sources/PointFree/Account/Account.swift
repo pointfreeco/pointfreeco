@@ -11,62 +11,23 @@ import Styleguide
 import Tuple
 
 let accountResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <| fetchAccountData
+  fetchAccountData
     >-> writeStatus(.ok)
     >-> map(lower)
     >>> respond(text: "yo")
-//    >>> respond(
-//      view: accountView,
-//      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
-//        SimplePageLayoutData(
-//          currentSubscriptionStatus: subscriptionStatus,
-//          currentUser: currentUser,
-//          data: (subscription, teamInvites, teammates, emailSettings, [], currentUser),
-//          title: "Account"
-//        )
-//    }
-//)
 
-private func fetchAccountData<I, A>(
-  _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
+private func fetchAccountData<I, Z>(
+  _ conn: Conn<I, T2<Database.User?, Z>>
+  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User?, Z>>> {
 
   let user = get1(conn.data)
 
-  let subscription = user.subscriptionId
-    .map(
-      (
-        AppEnvironment.current.database.fetchSubscriptionById
-          >>> mapExcept(requireSome)
-          >>> map(^\.stripeSubscriptionId)
-          >-> AppEnvironment.current.stripe.fetchSubscription
-        )
-        >>> ^\.run
-        >>> map(^\.right)
-    )
-    ?? pure(nil)
-
   return zip5(
-//    subscription.parallel,
-//
-//    AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
-//      .map { $0.right ?? [] },
-//
-//    AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-//      .map { $0.right ?? [] },
-//
-//    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-//      .map { $0.right ?? [] },
-//
-//    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
-//      .map { $0.right ?? [] }
-
     pure(nil),
     pure([]),
     pure([]),
+    pure([]),
     pure([])
-    , pure([])
     )
     .map { conn.map(const($0.0 .*. $0.1 .*. $0.2 .*. $0.3 .*. conn.data)) }
     .sequential
