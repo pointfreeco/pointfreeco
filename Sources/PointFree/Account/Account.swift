@@ -10,24 +10,40 @@ import Prelude
 import Styleguide
 import Tuple
 
+public struct Foo {
+  public private(set) var canceledAt: Date
+  public private(set) var cancelAtPeriodEnd: Bool
+  public private(set) var created: Date
+  public private(set) var currentPeriodStart: Date
+//  public private(set) var currentPeriodEnd: Date
+//  public private(set) var customer: Stripe.Customer
+//  public private(set) var endedAt: Date?
+//  public private(set) var id: Id
+//  public private(set) var items: Stripe.ListEnvelope<Stripe.Subscription.Item>
+//  public private(set) var plan: Stripe.Plan
+//  public private(set) var quantity: Int
+//  public private(set) var start: Date
+//  public private(set) var status: Status
+}
+
 let accountResponse =
   fetchAccountData
     >-> writeStatus(.ok)
     >-> map(lower)
-    >>> respond(text: "yo")
+    >>> respond(text: "yo 9")
 
 private func fetchAccountData<I, Z>(
   _ conn: Conn<I, T2<Database.User?, Z>>
-  ) -> IO<Conn<I, T2<Database.User?, Z>>> {
+  ) -> IO<Conn<I, T3<Foo?, Database.User?, Z>>> {
 
   return zip5(
-    pure(nil) as Parallel<Int?>,
+    pure(nil) as Parallel<Foo?>,
     pure([]) as Parallel<[Int]>,
     pure([]) as Parallel<[Int]>,
     pure([]) as Parallel<[Int]>,
     pure([]) as Parallel<[Int]>
     )
-    .map { _ in conn }
+    .map { a, b, c, d, e in conn.map(const(a .*. conn.data)) }
     .sequential
 }
 
