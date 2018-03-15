@@ -32,7 +32,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. subscriptionStatus .*. unit))
+      return conn.map(const(user .*. unit))
         |> accountResponse
 
     case let .account(.paymentInfo(.show(expand))):
