@@ -47,19 +47,25 @@ private func fetchAccountData<I, A>(
     ?? pure(nil)
 
   return zip5(
-    subscription.parallel,
+//    subscription.parallel,
+//
+//    AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
+//      .map { $0.right ?? [] },
+//
+//    AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
+//      .map { $0.right ?? [] },
+//
+//    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+//      .map { $0.right ?? [] },
+//
+//    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
+//      .map { $0.right ?? [] }
 
-    AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
-      .map { $0.right ?? [] },
-
-    AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-      .map { $0.right ?? [] },
-
-    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-      .map { $0.right ?? [] },
-
-    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
-      .map { $0.right ?? [] }
+    pure(nil),
+    pure([]),
+    pure([]),
+    pure([]),
+    pure([])
     )
     .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. $4 .*. conn.data)) }
     .sequential
@@ -122,7 +128,7 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
             Class.padding([.mobile: [.top: 2]])
           ]
         ),
-      ],
+        ],
       ["Chosen episodes"]
     ),
 
@@ -589,3 +595,4 @@ let blockSelectClass =
     | Class.size.width100pct
     | Class.pf.colors.border.gray800
     | Class.type.fontFamilyInherit
+
