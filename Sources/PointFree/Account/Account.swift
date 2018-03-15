@@ -18,18 +18,16 @@ let accountResponse =
 
 private func fetchAccountData<I, Z>(
   _ conn: Conn<I, T2<Database.User?, Z>>
-  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User?, Z>>> {
-
-  let user = get1(conn.data)
+  ) -> IO<Conn<I, T2<Database.User?, Z>>> {
 
   return zip5(
-    pure(nil),
-    pure([]),
-    pure([]),
-    pure([]),
-    pure([])
+    pure(nil) as Parallel<Int?>,
+    pure([]) as Parallel<[Int]>,
+    pure([]) as Parallel<[Int]>,
+    pure([]) as Parallel<[Int]>,
+    pure([]) as Parallel<[Int]>
     )
-    .map { conn.map(const($0.0 .*. $0.1 .*. $0.2 .*. $0.3 .*. conn.data)) }
+    .map { _ in conn }
     .sequential
 }
 
