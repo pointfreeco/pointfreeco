@@ -13,8 +13,8 @@ import Tuple
 public struct Foo {
   public private(set) var a: Date
   public private(set) var c: Date
-  public private(set) var b: Bool
   public private(set) var d: Date
+  public private(set) var b: Bool
 //  public private(set) var currentPeriodEnd: Date
 //  public private(set) var customer: Stripe.Customer
 //  public private(set) var endedAt: Date?
@@ -30,7 +30,7 @@ let accountResponse =
   fetchAccountData
     >-> writeStatus(.ok)
     >-> map(lower)
-    >>> respond(text: "yo 14")
+    >>> respond(text: "yo 15")
 
 private func fetchAccountData<I, Z>(
   _ conn: Conn<I, T2<Database.User?, Z>>
