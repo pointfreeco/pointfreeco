@@ -34,7 +34,7 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
 
 * Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make CommonCrypto, WebKit's WKSnapshotConfiguration, and Postgres headers available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
   ``` sh
-  make bootstrap
+  make bootstrap-oss
   ```
 
 * With everything bootstrapped and the project open in Xcode, you can:
