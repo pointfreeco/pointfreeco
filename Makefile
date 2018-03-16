@@ -7,9 +7,11 @@ xcodeproj:
 
 # bootstrap
 
-bootstrap-oss: mock-env mock-transcripts check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db xcodeproj
 
-bootstrap: submodules check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm init-db xcodeproj
+bootstrap-oss: mock-env mock-transcripts bootstrap-common
+
+bootstrap: submodules bootstrap-common
 
 mock-all-episodes:
 	test -f Sources/Server/Transcripts/AllEpisodes.swift \
@@ -142,6 +144,10 @@ webkit-snapshot-mm:
 	-@sudo mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
 	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" | sudo tee "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map" > /dev/null
 
+ccmark-mm:
+	-@sudo mkdir -p "$(CCMARK_CONFIGURATION_PATH)"
+	-@echo "$$CCMARK_CONFIGURATION_MODULE_MAP" | sudo tee "$(CCMARK_CONFIGURATION_PATH)/module.map" > /dev/null
+
 SDK_PATH = $(shell xcrun --show-sdk-path)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
 COMMON_CRYPTO_PATH = $(FRAMEWORKS_PATH)/CommonCrypto.framework
@@ -184,6 +190,15 @@ module WKSnapshotConfigurationShim [system] {
 }
 endef
 export WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP
+
+CCMARK_CONFIGURATION_PATH = $(FRAMEWORKS_PATH)/Ccmark.framework
+define CCMARK_CONFIGURATION_MODULE_MAP
+module Ccmark [system] {
+  header "/usr/local/Cellar/cmark/0.28.3/include/cmark.h"
+  export *
+}
+endef
+export CCMARK_CONFIGURATION_MODULE_MAP
 
 # colortheme
 
