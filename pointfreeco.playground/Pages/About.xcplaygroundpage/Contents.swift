@@ -10,12 +10,11 @@ import PlaygroundSupport
 import Prelude
 import WebKit
 import Optics
-import SnapshotTesting
 import Styleguide
 
 AppEnvironment.push(const(.mock))
 
-let request = PointFreeTestSupport.request(to: .pricing(nil, nil))
+let request = PointFreeTestSupport.request(to: .pricing(nil, expand: nil))
 
 let conn = connection(from: request)
 let result = (conn |> siteMiddleware).perform()
