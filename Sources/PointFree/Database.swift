@@ -357,8 +357,8 @@ private func upsertUser(
 
   return execute(
     """
-    INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name")
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
+    VALUES ($1, $2, $3, $4, 1)
     ON CONFLICT ("github_user_id") DO UPDATE
     SET "github_access_token" = $3, "name" = $4
     """,

@@ -14,7 +14,7 @@ import SnapshotTesting
 
 AppEnvironment.push(const(.mock))
 
-let htmlString = render(accountView.view((.mock, .mock, [.mock, .mock], [.mock, .mock, .mock], unit)), config: pretty)
+let htmlString = render(accountView.view((.mock, [.mock, .mock], [.mock, .mock, .mock], [.mock], [.mock], .mock)), config: pretty)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 750))
 webView.loadHTMLString(htmlString, baseURL: nil)

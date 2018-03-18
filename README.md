@@ -32,19 +32,23 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   cd pointfreeco
   ```
 
-* Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make CommonCrypto, WebKit's WKSnapshotConfiguration, and Postgres headers available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
+* Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make sure CommonCrypto, WebKit's WKSnapshotConfiguration, Postgres _and_ cmark headers are available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
   ``` sh
   make bootstrap-oss
   ```
 
-* With everything bootstrapped and the project open in Xcode, you can:
+With everything bootstrapped and the project open in Xcode, you can:
+
+* Run the server locally
+  * Open Xcode
+  * Select the `Server` target
+  * Run Command+R
+  * Visit `http://localhost:8080`
+* Explore our playgrounds
+  * Open Xcode
+  * Select the `PointFree-Package` target
   * Build: Command+B
-  * Run the site locally:
-    * Select `Server` target
-    * Run Command+R
-    * Visit `http://localhost:8080`
-  * Run tests: Command+U  
-  * Open a playground! Requires building `Server` first.
+  * Open a [playground](https://github.com/pointfreeco/pointfreeco/tree/master/pointfreeco.playground)!
 
 ## Some fun things to explore
 

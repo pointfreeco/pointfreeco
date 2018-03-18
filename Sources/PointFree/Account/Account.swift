@@ -17,11 +17,11 @@ let accountResponse =
     >-> map(lower)
     >>> respond(
       view: accountView,
-      layoutData: { subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser, subscriptionStatus in
+      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
         SimplePageLayoutData(
           currentSubscriptionStatus: subscriptionStatus,
           currentUser: currentUser,
-          data: (subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser),
+          data: (subscription, teamInvites, teammates, emailSettings, [], currentUser),
           title: "Account"
         )
     }
@@ -29,7 +29,7 @@ let accountResponse =
 
 private func fetchAccountData<I, A>(
   _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, T7<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], [Database.EpisodeCredit], Database.User, A>>> {
+  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
 
   let user = get1(conn.data)
 
@@ -46,7 +46,7 @@ private func fetchAccountData<I, A>(
     )
     ?? pure(nil)
 
-  return zip5(
+  return zip4(
     subscription.parallel,
 
     AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
@@ -56,12 +56,9 @@ private func fetchAccountData<I, A>(
       .map { $0.right ?? [] },
 
     AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
-      .map { $0.right ?? [] },
-
-    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] }
     )
-    .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. $4 .*. conn.data)) }
+    .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. conn.data)) }
     .sequential
 }
 
@@ -94,7 +91,7 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
             h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              text("subscription. You currently have \(currentUser.episodeCreditCount) credits "),
+              text("subscription. You currently have \(pluralizedCredits(count: currentUser.episodeCreditCount)) "),
               "remaining."
               ]),
             p([
@@ -108,6 +105,12 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
         ])
       ])
   ]
+}
+
+private func pluralizedCredits(count: Int) -> String {
+  return count == 1
+    ? "1 credit"
+    : "\(count) credits"
 }
 
 private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [Node] in
