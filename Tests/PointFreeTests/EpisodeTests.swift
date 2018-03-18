@@ -272,15 +272,16 @@ class EpisodeTests: TestCase {
     let episode = Episode.mock
       |> \.subscriberOnly .~ true
 
+    let user = Database.User.mock
+      |> \.episodeCreditCount .~ 0
+      |> \.id .~ .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+
     let env: (Environment) -> Environment =
       (\.database .~ .live)
+        <> (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
-      let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
-        .run.perform().right!!
-
       let conn = connection(
         from: request(
           to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)
@@ -305,16 +306,16 @@ class EpisodeTests: TestCase {
     let episode = Episode.mock
       |> \.subscriberOnly .~ false
 
+    let user = Database.User.mock
+      |> \.episodeCreditCount .~ 1
+      |> \.id .~ .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+
     let env: (Environment) -> Environment =
       (\.database .~ .live)
+        <> (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
-      let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
-        .run.perform().right!!
-      _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
-
       let conn = connection(
         from: request(
           to: .useEpisodeCredit(episode.id), session: Session.init(flash: nil, userId: user.id)

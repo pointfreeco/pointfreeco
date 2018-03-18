@@ -26,4 +26,4 @@ let webView = WKWebView(
 )
 webView.loadHTMLString(htmlStr, baseURL: nil)
 
-PlaygroundPage.current.liveView = webVie
+PlaygroundPage.current.liveView = webView

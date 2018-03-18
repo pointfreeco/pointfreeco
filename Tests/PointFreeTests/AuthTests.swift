@@ -13,6 +13,39 @@ import XCTest
 #endif
 
 class AuthTests: TestCase {
+
+  func testRegister() {
+    let gitHubUserEnvelope = GitHub.UserEnvelope.mock
+      |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
+      |> \.gitHubUser.id .~ .init(unwrap: 1234567890)
+      |> \.gitHubUser.name .~ "Blobby McBlob"
+
+    let env: (Environment) -> Environment =
+      (\.database .~ .live)
+        <> (\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
+        <> (\.gitHub.fetchAuthToken .~ const(pure(gitHubUserEnvelope.accessToken)))
+
+    AppEnvironment.with(env) {
+      let result = connection(
+        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+        )
+        |> siteMiddleware
+        |> Prelude.perform
+      assertSnapshot(matching: result)
+
+      let registeredUser = AppEnvironment.current.database
+        .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
+        .run
+        .perform()
+        .right!!
+
+      XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id.unwrap, registeredUser.gitHubUserId.unwrap)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
+      XCTAssertEqual(1, registeredUser.episodeCreditCount)
+    }
+  }
+
   func testAuth() {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 

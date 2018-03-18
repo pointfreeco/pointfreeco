@@ -14,7 +14,7 @@ let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent)
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
-      title: "Free Point-Free Episode: \(ep.title)",
+      title: "Point-Freebie: \(ep.title)",
       preheader: freeEpisodeBlurb,
       data: ep
     )
