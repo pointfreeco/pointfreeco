@@ -4,8 +4,6 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-AppEnvironment.current.envVars
-
 AppEnvironment.current.database.migrate().run.perform()
 
 AppEnvironment.current.database.fetchFreeEpisodeUsers()
