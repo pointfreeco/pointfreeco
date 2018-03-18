@@ -13,6 +13,26 @@ import XCTest
 #endif
 
 class AuthTests: TestCase {
+
+  func testRegister() {
+    AppEnvironment.with(\.database .~ .live) {
+      let result = connection(
+        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+        )
+        |> siteMiddleware
+        |> Prelude.perform
+      assertSnapshot(matching: result)
+
+      let registeredUser = AppEnvironment.current.database
+        .fetchUserByGitHub(GitHub.UserEnvelope.mock.gitHubUser.id)
+        .run
+        .perform()
+        .right!!
+
+      XCTAssertEqual(1, registeredUser.episodeCreditCount)
+    }
+  }
+
   func testAuth() {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
