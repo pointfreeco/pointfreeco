@@ -91,7 +91,7 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
             h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              text("subscription. You currently have \(currentUser.episodeCreditCount) credits "),
+              text("subscription. You currently have \(pluralizedCredits(count: currentUser.episodeCreditCount)) "),
               "remaining."
               ]),
             p([
@@ -105,6 +105,12 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
         ])
       ])
   ]
+}
+
+private func pluralizedCredits(count: Int) -> String {
+  return count == 1
+    ? "1 credit"
+    : "\(count) credits"
 }
 
 private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [Node] in
