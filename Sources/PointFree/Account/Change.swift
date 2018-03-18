@@ -54,7 +54,7 @@ let subscriptionChangeMiddleware =
 private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User, Int, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (currentSubscription, user, _, newPricing) = conn.data
+    let (currentSubscription, _, _, newPricing) = conn.data
 
     let newPrice = defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100
     let currentPrice = currentSubscription.plan.amount.rawValue
