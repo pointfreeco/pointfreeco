@@ -533,7 +533,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
         ]
         <> loginLink.view((user, episode))
         <> creditBlurb.view((permission, episode))
-      <> signUpBlurb.view((permission, episode))
+        <> signUpBlurb.view((permission, episode))
     ),
     divider
   ]
