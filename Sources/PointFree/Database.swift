@@ -257,6 +257,7 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
   return rows(
     """
     SELECT "users"."email",
+           "users"."episode_credit_count",
            "users"."github_user_id",
            "users"."github_access_token",
            "users"."id",
@@ -398,6 +399,7 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
   return rows(
     """
     SELECT "users"."email",
+           "users"."episode_credit_count",
            "users"."github_user_id",
            "users"."github_access_token",
            "users"."id",
