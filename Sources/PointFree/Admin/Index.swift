@@ -98,7 +98,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
           )
           .delay(.milliseconds(200))
           .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-      }
+    }
   }
 
   // An email to send to admins once all user emails are sent
