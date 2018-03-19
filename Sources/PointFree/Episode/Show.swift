@@ -453,8 +453,8 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
       ],
       [
         text("""
-          You currently have \(user.episodeCreditCount) episode credit available. Do you want to use it to
-          view this episode for free right now?
+          You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
+          want to use it to view this episode for free right now?
           """)
       ]
     ),
@@ -476,6 +476,12 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
       ]
     )
   ]
+}
+
+private func pluralizedEpisodeCredits(count: Int) -> String {
+  return count == 1
+    ? "1 episode credit"
+    : "\(count) episode credits"
 }
 
 private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
