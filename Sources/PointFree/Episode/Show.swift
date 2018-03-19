@@ -483,14 +483,7 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
 
   return [
     p(
-      [
-        `class`(
-          [
-            Class.pf.type.body.regular,
-            Class.padding([.mobile: [.top: 4, .bottom: 2]])
-          ]
-        )
-      ],
+      [`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
       [
         """
         Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
@@ -502,11 +495,7 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
     a(
       [
         href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
-        `class`(
-          [
-            Class.pf.components.button(color: .black)
-          ]
-        )
+        `class`([Class.pf.components.button(color: .black)])
       ],
       ["Sign up for free episode"]
     )
