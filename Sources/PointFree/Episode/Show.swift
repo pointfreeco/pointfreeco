@@ -392,7 +392,7 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Stripe.Sub
       )
       + (
         isEpisodeViewable(for: permission)
-          ? transcriptView.view(episode)
+          ? transcriptView.view(episode.transcriptBlocks)
           : []
       )
       + exercisesView.view(episode.exercises)
@@ -595,7 +595,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
 let divider = hr([`class`([Class.pf.components.divider])])
 let dividerView = View<Prelude.Unit>(const(divider))
 
-private let transcriptView = View<Episode> { ep in
+private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
   div(
     [
       `class`(
@@ -605,7 +605,7 @@ private let transcriptView = View<Episode> { ep in
         ]
       )
     ],
-    ep.transcriptBlocks.flatMap(transcriptBlockView.view)
+    blocks.flatMap(transcriptBlockView.view)
   )
 }
 
