@@ -12,6 +12,9 @@ private let paidEpisode = Episode(
   """,
   codeSampleDirectory: "ep1-proof-in-functions",
   id: .init(unwrap: 1),
+  exercises: [
+    .init(body: "This is an exercise.")
+  ],
   image: "",
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
