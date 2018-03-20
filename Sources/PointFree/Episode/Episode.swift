@@ -4,6 +4,7 @@ import Prelude
 public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
+  public private(set) var exercises: [Exercise]
   public private(set) var id: Id
   public private(set) var image: String
   public private(set) var length: Int
@@ -19,6 +20,7 @@ public struct Episode {
     blurb: String,
     codeSampleDirectory: String,
     id: Id,
+    exercises: [Exercise],
     image: String,
     length: Int,
     publishedAt: Date,
@@ -31,6 +33,7 @@ public struct Episode {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
+    self.exercises = exercises
     self.id = id
     self.image = image
     self.length = length
@@ -49,6 +52,14 @@ public struct Episode {
     return "ep\(self.sequence)-\(PointFree.slug(for: self.title))"
   }
 
+  public struct Exercise {
+    public private(set) var body: String
+
+    public init(body: String) {
+      self.body = body
+    }
+  }
+
   public struct TranscriptBlock {
     public private(set) var content: String
     public private(set) var timestamp: Int?
@@ -62,14 +73,8 @@ public struct Episode {
 
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
-      case exercise
       case paragraph
       case title
-
-      public var isExercise: Bool {
-        guard case .exercise = self else { return false }
-        return true
-      }
 
       public enum CodeLang: Equatable {
         case html
@@ -103,9 +108,9 @@ public struct Episode {
         switch (lhs, rhs) {
         case let (.code(lhs), .code(rhs)):
           return lhs == rhs
-        case (.exercise, .exercise), (.paragraph, .paragraph), (.title, .title):
+        case (.paragraph, .paragraph), (.title, .title):
           return true
-        case (.code, _), (.exercise, _), (.paragraph, _), (.title, _):
+        case (.code, _), (.paragraph, _), (.title, _):
           return false
         }
       }
@@ -120,6 +125,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
 """,
   codeSampleDirectory: "ep4-type-safe-html",
   id: .init(unwrap: 4),
+  exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg",
   length: 1380,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
