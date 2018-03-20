@@ -645,12 +645,6 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
       )
       ])
 
-//  case .exercise:
-//    return div(
-//      timestampLinkView.view(block.timestamp)
-//        + [markdownBlock(block.content)]
-//    )
-
   case .paragraph:
     return div(
       timestampLinkView.view(block.timestamp)
