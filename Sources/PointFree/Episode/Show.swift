@@ -453,9 +453,9 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
       ],
       [
         text("""
-        You currently have \(user.episodeCreditCount) episode credit available. Do you want to use it to
-        view this episode for free right now?
-        """)
+          You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
+          want to use it to view this episode for free right now?
+          """)
       ]
     ),
 
@@ -467,13 +467,43 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
             type(.submit),
             `class`(
               [
-                Class.pf.components.button(color: .purple, size: .small)
+                Class.pf.components.button(color: .black, size: .small)
               ]
             ),
             value("Use an episode credit")
           ]
         )
       ]
+    )
+  ]
+}
+
+private func pluralizedEpisodeCredits(count: Int) -> String {
+  return count == 1
+    ? "1 episode credit"
+    : "\(count) episode credits"
+}
+
+private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+  guard case .loggedOut = permission else { return [] }
+
+  return [
+    p(
+      [`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
+      [
+        """
+        Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
+        subscriber-only episode of your choosing!
+        """
+      ]
+    ),
+
+    a(
+      [
+        href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
+        `class`([Class.pf.components.button(color: .black)])
+      ],
+      ["Sign up for free episode"]
     )
   ]
 }
@@ -509,6 +539,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
         ]
         <> loginLink.view((user, episode))
         <> creditBlurb.view((permission, episode))
+        <> signUpBlurb.view((permission, episode))
     ),
     divider
   ]
