@@ -187,15 +187,13 @@ private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscr
 
     script(
       """
+      var hasPlayed = false;
       var video = document.getElementsByTagName('video')[0];
-      video.addEventListener('click', function () {
-        video.focus();
-      });
       video.addEventListener('play', function () {
-        video.focus();
+        hasPlayed = true;
       });
       document.addEventListener('keypress', function (event) {
-        if (document.activeElement === video && event.key === ' ') {
+        if (hasPlayed && event.key === ' ') {
           if (video.paused) {
             video.play();
           } else {
@@ -221,18 +219,20 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
-  video(
-    [
-      `class`([Class.size.width100pct]),
-      controls(true),
-      playsinline(true),
-      poster(episode.image),
-      tabindex(0)
-    ],
-    isEpisodeViewable
-      ? episode.sourcesFull.map { source(src: $0) }
-      : episode.sourcesTrailer.map { source(src: $0) }
-  )
+  div([`class`([pfVideoClass])], [
+    video(
+      [
+        `class`([Class.size.width100pct]),
+        controls(true),
+        playsinline(true),
+        autoplay(true),
+        poster(episode.image)
+      ],
+      isEpisodeViewable
+        ? episode.sourcesFull.map { source(src: $0) }
+        : episode.sourcesTrailer.map { source(src: $0) }
+    )
+    ])
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
@@ -832,5 +832,15 @@ extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
   }
 }
 
+private let pfVideoClass = CssSelector.class("pf-video")
 private let videoExtraStyles: Stylesheet =
-  (video & .pseudo(.focus)) % outlineStyle(all: .none)
+  pfVideoClass % (
+    width(.pct(100))
+      <> padding(bottom: .pct(56.25))
+      <> position(.relative)
+    )
+    <> (
+      (pfVideoClass > video) % (
+        position(.absolute) <> height(.pct(100))
+      )
+)
