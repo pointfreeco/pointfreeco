@@ -394,7 +394,8 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Stripe.Sub
         isEpisodeViewable(for: permission)
           ? transcriptView.view(episode.transcriptBlocks)
           : []
-    )
+      )
+      + exercisesView.view(episode.exercises)
   )
 }
 
@@ -604,21 +605,32 @@ private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
         ]
       )
     ],
-    blocks.filter((!) <<< ^\.type.isExercise).flatMap(transcriptBlockView.view)
-      <> exercisesView.view(blocks.filter(^\.type.isExercise))
+    blocks.flatMap(transcriptBlockView.view)
   )
 }
 
-private let exercisesView = View<[Episode.TranscriptBlock]> { exercises -> [Node] in
+private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
   guard !exercises.isEmpty else { return [] }
 
-  return [
-    h2(
-      [`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
-      ["Exercises"]
-    ),
-    ol(
-      exercises.map { li(transcriptBlockView.view($0)) }
+  return dividerView.view(unit) + [
+    div(
+      [
+        `class`(
+          [
+            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+            Class.pf.colors.bg.white
+          ]
+        )
+      ],
+      [
+        h2(
+          [`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+          ["Exercises"]
+        ),
+        ol(
+          exercises.map { li([div([markdownBlock($0.body)])]) }
+        )
+      ]
     )
   ]
 }
@@ -632,12 +644,6 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         [.text(encode(block.content))]
       )
       ])
-
-  case .exercise:
-    return div(
-      timestampLinkView.view(block.timestamp)
-        + [markdownBlock(block.content)]
-    )
 
   case .paragraph:
     return div(
