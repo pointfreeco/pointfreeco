@@ -660,6 +660,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       "episode_credit_count" integer NOT NULL DEFAULT 0
       """
     )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "episode_credits"
+      ADD COLUMN IF NOT EXISTS
+      "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+      """
+    )))
     .map(const(unit))
 }
 
