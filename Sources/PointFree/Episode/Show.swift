@@ -30,7 +30,7 @@ let episodeResponse =
           currentUser: currentUser,
           data: (permission, currentUser, subscriptionStatus, episode),
           description: episode.blurb,
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
           navStyle: navStyle,
           title: "Episode #\(episode.sequence): \(episode.title)",
@@ -219,18 +219,20 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
-  video(
-    [
-      `class`([Class.size.width100pct]),
-      controls(true),
-      playsinline(true),
-      autoplay(true),
-      poster(episode.image)
-    ],
-    isEpisodeViewable
-      ? episode.sourcesFull.map { source(src: $0) }
-      : episode.sourcesTrailer.map { source(src: $0) }
-  )
+  div([`class`([pfVideoClass])], [
+    video(
+      [
+        `class`([Class.size.width100pct]),
+        controls(true),
+        playsinline(true),
+        autoplay(true),
+        poster(episode.image)
+      ],
+      isEpisodeViewable
+        ? episode.sourcesFull.map { source(src: $0) }
+        : episode.sourcesTrailer.map { source(src: $0) }
+    )
+    ])
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
@@ -823,3 +825,16 @@ extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
     }
   }
 }
+
+private let pfVideoClass = CssSelector.class("pf-video")
+private let videoExtraStyles: Stylesheet =
+  pfVideoClass % (
+    width(.pct(100))
+      <> padding(bottom: .pct(56.25))
+      <> position(.relative)
+    )
+    <> (
+      (pfVideoClass > video) % (
+        position(.absolute) <> height(.pct(100))
+      )
+)
