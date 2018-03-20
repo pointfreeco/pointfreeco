@@ -15,6 +15,7 @@ import XCTest
 class EpisodeTests: TestCase {
   override func setUp() {
     super.setUp()
+    record = true
     AppEnvironment.push(\.database .~ .mock)
   }
 
