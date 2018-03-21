@@ -42,7 +42,9 @@ private let aboutView = View<Prelude.Unit> { _ in
           [
             `class`([
               Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-              Class.pf.colors.bg.purple150
+              Class.pf.colors.bg.purple150,
+              Class.position.sticky(.desktop),
+              Class.position.top0
               ])
           ],
           hostsView.view(unit)
@@ -163,7 +165,7 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
           p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             The most basic unit of code reusability comes in the form of simple function composition. We will
-            show how that by focusing on small atomic units that compose well, we can build large complex
+            show that by focusing on small atomic units that compose well, we can build large complex
             systems that are easy to understand.
             """])
           ]),
