@@ -37,7 +37,17 @@ AppEnvironment.push(\.envVars .~ envVars)
 
 // Transcripts
 
-AppEnvironment.push(\.episodes .~ allEpisodes)
+AppEnvironment.push(\
+  .episodes .~ {
+    let now = AppEnvironment.current.date()
+    return (allPublicEpisodes + allPrivateEpisodes)
+      .filter {
+        AppEnvironment.current.envVars.appEnv == .production
+          ? $0.publishedAt <= now
+          : true
+    }
+  }
+)
 
 // Bootstrap
 
