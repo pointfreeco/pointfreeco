@@ -8,6 +8,7 @@ xcodeproj:
 xcodeproj-oss:
 	swift package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig
 	xed .
+
 # bootstrap
 
 bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db
