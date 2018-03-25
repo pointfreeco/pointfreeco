@@ -17,10 +17,6 @@ bootstrap-oss: mock-env mock-transcripts bootstrap-common xcodeproj-oss
 
 bootstrap: submodules bootstrap-common xcodeproj
 
-mock-all-episodes:
-	test -f Sources/Server/Transcripts/AllEpisodes.swift \
-		|| echo "import PointFree; public func allEpisodes() -> [Episode] { return [] }" > Sources/Server/Transcripts/AllEpisodes.swift
-
 mock-env:
 	test -f .env \
 		|| cp .env.example .env
@@ -70,16 +66,11 @@ reset-db: deinit-db init-db
 
 test-all: test-linux test-mac test-ios
 
-test-linux: mock-all-episodes sourcery
+test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
-test-macos: mock-all-episodes xcodeproj init-db
-	xcodebuild test \
-		-scheme PointFree-Package \
-		-destination platform="macOS"
-
-test-swift: mock-all-episodes init-db
-	swift test
+test-swift: init-db
+	swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 # deploy
 
