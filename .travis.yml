@@ -16,9 +16,8 @@ install:
   - make -C cmark INSTALL_PREFIX=/usr
   - sudo make -C cmark install
 script:
-  - psql template1 < database/deinit.sql
-  - psql template1 < database/init.sql
-  - swift test
+  - make reset-db
+  - make test-swift
 services:
   - postgresql
 addons:
