@@ -5,17 +5,17 @@ xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
 
+xcodeproj-oss:
+	swift package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig
+	xed .
+
 # bootstrap
 
-bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db xcodeproj
+bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db
 
-bootstrap-oss: mock-env mock-transcripts bootstrap-common
+bootstrap-oss: mock-env mock-transcripts bootstrap-common xcodeproj-oss
 
-bootstrap: submodules bootstrap-common
-
-mock-all-episodes:
-	test -f Sources/Server/Transcripts/AllEpisodes.swift \
-		|| echo "import PointFree; public func allEpisodes() -> [Episode] { return [] }" > Sources/Server/Transcripts/AllEpisodes.swift
+bootstrap: submodules bootstrap-common xcodeproj
 
 mock-env:
 	test -f .env \
@@ -66,16 +66,11 @@ reset-db: deinit-db init-db
 
 test-all: test-linux test-mac test-ios
 
-test-linux: mock-all-episodes sourcery
+test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
-test-macos: mock-all-episodes xcodeproj init-db
-	xcodebuild test \
-		-scheme PointFree-Package \
-		-destination platform="macOS"
-
-test-swift: mock-all-episodes init-db
-	swift test
+test-swift: init-db
+	swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 # deploy
 
