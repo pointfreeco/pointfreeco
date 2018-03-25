@@ -1,5 +1,4 @@
 import Foundation
-import PointFree
 
 let ep1 = Episode(
   blurb: """
