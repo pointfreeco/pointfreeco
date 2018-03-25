@@ -5,13 +5,16 @@ xcodeproj:
 	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
 	xed .
 
+xcodeproj-oss:
+	swift package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig
+	xed .
 # bootstrap
 
-bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db xcodeproj
+bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db
 
-bootstrap-oss: mock-env mock-transcripts bootstrap-common
+bootstrap-oss: mock-env mock-transcripts bootstrap-common xcodeproj-oss
 
-bootstrap: submodules bootstrap-common
+bootstrap: submodules bootstrap-common xcodeproj
 
 mock-all-episodes:
 	test -f Sources/Server/Transcripts/AllEpisodes.swift \

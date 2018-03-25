@@ -37,10 +37,15 @@ AppEnvironment.push(\.envVars .~ envVars)
 
 // Transcripts
 
+#if OSS
+  private let allEpisodes = allPublicEpisodes
+#else
+  private let allEpisodes = allPublicEpisodes + allPrivateEpisodes
+#endif
 AppEnvironment.push(\
   .episodes .~ {
     let now = AppEnvironment.current.date()
-    return (allPublicEpisodes + allPrivateEpisodes)
+    return allEpisodes
       .filter {
         AppEnvironment.current.envVars.appEnv == .production
           ? $0.publishedAt <= now
