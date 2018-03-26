@@ -150,20 +150,24 @@ extension Stripe {
                 address_country: form.stripe_address_country.value
               }
             ).then(function(result) {
-              setFormEnabled(form, true, function(el) {
-                return true
-              });
-
               if (result.error) {
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
+
+                setFormEnabled(form, true, function(el) {
+                  return true;
+                });
               } else {
+                setFormEnabled(form, true, function(el) {
+                  return el.tagName != 'BUTTON';
+                });
+
                 form.token.value = result.token.id;
                 form.submit();
               }
             }).catch(function() {
               setFormEnabled(form, true, function(el) {
-                return true
+                return true;
               });
             });
           });
