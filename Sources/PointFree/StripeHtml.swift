@@ -151,7 +151,7 @@ extension Stripe {
               }
             ).then(function(result) {
               setFormEnabled(form, true, function(el) {
-                return el.tagName != 'BUTTON'
+                return true
               });
 
               if (result.error) {
@@ -161,6 +161,10 @@ extension Stripe {
                 form.token.value = result.token.id;
                 form.submit();
               }
+            }).catch(function() {
+              setFormEnabled(form, true, function(el) {
+                return true
+              });
             });
           });
           """
