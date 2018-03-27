@@ -11,7 +11,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 let htmlNodes = newEpisodeEmail.view(
   (
     typeSafeHtml,
-    "This is an announcement for subscribers! <u>[Click here](#)</u> for something cool!",
+    nil,
     "This is an announcement for non-subscribers!",
     .mock
   )

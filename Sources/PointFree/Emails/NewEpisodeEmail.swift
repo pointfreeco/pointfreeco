@@ -68,7 +68,7 @@ private let announcementView = View<String?> { announcement -> [Node] in
         )
       ],
       [
-        h6([`class`([Class.pf.type.title6])], ["Announcements"]),
+        h4([`class`([Class.pf.type.title4])], ["Announcements"]),
         markdownBlock(announcement)
       ]
     )
