@@ -62,24 +62,27 @@ private let showNewEpisodeView = View<Database.User> { _ in
 private let newEpisodeEmailRowView = View<Episode> { ep in
   p([
     .text(encode(ep.title)),
-    form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id))))), method(.post)], [
-      input([type(.submit), value("Send email!")])
+    form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, test: nil))))), method(.post)], [
+      button([], ["Send email!"]),
+      button([name("test"), value("true")], ["Send test email!"]),
       ])
     ])
 }
 
 let sendNewEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Episode.Id, Bool?>, Data> =
   requireAdmin
-    <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
+    <<< filterMap(over2(fetchEpisode) >>> sequence2 >>> pure, or: redirect(to: .admin(.newEpisodeEmail(.show))))
     <| sendNewEpisodeEmails
     >-> redirect(to: .admin(.index))
 
-private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
+private func sendNewEpisodeEmails<I>(_ conn: Conn<I, Tuple3<Database.User, Episode, Bool?>>) -> IO<Conn<I, Prelude.Unit>> {
+
+  let (_, episode, test) = lower(conn.data)
 
   return AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
     .mapExcept(bimap(const(unit), id))
-    .flatMap { users in sendEmail(forNewEpisode: conn.data, toUsers: users) }
+    .flatMap { users in sendEmail(forNewEpisode: episode, toUsers: users) }
     .run
     .map { _ in conn.map(const(unit)) }
 }

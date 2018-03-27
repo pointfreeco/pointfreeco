@@ -216,6 +216,10 @@ public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
   }
 }
 
+public func sequence2<A, B, Z>(_ t: T3<A, B?, Z>) -> T3<A, B, Z>? {
+  return get2(t).map { t.first .*. $0 .*. t.second.second }
+}
+
 /// Combines two partial iso's into one by concatenating their results into a single string.
 public func payload<A, B>(
   _ iso1: PartialIso<String, A>,
