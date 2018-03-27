@@ -70,7 +70,7 @@ public enum Route: DerivePartialIsos {
     }
 
     public enum NewEpisodeEmail: DerivePartialIsos {
-      case send(Episode.Id, isTest: Bool?)
+      case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
       case show
     }
   }
@@ -305,10 +305,11 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
   }
 }
 
-import ApplicativeRouter
 let ___tmp: Router<Route> =
-  .admin <<< .newEpisodeEmail <<< .send
+  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged)
+    <%> formField("subscriber_announcement", .string).map(Optional.iso.some)
+    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
     <%> isTest
     <% lit("send")
     <% end

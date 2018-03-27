@@ -8,7 +8,14 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = freeEpisodeEmail.view((typeSafeHtml, .mock))
+let htmlNodes = newEpisodeEmail.view(
+  (
+    typeSafeHtml,
+    "This is an announcement for subscribers! <u>[Click here](#)</u> for something cool!",
+    "This is an announcement for non-subscribers!",
+    .mock
+  )
+)
 let htmlString = render(htmlNodes, config: compact)
 
 let webView = WKWebView(

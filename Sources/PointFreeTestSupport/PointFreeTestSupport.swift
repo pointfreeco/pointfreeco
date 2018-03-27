@@ -49,6 +49,7 @@ extension Database {
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
+    fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
     fetchFreeEpisodeUsers: { pure([.mock]) },

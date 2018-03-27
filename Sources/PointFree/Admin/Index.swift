@@ -12,7 +12,7 @@ import Tuple
 
 let adminEmails = [
   "mbw234@gmail.com",
-  "stephen.celis@gmail.com"
+//  "stephen.celis@gmail.com"
 ]
 
 func requireAdmin<A>(
