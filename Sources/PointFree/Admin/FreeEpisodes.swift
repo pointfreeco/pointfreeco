@@ -32,15 +32,16 @@ private let freeEpisodeEmailRowView = View<Episode> { ep in
   [
     p([
       text(ep.title),
-      form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)], [
-        input([type(.submit), value("Send email!")])
+      form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id, test: nil))))), method(.post)], [
+        button([], ["Send email!"]),
+        button([name("test"), value("true")], ["Send test email!"]),
         ])
       ])
   ]
 }
 
 let sendFreeEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Episode.Id, Bool?>, Data> =
   requireAdmin
     <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
     <| sendFreeEpisodeEmails
