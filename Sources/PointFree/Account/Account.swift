@@ -238,7 +238,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
 private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { currentUser, subscription, invites, allTeammates -> [Node] in
   guard let subscription = subscription else { return [] }
 
-  let teammates = allTeammates.filter(^\.id.unwrap != currentUser.id.unwrap)
+  let teammates = allTeammates //.filter(^\.id.unwrap != currentUser.id.unwrap)
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
