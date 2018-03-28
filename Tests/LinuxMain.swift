@@ -161,11 +161,6 @@ extension InviteTests {
     ("testAcceptInvitation_CurrentUserIsInviter", testAcceptInvitation_CurrentUserIsInviter)
   ]
 }
-extension LaunchEmailTests {
-  static var allTests: [(String, (LaunchEmailTests) -> () throws -> Void)] = [
-    ("testLaunchEmail", testLaunchEmail)
-  ]
-}
 extension MetaLayoutTests {
   static var allTests: [(String, (MetaLayoutTests) -> () throws -> Void)] = [
     ("testMetaTagsWithStyleTag", testMetaTagsWithStyleTag)
@@ -288,7 +283,6 @@ XCTMain([
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
-  testCase(LaunchEmailTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(MinimalNavViewTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),
