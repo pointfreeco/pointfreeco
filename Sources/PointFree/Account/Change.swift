@@ -64,7 +64,11 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     return AppEnvironment.current.stripe.updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, prorate)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if prorate {
-          parallel(AppEnvironment.current.stripe.invoiceCustomer(sub.customer).run)
+          parallel(
+            AppEnvironment.current.stripe.invoiceCustomer(sub.customer)
+              .withExcept(notifyError(subject: "Invoice Failed"))
+              .run
+            )
             .run(const(()))
         }
 
