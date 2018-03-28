@@ -335,7 +335,7 @@ private let pricingIntervalRowView = View<Pricing> { pricing in
               Class.type.normal,
               ])
             ],
-            ["Up to 20% off the Individual Monthly plan"])
+            ["20% off the Individual Monthly plan"])
           ])
     ]
   )
