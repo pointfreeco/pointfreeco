@@ -34,6 +34,7 @@ extension AtomFeedTests {
 }
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
+    ("testRegister", testRegister),
     ("testAuth", testAuth),
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
@@ -158,6 +159,7 @@ extension InviteTests {
     ("testAcceptInvitation_HappyPath", testAcceptInvitation_HappyPath),
     ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
     ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
+    ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription),
     ("testAcceptInvitation_CurrentUserIsInviter", testAcceptInvitation_CurrentUserIsInviter)
   ]
 }
