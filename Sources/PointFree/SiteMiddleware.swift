@@ -25,7 +25,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+
     let subscriptionStatus = subscription?.stripeSubscriptionStatus
+//    let subscriptionStatus = user?.subscriptionId == nil ? nil : subscription?.stripeSubscriptionStatus
+
+    let subscriptionState: SubscriptionState =
+      subscription?.stripeSubscriptionStatus == .some(.active)
+        ? .hasActiveSubscription
+        : .doesNotHaveActiveSubscription
 
     switch route {
     case .about:
