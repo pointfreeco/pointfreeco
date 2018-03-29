@@ -560,7 +560,7 @@ private func tabStyles(
         <> selectedStyles
 }
 
-
+// TODO: account for owners
 func redirectActiveSubscribers<A>(
   user: @escaping (A) -> Database.User?
   )

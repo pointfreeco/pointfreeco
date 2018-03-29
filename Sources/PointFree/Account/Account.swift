@@ -54,8 +54,11 @@ private func fetchAccountData<I, A>(_ conn: Conn<I, T2<Database.User, A>>) -> IO
     .map(^\.stripeSubscriptionId)
     .flatMap(AppEnvironment.current.stripe.fetchSubscription)
 
-  let tmp1 = zip3(
+  let tmp1 = zip4(
     AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+      .map { $0.right ?? [] },
+
+    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
 
     stripeSubscription.run.map(^\.right).parallel,
@@ -74,18 +77,19 @@ private func fetchAccountData<I, A>(_ conn: Conn<I, T2<Database.User, A>>) -> IO
   )
 
   return zip2(tmp1, tmp2)
-    .map { ($0.0, $0.1, $0.2, $1.0, $1.1, $1.2) }
+    .map { ($0.0, $0.1, $0.2, $0.3, $1.0, $1.1, $1.2) }
     .map {
       conn.map(
         const(
           AccountData(
             currentUser: user,
             emailSettings: $0,
-            stripeSubscription: $1,
-            subscription: $2,
-            subscriptionOwner:$3,
-            teamInvites: $4,
-            teammates: $5
+            episodeCredits: $1,
+            stripeSubscription: $2,
+            subscription: $3,
+            subscriptionOwner: $4,
+            teamInvites: $5,
+            teammates: $6
           )
         )
       )
@@ -101,18 +105,20 @@ private let accountView = View<AccountData> { data in
           titleRowView.view(unit)
             <> profileRowView.view((data.currentUser, data.emailSettings))
             <> subscriptionOverview.view(data)
-            <> creditsView.view((data.stripeSubscription, data.currentUser, [] /*data.episodeCredits*/))
+            <> creditsView.view(data)
             <> logoutView.view(unit)
       )
       ])
     ])
 }
 
-private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.EpisodeCredit])> {
-  subscription, currentUser, credits -> [Node] in
+private let creditsView = View<AccountData> { data -> [Node] in
 
-  guard subscription?.status != .some(.active) else { return [] }
-  guard currentUser.episodeCreditCount > 0 || credits.count > 0 else { return [] }
+  guard
+    data.currentUser.subscriptionId == nil
+      || data.stripeSubscription?.status != .some(.active)
+    else { return [] }
+  guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -122,18 +128,30 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
             h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              text("subscription. You currently have \(pluralizedCredits(count: currentUser.episodeCreditCount)) "),
+              text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
               "remaining."
-              ]),
-            p([
-              "To get all past and future episodes, ",
-              a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
-              " a subscriber today!"
               ])
             ]
-            <> episodeCreditsView.view(credits)
+            <> subscribeCallout.view((data.currentUser, data.stripeSubscription))
+            <> episodeCreditsView.view(data.episodeCredits)
         )
         ])
+      ])
+  ]
+}
+
+private let subscribeCallout = View<(Database.User, Stripe.Subscription?)> { currentUser, stripeSubscription -> [Node] in
+
+  let isOwnerOfActiveSubscription = currentUser.subscriptionId == nil
+    && stripeSubscription?.status == .some(.active)
+
+  guard !isOwnerOfActiveSubscription else { return [] }
+
+  return [
+    p([
+      "To get all past and future episodes, ",
+      a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+      " a subscriber today!"
       ])
   ]
 }
@@ -539,7 +557,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
-  let invitesRemaining = subscription.quantity - invites.count - teammates.count - 1
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count
   guard invitesRemaining > 0 else { return [] }
 
   return [
@@ -674,6 +692,7 @@ let blockSelectClass =
 private struct AccountData {
   let currentUser: Database.User
   let emailSettings: [Database.EmailSetting]
+  let episodeCredits: [Database.EpisodeCredit]
   let stripeSubscription: Stripe.Subscription?
   let subscription: Database.Subscription?
   let subscriptionOwner: Database.User?

@@ -13,13 +13,6 @@ import Tuple
 let showInviteMiddleware =
   redirectCurrentSubscribers
     <<< requireTeamInvite
-    <<< filter(
-      validateCurrentUserIsNotInviter,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.warning, "You can’t view your own team invite!")
-      )
-    )
     <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
     <| writeStatus(.ok)
     >-> map(lower)
@@ -71,13 +64,6 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   redirectCurrentSubscribers
     <<< requireTeamInvite
-    <<< filter(
-      validateCurrentUserIsNotInviter,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.warning, "You can’t accept your own team invite!")
-      )
-    )
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       let (teamInvite, currentUser) = lower(conn.data)
@@ -104,9 +90,8 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
       // VERIFY: user is subscribed
       let subscription = inviter
-        .map(^\.subscriptionId)
-        .mapExcept(requireSome)
-        .flatMap { AppEnvironment.current.database.fetchSubscriptionById($0) }
+        .map(^\.id)
+        .flatMap(AppEnvironment.current.database.fetchSubscriptionByOwnerId)
         .mapExcept(requireSome)
         .flatMap { subscription in
           AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
@@ -134,10 +119,6 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <<< filter(
-      validateEmailDoesNotBelongToInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You can’t invite yourself :/"))
-    )
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
       let (email, inviter) = lower(conn.data)
