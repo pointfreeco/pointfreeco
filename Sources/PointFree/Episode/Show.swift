@@ -569,12 +569,14 @@ private let episodeInfoView = View<Episode> { ep in
 }
 
 private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
-  return [
-      "#\(ep.sequence)",
-      episodeDateFormatter.string(from: ep.publishedAt),
-      ep.subscriberOnly ? "Subscriber-only" : nil
-    ]
-    .flatMap { $0 }
+  let components: [String?] = [
+    "#\(ep.sequence)",
+    episodeDateFormatter.string(from: ep.publishedAt),
+    ep.subscriberOnly ? "Subscriber-only" : nil
+  ]
+
+  return components
+    .compactMap { $0 }
     .joined(separator: " • ")
 }
 
@@ -657,7 +659,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
         ]
-        .flatMap { $0 },
+        .compactMap { $0 },
       [
         a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
           text(block.content)

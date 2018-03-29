@@ -17,7 +17,7 @@ class AuthTests: TestCase {
   func testRegister() {
     let gitHubUserEnvelope = GitHub.UserEnvelope.mock
       |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
-      |> \.gitHubUser.id .~ .init(unwrap: 1234567890)
+      |> \.gitHubUser.id .~ 1234567890
       |> \.gitHubUser.name .~ "Blobby McBlob"
 
     let env: (Environment) -> Environment =

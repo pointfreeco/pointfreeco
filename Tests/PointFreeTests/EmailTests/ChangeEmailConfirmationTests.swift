@@ -12,7 +12,7 @@ import Optics
 
 class ChangeEmailConfirmationTests: TestCase {
   func testChangeEmailConfirmationEmail() {
-    let emailNodes = confirmEmailChangeEmailView.view((.mock, .init(unwrap: "blobby@blob.co")))
+    let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co"))
 
     assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
 
@@ -27,7 +27,7 @@ class ChangeEmailConfirmationTests: TestCase {
   }
 
   func testChangedEmail() {
-    let emailNodes = emailChangedEmailView.view((.mock, .init(unwrap: "blobby@blob.co")))
+    let emailNodes = emailChangedEmailView.view((.mock, "blobby@blob.co"))
 
     assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
 

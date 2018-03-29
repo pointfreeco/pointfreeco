@@ -124,7 +124,7 @@ public let typeSafeHtml = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep4-type-safe-html",
-  id: .init(unwrap: 4),
+  id: 4,
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg",
   length: 1380,

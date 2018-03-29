@@ -12,7 +12,7 @@ import Optics
 
 class UpdateProfileTests: TestCase {
   func testUpdateNameAndEmail() {
-    let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
@@ -23,7 +23,7 @@ class UpdateProfileTests: TestCase {
     )
     
     let update = request(
-      to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
+      to: .account(.update(.init(email: "blobby@blob.co", name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
     )
     
@@ -45,7 +45,7 @@ class UpdateProfileTests: TestCase {
   }
   
   func testUpdateEmailSettings() {
-    let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!

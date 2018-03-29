@@ -242,7 +242,7 @@ class EpisodeTests: TestCase {
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .registerUser(.mock, "hello@pointfree.co")
         .run.perform().right!!
       _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
 
@@ -346,7 +346,7 @@ class EpisodeTests: TestCase {
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .registerUser(.mock, "hello@pointfree.co")
         .run.perform().right!!
       _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
       _ = AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()

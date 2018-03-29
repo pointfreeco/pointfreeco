@@ -67,12 +67,12 @@ class InviteTests: TestCase {
   }
 
   func testResendInvite_HappyPath() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), currentUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
       .run
       .perform()
       .right!
@@ -85,25 +85,22 @@ class InviteTests: TestCase {
 
   func testResendInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -115,12 +112,12 @@ class InviteTests: TestCase {
   }
 
   func testRevokeInvite_HappyPath() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), currentUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
       .run
       .perform()
       .right!
@@ -140,24 +137,22 @@ class InviteTests: TestCase {
 
   func testRevokeInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -177,18 +172,16 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_HappyPath() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
@@ -198,7 +191,7 @@ class InviteTests: TestCase {
       .run
       .perform()
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -227,24 +220,22 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterIsNotSubscriber() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -265,18 +256,16 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
@@ -286,7 +275,7 @@ class InviteTests: TestCase {
       .run
       .perform()
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -312,18 +301,16 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 1),
-      EmailAddress(unwrap: "hello@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
       )
       .run
       .perform()
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock
-        |> \.gitHubUser.id .~ .init(unwrap: 2),
-      EmailAddress(unwrap: "inviter@pointfree.co")
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
       )
       .run
       .perform()
@@ -333,7 +320,7 @@ class InviteTests: TestCase {
       .run
       .perform()
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -358,12 +345,12 @@ class InviteTests: TestCase {
   }
 
   func testAcceptInvitation_CurrentUserIsInviter() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock, .init(unwrap: "hello@pointfree.co"))
+    let currentUser = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), currentUser.id)
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
       .run
       .perform()
       .right!

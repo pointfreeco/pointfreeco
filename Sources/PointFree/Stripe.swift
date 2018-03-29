@@ -234,19 +234,19 @@ public struct Stripe {
 
 extension Tagged where Tag == Stripe.Plan, A == String {
   static var individualMonthly: Stripe.Plan.Id {
-    return .init(unwrap: "individual-monthly")
+    return "individual-monthly"
   }
 
   static var individualYearly: Stripe.Plan.Id {
-    return .init(unwrap: "individual-yearly")
+    return "individual-yearly"
   }
 
   static var teamMonthly: Stripe.Plan.Id {
-    return .init(unwrap: "team-monthly")
+    return "team-monthly"
   }
 
   static var teamYearly: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly")
+    return "team-yearly"
   }
 }
 
