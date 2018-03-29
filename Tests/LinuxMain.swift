@@ -159,6 +159,7 @@ extension InviteTests {
     ("testAcceptInvitation_HappyPath", testAcceptInvitation_HappyPath),
     ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
     ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
+    ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription),
     ("testAcceptInvitation_CurrentUserIsInviter", testAcceptInvitation_CurrentUserIsInviter)
   ]
 }

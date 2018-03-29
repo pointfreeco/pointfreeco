@@ -334,7 +334,7 @@ private func redirectCurrentSubscribers<A, B>(
       .bimap(const(unit), id)
       .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
       .run
-      .map { $0.right?.status == .some(.active) }
+      .map { $0.right?.isRenewing ?? false }
 
     return hasActiveSubscription.flatMap {
       $0
