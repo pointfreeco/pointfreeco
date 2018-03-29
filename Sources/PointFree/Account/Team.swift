@@ -10,6 +10,76 @@ import Prelude
 import Styleguide
 import Tuple
 
+let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User?, Data> =
+  filterMap(pure, or: loginAndRedirect)
+    <<< requireNonOwnerSubscriber
+    <<< leaveTeam
+    <| redirect(
+      to: .account(.index),
+      headersMiddleware: flash(.notice, "You are no longer apart of that team.")
+)
+
+private func leaveTeam(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, Database.User, Data> {
+
+  return { conn in
+
+    let removed = conn.data.subscriptionId
+      .map {
+        AppEnvironment.current.database
+          .removeTeammateUserIdFromSubscriptionId(conn.data.id, $0)
+      }
+      ?? pure(unit)
+
+    return removed
+      .run
+      .flatMap(
+        either(
+          const(
+            conn
+              |> redirect(
+                to: .account(.index),
+                headersMiddleware: flash(.error, "Something went wrong.")
+            )
+          ),
+          const(middleware(conn))
+        )
+    )
+  }
+}
+
+private func requireNonOwnerSubscriber(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, Database.User, Data> {
+
+  return { conn in
+
+    let isOwnerOfSubscription = conn.data.subscriptionId
+      .map(
+        AppEnvironment.current.database.fetchSubscriptionById
+          >>> mapExcept(requireSome)
+          >>> map { $0.userId.unwrap == conn.data.id.unwrap }
+      )
+      ?? pure(false)
+
+    return isOwnerOfSubscription
+      .run
+      .flatMap(
+        either(
+          const(
+            conn
+              |> redirect(
+                to: .account(.index),
+                headersMiddleware: flash(.error, "We couldn’t find your subscription.")
+            )
+          ),
+          const(middleware(conn))
+        )
+    )
+  }
+}
+
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in

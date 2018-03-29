@@ -32,7 +32,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. subscriptionStatus .*. unit))
+      return conn.map(const(user .*. unit))
         |> accountResponse
 
     case let .account(.paymentInfo(.show(expand))):
@@ -158,6 +158,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
+
+    case .team(.leave):
+      return conn.map(const(user))
+        |> leaveTeamMiddleware
 
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))

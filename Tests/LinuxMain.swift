@@ -34,6 +34,7 @@ extension AtomFeedTests {
 }
 extension AuthTests {
   static var allTests: [(String, (AuthTests) -> () throws -> Void)] = [
+    ("testRegister", testRegister),
     ("testAuth", testAuth),
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
