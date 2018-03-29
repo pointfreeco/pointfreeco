@@ -69,18 +69,26 @@ public func currentSubscriptionMiddleware<A, I>(
   _ conn: Conn<I, T2<Database.User?, A>>
   ) -> IO<Conn<I, T3<Database.Subscription?, Database.User?, A>>> {
 
-  return conn.data.first
-    .map { user in
-      guard let subscriptionId = user.subscriptionId
-        else { return pure(conn.map(const(nil .*. conn.data))) }
+  let user = conn.data.first
 
-      return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
-        .mapExcept(requireSome)
-        .run
-        .map(^\.right)
-        .map { conn.map(const($0 .*. conn.data)) }
-    }
-    ?? pure(conn.map(const(nil .*. conn.data)))
+  let userSubscription = (user?.subscriptionId)
+    .map(
+      AppEnvironment.current.database.fetchSubscriptionById
+        >>> mapExcept(requireSome)
+    )
+    ?? throwE(unit)
+
+  let ownerSubscription = (user?.id)
+    .map(
+      AppEnvironment.current.database.fetchSubscriptionByOwnerId
+        >>> mapExcept(requireSome)
+    )
+    ?? throwE(unit)
+
+  return (userSubscription <|> ownerSubscription)
+    .run
+    .map(^\.right)
+    .map { conn.map(const($0 .*. conn.data)) }
 }
 
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)

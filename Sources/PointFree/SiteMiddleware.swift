@@ -16,6 +16,11 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >-> currentSubscriptionMiddleware
     >-> render(conn:)
 
+enum SubscriptionState {
+  case doesNotHaveActiveSubscription
+  case hasActiveSubscription
+}
+
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 

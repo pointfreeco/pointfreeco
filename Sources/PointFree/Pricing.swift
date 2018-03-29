@@ -569,23 +569,38 @@ func redirectActiveSubscribers<A>(
 
     return { middleware in
       return { conn in
-        guard
-          let user = user(conn.data),
-          let subscriptionId = user.subscriptionId
-          else { return middleware(conn) }
+        let user = user(conn.data)
 
-        let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
-          .mapExcept(requireSome)
+        let userSubscription = (user?.subscriptionId)
+          .map(
+            AppEnvironment.current.database.fetchSubscriptionById
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+
+        let ownerSubscription = (user?.id)
+          .map(
+            AppEnvironment.current.database.fetchSubscriptionByOwnerId
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+
+        return (userSubscription <|> ownerSubscription)
           .run
-          .map { $0.right?.stripeSubscriptionStatus == .some(.active) }
-
-        return hasActiveSubscription.flatMap {
-          $0
-            ? (conn |> redirect(to: .account(.index),
-                                headersMiddleware: flash(.warning, "You already have an active subscription."))
+          .flatMap(
+            either(
+              const(
+                middleware(conn)
+              ),
+              const(
+                conn
+                  |> redirect(
+                    to: .account(.index),
+                    headersMiddleware: flash(.warning, "You already have an active subscription.")
+                )
               )
-            : middleware(conn)
-        }
+            )
+        )
       }
     }
 }
