@@ -91,28 +91,6 @@ public struct Episode {
             return "swift"
           }
         }
-
-        public static func ==(lhs: CodeLang, rhs: CodeLang) -> Bool {
-          switch (lhs, rhs) {
-          case (.html, .html), (.swift, .swift):
-            return true
-          case let (.other(lhs), .other(rhs)):
-            return lhs == rhs
-          case (.html, _), (.other, _), (.swift, _):
-            return false
-          }
-        }
-      }
-
-      public static func ==(lhs: Episode.TranscriptBlock.BlockType, rhs: Episode.TranscriptBlock.BlockType) -> Bool {
-        switch (lhs, rhs) {
-        case let (.code(lhs), .code(rhs)):
-          return lhs == rhs
-        case (.paragraph, .paragraph), (.title, .title):
-          return true
-        case (.code, _), (.paragraph, _), (.title, _):
-          return false
-        }
       }
     }
   }

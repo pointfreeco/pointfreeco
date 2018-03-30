@@ -67,10 +67,6 @@ public struct Database {
 
       public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
     }
-
-    public static func ==(lhs: Database.EmailSetting, rhs: Database.EmailSetting) -> Bool {
-      return lhs.newsletter == rhs.newsletter && lhs.userId.unwrap == rhs.userId.unwrap
-    }
   }
 
   public struct EpisodeCredit: Decodable, Equatable {
@@ -81,14 +77,9 @@ public struct Database {
       case episodeSequence = "episode_sequence"
       case userId = "user_id"
     }
-
-    public static func == (lhs: EpisodeCredit, rhs: EpisodeCredit) -> Bool {
-      return lhs.episodeSequence == rhs.episodeSequence
-        && lhs.userId == rhs.userId
-    }
   }
 
-  public struct User: Decodable {
+  public struct User: Decodable, Equatable {
     public internal(set) var email: EmailAddress
     public internal(set) var episodeCreditCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
