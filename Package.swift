@@ -50,7 +50,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("de9704d")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
-    .package(url: "https://github.com/IBM-Swift/Kitura.git", .exact("2.2.0")),
+    .package(url: "https://github.com/IBM-Swift/Kitura.git", .branch("swift-4.1")),
     .package(url: "https://github.com/IBM-Swift/Kitura-Compression", .exact("2.1.1")),
     ],
   targets: [
