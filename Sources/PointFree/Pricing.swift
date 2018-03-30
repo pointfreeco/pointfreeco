@@ -84,6 +84,9 @@ extension Pricing: Codable {
 }
 
 let pricingResponse =
+{ m in
+  return m
+} <<< 
   redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >-> map(lower)

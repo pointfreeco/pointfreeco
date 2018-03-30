@@ -12,6 +12,9 @@ public struct SubscribeData: Codable {
 }
 
 let subscribeMiddleware =
+{ m in
+  return m
+  } <<< 
   filterMap(
     require1 >>> pure,
     or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "Error creating subscription!"))
