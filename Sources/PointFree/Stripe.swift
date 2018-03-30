@@ -58,15 +58,6 @@ public struct Stripe {
       case prepaid
       case unknown
     }
-
-    private enum CodingKeys: String, CodingKey {
-      case brand
-      case customer
-      case expMonth = "exp_month"
-      case expYear = "exp_year"
-      case id
-      case last4
-    }
   }
 
   public typealias Cents = Tagged<Stripe, Int>
@@ -77,12 +68,6 @@ public struct Stripe {
     public private(set) var sources: ListEnvelope<Card>
 
     public typealias Id = Tagged<Customer, String>
-
-    private enum CodingKeys: String, CodingKey {
-      case defaultSource = "default_source"
-      case id
-      case sources
-    }
   }
 
   public struct ErrorEnvelope: Codable, Swift.Error {
@@ -116,25 +101,12 @@ public struct Stripe {
     public private(set) var subscription: Subscription.Id
 
     public typealias Id = Tagged<Invoice, String>
-
-    private enum CodingKeys: String, CodingKey {
-      case amountDue = "amount_due"
-      case customer
-      case id
-      case subscription
-    }
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
     private(set) var data: [A]
     private(set) var hasMore: Bool
     private(set) var totalCount: Int
-
-    private enum CodingKeys: String, CodingKey {
-      case data
-      case hasMore = "has_more"
-      case totalCount = "total_count"
-    }
   }
 
   public struct Plan: Codable {
@@ -146,17 +118,6 @@ public struct Stripe {
     public private(set) var metadata: [String: String]
     public private(set) var name: String
     public private(set) var statementDescriptor: String?
-
-    private enum CodingKeys: String, CodingKey {
-      case amount
-      case created
-      case currency
-      case id
-      case interval
-      case metadata
-      case name
-      case statementDescriptor = "statement_descriptor"
-    }
 
     public typealias Id = Tagged<Plan, String>
 
@@ -187,22 +148,6 @@ public struct Stripe {
 
     public var isRenewing: Bool {
       return self.status != .canceled && !self.cancelAtPeriodEnd
-    }
-
-    private enum CodingKeys: String, CodingKey {
-      case canceledAt = "canceled_at"
-      case cancelAtPeriodEnd = "cancel_at_period_end"
-      case customer
-      case created
-      case currentPeriodEnd = "current_period_end"
-      case currentPeriodStart = "current_period_start"
-      case endedAt = "ended_at"
-      case id
-      case items
-      case plan
-      case quantity
-      case start
-      case status
     }
 
     public typealias Id = Tagged<Subscription, String>
@@ -328,17 +273,13 @@ private func updateSubscription(
       ]))
 }
 
-let stripeJsonDecoder: JSONDecoder = {
-  let decoder = JSONDecoder()
-  decoder.dateDecodingStrategy = .secondsSince1970
-  return decoder
-}()
+let stripeJsonDecoder = JSONDecoder()
+  |> \.dateDecodingStrategy .~ .secondsSince1970
+  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
 
-let stripeJsonEncoder: JSONEncoder = {
-  let encoder = JSONEncoder()
-  encoder.dateEncodingStrategy = .secondsSince1970
-  return encoder
-}()
+let stripeJsonEncoder = JSONEncoder()
+  |> \.dateEncodingStrategy .~ .secondsSince1970
+  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
 private enum Method {
   case get
