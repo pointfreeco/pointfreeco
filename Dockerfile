@@ -62,6 +62,8 @@ RUN ssh-keyscan github.com 2> /dev/null >> $HOME/.ssh/known_hosts
 
 # local
 
+RUN echo 'export SKIP_TESTS=1' >> $HOME/.profile
+
 RUN /bin/bash -cl "swift --version"
 
 # postgres
