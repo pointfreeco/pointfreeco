@@ -23,7 +23,7 @@ class AuthTests: TestCase {
     let env: (Environment) -> Environment =
       (\.database .~ .live)
         <> (\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
-        <> (\.gitHub.fetchAuthToken .~ const(pure(gitHubUserEnvelope.accessToken)))
+        <> (\.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
 
     AppEnvironment.with(env) {
       let result = connection(
@@ -62,6 +62,34 @@ class AuthTests: TestCase {
       let conn = connection(from: auth)
       let result = conn |> siteMiddleware
       
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testAuth_WithFetchAuthTokenBadVerificationCode() {
+    AppEnvironment.with(
+      \.gitHub.fetchAuthToken
+        .~ const(pure(.left(.init(error: .badVerificationCode, description: "", errorUri: ""))))
+    ) {
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+
+      let conn = connection(from: auth)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
+    AppEnvironment.with(
+      \.gitHub.fetchAuthToken
+        .~ const(pure(.left(.init(error: .badVerificationCode, description: "", errorUri: ""))))
+    ) {
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
+
+      let conn = connection(from: auth)
+      let result = conn |> siteMiddleware
+
       assertSnapshot(matching: result.perform())
     }
   }

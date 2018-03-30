@@ -125,7 +125,7 @@ extension Date {
 
 extension GitHub {
   public static let mock = GitHub(
-    fetchAuthToken: const(pure(.mock)),
+    fetchAuthToken: const(pure(pure(.mock))),
     fetchEmails: const(pure([.mock])),
     fetchUser: const(pure(.mock))
   )

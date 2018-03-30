@@ -14,6 +14,7 @@ import Tuple
 let gitHubCallbackResponse =
   requireLoggedOutUser
     <<< filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
+    <<< requireAccessToken
     <| gitHubAuthTokenMiddleware
 
 /// Middleware to run when the GitHub auth code is missing.
@@ -128,16 +129,13 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
 
 /// Exchanges a github code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<String, String?>>
+  _ conn: Conn<StatusLineOpen, Tuple2<GitHub.AccessToken, String?>>
   )
   -> IO<Conn<ResponseEnded, Data>> {
-    let (code, redirect) = lower(conn.data)
+    let (token, redirect) = lower(conn.data)
 
-    return AppEnvironment.current.gitHub.fetchAuthToken(code)
-      .flatMap { token in
-        AppEnvironment.current.gitHub.fetchUser(token)
-          .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
-      }
+    return AppEnvironment.current.gitHub.fetchUser(token)
+      .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       .flatMap(fetchOrRegisterUser(env:))
       .flatMap { user in
         refreshStripeSubscription(for: user)
@@ -163,6 +161,35 @@ private func gitHubAuthTokenMiddleware(
           )
         }
     )
+}
+
+private func requireAccessToken<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<GitHub.AccessToken, String?, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<String, String?, A>, Data> {
+
+    return { conn in
+      let (code, redirect) = (get1(conn.data), get2(conn.data))
+
+      return AppEnvironment.current.gitHub.fetchAuthToken(code)
+        .run
+        .flatMap { errorOrToken in
+          switch errorOrToken {
+          case let .right(.right(token)):
+            return conn.map(const(token .*. conn.data.second)) |> middleware
+          case let .right(.left(error)) where error.error == .badVerificationCode:
+            return conn |> PointFree.redirect(to: .login(redirect: redirect))
+          case .right(.left), .left:
+            return conn |> PointFree.redirect(
+              to: .home,
+              headersMiddleware: flash(
+                .error,
+                "We were not able to log you in with GitHub. Please try again."
+              )
+            )
+          }
+      }
+    }
 }
 
 private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Error, Prelude.Unit> {
