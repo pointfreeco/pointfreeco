@@ -16,10 +16,47 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >-> currentSubscriptionMiddleware
     >-> render(conn:)
 
-enum SubscriptionState {
-  case doesNotHaveActiveSubscription
-  case hasActiveSubscription
+enum SubscriberState {
+  case nonSubscriber
+  case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
+  case teammate(status: Stripe.Subscription.Status)
+
+  var status: Stripe.Subscription.Status? {
+    switch self {
+    case .nonSubscriber:
+      return nil
+    case let .owner(_, status):
+      return status
+    case let .teammate(status):
+      return status
+    }
+  }
+
+  var isActive: Bool {
+    return self.status == .some(.active)
+  }
+
+  var isPastDue: Bool {
+    return self.status == .some(.pastDue)
+  }
+
+  var isOwner: Bool {
+    if case .owner = self { return true }
+    return false
+  }
+
+  var isTeammate: Bool {
+    if case .teammate = self { return true }
+    return false
+  }
+
+  var isNonSubscriber: Bool {
+    if case .nonSubscriber = self { return true }
+    return false
+  }
 }
+
+//
 
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -27,16 +64,26 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
 
     let subscriptionStatus = subscription?.stripeSubscriptionStatus
-//    let subscriptionStatus = user?.subscriptionId == nil ? nil : subscription?.stripeSubscriptionStatus
 
-    let subscriptionState: SubscriptionState =
-      subscription?.stripeSubscriptionStatus == .some(.active)
-        ? .hasActiveSubscription
-        : .doesNotHaveActiveSubscription
+    let subscriberState: SubscriberState
+    switch (user, subscription) {
+    case let (.some(user), .some(subscription)):
+      if subscription.userId == user.id {
+        subscriberState = .owner(
+          hasSeat: user.subscriptionId != nil,
+          status: subscription.stripeSubscriptionStatus
+        )
+      } else {
+        subscriberState = .teammate(status: subscription.stripeSubscriptionStatus)
+      }
+
+    case (.none, _), (.some, _):
+      subscriberState = .nonSubscriber
+    }
 
     switch route {
     case .about:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> aboutResponse
 
     case let .account(.confirmEmailChange(userId, emailAddress)):

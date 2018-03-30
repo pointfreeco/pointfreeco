@@ -571,6 +571,8 @@ func redirectActiveSubscribers<A>(
       return { conn in
         let user = user(conn.data)
 
+        print(conn.data)
+
         let userSubscription = (user?.subscriptionId)
           .map(
             AppEnvironment.current.database.fetchSubscriptionById
