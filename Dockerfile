@@ -15,5 +15,5 @@ COPY Tests ./Tests
 RUN make linux-install-cmark
 
 RUN swift package update
-RUN swift build --target Server --configuration release
-CMD swift run Server --configuration release
+RUN swift build --product Server --configuration release
+CMD .build/release/Server
