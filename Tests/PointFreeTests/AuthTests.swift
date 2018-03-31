@@ -69,7 +69,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
     AppEnvironment.with(
       \.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(error: .badVerificationCode, description: "", errorUri: ""))))
+        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     ) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
@@ -83,7 +83,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
     AppEnvironment.with(
       \.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(error: .badVerificationCode, description: "", errorUri: ""))))
+        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     ) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
 
