@@ -53,8 +53,8 @@ public struct Database {
   )
 
   public struct EmailSetting: Codable, Equatable {
-    public let newsletter: Newsletter
-    public let userId: Database.User.Id
+    public internal(set) var newsletter: Newsletter
+    public internal(set) var userId: Database.User.Id
 
     public enum CodingKeys: String, CodingKey {
       case newsletter
@@ -104,10 +104,10 @@ public struct Database {
   }
 
   public struct Subscription: Decodable {
-    var id: Id
-    var stripeSubscriptionId: Stripe.Subscription.Id
-    var stripeSubscriptionStatus: Stripe.Subscription.Status
-    var userId: User.Id
+    internal(set) var id: Id
+    internal(set) var stripeSubscriptionId: Stripe.Subscription.Id
+    internal(set) var stripeSubscriptionStatus: Stripe.Subscription.Status
+    internal(set) var userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
 
@@ -120,10 +120,10 @@ public struct Database {
   }
 
   public struct TeamInvite: Decodable {
-    var createdAt: Date
-    var email: EmailAddress
-    var id: Id
-    var inviterUserId: User.Id
+    internal(set) var createdAt: Date
+    internal(set) var email: EmailAddress
+    internal(set) var id: Id
+    internal(set) var inviterUserId: User.Id
 
     public typealias Id = Tagged<TeamInvite, UUID>
 
