@@ -37,7 +37,6 @@ public struct GitHub {
       case badVerificationCode = "bad_verification_code"
     }
 
-
     private enum CodingKeys: String, CodingKey {
       case description
       case error
