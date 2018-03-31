@@ -18,12 +18,6 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8]
 }
 
-//extension Func {
-//  public static func <¢> <C>(f: @escaping (B) -> C, c: Func) -> Func<A, C> {
-//    return c.map(f)
-//  }
-//}
-
 // TODO: Move to HttpPipeline
 
 /// Lifts middleware that operates on non-optional values to one that operates on optionals, but renders
