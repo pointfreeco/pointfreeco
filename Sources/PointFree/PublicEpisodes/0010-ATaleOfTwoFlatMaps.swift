@@ -123,7 +123,6 @@ let csv = \"\"\"
 3,5,2
 8,9,4
 \"\"\"
-```
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -403,13 +402,10 @@ We spend a lot of time thinking about types, particularly the shape of functions
     ),
     Episode.TranscriptBlock(
       content: """
-```
 // flatMap : ((A) -> [B]) -> ([A]) -> [B]
 // flatMap : ((A) ->  B?) -> ( A?) ->  B?
 
 // flatMap : ((A) ->  B?) -> ([A]) -> [B]
-```
-
 """,
       timestamp: 6*60+35,
       type: .code(lang: .swift)
@@ -910,7 +906,6 @@ The type system has a little bit of trouble with the tuple names here, but we ca
     ),
     Episode.TranscriptBlock(
       content: """
-```
 func partition<A>(_ p: @escaping (A) -> Bool) -> ([A]) -> (`false`: [A], `true`: [A]) {
   return {
     let (lefts, rights) = $0.partitionMap(partitionEither(p))
