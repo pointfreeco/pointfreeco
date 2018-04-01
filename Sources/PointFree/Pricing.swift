@@ -84,9 +84,6 @@ extension Pricing: Codable {
 }
 
 let pricingResponse =
-{ m in
-  return m
-} <<< 
   redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >-> map(lower)
@@ -573,8 +570,6 @@ func redirectActiveSubscribers<A>(
     return { middleware in
       return { conn in
         let user = user(conn.data)
-
-        print(conn.data)
 
         let userSubscription = (user?.subscriptionId)
           .map(
