@@ -144,7 +144,7 @@ We can start by splitting on newlines.
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
 // ["1,2,3,4", "3,5,2", "8,9,4"]
 """,
       timestamp: nil,
@@ -167,7 +167,7 @@ We're familiar with using `map` to modify arrays.
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
   .map { $0.split(separator: ",") }
 // [["1", "2", "3", "4"], ["3", "5", "2"], ["8", "9", "4"]]
 """,
@@ -191,7 +191,7 @@ This is exactly what `flatMap` lets us do. It applies a function to each element
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
   .flatMap { $0.split(separator: ",") }
 // ["1", "2", "3", "4", "3", "5", "2", "8", "9", "4"]
 """,
@@ -377,7 +377,7 @@ Things become even more confusing when using both methods together. Let's take o
     ),
     Episode.TranscriptBlock(
       content: """
-csv.split(separator: "\n")
+csv.split(separator: "\\n")
   .flatMap { $0.split(separator: ",") }
   .flatMap { Int($0) }
   .reduce(0, +)
