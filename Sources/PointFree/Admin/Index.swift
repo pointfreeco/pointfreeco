@@ -45,4 +45,3 @@ private let adminIndexView = View<Database.User> { currentUser in
       ])
     ])
 }
-
