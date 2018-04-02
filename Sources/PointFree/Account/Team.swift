@@ -16,7 +16,7 @@ let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User
     <<< leaveTeam
     <| redirect(
       to: .account(.index),
-      headersMiddleware: flash(.notice, "You are no longer apart of that team.")
+      headersMiddleware: flash(.notice, "You are no longer a part of that team.")
 )
 
 private func leaveTeam(

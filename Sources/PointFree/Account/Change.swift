@@ -66,6 +66,7 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
         if prorate {
           parallel(
             AppEnvironment.current.stripe.invoiceCustomer(sub.customer)
+              .retry(maxRetries: 10, backoff: { .seconds($0) })
               .withExcept(notifyError(subject: "Invoice Failed"))
               .run
             )
