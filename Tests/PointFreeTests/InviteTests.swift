@@ -310,6 +310,53 @@ class InviteTests: TestCase {
     }
   }
 
+  func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
+    let currentUser = AppEnvironment.current.database.registerUser(
+      .mock
+        |> \.gitHubUser.id .~ .init(unwrap: 1),
+      EmailAddress(unwrap: "hello@pointfree.co")
+      )
+      .run
+      .perform()
+      .right!!
+
+    let inviterUser = AppEnvironment.current.database.registerUser(
+      .mock
+        |> \.gitHubUser.id .~ .init(unwrap: 2),
+      EmailAddress(unwrap: "inviter@pointfree.co")
+      )
+      .run
+      .perform()
+      .right!!
+
+    _ = AppEnvironment.current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id)
+      .run
+      .perform()
+
+    let teamInvite = AppEnvironment.current.database.insertTeamInvite(.init(unwrap: "blobber@pointfree.co"), inviterUser.id)
+      .run
+      .perform()
+      .right!
+
+    let stripe = Stripe.mock
+      |> (\Stripe.fetchSubscription) .~ const(pure(.mock |> \.status .~ .canceled))
+
+    AppEnvironment.with(\.stripe .~ stripe) {
+      let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+      let result = siteMiddleware(connection(from: acceptInvite))
+
+      assertSnapshot(matching: result.perform())
+
+      XCTAssertNil(
+        AppEnvironment.current.database.fetchUserById(currentUser.id)
+          .run
+          .perform()
+          .right!!.subscriptionId,
+        "Current user now has a subscription"
+      )
+    }
+  }
+
   func testAcceptInvitation_CurrentUserIsInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(.mock, .init(unwrap: "hello@pointfree.co"))
       .run
