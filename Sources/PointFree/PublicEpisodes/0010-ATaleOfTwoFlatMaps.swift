@@ -2,9 +2,9 @@ import Foundation
 
 let ep10 = Episode(
   blurb: """
-The most recent version of Swift, 4.1, has deprecated and renamed a particular overload of `flatMap`. We want
-to take a moment to understand what made this `flatMap` different from all the others, and explore
-generalizations of the operation to other structures.
+Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from
+the others? We'll explore this and how understanding that difference helps us explore generalizations of the
+operation to other structures and derive new, useful code!
 """,
   codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
   id: .init(unwrap: 10),
@@ -52,7 +52,7 @@ Is it possible to define `partitionMap` on `Either`?
     "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/hls-trailer.m3u8"
   ],
   subscriberOnly: false,
-  title: "A Tale of Two Flat-Maps", 
+  title: "A Tale of Two Flat-Maps",
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: "Introduction",
