@@ -88,34 +88,18 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeIndividualPlan() {
     #if !os(Linux)
-      let invoiceCustomer = expectation(description: "invoiceCustomer")
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.individualMonthly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            invoiceCustomer.fulfill()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
         assertSnapshot(matching: result.perform())
       }
-      waitForExpectations(timeout: 0.1, handler: nil)
     #endif
   }
 
   func testChangeUpdateDowngradeIndividualPlan() {
     #if !os(Linux)
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.individualYearly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            XCTFail()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
@@ -126,34 +110,18 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeTeamPlan() {
     #if !os(Linux)
-      let invoiceCustomer = expectation(description: "invoiceCustomer")
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.teamMonthly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            invoiceCustomer.fulfill()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
         assertSnapshot(matching: result.perform())
-        waitForExpectations(timeout: 0.1, handler: nil)
       }
     #endif
   }
 
   func testChangeUpdateDowngradeTeamPlan() {
     #if !os(Linux)
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.individualYearly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            XCTFail()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualYearly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
@@ -164,20 +132,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateAddSeatsIndividualPlan() {
     #if !os(Linux)
-      let invoiceCustomer = expectation(description: "invoiceCustomer")
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.individualMonthly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            invoiceCustomer.fulfill()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.individualMonthly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
         assertSnapshot(matching: result.perform())
-        waitForExpectations(timeout: 0.1, handler: nil)
       }
     #endif
   }
@@ -185,19 +144,11 @@ final class ChangeTests: TestCase {
   func testChangeUpdateAddSeatsTeamPlan() {
     #if !os(Linux)
       let invoiceCustomer = expectation(description: "invoiceCustomer")
-      AppEnvironment.with(
-        (\.stripe.fetchSubscription .~ const(pure(.teamMonthly)))
-          <> (\.stripe.invoiceCustomer .~ { _ in
-            invoiceCustomer.fulfill()
-            return pure(.mock)
-            })
-      ) {
-
+      AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(.teamMonthly))) {
         let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
         let result = conn |> siteMiddleware
 
         assertSnapshot(matching: result.perform())
-        waitForExpectations(timeout: 0.1, handler: nil)
       }
     #endif
   }
