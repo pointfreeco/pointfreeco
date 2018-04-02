@@ -52,7 +52,8 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
 }
 
 private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
-  return Date(timeIntervalSince1970: timestamp) > AppEnvironment.current.date().addingTimeInterval(-tolerance)
+  return Date(timeIntervalSince1970: timestamp)
+    > AppEnvironment.current.date().addingTimeInterval(-tolerance)
 }
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
