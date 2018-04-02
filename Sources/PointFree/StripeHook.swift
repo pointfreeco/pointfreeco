@@ -34,7 +34,7 @@ private func validateStripeSignature<A>(
           var requestDump = ""
           print("Current timestamp: \(AppEnvironment.current.date().timeIntervalSince1970)", to: &requestDump)
           print(
-            "\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
+            "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
             to: &requestDump
           )
           print("\nHeaders:", to: &requestDump)
