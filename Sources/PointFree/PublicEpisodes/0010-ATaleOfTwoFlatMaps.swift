@@ -123,7 +123,6 @@ let csv = \"\"\"
 3,5,2
 8,9,4
 \"\"\"
-```
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -145,7 +144,7 @@ We can start by splitting on newlines.
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
 // ["1,2,3,4", "3,5,2", "8,9,4"]
 """,
       timestamp: nil,
@@ -168,7 +167,7 @@ We're familiar with using `map` to modify arrays.
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
   .map { $0.split(separator: ",") }
 // [["1", "2", "3", "4"], ["3", "5", "2"], ["8", "9", "4"]]
 """,
@@ -192,7 +191,7 @@ This is exactly what `flatMap` lets us do. It applies a function to each element
     Episode.TranscriptBlock(
       content: """
 csv
-  .split(separator: "\n")
+  .split(separator: "\\n")
   .flatMap { $0.split(separator: ",") }
 // ["1", "2", "3", "4", "3", "5", "2", "8", "9", "4"]
 """,
@@ -378,7 +377,7 @@ Things become even more confusing when using both methods together. Let's take o
     ),
     Episode.TranscriptBlock(
       content: """
-csv.split(separator: "\n")
+csv.split(separator: "\\n")
   .flatMap { $0.split(separator: ",") }
   .flatMap { Int($0) }
   .reduce(0, +)
@@ -403,13 +402,10 @@ We spend a lot of time thinking about types, particularly the shape of functions
     ),
     Episode.TranscriptBlock(
       content: """
-```
 // flatMap : ((A) -> [B]) -> ([A]) -> [B]
 // flatMap : ((A) ->  B?) -> ( A?) ->  B?
 
 // flatMap : ((A) ->  B?) -> ([A]) -> [B]
-```
-
 """,
       timestamp: 6*60+35,
       type: .code(lang: .swift)
@@ -910,7 +906,6 @@ The type system has a little bit of trouble with the tuple names here, but we ca
     ),
     Episode.TranscriptBlock(
       content: """
-```
 func partition<A>(_ p: @escaping (A) -> Bool) -> ([A]) -> (`false`: [A], `true`: [A]) {
   return {
     let (lefts, rights) = $0.partitionMap(partitionEither(p))
