@@ -4,7 +4,7 @@
 ▿ Request
   POST http://localhost:8080/webhooks/stripe
   Cookie: pf_session={}
-  Stripe-Signature: t=1517356800,v1=369d17483762d03d2a55fe5facdfe8624e19959a5660c580b8857890281dcc0e
+  Stripe-Signature: t=1517356800,v1=7f66af23da46c4b8f558da9be8c6a85ae3ea6bbeb66480c71e6e961804cc7518
 
   {"id":"evt_test","data":{"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 

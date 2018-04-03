@@ -590,7 +590,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
       [a([href(path(to: .episode(.left(ep.slug))))], [text(ep.title)])]
     ),
-    p([`class`([Class.pf.type.body.leading])], [text(ep.blurb)])
+    div([`class`([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
   ]
 }
 
