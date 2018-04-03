@@ -12,7 +12,7 @@ import XCTest
 
 class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Subscriber() {
-    let doc = newEpisodeEmail.view((AppEnvironment.current.episodes().first!, .mock))
+    let doc = newEpisodeEmail.view((AppEnvironment.current.episodes().first!, "", "", .mock))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
@@ -29,9 +29,11 @@ class NewEpisodeEmailTests: TestCase {
     #endif
   }
 
-  func testNewEpisodeEmail_NonSubscriber() {
-    let nonSubscriberUser = Database.User.mock |> \.subscriptionId .~ nil
-    let doc = newEpisodeEmail.view((AppEnvironment.current.episodes().first!, nonSubscriberUser))
+  func testNewEpisodeEmail_FreeEpisode_NonSubscriber() {
+    let episode = AppEnvironment.current.episodes().first!
+      |> \.subscriberOnly .~ false
+
+    let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
