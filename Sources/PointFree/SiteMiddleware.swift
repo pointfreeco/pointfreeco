@@ -160,7 +160,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> subscribeMiddleware
 
     case .team(.leave):
-      return conn.map(const(user))
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> leaveTeamMiddleware
 
     case let .team(.remove(teammateId)):

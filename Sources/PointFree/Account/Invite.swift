@@ -90,8 +90,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
       // VERIFY: user is subscribed
       let subscription = inviter
-        .map(^\.id)
-        .flatMap(AppEnvironment.current.database.fetchSubscriptionByOwnerId)
+        .flatMap(^\.id >>> AppEnvironment.current.database.fetchSubscriptionByOwnerId)
         .mapExcept(requireSome)
         .flatMap { subscription in
           AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
@@ -333,11 +332,6 @@ private func redirectCurrentSubscribers<A, B>(
         : middleware(conn)
     }
   }
-}
-
-private func validateCurrentUserIsNotInviter<A>(_ data: T3<Database.TeamInvite, Database.User?, A>) -> Bool {
-  let (teamInvite, currentUser) = (get1(data), get2(data))
-  return currentUser?.id != .some(teamInvite.inviterUserId)
 }
 
 private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Database.User, A>) -> Bool {

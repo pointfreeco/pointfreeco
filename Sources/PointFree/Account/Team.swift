@@ -10,25 +10,32 @@ import Prelude
 import Styleguide
 import Tuple
 
-let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Database.User?, Data> =
-  filterMap(pure, or: loginAndRedirect)
-    <<< requireNonOwnerSubscriber
+let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filter(
+      get2 >>> ^\.isOwner >>> (!),
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "We couldn’t find your subscription.")
+      )
+    )
     <<< leaveTeam
     <| redirect(
       to: .account(.index),
       headersMiddleware: flash(.notice, "You are no longer a part of that team.")
 )
 
-private func leaveTeam(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Database.User, Data> {
+private func leaveTeam<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data> {
 
   return { conn in
+    let user = get1(conn.data)
 
-    let removed = conn.data.subscriptionId
+    let removed = user.subscriptionId
       .map {
         AppEnvironment.current.database
-          .removeTeammateUserIdFromSubscriptionId(conn.data.id, $0)
+          .removeTeammateUserIdFromSubscriptionId(user.id, $0)
       }
       ?? pure(unit)
 
@@ -41,38 +48,6 @@ private func leaveTeam(
               |> redirect(
                 to: .account(.index),
                 headersMiddleware: flash(.error, "Something went wrong.")
-            )
-          ),
-          const(middleware(conn))
-        )
-    )
-  }
-}
-
-// TODO: use SubscriberState to check `owner` case instead
-private func requireNonOwnerSubscriber(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, Database.User, Data> {
-
-  return { conn in
-
-    let isOwnerOfSubscription = conn.data.subscriptionId
-      .map(
-        AppEnvironment.current.database.fetchSubscriptionById
-          >>> mapExcept(requireSome)
-          >>> map { $0.userId == conn.data.id }
-      )
-      ?? pure(false)
-
-    return isOwnerOfSubscription
-      .run
-      .flatMap(
-        either(
-          const(
-            conn
-              |> redirect(
-                to: .account(.index),
-                headersMiddleware: flash(.error, "We couldn’t find your subscription.")
             )
           ),
           const(middleware(conn))
