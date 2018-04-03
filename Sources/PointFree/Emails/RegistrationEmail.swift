@@ -24,14 +24,14 @@ private let registrationEmailBody = View<GitHub.User> { user in
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "You’re one step closer to our video series!"
             ]),
-          
+
           p([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
             """
             To get all that Point-Free has to offer, choose from one of our monthly or yearly plans by clicking
             the link below!
             """
             ]),
-          
+
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
               ["Choose a subscription plan!"])

@@ -91,28 +91,6 @@ public struct Episode {
             return "swift"
           }
         }
-
-        public static func ==(lhs: CodeLang, rhs: CodeLang) -> Bool {
-          switch (lhs, rhs) {
-          case (.html, .html), (.swift, .swift):
-            return true
-          case let (.other(lhs), .other(rhs)):
-            return lhs == rhs
-          case (.html, _), (.other, _), (.swift, _):
-            return false
-          }
-        }
-      }
-
-      public static func ==(lhs: Episode.TranscriptBlock.BlockType, rhs: Episode.TranscriptBlock.BlockType) -> Bool {
-        switch (lhs, rhs) {
-        case let (.code(lhs), .code(rhs)):
-          return lhs == rhs
-        case (.paragraph, .paragraph), (.title, .title):
-          return true
-        case (.code, _), (.paragraph, _), (.title, _):
-          return false
-        }
       }
     }
   }
@@ -124,7 +102,7 @@ public let typeSafeHtml = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep4-type-safe-html",
-  id: .init(unwrap: 4),
+  id: 4,
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg",
   length: 1380,

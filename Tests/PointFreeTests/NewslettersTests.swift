@@ -12,7 +12,7 @@ import Optics
 
 class NewslettersTests: TestCase {
   func testExpressUnsubscribe() {
-    let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
@@ -46,7 +46,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
@@ -91,7 +91,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
@@ -136,7 +136,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_UnknownNewsletter() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!

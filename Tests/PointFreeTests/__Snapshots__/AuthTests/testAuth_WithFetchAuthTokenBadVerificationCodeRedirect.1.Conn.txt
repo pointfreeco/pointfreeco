@@ -1,0 +1,12 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/github-auth?code=deadbeef&redirect=http://localhost:8080/episodes/42
+  Cookie: pf_session={}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /login?redirect=http://localhost:8080/episodes/42

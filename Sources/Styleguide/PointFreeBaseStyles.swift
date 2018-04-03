@@ -393,7 +393,7 @@ private let colorStyles: Stylesheet =
     <> Class.pf.colors.bg.yellow % backgroundColor(Colors.yellow)
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
-    <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)    
+    <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)

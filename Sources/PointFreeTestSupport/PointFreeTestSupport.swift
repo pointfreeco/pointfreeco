@@ -8,6 +8,7 @@ import Prelude
 
 extension Environment {
   public static let mock = Environment(
+    assets: .mock,
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
@@ -23,6 +24,14 @@ extension Environment {
     |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+}
+
+extension Assets {
+  static let mock = Assets(
+    brandonImgSrc: "",
+    stephenImgSrc: "",
+    emailHeaderImgSrc: ""
+  )
 }
 
 extension Logger {
@@ -72,9 +81,9 @@ extension Database {
 
 extension Database.User {
   public static let mock = Database.User(
-    email: .init(unwrap: "hello@pointfree.co"),
+    email: "hello@pointfree.co",
     episodeCreditCount: 0,
-    gitHubUserId: .init(unwrap: 1),
+    gitHubUserId: 1,
     gitHubAccessToken: "deadbeef",
     id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     isAdmin: false,
@@ -103,7 +112,7 @@ extension Database.Subscription {
 extension Database.TeamInvite {
   public static let mock = Database.TeamInvite(
     createdAt: .mock,
-    email: .init(unwrap: "blob@pointfree.co"),
+    email: "blob@pointfree.co",
     id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
     inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
@@ -129,7 +138,7 @@ extension Date {
 
 extension GitHub {
   public static let mock = GitHub(
-    fetchAuthToken: const(pure(.mock)),
+    fetchAuthToken: const(pure(pure(.mock))),
     fetchEmails: const(pure([.mock])),
     fetchUser: const(pure(.mock))
   )
@@ -137,7 +146,7 @@ extension GitHub {
 
 extension GitHub.User.Email {
   public static let mock = GitHub.User.Email(
-    email: EmailAddress(unwrap: "hello@pointfree.co"),
+    email: "hello@pointfree.co",
     primary: true
   )
 }
@@ -150,7 +159,7 @@ extension GitHub.AccessToken {
 
 extension GitHub.User {
   public static let mock = GitHub.User(
-    id: .init(unwrap: 1),
+    id: 1,
     name: "Blob"
   )
 }
@@ -201,18 +210,18 @@ extension Stripe {
 extension Stripe.Card {
   public static let mock = Stripe.Card(
     brand: .visa,
-    customer: .init(unwrap: "cus_test"),
+    customer: "cus_test",
     expMonth: 1,
     expYear: 2020,
-    id: .init(unwrap: "card_test"),
+    id: "card_test",
     last4: "4242"
   )
 }
 
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
-    defaultSource: .init(unwrap: "card_test"),
-    id: .init(unwrap: "cus_test"),
+    defaultSource: "card_test",
+    id: "cus_test",
     sources: .mock([.mock])
   )
 }
@@ -233,7 +242,7 @@ extension Stripe.Event where T == Stripe.Invoice {
   public static var mock: Stripe.Event<Stripe.Invoice> {
     return .init(
       data: .init(object: .mock),
-      id: .init(unwrap: "evt_test"),
+      id: "evt_test",
       type: .invoicePaymentFailed
     )
   }
@@ -241,10 +250,10 @@ extension Stripe.Event where T == Stripe.Invoice {
 
 extension Stripe.Invoice {
   public static let mock = Stripe.Invoice(
-    amountDue: .init(unwrap: 17_00),
-    customer: .init(unwrap: "cus_test"),
-    id: .init(unwrap: "in_test"),
-    subscription: .init(unwrap: "sub_test")
+    amountDue: 17_00,
+    customer: "cus_test",
+    id: "in_test",
+    subscription: "sub_test"
   )
 }
 
@@ -260,7 +269,7 @@ extension Stripe.ListEnvelope {
 
 extension Stripe.Plan {
   public static let mock = Stripe.Plan(
-    amount: .init(unwrap: 17_00),
+    amount: 17_00,
     created: .mock,
     currency: .usd,
     id: .individualMonthly,
@@ -273,17 +282,17 @@ extension Stripe.Plan {
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.amount .~ .init(unwrap: 170_00)
+    |> \.amount .~ 170_00
     |> \.id .~ .individualYearly
     |> \.name .~ "Individual Yearly"
 
   public static let teamMonthly = mock
-    |> \.amount .~ .init(unwrap: 16_00)
+    |> \.amount .~ 16_00
     |> \.id .~ .teamMonthly
     |> \.name .~ "Team Monthly"
 
   public static let teamYearly = mock
-    |> \.amount .~ .init(unwrap: 160_00)
+    |> \.amount .~ 160_00
     |> \.id .~ .teamYearly
     |> \.name .~ "Team Yearly"
 }
@@ -297,7 +306,7 @@ extension Stripe.Subscription {
     currentPeriodEnd: Date(timeInterval: 60 * 60 * 24 * 30, since: .mock),
     customer: .mock,
     endedAt: nil,
-    id: .init(unwrap: "sub_test"),
+    id: "sub_test",
     items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
@@ -334,7 +343,7 @@ extension Stripe.Subscription {
 extension Stripe.Subscription.Item {
   public static let mock = Stripe.Subscription.Item(
     created: .mock,
-    id: .init(unwrap: "si_test"),
+    id: "si_test",
     plan: .mock,
     quantity: 1
   )
@@ -343,20 +352,20 @@ extension Stripe.Subscription.Item {
 extension SubscribeData {
   public static let individualMonthly = SubscribeData(
     pricing: .init(billing: .monthly, quantity: 1),
-    token: .init(unwrap: "stripe-deadbeef"),
+    token: "stripe-deadbeef",
     vatNumber: ""
   )
 
   public static let individualYearly = SubscribeData(
     pricing: .init(billing: .yearly, quantity: 1),
-    token: .init(unwrap: "stripe-deadbeef"),
+    token: "stripe-deadbeef",
     vatNumber: ""
   )
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
       pricing: .init(billing: .yearly, quantity: quantity),
-      token: .init(unwrap: "stripe-deadbeef"),
+      token: "stripe-deadbeef",
       vatNumber: ""
     )
   }

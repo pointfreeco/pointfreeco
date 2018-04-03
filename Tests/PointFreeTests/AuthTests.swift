@@ -8,22 +8,19 @@ import Prelude
 import Optics
 import SnapshotTesting
 import XCTest
-#if !os(Linux)
-  import WebKit
-#endif
 
 class AuthTests: TestCase {
 
   func testRegister() {
     let gitHubUserEnvelope = GitHub.UserEnvelope.mock
       |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
-      |> \.gitHubUser.id .~ .init(unwrap: 1234567890)
+      |> \.gitHubUser.id .~ 1234567890
       |> \.gitHubUser.name .~ "Blobby McBlob"
 
     let env: (Environment) -> Environment =
       (\.database .~ .live)
         <> (\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
-        <> (\.gitHub.fetchAuthToken .~ const(pure(gitHubUserEnvelope.accessToken)))
+        <> (\.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
 
     AppEnvironment.with(env) {
       let result = connection(
@@ -51,28 +48,56 @@ class AuthTests: TestCase {
 
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
-    
+
     assertSnapshot(matching: result.perform())
   }
-  
+
   func testAuth_WithFetchAuthTokenFailure() {
     AppEnvironment.with(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const)) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
       let conn = connection(from: auth)
       let result = conn |> siteMiddleware
-      
+
       assertSnapshot(matching: result.perform())
     }
   }
-  
+
+  func testAuth_WithFetchAuthTokenBadVerificationCode() {
+    AppEnvironment.with(
+      \.gitHub.fetchAuthToken
+        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    ) {
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+
+      let conn = connection(from: auth)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
+  func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
+    AppEnvironment.with(
+      \.gitHub.fetchAuthToken
+        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+    ) {
+      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
+
+      let conn = connection(from: auth)
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+    }
+  }
+
   func testAuth_WithFetchUserFailure() {
     AppEnvironment.with(\.gitHub.fetchUser .~ (unit |> throwE >>> const)) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
       let conn = connection(from: auth)
       let result = conn |> siteMiddleware
-      
+
       assertSnapshot(matching: result.perform())
     }
   }
@@ -85,14 +110,14 @@ class AuthTests: TestCase {
 
     assertSnapshot(matching: result.perform())
   }
-  
+
   func testLogin_AlreadyLoggedIn() {
     AppEnvironment.with(\.database .~ .mock) {
       let login = request(to: .login(redirect: nil), session: .loggedIn)
-      
+
       let conn = connection(from: login)
       let result = conn |> siteMiddleware
-      
+
       assertSnapshot(matching: result.perform())
     }
   }
@@ -102,28 +127,28 @@ class AuthTests: TestCase {
 
     let conn = connection(from: login)
     let result = conn |> siteMiddleware
-    
+
     assertSnapshot(matching: result.perform())
   }
-  
+
   func testLogout() {
     let conn = connection(from: request(to: .logout))
     let result = conn |> siteMiddleware
-    
+
     assertSnapshot(matching: result.perform())
   }
-  
+
   func testHome_LoggedOut() {
     let conn = connection(from: request(to: .home, session: .loggedOut))
     let result = conn |> siteMiddleware
-    
+
     assertSnapshot(matching: result.perform())
   }
-  
+
   func testHome_LoggedIn() {
     let conn = connection(from: request(to: .home, session: .loggedIn))
-    let result = conn |> siteMiddleware 
-    
+    let result = conn |> siteMiddleware
+
     assertSnapshot(matching: result.perform())
   }
 }

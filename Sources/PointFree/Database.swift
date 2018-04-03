@@ -55,8 +55,8 @@ public struct Database {
   )
 
   public struct EmailSetting: Codable, Equatable {
-    public let newsletter: Newsletter
-    public let userId: Database.User.Id
+    public internal(set) var newsletter: Newsletter
+    public internal(set) var userId: Database.User.Id
 
     public enum CodingKeys: String, CodingKey {
       case newsletter
@@ -69,10 +69,6 @@ public struct Database {
 
       public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
     }
-
-    public static func ==(lhs: Database.EmailSetting, rhs: Database.EmailSetting) -> Bool {
-      return lhs.newsletter == rhs.newsletter && lhs.userId.unwrap == rhs.userId.unwrap
-    }
   }
 
   public struct EpisodeCredit: Decodable, Equatable {
@@ -83,14 +79,9 @@ public struct Database {
       case episodeSequence = "episode_sequence"
       case userId = "user_id"
     }
-
-    public static func == (lhs: EpisodeCredit, rhs: EpisodeCredit) -> Bool {
-      return lhs.episodeSequence == rhs.episodeSequence
-        && lhs.userId == rhs.userId
-    }
   }
 
-  public struct User: Decodable {
+  public struct User: Decodable, Equatable {
     public internal(set) var email: EmailAddress
     public internal(set) var episodeCreditCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
@@ -115,10 +106,10 @@ public struct Database {
   }
 
   public struct Subscription: Decodable {
-    var id: Id
-    var stripeSubscriptionId: Stripe.Subscription.Id
-    var stripeSubscriptionStatus: Stripe.Subscription.Status
-    var userId: User.Id
+    internal(set) var id: Id
+    internal(set) var stripeSubscriptionId: Stripe.Subscription.Id
+    internal(set) var stripeSubscriptionStatus: Stripe.Subscription.Status
+    internal(set) var userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
 
@@ -131,10 +122,10 @@ public struct Database {
   }
 
   public struct TeamInvite: Decodable {
-    var createdAt: Date
-    var email: EmailAddress
-    var id: Id
-    var inviterUserId: User.Id
+    internal(set) var createdAt: Date
+    internal(set) var email: EmailAddress
+    internal(set) var id: Id
+    internal(set) var inviterUserId: User.Id
 
     public typealias Id = Tagged<TeamInvite, UUID>
 
@@ -307,7 +298,7 @@ private func registerUser(
   ) -> EitherIO<Error, Database.User?> {
 
   return upsertUser(withGitHubEnvelope: envelope, email: email)
-    .flatMap { optionalUser in 
+    .flatMap { optionalUser in
       guard let user = optionalUser else { return pure(optionalUser) }
 
       return updateEmailSettings(settings: Database.EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
