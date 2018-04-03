@@ -129,7 +129,7 @@ private let creditsView = View<AccountData> { data -> [Node] in
               "remaining."
               ])
             ]
-            <> subscribeCallout.view((data.currentUser, data.stripeSubscription))
+            <> subscribeCallout.view(data.subscriberState)
             <> episodeCreditsView.view(data.episodeCredits)
         )
         ])
@@ -137,13 +137,9 @@ private let creditsView = View<AccountData> { data -> [Node] in
   ]
 }
 
-private let subscribeCallout = View<(Database.User, Stripe.Subscription?)> { currentUser, stripeSubscription -> [Node] in
+private let subscribeCallout = View<SubscriberState> { subscriberState -> [Node] in
 
-  let isOwnerOfActiveSubscription =
-    currentUser.subscriptionId == nil
-      && stripeSubscription?.status == .some(.active)
-
-  guard !isOwnerOfActiveSubscription else { return [] }
+  guard !subscriberState.isActiveSubscriber else { return [] }
 
   return [
     p([
