@@ -230,7 +230,7 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
   .team <<< .leave
-    <¢> post %> lit("account") %> lit("team") %> lit("leave")
+    <¢> post %> lit("account") %> lit("team") %> lit("leave") 
     <% end,
 
   .team <<< .remove

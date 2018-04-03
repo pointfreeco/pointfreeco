@@ -73,7 +73,11 @@ final class SubscribeTests: TestCase {
   //  }
 
   func testInvalidQuantity() {
-    AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(nil))) {
+    let env: (Environment) -> Environment =
+      (\.database.fetchSubscriptionById .~ const(pure(nil)))
+      <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+
+    AppEnvironment.with(env) {
       let conn = connection(
         from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
         )
@@ -85,7 +89,7 @@ final class SubscribeTests: TestCase {
       #endif
     }
 
-    AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(nil))) {
+    AppEnvironment.with(env) {
       let conn = connection(
         from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
         )
@@ -128,10 +132,12 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
-    AppEnvironment.with(
+    let env: (Environment) -> Environment =
       (\.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) })
         <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-    ) {
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+
+    AppEnvironment.with(env) {
       let conn = connection(
         from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
         )
@@ -145,10 +151,12 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure() {
-    AppEnvironment.with(
+    let env: (Environment) -> Environment =
       (\.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) })
         <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-    ) {
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+
+    AppEnvironment.with(env) {
       let conn = connection(
         from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
         )
@@ -162,10 +170,12 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    AppEnvironment.with(
+    let env: (Environment) -> Environment =
       (\.database.createSubscription .~ { _, _ in throwE(unit as Error) })
         <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-    ) {
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+
+    AppEnvironment.with(env) {
       let conn = connection(
         from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
         )
