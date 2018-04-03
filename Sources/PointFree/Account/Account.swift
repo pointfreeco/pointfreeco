@@ -283,7 +283,7 @@ private let subscriptionOverview = View<AccountData> { data -> [Node] in
   if data.subscription?.userId == data.currentUser.id {
     return subscriptionOwnerOverview.view(data)
   } else if let subscription = data.stripeSubscription {
-    return subscriptionNonOwnerOverview.view(data)
+    return subscriptionTeammateOverview.view(data)
   } else {
     return []
   }
@@ -312,7 +312,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
   ]
 }
 
-private let subscriptionNonOwnerOverview = View<AccountData> { data -> [Node] in
+private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
   guard let subscription = data.stripeSubscription else { return [] }
 
   return [
@@ -338,7 +338,7 @@ private let subscriptionNonOwnerOverview = View<AccountData> { data -> [Node] in
           form([action(path(to: .team(.leave))), method(.post)], [
             input(
               [
-                `class`([Class.pf.components.button(color: .red)]),
+                `class`([Class.pf.components.button(color: .red, size: .small)]),
                 type(.submit),
                 value("Leave this team")
               ]
