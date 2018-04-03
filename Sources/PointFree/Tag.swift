@@ -20,10 +20,6 @@ public struct Tag: Equatable {
     serverSideSwift: Tag(name: "Server-Side Swift"),
     swift: Tag(name: "Swift")
   )
-
-  public static func ==(lhs: Tag, rhs: Tag) -> Bool {
-    return lhs.name == rhs.name
-  }
 }
 
 extension Tag {

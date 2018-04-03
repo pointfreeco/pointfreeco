@@ -41,14 +41,14 @@ extension URLRequest {
   }
 }
 
-public struct Session: Codable {
+public struct Session: Codable, Equatable {
   public var flash: Flash?
   public var userId: Database.User.Id?
 
   public static let empty = Session(flash: nil, userId: nil)
 }
 
-public struct Flash: Codable {
+public struct Flash: Codable, Equatable {
   public enum Priority: String, Codable {
     case error
     case notice
@@ -57,19 +57,6 @@ public struct Flash: Codable {
 
   public let priority: Priority
   public let message: String
-}
-
-extension Session: Equatable {
-  public static func ==(lhs: Session, rhs: Session) -> Bool {
-    return lhs.flash == rhs.flash
-      && lhs.userId?.rawValue == rhs.userId?.rawValue
-  }
-}
-
-extension Flash: Equatable {
-  public static func ==(lhs: Flash, rhs: Flash) -> Bool {
-    return lhs.priority == rhs.priority && lhs.message == rhs.message
-  }
 }
 
 private let pointFreeUserSession = "pf_session"

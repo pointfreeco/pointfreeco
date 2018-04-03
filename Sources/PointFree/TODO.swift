@@ -18,12 +18,6 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
   return [tuple.0, tuple.1, tuple.2, tuple.3, tuple.4, tuple.5, tuple.6, tuple.7, tuple.8]
 }
 
-extension FunctionM {
-  public static func <¢> <N>(f: @escaping (M) -> N, c: FunctionM) -> FunctionM<A, N> {
-    return c.map(f)
-  }
-}
-
 // TODO: Move to HttpPipeline
 
 /// Lifts middleware that operates on non-optional values to one that operates on optionals, but renders
@@ -156,7 +150,7 @@ extension URLRequest {
         $0.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
           .map(String.init)
       }
-      .flatMap { (pair: [String]) -> (String, String) in
+      .compactMap { (pair: [String]) -> (String, String) in
         (pair[0], pair.count == 2 ? pair[1] : "")
     }
     return .init(pairs, uniquingKeysWith: { $1 })

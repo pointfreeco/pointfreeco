@@ -11,7 +11,7 @@ private let paidEpisode = Episode(
   text, no markdown allowed. Here is some more text just to have some filler.
   """,
   codeSampleDirectory: "ep1-proof-in-functions",
-  id: .init(unwrap: 1),
+  id: 1,
   exercises: [
     .init(body: "This is an exercise.")
   ],
