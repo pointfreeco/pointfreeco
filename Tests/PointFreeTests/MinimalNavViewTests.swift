@@ -39,19 +39,19 @@ class MinimalNavViewTests: TestCase {
   }
 }
 
-private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?))] = [
-  ("dark_logged-out_no-route", (.dark, nil, nil, nil)),
-  ("dark_logged-out_route", (.dark, nil, nil, .pricing(nil, expand: nil))),
-  ("dark_logged-in_non-subscriber", (.dark, .mock, nil, nil)),
-  ("dark_logged-in_inactive-subscriber", (.dark, .mock, .canceled, nil)),
-  ("dark_logged-in_active-subscriber", (.dark, .mock, .active, nil)),
+private let states: [(String, (NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?))] = [
+  ("dark_logged-out_no-route", (.dark, nil, .nonSubscriber, nil)),
+  ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricing(nil, expand: nil))),
+  ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
+  ("dark_logged-in_inactive-subscriber", (.dark, .mock, .teammate(status: .canceled), nil)),
+  ("dark_logged-in_active-subscriber", (.dark, .mock, .teammate(status: .active), nil)),
 
-  ("light_logged-out", (.light, nil, nil, nil)),
-  ("light_logged-in_non-subscriber", (.light, .mock, nil, nil)),
-  ("light_logged-in_active-subscriber", (.light, .mock, .active, nil)),
+  ("light_logged-out", (.light, nil, .nonSubscriber, nil)),
+  ("light_logged-in_non-subscriber", (.light, .mock, .nonSubscriber, nil)),
+  ("light_logged-in_active-subscriber", (.light, .mock, .teammate(status: .active), nil)),
 ]
 
-private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { style, currentUser, currentSubscriptionStatus, currentRoute in
+private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   document([
     html([
       head([
@@ -59,7 +59,7 @@ private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Su
         HtmlCssSupport.style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
-      body(minimalNavView.view((style, currentUser, currentSubscriptionStatus, currentRoute)))
+      body(minimalNavView.view((style, currentUser, subscriberState, currentRoute)))
       ])
     ])
 }
