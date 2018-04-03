@@ -38,9 +38,9 @@ AppEnvironment.push(\.envVars .~ envVars)
 // Transcripts
 
 #if OSS
-  private let allEpisodes = allPublicEpisodes
+private let allEpisodes = allPublicEpisodes
 #else
-  private let allEpisodes = allPublicEpisodes + allPrivateEpisodes
+private let allEpisodes = allPublicEpisodes + allPrivateEpisodes
 #endif
 AppEnvironment.push(\
   .episodes .~ {

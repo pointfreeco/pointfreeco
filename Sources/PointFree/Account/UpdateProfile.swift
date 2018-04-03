@@ -42,7 +42,7 @@ let updateProfileMiddleware =
       let (data, user) = lower(conn.data)
 
       let emailSettings = data.emailSettings.keys
-        .flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
+        .compactMap(Database.EmailSetting.Newsletter.init(rawValue:))
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {

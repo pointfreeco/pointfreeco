@@ -20,7 +20,7 @@ print(htmlString)
 PlaygroundPage.current.liveView = webView
 
 sendEmail(
-  to: [.init(unwrap: "mbw234@gmail.com")],
+  to: ["mbw234@gmail.com"],
   subject: "Email test: \(arc4random())",
   unsubscribeData: (.init(unwrap: UUID()), .newEpisode),
   content: inj2(htmlNodes)

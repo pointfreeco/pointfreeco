@@ -4,7 +4,7 @@ import HtmlCssSupport
 import Styleguide
 import Prelude
 
-let footerView =
+let footerView: View<Database.User?> =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
 

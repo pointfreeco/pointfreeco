@@ -5,9 +5,6 @@ import XCTest
 @testable import PointFree
 import PointFreeTestSupport
 import HttpPipeline
-#if !os(Linux)
-  import WebKit
-#endif
 
 class AtomFeedTests: TestCase {
   func testAtomFeed() {

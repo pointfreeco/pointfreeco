@@ -143,7 +143,7 @@ ccmark-mm:
 	-@sudo mkdir -p "$(CCMARK_CONFIGURATION_PATH)"
 	-@echo "$$CCMARK_CONFIGURATION_MODULE_MAP" | sudo tee "$(CCMARK_CONFIGURATION_PATH)/module.map" > /dev/null
 
-SDK_PATH = $(shell xcrun --show-sdk-path)
+SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
 COMMON_CRYPTO_PATH = $(FRAMEWORKS_PATH)/CommonCrypto.framework
 COMMON_CRYPTO_MODULE_MAP_PATH = $(COMMON_CRYPTO_PATH)/module.map
