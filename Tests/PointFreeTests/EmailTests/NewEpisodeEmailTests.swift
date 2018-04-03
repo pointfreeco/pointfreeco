@@ -6,7 +6,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 #if !os(Linux)
-  import WebKit
+import WebKit
 #endif
 import XCTest
 
@@ -18,14 +18,14 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView)
+    if #available(OSX 10.13, *) {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView)
 
-        webView.frame.size = .init(width: 400, height: 1100)
-        assertSnapshot(matching: webView)
-      }
+      webView.frame.size = .init(width: 400, height: 1100)
+      assertSnapshot(matching: webView)
+    }
     #endif
   }
 
@@ -39,14 +39,14 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView)
+    if #available(OSX 10.13, *) {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView)
 
-        webView.frame.size = .init(width: 400, height: 1100)
-        assertSnapshot(matching: webView)
-      }
+      webView.frame.size = .init(width: 400, height: 1100)
+      assertSnapshot(matching: webView)
+    }
     #endif
   }
 
@@ -63,16 +63,14 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
-    #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView)
 
-        webView.frame.size = .init(width: 400, height: 1100)
-        assertSnapshot(matching: webView)
-      }
-    #endif
+      webView.frame.size = .init(width: 400, height: 1100)
+      assertSnapshot(matching: webView)
+    }
   }
 
   func testNewEpisodeEmail_Announcement_Subscriber() {
@@ -88,15 +86,13 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
-    #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
-        webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView)
 
-        webView.frame.size = .init(width: 400, height: 1100)
-        assertSnapshot(matching: webView)
-      }
-    #endif
+      webView.frame.size = .init(width: 400, height: 1100)
+      assertSnapshot(matching: webView)
+    }
   }
 }

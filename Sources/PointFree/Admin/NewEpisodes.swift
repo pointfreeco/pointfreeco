@@ -107,7 +107,7 @@ private func sendEmail(
   let newEpisodeEmailReport = sequence(newEpisodeEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
-        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        to: adminEmails,
         subject: "New episode email finished sending!",
         content: inj2(
           newEpisodeEmailAdminReportEmail.view(
