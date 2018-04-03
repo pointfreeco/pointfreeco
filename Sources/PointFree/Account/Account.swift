@@ -56,7 +56,7 @@ private func fetchAccountData<I>(
     .map(^\.stripeSubscriptionId)
     .flatMap(AppEnvironment.current.stripe.fetchSubscription)
 
-  let tmp1 = zip4(
+  let everything = zip7(
     AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] },
 
@@ -65,10 +65,8 @@ private func fetchAccountData<I>(
 
     stripeSubscription.run.map(^\.right).parallel,
 
-    subscription.run.map(^\.right).parallel
-  )
+    subscription.run.map(^\.right).parallel,
 
-  let tmp2 = zip3(
     owner.run.map(^\.right).parallel,
 
     AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
@@ -78,8 +76,7 @@ private func fetchAccountData<I>(
       .map { $0.right ?? [] }
   )
 
-  return zip2(tmp1, tmp2)
-    .map { ($0.0, $0.1, $0.2, $0.3, $1.0, $1.1, $1.2) }
+  return everything
     .map {
       conn.map(
         const(
