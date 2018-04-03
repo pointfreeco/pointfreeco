@@ -114,10 +114,7 @@ private let accountView = View<AccountData> { data in
 
 private let creditsView = View<AccountData> { data -> [Node] in
 
-  guard
-    data.currentUser.subscriptionId == nil
-      || data.stripeSubscription?.status != .some(.active)
-    else { return [] }
+  guard !data.subscriberState.isActiveSubscriber else { return [] }
   guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
