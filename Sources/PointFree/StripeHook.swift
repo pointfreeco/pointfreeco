@@ -30,7 +30,28 @@ private func validateStripeSignature<A>(
         let signatures = params["v1"],
         let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
         signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
-        else { return conn |> writeStatus(.badRequest) >-> end }
+        else {
+          var requestDump = ""
+          print("Current timestamp: \(AppEnvironment.current.date().timeIntervalSince1970)", to: &requestDump)
+          print(
+            "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
+            to: &requestDump
+          )
+          print("\nHeaders:", to: &requestDump)
+          dump(conn.request.allHTTPHeaderFields, to: &requestDump)
+          print("\nBody:", to: &requestDump)
+          print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
+
+          parallel(
+            sendEmail(
+              to: adminEmails.map(EmailAddress.init(unwrap:)),
+              subject: "[PointFree Error] Stripe Hook Failed!",
+              content: inj1(requestDump)
+              ).run
+            ).run { _ in }
+
+          return conn |> writeStatus(.badRequest) >-> end
+      }
 
       return conn |> middleware
     }
@@ -39,7 +60,7 @@ private func validateStripeSignature<A>(
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
     let secret = AppEnvironment.current.envVars.stripe.endpointSecret
-    guard let digest = hexDigest(value: "\(timestamp).\(payload)", asciiSecret: secret) else { return false }
+    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret) else { return false }
 
     let constantTimeSignature =
       signature.count == digest.count
