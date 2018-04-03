@@ -177,7 +177,9 @@ extension MinimalNavViewTests {
 extension NewEpisodeEmailTests {
   static var allTests: [(String, (NewEpisodeEmailTests) -> () throws -> Void)] = [
     ("testNewEpisodeEmail_Subscriber", testNewEpisodeEmail_Subscriber),
-    ("testNewEpisodeEmail_NonSubscriber", testNewEpisodeEmail_NonSubscriber)
+    ("testNewEpisodeEmail_FreeEpisode_NonSubscriber", testNewEpisodeEmail_FreeEpisode_NonSubscriber),
+    ("testNewEpisodeEmail_Announcement_NonSubscriber", testNewEpisodeEmail_Announcement_NonSubscriber),
+    ("testNewEpisodeEmail_Announcement_Subscriber", testNewEpisodeEmail_Announcement_Subscriber)
   ]
 }
 extension NewslettersTests {
