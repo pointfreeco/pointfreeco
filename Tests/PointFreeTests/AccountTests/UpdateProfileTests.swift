@@ -12,25 +12,25 @@ import Optics
 
 class UpdateProfileTests: TestCase {
   func testUpdateNameAndEmail() {
-    let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
-    
+
     assertSnapshot(
       matching: user,
       named: "user_before_update"
     )
-    
+
     let update = request(
-      to: .account(.update(.init(email: .init(unwrap: "blobby@blob.co"), name: "Blobby McBlob", emailSettings: [:]))),
+      to: .account(.update(.init(email: "blobby@blob.co", name: "Blobby McBlob", emailSettings: [:]))),
       session: .init(flash: nil, userId: user.id)
     )
-    
+
     let output = connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
-    
+
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchUserById(user.id)
         .run
@@ -43,9 +43,9 @@ class UpdateProfileTests: TestCase {
       assertSnapshot(matching: output)
     #endif
   }
-  
+
   func testUpdateEmailSettings() {
-    let user = AppEnvironment.current.database.registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
@@ -53,21 +53,21 @@ class UpdateProfileTests: TestCase {
       .run
       .perform()
       .right!
-    
+
     assertSnapshot(
       matching: emailSettings,
       named: "email_settings_before_update"
     )
-    
+
     let update = request(
       to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
       session: .init(flash: nil, userId: user.id)
     )
-    
+
     let output = connection(from: update)
       |> siteMiddleware
       |> Prelude.perform
-    
+
     assertSnapshot(
       matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
         .run

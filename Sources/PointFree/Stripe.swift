@@ -147,17 +147,6 @@ public struct Stripe {
     public private(set) var name: String
     public private(set) var statementDescriptor: String?
 
-    private enum CodingKeys: String, CodingKey {
-      case amount
-      case created
-      case currency
-      case id
-      case interval
-      case metadata
-      case name
-      case statementDescriptor = "statement_descriptor"
-    }
-
     public typealias Id = Tagged<Plan, String>
 
     public enum Currency: String, Codable {
@@ -167,6 +156,17 @@ public struct Stripe {
     public enum Interval: String, Codable {
       case month
       case year
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case amount
+      case created
+      case currency
+      case id
+      case interval
+      case metadata
+      case name
+      case statementDescriptor = "statement_descriptor"
     }
   }
 
@@ -189,22 +189,6 @@ public struct Stripe {
       return self.status != .canceled && !self.cancelAtPeriodEnd
     }
 
-    private enum CodingKeys: String, CodingKey {
-      case canceledAt = "canceled_at"
-      case cancelAtPeriodEnd = "cancel_at_period_end"
-      case customer
-      case created
-      case currentPeriodEnd = "current_period_end"
-      case currentPeriodStart = "current_period_start"
-      case endedAt = "ended_at"
-      case id
-      case items
-      case plan
-      case quantity
-      case start
-      case status
-    }
-
     public typealias Id = Tagged<Subscription, String>
 
     public struct Item: Codable {
@@ -223,6 +207,22 @@ public struct Stripe {
       case trialing
       case unpaid
     }
+
+    private enum CodingKeys: String, CodingKey {
+      case canceledAt = "canceled_at"
+      case cancelAtPeriodEnd = "cancel_at_period_end"
+      case customer
+      case created
+      case currentPeriodEnd = "current_period_end"
+      case currentPeriodStart = "current_period_start"
+      case endedAt = "ended_at"
+      case id
+      case items
+      case plan
+      case quantity
+      case start
+      case status
+    }
   }
 
   public struct Token: Codable {
@@ -234,19 +234,19 @@ public struct Stripe {
 
 extension Tagged where Tag == Stripe.Plan, A == String {
   static var individualMonthly: Stripe.Plan.Id {
-    return .init(unwrap: "individual-monthly")
+    return "individual-monthly"
   }
 
   static var individualYearly: Stripe.Plan.Id {
-    return .init(unwrap: "individual-yearly")
+    return "individual-yearly"
   }
 
   static var teamMonthly: Stripe.Plan.Id {
-    return .init(unwrap: "team-monthly")
+    return "team-monthly"
   }
 
   static var teamYearly: Stripe.Plan.Id {
-    return .init(unwrap: "team-yearly")
+    return "team-yearly"
   }
 }
 
@@ -328,17 +328,13 @@ private func updateSubscription(
       ]))
 }
 
-let stripeJsonDecoder: JSONDecoder = {
-  let decoder = JSONDecoder()
-  decoder.dateDecodingStrategy = .secondsSince1970
-  return decoder
-}()
+let stripeJsonDecoder = JSONDecoder()
+  |> \.dateDecodingStrategy .~ .secondsSince1970
+//  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
 
-let stripeJsonEncoder: JSONEncoder = {
-  let encoder = JSONEncoder()
-  encoder.dateEncodingStrategy = .secondsSince1970
-  return encoder
-}()
+let stripeJsonEncoder = JSONEncoder()
+  |> \.dateEncodingStrategy .~ .secondsSince1970
+//  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
 private enum Method {
   case get

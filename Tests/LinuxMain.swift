@@ -37,6 +37,8 @@ extension AuthTests {
     ("testRegister", testRegister),
     ("testAuth", testAuth),
     ("testAuth_WithFetchAuthTokenFailure", testAuth_WithFetchAuthTokenFailure),
+    ("testAuth_WithFetchAuthTokenBadVerificationCode", testAuth_WithFetchAuthTokenBadVerificationCode),
+    ("testAuth_WithFetchAuthTokenBadVerificationCodeRedirect", testAuth_WithFetchAuthTokenBadVerificationCodeRedirect),
     ("testAuth_WithFetchUserFailure", testAuth_WithFetchUserFailure),
     ("testLogin", testLogin),
     ("testLogin_AlreadyLoggedIn", testLogin_AlreadyLoggedIn),
