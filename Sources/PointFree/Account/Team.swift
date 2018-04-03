@@ -16,7 +16,7 @@ let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Databa
       get2 >>> ^\.isOwner >>> (!),
       or: redirect(
         to: .account(.index),
-        headersMiddleware: flash(.error, "We couldn’t find your subscription.")
+        headersMiddleware: flash(.error, "You are the owner of the subscription, you can’t leave.")
       )
     )
     <<< leaveTeam
