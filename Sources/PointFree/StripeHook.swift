@@ -44,7 +44,7 @@ private func validateStripeSignature<A>(
 
           parallel(
             sendEmail(
-              to: adminEmails.map(EmailAddress.init(unwrap:)),
+              to: adminEmails,
               subject: "[PointFree Error] Stripe Hook Failed!",
               content: inj1(requestDump)
               ).run
@@ -80,7 +80,7 @@ private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval =
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
   return { string in
     string.split(separator: separator)
-      .flatMap { pair -> (String, [String])? in
+      .compactMap { pair -> (String, [String])? in
         let pair = pair.split(separator: "=", maxSplits: 1).map(String.init)
         return tuple <¢> pair.first <*> (pair.count == 2 ? [pair[1]] : nil)
     }

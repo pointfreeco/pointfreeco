@@ -37,7 +37,7 @@ private enum Whitespace: String {
 }
 
 private let responsivePaddingStyles =
-  Breakpoint.all.flatMap { breakpoint in
+  Breakpoint.all.compactMap { breakpoint in
     breakpoint.querySelfAndBigger(only: screen) {
       Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in
@@ -50,7 +50,7 @@ private let responsivePaddingStyles =
     .concat()
 
 private let responsiveMarginStyles =
-  Breakpoint.all.flatMap { breakpoint in
+  Breakpoint.all.compactMap { breakpoint in
     breakpoint.querySelfAndBigger(only: screen) {
       Side.allSides.flatMap { side in
         spacings.enumerated().map { n, size in

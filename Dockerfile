@@ -1,21 +1,19 @@
-FROM swift:4.0
+FROM norionomura/swift:41
 
-ENV SKIP_TESTS 1
-
-RUN swift --version
-
+# postgres
 RUN apt-get update
 RUN apt-get install -y postgresql libpq-dev
 
 WORKDIR /app
 
 COPY Makefile ./
+COPY Package.swift ./
+COPY Sources ./Sources
+COPY Tests ./Tests
+
+# cmark
 RUN make linux-install-cmark
 
-COPY Package.swift ./
 RUN swift package update
-
-COPY Sources ./Sources
-RUN swift build --configuration release
-
-CMD ./.build/release/Server
+RUN swift build --product Server --configuration release
+CMD .build/release/Server

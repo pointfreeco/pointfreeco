@@ -6,7 +6,7 @@ Point-Free is here, bringing you videos covering functional programming concepts
 Take a moment to hear from the hosts about what to expect from this new series.
 """,
   codeSampleDirectory: "",
-  id: .init(unwrap: 0),
+  id: 0,
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
   length: 179,

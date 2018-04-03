@@ -7,7 +7,7 @@ import Prelude
 import SnapshotTesting
 import Styleguide
 #if !os(Linux)
-  import WebKit
+import WebKit
 #endif
 import XCTest
 
@@ -25,15 +25,15 @@ class MinimalNavViewTests: TestCase {
       let doc = testDocView.view(state)
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 180))
-          webView.loadHTMLString(render(doc), baseURL: nil)
-          assertSnapshot(matching: webView, named: "\(key)_desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 180))
+        webView.loadHTMLString(render(doc), baseURL: nil)
+        assertSnapshot(matching: webView, named: "\(key)_desktop")
 
-          webView.frame.size.width = 500
-          webView.frame.size.height = 140
-          assertSnapshot(matching: webView, named: "\(key)_mobile")
-        }
+        webView.frame.size.width = 500
+        webView.frame.size.height = 140
+        assertSnapshot(matching: webView, named: "\(key)_mobile")
+      }
       #endif
     }
   }

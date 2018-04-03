@@ -171,7 +171,7 @@ final class SubscribeTests: TestCase {
         )
         |> siteMiddleware
         |> Prelude.perform
-      
+
       #if !os(Linux)
         assertSnapshot(matching: conn)
       #endif

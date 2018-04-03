@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let adminEmails = [
+let adminEmails: [EmailAddress] = [
   "mbw234@gmail.com",
   "stephen.celis@gmail.com"
 ]
@@ -105,7 +105,7 @@ private func sendEmail(forNewEpisode episode: Episode, toUsers users: [Database.
   let newEpisodeEmailReport = sequence(newEpisodeEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
-        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        to: adminEmails,
         subject: "New episode email finished sending!",
         content: inj2(
           newEpisodeEmailAdminReportEmail.view(

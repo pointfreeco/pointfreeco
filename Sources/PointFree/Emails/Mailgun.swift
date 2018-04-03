@@ -109,7 +109,7 @@ func userIdAndNewsletter(
   let payload = email.unwrap
     .components(separatedBy: "unsub-")
     .last
-    .flatMap({ $0.split(separator: "@").first })
+    .flatMap { $0.split(separator: "@").first }
     .map(String.init)
 
   return payload

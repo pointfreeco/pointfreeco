@@ -82,7 +82,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [Database
   let freeEpisodeEmailReport = sequence(freeEpisodeEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
-        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        to: adminEmails,
         subject: "New free episode email finished sending!",
         content: inj2(
           freeEpisodeEmailAdminReportEmail.view(
