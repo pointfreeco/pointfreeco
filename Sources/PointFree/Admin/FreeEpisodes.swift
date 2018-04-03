@@ -47,7 +47,7 @@ let sendFreeEpisodeEmailMiddleware:
     >-> redirect(to: .admin(.index))
 
 func fetchEpisode(_ id: Episode.Id) -> Episode? {
-  return AppEnvironment.current.episodes().first(where: { $0.id.unwrap == id.unwrap })
+  return AppEnvironment.current.episodes().first(where: { $0.id == id })
 }
 
 private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {

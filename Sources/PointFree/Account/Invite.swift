@@ -284,7 +284,7 @@ private func sendInviteEmail(
 
 private func validateIsNot(currentUser: Database.User) -> (Database.User) -> EitherIO<Error, Database.User> {
   return { user in
-    user.id.unwrap.uuidString == currentUser.id.unwrap.uuidString
+    user.id == currentUser.id
       ? lift(.left(unit))
       : lift(.right(user))
   }
@@ -337,12 +337,12 @@ private func redirectCurrentSubscribers<A, B>(
 
 private func validateCurrentUserIsNotInviter<A>(_ data: T3<Database.TeamInvite, Database.User?, A>) -> Bool {
   let (teamInvite, currentUser) = (get1(data), get2(data))
-  return currentUser?.id.unwrap != .some(teamInvite.inviterUserId.unwrap)
+  return currentUser?.id != .some(teamInvite.inviterUserId)
 }
 
 private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Database.User, A>) -> Bool {
   let (teamInvite, currentUser) = (get1(data), get2(data))
-  return currentUser.id.unwrap == teamInvite.inviterUserId.unwrap
+  return currentUser.id == teamInvite.inviterUserId
 }
 
 private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {

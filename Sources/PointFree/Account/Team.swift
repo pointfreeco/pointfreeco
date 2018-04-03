@@ -59,7 +59,7 @@ private func requireNonOwnerSubscriber(
       .map(
         AppEnvironment.current.database.fetchSubscriptionById
           >>> mapExcept(requireSome)
-          >>> map { $0.userId.unwrap == conn.data.id.unwrap }
+          >>> map { $0.userId == conn.data.id }
       )
       ?? pure(false)
 
@@ -103,9 +103,9 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
         .mapExcept(requireSome)
         .mapExcept { errorOrSubscription in
           // Validate the current user is the subscription owner
-          errorOrSubscription.right?.userId.unwrap == .some(currentUser.id.unwrap)
+          errorOrSubscription.right?.userId == .some(currentUser.id)
             // Validate that the fetched user is in fact the current user's teammate.
-            && errorOrSubscription.right?.id.unwrap == teammate.subscriptionId?.unwrap
+            && errorOrSubscription.right?.id == teammate.subscriptionId
             ? .right(unit)
             : .left(unit as Error)
       }
@@ -130,7 +130,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
 
 private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
 
-  guard owner.id.unwrap != teammate.id.unwrap else {
+  guard owner.id != teammate.id else {
     return pure(unit)
   }
 

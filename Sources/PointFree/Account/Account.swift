@@ -44,7 +44,7 @@ private func fetchAccountData<I>(
 
   let owner = userSubscription
     .flatMap { subscription in
-      subscription.userId.unwrap == user.id.unwrap
+      subscription.userId == user.id
         ? pure(user)
         : AppEnvironment.current.database.fetchUserById(subscription.userId)
     }
@@ -290,7 +290,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
 
 private let subscriptionOverview = View<AccountData> { data -> [Node] in
 
-  if data.subscription?.userId.unwrap == data.currentUser.id.unwrap {
+  if data.subscription?.userId == data.currentUser.id {
     return subscriptionOwnerOverview.view(data)
   } else if let subscription = data.stripeSubscription {
     return subscriptionNonOwnerOverview.view(data)
@@ -510,7 +510,7 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
 
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
 
-  let teammateLabel = currentUser.id.unwrap == teammate.id.unwrap
+  let teammateLabel = currentUser.id == teammate.id
     ? "\(teammate.name ?? teammate.email.unwrap) (you)"
     : "\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"
 
