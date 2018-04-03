@@ -9,7 +9,7 @@ import Optics
 import SnapshotTesting
 import XCTest
 #if !os(Linux)
-  import WebKit
+import WebKit
 #endif
 
 final class NotFoundMiddlewareTests: TestCase {
@@ -31,17 +31,16 @@ final class NotFoundMiddlewareTests: TestCase {
     assertSnapshot(matching: result)
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
-        webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
+      webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
+    }
     #endif
   }
-
 
   func testNotFound_LoggedIn() {
     let result = connection(
@@ -54,14 +53,14 @@ final class NotFoundMiddlewareTests: TestCase {
     assertSnapshot(matching: result)
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
-        webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
+      webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
+    }
     #endif
   }
 }

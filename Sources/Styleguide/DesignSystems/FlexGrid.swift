@@ -5,9 +5,9 @@ extension Class {
   public enum grid {
     public static let row = CssSelector.class("row")
     public static let col = CssSelector.class("col")
-    
+
     public static let reversed = CssSelector.class("reverse")
-    
+
     public static let rowReversed = row & reversed
     public static let colReversed = col & reversed
 

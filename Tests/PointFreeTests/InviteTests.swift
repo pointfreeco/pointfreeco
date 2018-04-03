@@ -6,9 +6,6 @@ import XCTest
 import PointFreeTestSupport
 import HttpPipeline
 import Optics
-#if !os(Linux)
-  import WebKit
-#endif
 
 class InviteTests: TestCase {
   func testShowInvite_LoggedOut() {
@@ -286,7 +283,7 @@ class InviteTests: TestCase {
     AppEnvironment.with(\.stripe .~ stripe) {
       let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
       let result = siteMiddleware(connection(from: acceptInvite))
-      
+
       assertSnapshot(matching: result.perform())
 
       XCTAssertNil(

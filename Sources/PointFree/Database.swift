@@ -296,7 +296,7 @@ private func registerUser(
   ) -> EitherIO<Error, Database.User?> {
 
   return upsertUser(withGitHubEnvelope: envelope, email: email)
-    .flatMap { optionalUser in 
+    .flatMap { optionalUser in
       guard let user = optionalUser else { return pure(optionalUser) }
 
       return updateEmailSettings(settings: Database.EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
