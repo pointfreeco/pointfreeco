@@ -82,32 +82,38 @@ private func requireNonOwnerSubscriber(
 
 let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
+    <<< filterMap(
+      over1(
+        AppEnvironment.current.database.fetchUserById
+          >>> mapExcept(requireSome)
+          >>> ^\.run
+          >>> map(^\.right)
+        )
+        >>> sequence1
+        >>> map(require1),
+      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Could not find that teammate."))
+    )
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
-      let (teammateId, currentUser) = lower(conn.data)
-      guard let currentUserSubscriptionId = currentUser.subscriptionId
+      let (teammate, currentUser) = lower(conn.data)
+      guard let teammateSubscriptionId = teammate.subscriptionId
         else { return pure(conn.map(const(unit))) }
 
-      let validateCurrentUserIsSubscriptionOwner = AppEnvironment.current.database
-        .fetchSubscriptionById(currentUserSubscriptionId)
+      let validateSubscriptionData = AppEnvironment.current.database
+        .fetchSubscriptionById(teammateSubscriptionId)
         .mapExcept(requireSome)
         .mapExcept { errorOrSubscription in
+          // Validate the current user is the subscription owner
           errorOrSubscription.right?.userId.unwrap == .some(currentUser.id.unwrap)
+            // Validate that the fetched user is in fact the current user's teammate.
+            && errorOrSubscription.right?.id.unwrap == teammate.subscriptionId?.unwrap
             ? .right(unit)
             : .left(unit as Error)
       }
 
-      return validateCurrentUserIsSubscriptionOwner
-        .flatMap { _ in AppEnvironment.current.database.fetchUserById(teammateId) }
-        .mapExcept(requireSome)
-        .mapExcept { errorOrTeammate in
-          // Validate that the fetched user is in fact the current user's teammate.
-          errorOrTeammate.right?.subscriptionId?.unwrap == .some(currentUserSubscriptionId.unwrap)
-            ? errorOrTeammate
-            : .left(unit)
-        }
-        .flatMap { teammate in
+      return validateSubscriptionData
+        .flatMap { _ in
           AppEnvironment.current.database
-            .removeTeammateUserIdFromSubscriptionId(teammate.id, currentUserSubscriptionId)
+            .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
             .flatMap { x -> EitherIO<Error, Prelude.Unit> in
 
               // Fire-and-forget emails to owner and teammate
@@ -120,9 +126,13 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
         .run
         .map(const(conn.map(const(unit))))
     }
-    >-> redirect(to: .account(.index))
+    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
 private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
+
+  guard owner.id.unwrap != teammate.id.unwrap else {
+    return pure(unit)
+  }
 
   return zip2(
     parallel(sendEmail(

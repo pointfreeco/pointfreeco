@@ -215,6 +215,11 @@ public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
     return t |> over2(perform)
   }
 }
+public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+  return IO {
+    return t |> over1(perform)
+  }
+}
 
 /// Combines two partial iso's into one by concatenating their results into a single string.
 public func payload<A, B>(

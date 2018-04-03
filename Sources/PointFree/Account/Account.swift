@@ -142,8 +142,9 @@ private let creditsView = View<AccountData> { data -> [Node] in
 
 private let subscribeCallout = View<(Database.User, Stripe.Subscription?)> { currentUser, stripeSubscription -> [Node] in
 
-  let isOwnerOfActiveSubscription = currentUser.subscriptionId == nil
-    && stripeSubscription?.status == .some(.active)
+  let isOwnerOfActiveSubscription =
+    currentUser.subscriptionId == nil
+      && stripeSubscription?.status == .some(.active)
 
   guard !isOwnerOfActiveSubscription else { return [] }
 
@@ -497,19 +498,22 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["Your current team:"])]
-              <> teammates.flatMap(teammateRowView.view)
+              <> teammates.flatMap { teammateRowView.view((currentUser, $0)) }
         )
         ])
       ])
   ]
 }
 
-private let teammateRowView = View<Database.User> { teammate in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(encode("\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"))])
-      ]),
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
+private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
+
+  let teammateLabel = currentUser.id.unwrap == teammate.id.unwrap
+    ? "\(teammate.name ?? teammate.email.unwrap) (you)"
+    : "\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"
+
+  return gridRow([
+    gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
+    gridColumn(sizes: [.mobile: 4], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
         ]),
