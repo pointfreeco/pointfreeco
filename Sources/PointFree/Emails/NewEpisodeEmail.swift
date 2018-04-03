@@ -53,7 +53,7 @@ let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, 
 }
 
 private let announcementView = View<String?> { announcement -> [Node] in
-  guard let announcement = announcement else { return [] }
+  guard let announcement = announcement, !announcement.isEmpty else { return [] }
 
   return [
     blockquote(
@@ -78,13 +78,16 @@ private let announcementView = View<String?> { announcement -> [Node] in
 private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber -> [Node] in
   guard !isSubscriber else { return [] }
 
+  let blurb = ep.subscriberOnly
+    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
+    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
+
+  let watchText = ep.subscriberOnly
+    ? "Watch preview"
+    : "Watch"
+
   return [
-    p([
-      """
-      This episode is for subscribers only. To access it, and all past and future episodes, become a
-      subscriber today!
-      """
-      ]),
+    p([text(blurb)]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
       a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
         ["Subscribe to Point-Free!"]
@@ -92,9 +95,9 @@ private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isS
       a(
         [
           href(url(to: .episode(.left(ep.slug)))),
-          `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
+            `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
         ],
-        [" Watch preview"]
+        [text(watchText)]
       )
       ])
   ]

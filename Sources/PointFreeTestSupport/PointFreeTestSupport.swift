@@ -86,6 +86,9 @@ extension Database.User {
 
   public static let teammate = mock
     |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+
+  public static let nonSubscriber = mock
+    |> \.subscriptionId .~ nil
 }
 
 extension Database.Subscription {

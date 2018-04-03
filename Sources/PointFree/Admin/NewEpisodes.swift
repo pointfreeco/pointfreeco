@@ -134,4 +134,3 @@ private func sendEmail(
 
   return lift(fireAndForget)
 }
-

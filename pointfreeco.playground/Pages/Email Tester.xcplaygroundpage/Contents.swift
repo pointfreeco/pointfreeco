@@ -11,9 +11,9 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 let htmlNodes = newEpisodeEmail.view(
   (
     ep10,
-    "This is an announcement for <u>[subscribers](https://www.com)</u>!",
-    "This is an announcement for non-subscribers!",
-    .mock
+    "",
+    "",
+    .nonSubscriber
   )
 )
 let htmlString = render(htmlNodes, config: compact)
