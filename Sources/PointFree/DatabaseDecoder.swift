@@ -60,7 +60,7 @@ public final class DatabaseDecoder: Decoder {
       return self.decoder.codingPath
     }
     var allKeys: [Key] {
-      return self.container.keys.flatMap(Key.init(stringValue:))
+      return self.container.keys.compactMap(Key.init(stringValue:))
     }
 
     private func checked<T>(_ key: Key, _ block: (PostgreSQL.Node) throws -> T) throws -> T {

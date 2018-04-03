@@ -567,12 +567,14 @@ private let episodeInfoView = View<Episode> { ep in
 }
 
 private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
-  return [
-      "#\(ep.sequence)",
-      episodeDateFormatter.string(from: ep.publishedAt),
-      ep.subscriberOnly ? "Subscriber-only" : nil
-    ]
-    .flatMap { $0 }
+  let components: [String?] = [
+    "#\(ep.sequence)",
+    episodeDateFormatter.string(from: ep.publishedAt),
+    ep.subscriberOnly ? "Subscriber-only" : nil
+  ]
+
+  return components
+    .compactMap { $0 }
     .joined(separator: " • ")
 }
 
@@ -655,7 +657,7 @@ private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node 
         `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
         ]
-        .flatMap { $0 },
+        .compactMap { $0 },
       [
         a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
           text(block.content)
@@ -776,56 +778,17 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
   }
 }
 
-private enum EpisodePermission {
+private enum EpisodePermission: Equatable {
   case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
   case loggedOut(isSubscriberOnly: Bool)
 
-  enum SubscriptionPermission {
+  enum SubscriptionPermission: Equatable {
     case isSubscriber
     case isNotSubscriber(creditPermission: CreditPermission)
 
-    enum CreditPermission {
+    enum CreditPermission: Equatable {
       case isCredit
       case isNotCredit(isSubscriberOnly: Bool)
-    }
-  }
-}
-
-extension EpisodePermission: Equatable {
-  static func == (lhs: EpisodePermission, rhs: EpisodePermission) -> Bool {
-    switch (lhs, rhs) {
-    case let (.loggedIn(lhsUser, lhsPermission), .loggedIn(rhsUser, rhsPermission)):
-      return lhsUser.id.unwrap == rhsUser.id.unwrap && lhsPermission == rhsPermission
-    case let (.loggedOut(lhs), .loggedOut(rhs)):
-      return lhs == rhs
-    case (.loggedIn, _), (.loggedOut, _):
-      return false
-    }
-  }
-}
-
-extension EpisodePermission.SubscriptionPermission: Equatable {
-  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission, rhs: EpisodePermission.SubscriptionPermission) -> Bool {
-    switch (lhs, rhs) {
-    case (.isSubscriber, .isSubscriber):
-      return true
-    case let (.isNotSubscriber(lhs), .isNotSubscriber(rhs)):
-      return lhs == rhs
-    case (.isSubscriber, _), (.isNotSubscriber, _):
-      return false
-    }
-  }
-}
-
-extension EpisodePermission.SubscriptionPermission.CreditPermission: Equatable {
-  fileprivate static func == (lhs: EpisodePermission.SubscriptionPermission.CreditPermission, rhs: EpisodePermission.SubscriptionPermission.CreditPermission) -> Bool {
-    switch (lhs, rhs) {
-    case (.isCredit, .isCredit):
-      return true
-    case let (.isNotCredit(lhs), .isNotCredit(rhs)):
-      return lhs == rhs
-    case (.isCredit, _), (.isNotCredit, _):
-      return false
     }
   }
 }

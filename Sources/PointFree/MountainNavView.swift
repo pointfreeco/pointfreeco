@@ -82,5 +82,5 @@ private let headerLinks = View<(Database.User?, SubscriberState, Route?)> { curr
       ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)
       : a([href(path(to: .account(.index))), `class`([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
     ]
-    .flatMap(id)
+    .compactMap(id)
 }

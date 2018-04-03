@@ -3,7 +3,7 @@ import Html
 import Prelude
 
 func sendEmail(
-  from: EmailAddress = .init(unwrap: "Point-Free <support@pointfree.co>"),
+  from: EmailAddress = "Point-Free <support@pointfree.co>",
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
@@ -65,7 +65,7 @@ func notifyError(subject: String) -> (Error) -> Prelude.Unit {
 
     parallel(
       sendEmail(
-        to: adminEmails.map(EmailAddress.init(unwrap:)),
+        to: adminEmails,
         subject: "[PointFree Error] \(subject)",
         content: inj1(errorDump)
         ).run

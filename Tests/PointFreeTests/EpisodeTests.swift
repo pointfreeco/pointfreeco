@@ -9,7 +9,7 @@ import Optics
 import SnapshotTesting
 import XCTest
 #if !os(Linux)
-  import WebKit
+import WebKit
 #endif
 
 class EpisodeTests: TestCase {
@@ -32,14 +32,14 @@ class EpisodeTests: TestCase {
     assertSnapshot(matching: result.perform())
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 500
-        assertSnapshot(matching: webView, named: "mobile")
-      }
+      webView.frame.size.width = 500
+      assertSnapshot(matching: webView, named: "mobile")
+    }
     #endif
   }
 
@@ -52,14 +52,14 @@ class EpisodeTests: TestCase {
     assertSnapshot(matching: result.perform())
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 500
-        assertSnapshot(matching: webView, named: "mobile")
-      }
+      webView.frame.size.width = 500
+      assertSnapshot(matching: webView, named: "mobile")
+    }
     #endif
   }
 
@@ -76,14 +76,14 @@ class EpisodeTests: TestCase {
       assertSnapshot(matching: result.perform())
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-          assertSnapshot(matching: webView, named: "desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-          webView.frame.size.width = 500
-          assertSnapshot(matching: webView, named: "mobile")
-        }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
       #endif
     }
   }
@@ -101,14 +101,14 @@ class EpisodeTests: TestCase {
       assertSnapshot(matching: result.perform())
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-          assertSnapshot(matching: webView, named: "desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-          webView.frame.size.width = 500
-          assertSnapshot(matching: webView, named: "mobile")
-        }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
       #endif
     }
   }
@@ -122,11 +122,11 @@ class EpisodeTests: TestCase {
     assertSnapshot(matching: result.perform())
 
     #if !os(Linux)
-      if #available(OSX 10.13, *) {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView)
-      }
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1000))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView)
+    }
     #endif
   }
 
@@ -153,14 +153,14 @@ class EpisodeTests: TestCase {
       assertSnapshot(matching: result.perform())
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-          assertSnapshot(matching: webView, named: "desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-          webView.frame.size.width = 500
-          assertSnapshot(matching: webView, named: "mobile")
-        }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
       #endif
     }
   }
@@ -188,14 +188,14 @@ class EpisodeTests: TestCase {
       assertSnapshot(matching: result.perform())
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-          assertSnapshot(matching: webView, named: "desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-          webView.frame.size.width = 500
-          assertSnapshot(matching: webView, named: "mobile")
-        }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
       #endif
     }
   }
@@ -223,14 +223,14 @@ class EpisodeTests: TestCase {
       assertSnapshot(matching: result.perform())
 
       #if !os(Linux)
-        if #available(OSX 10.13, *) {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
-          webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-          assertSnapshot(matching: webView, named: "desktop")
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
-          webView.frame.size.width = 500
-          assertSnapshot(matching: webView, named: "mobile")
-        }
+        webView.frame.size.width = 500
+        assertSnapshot(matching: webView, named: "mobile")
+      }
       #endif
     }
   }
@@ -245,7 +245,7 @@ class EpisodeTests: TestCase {
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .registerUser(.mock, "hello@pointfree.co")
         .run.perform().right!!
       _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
 
@@ -349,7 +349,7 @@ class EpisodeTests: TestCase {
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database
-        .registerUser(.mock, EmailAddress(unwrap: "hello@pointfree.co"))
+        .registerUser(.mock, "hello@pointfree.co")
         .run.perform().right!!
       _ = AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
       _ = AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()

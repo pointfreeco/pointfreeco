@@ -62,19 +62,6 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     let prorate = newPrice > currentPrice
 
     return AppEnvironment.current.stripe.updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, prorate)
-      .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
-        if prorate {
-          parallel(
-            AppEnvironment.current.stripe.invoiceCustomer(sub.customer)
-              .retry(maxRetries: 10, backoff: { .seconds($0) })
-              .withExcept(notifyError(subject: "Invoice Failed"))
-              .run
-            )
-            .run(const(()))
-        }
-
-        return pure(sub)
-      }
       .run
       .flatMap(
         either(

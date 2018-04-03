@@ -59,7 +59,7 @@ let updatePaymentInfoMiddleware:
 }
 
 let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand in
-  
+
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],

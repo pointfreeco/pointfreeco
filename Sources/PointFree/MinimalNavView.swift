@@ -53,7 +53,7 @@ private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, S
       subscriberState.isNonSubscriber ? subscribeLinkView : nil,
       accountLinkView
       ]
-      .flatMap(id)
+      .compactMap(id)
     )
     .view(style)
 }
