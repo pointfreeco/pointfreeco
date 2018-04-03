@@ -10,8 +10,8 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 let htmlNodes = newEpisodeEmail.view(
   (
-    typeSafeHtml,
-    nil,
+    ep10,
+    "This is an announcement for <u>[subscribers](https://www.com)</u>!",
     "This is an announcement for non-subscribers!",
     .mock
   )
@@ -25,12 +25,3 @@ webView.loadHTMLString(htmlString, baseURL: nil)
 print(htmlString)
 
 PlaygroundPage.current.liveView = webView
-
-sendEmail(
-  to: [.init(unwrap: "mbw234@gmail.com")],
-  subject: "Email test: \(arc4random())",
-  unsubscribeData: (.init(unwrap: UUID()), .newEpisode),
-  content: inj2(htmlNodes)
-  )
-  .run
-  .perform()

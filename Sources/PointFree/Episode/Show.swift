@@ -778,6 +778,10 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
   }
 }
 
+// (User?, subscriberOnly: Bool, usedCredit: Bool, isSubscriber: Bool)   2^4 = 16
+
+// 2+1+1+2
+
 private enum EpisodePermission {
   case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
   case loggedOut(isSubscriberOnly: Bool)

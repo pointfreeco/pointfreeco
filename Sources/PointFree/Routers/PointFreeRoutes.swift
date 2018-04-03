@@ -159,7 +159,13 @@ private let routers: [Router<Route>] = [
   .admin <<< .freeEpisodeEmail <<< .index
     <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
 
-  ___tmp,
+  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
+    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged)
+    <%> formField("subscriber_announcement", .string).map(Optional.iso.some)
+    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
+    <%> isTest
+    <% lit("send")
+    <% end,
 
   .admin <<< .newEpisodeEmail <<< .show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
@@ -304,15 +310,6 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
     })
   }
 }
-
-let ___tmp: Router<Route> =
-  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
-    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged)
-    <%> formField("subscriber_announcement", .string).map(Optional.iso.some)
-    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
-    <%> isTest
-    <% lit("send")
-    <% end
 
 private let isTest: Router<Bool?> =
   formField("live", .string).map(isPresent >>> negate >>> Optional.iso.some)
