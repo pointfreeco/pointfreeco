@@ -24,7 +24,6 @@ Define `partitionMap` on `Optional`.
     .init(body:
       """
 Dictionary has `mapValues`, which takes a transform function from `(Value) -> B` to produce a new dictionary of type `[Key: B]`. Define `filterMapValues` on `Dictionary`.
-//    - Define `partitionMapValues` on `Dictionary`.
 """),
     .init(body:
       """
@@ -577,7 +576,7 @@ Given an array of users, we may be tempted to `map` over them and pluck out thei
       content: """
 users
   .map { $0.name }
-[{some "Blob"}, {some "Math"}]
+// [{some "Blob"}, {some "Math"}]
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -593,7 +592,7 @@ But now we have this array of optional values. What we really wanted to use is `
       content: """
 users
   .flatMap { $0.name }
-["Blob", "Math"]
+// ["Blob", "Math"]
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -625,7 +624,7 @@ When our code recompiles, what happens to our runtime behavior?
       content: """
 users
   .flatMap { $0.name }
-["B", "l", "o", "b", "M", "a", "t", "h"]
+// ["B", "l", "o", "b", "M", "a", "t", "h"]
 """,
       timestamp: 13*60,
       type: .code(lang: .swift)
@@ -865,7 +864,7 @@ Now let's generalize `filterMap` using this connection with partition and `Eithe
       content: """
 extension Array {
   func partitionMap<A, B>(_ transform: (Element) -> Either<A, B>) -> (lefts: [A], rights: [B]) {
-    var result = (lefts: [Element](), rights: [B]())
+    var result = (lefts: [A](), rights: [B]())
     for x in self {
       switch transform(x) {
       case let .left(a):
