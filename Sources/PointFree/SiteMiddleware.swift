@@ -21,6 +21,23 @@ enum SubscriberState {
   case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
   case teammate(status: Stripe.Subscription.Status)
 
+  init(user: Database.User?, subscription: Database.Subscription?) {
+    switch (user, subscription) {
+    case let (.some(user), .some(subscription)):
+      if subscription.userId == user.id {
+        self = .owner(
+          hasSeat: user.subscriptionId != nil,
+          status: subscription.stripeSubscriptionStatus
+        )
+      } else {
+        self = .teammate(status: subscription.stripeSubscriptionStatus)
+      }
+
+    case (.none, _), (.some, _):
+      self = .nonSubscriber
+    }
+  }
+
   var status: Stripe.Subscription.Status? {
     switch self {
     case .nonSubscriber:
@@ -54,32 +71,19 @@ enum SubscriberState {
     if case .nonSubscriber = self { return true }
     return false
   }
-}
 
-//
+  var isActiveSubscriber: Bool {
+    if case .teammate = self { return true }
+    if case .owner(hasSeat: true, status: .active) = self { return true }
+    return false
+  }
+}
 
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
-
-    let subscriptionStatus = subscription?.stripeSubscriptionStatus
-
-    let subscriberState: SubscriberState
-    switch (user, subscription) {
-    case let (.some(user), .some(subscription)):
-      if subscription.userId == user.id {
-        subscriberState = .owner(
-          hasSeat: user.subscriptionId != nil,
-          status: subscription.stripeSubscriptionStatus
-        )
-      } else {
-        subscriberState = .teammate(status: subscription.stripeSubscriptionStatus)
-      }
-
-    case (.none, _), (.some, _):
-      subscriberState = .nonSubscriber
-    }
+    let subscriberState = SubscriberState(user: user, subscription: subscription)
 
     switch route {
     case .about:
@@ -91,11 +95,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> accountResponse
 
     case let .account(.paymentInfo(.show(expand))):
-      return conn.map(const(user .*. (expand ?? false) .*. unit))
+      return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
         |> paymentInfoResponse
 
     case let .account(.paymentInfo(.update(token))):
@@ -107,7 +111,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> cancelMiddleware
 
     case .account(.subscription(.change(.show))):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> subscriptionChangeShowResponse
 
     case let .account(.subscription(.change(.update(pricing)))):
@@ -155,7 +159,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
     case let .episode(param):
-      return conn.map(const(param .*. user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
 
     case let .expressUnsubscribe(userId, newsletter):
@@ -207,11 +211,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> pricingResponse
 
     case .privacy:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> privacyResponse
 
     case .home:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> homeMiddleware
 
     case let .subscribe(data):
@@ -227,7 +231,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):

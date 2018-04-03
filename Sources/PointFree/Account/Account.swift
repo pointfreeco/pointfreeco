@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
+let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
@@ -18,7 +18,7 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.U
       view: accountView,
       layoutData: { data in
         SimplePageLayoutData(
-          currentSubscriptionStatus: data.stripeSubscription?.status,
+          currentSubscriberState: data.subscriberState,
           currentUser: data.currentUser,
           data: data,
           title: "Account"
@@ -26,9 +26,11 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.U
     }
 )
 
-private func fetchAccountData<I, A>(_ conn: Conn<I, T2<Database.User, A>>) -> IO<Conn<I, AccountData>> {
+private func fetchAccountData<I>(
+  _ conn: Conn<I, Tuple2<Database.User, SubscriberState>>
+  ) -> IO<Conn<I, AccountData>> {
 
-  let user = get1(conn.data)
+  let (user, subscriberState) = lower(conn.data)
 
   let userSubscription = user.subscriptionId
     .map(
@@ -86,6 +88,7 @@ private func fetchAccountData<I, A>(_ conn: Conn<I, T2<Database.User, A>>) -> IO
             emailSettings: $0,
             episodeCredits: $1,
             stripeSubscription: $2,
+            subscriberState: subscriberState,
             subscription: $3,
             subscriptionOwner: $4,
             teamInvites: $5,
@@ -698,6 +701,7 @@ private struct AccountData {
   let emailSettings: [Database.EmailSetting]
   let episodeCredits: [Database.EpisodeCredit]
   let stripeSubscription: Stripe.Subscription?
+  let subscriberState: SubscriberState
   let subscription: Database.Subscription?
   let subscriptionOwner: Database.User?
   let teamInvites: [Database.TeamInvite]

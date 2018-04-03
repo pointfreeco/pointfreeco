@@ -21,7 +21,6 @@ enum NavStyle {
 
 struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
-  private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
   private(set) var currentSubscriberState: SubscriberState
   private(set) var currentUser: Database.User?
   private(set) var data: A
@@ -37,7 +36,6 @@ struct SimplePageLayoutData<A> {
 
   init(
     currentRoute: Route? = nil,
-    currentSubscriptionStatus: Stripe.Subscription.Status? = nil,
     currentSubscriberState: SubscriberState = .nonSubscriber,
     currentUser: Database.User?,
     data: A,
@@ -52,7 +50,6 @@ struct SimplePageLayoutData<A> {
     ) {
 
     self.currentRoute = currentRoute
-    self.currentSubscriptionStatus = currentSubscriptionStatus
     self.currentSubscriberState = currentSubscriberState
     self.currentUser = currentUser
     self.data = data
@@ -153,10 +150,10 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   switch data.navStyle {
   case .some(.mountains):
-    return mountainNavView.view((data.currentUser, data.currentSubscriptionStatus, data.currentRoute))
+    return mountainNavView.view((data.currentUser, data.currentSubscriberState, data.currentRoute))
 
   case let .some(.minimal(minimalStyle)):
-    return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriptionStatus, data.currentRoute))
+    return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
 
   case .none:
     return []

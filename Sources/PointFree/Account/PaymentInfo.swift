@@ -17,9 +17,9 @@ let paymentInfoResponse =
     >-> map(lower)
     >>> respond(
       view: paymentInfoView,
-      layoutData: { subscription, currentUser, expand in
+      layoutData: { subscription, currentUser, expand, subscriberState in
         SimplePageLayoutData(
-          currentSubscriptionStatus: subscription.status,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (subscription, expand),
           title: "Update Payment Info"

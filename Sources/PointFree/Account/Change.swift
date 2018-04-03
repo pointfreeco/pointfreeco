@@ -21,9 +21,9 @@ let subscriptionChangeShowResponse =
     >-> map(lower)
     >>> respond(
       view: subscriptionChangeShowView,
-      layoutData: { subscription, currentUser, seatsTaken in
+      layoutData: { subscription, currentUser, seatsTaken, subscriberState in
         SimplePageLayoutData(
-          currentSubscriptionStatus: subscription.status,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (subscription, currentUser, seatsTaken),
           extraStyles: extraStyles,
