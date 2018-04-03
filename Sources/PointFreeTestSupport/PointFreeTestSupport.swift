@@ -8,6 +8,7 @@ import Prelude
 
 extension Environment {
   public static let mock = Environment(
+    assets: .mock,
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
@@ -23,6 +24,14 @@ extension Environment {
     |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+}
+
+extension Assets {
+  static let mock = Assets(
+    brandonImgSrc: "",
+    stephenImgSrc: "",
+    emailHeaderImgSrc: ""
+  )
 }
 
 extension Logger {

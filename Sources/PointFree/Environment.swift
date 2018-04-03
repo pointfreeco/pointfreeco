@@ -9,6 +9,7 @@ public enum CookieTransform: String, Codable {
 }
 
 public struct Environment {
+  public private(set) var assets: Assets
   public private(set) var cookieTransform: CookieTransform
   public private(set) var database: Database
   public private(set) var date: () -> Date
@@ -20,6 +21,7 @@ public struct Environment {
   public private(set) var stripe: Stripe
 
   init(
+    assets: Assets = .init(),
     cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
@@ -30,6 +32,7 @@ public struct Environment {
     mailgun: Mailgun = .live,
     stripe: Stripe = .live) {
 
+    self.assets = assets
     self.cookieTransform = cookieTransform
     self.database = database
     self.date = date
@@ -59,4 +62,10 @@ public struct AppEnvironment {
   public static func pop() {
     self.stack.removeLast()
   }
+}
+
+public struct Assets {
+  public var brandonImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg"
+  public var stephenImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg"
+  public var emailHeaderImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png"
 }
