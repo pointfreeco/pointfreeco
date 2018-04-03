@@ -315,5 +315,5 @@ private let isTest: Router<Bool?> =
   formField("live", .string).map(isPresent >>> negate >>> Optional.iso.some)
     <|> formField("test", .string).map(isPresent >>> Optional.iso.some)
 
-private let isPresent = PartialIso<String, Bool>(apply: { _ in true }, unapply: { $0 ? "" : nil })
-private let negate = PartialIso<Bool, Bool>(apply: { !$0 }, unapply: { !$0 })
+private let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
+private let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
