@@ -44,7 +44,7 @@ private func validateStripeSignature<A>(
 
           parallel(
             sendEmail(
-              to: adminEmails.map(EmailAddress.init(unwrap:)),
+              to: adminEmails,
               subject: "[PointFree Error] Stripe Hook Failed!",
               content: inj1(requestDump)
               ).run
