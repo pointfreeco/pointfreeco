@@ -585,8 +585,8 @@ func redirectActiveSubscribers<A>(
           )
           ?? throwE(unit)
 
-        return (userSubscription <|> ownerSubscription)
-          .run
+        return (userSubscription.run.parallel <|> ownerSubscription.run.parallel)
+          .sequential
           .flatMap(
             either(
               const(

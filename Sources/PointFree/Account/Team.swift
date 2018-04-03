@@ -49,6 +49,7 @@ private func leaveTeam(
   }
 }
 
+// TODO: use SubscriberState to check `owner` case instead
 private func requireNonOwnerSubscriber(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, Database.User, Data> {
