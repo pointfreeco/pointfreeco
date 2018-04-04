@@ -8,7 +8,14 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = freeEpisodeEmail.view((typeSafeHtml, .mock))
+let htmlNodes = newEpisodeEmail.view(
+  (
+    ep10,
+    "",
+    "",
+    .nonSubscriber
+  )
+)
 let htmlString = render(htmlNodes, config: compact)
 
 let webView = WKWebView(
@@ -18,12 +25,3 @@ webView.loadHTMLString(htmlString, baseURL: nil)
 print(htmlString)
 
 PlaygroundPage.current.liveView = webView
-
-sendEmail(
-  to: ["mbw234@gmail.com"],
-  subject: "Email test: \(arc4random())",
-  unsubscribeData: (.init(unwrap: UUID()), .newEpisode),
-  content: inj2(htmlNodes)
-  )
-  .run
-  .perform()
