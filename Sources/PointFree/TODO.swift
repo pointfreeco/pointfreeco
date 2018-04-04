@@ -279,3 +279,10 @@ public func zurry<A>(_ f: () -> A) -> A {
 public func unzurry<A>(_ a: A) -> () -> A {
   return { a }
 }
+
+public func require4<A, B, C, D, Z>(_ x: T5<A, B, C, D?, Z>) -> T5<A, B, C, D, Z>? {
+  return get4(x).map { over4(const($0)) <| x }
+}
+public func require5<A, B, C, D, E, Z>(_ x: T6<A, B, C, D, E?, Z>) -> T6<A, B, C, D, E, Z>? {
+  return get5(x).map { over5(const($0)) <| x }
+}

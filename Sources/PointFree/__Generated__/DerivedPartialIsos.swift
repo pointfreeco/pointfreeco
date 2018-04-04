@@ -598,6 +598,12 @@ import Prelude
 
       extension PartialIso where A == (
             Episode.Id
+          , 
+            String?
+          , 
+            String?
+          , 
+            Bool?
         ), B == Route.Admin.NewEpisodeEmail {
 
           public static let send = parenthesize <| PartialIso(

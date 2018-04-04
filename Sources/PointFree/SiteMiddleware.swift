@@ -83,8 +83,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. episodeId .*. unit))
         |> sendFreeEpisodeEmailMiddleware
 
-    case let .admin(.newEpisodeEmail(.send(episodeId))):
-      return conn.map(const(user .*. episodeId .*. unit))
+    case let .admin(.newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest))):
+      return conn.map(const(user .*. episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
         |> sendNewEpisodeEmailMiddleware
 
     case .admin(.newEpisodeEmail(.show)):

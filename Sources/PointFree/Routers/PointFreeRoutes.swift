@@ -70,7 +70,7 @@ public enum Route: DerivePartialIsos {
     }
 
     public enum NewEpisodeEmail: DerivePartialIsos {
-      case send(Episode.Id)
+      case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
       case show
     }
   }
@@ -160,8 +160,12 @@ private let routers: [Router<Route>] = [
   .admin <<< .freeEpisodeEmail <<< .index
     <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
 
-  .admin <<< .newEpisodeEmail <<< .send
-    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
+  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
+    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")
+    %> formField("subscriber_announcement", .string).map(Optional.iso.some)
+    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
+    <%> isTest
+    <% end,
 
   .admin <<< .newEpisodeEmail <<< .show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
@@ -310,3 +314,10 @@ extension PartialIso where A == (String?, Int?), B == Pricing {
     })
   }
 }
+
+private let isTest: Router<Bool?> =
+  formField("live", .string).map(isPresent >>> negate >>> Optional.iso.some)
+    <|> formField("test", .string).map(isPresent >>> Optional.iso.some)
+
+private let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
+private let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))

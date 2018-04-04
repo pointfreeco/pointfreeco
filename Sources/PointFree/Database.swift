@@ -9,6 +9,7 @@ public struct Database {
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  var fetchAdmins: () -> EitherIO<Error, [User]>
   var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
   var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
   var fetchFreeEpisodeUsers: () -> EitherIO<Error, [User]>
@@ -33,6 +34,7 @@ public struct Database {
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     insertTeamInvite: PointFree.insertTeamInvite,
+    fetchAdmins: PointFree.fetchAdmins,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
     fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
     fetchFreeEpisodeUsers: PointFree.fetchFreeEpisodeUsers,
@@ -454,6 +456,24 @@ private func fetchTeamInvites(inviterId: Database.User.Id) -> EitherIO<Error, [D
     WHERE "inviter_user_id" = $1
     """,
     [inviterId.unwrap.uuidString]
+  )
+}
+
+private func fetchAdmins() -> EitherIO<Error, [Database.User]> {
+  return rows(
+    """
+    SELECT "users"."email",
+           "users"."episode_credit_count",
+           "users"."github_user_id",
+           "users"."github_access_token",
+           "users"."id",
+           "users"."is_admin",
+           "users"."name",
+           "users"."subscription_id"
+    FROM "users"
+    WHERE "users"."is_admin" = TRUE
+    """,
+    []
   )
 }
 
