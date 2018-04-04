@@ -160,11 +160,10 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
 
   PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
-    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged)
-    <%> formField("subscriber_announcement", .string).map(Optional.iso.some)
+    <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")
+    %> formField("subscriber_announcement", .string).map(Optional.iso.some)
     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
     <%> isTest
-    <% lit("send")
     <% end,
 
   .admin <<< .newEpisodeEmail <<< .show
