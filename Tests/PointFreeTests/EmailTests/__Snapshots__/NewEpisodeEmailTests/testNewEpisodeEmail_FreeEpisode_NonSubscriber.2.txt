@@ -7,10 +7,9 @@ text, no markdown allowed. Here is some more text just to have some filler.
 
  <http://localhost:8080/episodes/ep1-proof-in-functions>
 
-This episode is for subscribers only. To access it, and all past and future episodes, become a
-subscriber today!
+This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!
 
-Subscribe to Point-Free! <http://localhost:8080/pricing> Watch preview <http://localhost:8080/episodes/ep1-proof-in-functions>
+Subscribe to Point-Free! <http://localhost:8080/pricing>Watch <http://localhost:8080/episodes/ep1-proof-in-functions>
 
 Your hosts,
 

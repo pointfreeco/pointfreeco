@@ -58,6 +58,7 @@ extension Database {
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     insertTeamInvite: { _, _ in pure(.mock) },
+    fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
     fetchFreeEpisodeUsers: { pure([.mock]) },
@@ -94,6 +95,9 @@ extension Database.User {
 
   public static let teammate = mock
     |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+
+  public static let nonSubscriber = mock
+    |> \.subscriptionId .~ nil
 }
 
 extension Database.Subscription {
