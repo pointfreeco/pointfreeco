@@ -6,7 +6,7 @@ This repo contains the full source code for the [Point-Free](http://www.pointfre
 
 * `PointFree`: This is the core application, and is responsible for routing requests, loading data and rendering HTML and CSS.
 * `Styleguide`: This library contains functions and data types for creating a consistent style across the entire website.
-* `Server`: This is the actual executable server. It uses [Kitura](http://kitura.io) to handle the low level server responsibilities, and hands everything else over to the `PointFree` package.
+* `Server`: This is the actual executable server. It uses [NIO](https://github.com/apple/swift-nio) to handle the low-level server responsibilities, and hands everything else over to the `PointFree` package.
 
 ![Point-Free Homepage](.github/pointfreeco-announcement-homepage.png)
 
