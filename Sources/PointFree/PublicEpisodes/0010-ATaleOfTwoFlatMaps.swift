@@ -1027,7 +1027,7 @@ In just a few lines and in a single expression, we were able to apply a complex 
       type: .paragraph
     ),
     Episode.TranscriptBlock(
-      content: "What's the point?",
+      content: "What’s the point?",
       timestamp: 22*60+45,
       type: .title
     ),
