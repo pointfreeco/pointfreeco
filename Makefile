@@ -11,7 +11,7 @@ xcodeproj-oss:
 
 # bootstrap
 
-bootstrap-common: check-dependencies common-crypto-mm postgres-mm webkit-snapshot-mm ccmark-mm init-db
+bootstrap-common: check-dependencies common-crypto-mm postgres-mm ccmark-mm xcodeproj-mm init-db
 
 bootstrap-oss: mock-env mock-transcripts bootstrap-common xcodeproj-oss
 
@@ -135,13 +135,13 @@ postgres-mm:
 	-@echo "$$POSTGRES_MODULE_MAP" | sudo tee "$(POSTGRES_PATH)/module.map" > /dev/null
 	-@echo "$$POSTGRES_SHIM_H" | sudo tee "$(POSTGRES_PATH)/shim.h" > /dev/null
 
-webkit-snapshot-mm:
-	-@sudo mkdir -p "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)"
-	-@echo "$$WEBKIT_SNAPSHOT_CONFIGURATION_MODULE_MAP" | sudo tee "$(WEBKIT_SNAPSHOT_CONFIGURATION_PATH)/module.map" > /dev/null
-
 ccmark-mm:
 	-@sudo mkdir -p "$(CCMARK_CONFIGURATION_PATH)"
 	-@echo "$$CCMARK_CONFIGURATION_MODULE_MAP" | sudo tee "$(CCMARK_CONFIGURATION_PATH)/module.map" > /dev/null
+
+xcodeproj-mm:
+	-@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
+	-@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 
 SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
