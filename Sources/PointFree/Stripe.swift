@@ -106,6 +106,7 @@ public struct Stripe {
 
     public enum `Type`: String, Codable {
       case invoicePaymentFailed = "invoice.payment_failed"
+      case invoicePaymentSucceeded = "invoice.payment_succeeded"
     }
   }
 
