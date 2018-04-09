@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/stephen/Developer/pointfreeco/pointfreeco/PointFree.playground">
+      location = "group:PointFree.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:PointFree.xcodeproj">
+      location = "group:PointFree.playground">
    </FileRef>
 </Workspace>
