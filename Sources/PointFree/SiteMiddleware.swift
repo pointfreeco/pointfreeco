@@ -95,6 +95,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(unit))
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
+    case .blog(_):
+      return conn.map(const(unit))
+        |> writeStatus(.ok)
+        >-> respond(text: "Blog!")
+
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriptionStatus .*. route .*. unit))
         |> episodeResponse
