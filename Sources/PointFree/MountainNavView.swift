@@ -72,7 +72,7 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
 
 private let headerLinks = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
   [
-    a([href(path(to: .about)), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["About"]),
+    a([href(path(to: .blog(.index))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Blog"]),
 
     subscriberState.isNonSubscriber
       ? a([href(path(to: .pricing(nil, expand: nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"])
