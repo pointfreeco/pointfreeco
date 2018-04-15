@@ -96,7 +96,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
     case .blog(.index):
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> blogIndexMiddleware
 
     case let .blog(param):

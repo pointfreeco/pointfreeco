@@ -168,8 +168,8 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   switch data.navStyle {
-  case .some(.mountains):
-    return mountainNavView.view((data.currentUser, data.currentSubscriberState, data.currentRoute))
+  case let .some(.mountains(style)):
+    return mountainNavView.view((style, data.currentUser, data.currentSubscriberState, data.currentRoute))
 
   case let .some(.minimal(minimalStyle)):
     return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))

@@ -19,17 +19,17 @@ struct Blog {
   }
 }
 
-let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: blogIndexView,
-      layoutData: { currentUser, currentSubscriptionStatus, currentRoute in
+      layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
-          currentSubscriptionStatus: currentSubscriptionStatus,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, currentSubscriptionStatus),
+          data: (currentUser, subscriberState),
           description: "Point-Free is a video series exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
@@ -41,7 +41,7 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Sub
     }
 )
 
-private let blogIndexView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
+private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState in
 
   []
 }
