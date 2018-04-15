@@ -13,13 +13,6 @@ import Tuple
 let showInviteMiddleware =
   redirectCurrentSubscribers
     <<< requireTeamInvite
-    <<< filter(
-      validateCurrentUserIsNotInviter,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.warning, "You can’t view your own team invite!")
-      )
-    )
     <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
     <| writeStatus(.ok)
     >-> map(lower)
@@ -71,13 +64,6 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
   redirectCurrentSubscribers
     <<< requireTeamInvite
-    <<< filter(
-      validateCurrentUserIsNotInviter,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(.warning, "You can’t accept your own team invite!")
-      )
-    )
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
       let (teamInvite, currentUser) = lower(conn.data)
@@ -104,9 +90,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
       // VERIFY: user is subscribed
       let subscription = inviter
-        .map(^\.subscriptionId)
-        .mapExcept(requireSome)
-        .flatMap { AppEnvironment.current.database.fetchSubscriptionById($0) }
+        .flatMap(^\.id >>> AppEnvironment.current.database.fetchSubscriptionByOwnerId)
         .mapExcept(requireSome)
         .flatMap { subscription in
           AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
@@ -134,10 +118,6 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <<< filter(
-      validateEmailDoesNotBelongToInviter,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "You can’t invite yourself :/"))
-    )
     <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
 
       let (email, inviter) = lower(conn.data)
@@ -303,7 +283,7 @@ private func sendInviteEmail(
 
 private func validateIsNot(currentUser: Database.User) -> (Database.User) -> EitherIO<Error, Database.User> {
   return { user in
-    user.id.unwrap.uuidString == currentUser.id.unwrap.uuidString
+    user.id == currentUser.id
       ? lift(.left(unit))
       : lift(.right(user))
   }
@@ -354,14 +334,9 @@ private func redirectCurrentSubscribers<A, B>(
   }
 }
 
-private func validateCurrentUserIsNotInviter<A>(_ data: T3<Database.TeamInvite, Database.User?, A>) -> Bool {
-  let (teamInvite, currentUser) = (get1(data), get2(data))
-  return currentUser?.id.unwrap != .some(teamInvite.inviterUserId.unwrap)
-}
-
 private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Database.User, A>) -> Bool {
   let (teamInvite, currentUser) = (get1(data), get2(data))
-  return currentUser.id.unwrap == teamInvite.inviterUserId.unwrap
+  return currentUser.id == teamInvite.inviterUserId
 }
 
 private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {
