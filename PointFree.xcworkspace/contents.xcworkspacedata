@@ -5,6 +5,6 @@
       location = "group:PointFree.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:pointfreeco.playground">
+      location = "group:PointFree.playground">
    </FileRef>
 </Workspace>

@@ -14,11 +14,9 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("a3cd883")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("0a86107")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("0d4397e")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("894ddcd")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
-    .package(url: "https://github.com/IBM-Swift/Kitura.git", .branch("swift-4.1")),
-    .package(url: "https://github.com/IBM-Swift/Kitura-Compression", .exact("2.1.1")),
     ],
   targets: [
     .target(
@@ -73,8 +71,6 @@ let package = Package(
     .target(
       name: "Server",
       dependencies: [
-        "Kitura",
-        "KituraCompression",
         "PointFree",
         ]
     ),
