@@ -17,7 +17,6 @@ let routeNotFoundMiddleware =
       view: routeNotFoundView,
       layoutData: { subscription, currentUser in
         SimplePageLayoutData(
-          currentSubscriptionStatus: subscription?.stripeSubscriptionStatus,
           currentUser: currentUser,
           data: unit,
           title: "Page not found"

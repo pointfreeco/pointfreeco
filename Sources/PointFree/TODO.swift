@@ -118,8 +118,41 @@ public func zip5<A, B, C, D, E>(
   return tuple5 <¢> a <*> b <*> c <*> d <*> e
 }
 
+public func zip6<A, B, C, D, E, F>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>,
+  _ f: Parallel<F>
+  ) -> Parallel<(A, B, C, D, E, F)> {
+
+  return tuple6 <¢> a <*> b <*> c <*> d <*> e <*> f
+}
+
+public func zip7<A, B, C, D, E, F, G>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>,
+  _ f: Parallel<F>,
+  _ g: Parallel<G>
+  ) -> Parallel<(A, B, C, D, E, F, G)> {
+
+  return tuple7 <¢> a <*> b <*> c <*> d <*> e <*> f <*> g
+}
+
 public func tuple5<A, B, C, D, E>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (A, B, C, D, E) {
   return { b in { c in { d in { e in (a, b, c, d, e) } } } }
+}
+
+public func tuple6<A, B, C, D, E, F>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) -> (A, B, C, D, E, F) {
+  return { b in { c in { d in { e in { f in (a, b, c, d, e, f) } } } } }
+}
+
+public func tuple7<A, B, C, D, E, F, G>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) -> (G) -> (A, B, C, D, E, F, G) {
+  return { b in { c in { d in { e in { f in { g in (a, b, c, d, e, f, g) } } } } } }
 }
 
 public typealias T8<A, B, C, D, E, F, G, Z> = Tuple<A, T7<B, C, D, E, F, G, Z>>
@@ -207,6 +240,11 @@ extension PartialIso where A == String, B == String {
 public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
   return IO {
     return t |> over2(perform)
+  }
+}
+public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+  return IO {
+    return t |> over1(perform)
   }
 }
 

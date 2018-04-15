@@ -8,7 +8,7 @@ import Optics
 import Styleguide
 import Prelude
 
-let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { style, currentUser, currentSubscriptionStatus, currentRoute in
+let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   gridRow([`class`([newNavBarClass(for: style)])], [
     gridColumn(sizes: [:], [
       div([`class`([Class.hide(.desktop)])], [
@@ -40,17 +40,17 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, Stripe.Subscri
 
     gridColumn(
       sizes: [:],
-      currentUser.map { loggedInNavItemsView.view((style, $0, currentSubscriptionStatus)) }
+      currentUser.map { loggedInNavItemsView.view((style, $0, subscriberState)) }
         ?? loggedOutNavItemsView.view((style, currentRoute))
     ),
     ])
 }
 
-private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, Stripe.Subscription.Status?)> { style, currentUser, currentSubscriptionStatus in
+private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, SubscriberState)> { style, currentUser, subscriberState in
   navItems(
     [
       aboutLinkView,
-      currentSubscriptionStatus == .some(.active) ? nil : subscribeLinkView,
+      subscriberState.isNonSubscriber ? subscribeLinkView : nil,
       accountLinkView
       ]
       .compactMap(id)
