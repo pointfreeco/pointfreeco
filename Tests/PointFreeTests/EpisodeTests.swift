@@ -142,6 +142,7 @@ class EpisodeTests: TestCase {
       (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.episodes .~ unzurry([episode]))
         <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -176,6 +177,7 @@ class EpisodeTests: TestCase {
       (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.episodes .~ unzurry([episode]))
         <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -210,6 +212,7 @@ class EpisodeTests: TestCase {
       (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.episodes .~ unzurry([episode]))
         <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(

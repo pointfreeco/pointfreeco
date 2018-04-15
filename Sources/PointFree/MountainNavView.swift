@@ -8,9 +8,9 @@ import Optics
 import Styleguide
 import Prelude
 
-let mountainNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+let mountainNavView = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
 
-  menuAndLogoHeaderView.view((currentUser, currentSubscriptionStatus, currentRoute))
+  menuAndLogoHeaderView.view((currentUser, subscriberState, currentRoute))
     + [
       gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
@@ -36,7 +36,7 @@ let mountainNavView = View<(Database.User?, Stripe.Subscription.Status?, Route?)
   ]
 }
 
-private let menuAndLogoHeaderView = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+private let menuAndLogoHeaderView = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
 
   gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), Class.pf.components.blueGradient])], [
 
@@ -49,7 +49,7 @@ private let menuAndLogoHeaderView = View<(Database.User?, Stripe.Subscription.St
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
           div(
             [`class`([Class.grid.end(.mobile)])],
-            headerLinks.view((currentUser, currentSubscriptionStatus, currentRoute))
+            headerLinks.view((currentUser, subscriberState, currentRoute))
           )
           ])
         ]),
@@ -70,13 +70,13 @@ private let menuAndLogoHeaderView = View<(Database.User?, Stripe.Subscription.St
     ])
 }
 
-private let headerLinks = View<(Database.User?, Stripe.Subscription.Status?, Route?)> { currentUser, currentSubscriptionStatus, currentRoute in
+private let headerLinks = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
   [
     a([href(path(to: .about)), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["About"]),
 
-    currentSubscriptionStatus == .some(.active)
-      ? nil
-      : a([href(path(to: .pricing(nil, expand: nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"]),
+    subscriberState.isNonSubscriber
+      ? a([href(path(to: .pricing(nil, expand: nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"])
+      : nil,
 
     currentUser == nil
       ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)

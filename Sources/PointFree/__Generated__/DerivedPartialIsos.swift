@@ -747,6 +747,17 @@ import Prelude
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Route.Team {
+        public static let leave = parenthesize <| PartialIso<Prelude.Unit, Route.Team>(
+          apply: const(.some(.leave)),
+          unapply: {
+            guard case .leave = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == (
             Database.User.Id
         ), B == Route.Team {

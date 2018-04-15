@@ -340,28 +340,4 @@ class InviteTests: TestCase {
       )
     }
   }
-
-  func testAcceptInvitation_CurrentUserIsInviter() {
-    let currentUser = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
-      .run
-      .perform()
-      .right!!
-
-    let teamInvite = AppEnvironment.current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .run
-      .perform()
-      .right!
-
-    let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: acceptInvite))
-
-    assertSnapshot(matching: result.perform())
-
-    XCTAssertNotNil(
-      AppEnvironment.current.database.fetchTeamInvite(teamInvite.id)
-        .run
-        .perform()
-        .right!
-    )
-  }
 }

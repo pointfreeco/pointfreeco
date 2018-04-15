@@ -94,6 +94,7 @@ public enum Route: DerivePartialIsos {
   }
 
   public enum Team: DerivePartialIsos {
+    case leave
     case remove(Database.User.Id)
   }
 
@@ -240,6 +241,10 @@ private let routers: [Router<Route>] = [
 
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+
+  .team <<< .leave
+    <¢> post %> lit("account") %> lit("team") %> lit("leave")
+    <% end,
 
   .team <<< .remove
     <¢> post %> lit("account") %> lit("team") %> lit("members")

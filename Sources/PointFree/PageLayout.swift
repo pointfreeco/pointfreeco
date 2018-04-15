@@ -40,7 +40,7 @@ enum NavStyle {
 
 struct SimplePageLayoutData<A> {
   private(set) var currentRoute: Route?
-  private(set) var currentSubscriptionStatus: Stripe.Subscription.Status?
+  private(set) var currentSubscriberState: SubscriberState
   private(set) var currentUser: Database.User?
   private(set) var data: A
   private(set) var description: String?
@@ -55,7 +55,7 @@ struct SimplePageLayoutData<A> {
 
   init(
     currentRoute: Route? = nil,
-    currentSubscriptionStatus: Stripe.Subscription.Status? = nil,
+    currentSubscriberState: SubscriberState = .nonSubscriber,
     currentUser: Database.User?,
     data: A,
     description: String? = nil,
@@ -69,7 +69,7 @@ struct SimplePageLayoutData<A> {
     ) {
 
     self.currentRoute = currentRoute
-    self.currentSubscriptionStatus = currentSubscriptionStatus
+    self.currentSubscriberState = currentSubscriberState
     self.currentUser = currentUser
     self.data = data
     self.description = description
@@ -137,9 +137,9 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           <> favicons
         ),
         body(
-          pastDueBanner(layoutData.currentSubscriptionStatus)
+          pastDueBanner(layoutData)
             <> (layoutData.flash.map(flashView.view) ?? [])
-            <> (layoutData.navStyle.map { navView.view(($0, layoutData.currentUser, layoutData.currentSubscriptionStatus, layoutData.currentRoute)) } ?? [])
+            <> navView(layoutData)
             <> contentView.view(layoutData.data)
             <> footerView.view(layoutData.currentUser)
         )
@@ -148,8 +148,10 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
   }
 }
 
-func pastDueBanner(_ subscriptionStatus: Stripe.Subscription.Status?) -> [Node] {
-  guard subscriptionStatus == .some(.pastDue) else { return [] }
+func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+  guard data.currentSubscriberState.isPastDue else { return [] }
+
+  // TODO: custom messages for owner vs teammate
 
   return flashView.view(
     .init(
@@ -163,13 +165,17 @@ func pastDueBanner(_ subscriptionStatus: Stripe.Subscription.Status?) -> [Node] 
   )
 }
 
-private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
+private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
-  switch navStyle {
-  case let .mountains(style):
-    return mountainNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
-  case let .minimal(minimalStyle):
-    return minimalNavView.view((minimalStyle, currentUser, currentSubscriptionStatus, currentRoute))
+  switch data.navStyle {
+  case .some(.mountains):
+    return mountainNavView.view((data.currentUser, data.currentSubscriberState, data.currentRoute))
+
+  case let .some(.minimal(minimalStyle)):
+    return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
+
+  case .none:
+    return []
   }
 }
 

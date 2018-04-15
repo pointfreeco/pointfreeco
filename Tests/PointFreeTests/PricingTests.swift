@@ -51,7 +51,11 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn_NonSubscriber() {
-    AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(nil))) {
+    let env: (Environment) -> Environment =
+      (\.database.fetchSubscriptionById .~ const(pure(nil)))
+        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+
+    AppEnvironment.with(env) {
       let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
       let result = conn |> siteMiddleware
 

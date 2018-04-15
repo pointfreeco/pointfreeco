@@ -20,11 +20,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
-    let subscriptionStatus = subscription?.stripeSubscriptionStatus
+    let subscriberState = SubscriberState(user: user, subscription: subscription)
 
     switch route {
     case .about:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> aboutResponse
 
     case let .account(.confirmEmailChange(userId, emailAddress)):
@@ -32,11 +32,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> confirmEmailChangeMiddleware
 
     case .account(.index):
-      return conn.map(const(user .*. subscriptionStatus .*. unit))
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> accountResponse
 
     case let .account(.paymentInfo(.show(expand))):
-      return conn.map(const(user .*. (expand ?? false) .*. unit))
+      return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
         |> paymentInfoResponse
 
     case let .account(.paymentInfo(.update(token))):
@@ -48,7 +48,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> cancelMiddleware
 
     case .account(.subscription(.change(.show))):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> subscriptionChangeShowResponse
 
     case let .account(.subscription(.change(.update(pricing)))):
@@ -103,7 +103,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       fatalError()
 
     case let .episode(param):
-      return conn.map(const(param .*. user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
 
     case let .expressUnsubscribe(userId, newsletter):
@@ -155,23 +155,27 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> pricingResponse
 
     case .privacy:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> privacyResponse
 
     case .home:
-      return conn.map(const(user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> homeMiddleware
 
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
+    case .team(.leave):
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> leaveTeamMiddleware
+
     case let .team(.remove(teammateId)):
       return conn.map(const(teammateId .*. user .*. unit))
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriptionStatus .*. route .*. unit))
+      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):
@@ -213,3 +217,66 @@ private let allowedInsecureHosts: [String] = [
   "0.0.0.0",
   "localhost"
 ]
+
+enum SubscriberState {
+  case nonSubscriber
+  case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
+  case teammate(status: Stripe.Subscription.Status)
+
+  init(user: Database.User?, subscription: Database.Subscription?) {
+    switch (user, subscription) {
+    case let (.some(user), .some(subscription)):
+      if subscription.userId == user.id {
+        self = .owner(
+          hasSeat: user.subscriptionId != nil,
+          status: subscription.stripeSubscriptionStatus
+        )
+      } else {
+        self = .teammate(status: subscription.stripeSubscriptionStatus)
+      }
+
+    case (.none, _), (.some, _):
+      self = .nonSubscriber
+    }
+  }
+
+  var status: Stripe.Subscription.Status? {
+    switch self {
+    case .nonSubscriber:
+      return nil
+    case let .owner(_, status):
+      return status
+    case let .teammate(status):
+      return status
+    }
+  }
+
+  var isActive: Bool {
+    return self.status == .some(.active)
+  }
+
+  var isPastDue: Bool {
+    return self.status == .some(.pastDue)
+  }
+
+  var isOwner: Bool {
+    if case .owner = self { return true }
+    return false
+  }
+
+  var isTeammate: Bool {
+    if case .teammate = self { return true }
+    return false
+  }
+
+  var isNonSubscriber: Bool {
+    if case .nonSubscriber = self { return true }
+    return false
+  }
+
+  var isActiveSubscriber: Bool {
+    if case .teammate(status: .active) = self { return true }
+    if case .owner(hasSeat: true, status: .active) = self { return true }
+    return false
+  }
+}

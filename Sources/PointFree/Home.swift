@@ -10,17 +10,17 @@ import Styleguide
 import Tuple
 import UrlFormEncoding
 
-let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: homeView,
-      layoutData: { currentUser, currentSubscriptionStatus, currentRoute in
+      layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
-          currentSubscriptionStatus: currentSubscriptionStatus,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, currentSubscriptionStatus),
+          data: (currentUser, subscriberState),
           description: "Point-Free is a video series exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
@@ -32,9 +32,9 @@ let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Stripe.Subscrip
     }
 )
 
-let homeView = View<(Database.User?, Stripe.Subscription.Status?)> { currentUser, currentSubscriptionStatus in
+let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState in
   episodesListView.view(AppEnvironment.current.episodes().sorted(by: their(^\.sequence, >)))
-    <> (currentSubscriptionStatus == .some(.active) ? [] : pricingOptionsView.view((currentUser, .default, false)))
+    <> (subscriberState.isNonSubscriber ? pricingOptionsView.view((currentUser, .default, false)) : [])
 }
 
 private let episodesListView = View<[Episode]> { eps in

@@ -12,15 +12,15 @@ import Tuple
 
 private let title = "Privacy Policy"
 
-let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Stripe.Subscription.Status?, Route?>, Data> =
+let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: privacyView,
-      layoutData: { currentUser, subscriptionStatus, currentRoute in
+      layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
-          currentSubscriptionStatus: subscriptionStatus,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: unit,
           title: title
