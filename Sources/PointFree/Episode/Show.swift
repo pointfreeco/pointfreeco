@@ -21,14 +21,14 @@ let episodeResponse =
     >-> map(lower)
     >>> respond(
       view: episodeView,
-      layoutData: { permission, episode, currentUser, subscriptionStatus, currentRoute in
+      layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
-          currentSubscriptionStatus: subscriptionStatus,
+          currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (permission, currentUser, subscriptionStatus, episode),
+          data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
           extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
           image: episode.image,
@@ -116,11 +116,11 @@ private func validateCreditRequest<Z>(
 }
 
 private func userEpisodePermission<I, Z>(
-  _ conn: Conn<I, T4<Episode, Database.User?, Stripe.Subscription.Status?, Z>>
+  _ conn: Conn<I, T4<Episode, Database.User?, SubscriberState, Z>>
   )
-  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, Stripe.Subscription.Status?, Z>>> {
+  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, SubscriberState, Z>>> {
 
-    let (episode, currentUser, subscriptionStatus) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
     guard let user = currentUser else {
       let permission: EpisodePermission = .loggedOut(isSubscriberOnly: episode.subscriberOnly)
@@ -132,11 +132,9 @@ private func userEpisodePermission<I, Z>(
       .run
       .map { $0.right ?? false }
 
-    let isSubscribed = subscriptionStatus == .some(.active)
-
     let permission = hasCredit
       .map { hasCredit -> EpisodePermission in
-        switch (hasCredit, isSubscribed) {
+        switch (hasCredit, subscriberState.isActiveSubscriber) {
         case (_, true):
           return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
         case (true, false):
@@ -155,8 +153,8 @@ private func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscription.Status?, Episode)> {
-  permission, user, subscriptionStatus, episode in
+private let episodeView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
+  permission, user, subscriberState, episode in
 
   [
     gridRow([
@@ -168,7 +166,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, Stripe.Subscr
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view((permission, user, subscriptionStatus, episode))
+        leftColumnView.view((permission, user, subscriberState, episode))
       ),
 
       gridColumn(
@@ -380,8 +378,8 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(EpisodePermission, Database.User?, Stripe.Subscription.Status?, Episode)> {
-  permission, user, subscriptionStatus, episode in
+private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
+  permission, user, subscriberState, episode in
   div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
@@ -684,16 +682,16 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
 }
 
 private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
-  .contramap { param, user, subscriptionStatus, route in
+  .contramap { param, user, subscriberState, route in
     SimplePageLayoutData(
-      currentSubscriptionStatus: subscriptionStatus,
+      currentSubscriberState: subscriberState,
       currentUser: user,
-      data: (param, user, subscriptionStatus, route),
+      data: (param, user, subscriberState, route),
       title: "Episode not found :("
     )
 }
 
-private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Stripe.Subscription.Status?, Route?)> { _, _, _, _ in
+private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, SubscriberState, Route?)> { _, _, _, _ in
 
   gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
@@ -752,10 +750,10 @@ func unsafeMark(from markdown: String) -> String {
 private func isEpisodeViewable(
   _ permission: EpisodePermission,
   _ episode: Episode,
-  _ subscriptionStatus: Stripe.Subscription.Status?
+  _ subscriberState: SubscriberState
   ) -> Bool {
 
-  return !episode.subscriberOnly || subscriptionStatus == .some(.active)
+  return !episode.subscriberOnly || subscriberState.isActiveSubscriber
 }
 
 private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {

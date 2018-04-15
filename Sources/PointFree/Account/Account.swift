@@ -10,78 +10,112 @@ import Prelude
 import Styleguide
 import Tuple
 
-let accountResponse =
+let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >-> writeStatus(.ok)
-    >-> map(lower)
-    >>> respond(
+    >-> respond(
       view: accountView,
-      layoutData: { subscription, teamInvites, teammates, emailSettings, currentUser, subscriptionStatus in
+      layoutData: { data in
         SimplePageLayoutData(
-          currentSubscriptionStatus: subscriptionStatus,
-          currentUser: currentUser,
-          data: (subscription, teamInvites, teammates, emailSettings, [], currentUser),
+          currentSubscriberState: data.subscriberState,
+          currentUser: data.currentUser,
+          data: data,
           title: "Account"
         )
     }
 )
 
-private func fetchAccountData<I, A>(
-  _ conn: Conn<I, T2<Database.User, A>>
-  ) -> IO<Conn<I, T6<Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], Database.User, A>>> {
+private func fetchAccountData<I>(
+  _ conn: Conn<I, Tuple2<Database.User, SubscriberState>>
+  ) -> IO<Conn<I, AccountData>> {
 
-  let user = get1(conn.data)
+  let (user, subscriberState) = lower(conn.data)
 
-  let subscription = user.subscriptionId
+  let userSubscription = user.subscriptionId
     .map(
-      (
-        AppEnvironment.current.database.fetchSubscriptionById
-          >>> mapExcept(requireSome)
-          >>> map(^\.stripeSubscriptionId)
-          >-> AppEnvironment.current.stripe.fetchSubscription
-        )
-        >>> ^\.run
-        >>> map(^\.right)
+      AppEnvironment.current.database.fetchSubscriptionById
+        >>> mapExcept(requireSome)
     )
-    ?? pure(nil)
+    ?? throwE(unit)
 
-  return zip4(
-    subscription.parallel,
+  let ownerSubscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(user.id)
+    .mapExcept(requireSome)
+
+  let owner = userSubscription
+    .flatMap { subscription in
+      subscription.userId == user.id
+        ? pure(user)
+        : AppEnvironment.current.database.fetchUserById(subscription.userId)
+    }
+    .mapExcept(requireSome)
+
+  let subscription = userSubscription <|> ownerSubscription
+
+  let stripeSubscription = subscription
+    .map(^\.stripeSubscriptionId)
+    .flatMap(AppEnvironment.current.stripe.fetchSubscription)
+
+  let everything = zip7(
+    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+      .map { $0.right ?? [] },
+
+    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
+      .map { $0.right ?? [] },
+
+    stripeSubscription.run.map(^\.right).parallel,
+
+    subscription.run.map(^\.right).parallel,
+
+    owner.run.map(^\.right).parallel,
 
     AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
       .map { $0.right ?? [] },
 
     AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-      .map { $0.right ?? [] },
-
-    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] }
-    )
-    .map { conn.map(const($0 .*. $1 .*. $2 .*. $3 .*. conn.data)) }
+  )
+
+  return everything
+    .map {
+      conn.map(
+        const(
+          AccountData(
+            currentUser: user,
+            emailSettings: $0,
+            episodeCredits: $1,
+            stripeSubscription: $2,
+            subscriberState: subscriberState,
+            subscription: $3,
+            subscriptionOwner: $4,
+            teamInvites: $5,
+            teammates: $6
+          )
+        )
+      )
+    }
     .sequential
 }
 
-let accountView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User], [Database.EmailSetting], [Database.EpisodeCredit], Database.User)> { subscription, teamInvites, teammates, emailSettings, episodeCredits, currentUser in
+private let accountView = View<AccountData> { data in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
-            <> profileRowView.view((currentUser, emailSettings))
-            <> subscriptionRowView.view((currentUser, subscription, teamInvites, teammates))
-            <> creditsView.view((subscription, currentUser, episodeCredits))
+            <> profileRowView.view((data.currentUser, data.emailSettings))
+            <> subscriptionOverview.view(data)
+            <> creditsView.view(data)
             <> logoutView.view(unit)
       )
       ])
     ])
 }
 
-private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.EpisodeCredit])> {
-  subscription, currentUser, credits -> [Node] in
+private let creditsView = View<AccountData> { data -> [Node] in
 
-  guard subscription?.status != .some(.active) else { return [] }
-  guard currentUser.episodeCreditCount > 0 || credits.count > 0 else { return [] }
+  guard !data.subscriberState.isActiveSubscriber else { return [] }
+  guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -91,18 +125,27 @@ private let creditsView = View<(Stripe.Subscription?, Database.User, [Database.E
             h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              text("subscription. You currently have \(pluralizedCredits(count: currentUser.episodeCreditCount)) "),
+              text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
               "remaining."
-              ]),
-            p([
-              "To get all past and future episodes, ",
-              a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
-              " a subscriber today!"
               ])
             ]
-            <> episodeCreditsView.view(credits)
+            <> subscribeCallout.view(data.subscriberState)
+            <> episodeCreditsView.view(data.episodeCredits)
         )
         ])
+      ])
+  ]
+}
+
+private let subscribeCallout = View<SubscriberState> { subscriberState -> [Node] in
+
+  guard !subscriberState.isActiveSubscriber else { return [] }
+
+  return [
+    p([
+      "To get all past and future episodes, ",
+      a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+      " a subscriber today!"
       ])
   ]
 }
@@ -235,10 +278,19 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   }
 }
 
-private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { currentUser, subscription, invites, allTeammates -> [Node] in
-  guard let subscription = subscription else { return [] }
+private let subscriptionOverview = View<AccountData> { data -> [Node] in
 
-  let teammates = allTeammates.filter(^\.id.unwrap != currentUser.id.unwrap)
+  if data.subscription?.userId == data.currentUser.id {
+    return subscriptionOwnerOverview.view(data)
+  } else if let subscription = data.stripeSubscription {
+    return subscriptionTeammateOverview.view(data)
+  } else {
+    return []
+  }
+}
+
+private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
+  guard let subscription = data.stripeSubscription else { return [] }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -249,11 +301,49 @@ private let subscriptionRowView = View<(Database.User, Stripe.Subscription?, [Da
           gridColumn(
             sizes: [.mobile: 12],
             subscriptionPlanRows.view(subscription)
-              <> subscriptionTeamRow.view(teammates)
-              <> subscriptionInvitesRowView.view(invites)
-              <> subscriptionInviteMoreRowView.view((subscription, invites, teammates))
+              <> subscriptionTeamRow.view((data.currentUser, data.teammates))
+              <> subscriptionInvitesRowView.view(data.teamInvites)
+              <> subscriptionInviteMoreRowView.view((subscription, data.teamInvites, data.teammates))
               <> subscriptionPaymentInfoView.view(subscription)
           )
+          ])
+        ])
+      ])
+  ]
+}
+
+private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
+  guard let subscription = data.stripeSubscription else { return [] }
+
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h2([`class`([Class.pf.type.title4])], ["Subscription overview"]),
+
+          p([
+            "You are currently on a team subscription. Contact ",
+            a(
+              [
+                mailto(data.subscriptionOwner?.email.unwrap ?? ""),
+                `class`([Class.pf.colors.link.purple])
+              ],
+              [
+                text(data.subscriptionOwner?.name ?? "the owner")
+              ]
+            ),
+            " for more information.",
+            ]),
+
+          form([action(path(to: .team(.leave))), method(.post)], [
+            input(
+              [
+                `class`([Class.pf.components.button(color: .red, size: .small)]),
+                type(.submit),
+                value("Leave this team")
+              ]
+            )
+            ]),
           ])
         ])
       ])
@@ -388,7 +478,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   }
 }
 
-private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
+private let subscriptionTeamRow = View<(Database.User, [Database.User])> { currentUser, teammates -> [Node] in
   guard !teammates.isEmpty else { return [] }
 
   return [
@@ -401,19 +491,22 @@ private let subscriptionTeamRow = View<[Database.User]> { teammates -> [Node] in
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["Your current team:"])]
-              <> teammates.flatMap(teammateRowView.view)
+              <> teammates.flatMap { teammateRowView.view((currentUser, $0)) }
         )
         ])
       ])
   ]
 }
 
-private let teammateRowView = View<Database.User> { teammate in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(encode("\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"))])
-      ]),
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
+private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
+
+  let teammateLabel = currentUser.id == teammate.id
+    ? "\(teammate.name ?? teammate.email.unwrap) (you)"
+    : "\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"
+
+  return gridRow([
+    gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
+    gridColumn(sizes: [.mobile: 4], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
         p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
         ]),
@@ -461,7 +554,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
-  let invitesRemaining = subscription.quantity - invites.count - teammates.count - 1
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count
   guard invitesRemaining > 0 else { return [] }
 
   return [
@@ -592,3 +685,15 @@ let blockSelectClass =
     | Class.size.width100pct
     | Class.pf.colors.border.gray800
     | Class.type.fontFamilyInherit
+
+private struct AccountData {
+  let currentUser: Database.User
+  let emailSettings: [Database.EmailSetting]
+  let episodeCredits: [Database.EpisodeCredit]
+  let stripeSubscription: Stripe.Subscription?
+  let subscriberState: SubscriberState
+  let subscription: Database.Subscription?
+  let subscriptionOwner: Database.User?
+  let teamInvites: [Database.TeamInvite]
+  let teammates: [Database.User]
+}

@@ -164,14 +164,10 @@ private func fetchSubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
 
     return { conn in
-      let subscription = get1(conn.data).subscriptionId
-        .map {
-          AppEnvironment.current.database.fetchSubscriptionById($0)
-            .mapExcept(requireSome)
-            .run
-            .map(^\.right)
-        }
-        ?? pure(nil)
+      let subscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
+        .mapExcept(requireSome)
+        .run
+        .map(^\.right)
 
       return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
     }

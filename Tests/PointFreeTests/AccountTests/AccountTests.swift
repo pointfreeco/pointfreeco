@@ -104,7 +104,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithPastDue() {
-    AppEnvironment.with(\.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))) {
+    let env: (Environment) -> Environment =
+      (\.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)))
+        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)))
+
+    AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -175,6 +179,7 @@ final class AccountTests: TestCase {
     let env: (Environment) -> Environment =
       (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
@@ -203,6 +208,7 @@ final class AccountTests: TestCase {
     let env: (Environment) -> Environment =
       (\.database.fetchUserById .~ const(pure(.some(user))))
         <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))

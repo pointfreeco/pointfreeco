@@ -560,7 +560,7 @@ private func tabStyles(
         <> selectedStyles
 }
 
-
+// TODO: account for owners
 func redirectActiveSubscribers<A>(
   user: @escaping (A) -> Database.User?
   )
@@ -569,23 +569,38 @@ func redirectActiveSubscribers<A>(
 
     return { middleware in
       return { conn in
-        guard
-          let user = user(conn.data),
-          let subscriptionId = user.subscriptionId
-          else { return middleware(conn) }
+        let user = user(conn.data)
 
-        let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
-          .mapExcept(requireSome)
-          .run
-          .map { $0.right?.stripeSubscriptionStatus == .some(.active) }
+        let userSubscription = (user?.subscriptionId)
+          .map(
+            AppEnvironment.current.database.fetchSubscriptionById
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
 
-        return hasActiveSubscription.flatMap {
-          $0
-            ? (conn |> redirect(to: .account(.index),
-                                headersMiddleware: flash(.warning, "You already have an active subscription."))
+        let ownerSubscription = (user?.id)
+          .map(
+            AppEnvironment.current.database.fetchSubscriptionByOwnerId
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+
+        return (userSubscription.run.parallel <|> ownerSubscription.run.parallel)
+          .sequential
+          .flatMap(
+            either(
+              const(
+                middleware(conn)
+              ),
+              const(
+                conn
+                  |> redirect(
+                    to: .account(.index),
+                    headersMiddleware: flash(.warning, "You already have an active subscription.")
+                )
               )
-            : middleware(conn)
-        }
+            )
+        )
       }
     }
 }
