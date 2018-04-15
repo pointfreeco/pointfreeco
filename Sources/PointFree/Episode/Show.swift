@@ -22,7 +22,7 @@ let episodeResponse =
     >>> respond(
       view: episodeView,
       layoutData: { permission, episode, currentUser, subscriptionStatus, currentRoute in
-        let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
+        let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,

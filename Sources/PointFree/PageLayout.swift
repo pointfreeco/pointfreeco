@@ -11,11 +11,30 @@ import Tuple
 
 enum NavStyle {
   case minimal(MinimalStyle)
-  case mountains
+  case mountains(MountainsStyle)
 
   enum MinimalStyle {
     case dark
     case light
+  }
+
+  enum MountainsStyle {
+    case blog
+    case main
+
+    var heroTagline: String {
+      switch self {
+      case .blog:   return "A blog exploring functional programming and Swift."
+      case .main:   return "A new Swift video series exploring functional programming and more."
+      }
+    }
+
+    var heroLogoSvgBase64: String {
+      switch self {
+      case .blog:   return pointFreePointersLogoSvgBase64
+      case .main:   return pointFreeHeroSvgBase64
+      }
+    }
   }
 }
 
@@ -147,7 +166,7 @@ func pastDueBanner(_ subscriptionStatus: Stripe.Subscription.Status?) -> [Node] 
 private let navView = View<(NavStyle, Database.User?, Stripe.Subscription.Status?, Route?)> { navStyle, currentUser, currentSubscriptionStatus, currentRoute -> [Node] in
 
   switch navStyle {
-  case .mountains:
+  case let .mountains(style):
     return mountainNavView.view((currentUser, currentSubscriptionStatus, currentRoute))
   case let .minimal(minimalStyle):
     return minimalNavView.view((minimalStyle, currentUser, currentSubscriptionStatus, currentRoute))
