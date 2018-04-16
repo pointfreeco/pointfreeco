@@ -32,7 +32,7 @@ even deeper into functional programming, show real world use cases, and more!
       type: .paragraph
     ),
     ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-production/point-free-pointers/0001-cover-image.png",
+  coverImage: "",
   id: 1,
   publishedAt: .init(timeIntervalSince1970: 1_523_872_623),
   title: "Announcing Point-Free Pointers!",
