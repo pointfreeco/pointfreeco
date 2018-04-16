@@ -379,7 +379,7 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
-public func request(to route: Route, session: Session = .loggedOut) -> URLRequest {
+public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
   var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
@@ -388,6 +388,13 @@ public func request(to route: Route, session: Session = .loggedOut) -> URLReques
   let httpBody = request.httpBody
   request.httpBody = httpBody
   request.httpMethod = request.httpMethod?.uppercased()
+
+  if basicAuth {
+    let username = AppEnvironment.current.envVars.basicAuth.username
+    let password = AppEnvironment.current.envVars.basicAuth.password
+    request.allHTTPHeaderFields?["Authorization"] =
+      "Basic " + Data("\(username):\(password)".utf8).base64EncodedString()
+  }
 
   guard
     let sessionData = try? cookieJsonEncoder.encode(session),

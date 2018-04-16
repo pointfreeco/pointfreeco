@@ -181,13 +181,13 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
 
   .blog <<< .feed <<< .atom
-    <¢> get %> (lit("blog") <|> lit("pointers")) %> lit("feed") %> lit("atom.xml") <% end,
+    <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
 
   .blog <<< .index
-    <¢> get %> (lit("blog") <|> lit("pointers")) <% end,
+    <¢> get %> lit("blog") <% end,
 
   .blog <<< .show
-    <¢> get %> (lit("blog") <|> lit("pointers")) %> lit("posts") %> pathParam(.intOrString) <% end,
+    <¢> get %> lit("blog") %> lit("posts") %> pathParam(.intOrString) <% end,
 
   .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,

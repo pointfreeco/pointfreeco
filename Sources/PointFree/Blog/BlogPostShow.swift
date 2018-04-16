@@ -91,7 +91,7 @@ private let subscriberCalloutView = View<Prelude.Unit> { _ in
         p(
           [
             "👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to also",
-            " checkout ",
+            " check out ",
             a(
               [
                 href(path(to: .home)),
