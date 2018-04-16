@@ -48,6 +48,16 @@ extension AuthTests {
     ("testHome_LoggedIn", testHome_LoggedIn)
   ]
 }
+extension BlogTests {
+  static var allTests: [(String, (BlogTests) -> () throws -> Void)] = [
+    ("testBlogIndex", testBlogIndex),
+    ("testBlogIndex_Unauthed", testBlogIndex_Unauthed),
+    ("testBlogShow", testBlogShow),
+    ("testBlogShow_Unauthed", testBlogShow_Unauthed),
+    ("testBlogAtomFeed", testBlogAtomFeed),
+    ("testBlogAtomFeed_Unauthed", testBlogAtomFeed_Unauthed)
+  ]
+}
 extension CancelTests {
   static var allTests: [(String, (CancelTests) -> () throws -> Void)] = [
     ("testCancel", testCancel),
@@ -275,6 +285,7 @@ XCTMain([
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
+  testCase(BlogTests.allTests),
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
   testCase(ChangeTests.allTests),
