@@ -22,7 +22,7 @@ let episodeResponse =
     >>> respond(
       view: episodeView,
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
-        let navStyle: NavStyle = currentUser == nil ? .mountains : .minimal(.light)
+        let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
@@ -635,7 +635,7 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
   ]
 }
 
-private let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
+let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   switch block.type {
   case let .code(lang):
     return pre([
@@ -721,6 +721,7 @@ let markdownBlockStyles: Stylesheet =
       <> (a & .pseudo(.link)) % color(Colors.purple150)
       <> (a & .pseudo(.visited)) % color(Colors.purple150)
       <> (a & .pseudo(.hover)) % color(Colors.black)
+      <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
       <> code % (
         fontFamily(["monospace"])
           <> padding(topBottom: .px(1), leftRight: .px(5))

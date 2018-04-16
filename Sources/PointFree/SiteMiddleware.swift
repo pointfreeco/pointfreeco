@@ -95,6 +95,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(unit))
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
+    case let .blog(subRoute):
+      return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
+        |> blogMiddleware
+
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse

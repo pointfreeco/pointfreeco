@@ -11,11 +11,51 @@ import Tuple
 
 enum NavStyle {
   case minimal(MinimalStyle)
-  case mountains
+  case mountains(MountainsStyle)
 
   enum MinimalStyle {
     case dark
     case light
+  }
+
+  enum MountainsStyle {
+    case blog
+    case main
+
+    var heroTagline: String {
+      switch self {
+      case .blog:   return "A blog exploring functional programming and Swift."
+      case .main:   return "A new Swift video series exploring functional programming and more."
+      }
+    }
+
+    var heroLogoSvgBase64: String {
+      switch self {
+      case .blog:   return pointFreePointersLogoSvgBase64
+      case .main:   return pointFreeHeroSvgBase64
+      }
+    }
+
+    var heroHref: String {
+      switch self {
+      case .blog:   return path(to: .blog(.index))
+      case .main:   return path(to: .home)
+      }
+    }
+
+    var navLinkName: String {
+      switch self {
+      case .blog:   return "Blog"
+      case .main:   return "Home"
+      }
+    }
+
+    var otherStyle: MountainsStyle {
+      switch self {
+      case .blog:   return .main
+      case .main:   return .blog
+      }
+    }
   }
 }
 
@@ -112,6 +152,12 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
             rel(.alternate),
             title("Point-Free Episodes"),
             type(.application(.atom)),
+            ]),
+          link([
+            href(url(to: .blog(.feed(.atom)))),
+            rel(.alternate),
+            title("Point-Free Blog"),
+            type(.application(.atom)),
             ])
           ]
           <> (layoutData.usePrismJs ? prismJsHead : [])
@@ -149,8 +195,8 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   switch data.navStyle {
-  case .some(.mountains):
-    return mountainNavView.view((data.currentUser, data.currentSubscriberState, data.currentRoute))
+  case let .some(.mountains(style)):
+    return mountainNavView.view((style, data.currentUser, data.currentSubscriberState, data.currentRoute))
 
   case let .some(.minimal(minimalStyle)):
     return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))

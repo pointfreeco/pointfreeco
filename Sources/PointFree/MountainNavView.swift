@@ -8,9 +8,9 @@ import Optics
 import Styleguide
 import Prelude
 
-let mountainNavView = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
+let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
-  menuAndLogoHeaderView.view((currentUser, subscriberState, currentRoute))
+  menuAndLogoHeaderView.view((mountainsStyle, currentUser, subscriberState, currentRoute))
     + [
       gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
@@ -20,7 +20,7 @@ let mountainNavView = View<(Database.User?, SubscriberState, Route?)> { currentU
 
         gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
           div([`class`([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
-            "A new Swift video series exploring functional programming and more."
+            text(mountainsStyle.heroTagline)
             ])
           ]),
 
@@ -36,7 +36,7 @@ let mountainNavView = View<(Database.User?, SubscriberState, Route?)> { currentU
   ]
 }
 
-private let menuAndLogoHeaderView = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
+private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
   gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), Class.pf.components.blueGradient])], [
 
@@ -49,16 +49,16 @@ private let menuAndLogoHeaderView = View<(Database.User?, SubscriberState, Route
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
           div(
             [`class`([Class.grid.end(.mobile)])],
-            headerLinks.view((currentUser, subscriberState, currentRoute))
+            headerLinks.view((mountainsStyle, currentUser, subscriberState, currentRoute))
           )
           ])
         ]),
 
       gridRow([`class`([Class.grid.center(.mobile), Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 0]])])], [
         gridColumn(sizes: [:], [
-          a([href(path(to: .home))], [
+          a([href(mountainsStyle.heroHref)], [
             img(
-              base64: pointFreeHeroSvgBase64,
+              base64: mountainsStyle.heroLogoSvgBase64,
               mediaType: .image(.svg),
               alt: "",
               [`class`([Class.pf.components.heroLogo])]
@@ -70,7 +70,8 @@ private let menuAndLogoHeaderView = View<(Database.User?, SubscriberState, Route
     ])
 }
 
-private let headerLinks = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
+private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
+
   [
     a([href(path(to: .about)), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["About"]),
 
