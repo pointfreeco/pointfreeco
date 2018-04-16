@@ -79,7 +79,7 @@ public enum Route: DerivePartialIsos {
 
     public enum NewBlogPostEmail: DerivePartialIsos {
       case send(BlogPost.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
-      case show
+      case index
     }
 
     public enum NewEpisodeEmail: DerivePartialIsos {
@@ -172,6 +172,9 @@ private let routers: [Router<Route>] = [
 
   .admin <<< .freeEpisodeEmail <<< .index
     <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
+
+  .admin <<< .newBlogPostEmail <<< .index
+    <¢> get %> lit("admin") %> lit("new-blog-post-email") <% end,
 
   PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")

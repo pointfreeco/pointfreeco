@@ -645,10 +645,10 @@ import Prelude
 
 
       extension PartialIso where A == Prelude.Unit, B == Route.Admin.NewBlogPostEmail {
-        public static let show = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.NewBlogPostEmail>(
-          apply: const(.some(.show)),
+        public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Admin.NewBlogPostEmail>(
+          apply: const(.some(.index)),
           unapply: {
-            guard case .show = $0 else { return nil }
+            guard case .index = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
