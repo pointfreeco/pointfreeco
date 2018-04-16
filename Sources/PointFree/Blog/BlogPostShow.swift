@@ -35,7 +35,7 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
     }
 )
 
-func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
+private func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
     .first(where: { param.right == .some($0.id.unwrap) })
 }
