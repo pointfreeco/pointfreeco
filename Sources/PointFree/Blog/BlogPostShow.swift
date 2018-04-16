@@ -37,49 +37,21 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
 
 private func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
-    .first(where: {
-      param.right == .some($0.id.unwrap)
-    })
+    .first(where: { param.right == .some($0.id.unwrap) })
 }
 
 private let blogPostShowView = View<BlogPost> { post in
 
   [
     gridRow(
-      [
-        `class`(
-          [
-            Class.padding(
-              [
-                .mobile: [.leftRight: 3],
-                .desktop: [.leftRight: 4]
-              ]
-            )
-          ]
-        )
-      ],
+      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
         gridColumn(
           sizes: [.mobile: 12, .desktop: 9],
-          [
-            style(
-              margin(leftRight: .auto)
-            )
-          ],
+          [style(margin(leftRight: .auto))],
           [
             div(
-              [
-                `class`(
-                  [
-                    Class.padding(
-                      [
-                        .mobile: [.topBottom: 3],
-                        .desktop: [.topBottom: 4]
-                      ]
-                    )
-                  ]
-                )
-              ],
+              [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
               blogPostContentView.view(post)
                 <> subscriberCalloutView.view(unit)
             )
@@ -138,34 +110,20 @@ private let subscriberCalloutView = View<Prelude.Unit> { _ in
 let blogPostContentView = View<BlogPost> { post in
   [
     h1(
-      [
-        `class`([Class.pf.type.responsiveTitle3]),
-      ],
+      [`class`([Class.pf.type.responsiveTitle3]),],
       [
         a(
-          [
-            href(path(to: .blog(.show(.right(post.id.unwrap)))))
-          ],
-          [
-            text(post.title)
-          ]
+          [href(path(to: .blog(.show(.right(post.id.unwrap)))))],
+          [text(post.title)]
         )
       ]
     ),
 
-    p(
-      [],
-      [
-        text(episodeDateFormatter.string(from: post.publishedAt)),
-      ]
-    ),
+    p([text(episodeDateFormatter.string(from: post.publishedAt))]),
  
     div(
       [
-        style(
-          width(.rem(3))
-            <> height(.px(1))
-        ),
+        style(width(.rem(3)) <> height(.px(1))),
         `class`(
           [
             Class.pf.colors.bg.green,
@@ -177,13 +135,7 @@ let blogPostContentView = View<BlogPost> { post in
     ),
 
     div(
-      [
-        `class`(
-          [
-            Class.pf.colors.bg.white
-          ]
-        )
-      ],
+      [`class`([Class.pf.colors.bg.white])],
       post.contentBlocks.flatMap(transcriptBlockView.view)
     )
   ]
