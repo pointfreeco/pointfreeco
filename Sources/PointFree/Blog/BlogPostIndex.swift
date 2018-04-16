@@ -36,21 +36,11 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
 
   [
     gridRow(
-      [
-        `class`(
-          [
-            Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])
-          ]
-        )
-      ],
+      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
         gridColumn(
           sizes: [.mobile: 12, .desktop: 9],
-          [
-            style(
-              margin(leftRight: .auto)
-            )
-          ],
+          [style(margin(leftRight: .auto))],
           [
             div(
               [
@@ -60,13 +50,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
                 .flatMap { post in
                   [
                     div(
-                      [
-                        `class`(
-                          [
-                            Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])
-                          ]
-                        )
-                      ],
+                      [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
                       blogPostContentView.view(post)
                     ),
                     divider
