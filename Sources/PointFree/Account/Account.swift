@@ -274,7 +274,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   case .announcements:
     return "New announcements (very infrequently)"
   case .newBlogPost:
-    return "New blog posts on Point-Free Pointers"
+    return "New blog posts on Point-Free Pointers (about every two weeks)"
   case .newEpisode:
     return "New episode is available (about once a week)"
   }
