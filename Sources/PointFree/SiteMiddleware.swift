@@ -95,12 +95,17 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(unit))
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
 
+    case .blog(.feed(.atom)):
+      return conn.map(const(AppEnvironment.current.blogPosts()))
+        |> blogAtomFeedResponse
+
     case .blog(.index):
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> blogIndexMiddleware
 
-    case let .blog(param):
-      fatalError()
+    case let .blog(.show(param)):
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+        |> blogPostShowMiddleware
 
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))

@@ -171,6 +171,8 @@ extension Class {
             | Class.type.normal
             | Class.type.lineHeight(4)
       }
+
+      public static let underlineLink = CssSelector.class("underline-link")
     }
   }
 }
@@ -464,7 +466,8 @@ private let aStyles =
   )
   <> (a & .pseudo(.hover) | a & .pseudo(.active)) % (
     key("text-decoration", "underline")
-)
+    )
+    <> (a & Class.pf.type.underlineLink) % key("text-decoration", "underline")
 
 private let baseMarginStyles =
   (h1 | h2 | h3 | h4 | h5 | h6 | p | ul | ol) % margin(topBottom: .rem(0.5), leftRight: 0)

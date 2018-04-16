@@ -49,14 +49,14 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
           div(
             [`class`([Class.grid.end(.mobile)])],
-            headerLinks.view((currentUser, subscriberState, currentRoute))
+            headerLinks.view((mountainsStyle, currentUser, subscriberState, currentRoute))
           )
           ])
         ]),
 
       gridRow([`class`([Class.grid.center(.mobile), Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 0]])])], [
         gridColumn(sizes: [:], [
-          a([href(path(to: .home))], [
+          a([href(mountainsStyle.heroHref)], [
             img(
               base64: mountainsStyle.heroLogoSvgBase64,
               mediaType: .image(.svg),
@@ -70,9 +70,24 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
     ])
 }
 
-private let headerLinks = View<(Database.User?, SubscriberState, Route?)> { currentUser, subscriberState, currentRoute in
+private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
+
   [
-    a([href(path(to: .blog(.index))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Blog"]),
+    a(
+      [
+        href(mountainsStyle.otherStyle.heroHref),
+        `class`(
+          [
+            Class.type.medium,
+            Class.pf.colors.link.black,
+            Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])
+          ]
+        )
+      ],
+      [
+        text(mountainsStyle.otherStyle.navLinkName)
+      ]
+    ),
 
     subscriberState.isNonSubscriber
       ? a([href(path(to: .pricing(nil, expand: nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"])

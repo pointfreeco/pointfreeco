@@ -31,6 +31,7 @@ public enum Route: DerivePartialIsos {
   case webhooks(Webhooks)
 
   public enum Blog: DerivePartialIsos {
+    case feed(Feed)
     case index
     case show(Either<String, Int>)
   }
@@ -179,8 +180,14 @@ private let routers: [Router<Route>] = [
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
 
+  .blog <<< .feed <<< .atom
+    <¢> get %> (lit("blog") <|> lit("pointers")) %> lit("feed") %> lit("atom.xml") <% end,
+
   .blog <<< .index
-    <¢> get %> lit("blog"),
+    <¢> get %> (lit("blog") <|> lit("pointers")) <% end,
+
+  .blog <<< .show
+    <¢> get %> (lit("blog") <|> lit("pointers")) %> lit("posts") %> pathParam(.intOrString) <% end,
 
   .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,

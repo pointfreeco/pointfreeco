@@ -35,6 +35,27 @@ enum NavStyle {
       case .main:   return pointFreeHeroSvgBase64
       }
     }
+
+    var heroHref: String {
+      switch self {
+      case .blog:   return path(to: .blog(.index))
+      case .main:   return path(to: .home)
+      }
+    }
+
+    var navLinkName: String {
+      switch self {
+      case .blog:   return "Blog"
+      case .main:   return "Home"
+      }
+    }
+
+    var otherStyle: MountainsStyle {
+      switch self {
+      case .blog:   return .main
+      case .main:   return .blog
+      }
+    }
   }
 }
 
@@ -130,6 +151,12 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
             href(url(to: .feed(.atom))),
             rel(.alternate),
             title("Point-Free Episodes"),
+            type(.application(.atom)),
+            ]),
+          link([
+            href(url(to: .blog(.feed(.atom)))),
+            rel(.alternate),
+            title("Point-Free Blog"),
             type(.application(.atom)),
             ])
           ]

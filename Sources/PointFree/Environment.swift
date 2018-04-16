@@ -10,6 +10,7 @@ public enum CookieTransform: String, Codable {
 
 public struct Environment {
   public private(set) var assets: Assets
+  public private(set) var blogPosts: () -> [BlogPost]
   public private(set) var cookieTransform: CookieTransform
   public private(set) var database: Database
   public private(set) var date: () -> Date
@@ -22,6 +23,7 @@ public struct Environment {
 
   init(
     assets: Assets = .init(),
+    blogPosts: @escaping () -> [BlogPost] = { allBlogPosts },
     cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
@@ -33,6 +35,7 @@ public struct Environment {
     stripe: Stripe = .live) {
 
     self.assets = assets
+    self.blogPosts = blogPosts
     self.cookieTransform = cookieTransform
     self.database = database
     self.date = date
