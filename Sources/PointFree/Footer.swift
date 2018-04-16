@@ -4,6 +4,8 @@ import HtmlCssSupport
 import Styleguide
 import Prelude
 
+// TODO: add "About" to footer
+
 let footerView: View<Database.User?> =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView

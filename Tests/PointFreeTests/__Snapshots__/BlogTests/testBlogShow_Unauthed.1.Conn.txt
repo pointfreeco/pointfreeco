@@ -1,0 +1,16 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/blog/posts/1
+  Cookie: pf_session={}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 401 UNAUTHORIZED
+  Content-Length: 20
+  Content-Type: text/plain
+  WWW-Authenticate: Basic
+
+  Please authenticate.

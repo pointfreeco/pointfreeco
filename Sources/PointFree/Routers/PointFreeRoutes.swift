@@ -13,6 +13,7 @@ public enum Route: DerivePartialIsos {
   case account(Account)
   case admin(Admin)
   case appleDeveloperMerchantIdDomainAssociation
+  case blog(Blog)
   case episode(Either<String, Int>)
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
   case expressUnsubscribeReply(MailgunForwardPayload)
@@ -28,6 +29,12 @@ public enum Route: DerivePartialIsos {
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
+
+  public enum Blog: DerivePartialIsos {
+    case feed(Feed)
+    case index
+    case show(Either<String, Int>)
+  }
 
   public enum Account: DerivePartialIsos {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
@@ -172,6 +179,15 @@ private let routers: [Router<Route>] = [
 
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
+
+  .blog <<< .feed <<< .atom
+    <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
+
+  .blog <<< .index
+    <¢> get %> lit("blog") <% end,
+
+  .blog <<< .show
+    <¢> get %> lit("blog") %> lit("posts") %> pathParam(.intOrString) <% end,
 
   .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
