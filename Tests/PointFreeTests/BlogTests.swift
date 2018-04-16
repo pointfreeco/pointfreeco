@@ -49,6 +49,15 @@ class BlogTests: TestCase {
     #endif
   }
 
+  func testBlogIndex_Unauthed() {
+    let req = request(to: .blog(.index)) |> withBasicAuth
+    let result = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: result)
+  }
+
   func testBlogShow() {
     let req = request(to: .blog(.show(.right(1)))) |> withBasicAuth
     let result = connection(from: req)
@@ -67,5 +76,14 @@ class BlogTests: TestCase {
       assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
+  }
+
+  func testBlogShow_Unauthed() {
+    let req = request(to: .blog(.show(.right(1)))) 
+    let result = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: result)
   }
 }
