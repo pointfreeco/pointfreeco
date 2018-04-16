@@ -12,6 +12,12 @@ import XCTest
 import WebKit
 #endif
 
+func withBasicAuth(_ req: URLRequest) -> URLRequest {
+  var req = req
+  req.allHTTPHeaderFields?["Authorization"] = "Basic " + Data("\(AppEnvironment.current.envVars.basicAuth.username):\(AppEnvironment.current.envVars.basicAuth.password)".utf8).base64EncodedString()
+  return req
+}
+
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -24,7 +30,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex() {
-    let result = connection(from: request(to: .blog(.index)))
+    let req = request(to: .blog(.index)) |> withBasicAuth
+    let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
 
@@ -43,7 +50,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() {
-    let result = connection(from: request(to: .blog(.show(.right(1)))))
+    let req = request(to: .blog(.show(.right(1)))) |> withBasicAuth
+    let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
 
