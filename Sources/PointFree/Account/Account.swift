@@ -265,7 +265,7 @@ private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmai
         ),
         .text(encode(newsletterDescription(newsletter)))
         ])
-    })  
+    })
   ]
 }
 

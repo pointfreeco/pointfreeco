@@ -4,7 +4,7 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
-enum LayoutTemplate {
+enum EmailLayoutTemplate {
   case blog
   case `default`
 
@@ -26,7 +26,7 @@ struct SimpleEmailLayoutData<A> {
   /// Content of the hidden preheader tag at the top of the body. Many email clients will render this as a
   /// preview of the email in the inbox.
   let preheader: String
-  let template: LayoutTemplate
+  let template: EmailLayoutTemplate
   /// Any other data the email view needs to do its job.
   let data: A
 }
