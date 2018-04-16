@@ -86,4 +86,22 @@ class BlogTests: TestCase {
 
     assertSnapshot(matching: result)
   }
+
+  func testBlogAtomFeed() {
+    let req = request(to: .blog(.feed(.atom))) |> withBasicAuth
+    let result = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: result)
+  }
+
+  func testBlogAtomFeed_Unauthed() {
+    let req = request(to: .blog(.feed(.atom)))
+    let result = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: result)
+  }
 }

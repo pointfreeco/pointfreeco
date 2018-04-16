@@ -17,7 +17,7 @@ private let feedView = View<[BlogPost]> { posts in
       ),
       entries: posts.map(atomEntry(for:)),
       atomUrl: url(to: .feed(.atom)),
-      siteUrl: url(to: .home),
+      siteUrl: url(to: .blog(.index)),
       title: "Point-Free Pointers"
     )
   )
