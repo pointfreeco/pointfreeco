@@ -7,7 +7,14 @@ import Prelude
 import Styleguide
 import Tuple
 
-func blogMiddleware(
+let blogMiddleware =
+  basicAuth(
+    user: AppEnvironment.current.envVars.basicAuth.username,
+    password: AppEnvironment.current.envVars.basicAuth.password
+    )
+    <| _blogMiddleware
+
+private func _blogMiddleware(
   conn: Conn<StatusLineOpen, Tuple4<Database.User?, SubscriberState, Route, Route.Blog>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
@@ -27,5 +34,3 @@ func blogMiddleware(
       |> blogPostShowMiddleware
   }
 }
-
-

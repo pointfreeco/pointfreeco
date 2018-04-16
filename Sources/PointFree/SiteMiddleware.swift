@@ -97,13 +97,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
 
     case let .blog(subRoute):
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
-        |> (
-          basicAuth(
-            user: AppEnvironment.current.envVars.basicAuth.username,
-            password: AppEnvironment.current.envVars.basicAuth.password
-            )
-            <| blogMiddleware
-      )
+        |> blogMiddleware
 
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
