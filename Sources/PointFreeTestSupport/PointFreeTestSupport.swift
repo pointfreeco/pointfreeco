@@ -392,6 +392,7 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
   if basicAuth {
     let username = AppEnvironment.current.envVars.basicAuth.username
     let password = AppEnvironment.current.envVars.basicAuth.password
+    request.allHTTPHeaderFields = request.allHTTPHeaderFields ?? [:]
     request.allHTTPHeaderFields?["Authorization"] =
       "Basic " + Data("\(username):\(password)".utf8).base64EncodedString()
   }
