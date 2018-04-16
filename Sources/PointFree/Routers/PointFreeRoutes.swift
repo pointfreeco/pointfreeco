@@ -64,6 +64,7 @@ public enum Route: DerivePartialIsos {
     case episodeCredits(EpisodeCredit)
     case freeEpisodeEmail(FreeEpisodeEmail)
     case index
+    case newBlogPostEmail(NewBlogPostEmail)
     case newEpisodeEmail(NewEpisodeEmail)
 
     public enum EpisodeCredit: DerivePartialIsos {
@@ -74,6 +75,11 @@ public enum Route: DerivePartialIsos {
     public enum FreeEpisodeEmail: DerivePartialIsos {
       case send(Episode.Id)
       case index
+    }
+
+    public enum NewBlogPostEmail: DerivePartialIsos {
+      case send(BlogPost.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
+      case show
     }
 
     public enum NewEpisodeEmail: DerivePartialIsos {

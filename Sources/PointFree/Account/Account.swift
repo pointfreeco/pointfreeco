@@ -265,7 +265,7 @@ private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmai
         ),
         .text(encode(newsletterDescription(newsletter)))
         ])
-    })
+    })  
   ]
 }
 
@@ -273,6 +273,8 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   switch type {
   case .announcements:
     return "New announcements (very infrequently)"
+  case .blogPost:
+    return "New blog posts on Point-Free Pointers"
   case .newEpisode:
     return "New episode is available (about once a week)"
   }

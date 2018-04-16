@@ -65,9 +65,10 @@ public struct Database {
 
     public enum Newsletter: String, RawRepresentable, Codable {
       case announcements
+      case blogPost
       case newEpisode
 
-      public static let allNewsletters: [Newsletter] = [.announcements, .newEpisode]
+      public static let allNewsletters: [Newsletter] = [.announcements, .blogPost, .newEpisode]
     }
   }
 
