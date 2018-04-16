@@ -19,11 +19,11 @@ let post0001_welcome = BlogPost(
       in an episode, but we have to cut in the interest of time.
 
       So, that is why we are happy to announce the launch of Point-Free Pointers! A
-      supplementary blog for [Point-Free](\(path(to: .home))) where we will be diving
+      supplementary blog for [Point-Free](\(url(to: .home))) where we will be diving
       even deeper into topics covered in our episodes. Keep up-to-date on new posts by add the
-      [RSS feed](\(path(to: .blog(.feed(.atom))))) to your reader of choice, follow us on
+      [RSS feed](\(url(to: .blog(.feed(.atom))))) to your reader of choice, follow us on
       [Twitter](\(twitterUrl(to: .pointfreeco))), or sign up for our
-      [newsletter](\(path(to: .login(redirect: path(to: .account(.index)))))).
+      [newsletter](\(url(to: .login(redirect: url(to: .account(.index)))))).
       """,
       timestamp: nil,
       type: .paragraph
