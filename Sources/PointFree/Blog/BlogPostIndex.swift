@@ -39,12 +39,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
       [
         `class`(
           [
-            Class.padding(
-              [
-                .mobile: [.leftRight: 3],
-                .desktop: [.leftRight: 4]
-              ]
-            )
+            Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])
           ]
         )
       ],
@@ -68,12 +63,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
                       [
                         `class`(
                           [
-                            Class.padding(
-                              [
-                                .mobile: [.topBottom: 3],
-                                .desktop: [.topBottom: 4]
-                              ]
-                            )
+                            Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])
                           ]
                         )
                       ],
