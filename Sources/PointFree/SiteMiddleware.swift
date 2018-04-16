@@ -35,6 +35,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. unit))
         |> accountResponse
 
+    case let .account(.invoices(.index(afterInvoiceId))):
+      return conn.map(const(user .*. subscriberState .*. afterInvoiceId .*. unit))
+        |> invoicesResponse
+
+    case let .account(.invoices(.show(invoiceId))):
+      return conn.map(const(user .*. subscriberState .*. invoiceId .*. unit))
+        |> invoiceResponse
+
     case let .account(.paymentInfo(.show(expand))):
       return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
         |> paymentInfoResponse

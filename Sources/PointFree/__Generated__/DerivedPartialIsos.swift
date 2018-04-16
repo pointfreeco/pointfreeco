@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.10.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.11.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -375,6 +375,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Route.Account.Invoices
+        ), B == Route.Account {
+
+          public static let invoices = parenthesize <| PartialIso(
+            apply: Route.Account.invoices,
+            unapply: {
+              guard case let .invoices(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Account.PaymentInfo
         ), B == Route.Account {
 
@@ -410,6 +424,34 @@ import Prelude
             apply: Route.Account.update,
             unapply: {
               guard case let .update(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            Stripe.Invoice.Id?
+        ), B == Route.Account.Invoices {
+
+          public static let index = parenthesize <| PartialIso(
+            apply: Route.Account.Invoices.index,
+            unapply: {
+              guard case let .index(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            Stripe.Invoice.Id
+        ), B == Route.Account.Invoices {
+
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Account.Invoices.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
               return .some(result)
           })
       }

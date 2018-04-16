@@ -284,6 +284,11 @@ private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Cus
   return stripeDataTask("customers/" + id.unwrap)
 }
 
+private func fetchInvoices(for customer: Stripe.Customer, startingAfter invoiceId: Stripe.Invoice.Id? = nil) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
+  let startingAfter = invoiceId.map { "&starting_after=" + $0.unwrap } ?? ""
+  return stripeDataTask("invoices?customer=" + customer.id.unwrap + startingAfter)
+}
+
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
@@ -343,27 +348,25 @@ private enum Method {
   case delete([String: String])
 }
 
+private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
+  switch method {
+  case .get:
+    return \.httpMethod .~ "GET"
+  case let .post(params):
+    return (\.httpMethod .~ "POST")
+      <> setHeader("Idempotency-Key", UUID().uuidString)
+      <> attachFormData(params)
+  case let .delete(params):
+    return (\.httpMethod .~ "DELETE")
+      <> attachFormData(params)
+  }
+}
+
 private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URLRequest> {
   return IO {
-    var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
-    let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
-    var headers = ["Authorization": "Basic " + secret]
-
-    switch method {
-    case .get:
-      request.httpMethod = "GET"
-    case let .post(params):
-      let httpBody = Data(urlFormEncode(value: params).utf8)
-      request.httpMethod = "POST"
-      headers["Idempotency-Key"] = UUID().uuidString
-      request.httpBody = httpBody
-    case let .delete(params):
-      request.httpMethod = "DELETE"
-      request.httpBody = Data(urlFormEncode(value: params).utf8)
-    }
-    request.allHTTPHeaderFields = headers
-
-    return request
+    URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+      |> attachMethod(method)
+      <> attachBasicAuth(username: AppEnvironment.current.envVars.stripe.secretKey)
   }
 }
 
