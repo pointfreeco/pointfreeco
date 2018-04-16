@@ -174,7 +174,7 @@ private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, 
   return firstRow(
     """
     UPDATE "subscriptions"
-    SET "stripe_subscription_status" = $1
+    SET "stripe_subscription_status" = $1, "updated_at" = NOW()
     WHERE "subscriptions"."stripe_subscription_id" = $2
     RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
     """,
@@ -228,6 +228,7 @@ private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, 
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "id" = $1
+    ORDER BY "created_at" DESC
     LIMIT 1
     """,
     [id.unwrap.uuidString]
@@ -240,6 +241,7 @@ private func fetchSubscription(ownerId: Database.User.Id) -> EitherIO<Error, Dat
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "user_id" = $1
+    ORDER BY "created_at" DESC
     LIMIT 1
     """,
     [ownerId.unwrap.uuidString]
@@ -278,7 +280,8 @@ private func updateUser(
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
         "email" = COALESCE($2, "email"),
-        "episode_credit_count" = COALESCE($3, "episode_credit_count")
+        "episode_credit_count" = COALESCE($3, "episode_credit_count"),
+        "updated_at" = NOW()
     WHERE "id" = $4
     """,
     [

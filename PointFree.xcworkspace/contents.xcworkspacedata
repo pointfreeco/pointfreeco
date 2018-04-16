@@ -2,9 +2,18 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:PointFree.xcodeproj">
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:LICENSE">
+   </FileRef>
+   <FileRef
+      location = "group:CC-LICENSE.md">
    </FileRef>
    <FileRef
       location = "group:PointFree.playground">
+   </FileRef>
+   <FileRef
+      location = "group:PointFree.xcodeproj">
    </FileRef>
 </Workspace>
