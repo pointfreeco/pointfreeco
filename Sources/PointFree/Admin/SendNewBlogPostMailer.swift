@@ -99,7 +99,7 @@ private func sendEmail(
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
-          subject: "\(subjectPrefix)New Point-Free Pointer: \(post.title)",
+          subject: "\(subjectPrefix)Point-Free Pointer: \(post.title)",
           unsubscribeData: (user.id, .newBlogPost),
           content: inj2(nodes)
           )

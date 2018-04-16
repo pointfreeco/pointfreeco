@@ -31,7 +31,8 @@ extension Assets {
   static let mock = Assets(
     brandonImgSrc: "",
     stephenImgSrc: "",
-    emailHeaderImgSrc: ""
+    emailHeaderImgSrc: "",
+    pointersEmailHeaderImgSrc: ""
   )
 }
 

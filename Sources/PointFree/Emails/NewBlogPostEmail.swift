@@ -14,39 +14,57 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newBlogPost,
-      title: "New Point-Free Pointer: \(post.title)",
+      title: "Point-Free Pointer: \(post.title)",
       preheader: post.blurb,
+      template: .blog,
       data: (
         post,
         user.subscriptionId != nil
           ? subscriberAnnouncement
-          : nonSubscriberAnnouncement,
-        user.subscriptionId != nil
+          : nonSubscriberAnnouncement
       )
     )
 }
 
-let newBlogPostEmailContent = View<(BlogPost, String?, isSubscriber: Bool)> { post, announcement, isSubscriber in
+let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+        div(
+          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          announcementView.view(announcement)
+        ),
 
-            announcementView.view(announcement) <> [
+        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+          a([href(url(to: .blog(.show(.right(post.id.unwrap)))))], [
+            h3([`class`([Class.pf.type.responsiveTitle3])], [text(post.title)]),
+            ]),
+          p([.text(encode(post.blurb))]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .blog(.show((.right(post.id.unwrap))))))], [
+              img(src: post.coverImage, alt: "", [style(maxWidth(.pct(100)))])
+              ])
+            ]),
 
-              a([href(url(to: .blog(.show(.right(post.id.unwrap)))))], [
-                h3([`class`([Class.pf.type.responsiveTitle3])], [text(post.title)]),
-                ]),
-              p([.text(encode(post.blurb))]),
-              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                a([href(url(to: .blog(.show((.right(post.id.unwrap))))))], [
-                  img(src: post.coverImage, alt: "", [style(maxWidth(.pct(100)))])
-                  ])
-                ])
-              ]
-              <> nonSubscriberCtaView.view((post, isSubscriber))
-              <> subscriberCtaView.view((post, isSubscriber))
-              <> hostSignOffView.view(unit))
+          a(
+            [
+              href(url(to: .blog(.show(.right(post.id.unwrap))))),
+              `class`(
+                [
+                  Class.pf.colors.link.purple,
+                  Class.pf.colors.fg.purple,
+                  Class.pf.type.body.leading
+                ]
+              )
+            ],
+            ["Read the full post…"]
+          )
+          ]),
+
+        div(
+          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          hostSignOffView.view(unit)
+        )
         ])
       ])
     ])
@@ -75,46 +93,6 @@ private let announcementView = View<String?> { announcement -> [Node] in
   ]
 }
 
-private let nonSubscriberCtaView = View<(BlogPost, isSubscriber: Bool)> { post, isSubscriber -> [Node] in
-  guard !isSubscriber else { return [] }
-
-  let blurb = true // ep.subscriberOnly
-    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
-    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
-
-  let watchText = true // ep.subscriberOnly
-    ? "Watch preview"
-    : "Watch"
-
-  return [
-    p([text(blurb)]),
-    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Subscribe to Point-Free!"]
-      ),
-      a(
-        [
-          href(url(to: .blog(.show(.right(post.id.unwrap))))),
-          `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
-        ],
-        [text(watchText)]
-      )
-      ])
-  ]
-}
-
-private let subscriberCtaView = View<(BlogPost, isSubscriber: Bool)> { (post, isSubscriber) -> [Node] in
-  guard isSubscriber else { return [] }
-
-  return [
-//    p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
-//    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-//      a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
-//        ["Watch now!"])
-//      ])
-  ]
-}
-
 let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminReportEmailContent)
   .contramap { erroredUsers, totalAttempted in
     SimpleEmailLayoutData(
@@ -122,6 +100,7 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
       newsletter: nil,
       title: "New blog post email finished sending!",
       preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
+      template: .blog,
       data: (erroredUsers, totalAttempted)
     )
 }
