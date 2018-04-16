@@ -40,34 +40,39 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
 }
 
 let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Episode.Id, String?, String?, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, BlogPost.Id, String?, String?, Bool?>, Data> =
   requireAdmin
     <<< filterMap(
-      over2(fetchEpisode) >>> require2 >>> pure,
-      or: redirect(to: .admin(.newEpisodeEmail(.show)))
+      over2(fetchBlogPost(forId:)) >>> require2 >>> pure,
+      or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
     <<< filterMap(
       require5 >>> pure,
-      or: redirect(to: .admin(.newEpisodeEmail(.show)))
+      or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
-    <| sendNewEpisodeEmails
+    <| sendNewBlogPostEmails
     >-> redirect(to: .admin(.index))
 
-private func sendNewEpisodeEmails<I>(
-  _ conn: Conn<I, Tuple5<Database.User, Episode, String?, String? , Bool>>
+private func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
+  return AppEnvironment.current.blogPosts()
+    .first(where: { id == $0.id })
+}
+
+private func sendNewBlogPostEmails<I>(
+  _ conn: Conn<I, Tuple5<Database.User, BlogPost, String?, String? , Bool>>
   ) -> IO<Conn<I, Prelude.Unit>> {
 
-  let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
+  let (_, post, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
   let users = isTest
     ? AppEnvironment.current.database.fetchAdmins()
-    : AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
+    : AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newBlogPost)
 
   return users
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in
       sendEmail(
-        forNewEpisode: episode,
+        forNewBlogPost: post,
         toUsers: users,
         subscriberAnnouncement: subscriberAnnouncement,
         nonSubscriberAnnouncement: nonSubscriberAnnouncement,
@@ -79,7 +84,7 @@ private func sendNewEpisodeEmails<I>(
 }
 
 private func sendEmail(
-  forNewEpisode episode: Episode,
+  forNewBlogPost post: BlogPost,
   toUsers users: [Database.User],
   subscriberAnnouncement: String?,
   nonSubscriberAnnouncement: String?,
@@ -89,13 +94,13 @@ private func sendEmail(
   let subjectPrefix = isTest ? "[TEST] " : ""
 
   // A personalized email to send to each user.
-  let newEpisodeEmails = users.map { user in
-    lift(IO { newEpisodeEmail.view((episode, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
+  let newBlogPostEmails = users.map { user in
+    lift(IO { newBlogPostEmail.view((post, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
-          subject: "\(subjectPrefix)New Point-Free Episode: \(episode.title)",
-          unsubscribeData: (user.id, .newEpisode),
+          subject: "\(subjectPrefix)New Point-Free Pointer: \(post.title)",
+          unsubscribeData: (user.id, .newBlogPost),
           content: inj2(nodes)
           )
           .delay(.milliseconds(200))
@@ -104,13 +109,13 @@ private func sendEmail(
   }
 
   // An email to send to admins once all user emails are sent
-  let newEpisodeEmailReport = sequence(newEpisodeEmails.map(^\.run))
+  let newBlogPostEmailReport = sequence(newBlogPostEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
         to: adminEmails,
-        subject: "New episode email finished sending!",
+        subject: "New blog post email finished sending!",
         content: inj2(
-          newEpisodeEmailAdminReportEmail.view(
+          newBlogPostEmailAdminReportEmail.view(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)
@@ -125,7 +130,7 @@ private func sendEmail(
   }
 
   let fireAndForget = IO { () -> Prelude.Unit in
-    newEpisodeEmailReport
+    newBlogPostEmailReport
       .map(const(unit))
       .parallel
       .run({ _ in })

@@ -273,7 +273,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   switch type {
   case .announcements:
     return "New announcements (very infrequently)"
-  case .blogPost:
+  case .newBlogPost:
     return "New blog posts on Point-Free Pointers"
   case .newEpisode:
     return "New episode is available (about once a week)"

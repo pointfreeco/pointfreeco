@@ -60,7 +60,7 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
     You are receiving this email because you expressed interest in hearing about new announcements,
     such as new features and new projects of ours.
     """
-  case .blogPost:
+  case .newBlogPost:
     return """
     You are receiving this email because you expressed interest in being notified about new posts on our
     blog, Point-Free Pointers.
