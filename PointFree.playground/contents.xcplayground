@@ -11,5 +11,6 @@
         <page name='About'/>
         <page name='Subscribe'/>
         <page name='Session'/>
+        <page name='Blog'/>
     </pages>
 </playground>

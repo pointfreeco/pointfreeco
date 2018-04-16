@@ -73,21 +73,7 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
 private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
   [
-    a(
-      [
-        href(mountainsStyle.otherStyle.heroHref),
-        `class`(
-          [
-            Class.type.medium,
-            Class.pf.colors.link.black,
-            Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])
-          ]
-        )
-      ],
-      [
-        text(mountainsStyle.otherStyle.navLinkName)
-      ]
-    ),
+    a([href(path(to: .about)), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["About"]),
 
     subscriberState.isNonSubscriber
       ? a([href(path(to: .pricing(nil, expand: nil))), `class`([Class.type.medium, Class.pf.colors.link.black, Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])])], ["Subscribe"])
