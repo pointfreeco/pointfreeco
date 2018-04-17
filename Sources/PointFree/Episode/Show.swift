@@ -628,7 +628,13 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
           ["Exercises"]
         ),
         ol(
-          exercises.map { li([div([markdownBlock($0.body)])]) }
+          [id("exercises")],
+          zip(1..., exercises).map {
+            li(
+              [id("exercise-\($0)")],
+              [div([markdownBlock($1.body)])]
+            )
+          }
         )
       ]
     )
