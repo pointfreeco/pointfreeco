@@ -134,6 +134,7 @@ let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView)
       newsletter: nil,
       title: "Your subscription is past-due",
       preheader: "Your most recent payment was declined.",
+      template: .default,
       data: unit
     )
 }

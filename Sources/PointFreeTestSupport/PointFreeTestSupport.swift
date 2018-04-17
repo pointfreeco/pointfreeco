@@ -9,7 +9,7 @@ import Prelude
 extension Environment {
   public static let mock = Environment(
     assets: .mock,
-    blogPosts: { [post0001_welcome] },
+    blogPosts: { [post0000_mock] },
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
@@ -31,7 +31,8 @@ extension Assets {
   static let mock = Assets(
     brandonImgSrc: "",
     stephenImgSrc: "",
-    emailHeaderImgSrc: ""
+    emailHeaderImgSrc: "",
+    pointersEmailHeaderImgSrc: ""
   )
 }
 

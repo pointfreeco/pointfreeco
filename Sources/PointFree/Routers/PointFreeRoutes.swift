@@ -64,6 +64,7 @@ public enum Route: DerivePartialIsos {
     case episodeCredits(EpisodeCredit)
     case freeEpisodeEmail(FreeEpisodeEmail)
     case index
+    case newBlogPostEmail(NewBlogPostEmail)
     case newEpisodeEmail(NewEpisodeEmail)
 
     public enum EpisodeCredit: DerivePartialIsos {
@@ -73,6 +74,11 @@ public enum Route: DerivePartialIsos {
 
     public enum FreeEpisodeEmail: DerivePartialIsos {
       case send(Episode.Id)
+      case index
+    }
+
+    public enum NewBlogPostEmail: DerivePartialIsos {
+      case send(BlogPost.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
       case index
     }
 
@@ -167,7 +173,17 @@ private let routers: [Router<Route>] = [
   .admin <<< .freeEpisodeEmail <<< .index
     <¢> get %> lit("admin") %> lit("free-episode-email") <% end,
 
-  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
+  .admin <<< .newBlogPostEmail <<< .index
+    <¢> get %> lit("admin") %> lit("new-blog-post-email") <% end,
+
+  .admin <<< .newBlogPostEmail <<< PartialIso.send
+    <¢> post %> lit("admin") %> lit("new-blog-post-email") %> pathParam(.int >>> .tagged) <%> lit("send")
+    %> formField("subscriber_announcement", .string).map(Optional.iso.some)
+    <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
+    <%> isTest
+    <% end,
+
+  .admin <<< .newEpisodeEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")
     %> formField("subscriber_announcement", .string).map(Optional.iso.some)
     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
