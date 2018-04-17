@@ -72,21 +72,15 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
 
 private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute -> [Node] in
 
-  let linkClasses = [
-    Class.type.medium,
-    Class.pf.colors.link.black,
-    Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])
-  ]
-
   let blogOrAboutLink: Node
   if AppEnvironment.current.features.hasAccess(to: .blog, for: currentUser) {
     blogOrAboutLink = a(
-      [href(mountainsStyle.otherStyle.heroHref), `class`(linkClasses)],
+      [href(mountainsStyle.otherStyle.heroHref), `class`(navLinkClasses)],
       [text(mountainsStyle.otherStyle.navLinkName)]
     )
   } else {
     blogOrAboutLink = a(
-      [href(path(to: .about)), `class`(linkClasses)],
+      [href(path(to: .about)), `class`(navLinkClasses)],
       ["About"]
     )
   }
@@ -95,7 +89,7 @@ private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, Subscri
     blogOrAboutLink,
 
     subscriberState.isNonSubscriber
-      ? a([href(path(to: .pricing(nil, expand: nil))), `class`(linkClasses)], ["Subscribe"])
+      ? a([href(path(to: .pricing(nil, expand: nil))), `class`(navLinkClasses)], ["Subscribe"])
       : nil,
 
     currentUser == nil
@@ -104,3 +98,9 @@ private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, Subscri
     ]
     .compactMap(id)
 }
+
+
+let navLinkClasses =
+  Class.type.medium
+    | Class.pf.colors.link.black
+    | Class.margin([.mobile: [.right: 2], .desktop: [.right: 3]])
