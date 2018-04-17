@@ -75,12 +75,12 @@ private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, Subscri
   let blogOrAboutLink: Node
   if AppEnvironment.current.features.hasAccess(to: .blog, for: currentUser) {
     blogOrAboutLink = a(
-      [href(mountainsStyle.otherStyle.heroHref), `class`(navLinkClasses)],
+      [href(mountainsStyle.otherStyle.heroHref), `class`([navLinkClasses])],
       [text(mountainsStyle.otherStyle.navLinkName)]
     )
   } else {
     blogOrAboutLink = a(
-      [href(path(to: .about)), `class`(navLinkClasses)],
+      [href(path(to: .about)), `class`([navLinkClasses])],
       ["About"]
     )
   }
@@ -89,7 +89,7 @@ private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, Subscri
     blogOrAboutLink,
 
     subscriberState.isNonSubscriber
-      ? a([href(path(to: .pricing(nil, expand: nil))), `class`(navLinkClasses)], ["Subscribe"])
+      ? a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClasses])], ["Subscribe"])
       : nil,
 
     currentUser == nil
