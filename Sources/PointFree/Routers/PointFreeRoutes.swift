@@ -176,14 +176,14 @@ private let routers: [Router<Route>] = [
   .admin <<< .newBlogPostEmail <<< .index
     <¢> get %> lit("admin") %> lit("new-blog-post-email") <% end,
 
-  PartialIso.admin <<< PartialIso.newBlogPostEmail <<< PartialIso.send
+  .admin <<< .newBlogPostEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-blog-post-email") %> pathParam(.int >>> .tagged) <%> lit("send")
     %> formField("subscriber_announcement", .string).map(Optional.iso.some)
     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
     <%> isTest
     <% end,
 
-  PartialIso.admin <<< PartialIso.newEpisodeEmail <<< PartialIso.send
+  .admin <<< .newEpisodeEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")
     %> formField("subscriber_announcement", .string).map(Optional.iso.some)
     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)

@@ -113,7 +113,7 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
           h3([`class`([Class.pf.type.title3])], ["New blog post email report"]),
           p([
             "A total of ",
-            strong([.text(encode("\(totalAttempted)"))]),
+            strong([text("\(totalAttempted)")]),
             " emails were attempted to be sent, and of those, ",
             strong([.text(encode("\(erroredUsers.count)"))]),
             " emails failed to send. Here is the list of users that we ",
