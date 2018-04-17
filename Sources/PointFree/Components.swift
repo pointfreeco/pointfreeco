@@ -78,6 +78,7 @@ func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
       """),
       target(.blank),
       rel(.value("noopener noreferrer")),
+      `class`([twitterLinkButtonClass]),
       style(twitterLinkButtonStyle)
     ],
     [
@@ -86,10 +87,14 @@ func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
         mediaType: .image(.svg),
         alt: "",
         [
-          style(twitterButtonIconStyle)
+          style(twitterButtonIconStyle),
+          `class`([twitterButtonIconClass])
         ]
       ),
-      span([style(twitterButtonTextStyle)], ["Tweet"])
+      span(
+        [style(twitterButtonTextStyle), `class`([twitterButtonTextClass])],
+        ["Tweet"]
+      )
     ]
   )
 }
@@ -101,28 +106,38 @@ private let twitterLogoSvg = Data(
   )
   .base64EncodedString()
 
+private let twitterLinkButtonClass: CssSelector =
+  Class.type.lineHeight(1)
+    | Class.position.relative
+    | Class.type.medium
+    | Class.display.inlineBlock
+    | Class.align.top
+
 private let twitterLinkButtonStyle: Stylesheet =
-  backgroundColor(.rgba(12, 122, 191, 1))
-    <> height(.px(20))
-    <> position(.relative)
-    <> boxSizing(.borderBox)
-    <> padding(top: .px(1), right: .px(8), bottom: .px(1), left: .px(6))
+  boxSizing(.borderBox)
     <> color(.white)
+    <> backgroundColor(.rgba(12, 122, 191, 1))
+    <> height(.px(20))
+    <> padding(top: .px(1), right: .px(8), bottom: .px(1), left: .px(6))
     <> borderRadius(all: .px(3))
-    <> fontWeight(.w500)
-    <> display(.inlineBlock)
-    <> verticalAlign(.top)
+    <> fontSize(.px(16))
+
+private let twitterButtonTextClass: CssSelector =
+  Class.display.inlineBlock
+    | Class.align.top
 
 private let twitterButtonTextStyle: Stylesheet =
-  verticalAlign(.top)
-    <> display(.inlineBlock)
-    <> fontFamily(["'Helvetica Neue',Arial,sans-serif"])
+  fontFamily(["'Helvetica Neue',Arial,sans-serif"])
     <> fontSize(.px(11))
-    <> margin(top: .px(1), left: .px(3))
+    <> lineHeight(.px(18))
+    <> margin(left: .px(3))
+
+private let twitterButtonIconClass: CssSelector =
+  Class.position.relative
+    | Class.display.inlineBlock
 
 private let twitterButtonIconStyle: Stylesheet =
-  position(.relative)
-    <> display(.inlineBlock)
-    <> width(.px(14))
+  width(.px(14))
     <> height(.px(14))
-    <> top(.px(-1))
+    <> fontSize(.px(16))
+    <> top(.px(1))

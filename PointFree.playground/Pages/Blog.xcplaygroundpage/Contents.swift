@@ -22,7 +22,7 @@ let result = connection(from: req)
   |> ^\.response.body
 let htmlStr = String(data: result, encoding: .utf8) ?? ""
 
-let webView = WKWebView(frame: .init(x: 0, y: 0, width: 832, height: 750))
+let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
 webView.loadHTMLString(htmlStr, baseURL: nil)
 
 PlaygroundPage.current.liveView = webView
