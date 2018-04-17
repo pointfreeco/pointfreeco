@@ -53,7 +53,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() {
-    let req = request(to: .blog(.show(.right(1))), basicAuth: true)
+    let req = request(to: .blog(.show(.right(post0000_mock.id.unwrap))), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
@@ -73,7 +73,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow_Unauthed() {
-    let req = request(to: .blog(.show(.right(1)))) 
+    let req = request(to: .blog(.show(.right(post0000_mock.id.unwrap)))) 
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform

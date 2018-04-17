@@ -11,6 +11,7 @@ let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody)
       newsletter: nil,
       title: "You have been removed from \(teamOwner.name ?? teamOwner.email.unwrap)’s Point-Free team",
       preheader: "",
+      template: .default,
       data: (teamOwner, teammate)
     )
 }
@@ -49,6 +50,7 @@ let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody)
       newsletter: nil,
       title: "Your teammate \(teammate.name ?? teammate.email.unwrap) has been removed",
       preheader: "",
+      template: .default,
       data: (teamOwner, teammate)
     )
 }

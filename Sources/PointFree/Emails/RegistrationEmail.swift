@@ -11,6 +11,7 @@ let registrationEmailView = simpleEmailLayout(registrationEmailBody)
       newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "",
+      template: .default,
       data: user
     )
 }

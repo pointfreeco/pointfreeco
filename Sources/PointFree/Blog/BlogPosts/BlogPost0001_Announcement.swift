@@ -2,6 +2,9 @@ import Foundation
 
 let post0001_welcome = BlogPost(
   blurb: """
+Today we are excited to announcement launch of Point-Free Pointers, a blog to supplement our video
+series for all the content we couldn’t fit in. Expect to find regularly postings here that dive
+even deeper into functional programming, show real world use cases, and more!
 """,
   contentBlocks: [
     .init(
@@ -29,6 +32,7 @@ let post0001_welcome = BlogPost(
       type: .paragraph
     ),
     ],
+  coverImage: "",
   id: 1,
   publishedAt: .init(timeIntervalSince1970: 1_523_872_623),
   title: "Announcing Point-Free Pointers!",
