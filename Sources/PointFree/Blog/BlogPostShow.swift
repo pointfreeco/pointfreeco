@@ -125,18 +125,10 @@ let blogPostContentView = View<BlogPost> { post in
         style(flex(direction: .row))
       ],
       [
+        div([p([text(episodeDateFormatter.string(from: post.publishedAt))])]),
         div(
-          [
-            p([text(episodeDateFormatter.string(from: post.publishedAt))]),
-          ]
-        ),
-        div(
-          [
-            `class`([Class.margin([.mobile: [.left: 1]])])
-          ],
-          [
-            twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco"),
-          ]
+          [`class`([Class.margin([.mobile: [.left: 1]])])],
+          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
         )
       ]
     ),
