@@ -22,11 +22,10 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: post,
+          data: (post, subscriberState),
           description: post.blurb,
           extraStyles: markdownBlockStyles,
-          // TODO
-          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+          image: post.coverImage,
           navStyle: .mountains(.blog),
           openGraphType: .website,
           title: post.title,
@@ -40,7 +39,7 @@ private func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
     .first(where: { param.right == .some($0.id.unwrap) })
 }
 
-private let blogPostShowView = View<BlogPost> { post in
+private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
 
   [
     gridRow(
@@ -53,7 +52,7 @@ private let blogPostShowView = View<BlogPost> { post in
             div(
               [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
               blogPostContentView.view(post)
-                <> subscriberCalloutView.view(unit)
+                <> subscriberCalloutView.view(subscriberState)
             )
           ]
         )
@@ -62,8 +61,10 @@ private let blogPostShowView = View<BlogPost> { post in
   ]
 }
 
-private let subscriberCalloutView = View<Prelude.Unit> { _ in
-  [
+private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+  guard !subscriberState.isActive else { return [] }
+
+  return [
     hr([`class`([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
 
     div(
