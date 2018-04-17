@@ -70,7 +70,7 @@ extension PartialIso where A == Either<String, Int>, B == BlogPost {
   static var blogPostFromParam: PartialIso {
     return PartialIso(
       apply: fetchBlogPost(forParam:),
-      unapply: { return .left($0.slug) }
+      unapply: Either.left <<< ^\.slug
     )
   }
 }
