@@ -10,8 +10,17 @@
 
 ▿ Response
   Status 200 OK
-  Content-Length: 756
+  Content-Length: 1585
   Content-Type: application/atom+xml
 
-  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Mock Blog Post</title><link href="http://localhost:8080/blog/posts/0-mock-blog-post"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/0-mock-blog-post</id><content type="html"><![CDATA[This is the blurb to a mock blog post. This should just be short and to the point, using only plain
-  text, no markdown.]]></content></entry></feed>
+  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Mock Blog Post</title><link href="http://localhost:8080/blog/posts/0-mock-blog-post"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/0-mock-blog-post</id><content type="html"><![CDATA[<h1 class="fg-black bold ts-m-r1_5 ts-d-r2 lh-2"><a href="http://localhost:8080/blog/posts/0-mock-blog-post">Mock Blog Post</a></h1><p>Monday Apr 16, 2018</p><div style="width:3rem;height:1px" class="bg-green m-mb3"></div><div class="bg-white"><div><div class=" md-ctn"><p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
+  should be broken out into separate content blocks so that we can use the JS syntax highlighting
+  library. For example, here is some code:</p>
+  </div></div><pre><code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">struct PredicateSet&lt;A&gt; {
+    let contains: (A) -&gt; Bool
+  }
+
+  func contramap&lt;A, B&gt;(_ f: @escaping (B) -&gt; A) -&gt; (PredicateSet&lt;A&gt;) -&gt; PredicateSet&lt;B&gt; {
+    return { set in PredicateSet(contains: f &gt;&gt;&gt; set.contains) }
+  }</code></pre><div><div class=" md-ctn"><p>Cool stuff right?</p>
+  </div></div></div>]]></content></entry></feed>

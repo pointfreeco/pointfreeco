@@ -113,7 +113,7 @@ let blogPostContentView = View<BlogPost> { post in
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
         a(
-          [href(path(to: .blog(.show(post))))],
+          [href(url(to: .blog(.show(post))))],
           [text(post.title)]
         )
       ]
