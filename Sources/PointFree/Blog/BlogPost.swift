@@ -19,7 +19,7 @@ public struct BlogPost {
   }
 
   public var slug: String {
-    return "post\(self.id.unwrap)-\(PointFree.slug(for: self.title))"
+    return "\(self.id.unwrap)-\(PointFree.slug(for: self.title))"
   }
 }
 
