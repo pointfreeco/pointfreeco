@@ -102,7 +102,7 @@ private let contentColumnView = View<Database.User?> { currentUser -> Node in
 
 private let accountColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([columnTitleClass])], ["Join!"]),
+    h5([`class`([columnTitleClass])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
       li([
         a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Subscribe"])
@@ -150,24 +150,3 @@ private let columnTitleClass =
 private let legalClass =
   Class.pf.colors.fg.gray400
     | Class.pf.type.body.small
-
-
-
-//CONTENT
-//-------
-//Videos
-//Blog
-//About Us
-//
-//JOIN!
-//-------
-//Subscribe
-//Pricing
-//
-//MORE
-//----
-//Twitter
-//GitHub
-//Contact us / Support
-//Privacy Policy
-//
