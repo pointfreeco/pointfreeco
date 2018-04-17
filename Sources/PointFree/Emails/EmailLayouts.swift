@@ -4,6 +4,20 @@ import HtmlCssSupport
 import Prelude
 import Styleguide
 
+enum EmailLayoutTemplate {
+  case blog
+  case `default`
+
+  var headerImgSrc: String {
+    switch self {
+    case .blog:
+      return AppEnvironment.current.assets.pointersEmailHeaderImgSrc
+    case .default:
+      return AppEnvironment.current.assets.emailHeaderImgSrc
+    }
+  }
+}
+
 /// The data needed to use the simple email layout.
 struct SimpleEmailLayoutData<A> {
   let user: Database.User?
@@ -12,6 +26,7 @@ struct SimpleEmailLayoutData<A> {
   /// Content of the hidden preheader tag at the top of the body. Many email clients will render this as a
   /// preview of the email in the inbox.
   let preheader: String
+  let template: EmailLayoutTemplate
   /// Any other data the email view needs to do its job.
   let data: A
 }
@@ -37,7 +52,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
             tr([
               td([
                 img(
-                  src: AppEnvironment.current.assets.emailHeaderImgSrc,
+                  src: layoutData.template.headerImgSrc,
                   alt: "",
                   [style(maxWidth(.pct(100)))]
                 )

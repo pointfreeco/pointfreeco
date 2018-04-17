@@ -11,6 +11,7 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
       newsletter: nil,
       title: "You’re invited to join \(inviter.name ?? inviter.email.unwrap)’s team on Point-Free",
       preheader: "Your colleague \(inviter.name ?? inviter.email.unwrap) has invited you to join their team account on Point-Free.",
+      template: .default,
       data: (inviter, invite)
     )
 }
@@ -49,6 +50,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
       newsletter: nil,
       title: "\(invitee.name ?? invitee.email.unwrap) has accepted your invitation!",
       preheader: "",
+      template: .default,
       data: (inviter, invitee)
     )
 }

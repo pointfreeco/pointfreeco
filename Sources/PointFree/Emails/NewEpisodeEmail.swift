@@ -16,6 +16,7 @@ let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
       newsletter: .newEpisode,
       title: "New Point-Free Episode: \(episode.title)",
       preheader: episode.blurb,
+      template: .default,
       data: (
         episode,
         user.subscriptionId != nil
@@ -122,6 +123,7 @@ let newEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminRepo
       newsletter: nil,
       title: "New episode email finished sending!",
       preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
+      template: .default,
       data: (erroredUsers, totalAttempted)
     )
 }
