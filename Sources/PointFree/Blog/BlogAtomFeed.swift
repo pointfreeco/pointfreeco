@@ -26,7 +26,7 @@ private let feedView = View<[BlogPost]> { posts in
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   return AtomEntry(
     title: post.title,
-    siteUrl: url(to: .blog(.show(.right(post.id.unwrap)))),
+    siteUrl: url(to: .blog(.show(post))),
     updated: post.publishedAt,
     content: [text(post.blurb)]
   )

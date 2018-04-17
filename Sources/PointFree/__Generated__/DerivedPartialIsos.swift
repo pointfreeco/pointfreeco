@@ -625,7 +625,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            BlogPost.Id
+            BlogPost
           , 
             String?
           , 
@@ -712,7 +712,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            Either<String, Int>
+            BlogPost
         ), B == Route.Blog {
 
           public static let show = parenthesize <| PartialIso(

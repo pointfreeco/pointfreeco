@@ -15,7 +15,7 @@ import SnapshotTesting
 AppEnvironment.push(const(.mock))
 
 let post = AppEnvironment.current.blogPosts().first!
-let req = request(to: .blog(.show(.right(post.id.unwrap))), session: .loggedOut, basicAuth: true)
+let req = request(to: .blog(.show(post)), session: .loggedOut, basicAuth: true)
 let result = connection(from: req)
   |> siteMiddleware
   |> Prelude.perform

@@ -8,12 +8,8 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
-  filterMap(
-    over1(blogPost(forParam:)) >>> require1 >>> pure,
-    or: map(const(unit)) >>> routeNotFoundMiddleware
-    )
-    <| writeStatus(.ok)
+let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+  writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: blogPostShowView,
@@ -34,9 +30,12 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
     }
 )
 
-private func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
+func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
-    .first(where: { param.right == .some($0.id.unwrap) })
+    .first(where: {
+      param.right == .some($0.id.unwrap)
+        || param.left == .some($0.slug)
+    })
 }
 
 private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
@@ -114,7 +113,7 @@ let blogPostContentView = View<BlogPost> { post in
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
         a(
-          [href(path(to: .blog(.show(.right(post.id.unwrap)))))],
+          [href(path(to: .blog(.show(post))))],
           [text(post.title)]
         )
       ]

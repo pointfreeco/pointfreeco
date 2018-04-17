@@ -1,3 +1,5 @@
+import ApplicativeRouter
+import Either
 import Foundation
 import Prelude
 
@@ -14,6 +16,10 @@ public struct BlogPost {
 
   public struct Video {
     public private(set) var sources: [String]
+  }
+
+  public var slug: String {
+    return "post\(self.id.unwrap)-\(PointFree.slug(for: self.title))"
   }
 }
 
@@ -59,3 +65,21 @@ text, no markdown.
   title: "Mock Blog Post",
   video: nil
 )
+
+extension PartialIso where A == Either<String, Int>, B == BlogPost {
+  static var blogPostFromParam: PartialIso {
+    return PartialIso(
+      apply: fetchBlogPost(forParam:),
+      unapply: { return .left($0.slug) }
+    )
+  }
+}
+
+extension PartialIso where A == BlogPost.Id, B == BlogPost {
+  static var blogPostFromId: PartialIso {
+    return PartialIso(
+      apply: fetchBlogPost(forId:),
+      unapply: ^\.id
+    )
+  }
+}
