@@ -24,7 +24,7 @@ private let footerInfoColumnsView =
 private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
 private let linksColumnsView = View<Database.User?> { currentUser in
-  contentColumnView.map(linksColumn).view(unit)
+  contentColumnView.map(linksColumn).view(currentUser)
     <> (currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [])
     <> moreColumnView.map(linksColumn).view(unit)
 }
@@ -64,10 +64,24 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
     ])
 }
 
-private let contentColumnView = View<Prelude.Unit> { _ in
-  div([
-    h5([`class`([columnTitleClass])], ["Content"]),
-    ol([`class`([Class.type.list.reset])], [
+private let contentColumnView = View<Database.User?> { currentUser -> Node in
+
+  let links: [ChildOf<Element.Ol>]
+
+  if AppEnvironment.current.features.hasAccess(to: .blog, for: currentUser) {
+    links = [
+      li([
+        a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
+        ]),
+      li([
+        a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
+        ]),
+      li([
+        a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
+        ]),
+    ]
+  } else {
+    links = [
       li([
         a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
         ]),
@@ -77,13 +91,18 @@ private let contentColumnView = View<Prelude.Unit> { _ in
       li([
         a([`class`([footerLinkClass]), href("http://www.stephencelis.com")], ["Stephen Celis"])
         ]),
-      ])
+    ]
+  }
+
+  return div([
+    h5([`class`([columnTitleClass])], ["Content"]),
+    ol([`class`([Class.type.list.reset])], links)
     ])
 }
 
 private let accountColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([`class`([columnTitleClass])], ["Account"]),
+    h5([`class`([columnTitleClass])], ["Join!"]),
     ol([`class`([Class.type.list.reset])], [
       li([
         a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Subscribe"])
@@ -131,3 +150,24 @@ private let columnTitleClass =
 private let legalClass =
   Class.pf.colors.fg.gray400
     | Class.pf.type.body.small
+
+
+
+//CONTENT
+//-------
+//Videos
+//Blog
+//About Us
+//
+//JOIN!
+//-------
+//Subscribe
+//Pricing
+//
+//MORE
+//----
+//Twitter
+//GitHub
+//Contact us / Support
+//Privacy Policy
+//
