@@ -1,0 +1,12 @@
+▿ Step
+  ResponseEnded
+
+▿ Request
+  GET http://localhost:8080/episodes
+  Cookie: pf_session={}
+
+  (Data, 0 bytes)
+
+▿ Response
+  Status 302 FOUND
+  Location: /
