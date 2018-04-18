@@ -652,8 +652,13 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
       ])
 
   case let .image(src):
-    return div(
-      [`class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])])],
+    return a(
+      [
+        `class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
+        href(src),
+        target(.blank),
+        rel(.value("noopener noreferrer")),
+      ],
       [img(src: src, alt: "", [`class`([innerImageContainerClass])])]
     )
 
@@ -680,7 +685,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   case let .video(poster, sources):
     return div(
       [
-        `class`([outerVideoContainerClass, Class.margin([.mobile: [.bottom: 3]])]),
+        `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
         style(outerVideoContainerStyle)
       ],
       [

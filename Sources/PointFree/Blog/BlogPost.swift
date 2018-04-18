@@ -29,19 +29,11 @@ This is the blurb to a mock blog post. This should just be short and to the poin
 text, no markdown.
 """,
   contentBlocks: [
-
-
-
     .init(
       content: "",
       timestamp: nil,
-      type: .video(poster: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg", sources: [])
+      type: .video(poster: "", sources: [])
     ),
-
-
-
-
-
     .init(
       content: """
       This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
@@ -64,17 +56,11 @@ text, no markdown.
       timestamp: nil,
       type: .code(lang: .swift)
     ),
-
-
-
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg")
+      type: .image(src: "")
     ),
-
-
-    
     .init(
       content: """
       Cool stuff right? 
