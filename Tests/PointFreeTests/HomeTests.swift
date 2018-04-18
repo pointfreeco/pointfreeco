@@ -27,4 +27,11 @@ class HomeTests: TestCase {
     }
     #endif
   }
+
+  func testEpisodesIndex() {
+    let conn = connection(from: request(to: .episodes))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
 }

@@ -15,6 +15,7 @@ public enum Route: DerivePartialIsos {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case episode(Either<String, Int>)
+  case episodes
   case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -207,6 +208,9 @@ private let routers: [Router<Route>] = [
 
   .episode
     <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+
+  .episodes
+    <¢> get %> lit("episodes") <% end,
 
   .feed <<< .atom
     <¢> get %> lit("feed") %> lit("atom.xml") <% end,
