@@ -39,7 +39,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
           a([href(url(to: .blog(.show(.right(post.id.unwrap)))))], [
             h3([`class`([Class.pf.type.responsiveTitle3])], [text(post.title)]),
             ]),
-          p([.text(encode(post.blurb))]),
+          p([text(post.blurb)]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .blog(.show((.right(post.id.unwrap))))))], [
               img(src: post.coverImage, alt: "", [style(maxWidth(.pct(100)))])
@@ -115,13 +115,13 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
             "A total of ",
             strong([text("\(totalAttempted)")]),
             " emails were attempted to be sent, and of those, ",
-            strong([.text(encode("\(erroredUsers.count)"))]),
+            strong([text("\(erroredUsers.count)")]),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
             ]),
 
           ul(erroredUsers.map { user in
-            li([.text(encode(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap))])
+            li([text(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap)])
           })
           ])
         ])
