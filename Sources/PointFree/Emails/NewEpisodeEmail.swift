@@ -38,7 +38,7 @@ let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, 
               a([href(url(to: .episode(.left(ep.slug))))], [
                 h3([`class`([Class.pf.type.responsiveTitle3])], [text("#\(ep.sequence): \(ep.title)")]),
                 ]),
-              p([.text(encode(ep.blurb))]),
+              p([text(ep.blurb)]),
               p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
                 a([href(url(to: .episode(.left(ep.slug))))], [
                   img(src: ep.image, alt: "", [style(maxWidth(.pct(100)))])
@@ -108,7 +108,7 @@ private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSub
   guard isSubscriber else { return [] }
 
   return [
-    p([.text(encode("This episode is \(ep.length / 60) minutes long."))]),
+    p([text("This episode is \(ep.length / 60) minutes long.")]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
       a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
         ["Watch now!"])
@@ -136,15 +136,15 @@ let newEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erro
           h3([`class`([Class.pf.type.title3])], ["New episode email report"]),
           p([
             "A total of ",
-            strong([.text(encode("\(totalAttempted)"))]),
+            strong([text("\(totalAttempted)")]),
             " emails were attempted to be sent, and of those, ",
-            strong([.text(encode("\(erroredUsers.count)"))]),
+            strong([text("\(erroredUsers.count)")]),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
             ]),
 
           ul(erroredUsers.map { user in
-            li([.text(encode(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap))])
+            li([text(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap)])
           })
           ])
         ])
