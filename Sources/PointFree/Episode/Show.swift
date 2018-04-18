@@ -336,7 +336,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
               href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
               `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
             ],
-            [.text(encode("\(codeSampleDirectory).playground"))]
+            [text("\(codeSampleDirectory).playground")]
           )
       ]
     )
@@ -528,7 +528,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
 
         p(
           [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          [.text(encode(String(describing: subscribeBlurb(for: permission))))]
+          [text(String(describing: subscribeBlurb(for: permission)))]
         ),
 
         a(
@@ -647,7 +647,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
     return pre([
       code(
         [`class`([Class.pf.components.code(lang: lang.identifier)])],
-        [.text(encode(block.content))]
+        [text(block.content)]
       )
       ])
 
