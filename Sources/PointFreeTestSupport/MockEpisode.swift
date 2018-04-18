@@ -100,9 +100,14 @@ private let paidEpisode = Episode(
     Episode.TranscriptBlock(
       content: """
       That was another title. See how the title create the “table of contents” under the video?
+
+      Here's a block quote with a really long word inside so that we can make sure that word breaking is
+      working how we expect:
+
+      > Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary<Swift.Dictionary<Swift.StringSwift.Dictionary<Swift.String, Any>>>, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary<String, Any> but found a string/data instead.”, underlyingError: nil))
       """,
       timestamp: 120,
       type: .paragraph
-    )
+    ),
   ]
 )
