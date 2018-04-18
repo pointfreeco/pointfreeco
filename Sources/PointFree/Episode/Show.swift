@@ -723,7 +723,8 @@ private func episode(forParam param: Either<String, Int>) -> Episode? {
 private let markdownContainerClass = CssSelector.class("md-ctn")
 let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
-    a % key("text-decoration", "underline")
+    p % key("word-wrap", "break-word")
+      <> a % key("text-decoration", "underline")
       <> (a & .pseudo(.link)) % color(Colors.purple150)
       <> (a & .pseudo(.visited)) % color(Colors.purple150)
       <> (a & .pseudo(.hover)) % color(Colors.black)
