@@ -73,8 +73,10 @@ public struct Episode {
 
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
+      case image(src: String)
       case paragraph
       case title
+      case video(poster: String, sources: [String])
 
       public enum CodeLang: Equatable {
         case html
