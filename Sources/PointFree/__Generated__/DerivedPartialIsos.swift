@@ -154,6 +154,17 @@ import Prelude
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let episodes = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.episodes)),
+          unapply: {
+            guard case .episodes = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == (
             Database.User.Id
           , 
