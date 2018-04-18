@@ -11,7 +11,7 @@ import Styleguide
 import Tuple
 
 let adminEmails: [EmailAddress] = [
-  "mbw234@gmail.com",
+//  "mbw234@gmail.com",
   "stephen.celis@gmail.com"
 ]
 

@@ -628,11 +628,14 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
   ]
 }
 
+public func format(cents: Stripe.Cents) -> String {
+  let dollars = NSNumber(value: Double(cents.rawValue) / 100)
+  return currencyFormatter.string(from: dollars)
+    ?? NumberFormatter.localizedString(from: dollars, number: .currency)
+}
+
 private func totalAmount(for subscription: Stripe.Subscription) -> String {
-  let totalCents = subscription.plan.amount.rawValue * subscription.quantity
-  let totalDollars = NSNumber(value: Double(totalCents) / 100)
-  return currencyFormatter.string(from: totalDollars)
-    ?? NumberFormatter.localizedString(from: totalDollars, number: .currency)
+  return format(cents: .init(unwrap: subscription.plan.amount.rawValue * subscription.quantity))
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
@@ -655,7 +658,7 @@ let labelClass =
     | Class.margin([.mobile: [.bottom: 1]])
 
 let baseInputClass =
-  Class.type.fontFamilyInherit
+  Class.type.fontFamily.inherit
     | Class.pf.colors.fg.black
     | ".border-box"
     | Class.border.rounded.all
@@ -684,7 +687,7 @@ let blockSelectClass =
     | Class.size.height(rem: 3)
     | Class.size.width100pct
     | Class.pf.colors.border.gray800
-    | Class.type.fontFamilyInherit
+    | Class.type.fontFamily.inherit
 
 private struct AccountData {
   let currentUser: Database.User

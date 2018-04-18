@@ -238,14 +238,19 @@ extension PartialIso where A == String, B == String {
   }
 }
 
+public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+  return IO {
+    return t |> over1(perform)
+  }
+}
 public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
   return IO {
     return t |> over2(perform)
   }
 }
-public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+public func sequence3<A, B, C, Z>(_ t: T4<A, B, IO<C>, Z>) -> IO<T4<A, B, C, Z>> {
   return IO {
-    return t |> over1(perform)
+    return t |> over3(perform)
   }
 }
 

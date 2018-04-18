@@ -10,6 +10,8 @@ public struct Stripe {
   public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Swift.Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
+  public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
+  public var fetchInvoices: (Customer) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
   public var fetchPlans: EitherIO<Swift.Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
@@ -23,6 +25,8 @@ public struct Stripe {
     createCustomer: PointFree.createCustomer,
     createSubscription: PointFree.createSubscription,
     fetchCustomer: PointFree.fetchCustomer,
+    fetchInvoice: PointFree.fetchInvoice,
+    fetchInvoices: PointFree.fetchInvoices,
     fetchPlans: PointFree.fetchPlans,
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
@@ -112,29 +116,57 @@ public struct Stripe {
 
   public struct Invoice: Codable {
     public private(set) var amountDue: Cents
+    public private(set) var amountPaid: Cents
+    public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
+    public private(set) var date: Date
     public private(set) var id: Id
-    public private(set) var subscription: Subscription.Id
+    public private(set) var lines: ListEnvelope<LineItem>
+    public private(set) var number: Number
+    public private(set) var periodStart: Date
+    public private(set) var periodEnd: Date
+    public private(set) var subscription: Subscription.Id?
+    public private(set) var subtotal: Cents
+    public private(set) var total: Cents
 
-    public typealias Id = Tagged<Invoice, String>
+    public typealias Id = Tagged<(Invoice, id: ()), String>
+    public typealias Number = Tagged<(Invoice, number: ()), String>
 
     private enum CodingKeys: String, CodingKey {
       case amountDue = "amount_due"
+      case amountPaid = "amount_paid"
+      case closed
       case customer
+      case date
       case id
+      case lines
+      case number
+      case periodStart = "period_start"
+      case periodEnd = "period_end"
       case subscription
+      case subtotal
+      case total
     }
+  }
+
+  public struct LineItem: Codable {
+    public private(set) var amount: Cents
+    public private(set) var description: String?
+    public private(set) var id: Id
+    public private(set) var plan: Plan
+    public private(set) var quantity: Int
+    public private(set) var subscription: Subscription.Id?
+
+    public typealias Id = Tagged<LineItem, String>
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
     private(set) var data: [A]
     private(set) var hasMore: Bool
-    private(set) var totalCount: Int
 
     private enum CodingKeys: String, CodingKey {
       case data
       case hasMore = "has_more"
-      case totalCount = "total_count"
     }
   }
 
@@ -284,9 +316,12 @@ private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Cus
   return stripeDataTask("customers/" + id.unwrap)
 }
 
-private func fetchInvoices(for customer: Stripe.Customer, startingAfter invoiceId: Stripe.Invoice.Id? = nil) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
-  let startingAfter = invoiceId.map { "&starting_after=" + $0.unwrap } ?? ""
-  return stripeDataTask("invoices?customer=" + customer.id.unwrap + startingAfter)
+private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoice> {
+  return stripeDataTask("invoices/" + id.unwrap)
+}
+
+private func fetchInvoices(for customer: Stripe.Customer) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
+  return stripeDataTask("invoices?customer=" + customer.id.unwrap + "&limit=100")
 }
 
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =

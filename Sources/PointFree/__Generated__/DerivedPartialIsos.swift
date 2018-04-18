@@ -430,16 +430,13 @@ import Prelude
 
 
 
-      extension PartialIso where A == (
-            Stripe.Invoice.Id?
-        ), B == Route.Account.Invoices {
-
-          public static let index = parenthesize <| PartialIso(
-            apply: Route.Account.Invoices.index,
-            unapply: {
-              guard case let .index(result) = $0 else { return nil }
-              return .some(result)
-          })
+      extension PartialIso where A == Prelude.Unit, B == Route.Account.Invoices {
+        public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Invoices>(
+          apply: const(.some(.index)),
+          unapply: {
+            guard case .index = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 

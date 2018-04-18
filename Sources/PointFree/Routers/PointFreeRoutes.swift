@@ -45,7 +45,7 @@ public enum Route: DerivePartialIsos {
     case update(ProfileData?)
 
     public enum Invoices: DerivePartialIsos {
-      case index(startingAfter: Stripe.Invoice.Id?)
+      case index
       case show(Stripe.Invoice.Id)
     }
 
@@ -129,7 +129,7 @@ private let routers: [Router<Route>] = [
     <¢> get %> lit("account") <% end,
 
   .account <<< .invoices <<< .index
-    <¢> get %> lit("account") %> lit("invoices") %> queryParam("after", opt(.string >>> .tagged)) <% end,
+    <¢> get %> lit("account") %> lit("invoices") <% end,
 
   .account <<< .invoices <<< .show
     <¢> get %> lit("account") %> lit("invoices") %> pathParam(.string >>> .tagged) <% end,
