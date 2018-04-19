@@ -50,24 +50,17 @@ class HomeTests: TestCase {
       webView.frame.size.width = 400
       webView.frame.size.height = 3500
 
-      let render = XCTestExpectation()
+      let render = expectation(description: "Render")
       DispatchQueue.main.async {
         assertSnapshot(matching: webView, named: "mobile")
         render.fulfill()
       }
-      guard XCTWaiter.wait(for: [render], timeout: 2.0) == .completed else {
-        XCTAssert(false)
-        return
-      }
+      waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }
     }
     #endif
   }
 
   func testHomepage_Subscriber() {
-    let env: (Environment) -> Environment =
-      (\.database .~ .mock)
-        <> (\.episodes .~ unzurry(Array(repeating: .mock, count: 4)))
-
     let conn = connection(from: request(to: .home, session: .loggedIn))
     let result = conn |> siteMiddleware
 
@@ -82,15 +75,12 @@ class HomeTests: TestCase {
       webView.frame.size.width = 400
       webView.frame.size.height = 2800
 
-      let render = XCTestExpectation()
+      let render = expectation(description: "Render")
       DispatchQueue.main.async {
         assertSnapshot(matching: webView, named: "mobile")
         render.fulfill()
       }
-      guard XCTWaiter.wait(for: [render], timeout: 2.0) == .completed else {
-        XCTAssert(false)
-        return
-      }
+      waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }
     }
     #endif
   }
