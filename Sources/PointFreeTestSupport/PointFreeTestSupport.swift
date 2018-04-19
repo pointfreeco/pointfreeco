@@ -263,7 +263,7 @@ extension Stripe.Event where T == Stripe.Invoice {
 
 extension Stripe.Invoice {
   public static let mock = Stripe.Invoice(
-    amountDue: 17_00,
+    amountDue: 0_00,
     amountPaid: 17_00,
     charge: .mock,
     closed: true,
