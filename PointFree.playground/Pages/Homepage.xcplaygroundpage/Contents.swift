@@ -13,6 +13,7 @@ import Optics
 import SnapshotTesting
 
 AppEnvironment.push(const(.mock))
+AppEnvironment.push(\.episodes .~ unzurry(allPublicEpisodes))
 
 let result = connection(from: request(to: .home))
   |> siteMiddleware

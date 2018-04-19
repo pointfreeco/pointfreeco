@@ -2,7 +2,7 @@
   ResponseEnded
 
 ▿ Request
-  GET http://localhost:8080/blog/posts/1
+  GET http://localhost:8080/blog/posts/0
   Cookie: pf_session={}
 
   (Data, 0 bytes)

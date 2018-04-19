@@ -190,7 +190,7 @@ private let episodeLinkView = View<Episode> { episode in
         ]
       )
     ],
-    [.text(encode("#\(episode.sequence): \(episode.title)"))]
+    [text("#\(episode.sequence): \(episode.title)")]
   )
 }
 
@@ -263,7 +263,7 @@ private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmai
             `class`([Class.margin([.mobile: [.right: 1]])])
           ]
         ),
-        .text(encode(newsletterDescription(newsletter)))
+        text(newsletterDescription(newsletter))
         ])
     })
   ]
@@ -273,6 +273,8 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   switch type {
   case .announcements:
     return "New announcements (very infrequently)"
+  case .newBlogPost:
+    return "New blog posts on Point-Free Pointers (about every two weeks)"
   case .newEpisode:
     return "New episode is available (about once a week)"
   }
@@ -536,7 +538,7 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 private let inviteRowView = View<Database.TeamInvite> { invite in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(encode(invite.email.unwrap))])
+      p([text(invite.email.unwrap)])
       ]),
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
@@ -566,7 +568,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
         ]),
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([.text(encode("You have \(invitesRemaining) open spots on your team. Invite a team member below:"))]),
+          p([text("You have \(invitesRemaining) open spots on your team. Invite a team member below:")]),
 
           form([
             action(path(to: .invite(.send(nil)))), method(.post),

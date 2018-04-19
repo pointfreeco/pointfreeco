@@ -10,7 +10,8 @@
 
 ▿ Response
   Status 200 OK
-  Content-Length: 625
+  Content-Length: 726
   Content-Type: application/atom+xml
 
-  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Announcing Point-Free Pointers!</title><link href="http://localhost:8080/blog/posts/1"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/1</id><content type="html"><![CDATA[]]></content></entry></feed>
+  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Mock Blog Post</title><link href="http://localhost:8080/blog/posts/0"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/0</id><content type="html"><![CDATA[This is the blurb to a mock blog post. This should just be short and to the point, using only plain
+  text, no markdown.]]></content></entry></feed>

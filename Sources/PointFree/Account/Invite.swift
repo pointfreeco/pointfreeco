@@ -163,7 +163,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name ?? inviter.email.unwrap))]),
+          a([mailto(inviter.email.unwrap)], [text(inviter.name ?? inviter.email.unwrap)]),
           """
            has invited you to join their team on Point-Free, a video series exploring functional programming
           concepts using the Swift programming language. Accepting this invitation gives you access to all of
@@ -191,7 +191,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.unwrap)], [.text(encode(inviter.name ?? inviter.email.unwrap))]),
+          a([mailto(inviter.email.unwrap)], [text(inviter.name ?? inviter.email.unwrap)]),
           """
            has invited you to join their team account on Point-Free, a video series exploring functional
           programming concepts using the Swift programming language. Accepting this invitation gives you

@@ -11,6 +11,7 @@ let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
       newsletter: nil,
       title: "Email change confirmation",
       preheader: "We received a request to change your email on Point-Free.",
+      template: .default,
       data: (user, newEmailAddress)
     )
 }
@@ -23,9 +24,9 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
           h3([`class`([Class.pf.type.title3])], ["Confirm email change"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "We received a request to change your email on Point-Free. Your current email is ",
-            span([`class`([Class.type.semiBold])], [.text(encode(user.email.unwrap))]),
+            span([`class`([Class.type.semiBold])], [text(user.email.unwrap)]),
             ", and the new email is ",
-            span([`class`([Class.type.semiBold])], [.text(encode(newEmailAddress.unwrap))]),
+            span([`class`([Class.type.semiBold])], [text(newEmailAddress.unwrap)]),
             ". If you want to make this change, just click the confirmation link below:"
             ]),
 
@@ -56,6 +57,7 @@ let emailChangedEmailView = simpleEmailLayout(emailChangedEmailBody)
       newsletter: nil,
       title: "Your email has been changed",
       preheader: "",
+      template: .default,
       data: newEmailAddress
     )
 }
@@ -68,7 +70,7 @@ private let emailChangedEmailBody = View<EmailAddress> { newEmailAddress in
           h3([`class`([Class.pf.type.responsiveTitle3])], ["Your email has been changed"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your email has been successfully changed to ",
-            strong([span([`class`([Class.type.semiBold])], [.text(encode(newEmailAddress.unwrap))])]),
+            strong([span([`class`([Class.type.semiBold])], [text(newEmailAddress.unwrap)])]),
             ". If you did not make this change, please get in touch with us immediately: ",
             a([mailto("support@pointfree.co")], ["support@pointfree.co"])
             ])

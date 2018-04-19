@@ -151,7 +151,9 @@ extension FreeEpisodeEmailTests {
 }
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
-    ("testHomepage", testHomepage)
+    ("testHomepage_LoggedOut", testHomepage_LoggedOut),
+    ("testHomepage_Subscriber", testHomepage_Subscriber),
+    ("testEpisodesIndex", testEpisodesIndex)
   ]
 }
 extension HtmlCssInlinerTests {
@@ -183,6 +185,14 @@ extension MinimalNavViewTests {
   static var allTests: [(String, (MinimalNavViewTests) -> () throws -> Void)] = [
     ("testNav_Html", testNav_Html),
     ("testNav_Screenshots", testNav_Screenshots)
+  ]
+}
+extension NewBlogPostEmailTests {
+  static var allTests: [(String, (NewBlogPostEmailTests) -> () throws -> Void)] = [
+    ("testNewBlogPostEmail_NoAnnouncements_Subscriber", testNewBlogPostEmail_NoAnnouncements_Subscriber),
+    ("testNewBlogPostEmail_NoAnnouncements_NonSubscriber", testNewBlogPostEmail_NoAnnouncements_NonSubscriber),
+    ("testNewBlogPostEmail_Announcements_Subscriber", testNewBlogPostEmail_Announcements_Subscriber),
+    ("testNewBlogPostEmail_Announcements_NonSubscriber", testNewBlogPostEmail_Announcements_NonSubscriber)
   ]
 }
 extension NewEpisodeEmailTests {
@@ -301,6 +311,7 @@ XCTMain([
   testCase(InviteTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(MinimalNavViewTests.allTests),
+  testCase(NewBlogPostEmailTests.allTests),
   testCase(NewEpisodeEmailTests.allTests),
   testCase(NewslettersTests.allTests),
   testCase(NotFoundMiddlewareTests.allTests),

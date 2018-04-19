@@ -91,6 +91,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. episodeId .*. unit))
         |> sendFreeEpisodeEmailMiddleware
 
+    case let .admin(.newBlogPostEmail(.send(blogPostId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest))):
+      return conn.map(const(user .*. blogPostId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
+        |> sendNewBlogPostEmailMiddleware
+
+    case .admin(.newBlogPostEmail(.index)):
+      return conn.map(const(user .*. unit))
+        |> showNewBlogPostEmailMiddleware
+
     case let .admin(.newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest))):
       return conn.map(const(user .*. episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
         |> sendNewEpisodeEmailMiddleware
@@ -110,6 +118,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
+
+    case .episodes:
+      return conn
+        |> redirect(to: path(to: .home))
 
     case let .expressUnsubscribe(userId, newsletter):
       return conn.map(const(userId .*. newsletter .*. unit))

@@ -45,7 +45,7 @@ private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsle
 
   return [
     p([`class`([Class.pf.type.body.small])], [
-      .text(encode(subscribedReason(newsletter: newsletter))),
+      text(subscribedReason(newsletter: newsletter)),
       " If you no longer wish to receive emails like this, you can unsubscribe ",
       a([href(url(to: .expressUnsubscribe(userId: user.id, newsletter: newsletter)))], ["here"]),
       "."
@@ -59,6 +59,11 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
     return """
     You are receiving this email because you expressed interest in hearing about new announcements,
     such as new features and new projects of ours.
+    """
+  case .newBlogPost:
+    return """
+    You are receiving this email because you expressed interest in being notified about new posts on our
+    blog, Point-Free Pointers.
     """
   case .newEpisode:
     return """
