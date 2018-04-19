@@ -29,8 +29,8 @@ private func _blogMiddleware(
     return conn.map(const(user .*. subscriberState .*. route .*. unit))
       |> blogIndexMiddleware
 
-  case let .show(param):
-    return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+  case let .show(post):
+    return conn.map(const(post .*. user .*. subscriberState .*. route .*. unit))
       |> blogPostShowMiddleware
   }
 }
