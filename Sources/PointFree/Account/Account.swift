@@ -122,7 +122,7 @@ private let creditsView = View<AccountData> { data -> [Node] in
       gridColumn(sizes: [.mobile: 12], [
         div(
           [
-            h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
+            h2([`class`([Class.pf.type.responsiveTitle4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
               text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
@@ -164,7 +164,7 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
       [
         `class`(
           [
-            Class.pf.type.title5,
+            Class.pf.type.responsiveTitle5,
             Class.padding([.mobile: [.top: 2]])
           ]
         ),
@@ -208,7 +208,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Account"])
+        h1([`class`([Class.pf.type.responsiveTitle2])], ["Account"])
         ])
       ])
     ])
@@ -218,7 +218,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.title4])], ["Profile"]),
+        h2([`class`([Class.pf.type.responsiveTitle4])], ["Profile"]),
 
         form([action(path(to: .account(.update(nil)))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
@@ -298,7 +298,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([`class`([Class.pf.type.title4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           gridColumn(
             sizes: [.mobile: 12],
@@ -321,7 +321,7 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([`class`([Class.pf.type.title4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           p([
             "You are currently on a team subscription. Contact ",
