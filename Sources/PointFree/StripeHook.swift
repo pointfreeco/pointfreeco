@@ -12,7 +12,7 @@ let stripeInvoiceWebhookMiddleware =
   validateStripeSignature
     <<< filterMap(
       ^\Stripe.Event<Stripe.Invoice>.data.object.subscription >>> pure,
-      or: writeStatus(.ok) >-> end // FIXME: admin email?
+      or: writeStatus(.badRequest) >-> end // FIXME: admin email?
     )
     <| handleFailedPayment
 
