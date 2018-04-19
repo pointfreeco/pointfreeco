@@ -121,7 +121,7 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
             ]),
 
           ul(erroredUsers.map { user in
-            li([text(user.name.map { "\($0) (\(user.email.unwrap)" } ?? user.email.unwrap)])
+            li([text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
           })
           ])
         ])

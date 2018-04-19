@@ -43,7 +43,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
               [
               ],
               AppEnvironment.current.blogPosts()
-                .sorted(by: their(^\.id.unwrap, >))
+                .sorted(by: their(^\.id, >))
                 .flatMap { post in
                   [
                     div(

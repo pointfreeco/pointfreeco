@@ -57,7 +57,7 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       return conn
         |> redirect(
           to: .account(.index),
-          headersMiddleware: flash(.notice, "Invite sent to \(invite.email.unwrap).")
+          headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
       )
 }
 
@@ -79,7 +79,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
             errorOrInviter.right.map { inviter in
               sendEmail(
                 to: [inviter.email],
-                subject: "\(currentUser.name ?? currentUser.email.unwrap) has accepted your Point-Free team invitation!",
+                subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
                 content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: currentUser)))
                 )
                 .run
@@ -136,7 +136,7 @@ let sendInviteMiddleware =
             return conn
               |> redirect(
                 to: .account(.index),
-                headersMiddleware: flash(.notice, "Invite sent to \(invite.email.unwrap).")
+                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
             )
           }
       }
@@ -163,7 +163,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.unwrap)], [text(inviter.name ?? inviter.email.unwrap)]),
+          a([mailto(inviter.email.rawValue)], [text(inviter.displayName)]),
           """
            has invited you to join their team on Point-Free, a video series exploring functional programming
           concepts using the Swift programming language. Accepting this invitation gives you access to all of
@@ -191,7 +191,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.unwrap)], [text(inviter.name ?? inviter.email.unwrap)]),
+          a([mailto(inviter.email.rawValue)], [text(inviter.name ?? inviter.email.rawValue)]),
           """
            has invited you to join their team account on Point-Free, a video series exploring functional
           programming concepts using the Swift programming language. Accepting this invitation gives you
@@ -276,7 +276,7 @@ private func sendInviteEmail(
 
   return sendEmail(
     to: [invite.email],
-    subject: "You’re invited to join \(inviter.name ?? inviter.email.unwrap)’s team on Point-Free",
+    subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
     content: inj2(teamInviteEmailView.view((inviter, invite)))
   )
 }
@@ -341,7 +341,7 @@ private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Dat
 
 private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {
   let (email, inviter) = (get1(data), get2(data))
-  return email.unwrap.lowercased() != inviter.email.unwrap.lowercased()
+  return email.rawValue.lowercased() != inviter.email.rawValue.lowercased()
 }
 
 private func fetchTeamInviter<A>(_ data: T2<Database.TeamInvite, A>) -> IO<T3<Database.TeamInvite, Database.User, A>?> {

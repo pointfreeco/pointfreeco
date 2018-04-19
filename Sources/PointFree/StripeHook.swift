@@ -104,7 +104,7 @@ private func handleFailedPayment(
           .mapExcept(requireSome)
           .map { ($0, subscription) }
       }
-      .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data.unwrap)"))
+      .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
       .run
       .flatMap(
         either(const(conn |> writeStatus(.badRequest) >-> end)) { user, subscription in

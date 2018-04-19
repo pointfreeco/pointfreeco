@@ -57,10 +57,10 @@ public struct Email {
 private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
   var params: [String: String] = [:]
-  params["from"] = email.from.unwrap
-  params["to"] = email.to.map(^\.unwrap).joined(separator: ",")
-  params["cc"] = email.cc.map(map(^\.unwrap) >>> joined(separator: ","))
-  params["bcc"] = email.bcc.map(map(^\.unwrap) >>> joined(separator: ","))
+  params["from"] = email.from.rawValue
+  params["to"] = email.to.map(^\.rawValue).joined(separator: ",")
+  params["cc"] = email.cc.map(map(^\.rawValue) >>> joined(separator: ","))
+  params["bcc"] = email.bcc.map(map(^\.rawValue) >>> joined(separator: ","))
   params["subject"] = email.subject
   params["text"] = email.text
   params["html"] = email.html
@@ -94,11 +94,11 @@ func unsubscribeEmail(
   ) -> EmailAddress? {
 
   guard let payload = encrypted(
-    text: "\(userId.unwrap.uuidString)\(boundary)\(newsletter.rawValue)",
+    text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
     secret: AppEnvironment.current.envVars.appSecret
     ) else { return nil }
 
-  return .init(unwrap: "unsub-\(payload)@pointfree.co")
+  return .init(rawValue: "unsub-\(payload)@pointfree.co")
 }
 
 func userIdAndNewsletter(
@@ -106,7 +106,7 @@ func userIdAndNewsletter(
   boundary: String = "--"
   ) -> (Database.User.Id, Database.EmailSetting.Newsletter)? {
 
-  let payload = email.unwrap
+  let payload = email.rawValue
     .components(separatedBy: "unsub-")
     .last
     .flatMap { $0.split(separator: "@").first }

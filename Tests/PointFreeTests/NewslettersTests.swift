@@ -142,10 +142,10 @@ class NewslettersTests: TestCase {
         .right!!
 
       let payload = encrypted(
-        text: "\(user.id.unwrap.uuidString)--unknown",
+        text: "\(user.id.rawValue.uuidString)--unknown",
         secret: AppEnvironment.current.envVars.appSecret
         )!
-      let unsubEmail = EmailAddress(unwrap: "unsub-\(payload)@pointfree.co")
+      let unsubEmail = EmailAddress(rawValue: "unsub-\(payload)@pointfree.co")
 
       let unsubscribe = request(
         to: .expressUnsubscribeReply(

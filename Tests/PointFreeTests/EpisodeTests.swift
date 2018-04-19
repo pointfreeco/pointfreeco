@@ -277,7 +277,7 @@ class EpisodeTests: TestCase {
 
     let user = Database.User.mock
       |> \.episodeCreditCount .~ 0
-      |> \.id .~ .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     let env: (Environment) -> Environment =
       (\.database .~ .live)
@@ -311,7 +311,7 @@ class EpisodeTests: TestCase {
 
     let user = Database.User.mock
       |> \.episodeCreditCount .~ 1
-      |> \.id .~ .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     let env: (Environment) -> Environment =
       (\.database .~ .live)
