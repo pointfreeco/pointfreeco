@@ -75,6 +75,14 @@ public struct Stripe {
 
   public typealias Cents = Tagged<Stripe, Int>
 
+  public struct Charge: Codable {
+    public private(set) var amount: Cents
+    public private(set) var id: Id
+    public private(set) var source: Card
+
+    public typealias Id = Tagged<Card, String>
+  }
+
   public struct Customer: Codable {
     public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
@@ -117,6 +125,7 @@ public struct Stripe {
   public struct Invoice: Codable {
     public private(set) var amountDue: Cents
     public private(set) var amountPaid: Cents
+    public private(set) var charge: Charge?
     public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
@@ -133,8 +142,9 @@ public struct Stripe {
     public typealias Number = Tagged<(Invoice, number: ()), String>
 
     private enum CodingKeys: String, CodingKey {
-      case amountDue = "amount_due"
+      case amountDue = "amount_remaining"
       case amountPaid = "amount_paid"
+      case charge
       case closed
       case customer
       case date
@@ -317,11 +327,11 @@ private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Cus
 }
 
 private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoice> {
-  return stripeDataTask("invoices/" + id.unwrap)
+  return stripeDataTask("invoices/" + id.unwrap + "?expand[]=charge")
 }
 
 private func fetchInvoices(for customer: Stripe.Customer) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
-  return stripeDataTask("invoices?customer=" + customer.id.unwrap + "&limit=100")
+  return stripeDataTask("invoices?customer=" + customer.id.unwrap + "&expand[]=data.charge&limit=100")
 }
 
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
