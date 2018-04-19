@@ -159,7 +159,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
   gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([`class`([Class.pf.type.title3])], ["You’ve been invited!"]),
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
@@ -187,7 +187,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
   gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([`class`([Class.pf.type.title3])], ["You’ve been invited!"]),
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
@@ -216,7 +216,7 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
-        h3([`class`([Class.pf.type.title3])], ["Invite not found"]),
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
 
         p([
           """

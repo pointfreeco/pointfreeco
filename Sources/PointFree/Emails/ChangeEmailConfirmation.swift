@@ -21,7 +21,7 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Confirm email change"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Confirm email change"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "We received a request to change your email on Point-Free. Your current email is ",
             span([`class`([Class.type.semiBold])], [text(user.email.rawValue)]),

@@ -86,7 +86,7 @@ private let announcementView = View<String?> { announcement -> [Node] in
         )
       ],
       [
-        h5([`class`([Class.pf.type.title5])], ["Announcements"]),
+        h5([`class`([Class.pf.type.responsiveTitle5])], ["Announcements"]),
         markdownBlock(announcement)
       ]
     )
@@ -110,7 +110,7 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["New blog post email report"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["New blog post email report"]),
           p([
             "A total of ",
             strong([text("\(totalAttempted)")]),

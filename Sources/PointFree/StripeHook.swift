@@ -145,7 +145,7 @@ private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Payment failed"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Payment failed"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             """
             Your most recent subscription payment was declined. This could be due to a change in your card
