@@ -191,7 +191,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [text(inviter.name ?? inviter.email.rawValue)]),
+          a([mailto(inviter.email.rawValue)], [text(inviter.displayName)]),
           """
            has invited you to join their team account on Point-Free, a video series exploring functional
           programming concepts using the Swift programming language. Accepting this invitation gives you
