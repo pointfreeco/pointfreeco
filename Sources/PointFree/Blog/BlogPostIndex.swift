@@ -23,8 +23,8 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Subscriber
           extraStyles: markdownBlockStyles,
           // TODO
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
-          navStyle: .mountains(.blog),
           openGraphType: .website,
+          style: .base(.mountains(.blog)),
           // TODO
           title: "Point-Free: A video series on functional programming and the Swift programming language.",
           twitterCard: .summaryLargeImage

@@ -25,7 +25,7 @@ let invoicesResponse =
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (subscription, invoicesEnvelope, currentUser),
-          title: "Invoice history"
+          title: "Payment history"
         )
     }
 )
@@ -48,7 +48,17 @@ let invoiceResponse =
     )
     <| writeStatus(.ok)
     >-> map(lower)
-    >>> respond(invoiceView)
+    >>> respond(
+      view: invoiceView,
+      layoutData: { subscription, currentUser, invoice in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: (subscription, currentUser, invoice),
+          style: .minimal,
+          title: "Invoice"
+        )
+    }
+)
 
 private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
   return AppEnvironment.current.stripe.fetchInvoice(id)
@@ -147,7 +157,9 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        []
+        [
+          "hi"
+        ]
       )
       ])
     ])

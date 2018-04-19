@@ -27,8 +27,8 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
           extraStyles: markdownBlockStyles,
           // TODO
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
-          navStyle: .mountains(.blog),
           openGraphType: .website,
+          style: .base(.mountains(.blog)),
           title: post.title,
           twitterCard: .summaryLargeImage
         )
