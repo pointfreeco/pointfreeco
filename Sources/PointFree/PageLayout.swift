@@ -60,6 +60,16 @@ enum NavStyle {
 }
 
 struct SimplePageLayoutData<A> {
+  enum Style {
+    case minimal
+    case base(NavStyle?)
+
+    var isMinimal: Bool {
+      guard case .minimal = self else { return false }
+      return true
+    }
+  }
+
   private(set) var currentRoute: Route?
   private(set) var currentSubscriberState: SubscriberState
   private(set) var currentUser: Database.User?
@@ -68,8 +78,8 @@ struct SimplePageLayoutData<A> {
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
-  private(set) var navStyle: NavStyle?
   private(set) var openGraphType: OpenGraphType
+  private(set) var style: Style
   private(set) var title: String
   private(set) var twitterCard: TwitterCard
   private(set) var usePrismJs: Bool
@@ -82,8 +92,8 @@ struct SimplePageLayoutData<A> {
     description: String? = nil,
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
-    navStyle: NavStyle? = .some(.minimal(.light)),
     openGraphType: OpenGraphType = .website,
+    style: Style = .base(.some(.minimal(.light))),
     title: String,
     twitterCard: TwitterCard = .summaryLargeImage,
     usePrismJs: Bool = false
@@ -97,8 +107,8 @@ struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
-    self.navStyle = navStyle
     self.openGraphType = openGraphType
+    self.style = style
     self.title = title
     self.twitterCard = twitterCard
     self.usePrismJs = usePrismJs
@@ -168,7 +178,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
             <> (layoutData.flash.map(flashView.view) ?? [])
             <> navView(layoutData)
             <> contentView.view(layoutData.data)
-            <> footerView.view(layoutData.currentUser)
+            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
         )
         ])
       ])
@@ -194,14 +204,14 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
 private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
-  switch data.navStyle {
-  case let .some(.mountains(style)):
+  switch data.style {
+  case let .base(.some(.mountains(style))):
     return mountainNavView.view((style, data.currentUser, data.currentSubscriberState, data.currentRoute))
 
-  case let .some(.minimal(minimalStyle)):
+  case let .base(.some(.minimal(minimalStyle))):
     return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
 
-  case .none:
+  case .base(.none), .minimal:
     return []
   }
 }

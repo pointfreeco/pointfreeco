@@ -40,9 +40,15 @@ public enum Route: DerivePartialIsos {
   public enum Account: DerivePartialIsos {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
     case index
+    case invoices(Invoices)
     case paymentInfo(PaymentInfo)
     case subscription(Subscription)
     case update(ProfileData?)
+
+    public enum Invoices: DerivePartialIsos {
+      case index
+      case show(Stripe.Invoice.Id)
+    }
 
     public enum PaymentInfo: DerivePartialIsos {
       case show(expand: Bool?)
@@ -128,6 +134,12 @@ private let routers: [Router<Route>] = [
 
   .account <<< .index
     <¢> get %> lit("account") <% end,
+
+  .account <<< .invoices <<< .index
+    <¢> get %> lit("account") %> lit("invoices") <% end,
+
+  .account <<< .invoices <<< .show
+    <¢> get %> lit("account") %> lit("invoices") %> pathParam(.string >>> .tagged) <% end,
 
   .account <<< .paymentInfo <<< .show
     <¢> get %> lit("account") %> lit("payment-info")

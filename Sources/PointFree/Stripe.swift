@@ -10,6 +10,8 @@ public struct Stripe {
   public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Swift.Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
+  public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
+  public var fetchInvoices: (Customer) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
   public var fetchPlans: EitherIO<Swift.Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
@@ -23,6 +25,8 @@ public struct Stripe {
     createCustomer: PointFree.createCustomer,
     createSubscription: PointFree.createSubscription,
     fetchCustomer: PointFree.fetchCustomer,
+    fetchInvoice: PointFree.fetchInvoice,
+    fetchInvoices: PointFree.fetchInvoices,
     fetchPlans: PointFree.fetchPlans,
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
@@ -71,14 +75,25 @@ public struct Stripe {
 
   public typealias Cents = Tagged<Stripe, Int>
 
+  public struct Charge: Codable {
+    public private(set) var amount: Cents
+    public private(set) var id: Id
+    public private(set) var source: Card
+
+    public typealias Id = Tagged<Card, String>
+  }
+
   public struct Customer: Codable {
+    public private(set) var businessVatId: Vat?
     public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
     public private(set) var sources: ListEnvelope<Card>
 
-    public typealias Id = Tagged<Customer, String>
+    public typealias Id = Tagged<(Customer, id: ()), String>
+    public typealias Vat = Tagged<(Customer, vat: ()), String>
 
     private enum CodingKeys: String, CodingKey {
+      case businessVatId = "business_vat_id"
       case defaultSource = "default_source"
       case id
       case sources
@@ -112,29 +127,59 @@ public struct Stripe {
 
   public struct Invoice: Codable {
     public private(set) var amountDue: Cents
+    public private(set) var amountPaid: Cents
+    public private(set) var charge: Charge?
+    public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
+    public private(set) var date: Date
     public private(set) var id: Id
-    public private(set) var subscription: Subscription.Id
+    public private(set) var lines: ListEnvelope<LineItem>
+    public private(set) var number: Number
+    public private(set) var periodStart: Date
+    public private(set) var periodEnd: Date
+    public private(set) var subscription: Subscription.Id?
+    public private(set) var subtotal: Cents
+    public private(set) var total: Cents
 
-    public typealias Id = Tagged<Invoice, String>
+    public typealias Id = Tagged<(Invoice, id: ()), String>
+    public typealias Number = Tagged<(Invoice, number: ()), String>
 
     private enum CodingKeys: String, CodingKey {
-      case amountDue = "amount_due"
+      case amountDue = "amount_remaining"
+      case amountPaid = "amount_paid"
+      case charge
+      case closed
       case customer
+      case date
       case id
+      case lines
+      case number
+      case periodStart = "period_start"
+      case periodEnd = "period_end"
       case subscription
+      case subtotal
+      case total
     }
+  }
+
+  public struct LineItem: Codable {
+    public private(set) var amount: Cents
+    public private(set) var description: String?
+    public private(set) var id: Id
+    public private(set) var plan: Plan
+    public private(set) var quantity: Int
+    public private(set) var subscription: Subscription.Id?
+
+    public typealias Id = Tagged<LineItem, String>
   }
 
   public struct ListEnvelope<A: Codable>: Codable {
     private(set) var data: [A]
     private(set) var hasMore: Bool
-    private(set) var totalCount: Int
 
     private enum CodingKeys: String, CodingKey {
       case data
       case hasMore = "has_more"
-      case totalCount = "total_count"
     }
   }
 
@@ -284,6 +329,14 @@ private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Cus
   return stripeDataTask("customers/" + id.unwrap)
 }
 
+private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoice> {
+  return stripeDataTask("invoices/" + id.unwrap + "?expand[]=charge")
+}
+
+private func fetchInvoices(for customer: Stripe.Customer) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
+  return stripeDataTask("invoices?customer=" + customer.id.unwrap + "&expand[]=data.charge&limit=100")
+}
+
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
@@ -343,27 +396,25 @@ private enum Method {
   case delete([String: String])
 }
 
+private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
+  switch method {
+  case .get:
+    return \.httpMethod .~ "GET"
+  case let .post(params):
+    return (\.httpMethod .~ "POST")
+      <> setHeader("Idempotency-Key", UUID().uuidString)
+      <> attachFormData(params)
+  case let .delete(params):
+    return (\.httpMethod .~ "DELETE")
+      <> attachFormData(params)
+  }
+}
+
 private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URLRequest> {
   return IO {
-    var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
-    let secret = Data("\(AppEnvironment.current.envVars.stripe.secretKey):".utf8).base64EncodedString()
-    var headers = ["Authorization": "Basic " + secret]
-
-    switch method {
-    case .get:
-      request.httpMethod = "GET"
-    case let .post(params):
-      let httpBody = Data(urlFormEncode(value: params).utf8)
-      request.httpMethod = "POST"
-      headers["Idempotency-Key"] = UUID().uuidString
-      request.httpBody = httpBody
-    case let .delete(params):
-      request.httpMethod = "DELETE"
-      request.httpBody = Data(urlFormEncode(value: params).utf8)
-    }
-    request.allHTTPHeaderFields = headers
-
-    return request
+    URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+      |> attachMethod(method)
+      <> attachBasicAuth(username: AppEnvironment.current.envVars.stripe.secretKey)
   }
 }
 

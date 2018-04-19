@@ -22,8 +22,8 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Blo
           description: post.blurb,
           extraStyles: markdownBlockStyles,
           image: post.coverImage,
-          navStyle: .mountains(.blog),
           openGraphType: .website,
+          style: .base(.mountains(.blog)),
           title: post.title,
           twitterCard: .summaryLargeImage
         )

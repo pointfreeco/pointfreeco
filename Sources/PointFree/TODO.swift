@@ -11,6 +11,7 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
+import UrlFormEncoding
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
@@ -237,14 +238,19 @@ extension PartialIso where A == String, B == String {
   }
 }
 
+public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+  return IO {
+    return t |> over1(perform)
+  }
+}
 public func sequence2<A, B, Z>(_ t: T3<A, IO<B>, Z>) -> IO<T3<A, B, Z>> {
   return IO {
     return t |> over2(perform)
   }
 }
-public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
+public func sequence3<A, B, C, Z>(_ t: T4<A, B, IO<C>, Z>) -> IO<T4<A, B, C, Z>> {
   return IO {
-    return t |> over1(perform)
+    return t |> over3(perform)
   }
 }
 
@@ -286,3 +292,25 @@ public func require4<A, B, C, D, Z>(_ x: T5<A, B, C, D?, Z>) -> T5<A, B, C, D, Z
 public func require5<A, B, C, D, E, Z>(_ x: T6<A, B, C, D, E?, Z>) -> T6<A, B, C, D, E, Z>? {
   return get5(x).map { over5(const($0)) <| x }
 }
+
+// PreludeFoundation
+
+private let guaranteeHeaders = \URLRequest.allHTTPHeaderFields %~ {
+  $0 ?? [:]
+}
+
+let setHeader = { name, value in
+  guaranteeHeaders
+    <> (\.allHTTPHeaderFields <<< map <<< \.[name] .~ value)
+}
+
+func attachBasicAuth(username: String = "", password: String = "") -> (URLRequest) -> URLRequest {
+  let encoded = Data((username + ":" + password).utf8).base64EncodedString()
+  return setHeader("Authorization", "Basic " + encoded)
+}
+
+let attachFormData =
+  urlFormEncode(value:)
+    >>> ^\.utf8
+    >>> Data.init
+    >>> set(\URLRequest.httpBody)

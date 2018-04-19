@@ -4,9 +4,9 @@
 ▿ Request
   POST http://localhost:8080/webhooks/stripe
   Cookie: pf_session={}
-  Stripe-Signature: t=1517356200,v1=d5d9c018012292135f6471d14653b4e54fb0dacf7d528894bce016340343f529
+  Stripe-Signature: t=1517356200,v1=5f255a9e30c548d47baa282a1f38bebcd33b7c7d5913cf87323c417d6f795083
 
-  {"id":"evt_test","data":{"object":{"amount_due":1700,"id":"in_test","customer":"cus_test","subscription":"sub_test"}},"type":"invoice.payment_failed"}
+  {"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"closed":true,"lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"currency":"usd","metadata":{},"interval":"month"}}]},"customer":"cus_test","charge":{"amount":1700,"id":"ch_test","source":{"exp_year":2020,"brand":"Visa","customer":"cus_test","id":"card_test","exp_month":1,"last4":"4242"}},"total":1700,"period_start":1517356800,"amount_remaining":1700,"subtotal":1700,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
 ▿ Response
   Status 400 BAD REQUEST

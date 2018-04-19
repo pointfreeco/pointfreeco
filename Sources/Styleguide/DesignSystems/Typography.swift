@@ -26,7 +26,11 @@ extension Class {
     public static let semiBold = CssSelector.class("semi-bold")
     public static let underline = CssSelector.class("underline")
 
-    public static let fontFamilyInherit = CssSelector.class("font-family-inherit")
+    public enum fontFamily {
+      public static let inherit = CssSelector.class("font-family-inherit")
+      public static let monospace = CssSelector.class("font-family-monospace")
+    }
+
     public static let fontSizeInherit = CssSelector.class("font-size-inherit")
     public static let textDecorationNone = CssSelector.class("text-decoration-none")
 
@@ -87,7 +91,8 @@ private let boldStyles =
     <> Class.type.semiBold % fontWeight(.w600)
 
 private let miscStyles: Stylesheet =
-  Class.type.fontFamilyInherit % fontFamily(.inherit)
+  Class.type.fontFamily.inherit % fontFamily(.inherit)
+    <> Class.type.fontFamily.monospace % fontFamily(["monospace"])
     <> Class.type.fontSizeInherit % fontSize(.inherit)
     <> Class.type.textDecorationNone % key("text-decoration", "none")
 
