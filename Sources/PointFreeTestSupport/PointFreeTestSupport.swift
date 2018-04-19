@@ -199,6 +199,8 @@ extension Stripe {
     createCustomer: { _, _, _ in pure(.mock) },
     createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
+    fetchInvoice: const(pure(.mock)),
+    fetchInvoices: const(pure(.mock([.mock]))),
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
@@ -220,8 +222,17 @@ extension Stripe.Card {
   )
 }
 
+extension Stripe.Charge {
+  public static let mock = Stripe.Charge(
+    amount: 17_00,
+    id: "ch_test",
+    source: .mock
+  )
+}
+
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
+    businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",
     sources: .mock([.mock])
@@ -253,8 +264,29 @@ extension Stripe.Event where T == Stripe.Invoice {
 extension Stripe.Invoice {
   public static let mock = Stripe.Invoice(
     amountDue: 17_00,
+    amountPaid: 17_00,
+    charge: .mock,
+    closed: true,
     customer: "cus_test",
+    date: .mock,
     id: "in_test",
+    lines: .mock([.mock]),
+    number: "0000000-0000",
+    periodStart: .mock,
+    periodEnd: Date.mock.addingTimeInterval(60 * 60 * 24 * 30),
+    subscription: "sub_test",
+    subtotal: 17_00,
+    total: 17_00
+  )
+}
+
+extension Stripe.LineItem {
+  public static let mock = Stripe.LineItem(
+    amount: 17_00,
+    description: nil,
+    id: "ii_test",
+    plan: .mock,
+    quantity: 1,
     subscription: "sub_test"
   )
 }
@@ -263,8 +295,7 @@ extension Stripe.ListEnvelope {
   public static func mock(_ xs: [A]) -> Stripe.ListEnvelope<A> {
     return .init(
       data: xs,
-      hasMore: false,
-      totalCount: xs.count
+      hasMore: false
     )
   }
 }

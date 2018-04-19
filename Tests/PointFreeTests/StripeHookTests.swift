@@ -27,7 +27,7 @@ final class StripeHookTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=7f66af23da46c4b8f558da9be8c6a85ae3ea6bbeb66480c71e6e961804cc7518",
+      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=a4f52b8407ddfaddcf61a3e3a874ee679424515a0a0c5894ee44f12503eb04ca",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -42,7 +42,7 @@ final class StripeHookTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=d5d9c018012292135f6471d14653b4e54fb0dacf7d528894bce016340343f529",
+      "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=5f255a9e30c548d47baa282a1f38bebcd33b7c7d5913cf87323c417d6f795083",
       forHTTPHeaderField: "Stripe-Signature"
     )
 

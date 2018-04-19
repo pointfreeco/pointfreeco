@@ -32,7 +32,7 @@ let episodeResponse =
           description: episode.blurb,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
-          navStyle: navStyle,
+          style: .base(navStyle),
           title: "Episode #\(episode.sequence): \(episode.title)",
           usePrismJs: true
         )
