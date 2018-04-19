@@ -75,7 +75,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title3])], ["Payment Info"])
+        h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment Info"])
         ])
       ])
     ])
@@ -85,7 +85,7 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.title4])], ["Current Payment Info"]),
+        h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
         p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
         p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
         ])
@@ -97,7 +97,7 @@ private let updatePaymentInfoRowView = View<Bool> { expand in
   return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.title4])], ["Update"]),
+        h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
           Stripe.html.cardInput(expand: expand)

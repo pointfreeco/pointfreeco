@@ -21,7 +21,7 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["You’re invited!"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your colleague ",
             text(inviter.name ?? inviter.email.unwrap),
@@ -59,7 +59,7 @@ private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> 
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        h3([`class`([Class.pf.type.title3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
+        h3([`class`([Class.pf.type.responsiveTitle3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
           "Your invitation was accepted!"
           ]),
         p([

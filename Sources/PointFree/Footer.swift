@@ -45,7 +45,7 @@ private let legalView = View<Prelude.Unit> { _ in
 
 private let pointFreeView = View<Prelude.Unit> { _ -> Node in
   div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
-    h4([`class`([Class.pf.type.title4, Class.margin([.mobile: [.bottom: 0]])])], [
+    h4([`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])], [
       a([href(path(to: .home)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
       ]),
     p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white])], [
@@ -144,7 +144,7 @@ private let footerLinkClass =
     | Class.pf.type.body.regular
 
 private let columnTitleClass =
-  Class.pf.type.title6
+  Class.pf.type.responsiveTitle7
     | Class.pf.colors.fg.white
 
 private let legalClass =
