@@ -624,7 +624,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
                 ]),
               p([`class`([])], [
                 a([
-                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  `class`([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
                   href(path(to: .account(.invoices(.index)))),
                   ],
                   ["Payment history"])
