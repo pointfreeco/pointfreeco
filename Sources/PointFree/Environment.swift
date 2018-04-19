@@ -16,6 +16,7 @@ public struct Environment {
   public private(set) var date: () -> Date
   public private(set) var envVars: EnvVars
   public private(set) var episodes: () -> [Episode]
+  public private(set) var features: [Feature]
   public private(set) var gitHub: GitHub
   public private(set) var logger: Logger
   public private(set) var mailgun: Mailgun
@@ -29,6 +30,7 @@ public struct Environment {
     date: @escaping () -> Date = Date.init,
     envVars: EnvVars = EnvVars(),
     episodes: @escaping () -> [Episode] = { [typeSafeHtml, typeSafeHtml, typeSafeHtml] },
+    features: [Feature] = Feature.allFeatures,
     gitHub: GitHub = .live,
     logger: Logger = Logger(),
     mailgun: Mailgun = .live,
@@ -41,6 +43,7 @@ public struct Environment {
     self.date = date
     self.envVars = envVars
     self.episodes = episodes
+    self.features = features
     self.gitHub = gitHub
     self.logger = logger
     self.mailgun = mailgun

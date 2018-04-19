@@ -36,19 +36,19 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
         ),
 
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
-          a([href(url(to: .blog(.show(.right(post.id.unwrap)))))], [
+          a([href(url(to: .blog(.show(post))))], [
             h3([`class`([Class.pf.type.responsiveTitle3])], [text(post.title)]),
             ]),
           p([text(post.blurb)]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .blog(.show((.right(post.id.unwrap))))))], [
+            a([href(url(to: .blog(.show(post))))], [
               img(src: post.coverImage, alt: "", [style(maxWidth(.pct(100)))])
               ])
             ]),
 
           a(
             [
-              href(url(to: .blog(.show(.right(post.id.unwrap))))),
+              href(url(to: .blog(.show(post)))),
               `class`(
                 [
                   Class.pf.colors.link.purple,

@@ -28,7 +28,7 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
   p([
     text("Blog Post: \(post.title)"),
 
-    form([action(path(to: .admin(.newBlogPostEmail(.send(post.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
+    form([action(path(to: .admin(.newBlogPostEmail(.send(post, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
 
       textarea([name("subscriber_announcement"), placeholder("Subscriber announcement")]),
       textarea([name("nonsubscriber_announcement"), placeholder("Non-subscribers announcements")]),
@@ -40,12 +40,8 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
 }
 
 let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, BlogPost.Id, String?, String?, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, BlogPost, String?, String?, Bool?>, Data> =
   requireAdmin
-    <<< filterMap(
-      over2(fetchBlogPost(forId:)) >>> require2 >>> pure,
-      or: redirect(to: .admin(.newBlogPostEmail(.index)))
-    )
     <<< filterMap(
       require5 >>> pure,
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
@@ -53,7 +49,7 @@ let sendNewBlogPostEmailMiddleware:
     <| sendNewBlogPostEmails
     >-> redirect(to: .admin(.index))
 
-private func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
+func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
     .first(where: { id == $0.id })
 }
