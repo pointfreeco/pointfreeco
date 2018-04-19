@@ -234,7 +234,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
             `class`([blockInputClass]),
             name(ProfileData.CodingKeys.email.stringValue),
             type(.email),
-            value(currentUser.email.unwrap)
+            value(currentUser.email.rawValue)
             ]),
 
           ] + emailSettingCheckboxes.view(currentEmailSettings) + [
@@ -327,7 +327,7 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
             "You are currently on a team subscription. Contact ",
             a(
               [
-                mailto(data.subscriptionOwner?.email.unwrap ?? ""),
+                mailto(data.subscriptionOwner?.email.rawValue ?? ""),
                 `class`([Class.pf.colors.link.purple])
               ],
               [
@@ -503,8 +503,8 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
 
   let teammateLabel = currentUser.id == teammate.id
-    ? "\(teammate.name ?? teammate.email.unwrap) (you)"
-    : "\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"
+    ? "\(teammate.displayName) (you)"
+    : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
   return gridRow([
     gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
@@ -538,7 +538,7 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 private let inviteRowView = View<Database.TeamInvite> { invite in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([text(invite.email.unwrap)])
+      p([text(invite.email.rawValue)])
       ]),
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
@@ -644,7 +644,7 @@ public func format(cents: Stripe.Cents) -> String {
 }
 
 private func totalAmount(for subscription: Stripe.Subscription) -> String {
-  return format(cents: .init(unwrap: subscription.plan.amount.rawValue * subscription.quantity))
+  return format(cents: subscription.plan.amount * .init(rawValue: subscription.quantity))
 }
 
 private let logoutView = View<Prelude.Unit> { _ in

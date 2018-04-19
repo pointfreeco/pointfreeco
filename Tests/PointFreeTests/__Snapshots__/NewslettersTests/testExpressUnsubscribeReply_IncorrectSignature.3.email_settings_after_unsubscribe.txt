@@ -1,13 +1,13 @@
 ▿ 3 elements
   ▿ PointFree.Database.EmailSetting
     - newsletter: PointFree.Database.EmailSetting.Newsletter.announcements
-    ▿ userId: Prelude.Tagged<PointFree.Database.User, Foundation.UUID>
-      - unwrap: 00000000-0000-0000-0000-000000000001
+    ▿ userId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
   ▿ PointFree.Database.EmailSetting
     - newsletter: PointFree.Database.EmailSetting.Newsletter.newBlogPost
-    ▿ userId: Prelude.Tagged<PointFree.Database.User, Foundation.UUID>
-      - unwrap: 00000000-0000-0000-0000-000000000001
+    ▿ userId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
   ▿ PointFree.Database.EmailSetting
     - newsletter: PointFree.Database.EmailSetting.Newsletter.newEpisode
-    ▿ userId: Prelude.Tagged<PointFree.Database.User, Foundation.UUID>
-      - unwrap: 00000000-0000-0000-0000-000000000001
+    ▿ userId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001

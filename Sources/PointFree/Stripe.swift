@@ -278,7 +278,7 @@ public struct Stripe {
   }
 }
 
-extension Tagged where Tag == Stripe.Plan, A == String {
+extension Tagged where Tag == Stripe.Plan, RawValue == String {
   static var individualMonthly: Stripe.Plan.Id {
     return "individual-monthly"
   }
@@ -297,7 +297,7 @@ extension Tagged where Tag == Stripe.Plan, A == String {
 }
 
 private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer", .delete(["at_period_end": "true"]))
+  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"]))
 }
 
 private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
@@ -305,9 +305,9 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumb
 
     return stripeDataTask("customers", .post(filteredValues <| [
       "business_vat_id": vatNumber,
-      "description": user.id.unwrap.uuidString,
-      "email": user.email.unwrap,
-      "source": token.unwrap,
+      "description": user.id.rawValue.uuidString,
+      "email": user.email.rawValue,
+      "source": token.rawValue,
       ]))
 }
 
@@ -319,48 +319,48 @@ private func createSubscription(
   -> EitherIO<Error, Stripe.Subscription> {
 
     return stripeDataTask("subscriptions?expand[]=customer", .post([
-      "customer": customer.unwrap,
-      "items[0][plan]": plan.unwrap,
+      "customer": customer.rawValue,
+      "items[0][plan]": plan.rawValue,
       "items[0][quantity]": String(quantity),
       ]))
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Customer> {
-  return stripeDataTask("customers/" + id.unwrap)
+  return stripeDataTask("customers/" + id.rawValue)
 }
 
 private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoice> {
-  return stripeDataTask("invoices/" + id.unwrap + "?expand[]=charge")
+  return stripeDataTask("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
 private func fetchInvoices(for customer: Stripe.Customer) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
-  return stripeDataTask("invoices?customer=" + customer.id.unwrap + "&expand[]=data.charge&limit=100")
+  return stripeDataTask("invoices?customer=" + customer.id.rawValue + "&expand[]=data.charge&limit=100")
 }
 
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
   stripeDataTask("plans")
 
 private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Error, Stripe.Plan> {
-  return stripeDataTask("plans/" + id.unwrap)
+  return stripeDataTask("plans/" + id.rawValue)
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.unwrap + "?expand[]=customer")
+  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
 private func invoiceCustomer(_ customer: Stripe.Customer)
   -> EitherIO<Error, Stripe.Invoice> {
 
     return stripeDataTask("invoices", .post([
-      "customer": customer.id.unwrap,
+      "customer": customer.id.rawValue,
       ]))
 }
 
 private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.Id)
   -> EitherIO<Error, Stripe.Customer> {
 
-    return stripeDataTask("customers/" + customer.id.unwrap, .post([
-      "source": token.unwrap,
+    return stripeDataTask("customers/" + customer.id.rawValue, .post([
+      "source": token.rawValue,
       ]))
 }
 
@@ -374,9 +374,9 @@ private func updateSubscription(
 
     guard let item = currentSubscription.items.data.first else { return throwE(unit) }
 
-    return stripeDataTask("subscriptions/" + currentSubscription.id.unwrap + "?expand[]=customer", .post(filteredValues <| [
-      "items[0][id]": item.id.unwrap,
-      "items[0][plan]": plan.unwrap,
+    return stripeDataTask("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
+      "items[0][id]": item.id.rawValue,
+      "items[0][plan]": plan.rawValue,
       "items[0][quantity]": String(quantity),
       "prorate": prorate.map(String.init(describing:)),
       ]))

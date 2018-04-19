@@ -33,7 +33,7 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Blo
 func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
     .first(where: {
-      param.right == .some($0.id.unwrap)
+      param.right == .some($0.id.rawValue)
         || param.left == .some($0.slug)
     })
 }
