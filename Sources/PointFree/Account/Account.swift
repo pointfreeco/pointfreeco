@@ -503,8 +503,8 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
 
   let teammateLabel = currentUser.id == teammate.id
-    ? "\(teammate.name ?? teammate.email.rawValue) (you)"
-    : "\(teammate.name ?? teammate.email.rawValue) (\(teammate.email.rawValue))"
+    ? "\(teammate.displayName) (you)"
+    : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
   return gridRow([
     gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
