@@ -18,15 +18,12 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Subscriber
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (currentUser, subscriberState),
-          // TODO
-          description: "Point-Free is a video series exploring functional programming and Swift.",
+          description: "A companion blog to Point-Free, exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles,
-          // TODO
-          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pfp-twitter-card-large.jpg",
           openGraphType: .website,
           style: .base(.mountains(.blog)),
-          // TODO
-          title: "Point-Free: A video series on functional programming and the Swift programming language.",
+          title: "Point-Free Pointers",
           twitterCard: .summaryLargeImage
         )
     }
