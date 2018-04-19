@@ -10,13 +10,6 @@ import SnapshotTesting
 import XCTest
 
 class AuthTests: TestCase {
-  override func setUp() {
-    super.setUp()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-  }
 
   func testRegister() {
     let gitHubUserEnvelope = GitHub.UserEnvelope.mock
@@ -149,16 +142,16 @@ class AuthTests: TestCase {
     AppEnvironment.with(\.database .~ .mock) {
       let conn = connection(from: request(to: .home, session: .loggedOut))
       let result = conn |> siteMiddleware
-      
+
       assertSnapshot(matching: result.perform())
     }
   }
-  
+
   func testHome_LoggedIn() {
     AppEnvironment.with(\.database .~ .mock) {
       let conn = connection(from: request(to: .home, session: .loggedIn))
       let result = conn |> siteMiddleware
-      
+
       assertSnapshot(matching: result.perform())
     }
   }
