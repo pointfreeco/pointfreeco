@@ -1,3 +1,5 @@
+import ApplicativeRouter
+import Either
 import Foundation
 import Prelude
 
@@ -15,6 +17,10 @@ public struct BlogPost {
   public struct Video {
     public private(set) var sources: [String]
   }
+
+  public var slug: String {
+    return "\(self.id.unwrap)-\(PointFree.slug(for: self.title))"
+  }
 }
 
 let post0000_mock = BlogPost(
@@ -23,6 +29,11 @@ This is the blurb to a mock blog post. This should just be short and to the poin
 text, no markdown.
 """,
   contentBlocks: [
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .video(poster: "", sources: [])
+    ),
     .init(
       content: """
       This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
@@ -46,6 +57,11 @@ text, no markdown.
       type: .code(lang: .swift)
     ),
     .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "")
+    ),
+    .init(
       content: """
       Cool stuff right? 
       """,
@@ -59,3 +75,21 @@ text, no markdown.
   title: "Mock Blog Post",
   video: nil
 )
+
+extension PartialIso where A == Either<String, Int>, B == BlogPost {
+  static var blogPostFromParam: PartialIso {
+    return PartialIso(
+      apply: fetchBlogPost(forParam:),
+      unapply: Either.left <<< ^\.slug
+    )
+  }
+}
+
+extension PartialIso where A == BlogPost.Id, B == BlogPost {
+  static var blogPostFromId: PartialIso {
+    return PartialIso(
+      apply: fetchBlogPost(forId:),
+      unapply: ^\.id
+    )
+  }
+}

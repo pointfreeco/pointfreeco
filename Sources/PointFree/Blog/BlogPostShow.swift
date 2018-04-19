@@ -8,12 +8,8 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware =
-  filterMap(
-    over1(blogPost(forParam:)) >>> require1 >>> pure,
-    or: map(const(unit)) >>> routeNotFoundMiddleware
-    )
-    <| writeStatus(.ok)
+let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
+  writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: blogPostShowView,
@@ -22,11 +18,10 @@ let blogPostShowMiddleware =
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: post,
+          data: (post, subscriberState),
           description: post.blurb,
           extraStyles: markdownBlockStyles,
-          // TODO
-          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+          image: post.coverImage,
           navStyle: .mountains(.blog),
           openGraphType: .website,
           title: post.title,
@@ -35,12 +30,15 @@ let blogPostShowMiddleware =
     }
 )
 
-private func blogPost(forParam param: Either<String, Int>) -> BlogPost? {
+func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
-    .first(where: { param.right == .some($0.id.unwrap) })
+    .first(where: {
+      param.right == .some($0.id.unwrap)
+        || param.left == .some($0.slug)
+    })
 }
 
-private let blogPostShowView = View<BlogPost> { post in
+private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
 
   [
     gridRow(
@@ -53,7 +51,7 @@ private let blogPostShowView = View<BlogPost> { post in
             div(
               [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
               blogPostContentView.view(post)
-                <> subscriberCalloutView.view(unit)
+                <> subscriberCalloutView.view(subscriberState)
             )
           ]
         )
@@ -62,8 +60,10 @@ private let blogPostShowView = View<BlogPost> { post in
   ]
 }
 
-private let subscriberCalloutView = View<Prelude.Unit> { _ in
-  [
+private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+  guard !subscriberState.isActive else { return [] }
+
+  return [
     hr([`class`([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
 
     div(
@@ -113,17 +113,29 @@ let blogPostContentView = View<BlogPost> { post in
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
         a(
-          [href(path(to: .blog(.show(.right(post.id.unwrap)))))],
+          [href(url(to: .blog(.show(post))))],
           [text(post.title)]
         )
       ]
     ),
 
-    p([text(episodeDateFormatter.string(from: post.publishedAt))]),
+    div(
+      [
+        `class`([Class.flex.flex, Class.flex.items.baseline]),
+        style(flex(direction: .row))
+      ],
+      [
+        div([p([text(episodeDateFormatter.string(from: post.publishedAt))])]),
+        div(
+          [`class`([Class.margin([.mobile: [.left: 1]])])],
+          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
+        )
+      ]
+    ),
  
     div(
       [
-        style(width(.rem(3)) <> height(.px(1))),
+        style(width(.rem(3)) <> height(.px(2))),
         `class`(
           [
             Class.pf.colors.bg.green,
