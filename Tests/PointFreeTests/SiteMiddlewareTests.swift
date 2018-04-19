@@ -16,6 +16,16 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 }
 
 class SiteMiddlewareTests: TestCase {
+  override func setUp() {
+    super.setUp()
+    AppEnvironment.push(\.database .~ .mock)
+  }
+
+  override func tearDown() {
+    super.tearDown()
+    AppEnvironment.pop()
+  }
+
   func testWithoutWWW() {
     assertSnapshot(
       matching: connection(from: secureRequest("https://pointfree.co"))
