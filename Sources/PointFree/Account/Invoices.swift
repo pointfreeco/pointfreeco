@@ -35,16 +35,11 @@ let invoiceResponse =
     <<< requireStripeSubscription
     <<< filterMap(
       over3(fetchInvoice) >>> sequence3 >>> map(require3),
-      or: redirect(
-        to: .account(.invoices(.index)),
-        headersMiddleware: flash(
-          .error,
-          """
-          We had some trouble loading your invoice! Please try again later.
-          If the problem persists, please notify <support@pointfree.co>.
-          """
-        )
-      )
+      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
+    )
+    <<< filter(
+      invoiceBelongsToCustomer,
+      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
     )
     <| writeStatus(.ok)
     >-> map(lower)
@@ -59,12 +54,6 @@ let invoiceResponse =
         )
     }
 )
-
-private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
-  return AppEnvironment.current.stripe.fetchInvoice(id)
-    .run
-    .map(^\.right)
-}
 
 private func fetchInvoices<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, A>, Data>
@@ -96,6 +85,21 @@ private func fetchInvoices<A>(
           }
       }
     }
+}
+
+private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
+  return AppEnvironment.current.stripe.fetchInvoice(id)
+    .run
+    .map(^\.right)
+}
+
+private let invoiceError = """
+We had some trouble loading your invoice! Please try again later.
+If the problem persists, please notify <support@pointfree.co>.
+"""
+
+private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, Database.User, Stripe.Invoice>) -> Bool {
+  return get1(data).customer.id == get3(data).customer
 }
 
 // MARK: Views
