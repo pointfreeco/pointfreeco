@@ -139,16 +139,20 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    let conn = connection(from: request(to: .home, session: .loggedOut))
-    let result = conn |> siteMiddleware
+    AppEnvironment.with(\.database .~ .mock) {
+      let conn = connection(from: request(to: .home, session: .loggedOut))
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
+    }
   }
 
   func testHome_LoggedIn() {
-    let conn = connection(from: request(to: .home, session: .loggedIn))
-    let result = conn |> siteMiddleware
+    AppEnvironment.with(\.database .~ .mock) {
+      let conn = connection(from: request(to: .home, session: .loggedIn))
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
+    }
   }
 }
