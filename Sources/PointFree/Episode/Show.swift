@@ -754,7 +754,7 @@ private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Su
 private func episode(forParam param: Either<String, Int>) -> Episode? {
   return AppEnvironment.current.episodes()
     .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
+      param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
     })
 }
 

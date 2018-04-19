@@ -15,7 +15,7 @@ import SnapshotTesting
 AppEnvironment.push(const(.mock))
 AppEnvironment.push(\.database.fetchTeamInvite .~ const(throwE(unit)))
 
-let teamInviteId = Database.TeamInvite.Id(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+let teamInviteId = Database.TeamInvite.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
 
 let htmlString = String(
   data: connection(from: request(to: .invite(.show(teamInviteId)), session: .loggedIn))
