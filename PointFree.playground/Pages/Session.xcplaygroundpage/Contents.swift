@@ -2,7 +2,7 @@
 import Foundation
 import HttpPipeline
 
-let session = Session(flash: nil, userId: .init(unwrap: UUID(uuidString: "f2d31034-0baf-11e8-9112-b3ffbeb2f840")!))
+let session = Session(flash: nil, userId: .init(rawValue: UUID(uuidString: "f2d31034-0baf-11e8-9112-b3ffbeb2f840")!))
 
 String(data: try! JSONEncoder().encode(session), encoding: .utf8)
 

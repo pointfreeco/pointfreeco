@@ -192,7 +192,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(Either.right(episodeId.rawValue) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):

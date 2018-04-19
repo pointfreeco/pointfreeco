@@ -104,6 +104,10 @@ public struct Database {
       case name
       case subscriptionId = "subscription_id"
     }
+
+    var displayName: String {
+      return name ?? email.rawValue
+    }
   }
 
   public struct Subscription: Decodable {
@@ -150,9 +154,9 @@ private func createSubscription(
       RETURNING "id"
       """,
       [
-        stripeSubscription.id.unwrap,
+        stripeSubscription.id.rawValue,
         stripeSubscription.status.rawValue,
-        userId.unwrap.uuidString,
+        userId.rawValue.uuidString,
         ]
       )
       .flatMap { node in
@@ -164,7 +168,7 @@ private func createSubscription(
           """,
           [
             node[0, "id"]?.string,
-            userId.unwrap.uuidString
+            userId.rawValue.uuidString
           ]
         )
       }
@@ -181,7 +185,7 @@ private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, 
     """,
     [
       stripeSubscription.status.rawValue,
-      stripeSubscription.id.unwrap
+      stripeSubscription.id.rawValue
     ]
   )
 }
@@ -195,8 +199,8 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
     WHERE "users"."id" = $2
     """,
     [
-      subscriptionId.unwrap.uuidString,
-      userId.unwrap.uuidString,
+      subscriptionId.rawValue.uuidString,
+      userId.rawValue.uuidString,
     ]
   )
   .map(const(unit))
@@ -216,8 +220,8 @@ private func remove(
     AND "users"."subscription_id" = $2
     """,
     [
-      teammateUserId.unwrap.uuidString,
-      subscriptionId.unwrap.uuidString,
+      teammateUserId.rawValue.uuidString,
+      subscriptionId.rawValue.uuidString,
       ]
     )
     .map(const(unit))
@@ -232,7 +236,7 @@ private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, 
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-    [id.unwrap.uuidString]
+    [id.rawValue.rawValue]
   )
 }
 
@@ -245,7 +249,7 @@ private func fetchSubscription(ownerId: Database.User.Id) -> EitherIO<Error, Dat
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-    [ownerId.unwrap.uuidString]
+    [ownerId.rawValue.uuidString]
   )
 }
 
@@ -264,7 +268,7 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
     """,
-    [ownerId.unwrap.uuidString]
+    [ownerId.rawValue.uuidString]
   )
 }
 
@@ -287,9 +291,9 @@ private func updateUser(
     """,
     [
       name,
-      email?.unwrap,
+      email?.rawValue,
       episodeCreditCount,
-      userId.unwrap.uuidString
+      userId.rawValue.uuidString
     ]
     )
     .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
@@ -323,7 +327,7 @@ private func updateEmailSettings(
       DELETE FROM "email_settings"
       WHERE "user_id" = $1
       """,
-      [userId.unwrap.uuidString]
+      [userId.rawValue.uuidString]
       )
       .map(const(unit))
 
@@ -336,7 +340,7 @@ private func updateEmailSettings(
           """,
           [
             type.rawValue,
-            userId.unwrap.uuidString
+            userId.rawValue.uuidString
           ]
         )
       }
@@ -361,8 +365,8 @@ private func upsertUser(
     SET "github_access_token" = $3, "name" = $4
     """,
     [
-      email.unwrap,
-      envelope.gitHubUser.id.unwrap,
+      email.rawValue,
+      envelope.gitHubUser.id.rawValue,
       envelope.accessToken.accessToken,
       envelope.gitHubUser.name
     ]
@@ -388,7 +392,7 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
     WHERE "id" = $1
     LIMIT 1
     """,
-    [id.unwrap.uuidString]
+    [id.rawValue.uuidString]
   )
 }
 
@@ -425,7 +429,7 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
     WHERE "github_user_id" = $1
     LIMIT 1
     """,
-    [userId.unwrap]
+    [userId.rawValue]
   )
 }
 
@@ -437,7 +441,7 @@ private func fetchTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Data
     WHERE "id" = $1
     LIMIT 1
     """,
-    [id.unwrap.uuidString]
+    [id.rawValue.uuidString]
   )
 }
 
@@ -447,7 +451,7 @@ private func deleteTeamInvite(id: Database.TeamInvite.Id) -> EitherIO<Error, Pre
     DELETE FROM "team_invites"
     WHERE "id" = $1
     """,
-    [id.unwrap.uuidString]
+    [id.rawValue.uuidString]
   )
   .map(const(unit))
 }
@@ -459,7 +463,7 @@ private func fetchTeamInvites(inviterId: Database.User.Id) -> EitherIO<Error, [D
     FROM "team_invites"
     WHERE "inviter_user_id" = $1
     """,
-    [inviterId.unwrap.uuidString]
+    [inviterId.rawValue.uuidString]
   )
 }
 
@@ -493,8 +497,8 @@ private func insertTeamInvite(
     RETURNING "id"
     """,
     [
-      email.unwrap,
-      inviterUserId.unwrap.uuidString
+      email.rawValue,
+      inviterUserId.rawValue.uuidString
     ]
     )
     .flatMap { node -> EitherIO<Error, Database.TeamInvite> in
@@ -517,7 +521,7 @@ private func fetchEmailSettings(forUserId userId: Database.User.Id) -> EitherIO<
     FROM "email_settings"
     WHERE "user_id" = $1
     """,
-    [userId.unwrap.uuidString]
+    [userId.rawValue.uuidString]
   )
 }
 
@@ -528,7 +532,7 @@ private func fetchEpisodeCredits(for userId: Database.User.Id) -> EitherIO<Error
     FROM "episode_credits"
     WHERE "user_id" = $1
     """,
-    [userId.unwrap.uuidString]
+    [userId.rawValue.uuidString]
   )
 }
 
@@ -568,7 +572,7 @@ private func redeemEpisodeCredit(episodeSequence: Int, userId: Database.User.Id)
     """,
     [
       episodeSequence,
-      userId.unwrap.uuidString
+      userId.rawValue.uuidString
     ]
     )
     .map(const(unit))
