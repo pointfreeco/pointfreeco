@@ -69,43 +69,6 @@ extension Class {
     public static let opacity50 = CssSelector.class("opacity-50")
     public static let opacity75 = CssSelector.class("opacity-75")
     public enum type {
-//      public static let title1 =
-//        Class.pf.colors.fg.black
-//          | Class.type.bold
-//          | Class.h1
-//          | Class.type.lineHeight(2)
-//
-//      public static let title2 =
-//        Class.pf.colors.fg.black
-//          | Class.type.bold
-//          | Class.h2
-//          | Class.type.lineHeight(2)
-//
-//      public static let title3 =
-//        Class.pf.colors.fg.black
-//          | Class.type.bold
-//          | Class.h3
-//          | Class.type.lineHeight(2)
-//
-//      public static let title4 =
-//        Class.pf.colors.fg.black
-//          | Class.type.bold
-//          | Class.h4
-//          | Class.type.lineHeight(2)
-//
-//      public static let title5 =
-//        Class.pf.colors.fg.black
-//          | Class.type.semiBold
-//          | Class.h5
-//          | Class.type.lineHeight(1)
-//
-//      public static let title6 =
-//        Class.pf.colors.fg.black
-//          | Class.type.bold
-//          | Class.h6
-//          | Class.type.lineHeight(1)
-//          | Class.type.caps
-
       private static let titleBase =
         Class.pf.colors.fg.black
           | Class.type.bold

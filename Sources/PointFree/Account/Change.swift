@@ -322,7 +322,7 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { bil
             ]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.responsiveTitle6, Class.pf.colors.fg.gray650, Class.display.inline])], [
+          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
             text(title(for: billing))
             ])
           ])
