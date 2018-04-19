@@ -17,6 +17,11 @@ class HomeTests: TestCase {
 
     assertSnapshot(matching: result.perform())
 
+    AppEnvironment.with(\.episodes .~ unzurry(Array(repeating: Episode.mock, count: 6))) {
+
+    }
+
+
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1600))
