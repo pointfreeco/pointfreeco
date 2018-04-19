@@ -21,7 +21,7 @@ private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> {
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Team removal"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             text("""
               You have been removed from \(teamOwner.name ?? teamOwner.email.unwrap)’s Point-Free team, which means you no longer
@@ -60,7 +60,7 @@ private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { te
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Team removal"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             text("""
               You have removed \(teammate.name ?? teammate.email.unwrap) from your Point-Free team, which means they no longer
