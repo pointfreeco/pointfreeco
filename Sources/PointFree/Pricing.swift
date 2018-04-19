@@ -95,7 +95,7 @@ let pricingResponse =
           currentUser: currentUser,
           data: (currentUser, pricing, expand),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
-          navStyle: .minimal(.dark),
+          style: .base(.minimal(.dark)),
           title: "Subscribe to Point-Free"
         )
     }
