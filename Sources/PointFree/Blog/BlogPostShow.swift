@@ -8,7 +8,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let blogPostShowMiddleware =
   filterMap(
     over1(blogPost(forParam:)) >>> require1 >>> pure,
     or: map(const(unit)) >>> routeNotFoundMiddleware
@@ -17,7 +17,7 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<Either<String, Int>, Da
     >-> map(lower)
     >>> respond(
       view: blogPostShowView,
-      layoutData: { post, currentUser, subscriberState, currentRoute in
+      layoutData: { (post: BlogPost, currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
