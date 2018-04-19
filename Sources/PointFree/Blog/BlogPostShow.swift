@@ -8,7 +8,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware =
+let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
