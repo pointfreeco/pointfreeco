@@ -56,7 +56,7 @@ private let episodeTagView = View<Tag> { tag in
         Class.pf.colors.border.gray900
         ])
     ],
-    [.text(encode(tag.name))]
+    [text(tag.name)]
   )
 }
 

@@ -151,7 +151,9 @@ extension FreeEpisodeEmailTests {
 }
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
-    ("testHomepage", testHomepage)
+    ("testHomepage_LoggedOut", testHomepage_LoggedOut),
+    ("testHomepage_Subscriber", testHomepage_Subscriber),
+    ("testEpisodesIndex", testEpisodesIndex)
   ]
 }
 extension HtmlCssInlinerTests {

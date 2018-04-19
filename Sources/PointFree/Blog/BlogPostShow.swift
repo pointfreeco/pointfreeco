@@ -8,12 +8,12 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let blogPostShowMiddleware =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: blogPostShowView,
-      layoutData: { post, currentUser, subscriberState, currentRoute in
+      layoutData: { (post: BlogPost, currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,

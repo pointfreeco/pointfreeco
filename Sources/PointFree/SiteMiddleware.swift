@@ -111,6 +111,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
 
+    case .episodes:
+      return conn
+        |> redirect(to: path(to: .home))
+
     case let .expressUnsubscribe(userId, newsletter):
       return conn.map(const(userId .*. newsletter .*. unit))
         |> expressUnsubscribeMiddleware
