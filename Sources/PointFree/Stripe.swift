@@ -84,13 +84,16 @@ public struct Stripe {
   }
 
   public struct Customer: Codable {
+    public private(set) var businessVatId: Vat?
     public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
     public private(set) var sources: ListEnvelope<Card>
 
-    public typealias Id = Tagged<Customer, String>
+    public typealias Id = Tagged<(Customer, id: ()), String>
+    public typealias Vat = Tagged<(Customer, vat: ()), String>
 
     private enum CodingKeys: String, CodingKey {
+      case businessVatId = "business_vat_id"
       case defaultSource = "default_source"
       case id
       case sources

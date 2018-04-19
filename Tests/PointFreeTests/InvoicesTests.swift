@@ -31,7 +31,25 @@ final class InvoicesTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 800))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
+
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
+    }
+    #endif
+  }
+
+  func testInvoice() {
+    let conn = connection(from: request(to: .account(.invoices(.show(Stripe.Invoice.mock.id))), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 800))
       webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
       assertSnapshot(matching: webView, named: "desktop")
 

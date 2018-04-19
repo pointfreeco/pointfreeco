@@ -221,8 +221,17 @@ extension Stripe.Card {
   )
 }
 
+extension Stripe.Charge {
+  public static let mock = Stripe.Charge(
+    amount: 17_00,
+    id: "ch_test",
+    source: .mock
+  )
+}
+
 extension Stripe.Customer {
   public static let mock = Stripe.Customer(
+    businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",
     sources: .mock([.mock])
@@ -255,6 +264,7 @@ extension Stripe.Invoice {
   public static let mock = Stripe.Invoice(
     amountDue: 17_00,
     amountPaid: 17_00,
+    charge: .mock,
     closed: true,
     customer: "cus_test",
     date: .mock,
