@@ -9,8 +9,8 @@ import Prelude
 import Styleguide
 
 let stripeInvoiceWebhookMiddleware =
-  validateStripeSignature <<<
-    filterMap(
+  validateStripeSignature
+    <<< filterMap(
       ^\Stripe.Event<Stripe.Invoice>.data.object.subscription >>> pure,
       or: writeStatus(.ok) >-> end // FIXME: admin email?
     )
