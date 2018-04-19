@@ -28,6 +28,6 @@ private func atomEntry(for post: BlogPost) -> AtomEntry {
     title: post.title,
     siteUrl: url(to: .blog(.show(post))),
     updated: post.publishedAt,
-    content: [text(post.blurb)]
+    content: blogPostContentView.view(post)
   )
 }

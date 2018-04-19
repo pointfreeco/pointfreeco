@@ -786,6 +786,10 @@
   vertical-align : middle;
 }
 
+.align-top {
+  vertical-align : top;
+}
+
 .h-1r {
   height : 1rem;
 }

@@ -113,17 +113,29 @@ let blogPostContentView = View<BlogPost> { post in
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
         a(
-          [href(path(to: .blog(.show(post))))],
+          [href(url(to: .blog(.show(post))))],
           [text(post.title)]
         )
       ]
     ),
 
-    p([text(episodeDateFormatter.string(from: post.publishedAt))]),
+    div(
+      [
+        `class`([Class.flex.flex, Class.flex.items.baseline]),
+        style(flex(direction: .row))
+      ],
+      [
+        div([p([text(episodeDateFormatter.string(from: post.publishedAt))])]),
+        div(
+          [`class`([Class.margin([.mobile: [.left: 1]])])],
+          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
+        )
+      ]
+    ),
  
     div(
       [
-        style(width(.rem(3)) <> height(.px(1))),
+        style(width(.rem(3)) <> height(.px(2))),
         `class`(
           [
             Class.pf.colors.bg.green,

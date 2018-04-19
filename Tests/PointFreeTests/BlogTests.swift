@@ -33,7 +33,7 @@ class BlogTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1400))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
       webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
       assertSnapshot(matching: webView, named: "desktop")
 
@@ -62,7 +62,7 @@ class BlogTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
       webView.loadHTMLString(String(data: result.data, encoding: .utf8)!, baseURL: nil)
       assertSnapshot(matching: webView, named: "desktop")
 
