@@ -295,13 +295,13 @@ public func require5<A, B, C, D, E, Z>(_ x: T6<A, B, C, D, E?, Z>) -> T6<A, B, C
 
 // PreludeFoundation
 
-private let guaranteeHeaders = \URLRequest.allHTTPHeaderFields %~ {
+private let guaranteeHeaders = ^\URLRequest.allHTTPHeaderFields %~ {
   $0 ?? [:]
 }
 
 let setHeader = { name, value in
   guaranteeHeaders
-    <> (\.allHTTPHeaderFields <<< map <<< \.[name] .~ value)
+    <> (^\.allHTTPHeaderFields <<< map <<< ^\.[name] .~ value)
 }
 
 func attachBasicAuth(username: String = "", password: String = "") -> (URLRequest) -> URLRequest {

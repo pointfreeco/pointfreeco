@@ -22,9 +22,9 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
-    |> \.database.fetchTeamInvites .~ const(pure([.mock]))
-    |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
+    |> ^\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
+    |> ^\.database.fetchTeamInvites .~ const(pure([.mock]))
+    |> (^\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
 }
 
 extension Assets {
@@ -43,7 +43,7 @@ extension Logger {
 extension EnvVars {
   public static var mock: EnvVars {
     return EnvVars()
-      |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+      |> ^\.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
   }
 }
 
@@ -96,10 +96,10 @@ extension Database.User {
   public static let owner = mock
 
   public static let teammate = mock
-    |> \.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+    |> ^\.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
 
   public static let nonSubscriber = mock
-    |> \.subscriptionId .~ nil
+    |> ^\.subscriptionId .~ nil
 }
 
 extension Database.Subscription {
@@ -177,20 +177,20 @@ extension Pricing {
   public static let mock = `default`
 
   public static let individualMonthly = mock
-    |> \.billing .~ .monthly
-    |> \.quantity .~ 1
+    |> ^\.billing .~ .monthly
+    |> ^\.quantity .~ 1
 
   public static let individualYearly = mock
-    |> \.billing .~ .yearly
-    |> \.quantity .~ 1
+    |> ^\.billing .~ .yearly
+    |> ^\.quantity .~ 1
 
   public static let teamMonthly = mock
-    |> \.billing .~ .monthly
-    |> \.quantity .~ 4
+    |> ^\.billing .~ .monthly
+    |> ^\.quantity .~ 4
 
   public static let teamYearly = mock
-    |> \.billing .~ .yearly
-    |> \.quantity .~ 4
+    |> ^\.billing .~ .yearly
+    |> ^\.quantity .~ 4
 }
 
 extension Stripe {
@@ -315,19 +315,19 @@ extension Stripe.Plan {
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.amount .~ 170_00
-    |> \.id .~ .individualYearly
-    |> \.name .~ "Individual Yearly"
+    |> ^\.amount .~ 170_00
+    |> ^\.id .~ .individualYearly
+    |> ^\.name .~ "Individual Yearly"
 
   public static let teamMonthly = mock
-    |> \.amount .~ 16_00
-    |> \.id .~ .teamMonthly
-    |> \.name .~ "Team Monthly"
+    |> ^\.amount .~ 16_00
+    |> ^\.id .~ .teamMonthly
+    |> ^\.name .~ "Team Monthly"
 
   public static let teamYearly = mock
-    |> \.amount .~ 160_00
-    |> \.id .~ .teamYearly
-    |> \.name .~ "Team Yearly"
+    |> ^\.amount .~ 160_00
+    |> ^\.id .~ .teamYearly
+    |> ^\.name .~ "Team Yearly"
 }
 
 extension Stripe.Subscription {
@@ -348,29 +348,29 @@ extension Stripe.Subscription {
   )
 
   public static let individualMonthly = mock
-    |> \.plan .~ .individualMonthly
-    |> \.quantity .~ 1
+    |> ^\.plan .~ .individualMonthly
+    |> ^\.quantity .~ 1
 
   public static let individualYearly = mock
-    |> \.plan .~ .individualYearly
-    |> \.quantity .~ 1
+    |> ^\.plan .~ .individualYearly
+    |> ^\.quantity .~ 1
 
   public static let teamMonthly = mock
-    |> \.plan .~ .teamMonthly
-    |> \.quantity .~ 4
+    |> ^\.plan .~ .teamMonthly
+    |> ^\.quantity .~ 4
 
   public static let teamYearly = mock
-    |> \.plan .~ .teamYearly
-    |> \.quantity .~ 4
+    |> ^\.plan .~ .teamYearly
+    |> ^\.quantity .~ 4
 
   public static let canceling = mock
-    |> \.cancelAtPeriodEnd .~ true
+    |> ^\.cancelAtPeriodEnd .~ true
 
   public static let canceled = mock
-    |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-    |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-    |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
-    |> \.status .~ .canceled
+    |> ^\.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> ^\.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> ^\.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
+    |> ^\.status .~ .canceled
 }
 
 extension Stripe.Subscription.Item {
@@ -408,7 +408,7 @@ extension Session {
   public static let loggedOut = empty
 
   public static let loggedIn = loggedOut
-    |> \.userId .~ Database.User.mock.id
+    |> ^\.userId .~ Database.User.mock.id
 }
 
 public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {

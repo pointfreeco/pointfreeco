@@ -12,7 +12,7 @@ import XCTest
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
+    AppEnvironment.push(^\.database .~ .mock)
   }
 
   override func tearDown() {
@@ -74,8 +74,8 @@ final class SubscribeTests: TestCase {
 
   func testInvalidQuantity() {
     let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionById .~ const(pure(nil)))
-      <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.fetchSubscriptionById .~ const(pure(nil)))
+      <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -103,12 +103,12 @@ final class SubscribeTests: TestCase {
   }
 
   func testHappyPath() {
-    AppEnvironment.with(\.database .~ .live) {
+    AppEnvironment.with(^\.database .~ .live) {
       let user = AppEnvironment.current.database.upsertUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
-      let session = Session.loggedIn |> \.userId .~ user.id
+      let session = Session.loggedIn |> ^\.userId .~ user.id
 
       let conn = connection(
         from: request(to: .subscribe(.some(.individualMonthly)), session: session)
@@ -133,9 +133,9 @@ final class SubscribeTests: TestCase {
 
   func testCreateCustomerFailure() {
     let env: (Environment) -> Environment =
-      (\.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) })
+        <> (^\.database.fetchSubscriptionById .~ const(pure(nil)))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -152,9 +152,9 @@ final class SubscribeTests: TestCase {
 
   func testCreateStripeSubscriptionFailure() {
     let env: (Environment) -> Environment =
-      (\.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) })
+        <> (^\.database.fetchSubscriptionById .~ const(pure(nil)))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -171,9 +171,9 @@ final class SubscribeTests: TestCase {
 
   func testCreateDatabaseSubscriptionFailure() {
     let env: (Environment) -> Environment =
-      (\.database.createSubscription .~ { _, _ in throwE(unit as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.createSubscription .~ { _, _ in throwE(unit as Error) })
+        <> (^\.database.fetchSubscriptionById .~ const(pure(nil)))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(

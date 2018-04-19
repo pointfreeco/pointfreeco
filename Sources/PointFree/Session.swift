@@ -25,7 +25,7 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Ses
 }
 
 public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middleware<HeadersOpen, HeadersOpen, A, A> {
-  return writeSessionCookieMiddleware(\.flash .~ Flash(priority: priority, message: message))
+  return writeSessionCookieMiddleware(^\.flash .~ Flash(priority: priority, message: message))
 }
 
 extension URLRequest {

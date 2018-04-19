@@ -13,7 +13,7 @@ import WebKit
 class PricingTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
+    AppEnvironment.push(^\.database .~ .mock)
   }
 
   override func tearDown() {
@@ -52,8 +52,8 @@ class PricingTests: TestCase {
 
   func testPricingLoggedIn_NonSubscriber() {
     let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.fetchSubscriptionById .~ const(pure(nil)))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))

@@ -75,8 +75,8 @@ private func applyInlineStyles(element: Element, stylesheet: Stylesheet) -> Elem
     + (newStyles.isEmpty ? [] : [AnyAttribute("style", newStyles)])
 
   return element
-    |> \.attribs .~ newAttribs
-    |> \.content .~ applyInlineStyles(nodes: element.content ?? [], stylesheet: stylesheet)
+    |> ^\.attribs .~ newAttribs
+    |> ^\.content .~ applyInlineStyles(nodes: element.content ?? [], stylesheet: stylesheet)
 }
 
 // Computes the inline styles for a selector given a stylesheet.

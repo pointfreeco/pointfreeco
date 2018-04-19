@@ -15,7 +15,7 @@ import WebKit
 final class NotFoundMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
+    AppEnvironment.push(^\.database .~ .mock)
   }
 
   override func tearDown() {
@@ -45,7 +45,7 @@ final class NotFoundMiddlewareTests: TestCase {
   func testNotFound_LoggedIn() {
     let result = connection(
       from: request(to: .home, session: .loggedIn)
-        |> (over(\.url) <<< map) %~ { $0.appendingPathComponent("404") }
+        |> (^\.url <<< map) %~ { $0.appendingPathComponent("404") }
       )
       |> siteMiddleware
       |> Prelude.perform

@@ -13,7 +13,7 @@ import Optics
 import SnapshotTesting
 
 AppEnvironment.push(const(.mock))
-AppEnvironment.push(\.database.fetchTeamInvite .~ const(throwE(unit)))
+AppEnvironment.push(^\.database.fetchTeamInvite .~ const(throwE(unit)))
 
 let teamInviteId = Database.TeamInvite.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
 

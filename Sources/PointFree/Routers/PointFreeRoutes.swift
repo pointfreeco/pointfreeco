@@ -304,7 +304,7 @@ private let routers: [Router<Route>] = [
 ]
 
 private let formDecoder = UrlFormDecoder()
-  |> \.parsingStrategy .~ .bracketsWithIndices
+  |> ^\.parsingStrategy .~ .bracketsWithIndices
 
 public let router = routers.reduce(.empty, <|>)
 
