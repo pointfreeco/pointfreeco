@@ -31,7 +31,7 @@ class NewEpisodeEmailTests: TestCase {
 
   func testNewEpisodeEmail_FreeEpisode_NonSubscriber() {
     let episode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
     let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
 

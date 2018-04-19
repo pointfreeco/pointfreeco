@@ -15,7 +15,7 @@ import WebKit
 class EpisodeTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
+    AppEnvironment.push(^\.database .~ .mock)
   }
 
   override func tearDown() {
@@ -65,9 +65,9 @@ class EpisodeTests: TestCase {
 
   func testFreeEpisodePage() {
     let freeEpisode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
-    AppEnvironment.with(\.episodes .~ { [freeEpisode] }) {
+    AppEnvironment.with(^\.episodes .~ { [freeEpisode] }) {
       let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedOut)
 
       let conn = connection(from: episode)
@@ -90,9 +90,9 @@ class EpisodeTests: TestCase {
 
   func testFreeEpisodePageSubscriber() {
     let freeEpisode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
-    AppEnvironment.with(\.episodes .~ { [freeEpisode] }) {
+    AppEnvironment.with(^\.episodes .~ { [freeEpisode] }) {
       let episode = request(to: .episode(.left(AppEnvironment.current.episodes().first!.slug)), session: .loggedIn)
 
       let conn = connection(from: episode)
@@ -132,17 +132,17 @@ class EpisodeTests: TestCase {
 
   func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
     let user = Database.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+      |> ^\.subscriptionId .~ nil
+      |> ^\.episodeCreditCount .~ 1
 
     let episode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (^\.episodes .~ unzurry([episode]))
+        <> (^\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -167,17 +167,17 @@ class EpisodeTests: TestCase {
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
     let user = Database.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+      |> ^\.subscriptionId .~ nil
+      |> ^\.episodeCreditCount .~ 1
 
     let episode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ true
+      |> ^\.subscriberOnly .~ true
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (^\.episodes .~ unzurry([episode]))
+        <> (^\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -202,17 +202,17 @@ class EpisodeTests: TestCase {
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
     let user = Database.User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+      |> ^\.subscriptionId .~ nil
+      |> ^\.episodeCreditCount .~ 1
 
     let episode = AppEnvironment.current.episodes().first!
-      |> \.subscriberOnly .~ true
+      |> ^\.subscriberOnly .~ true
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+      (^\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (^\.episodes .~ unzurry([episode]))
+        <> (^\.database.fetchEpisodeCredits .~ const(pure([])))
+        <> ((^\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -237,11 +237,11 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_HappyPath() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ true
+      |> ^\.subscriberOnly .~ true
 
     let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.episodes .~ unzurry([episode]))
+      (^\.database .~ .live)
+        <> (^\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database
@@ -273,16 +273,16 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_NotEnoughCredits() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ true
+      |> ^\.subscriberOnly .~ true
 
     let user = Database.User.mock
-      |> \.episodeCreditCount .~ 0
-      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+      |> ^\.episodeCreditCount .~ 0
+      |> ^\.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
+      (^\.database .~ .live)
+        <> (^\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (^\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -307,16 +307,16 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_PublicEpisode() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
     let user = Database.User.mock
-      |> \.episodeCreditCount .~ 1
-      |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
+      |> ^\.episodeCreditCount .~ 1
+      |> ^\.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
+      (^\.database .~ .live)
+        <> (^\.database.fetchUserById .~ const(pure(.some(user))))
+        <> (^\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -341,11 +341,11 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_AlreadyCredited() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ false
+      |> ^\.subscriberOnly .~ false
 
     let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.episodes .~ unzurry([episode]))
+      (^\.database .~ .live)
+        <> (^\.episodes .~ unzurry([episode]))
 
     AppEnvironment.with(env) {
       let user = AppEnvironment.current.database

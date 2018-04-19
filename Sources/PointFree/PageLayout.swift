@@ -122,7 +122,7 @@ func respond<A, B>(
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
+      let newLayoutData = layoutData(conn.data) |> ^\.flash .~ conn.request.session.flash
       let pageLayout = metaLayout(simplePageLayout(view))
         .map(addGoogleAnalytics)
         .contramap(
@@ -138,7 +138,7 @@ func respond<A, B>(
       )
 
       return conn
-        |> writeSessionCookieMiddleware(\.flash .~ nil)
+        |> writeSessionCookieMiddleware(^\.flash .~ nil)
         >-> respond(
           body: pageLayout.rendered(with: newLayoutData),
           contentType: .html

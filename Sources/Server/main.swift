@@ -31,7 +31,7 @@ let envVars = (try? JSONSerialization.data(withJSONObject: envVarDict))
   .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
   ?? AppEnvironment.current.envVars
 
-AppEnvironment.push(\.envVars .~ envVars)
+AppEnvironment.push(^\.envVars .~ envVars)
 
 // Transcripts
 
@@ -40,7 +40,7 @@ private let allEpisodes = allPublicEpisodes
 #else
 private let allEpisodes = allPublicEpisodes + allPrivateEpisodes
 #endif
-AppEnvironment.push(\
+AppEnvironment.push(^\
   .episodes .~ {
     let now = AppEnvironment.current.date()
     return allEpisodes

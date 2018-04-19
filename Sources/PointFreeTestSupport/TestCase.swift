@@ -11,8 +11,8 @@ open class TestCase: XCTestCase {
     AppEnvironment.push(
       const(
         .mock
-          |> \.database .~ .live
-          |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
+          |> ^\.database .~ .live
+          |> ^\.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
       )
     )
 
