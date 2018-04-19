@@ -30,6 +30,11 @@ text, no markdown.
 """,
   contentBlocks: [
     .init(
+      content: "",
+      timestamp: nil,
+      type: .video(poster: "", sources: [])
+    ),
+    .init(
       content: """
       This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
       should be broken out into separate content blocks so that we can use the JS syntax highlighting
@@ -50,6 +55,11 @@ text, no markdown.
       """,
       timestamp: nil,
       type: .code(lang: .swift)
+    ),
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "")
     ),
     .init(
       content: """
