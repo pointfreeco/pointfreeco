@@ -11,26 +11,68 @@ import WebKit
 #endif
 
 class HomeTests: TestCase {
-  func testHomepage() {
+  func testHomepage_LoggedOut() {
     let conn = connection(from: request(to: .home))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
 
-    AppEnvironment.with(\.episodes .~ unzurry(Array(repeating: Episode.mock, count: 6))) {
+    AppEnvironment.with(\.episodes .~ unzurry(Array(repeating: Episode.mock, count: 4))) {
+      #if !os(Linux)
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 3000))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
 
+        webView.frame.size.width = 400
+        webView.frame.size.height = 3500
+
+        let render = XCTestExpectation()
+        DispatchQueue.main.async {
+          assertSnapshot(matching: webView, named: "mobile")
+          render.fulfill()
+        }
+        guard XCTWaiter.wait(for: [render], timeout: 2.0) == .completed else {
+          XCTAssert(false)
+          return
+        }
+      }
+      #endif
     }
+  }
 
+  func testHomepage_Subscriber() {
+    let env: (Environment) -> Environment =
+      (\.database .~ .mock)
+        <> (\.episodes .~ unzurry(Array(repeating: .mock, count: 4)))
 
-    #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1600))
-      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+    AppEnvironment.with(env) {
+      let conn = connection(from: request(to: .home, session: .loggedIn))
+      let result = conn |> siteMiddleware
+
+      assertSnapshot(matching: result.perform())
+
+      #if !os(Linux)
+      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2300))
+        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+        assertSnapshot(matching: webView, named: "desktop")
+
+        webView.frame.size.width = 400
+        webView.frame.size.height = 2800
+
+        let render = XCTestExpectation()
+        DispatchQueue.main.async {
+          assertSnapshot(matching: webView, named: "mobile")
+          render.fulfill()
+        }
+        guard XCTWaiter.wait(for: [render], timeout: 2.0) == .completed else {
+          XCTAssert(false)
+          return
+        }
+      }
+      #endif
     }
-    #endif
   }
 
   func testEpisodesIndex() {
