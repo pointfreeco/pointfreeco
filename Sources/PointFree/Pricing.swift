@@ -168,7 +168,7 @@ private let whatToExpectStyles =
 private let whatToExpect = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4])],
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4])],
       [.text(unsafeUnencodedString("What to expect?"))]
     ),
 
@@ -188,7 +188,7 @@ private let whatToExpect = View<Prelude.Unit> { _ in
 private let topicsView = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
       [.text(unsafeUnencodedString("What kind of topics will you cover?"))]
     ),
 
@@ -216,7 +216,7 @@ private let topicsView = View<Prelude.Unit> { _ in
 private let suggestATopic = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
       [.text(unsafeUnencodedString("Can I suggest a topic?"))]
     ),
 
@@ -237,7 +237,7 @@ private let suggestATopic = View<Prelude.Unit> { _ in
 private let whoAreYou = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.title4, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
       [.text(unsafeUnencodedString("Who are you?"))]
     ),
 
@@ -376,7 +376,7 @@ return
             ]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.title6, Class.pf.colors.fg.gray650, Class.display.inline])], [
+          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
             text(title(for: billing))
             ]),
           ]),
@@ -435,7 +435,7 @@ private let numberSpinnerClass = CssSelector.class("num-spinner")
 let numberSpinner =
   numberSpinnerClass
     | Class.type.align.center
-    | Class.pf.type.title1
+    | Class.pf.type.responsiveTitle1
 let extraSpinnerStyles =
   numberSpinnerClass % (
     padding(left: .px(20))

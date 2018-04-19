@@ -224,7 +224,7 @@ private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { u
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Subscription canceled"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your ",
             strong([text(subscription.plan.name)]),
@@ -267,7 +267,7 @@ private let reactivateEmailBodyView = View<(Database.User, Stripe.Subscription)>
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Subscription reactivated"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Thanks for sticking with us! Your ",
             strong([text(subscription.plan.name)]),
