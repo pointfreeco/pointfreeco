@@ -922,6 +922,10 @@ a:link.btn-normal {
   font-family : inherit;
 }
 
+.font-family-monospace {
+  font-family : monospace;
+}
+
 .font-size-inherit {
   font-size : inherit;
 }

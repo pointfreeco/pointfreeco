@@ -27,7 +27,7 @@ final class StripeHookTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=7f66af23da46c4b8f558da9be8c6a85ae3ea6bbeb66480c71e6e961804cc7518",
+      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=3111e73ee4307d2ea48c59f85f18087a7a1f1f5e45bf8255be4e13d13102c83a",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
