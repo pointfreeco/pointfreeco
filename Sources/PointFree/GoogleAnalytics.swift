@@ -13,7 +13,7 @@ public func addGoogleAnalytics(_ nodes: [Node]) -> [Node] {
       if element.name == "head" {
         return .element(element |> over(^\.content) { ($0 ?? []) + [googleAnalytics] })
       } else {
-        return .element(element |> over(^\.content, map(addGoogleAnalytics))
+        return .element(element |> over(^\.content <<< map, addGoogleAnalytics))
       }
     case .text:
       return node

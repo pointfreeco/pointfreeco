@@ -12,7 +12,7 @@ import Optics
 
 private func secureRequest(_ urlString: String) -> URLRequest {
   return URLRequest(url: URL(string: urlString)!)
-    setHeader("X-Forwarded-Proto", "https")
+    |> setHeader("X-Forwarded-Proto", "https")
 }
 
 class SiteMiddlewareTests: TestCase {

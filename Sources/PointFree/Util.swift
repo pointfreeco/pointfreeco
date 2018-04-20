@@ -9,9 +9,9 @@ public let currencyFormatter = NumberFormatter()
 
 public let dateFormatter = DateFormatter()
   |> set(^\.dateStyle, .short)
-  <> set(^\.timeStyle, .none)
-  <> set(^\.timeZone, TimeZone(secondsFromGMT: 0))
+  |> set(^\.timeStyle, .none)
+  |> set(^\.timeZone, TimeZone(secondsFromGMT: 0))
 
 public let episodeDateFormatter = DateFormatter()
   |> set(^\.dateFormat, "EEEE MMM d, yyyy")
-  <> set(^\.timeZone, TimeZone(secondsFromGMT: 0))
+  |> set(^\.timeZone, TimeZone(secondsFromGMT: 0))

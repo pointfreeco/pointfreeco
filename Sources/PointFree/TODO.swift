@@ -311,6 +311,7 @@ func attachBasicAuth(username: String = "", password: String = "") -> (URLReques
 
 let attachFormData =
   urlFormEncode(value:)
-    >>> ^\.utf8
+    >>> ^\String.utf8
     >>> Data.init
-    >>> set(\URLRequest.httpBody)
+    >>> const
+    >>> ^\URLRequest.httpBody

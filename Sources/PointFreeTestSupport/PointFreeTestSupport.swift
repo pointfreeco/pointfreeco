@@ -9,22 +9,22 @@ import Prelude
 extension Environment {
   public static let mock = Environment(
     assets: .mock,
-    blogPosts: { [post0000_mock] },
+    blogPosts: unzurry([post0000_mock]),
     cookieTransform: .plaintext,
     database: .mock,
-    date: { .mock },
+    date: unzurry(.mock),
     envVars: .mock,
-    episodes: { [.mock] },
+    episodes: unzurry([.mock]),
     gitHub: .mock,
     logger: .mock,
     mailgun: .mock,
     stripe: .mock
   )
 
-  public static let teamYearly = mock
-    |> set(^\.database.fetchSubscriptionTeammatesByOwnerId, const(pure([.mock])))
-    <> set(^\.database.fetchTeamInvites, const(pure([.mock])))
-    <> set(^\.stripe.fetchSubscription, const(pure(.teamYearly))
+  public static let teamYearly = Environment.mock
+    |> set(^\Environment.database.fetchSubscriptionTeammatesByOwnerId, const(pure([.mock])))
+    |> set(^\Environment.database.fetchTeamInvites, const(pure([.mock])))
+    |> set(^\Environment.stripe.fetchSubscription, const(pure(.teamYearly)))
 }
 
 extension Assets {
