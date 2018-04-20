@@ -16,7 +16,7 @@ let showNewBlogPostEmailMiddleware =
     >-> respond(showNewBlogPostView.contramap(lower))
 
 private let showNewBlogPostView = View<Database.User> { _ in
-  ul(
+  pure <| ul(
     AppEnvironment.current.blogPosts()
       .sorted(by: their(^\.id, >))
       .prefix(upTo: 1)
@@ -25,7 +25,7 @@ private let showNewBlogPostView = View<Database.User> { _ in
 }
 
 private let newBlogPostEmailRowView = View<BlogPost> { post in
-  p([
+  pure <| p([
     text("Blog Post: \(post.title)"),
 
     form([action(path(to: .admin(.newBlogPostEmail(.send(post, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [

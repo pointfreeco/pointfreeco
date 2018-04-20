@@ -141,7 +141,7 @@ let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView)
 }
 
 private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

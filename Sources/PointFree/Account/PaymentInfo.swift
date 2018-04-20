@@ -59,8 +59,7 @@ let updatePaymentInfoMiddleware:
 }
 
 let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand in
-
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
@@ -72,7 +71,7 @@ let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand i
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment Info"])
@@ -82,7 +81,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
 }
 
 private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
@@ -94,7 +93,7 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
 }
 
 private let updatePaymentInfoRowView = View<Bool> { expand in
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),

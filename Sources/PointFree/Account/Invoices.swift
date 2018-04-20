@@ -104,9 +104,8 @@ private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, Databa
 
 // MARK: Views
 
-let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, Database.User)> { subscription, invoicesEnvelope, currentUser -> Node in
-
-  gridRow([
+let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, Database.User)> { subscription, invoicesEnvelope, currentUser in
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
@@ -117,7 +116,7 @@ let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.responsiveTitle2])], ["Payment history"])
@@ -127,7 +126,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
 }
 
 private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoicesEnvelope in
-  div(
+  pure <| div(
     invoicesEnvelope.data.map { invoice in
       gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
         gridColumn(sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])], [
@@ -156,9 +155,8 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
   )
 }
 
-let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { subscription, currentUser, invoice -> Node in
-
-  gridRow([
+let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { subscription, currentUser, invoice in
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],

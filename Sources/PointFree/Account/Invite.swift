@@ -143,8 +143,7 @@ let sendInviteMiddleware =
 }
 
 let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> { teamInvite, inviter, currentUser in
-
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           currentUser
@@ -156,7 +155,7 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
 }
 
 private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
@@ -184,7 +183,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
 }
 
 private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, Database.User)> { currentUser, teamInvite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
@@ -212,8 +211,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
 }
 
 private let inviteNotFoundView = View<Prelude.Unit> { _ in
-
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
         h3([`class`([Class.pf.type.responsiveTitle3])], ["Invite not found"]),

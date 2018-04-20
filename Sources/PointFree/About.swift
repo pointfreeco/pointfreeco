@@ -26,7 +26,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
 )
 
 private let aboutView = View<Prelude.Unit> { _ in
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           aboutSectionView.view(unit)
@@ -82,7 +82,7 @@ private let hostsView = View<Prelude.Unit> { _ in
 }
 
 private let hostView = View<Host> { host in
-  div(
+  pure <| div(
     [`class`([Class.padding([.mobile: [.bottom: 3]])])],
     [
       img(

@@ -17,7 +17,7 @@ let registrationEmailView = simpleEmailLayout(registrationEmailBody)
 }
 
 private let registrationEmailBody = View<GitHub.User> { user in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

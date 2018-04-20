@@ -158,9 +158,8 @@ private func fetchSeatsTaken<A>(
     }
 }
 
-let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)> { subscription, currentUser, seatsTaken -> Node in
-
-  gridRow([
+let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)> { subscription, currentUser, seatsTaken in
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
@@ -173,7 +172,7 @@ let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)>
 }
 
 private let titleRowView = View<Stripe.Subscription> { subscription in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
@@ -193,9 +192,8 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
     ])
 }
 
-private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
-
-  return form(
+private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken in
+  pure <| form(
     [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), `class`([Class.margin([.mobile: [.bottom: 3]])])],
     changeSeatsRowView.view((subscription, seatsTaken))
       <> changeBillingIntervalRowView.view(subscription)
@@ -205,7 +203,7 @@ private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seats
   )
 }
 
-private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
+private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken in
 
   let pricing = PointFree.pricing(for: subscription)
   let subtitle = pricing.isIndividual
@@ -218,7 +216,7 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
       strong([text(String(subscription.quantity))]), " seats"]), " available."
   ]
 
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  return pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       h3([`class`([Class.pf.type.responsiveTitle4])], [text(subtitle)]),
       p(description + [" ",
@@ -258,14 +256,14 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
 
 let priceClass = CssSelector.class("price")
 
-private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscription -> Node in
+private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscription in
 
   let pricing = PointFree.pricing(for: subscription)
   let subtitle = pricing.billing == .monthly
     ? "Change to yearly billing?"
     : "Change to monthly billing?"
 
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  return pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       h3([`class`([Class.pf.type.responsiveTitle4])], [text(subtitle)]),
       p([
@@ -294,8 +292,8 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
     ])
 }
 
-private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
-  return gridColumn(sizes: [.mobile: 16], [`class`([Class.pf.colors.bg.white])], [
+private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing in
+  pure <| gridColumn(sizes: [.mobile: 16], [`class`([Class.pf.colors.bg.white])], [
     label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.topBottom: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([

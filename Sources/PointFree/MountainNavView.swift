@@ -38,7 +38,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
 
 private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
-  gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), Class.pf.components.blueGradient])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), Class.pf.components.blueGradient])], [
 
     gridColumn(sizes: [.mobile: 12], [
       gridRow([

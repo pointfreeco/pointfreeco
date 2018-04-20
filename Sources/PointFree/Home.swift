@@ -125,7 +125,7 @@ private let episodeRowView = View<Episode> { ep in
 }
 
 private let episodeInfoColumnView = View<Episode> { ep in
-  div(
+  pure <| div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep) + [
       div([`class`([Class.margin([.mobile: [.top: 3]])])], [

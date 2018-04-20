@@ -25,7 +25,7 @@ let routeNotFoundMiddleware =
 )
 
 private let routeNotFoundView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.grid.center(.mobile)])], [
+  pure <| gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
       div([style(padding(topBottom: .rem(12)))], [
         h5([`class`([Class.pf.type.responsiveTitle5])], ["Page not found :("]),

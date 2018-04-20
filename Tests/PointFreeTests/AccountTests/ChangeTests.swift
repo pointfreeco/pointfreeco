@@ -177,9 +177,9 @@ final class ChangeTests: TestCase {
       |> \.quantity .~ 5
     
     let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])))
-        >>> (\.database.fetchTeamInvites .~ const(pure([.mock, .mock])))
-        >>> (\.stripe.fetchSubscription .~ const(pure(subscription)))
+      ((\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.teammate, .teammate])))
+        <> ((\Environment.database.fetchTeamInvites) .~ const(pure([.mock, .mock])))
+        <> ((\Environment.stripe.fetchSubscription) .~ const(pure(subscription)))
     
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))

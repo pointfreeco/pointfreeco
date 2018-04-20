@@ -30,7 +30,7 @@ private let linksColumnsView = View<Database.User?> { currentUser in
 }
 
 private let legalView = View<Prelude.Unit> { _ in
-  p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
+  pure <| p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
     "© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. ",
     "All other content is licensed under ",
     a([`class`([Class.pf.colors.link.gray650]),
@@ -43,8 +43,8 @@ private let legalView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let pointFreeView = View<Prelude.Unit> { _ -> Node in
-  div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
+private let pointFreeView = View<Prelude.Unit> { _ in
+  pure <| div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
     h4([`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])], [
       a([href(path(to: .home)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
       ]),
@@ -64,7 +64,7 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
     ])
 }
 
-private let contentColumnView = View<Database.User?> { currentUser -> Node in
+private let contentColumnView = View<Database.User?> { currentUser in
 
   let links: [ChildOf<Element.Ol>]
 
@@ -94,14 +94,14 @@ private let contentColumnView = View<Database.User?> { currentUser -> Node in
     ]
   }
 
-  return div([
+  return pure <| div([
     h5([`class`([columnTitleClass])], ["Content"]),
     ol([`class`([Class.type.list.reset])], links)
     ])
 }
 
 private let accountColumnView = View<Prelude.Unit> { _ in
-  div([
+  pure <| div([
     h5([`class`([columnTitleClass])], ["Account"]),
     ol([`class`([Class.type.list.reset])], [
       li([
@@ -115,7 +115,7 @@ private let accountColumnView = View<Prelude.Unit> { _ in
 }
 
 private let moreColumnView = View<Prelude.Unit> { _ in
-  div([
+  pure <| div([
     h5([`class`([columnTitleClass])], ["More"]),
     ol([`class`([Class.type.list.reset])], [
       li([

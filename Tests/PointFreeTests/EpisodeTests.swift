@@ -139,9 +139,9 @@ class EpisodeTests: TestCase {
       |> \.subscriberOnly .~ false
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+      ((\Environment.database.fetchUserById) .~ const(pure(.some(user))))
+        <> ((\Environment.episodes) .~ unzurry([episode]))
+        <> ((\Environment.database.fetchEpisodeCredits) .~ const(pure([.mock])))
         <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
@@ -174,9 +174,9 @@ class EpisodeTests: TestCase {
       |> \.subscriberOnly .~ true
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
+      ((\Environment.database.fetchUserById) .~ const(pure(.some(user))))
+        <> ((\Environment.episodes) .~ unzurry([episode]))
+        <> ((\Environment.database.fetchEpisodeCredits) .~ const(pure([.mock])))
         <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
@@ -209,9 +209,9 @@ class EpisodeTests: TestCase {
       |> \.subscriberOnly .~ true
 
     let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.episodes .~ unzurry([episode]))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
+      ((\Environment.database.fetchUserById) .~ const(pure(.some(user))))
+        <> ((\Environment.episodes) .~ unzurry([episode]))
+        <> ((\Environment.database.fetchEpisodeCredits) .~ const(pure([])))
         <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
 
     AppEnvironment.with(env) {
