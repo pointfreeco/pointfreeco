@@ -31,7 +31,7 @@ extension Tag {
 }
 
 public let pillTagsView = View<[Tag]> { tags in
-  ol(
+  pure <| ol(
     [`class`([Class.display.inlineBlock, Class.type.list.reset])],
     tags
       .sorted(by: their(^\.name))
@@ -43,7 +43,7 @@ public let pillTagsView = View<[Tag]> { tags in
 }
 
 private let episodeTagView = View<Tag> { tag in
-  a(
+  pure <| a(
     [
       href("#"),
       `class`([

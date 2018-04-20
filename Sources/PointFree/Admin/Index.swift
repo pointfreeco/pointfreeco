@@ -31,7 +31,7 @@ let adminIndex =
     >-> respond(adminIndexView.contramap(lower))
 
 private let adminIndexView = View<Database.User> { currentUser in
-  ul([
+  pure <| ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
       ]),

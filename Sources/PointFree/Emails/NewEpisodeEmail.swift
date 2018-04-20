@@ -28,7 +28,7 @@ let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
 }
 
 let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, announcement, isSubscriber in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
@@ -129,7 +129,7 @@ let newEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminRepo
 }
 
 let newEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [

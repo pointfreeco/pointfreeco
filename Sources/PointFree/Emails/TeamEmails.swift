@@ -17,7 +17,7 @@ let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody)
 }
 
 private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> { teamOwner, teammate in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -56,7 +56,7 @@ let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody)
 }
 
 private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { teamOwner, teammate in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

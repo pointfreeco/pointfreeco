@@ -14,7 +14,8 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b811904")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("0a86107")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("702ddc3")),
+    //.package(url: "https://github.com/pointfreeco/swift-web.git", .revision("702ddc3")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("consistent-view")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
     ],

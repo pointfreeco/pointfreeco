@@ -27,7 +27,7 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
 }
 
 let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div(
@@ -106,7 +106,7 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
 }
 
 let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [

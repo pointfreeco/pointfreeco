@@ -217,7 +217,7 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
-  div(
+  pure <| div(
     [
       `class`([outerVideoContainerClass]),
       style(outerVideoContainerStyle)
@@ -240,7 +240,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
+  pure <| div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
     h6(
       [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
       ["Chapters"]
@@ -277,7 +277,7 @@ private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attri
 }
 
 private let tocChapterView = View<(title: String, timestamp: Int, isEpisodeViewable: Bool)> { title, timestamp, isEpisodeViewable in
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 10], [
       div(tocChapterLinkView.view((title, timestamp, isEpisodeViewable)))
       ]),
@@ -350,7 +350,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
 }
 
 private let hostsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+  pure <| div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
           [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -386,7 +386,7 @@ private func timestampLabel(for timestamp: Int) -> String {
 
 private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode in
-  div(
+  pure <| div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
       + (
@@ -566,7 +566,7 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
 }
 
 private let episodeInfoView = View<Episode> { ep in
-  div(
+  pure <| div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
   )
@@ -599,10 +599,10 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
 }
 
 let divider = hr([`class`([Class.pf.components.divider])])
-let dividerView = View<Prelude.Unit>(const(divider))
+let dividerView = View<Prelude.Unit>(const(pure(divider)))
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
-  div(
+  pure <| div(
     [
       `class`(
         [
@@ -647,10 +647,10 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
   ]
 }
 
-let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
+let transcriptBlockView = View<Episode.TranscriptBlock> { block in
   switch block.type {
   case let .code(lang):
-    return pre([
+    return pure <| pre([
       code(
         [`class`([Class.pf.components.code(lang: lang.identifier)])],
         [text(block.content)]
@@ -658,7 +658,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
       ])
 
   case let .image(src):
-    return a(
+    return pure <| a(
       [
         `class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
         href(src),
@@ -669,13 +669,13 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
     )
 
   case .paragraph:
-    return div(
+    return pure <| div(
       timestampLinkView.view(block.timestamp)
         + [markdownBlock(block.content)]
     )
 
   case .title:
-    return h2(
+    return pure <| h2(
       [
         `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
@@ -689,7 +689,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
     )
 
   case let .video(poster, sources):
-    return div(
+    return pure <| div(
       [
         `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
         style(outerVideoContainerStyle)
@@ -711,7 +711,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   }
 }
 
-private let timestampLinkView = View<Int?> { timestamp -> [Node] in
+private let timestampLinkView = View<Int?> { timestamp in
   guard let timestamp = timestamp else { return [] }
 
   return [
@@ -736,8 +736,7 @@ private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
 }
 
 private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, SubscriberState, Route?)> { _, _, _, _ in
-
-  gridRow([`class`([Class.grid.center(.mobile)])], [
+  pure <| gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
       div([style(padding(topBottom: .rem(12)))], [
         h5([`class`([Class.h5])], ["Episode not found :("]),

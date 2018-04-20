@@ -18,9 +18,9 @@ class AuthTests: TestCase {
       |> \.gitHubUser.name .~ "Blobby McBlob"
 
     let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
-        <> (\.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
+      ((\Environment.database) .~ .live)
+        <> ((\Environment.gitHub.fetchUser) .~ const(pure(gitHubUserEnvelope.gitHubUser)))
+        <> ((\Environment.gitHub.fetchAuthToken) .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
 
     AppEnvironment.with(env) {
       let result = connection(

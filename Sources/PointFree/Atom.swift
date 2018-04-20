@@ -52,13 +52,15 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
 }
 
 public let atomEntry = View<AtomEntry> { atomEntry in
-  return entry([
-    title(atomEntry.title),
-    link([href(atomEntry.siteUrl)]),
-    updated(atomEntry.updated),
-    id(atomEntry.siteUrl),
-    content([type("html")], atomEntry.content)
-    ])
+  return pure <| entry(
+    [
+      title(atomEntry.title),
+      link([href(atomEntry.siteUrl)]),
+      updated(atomEntry.updated),
+      id(atomEntry.siteUrl),
+      content([type("html")], atomEntry.content)
+    ]
+  )
 }
 
 extension Element {

@@ -26,7 +26,7 @@ Every once in awhile we release a past episode for free to all of our viewers, a
 """
 
 let freeEpisodeEmailContent = View<Episode> { ep in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
@@ -93,7 +93,7 @@ let freeEpisodeEmailAdminReportEmail = simpleEmailLayout(newEpisodeEmailAdminRep
 }
 
 let freeEpisodeEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [

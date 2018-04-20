@@ -29,7 +29,7 @@ let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.U
 )
 
 private let privacyView = View<Prelude.Unit> { _ in
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],

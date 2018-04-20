@@ -36,7 +36,7 @@ let emailStylesheet = styleguide
 
 func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
   return View { layoutData in
-    document([
+    pure <| document([
       html([xmlns("http://www.w3.org/1999/xhtml")], [
         head([
           style(emailStylesheet),

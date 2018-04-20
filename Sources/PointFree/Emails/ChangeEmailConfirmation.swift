@@ -17,7 +17,7 @@ let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
 }
 
 private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { user, newEmailAddress in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -63,7 +63,7 @@ let emailChangedEmailView = simpleEmailLayout(emailChangedEmailBody)
 }
 
 private let emailChangedEmailBody = View<EmailAddress> { newEmailAddress in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

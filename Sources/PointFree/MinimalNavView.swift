@@ -9,7 +9,7 @@ import Styleguide
 import Prelude
 
 let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  gridRow([`class`([newNavBarClass(for: style)])], [
+  pure <| gridRow([`class`([newNavBarClass(for: style)])], [
     gridColumn(sizes: [:], [
       div([`class`([Class.hide(.desktop)])], [
         a([href(path(to: .home))], [
@@ -66,7 +66,7 @@ private let loggedOutNavItemsView = navItems([
 
 private func navItems<A>(_ views: [View<A>]) -> View<A> {
   return View { a in
-    ul([`class`([navListClass])],
+    pure <| ul([`class`([navListClass])],
        views
         .map { (curry(li)([`class`([navListItemClass])]) >>> pure) <¢> $0 }
         .concat()
@@ -76,19 +76,19 @@ private func navItems<A>(_ views: [View<A>]) -> View<A> {
 }
 
 private let aboutLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .about)), `class`([navLinkClass(for: style)])], ["About"])
+  pure <| a([href(path(to: .about)), `class`([navLinkClass(for: style)])], ["About"])
 }
 
 private let subscribeLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClass(for: style)])], ["Subscribe"])
+  pure <| a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClass(for: style)])], ["Subscribe"])
 }
 
 private let accountLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .account(.index))), `class`([navLinkClass(for: style)])], ["Account"])
+  pure <| a([href(path(to: .account(.index))), `class`([navLinkClass(for: style)])], ["Account"])
 }
 
 private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, currentRoute in
-  gitHubLink(text: "Log in", type: gitHubLinkType(for: style), redirectRoute: currentRoute)
+  pure <| gitHubLink(text: "Log in", type: gitHubLinkType(for: style), redirectRoute: currentRoute)
 }
 
 private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {

@@ -18,7 +18,7 @@ let hostSignOffView = View<Prelude.Unit> { _ in
 }
 
 let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
+  pure <| emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

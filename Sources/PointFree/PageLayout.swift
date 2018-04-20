@@ -148,7 +148,7 @@ func respond<A, B>(
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   return View { layoutData in
-    document([
+    pure <| document([
       html([
         head([
           meta([charset(.utf8)]),
@@ -217,7 +217,7 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 }
 
 let flashView = View<Flash> { flash in
-  gridRow([`class`([flashClass(for: flash.priority)])], [
+  pure <| gridRow([`class`([flashClass(for: flash.priority)])], [
     gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
     ])
 }

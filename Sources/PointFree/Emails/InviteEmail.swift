@@ -17,7 +17,7 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
 }
 
 private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -56,7 +56,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
 }
 
 private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> { inviter, invitee in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         h3([`class`([Class.pf.type.responsiveTitle3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [

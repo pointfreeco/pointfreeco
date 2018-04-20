@@ -26,9 +26,9 @@ class InviteTests: TestCase {
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
-      |> \.fetchUserById .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
+      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
+      |> (\Database.fetchTeamInvite) .~ const(pure(.some(invite)))
+      |> (\Database.fetchSubscriptionById) .~ const(pure(nil))
 
     AppEnvironment.with(\.database .~ db) {
       let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
@@ -47,9 +47,9 @@ class InviteTests: TestCase {
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
-      |> \.fetchUserById .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(.mock))
+      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
+      |> (\Database.fetchTeamInvite) .~ const(pure(.some(invite)))
+      |> (\Database.fetchSubscriptionById) .~ const(pure(.mock))
 
     let stripe = Stripe.mock
       |> \.fetchSubscription .~ const(pure(.mock |> \.status .~ .active))

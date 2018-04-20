@@ -98,8 +98,7 @@ private func fetchAccountData<I>(
 }
 
 private let accountView = View<AccountData> { data in
-
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
@@ -181,7 +180,7 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
 }
 
 private let episodeLinkView = View<Episode> { episode in
-  a(
+  pure <| a(
     [
       href(path(to: .episode(.left(episode.slug)))),
       `class`(
@@ -205,7 +204,7 @@ private func episode(atSequence sequence: Int) -> Episode? {
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h1([`class`([Class.pf.type.responsiveTitle2])], ["Account"])
@@ -215,7 +214,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
 }
 
 private let profileRowView = View<(Database.User, [Database.EmailSetting])> { currentUser, currentEmailSettings in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  pure <| gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.responsiveTitle4])], ["Profile"]),
@@ -396,7 +395,7 @@ public func nextBilling(for subscription: Stripe.Subscription) -> String {
 }
 
 private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
-  return div([`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])], [
+  pure <| div([`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])], [
     gridRow([
       gridColumn(sizes: [.mobile: 3], [
         p([div(["Plan"])])
@@ -500,13 +499,13 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
   ]
 }
 
-private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
+private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate in
 
   let teammateLabel = currentUser.id == teammate.id
     ? "\(teammate.displayName) (you)"
     : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
-  return gridRow([
+  return pure <| gridRow([
     gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
     gridColumn(sizes: [.mobile: 4], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
@@ -536,7 +535,7 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 }
 
 private let inviteRowView = View<Database.TeamInvite> { invite in
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
       p([text(invite.email.rawValue)])
       ]),
@@ -648,7 +647,7 @@ private func totalAmount(for subscription: Stripe.Subscription) -> String {
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
-  gridRow([
+  pure <| gridRow([
     gridColumn(sizes: [.mobile: 12], [
       a([`class`([Class.pf.components.button(color: .black)]), href(path(to: .logout))], ["Logout"])
       ])

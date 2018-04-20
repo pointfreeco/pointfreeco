@@ -112,7 +112,7 @@ private let pricingOptionsRowClass =
 
 let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pricing, expand in
 
-  gridRow([`class`([pricingOptionsRowClass])], [
+  pure <| gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([
         h2(
@@ -269,7 +269,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
 }
 
 private let faqView = View<Prelude.Unit> { _ in
-  gridRow([`class`([pricingOptionsRowClass])], [
+  pure <| gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)
@@ -318,7 +318,7 @@ private let pricingTabsView = View<Pricing> { pricing in
 }
 
 private let pricingIntervalRowView = View<Pricing> { pricing in
-  gridRow(
+  pure <| gridRow(
     [`class`([Class.pf.colors.bg.white])],
     individualPricingColumnView.view((.monthly, pricing))
       <> individualPricingColumnView.view((.yearly, pricing))
@@ -347,9 +347,8 @@ func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
 
 let teamPriceClass = CssSelector.class("team-price")
 
-private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
-return
-  gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
+private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing in
+  pure <| gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
     label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
@@ -385,11 +384,11 @@ return
     ])
 }
 
-private let quantityRowView = View<Pricing> { pricing -> Node in
+private let quantityRowView = View<Pricing> { pricing in
 
   let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
 
-  return div([`class`([Class.flex.flex])], [
+  return pure <| div([`class`([Class.flex.flex])], [
     gridRow([`class`([selectors.content.1, Class.pf.colors.bg.white, Class.size.width100pct])], [
       gridColumn(sizes: [.mobile: 12], [], [
         div([`class`([Class.padding([.mobile: [.top: 3, .left: 3, .right: 3]])])], [
@@ -449,7 +448,7 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
 private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expand in
-  gridRow([`class`([Class.pf.colors.bg.white])], [
+  pure <| gridRow([`class`([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
@@ -462,7 +461,7 @@ private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expa
 }
 
 private let stripeForm = View<Bool> { expand in
-  div(
+  pure <| div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
     Stripe.html.cardInput(expand: expand)
       <> Stripe.html.errors

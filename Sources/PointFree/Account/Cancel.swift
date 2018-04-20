@@ -220,7 +220,7 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
 }
 
 private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -263,7 +263,7 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
 }
 
 private let reactivateEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
+  pure <| emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [

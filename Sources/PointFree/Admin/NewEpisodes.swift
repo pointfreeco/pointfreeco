@@ -16,7 +16,7 @@ let showNewEpisodeEmailMiddleware =
     >-> respond(showNewEpisodeView.contramap(lower))
 
 private let showNewEpisodeView = View<Database.User> { _ in
-  ul(
+  pure <| ul(
     AppEnvironment.current.episodes()
       .sorted(by: their(^\.sequence, >))
       .prefix(upTo: 1)
@@ -25,7 +25,7 @@ private let showNewEpisodeView = View<Database.User> { _ in
 }
 
 private let newEpisodeEmailRowView = View<Episode> { ep in
-  p([
+  pure <| p([
     text("Episode #\(ep.sequence): \(ep.title)"),
 
     form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
