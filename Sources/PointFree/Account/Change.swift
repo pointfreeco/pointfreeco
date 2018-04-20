@@ -32,7 +32,7 @@ let subscriptionChangeShowResponse =
     }
 )
 
-let subscriptionChangeMiddleware =
+let subscriptionChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Pricing?>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,
