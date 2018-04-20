@@ -14,7 +14,10 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Ses
       return setCookie(
           key: pointFreeUserSession,
           value: value,
-          options: [.path("/")]
+          options: [
+            .expires(AppEnvironment.current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
+            .path("/")
+        ]
         )
         .map { conn |> writeHeader($0) }
         ?? pure(conn)

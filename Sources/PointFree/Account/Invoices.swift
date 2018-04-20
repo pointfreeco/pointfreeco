@@ -131,7 +131,7 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
     invoicesEnvelope.data.map { invoice in
       gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
         gridColumn(sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])], [
-          div([text("#" + invoice.number.unwrap)])
+          div([text("#" + invoice.number.rawValue)])
           ]),
         gridColumn(sizes: [.mobile: 4], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])], [
           div([text(dateFormatter.string(from: invoice.date))])
@@ -177,7 +177,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Bill to"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(currentUser.email.unwrap)]),
+                  div([text(currentUser.email.rawValue)]),
                   ]),
                 ]),
               ]),
@@ -187,7 +187,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Invoice number"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(invoice.number.unwrap)]),
+                  div([text(invoice.number.rawValue)]),
                   ]),
                 ]),
               gridRow([
@@ -287,7 +287,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                 div(["Amount paid"]),
                 ]),
               gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                div([text(format(cents: .init(unwrap: -invoice.amountPaid.unwrap)))]),
+                div([text(format(cents: -invoice.amountPaid))]),
                 ]),
               ]),
             gridRow([`class`([Class.padding([.mobile: [.topBottom: 2]]), Class.type.bold])], [

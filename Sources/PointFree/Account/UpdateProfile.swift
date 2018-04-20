@@ -28,7 +28,7 @@ extension ProfileData: Decodable {
 }
 
 func isValidEmail(_ email: EmailAddress) -> Bool {
-  return email.unwrap.range(of: "^.+@.+$", options: .regularExpression) != nil
+  return email.rawValue.range(of: "^.+@.+$", options: .regularExpression) != nil
 }
 
 let updateProfileMiddleware =
@@ -45,8 +45,8 @@ let updateProfileMiddleware =
         .compactMap(Database.EmailSetting.Newsletter.init(rawValue:))
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
-      if data.email.unwrap.lowercased() != user.email.unwrap.lowercased() {
-        updateFlash = flash(.warning, "We’ve sent an email to \(user.email.unwrap) to confirm this change.")
+      if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
+        updateFlash = flash(.warning, "We’ve sent an email to \(user.email) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],

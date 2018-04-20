@@ -20,10 +20,10 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_NonSubscriber() {
     let currentUser = Database.User.mock
-      |> \.id .~ .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
     let invite = Database.TeamInvite.mock
-      |> \.inviterUserId .~ .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
       |> \.fetchUserById .~ const(pure(.some(currentUser)))
@@ -41,10 +41,10 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_Subscriber() {
     let currentUser = Database.User.mock
-      |> \.id .~ .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
     let invite = Database.TeamInvite.mock
-      |> \.inviterUserId .~ .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
       |> \.fetchUserById .~ const(pure(.some(currentUser)))

@@ -37,7 +37,7 @@ class AuthTests: TestCase {
         .right!!
 
       XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
-      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id.unwrap, registeredUser.gitHubUserId.unwrap)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
       XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
       XCTAssertEqual(1, registeredUser.episodeCreditCount)
     }

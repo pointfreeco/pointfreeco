@@ -24,7 +24,7 @@ extension Environment {
   public static let teamYearly = mock
     |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
-    |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+    |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
 }
 
 extension Assets {
@@ -87,16 +87,16 @@ extension Database.User {
     episodeCreditCount: 0,
     gitHubUserId: 1,
     gitHubAccessToken: "deadbeef",
-    id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     isAdmin: false,
     name: "Blob",
-    subscriptionId: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 
   public static let owner = mock
 
   public static let teammate = mock
-    |> \.id .~ .init(unwrap: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+    |> \.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
 
   public static let nonSubscriber = mock
     |> \.subscriptionId .~ nil
@@ -104,7 +104,7 @@ extension Database.User {
 
 extension Database.Subscription {
   public static let mock = Database.Subscription(
-    id: .init(unwrap: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
+    id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     stripeSubscriptionId: Stripe.Subscription.mock.id,
     stripeSubscriptionStatus: .active,
     userId: Database.User.mock.id
@@ -115,15 +115,15 @@ extension Database.TeamInvite {
   public static let mock = Database.TeamInvite(
     createdAt: .mock,
     email: "blob@pointfree.co",
-    id: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
-    inviterUserId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+    id: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
+    inviterUserId: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 
 extension Database.EmailSetting {
   public static let mock = Database.EmailSetting(
     newsletter: .newEpisode,
-    userId: .init(unwrap: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
+    userId: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
   )
 }
 
@@ -263,7 +263,7 @@ extension Stripe.Event where T == Stripe.Invoice {
 
 extension Stripe.Invoice {
   public static let mock = Stripe.Invoice(
-    amountDue: 17_00,
+    amountDue: 0_00,
     amountPaid: 17_00,
     charge: .mock,
     closed: true,
