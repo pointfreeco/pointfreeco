@@ -146,29 +146,35 @@ func respond<A, B>(
     }
 }
 
+private let base: [ChildOf<Element.Head>] = [
+  meta([charset(.utf8)]),
+  meta(viewport: .width(.deviceWidth), .initialScale(1)),
+  link([
+    href(url(to: .feed(.atom))),
+    rel(.alternate),
+    title("Point-Free Episodes"),
+    type(.application(.atom)),
+    ]),
+  link([
+    href(url(to: .blog(.feed(.atom)))),
+    rel(.alternate),
+    title("Point-Free Blog"),
+    type(.application(.atom)),
+    ]),
+  style(renderedNormalizeCss),
+  style(styleguide),
+]
+
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   return View { layoutData in
     document([
       html([
-        head([
-          meta([charset(.utf8)]),
+        head(base <> [
+
           title(layoutData.title),
-          style(renderedNormalizeCss),
-          style(styleguide),
+
           style(layoutData.extraStyles),
-          meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          link([
-            href(url(to: .feed(.atom))),
-            rel(.alternate),
-            title("Point-Free Episodes"),
-            type(.application(.atom)),
-            ]),
-          link([
-            href(url(to: .blog(.feed(.atom)))),
-            rel(.alternate),
-            title("Point-Free Blog"),
-            type(.application(.atom)),
-            ])
+
           ]
           <> (layoutData.usePrismJs ? prismJsHead : [])
           <> favicons

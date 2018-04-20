@@ -20,7 +20,7 @@ let invoicesResponse =
     >-> map(lower)
     >>> respond(
       view: invoicesView,
-      layoutData: { subscription, invoicesEnvelope, currentUser, subscriberState in
+      layoutData: { (subscription: Stripe.Subscription, invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoice>, currentUser: Database.User, subscriberState: SubscriberState) in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
@@ -45,7 +45,7 @@ let invoiceResponse =
     >-> map(lower)
     >>> respond(
       view: invoiceView,
-      layoutData: { subscription, currentUser, invoice in
+      layoutData: { (subscription: Stripe.Subscription, currentUser: Database.User, invoice: Stripe.Invoice) in
         SimplePageLayoutData(
           currentUser: currentUser,
           data: (subscription, currentUser, invoice),
