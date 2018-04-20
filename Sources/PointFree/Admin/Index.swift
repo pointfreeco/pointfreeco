@@ -10,7 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let adminEmails: [EmailAddress] = [
+public let adminEmails: [EmailAddress] = [
   "mbw234@gmail.com",
   "stephen.celis@gmail.com"
 ]

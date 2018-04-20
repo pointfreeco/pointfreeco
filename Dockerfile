@@ -16,4 +16,5 @@ RUN make linux-install-cmark
 
 RUN swift package update
 RUN swift build --product Server --configuration release
+RUN swift build --product Runner --configuration release
 CMD .build/release/Server

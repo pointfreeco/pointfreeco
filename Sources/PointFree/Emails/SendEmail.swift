@@ -2,7 +2,7 @@ import Either
 import Html
 import Prelude
 
-func sendEmail(
+public func sendEmail(
   from: EmailAddress = "Point-Free <support@pointfree.co>",
   to: [EmailAddress],
   subject: String,
