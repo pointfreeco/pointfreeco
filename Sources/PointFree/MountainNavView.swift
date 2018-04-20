@@ -15,7 +15,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
       gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
         gridColumn(sizes: [.mobile: 5], [`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-          img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [width(.pct(100))])
+          img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [`class`([Class.size.width100pct])])
           ]),
 
         gridColumn(sizes: [.mobile: 2], [`class`([Class.position.z1])], [
@@ -29,7 +29,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
             base64: heroMountainSvgBase64,
             mediaType: .image(.svg),
             alt: "",
-            [width(.pct(100)), `class`([Class.pf.components.reflectX])]
+            [`class`([Class.pf.components.reflectX, Class.size.width100pct])]
           )
           ]),
         ])
