@@ -57,11 +57,11 @@ func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
 
   let tweetHref = (
     URLComponents(string: "https://twitter.com/intent/tweet")!
-      |> (^\URLComponents.queryItems) .~ [
+      |> set(^\URLComponents.queryItems, [
         URLQueryItem(name: "text", value: text),
         URLQueryItem(name: "url", value: url),
         via.map { URLQueryItem(name: "via", value: $0) }
-        ].compactMap(id)
+        ].compactMap(id))
       |> ^\.url?.absoluteString
     )
     ?? ""

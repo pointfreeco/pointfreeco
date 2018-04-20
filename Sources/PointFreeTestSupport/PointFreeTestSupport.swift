@@ -22,9 +22,9 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> ^\.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
-    |> ^\.database.fetchTeamInvites .~ const(pure([.mock]))
-    |> (^\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
+    |> set(^\.database.fetchSubscriptionTeammatesByOwnerId, const(pure([.mock])))
+    <> set(^\.database.fetchTeamInvites, const(pure([.mock])))
+    <> set(^\.stripe.fetchSubscription, const(pure(.teamYearly))
 }
 
 extension Assets {
@@ -43,7 +43,7 @@ extension Logger {
 extension EnvVars {
   public static var mock: EnvVars {
     return EnvVars()
-      |> ^\.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+      |> set(^\.postgres.databaseUrl, "postgres://pointfreeco:@localhost:5432/pointfreeco_test")
   }
 }
 
@@ -96,10 +96,10 @@ extension Database.User {
   public static let owner = mock
 
   public static let teammate = mock
-    |> ^\.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+    |> set(^\.id, .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!))
 
   public static let nonSubscriber = mock
-    |> ^\.subscriptionId .~ nil
+    |> set(^\.subscriptionId, nil)
 }
 
 extension Database.Subscription {
@@ -177,20 +177,20 @@ extension Pricing {
   public static let mock = `default`
 
   public static let individualMonthly = mock
-    |> ^\.billing .~ .monthly
-    |> ^\.quantity .~ 1
+    |> set(^\.billing, .monthly)
+    |> set(^\.quantity, 1)
 
   public static let individualYearly = mock
-    |> ^\.billing .~ .yearly
-    |> ^\.quantity .~ 1
+    |> set(^\.billing, .yearly)
+    |> set(^\.quantity, 1)
 
   public static let teamMonthly = mock
-    |> ^\.billing .~ .monthly
-    |> ^\.quantity .~ 4
+    |> set(^\.billing, .monthly)
+    |> set(^\.quantity, 4)
 
   public static let teamYearly = mock
-    |> ^\.billing .~ .yearly
-    |> ^\.quantity .~ 4
+    |> set(^\.billing, .yearly)
+    |> set(^\.quantity, 4)
 }
 
 extension Stripe {
@@ -315,19 +315,19 @@ extension Stripe.Plan {
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> ^\.amount .~ 170_00
-    |> ^\.id .~ .individualYearly
-    |> ^\.name .~ "Individual Yearly"
+    |> set(^\.amount, 170_00)
+    |> set(^\.id, .individualYearly)
+    |> set(^\.name, "Individual Yearly")
 
   public static let teamMonthly = mock
-    |> ^\.amount .~ 16_00
-    |> ^\.id .~ .teamMonthly
-    |> ^\.name .~ "Team Monthly"
+    |> set(^\.amount, 16_00)
+    |> set(^\.id, .teamMonthly)
+    |> set(^\.name, "Team Monthly")
 
   public static let teamYearly = mock
-    |> ^\.amount .~ 160_00
-    |> ^\.id .~ .teamYearly
-    |> ^\.name .~ "Team Yearly"
+    |> set(^\.amount, 160_00)
+    |> set(^\.id, .teamYearly)
+    |> set(^\.name, "Team Yearly")
 }
 
 extension Stripe.Subscription {
@@ -348,29 +348,29 @@ extension Stripe.Subscription {
   )
 
   public static let individualMonthly = mock
-    |> ^\.plan .~ .individualMonthly
-    |> ^\.quantity .~ 1
+    |> set(^\.plan, .individualMonthly)
+    |> set(^\.quantity, 1)
 
   public static let individualYearly = mock
-    |> ^\.plan .~ .individualYearly
-    |> ^\.quantity .~ 1
+    |> set(^\.plan, .individualYearly)
+    |> set(^\.quantity, 1)
 
   public static let teamMonthly = mock
-    |> ^\.plan .~ .teamMonthly
-    |> ^\.quantity .~ 4
+    |> set(^\.plan, .teamMonthly)
+    |> set(^\.quantity, 4)
 
   public static let teamYearly = mock
-    |> ^\.plan .~ .teamYearly
-    |> ^\.quantity .~ 4
+    |> set(^\.plan, .teamYearly)
+    |> set(^\.quantity, 4)
 
   public static let canceling = mock
-    |> ^\.cancelAtPeriodEnd .~ true
+    |> set(^\.cancelAtPeriodEnd, true)
 
   public static let canceled = mock
-    |> ^\.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-    |> ^\.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-    |> ^\.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
-    |> ^\.status .~ .canceled
+    |> set(^\.canceledAt, Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
+    |> set(^\.currentPeriodEnd, Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
+    |> set(^\.currentPeriodStart, Date(timeInterval: -60 * 60 * 24 * 60, since: .mock))
+    |> set(^\.status, .canceled)
 }
 
 extension Stripe.Subscription.Item {
@@ -408,7 +408,7 @@ extension Session {
   public static let loggedOut = empty
 
   public static let loggedIn = loggedOut
-    |> ^\.userId .~ Database.User.mock.id
+    |> set(^\.userId, Database.User.mock.id)
 }
 
 public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {

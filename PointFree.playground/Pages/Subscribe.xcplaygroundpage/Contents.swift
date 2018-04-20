@@ -15,8 +15,7 @@ import SnapshotTesting
 AppEnvironment.push(const(.mock))
 
 var request = URLRequest(url: URL(string: "http://localhost:8080/pricing")!)
-  |> ^\.allHTTPHeaderFields .~ [
-    "Authorization": "Basic " + Data("hello:world".utf8).base64EncodedString()
+  |> attachBasicAuth(username: "hello", password: "world")
 ]
 
 let conn = connection(from: request)

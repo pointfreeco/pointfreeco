@@ -74,17 +74,11 @@ private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailRespo
   let request = URLRequest(
     url: URL(string: "https://api.mailgun.net/v3/\(AppEnvironment.current.envVars.mailgun.domain)/messages")!
     )
-    |> ^\.httpMethod .~ "POST"
-    |> ^\.allHTTPHeaderFields %~ attachedMailgunAuthorization
-    |> ^\.httpBody .~ Data(urlFormEncode(value: params).utf8)
+    |> set(^\.httpMethod, "POST")
+    |> attachBasicAuth(username: "api", password: AppEnvironment.current.envVars.mailgun.apiKey)
+    |> set(^\.httpBody, Data(urlFormEncode(value: params).utf8))
 
   return jsonDataTask(with: request)
-}
-
-private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
-  let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
-  return (headers ?? [:])
-    |> ^\.["Authorization"] .~ ("Basic " + secret) // TODO: Use key path subscript
 }
 
 func unsubscribeEmail(

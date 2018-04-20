@@ -9,7 +9,7 @@ import Optics
 
 class InviteTests: TestCase {
   func testShowInvite_LoggedOut() {
-    AppEnvironment.with(^\.database .~ .mock) {
+    AppEnvironment.with(set(^\.database, .mock)) {
       let showInvite = request(to: .invite(.show(Database.TeamInvite.mock.id)))
       let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
@@ -20,17 +20,17 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_NonSubscriber() {
     let currentUser = Database.User.mock
-      |> ^\.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+      |> set(^\.id, .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!))
 
     let invite = Database.TeamInvite.mock
-      |> ^\.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      |> set(^\.inviterUserId, .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!))
 
     let db = Database.mock
-      |> ^\.fetchUserById .~ const(pure(.some(currentUser)))
-      |> ^\.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> ^\.fetchSubscriptionById .~ const(pure(nil))
+      |> set(^\.fetchUserById, const(pure(.some(currentUser))))
+      <> set(^\.fetchTeamInvite, const(pure(.some(invite))))
+      <> set(^\.fetchSubscriptionById, const(pure(nil)))
 
-    AppEnvironment.with(^\.database .~ db) {
+    AppEnvironment.with(set(^\.database, db)) {
       let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
       let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
@@ -41,20 +41,20 @@ class InviteTests: TestCase {
 
   func testShowInvite_LoggedIn_Subscriber() {
     let currentUser = Database.User.mock
-      |> ^\.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+      |> set(^\.id, .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!))
 
     let invite = Database.TeamInvite.mock
-      |> ^\.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+      |> set(^\.inviterUserId, .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!))
 
     let db = Database.mock
-      |> ^\.fetchUserById .~ const(pure(.some(currentUser)))
-      |> ^\.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> ^\.fetchSubscriptionById .~ const(pure(.mock))
+      |> set(^\.fetchUserById, const(pure(.some(currentUser))))
+      <> set(^\.fetchTeamInvite, const(pure(.some(invite))))
+      <> set(^\.fetchSubscriptionById, const(pure(.mock)))
 
     let stripe = Stripe.mock
-      |> ^\.fetchSubscription .~ const(pure(.mock |> ^\.status .~ .active))
+      |> set(^\.fetchSubscription, const(pure(.mock |> set(^\.status, .active))))
 
-    AppEnvironment.with((^\.database .~ db) <> (^\.stripe .~ stripe)) {
+    AppEnvironment.with(set(^\.database, db) <> set(^\.stripe, stripe)) {
       let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
       let conn = connection(from: showInvite)
       let result = siteMiddleware(conn)
@@ -82,7 +82,7 @@ class InviteTests: TestCase {
 
   func testResendInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -90,7 +90,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -134,7 +134,7 @@ class InviteTests: TestCase {
 
   func testRevokeInvite_CurrentUserIsNotInviter() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -142,7 +142,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -169,7 +169,7 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_HappyPath() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -177,7 +177,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -217,7 +217,7 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterIsNotSubscriber() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -225,7 +225,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -253,7 +253,7 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -261,7 +261,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -278,9 +278,9 @@ class InviteTests: TestCase {
       .right!
 
     let stripe = Stripe.mock
-      |> (^\Stripe.fetchSubscription) .~ const(pure(.mock |> ^\.status .~ .canceled))
+      |> set(^\.fetchSubscription, const(pure(.mock |> set(^\.status, .canceled))))
 
-    AppEnvironment.with(^\.stripe .~ stripe) {
+    AppEnvironment.with(set(^\.stripe, stripe)) {
       let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
       let result = siteMiddleware(connection(from: acceptInvite))
 
@@ -298,7 +298,7 @@ class InviteTests: TestCase {
 
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
     let currentUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 1,
+      .mock |> set(^\.gitHubUser.id, 1),
       "hello@pointfree.co"
       )
       .run
@@ -306,7 +306,7 @@ class InviteTests: TestCase {
       .right!!
 
     let inviterUser = AppEnvironment.current.database.registerUser(
-      .mock |> ^\.gitHubUser.id .~ 2,
+      .mock |> set(^\.gitHubUser.id, 2),
       "inviter@pointfree.co"
       )
       .run
@@ -323,9 +323,9 @@ class InviteTests: TestCase {
       .right!
 
     let stripe = Stripe.mock
-      |> (^\Stripe.fetchSubscription) .~ const(pure(.mock |> ^\.status .~ .canceled))
+      |> set(^\.fetchSubscription, const(pure(.mock |> set(^\.status, .canceled))))
 
-    AppEnvironment.with(^\.stripe .~ stripe) {
+    AppEnvironment.with(set(^\.stripe, stripe)) {
       let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
       let result = siteMiddleware(connection(from: acceptInvite))
 

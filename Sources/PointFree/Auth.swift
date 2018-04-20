@@ -30,7 +30,7 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.Use
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .home),
-    headersMiddleware: writeSessionCookieMiddleware(^\.userId .~ nil)
+    headersMiddleware: writeSessionCookieMiddleware(set(^\.userId, nil))
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -165,7 +165,7 @@ private func gitHubAuthTokenMiddleware(
         ) { user in
           conn |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
-            headersMiddleware: writeSessionCookieMiddleware(^\.userId .~ user.id)
+            headersMiddleware: writeSessionCookieMiddleware(set(^\.userId, user.id))
           )
         }
     )

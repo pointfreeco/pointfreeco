@@ -15,7 +15,7 @@ import WebKit
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(^\.database .~ .mock)
+    AppEnvironment.push(set(^\.database, .mock))
   }
 
   override func tearDown() {
