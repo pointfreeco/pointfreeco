@@ -1,15 +1,15 @@
 // swift-tools-version:4.0
 
-import Foundation
 import PackageDescription
 
 let package = Package(
   name: "PointFree",
   products: [
-    .executable(name: "Server", targets: ["Server"]),
-    .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
+    .executable(name: "Runner", targets: ["Runner"]),
+    .executable(name: "Server", targets: ["Server"]),
+    .library(name: "Styleguide", targets: ["Styleguide"]),
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b811904")),
@@ -19,14 +19,6 @@ let package = Package(
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
     ],
   targets: [
-    .target(
-      name: "Styleguide",
-      dependencies: ["Html", "Css"]),
-
-    .testTarget(
-      name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
-
     .target(
       name: "PointFree",
       dependencies: [
@@ -69,11 +61,20 @@ let package = Package(
     ),
 
     .target(
+      name: "Runner",
+      dependencies: ["PointFree"]),
+
+    .target(
       name: "Server",
-      dependencies: [
-        "PointFree",
-        ]
-    ),
+      dependencies: ["PointFree"]),
+
+    .target(
+      name: "Styleguide",
+      dependencies: ["Html", "Css"]),
+
+    .testTarget(
+      name: "StyleguideTests",
+      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
     ],
   swiftLanguageVersions: [4]
 )
