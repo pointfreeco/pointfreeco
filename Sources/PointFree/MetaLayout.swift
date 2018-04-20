@@ -94,13 +94,13 @@ private func inserted<A>(meta: Metadata<A>, intoHeadOf nodes: [Node]) -> [Node] 
       return
         .element(
           element
-            |> ^\.content %~ map { $0 + meta.metaNodes }
+            |> over(^\.content, map { $0 + meta.metaNodes })
         )
 
     case let .element(element):
       return .element(
         element
-          |> ^\.content %~ map { inserted(meta: meta, intoHeadOf: $0) }
+          |> over(^\.content, map { inserted(meta: meta, intoHeadOf: $0) })
       )
 
     case .text:

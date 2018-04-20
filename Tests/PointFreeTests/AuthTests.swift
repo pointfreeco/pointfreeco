@@ -13,14 +13,14 @@ class AuthTests: TestCase {
 
   func testRegister() {
     let gitHubUserEnvelope = GitHub.UserEnvelope.mock
-      |> ^\.accessToken .~ .init(accessToken: "1234-deadbeef")
-      |> ^\.gitHubUser.id .~ 1234567890
-      |> ^\.gitHubUser.name .~ "Blobby McBlob"
+      |> set(^\.accessToken, .init(accessToken: "1234-deadbeef"))
+      <> set(^\.gitHubUser.id, 1234567890)
+      <> set(^\.gitHubUser.name, "Blobby McBlob")
 
     let env: (Environment) -> Environment =
-      (^\.database .~ .live)
-        <> (^\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
-        <> (^\.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
+      set(^\.database, .live)
+        <> set(^\.gitHub.fetchUser, const(pure(gitHubUserEnvelope.gitHubUser)))
+        <> set(^\.gitHub.fetchAuthToken, const(pure(pure(gitHubUserEnvelope.accessToken))))
 
     AppEnvironment.with(env) {
       let result = connection(
@@ -53,7 +53,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    AppEnvironment.with(^\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const)) {
+    AppEnvironment.with(set(^\.gitHub.fetchAuthToken, unit |> throwE >>> const)) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
       let conn = connection(from: auth)
@@ -65,8 +65,10 @@ class AuthTests: TestCase {
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
     AppEnvironment.with(
-      ^\.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+      set(
+        ^\.gitHub.fetchAuthToken,
+        const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+      )
     ) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
@@ -79,8 +81,10 @@ class AuthTests: TestCase {
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
     AppEnvironment.with(
-      ^\.gitHub.fetchAuthToken
-        .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+      set(
+        ^\.gitHub.fetchAuthToken,
+        const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
+      )
     ) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
 
@@ -92,7 +96,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() {
-    AppEnvironment.with(^\.gitHub.fetchUser .~ (unit |> throwE >>> const)) {
+    AppEnvironment.with(set(^\.gitHub.fetchUser, unit |> throwE >>> const)) {
       let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
       let conn = connection(from: auth)
@@ -112,7 +116,7 @@ class AuthTests: TestCase {
   }
 
   func testLogin_AlreadyLoggedIn() {
-    AppEnvironment.with(^\.database .~ .mock) {
+    AppEnvironment.with(set(^\.database, .mock)) {
       let login = request(to: .login(redirect: nil), session: .loggedIn)
 
       let conn = connection(from: login)
@@ -139,7 +143,7 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    AppEnvironment.with(^\.database .~ .mock) {
+    AppEnvironment.with(set(^\.database, .mock)) {
       let conn = connection(from: request(to: .home, session: .loggedOut))
       let result = conn |> siteMiddleware
 
@@ -148,7 +152,7 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedIn() {
-    AppEnvironment.with(^\.database .~ .mock) {
+    AppEnvironment.with(set(^\.database, .mock)) {
       let conn = connection(from: request(to: .home, session: .loggedIn))
       let result = conn |> siteMiddleware
 

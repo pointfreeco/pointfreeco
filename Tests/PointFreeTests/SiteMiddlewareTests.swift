@@ -12,13 +12,13 @@ import Optics
 
 private func secureRequest(_ urlString: String) -> URLRequest {
   return URLRequest(url: URL(string: urlString)!)
-    |> ^\.allHTTPHeaderFields .~ ["X-Forwarded-Proto": "https"]
+    setHeader("X-Forwarded-Proto", "https")
 }
 
 class SiteMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(^\.database .~ .mock)
+    AppEnvironment.push(set(^\.database, .mock))
   }
 
   override func tearDown() {

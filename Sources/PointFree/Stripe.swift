@@ -383,12 +383,12 @@ private func updateSubscription(
 }
 
 let stripeJsonDecoder = JSONDecoder()
-  |> ^\.dateDecodingStrategy .~ .secondsSince1970
-//  |> ^\.keyDecodingStrategy .~ .convertFromSnakeCase
+  |> set(^\.dateDecodingStrategy, .secondsSince1970)
+//  |> set(^\.keyDecodingStrategy, .convertFromSnakeCase)
 
 let stripeJsonEncoder = JSONEncoder()
-  |> ^\.dateEncodingStrategy .~ .secondsSince1970
-//  |> ^\.keyEncodingStrategy .~ .convertToSnakeCase
+  |> set(^\.dateEncodingStrategy, .secondsSince1970)
+//  |> set(^\.keyEncodingStrategy, .convertToSnakeCase)
 
 private enum Method {
   case get
@@ -399,13 +399,13 @@ private enum Method {
 private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
   switch method {
   case .get:
-    return ^\.httpMethod .~ "GET"
+    return set(^\.httpMethod, "GET")
   case let .post(params):
-    return (^\.httpMethod .~ "POST")
+    return set(^\.httpMethod, "POST")
       <> setHeader("Idempotency-Key", UUID().uuidString)
       <> attachFormData(params)
   case let .delete(params):
-    return (^\.httpMethod .~ "DELETE")
+    return set(^\.httpMethod, "DELETE")
       <> attachFormData(params)
   }
 }

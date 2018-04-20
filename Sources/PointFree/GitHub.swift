@@ -94,13 +94,11 @@ private func fetchUser(with token: GitHub.AccessToken) -> EitherIO<Error, GitHub
 private func apiDataTask<A: Decodable>(_ path: String, token: GitHub.AccessToken) -> EitherIO<Error, A> {
 
   let request = URLRequest(url: URL(string: "https://api.github.com/" + path)!)
-    |> ^\.allHTTPHeaderFields .~ [
-      "Authorization": "token \(token.accessToken)",
-      "Accept": "application/vnd.github.v3+json"
-  ]
+    |> setHeader("Authorization", "token \(token.accessToken)")
+    <> setHeader("Accept", "application/vnd.github.v3+json")
 
   return jsonDataTask(with: request, decoder: gitHubJsonDecoder)
 }
 
 private let gitHubJsonDecoder = JSONDecoder()
-//  |> ^\.keyDecodingStrategy .~ .convertFromSnakeCase
+//  |> set(^\.keyDecodingStrategy, .convertFromSnakeCase)

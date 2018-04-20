@@ -15,7 +15,7 @@ import WebKit
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(^\.database .~ .mock)
+    AppEnvironment.push(set(^\.database, .mock))
   }
 
   override func tearDown() {
@@ -46,7 +46,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashNotice() {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> ^\.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> set(^\.flash, flash)))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -66,7 +66,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashWarning() {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> ^\.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> set(^\.flash, flash)))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -86,7 +86,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashError() {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> ^\.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> set(^\.flash, flash)))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -105,8 +105,8 @@ final class AccountTests: TestCase {
 
   func testAccountWithPastDue() {
     let env: (Environment) -> Environment =
-      (^\.database.fetchSubscriptionById .~ const(pure(.mock |> ^\.stripeSubscriptionStatus .~ .pastDue)))
-        <> (^\.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> ^\.stripeSubscriptionStatus .~ .pastDue)))
+      set(^\.database.fetchSubscriptionById, const(pure(.mock |> set(^\.stripeSubscriptionStatus, .pastDue))))
+        <> set(^\.database.fetchSubscriptionByOwnerId, const(pure(.mock |> set(^\.stripeSubscriptionStatus, .pastDue))))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
@@ -130,7 +130,7 @@ final class AccountTests: TestCase {
   func testAccountCancelingSubscription() {
     let subscription = Stripe.Subscription.canceling
 
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(subscription))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(subscription)))) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -152,7 +152,7 @@ final class AccountTests: TestCase {
   func testAccountCanceledSubscription() {
     let subscription = Stripe.Subscription.canceled
 
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(subscription))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(subscription)))) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -173,13 +173,13 @@ final class AccountTests: TestCase {
 
   func testEpisodeCredits_1Credit_NoneChosen() {
     let user = Database.User.mock
-      |> ^\.subscriptionId .~ nil
-      |> ^\.episodeCreditCount .~ 1
+      |> set(^\.subscriptionId, nil)
+      <> set(^\.episodeCreditCount, 1)
 
     let env: (Environment) -> Environment =
-      (^\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (^\.database.fetchEpisodeCredits .~ const(pure([])))
-        <> (^\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
+      set(^\.database.fetchUserById, const(pure(.some(user))))
+        <> set(^\.database.fetchEpisodeCredits, const(pure([])))
+        <> set(^\.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))
@@ -202,13 +202,13 @@ final class AccountTests: TestCase {
 
   func testEpisodeCredits_1Credit_1Chosen() {
     let user = Database.User.mock
-      |> ^\.subscriptionId .~ nil
-      |> ^\.episodeCreditCount .~ 1
+      |> set(^\.subscriptionId, nil)
+      <> set(^\.episodeCreditCount, 1)
 
     let env: (Environment) -> Environment =
-      (^\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (^\.database.fetchEpisodeCredits .~ const(pure([.mock])))
-        <> (^\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
+      set(^\.database.fetchUserById, const(pure(.some(user))))
+        <> set(^\.database.fetchEpisodeCredits, const(pure([.mock])))
+        <> set(^\.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(from: request(to: .account(.index), session: .loggedIn))

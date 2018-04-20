@@ -21,11 +21,11 @@ class HomeTests: TestCase {
       introduction,
       ]
       .suffix(4)
-      .map(^\.image .~ "")
+      .map(set(^\.image, ""))
 
     let env: (Environment) -> Environment =
-      (^\.database .~ .mock)
-      <> (^\.episodes .~ unzurry(eps))
+      set(^\.database, .mock)
+        <> set(^\.episodes, unzurry(eps))
 
     AppEnvironment.push(env)
   }

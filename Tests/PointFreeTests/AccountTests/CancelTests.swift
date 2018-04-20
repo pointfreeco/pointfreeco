@@ -15,7 +15,7 @@ import WebKit
 final class CancelTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(^\.database .~ .mock)
+    AppEnvironment.push(set(^\.database, .mock))
   }
 
   override func tearDown() {
@@ -38,7 +38,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelNoSubscription() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(throwE(unit))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(throwE(unit)))) {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -47,7 +47,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCancelingSubscription() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(.canceling))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(.canceling)))) {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -56,7 +56,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelCanceledSubscription() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(.canceled))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(.canceled)))) {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -65,7 +65,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() {
-    AppEnvironment.with(^\.stripe.cancelSubscription .~ const(throwE(unit))) {
+    AppEnvironment.with(set(^\.stripe.cancelSubscription, const(throwE(unit)))) {
       let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -92,7 +92,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivate() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(.canceling))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(.canceling)))) {
       let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -108,7 +108,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateNoSubscription() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(throwE(unit))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(throwE(unit)))) {
       let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -124,7 +124,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateCanceledSubscription() {
-    AppEnvironment.with(^\.stripe.fetchSubscription .~ const(pure(.canceled))) {
+    AppEnvironment.with(set(^\.stripe.fetchSubscription, const(pure(.canceled)))) {
       let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
@@ -133,7 +133,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateStripeFailure() {
-    AppEnvironment.with(^\.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) }) {
+    AppEnvironment.with(set(^\.stripe.updateSubscription) { _, _, _, _ in throwE(unit) }) {
       let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
       let result = conn |> siteMiddleware
 
