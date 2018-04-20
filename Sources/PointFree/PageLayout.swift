@@ -157,7 +157,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
               style(layoutData.extraStyles),
               ]
             <> (layoutData.usePrismJs ? prismJsHead : [])
-            <> favicons
         ),
         body(
           pastDueBanner(layoutData)
@@ -170,25 +169,6 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
       ])
   }
 }
-
-private let commonHead: [ChildOf<Element.Head>] = [
-  meta([charset(.utf8)]),
-  meta(viewport: .width(.deviceWidth), .initialScale(1)),
-  link([
-    href(url(to: .feed(.atom))),
-    rel(.alternate),
-    title("Point-Free Episodes"),
-    type(.application(.atom)),
-    ]),
-  link([
-    href(url(to: .blog(.feed(.atom)))),
-    rel(.alternate),
-    title("Point-Free Blog"),
-    type(.application(.atom)),
-    ]),
-  style(renderedNormalizeCss),
-  style(styleguide),
-]
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   guard data.currentSubscriberState.isPastDue else { return [] }
@@ -247,7 +227,23 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
   }
 }
 
-private let favicons: [ChildOf<Element.Head>] = [
+private let commonHead: [ChildOf<Element.Head>] = [
+  meta([charset(.utf8)]),
+  meta(viewport: .width(.deviceWidth), .initialScale(1)),
+  link([
+    href(url(to: .feed(.atom))),
+    rel(.alternate),
+    title("Point-Free Episodes"),
+    type(.application(.atom)),
+    ]),
+  link([
+    href(url(to: .blog(.feed(.atom)))),
+    rel(.alternate),
+    title("Point-Free Blog"),
+    type(.application(.atom)),
+    ]),
+  style(renderedNormalizeCss),
+  style(styleguide),
   link([rel(.value("apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
   link([rel(.value("icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
   link([rel(.value("icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
