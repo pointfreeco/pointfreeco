@@ -12,7 +12,7 @@ class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
 
     let view = View<Prelude.Unit> { _ in
-      document(
+      pure <| document(
         [
           html(
             [
