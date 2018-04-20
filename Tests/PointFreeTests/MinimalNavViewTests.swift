@@ -52,7 +52,7 @@ private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Subscriber
 ]
 
 private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  document([
+  pure <| document([
     html([
       head([
         Html.style(renderedNormalizeCss),
