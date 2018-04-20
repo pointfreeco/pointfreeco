@@ -139,10 +139,10 @@ class EpisodeTests: TestCase {
       |> set(^\.subscriberOnly, false)
 
     let env: (Environment) -> Environment =
-      set(^\.database.fetchUserById, const(pure(.some(user))))
-        <> set(^\.episodes, unzurry([episode]))
-        <> set(^\.database.fetchEpisodeCredits, const(pure([.mock])))
-        <> set(^\.database.fetchSubscriptionByOwnerId, const(pure(nil)))
+      set(^\Environment.database.fetchUserById, const(pure(.some(user))))
+        <> set(^\Environment.episodes, unzurry([episode]))
+        <> set(^\Environment.database.fetchEpisodeCredits, const(pure([.mock])))
+        <> set(^\Environment.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -174,10 +174,10 @@ class EpisodeTests: TestCase {
       |> set(^\.subscriberOnly, true)
 
     let env: (Environment) -> Environment =
-      set(^\.database.fetchUserById, const(pure(.some(user))))
-        <> set(^\.episodes, unzurry([episode]))
-        <> set(^\.database.fetchEpisodeCredits, const(pure([.mock])))
-        <> set((^\.database.fetchSubscriptionByOwnerId), const(pure(nil)))
+      set(^\Environment.database.fetchUserById, const(pure(.some(user))))
+        <> set(^\Environment.episodes, unzurry([episode]))
+        <> set(^\Environment.database.fetchEpisodeCredits, const(pure([.mock])))
+        <> set(^\Environment.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
@@ -209,10 +209,10 @@ class EpisodeTests: TestCase {
       |> set(^\.subscriberOnly, true)
 
     let env: (Environment) -> Environment =
-      set(^\.database.fetchUserById, const(pure(.some(user))))
-        <> set(^\.episodes, unzurry([episode]))
-        <> set(^\.database.fetchEpisodeCredits, const(pure([])))
-        <> set(^\.database.fetchSubscriptionByOwnerId, const(pure(nil)))
+      set(^\Environment.database.fetchUserById, const(pure(.some(user))))
+        <> set(^\Environment.episodes, unzurry([episode]))
+        <> set(^\Environment.database.fetchEpisodeCredits, const(pure([])))
+        <> set(^\Environment.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(

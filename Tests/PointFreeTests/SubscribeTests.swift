@@ -152,8 +152,8 @@ final class SubscribeTests: TestCase {
 
   func testCreateStripeSubscriptionFailure() {
     let env: (Environment) -> Environment =
-      set(^\.stripe.createSubscription) { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
-        <> set(^\.database.fetchSubscriptionById, const(pure(nil)))
+      set(^\Environment.stripe.createSubscription) { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
+        <> set(^\Environment.database.fetchSubscriptionById, const(pure(nil)))
         <> set(^\Environment.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
@@ -171,9 +171,9 @@ final class SubscribeTests: TestCase {
 
   func testCreateDatabaseSubscriptionFailure() {
     let env: (Environment) -> Environment =
-      set(^\.database.createSubscription) { _, _ in throwE(unit as Error) }
-        <> set(^\.database.fetchSubscriptionById, const(pure(nil)))
-        <> set(^\Environment.database.fetchSubscriptionByOwnerId), const(pure(nil))
+      set(^\Environment.database.createSubscription) { _, _ in throwE(unit as Error) }
+        <> set(^\Environment.database.fetchSubscriptionById, const(pure(nil)))
+        <> set(^\Environment.database.fetchSubscriptionByOwnerId, const(pure(nil)))
 
     AppEnvironment.with(env) {
       let conn = connection(
