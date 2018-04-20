@@ -146,7 +146,32 @@ func respond<A, B>(
     }
 }
 
-private let base: [ChildOf<Element.Head>] = [
+func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+  return View { layoutData in
+    document([
+      html([
+        head(
+          commonHead <>
+            [
+              title(layoutData.title),
+              style(layoutData.extraStyles),
+              ]
+            <> (layoutData.usePrismJs ? prismJsHead : [])
+            <> favicons
+        ),
+        body(
+          pastDueBanner(layoutData)
+            <> (layoutData.flash.map(flashView.view) ?? [])
+            <> navView(layoutData)
+            <> contentView.view(layoutData.data)
+            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
+        )
+        ])
+      ])
+  }
+}
+
+private let commonHead: [ChildOf<Element.Head>] = [
   meta([charset(.utf8)]),
   meta(viewport: .width(.deviceWidth), .initialScale(1)),
   link([
@@ -164,32 +189,6 @@ private let base: [ChildOf<Element.Head>] = [
   style(renderedNormalizeCss),
   style(styleguide),
 ]
-
-func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
-  return View { layoutData in
-    document([
-      html([
-        head(base <> [
-
-          title(layoutData.title),
-
-          style(layoutData.extraStyles),
-
-          ]
-          <> (layoutData.usePrismJs ? prismJsHead : [])
-          <> favicons
-        ),
-        body(
-          pastDueBanner(layoutData)
-            <> (layoutData.flash.map(flashView.view) ?? [])
-            <> navView(layoutData)
-            <> contentView.view(layoutData.data)
-            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
-        )
-        ])
-      ])
-  }
-}
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   guard data.currentSubscriberState.isPastDue else { return [] }
