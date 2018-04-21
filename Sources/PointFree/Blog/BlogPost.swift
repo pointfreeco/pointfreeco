@@ -29,9 +29,9 @@ public struct BlogPost {
     public var twitterUrl: String {
       switch self {
       case .brandon:
-        return twitterRouter.absoluteString(for: .mbrandonw) ?? "#"
+        return PointFree.twitterUrl(to: .mbrandonw)
       case .stephen:
-        return twitterRouter.absoluteString(for: .stephencelis) ?? "#"
+        return PointFree.twitterUrl(to: .stephencelis)
       }
     }
   }

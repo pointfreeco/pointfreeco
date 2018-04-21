@@ -10,7 +10,7 @@ even deeper into functional programming, showing real world use cases and more!
   contentBlocks: [
     .init(
       content: """
-      It's hard to believe it's already been X (TODO) months since we launched Point-Free, but
+      It's hard to believe it's been nearly 3 months since we launched [Point-Free](\(url(to: .home))), but
       here we are! We have been having a lot of fun planning out episodes, crafting story
       arcs that connect episodes in interesting ways, and coming up with challenging exercises
       so that viewers can continue exploring concepts on their own. The reception has also been
@@ -19,8 +19,8 @@ even deeper into functional programming, showing real world use cases and more!
 
       However, there's only so much material we can fit in an episode. We try to keep
       them down to 20-30 minutes so that more people will watch the full episode,
-      and hopefully it's more digestible. Often there is so much more we want to include
-      in an episode, but we have to cut in the interest of time.
+      and hopefully it's more digestible. Often there is more we want to include
+      in an episode, but we have to make cuts in the interest of time.
 
       So, that is why we are happy to announce the launch of Point-Free Pointers! A
       supplementary blog for [Point-Free](\(url(to: .home))) where we will be diving
@@ -28,6 +28,10 @@ even deeper into functional programming, showing real world use cases and more!
       [RSS feed](\(url(to: .blog(.feed(.atom))))) to your reader of choice, follow us on
       [Twitter](\(twitterUrl(to: .pointfreeco))), or sign up for our
       [newsletter](\(url(to: .login(redirect: url(to: .account(.index)))))).
+
+      Your hosts,
+
+      [Brandon Williams](\(twitterUrl(to: .mbrandonw))) & [Stephen Celis](\(twitterUrl(to: .stephencelis)))
       """,
       timestamp: nil,
       type: .paragraph
