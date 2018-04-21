@@ -71,6 +71,6 @@ Packages/*
 *.xcodeproj/*
 Package.resolved
 .env
-Sources/Server/Transcripts
+Sources/PointFree/Transcripts
 .ssl/*
 bin/*

@@ -22,8 +22,8 @@ mock-env:
 		|| cp .env.example .env
 
 mock-transcripts:
-	test -d Sources/Server/Transcripts/ \
-		|| cp -r Transcripts.example/ Sources/Server/Transcripts/
+	test -d Sources/PointFree/Transcripts/ \
+		|| cp -r Transcripts.example/ Sources/PointFree/Transcripts/
 
 submodules:
 	git submodule sync --recursive || true
