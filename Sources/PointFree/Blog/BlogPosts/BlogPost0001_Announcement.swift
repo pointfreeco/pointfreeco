@@ -1,10 +1,11 @@
 import Foundation
 
 let post0001_welcome = BlogPost(
+  author: nil,
   blurb: """
 Today we are excited to announcement launch of Point-Free Pointers, a blog to supplement our video
 series for all the content we couldn’t fit in. Expect to find regularly postings here that dive
-even deeper into functional programming, show real world use cases, and more!
+even deeper into functional programming, showing real world use cases and more!
 """,
   contentBlocks: [
     .init(
@@ -32,9 +33,8 @@ even deeper into functional programming, show real world use cases, and more!
       type: .paragraph
     ),
     ],
-  coverImage: "",
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/common/pfp-social-logo.jpg",
   id: 1,
-  publishedAt: .init(timeIntervalSince1970: 1_523_872_623),
-  title: "Announcing Point-Free Pointers!",
-  video: nil
+  publishedAt: .init(timeIntervalSince1970: 1_524_477_423),
+  title: "Announcing Point-Free Pointers!"
 )

@@ -761,11 +761,9 @@ private func episode(forParam param: Either<String, Int>) -> Episode? {
 private let markdownContainerClass = CssSelector.class("md-ctn")
 let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
-    p % key("word-wrap", "break-word")
-      <> a % key("text-decoration", "underline")
-      <> (a & .pseudo(.link)) % color(Colors.purple150)
-      <> (a & .pseudo(.visited)) % color(Colors.purple150)
-      <> (a & .pseudo(.hover)) % color(Colors.black)
+    hrMarkdownStyles
+      <> aMarkdownStyles
+      <> p % key("word-wrap", "break-word")
       <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
       <> code % (
         fontFamily(["monospace"])
@@ -774,6 +772,22 @@ let markdownBlockStyles: Stylesheet =
           <> borderRadius(all: .px(3))
           <> backgroundColor(Color.other("#f7f7f7"))
     )
+)
+
+private let aMarkdownStyles: Stylesheet =
+  a % key("text-decoration", "underline")
+    <> (a & .pseudo(.link)) % color(Colors.purple150)
+    <> (a & .pseudo(.visited)) % color(Colors.purple150)
+    <> (a & .pseudo(.hover)) % color(Colors.black)
+
+private let hrMarkdownStyles: Stylesheet =
+  hr % (
+    margin(top: .rem(2), right: .pct(30), bottom: .rem(2), left: .pct(30))
+      <> borderStyle(top: .solid)
+      <> borderWidth(top: .px(1))
+      <> backgroundColor(.white)
+      <> borderColor(top: Color.other("#ddd"))
+      <> height(.px(0))
 )
 
 func markdownBlock(_ markdown: String) -> Node {
@@ -850,6 +864,7 @@ let innerVideoContainerClass: CssSelector =
   Class.size.height100pct
     | Class.size.width100pct
     | Class.position.absolute
+    | Class.pf.colors.bg.gray650
 
 let outerImageContainerClass: CssSelector =
   Class.size.width100pct
@@ -857,3 +872,4 @@ let outerImageContainerClass: CssSelector =
 
 let innerImageContainerClass: CssSelector =
   Class.size.width100pct
+    | Class.pf.colors.bg.gray650
