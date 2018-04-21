@@ -46,9 +46,9 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
           ]),
 
         body([bgcolor("#FFFFFF")], [
-          span([style(preheaderStyles)], [.text(encode(layoutData.preheader))]),
+          span([style(preheaderStyles)], [text(layoutData.preheader)]),
 
-          emailTable([height(.pct(100)), width(.pct(100)), style(bodyTableStyles)], [
+          emailTable([height(.pct(100)), style(bodyTableStyles)], [
             tr([
               td([
                 img(

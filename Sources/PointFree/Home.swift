@@ -10,12 +10,12 @@ import Styleguide
 import Tuple
 import UrlFormEncoding
 
-let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: homeView,
-      layoutData: { currentUser, subscriberState, currentRoute in
+      layoutData: { (currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -24,20 +24,81 @@ let homeMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState
           description: "Point-Free is a video series exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
-          navStyle: .mountains(.main),
           openGraphType: .website,
+          style: .base(.mountains(.main)),
           title: "Point-Free: A video series on functional programming and the Swift programming language.",
           twitterCard: .summaryLargeImage
         )
     }
 )
 
-let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState in
-  episodesListView.view(AppEnvironment.current.episodes().sorted(by: their(^\.sequence, >)))
+let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
+
+  let episodes = AppEnvironment.current.episodes().sorted(by: their(^\.sequence, >))
+
+  let ctaInsertionIndex = subscriberState.isNonSubscriber ? min(3, episodes.count) : 0
+  let firstBatch = episodes[0..<ctaInsertionIndex]
+  let secondBatch = episodes[ctaInsertionIndex...]
+
+  return episodesListView.view(firstBatch)
+    <> subscriberCalloutView.view(subscriberState)
+    <> episodesListView.view(secondBatch)
     <> (subscriberState.isNonSubscriber ? pricingOptionsView.view((currentUser, .default, false)) : [])
 }
 
-private let episodesListView = View<[Episode]> { eps in
+private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+  guard subscriberState.isNonSubscriber else { return [] }
+
+  return dividerView.view(unit) <> [
+    gridRow([
+      gridColumn(
+        sizes: [.desktop: 9, .mobile: 12],
+        [style(margin(leftRight: .auto))],
+        [
+          div(
+            [
+              `class`(
+                [
+                  Class.margin([.mobile: [.all: 4]]),
+                  Class.padding([.mobile: [.all: 3]]),
+                  Class.pf.colors.bg.gray900
+                ]
+              )
+            ],
+            [
+              h4(
+                [
+                  `class`(
+                    [
+                      Class.pf.type.responsiveTitle4,
+                      Class.padding([.mobile: [.bottom: 2]])
+                    ]
+                  )
+                ],
+                ["Subscribe to Point-Free"]
+              ),
+              p(
+                [
+                  "👋 Hey there! See anything you like? You may be interested in ",
+                  a(
+                    [
+                      href(path(to: .pricing(nil, expand: nil))),
+                      `class`([Class.pf.type.underlineLink])
+                    ],
+                    ["subscribing"]
+                  ),
+                  " so that you get access to these episodes and all future ones.",
+                  ]
+              )
+            ]
+          )
+        ]
+      )
+      ])
+  ]
+}
+
+private let episodesListView = View<ArraySlice<Episode>> { eps in
   eps.flatMap(episodeRowView.view)
 }
 

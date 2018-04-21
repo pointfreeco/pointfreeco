@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.10.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.11.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -150,6 +150,17 @@ import Prelude
               guard case let .episode(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let episodes = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.episodes)),
+          unapply: {
+            guard case .episodes = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
@@ -375,6 +386,20 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Route.Account.Invoices
+        ), B == Route.Account {
+
+          public static let invoices = parenthesize <| PartialIso(
+            apply: Route.Account.invoices,
+            unapply: {
+              guard case let .invoices(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Account.PaymentInfo
         ), B == Route.Account {
 
@@ -410,6 +435,31 @@ import Prelude
             apply: Route.Account.update,
             unapply: {
               guard case let .update(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Account.Invoices {
+        public static let index = parenthesize <| PartialIso<Prelude.Unit, Route.Account.Invoices>(
+          apply: const(.some(.index)),
+          unapply: {
+            guard case .index = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == (
+            Stripe.Invoice.Id
+        ), B == Route.Account.Invoices {
+
+          public static let show = parenthesize <| PartialIso(
+            apply: Route.Account.Invoices.show,
+            unapply: {
+              guard case let .show(result) = $0 else { return nil }
               return .some(result)
           })
       }

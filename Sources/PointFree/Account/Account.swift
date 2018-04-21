@@ -122,7 +122,7 @@ private let creditsView = View<AccountData> { data -> [Node] in
       gridColumn(sizes: [.mobile: 12], [
         div(
           [
-            h2([`class`([Class.pf.type.title4])], ["Episode Credits"]),
+            h2([`class`([Class.pf.type.responsiveTitle4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
               text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
@@ -164,7 +164,7 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
       [
         `class`(
           [
-            Class.pf.type.title5,
+            Class.pf.type.responsiveTitle5,
             Class.padding([.mobile: [.top: 2]])
           ]
         ),
@@ -190,7 +190,7 @@ private let episodeLinkView = View<Episode> { episode in
         ]
       )
     ],
-    [.text(encode("#\(episode.sequence): \(episode.title)"))]
+    [text("#\(episode.sequence): \(episode.title)")]
   )
 }
 
@@ -208,7 +208,7 @@ private let titleRowView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.title2])], ["Account"])
+        h1([`class`([Class.pf.type.responsiveTitle2])], ["Account"])
         ])
       ])
     ])
@@ -218,7 +218,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.title4])], ["Profile"]),
+        h2([`class`([Class.pf.type.responsiveTitle4])], ["Profile"]),
 
         form([action(path(to: .account(.update(nil)))), method(.post)], [
           label([`class`([labelClass])], ["Name"]),
@@ -234,7 +234,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
             `class`([blockInputClass]),
             name(ProfileData.CodingKeys.email.stringValue),
             type(.email),
-            value(currentUser.email.unwrap)
+            value(currentUser.email.rawValue)
             ]),
 
           ] + emailSettingCheckboxes.view(currentEmailSettings) + [
@@ -263,7 +263,7 @@ private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmai
             `class`([Class.margin([.mobile: [.right: 1]])])
           ]
         ),
-        .text(encode(newsletterDescription(newsletter)))
+        text(newsletterDescription(newsletter))
         ])
     })
   ]
@@ -298,7 +298,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([`class`([Class.pf.type.title4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           gridColumn(
             sizes: [.mobile: 12],
@@ -321,13 +321,13 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([`class`([Class.pf.type.title4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           p([
             "You are currently on a team subscription. Contact ",
             a(
               [
-                mailto(data.subscriptionOwner?.email.unwrap ?? ""),
+                mailto(data.subscriptionOwner?.email.rawValue ?? ""),
                 `class`([Class.pf.colors.link.purple])
               ],
               [
@@ -503,8 +503,8 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
 
   let teammateLabel = currentUser.id == teammate.id
-    ? "\(teammate.name ?? teammate.email.unwrap) (you)"
-    : "\(teammate.name ?? teammate.email.unwrap) (\(teammate.email.unwrap))"
+    ? "\(teammate.displayName) (you)"
+    : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
   return gridRow([
     gridColumn(sizes: [.mobile: 8], [p([text(teammateLabel)])]),
@@ -538,7 +538,7 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
 private let inviteRowView = View<Database.TeamInvite> { invite in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(encode(invite.email.unwrap))])
+      p([text(invite.email.rawValue)])
       ]),
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
@@ -568,7 +568,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
         ]),
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([.text(encode("You have \(invitesRemaining) open spots on your team. Invite a team member below:"))]),
+          p([text("You have \(invitesRemaining) open spots on your team. Invite a team member below:")]),
 
           form([
             action(path(to: .invite(.send(nil)))), method(.post),
@@ -621,6 +621,13 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
                   href(path(to: .account(.paymentInfo(.show(expand: nil))))),
                   ],
                   ["Update payment method"])
+                ]),
+              p([`class`([])], [
+                a([
+                  `class`([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
+                  href(path(to: .account(.invoices(.index)))),
+                  ],
+                  ["Payment history"])
                 ])
               ])
             ])
@@ -630,11 +637,14 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
   ]
 }
 
+public func format(cents: Stripe.Cents) -> String {
+  let dollars = NSNumber(value: Double(cents.rawValue) / 100)
+  return currencyFormatter.string(from: dollars)
+    ?? NumberFormatter.localizedString(from: dollars, number: .currency)
+}
+
 private func totalAmount(for subscription: Stripe.Subscription) -> String {
-  let totalCents = subscription.plan.amount.rawValue * subscription.quantity
-  let totalDollars = NSNumber(value: Double(totalCents) / 100)
-  return currencyFormatter.string(from: totalDollars)
-    ?? NumberFormatter.localizedString(from: totalDollars, number: .currency)
+  return format(cents: subscription.plan.amount * .init(rawValue: subscription.quantity))
 }
 
 private let logoutView = View<Prelude.Unit> { _ in
@@ -657,7 +667,7 @@ let labelClass =
     | Class.margin([.mobile: [.bottom: 1]])
 
 let baseInputClass =
-  Class.type.fontFamilyInherit
+  Class.type.fontFamily.inherit
     | Class.pf.colors.fg.black
     | ".border-box"
     | Class.border.rounded.all
@@ -686,7 +696,7 @@ let blockSelectClass =
     | Class.size.height(rem: 3)
     | Class.size.width100pct
     | Class.pf.colors.border.gray800
-    | Class.type.fontFamilyInherit
+    | Class.type.fontFamily.inherit
 
 private struct AccountData {
   let currentUser: Database.User

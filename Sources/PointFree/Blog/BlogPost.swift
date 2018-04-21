@@ -19,7 +19,7 @@ public struct BlogPost {
   }
 
   public var slug: String {
-    return "\(self.id.unwrap)-\(PointFree.slug(for: self.title))"
+    return "\(self.id)-\(PointFree.slug(for: self.title))"
   }
 }
 
@@ -29,6 +29,11 @@ This is the blurb to a mock blog post. This should just be short and to the poin
 text, no markdown.
 """,
   contentBlocks: [
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .video(poster: "", sources: [])
+    ),
     .init(
       content: """
       This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
@@ -50,6 +55,11 @@ text, no markdown.
       """,
       timestamp: nil,
       type: .code(lang: .swift)
+    ),
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "")
     ),
     .init(
       content: """

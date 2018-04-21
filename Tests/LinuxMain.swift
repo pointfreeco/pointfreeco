@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.10.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.11.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 import XCTest
@@ -151,7 +151,9 @@ extension FreeEpisodeEmailTests {
 }
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
-    ("testHomepage", testHomepage)
+    ("testHomepage_LoggedOut", testHomepage_LoggedOut),
+    ("testHomepage_Subscriber", testHomepage_Subscriber),
+    ("testEpisodesIndex", testEpisodesIndex)
   ]
 }
 extension HtmlCssInlinerTests {

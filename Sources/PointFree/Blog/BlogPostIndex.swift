@@ -21,8 +21,8 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Subscriber
           description: "A companion blog to Point-Free, exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles,
           image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pfp-twitter-card-large.jpg",
-          navStyle: .mountains(.blog),
           openGraphType: .website,
+          style: .base(.mountains(.blog)),
           title: "Point-Free Pointers",
           twitterCard: .summaryLargeImage
         )
@@ -43,7 +43,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
               [
               ],
               AppEnvironment.current.blogPosts()
-                .sorted(by: their(^\.id.unwrap, >))
+                .sorted(by: their(^\.id, >))
                 .flatMap { post in
                   [
                     div(

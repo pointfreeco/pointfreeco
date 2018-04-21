@@ -35,6 +35,14 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. unit))
         |> accountResponse
 
+    case .account(.invoices(.index)):
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> invoicesResponse
+
+    case let .account(.invoices(.show(invoiceId))):
+      return conn.map(const(user .*. invoiceId .*. unit))
+        |> invoiceResponse
+
     case let .account(.paymentInfo(.show(expand))):
       return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
         |> paymentInfoResponse
@@ -111,6 +119,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
 
+    case .episodes:
+      return conn
+        |> redirect(to: path(to: .home))
+
     case let .expressUnsubscribe(userId, newsletter):
       return conn.map(const(userId .*. newsletter .*. unit))
         |> expressUnsubscribeMiddleware
@@ -180,7 +192,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId.unwrap) .*. user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(Either.right(episodeId.rawValue) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.invoice(event))):

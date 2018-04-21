@@ -8,12 +8,12 @@ import Prelude
 import Styleguide
 import Tuple
 
-let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >-> map(lower)
     >>> respond(
       view: blogPostShowView,
-      layoutData: { post, currentUser, subscriberState, currentRoute in
+      layoutData: { (post: BlogPost, currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -22,8 +22,8 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<BlogPost, Database.User
           description: post.blurb,
           extraStyles: markdownBlockStyles,
           image: post.coverImage,
-          navStyle: .mountains(.blog),
           openGraphType: .website,
+          style: .base(.mountains(.blog)),
           title: post.title,
           twitterCard: .summaryLargeImage
         )
@@ -33,7 +33,7 @@ let blogPostShowMiddleware: (Conn<StatusLineOpen, Tuple4<BlogPost, Database.User
 func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
   return AppEnvironment.current.blogPosts()
     .first(where: {
-      param.right == .some($0.id.unwrap)
+      param.right == .some($0.id.rawValue)
         || param.left == .some($0.slug)
     })
 }

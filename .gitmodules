@@ -1,3 +1,3 @@
-[submodule "Sources/Server/Transcripts"]
-	path = Sources/Server/Transcripts
+[submodule "Sources/PointFree/Transcripts"]
+	path = Sources/PointFree/Transcripts
 	url = http://github.com/mbrandonw/episode-transcripts

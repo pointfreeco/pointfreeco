@@ -9,8 +9,8 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "You’re invited to join \(inviter.name ?? inviter.email.unwrap)’s team on Point-Free",
-      preheader: "Your colleague \(inviter.name ?? inviter.email.unwrap) has invited you to join their team account on Point-Free.",
+      title: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
+      preheader: "Your colleague \(inviter.displayName) has invited you to join their team account on Point-Free.",
       template: .default,
       data: (inviter, invite)
     )
@@ -21,10 +21,10 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["You’re invited!"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your colleague ",
-            .text(encode(inviter.name ?? inviter.email.unwrap)),
+            text(inviter.displayName),
             """
              has invited you to join their team account on Point-Free, a video series about functional
             programming and the Swift programming language. To accept, simply click the link below!
@@ -48,7 +48,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "\(invitee.name ?? invitee.email.unwrap) has accepted your invitation!",
+      title: "\(invitee.displayName) has accepted your invitation!",
       preheader: "",
       template: .default,
       data: (inviter, invitee)
@@ -59,15 +59,15 @@ private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> 
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        h3([`class`([Class.pf.type.title3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
+        h3([`class`([Class.pf.type.responsiveTitle3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
           "Your invitation was accepted!"
           ]),
         p([
-          "Hey ", .text(encode(inviter.name ?? inviter.email.unwrap)), "!"
+          "Hey ", text(inviter.displayName), "!"
           ]),
         p([
           "Your colleague ",
-          .text(encode(invitee.name ?? invitee.email.unwrap)),
+          text(invitee.displayName),
           " has accepted your invitation! They now have full access to everything Point-Free has to offer. "
           ]),
 

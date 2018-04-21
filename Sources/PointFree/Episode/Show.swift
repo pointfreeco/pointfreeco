@@ -30,9 +30,9 @@ let episodeResponse =
           currentUser: currentUser,
           data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
-          extraStyles: markdownBlockStyles <> pricingExtraStyles <> videoExtraStyles,
+          extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
-          navStyle: navStyle,
+          style: .base(navStyle),
           title: "Episode #\(episode.sequence): \(episode.title)",
           usePrismJs: true
         )
@@ -217,20 +217,26 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
-  div([`class`([pfVideoClass])], [
-    video(
-      [
-        `class`([Class.size.width100pct]),
-        controls(true),
-        playsinline(true),
-        autoplay(true),
-        poster(episode.image)
-      ],
-      isEpisodeViewable
-        ? episode.sourcesFull.map { source(src: $0) }
-        : episode.sourcesTrailer.map { source(src: $0) }
-    )
-    ])
+  div(
+    [
+      `class`([outerVideoContainerClass]),
+      style(outerVideoContainerStyle)
+    ],
+    [
+      video(
+        [
+          `class`([innerVideoContainerClass]),
+          controls(true),
+          playsinline(true),
+          autoplay(true),
+          poster(episode.image)
+        ],
+        isEpisodeViewable
+          ? episode.sourcesFull.map { source(src: $0) }
+          : episode.sourcesTrailer.map { source(src: $0) }
+      )
+    ]
+  )
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
@@ -336,7 +342,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
               href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
               `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
             ],
-            [.text(encode("\(codeSampleDirectory).playground"))]
+            [text("\(codeSampleDirectory).playground")]
           )
       ]
     )
@@ -528,7 +534,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
 
         p(
           [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          [.text(encode(String(describing: subscribeBlurb(for: permission))))]
+          [text(String(describing: subscribeBlurb(for: permission)))]
         ),
 
         a(
@@ -628,7 +634,13 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
           ["Exercises"]
         ),
         ol(
-          exercises.map { li([div([markdownBlock($0.body)])]) }
+          [id("exercises")],
+          zip(1..., exercises).map {
+            li(
+              [id("exercise-\($0)")],
+              [div([markdownBlock($1.body)])]
+            )
+          }
         )
       ]
     )
@@ -641,9 +653,20 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
     return pre([
       code(
         [`class`([Class.pf.components.code(lang: lang.identifier)])],
-        [.text(encode(block.content))]
+        [text(block.content)]
       )
       ])
+
+  case let .image(src):
+    return a(
+      [
+        `class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
+        href(src),
+        target(.blank),
+        rel(.value("noopener noreferrer")),
+      ],
+      [img(src: src, alt: "", [`class`([innerImageContainerClass])])]
+    )
 
   case .paragraph:
     return div(
@@ -657,11 +680,32 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
         ]
-        .compactMap { $0 },
+        .compactMap(id),
       [
         a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
           text(block.content)
           ])
+      ]
+    )
+
+  case let .video(poster, sources):
+    return div(
+      [
+        `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
+        style(outerVideoContainerStyle)
+      ],
+      [
+        video(
+          [
+            `class`([innerVideoContainerClass]),
+            controls(true),
+            playsinline(true),
+            autoplay(false),
+            Html.poster(poster)
+          ],
+
+          sources.map { source(src: $0) }
+        )
       ]
     )
   }
@@ -710,14 +754,15 @@ private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Su
 private func episode(forParam param: Either<String, Int>) -> Episode? {
   return AppEnvironment.current.episodes()
     .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id.unwrap)
+      param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
     })
 }
 
 private let markdownContainerClass = CssSelector.class("md-ctn")
 let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
-    a % key("text-decoration", "underline")
+    p % key("word-wrap", "break-word")
+      <> a % key("text-decoration", "underline")
       <> (a & .pseudo(.link)) % color(Colors.purple150)
       <> (a & .pseudo(.visited)) % color(Colors.purple150)
       <> (a & .pseudo(.hover)) % color(Colors.black)
@@ -794,15 +839,21 @@ private enum EpisodePermission: Equatable {
   }
 }
 
-private let pfVideoClass = CssSelector.class("pf-video")
-private let videoExtraStyles: Stylesheet =
-  pfVideoClass % (
-    width(.pct(100))
-      <> padding(bottom: .pct(56.25))
-      <> position(.relative)
-    )
-    <> (
-      (pfVideoClass > video) % (
-        position(.absolute) <> height(.pct(100))
-      )
-)
+let outerVideoContainerClass: CssSelector =
+  Class.size.width100pct
+    | Class.position.relative
+
+let outerVideoContainerStyle: Stylesheet =
+  padding(bottom: .pct(56.25))
+
+let innerVideoContainerClass: CssSelector =
+  Class.size.height100pct
+    | Class.size.width100pct
+    | Class.position.absolute
+
+let outerImageContainerClass: CssSelector =
+  Class.size.width100pct
+    | Class.position.relative
+
+let innerImageContainerClass: CssSelector =
+  Class.size.width100pct

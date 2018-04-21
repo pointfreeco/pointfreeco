@@ -10,6 +10,10 @@ import Styleguide
 
 let stripeInvoiceWebhookMiddleware =
   validateStripeSignature
+    <<< filterMap(
+      ^\Stripe.Event<Stripe.Invoice>.data.object.subscription >>> pure,
+      or: writeStatus(.badRequest) >-> end // FIXME: admin email?
+    )
     <| handleFailedPayment
 
 private func validateStripeSignature<A>(
@@ -88,14 +92,11 @@ private func keysWithAllValues(separator: Character) -> (String) -> [(String, [S
 }
 
 private func handleFailedPayment(
-  _ conn: Conn<StatusLineOpen, Stripe.Event<Stripe.Invoice>>
+  _ conn: Conn<StatusLineOpen, Stripe.Subscription.Id>
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let event = conn.data
-    let invoice = event.data.object
-
-    return AppEnvironment.current.stripe.fetchSubscription(invoice.subscription)
+    return AppEnvironment.current.stripe.fetchSubscription(conn.data)
       .flatMap(AppEnvironment.current.database.updateStripeSubscription)
       .mapExcept(requireSome)
       .flatMap { subscription in
@@ -103,7 +104,7 @@ private func handleFailedPayment(
           .mapExcept(requireSome)
           .map { ($0, subscription) }
       }
-      .withExcept(notifyError(subject: "Stripe Hook failed for \(invoice.subscription.unwrap)"))
+      .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
       .run
       .flatMap(
         either(const(conn |> writeStatus(.badRequest) >-> end)) { user, subscription in
@@ -144,7 +145,7 @@ private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Payment failed"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Payment failed"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             """
             Your most recent subscription payment was declined. This could be due to a change in your card

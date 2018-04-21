@@ -48,7 +48,7 @@ func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
           width(20),
           height(20)]
       ),
-      span([.text(encode(text))])
+      span([Html.text(text)])
     ]
   )
 }

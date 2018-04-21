@@ -37,7 +37,7 @@ class AuthTests: TestCase {
         .right!!
 
       XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
-      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id.unwrap, registeredUser.gitHubUserId.unwrap)
+      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
       XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
       XCTAssertEqual(1, registeredUser.episodeCreditCount)
     }
@@ -139,16 +139,20 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    let conn = connection(from: request(to: .home, session: .loggedOut))
-    let result = conn |> siteMiddleware
+    AppEnvironment.with(\.database .~ .mock) {
+      let conn = connection(from: request(to: .home, session: .loggedOut))
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
+    }
   }
 
   func testHome_LoggedIn() {
-    let conn = connection(from: request(to: .home, session: .loggedIn))
-    let result = conn |> siteMiddleware
+    AppEnvironment.with(\.database .~ .mock) {
+      let conn = connection(from: request(to: .home, session: .loggedIn))
+      let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+      assertSnapshot(matching: result.perform())
+    }
   }
 }

@@ -21,12 +21,12 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.title3])], ["Confirm email change"]),
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Confirm email change"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "We received a request to change your email on Point-Free. Your current email is ",
-            span([`class`([Class.type.semiBold])], [.text(encode(user.email.unwrap))]),
+            span([`class`([Class.type.semiBold])], [text(user.email.rawValue)]),
             ", and the new email is ",
-            span([`class`([Class.type.semiBold])], [.text(encode(newEmailAddress.unwrap))]),
+            span([`class`([Class.type.semiBold])], [text(newEmailAddress.rawValue)]),
             ". If you want to make this change, just click the confirmation link below:"
             ]),
 
@@ -70,7 +70,7 @@ private let emailChangedEmailBody = View<EmailAddress> { newEmailAddress in
           h3([`class`([Class.pf.type.responsiveTitle3])], ["Your email has been changed"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your email has been successfully changed to ",
-            strong([span([`class`([Class.type.semiBold])], [.text(encode(newEmailAddress.unwrap))])]),
+            strong([span([`class`([Class.type.semiBold])], [text(newEmailAddress.rawValue)])]),
             ". If you did not make this change, please get in touch with us immediately: ",
             a([mailto("support@pointfree.co")], ["support@pointfree.co"])
             ])
