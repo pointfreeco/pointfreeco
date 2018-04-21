@@ -33,7 +33,7 @@ even deeper into functional programming, showing real world use cases and more!
       type: .paragraph
     ),
     ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/common/pfp-social-logo.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg",
   id: 1,
   publishedAt: .init(timeIntervalSince1970: 1_524_477_423),
   title: "Announcing Point-Free Pointers!"

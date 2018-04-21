@@ -12,10 +12,10 @@ code on this very site so that the invalid states are unrepresentable by the com
       content: "",
       timestamp: nil,
       type: .video(
-        poster: "https://s3.amazonaws.com/pointfreeco-blog/posts/0002-case-study-adt/poster.jpg",
+        poster: "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/poster.jpg",
         sources: [
-          "https://s3.amazonaws.com/pointfreeco-blog/posts/0002-case-study-adt/hls-playlist.m3u8",
-          "https://s3.amazonaws.com/pointfreeco-blog/posts/0002-case-study-adt/webm.webm"
+          "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/hls-playlist.m3u8",
+          "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/webm.webm"
         ]
       )
     ),
@@ -67,7 +67,7 @@ code on this very site so that the invalid states are unrepresentable by the com
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0002-case-study-adt/credits-feature.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/credits-feature.jpg")
     ),
 
     .init(
@@ -543,7 +543,7 @@ and any of the other things we do on Point-Free, feel free to poke around and as
       type: .paragraph
     ),
     ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0002-case-study-adt/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/poster.jpg",
   id: 2,
   publishedAt: .init(timeIntervalSince1970: 1_524_477_423),
   title: "Case Study: Algebraic Data Types"
