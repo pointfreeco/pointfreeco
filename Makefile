@@ -1,4 +1,4 @@
-run-oss: mock-env mock-transcripts
+run-oss: mock-env
 	swift run
 
 xcodeproj:
@@ -13,17 +13,13 @@ xcodeproj-oss:
 
 bootstrap-common: check-dependencies common-crypto-mm postgres-mm ccmark-mm xcodeproj-mm init-db
 
-bootstrap-oss: mock-env mock-transcripts bootstrap-common xcodeproj-oss
+bootstrap-oss: mock-env bootstrap-common xcodeproj-oss
 
 bootstrap: submodules bootstrap-common xcodeproj
 
 mock-env:
 	test -f .env \
 		|| cp .env.example .env
-
-mock-transcripts:
-	test -d Sources/PointFree/Transcripts/ \
-		|| cp -r Transcripts.example/ Sources/PointFree/Transcripts/
 
 submodules:
 	git submodule sync --recursive || true
