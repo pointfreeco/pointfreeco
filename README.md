@@ -24,9 +24,10 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   brew install cmark # or your preferred installation method
   ```
 
-* Make sure [Postgres](https://www.postgresql.org) is installed and running. It's our database of choice. You can install it with Homebrew:
+* Make sure [Postgres](https://www.postgresql.org) is installed _and running_. It's our database of choice. You can install it with Homebrew:
   ``` sh
   brew install postgres # or your preferred installation method
+  brew services start postgresql # or your preferred launch method
   ```
 
 * Open up a terminal window and grab the code:
