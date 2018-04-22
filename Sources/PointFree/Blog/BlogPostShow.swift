@@ -25,7 +25,8 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Blo
           openGraphType: .website,
           style: .base(.mountains(.blog)),
           title: post.title,
-          twitterCard: .summaryLargeImage
+          twitterCard: .summaryLargeImage,
+          usePrismJs: true
         )
     }
 )

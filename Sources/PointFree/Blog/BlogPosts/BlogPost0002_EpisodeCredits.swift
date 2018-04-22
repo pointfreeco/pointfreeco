@@ -1,6 +1,5 @@
 import Foundation
 
-// todo: cloudfront
 let post0002_episodeCredits = BlogPost(
   author: .brandon,
   blurb: """
@@ -342,11 +341,10 @@ LoggedIn    * NotSubscriber * HasUsedCredit * Void                   (1)
     ),
 
     .init(
-      // todo: change bifurcate?
       content: """
 Ok, this has been fun, but we've been entirely working in comments and pseudocode. It's now our job to
 translate this to a Swift data type. Well, we want the sum of all these states, so I'm thinking at the root
-level we want an enum. We can see that it bifurcates first at the question of logged in or not logged in.
+level we want an enum. We can see that it splits first at the question of logged in or not logged in.
 So let's start there!
 """,
       timestamp: nil,
@@ -398,7 +396,7 @@ enum EpisodePermission {
 
     .init(
       content: """
-In the `loggedIn` state we can see that we next bifurcate on the question of whether or not the user is a
+In the `loggedIn` state we can see that we next split on the question of whether or not the user is a
 subscriber. Sounds like we can introduce a nested enum for that:
 """,
       timestamp: nil,

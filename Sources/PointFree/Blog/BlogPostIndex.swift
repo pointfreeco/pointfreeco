@@ -20,11 +20,12 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Subscriber
           data: (currentUser, subscriberState),
           description: "A companion blog to Point-Free, exploring functional programming and Swift.",
           extraStyles: markdownBlockStyles,
-          image: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pfp-twitter-card-large.jpg",
+          image: "https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg",
           openGraphType: .website,
           style: .base(.mountains(.blog)),
           title: "Point-Free Pointers",
-          twitterCard: .summaryLargeImage
+          twitterCard: .summaryLargeImage,
+          usePrismJs: true
         )
     }
 )
