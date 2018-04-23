@@ -49,7 +49,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberStat
 private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, SubscriberState)> { style, currentUser, subscriberState in
   navItems(
     [
-      aboutLinkView,
+      blogLinkView,
       subscriberState.isNonSubscriber ? subscribeLinkView : nil,
       accountLinkView
       ]
@@ -59,7 +59,7 @@ private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, S
 }
 
 private let loggedOutNavItemsView = navItems([
-  aboutLinkView.contramap(first),
+  blogLinkView.contramap(first),
   subscribeLinkView.contramap(first),
   logInLinkView
   ])
@@ -75,8 +75,8 @@ private func navItems<A>(_ views: [View<A>]) -> View<A> {
   }
 }
 
-private let aboutLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .about)), `class`([navLinkClass(for: style)])], ["About"])
+private let blogLinkView = View<NavStyle.MinimalStyle> { style in
+  a([href(path(to: .blog(.index))), `class`([navLinkClass(for: style)])], ["Blog"])
 }
 
 private let subscribeLinkView = View<NavStyle.MinimalStyle> { style in

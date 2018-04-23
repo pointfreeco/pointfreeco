@@ -24,7 +24,7 @@ public struct Environment {
 
   init(
     assets: Assets = .init(),
-    blogPosts: @escaping () -> [BlogPost] = { allBlogPosts },
+    blogPosts: @escaping () -> [BlogPost] = allBlogPosts,
     cookieTransform: CookieTransform = .encrypted,
     database: PointFree.Database = .live,
     date: @escaping () -> Date = Date.init,
