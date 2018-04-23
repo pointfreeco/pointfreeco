@@ -72,21 +72,11 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
 
 private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute -> [Node] in
 
-  let blogOrAboutLink: Node
-  if AppEnvironment.current.features.hasAccess(to: .blog, for: currentUser) {
-    blogOrAboutLink = a(
+  return [
+    a(
       [href(mountainsStyle.otherStyle.heroHref), `class`([navLinkClasses])],
       [text(mountainsStyle.otherStyle.navLinkName)]
-    )
-  } else {
-    blogOrAboutLink = a(
-      [href(path(to: .about)), `class`([navLinkClasses])],
-      ["About"]
-    )
-  }
-
-  return [
-    blogOrAboutLink,
+    ),
 
     subscriberState.isNonSubscriber
       ? a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClasses])], ["Subscribe"])
