@@ -3,10 +3,7 @@ public struct Feature: Equatable {
   fileprivate let isEnabled: Bool
   fileprivate let name: String
 
-  static let blog = Feature(isAdminEnabled: true, isEnabled: false, name: "blog")
-
-  static let allFeatures = [
-    blog
+  static let allFeatures: [Feature] = [
   ]
 }
 

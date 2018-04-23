@@ -29,6 +29,10 @@ jobs:
           command: brew install sourcery
 
       - run:
+          name: Run Bootstrap OSS
+          command: make bootstrap-oss
+
+      - run:
           name: Run Swift tests
           command: make test-swift
           environment:

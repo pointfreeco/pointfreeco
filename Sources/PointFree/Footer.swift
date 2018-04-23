@@ -4,8 +4,6 @@ import HtmlCssSupport
 import Styleguide
 import Prelude
 
-// TODO: add "About" to footer
-
 let footerView: View<Database.User?> =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
@@ -66,37 +64,22 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
 
 private let contentColumnView = View<Database.User?> { currentUser -> Node in
 
-  let links: [ChildOf<Element.Ol>]
-
-  if AppEnvironment.current.features.hasAccess(to: .blog, for: currentUser) {
-    links = [
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
-        ]),
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
-        ]),
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
-        ]),
-    ]
-  } else {
-    links = [
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
-        ]),
-      li([
-        a([`class`([footerLinkClass]), href("http://www.fewbutripe.com")], ["Few, but ripe…"])
-        ]),
-      li([
-        a([`class`([footerLinkClass]), href("http://www.stephencelis.com")], ["Stephen Celis"])
-        ]),
-    ]
-  }
-
   return div([
     h5([`class`([columnTitleClass])], ["Content"]),
-    ol([`class`([Class.type.list.reset])], links)
+    ol(
+      [`class`([Class.type.list.reset])],
+      [
+        li([
+          a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
+          ]),
+        li([
+          a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
+          ]),
+        li([
+          a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
+          ])
+      ]
+    )
     ])
 }
 
