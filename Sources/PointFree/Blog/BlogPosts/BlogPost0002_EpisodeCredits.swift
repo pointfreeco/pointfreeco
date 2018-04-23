@@ -543,6 +543,6 @@ and any of the other things we do on Point-Free, feel free to poke around and as
     ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0002-case-study-adt/poster.jpg",
   id: 2,
-  publishedAt: .init(timeIntervalSince1970: 1_524_477_423),
+  publishedAt: .init(timeIntervalSince1970: 1_524_456_062),
   title: "Case Study: Algebraic Data Types"
 )

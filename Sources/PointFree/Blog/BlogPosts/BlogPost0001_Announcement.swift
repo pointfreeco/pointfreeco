@@ -39,6 +39,6 @@ even deeper into functional programming, showing real world use cases and more!
     ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg",
   id: 1,
-  publishedAt: .init(timeIntervalSince1970: 1_524_477_423),
+  publishedAt: .init(timeIntervalSince1970: 1_524_456_062),
   title: "Announcing Point-Free Pointers!"
 )
