@@ -1,6 +1,9 @@
-# [www.pointfree.co](http://www.pointfree.co)
+# 🎬 [www.pointfree.co](http://www.pointfree.co)
 
-macOS [![CircleCI](https://circleci.com/gh/pointfreeco/pointfreeco.svg?style=svg)](https://circleci.com/gh/pointfreeco/pointfreeco) Linux [![Build Status](https://travis-ci.org/pointfreeco/pointfreeco.svg?branch=master)](https://travis-ci.org/pointfreeco/pointfreeco)
+[![Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)](https://swift.org/download/)
+[![iOS/macOS CI](https://img.shields.io/circleci/project/github/pointfreeco/pointfreeco/master.svg?label=macos)](https://circleci.com/gh/pointfreeco/pointfreeco)
+[![Linux CI](https://img.shields.io/travis/pointfreeco/pointfreeco/master.svg?label=linux)](https://travis-ci.org/pointfreeco/pointfreeco)
+[![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
 
 This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a video series exploring Swift and functional programming. The codebase is split into 3 pieces:
 
@@ -21,9 +24,10 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   brew install cmark # or your preferred installation method
   ```
 
-* Make sure [Postgres](https://www.postgresql.org) is installed and running. It's our database of choice. You can install it with Homebrew:
+* Make sure [Postgres](https://www.postgresql.org) is installed _and running_. It's our database of choice. You can install it with Homebrew:
   ``` sh
   brew install postgres # or your preferred installation method
+  brew services start postgresql # or your preferred launch method
   ```
 
 * Open up a terminal window and grab the code:
@@ -81,10 +85,10 @@ Like the color theme we use in our episodes? Run `make colortheme` to install lo
 
 Point-Free uses a bunch of interesting open-source software:
 
-  * [swift-web](https://www.github.com/pointfreeco/swift-web): A collection of types and functions for dealing with common web server concerns, such as HTML render, CSS preprocessing, middleware and more.
-  * [swift-prelude](https://www.github.com/pointfreeco/swift-prelude): Offers a standard library for experimental functional programming in Swift.
-  * [swift-tagged](https://www.github.com/pointfreeco/swift-tagged): Helps us create strong contracts with our data boundaries, like JSON from [GitHub](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/GitHub.swift#L56) and [Stripe](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Stripe.swift#L92), and our [PostgreSQL data](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Database.swift#L95).
-  * [swift-snapshot-testing](https://www.github.com/pointfreeco/swift-snapshot-testing): Powers our testing infrastructure by taking snapshots of various data structures to guarantee the correctness of their output. We use this on everything from [middleware](https://github.com/pointfreeco/pointfreeco/blob/27f6eae212c1fea48da24b1f16a26043baaea4aa/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testSignup.1.Conn.txt) to ensure requests are correctly transformed into responses, and even entire web pages to make sure the site looks correct at a variety of sizes (e.g. on [iPhone](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.3._375.0x667.0.png) and [desktop](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.5._800.0x600.0.png)).
+  * 🕸 [swift-web](https://www.github.com/pointfreeco/swift-web): A collection of types and functions for dealing with common web server concerns, such as HTML render, CSS preprocessing, middleware and more.
+  * 🎶 [swift-prelude](https://www.github.com/pointfreeco/swift-prelude): Offers a standard library for experimental functional programming in Swift.
+  * 🏷 [swift-tagged](https://www.github.com/pointfreeco/swift-tagged): Helps us create strong contracts with our data boundaries, like JSON from [GitHub](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/GitHub.swift#L56) and [Stripe](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Stripe.swift#L92), and our [PostgreSQL data](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Database.swift#L95).
+  * 📸 [swift-snapshot-testing](https://www.github.com/pointfreeco/swift-snapshot-testing): Powers our testing infrastructure by taking snapshots of various data structures to guarantee the correctness of their output. We use this on everything from [middleware](https://github.com/pointfreeco/pointfreeco/blob/27f6eae212c1fea48da24b1f16a26043baaea4aa/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testSignup.1.Conn.txt) to ensure requests are correctly transformed into responses, and even entire web pages to make sure the site looks correct at a variety of sizes (e.g. on [iPhone](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.3._375.0x667.0.png) and [desktop](https://github.com/pointfreeco/pointfreeco/blob/fe09eae49835b603ee8083bdfdcee45b3fed81b0/Tests/PointFreeTests/__Snapshots__/LaunchSignupTests/testHome.5._800.0x600.0.png)).
 
 Explore more of our open-source on the [Point-Free](https://github.com/pointfreeco) organization.
 
