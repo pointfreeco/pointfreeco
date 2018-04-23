@@ -22,12 +22,17 @@ even deeper into functional programming, showing real world use cases and more!
       and hopefully it's more digestible. Often there is more we want to include
       in an episode, but we have to make cuts in the interest of time.
 
-      So, that is why we are happy to announce the launch of Point-Free Pointers! A
+      So, that is why we are happy to announce the launch of
+      [Point-Free Pointers](\(url(to: .blog(.index))))! A
       supplementary blog for [Point-Free](\(url(to: .home))) where we will be diving
       even deeper into topics covered in our episodes. Keep up-to-date on new posts by add the
       [RSS feed](\(url(to: .blog(.feed(.atom))))) to your reader of choice, follow us on
       [Twitter](\(twitterUrl(to: .pointfreeco))), or sign up for our
       [newsletter](\(url(to: .login(redirect: url(to: .account(.index)))))).
+
+      To kick things off, we have a [post](\(url(to: .blog(.show(post0002_episodeCredits))))) about applying
+      the ideas from [algebraic data types](\(url(to: .episode(.left("ep4-algebraic-data-types"))))) to a
+      real world problem. You can read it [here](\(url(to: .blog(.show(post0002_episodeCredits)))))!
 
       Your hosts,
 
