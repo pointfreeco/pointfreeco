@@ -123,7 +123,7 @@ private func userEpisodePermission<I, Z>(
     let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
     guard let user = currentUser else {
-      let permission: EpisodePermission = .loggedOut(isSubscriberOnly: episode.subscriberOnly)
+      let permission: EpisodePermission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
       return pure(conn.map(const(permission .*. conn.data)))
     }
 
@@ -138,12 +138,12 @@ private func userEpisodePermission<I, Z>(
         case (_, true):
           return .loggedIn(user: user, subscriptionPermission: .isSubscriber)
         case (true, false):
-          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(creditPermission: .isCredit))
+          return .loggedIn(user: user, subscriptionPermission: .isNotSubscriber(creditPermission: .hasUsedCredit))
         case (false, false):
           return .loggedIn(
             user: user,
             subscriptionPermission: .isNotSubscriber(
-              creditPermission: .isNotCredit(isSubscriberOnly: episode.subscriberOnly)
+              creditPermission: .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
             )
           )
         }
@@ -408,31 +408,31 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   case .loggedIn(_, .isSubscriber):
     fatalError("This should never be called.")
 
-  case .loggedIn(_, .isNotSubscriber(.isCredit)):
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
     return """
     You have access to this episode because you used a free episode credit. To get access to all past and
     future episodes, become a subscriber today!
     """
 
-  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: true))):
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
     return """
     This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
     today!
     """
 
-  case .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly: false))):
+  case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
     return """
     This episode is free to all users. To get access to all past and future episodes, become a
     subscriber today!
     """
 
-  case .loggedOut(isSubscriberOnly: true):
+  case .loggedOut(isEpisodeSubscriberOnly: true):
     return """
     This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
     today!
     """
 
-  case .loggedOut(isSubscriberOnly: false):
+  case .loggedOut(isEpisodeSubscriberOnly: false):
     return """
     This episode is free to all users. To get access to all past and future episodes, become a
     subscriber today!
@@ -442,7 +442,7 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
 
 private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
   guard
-    case let .loggedIn(user, .isNotSubscriber(.isNotCredit(true))) = permission,
+    case let .loggedIn(user, .isNotSubscriber(.hasNotUsedCredit(true))) = permission,
     user.episodeCreditCount > 0
     else { return [] }
 
@@ -761,11 +761,9 @@ private func episode(forParam param: Either<String, Int>) -> Episode? {
 private let markdownContainerClass = CssSelector.class("md-ctn")
 let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
-    p % key("word-wrap", "break-word")
-      <> a % key("text-decoration", "underline")
-      <> (a & .pseudo(.link)) % color(Colors.purple150)
-      <> (a & .pseudo(.visited)) % color(Colors.purple150)
-      <> (a & .pseudo(.hover)) % color(Colors.black)
+    hrMarkdownStyles
+      <> aMarkdownStyles
+      <> p % key("word-wrap", "break-word")
       <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
       <> code % (
         fontFamily(["monospace"])
@@ -774,6 +772,22 @@ let markdownBlockStyles: Stylesheet =
           <> borderRadius(all: .px(3))
           <> backgroundColor(Color.other("#f7f7f7"))
     )
+)
+
+private let aMarkdownStyles: Stylesheet =
+  a % key("text-decoration", "underline")
+    <> (a & .pseudo(.link)) % color(Colors.purple150)
+    <> (a & .pseudo(.visited)) % color(Colors.purple150)
+    <> (a & .pseudo(.hover)) % color(Colors.black)
+
+private let hrMarkdownStyles: Stylesheet =
+  hr % (
+    margin(top: .rem(2), right: .pct(30), bottom: .rem(2), left: .pct(30))
+      <> borderStyle(top: .solid)
+      <> borderWidth(top: .px(1))
+      <> backgroundColor(.white)
+      <> borderColor(top: Color.other("#ddd"))
+      <> height(.px(0))
 )
 
 func markdownBlock(_ markdown: String) -> Node {
@@ -806,9 +820,9 @@ private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
   switch permission {
   case .loggedIn(_, .isSubscriber):
     return true
-  case .loggedIn(_, .isNotSubscriber(.isCredit)):
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
     return true
-  case let .loggedIn(_, .isNotSubscriber(.isNotCredit(isSubscriberOnly))):
+  case let .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isSubscriberOnly))):
     return !isSubscriberOnly
   case let .loggedOut(isSubscriberOnly):
     return !isSubscriberOnly
@@ -825,16 +839,16 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
 }
 
 private enum EpisodePermission: Equatable {
-  case loggedIn(user: Database.User, subscriptionPermission: SubscriptionPermission)
-  case loggedOut(isSubscriberOnly: Bool)
+  case loggedIn(user: Database.User, subscriptionPermission: SubscriberPermission)
+  case loggedOut(isEpisodeSubscriberOnly: Bool)
 
-  enum SubscriptionPermission: Equatable {
-    case isSubscriber
+  enum SubscriberPermission: Equatable {
     case isNotSubscriber(creditPermission: CreditPermission)
+    case isSubscriber
 
     enum CreditPermission: Equatable {
-      case isCredit
-      case isNotCredit(isSubscriberOnly: Bool)
+      case hasNotUsedCredit(isEpisodeSubscriberOnly: Bool)
+      case hasUsedCredit
     }
   }
 }
@@ -850,6 +864,7 @@ let innerVideoContainerClass: CssSelector =
   Class.size.height100pct
     | Class.size.width100pct
     | Class.position.absolute
+    | Class.pf.colors.bg.gray650
 
 let outerImageContainerClass: CssSelector =
   Class.size.width100pct
@@ -857,3 +872,4 @@ let outerImageContainerClass: CssSelector =
 
 let innerImageContainerClass: CssSelector =
   Class.size.width100pct
+    | Class.pf.colors.bg.gray650
