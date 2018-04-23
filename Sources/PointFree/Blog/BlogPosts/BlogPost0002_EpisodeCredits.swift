@@ -29,7 +29,8 @@ code on this very site so that the invalid states are unrepresentable by the com
       allowed to construct invalid values, and it was proven to us by the compiler!
 
       In today's [Point-Free Pointer](\(url(to: .blog(.index)))) we are going to apply this to a real world
-      problem. In fact, we are going to analyze a data type that I made for a feature on this very site. I
+      problem. In fact, we are going to analyze a [data type](https://github.com/pointfreeco/pointfreeco/blob/c3a03fda2817418cc74d66da6c21e3fede0574f7/Sources/PointFree/Episode/Show.swift#L841-L854)
+      that I made for a feature on this very site. I
       did it completely wrong the first time, and it held lots of values that were just completely
       nonsensical. I convinced myself that it wasn't going to be a problem, and just rolled with it for
       awhile. But, I kept finding myself adding lil `if let`s here and lil `guard let`s there, until finally
@@ -525,15 +526,16 @@ enum EpisodePermission {
     ),
 
     .init(
-      // todo: link to open source
       content: """
-That is so simple! And this is precisely the data type we use in the code on this site! It cleaned up the
+That is so simple! And this is precisely the [data type](https://github.com/pointfreeco/pointfreeco/blob/c3a03fda2817418cc74d66da6c21e3fede0574f7/Sources/PointFree/Episode/Show.swift#L841-L854)
+we use in the code on this site! It cleaned up the
 code that dealt with this permissions type a lot. I was able to delete let's of `guard`ing and `if let`ing
 and instead just focus on the states I knew were valid.
 
 So, that's it for this Point-Free Pointer. I hope you can see how understanding algebra in the Swift type
 system can greatly simplify the types we work with. Also, the code for this entire website, including
-everything we discussed today, is fully open sourced on GitHub. If you are curious about this technique,
+everything we discussed today, is fully [open sourced](https://github.com/pointfreeco/pointfreeco)
+on GitHub. If you are curious about this technique,
 and any of the other things we do on Point-Free, feel free to poke around and ask us questions on
 [Twitter](\(twitterUrl(to: .pointfreeco)))!
 """,
