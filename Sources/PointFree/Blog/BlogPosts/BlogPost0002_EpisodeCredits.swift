@@ -295,7 +295,7 @@ We still have 4 more states to consider, the case where you are logged in but no
 
     .init(
       content: """
-There are two states here that are kind of redundant. For, if you have used a credit to see this particular
+There are two states here that are kind of redundant. For example, if you have used a credit to see this particular
 episode, then it does not matter if the episode was originally subscriber only or not. In particular these
 two states represent just one that we are actually interested in:
 """,
