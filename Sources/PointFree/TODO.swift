@@ -317,36 +317,6 @@ let attachFormData =
 
 // Prelude
 
-public struct Endo<A> {
-  public let call: (A) -> A
-
-  public init(_ call: @escaping (A) -> A) {
-    self.call = call
-  }
-}
-
-extension Endo /* : Semigroupoid */ {
-  public static func >>> (f: Endo, g: Endo) -> Endo {
-    return .init(f.call >>> g.call)
-  }
-
-  public static func <<< (f: Endo, g: Endo) -> Endo {
-    return .init(f.call <<< g.call)
-  }
-}
-
-extension Endo: Semigroup {
-  public static func <> (lhs: Endo, rhs: Endo) -> Endo {
-    return lhs >>> rhs
-  }
-}
-
-extension Endo: Monoid {
-  public static var empty: Endo<A> {
-    return .init(id)
-  }
-}
-
 public func concat<A>(_ fs: [(A) -> A]) -> (A) -> A {
   return { a in
     fs.reduce(a) { a, f in f(a) }
