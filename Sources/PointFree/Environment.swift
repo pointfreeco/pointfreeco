@@ -59,11 +59,7 @@ public struct Environment {
     self.stripe = stripe
   }
 
-  public mutating func make(_ changes: [(Environment) -> Environment]) {
-    self = self |> concat(changes)
-  }
-
   public mutating func make(_ changes: ((Environment) -> Environment)...) {
-    self.make(changes)
+    self = self |> concat(changes)
   }
 }
