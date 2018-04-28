@@ -17,30 +17,29 @@ class AuthTests: TestCase {
       |> \.gitHubUser.id .~ 1234567890
       |> \.gitHubUser.name .~ "Blobby McBlob"
 
-    let env: (Environment) -> Environment =
-      (\.database .~ .live)
-        <> (\.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)))
-        <> (\.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken))))
+    Current.make(
+      \.database .~ .live,
+      \.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)),
+      \.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken)))
+    )
 
-    AppEnvironment.with(env) {
-      let result = connection(
-        from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
-      assertSnapshot(matching: result)
+    let result = connection(
+      from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: result)
 
-      let registeredUser = AppEnvironment.current.database
-        .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
-        .run
-        .perform()
-        .right!!
+    let registeredUser = Current.database
+      .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)
+      .run
+      .perform()
+      .right!!
 
-      XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
-      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
-      XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
-      XCTAssertEqual(1, registeredUser.episodeCreditCount)
-    }
+    XCTAssertEqual(gitHubUserEnvelope.accessToken.accessToken, registeredUser.gitHubAccessToken)
+    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.id, registeredUser.gitHubUserId)
+    XCTAssertEqual(gitHubUserEnvelope.gitHubUser.name, registeredUser.name)
+    XCTAssertEqual(1, registeredUser.episodeCreditCount)
   }
 
   func testAuth() {
@@ -53,53 +52,53 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    AppEnvironment.with(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const)) {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+    Current.make(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const))
 
-      let conn = connection(from: auth)
-      let result = conn |> siteMiddleware
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: auth)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
-    AppEnvironment.with(
+    Current.make(
       \.gitHub.fetchAuthToken
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
-    ) {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+    )
 
-      let conn = connection(from: auth)
-      let result = conn |> siteMiddleware
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: auth)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
-    AppEnvironment.with(
+    Current.make(
       \.gitHub.fetchAuthToken
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
-    ) {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
+    )
 
-      let conn = connection(from: auth)
-      let result = conn |> siteMiddleware
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: auth)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testAuth_WithFetchUserFailure() {
-    AppEnvironment.with(\.gitHub.fetchUser .~ (unit |> throwE >>> const)) {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+    Current.make(\.gitHub.fetchUser .~ (unit |> throwE >>> const))
 
-      let conn = connection(from: auth)
-      let result = conn |> siteMiddleware
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: auth)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testLogin() {
@@ -112,14 +111,14 @@ class AuthTests: TestCase {
   }
 
   func testLogin_AlreadyLoggedIn() {
-    AppEnvironment.with(\.database .~ .mock) {
-      let login = request(to: .login(redirect: nil), session: .loggedIn)
+    Current.make(\.database .~ .mock)
 
-      let conn = connection(from: login)
-      let result = conn |> siteMiddleware
+    let login = request(to: .login(redirect: nil), session: .loggedIn)
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: login)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testLoginWithRedirect() {
@@ -139,20 +138,20 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    AppEnvironment.with(\.database .~ .mock) {
-      let conn = connection(from: request(to: .home, session: .loggedOut))
-      let result = conn |> siteMiddleware
+    Current.make(\.database .~ .mock)
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: request(to: .home, session: .loggedOut))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 
   func testHome_LoggedIn() {
-    AppEnvironment.with(\.database .~ .mock) {
-      let conn = connection(from: request(to: .home, session: .loggedIn))
-      let result = conn |> siteMiddleware
+    Current.make(\.database .~ .mock)
 
-      assertSnapshot(matching: result.perform())
-    }
+    let conn = connection(from: request(to: .home, session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
   }
 }

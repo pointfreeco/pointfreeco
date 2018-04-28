@@ -63,9 +63,9 @@ private func applyCreditMiddleware<Z>(
     )
   }
 
-  return AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id)
+  return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .flatMap { _ in
-      AppEnvironment.current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
+      Current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
     }
     .run
     .flatMap(
@@ -127,7 +127,7 @@ private func userEpisodePermission<I, Z>(
       return pure(conn.map(const(permission .*. conn.data)))
     }
 
-    let hasCredit = AppEnvironment.current.database.fetchEpisodeCredits(user.id)
+    let hasCredit = Current.database.fetchEpisodeCredits(user.id)
       .map { credits in credits.contains { $0.episodeSequence == episode.sequence } }
       .run
       .map { $0.right ?? false }
@@ -752,7 +752,7 @@ private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Su
 }
 
 private func episode(forParam param: Either<String, Int>) -> Episode? {
-  return AppEnvironment.current.episodes()
+  return Current.episodes()
     .first(where: {
       param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
     })

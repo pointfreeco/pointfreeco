@@ -12,12 +12,7 @@ import XCTest
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    Current.make(\.database .~ .mock)
   }
 
   func testNotLoggedIn_IndividualMonthly() {
@@ -73,118 +68,112 @@ final class SubscribeTests: TestCase {
   //  }
 
   func testInvalidQuantity() {
-    let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionById .~ const(pure(nil)))
-      <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+    Current.make(
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
 
-    AppEnvironment.with(env) {
-      let conn = connection(
-        from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let conn = connection(
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, named: "too_high")
-      #endif
-    }
+    #if !os(Linux)
+      assertSnapshot(matching: conn, named: "too_high")
+    #endif
 
-    AppEnvironment.with(env) {
-      let conn = connection(
-        from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let conn2 = connection(
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn, named: "too_low")
-      #endif
-    }
+    #if !os(Linux)
+      assertSnapshot(matching: conn2, named: "too_low")
+    #endif
   }
 
   func testHappyPath() {
-    AppEnvironment.with(\.database .~ .live) {
-      let user = AppEnvironment.current.database.upsertUser(.mock, "hello@pointfree.co")
-        .run
-        .perform()
-        .right!!
-      let session = Session.loggedIn |> \.userId .~ user.id
+    Current.make(\.database .~ .live)
 
-      let conn = connection(
-        from: request(to: .subscribe(.some(.individualMonthly)), session: session)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> \.userId .~ user.id
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn)
-      #endif
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualMonthly)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      let subscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(user.id)
-        .run
-        .perform()
-        .right!!
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
 
-      #if !os(Linux)
-        assertSnapshot(matching: subscription)
-      #endif
-    }
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+      assertSnapshot(matching: subscription)
+    #endif
   }
 
   func testCreateCustomerFailure() {
-    let env: (Environment) -> Environment =
-      (\.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+    Current.make(
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) }
+    )
 
-    AppEnvironment.with(env) {
-      let conn = connection(
-        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn)
-      #endif
-    }
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   func testCreateStripeSubscriptionFailure() {
-    let env: (Environment) -> Environment =
-      (\.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+    Current.make(
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
+    )
 
-    AppEnvironment.with(env) {
-      let conn = connection(
-        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn)
-      #endif
-    }
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    let env: (Environment) -> Environment =
-      (\.database.createSubscription .~ { _, _ in throwE(unit as Error) })
-        <> (\.database.fetchSubscriptionById .~ const(pure(nil)))
-        <> ((\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil)))
+    Current.make(
+      \.database.createSubscription .~ { _, _ in throwE(unit as Error) },
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
 
-    AppEnvironment.with(env) {
-      let conn = connection(
-        from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
-        )
-        |> siteMiddleware
-        |> Prelude.perform
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
 
-      #if !os(Linux)
-        assertSnapshot(matching: conn)
-      #endif
-    }
+    #if !os(Linux)
+      assertSnapshot(matching: conn)
+    #endif
   }
 }

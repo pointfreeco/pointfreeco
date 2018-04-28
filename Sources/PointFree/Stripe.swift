@@ -414,7 +414,7 @@ private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URL
   return IO {
     URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
-      <> attachBasicAuth(username: AppEnvironment.current.envVars.stripe.secretKey)
+      <> attachBasicAuth(username: Current.envVars.stripe.secretKey)
   }
 }
 

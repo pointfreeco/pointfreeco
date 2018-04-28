@@ -313,7 +313,7 @@ public func path(to route: Route) -> String {
 }
 
 public func url(to route: Route) -> String {
-  return router.url(for: route, base: AppEnvironment.current.envVars.baseUrl)?.absoluteString ?? ""
+  return router.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
 }
 
 extension PartialIso where A == String, B == Tag {
@@ -345,7 +345,7 @@ extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayloa
 private func verify(payload: MailgunForwardPayload) -> Bool {
   let digest = hexDigest(
     value: "\(payload.timestamp)\(payload.token)",
-    asciiSecret: AppEnvironment.current.envVars.mailgun.apiKey
+    asciiSecret: Current.envVars.mailgun.apiKey
   )
   return payload.signature == digest
 }

@@ -31,7 +31,7 @@ private let loadEnvVars =
       let decoder = JSONDecoder()
       let encoder = JSONEncoder()
 
-      let defaultEnvVarDict = (try? encoder.encode(AppEnvironment.current.envVars))
+      let defaultEnvVarDict = (try? encoder.encode(Current.envVars))
         .flatMap { try? decoder.decode([String: String].self, from: $0) }
         ?? [:]
 
@@ -45,21 +45,21 @@ private let loadEnvVars =
 
       let envVars = (try? JSONSerialization.data(withJSONObject: envVarDict))
         .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
-        ?? AppEnvironment.current.envVars
+        ?? Current.envVars
 
-      AppEnvironment.push(\.envVars .~ envVars)
+      Current.make(\.envVars .~ envVars)
 
       #if OSS
       let allEpisodes = allPublicEpisodes
       #else
       let allEpisodes = allPublicEpisodes + allPrivateEpisodes
       #endif
-      AppEnvironment.push(\
+      Current.make(\
         .episodes .~ {
-          let now = AppEnvironment.current.date()
+          let now = Current.date()
           return allEpisodes
             .filter {
-              AppEnvironment.current.envVars.appEnv == .production
+              Current.envVars.appEnv == .production
                 ? $0.publishedAt <= now
                 : true
           }
@@ -72,7 +72,7 @@ private let loadEnvVars =
 
 private let connectToPostgres =
   print(message: "  ⚠️ Connecting to PostgreSQL...")
-    .flatMap { _ in AppEnvironment.current.database.migrate() }
+    .flatMap { _ in Current.database.migrate() }
     .catch { print(message: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
     .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
     .flatMap(const(print(message: "  ✅ Connected to PostgreSQL!")))

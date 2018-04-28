@@ -15,7 +15,7 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Ses
           key: pointFreeUserSession,
           value: value,
           options: [
-            .expires(AppEnvironment.current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
+            .expires(Current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
             .path("/")
         ]
         )
@@ -32,12 +32,12 @@ extension URLRequest {
   var session: Session {
     return self.cookies[pointFreeUserSession]
       .flatMap { value in
-        switch AppEnvironment.current.cookieTransform {
+        switch Current.cookieTransform {
         case .plaintext:
           return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
         case .encrypted:
           return Response.Header
-            .verifiedValue(signedCookieValue: value, secret: AppEnvironment.current.envVars.appSecret)
+            .verifiedValue(signedCookieValue: value, secret: Current.envVars.appSecret)
         }
       }
       ?? .empty
@@ -65,7 +65,7 @@ public struct Flash: Codable, Equatable {
 private let pointFreeUserSession = "pf_session"
 
 private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
-  switch AppEnvironment.current.cookieTransform {
+  switch Current.cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))
       .flatMap { String(data: $0, encoding: .utf8) }
@@ -77,7 +77,7 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
         key: key,
         value: value,
         options: options,
-        secret: AppEnvironment.current.envVars.appSecret,
+        secret: Current.envVars.appSecret,
         encrypt: true
     )
   }

@@ -21,7 +21,7 @@ let page = simplePageLayout(invoicesView).view(
   )
 )
 
-AppEnvironment.push(const(.mock))
+Current = .mock
 
 let htmlStr = render(page, config: pretty)
 

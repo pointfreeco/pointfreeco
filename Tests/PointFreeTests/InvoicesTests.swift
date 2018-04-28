@@ -15,12 +15,7 @@ import WebKit
 final class InvoicesTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    Current.make(\.database .~ .mock)
   }
 
   func testInvoices() {

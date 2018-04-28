@@ -8,7 +8,7 @@ import Styleguide
 import Tuple
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger { AppEnvironment.current.logger.info($0) }
+  requestLogger { Current.logger.info($0) }
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
@@ -132,7 +132,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> expressUnsubscribeReplyMiddleware
 
     case .feed(.atom):
-      return conn.map(const(AppEnvironment.current.episodes()))
+      return conn.map(const(Current.episodes()))
         |> atomFeedResponse
 
     case let .gitHubCallback(code, redirect):
@@ -218,7 +218,7 @@ public func redirect<A>(
 private let canonicalHost = "www.pointfree.co"
 private let allowedHosts: [String] = [
   canonicalHost,
-  AppEnvironment.current.envVars.baseUrl.host ?? canonicalHost,
+  Current.envVars.baseUrl.host ?? canonicalHost,
   "127.0.0.1",
   "0.0.0.0",
   "localhost"

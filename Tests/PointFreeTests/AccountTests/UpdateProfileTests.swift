@@ -12,7 +12,7 @@ import Optics
 
 class UpdateProfileTests: TestCase {
   func testUpdateNameAndEmail() {
-    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
@@ -32,7 +32,7 @@ class UpdateProfileTests: TestCase {
       |> Prelude.perform
 
     assertSnapshot(
-      matching: AppEnvironment.current.database.fetchUserById(user.id)
+      matching: Current.database.fetchUserById(user.id)
         .run
         .perform()
         .right!!,
@@ -45,11 +45,11 @@ class UpdateProfileTests: TestCase {
   }
 
   func testUpdateEmailSettings() {
-    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
-    let emailSettings = AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+    let emailSettings = Current.database.fetchEmailSettingsForUserId(user.id)
       .run
       .perform()
       .right!
@@ -69,7 +69,7 @@ class UpdateProfileTests: TestCase {
       |> Prelude.perform
 
     assertSnapshot(
-      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+      matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,

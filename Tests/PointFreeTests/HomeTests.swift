@@ -23,16 +23,10 @@ class HomeTests: TestCase {
       .suffix(4)
       .map(\.image .~ "")
 
-    let env: (Environment) -> Environment =
-      (\.database .~ .mock)
-      <> (\.episodes .~ unzurry(eps))
-
-    AppEnvironment.push(env)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    Current.make(
+      \.database .~ .mock,
+      \.episodes .~ unzurry(eps)
+    )
   }
 
   func testHomepage_LoggedOut() {

@@ -3,10 +3,19 @@ import Foundation
 import Optics
 import Prelude
 
+public struct Assets {
+  public var brandonImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg"
+  public var stephenImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg"
+  public var emailHeaderImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png"
+  public var pointersEmailHeaderImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-pointers-header.jpg"
+}
+
 public enum CookieTransform: String, Codable {
   case plaintext
   case encrypted
 }
+
+public var Current = Environment()
 
 public struct Environment {
   public private(set) var assets: Assets
@@ -49,30 +58,12 @@ public struct Environment {
     self.mailgun = mailgun
     self.stripe = stripe
   }
-}
 
-public struct AppEnvironment {
-  private static var stack: [Environment] = [Environment()]
-  public static var current: Environment { return stack.last! }
-
-  public static func push(_ env: (Environment) -> Environment) {
-    self.stack.append(self.current |> env)
+  public mutating func make(_ changes: [(Environment) -> Environment]) {
+    self = self |> concat(changes)
   }
 
-  public static func with(_ env: (Environment) -> Environment, _ block: () -> Void) {
-    self.push(env)
-    block()
-    self.pop()
+  public mutating func make(_ changes: ((Environment) -> Environment)...) {
+    self.make(changes)
   }
-
-  public static func pop() {
-    self.stack.removeLast()
-  }
-}
-
-public struct Assets {
-  public var brandonImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg"
-  public var stephenImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg"
-  public var emailHeaderImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png"
-  public var pointersEmailHeaderImgSrc = "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-pointers-header.jpg"
 }

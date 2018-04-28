@@ -34,7 +34,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Us
 
 let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
 
-  let episodes = AppEnvironment.current.episodes().sorted(by: their(^\.sequence, >))
+  let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
 
   let ctaInsertionIndex = subscriberState.isNonSubscriber ? min(3, episodes.count) : 0
   let firstBatch = episodes[0..<ctaInsertionIndex]

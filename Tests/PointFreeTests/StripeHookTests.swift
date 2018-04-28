@@ -15,19 +15,14 @@ import WebKit
 final class StripeHookTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    Current.make(\.database .~ .mock)
   }
 
   func testValidHook() {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=499156b6abcf65d5c4a7c31f4e367d788b6112a030106c93aa2fc9fb1023473e",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=499156b6abcf65d5c4a7c31f4e367d788b6112a030106c93aa2fc9fb1023473e",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -42,7 +37,7 @@ final class StripeHookTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=090637e9a79c21e220bbcc306207947dc9913e275bcf3ecaaa0c8a413fe71836",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=090637e9a79c21e220bbcc306207947dc9913e275bcf3ecaaa0c8a413fe71836",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -57,7 +52,7 @@ final class StripeHookTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
     hook.addValue(
-      "t=\(Int(AppEnvironment.current.date().timeIntervalSince1970)),v1=deadbeef",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=deadbeef",
       forHTTPHeaderField: "Stripe-Signature"
     )
 

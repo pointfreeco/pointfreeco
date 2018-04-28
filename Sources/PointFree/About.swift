@@ -258,7 +258,7 @@ private struct Host {
 Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
 better our craft as engineers.
 """,
-      image: AppEnvironment.current.assets.brandonImgSrc,
+      image: Current.assets.brandonImgSrc,
       name: "Brandon Williams",
       twitterRoute: .mbrandonw,
       website: "http://www.fewbutripe.com"
@@ -271,7 +271,7 @@ better our craft as engineers.
 Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a
 functional convert and believer after years of objects.
 """,
-      image: AppEnvironment.current.assets.stephenImgSrc,
+      image: Current.assets.stephenImgSrc,
       name: "Stephen Celis",
       twitterRoute: .stephencelis,
       website: "http://www.stephencelis.com"

@@ -234,7 +234,7 @@ extension PartialIso where A == String, B == String {
   }
 
   public static var appDecrypted: PartialIso<String, String> {
-    return .decrypted(withSecret: AppEnvironment.current.envVars.appSecret)
+    return .decrypted(withSecret: Current.envVars.appSecret)
   }
 }
 
@@ -314,3 +314,45 @@ let attachFormData =
     >>> ^\.utf8
     >>> Data.init
     >>> set(\URLRequest.httpBody)
+
+// Prelude
+
+public struct Endo<A> {
+  public let call: (A) -> A
+
+  public init(_ call: @escaping (A) -> A) {
+    self.call = call
+  }
+}
+
+extension Endo /* : Semigroupoid */ {
+  public static func >>> (f: Endo, g: Endo) -> Endo {
+    return .init(f.call >>> g.call)
+  }
+
+  public static func <<< (f: Endo, g: Endo) -> Endo {
+    return .init(f.call <<< g.call)
+  }
+}
+
+extension Endo: Semigroup {
+  public static func <> (lhs: Endo, rhs: Endo) -> Endo {
+    return lhs >>> rhs
+  }
+}
+
+extension Endo: Monoid {
+  public static var empty: Endo<A> {
+    return .init(id)
+  }
+}
+
+public func concat<A>(_ fs: [(A) -> A]) -> (A) -> A {
+  return { a in
+    fs.reduce(a) { a, f in f(a) }
+  }
+}
+
+public func concat<A>(_ fs: ((A) -> A)..., and fz: @escaping (_ a: A) -> A = id) -> (A) -> A {
+  return concat(fs + [fz])
+}

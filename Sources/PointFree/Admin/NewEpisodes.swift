@@ -17,7 +17,7 @@ let showNewEpisodeEmailMiddleware =
 
 private let showNewEpisodeView = View<Database.User> { _ in
   ul(
-    AppEnvironment.current.episodes()
+    Current.episodes()
       .sorted(by: their(^\.sequence, >))
       .prefix(upTo: 1)
       .map(li <<< newEpisodeEmailRowView.view)
@@ -60,8 +60,8 @@ private func sendNewEpisodeEmails<I>(
   let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
   let users = isTest
-    ? AppEnvironment.current.database.fetchAdmins()
-    : AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
+    ? Current.database.fetchAdmins()
+    : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
 
   return users
     .mapExcept(bimap(const(unit), id))

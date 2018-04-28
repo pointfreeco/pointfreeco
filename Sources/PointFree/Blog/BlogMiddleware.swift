@@ -15,7 +15,7 @@ func blogMiddleware(
 
   switch subRoute {
   case .feed(.atom):
-    return conn.map(const(AppEnvironment.current.blogPosts()))
+    return conn.map(const(Current.blogPosts()))
       |> blogAtomFeedResponse
 
   case .index:

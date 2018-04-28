@@ -572,14 +572,14 @@ func redirectActiveSubscribers<A>(
 
         let userSubscription = (user?.subscriptionId)
           .map(
-            AppEnvironment.current.database.fetchSubscriptionById
+            Current.database.fetchSubscriptionById
               >>> mapExcept(requireSome)
           )
           ?? throwE(unit)
 
         let ownerSubscription = (user?.id)
           .map(
-            AppEnvironment.current.database.fetchSubscriptionByOwnerId
+            Current.database.fetchSubscriptionByOwnerId
               >>> mapExcept(requireSome)
           )
           ?? throwE(unit)
