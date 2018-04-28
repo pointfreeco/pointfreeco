@@ -15,7 +15,7 @@ import WebKit
 class EpisodeTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testEpisodePage() {
@@ -62,7 +62,7 @@ class EpisodeTests: TestCase {
     let freeEpisode = Current.episodes()[0]
       |> \.subscriberOnly .~ false
 
-    Current.make(\.episodes .~ { [freeEpisode] })
+    update(&Current, \.episodes .~ { [freeEpisode] })
 
     let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedOut)
 
@@ -87,7 +87,7 @@ class EpisodeTests: TestCase {
     let freeEpisode = Current.episodes()[0]
       |> \.subscriberOnly .~ false
 
-    Current.make(\.episodes .~ { [freeEpisode] })
+    update(&Current, \.episodes .~ { [freeEpisode] })
 
     let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedIn)
 
@@ -133,7 +133,8 @@ class EpisodeTests: TestCase {
     let episode = Current.episodes()[0]
       |> \.subscriberOnly .~ false
 
-    Current.make(
+    update(
+      &Current,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
@@ -167,7 +168,8 @@ class EpisodeTests: TestCase {
     let episode = Current.episodes().first!
       |> \.subscriberOnly .~ true
 
-    Current.make(
+    update(
+      &Current,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
@@ -201,7 +203,8 @@ class EpisodeTests: TestCase {
     let episode = Current.episodes().first!
       |> \.subscriberOnly .~ true
 
-    Current.make(
+    update(
+      &Current,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([])),
@@ -231,7 +234,8 @@ class EpisodeTests: TestCase {
     let episode = Episode.mock
       |> \.subscriberOnly .~ true
 
-    Current.make(
+    update(
+      &Current,
       \.database .~ .live,
       \.episodes .~ unzurry([episode])
     )
@@ -270,7 +274,8 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 0
       |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    Current.make(
+    update(
+      &Current,
       \.database .~ .live,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode])
@@ -303,7 +308,8 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 1
       |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
-    Current.make(
+    update(
+      &Current,
       \.database .~ .live,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode])
@@ -332,7 +338,8 @@ class EpisodeTests: TestCase {
     let episode = Episode.mock
       |> \.subscriberOnly .~ false
 
-    Current.make(
+    update(
+      &Current, 
       \.database .~ .live,
       \.episodes .~ unzurry([episode])
     )

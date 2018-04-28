@@ -13,7 +13,7 @@ import WebKit
 class PricingTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testPricing() {
@@ -46,7 +46,8 @@ class PricingTests: TestCase {
   }
 
   func testPricingLoggedIn_NonSubscriber() {
-    Current.make(
+    update(
+      &Current, 
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )

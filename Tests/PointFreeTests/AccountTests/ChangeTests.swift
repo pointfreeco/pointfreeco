@@ -15,7 +15,7 @@ import WebKit
 final class ChangeTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testChangeShow() {
@@ -44,7 +44,7 @@ final class ChangeTests: TestCase {
   }
   
   func testChangeShowNoSubscription() {
-    Current.make(\.stripe.fetchSubscription .~ const(throwE(unit)))
+    update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -53,7 +53,7 @@ final class ChangeTests: TestCase {
   }
   
   func testChangeShowCancelingSubscription() {
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.canceling)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -73,7 +73,7 @@ final class ChangeTests: TestCase {
   }
   
   func testChangeShowCanceledSubscription() {
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.canceled)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -83,7 +83,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateUpgradeIndividualPlan() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -100,7 +101,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateDowngradeIndividualPlan() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -117,7 +119,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateUpgradeTeamPlan() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -134,7 +137,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateDowngradeTeamPlan() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -151,7 +155,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateAddSeatsIndividualPlan() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -169,7 +174,8 @@ final class ChangeTests: TestCase {
   func testChangeUpdateAddSeatsTeamPlan() {
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         invoiceCustomer.fulfill()
@@ -186,7 +192,8 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateRemoveSeats() {
     #if !os(Linux)
-    Current.make(
+    update(
+      &Current,
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
@@ -207,7 +214,8 @@ final class ChangeTests: TestCase {
       |> \.plan .~ .teamYearly
       |> \.quantity .~ 5
 
-    Current.make(
+    update(
+      &Current, 
       \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])),
       \.database.fetchTeamInvites .~ const(pure([.mock, .mock])),
       \.stripe.fetchSubscription .~ const(pure(subscription))

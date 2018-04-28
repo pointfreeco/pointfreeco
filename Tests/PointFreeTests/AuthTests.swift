@@ -17,7 +17,8 @@ class AuthTests: TestCase {
       |> \.gitHubUser.id .~ 1234567890
       |> \.gitHubUser.name .~ "Blobby McBlob"
 
-    Current.make(
+    update(
+      &Current,
       \.database .~ .live,
       \.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)),
       \.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken)))
@@ -52,7 +53,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
-    Current.make(\.gitHub.fetchAuthToken .~ (unit |> throwE >>> const))
+    update(&Current, \.gitHub.fetchAuthToken .~ (unit |> throwE >>> const))
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
@@ -63,7 +64,8 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
-    Current.make(
+    update(
+      &Current,
       \.gitHub.fetchAuthToken
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     )
@@ -77,7 +79,8 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
-    Current.make(
+    update(
+      &Current, 
       \.gitHub.fetchAuthToken
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     )
@@ -91,7 +94,7 @@ class AuthTests: TestCase {
   }
 
   func testAuth_WithFetchUserFailure() {
-    Current.make(\.gitHub.fetchUser .~ (unit |> throwE >>> const))
+    update(&Current, \.gitHub.fetchUser .~ (unit |> throwE >>> const))
 
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
 
@@ -111,7 +114,7 @@ class AuthTests: TestCase {
   }
 
   func testLogin_AlreadyLoggedIn() {
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
 
     let login = request(to: .login(redirect: nil), session: .loggedIn)
 
@@ -138,7 +141,7 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedOut() {
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
 
     let conn = connection(from: request(to: .home, session: .loggedOut))
     let result = conn |> siteMiddleware
@@ -147,7 +150,7 @@ class AuthTests: TestCase {
   }
 
   func testHome_LoggedIn() {
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
 
     let conn = connection(from: request(to: .home, session: .loggedIn))
     let result = conn |> siteMiddleware

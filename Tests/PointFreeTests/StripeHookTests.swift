@@ -15,7 +15,7 @@ import WebKit
 final class StripeHookTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testValidHook() {

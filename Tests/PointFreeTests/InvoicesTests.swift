@@ -15,7 +15,7 @@ import WebKit
 final class InvoicesTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testInvoices() {

@@ -9,7 +9,7 @@ import Optics
 
 class InviteTests: TestCase {
   func testShowInvite_LoggedOut() {
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
 
     let showInvite = request(to: .invite(.show(Database.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
@@ -30,7 +30,7 @@ class InviteTests: TestCase {
       |> \.fetchTeamInvite .~ const(pure(.some(invite)))
       |> \.fetchSubscriptionById .~ const(pure(nil))
 
-    Current.make(\.database .~ db)
+    update(&Current, \.database .~ db)
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
@@ -47,11 +47,12 @@ class InviteTests: TestCase {
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
-      |> \.fetchUserById .~ const(pure(.some(currentUser)))
+      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
       |> \.fetchTeamInvite .~ const(pure(.some(invite)))
       |> \.fetchSubscriptionById .~ const(pure(.mock))
 
-    Current.make(
+    update(
+      &Current,
       \.database .~ db,
       \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .active))
     )
@@ -277,7 +278,7 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))
@@ -319,7 +320,7 @@ class InviteTests: TestCase {
       .perform()
       .right!
 
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
     
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))

@@ -15,7 +15,7 @@ import WebKit
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testAccount() {
@@ -99,7 +99,8 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithPastDue() {
-    Current.make(
+    update(
+      &Current,
       \.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
     )
@@ -122,7 +123,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCancelingSubscription() {
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.canceling)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -142,7 +143,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    Current.make(\.stripe.fetchSubscription .~ const(pure(.canceled)))
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -166,7 +167,8 @@ final class AccountTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    Current.make(
+    update(
+      &Current,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.database.fetchEpisodeCredits .~ const(pure([])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -193,7 +195,8 @@ final class AccountTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    Current.make(
+    update(
+      &Current, 
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))

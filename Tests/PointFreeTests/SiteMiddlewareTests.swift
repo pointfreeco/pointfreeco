@@ -18,7 +18,7 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class SiteMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testWithoutWWW() {

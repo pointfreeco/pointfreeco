@@ -23,7 +23,8 @@ class HomeTests: TestCase {
       .suffix(4)
       .map(\.image .~ "")
 
-    Current.make(
+    update(
+      &Current, 
       \.database .~ .mock,
       \.episodes .~ unzurry(eps)
     )

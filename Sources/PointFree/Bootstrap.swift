@@ -47,15 +47,15 @@ private let loadEnvVars =
         .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
         ?? Current.envVars
 
-      Current.make(\.envVars .~ envVars)
+      update(&Current, \.envVars .~ envVars)
 
       #if OSS
       let allEpisodes = allPublicEpisodes
       #else
       let allEpisodes = allPublicEpisodes + allPrivateEpisodes
       #endif
-      Current.make(\
-        .episodes .~ {
+      update(
+        &Current, \.episodes .~ {
           let now = Current.date()
           return allEpisodes
             .filter {

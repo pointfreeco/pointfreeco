@@ -12,7 +12,7 @@ import XCTest
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    Current.make(\.database .~ .mock)
+    update(&Current, \.database .~ .mock)
   }
 
   func testNotLoggedIn_IndividualMonthly() {
@@ -68,7 +68,8 @@ final class SubscribeTests: TestCase {
   //  }
 
   func testInvalidQuantity() {
-    Current.make(
+    update(
+      &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
@@ -95,7 +96,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testHappyPath() {
-    Current.make(\.database .~ .live)
+    update(&Current, \.database .~ .live)
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
@@ -124,7 +125,8 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
-    Current.make(
+    update(
+      &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
       \.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) }
@@ -142,7 +144,8 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure() {
-    Current.make(
+    update(
+      &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
       \.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
@@ -160,7 +163,8 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    Current.make(
+    update(
+      &Current, 
       \.database.createSubscription .~ { _, _ in throwE(unit as Error) },
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
