@@ -31,7 +31,7 @@ class NewEpisodeEmailTests: TestCase {
 
   func testNewEpisodeEmail_FreeEpisode_NonSubscriber() {
     let episode = Current.episodes().first!
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
 
