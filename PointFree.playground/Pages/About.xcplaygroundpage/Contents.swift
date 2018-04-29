@@ -12,7 +12,7 @@ import WebKit
 import Optics
 import Styleguide
 
-AppEnvironment.push(const(.mock))
+Current = .mock
 
 let request = PointFreeTestSupport.request(to: .pricing(nil, expand: nil))
 

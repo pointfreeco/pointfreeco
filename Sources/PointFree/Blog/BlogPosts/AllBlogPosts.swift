@@ -1,8 +1,8 @@
 func allBlogPosts() -> [BlogPost] {
-  let now = AppEnvironment.current.date()
+  let now = Current.date()
   return _allBlogPosts
     .filter {
-      AppEnvironment.current.envVars.appEnv == .production
+      Current.envVars.appEnv == .production
         ? $0.publishedAt <= now
         : true
   }

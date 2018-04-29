@@ -34,7 +34,7 @@ private func leaveTeam<Z>(
 
     let removed = user.subscriptionId
       .map {
-        AppEnvironment.current.database
+        Current.database
           .removeTeammateUserIdFromSubscriptionId(user.id, $0)
       }
       ?? pure(unit)
@@ -60,7 +60,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       over1(
-        AppEnvironment.current.database.fetchUserById
+        Current.database.fetchUserById
           >>> mapExcept(requireSome)
           >>> ^\.run
           >>> map(^\.right)
@@ -74,7 +74,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
       guard let teammateSubscriptionId = teammate.subscriptionId
         else { return pure(conn.map(const(unit))) }
 
-      let validateSubscriptionData = AppEnvironment.current.database
+      let validateSubscriptionData = Current.database
         .fetchSubscriptionById(teammateSubscriptionId)
         .mapExcept(requireSome)
         .mapExcept { errorOrSubscription in
@@ -88,7 +88,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
 
       return validateSubscriptionData
         .flatMap { _ in
-          AppEnvironment.current.database
+          Current.database
             .removeTeammateUserIdFromSubscriptionId(teammate.id, teammateSubscriptionId)
             .flatMap { x -> EitherIO<Error, Prelude.Unit> in
 

@@ -45,7 +45,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user) = conn.data
-    return AppEnvironment.current.stripe.cancelSubscription(subscription.id)
+    return Current.stripe.cancelSubscription(subscription.id)
       .run
       .flatMap(
         either(
@@ -71,7 +71,7 @@ private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, 
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (item, subscription, user) = conn.data
-    return AppEnvironment.current.stripe.updateSubscription(subscription, item.plan.id, item.quantity, nil)
+    return Current.stripe.updateSubscription(subscription, item.plan.id, item.quantity, nil)
       .run
       .flatMap(
         either(
@@ -164,7 +164,7 @@ private func fetchSubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
 
     return { conn in
-      let subscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
+      let subscription = Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
         .mapExcept(requireSome)
         .run
         .map(^\.right)
@@ -185,7 +185,7 @@ private func fetchStripeSubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.Subscription, A>, Data> {
 
     return { conn in
-      AppEnvironment.current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
+      Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
         .run
         .map(^\.right)
         .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }

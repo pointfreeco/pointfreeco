@@ -60,7 +60,7 @@ let updateProfileMiddleware =
         updateFlash = flash(.notice, "We’ve updated your profile!")
       }
 
-      return AppEnvironment.current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
+      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
         .run
         .flatMap(
           const(
@@ -74,7 +74,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
   let (userId, newEmailAddress) = lower(conn.data)
 
   parallel(
-    AppEnvironment.current.database.fetchUserById(userId)
+    Current.database.fetchUserById(userId)
       .bimap(const(unit), id)
       .flatMap { user in
         sendEmail(
@@ -87,7 +87,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tupl
     )
     .run({ _ in })
 
-  return AppEnvironment.current.database.updateUser(userId, nil, newEmailAddress, nil, nil)
+  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }

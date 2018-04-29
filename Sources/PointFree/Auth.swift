@@ -43,7 +43,7 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
 
     let user = conn.request.session.userId
       .flatMap {
-        AppEnvironment.current.database.fetchUserById($0)
+        Current.database.fetchUserById($0)
           .run
           .map(either(const(nil), id))
       }
@@ -74,14 +74,14 @@ public func currentSubscriptionMiddleware<A, I>(
 
   let userSubscription = (user?.subscriptionId)
     .map(
-      AppEnvironment.current.database.fetchSubscriptionById
+      Current.database.fetchSubscriptionById
         >>> mapExcept(requireSome)
     )
     ?? throwE(unit)
 
   let ownerSubscription = (user?.id)
     .map(
-      AppEnvironment.current.database.fetchSubscriptionByOwnerId
+      Current.database.fetchSubscriptionByOwnerId
         >>> mapExcept(requireSome)
     )
     ?? throwE(unit)
@@ -95,25 +95,25 @@ public func currentSubscriptionMiddleware<A, I>(
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
   -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
 
-    return AppEnvironment.current.database.fetchUserById(get1(conn.data))
+    return Current.database.fetchUserById(get1(conn.data))
       .run
       .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
 }
 
 private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
 
-  return AppEnvironment.current.database.fetchUserByGitHub(env.gitHubUser.id)
+  return Current.database.fetchUserByGitHub(env.gitHubUser.id)
     .flatMap { user in user.map(pure) ?? registerUser(env: env) }
 }
 
 private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
 
-  return AppEnvironment.current.gitHub.fetchEmails(env.accessToken)
+  return Current.gitHub.fetchEmails(env.accessToken)
     .map { emails in emails.first(where: { $0.primary }) }
     .mapExcept(requireSome) // todo: better error messaging
     .flatMap { email in
 
-      AppEnvironment.current.database.registerUser(env, email.email)
+      Current.database.registerUser(env, email.email)
         .mapExcept(requireSome)
         .flatMap { user in
           EitherIO(run: IO { () -> Either<Error, Database.User> in
@@ -142,7 +142,7 @@ private func gitHubAuthTokenMiddleware(
   -> IO<Conn<ResponseEnded, Data>> {
     let (token, redirect) = lower(conn.data)
 
-    return AppEnvironment.current.gitHub.fetchUser(token)
+    return Current.gitHub.fetchUser(token)
       .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
       .flatMap(fetchOrRegisterUser(env:))
       .flatMap { user in
@@ -179,7 +179,7 @@ private func requireAccessToken<A>(
     return { conn in
       let (code, redirect) = (get1(conn.data), get2(conn.data))
 
-      return AppEnvironment.current.gitHub.fetchAuthToken(code)
+      return Current.gitHub.fetchAuthToken(code)
         .run
         .flatMap { errorOrToken in
           switch errorOrToken {
@@ -203,12 +203,12 @@ private func requireAccessToken<A>(
 private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
-  return AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+  return Current.database.fetchSubscriptionById(subscriptionId)
     .mapExcept(requireSome)
     .flatMap { subscription in
-      AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+      Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .flatMap { stripeSubscription in
-          AppEnvironment.current.database.updateStripeSubscription(stripeSubscription)
+          Current.database.updateStripeSubscription(stripeSubscription)
             .map(const(unit)) // FIXME: mapExcept(requireSome) / handle failure?
         }
     }
@@ -217,7 +217,7 @@ private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Erro
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return gitHubUrl(
     to: .authorize(
-      clientId: AppEnvironment.current.envVars.gitHub.clientId,
+      clientId: Current.envVars.gitHub.clientId,
       redirectUri: url(to: .gitHubCallback(code: nil, redirect: redirect)),
       scope: "user:email"
     )

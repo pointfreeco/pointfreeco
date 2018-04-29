@@ -20,7 +20,7 @@ private let freeEpisodeView = View<Database.User> { _ in
     h2(["Send free episode email"]),
 
     ul(
-      AppEnvironment.current.episodes()
+      Current.episodes()
         .filter((!) <<< ^\.subscriberOnly)
         .sorted(by: their(^\.sequence))
         .map(li <<< freeEpisodeEmailRowView.view)
@@ -47,12 +47,12 @@ let sendFreeEpisodeEmailMiddleware:
     >-> redirect(to: .admin(.index))
 
 func fetchEpisode(_ id: Episode.Id) -> Episode? {
-  return AppEnvironment.current.episodes().first(where: { $0.id == id })
+  return Current.episodes().first(where: { $0.id == id })
 }
 
 private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
 
-  return AppEnvironment.current.database.fetchFreeEpisodeUsers()
+  return Current.database.fetchFreeEpisodeUsers()
     .mapExcept(bimap(const(unit), id))
     .flatMap { users in
       sendEmail(forFreeEpisode: conn.data, toUsers: users)

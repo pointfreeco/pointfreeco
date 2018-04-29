@@ -11,9 +11,9 @@ enum EmailLayoutTemplate {
   var headerImgSrc: String {
     switch self {
     case .blog:
-      return AppEnvironment.current.assets.pointersEmailHeaderImgSrc
+      return Current.assets.pointersEmailHeaderImgSrc
     case .default:
-      return AppEnvironment.current.assets.emailHeaderImgSrc
+      return Current.assets.emailHeaderImgSrc
     }
   }
 }

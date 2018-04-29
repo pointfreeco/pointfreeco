@@ -12,7 +12,7 @@ import Optics
 
 class NewslettersTests: TestCase {
   func testExpressUnsubscribe() {
-    let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
@@ -23,7 +23,7 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+      matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
@@ -36,7 +36,7 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+      matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
@@ -46,7 +46,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+      let user = Current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
@@ -57,7 +57,7 @@ class NewslettersTests: TestCase {
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+            timestamp: Int(Current.date().timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
@@ -67,7 +67,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -80,7 +80,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -91,7 +91,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+      let user = Current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
@@ -102,7 +102,7 @@ class NewslettersTests: TestCase {
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+            timestamp: Int(Current.date().timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "this is an invalid signature"
@@ -112,7 +112,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -125,7 +125,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -136,14 +136,14 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_UnknownNewsletter() {
     #if !os(Linux)
-      let user = AppEnvironment.current.database.registerUser(.mock, "hello@pointfree.co")
+      let user = Current.database.registerUser(.mock, "hello@pointfree.co")
         .run
         .perform()
         .right!!
 
       let payload = encrypted(
         text: "\(user.id.rawValue.uuidString)--unknown",
-        secret: AppEnvironment.current.envVars.appSecret
+        secret: Current.envVars.appSecret
         )!
       let unsubEmail = EmailAddress(rawValue: "unsub-\(payload)@pointfree.co")
 
@@ -151,7 +151,7 @@ class NewslettersTests: TestCase {
         to: .expressUnsubscribeReply(
           .init(
             recipient: unsubEmail,
-            timestamp: Int(AppEnvironment.current.date().timeIntervalSince1970),
+            timestamp: Int(Current.date().timeIntervalSince1970),
             token: "deadbeef",
             sender: user.email,
             signature: "ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9"
@@ -161,7 +161,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -174,7 +174,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id)
+        matching: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,

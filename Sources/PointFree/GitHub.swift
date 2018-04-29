@@ -68,8 +68,8 @@ private func fetchAuthToken(with code: String) -> EitherIO<Error, Either<GitHub.
   request.httpMethod = "POST"
   request.httpBody = try? JSONEncoder().encode(
     [
-      "client_id": AppEnvironment.current.envVars.gitHub.clientId,
-      "client_secret": AppEnvironment.current.envVars.gitHub.clientSecret,
+      "client_id": Current.envVars.gitHub.clientId,
+      "client_secret": Current.envVars.gitHub.clientSecret,
       "code": code,
       "accept": "json"
     ])
