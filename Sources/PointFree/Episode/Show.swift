@@ -385,7 +385,7 @@ private func timestampLabel(for timestamp: Int) -> String {
 }
 
 private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
-  permission, user, subscriberState, episode in
+  permission, user, subscriberState, episode -> Node in
   div(
     [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)

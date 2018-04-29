@@ -135,7 +135,7 @@ class EpisodeTests: TestCase {
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -170,7 +170,7 @@ class EpisodeTests: TestCase {
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -205,7 +205,7 @@ class EpisodeTests: TestCase {
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
