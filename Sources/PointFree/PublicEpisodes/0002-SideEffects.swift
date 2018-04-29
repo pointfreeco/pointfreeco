@@ -9,6 +9,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
   length: 2676,
+  permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
   sequence: 2,
   sourcesFull: [
@@ -19,7 +20,6 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
     "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/hls.m3u8",
     "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/webm.webm"
   ],
-  subscriberOnly: false,
   title: "Side Effects",
   transcriptBlocks: [
     Episode.TranscriptBlock(

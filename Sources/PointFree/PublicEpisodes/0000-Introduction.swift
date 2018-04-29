@@ -10,6 +10,7 @@ Take a moment to hear from the hosts about what to expect from this new series.
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
   length: 179,
+  permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 0,
   sourcesFull: [
@@ -17,7 +18,6 @@ Take a moment to hear from the hosts about what to expect from this new series.
     "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/webm.webm"
   ],
   sourcesTrailer: [],
-  subscriberOnly: false,
   title: "We launched!",
   transcriptBlocks: [
     Episode.TranscriptBlock(

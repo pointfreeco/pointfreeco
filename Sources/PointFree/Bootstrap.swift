@@ -54,6 +54,9 @@ private let loadEnvVars =
       #else
       let allEpisodes = allPublicEpisodes + allPrivateEpisodes
       #endif
+
+      assert(allEpisodes.count == Set(allEpisodes.map(^\.id)).count)
+      assert(allEpisodes.count == Set(allEpisodes.map(^\.sequence)).count)
       update(
         &Current, \.episodes .~ {
           let now = Current.date()

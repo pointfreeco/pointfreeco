@@ -9,6 +9,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/0001-poster.jpg",
   length: 1219,
+  permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 1,
   sourcesFull: [
@@ -16,7 +17,6 @@ Our first episode is all about functions! We talk a bit about what makes functio
     "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/webm.webm"
   ],
   sourcesTrailer: [],
-  subscriberOnly: false,
   title: "Functions",
   transcriptBlocks: [
     Episode.TranscriptBlock(
