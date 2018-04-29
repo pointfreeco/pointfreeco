@@ -33,7 +33,7 @@ private func creditUserMiddleware(
 
   let (user, episode) = (get2(conn.data), get3(conn.data))
 
-  return AppEnvironment.current.database.redeemEpisodeCredit(episode.sequence, user.id)
+  return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .run
     .flatMap(
       const(
@@ -46,7 +46,7 @@ private func creditUserMiddleware(
 private func fetchUser(id: Database.User.Id?) -> IO<Database.User?> {
   guard let id = id else { return pure(nil) }
 
-  return AppEnvironment.current.database.fetchUserById(id)
+  return Current.database.fetchUserById(id)
     .mapExcept(requireSome)
     .run
     .map(^\.right)
@@ -54,7 +54,7 @@ private func fetchUser(id: Database.User.Id?) -> IO<Database.User?> {
 
 private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
   guard let sequence = sequence else { return nil }
-  return AppEnvironment.current.episodes()
+  return Current.episodes()
     .first(where: { $0.sequence == sequence })
 }
 

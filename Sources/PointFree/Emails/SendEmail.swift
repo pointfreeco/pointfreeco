@@ -37,15 +37,15 @@ public func sendEmail(
       }
       ?? []
 
-    return AppEnvironment.current.mailgun.sendEmail(
+    return Current.mailgun.sendEmail(
       Email(
         from: from,
         to: to,
         cc: nil,
         bcc: nil,
-        subject: AppEnvironment.current.envVars.appEnv == .production
+        subject: Current.envVars.appEnv == .production
           ? subject
-          : "[\(AppEnvironment.current.envVars.appEnv)] " + subject,
+          : "[\(Current.envVars.appEnv)] " + subject,
         text: plain,
         html: html,
         testMode: nil,

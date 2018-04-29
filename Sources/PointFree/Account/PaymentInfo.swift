@@ -46,7 +46,7 @@ let updatePaymentInfoMiddleware:
     <| { conn in
       let (subscription, _, token) = lower(conn.data)
 
-      return AppEnvironment.current.stripe.updateCustomer(subscription.customer, token)
+      return Current.stripe.updateCustomer(subscription.customer, token)
         .run
         .flatMap {
           conn |> redirect(

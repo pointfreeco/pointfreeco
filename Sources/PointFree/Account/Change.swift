@@ -63,12 +63,12 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     let shouldInvoice = newPricing.plan == currentSubscription.plan.id
       && newPricing.quantity > currentSubscription.quantity
 
-    return AppEnvironment.current.stripe
+    return Current.stripe
       .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if shouldInvoice {
           parallel(
-            AppEnvironment.current.stripe.invoiceCustomer(sub.customer)
+            Current.stripe.invoiceCustomer(sub.customer)
               .withExcept(notifyError(subject: "Invoice Failed"))
               .run
             )
@@ -161,9 +161,9 @@ private func fetchSeatsTaken<A>(
       let user = conn.data.first
 
       let invitesAndTeammates = sequence([
-        parallel(AppEnvironment.current.database.fetchTeamInvites(user.id).run)
+        parallel(Current.database.fetchTeamInvites(user.id).run)
           .map { $0.right?.count ?? 0 },
-        parallel(AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
+        parallel(Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run)
           .map { $0.right?.count ?? 0 }
         ])
 
