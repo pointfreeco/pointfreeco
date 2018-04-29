@@ -17,11 +17,11 @@ private let paidEpisode = Episode(
   ],
   image: "",
   length: 1380,
+  permission: .subscriberOnly,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 1,
   sourcesFull: [""],
   sourcesTrailer: [""],
-  subscriberOnly: true,
   title: "Proof in Functions",
   transcriptBlocks: [
     Episode.TranscriptBlock(

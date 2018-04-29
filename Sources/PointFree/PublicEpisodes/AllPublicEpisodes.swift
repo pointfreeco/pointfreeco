@@ -1,4 +1,4 @@
-public let allPublicEpisodes = [
+public let allPublicEpisodes: [Episode] = [
   introduction,
   ep1,
   ep2,

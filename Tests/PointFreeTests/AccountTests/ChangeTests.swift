@@ -216,7 +216,7 @@ final class ChangeTests: TestCase {
 
     update(
       &Current, 
-      \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.teammate, .teammate])),
+      (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.teammate, .teammate])),
       \.database.fetchTeamInvites .~ const(pure([.mock, .mock])),
       \.stripe.fetchSubscription .~ const(pure(subscription))
     )

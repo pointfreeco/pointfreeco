@@ -10,6 +10,7 @@ Take a moment to hear from the hosts about what to expect from this new series.
   exercises: [],
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
   length: 179,
+  permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 0,
   sourcesFull: [
@@ -17,16 +18,18 @@ Take a moment to hear from the hosts about what to expect from this new series.
     "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/webm.webm"
   ],
   sourcesTrailer: [],
-  subscriberOnly: false,
   title: "We launched!",
-  transcriptBlocks: [
-    Episode.TranscriptBlock(
-      content: "What is Point-Free?",
-      timestamp: 0,
-      type: .title
-    ),
-    Episode.TranscriptBlock(
-      content: """
+  transcriptBlocks: transcriptBlocks
+)
+
+private let transcriptBlocks: [Episode.TranscriptBlock] = [
+  Episode.TranscriptBlock(
+    content: "What is Point-Free?",
+    timestamp: 0,
+    type: .title
+  ),
+  Episode.TranscriptBlock(
+    content: """
 Point-Free is a video series covering functional programming and Swift. We've been working in functional
 programming for quite some time now, and we've seen a lot of benefits. So, we've wanted to share with
 more people, and what better way than a video series that we can bring to our community.
@@ -41,36 +44,36 @@ shame because it's a really beautiful way of doing programming, just a little di
 are used to. It emphasizes immutable values, which means you are not allowed to mutate! And it is weirdly
 obsessed with functions and how they compose, and in some sense that is all that matters.
 """,
-      timestamp: 0,
-      type: .paragraph
-    ),
+    timestamp: 0,
+    type: .paragraph
+  ),
 
 
 
-    Episode.TranscriptBlock(
-      content: "What’s the point?!",
-      timestamp: 92,
-      type: .title
-    ),
-    Episode.TranscriptBlock(
-      content: """
+  Episode.TranscriptBlock(
+    content: "What’s the point?!",
+    timestamp: 92,
+    type: .title
+  ),
+  Episode.TranscriptBlock(
+    content: """
 We want to cover all of that wild and interesting ideas, but at the end of the day we want to slow down
 and ask ourselves *"what's the point?!"*. This is our chance to bring things back down to earth, take a
 deep breath, and see how these ideas are in fact applicable to our everyday programming lives.
 """,
-      timestamp: 92,
-      type: .paragraph
-    ),
+    timestamp: 92,
+    type: .paragraph
+  ),
 
 
 
-    Episode.TranscriptBlock(
-      content: "We’re open source",
-      timestamp: 113,
-      type: .title
-    ),
-    Episode.TranscriptBlock(
-      content: """
+  Episode.TranscriptBlock(
+    content: "We’re open source",
+    timestamp: 113,
+    type: .title
+  ),
+  Episode.TranscriptBlock(
+    content: """
 We also practice what we preach. This entire site is
 [open source](https://www.github.com/pointfreeco/pointfreeco) in server-side Swift, and written in a
 function style. The entire site is basically one function, taking a request from you, the viewer, and
@@ -82,25 +85,24 @@ We will have episodes dissecting pieces of the site's codebase in the future, an
 to take a look on [GitHub](https://www.github.com/pointfreeco/pointfreeco) and open up issues or pull
 requests if that interests you.
 """,
-      timestamp: 113,
-      type: .paragraph
-    ),
+    timestamp: 113,
+    type: .paragraph
+  ),
 
 
 
-    Episode.TranscriptBlock(
-      content: "The “Fun” in “Function”",
-      timestamp: 156,
-      type: .title
-    ),
-    Episode.TranscriptBlock(
-      content: """
+  Episode.TranscriptBlock(
+    content: "The “Fun” in “Function”",
+    timestamp: 156,
+    type: .title
+  ),
+  Episode.TranscriptBlock(
+    content: """
 The [first episode](https://www.pointfree.co/episodes/ep1-functions) is up and available to everyone! And if
 you enjoy that, the [second episode](https://www.pointfree.co/episodes/ep2-side-effects) is already up
 and just a [subscription](https://www.pointfree.co/pricing) away. We hope you enjoy!
 """,
-      timestamp: 156,
-      type: .paragraph
-    ),
-  ]
-)
+    timestamp: 156,
+    type: .paragraph
+  ),
+]
