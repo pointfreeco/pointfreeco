@@ -131,7 +131,7 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 1
 
     let episode = Current.episodes()[0]
-      |>\.permission .~ .free
+      |> \.permission .~ .free
 
     update(
       &Current,
