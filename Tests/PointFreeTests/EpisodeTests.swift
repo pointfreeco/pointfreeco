@@ -60,7 +60,7 @@ class EpisodeTests: TestCase {
 
   func testFreeEpisodePage() {
     let freeEpisode = Current.episodes()[0]
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     update(&Current, \.episodes .~ { [freeEpisode] })
 
@@ -85,7 +85,7 @@ class EpisodeTests: TestCase {
 
   func testFreeEpisodePageSubscriber() {
     let freeEpisode = Current.episodes()[0]
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     update(&Current, \.episodes .~ { [freeEpisode] })
 
@@ -131,11 +131,11 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 1
 
     let episode = Current.episodes()[0]
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -166,11 +166,11 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 1
 
     let episode = Current.episodes().first!
-      |> \.subscriberOnly .~ true
+      |> \.permission .~ .subscriberOnly
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -201,11 +201,11 @@ class EpisodeTests: TestCase {
       |> \.episodeCreditCount .~ 1
 
     let episode = Current.episodes().first!
-      |> \.subscriberOnly .~ true
+      |> \.permission .~ .subscriberOnly
 
     update(
       &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -232,7 +232,7 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_HappyPath() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ true
+      |> \.permission .~ .subscriberOnly
 
     update(
       &Current,
@@ -268,7 +268,7 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_NotEnoughCredits() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ true
+      |> \.permission .~ .subscriberOnly
 
     let user = Database.User.mock
       |> \.episodeCreditCount .~ 0
@@ -302,7 +302,7 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_PublicEpisode() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     let user = Database.User.mock
       |> \.episodeCreditCount .~ 1
@@ -336,7 +336,7 @@ class EpisodeTests: TestCase {
 
   func testRedeemEpisodeCredit_AlreadyCredited() {
     let episode = Episode.mock
-      |> \.subscriberOnly .~ false
+      |> \.permission .~ .free
 
     update(
       &Current, 
