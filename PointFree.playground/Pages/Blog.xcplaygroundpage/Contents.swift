@@ -12,9 +12,9 @@ import WebKit
 import Optics
 import SnapshotTesting
 
-AppEnvironment.push(const(.mock))
+Current = .mock
 
-let post = AppEnvironment.current.blogPosts().first!
+let post = Current.blogPosts().first!
 let req = request(to: .blog(.show(post)), session: .loggedOut, basicAuth: true)
 let result = connection(from: req)
   |> siteMiddleware

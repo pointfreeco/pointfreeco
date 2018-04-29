@@ -22,9 +22,9 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([.mock]))
+    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
-    |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
+    |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
 }
 
 extension Assets {
@@ -422,8 +422,8 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
   request.httpMethod = request.httpMethod?.uppercased()
 
   if basicAuth {
-    let username = AppEnvironment.current.envVars.basicAuth.username
-    let password = AppEnvironment.current.envVars.basicAuth.password
+    let username = Current.envVars.basicAuth.username
+    let password = Current.envVars.basicAuth.password
     request.allHTTPHeaderFields = request.allHTTPHeaderFields ?? [:]
     request.allHTTPHeaderFields?["Authorization"] =
       "Basic " + Data("\(username):\(password)".utf8).base64EncodedString()

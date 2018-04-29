@@ -12,7 +12,7 @@ import WebKit
 import Optics
 import SnapshotTesting
 
-AppEnvironment.push(const(.mock))
+Current = .mock
 
 let htmlString = render(accountView.view((.mock, [.mock, .mock], [.mock, .mock, .mock], [.mock], [.mock], .mock)), config: pretty)
 

@@ -15,12 +15,7 @@ import WebKit
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    update(&Current, \.database .~ .mock)
   }
 
   func testBlogIndex() {

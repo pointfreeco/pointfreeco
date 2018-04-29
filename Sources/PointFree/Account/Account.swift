@@ -34,19 +34,19 @@ private func fetchAccountData<I>(
 
   let userSubscription = user.subscriptionId
     .map(
-      AppEnvironment.current.database.fetchSubscriptionById
+      Current.database.fetchSubscriptionById
         >>> mapExcept(requireSome)
     )
     ?? throwE(unit)
 
-  let ownerSubscription = AppEnvironment.current.database.fetchSubscriptionByOwnerId(user.id)
+  let ownerSubscription = Current.database.fetchSubscriptionByOwnerId(user.id)
     .mapExcept(requireSome)
 
   let owner = userSubscription
     .flatMap { subscription in
       subscription.userId == user.id
         ? pure(user)
-        : AppEnvironment.current.database.fetchUserById(subscription.userId)
+        : Current.database.fetchUserById(subscription.userId)
     }
     .mapExcept(requireSome)
 
@@ -54,13 +54,13 @@ private func fetchAccountData<I>(
 
   let stripeSubscription = subscription
     .map(^\.stripeSubscriptionId)
-    .flatMap(AppEnvironment.current.stripe.fetchSubscription)
+    .flatMap(Current.stripe.fetchSubscription)
 
   let everything = zip7(
-    AppEnvironment.current.database.fetchEmailSettingsForUserId(user.id).run.parallel
+    Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    AppEnvironment.current.database.fetchEpisodeCredits(user.id).run.parallel
+    Current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
 
     stripeSubscription.run.map(^\.right).parallel,
@@ -69,10 +69,10 @@ private func fetchAccountData<I>(
 
     owner.run.map(^\.right).parallel,
 
-    AppEnvironment.current.database.fetchTeamInvites(user.id).run.parallel
+    Current.database.fetchTeamInvites(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    AppEnvironment.current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
+    Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
       .map { $0.right ?? [] }
   )
 
@@ -195,12 +195,12 @@ private let episodeLinkView = View<Episode> { episode in
 }
 
 private func episodes(from credits: [Database.EpisodeCredit]) -> [Episode] {
-  return AppEnvironment.current.episodes()
+  return Current.episodes()
     .filter { ep in credits.contains(where: { $0.episodeSequence == ep.sequence }) }
 }
 
 private func episode(atSequence sequence: Int) -> Episode? {
-  return AppEnvironment.current.episodes()
+  return Current.episodes()
     .first(where: { $0.sequence == sequence })
 }
 
@@ -383,7 +383,7 @@ public func nextBilling(for subscription: Stripe.Subscription) -> String {
       + " on "
       + dateFormatter.string(from: subscription.currentPeriodEnd)
   case .canceled:
-    return subscription.currentPeriodEnd > AppEnvironment.current.date()
+    return subscription.currentPeriodEnd > Current.date()
       ? "Cancels " + dateFormatter.string(from: subscription.currentPeriodEnd)
       : "Canceled"
   case .pastDue:

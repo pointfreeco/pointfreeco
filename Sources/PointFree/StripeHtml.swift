@@ -72,7 +72,7 @@ extension Stripe {
         div(
           [
             `class`([stripeInputClass]),
-            data("stripe-key", AppEnvironment.current.envVars.stripe.publishableKey),
+            data("stripe-key", Current.envVars.stripe.publishableKey),
             id("card-element"),
           ],
           []
@@ -93,7 +93,7 @@ extension Stripe {
 
     public static var scripts: [Node] {
       return [
-        script([src(AppEnvironment.current.stripe.js)]),
+        script([src(Current.stripe.js)]),
         script(
           """
           function setFormEnabled(form, isEnabled, elementsMatching) {
