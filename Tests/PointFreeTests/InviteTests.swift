@@ -26,7 +26,7 @@ class InviteTests: TestCase {
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     let db = Database.mock
-      |> \.fetchUserById .~ const(pure(.some(currentUser)))
+      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
       |> \.fetchTeamInvite .~ const(pure(.some(invite)))
       |> \.fetchSubscriptionById .~ const(pure(nil))
 
