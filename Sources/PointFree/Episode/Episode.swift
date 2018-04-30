@@ -57,7 +57,7 @@ public struct Episode {
     case .free:
       return false
     case let .freeDuring(dateRange):
-      return dateRange.contains(Current.date())
+      return !dateRange.contains(Current.date())
     case .subscriberOnly:
       return true
     }
