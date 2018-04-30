@@ -370,4 +370,20 @@ class EpisodeTests: TestCase {
       Current.database.fetchUserById(user.id).run.perform().right!!.episodeCreditCount
     )
   }
+
+  func test_permission() {
+    let start = Date(timeIntervalSinceReferenceDate: 0)
+    let end = Date(timeIntervalSinceReferenceDate: 100)
+    let episode = Episode.mock
+      |> \.permission .~ .freeDuring(start..<end)
+
+    update(&Current, \.date .~ { start.addingTimeInterval(-1) })
+    XCTAssertTrue(episode.subscriberOnly)
+
+    update(&Current, \.date .~ { start.addingTimeInterval(1) })
+    XCTAssertFalse(episode.subscriberOnly)
+
+    update(&Current, \.date .~ { end.addingTimeInterval(1) })
+    XCTAssertTrue(episode.subscriberOnly)
+  }
 }
