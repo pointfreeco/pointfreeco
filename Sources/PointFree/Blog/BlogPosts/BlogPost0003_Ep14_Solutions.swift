@@ -228,7 +228,7 @@ TODO
 
       > Define `union`, `intersect`, and `invert` on `PredicateSet`.
 
-      These functions directly correspond to `||`, `&&` and `!` on booleans:
+      These functions directly correspond to applying `||`, `&&` and `!` pointwise on the predicates:
       """,
       timestamp: nil,
       type: .paragraph
@@ -240,10 +240,78 @@ TODO
         func union(_ other: PredicateSet) -> PredicateSet {
           return PredicateSet { self.contains($0) || other.contains($0) }
         }
+
+        func intersect(_ other: PredicateSet) -> PredicateSet {
+          return PredicateSet { self.contains($0) && other.contains($0) }
+        }
+
+        var invert: PredicateSet {
+          return PredicateSet { !self.contains($0) }
+        }
       }
       """,
       timestamp: nil,
       type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      ### Exercise 5.1
+
+      > Create a predicate set `powersOf2: PredicateSet<Int>` that determines if a value is a power of `2`,
+      i.e. `2^n` for some `n: Int`.
+
+      There's a fun trick you can perform to compute this easily. A power of two written in binary form
+      has the expression `1000...0`, i.e. a `1` followed by sum number of `1`s, where as the number that came
+      just before it has the expression `111...1`, i.e. all `1`s and one less digit. So, to see if an integer
+      `n` is a power of two we could just `&` the bits of `n` and `n - 1` and see if we get `0`:
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      let powersOf2 = PredicateSet<Int> { n in
+        n > 0 && (n & (n - 1) == 0)
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      ### Exercise 5.2
+
+      > Use the above predicate set to derive a new one `powersOf2Minus1: PredicateSet<Int>` that tests
+      if a number is of the form `2^n - 1` for `n: Int`.
+
+      We can `contramap` on `powersOf2` to shift them all down by one:
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      let powersOf2Minus1 = powersOf2.contramap { $0 - 1 }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      ### Exercise 5.3
+
+      > Find an algorithm online for testing if an integer is prime, and turn it into a
+      predicate `primes: PredicateSet<Int>`.
+
+
+      """,
+      timestamp: nil,
+      type: .paragraph
     ),
 
     ],
@@ -252,3 +320,21 @@ TODO
   publishedAt: .init(timeIntervalSince1970: 1_525_665_662),
   title: "Solutions to Exercises: Contravariance"
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
