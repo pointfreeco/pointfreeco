@@ -25,8 +25,6 @@ TODO
       Recall from the episode on exponents and algebraic data types that function arrows parenthesize to the
       right, which means when we write `(A) -> (B) -> C`, we really mean `(A) -> ((B) -> C)`. Now we can
       apply the bracketing method we demonstrated in the episode:
-
-      So now we see that `A` is negative, `B` is also negative, and `C` is positive.
       """,
       timestamp: nil,
       type: .paragraph
@@ -217,10 +215,35 @@ TODO
       It's interesting to see that the implementation of `map` on `A` is quite similar to `contramap` on
       `B`, and `map` on `T` is similar to `contramap` on `S`.
 
-      Ok, we've now defined all these functions, but what do they _mean_? Well, `map` on `A` means
+      Ok, we've now defined all these functions, but what do they _mean_? Well, `map` on `A` means that if
+      we have a way to transform TODO: Finish
       """,
       timestamp: nil,
       type: .paragraph
+    ),
+
+    .init(
+      content: """
+      ### Exercise 4
+
+      > Define `union`, `intersect`, and `invert` on `PredicateSet`.
+
+      These functions directly correspond to `||`, `&&` and `!` on booleans:
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      extension PredicateSet {
+        func union(_ other: PredicateSet) -> PredicateSet {
+          return PredicateSet { self.contains($0) || other.contains($0) }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
     ),
 
     ],
