@@ -531,9 +531,23 @@ TODO
       > Consider the type `struct Equate<A> { let equals: (A, A) -> Bool }`. This is just a struct wrapper
       around an equality check. You can think of it as a kind of “type erased” `Equatable` protocol. Write
       `contramap` for this type.
+
+      This is a pretty straightforward `contramap` to write:
       """,
       timestamp: nil,
       type: .paragraph
+    ),
+
+    .init(
+      content: """
+      extension Equate {
+        func contramap<B>(_ f: @escaping (B) -> A) -> Equate<B> {
+          return .init { self.equals(f($0), f($1)) }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
     ),
 
     .init(
@@ -544,9 +558,23 @@ TODO
       this is like a “witness” to the `Equatable` conformance of Int. Show how to use `contramap` defined
       above to transform `intEquate` into something that defines equality of strings based on their character
       count.
+
+      We can induce an `Equate` value on strings by contramapping over its character count. Here are two
+      ways of doing it:
       """,
       timestamp: nil,
       type: .paragraph
+    ),
+
+    .init(
+      content: """
+      intEquate.contramap { (a: String, b: String) in a.count == b.count }
+
+      // Using the `their` function from episode #8: Key Paths and Getters
+      intEquate.contramap(their(\\String.count, ==))
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
     ),
 
     ],
