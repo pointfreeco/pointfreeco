@@ -3,9 +3,16 @@ import Foundation
 let post0003_ep14Solutions = BlogPost(
   author: .brandon,
   blurb: """
-TODO
+This week we solve the exercises from our episode on contravariance, because there were _a lot_ of
+them!
 """,
   contentBlocks: [
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0003-solutions-to-exercises-contravariance/poster.jpg")
+    ),
+
     .init(
       content: """
       In [episode #14](\(url(to: .episode(.right(14))))) we explored the idea of contravariance and it led us
@@ -52,6 +59,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 2
 
       > Determine the sign of all the type parameters in the following function:
@@ -94,6 +103,8 @@ TODO
       * `G = +1`
 
       And there you have it!
+
+      ---
 
       ### Exercise 3
 
@@ -215,8 +226,9 @@ TODO
       It's interesting to see that the implementation of `map` on `A` is quite similar to `contramap` on
       `B`, and `map` on `T` is similar to `contramap` on `S`.
 
-      Ok, we've now defined all these functions, but what do they _mean_? Well, `map` on `A` means that if
-      we have a way to transform TODO: Finish
+      Ok, we've now defined all these functions, but what do they _mean_? Well, they all mean that we can
+      lift transformations on parts and wholes up to transformations on setters, but let's look at some
+      examples.
       """,
       timestamp: nil,
       type: .paragraph
@@ -224,6 +236,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 4
 
       > Define `union`, `intersect`, and `invert` on `PredicateSet`.
@@ -256,13 +270,15 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.1
 
       > Create a predicate set `powersOf2: PredicateSet<Int>` that determines if a value is a power of `2`,
       i.e. `2^n` for some `n: Int`.
 
       There's a fun trick you can perform to compute this easily. A power of two written in binary form
-      has the expression `1000...0`, i.e. a `1` followed by sum number of `1`'s, where as the number that came
+      has the expression `1000...0`, i.e. a `1` followed by sum number of `1`'s, whereas the number that came
       just before it has the expression `111...1`, i.e. all `1`'s and one less digit. So, to see if an integer
       `n` is a power of two we could just `&` the bits of `n` and `n - 1` and see if we get `0`:
       """,
@@ -282,13 +298,15 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.2
 
       > Use the above predicate set to derive a new one `powersOf2Minus1: PredicateSet<Int>` that tests
       if a number is of the form `2^n - 1` for `n: Int`.
 
       We can `contramap` on `powersOf2` to shift them all by one. However, which direction do we shift?
-      Should we shift `- 1` or `+ 1`?
+      Should we shift `-1` or `+1`?
 
       Well, in order to test if a number is of the form `2^n - 1` using our `powersOf2` predicate set, we
       first need to shift the number up one, and then check if it's a power of two. Therefore
@@ -308,13 +326,15 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.3
 
       > Find an algorithm online for testing if an integer is prime, and turn it into a
       predicate `primes: PredicateSet<Int>`.
 
-      The easiest (and more naive) way to tell if `n` is prime is to loop over all the integers from 2 to
-      `n - 1` and see if it divids evenly into `n`. One optimization we can make is to only loop over
+      The easiest (and most naive) way to tell if `n` is prime is to loop over all the integers from 2 to
+      `n - 1` and see if it divides evenly into `n`. One optimization we can make is to only loop over
       integers less than or equal to `sqrt(n)`. The reason is that `n`'s factors cannot all be greater
       than `sqrt(n)`, for then their product would be greater than `n`.
 
@@ -355,6 +375,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.4
 
       > The intersection `primes.intersect(powersOf2Minus1)` consists of numbers known as Mersenne primes.
@@ -395,6 +417,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.5
 
       > Recall that `&&` and `||` are short-circuiting in Swift. How does that translate to `union` and
@@ -414,6 +438,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 5.6
 
       > What is the difference between `primes.intersect(powersOf2Minus1)` and
@@ -430,6 +456,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 6
 
       > It turns out that dictionaries `[K: V]` do not have map on `K` for all the same reasons `Set` does not.
@@ -463,16 +491,18 @@ TODO
       type: .code(lang: .swift)
     ),
 
-
-
-
-
     .init(
       content: """
+      ---
+
       ### Exercise 7
 
       > Define `CharacterSet` as a type alias of PredicateSet, and construct some of the sets that are
       currently available in the [API](https://developer.apple.com/documentation/foundation/characterset#2850991).
+
+      We can define a character set as simply a predicate set on characters:
+      `typealias CharacterSet = PredicateSet<Character>`. Let's define a character set that holds all
+      newlines:
       """,
       timestamp: nil,
       type: .paragraph
@@ -480,10 +510,41 @@ TODO
 
     .init(
       content: """
+      extension PredicateSet where A == Character {
+        static var newlines: PredicateSet {
+          return PredicateSet(
+            contains: Set<Character>(
+              [
+                .init(Unicode.Scalar(0x000A)),
+                .init(Unicode.Scalar(0x000B)),
+                .init(Unicode.Scalar(0x000C)),
+                .init(Unicode.Scalar(0x000D)),
+                .init(Unicode.Scalar(0x0085)),
+                .init(Unicode.Scalar(0x2028)),
+                .init(Unicode.Scalar(0x2029))
+              ]
+              ).contains
+          )
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      ---
+
       ### Exercise 8.1
 
       > Is `A` in positive or negative position in the function `(B) -> (A, A)`? Define either `map` or
       `contramap` on `A`.
+
+      As we have seen, tuples are a covariant construction since we can define `map` on each of their
+      components (we did this with `first` and `second` in episodes [#6](\(url(to: .episode(.right(6)))))
+      and [#7](\(url(to: .episode(.right(7))))). So, we'd expect functions _into_ a covariant structure to
+      also be covariant, and indeed:
       """,
       timestamp: nil,
       type: .paragraph
@@ -491,9 +552,39 @@ TODO
 
     .init(
       content: """
+      func map<A, B, C>(_ f: @escaping (A) -> C) -> ((B) -> (A, A)) -> ((B) -> (C, C)) {
+        return { g in
+          return { b in
+            let (first, second) = g(b)
+            return (g(first), g(second))
+          }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      What we are seeing is that if a type parameter appears multiple times in a signature, and all times
+      it appears on the right side of `->`, then we can consider the parameter covariant and thus can
+      define `map`.
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      ---
+
       ### Exercise 8.2
 
       > Is `A` in positive or negative position in `(A, A) -> B`? Define either map or contramap.
+
+      Again, tuples are covariant, and so putting them in a negative position might turn them negative.
+      Let's try defining `contramap`:
       """,
       timestamp: nil,
       type: .paragraph
@@ -501,12 +592,41 @@ TODO
 
     .init(
       content: """
+      func map<A, B, C>(_ f: @escaping (C) -> A) -> ((A, A) -> B) -> ((C, C) -> B) {
+        return { g in
+          return { c1, c2 in
+            let (a1, a2) = (f(c1), f(c2))
+            return g(a1, a2)
+          }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      What we are seeing is that if a type parameter appears multiple times in a signature, and all times
+      it appears on the left side of `->`, then we can consider the parameter contravariant and thus can
+      define `contramap`.
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      ---
+
       ### Exercise 8.3
 
       > Consider the type `struct Endo<A> { let apply: (A) -> A }`. This type is called `Endo` because
-      functions whose input type is the same as the output type are called “endomorphisms”. Notice that
-      `A` is in both positive and negative position. Does that mean that both map and contramap can be
+      functions whose input type is the same as the output type are called "endomorphisms". Notice that
+      `A` is in both positive and negative position. Does that mean that both `map` and `contramap` can be
       defined, or that neither can be defined?
+
+      Well, let's try defining each of `map` and `contramap` on `Endo` and see what goes wrong or right:
       """,
       timestamp: nil,
       type: .paragraph
@@ -514,11 +634,60 @@ TODO
 
     .init(
       content: """
+      extension Endo {
+        func map<B>(_ f: @escaping (A) -> B) -> Endo<B> {
+          return Endo<B> { b in
+            b // B
+            f // (A) -> B
+            fatalError("Need to return something in B")
+          }
+        }
+
+        func contramap<B>(_ f: @escaping (B) -> A) -> Endo<B> {
+          return Endo<B> { b in
+            b // B
+            f // (B) -> A
+            fatalError("Need to return something in B")
+          }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      So, the types we have at our disposal in the `Endo<B>` block don't exactly match up. In `map` we need
+      to return something in `B` while we have `b: B` and `f: (A) -> B`. Now, of course we could just return
+      `b`, but we didn't use `f` at all, and that seems weird! Likewise, for `contramap` we need to return
+      something in `B` and have `b: B` and `f: (B) -> A` at our disposal, so the only thing we can do is
+      return `b` and ignore `f` entirely. Very strange!
+
+      It seems that although `map` and `contramap` can be defined on `Endo`, neither one does anything
+      interesting.  They just return the identity endomorphism, regardless of what `f` is.
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      ---
+
       ### Exercise 8.4
 
       > Turns out, `Endo` has a different structure on it known as an “invariant structure”, and it comes
       equipped with a different kind of function called `imap`. Can you figure out what it’s signature should
       be?
+
+      Since neither `map` nor `contramap` were very interesting, maybe `imap` will have more to it. In both
+      potential implementations of `map` and `contramap` on `Endo` we saw that we were missing some way
+      of transporting values in the opposite direction of the `f` provided. For example, in `contramap`
+      we could apply `f(b)` to get something in `A`, but then we would need some way to transform back to
+      something in `B`.
+
+      Perhaps `imap` needs to functions going both ways!
       """,
       timestamp: nil,
       type: .paragraph
@@ -526,13 +695,39 @@ TODO
 
     .init(
       content: """
+      extension Endo {
+        func imap<B>(_ f: @escaping (A) -> B, _ g: @escaping (B) -> A) -> Endo<B> {
+          return Endo<B> { b in
+            f(self.apply(g(b)))
+          }
+        }
+      }
+      """,
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+      This shows that if a type parameter appears on _both_ sides of `->` in a function signature, then
+      to transform on that parameter you need something like `imap`, which comes equipped with functions
+      _into and out of_ the type.
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+      ---
+
       ### Exercise 9
 
       > Consider the type `struct Equate<A> { let equals: (A, A) -> Bool }`. This is just a struct wrapper
       around an equality check. You can think of it as a kind of “type erased” `Equatable` protocol. Write
       `contramap` for this type.
 
-      This is a pretty straightforward `contramap` to write:
+      This `contramap` is quite similar to some of the other ones we've written:
       """,
       timestamp: nil,
       type: .paragraph
@@ -552,6 +747,8 @@ TODO
 
     .init(
       content: """
+      ---
+
       ### Exercise 10
 
       > Consider the value `intEquate = Equate<Int> { $0 == $1 }`. Continuing the “type erased” analogy,
@@ -577,27 +774,25 @@ TODO
       type: .code(lang: .swift)
     ),
 
+    .init(
+      content: """
+      ---
+
+      _Phew_! That was a lot!
+
+      Well, that concludes this week's Point-Free Pointer. I hope that breaking down the exercises helped
+      you learn something new about the material, and encouraged you to try more exercises from our
+      episodes. They are a great opportunity to dig a lil deeper.
+
+      Until next time!
+      """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
     ],
-  coverImage: "TODO",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0003-solutions-to-exercises-contravariance/poster.jpg",
   id: 3,
   publishedAt: .init(timeIntervalSince1970: 1_525_665_662),
   title: "Solutions to Exercises: Contravariance"
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
