@@ -29,9 +29,9 @@ them!
       > Determine the sign of all the type parameters in the function (A) -> (B) -> C. Note that this is a
       > curried function. It may be helpful to fully parenthesize the expression before determining variance.
 
-      Recall from the episode on exponents and algebraic data types that function arrows parenthesize to the
-      right, which means when we write `(A) -> (B) -> C`, we really mean `(A) -> ((B) -> C)`. Now we can
-      apply the bracketing method we demonstrated in the episode:
+      Recall from the episode on [exponents and algebraic data types](\(url(to: .episode(.right(9)))))
+      that function arrows parenthesize to the right, which means when we write `(A) -> (B) -> C`, we really
+      mean `(A) -> ((B) -> C)`. Now we can apply the bracketing method we demonstrated in the episode:
       """,
       timestamp: nil,
       type: .paragraph
