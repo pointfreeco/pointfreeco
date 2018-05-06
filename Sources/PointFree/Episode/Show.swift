@@ -763,6 +763,7 @@ let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
     hrMarkdownStyles
       <> aMarkdownStyles
+      <> blockquote % fontStyle(.italic)
       <> p % key("word-wrap", "break-word")
       <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
       <> code % (
