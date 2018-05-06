@@ -20,7 +20,7 @@ them!
       total(!), and they went pretty deep into topics that we didn’t have time to cover.
 
       In today’s Point-Free Pointer we want to provide solutions to those exercises. If you haven’t yet had a
-      chance to try solving them on your own, we highly recommend giving it a short before reading further.
+      chance to try solving them on your own, we highly recommend giving it a shot before reading further.
 
       ---
 
@@ -364,7 +364,7 @@ them!
       content: """
       A few notes about this. First, we guard `n != 2` to simplify constructing the range from `2` to
       `sqrt(n)`. Also, the construction of the upper bound of that range is a little complicated in order
-      to dance around Swift's numeric system. However, once we are passed that it's pretty straight forward.
+      to dance around Swift's numeric system. However, once we are passed that it's pretty straightforward.
       We use `lazy` on the range so that we can early out the moment we find a divisor. We `map` to compute
       if a value in the range is a divisor of `n`, and then we find the first one that is `true`. Finally,
       if that search came up `nil`, we know we have a prime!
@@ -382,7 +382,7 @@ them!
       > The intersection `primes.intersect(powersOf2Minus1)` consists of numbers known as Mersenne primes.
       Compute the first `10`.
 
-      We made a small mistake with this one... we didn't mean to ask for you to compute 10! That's too many,
+      We made a small mistake with this one...we didn't mean to ask for you to compute 10! That's too many,
       so let's just compute 5. All we have to do is iterate over all positive integers and test them
       against the Mersenne set. We can use `lazy`+`filter`+`prefix` to do this!
       """,
@@ -497,7 +497,7 @@ them!
 
       ### Exercise 7
 
-      > Define `CharacterSet` as a type alias of PredicateSet, and construct some of the sets that are
+      > Define `CharacterSet` as a type alias of `PredicateSet`, and construct some of the sets that are
       currently available in the [API](https://developer.apple.com/documentation/foundation/characterset#2850991).
 
       We can define a character set as simply a predicate set on characters:
