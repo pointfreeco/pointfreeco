@@ -11,4 +11,5 @@ func allBlogPosts() -> [BlogPost] {
 private let _allBlogPosts: [BlogPost] = [
   post0001_welcome,
   post0002_episodeCredits,
+  post0003_ep14Solutions,
 ]
