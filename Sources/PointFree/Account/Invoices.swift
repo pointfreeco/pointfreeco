@@ -177,7 +177,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Bill to"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(currentUser.email.rawValue)]),
+                  div([text(currentUser.displayName)]),
                   ]),
                 ]),
               ]),
