@@ -149,6 +149,8 @@ them!
 
     .init(
       content: """
+      typealias Setter<S, T, A, B> = ((@escaping (A) -> B) -> (S) -> T
+
       func map<S, T, A, B, C>(_ f: @escaping (A) -> C)
         -> (@escaping Setter<S, T, A, B>)
         -> Setter<S, T, C, B> {
@@ -225,10 +227,6 @@ them!
       content: """
       It's interesting to see that the implementation of `map` on `A` is quite similar to `contramap` on
       `B`, and `map` on `T` is similar to `contramap` on `S`.
-
-      Ok, we've now defined all these functions, but what do they _mean_? Well, they all mean that we can
-      lift transformations on parts and wholes up to transformations on setters, but let's look at some
-      examples.
       """,
       timestamp: nil,
       type: .paragraph
@@ -556,7 +554,7 @@ them!
         return { g in
           return { b in
             let (first, second) = g(b)
-            return (g(first), g(second))
+            return (f(first), f(second))
           }
         }
       }
@@ -592,7 +590,7 @@ them!
 
     .init(
       content: """
-      func map<A, B, C>(_ f: @escaping (C) -> A) -> ((A, A) -> B) -> ((C, C) -> B) {
+      func contramap<A, B, C>(_ f: @escaping (C) -> A) -> ((A, A) -> B) -> ((C, C) -> B) {
         return { g in
           return { c1, c2 in
             let (a1, a2) = (f(c1), f(c2))
@@ -756,7 +754,7 @@ them!
       above to transform `intEquate` into something that defines equality of strings based on their character
       count.
 
-      We can induce an `Equate` value on strings by contramapping over its character count. Here are two
+      We can induce an `Equate` value on strings by contramapping over its character count. Here are three
       ways of doing it:
       """,
       timestamp: nil,
@@ -765,10 +763,13 @@ them!
 
     .init(
       content: """
-      intEquate.contramap { (a: String, b: String) in a.count == b.count }
+      intEquate.contramap { (a: String) in a.count }
 
-      // Using the `their` function from episode #8: Key Paths and Getters
-      intEquate.contramap(their(\\String.count, ==))
+      // Using the `get` function from episode #8: Key Paths and Getters
+      intEquate.contramap(get(\\String.count))
+
+      // Using the `^` operator from episode #8: Key Paths and Getters
+      intEquate.contramap(^\\String.count)
       """,
       timestamp: nil,
       type: .code(lang: .swift)
