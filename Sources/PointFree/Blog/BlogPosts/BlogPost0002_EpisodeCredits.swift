@@ -442,14 +442,14 @@ enum EpisodePermission {
   case loggedIn(subscriberPermission: SubscriberPermission)
 
   enum SubscriberPermission {
-    case isNotSubscriber(creditPermission)
+    case isNotSubscriber(creditPermission: CreditPermission)
 
     enum CreditPermission {
       // LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
-      // LoggedIn * NotSubscriber * HasUsedCredit * Void              (1)
+      // LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
       case hasNotUsedCredit
 
-      // LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
+      // LoggedIn * NotSubscriber * HasUsedCredit * Void              (1)
       case hasUsedCredit
     }
 
@@ -478,7 +478,7 @@ enum EpisodePermission {
   case loggedIn(subscriberPermission: SubscriberPermission)
 
   enum SubscriberPermission {
-    case isNotSubscriber(creditPermission)
+    case isNotSubscriber(creditPermission: CreditPermission)
 
     enum CreditPermission {
       case hasNotUsedCredit(isEpisodeSubscriberOnly: Bool)
@@ -511,7 +511,7 @@ enum EpisodePermission {
   case loggedOut(isEpisodeSubscriberOnly: Bool)
 
   enum SubscriberPermission {
-    case isNotSubscriber(creditPermission)
+    case isNotSubscriber(creditPermission: CreditPermission)
     case isSubscriber
 
     enum CreditPermission {
