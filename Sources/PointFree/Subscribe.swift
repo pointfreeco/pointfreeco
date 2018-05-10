@@ -33,16 +33,16 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
     let subscriptionOrError = (pure(subscribeData) as EitherIO<Error, SubscribeData>)
       .withExcept(const(unit))
       .flatMap { subscribeData in
-        AppEnvironment.current.stripe
+        Current.stripe
           .createCustomer(user, subscribeData.token, subscribeData.vatNumber.isEmpty ? nil : subscribeData.vatNumber)
           .map { ($0, subscribeData) }
       }
       .flatMap {
-        AppEnvironment.current.stripe
+        Current.stripe
           .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity)
       }
       .flatMap { stripeSubscription in
-        AppEnvironment.current.database
+        Current.database
           .createSubscription(stripeSubscription, user.id)
       }
       .run

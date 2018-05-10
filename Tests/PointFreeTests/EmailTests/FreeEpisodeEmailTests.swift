@@ -12,7 +12,7 @@ import XCTest
 
 class FreeEpisodeEmailTests: TestCase {
   func testFreeEpisodeEmail() {
-    let doc = freeEpisodeEmail.view((AppEnvironment.current.episodes().first!, .mock))
+    let doc = freeEpisodeEmail.view((Current.episodes().first!, .mock))
 
     assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))

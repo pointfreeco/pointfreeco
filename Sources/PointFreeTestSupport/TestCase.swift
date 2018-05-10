@@ -8,19 +8,15 @@ open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
 //    record = true
-    AppEnvironment.push(
-      const(
-        .mock
-          |> \.database .~ .live
-          |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
-      )
-    )
+    Current = .mock
+      |> \.database .~ .live
+      |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
 
     _ = try! execute("DROP SCHEMA IF EXISTS public CASCADE")
       .flatMap(const(execute("CREATE SCHEMA public")))
       .flatMap(const(execute("GRANT ALL ON SCHEMA public TO pointfreeco")))
       .flatMap(const(execute("GRANT ALL ON SCHEMA public TO public")))
-      .flatMap(const(AppEnvironment.current.database.migrate()))
+      .flatMap(const(Current.database.migrate()))
       .flatMap(const(execute("CREATE SEQUENCE test_uuids")))
       .flatMap(const(execute(
         """
@@ -39,6 +35,5 @@ open class TestCase: XCTestCase {
   override open func tearDown() {
     super.tearDown()
     record = false
-    AppEnvironment.pop()
   }
 }

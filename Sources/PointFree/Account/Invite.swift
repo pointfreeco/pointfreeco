@@ -37,7 +37,7 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, genericInviteError))
     )
     <| { conn in
-      AppEnvironment.current.database.deleteTeamInvite(get1(conn.data).id)
+      Current.database.deleteTeamInvite(get1(conn.data).id)
         .run
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
@@ -68,7 +68,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
     <| { conn in
       let (teamInvite, currentUser) = lower(conn.data)
 
-      let inviter = AppEnvironment.current.database
+      let inviter = Current.database
         .fetchUserById(teamInvite.inviterUserId)
         .mapExcept(requireSome)
 
@@ -90,20 +90,20 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 
       // VERIFY: user is subscribed
       let subscription = inviter
-        .flatMap(^\.id >>> AppEnvironment.current.database.fetchSubscriptionByOwnerId)
+        .flatMap(^\.id >>> Current.database.fetchSubscriptionByOwnerId)
         .mapExcept(requireSome)
         .flatMap { subscription in
-          AppEnvironment.current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+          Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
             .mapExcept(validateActiveStripeSubscription)
             .bimap(const(unit as Error), id)
             .flatMap { _ in
-              AppEnvironment.current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
+              Current.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
           }
       }
 
       let deleteInvite = parallel(
         subscription
-          .flatMap { _ in AppEnvironment.current.database.deleteTeamInvite(teamInvite.id) }
+          .flatMap { _ in Current.database.deleteTeamInvite(teamInvite.id) }
           .run
       )
 
@@ -122,7 +122,7 @@ let sendInviteMiddleware =
 
       let (email, inviter) = lower(conn.data)
 
-      return AppEnvironment.current.database.insertTeamInvite(email, inviter.id)
+      return Current.database.insertTeamInvite(email, inviter.id)
         .run
         .flatMap { errorOrTeamInvite in
           switch errorOrTeamInvite {
@@ -243,7 +243,7 @@ private func requireTeamInvite<A>(
   ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite.Id, A>, Data> {
 
   return { conn in
-    AppEnvironment.current.database.fetchTeamInvite(get1(conn.data))
+    Current.database.fetchTeamInvite(get1(conn.data))
       .run
       .map(requireSome)
       .flatMap { errorOrTeamInvite in
@@ -309,10 +309,10 @@ private func redirectCurrentSubscribers<A, B>(
       let subscriptionId = user.subscriptionId
       else { return middleware(conn) }
 
-    let hasActiveSubscription = AppEnvironment.current.database.fetchSubscriptionById(subscriptionId)
+    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
       .mapExcept(requireSome)
       .bimap(const(unit), id)
-      .flatMap { AppEnvironment.current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
       .run
       .map { $0.right?.isRenewing ?? false }
 
@@ -346,7 +346,7 @@ private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Dat
 
 private func fetchTeamInviter<A>(_ data: T2<Database.TeamInvite, A>) -> IO<T3<Database.TeamInvite, Database.User, A>?> {
 
-  return AppEnvironment.current.database.fetchUserById(get1(data).inviterUserId)
+  return Current.database.fetchUserById(get1(data).inviterUserId)
     .mapExcept(requireSome)
     .run
     .map { $0.right.map { get1(data) .*. $0 .*. data.second } }

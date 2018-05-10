@@ -372,7 +372,7 @@ private func upsertUser(
     ]
     )
     .flatMap { _ in
-      AppEnvironment.current.database
+      Current.database
         .fetchUserByGitHub(envelope.gitHubUser.id)
   }
 }
@@ -506,7 +506,7 @@ private func insertTeamInvite(
         .flatMap(UUID.init(uuidString:))
         .map(
           Database.TeamInvite.Id.init
-            >>> AppEnvironment.current.database.fetchTeamInvite
+            >>> Current.database.fetchTeamInvite
             >>> mapExcept(requireSome)
         )
         ?? throwE(unit)
@@ -693,7 +693,7 @@ public enum DatabaseError: Error {
   case invalidUrl
 }
 
-private let connInfo = URLComponents(string: AppEnvironment.current.envVars.postgres.databaseUrl)
+private let connInfo = URLComponents(string: Current.envVars.postgres.databaseUrl)
   .flatMap { url -> PostgreSQL.ConnInfo? in
     curry(PostgreSQL.ConnInfo.basic)
       <¢> url.host

@@ -36,7 +36,7 @@ private func validateStripeSignature<A>(
         signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
         else {
           var requestDump = ""
-          print("Current timestamp: \(AppEnvironment.current.date().timeIntervalSince1970)", to: &requestDump)
+          print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
           print(
             "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
             to: &requestDump
@@ -63,7 +63,7 @@ private func validateStripeSignature<A>(
 
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
-    let secret = AppEnvironment.current.envVars.stripe.endpointSecret
+    let secret = Current.envVars.stripe.endpointSecret
     guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret) else { return false }
 
     let constantTimeSignature =
@@ -78,7 +78,7 @@ private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (Stri
 
 private func shouldTolerate(_ timestamp: TimeInterval, tolerance: TimeInterval = 5 * 60) -> Bool {
   return Date(timeIntervalSince1970: timestamp)
-    > AppEnvironment.current.date().addingTimeInterval(-tolerance)
+    > Current.date().addingTimeInterval(-tolerance)
 }
 
 private func keysWithAllValues(separator: Character) -> (String) -> [(String, [String])] {
@@ -96,11 +96,11 @@ private func handleFailedPayment(
   )
   -> IO<Conn<ResponseEnded, Data>> {
 
-    return AppEnvironment.current.stripe.fetchSubscription(conn.data)
-      .flatMap(AppEnvironment.current.database.updateStripeSubscription)
+    return Current.stripe.fetchSubscription(conn.data)
+      .flatMap(Current.database.updateStripeSubscription)
       .mapExcept(requireSome)
       .flatMap { subscription in
-        AppEnvironment.current.database.fetchUserById(subscription.userId)
+        Current.database.fetchUserById(subscription.userId)
           .mapExcept(requireSome)
           .map { ($0, subscription) }
       }

@@ -63,7 +63,7 @@ private func fetchInvoices<A>(
     return { conn in
       let subscription = conn.data.first
 
-      return AppEnvironment.current.stripe.fetchInvoices(subscription.customer)
+      return Current.stripe.fetchInvoices(subscription.customer)
         .withExcept(notifyError(subject: "Couldn't load invoices"))
         .run
         .flatMap {
@@ -88,7 +88,7 @@ private func fetchInvoices<A>(
 }
 
 private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
-  return AppEnvironment.current.stripe.fetchInvoice(id)
+  return Current.stripe.fetchInvoice(id)
     .run
     .map(^\.right)
 }
@@ -177,7 +177,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Bill to"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(currentUser.email.rawValue)]),
+                  div([text(currentUser.displayName)]),
                   ]),
                 ]),
               ]),

@@ -234,7 +234,7 @@ extension PartialIso where A == String, B == String {
   }
 
   public static var appDecrypted: PartialIso<String, String> {
-    return .decrypted(withSecret: AppEnvironment.current.envVars.appSecret)
+    return .decrypted(withSecret: Current.envVars.appSecret)
   }
 }
 
@@ -314,3 +314,37 @@ let attachFormData =
     >>> ^\.utf8
     >>> Data.init
     >>> set(\URLRequest.httpBody)
+
+// Prelude
+
+public func concat<A>(_ fs: [(A) -> A]) -> (A) -> A {
+  return { a in
+    fs.reduce(a) { a, f in f(a) }
+  }
+}
+
+public func concat<A>(_ fs: ((A) -> A)..., and fz: @escaping (A) -> A = id) -> (A) -> A {
+  return concat(fs + [fz])
+}
+
+public func concat<A>(_ fs: [(inout A) -> Void]) -> (inout A) -> Void {
+  return { a in
+    fs.forEach { f in f(&a) }
+  }
+}
+
+public func concat<A>(_ fs: ((inout A) -> Void)..., and fz: @escaping (inout A) -> Void = { _ in })
+  -> (inout A) -> Void {
+
+    return concat(fs + [fz])
+}
+
+// Prelude / Overture
+
+public func update<A>(_ value: inout A, _ changes: ((A) -> A)...) {
+  value = value |> concat(changes)
+}
+
+public func update<A>(_ value: inout A, _ changes: ((inout A) -> Void)...) {
+  concat(changes)(&value)
+}

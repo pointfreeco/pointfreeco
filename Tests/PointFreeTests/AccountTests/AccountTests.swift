@@ -15,32 +15,27 @@ import WebKit
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-    AppEnvironment.push(\.database .~ .mock)
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.pop()
+    update(&Current, \.database .~ .mock)
   }
 
   func testAccount() {
-    AppEnvironment.with(const(.teamYearly)) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    Current = .teamYearly
 
-      assertSnapshot(matching: result.perform())
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    assertSnapshot(matching: result.perform())
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
+
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 
   func testAccountWithFlashNotice() {
@@ -104,71 +99,67 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithPastDue() {
-    let env: (Environment) -> Environment =
-      (\.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)))
-        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)))
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
+    )
 
-    AppEnvironment.with(env) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result.perform())
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 
   func testAccountCancelingSubscription() {
-    let subscription = Stripe.Subscription.canceling
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result.perform())
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 
   func testAccountCanceledSubscription() {
-    let subscription = Stripe.Subscription.canceled
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
-    AppEnvironment.with(\.stripe.fetchSubscription .~ const(pure(subscription))) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-      assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result.perform())
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() {
@@ -176,28 +167,27 @@ final class AccountTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([])))
-        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
+    update(
+      &Current,
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
+      \.database.fetchEpisodeCredits .~ const(pure([])),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-    AppEnvironment.with(env) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    assertSnapshot(matching: result.perform())
 
-      assertSnapshot(matching: result.perform())
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
-
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 
   func testEpisodeCredits_1Credit_1Chosen() {
@@ -205,27 +195,27 @@ final class AccountTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let env: (Environment) -> Environment =
-      (\.database.fetchUserById .~ const(pure(.some(user))))
-        <> (\.database.fetchEpisodeCredits .~ const(pure([.mock])))
-        <> (\.database.fetchSubscriptionByOwnerId .~ const(pure(nil)))
+    update(
+      &Current, 
+      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
+      \.database.fetchEpisodeCredits .~ const(pure([.mock])),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+    
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    let result = conn |> siteMiddleware
 
-    AppEnvironment.with(env) {
-      let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-      let result = conn |> siteMiddleware
+    assertSnapshot(matching: result.perform())
 
-      assertSnapshot(matching: result.perform())
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
+      webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
-      #if !os(Linux)
-      if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-        let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
-        webView.loadHTMLString(String(data: result.perform().data, encoding: .utf8)!, baseURL: nil)
-        assertSnapshot(matching: webView, named: "desktop")
-
-        webView.frame.size.width = 400
-        assertSnapshot(matching: webView, named: "mobile")
-      }
-      #endif
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
     }
+    #endif
   }
 }

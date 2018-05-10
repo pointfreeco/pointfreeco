@@ -72,7 +72,7 @@ private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailRespo
   }
 
   let request = URLRequest(
-    url: URL(string: "https://api.mailgun.net/v3/\(AppEnvironment.current.envVars.mailgun.domain)/messages")!
+    url: URL(string: "https://api.mailgun.net/v3/\(Current.envVars.mailgun.domain)/messages")!
     )
     |> \.httpMethod .~ "POST"
     |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
@@ -82,7 +82,7 @@ private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailRespo
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
-  let secret = Data("api:\(AppEnvironment.current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
+  let secret = Data("api:\(Current.envVars.mailgun.apiKey)".utf8).base64EncodedString()
   return (headers ?? [:])
     |> key("Authorization") .~ ("Basic " + secret) // TODO: Use key path subscript
 }
@@ -95,7 +95,7 @@ func unsubscribeEmail(
 
   guard let payload = encrypted(
     text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
-    secret: AppEnvironment.current.envVars.appSecret
+    secret: Current.envVars.appSecret
     ) else { return nil }
 
   return .init(rawValue: "unsub-\(payload)@pointfree.co")
@@ -113,7 +113,7 @@ func userIdAndNewsletter(
     .map(String.init)
 
   return payload
-    .flatMap { decrypted(text: $0, secret: AppEnvironment.current.envVars.appSecret) }
+    .flatMap { decrypted(text: $0, secret: Current.envVars.appSecret) }
     .map { $0.components(separatedBy: boundary) }
     .flatMap {
       tuple

@@ -17,7 +17,7 @@ let showNewBlogPostEmailMiddleware =
 
 private let showNewBlogPostView = View<Database.User> { _ in
   ul(
-    AppEnvironment.current.blogPosts()
+    Current.blogPosts()
       .sorted(by: their(^\.id, >))
       .prefix(upTo: 1)
       .map(li <<< newBlogPostEmailRowView.view)
@@ -50,7 +50,7 @@ let sendNewBlogPostEmailMiddleware:
     >-> redirect(to: .admin(.index))
 
 func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
-  return AppEnvironment.current.blogPosts()
+  return Current.blogPosts()
     .first(where: { id == $0.id })
 }
 
@@ -61,8 +61,8 @@ private func sendNewBlogPostEmails<I>(
   let (_, post, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 
   let users = isTest
-    ? AppEnvironment.current.database.fetchAdmins()
-    : AppEnvironment.current.database.fetchUsersSubscribedToNewsletter(.newBlogPost)
+    ? Current.database.fetchAdmins()
+    : Current.database.fetchUsersSubscribedToNewsletter(.newBlogPost)
 
   return users
     .mapExcept(bimap(const(unit), id))
