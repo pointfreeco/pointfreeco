@@ -2,7 +2,6 @@ import Foundation
 
 let post0004_overtureSetters = BlogPost(
   author: .brandon,
-  //TLDR;
   blurb: """
 This week’s [episode](TODO) explored providing a friendlier API to functional setters, and improving
 their performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
@@ -222,6 +221,13 @@ be the most versatile Swiss army knife of function composition in Swift. Stay tu
     ),
 
   ],
+  // Here is a carbon image we could use. To add to S3 do:
+  //
+  // https://carbon.now.sh/?bg=rgba(121,242,176,1)&t=duotone-dark&wt=none&l=swift&ds=true&dsyoff=20px&dsblur=33px&wc=true&wa=true&pv=65px&ph=61px&ln=false&fm=Hack&fs=18px&si=false&code=import%2520Overture%250A%250Alet%2520user%2520%253D%2520User(age%253A%252020%252C%2520name%253A%2520%2522Blob%2522)%250A%250A%252F%252F%2520Transform%2520user%2520inline%250Alet%2520newUser%2520%253D%2520with(user%252C%2520concat(%250A%2520%2520over(%255C.age%252C%2520incr)%252C%250A%2520%2520set(%255C.name%252C%2520%2522Older%2520Blob%2522)%250A))%250A%250A%252F%252F%2520Extract%2520transformation%250Alet%2520celebrateBirthday%2520%253D%2520concat(%250A%2520%2520over(%255CUser.age%252C%2520incr)%252C%250A%2520%2520set(%255C.name%252C%2520%2522Older%2520Blob%2522)%250A)%250Alet%2520newUser%2520%253D%2520with(user%252C%2520celebrateBirthday)&es=2x&wm=false
+  //
+  // * Add to bucket https://s3.amazonaws.com/pointfreeco-blog/posts/0004-overture-functional-setters
+  // * Make public
+  // * Use cloudfront url
   coverImage: "TODO",
   id: 4,
   publishedAt: .init(timeIntervalSince1970: 1_526_291_823),
