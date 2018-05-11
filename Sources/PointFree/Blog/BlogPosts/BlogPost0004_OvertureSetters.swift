@@ -2,16 +2,16 @@ import Foundation
 
 let post0004_overtureSetters = BlogPost(
   author: .brandon,
+  // TODO: this blurb is for twitter, so maybe it should be a bit shorter
   blurb: """
-This week’s [episode](TODO) explored providing a friendlier API to functional setters, and improving
-their performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
-we have updated our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library to add these
-helper functions and more!
+This week’s episode explored providing a friendlier API to functional setters, and improved their
+performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
+we have updated our Overture library to add these helper functions and more!
 """,
   contentBlocks: [
     .init(
       content: """
-> This week’s [episode](TODO) explored providing a friendlier API to functional setters, and improving
+> This week’s [episode](TODO) explored providing a friendlier API to functional setters, and improved
 their performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
 we have updated our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library to add these
 helper functions and more!
