@@ -109,6 +109,9 @@ extension Database.Subscription {
     stripeSubscriptionStatus: .active,
     userId: Database.User.mock.id
   )
+
+  public static let canceled = mock
+    |> \.stripeSubscriptionStatus .~ .canceled
 }
 
 extension Database.TeamInvite {
@@ -366,7 +369,7 @@ extension Stripe.Subscription {
   public static let canceling = mock
     |> \.cancelAtPeriodEnd .~ true
 
-  public static let canceled = mock
+  public static let canceled = canceling
     |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)

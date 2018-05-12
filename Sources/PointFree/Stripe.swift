@@ -231,6 +231,10 @@ public struct Stripe {
     public private(set) var start: Date
     public private(set) var status: Status
 
+    public var isCanceling: Bool {
+      return self.status == .active && self.cancelAtPeriodEnd
+    }
+
     public var isRenewing: Bool {
       return self.status != .canceled && !self.cancelAtPeriodEnd
     }
