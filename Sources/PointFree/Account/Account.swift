@@ -451,7 +451,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
 }
 
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
-  if subscription.cancelAtPeriodEnd {
+  if subscription.isCanceling {
     return form(
       [action(path(to: .account(.subscription(.reactivate)))), method(.post)],
       [
