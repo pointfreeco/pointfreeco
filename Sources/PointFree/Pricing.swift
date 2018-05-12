@@ -584,8 +584,15 @@ func redirectActiveSubscribers<A>(
           )
           ?? throwE(unit)
 
-        return (userSubscription.run.parallel <|> ownerSubscription.run.parallel)
-          .sequential
+        let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
+
+        return EitherIO(run: race)
+          .flatMap {
+            $0.stripeSubscriptionStatus == .canceled
+              ? throwE(unit as Error)
+              : pure($0)
+          }
+          .run
           .flatMap(
             either(
               const(
