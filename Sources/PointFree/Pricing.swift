@@ -588,9 +588,9 @@ func redirectActiveSubscribers<A>(
 
         return EitherIO(run: race)
           .flatMap {
-            $0.stripeSubscriptionStatus == .active
-              ? pure($0)
-              : throwE(unit as Error)
+            $0.stripeSubscriptionStatus == .canceled
+              ? throwE(unit as Error)
+              : pure($0)
           }
           .run
           .flatMap(

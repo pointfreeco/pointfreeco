@@ -112,6 +112,9 @@ extension Database.Subscription {
 
   public static let canceled = mock
     |> \.stripeSubscriptionStatus .~ .canceled
+
+  public static let pastDue = mock
+    |> \.stripeSubscriptionStatus .~ .pastDue
 }
 
 extension Database.TeamInvite {

@@ -89,4 +89,17 @@ class PricingTests: TestCase {
 
     assertSnapshot(matching: result.perform())
   }
+
+  func testPricingLoggedIn_PastDueSubscriber() {
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(.pastDue)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(.pastDue))
+    )
+
+    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+  }
 }
