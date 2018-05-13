@@ -9,12 +9,12 @@ import Prelude
 extension Environment {
   public static let mock = Environment(
     assets: .mock,
-    blogPosts: { [post0000_mock] },
+    blogPosts: unzurry([post0000_mock]),
     cookieTransform: .plaintext,
     database: .mock,
-    date: { .mock },
+    date: unzurry(.mock),
     envVars: .mock,
-    episodes: { [.mock] },
+    episodes: unzurry([.mock]),
     gitHub: .mock,
     logger: .mock,
     mailgun: .mock,
@@ -72,12 +72,13 @@ extension Database {
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
+    fetchUsersToWelcome: const(pure([.mock])),
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) },
-    migrate: { pure(unit) }
+    migrate: unzurry(pure(unit))
   )
 }
 

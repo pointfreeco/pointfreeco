@@ -21,6 +21,7 @@ public struct Database {
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
+  var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
@@ -46,6 +47,7 @@ public struct Database {
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
+    fetchUsersToWelcome: PointFree.fetchUsersToWelcome(fromWeeksAgo:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
@@ -67,8 +69,14 @@ public struct Database {
       case announcements
       case newBlogPost
       case newEpisode
+      case welcomeEmails
 
-      public static let allNewsletters: [Newsletter] = [.announcements, .newBlogPost, .newEpisode]
+      public static let allNewsletters: [Newsletter] = [
+        .announcements,
+        .newBlogPost,
+        .newEpisode,
+        .welcomeEmails
+      ]
     }
   }
 
@@ -411,6 +419,34 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
     WHERE "email_settings"."newsletter" = $1
     """,
     [newsletter.rawValue]
+  )
+}
+
+private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, [Database.User]> {
+  let daysAgo = weeksAgo * 7
+  return rows(
+    """
+    SELECT
+        "users"."email",
+        "users"."episode_credit_count",
+        "users"."github_user_id",
+        "users"."github_access_token",
+        "users"."id",
+        "users"."is_admin",
+        "users"."name",
+        "users"."subscription_id"
+    FROM
+        "email_settings"
+        LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+        LEFT JOIN "subscriptions" on "users"."id" = "subscriptions"."user_id"
+    WHERE
+        "email_settings"."newsletter" = $1
+        AND "users"."created_at" BETWEEN CURRENT_DATE - INTERVAL '\(daysAgo) DAY'
+        AND CURRENT_DATE - INTERVAL '\(daysAgo - 1) DAY'
+        AND "users"."subscription_id" IS NULL
+        AND "subscriptions"."user_id" IS NULL;
+    """,
+    [Database.EmailSetting.Newsletter.welcomeEmails.rawValue]
   )
 }
 

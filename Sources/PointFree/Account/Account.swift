@@ -252,7 +252,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
 
 private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmailSettings in
   [
-    p(["Receive email when:"]),
+    p(["Receive email for:"]),
     p([`class`([Class.padding([.mobile: [.left: 1]])])], Database.EmailSetting.Newsletter.allNewsletters.map { newsletter in
       label([`class`([Class.display.block])], [
         input(
@@ -277,6 +277,8 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
     return "New blog posts on Point-Free Pointers (about every two weeks)"
   case .newEpisode:
     return "New episode is available (about once a week)"
+  case .welcomeEmails:
+    return "A short series of emails introducing Point-Free"
   }
 }
 

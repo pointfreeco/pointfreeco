@@ -1,4 +1,4 @@
-▿ 3 elements
+▿ 4 elements
   ▿ PointFree.Database.EmailSetting
     - newsletter: PointFree.Database.EmailSetting.Newsletter.announcements
     ▿ userId: 00000000-0000-0000-0000-000000000001
@@ -9,5 +9,9 @@
       - rawValue: 00000000-0000-0000-0000-000000000001
   ▿ PointFree.Database.EmailSetting
     - newsletter: PointFree.Database.EmailSetting.Newsletter.newEpisode
+    ▿ userId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
+  ▿ PointFree.Database.EmailSetting
+    - newsletter: PointFree.Database.EmailSetting.Newsletter.welcomeEmails
     ▿ userId: 00000000-0000-0000-0000-000000000001
       - rawValue: 00000000-0000-0000-0000-000000000001
