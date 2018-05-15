@@ -4,9 +4,8 @@ let post0004_overtureSetters = BlogPost(
   author: .brandon,
   // TODO: this blurb is for twitter, so maybe it should be a bit shorter
   blurb: """
-This week's episode explored providing a friendlier API to functional setters, and improved their
-performance by leveraging Swift's value mutation semantics. To make these ideas accessible to everyone
-we have updated our Overture library to add these helper functions and more!
+Announcing Overture 0.2.0! This release is all about setters: functions that allow us to build complex
+transformations out of smaller units.
 """,
   contentBlocks: [
     .init(
