@@ -20,10 +20,10 @@ helper functions and more!
 
 We released [Swift Overture](\(gitHubUrl(to: .repo(.overture)))), a library for embracing
 function composition, a little over a month ago, and the reception has been great! It has helped people
-see that function composition is an important tool to have at your disposal, and that Swift actually has
+see that function composition is an important tool to have at your disposal, and that Swift has
 some really nice features to support composition (generics, free functions, variadics, etc.).
 
-Today we are happy to announce that we have made the first major addition to the Overture since its initial
+Today we are happy to announce that we've made the first major addition to the Overture since its initial
 release: functional setters! The first release had the `prop` helper we discussed in
 [episode #7](https://www.pointfree.co/episodes/ep7-setters-and-key-paths), which helps lift Swift writeable
 key paths into the world of functional setters:
@@ -43,7 +43,7 @@ let userNameSetter = prop(\\User.name)
 let ageSetter = prop(\\User.age)
 
 // Transforms a user by incrementing their age.
-let celebrateBirthday = ageSetter(incr)
+let celebrateBirthday = ageSetter { $0 + 1 }
 
 let user = User(age: 20, name: "Blob")
 let newUser = with(user, concat(
@@ -58,9 +58,9 @@ let newUser = with(user, concat(
     .init(
       content: """
 That is already really powerful, but as we explored in this [week's episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance), the ergonomics of using
-the API is quite right, and it creates a copy for each setter, so it could be more performant.
+the API isn't quite right, and it creates a copy for each setter, so it could be more performant.
 
-So, in the newest release of [Overture](\(gitHubUrl(to: .repo(.overture)))) we have added more
+In the newest release of [Overture](\(gitHubUrl(to: .repo(.overture)))) we've added more
 key path helpers to make the API friendlier:
 """,
       timestamp: nil,
@@ -73,7 +73,7 @@ import Overture
 
 let user = User(age: 20, name: "Blob")
 let newUser = with(user, concat(
-  over(\\.age, incr),
+  over(\\.age) { $0 + 1 },
   set(\\.name, "Older Blob")
 ))
 """,
@@ -83,15 +83,13 @@ let newUser = with(user, concat(
 
     .init(
       content: """
-In this snippet we create a user, and then transform that user by mapping over their age to increment it,
-and then set their name to a new value. The `over` and `set` helpers… TODO
+In this snippet we create a user, we use Overture's `over` and `set` helpers to transform a user by mapping
+_over_ their age to increment it, then _set_ their name to a new value. The `over` helper takes a function
+that transforms existing values, while `set` replaces an existing value with a brand new one.
 
 If this particular snippet happen to be in a performance critical code path we might be a little wary of
 having to create two copies of the user to apply these transformations, one for the `over` and another for
 the `set`. Fortunately with a very small tweak we can fuse the two transformations into a single copy and mutation!
-
-
-TODO: I dont actually know what the API is gonna look like in overture so just sketching something
 """,
       timestamp: nil,
       type: .paragraph
@@ -103,7 +101,7 @@ import Overture
 
 let user = User(age: 20, name: "Blob")
 let newUser = with(user, concat(
-  mver(\\.age, incr),
+  mver(\\.age) { $0 += 1 },
   mut(\\.name, "Older Blob")
 ))
 """,
@@ -113,6 +111,11 @@ let newUser = with(user, concat(
 
     .init(
       content: """
+The `mver` and `mut` helpers are mutating versions of `over` and `set`. In our example, we need to update our
+first setter to use in-place mutation: we merely swap `+` for `+=`. Our second setter requires no changes
+other than updating `set` to `mut`. We can read this as: mutate over (`mver`) the user's age and add one to
+it, then mutate (`mut`) the user's name to `"Older Blob"`.
+
 This means it's super simple to opt in and out of mutation whenever you see fit.
 """,
       timestamp: nil,
@@ -148,7 +151,7 @@ let user = User(
 )
 
 let newUser = with(user, concat(
-  over(\\.age, incr),
+  over(\\.age) { $0 + 1 },
   set(\\.name, "Older Blob"),
   over(compose(prop(\\.favoriteFoods), map)) { $0 + " & Salad" }
 ))
@@ -159,7 +162,7 @@ let newUser = with(user, concat(
 
     .init(
       content: """
-In this snippet we have `compose`'d the setter `prop(\\.favoriteFoods)` with the `map` setter so that we
+In this snippet we have `compose`d the setter `prop(\\.favoriteFoods)` with the `map` setter so that we
 can dive into that array and then apply the transformation `$0 + " & Salad"` (ole Blob is getting older
 and needs to eat healthier 🙂).
 
@@ -194,7 +197,7 @@ let newUser = with(user, concat(
     .init(
       content: """
 In the last transformation we "mutate over" (`mver`) the user's favorite foods (`mprop(\\.favoriteFoods)`)
-and then mutate each food (`mutEach`). All of this work happens in place on one single copy of the user.
+and then mutate each (`mutEach`) food. All of this work happens in place on one single copy of the user.
 """,
       timestamp: nil,
       type: .paragraph
