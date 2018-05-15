@@ -29,7 +29,7 @@ let reactivateMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <<< filter(
-      get1 >>> ^\.cancelAtPeriodEnd,
+      get1 >>> ^\.isCanceling,
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "Your subscription can’t be reactivated!")
