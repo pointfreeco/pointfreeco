@@ -4,15 +4,15 @@ let post0004_overtureSetters = BlogPost(
   author: .brandon,
   // TODO: this blurb is for twitter, so maybe it should be a bit shorter
   blurb: """
-This week’s episode explored providing a friendlier API to functional setters, and improved their
-performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
+This week's episode explored providing a friendlier API to functional setters, and improved their
+performance by leveraging Swift's value mutation semantics. To make these ideas accessible to everyone
 we have updated our Overture library to add these helper functions and more!
 """,
   contentBlocks: [
     .init(
       content: """
-> This week’s [episode](TODO) explored providing a friendlier API to functional setters, and improved
-their performance by leveraging Swift’s value mutation semantics. To make these ideas accessible to everyone
+> This week's [episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance) explored providing a friendlier API to functional setters, and improved
+their performance by leveraging Swift's value mutation semantics. To make these ideas accessible to everyone
 we have updated our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library to add these
 helper functions and more!
 
@@ -57,7 +57,7 @@ let newUser = with(user, concat(
 
     .init(
       content: """
-That is already really powerful, but as we explored in this [week’s episode](TODO), the ergonomics of using
+That is already really powerful, but as we explored in this [week's episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance), the ergonomics of using
 the API is quite right, and it creates a copy for each setter, so it could be more performant.
 
 So, in the newest release of [Overture](\(gitHubUrl(to: .repo(.overture)))) we have added more
@@ -115,7 +115,7 @@ let newUser = with(user, concat(
 
     .init(
       content: """
-This means it’s super simple to opt in and out of mutation whenever you see fit.
+This means it's super simple to opt in and out of mutation whenever you see fit.
 """,
       timestamp: nil,
       type: .paragraph
@@ -129,8 +129,8 @@ This means it’s super simple to opt in and out of mutation whenever you see fi
 
     .init(
       content: """
-There’s one type of setter that we’ve covered a lot in our episodes (see
-[episode #7]((https://www.pointfree.co/episodes/ep7-setters-and-key-paths))), and that’s the `map`
+There's one type of setter that we've covered a lot in our episodes (see
+[episode #7]((https://www.pointfree.co/episodes/ep7-setters-and-key-paths))), and that's the `map`
 setter on arrays and optionals. It is precisely what allows you to dive deeper into those structures and
 make transformations while leaving everything else fixed. In our episodes we have used the backwards
 composition operator `<<<` in order to facilitate this, but in Overture we can use `compose`:
@@ -168,8 +168,6 @@ and so needs to eat healthier 🙂).
 This is already super impressive, but we are now creating 3 copies of the user to apply these
 transformations. Amazingly, we can make a few small changes and do all of this work with a single fused
 transformation that operates on one copy of the user:
-
-TODO: I also don’t know if this is correct, but just sketching…
 """,
       timestamp: nil,
       type: .paragraph
@@ -186,9 +184,9 @@ let user = User(
 )
 
 let newUser = with(user, concat(
-  mver(\\.age, incr),
+  mver(\\.age) { $0 += 1 },
   mut(\\.name, "Older Blob"),
-  mver(concat(prop(\\.favoriteFoods), mutEach)) { $0 + " & Salad" }
+  mver(compose(mprop(\\.favoriteFoods), mutEach)) { $0 += " & Salad" }
 ))
 """,
       timestamp: nil,
@@ -197,7 +195,7 @@ let newUser = with(user, concat(
 
     .init(
       content: """
-In the last transformation we “mutate over” (`mver`) the user’s favorite foods (`prop(\\.favoriteFoods)`)
+In the last transformation we "mutate over" (`mver`) the user's favorite foods (`mprop(\\.favoriteFoods)`)
 and then mutate each food (`mutEach`). All of this work happens in place on one single copy of the user.
 """,
       timestamp: nil,
