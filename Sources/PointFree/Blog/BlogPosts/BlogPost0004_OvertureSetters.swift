@@ -62,8 +62,6 @@ the API is quite right, and it creates a copy for each setter, so it could be mo
 
 So, in the newest release of [Overture](\(gitHubUrl(to: .repo(.overture)))) we have added more
 key path helpers to make the API friendlier:
-
-TODO: the over/set/mver/mut helpers are all gonna take key paths in Overture right?
 """,
       timestamp: nil,
       type: .paragraph
@@ -163,7 +161,7 @@ let newUser = with(user, concat(
       content: """
 In this snippet we have `compose`'d the setter `prop(\\.favoriteFoods)` with the `map` setter so that we
 can dive into that array and then apply the transformation `$0 + " & Salad"` (ole Blob is getting older
-and so needs to eat healthier 🙂).
+and needs to eat healthier 🙂).
 
 This is already super impressive, but we are now creating 3 copies of the user to apply these
 transformations. Amazingly, we can make a few small changes and do all of this work with a single fused
