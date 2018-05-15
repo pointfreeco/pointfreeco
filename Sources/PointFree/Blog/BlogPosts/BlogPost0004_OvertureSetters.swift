@@ -2,28 +2,42 @@ import Foundation
 
 let post0004_overtureSetters = BlogPost(
   author: .brandon,
-  // TODO: this blurb is for twitter, so maybe it should be a bit shorter
   blurb: """
 Announcing Overture 0.2.0! This release is all about setters: functions that allow us to build complex
 transformations out of smaller units.
 """,
   contentBlocks: [
+
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0004-overture-functional-setters/0004-poster-1.jpg")
+    ),
+
     .init(
       content: """
+---
+
 > This week's [episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance) explored providing a friendlier API to functional setters, and improved
 their performance by leveraging Swift's value mutation semantics. To make these ideas accessible to everyone
 we have updated our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library to add these
 helper functions and more!
 
 ---
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
 
+    .init(
+      content: """
 We released [Swift Overture](\(gitHubUrl(to: .repo(.overture)))), a library for embracing
 function composition, a little over a month ago, and the reception has been great! It has helped people
 see that function composition is an important tool to have at your disposal, and that Swift has
-some really nice features to support composition (generics, free functions, variadics, etc.).
+some really nice features to support composition (generics, free functions, variadics, module namespaces, etc.).
 
-Today we are happy to announce that we've made the first major addition to the Overture since its initial
-release: functional setters! The first release had the `prop` helper we discussed in
+Today we are happy to announce that we've made the first major addition to the Overture since its inception:
+functional setters! The first release had the `prop` helper we discussed in
 [episode #7](https://www.pointfree.co/episodes/ep7-setters-and-key-paths), which helps lift Swift writeable
 key paths into the world of functional setters:
 """,
@@ -44,6 +58,7 @@ let ageSetter = prop(\\User.age)
 // Transforms a user by incrementing their age.
 let celebrateBirthday = ageSetter { $0 + 1 }
 
+// Apply multiple transformations to a user.
 let user = User(age: 20, name: "Blob")
 let newUser = with(user, concat(
   celebrateBirthday,
@@ -57,7 +72,7 @@ let newUser = with(user, concat(
     .init(
       content: """
 That is already really powerful, but as we explored in this [week's episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance), the ergonomics of using
-the API isn't quite right, and it creates a copy for each setter, so it could be more performant.
+the API isn't quite right, and it creates a copy for each setter application, so its performance could be improved.
 
 In the newest release of [Overture](\(gitHubUrl(to: .repo(.overture)))) we've added more
 key path helpers to make the API friendlier:
@@ -130,7 +145,7 @@ This means it's super simple to opt in and out of mutation whenever you see fit.
     .init(
       content: """
 There's one type of setter that we've covered a lot in our episodes (see
-[episode #7]((https://www.pointfree.co/episodes/ep7-setters-and-key-paths))), and that's the `map`
+[episode #7](https://www.pointfree.co/episodes/ep7-setters-and-key-paths)), and that's the `map`
 setter on arrays and optionals. It is precisely what allows you to dive deeper into those structures and
 make transformations while leaving everything else fixed. In our episodes we have used the backwards
 composition operator `<<<` in order to facilitate this, but in Overture we can use `compose`:
@@ -203,7 +218,7 @@ and then mutate each (`mutEach`) food. All of this work happens in place on one 
     ),
 
     .init(
-      content: "Overture",
+      content: "🎼 Overture",
       timestamp: nil,
       type: .title
     ),
@@ -219,15 +234,8 @@ be the most versatile Swiss army knife of function composition in Swift. Stay tu
     ),
 
   ],
-  // Here is a carbon image we could use. To add to S3 do:
-  //
-  // https://carbon.now.sh/?bg=rgba(121,242,176,1)&t=duotone-dark&wt=none&l=swift&ds=true&dsyoff=20px&dsblur=33px&wc=true&wa=true&pv=65px&ph=61px&ln=false&fm=Hack&fs=18px&si=false&code=import%2520Overture%250A%250Alet%2520user%2520%253D%2520User(age%253A%252020%252C%2520name%253A%2520%2522Blob%2522)%250A%250A%252F%252F%2520Transform%2520user%2520inline%250Alet%2520newUser%2520%253D%2520with(user%252C%2520concat(%250A%2520%2520over(%255C.age%252C%2520incr)%252C%250A%2520%2520set(%255C.name%252C%2520%2522Older%2520Blob%2522)%250A))%250A%250A%252F%252F%2520Extract%2520transformation%250Alet%2520celebrateBirthday%2520%253D%2520concat(%250A%2520%2520over(%255CUser.age%252C%2520incr)%252C%250A%2520%2520set(%255C.name%252C%2520%2522Older%2520Blob%2522)%250A)%250Alet%2520newUser%2520%253D%2520with(user%252C%2520celebrateBirthday)&es=2x&wm=false
-  //
-  // * Add to bucket https://s3.amazonaws.com/pointfreeco-blog/posts/0004-overture-functional-setters
-  // * Make public
-  // * Use cloudfront url
-  coverImage: "TODO",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0004-overture-functional-setters/0004-poster-1.jpg",
   id: 4,
-  publishedAt: .init(timeIntervalSince1970: 1_526_291_823),
+  publishedAt: .init(timeIntervalSince1970: 1_526_291_823 + 60*60*24),
   title: "Overture: Now with Functional Setters"
 )
