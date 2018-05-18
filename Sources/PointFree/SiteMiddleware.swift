@@ -201,8 +201,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
 
     case .webhooks(.stripe(.fallthrough)):
       return conn
-        |> writeStatus(.ok)
-        >-> end
+        |> writeStatus(.internalServerError)
+        >-> respond(text: "We don't support this event.")
     }
 }
 
