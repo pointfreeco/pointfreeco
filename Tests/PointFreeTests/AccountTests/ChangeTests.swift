@@ -88,7 +88,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
 
@@ -106,7 +106,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
 
@@ -124,7 +124,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
 
@@ -142,7 +142,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
 
@@ -160,7 +160,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
 
@@ -179,7 +179,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         invoiceCustomer.fulfill()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
@@ -197,7 +197,7 @@ final class ChangeTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
       \.stripe.invoiceCustomer .~ { _ in
         XCTFail()
-        return pure(.mock)
+        return pure(.mock(charge: .right(.mock)))
       }
     )
       

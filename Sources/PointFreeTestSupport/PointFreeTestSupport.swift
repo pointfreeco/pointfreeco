@@ -205,12 +205,12 @@ extension Stripe {
     createCustomer: { _, _, _ in pure(.mock) },
     createSubscription: { _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
-    fetchInvoice: const(pure(.mock)),
-    fetchInvoices: const(pure(.mock([.mock]))),
+    fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
+    fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
     fetchPlans: pure(.mock([.mock])),
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
-    invoiceCustomer: const(pure(.mock)),
+    invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
     updateCustomer: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _, _ in pure(.mock) },
     js: ""
@@ -260,7 +260,7 @@ extension Stripe.ErrorEnvelope {
 extension Stripe.Event where T == Stripe.Invoice {
   public static var mock: Stripe.Event<Stripe.Invoice> {
     return .init(
-      data: .init(object: .mock),
+      data: .init(object: .mock(charge: .left("ch_test"))),
       id: "evt_test",
       type: .invoicePaymentFailed
     )
@@ -268,22 +268,24 @@ extension Stripe.Event where T == Stripe.Invoice {
 }
 
 extension Stripe.Invoice {
-  public static let mock = Stripe.Invoice(
-    amountDue: 0_00,
-    amountPaid: 17_00,
-    charge: .mock,
-    closed: true,
-    customer: "cus_test",
-    date: .mock,
-    id: "in_test",
-    lines: .mock([.mock]),
-    number: "0000000-0000",
-    periodStart: .mock,
-    periodEnd: Date.mock.addingTimeInterval(60 * 60 * 24 * 30),
-    subscription: "sub_test",
-    subtotal: 17_00,
-    total: 17_00
-  )
+  public static func mock(charge: Either<Stripe.Charge.Id, Stripe.Charge>?) -> Stripe.Invoice {
+    return Stripe.Invoice(
+      amountDue: 0_00,
+      amountPaid: 17_00,
+      charge: charge,
+      closed: true,
+      customer: "cus_test",
+      date: .mock,
+      id: "in_test",
+      lines: .mock([.mock]),
+      number: "0000000-0000",
+      periodStart: .mock,
+      periodEnd: Date.mock.addingTimeInterval(60 * 60 * 24 * 30),
+      subscription: "sub_test",
+      subtotal: 17_00,
+      total: 17_00
+    )
+  }
 }
 
 extension Stripe.LineItem {
@@ -343,7 +345,7 @@ extension Stripe.Subscription {
     created: .mock,
     currentPeriodStart: .mock,
     currentPeriodEnd: Date(timeInterval: 60 * 60 * 24 * 30, since: .mock),
-    customer: .mock,
+    customer: .right(.mock),
     endedAt: nil,
     id: "sub_test",
     items: .mock([.mock]),
