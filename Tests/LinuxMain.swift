@@ -141,7 +141,8 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_HappyPath", testRedeemEpisodeCredit_HappyPath),
     ("testRedeemEpisodeCredit_NotEnoughCredits", testRedeemEpisodeCredit_NotEnoughCredits),
     ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
-    ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited)
+    ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
+    ("test_permission", test_permission)
   ]
 }
 extension FreeEpisodeEmailTests {
@@ -174,6 +175,12 @@ extension InviteTests {
     ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
     ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
     ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription)
+  ]
+}
+extension InvoicesTests {
+  static var allTests: [(String, (InvoicesTests) -> () throws -> Void)] = [
+    ("testInvoices", testInvoices),
+    ("testInvoice", testInvoice)
   ]
 }
 extension MetaLayoutTests {
@@ -226,7 +233,9 @@ extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
     ("testPricingLoggedIn_NonSubscriber", testPricingLoggedIn_NonSubscriber),
-    ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber)
+    ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber),
+    ("testPricingLoggedIn_CanceledSubscriber", testPricingLoggedIn_CanceledSubscriber),
+    ("testPricingLoggedIn_PastDueSubscriber", testPricingLoggedIn_PastDueSubscriber)
   ]
 }
 extension PrivacyTests {
@@ -247,8 +256,9 @@ extension SiteMiddlewareTests {
     ("testWithHttps", testWithHttps)
   ]
 }
-extension StripeHookTests {
-  static var allTests: [(String, (StripeHookTests) -> () throws -> Void)] = [
+extension StripeWebhooksTests {
+  static var allTests: [(String, (StripeWebhooksTests) -> () throws -> Void)] = [
+    ("testDecoding", testDecoding),
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
@@ -309,6 +319,7 @@ XCTMain([
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
+  testCase(InvoicesTests.allTests),
   testCase(MetaLayoutTests.allTests),
   testCase(MinimalNavViewTests.allTests),
   testCase(NewBlogPostEmailTests.allTests),
@@ -320,7 +331,7 @@ XCTMain([
   testCase(PrivacyTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
-  testCase(StripeHookTests.allTests),
+  testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
   testCase(TeamEmailsTests.allTests),
