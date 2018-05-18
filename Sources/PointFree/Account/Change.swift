@@ -68,7 +68,7 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if shouldInvoice {
           parallel(
-            Current.stripe.invoiceCustomer(sub.customer)
+            Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
               .withExcept(notifyError(subject: "Invoice Failed"))
               .run
             )
