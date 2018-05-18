@@ -37,7 +37,7 @@ final class InvoicesTests: TestCase {
   }
 
   func testInvoice() {
-    let conn = connection(from: request(to: .account(.invoices(.show(Stripe.Invoice.mock.id))), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
