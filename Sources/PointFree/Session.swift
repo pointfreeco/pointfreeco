@@ -4,6 +4,11 @@ import Optics
 import Prelude
 import Tuple
 
+public enum CookieTransform: String, Codable {
+  case plaintext
+  case encrypted
+}
+
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {

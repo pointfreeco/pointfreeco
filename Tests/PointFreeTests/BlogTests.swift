@@ -48,7 +48,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() {
-    let req = request(to: .blog(.show(post0000_mock)), basicAuth: true)
+    let req = request(to: .blog(.show(.mock)), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
@@ -68,7 +68,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow_Unauthed() {
-    let req = request(to: .blog(.show(post0000_mock))) 
+    let req = request(to: .blog(.show(.mock))) 
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
