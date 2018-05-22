@@ -5,8 +5,7 @@ public struct Feature: Equatable {
 }
 
 extension Array where Element == Feature {
-  static let allFeatures: Array = [
-  ]
+  static let allFeatures: Array = []
 
   func hasAccess(to feature: Feature, for user: Database.User?) -> Bool {
 
