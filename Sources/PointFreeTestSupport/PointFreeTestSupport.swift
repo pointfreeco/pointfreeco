@@ -7,14 +7,15 @@ import Optics
 import Prelude
 
 extension Environment {
-  public static let mock = Environment(
+  public static let mock = Environment.init(
     assets: .mock,
-    blogPosts: { [post0000_mock] },
+    blogPosts: { [.mock] },
     cookieTransform: .plaintext,
     database: .mock,
     date: { .mock },
     envVars: .mock,
     episodes: { [.mock] },
+    features: .allFeatures,
     gitHub: .mock,
     logger: .mock,
     mailgun: .mock,
