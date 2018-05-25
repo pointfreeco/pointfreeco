@@ -1,6 +1,6 @@
 
 bootstrap:
-	@if test -d Sources/PointFree/Transcripts; \
+	@if test -d Sources/PointFree/Transcripts/.git; \
 		then \
 			$(MAKE) bootstrap-private; \
 		else \
@@ -31,7 +31,7 @@ bootstrap-private:
 uninstall: uninstall-mm db-drop
 
 install-mm:
-	@if test -d Sources/PointFree/Transcripts; \
+	@if test -d Sources/PointFree/Transcripts/.git; \
 		then \
 			echo "  ⚠️  Installing module maps into SDK path..."; \
 		else \
@@ -302,8 +302,8 @@ xcodeproj: submodule check-dependencies
 
 submodule:
 	@echo "  ⚠️  Fetching transcripts..."
-	@git submodule sync --recursive >/dev/null
-	@git submodule update --init --recursive >/dev/null
+	@git submodule sync --recursive --quiet
+	@git submodule update --init --recursive --quiet
 	@echo "  ✅ Fetched!"
 
 env-local:
