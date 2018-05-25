@@ -13,9 +13,9 @@ xcodeproj-oss:
 
 bootstrap-common: check-dependencies common-crypto-mm postgres-mm ccmark-mm xcodeproj-mm init-db
 
-bootstrap-oss: mock-env bootstrap-common xcodeproj-oss
+bootstrap-oss: mock-env xcodeproj-oss bootstrap-common
 
-bootstrap: submodules bootstrap-common xcodeproj
+bootstrap: submodules xcodeproj bootstrap-common
 
 mock-env:
 	test -f .env \
