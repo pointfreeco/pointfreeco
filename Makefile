@@ -105,7 +105,7 @@ xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Preparing local configuration..."
 	@test -f .env && echo "$$DOTENV_ERROR" && exit 1 || true
 	@cp .env.example .env
-	@echo "  ✅ .env file copied!"
+	@echo "  ✅ \033[1m.env\033[0m file copied!"
 
 SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
