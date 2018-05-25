@@ -62,6 +62,8 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     let shouldProrate = newPrice > currentPrice
     let shouldInvoice = newPricing.plan == currentSubscription.plan.id
       && newPricing.quantity > currentSubscription.quantity
+      || shouldProrate
+      && newPricing.interval == currentSubscription.plan.interval
 
     return Current.stripe
       .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
