@@ -15,8 +15,8 @@ install:
   - make -C cmark INSTALL_PREFIX=/usr
   - sudo make -C cmark install
 script:
-  - make reset-db
-  - make test-swift
+  - make drop-db
+  - make test-oss
 services:
   - postgresql
 addons:
