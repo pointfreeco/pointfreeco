@@ -1,5 +1,7 @@
+
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
+	@$(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped!"
@@ -13,19 +15,19 @@ bootstrap: xcodeproj
 
 install-mm:
 	@echo "$$MODULE_MAP_WARNING"
-	@$(MAKE) install-mm-commoncrypto
+	@$(MAKE) install-mm-commoncrypto || (echo "$$MODULE_MAP_ERROR" && exit 1)
 	@$(MAKE) install-mm-cmark
 	@$(MAKE) install-mm-postgres
 	@$(MAKE) install-mm-xcodeproj
 	@echo "  ✅ Module maps installed!"
 
-install-mm-commoncrypto: $(COMMON_CRYPTO_MODULE_MAP_PATH)
-	@sudo mkdir -p "$(COMMON_CRYPTO_PATH)"
-	@echo "$$COMMON_CRYPTO_MODULE_MAP" | sudo tee "$(COMMON_CRYPTO_MODULE_MAP_PATH)" > /dev/null
-
 install-mm-cmark: $(CCMARK_MODULE_MAP_PATH)
 	@sudo mkdir -p "$(CCMARK_PATH)"
 	@echo "$$CCMARK_MODULE_MAP" | sudo tee "$(CCMARK_MODULE_MAP_PATH)" > /dev/null
+
+install-mm-commoncrypto: $(COMMON_CRYPTO_MODULE_MAP_PATH)
+	@sudo mkdir -p "$(COMMON_CRYPTO_PATH)"
+	@echo "$$COMMON_CRYPTO_MODULE_MAP" | sudo tee "$(COMMON_CRYPTO_MODULE_MAP_PATH)" > /dev/null
 
 install-mm-postgres: $(POSTGRES_MODULE_MAP_PATH)
 	@sudo mkdir -p "$(POSTGRES_PATH)"
@@ -38,7 +40,7 @@ install-mm-xcodeproj: PointFree.xcodeproj
 
 uninstall:
 	@echo "  ⚠️  Uninstalling module maps from SDK path..."
-	@sudo rm -r "$(COMMON_CRYPTO_PATH)"
+	@sudo rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
 	@sudo rm -r "$(CCMARK_PATH)"
 	@sudo rm -r "$(POSTGRES_PATH)"
 	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
@@ -65,15 +67,11 @@ db:
 	createdb --owner pointfreeco pointfreeco_development || true
 	createdb --owner pointfreeco pointfreeco_test || true
 
-drop-db:
+db-drop:
 	dropdb --username pointfreeco pointfreeco_development || true
 	dropdb --username pointfreeco pointfreeco_test || true
 	dropuser pointfreeco || true
 
-check-sourcery:
-	@echo "  ⚠️  Checking on Sourcery..."
-	@command -v sourcery >/dev/null || (echo "$$SOURCER_ERROR" && exit 1)
-	@echo "  ✅ Sourcery is installed!"
 
 xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
@@ -81,14 +79,11 @@ xcodeproj-oss: check-dependencies
 		&& echo "  ✅ Generated!" \
 		|| (echo "  🛑 Failed!" && exit 1)
 
-mock-env: .env
+.env: .env.example
 	@echo "  ⚠️  Preparing local configuration..."
 	@test -f .env || (echo "$$DOTENV_ERROR" && exit 1)
-	@cp env.example .env
+	@cp .env.example .env
 	@echo "  ✅ .env file copied!"
-
-test-oss: db
-	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
@@ -137,7 +132,7 @@ export POSTGRES_SHIM_H
 
 define MODULE_MAP_WARNING
   ⚠️  Point-Free installs module maps into your Xcode SDK path to enable
-     Playground support. If you don't want to run playgrounds, bootstrap with:
+     playground support. If you don't want to run playgrounds, bootstrap with:
 
        $$ \033[1mmake\033[0m \033[38;5;66mbootstrap-oss-lite\033[0m
 
@@ -147,6 +142,20 @@ define MODULE_MAP_WARNING
 
 endef
 export MODULE_MAP_WARNING
+
+define MODULE_MAP_ERROR
+  🛑 Couldn't install module maps! Point-Free requires \033[1msudo\033[0m access to install
+     module maps for playground support.
+
+endef
+export MODULE_MAP_ERROR
+
+define MODULE_MAP_ERROR_UNINSTALL
+  🛑 Couldn't uninstall module maps! Point-Free requires \033[1msudo\033[0m access to
+     uninstall its module maps.
+
+endef
+export MODULE_MAP_ERROR_UNINSTALL
 
 define CMARK_ERROR
   🛑 cmark not found! Point-Free uses cmark to render Markdown for transcripts
@@ -216,13 +225,13 @@ define SOURCERY_ERROR
 endef
 export SOURCERY_ERROR
 
-.PHONY: check-cmark check-postgres xcodeproj-oss uninstall
-
 # colortheme
+
+colortheme: $(COLOR_THEME)
 
 COLOR_THEMES_PATH = $(HOME)/Library/Developer/Xcode/UserData/FontAndColorThemes
 COLOR_THEME = $(COLOR_THEMES_PATH)/Point-Free.xcolortheme
-colortheme: $(COLOR_THEME)
+$(COLOR_THEME): .Point-Free.xccolortheme
 	@echo "  ⚠️  Installing \033[1mPoint-Free.xcolortheme\033[0m..."
 	@mkdir -p $(COLOR_THEMES_PATH)
 	@cp -r .PointFree.xccolortheme $(COLOR_THEME)
@@ -231,6 +240,11 @@ colortheme: $(COLOR_THEME)
 # sourcery
 
 sourcery: sourcery-routes sourcery-tests
+
+check-sourcery:
+	@echo "  ⚠️  Checking on Sourcery..."
+	@command -v sourcery >/dev/null || (echo "$$SOURCER_ERROR" && exit 1)
+	@echo "  ✅ Sourcery is installed!"
 
 sourcery-routes: check-sourcery
 	@echo "  ⚠️  Generating routes..."
@@ -259,7 +273,16 @@ sourcery-tests: check-sourcery
 
 # private
 
-config-local:
+xcodeproj: submodule check-dependencies
+	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
+	$(MAKE) install-mm
+	xed .
+
+submodule:
+	git submodule sync --recursive
+	git submodule update --init --recursive
+
+env-local:
 	heroku config --json -a pointfreeco-local > .env
 
 deploy-local:
@@ -268,11 +291,28 @@ deploy-local:
 deploy-production:
 	heroku container:push web -a pointfreeco
 
-submodule:
-	git submodule sync --recursive
-	git submodule update --init --recursive
+test-oss: db
+	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
-xcodeproj: submodule check-dependencies
-	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
-	$(MAKE) install-mm
-	xed .
+.PHONY: bootstrap-oss \
+  bootstrap-oss-lite \
+  bootstrap \
+  install-mm \
+  install-mm-cmark \
+  install-mm-commoncrypto \
+  install-mm-postgres \
+  install-mm-xcodeproj \
+  uninstall \
+  check-dependencies \
+  check-cmark \
+  check-postgres \
+  check-sourcery \
+  db \
+  db-drop \
+  xcodeproj-oss \
+  xcodeproj \
+  submodule \
+  env-local \
+  deploy-local \
+  deploy-production \
+  test-oss
