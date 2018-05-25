@@ -4,12 +4,14 @@ bootstrap-oss:
 	@$(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
-	@echo "  ✅ Bootstrapped!"
+	@echo "  ✅ Bootstrapped! Opening Xcode..."
+	@xed .
 
 bootstrap-oss-lite:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free (Lite)..."
 	@$(MAKE) xcodeproj-oss
-	@echo "  ✅ Bootstrapped!"
+	@echo "  ✅ Bootstrapped! Opening Xcode..."
+	@xed .
 
 bootstrap: xcodeproj
 
@@ -227,15 +229,17 @@ export SOURCERY_ERROR
 
 # colortheme
 
-colortheme: $(COLOR_THEME)
-
 COLOR_THEMES_PATH = $(HOME)/Library/Developer/Xcode/UserData/FontAndColorThemes
-COLOR_THEME = $(COLOR_THEMES_PATH)/Point-Free.xcolortheme
-$(COLOR_THEME): .Point-Free.xccolortheme
+COLOR_THEME = $(COLOR_THEMES_PATH)/Point-Free.xccolortheme
+
+colortheme:
 	@echo "  ⚠️  Installing \033[1mPoint-Free.xcolortheme\033[0m..."
 	@mkdir -p $(COLOR_THEMES_PATH)
 	@cp -r .PointFree.xccolortheme $(COLOR_THEME)
-	@echo "  ✅ Installed!
+	@echo "  ✅ Installed!"
+
+uninstall-colortheme:
+	rm -r $(COLOR_THEME)
 
 # sourcery
 
@@ -295,24 +299,26 @@ test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 .PHONY: bootstrap-oss \
-  bootstrap-oss-lite \
-  bootstrap \
-  install-mm \
-  install-mm-cmark \
-  install-mm-commoncrypto \
-  install-mm-postgres \
-  install-mm-xcodeproj \
-  uninstall \
-  check-dependencies \
-  check-cmark \
-  check-postgres \
-  check-sourcery \
-  db \
-  db-drop \
-  xcodeproj-oss \
-  xcodeproj \
-  submodule \
-  env-local \
-  deploy-local \
-  deploy-production \
-  test-oss
+	bootstrap-oss-lite \
+	bootstrap \
+	install-mm \
+	install-mm-cmark \
+	install-mm-commoncrypto \
+	install-mm-postgres \
+	install-mm-xcodeproj \
+	uninstall \
+	uninstall-mm \
+	uninstall-colortheme \
+	check-dependencies \
+	check-cmark \
+	check-postgres \
+	check-sourcery \
+	db \
+	db-drop \
+	xcodeproj-oss \
+	xcodeproj \
+	submodule \
+	env-local \
+	deploy-local \
+	deploy-production \
+	test-oss
