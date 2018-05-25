@@ -13,6 +13,8 @@ bootstrap-oss-lite:
 
 bootstrap: xcodeproj
 
+uninstall: uninstall-mm db-drop
+
 install-mm:
 	@echo "$$MODULE_MAP_WARNING"
 	@$(MAKE) install-mm-commoncrypto || (echo "$$MODULE_MAP_ERROR" && exit 1)
@@ -38,7 +40,7 @@ install-mm-xcodeproj: PointFree.xcodeproj
 	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
 	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 
-uninstall:
+uninstall-mm:
 	@echo "  ⚠️  Uninstalling module maps from SDK path..."
 	@sudo rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
 	@sudo rm -r "$(CCMARK_PATH)"
@@ -60,7 +62,7 @@ check-postgres:
 		(echo "$$POSTGRES_ERROR_RUNNING" && exit 1)
 	@echo "  ✅ PostgreSQL is up and running!"
 	@psql --dbname=pointfreeco_development --username=pointfreeco --command '' \
-		2>/dev/null || echo "$$POSTGRES_WARNING"
+		2>/dev/null || (echo "$$POSTGRES_WARNING" && $(MAKE) --quiet db)
 
 db:
 	createuser --superuser pointfreeco || true
@@ -138,7 +140,7 @@ define MODULE_MAP_WARNING
 
      You can undo this at any time by running the following:
 
-       $$ \033[1mmake\033[0m \033[38;5;66muninstall\033[0m
+       $$ \033[1mmake\033[0m \033[38;5;66muninstall-mm\033[0m
 
 endef
 export MODULE_MAP_WARNING
@@ -203,13 +205,11 @@ endef
 export POSTGRES_ERROR_RUNNING
 
 define POSTGRES_WARNING
-  ⚠️  Local databases aren't configured! Configure with:
-
-       $$ \033[1mmake\033[0m \033[38;5;66mdb\033[0m
+  ⚠️  Local databases aren't configured! Creating pointfreeco user/databases...
 
      Reset at any time with:
 
-       $$ \033[1mmake\033[0m \033[38;5;66mdrop-db\033[0m
+       $$ \033[1mmake\033[0m \033[38;5;66mdb-drop\033[0m
 
 endef
 export POSTGRES_WARNING

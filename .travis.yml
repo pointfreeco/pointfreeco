@@ -15,7 +15,7 @@ install:
   - make -C cmark INSTALL_PREFIX=/usr
   - sudo make -C cmark install
 script:
-  - make drop-db
+  - make db-drop
   - make test-oss
 services:
   - postgresql
