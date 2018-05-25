@@ -1,6 +1,6 @@
 
 bootstrap:
-	@if test -d Sources/PointFree/Transcripts; \
+	@if test -d Sources/PointFree/Transcripts/.git; \
 		then \
 			$(MAKE) bootstrap-private; \
 		else \
@@ -9,7 +9,7 @@ bootstrap:
 
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
-	@$(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
+	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
@@ -31,7 +31,7 @@ bootstrap-private:
 uninstall: uninstall-mm db-drop
 
 install-mm:
-	@if test -d Sources/PointFree/Transcripts; \
+	@if test -d Sources/PointFree/Transcripts/.git; \
 		then \
 			echo "  ⚠️  Installing module maps into SDK path..."; \
 		else \
@@ -103,9 +103,9 @@ xcodeproj-oss: check-dependencies
 
 .env: .env.example
 	@echo "  ⚠️  Preparing local configuration..."
-	@test -f .env || (echo "$$DOTENV_ERROR" && exit 1)
+	@test -f .env && echo "$$DOTENV_ERROR" && exit 1 || true
 	@cp .env.example .env
-	@echo "  ✅ .env file copied!"
+	@echo "  ✅ \033[1m.env\033[0m file copied!"
 
 SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
@@ -195,11 +195,11 @@ define DOTENV_ERROR
 
      Please reset the file:
 
-       $$ \033[1mrm\033[0m \033[38;5;66m.env\033[0m\n"\
+       $$ \033[1mrm\033[0m \033[38;5;66m.env\033[0m
 
      Or manually edit it:
 
-       $$ \033[1m$$EDITOR\033[0m \033[38;5;66minstall cmark\033[0m\n"\
+       $$ \033[1m$$EDITOR\033[0m \033[38;5;66minstall cmark\033[0m
 
 endef
 export DOTENV_ERROR
