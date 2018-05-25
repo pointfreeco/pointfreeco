@@ -44,7 +44,7 @@ uninstall:
 	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 	@echo "  ✅ Module maps uninstalled!"
 
-check-dependencies: check-cmark check-postgres check-sourcery
+check-dependencies: check-cmark check-postgres
 
 check-cmark:
 	@echo "  ⚠️  Checking on cmark..."
@@ -230,9 +230,9 @@ colortheme: $(COLOR_THEME)
 
 # sourcery
 
-sourcery: check-sourcery sourcery-routes sourcery-tests
+sourcery: sourcery-routes sourcery-tests
 
-sourcery-routes:
+sourcery-routes: check-sourcery
 	@echo "  ⚠️  Generating routes..."
 	@mkdir -p ./Sources/PointFree/__Generated__
 	@sourcery \
@@ -246,7 +246,7 @@ SOURCERY_TESTS_IMPORTS = \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 
-sourcery-tests:
+sourcery-tests: check-sourcery
 	@echo "  ⚠️  Generating tests..."
 	@sourcery \
 		--quiet \
