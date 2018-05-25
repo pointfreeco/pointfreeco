@@ -58,7 +58,7 @@ check-postgres:
 		(echo "$$POSTGRES_ERROR_RUNNING" && exit 1)
 	@echo "  ✅ PostgreSQL is up and running!"
 	@psql --dbname=pointfreeco_development --username=pointfreeco --command '' \
-		2>/dev/null || (echo "$$POSTGRES_WARNING" && exit 1)
+		2>/dev/null || echo "$$POSTGRES_WARNING"
 
 db:
 	createuser --superuser pointfreeco || true
@@ -196,11 +196,11 @@ export POSTGRES_ERROR_RUNNING
 define POSTGRES_WARNING
   🛑 Local databases aren't configured! Configure with:
 
-       $$ \033[1mmake\033[0m \033[38;5;66m-D db\033[0m
+       $$ \033[1mmake\033[0m \033[38;5;66mdb\033[0m
 
      Reset at any time with:
 
-       $$ \033[1mmake\033[0m \033[38;5;66m-D drop-db\033[0m
+       $$ \033[1mmake\033[0m \033[38;5;66mdrop-db\033[0m
 
 endef
 export POSTGRES_WARNING
