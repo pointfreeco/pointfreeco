@@ -44,28 +44,28 @@ install-mm:
 	@echo "  ✅ Module maps installed!"
 
 install-mm-cmark: $(CCMARK_MODULE_MAP_PATH)
-	@sudo mkdir -p "$(CCMARK_PATH)"
+	@$(SUDO) mkdir -p "$(CCMARK_PATH)"
 	@echo "$$CCMARK_MODULE_MAP" | sudo tee "$(CCMARK_MODULE_MAP_PATH)" > /dev/null
 
 install-mm-commoncrypto: $(COMMON_CRYPTO_MODULE_MAP_PATH)
-	@sudo mkdir -p "$(COMMON_CRYPTO_PATH)"
+	@$(SUDO) mkdir -p "$(COMMON_CRYPTO_PATH)"
 	@echo "$$COMMON_CRYPTO_MODULE_MAP" | sudo tee "$(COMMON_CRYPTO_MODULE_MAP_PATH)" > /dev/null
 
 install-mm-postgres: $(POSTGRES_MODULE_MAP_PATH)
-	@sudo mkdir -p "$(POSTGRES_PATH)"
-	@echo "$$POSTGRES_MODULE_MAP" | sudo tee "$(POSTGRES_PATH)/module.map" > /dev/null
-	@echo "$$POSTGRES_SHIM_H" | sudo tee "$(POSTGRES_PATH)/shim.h" > /dev/null
+	@$(SUDO) mkdir -p "$(POSTGRES_PATH)"
+	@echo "$$POSTGRES_MODULE_MAP" | $(SUDO) tee "$(POSTGRES_PATH)/module.map" > /dev/null
+	@echo "$$POSTGRES_SHIM_H" | $(SUDO) tee "$(POSTGRES_PATH)/shim.h" > /dev/null
 
 install-mm-xcodeproj: PointFree.xcodeproj
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
+	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
+	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 
 uninstall-mm:
 	@echo "  ⚠️  Uninstalling module maps from SDK path..."
-	@sudo rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
-	@sudo rm -r "$(CCMARK_PATH)"
-	@sudo rm -r "$(POSTGRES_PATH)"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' sudo rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
+	@$(SUDO) rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
+	@$(SUDO) rm -r "$(CCMARK_PATH)"
+	@$(SUDO) rm -r "$(POSTGRES_PATH)"
+	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 	@echo "  ✅ Module maps uninstalled!"
 
 check-dependencies: check-cmark check-postgres
@@ -317,6 +317,9 @@ deploy-production:
 
 test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
+
+SUDO = sudo --prompt=$(SUDO_PROMPT)
+SUDO_PROMPT = "  🔒 Please enter your password: "
 
 .PHONY: bootstrap-oss \
 	bootstrap-oss-lite \
