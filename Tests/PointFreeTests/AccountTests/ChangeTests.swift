@@ -155,6 +155,26 @@ final class ChangeTests: TestCase {
   
   func testChangeUpdateAddSeatsIndividualPlan() {
     #if !os(Linux)
+    let invoiceCustomer = expectation(description: "invoiceCustomer")
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
+      \.stripe.invoiceCustomer .~ { _ in
+        invoiceCustomer.fulfill()
+        return pure(.mock(charge: .right(.mock)))
+      }
+    )
+
+    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+    waitForExpectations(timeout: 0.1, handler: nil)
+    #endif
+  }
+
+  func testChangeUpgradeIndividualMonthlyToTeamYearly() {
+    #if !os(Linux)
     update(
       &Current,
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
@@ -164,7 +184,7 @@ final class ChangeTests: TestCase {
       }
     )
 
-    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
