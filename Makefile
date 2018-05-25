@@ -1,24 +1,42 @@
 
+bootstrap:
+	@if test -d Sources/PointFree/Transcripts; \
+		then \
+			$(MAKE) bootstrap-private; \
+		else \
+			$(MAKE) bootstrap-oss; \
+		fi
+
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
 	@$(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@xed .
+	@sleep 1 && xed .
 
 bootstrap-oss-lite:
-	@echo "  ⚠️  Bootstrapping open-source Point-Free (Lite)..."
+	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@xed .
+	@sleep 1 && xed .
 
-bootstrap: xcodeproj
+bootstrap-private:
+	@echo "  👀 Bootstrapping Point-Free (private)..."
+	@$(MAKE) xcodeproj
+	@$(MAKE) install-mm
+	@echo "  ✅ Bootstrapped! Opening Xcode..."
+	@sleep 1 && xed .
 
 uninstall: uninstall-mm db-drop
 
 install-mm:
-	@echo "$$MODULE_MAP_WARNING"
+	@if test -d Sources/PointFree/Transcripts; \
+		then \
+			echo "  ⚠️  Installing module maps into SDK path..."; \
+		else \
+			echo "$$MODULE_MAP_WARNING"; \
+		fi
 	@$(MAKE) install-mm-commoncrypto || (echo "$$MODULE_MAP_ERROR" && exit 1)
 	@$(MAKE) install-mm-cmark
 	@$(MAKE) install-mm-postgres
@@ -278,13 +296,15 @@ sourcery-tests: check-sourcery
 # private
 
 xcodeproj: submodule check-dependencies
-	swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig
-	$(MAKE) install-mm
-	xed .
+	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
+	@swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
+	@echo "  ✅ Generated!"
 
 submodule:
-	git submodule sync --recursive
-	git submodule update --init --recursive
+	@echo "  ⚠️  Fetching transcripts..."
+	@git submodule sync --recursive >/dev/null
+	@git submodule update --init --recursive >/dev/null
+	@echo "  ✅ Fetched!"
 
 env-local:
 	heroku config --json -a pointfreeco-local > .env
