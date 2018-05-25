@@ -9,7 +9,7 @@ bootstrap:
 
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
-	@$(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
+	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
@@ -103,7 +103,7 @@ xcodeproj-oss: check-dependencies
 
 .env: .env.example
 	@echo "  ⚠️  Preparing local configuration..."
-	@test -f .env || (echo "$$DOTENV_ERROR" && exit 1)
+	@test -f .env && echo "$$DOTENV_ERROR" && exit 1 || true
 	@cp .env.example .env
 	@echo "  ✅ .env file copied!"
 
@@ -195,11 +195,11 @@ define DOTENV_ERROR
 
      Please reset the file:
 
-       $$ \033[1mrm\033[0m \033[38;5;66m.env\033[0m\n"\
+       $$ \033[1mrm\033[0m \033[38;5;66m.env\033[0m
 
      Or manually edit it:
 
-       $$ \033[1m$$EDITOR\033[0m \033[38;5;66minstall cmark\033[0m\n"\
+       $$ \033[1m$$EDITOR\033[0m \033[38;5;66minstall cmark\033[0m
 
 endef
 export DOTENV_ERROR
@@ -302,8 +302,8 @@ xcodeproj: submodule check-dependencies
 
 submodule:
 	@echo "  ⚠️  Fetching transcripts..."
-	@git submodule sync --recursive --quiet
-	@git submodule update --init --recursive --quiet
+	@git submodule sync --recursive >/dev/null
+	@git submodule update --init --recursive >/dev/null
 	@echo "  ✅ Fetched!"
 
 env-local:
