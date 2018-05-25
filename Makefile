@@ -13,20 +13,20 @@ bootstrap-oss:
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@xed .
+	@sleep 1 && xed .
 
 bootstrap-oss-lite:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@xed .
+	@sleep 1 && xed .
 
 bootstrap-private:
 	@echo "  👀 Bootstrapping Point-Free (private)..."
 	@$(MAKE) xcodeproj
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@xed .
+	@sleep 1 && xed .
 
 uninstall: uninstall-mm db-drop
 
