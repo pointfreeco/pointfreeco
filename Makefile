@@ -5,7 +5,7 @@ bootstrap-oss:
 	@echo "  ✅ Bootstrapped!"
 
 bootstrap-oss-lite:
-	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
+	@echo "  ⚠️  Bootstrapping open-source Point-Free (Lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped!"
 
@@ -194,7 +194,7 @@ endef
 export POSTGRES_ERROR_RUNNING
 
 define POSTGRES_WARNING
-  🛑 Local databases aren't configured! Configure with:
+  ⚠️  Local databases aren't configured! Configure with:
 
        $$ \033[1mmake\033[0m \033[38;5;66mdb\033[0m
 
