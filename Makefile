@@ -1,6 +1,6 @@
 
 bootstrap:
-	@if test -d Sources/PointFree/Transcripts/.git; \
+	@if test -e Sources/PointFree/Transcripts/.git; \
 		then \
 			$(MAKE) bootstrap-private; \
 		else \
