@@ -7,7 +7,7 @@ bootstrap:
 			$(MAKE) bootstrap-oss; \
 		fi
 
-bootstrap-oss:
+bootstrap-oss: submodule
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
 	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
@@ -15,13 +15,13 @@ bootstrap-oss:
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@sleep 1 && xed .
 
-bootstrap-oss-lite:
+bootstrap-oss-lite: submodule
 	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@sleep 1 && xed .
 
-bootstrap-private:
+bootstrap-private: submodule
 	@echo "  👀 Bootstrapping Point-Free (private)..."
 	@$(MAKE) xcodeproj
 	@$(MAKE) install-mm
@@ -295,10 +295,11 @@ sourcery-tests: check-sourcery
 
 # private
 
-xcodeproj: submodule check-dependencies
+xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
 	@swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
 	@echo "  ✅ Generated!"
+	@sleep 1 && xed .
 
 submodule:
 	@echo "  ⚠️  Fetching transcripts..."
