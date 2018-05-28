@@ -7,7 +7,7 @@ bootstrap:
 			$(MAKE) bootstrap-oss; \
 		fi
 
-bootstrap-oss: submodule
+bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
 	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) xcodeproj-oss
@@ -15,7 +15,7 @@ bootstrap-oss: submodule
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@sleep 1 && xed .
 
-bootstrap-oss-lite: submodule
+bootstrap-oss-lite:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
