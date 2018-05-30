@@ -320,7 +320,7 @@ test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
-	@docker stop -f $(docker ps -a -q)
+	@docker stop $(docker ps -a -q)
 	@docker rm -f $(docker ps -a -q)
 	@docker rmi -f $(docker images -q)
 
