@@ -11,7 +11,7 @@ seminal episode that sets the foundation for some later work in the Point-Free s
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0005-styling-with-functions-free/0005-poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0005-styling-with-functions-free/poster.jpg")
     ),
 
     .init(
@@ -264,7 +264,7 @@ library.
     ),
 
   ],
-  coverImage: "https://https://d1iqsrac68iyd8.cloudfront.net/posts/0005-styling-with-functions-free/0005-poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0005-styling-with-functions-free/poster.jpg",
   id: 5,
   publishedAt: .init(timeIntervalSince1970: 1_527_674_223),
   title: "Styling with Functions: Free for Everyone!"
