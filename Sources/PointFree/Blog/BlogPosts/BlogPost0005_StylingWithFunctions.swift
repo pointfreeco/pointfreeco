@@ -32,7 +32,7 @@ series.
       content: """
 Our third episode in the Point-Free series, “[UIKit Styling with Functions](\(url(to: .episode(.left(ep3.slug)))))”,
 is one of our most popular episodes and has been the one that visitors have used their free episode credit on
-more than any other episode. We aired it nearly four months ago, and it contains some very important,
+more than any other episode. It aired nearly four months ago, and it contains some very important,
 foundational ideas on how to build reusable and composable styling using plain functions and function
 composition. We’d like more people see how fun it can be to style UIKit in this way, so today we are making
 the episode free!
@@ -51,25 +51,39 @@ the episode free!
       content: """
 The episode begins by discussing three popular ways of styling UIKit and describes some of their deficiencies:
 
-
 ### `UIAppearance`
 
-It’s an interesting API provided by Apple that allows you to globally specify styles in one place. However,
-there are some limitations. First, you cannot style nested properties, like
-`UIButton.appearance().titleLabel?.font`, only direct properties. Second, it doesn’t kick into action until a
-view has been added to a `UIWindow`, which adds a level of sequencing and coordination into your view layer
-that can cause subtle bugs. Third, it’s heavily tied to the subclass hierarchy of UIKit, which is deep and
-wide, and offers very little granular control of how styles are applied. That’s only the beginning of its
-problems!
+This API is the only truly Apple-sanctioned way of creating reusable styling. It’s an interesting API that
+allows you to globally specify styles in one place. However, there are some limitations. First, you cannot
+style nested properties, like:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
 
+    .init(
+      content: """
+UIButton.appearance().titleLabel?.font =
+  .systemFont(ofSize: 16, weight: .medium)
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+You can only style direct properties on a component. Second, it doesn’t kick into action until a view has
+been added to a `UIWindow`, which adds a level of sequencing and coordination into your view layer that can
+cause subtle bugs. Third, it’s heavily tied to the subclass hierarchy of UIKit, which is deep and wide, and
+offers very little granular control of how styles are applied. And that’s only the beginning of its problems.
 
 ### Inheritance
 
 Another common approach is to create subclasses of common UIKit components to provide custom styling. For
 example, you could have a `PrimaryButton`, a `SecondaryButton`, and so on. However, you will invariably be
-led to the dreaded “diamond inheritance” problem in which you want a subclass to be able to share styles from
-two other classes, like perhaps you want `PrimaryButton` to be able to inherit from both `RoundedButton` and
-`FilledButton`.
+led to the dreaded “[diamond inheritance](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem)”
+problem in which you want a subclass to be able to share styles from two other classes, like perhaps you
+want `PrimaryButton` to be able to inherit from both `RoundedButton` and `FilledButton`.
 
 ### Factories
 
@@ -85,7 +99,7 @@ turns out that Swift gives us an amazing tool that is perfect for styling: funct
 functions, which are very flexible because they are unbound (i.e. free) from being bound to any particular
 data. If we apply our styles to UIKit components using functions, then we can use function composition to
 layer on multiple styles at once. We are then free to build a small styleguide of styling functions, and
-pick-and-choose any combination of them to express the exact style you need.
+pick-and-choose any combination of them to express the exact style we need.
 
 For example, we could start with a function that sets the base styles needed for all the buttons in our
 application:
@@ -97,7 +111,7 @@ application:
     .init(
       content: """
 let baseButtonStyle: (UIButton) -> Void = {
-  $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+  $0.contentEdgeInsets = .init(top: 12, left: 16, bottom: 12, right: 16)
   $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
 }
 """,
@@ -127,7 +141,7 @@ func roundedStyle(_ view: UIView) {
     .init(
       content: """
 Then we could define a “rounded button style” by just combining these two styles. The approach we took in the
-episode is to use the diamond operator `<>` that is highly tuned for combining two values of the same type.
+episode is to use the diamond operator `<>`, which is highly tuned for combining two values of the same type.
 In this case, it combines two functions of the form `(A) → Void` to produce a third `(A) → Void`:
 """,
       timestamp: nil,
@@ -186,7 +200,7 @@ first, and then returns a `UIButton` styling function:
       content: """
 let imageButtonStyle: (UIImage?) -> (UIButton) -> Void = { image in
   return {
-    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16)
+    $0.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 16)
     $0.setImage(image, for: .normal)
   }
 }
