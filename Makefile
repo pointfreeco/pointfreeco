@@ -310,6 +310,9 @@ submodule:
 env-local:
 	heroku config --json -a pointfreeco-local > .env
 
+env-production:
+	heroku config --json -a pointfreeco > .env
+
 deploy-local:
 	heroku container:push web -a pointfreeco-local
 
