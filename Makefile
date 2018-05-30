@@ -311,10 +311,12 @@ env-local:
 	heroku config --json -a pointfreeco-local > .env
 
 deploy-local:
-	heroku container:push web -a pointfreeco-local
+	@heroku container:push web -a pointfreeco-local
+	@heroku container:release web -a pointfreeco-local
 
 deploy-production:
-	heroku container:push web -a pointfreeco
+	@heroku container:push web -a pointfreeco
+	@heroku container:release web -a pointfreeco
 
 test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
