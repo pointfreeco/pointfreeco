@@ -711,7 +711,7 @@ private let postgres = lift(connInfo)
 private let conn = postgres
   .flatMap { db in .wrap(db.makeConnection) }
 
-private func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+public func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
   -> EitherIO<Error, [T]> {
 
     return execute(query, representable)

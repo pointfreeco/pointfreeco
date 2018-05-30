@@ -24,6 +24,20 @@ private let loadEnvironment =
     .flatMap(loadEnvVars)
     .flatMap(loadEpisodes)
     .flatMap(const(print(message: "  ✅ Loaded!")))
+//    .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
+//      if Current.envVars.appEnv == .production {
+//        print("""
+//⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+//Whoa whoa whoa. Looks like you are running the local site with the production database.
+//You probably don't want to do that. Please confirm: Y/N
+//""")
+//        if readLine() != .some("Y") {
+//          return print(message: "💔 Aborting server...").flatMap(throwE(unit as Error))
+//        }
+//      }
+//
+//      return lift(.right(unit))
+//    }
 
 private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> in
   let envFilePath = URL(fileURLWithPath: #file)
