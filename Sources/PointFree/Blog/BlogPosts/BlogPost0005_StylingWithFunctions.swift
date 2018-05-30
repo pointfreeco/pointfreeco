@@ -34,7 +34,7 @@ Our third episode in the Point-Free series, “[UIKit Styling with Functions](\(
 is one of our most popular episodes and has been the one that visitors have used their free episode credit on
 more than any other episode. It aired nearly four months ago, and it contains some very important,
 foundational ideas on how to build reusable and composable styling using plain functions and function
-composition. We’d like more people see how fun it can be to style UIKit in this way, so today we are making
+composition. We’d like more people to see how fun it can be to style UIKit in this way, so today we are making
 the episode free!
 """,
       timestamp: nil,
@@ -55,7 +55,7 @@ The episode begins by discussing three popular ways of styling UIKit and describ
 
 This API is the only truly Apple-sanctioned way of creating reusable styling. It’s an interesting API that
 allows you to globally specify styles in one place. However, there are some limitations. First, you cannot
-style nested properties, like:
+style sub-properties of a view:
 """,
       timestamp: nil,
       type: .paragraph
@@ -72,18 +72,24 @@ UIButton.appearance().titleLabel?.font =
 
     .init(
       content: """
-You can only style direct properties on a component. Second, it doesn’t kick into action until a view has
-been added to a `UIWindow`, which adds a level of sequencing and coordination into your view layer that can
-cause subtle bugs. Third, it’s heavily tied to the subclass hierarchy of UIKit, which is deep and wide, and
-offers very little granular control of how styles are applied. And that’s only the beginning of its problems.
+Drilling into `titleLabel` does nothing. `UIAppearance` will only affect `UIButton` properties in this
+example, and you can only style direct properties on a component.
+
+Second, it doesn’t kick into action until a view has been added to a `UIWindow`, which adds a level of
+sequencing and coordination into your view layer that can cause subtle bugs.
+
+Third, it’s heavily tied to the subclass hierarchy of UIKit, which is deep and wide, and offers very little
+granular control of how styles are applied. And that’s only the beginning of its problems.
 
 ### Inheritance
 
 Another common approach is to create subclasses of common UIKit components to provide custom styling. For
-example, you could have a `PrimaryButton`, a `SecondaryButton`, and so on. However, you will invariably be
-led to the dreaded “[diamond inheritance](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem)”
-problem in which you want a subclass to be able to share styles from two other classes, like perhaps you
-want `PrimaryButton` to be able to inherit from both `RoundedButton` and `FilledButton`.
+example, you could have a `PrimaryButton`, a `SecondaryButton`, and so on.
+
+Unfortunately, you will invariably be led to the dreaded
+“[diamond inheritance](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem)” problem in
+which you want a subclass to be able to share styles from two other classes, like perhaps you want
+`PrimaryButton` to be able to inherit from both `RoundedButton` and `FilledButton`.
 
 ### Factories
 
@@ -94,12 +100,13 @@ have the same problems that inheritance had.
 
 ---
 
-None of these approaches give us the level of reuse and composability that we would hope for. However, it
-turns out that Swift gives us an amazing tool that is perfect for styling: functions! Swift supports free
-functions, which are very flexible because they are unbound (i.e. free) from being bound to any particular
-data. If we apply our styles to UIKit components using functions, then we can use function composition to
-layer on multiple styles at once. We are then free to build a small styleguide of styling functions, and
-pick-and-choose any combination of them to express the exact style we need.
+None of these approaches give us the level of reuse and composability that we would hope for.
+
+It turns out that Swift gives us an amazing tool that is _perfect_ for styling: functions! Swift supports
+free functions, which are very flexible because they are unbound (i.e. free). This means we can use them
+without any particular data attached. If we apply our styles to UIKit components using functions, we can use
+function composition to layer on multiple styles at once. We are then free to build a small styleguide of
+styling functions, and pick-and-choose any combination of them to express the exact style we need.
 
 For example, we could start with a function that sets the base styles needed for all the buttons in our
 application:
@@ -142,7 +149,7 @@ func roundedStyle(_ view: UIView) {
       content: """
 Then we could define a “rounded button style” by just combining these two styles. The approach we took in the
 episode is to use the diamond operator `<>`, which is highly tuned for combining two values of the same type.
-In this case, it combines two functions of the form `(A) → Void` to produce a third `(A) → Void`:
+In this case, it combines two functions of the form `(A) -> Void` to produce a third `(A) -> Void`:
 """,
       timestamp: nil,
       type: .paragraph
@@ -243,9 +250,9 @@ In just 30 lines of code we have set the foundation for the styling of all butto
 
     .init(
       content: """
-We think that functions and function composition is a really powerful way to style UIKit components. But the
-best part is that it’s so simple, and does not add many layers of abstraction onto your application.
-You could get benefits from using this tool in your code base today.
+We think that functions and function composition are a really powerful way to style UIKit components. But the
+best part is that it’s simple and doesn't add layers of abstraction to your application. You can get benefits
+from using this tool in your code base today.
 
 If this interests you then you may also want to check out our latest episode on
 “[Styling with Overture](https://www.pointfree.co/episodes/ep17-styling-with-overture)”, which improves
