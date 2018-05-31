@@ -735,7 +735,7 @@ baseTextFieldStyle(emailTextField)
 // …
 
 let passwordTextField = UITextField()
-baseTextFieldStyle(emailTextField)
+baseTextFieldStyle(passwordTextField)
 // …
 """,
     timestamp: nil,
