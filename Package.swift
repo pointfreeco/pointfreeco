@@ -10,6 +10,7 @@ let package = Package(
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
+    .library(name: "AppStuff", targets: ["AppStuff"]),
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b811904")),
@@ -71,6 +72,10 @@ let package = Package(
     .target(
       name: "Styleguide",
       dependencies: ["Html", "Css"]),
+
+    .target(
+      name: "AppStuff",
+      dependencies: ["Html"]),
 
     .testTarget(
       name: "StyleguideTests",
