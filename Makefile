@@ -21,7 +21,7 @@ bootstrap-oss-lite:
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@sleep 1 && xed .
 
-bootstrap-private: submodule
+bootstrap-private:
 	@echo "  👀 Bootstrapping Point-Free (private)..."
 	@$(MAKE) xcodeproj
 	@$(MAKE) install-mm
