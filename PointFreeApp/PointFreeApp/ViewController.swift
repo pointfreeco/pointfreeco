@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     // Do any additional setup after loading the view, typically from a nib.
 
     let vc = MyViewController()
+    vc.view.frame = CGRect.init(x: 100, y: 100, width: 100, height: 100)
+    self.view.addSubview(vc.view)
   }
 
   override func didReceiveMemoryWarning() {

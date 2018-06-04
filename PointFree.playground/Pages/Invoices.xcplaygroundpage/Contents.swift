@@ -1,7 +1,7 @@
-//import AppStuff
-import Html
+import AppStuff
+import PlaygroundSupport
 
-1
+PlaygroundPage.current.liveView = MyViewController()
 
 
 //import Css

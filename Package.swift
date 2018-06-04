@@ -75,7 +75,7 @@ let package = Package(
 
     .target(
       name: "AppStuff",
-      dependencies: ["Html"]),
+      dependencies: []),
 
     .testTarget(
       name: "StyleguideTests",
