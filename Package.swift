@@ -19,7 +19,7 @@ let package = Package(
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.1")),
     ],
   targets: [
-    .target(norw
+    .target(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
