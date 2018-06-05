@@ -108,7 +108,7 @@ private let moreColumnView = View<Prelude.Unit> { _ in
         a([`class`([footerLinkClass]), href(gitHubUrl(to: .organization))], ["GitHub"])
         ]),
       li([
-        a([`class`([footerLinkClass]), mailto("support@pointfree.co")], ["Contact us"])
+        a([`class`([footerLinkClass]), href(path(to: .support))], ["Support"])
         ]),
       li([
         a([`class`([footerLinkClass]), href(path(to: .privacy))], ["Privacy Policy"])
