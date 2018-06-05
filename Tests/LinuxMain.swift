@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.11.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.11.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 import XCTest
@@ -51,6 +51,7 @@ extension AuthTests {
 extension BlogTests {
   static var allTests: [(String, (BlogTests) -> () throws -> Void)] = [
     ("testBlogIndex", testBlogIndex),
+    ("testBlogIndex_WithLotsOfPosts", testBlogIndex_WithLotsOfPosts),
     ("testBlogIndex_Unauthed", testBlogIndex_Unauthed),
     ("testBlogShow", testBlogShow),
     ("testBlogShow_Unauthed", testBlogShow_Unauthed),
@@ -94,6 +95,7 @@ extension ChangeTests {
     ("testChangeUpdateUpgradeTeamPlan", testChangeUpdateUpgradeTeamPlan),
     ("testChangeUpdateDowngradeTeamPlan", testChangeUpdateDowngradeTeamPlan),
     ("testChangeUpdateAddSeatsIndividualPlan", testChangeUpdateAddSeatsIndividualPlan),
+    ("testChangeUpgradeIndividualMonthlyToTeamYearly", testChangeUpgradeIndividualMonthlyToTeamYearly),
     ("testChangeUpdateAddSeatsTeamPlan", testChangeUpdateAddSeatsTeamPlan),
     ("testChangeUpdateRemoveSeats", testChangeUpdateRemoveSeats),
     ("testChangeUpdateRemoveSeatsInvalidNumber", testChangeUpdateRemoveSeatsInvalidNumber)
