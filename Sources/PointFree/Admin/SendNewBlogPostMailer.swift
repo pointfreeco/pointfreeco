@@ -13,7 +13,7 @@ import Tuple
 let showNewBlogPostEmailMiddleware =
   requireAdmin
     <| writeStatus(.ok)
-    >-> respond(showNewBlogPostView.contramap(lower))
+    >=> respond(showNewBlogPostView.contramap(lower))
 
 private let showNewBlogPostView = View<Database.User> { _ in
   ul(
@@ -47,7 +47,7 @@ let sendNewBlogPostEmailMiddleware:
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
     <| sendNewBlogPostEmails
-    >-> redirect(to: .admin(.index))
+    >=> redirect(to: .admin(.index))
 
 func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
   return Current.blogPosts()

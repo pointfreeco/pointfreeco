@@ -14,11 +14,11 @@ import Tuple
 let episodeResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
     )
     <| writeStatus(.ok)
-    >-> userEpisodePermission
-    >-> map(lower)
+    >=> userEpisodePermission
+    >=> map(lower)
     >>> respond(
       view: episodeView,
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
@@ -42,9 +42,9 @@ let episodeResponse =
 let useCreditResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >-> respond(episodeNotFoundView.contramap(lower))
+    or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
     )
-    <<< { userEpisodePermission >-> $0 }
+    <<< { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
     <| applyCreditMiddleware

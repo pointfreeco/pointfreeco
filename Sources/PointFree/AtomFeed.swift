@@ -6,7 +6,7 @@ import Prelude
 
 let atomFeedResponse =
   writeStatus(.ok)
-    >-> respond(pointFreeFeed, contentType: .application(.atom))
+    >=> respond(pointFreeFeed, contentType: .application(.atom))
 
 let pointFreeFeed = View<[Episode]> { episodes in
   atomLayout.view(
