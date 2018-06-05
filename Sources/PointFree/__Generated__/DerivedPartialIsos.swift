@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.11.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.11.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -312,6 +312,17 @@ import Prelude
               guard case let .subscribe(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let support = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.support)),
+          unapply: {
+            guard case .support = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 

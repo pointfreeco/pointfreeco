@@ -203,6 +203,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn
         |> writeStatus(.internalServerError)
         >-> respond(text: "We don't support this event.")
+
+    case .support:
+      return conn
+        |> writeStatus(.ok)
+        >-> respond(text: "Support!")
     }
 }
 

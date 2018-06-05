@@ -27,6 +27,7 @@ public enum Route: DerivePartialIsos {
   case privacy
   case home
   case subscribe(SubscribeData?)
+  case support
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -280,6 +281,9 @@ private let routers: [Router<Route>] = [
 
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+
+  .support
+      <¢> get %> lit("support") <% end,
 
   .team <<< .leave
     <¢> post %> lit("account") %> lit("team") %> lit("leave")
