@@ -205,10 +205,38 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         >-> respond(text: "We don't support this event.")
 
     case .support:
-      return conn
+      return conn.map(const(unit))
         |> writeStatus(.ok)
-        >-> respond(text: "Support!")
+//        >-> respond(supportView)
+        >-> respond(
+          view: supportView,
+          layoutData: { data in
+            SimplePageLayoutData(
+              currentRoute: route,
+              currentSubscriberState: subscriberState,
+              currentUser: user,
+              data: data,
+              title: "Support"
+            )
+        }
+      )
     }
+}
+
+import Html
+
+private let supportView = View<Prelude.Unit> { _ in
+  [
+    h1(["Support"]),
+    ol([
+      li([
+        p(["Email us at support@pointfree.co"])
+        ]),
+      li([
+        p(["Open an issue on https://github.com/pointfreeco/pointfreeco"])
+        ]),
+      ]),
+  ]
 }
 
 public func redirect<A>(
