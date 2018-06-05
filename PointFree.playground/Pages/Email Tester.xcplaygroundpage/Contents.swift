@@ -10,9 +10,9 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 let htmlNodes = newBlogPostEmail.view(
   (
-    post0001_welcome,
-    "",
-    "",
+    post0005_stylingWithFunctions,
+    "Announcement for subscribers",
+    "Announcement for non-subscribers",
     .nonSubscriber
   )
 )
