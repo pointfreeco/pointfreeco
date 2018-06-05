@@ -6,7 +6,7 @@ import Prelude
 
 let blogAtomFeedResponse =
   writeStatus(.ok)
-    >-> respond(feedView, contentType: .application(.atom))
+    >=> respond(feedView, contentType: .application(.atom))
 
 private let feedView = View<[BlogPost]> { posts in
   atomLayout.view(

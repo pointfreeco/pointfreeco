@@ -14,7 +14,7 @@ let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: paymentInfoView,
       layoutData: { subscription, currentUser, expand, subscriberState in

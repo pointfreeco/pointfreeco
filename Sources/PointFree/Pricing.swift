@@ -95,7 +95,7 @@ extension Pricing: Codable {
 let pricingResponse =
   redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: pricingView,
       layoutData: { currentUser, pricing, expand, route in

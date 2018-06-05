@@ -40,7 +40,7 @@ public func requireSome<A>(
           ?? (
             conn.map(const(unit))
               |> writeStatus(.notFound)
-              >-> respond(notFoundView)
+              >=> respond(notFoundView)
         )
       }
     }

@@ -20,7 +20,7 @@ let gitHubCallbackResponse =
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.badRequest)
-    >-> respond(text: "GitHub code wasn't found :(")
+    >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
 let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, String?>, Data> =

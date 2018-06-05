@@ -28,7 +28,7 @@ func requireAdmin<A>(
 let adminIndex =
   requireAdmin
     <| writeStatus(.ok)
-    >-> respond(adminIndexView.contramap(lower))
+    >=> respond(adminIndexView.contramap(lower))
 
 private let adminIndexView = View<Database.User> { currentUser in
   ul([

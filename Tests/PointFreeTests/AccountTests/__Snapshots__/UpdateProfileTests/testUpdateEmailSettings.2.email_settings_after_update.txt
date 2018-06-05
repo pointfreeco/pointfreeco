@@ -1,5 +1,5 @@
 ▿ 1 element
-  ▿ PointFree.Database.EmailSetting
-    - newsletter: PointFree.Database.EmailSetting.Newsletter.newEpisode
+  ▿ EmailSetting
+    - newsletter: Newsletter.newEpisode
     ▿ userId: 00000000-0000-0000-0000-000000000001
       - rawValue: 00000000-0000-0000-0000-000000000001
