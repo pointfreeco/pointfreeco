@@ -14,7 +14,7 @@ private let title = "Privacy Policy"
 
 let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: privacyView,
       layoutData: { currentUser, subscriberState, currentRoute in

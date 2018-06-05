@@ -12,7 +12,7 @@ import UrlFormEncoding
 
 let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: homeView,
       layoutData: { (currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in

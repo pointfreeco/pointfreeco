@@ -15,7 +15,7 @@ let showInviteMiddleware =
     <<< requireTeamInvite
     <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: showInviteView,
       layoutData: { teamInvite, inviter, currentUser in
@@ -251,7 +251,7 @@ private func requireTeamInvite<A>(
         case .left:
           return conn.map(const(unit))
             |> writeStatus(.notFound)
-            >-> respond(
+            >=> respond(
               view: inviteNotFoundView,
               layoutData: { data in
                 SimplePageLayoutData(
