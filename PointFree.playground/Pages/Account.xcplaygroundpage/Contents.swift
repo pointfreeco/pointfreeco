@@ -1,23 +1,16 @@
-import Css
-import CssReset
-import Either
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import PlaygroundSupport
 @testable import PointFree
 @testable import PointFreeTestSupport
-import Prelude
 import WebKit
-import Optics
-import SnapshotTesting
 
 Current = .mock
 
-let htmlString = render(accountView.view((.mock, [.mock, .mock], [.mock, .mock, .mock], [.mock], [.mock], .mock)), config: pretty)
+let req = request(to: .account(.index), session: .loggedIn)
+let result = siteMiddleware(connection(from: req)).perform()
+let htmlStr = String(data: result.response.body, encoding: .utf8)!
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 750))
-webView.loadHTMLString(htmlString, baseURL: nil)
-//print(htmlString)
+webView.loadHTMLString(htmlStr, baseURL: nil)
 
 PlaygroundPage.current.liveView = webView
