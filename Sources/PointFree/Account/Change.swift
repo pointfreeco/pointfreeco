@@ -18,7 +18,7 @@ let subscriptionChangeShowResponse =
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: subscriptionChangeShowView,
       layoutData: { subscription, currentUser, seatsTaken, subscriberState in

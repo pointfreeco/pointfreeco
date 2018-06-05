@@ -1,9 +1,9 @@
 ▿ 2 elements
-  ▿ PointFree.Database.EmailSetting
-    - newsletter: PointFree.Database.EmailSetting.Newsletter.newBlogPost
+  ▿ EmailSetting
+    - newsletter: Newsletter.newBlogPost
     ▿ userId: 00000000-0000-0000-0000-000000000001
       - rawValue: 00000000-0000-0000-0000-000000000001
-  ▿ PointFree.Database.EmailSetting
-    - newsletter: PointFree.Database.EmailSetting.Newsletter.newEpisode
+  ▿ EmailSetting
+    - newsletter: Newsletter.newEpisode
     ▿ userId: 00000000-0000-0000-0000-000000000001
       - rawValue: 00000000-0000-0000-0000-000000000001

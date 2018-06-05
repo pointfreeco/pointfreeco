@@ -33,10 +33,10 @@ public func staticFileServer(
 
       return conn
         |> writeStatus(.ok)
-        >-> writeHeader("Content-Length", String(data.count))
-        >-> writeHeader("Content-Type", "application/octet-stream")
-        >-> closeHeaders
-        >-> send(data)
-        >-> end
+        >=> writeHeader("Content-Length", String(data.count))
+        >=> writeHeader("Content-Type", "application/octet-stream")
+        >=> closeHeaders
+        >=> send(data)
+        >=> end
     }
 }

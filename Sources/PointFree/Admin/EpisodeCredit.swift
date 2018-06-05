@@ -13,7 +13,7 @@ import Tuple
 let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
   requireAdmin
     <| writeStatus(.ok)
-    >-> respond(showEpisodeCreditsView.contramap(const(unit)))
+    >=> respond(showEpisodeCreditsView.contramap(const(unit)))
 
 let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Database.User.Id?, Int?>, Data> =
   requireAdmin

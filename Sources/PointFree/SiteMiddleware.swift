@@ -13,8 +13,8 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     <<< redirectUnrelatedHosts(isAllowedHost: isAllowed(host:), canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
-    >-> currentSubscriptionMiddleware
-    >-> render(conn:)
+    >=> currentSubscriptionMiddleware
+    >=> render(conn:)
 
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
@@ -202,7 +202,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case .webhooks(.stripe(.fallthrough)):
       return conn
         |> writeStatus(.internalServerError)
-        >-> respond(text: "We don't support this event.")
+        >=> respond(text: "We don't support this event.")
     }
 }
 

@@ -13,8 +13,8 @@ import Tuple
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
-    >-> writeStatus(.ok)
-    >-> respond(
+    >=> writeStatus(.ok)
+    >=> respond(
       view: accountView,
       layoutData: { data in
         SimplePageLayoutData(
