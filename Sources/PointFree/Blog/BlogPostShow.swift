@@ -10,7 +10,7 @@ import Tuple
 
 let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: blogPostShowView,
       layoutData: { (post: BlogPost, currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in

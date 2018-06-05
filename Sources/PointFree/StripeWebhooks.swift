@@ -12,7 +12,7 @@ let stripeInvoiceWebhookMiddleware =
   validateStripeSignature
     <<< filterMap(
       ^\Stripe.Event<Stripe.Invoice>.data.object.subscription >>> pure,
-      or: writeStatus(.badRequest) >-> end // FIXME: admin email?
+      or: writeStatus(.badRequest) >=> end // FIXME: admin email?
     )
     <| handleFailedPayment
 
@@ -54,7 +54,7 @@ private func validateStripeSignature<A>(
               ).run
             ).run { _ in }
 
-          return conn |> writeStatus(.badRequest) >-> end
+          return conn |> writeStatus(.badRequest) >=> end
       }
 
       return conn |> middleware
@@ -107,13 +107,13 @@ private func handleFailedPayment(
       .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
       .run
       .flatMap(
-        either(const(conn |> writeStatus(.badRequest) >-> end)) { user, subscription in
+        either(const(conn |> writeStatus(.badRequest) >=> end)) { user, subscription in
           if subscription.stripeSubscriptionStatus == .pastDue {
             parallel(sendPastDueEmail(to: user).run)
               .run { _ in }
           }
 
-          return conn |> writeStatus(.ok) >-> end
+          return conn |> writeStatus(.ok) >=> end
         }
     )
 }

@@ -10,9 +10,9 @@ import Tuple
 
 let routeNotFoundMiddleware =
   currentUserMiddleware
-    >-> currentSubscriptionMiddleware
-    >-> writeStatus(.notFound)
-    >-> map(lower)
+    >=> currentSubscriptionMiddleware
+    >=> writeStatus(.notFound)
+    >=> map(lower)
     >>> respond(
       view: routeNotFoundView,
       layoutData: { subscription, currentUser in

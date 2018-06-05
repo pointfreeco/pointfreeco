@@ -117,7 +117,7 @@ func userIdAndNewsletter(
     .map { $0.components(separatedBy: boundary) }
     .flatMap {
       tuple
-        <¢> $0.first.flatMap(UUID.init(uuidString:) >-> Database.User.Id.init)
+        <¢> $0.first.flatMap(UUID.init(uuidString:) >=> Database.User.Id.init)
         <*> $0.last.flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
   }
 }
