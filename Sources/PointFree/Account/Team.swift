@@ -102,7 +102,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
         .run
         .map(const(conn.map(const(unit))))
     }
-    >-> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
+    >=> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
 private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
 

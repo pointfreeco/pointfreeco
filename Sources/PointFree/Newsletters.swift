@@ -7,12 +7,12 @@ import Tuple
 
 let expressUnsubscribeMiddleware =
   unsubscribeMiddleware
-    >-> redirect(to: .home, headersMiddleware: flash(.notice, "You’re now unsubscribed."))
+    >=> redirect(to: .home, headersMiddleware: flash(.notice, "You’re now unsubscribed."))
 
 let expressUnsubscribeReplyMiddleware =
   requireUserAndNewsletter
     <| unsubscribeMiddleware
-    >-> head(.ok)
+    >=> head(.ok)
 
 private func requireUserAndNewsletter(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>, Data>

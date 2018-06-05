@@ -9,7 +9,7 @@ import Tuple
 
 let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: blogIndexView,
       layoutData: { currentUser, subscriberState, currentRoute in

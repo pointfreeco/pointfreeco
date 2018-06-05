@@ -17,7 +17,7 @@ let invoicesResponse =
     <<< requireStripeSubscription
     <<< fetchInvoices
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: invoicesView,
       layoutData: { subscription, invoicesEnvelope, currentUser, subscriberState in
@@ -42,7 +42,7 @@ let invoiceResponse =
       or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
     )
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: invoiceView,
       layoutData: { subscription, currentUser, invoice in
