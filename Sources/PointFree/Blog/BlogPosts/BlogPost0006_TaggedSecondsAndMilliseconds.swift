@@ -10,6 +10,7 @@ TODO
     .init(
       content: "",
       timestamp: nil,
+      // todo cloudfront
       type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg")
     ),
 
@@ -17,7 +18,8 @@ TODO
       content: """
 ---
 
-TODO
+> Let's create a type-safe interface to dealing with seconds and milliseconds in our programs. We'll use the
+`Tagged` type, which allows us to construct all new types in a lightweight way.
 
 ---
 """,
@@ -31,7 +33,7 @@ The [Tagged](https://github.com/pointfreeco/swift-tagged) type is a powerful way
 very lightweight way. It’s a small package that leverages many advanced features of Swift, including generics,
 generic type aliases, phantom types and conditional conformance. We’ve
 [previously](https://www.pointfree.co/episodes/ep12-tagged) explored ways of using `Tagged` to strengthen
-your types by better documenting their intentions and making accidental misuse of the types provably
+our types by better documenting their intentions and making accidental misuse of the types provably
 impossible by the compiler.
 
 In this [Point-Free Pointer](\(url(to: .blog(.index)))) we will show another application: building a
@@ -72,7 +74,7 @@ struct BlogPost: Decodable {
 
     .init(
       content: """
-We’ve already made this type a little bit safer by having defined a type alias `Blog.Id`, which makes a blog
+We’ve already made this type a little bit safer by defining a type alias `Blog.Id`, which makes a blog
 post’s `id` field completely different from any other `Int` in the eyes of the compiler. The `Tagged` type
 made this very easy to do, and with the help of Swift’s conditional conformances we were able to make
 `BlogPost` decodable without any additional work.
@@ -82,6 +84,14 @@ from the API measured in seconds, but others on my team or future contributors m
 pretty common for API’s to send back milliseconds, so someone could easily get this confused at some point.
 Worse, this `publishedAt` value might be extracted from a blog post and then passed through a few layers of
 functions, so by the time I come across this value I may not even know where it came from!
+
+One approach to fixing this would be to rename the field to something more descriptive, like
+`publishedAtInSeconds`, but now you have accidentally broken JSON decoding since the field name won't
+match. This means you have to implement a custom decode initializer, which can be a pain, but more
+importantly you could still misuse this type by comparing it to something measured in milliseconds.
+The compiler isn't able to help you at all.
+
+Let's fix that!
 """,
       timestamp: nil,
       type: .paragraph
@@ -95,7 +105,7 @@ functions, so by the time I come across this value I may not even know where it 
 
     .init(
       content: """
-So, let’s strengthen this field by using `Tagged`! The simplest thing would be to create two new types that
+So, let’s strengthen this field by using `Tagged`. The simplest thing would be to create two new types that
 tag `TimeInterval` with two different tags:
 """,
     timestamp: nil,
@@ -436,6 +446,6 @@ extension Tagged where Tag == MillisecondsTag, RawValue: BinaryFloatingPoint {
   ],
   coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg",
   id: 6,
-  publishedAt: .init(timeIntervalSince1970: 1_527_674_223 + 60*60*24*14),
+  publishedAt: .init(timeIntervalSince1970: 1_527_674_223 + 60*60*24*14), // todo
   title: "Tagged Seconds and Milliseconds"
 )
