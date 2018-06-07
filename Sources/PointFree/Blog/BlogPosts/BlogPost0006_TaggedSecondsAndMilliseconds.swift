@@ -171,6 +171,33 @@ blogPosts.sorted { $0.publishedAt < $1.publishedAt }
 
     .init(
       content: """
+Further, the compiler can prevent us from accidentally misusing time by, say, comparing a seconds value
+to a milliseconds value:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+let futureTime: Milliseconds = 1528378451000
+
+breakingBlogPost.publishedAt < futureTime
+// 🛑 Binary operator '<' cannot be applied to operands of type
+// 'Tagged<SecondsTag, Int>' and 'Tagged<MillisecondsTag, Int>'
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+The compiler caught a serious bug here! Since milliseconds are much larger numbers than seconds, this
+comparison would have always returned true, which could have led us to release this blog post sooner
+than we expected. But instead, the compiler stopped us and made us fix the problem. This means we don't have
+to remember which fields are measured in seconds and which fields are in milliseconds. The compiler has
+all that information and will keep us in check!
+
 This is incredibly powerful. We have given ourselves the ability to strengthen all uses of time in our
 application with only 4 lines of code: 2 tag types and 2 type aliases. However, we can improve it even more.
 """,
@@ -333,7 +360,8 @@ More importantly, you are not allowed to perform a potentially lossy conversion:
     .init(
       content: """
 let millis: Milliseconds<Int> = 500
-millis.seconds // 🛑 error: type 'Int' does not conform to protocol 'BinaryFloatingPoint'
+millis.seconds
+// 🛑 error: type 'Int' does not conform to protocol 'BinaryFloatingPoint'
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -396,14 +424,6 @@ do.
     ),
 
     .init(
-      content: """
-what
-""",
-      timestamp: nil,
-      type: .paragraph
-    ),
-
-    .init(
       content: "Conclusion",
       timestamp: nil,
       type: .title
@@ -443,6 +463,13 @@ extension Tagged where Tag == MillisecondsTag, RawValue: BinaryFloatingPoint {
       type: .code(lang: .swift)
     ),
 
+    .init(
+      content: """
+TODO: need a lil more of an outro
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
   ],
   coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg",
   id: 6,
