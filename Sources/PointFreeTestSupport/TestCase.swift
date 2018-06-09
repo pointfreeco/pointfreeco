@@ -7,6 +7,7 @@ import XCTest
 open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
+
 //    record = true
     Current = .mock
       |> \.database .~ .live
