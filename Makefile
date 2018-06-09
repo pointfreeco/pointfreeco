@@ -324,9 +324,9 @@ test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
-	@docker stop $(docker ps -a -q)
-	@docker rm -f $(docker ps -a -q)
-	@docker rmi -f $(docker images -q)
+	@docker container ls --all --quiet \
+		| xargs docker container stop \
+		&& docker system prune --all --force --volumes
 
 SUDO = sudo --prompt=$(SUDO_PROMPT)
 SUDO_PROMPT = "  🔒 Please enter your password: "
