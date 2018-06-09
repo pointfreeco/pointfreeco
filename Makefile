@@ -299,13 +299,15 @@ xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
 	@swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
 	@echo "  ✅ Generated!"
-	@sleep 1 && xed .
 
-submodule:
+submodules:
 	@echo "  ⚠️  Fetching transcripts..."
 	@git submodule sync --recursive >/dev/null
 	@git submodule update --init --recursive >/dev/null
 	@echo "  ✅ Fetched!"
+
+linux-start:
+	docker-compose up --build
 
 env-local:
 	heroku config --json -a pointfreeco-local > .env
