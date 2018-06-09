@@ -109,10 +109,14 @@ private let spacings: [Size] = [
 ]
 
 private func selector(_ data: [Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {
-  let classes = data.flatMap { breakpoint, sides in
-    sides.map { side, n in
-      selector(side: side, breakpoint: breakpoint, n: n, whitespace: whitespace)
-    }
+  let classes = data
+    .sorted(by: { $0.key.rawValue < $1.key.rawValue })
+    .flatMap { breakpoint, sides in
+      sides
+        .sorted(by: { $0.key.rawValue < $1.key.rawValue })
+        .map { side, n in
+          selector(side: side, breakpoint: breakpoint, n: n, whitespace: whitespace)
+      }
   }
   return classes.dropFirst().reduce(classes.first ?? .class("not-found"), |)
 }
