@@ -24,7 +24,9 @@ public func gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
 
 public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
   let classes = [Class.grid.col(.mobile, nil)]
-    + sizes.map(Class.grid.col(_:_:))
+    + sizes
+      .sorted(by: { $0.key.rawValue < $1.key.rawValue })
+      .map(Class.grid.col(_:_:))
 
   return div(addClasses(classes, to: attribs), content)
 }
