@@ -348,3 +348,22 @@ public func update<A>(_ value: inout A, _ changes: ((A) -> A)...) {
 public func update<A>(_ value: inout A, _ changes: ((inout A) -> Void)...) {
   concat(changes)(&value)
 }
+
+public func responseTimeout(_ interval: TimeInterval)
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> {
+
+    return { middleware in
+      return { conn in
+        let timeout = middleware(conn).parallel <|> (
+          conn
+            |> writeStatus(.internalServerError)
+            >=> respond(html: "<h1>Response Time-out</h1>")
+          )
+          .delay(interval)
+          .parallel
+
+        return timeout.sequential
+      }
+    }
+}
