@@ -3,14 +3,13 @@ import Foundation
 let post0006_taggedSecondsAndMilliseconds = BlogPost(
   author: .brandon,
   blurb: """
-TODO
+Let’s create a type-safe interface to dealing with seconds and milliseconds in our programs. We’ll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
 """,
   contentBlocks: [
 
     .init(
       content: "",
       timestamp: nil,
-      // todo cloudfront
       type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg")
     ),
 
@@ -418,12 +417,6 @@ do.
     ),
 
     .init(
-      content: "Future directions",
-      timestamp: nil,
-      type: .title
-    ),
-
-    .init(
       content: "Conclusion",
       timestamp: nil,
       type: .title
@@ -431,7 +424,7 @@ do.
 
     .init(
       content: """
-We have built a 14 line nano-library in order to increase the safety and expressiveness of times in our
+We have built a 14 line nano-library in order to increase the safety and expressiveness of time in our
 applications. The `Tagged` library was the real workhorse, so let’s take a moment to appreciate just how
 easy this was to accomplish:
 """,
@@ -465,7 +458,7 @@ extension Tagged where Tag == MillisecondsTag, RawValue: BinaryFloatingPoint {
 
     .init(
       content: """
-TODO: need a lil more of an outro
+This is just one small, but powerful example of how we can encode additional meaning in our application's types, preventing bugs at compile time, and _improving_ the ergonomics of how we work with these types in our everyday code. We'll continue to explore `Tagged` in other interesting ways in future posts!
 """,
       timestamp: nil,
       type: .paragraph
@@ -473,6 +466,6 @@ TODO: need a lil more of an outro
   ],
   coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg",
   id: 6,
-  publishedAt: .init(timeIntervalSince1970: 1_527_674_223 + 60*60*24*14), // todo
+  publishedAt: .init(timeIntervalSince1970: 1_529_332_606),
   title: "Tagged Seconds and Milliseconds"
 )
