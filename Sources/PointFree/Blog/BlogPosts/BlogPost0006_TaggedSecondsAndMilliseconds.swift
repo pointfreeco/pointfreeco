@@ -159,7 +159,7 @@ Also, `Tagged` conforms to most of the standard protocols that the raw type does
     .init(
       content: """
 // Embargo time is 1 hr before post is published
-let embragoLiftedAt = breakingBlogPost.publishedAt - 60 * 60
+let embargoLiftedAt = breakingBlogPost.publishedAt - 60 * 60
 
 // Sort blog posts by `publishedAt`
 blogPosts.sorted { $0.publishedAt < $1.publishedAt }
