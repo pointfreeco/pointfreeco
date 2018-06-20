@@ -117,7 +117,7 @@ enum SecondsTag {}
 typealias Seconds = Tagged<SecondsTag, Double>
 
 enum MillisecondsTag {}
-typealias MillisecondsTag = Tagged<MillisecondsTag, Double>
+typealias Milliseconds = Tagged<MillisecondsTag, Double>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
