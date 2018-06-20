@@ -242,6 +242,7 @@ extension Stripe.Customer {
     businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",
+    metadata: [:],
     sources: .mock([.mock])
   )
 }

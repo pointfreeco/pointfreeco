@@ -103,7 +103,7 @@ private let accountView = View<AccountData> { data in
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
-            <> profileRowView.view((data.currentUser, data.emailSettings))
+            <> profileRowView.view(data)
             <> subscriptionOverview.view(data)
             <> creditsView.view(data)
             <> logoutView.view(unit)
@@ -214,7 +214,8 @@ private let titleRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let profileRowView = View<(Database.User, [Database.EmailSetting])> { currentUser, currentEmailSettings in
+private let profileRowView = View<AccountData> { data in
+
   gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
@@ -226,7 +227,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
             `class`([blockInputClass]),
             name(ProfileData.CodingKeys.name.stringValue),
             type(.text),
-            value(currentUser.name ?? ""),
+            value(data.currentUser.name ?? ""),
             ]),
 
           label([`class`([labelClass])], ["Email"]),
@@ -234,10 +235,19 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
             `class`([blockInputClass]),
             name(ProfileData.CodingKeys.email.stringValue),
             type(.email),
-            value(currentUser.email.rawValue)
+            value(data.currentUser.email.rawValue)
             ]),
 
-          ] + emailSettingCheckboxes.view(currentEmailSettings) + [
+          label([`class`([labelClass])], ["Extra Invoice Info"]),
+          textarea(
+            [
+              placeholder("Company name, billing address, VAT number, ..."),
+              `class`([blockInputClass])
+            ],
+            data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
+          ),
+
+          ] + emailSettingCheckboxes.view(data.emailSettings) + [
 
             input([
               type(.submit),
