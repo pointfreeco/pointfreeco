@@ -32,7 +32,7 @@ public struct Stripe {
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
     invoiceCustomer: PointFree.invoiceCustomer,
-    updateCustomer: PointFree.updateCustomer,
+    updateCustomer: PointFree.updateCustomer(_:_:),
     updateCustomerExtraInvoiceInfo: PointFree.updateCustomer(id:extraInvoiceInfo),
     updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
@@ -417,7 +417,7 @@ let stripeJsonEncoder = JSONEncoder()
 
 private enum Method {
   case get
-  case post([String: String])
+  case post([String: Any])
   case delete([String: String])
 }
 
