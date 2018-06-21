@@ -34,15 +34,33 @@ func isValidEmail(_ email: EmailAddress) -> Bool {
   return email.rawValue.range(of: "^.+@.+$", options: .regularExpression) != nil
 }
 
+private func fetchStripeSubscription<A>(
+  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>)
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.Subscription?, A>, Data> {
+
+    return { conn -> IO<Conn<ResponseEnded, Data>> in
+      guard let subscription = get1(conn.data)
+        else { return middleware(conn.map(over1(const(Stripe.Subscription?.none)))) }
+
+      return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
+        .run
+        .map(^\.right)
+        .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
+    }
+}
+
 let updateProfileMiddleware =
-  filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
-      get1 >>> ^\.email >>> isValidEmail,
+      get2 >>> ^\.email >>> isValidEmail,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
     )
-    <| { (conn: Conn<StatusLineOpen, Tuple2<ProfileData, Database.User>>) -> IO<Conn<ResponseEnded, Data>> in
-      let (data, user) = lower(conn.data)
+    <<< fetchSubscription
+    <<< fetchStripeSubscription
+    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription?, Database.User, ProfileData>>) -> IO<Conn<ResponseEnded, Data>> in
+      let (subscription, user, data) = lower(conn.data)
 
       let emailSettings = data.emailSettings.keys
         .compactMap(Database.EmailSetting.Newsletter.init(rawValue:))
@@ -63,7 +81,15 @@ let updateProfileMiddleware =
         updateFlash = flash(.notice, "We’ve updated your profile!")
       }
 
+      let updateCustomerExtraInvoiceInfo = zip2(
+        (subscription?.customer.left ?? subscription?.customer.right?.id),
+        data.extraInvoiceInfo
+        )
+        .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
+        ?? pure(unit)
+
       return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
+        .flatMap(const(updateCustomerExtraInvoiceInfo))
         .run
         .flatMap(
           const(

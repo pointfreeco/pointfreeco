@@ -158,7 +158,7 @@ private func requireSubscriptionAndOwner<A>(
       <| middleware
 }
 
-private func fetchSubscription<A>(
+func fetchSubscription<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription?, Database.User, A>, Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {

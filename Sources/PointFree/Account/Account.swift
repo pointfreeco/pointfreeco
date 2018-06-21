@@ -214,47 +214,61 @@ private let titleRowView = View<Prelude.Unit> { _ in
     ])
 }
 
-private let profileRowView = View<AccountData> { data in
+private let profileRowView = View<AccountData> { data -> Node in
 
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  let nameFields = [
+    label([`class`([labelClass])], ["Name"]),
+    input([
+      `class`([blockInputClass]),
+      name(ProfileData.CodingKeys.name.stringValue),
+      type(.text),
+      value(data.currentUser.name ?? ""),
+      ])
+  ]
+
+  let emailFields = [
+    label([`class`([labelClass])], ["Email"]),
+    input([
+      `class`([blockInputClass]),
+      name(ProfileData.CodingKeys.email.stringValue),
+      type(.email),
+      value(data.currentUser.email.rawValue)
+      ])
+  ]
+
+  let extraInvoiceInfoFields = !data.isSubscriptionOwner ? [] : [
+    label([`class`([labelClass])], ["Extra Invoice Info"]),
+    textarea(
+      [
+        placeholder("Company name, billing address, VAT number, ..."),
+        `class`([blockInputClass]),
+        name(ProfileData.CodingKeys.extraInvoiceInfo.stringValue),
+      ],
+      data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
+    )
+  ]
+
+  let submit = [
+    input([
+      type(.submit),
+      `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
+      value("Update profile")
+      ])
+  ]
+
+  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([`class`([Class.pf.type.responsiveTitle4])], ["Profile"]),
 
-        form([action(path(to: .account(.update(nil)))), method(.post)], [
-          label([`class`([labelClass])], ["Name"]),
-          input([
-            `class`([blockInputClass]),
-            name(ProfileData.CodingKeys.name.stringValue),
-            type(.text),
-            value(data.currentUser.name ?? ""),
-            ]),
-
-          label([`class`([labelClass])], ["Email"]),
-          input([
-            `class`([blockInputClass]),
-            name(ProfileData.CodingKeys.email.stringValue),
-            type(.email),
-            value(data.currentUser.email.rawValue)
-            ]),
-
-          label([`class`([labelClass])], ["Extra Invoice Info"]),
-          textarea(
-            [
-              placeholder("Company name, billing address, VAT number, ..."),
-              `class`([blockInputClass])
-            ],
-            data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
-          ),
-
-          ] + emailSettingCheckboxes.view(data.emailSettings) + [
-
-            input([
-              type(.submit),
-              `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
-              value("Update profile")
-              ])
-          ])
+        form(
+          [action(path(to: .account(.update(nil)))), method(.post)],
+          nameFields
+            + emailFields
+            + extraInvoiceInfoFields
+            + emailSettingCheckboxes.view(data.emailSettings)
+            + submit
+        )
         ])
       ])
     ])
@@ -292,7 +306,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
 
 private let subscriptionOverview = View<AccountData> { data -> [Node] in
 
-  if data.subscription?.userId == data.currentUser.id {
+  if data.isSubscriptionOwner {
     return subscriptionOwnerOverview.view(data)
   } else if let subscription = data.stripeSubscription {
     return subscriptionTeammateOverview.view(data)
@@ -625,14 +639,14 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
             div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([`class`([])], [
+              p([
                 a([
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
                   href(path(to: .account(.paymentInfo(.show(expand: nil))))),
                   ],
                   ["Update payment method"])
                 ]),
-              p([`class`([])], [
+              p([
                 a([
                   `class`([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
                   href(path(to: .account(.invoices(.index)))),
@@ -718,4 +732,8 @@ private struct AccountData {
   let subscriptionOwner: Database.User?
   let teamInvites: [Database.TeamInvite]
   let teammates: [Database.User]
+
+  var isSubscriptionOwner: Bool {
+    return self.currentUser.id == self.subscriptionOwner?.id
+  }
 }

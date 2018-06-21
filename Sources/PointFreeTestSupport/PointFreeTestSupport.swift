@@ -213,6 +213,7 @@ extension Stripe {
     fetchSubscription: const(pure(.mock)),
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
     updateCustomer: { _, _ in pure(.mock) },
+    updateCustomerExtraInvoiceInfo: { _, _ in pure(.mock) },
     updateSubscription: { _, _, _, _ in pure(.mock) },
     js: ""
   )

@@ -177,9 +177,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Bill to"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(currentUser.displayName)]),
-                  br,
-                  div([text(subscription.customer.right?.extraInvoiceInfo ?? "")])
+                  div([text(currentUser.displayName)])
                   ]),
                 ]),
               ]),
@@ -231,6 +229,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   }
                   ?? []
               )
+              <> extraInvoiceInfo(subscription: subscription)
             ),
             ]),
           gridRow([`class`([Class.padding([.mobile: [.bottom: 2]]), Class.type.bold])], [
@@ -305,4 +304,27 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
       )
       ])
     ])
+}
+
+private func extraInvoiceInfo(subscription: Stripe.Subscription) -> [Node] {
+  guard let extraInvoiceInfo = subscription.customer.right?.extraInvoiceInfo else { return [] }
+
+  let extraInvoiceInfoNodes = intersperse(Html.br)
+    <| extraInvoiceInfo
+      .components(separatedBy: CharacterSet.newlines)
+      .filter { !$0.isEmpty }
+      .map(Html.text)
+
+  return [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+        div(["User Info"]),
+        ]),
+      gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+        div(
+          extraInvoiceInfoNodes
+        )
+        ])
+      ])
+  ]
 }

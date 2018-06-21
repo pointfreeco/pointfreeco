@@ -32,8 +32,8 @@ public struct Stripe {
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
     invoiceCustomer: PointFree.invoiceCustomer,
-    updateCustomer: PointFree.updateCustomer(_:_:),
-    updateCustomerExtraInvoiceInfo: PointFree.updateCustomer(id:extraInvoiceInfo),
+    updateCustomer: PointFree.updateCustomer(id:token:),
+    updateCustomerExtraInvoiceInfo: PointFree.updateCustomer(id:extraInvoiceInfo:),
     updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
   )
@@ -374,10 +374,10 @@ private func invoiceCustomer(_ customer: Stripe.Customer.Id)
       ]))
 }
 
-private func updateCustomer(_ customer: Stripe.Customer.Id, _ token: Stripe.Token.Id)
+private func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
   -> EitherIO<Error, Stripe.Customer> {
 
-    return stripeDataTask("customers/" + customer.rawValue, .post([
+    return stripeDataTask("customers/" + id.rawValue, .post([
       "source": token.rawValue,
       ]))
 }
