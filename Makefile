@@ -1,3 +1,5 @@
+test-linux: sourcery
+	docker-compose up --abort-on-container-exit --build
 
 bootstrap:
 	@if test -e Sources/PointFree/Transcripts/.git; \
