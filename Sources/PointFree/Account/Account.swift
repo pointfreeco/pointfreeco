@@ -252,6 +252,7 @@ private let profileRowView = View<(Database.User, [Database.EmailSetting])> { cu
 
 private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmailSettings in
   [
+    // TODO: hide `welcomeEmails` for subscribers?
     p(["Receive email for:"]),
     p([`class`([Class.padding([.mobile: [.left: 1]])])], Database.EmailSetting.Newsletter.allNewsletters.map { newsletter in
       label([`class`([Class.display.block])], [
