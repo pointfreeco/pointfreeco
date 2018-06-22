@@ -23,7 +23,9 @@ class UpdateProfileTests: TestCase {
     )
 
     let update = request(
-      to: .account(.update(.init(email: "blobby@blob.co", name: "Blobby McBlob", emailSettings: [:]))),
+      to: .account(
+        .update(ProfileData(email: "blobby@blob.co", extraInvoiceInfo: nil, emailSettings: [:], name: "Blobby McBlob"))
+      ),
       session: .init(flash: nil, userId: user.id)
     )
 
@@ -60,7 +62,9 @@ class UpdateProfileTests: TestCase {
     )
 
     let update = request(
-      to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
+      to: .account(
+        .update(.init(email: user.email, extraInvoiceInfo: nil, emailSettings: ["newEpisode": "on"], name: user.name))
+      ),
       session: .init(flash: nil, userId: user.id)
     )
 
