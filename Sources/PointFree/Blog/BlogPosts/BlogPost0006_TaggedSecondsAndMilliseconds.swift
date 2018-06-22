@@ -183,7 +183,7 @@ let futureTime: Milliseconds = 1528378451000
 
 breakingBlogPost.publishedAt < futureTime
 // 🛑 Binary operator '<' cannot be applied to operands of type
-// 'Tagged<SecondsTag, Int>' and 'Tagged<MillisecondsTag, Int>'
+// 'Tagged<SecondsTag, Double>' and 'Tagged<MillisecondsTag, Double>'
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -222,8 +222,8 @@ generic type aliases in Swift to express that:
 
     .init(
       content: """
-enum MillsecondsTag {}
-typealias Milliseconds<A> = Tagged<MillsecondsTag, A>
+enum MillisecondsTag {}
+typealias Milliseconds<A> = Tagged<MillisecondsTag, A>
 
 enum SecondsTag {}
 typealias Seconds<A> = Tagged<SecondsTag, A>
@@ -342,7 +342,7 @@ And now we get to do:
     .init(
       content: """
 let millis: Milliseconds<Double> = 5500
-millis.seconds // 5.5: Milliseconds<Double>
+millis.seconds // 5.5: Seconds<Double>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -380,7 +380,7 @@ everything goes smoothly:
     .init(
       content: """
 let millis: Milliseconds<Int> = 500
-millis.map(Double.init).seconds // 0.5: Milliseconds<Double>
+millis.map(Double.init).seconds // 0.5: Seconds<Double>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -434,8 +434,8 @@ easy this was to accomplish:
 
     .init(
       content: """
-enum MillsecondsTag {}
-typealias Milliseconds<A> = Tagged<MillsecondsTag, A>
+enum MillisecondsTag {}
+typealias Milliseconds<A> = Tagged<MillisecondsTag, A>
 
 enum SecondsTag {}
 typealias Seconds<A> = Tagged<SecondsTag, A>
