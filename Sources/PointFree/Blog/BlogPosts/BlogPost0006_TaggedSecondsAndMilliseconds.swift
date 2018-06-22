@@ -17,7 +17,7 @@ Let's create a type-safe interface for dealing with seconds and milliseconds in 
       content: """
 ---
 
-> Let's create a type-safe interface to dealing with seconds and milliseconds in our programs. We'll use the
+> Let's create a type-safe interface for dealing with seconds and milliseconds in our programs. We'll use the
 `Tagged` type, which allows us to construct all new types in a lightweight way.
 
 ---
