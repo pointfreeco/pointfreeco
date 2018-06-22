@@ -82,7 +82,7 @@ let updateProfileMiddleware =
       }
 
       let updateCustomerExtraInvoiceInfo = zip2(
-        (subscription?.customer.left ?? subscription?.customer.right?.id),
+        subscription?.customer.left ?? subscription?.customer.right?.id,
         data.extraInvoiceInfo
         )
         .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
