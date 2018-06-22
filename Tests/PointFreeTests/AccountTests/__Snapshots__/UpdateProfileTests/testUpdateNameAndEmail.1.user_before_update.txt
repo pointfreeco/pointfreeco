@@ -1,4 +1,4 @@
-▿ PointFree.Database.User
+▿ User
   ▿ email: hello@pointfree.co
     - rawValue: "hello@pointfree.co"
   - episodeCreditCount: 1
@@ -8,6 +8,6 @@
   ▿ id: 00000000-0000-0000-0000-000000000001
     - rawValue: 00000000-0000-0000-0000-000000000001
   - isAdmin: false
-  ▿ name: Optional("Blob")
+  ▿ name: Optional<String>
     - some: "Blob"
-  - subscriptionId: nil
+  - subscriptionId: Optional<Tagged<Subscription, UUID>>.none

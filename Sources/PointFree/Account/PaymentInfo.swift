@@ -14,7 +14,7 @@ let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: paymentInfoView,
       layoutData: { subscription, currentUser, expand, subscriberState in
@@ -46,7 +46,7 @@ let updatePaymentInfoMiddleware:
     <| { conn in
       let (subscription, _, token) = lower(conn.data)
 
-      return Current.stripe.updateCustomer(subscription.customer, token)
+      return Current.stripe.updateCustomer(subscription.customer.either(id, ^\.id), token)
         .run
         .flatMap {
           conn |> redirect(
@@ -64,7 +64,7 @@ let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand i
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
-            <> (subscription.customer.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
+            <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
             <> updatePaymentInfoRowView.view(expand)
       )
       ])

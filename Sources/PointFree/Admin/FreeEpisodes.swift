@@ -13,7 +13,7 @@ import Tuple
 let indexFreeEpisodeEmailMiddleware =
   requireAdmin
     <| writeStatus(.ok)
-    >-> respond(freeEpisodeView.contramap(lower))
+    >=> respond(freeEpisodeView.contramap(lower))
 
 private let freeEpisodeView = View<Database.User> { _ in
   [
@@ -44,7 +44,7 @@ let sendFreeEpisodeEmailMiddleware:
   requireAdmin
     <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
     <| sendFreeEpisodeEmails
-    >-> redirect(to: .admin(.index))
+    >=> redirect(to: .admin(.index))
 
 func fetchEpisode(_ id: Episode.Id) -> Episode? {
   return Current.episodes().first(where: { $0.id == id })

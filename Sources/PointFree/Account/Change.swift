@@ -18,7 +18,7 @@ let subscriptionChangeShowResponse =
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: subscriptionChangeShowView,
       layoutData: { subscription, currentUser, seatsTaken, subscriberState in
@@ -62,13 +62,15 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     let shouldProrate = newPrice > currentPrice
     let shouldInvoice = newPricing.plan == currentSubscription.plan.id
       && newPricing.quantity > currentSubscription.quantity
+      || shouldProrate
+      && newPricing.interval == currentSubscription.plan.interval
 
     return Current.stripe
       .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if shouldInvoice {
           parallel(
-            Current.stripe.invoiceCustomer(sub.customer)
+            Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
               .withExcept(notifyError(subject: "Invoice Failed"))
               .run
             )

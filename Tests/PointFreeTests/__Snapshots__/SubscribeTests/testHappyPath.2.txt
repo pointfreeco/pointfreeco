@@ -1,8 +1,8 @@
-▿ PointFree.Database.Subscription
+▿ Subscription
   ▿ id: 00000000-0000-0000-0000-000000000002
     - rawValue: 00000000-0000-0000-0000-000000000002
   ▿ stripeSubscriptionId: sub_test
     - rawValue: "sub_test"
-  - stripeSubscriptionStatus: PointFree.Stripe.Subscription.Status.active
+  - stripeSubscriptionStatus: Status.active
   ▿ userId: 00000000-0000-0000-0000-000000000001
     - rawValue: 00000000-0000-0000-0000-000000000001

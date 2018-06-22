@@ -16,7 +16,10 @@ COPY Sources ./Sources
 COPY Tests ./Tests
 
 # cmark
-RUN make linux-install-cmark
+RUN apt-get -y install cmake
+RUN git clone https://github.com/commonmark/cmark
+RUN make -C cmark INSTALL_PREFIX=/usr
+RUN make -C cmark install
 
 RUN swift package update
 RUN swift build --product Server --configuration release

@@ -17,7 +17,7 @@ let invoicesResponse =
     <<< requireStripeSubscription
     <<< fetchInvoices
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: invoicesView,
       layoutData: { subscription, invoicesEnvelope, currentUser, subscriberState in
@@ -42,7 +42,7 @@ let invoiceResponse =
       or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
     )
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: invoiceView,
       layoutData: { subscription, currentUser, invoice in
@@ -63,7 +63,7 @@ private func fetchInvoices<A>(
     return { conn in
       let subscription = conn.data.first
 
-      return Current.stripe.fetchInvoices(subscription.customer)
+      return Current.stripe.fetchInvoices(subscription.customer.either(id, ^\.id))
         .withExcept(notifyError(subject: "Couldn't load invoices"))
         .run
         .flatMap {
@@ -99,7 +99,7 @@ If the problem persists, please notify <support@pointfree.co>.
 """
 
 private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, Database.User, Stripe.Invoice>) -> Bool {
-  return get1(data).customer.id == get3(data).customer
+  return get1(data).customer.either(id, ^\.id) == get3(data).customer
 }
 
 // MARK: Views
@@ -200,7 +200,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                 ]),
               ]
               <> (
-                invoice.charge.map {
+                invoice.charge?.right.map {
                   [
                     gridRow([
                       gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
@@ -215,7 +215,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   ?? []
               )
               <> (
-                subscription.customer.businessVatId.map {
+                subscription.customer.right?.businessVatId.map {
                   [
                     gridRow([
                       gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [

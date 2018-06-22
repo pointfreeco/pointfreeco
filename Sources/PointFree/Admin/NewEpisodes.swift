@@ -13,7 +13,7 @@ import Tuple
 let showNewEpisodeEmailMiddleware =
   requireAdmin
     <| writeStatus(.ok)
-    >-> respond(showNewEpisodeView.contramap(lower))
+    >=> respond(showNewEpisodeView.contramap(lower))
 
 private let showNewEpisodeView = View<Database.User> { _ in
   ul(
@@ -51,7 +51,7 @@ let sendNewEpisodeEmailMiddleware:
       or: redirect(to: .admin(.newEpisodeEmail(.show)))
     )
     <| sendNewEpisodeEmails
-    >-> redirect(to: .admin(.index))
+    >=> redirect(to: .admin(.index))
 
 private func sendNewEpisodeEmails<I>(
   _ conn: Conn<I, Tuple5<Database.User, Episode, String?, String? , Bool>>

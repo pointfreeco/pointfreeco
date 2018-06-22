@@ -13,8 +13,8 @@ import Tuple
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
-    >-> writeStatus(.ok)
-    >-> respond(
+    >=> writeStatus(.ok)
+    >=> respond(
       view: accountView,
       layoutData: { data in
         SimplePageLayoutData(
@@ -598,7 +598,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
 }
 
 private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscription -> [Node] in
-  guard let card = subscription.customer.sources.data.first else { return [] }
+  guard let card = subscription.customer.right?.sources.data.first else { return [] }
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [

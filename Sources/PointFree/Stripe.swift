@@ -11,12 +11,12 @@ public struct Stripe {
   public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
-  public var fetchInvoices: (Customer) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
+  public var fetchInvoices: (Customer.Id) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
   public var fetchPlans: EitherIO<Swift.Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
-  public var invoiceCustomer: (Customer) -> EitherIO<Swift.Error, Invoice>
-  public var updateCustomer: (Customer, Token.Id) -> EitherIO<Swift.Error, Customer>
+  public var invoiceCustomer: (Customer.Id) -> EitherIO<Swift.Error, Invoice>
+  public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Swift.Error, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Swift.Error, Subscription>
   public var js: String
 
@@ -128,7 +128,7 @@ public struct Stripe {
   public struct Invoice: Codable {
     public private(set) var amountDue: Cents
     public private(set) var amountPaid: Cents
-    public private(set) var charge: Charge?
+    public private(set) var charge: Either<Charge.Id, Charge>?
     public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
@@ -222,7 +222,7 @@ public struct Stripe {
     public private(set) var created: Date
     public private(set) var currentPeriodStart: Date
     public private(set) var currentPeriodEnd: Date
-    public private(set) var customer: Customer
+    public private(set) var customer: Either<Customer.Id, Customer>
     public private(set) var endedAt: Date?
     public private(set) var id: Id
     public private(set) var items: ListEnvelope<Item>
@@ -337,8 +337,8 @@ private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoi
   return stripeDataTask("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-private func fetchInvoices(for customer: Stripe.Customer) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
-  return stripeDataTask("invoices?customer=" + customer.id.rawValue + "&expand[]=data.charge&limit=100")
+private func fetchInvoices(for customer: Stripe.Customer.Id) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
+  return stripeDataTask("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
 }
 
 private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
@@ -352,18 +352,18 @@ private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, St
   return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
-private func invoiceCustomer(_ customer: Stripe.Customer)
+private func invoiceCustomer(_ customer: Stripe.Customer.Id)
   -> EitherIO<Error, Stripe.Invoice> {
 
     return stripeDataTask("invoices", .post([
-      "customer": customer.id.rawValue,
+      "customer": customer.rawValue,
       ]))
 }
 
-private func updateCustomer(_ customer: Stripe.Customer, _ token: Stripe.Token.Id)
+private func updateCustomer(_ customer: Stripe.Customer.Id, _ token: Stripe.Token.Id)
   -> EitherIO<Error, Stripe.Customer> {
 
-    return stripeDataTask("customers/" + customer.id.rawValue, .post([
+    return stripeDataTask("customers/" + customer.rawValue, .post([
       "source": token.rawValue,
       ]))
 }

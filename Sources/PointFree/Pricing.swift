@@ -34,6 +34,29 @@ public struct Pricing {
     case quantity
   }
 
+  var interval: Stripe.Plan.Interval {
+    switch self.billing {
+    case .monthly:
+      return .month
+    case .yearly:
+      return .year
+    }
+  }
+
+  var isIndividual: Bool {
+    return self.lane == .individual
+  }
+
+  var isTeam: Bool {
+    return self.lane == .team
+  }
+
+  var lane: Lane {
+    return self.quantity == 1
+      ? .individual
+      : .team
+  }
+
   var plan: Stripe.Plan.Id {
     switch (self.billing, self.quantity) {
     case (.monthly, 1):
@@ -45,20 +68,6 @@ public struct Pricing {
     case (.yearly, _):
       return .teamYearly
     }
-  }
-
-  var lane: Lane {
-    return self.quantity == 1
-      ? .individual
-      : .team
-  }
-
-  var isIndividual: Bool {
-    return self.lane == .individual
-  }
-
-  var isTeam: Bool {
-    return self.lane == .team
   }
 }
 
@@ -86,7 +95,7 @@ extension Pricing: Codable {
 let pricingResponse =
   redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
-    >-> map(lower)
+    >=> map(lower)
     >>> respond(
       view: pricingView,
       layoutData: { currentUser, pricing, expand, route in
