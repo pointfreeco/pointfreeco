@@ -3,7 +3,7 @@ import Foundation
 let post0006_taggedSecondsAndMilliseconds = BlogPost(
   author: .brandon,
   blurb: """
-Let's create a type-safe interface to dealing with seconds and milliseconds in our programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
+Let's create a type-safe interface for dealing with seconds and milliseconds in our programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
 """,
   contentBlocks: [
 
@@ -17,7 +17,7 @@ Let's create a type-safe interface to dealing with seconds and milliseconds in o
       content: """
 ---
 
-> Let's create a type-safe interface to dealing with seconds and milliseconds in our programs. We'll use the
+> Let's create a type-safe interface for dealing with seconds and milliseconds in our programs. We'll use the
 `Tagged` type, which allows us to construct all new types in a lightweight way.
 
 ---
@@ -104,7 +104,7 @@ Let's fix that!
 
     .init(
       content: """
-So, let's strengthen this field by using `Tagged`. The simplest thing would be to create two new types that
+Let's strengthen this field by using `Tagged`. The simplest thing would be to create two new types that
 tag `Double` with two different tags:
 """,
     timestamp: nil,
@@ -183,7 +183,7 @@ let futureTime: Milliseconds = 1528378451000
 
 breakingBlogPost.publishedAt < futureTime
 // 🛑 Binary operator '<' cannot be applied to operands of type
-// 'Tagged<SecondsTag, Int>' and 'Tagged<MillisecondsTag, Int>'
+// 'Tagged<SecondsTag, Double>' and 'Tagged<MillisecondsTag, Double>'
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -222,8 +222,8 @@ generic type aliases in Swift to express that:
 
     .init(
       content: """
-enum MillsecondsTag {}
-typealias Milliseconds<A> = Tagged<MillsecondsTag, A>
+enum MillisecondsTag {}
+typealias Milliseconds<A> = Tagged<MillisecondsTag, A>
 
 enum SecondsTag {}
 typealias Seconds<A> = Tagged<SecondsTag, A>
@@ -342,7 +342,7 @@ And now we get to do:
     .init(
       content: """
 let millis: Milliseconds<Double> = 5500
-millis.seconds // 5.5: Milliseconds<Double>
+millis.seconds // 5.5: Seconds<Double>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -380,7 +380,7 @@ everything goes smoothly:
     .init(
       content: """
 let millis: Milliseconds<Int> = 500
-millis.map(Double.init).seconds // 0.5: Milliseconds<Double>
+millis.map(Double.init).seconds // 0.5: Seconds<Double>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -401,7 +401,7 @@ let millis: Milliseconds<Int> = 500
 millis
   .map(Double.init)
   .seconds
-  .map(Int.init) // 0: Double<Int>
+  .map(Int.init) // 0: Seconds<Int>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -434,8 +434,8 @@ easy this was to accomplish:
 
     .init(
       content: """
-enum MillsecondsTag {}
-typealias Milliseconds<A> = Tagged<MillsecondsTag, A>
+enum MillisecondsTag {}
+typealias Milliseconds<A> = Tagged<MillisecondsTag, A>
 
 enum SecondsTag {}
 typealias Seconds<A> = Tagged<SecondsTag, A>
