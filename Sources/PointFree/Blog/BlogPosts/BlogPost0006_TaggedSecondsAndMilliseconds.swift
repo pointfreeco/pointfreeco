@@ -3,7 +3,7 @@ import Foundation
 let post0006_taggedSecondsAndMilliseconds = BlogPost(
   author: .brandon,
   blurb: """
-Let's create a type-safe interface to dealing with seconds and milliseconds in our programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
+Let's create a type-safe interface for dealing with seconds and milliseconds in our programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
 """,
   contentBlocks: [
 
