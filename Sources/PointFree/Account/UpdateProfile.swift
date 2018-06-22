@@ -41,7 +41,7 @@ private func fetchStripeSubscription<A>(
 
     return { conn -> IO<Conn<ResponseEnded, Data>> in
       guard let subscription = get1(conn.data)
-        else { return middleware(conn.map(over1(const(Stripe.Subscription?.none)))) }
+        else { return middleware(conn.map(over1(const(nil)))) }
 
       return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .run
