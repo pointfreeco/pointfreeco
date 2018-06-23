@@ -1,3 +1,4 @@
+import Either
 import Html
 import HtmlTestSupport
 import HtmlPrettyPrint
@@ -23,7 +24,9 @@ class UpdateProfileTests: TestCase {
     )
 
     let update = request(
-      to: .account(.update(.init(email: "blobby@blob.co", name: "Blobby McBlob", emailSettings: [:]))),
+      to: .account(
+        .update(ProfileData(email: "blobby@blob.co", extraInvoiceInfo: nil, emailSettings: [:], name: "Blobby McBlob"))
+      ),
       session: .init(flash: nil, userId: user.id)
     )
 
@@ -60,7 +63,9 @@ class UpdateProfileTests: TestCase {
     )
 
     let update = request(
-      to: .account(.update(.init(email: user.email, name: user.name, emailSettings: ["newEpisode": "on"]))),
+      to: .account(
+        .update(.init(email: user.email, extraInvoiceInfo: nil, emailSettings: ["newEpisode": "on"], name: user.name))
+      ),
       session: .init(flash: nil, userId: user.id)
     )
 
@@ -79,5 +84,46 @@ class UpdateProfileTests: TestCase {
     #if !os(Linux)
       assertSnapshot(matching: output)
     #endif
+  }
+
+  func testUpdateExtraInvoiceInfo() {
+    var updatedCustomerWithExtraInvoiceInfo: String!
+
+    let stripeSubscription = Stripe.Subscription.mock
+      |> \.customer .~ .right(
+        .mock
+          |> \.metadata .~ ["extraInvoiceInfo": "VAT: 1234567890"]
+    )
+
+    Current = .teamYearly
+      |> \.stripe.fetchSubscription .~ const(pure(stripeSubscription))
+      |> \.stripe.updateCustomerExtraInvoiceInfo .~ { _, info -> EitherIO<Error, Stripe.Customer> in
+        updatedCustomerWithExtraInvoiceInfo = info
+        return pure(.mock)
+    }
+
+    let update = request(
+      to: .account(
+        .update(
+          .init(
+            email: "blob@pointfree.co",
+            extraInvoiceInfo: "VAT: 123456789",
+            emailSettings: ["newEpisode": "on"],
+            name: "Blob"
+          )
+        )
+      ),
+      session: .init(flash: nil, userId: Database.User.Id.init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+    )
+
+    let output = connection(from: update)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: output)
+    #endif
+
+    XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)
   }
 }

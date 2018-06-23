@@ -79,7 +79,7 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
 }
 
 private let connectToPostgres =
-  print(message: "  ⚠️ Connecting to PostgreSQL...")
+  print(message: "  ⚠️ Connecting to PostgreSQL at \(Current.envVars.postgres.databaseUrl)")
     .flatMap { _ in Current.database.migrate() }
     .catch { print(message: "  ❌ Error! \($0)").flatMap(const(throwE($0))) }
     .retry(maxRetries: 999_999, backoff: const(.seconds(1)))
