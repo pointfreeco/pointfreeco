@@ -349,6 +349,11 @@ public func update<A>(_ value: inout A, _ changes: ((inout A) -> Void)...) {
   concat(changes)(&value)
 }
 
+func zip2<A, B>(_ a: A?, _ b: B?) -> (A, B)? {
+  guard let a = a, let b = b else { return nil }
+  return (a, b)
+}
+
 public func responseTimeout(_ interval: TimeInterval)
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> {
