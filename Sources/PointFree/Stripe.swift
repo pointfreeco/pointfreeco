@@ -17,6 +17,7 @@ public struct Stripe {
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
   public var invoiceCustomer: (Customer.Id) -> EitherIO<Swift.Error, Invoice>
   public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Swift.Error, Customer>
+  public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Swift.Error, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Swift.Error, Subscription>
   public var js: String
 
@@ -31,12 +32,13 @@ public struct Stripe {
     fetchPlan: PointFree.fetchPlan,
     fetchSubscription: PointFree.fetchSubscription,
     invoiceCustomer: PointFree.invoiceCustomer,
-    updateCustomer: PointFree.updateCustomer,
+    updateCustomer: PointFree.updateCustomer(id:token:),
+    updateCustomerExtraInvoiceInfo: PointFree.updateCustomer(id:extraInvoiceInfo:),
     updateSubscription: PointFree.updateSubscription,
     js: "https://js.stripe.com/v3/"
   )
 
-  public struct Card: Codable {
+  public struct Card: Codable, Equatable {
     public private(set) var brand: Brand
     public private(set) var customer: Customer.Id
     public private(set) var expMonth: Int
@@ -46,7 +48,7 @@ public struct Stripe {
 
     public typealias Id = Tagged<Card, String>
 
-    public enum Brand: String, Codable {
+    public enum Brand: String, Codable, Equatable {
       case visa = "Visa"
       case americanExpress = "American Express"
       case masterCard = "MasterCard"
@@ -87,6 +89,7 @@ public struct Stripe {
     public private(set) var businessVatId: Vat?
     public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
+    public private(set) var metadata: [String: String]
     public private(set) var sources: ListEnvelope<Card>
 
     public typealias Id = Tagged<(Customer, id: ()), String>
@@ -96,7 +99,12 @@ public struct Stripe {
       case businessVatId = "business_vat_id"
       case defaultSource = "default_source"
       case id
+      case metadata
       case sources
+    }
+
+    public var extraInvoiceInfo: String? {
+      return self.metadata[#function]
     }
   }
 
@@ -282,6 +290,12 @@ public struct Stripe {
   }
 }
 
+extension Stripe.ListEnvelope: Equatable where A: Equatable {
+  public static func == (lhs: Stripe.ListEnvelope<A>, rhs: Stripe.ListEnvelope<A>) -> Bool {
+    return lhs.data == rhs.data && lhs.hasMore == rhs.hasMore
+  }
+}
+
 extension Tagged where Tag == Stripe.Plan, RawValue == String {
   static var individualMonthly: Stripe.Plan.Id {
     return "individual-monthly"
@@ -360,12 +374,19 @@ private func invoiceCustomer(_ customer: Stripe.Customer.Id)
       ]))
 }
 
-private func updateCustomer(_ customer: Stripe.Customer.Id, _ token: Stripe.Token.Id)
+private func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
   -> EitherIO<Error, Stripe.Customer> {
 
-    return stripeDataTask("customers/" + customer.rawValue, .post([
+    return stripeDataTask("customers/" + id.rawValue, .post([
       "source": token.rawValue,
       ]))
+}
+
+private func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> EitherIO<Swift.Error, Stripe.Customer> {
+
+  return stripeDataTask("customers/" + id.rawValue, .post([
+    "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
+    ]))
 }
 
 private func updateSubscription(
@@ -396,7 +417,7 @@ let stripeJsonEncoder = JSONEncoder()
 
 private enum Method {
   case get
-  case post([String: String])
+  case post([String: Any])
   case delete([String: String])
 }
 

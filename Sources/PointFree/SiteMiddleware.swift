@@ -69,7 +69,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> reactivateMiddleware
 
     case let .account(.update(data)):
-      return conn.map(const(data .*. user .*. unit))
+      return conn.map(const(user .*. data .*. unit))
         |> updateProfileMiddleware
 
     case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
