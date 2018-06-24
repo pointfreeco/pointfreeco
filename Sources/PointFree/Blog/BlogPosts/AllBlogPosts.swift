@@ -15,4 +15,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0004_overtureSetters,
   post0005_stylingWithFunctions,
   post0006_taggedSecondsAndMilliseconds,
+  post0007_openSourcingNonEmpty,
 ]
