@@ -10,10 +10,11 @@ public enum GitHubRoute: DerivePartialIsos {
   case repo(Repo)
 
   public enum Repo: String, RawRepresentable {
+    case nonempty = "swift-nonempty"
     case overture = "swift-overture"
     case pointfreeco
-    case pointfreecoServer = "pointfreeco-server"
     case prelude = "swift-prelude"
+    case tagged = "swift-tagged"
     case web = "swift-web"
   }
 }
