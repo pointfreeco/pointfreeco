@@ -196,7 +196,7 @@ Array(1...10)
     .init(
       content: """
 The implementation is pretty straightforward, and it works well enough. However, can the `[Element]` array
-inside the return ever be empty? What key value in `A` could even be associated with an empty array, for the
+inside the return ever be empty? What key value in `A` could even be associated with an empty array? The
 only way to generate `A` values is from `Element` values.
 
 Indeed, the `[Element]` array can _never_ be empty, but the API isn't letting us know that. So in our code,
@@ -235,8 +235,8 @@ Array(1...10)
 
     .init(
       content: """
-We didn't have to change much in the implementation, we get the same output, but the API is describing
-more about the data it returns now.
+We didn't have to change much in the implementation, we get essentially the same output, but the API is
+describing more about the data it returns now.
 
 ### Random Values
 
@@ -342,6 +342,9 @@ print(query([]))
 
     .init(
       content: """
+We now have the compiler proving to us that it is impossible to generate an invalid GraphQL query of this
+form.
+
 ### `Validated`
 
 Let's do one more just to show how often these non-empty types pop up in every day coding!
@@ -464,9 +467,10 @@ Conclusion
     .init(
       content: """
 We have now see 4 applications of the `NonEmpty` type, but there are so many more. We encourage the reader
-to start looking critically at their own code, API's and interactions with other API's to see where
-non-empty types might be appropriate. By pushing the non-emptiness requirement to the type level you
-get to enforce this invariant in a single place rather than sprinkle `if`'s and `guard`'s into your code.
+to start looking critically at their own application code, their library API's and their interactions with
+other API's to see where non-empty types might be appropriate. By pushing the non-emptiness requirement to
+the type level you get to enforce this invariant in a single place rather than sprinkle `if`'s and `guard`'s
+into your code.
 
 If you want to give `NonEmpty` a spin, then check out our
 [open source repo](\(gitHubUrl(to: .repo(.nonempty)))).
