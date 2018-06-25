@@ -467,8 +467,8 @@ Conclusion
     .init(
       content: """
 We have now see 4 applications of the `NonEmpty` type, but there are so many more. We encourage the reader
-to start looking critically at their own application code, their library API's and their interactions with
-other API's to see where non-empty types might be appropriate. By pushing the non-emptiness requirement to
+to start looking critically at their own application code, their library APIs and their interactions with
+other APIs to see where non-empty types might be appropriate. By pushing the non-emptiness requirement to
 the type level you get to enforce this invariant in a single place rather than sprinkle `if`'s and `guard`'s
 into your code.
 
