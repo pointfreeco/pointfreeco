@@ -330,10 +330,10 @@ func query(_ fields: NonEmptySet<UserField>) -> String {
     .joined(separator: " ")
 }
 
-print(query(.init([.name, .email])))
+print(query(.init(.name, .email)))
 // { name email }
 
-print(query([]))
+print(query(.init()))
 // 🛑 Compile error
 """,
       timestamp: nil,
