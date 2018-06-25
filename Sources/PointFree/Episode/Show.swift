@@ -657,6 +657,24 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
       )
       ])
 
+  case .correction:
+    return div(
+      [
+        `class`([
+          Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
+          Class.padding([.mobile: [.all: 2]]),
+          ]),
+        style("background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
+      ],
+      [
+        h3([`class`([Class.pf.type.responsiveTitle6])], ["Correction"]),
+        div(
+          [`class`([Class.pf.type.body.regular])],
+          [markdownBlock(block.content)]
+        ),
+      ]
+    )
+
   case let .image(src):
     return a(
       [
