@@ -186,7 +186,7 @@ extension Sequence {
 }
 
 Array(1...10)
-  .groupBy { $0 % 3 == 0 }
+  .groupBy { $0 % 3 }
 // [0: [3, 6, 9], 1: [1, 4, 7, 10], 2: [2, 5, 8]]
 """,
       timestamp: nil,
