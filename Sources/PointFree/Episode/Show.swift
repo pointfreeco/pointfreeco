@@ -663,8 +663,9 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         `class`([
           Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
           Class.padding([.mobile: [.all: 2]]),
+          Class.pf.colors.bg.red
           ]),
-        style("background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
+        style("border-left: 3px solid #eb1c26;")
       ],
       [
         h3([`class`([Class.pf.type.responsiveTitle6])], ["Correction"]),
