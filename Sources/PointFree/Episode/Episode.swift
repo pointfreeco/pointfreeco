@@ -90,6 +90,7 @@ public struct Episode {
 
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
+      case correction
       case image(src: String)
       case paragraph
       case title
