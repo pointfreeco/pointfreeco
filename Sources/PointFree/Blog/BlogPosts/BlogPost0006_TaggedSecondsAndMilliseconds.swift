@@ -399,9 +399,9 @@ division, and again to lower back to the world you want to be in. For example:
       content: """
 let millis: Milliseconds<Int> = 500
 millis
-  .map(Double.init)
-  .seconds
-  .map(Int.init) // 0: Seconds<Int>
+  .map(Double.init) // 500.0: Milliseconds<Double>
+  .seconds          // 0.5: Seconds<Double>
+  .map(Int.init)    // 0: Seconds<Int>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
