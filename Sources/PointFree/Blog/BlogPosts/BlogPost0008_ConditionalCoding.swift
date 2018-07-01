@@ -17,9 +17,7 @@ TODO
       content: """
 ---
 
-> Today we are open sourcing [NonEmpty](\(gitHubUrl(to: .repo(.nonempty)))), a Swift library for modeling
-non-empty collection types. This small library can help make your code safer and more expressive with very
-little work.
+> TODO
 
 ---
 """,
