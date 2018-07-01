@@ -1,13 +1,8 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/account
+Cookie: pf_session={"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
 
-▿ Request
-  POST http://localhost:8080/account
-  Cookie: pf_session={"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
+name=Blob&email=blob@pointfree.co&extraInvoiceInfo=VAT:%20123456789&emailSettings[newEpisode]=on
 
-  name=Blob&email=blob@pointfree.co&extraInvoiceInfo=VAT:%20123456789&emailSettings[newEpisode]=on
-
-▿ Response
-  Status 302 FOUND
-  Location: /account
-  Set-Cookie: pf_session={"flash":{"message":"We’ve sent an email to hello@pointfree.co to confirm this change.","priority":"warning"},"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /account
+Set-Cookie: pf_session={"flash":{"message":"We’ve sent an email to hello@pointfree.co to confirm this change.","priority":"warning"},"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/

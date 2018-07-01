@@ -73,7 +73,7 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
   switch Current.cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))
-      .flatMap { String(data: $0, encoding: .utf8) }
+      .map { String(decoding: $0, as: UTF8.self) }
       .map { Response.Header.setCookie(key, $0, options) }
 
   case .encrypted:

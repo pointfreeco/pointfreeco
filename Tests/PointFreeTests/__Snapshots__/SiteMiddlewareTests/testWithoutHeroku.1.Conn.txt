@@ -1,12 +1,5 @@
-▿ Step
-  ResponseEnded
+GET https://pointfreeco.herokuapp.com
+X-Forwarded-Proto: https
 
-▿ Request
-  GET https://pointfreeco.herokuapp.com
-  X-Forwarded-Proto: https
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 301 MOVED PERMANENTLY
-  Location: https://www.pointfree.co
+301 Moved Permanently
+Location: https://www.pointfree.co

@@ -97,7 +97,7 @@ private func styles(for breakpoint: Breakpoint) -> Stylesheet {
         <> flex(grow: 0, shrink: 0, basis: .auto)
   )
 
-  let cols = (1...12).map { idx in
+  let cols = (1...12).map { idx -> Stylesheet in
     Class.grid.col(breakpoint, idx) % (
       flex(basis: .pct(100 * Double(idx) / 12))
         <> maxWidth(.pct(100 * Double(idx) / 12))
