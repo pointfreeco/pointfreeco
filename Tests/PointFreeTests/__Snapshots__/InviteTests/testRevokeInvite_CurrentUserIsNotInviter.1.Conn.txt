@@ -1,13 +1,6 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000009/revoke
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-▿ Request
-  POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000009/revoke
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /account
-  Set-Cookie: pf_session={"flash":{"message":"You need to be the inviter to do that!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /account
+Set-Cookie: pf_session={"flash":{"message":"You need to be the inviter to do that!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/

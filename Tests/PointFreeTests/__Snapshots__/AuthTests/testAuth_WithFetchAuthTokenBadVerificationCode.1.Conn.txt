@@ -1,12 +1,5 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/github-auth?code=deadbeef
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/github-auth?code=deadbeef
-  Cookie: pf_session={}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /login
+302 Found
+Location: /login

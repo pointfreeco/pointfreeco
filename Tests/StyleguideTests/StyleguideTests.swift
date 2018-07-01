@@ -7,12 +7,12 @@ import XCTest
 class StyleguideTests: TestCase {
   func testStyleguide() {
     assertSnapshot(
-      matching: render(config: pretty, css: styleguide),
+      matching: render(config: .pretty, css: styleguide),
       named: "pretty",
       pathExtension: "css"
     )
     assertSnapshot(
-      matching: render(config: compact, css: styleguide),
+      matching: render(config: .compact, css: styleguide),
       named: "mini",
       pathExtension: "css"
     )
@@ -20,12 +20,12 @@ class StyleguideTests: TestCase {
 
   func testDesignSystem() {
     assertSnapshot(
-      matching: render(config: pretty, css: designSystems),
+      matching: render(config: .pretty, css: designSystems),
       named: "pretty",
       pathExtension: "css"
     )
     assertSnapshot(
-      matching: render(config: compact, css: designSystems),
+      matching: render(config: .compact, css: designSystems),
       named: "mini",
       pathExtension: "css"
     )
@@ -33,12 +33,12 @@ class StyleguideTests: TestCase {
 
   func testPointFreeStyles() {
     assertSnapshot(
-      matching: render(config: pretty, css: pointFreeBaseStyles),
+      matching: render(config: .pretty, css: pointFreeBaseStyles),
       named: "pretty",
       pathExtension: "css"
     )
     assertSnapshot(
-      matching: render(config: compact, css: pointFreeBaseStyles),
+      matching: render(config: .compact, css: pointFreeBaseStyles),
       named: "mini",
       pathExtension: "css"
     )
