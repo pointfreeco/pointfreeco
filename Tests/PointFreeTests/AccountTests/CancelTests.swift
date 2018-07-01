@@ -71,7 +71,7 @@ final class CancelTests: TestCase {
   func testCancelEmail() {
     let doc = cancelEmailView.view((.mock, .mock)).first!
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -139,7 +139,7 @@ final class CancelTests: TestCase {
   func testReactivateEmail() {
     let doc = reactivateEmailView.view((.mock, .mock)).first!
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

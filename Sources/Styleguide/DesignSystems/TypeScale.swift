@@ -48,7 +48,7 @@ extension Class {
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
       .map { breakpoint, typeScale in
         selector(breakpoint: breakpoint, typeScale: typeScale)
-      }
+    }
     return selectors
       .dropFirst()
       .reduce(selectors.first ?? .class("not-found"), |)

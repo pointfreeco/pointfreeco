@@ -170,7 +170,7 @@ final class StripeWebhooksTests: TestCase {
   func testPastDueEmail() {
     let doc = pastDueEmailView.view(unit).first!
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

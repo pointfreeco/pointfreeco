@@ -14,7 +14,7 @@ class ChangeEmailConfirmationTests: TestCase {
   func testChangeEmailConfirmationEmail() {
     let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co"))
 
-    assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -29,7 +29,7 @@ class ChangeEmailConfirmationTests: TestCase {
   func testChangedEmail() {
     let emailNodes = emailChangedEmailView.view((.mock, "blobby@blob.co"))
 
-    assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {

@@ -14,7 +14,7 @@ class TeamEmailsTests: TestCase {
   func testYouHaveBeenRemovedEmailView() {
     let emailNodes = youHaveBeenRemovedEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -29,7 +29,7 @@ class TeamEmailsTests: TestCase {
   func testTeammateRemovedEmailView() {
     let emailNodes = teammateRemovedEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: render(emailNodes, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {

@@ -1,12 +1,5 @@
-▿ Step
-  ResponseEnded
+GET https://pointfree.co/episodes
+X-Forwarded-Proto: https
 
-▿ Request
-  GET https://pointfree.co/episodes
-  X-Forwarded-Proto: https
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 301 MOVED PERMANENTLY
-  Location: https://www.pointfree.co/episodes
+301 Moved Permanently
+Location: https://www.pointfree.co/episodes
