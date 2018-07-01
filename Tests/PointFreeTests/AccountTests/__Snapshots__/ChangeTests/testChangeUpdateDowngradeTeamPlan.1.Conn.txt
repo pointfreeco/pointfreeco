@@ -5,7 +5,7 @@
   POST http://localhost:8080/account/subscription/change
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-  lane=team&quantity=4&billing=monthly
+  lane=team&billing=monthly&quantity=4
 
 ▿ Response
   Status 302 FOUND

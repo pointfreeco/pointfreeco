@@ -177,7 +177,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div(["Bill to"]),
                   ]),
                 gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                  div([text(currentUser.displayName)]),
+                  div([text(currentUser.displayName)])
                   ]),
                 ]),
               ]),
@@ -229,6 +229,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   }
                   ?? []
               )
+              <> extraInvoiceInfo(subscription: subscription)
             ),
             ]),
           gridRow([`class`([Class.padding([.mobile: [.bottom: 2]]), Class.type.bold])], [
@@ -249,7 +250,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
           <> invoice.lines.data.map { item in
             gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
               gridColumn(sizes: [.mobile: 6, .desktop: 6], [], [
-                div([text(item.description ?? subscription.plan.name)]),
+                div([text(item.description ?? subscription.plan.name)])
                 ]),
               gridColumn(sizes: [.mobile: 2, .desktop: 2], [`class`([Class.type.align.end])], [
                 div([text("\(item.quantity)")]),
@@ -303,4 +304,27 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
       )
       ])
     ])
+}
+
+private func extraInvoiceInfo(subscription: Stripe.Subscription) -> [Node] {
+  guard let extraInvoiceInfo = subscription.customer.right?.extraInvoiceInfo else { return [] }
+
+  let extraInvoiceInfoNodes = intersperse(Html.br)
+    <| extraInvoiceInfo
+      .components(separatedBy: CharacterSet.newlines)
+      .filter { !$0.isEmpty }
+      .map(Html.text)
+
+  return [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+        div(["User Info"]),
+        ]),
+      gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+        div(
+          extraInvoiceInfoNodes
+        )
+        ])
+      ])
+  ]
 }

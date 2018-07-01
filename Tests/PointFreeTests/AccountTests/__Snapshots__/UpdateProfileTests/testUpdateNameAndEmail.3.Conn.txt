@@ -5,7 +5,7 @@
   POST http://localhost:8080/account
   Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-  &email=blobby@blob.co&name=Blobby%20McBlob
+  name=Blobby%20McBlob&&email=blobby@blob.co
 
 ▿ Response
   Status 302 FOUND

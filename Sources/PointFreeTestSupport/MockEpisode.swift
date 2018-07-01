@@ -43,6 +43,14 @@ private let paidEpisode = Episode(
     ),
     Episode.TranscriptBlock(
       content: """
+      This is a correction for those time we make mistakes… it happens! We can use _markdown_ in this block,
+      including code snippets: `map(f >>> g)`.
+      """,
+      timestamp: nil,
+      type: .correction
+    ),
+    Episode.TranscriptBlock(
+      content: """
       Here we have created a whole new transcript block so that we can associate a timestamp with it.
       """,
       timestamp: 30,
