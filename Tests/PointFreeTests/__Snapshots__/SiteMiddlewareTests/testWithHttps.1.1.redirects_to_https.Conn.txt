@@ -1,11 +1,4 @@
-▿ Step
-  ResponseEnded
+GET http://www.pointfree.co
 
-▿ Request
-  GET http://www.pointfree.co
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 301 MOVED PERMANENTLY
-  Location: https://www.pointfree.co
+301 Moved Permanently
+Location: https://www.pointfree.co

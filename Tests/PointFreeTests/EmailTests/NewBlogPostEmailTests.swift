@@ -15,7 +15,7 @@ class NewBlogPostEmailTests: TestCase {
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() {
     let doc = newBlogPostEmail.view((post, "", "", .mock))
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -33,7 +33,7 @@ class NewBlogPostEmailTests: TestCase {
   func testNewBlogPostEmail_NoAnnouncements_NonSubscriber() {
     let doc = newBlogPostEmail.view((post, "", "", .nonSubscriber))
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -51,7 +51,7 @@ class NewBlogPostEmailTests: TestCase {
   func testNewBlogPostEmail_Announcements_Subscriber() {
     let doc = newBlogPostEmail.view((post, "Hey, thanks for being a subscriber! You're the best!", "", .mock))
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -69,7 +69,7 @@ class NewBlogPostEmailTests: TestCase {
   func testNewBlogPostEmail_Announcements_NonSubscriber() {
     let doc = newBlogPostEmail.view((post, "", "Hey! You're not a subscriber, but that's ok. At least you're interested in functional programming!", .nonSubscriber))
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

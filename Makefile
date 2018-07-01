@@ -1,3 +1,5 @@
+test-linux: sourcery
+	docker-compose up --abort-on-container-exit --build
 
 bootstrap:
 	@if test -e Sources/PointFree/Transcripts/.git; \
@@ -299,13 +301,15 @@ xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
 	@swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
 	@echo "  ✅ Generated!"
-	@sleep 1 && xed .
 
-submodule:
+submodules:
 	@echo "  ⚠️  Fetching transcripts..."
 	@git submodule sync --recursive >/dev/null
 	@git submodule update --init --recursive >/dev/null
 	@echo "  ✅ Fetched!"
+
+linux-start:
+	docker-compose up --build
 
 env-local:
 	heroku config --json -a pointfreeco-local > .env
@@ -322,9 +326,9 @@ test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
-	@docker stop $(docker ps -a -q)
-	@docker rm -f $(docker ps -a -q)
-	@docker rmi -f $(docker images -q)
+	@docker container ls --all --quiet \
+		| xargs docker container stop \
+		&& docker system prune --all --force --volumes
 
 SUDO = sudo --prompt=$(SUDO_PROMPT)
 SUDO_PROMPT = "  🔒 Please enter your password: "

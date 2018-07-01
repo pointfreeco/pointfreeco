@@ -1,12 +1,5 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/account/subscription/change
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/account/subscription/change
-  Cookie: pf_session={}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /login?redirect=http://localhost:8080/account/subscription/change
+302 Found
+Location: /login?redirect=http://localhost:8080/account/subscription/change

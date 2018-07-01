@@ -1,12 +1,5 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000009/accept
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-▿ Request
-  POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000009/accept
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /account
+302 Found
+Location: /account
