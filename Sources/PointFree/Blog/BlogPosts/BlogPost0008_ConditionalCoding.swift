@@ -3,21 +3,21 @@ import Foundation
 let post0008_conditionalCoding = BlogPost(
   author: .stephen,
   blurb: """
-TODO
+What happens when we combine Swift's conditional conformance with codability?
 """,
   contentBlocks: [
 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "") // TODO
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0008-conditional-coding/poster.png")
     ),
 
     .init(
       content: """
 ---
 
-> TODO
+> What happens when we combine Swift's conditional conformance with codability?
 
 ---
 """,
@@ -273,7 +273,7 @@ Conditional conformance gives us the ability to eliminate even _more_ decoding b
     ),
 
   ],
-  coverImage: "", // TODO
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0008-conditional-coding/poster.png",
   id: 8,
   publishedAt: .init(timeIntervalSince1970: 1_530_525_423),
   title: "Conditional Coding"
