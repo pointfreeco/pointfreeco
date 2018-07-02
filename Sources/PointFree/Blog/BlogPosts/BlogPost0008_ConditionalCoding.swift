@@ -225,7 +225,7 @@ try decoder.decode(
       content: """
 We were able to reuse our generalized solution for `Expandable` with a totally different use case. We didn't have to write any more custom decoding logic: `Either` works like an `if`—`else` statement for decoding!
 
-That's two examples. How about a two more for good luck?
+That's two examples. How about two more for good luck?
 """,
       timestamp: nil,
       type: .paragraph
