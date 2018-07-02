@@ -27,7 +27,7 @@ What happens when we combine Swift's conditional conformance with codability?
 
     .init(
       content: """
-Swift 4 introduced the [`Codable`](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types) set of protocols and made working with JSON a breeze, eliminating the need for a lot of boilerplate we'd have previously had to write! Swift 4.1's [conditional conformance](https://swift.org/blog/conditional-conformance/) unlocks even _more_ potential, and lets us delete even _more_ boilerplate. Let's take a look at one particular example.
+Swift 4 introduced the [`Codable`](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types) set of protocols and made working with JSON a breeze, eliminating the need for a lot of boilerplate we previously had to write! Swift 4.1's [conditional conformance](https://swift.org/blog/conditional-conformance/) unlocks even _more_ potential, and lets us delete even _more_ boilerplate. Let's take a look at one particular example.
 """,
       timestamp: nil,
       type: .paragraph
@@ -232,7 +232,7 @@ That's two examples. How about a two more for good luck?
     ),
 
     .init(
-      content: "APIs Are Inconsistent",
+      content: "Inconsistent APIs",
       timestamp: nil,
       type: .title
     ),
@@ -256,7 +256,7 @@ struct User: Decodable {
     ),
 
     .init(
-      content: "APIs Change",
+      content: "Changing APIs",
       timestamp: nil,
       type: .title
     ),
