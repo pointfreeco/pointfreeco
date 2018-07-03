@@ -143,7 +143,7 @@ enum Either<Left, Right> {
 
     .init(
       content: """
-`Either` is the most trivial `enum` that we can define: it has two cases with two generic, associated values. `Expandable` is an enum that wasn't far off from this definition, and indeed we could have used `Either` to define `Expandable` using a type alias:
+`Either` is the most generic, non-trivial `enum` that we can define: it has two cases with two generic, associated values. `Expandable` is an enum that wasn't far off from this definition, and indeed we could have used `Either` to define `Expandable` using a type alias:
 """,
       timestamp: nil,
       type: .paragraph
