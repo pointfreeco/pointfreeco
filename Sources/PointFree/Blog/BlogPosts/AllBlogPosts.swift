@@ -16,4 +16,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0005_stylingWithFunctions,
   post0006_taggedSecondsAndMilliseconds,
   post0007_openSourcingNonEmpty,
+  post0008_conditionalCoding,
 ]
