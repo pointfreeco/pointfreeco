@@ -3,6 +3,12 @@ GET http://127.0.0.1:8080/
 200 OK
 Content-Length: 59472
 Content-Type: text/html; charset=utf-8
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
 
 <!DOCTYPE html>
 <html>
