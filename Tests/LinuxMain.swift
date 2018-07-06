@@ -12,6 +12,7 @@ extension AboutTests {
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
     ("testAccountWithFlashError", testAccountWithFlashError),
@@ -258,6 +259,12 @@ extension SiteMiddlewareTests {
     ("testWithHttps", testWithHttps)
   ]
 }
+extension StripeTests {
+  static var allTests: [(String, (StripeTests) -> () throws -> Void)] = [
+    ("testDecodingCustomer", testDecodingCustomer),
+    ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata)
+  ]
+}
 extension StripeWebhooksTests {
   static var allTests: [(String, (StripeWebhooksTests) -> () throws -> Void)] = [
     ("testDecoding", testDecoding),
@@ -296,7 +303,8 @@ extension TeamEmailsTests {
 extension UpdateProfileTests {
   static var allTests: [(String, (UpdateProfileTests) -> () throws -> Void)] = [
     ("testUpdateNameAndEmail", testUpdateNameAndEmail),
-    ("testUpdateEmailSettings", testUpdateEmailSettings)
+    ("testUpdateEmailSettings", testUpdateEmailSettings),
+    ("testUpdateExtraInvoiceInfo", testUpdateExtraInvoiceInfo)
   ]
 }
 
@@ -333,6 +341,7 @@ XCTMain([
   testCase(PrivacyTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
+  testCase(StripeTests.allTests),
   testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
