@@ -3,3 +3,9 @@ Cookie: pf_session={}
 
 302 Found
 Location: /login?redirect=http://localhost:8080/account/subscription/change
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
