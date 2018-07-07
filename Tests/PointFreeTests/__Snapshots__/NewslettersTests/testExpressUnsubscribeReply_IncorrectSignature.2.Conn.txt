@@ -6,6 +6,12 @@ sender=hello@pointfree.co&recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2
 404 Not Found
 Content-Length: 40967
 Content-Type: text/html; charset=utf-8
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
 
 <!DOCTYPE html>
 <html>
