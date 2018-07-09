@@ -128,6 +128,7 @@ public struct Stripe {
     }
 
     public enum `Type`: String, Codable {
+      case customerSubscriptionDeleted = "customer.subscription.deleted"
       case invoicePaymentFailed = "invoice.payment_failed"
       case invoicePaymentSucceeded = "invoice.payment_succeeded"
     }
