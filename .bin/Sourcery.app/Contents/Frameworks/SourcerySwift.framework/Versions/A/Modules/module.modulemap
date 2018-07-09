@@ -1,0 +1,11 @@
+framework module SourcerySwift {
+  umbrella header "SourcerySwift.h"
+
+  export *
+  module * { export * }
+}
+
+module SourcerySwift.Swift {
+    header "SourcerySwift-Swift.h"
+    requires objc
+}

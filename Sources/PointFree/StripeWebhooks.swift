@@ -8,10 +8,12 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 
-let stripeInvoiceWebhookMiddleware =
+let stripeWebhookMiddleware =
   validateStripeSignature
     <<< filterMap(
-      ^\Stripe.Event<Stripe.Invoice>.data.object.subscription >>> pure,
+      ^\Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.data.object
+        >>> either(^\.subscription, ^\.id)
+        >>> pure,
       or: writeStatus(.badRequest) >=> end // FIXME: admin email?
     )
     <| handleFailedPayment

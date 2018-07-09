@@ -1,0 +1,11 @@
+framework module SourceryJS {
+  umbrella header "SourceryJS.h"
+
+  export *
+  module * { export * }
+}
+
+module SourceryJS.Swift {
+    header "SourceryJS-Swift.h"
+    requires objc
+}
