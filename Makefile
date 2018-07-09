@@ -236,17 +236,6 @@ define POSTGRES_WARNING
 endef
 export POSTGRES_WARNING
 
-define SOURCERY_ERROR
-  🛑 Sourcery not found! Point-Free uses Sourcery to generate routes and Linux
-     tests.
-
-     You can install it with your favorite package manager, e.g.:
-
-       $$ \033[1mbrew\033[0m \033[38;5;66minstall sourcery\033[0m
-
-endef
-export SOURCERY_ERROR
-
 # colortheme
 
 COLOR_THEMES_PATH = $(HOME)/Library/Developer/Xcode/UserData/FontAndColorThemes
@@ -265,15 +254,10 @@ uninstall-colortheme:
 
 sourcery: sourcery-routes sourcery-tests
 
-check-sourcery:
-	@echo "  ⚠️  Checking on Sourcery..."
-	@command -v sourcery >/dev/null || (echo "$$SOURCER_ERROR" && exit 1)
-	@echo "  ✅ Sourcery is installed!"
-
-sourcery-routes: check-sourcery
+sourcery-routes:
 	@echo "  ⚠️  Generating routes..."
 	@mkdir -p ./Sources/PointFree/__Generated__
-	@sourcery \
+	@.bin/sourcery \
 		--quiet \
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
@@ -286,7 +270,7 @@ SOURCERY_TESTS_IMPORTS = \
 
 sourcery-tests: check-sourcery
 	@echo "  ⚠️  Generating tests..."
-	@sourcery \
+	@.bin/sourcery \
 		--quiet \
 		--sources ./Tests/ \
 		--templates ./.sourcery-templates/LinuxMain.stencil \
