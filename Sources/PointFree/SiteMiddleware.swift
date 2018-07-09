@@ -196,9 +196,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(Either.right(episodeId.rawValue) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
-    case let .webhooks(.stripe(.invoice(event))):
+    case let .webhooks(.stripe(.event(event))):
       return conn.map(const(event))
-        |> stripeInvoiceWebhookMiddleware
+        |> stripeWebhookMiddleware
 
     case .webhooks(.stripe(.fallthrough)):
       return conn
