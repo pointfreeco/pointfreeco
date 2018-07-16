@@ -1,5 +1,4 @@
-test-linux: sourcery
-	docker-compose up --abort-on-container-exit --build
+default: bootstrap
 
 bootstrap:
 	@if test -e Sources/PointFree/Transcripts/.git; \
@@ -306,6 +305,9 @@ deploy-local:
 deploy-production:
 	@heroku container:push web -a pointfreeco
 	@heroku container:release web -a pointfreeco
+
+test-linux: sourcery
+	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
 	@swift test -Xswiftc "-D" -Xswiftc "OSS"
