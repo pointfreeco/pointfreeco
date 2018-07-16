@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 59472
+Content-Length: 59481
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1828,7 +1828,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
           </div>
           <div class="m-mt3">
             <a href="/episodes/ep1-proof-in-functions" class="align-middle pf-link-purple fg-black normal h5 lh-4">
-              Watch episode
+              Watch episode (23 min)
               <img alt="" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4=" class="align-middle m-ml1" width="16" height="16">
             </a>
           </div>
