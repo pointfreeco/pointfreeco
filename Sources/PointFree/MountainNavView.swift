@@ -56,7 +56,7 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
 
       gridRow([`class`([Class.grid.center(.mobile), Class.padding([.mobile: [.topBottom: 2], .desktop: [.topBottom: 0]])])], [
         gridColumn(sizes: [:], [
-          a([href(mountainsStyle.heroHref)], [
+          a([href(path(to: .home))], [
             img(
               base64: mountainsStyle.heroLogoSvgBase64,
               mediaType: .image(.svg),
@@ -74,8 +74,8 @@ private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, Subscri
 
   return [
     a(
-      [href(mountainsStyle.otherStyle.heroHref), `class`([navLinkClasses])],
-      [text(mountainsStyle.otherStyle.navLinkName)]
+      [href(path(to: .blog(.index))), `class`([navLinkClasses])],
+      ["Blog"]
     ),
 
     subscriberState.isNonSubscriber
