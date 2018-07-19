@@ -1,7 +1,7 @@
 GET http://localhost:8080/404
 
 404 Not Found
-Content-Length: 40967
+Content-Length: 40926
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1686,10 +1686,7 @@ html {
             Page not found :(
           </h5>
           <pre>
-            <code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">
-              f: (Page) -&gt; Never
-            </code>
-          </pre>
+<code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">f: (Page) -&gt; Never</code>          </pre>
         </div>
       </div>
     </div>
