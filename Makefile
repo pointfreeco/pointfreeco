@@ -284,7 +284,7 @@ sourcery-tests: check-sourcery
 
 xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@xcun swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
+	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
 	@xed .
 	@echo "  ✅ Generated!"
 
