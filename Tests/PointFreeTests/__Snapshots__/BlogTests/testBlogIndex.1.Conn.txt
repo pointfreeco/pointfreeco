@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 110906
+Content-Length: 110853
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1823,16 +1823,13 @@ library. For example, here is some code:</p>
                 </div>
               </div>
               <pre>
-                <code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">
-                  struct PredicateSet&lt;A&gt; {
+<code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">struct PredicateSet&lt;A&gt; {
   let contains: (A) -&gt; Bool
 }
 
 func contramap&lt;A, B&gt;(_ f: @escaping (B) -&gt; A) -&gt; (PredicateSet&lt;A&gt;) -&gt; PredicateSet&lt;B&gt; {
   return { set in PredicateSet(contains: f &gt;&gt;&gt; set.contains) }
-}
-                </code>
-              </pre>
+}</code>              </pre>
               <a class="w-100p relative m-mt3 m-mb3" href="" target="_blank" rel="noopener noreferrer">
                 <img src="" alt="" class="w-100p bg-gray650">
               </a>

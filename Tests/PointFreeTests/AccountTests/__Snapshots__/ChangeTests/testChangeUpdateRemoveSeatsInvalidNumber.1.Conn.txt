@@ -6,7 +6,7 @@ lane=team&billing=yearly&quantity=3
 302 Found
 Location: /account
 Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"flash":{"message":"We’ve modified your subscription.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+Set-Cookie: pf_session={"flash":{"message":"We can’t reduce the number of seats below the number that are active.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Frame-Options: SAMEORIGIN
