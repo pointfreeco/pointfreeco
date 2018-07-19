@@ -1,5 +1,7 @@
 default: bootstrap
 
+SWIFT := $(if $(shell command -v xcrun 2> /dev/null),xcrun swift,swift)
+
 bootstrap:
 	@if test -e Sources/PointFree/Transcripts/.git; \
 		then \
@@ -98,7 +100,7 @@ db-drop:
 
 xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@xcrun swift package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
+	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
 		&& echo "  ✅ Generated!" \
 		|| (echo "  🛑 Failed!" && exit 1)
 
@@ -108,7 +110,7 @@ xcodeproj-oss: check-dependencies
 	@cp .env.example .env
 	@echo "  ✅ \033[1m.env\033[0m file copied!"
 
-SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
+SDK_PATH = $(shell $(SWIFT) --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
 
 CCMARK_PATH = $(FRAMEWORKS_PATH)/Ccmark.framework
@@ -310,7 +312,7 @@ test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
-	@xcrun swift test -Xswiftc "-D" -Xswiftc "OSS"
+	@$(SWIFT) swift test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
 	@docker container ls --all --quiet \
