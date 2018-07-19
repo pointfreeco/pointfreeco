@@ -110,7 +110,7 @@ xcodeproj-oss: check-dependencies
 	@cp .env.example .env
 	@echo "  ✅ \033[1m.env\033[0m file copied!"
 
-SDK_PATH = $(shell $(SWIFT) --show-sdk-path 2>/dev/null)
+SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
 FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
 
 CCMARK_PATH = $(FRAMEWORKS_PATH)/Ccmark.framework
@@ -312,7 +312,7 @@ test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
-	@$(SWIFT) swift test -Xswiftc "-D" -Xswiftc "OSS"
+	@$(SWIFT) test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
 	@docker container ls --all --quiet \
