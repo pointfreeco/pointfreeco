@@ -9,7 +9,7 @@ import Prelude
 extension Environment {
   public static let mock = Environment.init(
     assets: .mock,
-    blogPosts: unzurry([post0000_mock]),
+    blogPosts: unzurry([.mock]),
     cookieTransform: .plaintext,
     database: .mock,
     date: unzurry(.mock),

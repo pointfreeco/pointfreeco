@@ -1,17 +1,6 @@
-POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000010/accept
+POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000012/accept
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-<<<<<<< HEAD
-▿ Request
-  POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000012/accept
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /account
-=======
 302 Found
 Location: /account
 Referrer-Policy: strict-origin-when-cross-origin
@@ -20,4 +9,3 @@ X-Download-Options: noopen
 X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
->>>>>>> origin/master

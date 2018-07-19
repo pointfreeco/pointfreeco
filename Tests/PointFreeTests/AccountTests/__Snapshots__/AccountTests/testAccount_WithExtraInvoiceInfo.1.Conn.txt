@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 49660
+Content-Length: 49896
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1706,7 +1706,7 @@ html {
                     VAT: 1234567890
                   </textarea>
                   <p>
-                    Receive email when:
+                    Receive email for:
                   </p>
                   <p class="m-pl1">
                     <label class="block">
@@ -1720,6 +1720,10 @@ html {
                     <label class="block">
                       <input type="checkbox" name="emailSettings[newEpisode]" checked class="m-mr1">
                       New episode is available (about once a week)
+                    </label>
+                    <label class="block">
+                      <input type="checkbox" name="emailSettings[welcomeEmails]" class="m-mr1">
+                      A short series of emails introducing Point-Free
                     </label>
                   </p>
                   <input type="submit" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2 m-mt3" value="Update profile">
