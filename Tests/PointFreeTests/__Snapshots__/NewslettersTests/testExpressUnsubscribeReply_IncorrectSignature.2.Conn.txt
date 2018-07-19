@@ -4,7 +4,7 @@ Cookie: pf_session={}
 sender=hello@pointfree.co&recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b470d3fed478e73515f3ad396db9cb71d21c0abe5f9872e3e792de15f4b1ae5795e@pointfree.co&timestamp=1517356800&token=deadbeef&signature=this%20is%20an%20invalid%20signature
 
 404 Not Found
-Content-Length: 40967
+Content-Length: 40926
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1689,10 +1689,7 @@ html {
             Page not found :(
           </h5>
           <pre>
-            <code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">
-              f: (Page) -&gt; Never
-            </code>
-          </pre>
+<code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">f: (Page) -&gt; Never</code>          </pre>
         </div>
       </div>
     </div>

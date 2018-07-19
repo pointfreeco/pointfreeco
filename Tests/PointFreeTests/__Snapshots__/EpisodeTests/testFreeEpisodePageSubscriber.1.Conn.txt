@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 58526
+Content-Length: 58479
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1947,14 +1947,11 @@ highlighted snippet of code:</p>
               </div>
             </div>
             <pre>
-              <code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">
-                infix operator |&gt;
+<code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">infix operator |&gt;
 
 func |&gt; &lt;A, B&gt;(x: A, f: (A) -&gt; B) -&gt; B {
   return f(x)
-}
-              </code>
-            </pre>
+}</code>            </pre>
             <div>
               <div id="t90" class="block">
                 <a href="#" onclick="javascript:var video = document.getElementsByTagName(&quot;video&quot;)[0];
