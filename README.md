@@ -29,6 +29,7 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   brew install postgres # or your preferred installation method
   brew services start postgresql # or your preferred launch method
   ```
+  (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
 
 * Open up a terminal window and grab the code:
   ``` sh
