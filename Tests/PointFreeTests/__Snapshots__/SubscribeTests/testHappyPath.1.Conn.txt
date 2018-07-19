@@ -1,13 +1,14 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/subscribe
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-▿ Request
-  POST http://localhost:8080/subscribe
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+pricing[lane]=individual&pricing[billing]=monthly&pricing[quantity]=1&token=stripe-deadbeef&vatNumber=
 
-  pricing[lane]=individual&pricing[billing]=monthly&pricing[quantity]=1&token=stripe-deadbeef&vatNumber=
-
-▿ Response
-  Status 302 FOUND
-  Location: /account
-  Set-Cookie: pf_session={"flash":{"message":"You are now subscribed to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /account
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"You are now subscribed to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

@@ -1,11 +1,10 @@
-▿ Step
-  ResponseEnded
+GET http://www.pointfree.co/episodes
 
-▿ Request
-  GET http://www.pointfree.co/episodes
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 301 MOVED PERMANENTLY
-  Location: https://www.pointfree.co/episodes
+301 Moved Permanently
+Location: https://www.pointfree.co/episodes
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

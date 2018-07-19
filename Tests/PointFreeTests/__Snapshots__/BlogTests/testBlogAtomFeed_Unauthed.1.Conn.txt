@@ -1,29 +1,28 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/blog/feed/atom.xml
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/blog/feed/atom.xml
-  Cookie: pf_session={}
+200 OK
+Content-Length: 4255
+Content-Type: application/atom+xml
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
 
-  (Data, 0 bytes)
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Mock Blog Post</title><link href="http://localhost:8080/blog/posts/0-mock-blog-post"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/0-mock-blog-post</id><content type="html"><![CDATA[<h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2"><a href="http://localhost:8080/blog/posts/0-mock-blog-post">Mock Blog Post</a></h1><div class="flex items-baseline" style="flex-direction:row"><div><p>Monday Apr 16, 2018</p></div><div class="m-ml1"><a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&amp;url=http://localhost:8080/blog/posts/0-mock-blog-post&amp;via=pointfreeco" onclick="javascript:window.open(
+  &quot;https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&amp;url=http://localhost:8080/blog/posts/0-mock-blog-post&amp;via=pointfreeco&quot;,
+  &quot;newwindow&quot;,
+  &quot;width=500,height=500&quot;
+);" target="_blank" rel="noopener noreferrer" class="lh-1 relative medium inline-block align-top" style="-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box;color:#ffffff;background-color:#0c7abf;height:20px;padding-top:1px;padding-right:8px;padding-bottom:1px;padding-left:6px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;font-size:16px"><img alt="" src="data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjZmZmIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+" style="width:14px;height:14px;font-size:16px;top:1px" class="relative inline-block"><span style="font-family:&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:11px;line-height:18px;margin-left:3px" class="inline-block align-top">Tweet</span></a></div></div><div style="width:3rem;height:2px" class="bg-green m-mb3"></div><div class="bg-white"><div class="w-100p relative m-mt2 m-mb2" style="padding-bottom:56.25%"><video class="h-100p w-100p absolute bg-gray650" controls playsinline poster=""></video></div><div><div class=" md-ctn"><p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
+should be broken out into separate content blocks so that we can use the JS syntax highlighting
+library. For example, here is some code:</p>
+</div></div><pre><code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">struct PredicateSet&lt;A&gt; {
+  let contains: (A) -&gt; Bool
+}
 
-▿ Response
-  Status 200 OK
-  Content-Length: 4255
-  Content-Type: application/atom+xml
-
-  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free Pointers</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080/blog"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Mock Blog Post</title><link href="http://localhost:8080/blog/posts/0-mock-blog-post"></link><updated>2018-04-16T09:57:03Z</updated><id>http://localhost:8080/blog/posts/0-mock-blog-post</id><content type="html"><![CDATA[<h1 class="fg-black bold ts-d-r2 ts-m-r1_5 lh-2"><a href="http://localhost:8080/blog/posts/0-mock-blog-post">Mock Blog Post</a></h1><div class="flex items-baseline" style="flex-direction:row"><div><p>Monday Apr 16, 2018</p></div><div class="m-ml1"><a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&amp;url=http://localhost:8080/blog/posts/0-mock-blog-post&amp;via=pointfreeco" onclick="javascript:window.open(
-    &quot;https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&amp;url=http://localhost:8080/blog/posts/0-mock-blog-post&amp;via=pointfreeco&quot;,
-    &quot;newwindow&quot;,
-    &quot;width=500,height=500&quot;
-  );" target="_blank" rel="noopener noreferrer" class="lh-1 relative medium inline-block align-top" style="-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box;color:#ffffff;background-color:#0c7abf;height:20px;padding-top:1px;padding-right:8px;padding-bottom:1px;padding-left:6px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;font-size:16px"><img alt="" src="data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjZmZmIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+" style="width:14px;height:14px;font-size:16px;top:1px" class="relative inline-block"><span style="font-family:&#39;Helvetica Neue&#39;,Arial,sans-serif;font-size:11px;line-height:18px;margin-left:3px" class="inline-block align-top">Tweet</span></a></div></div><div style="width:3rem;height:2px" class="bg-green m-mb3"></div><div class="bg-white"><div class="w-100p relative m-mt2 m-mb2" style="padding-bottom:56.25%"><video class="h-100p w-100p absolute bg-gray650" controls playsinline poster=""></video></div><div><div class=" md-ctn"><p>This is the main content of the blog post. Each paragraph can use markdown, but titles code snippets
-  should be broken out into separate content blocks so that we can use the JS syntax highlighting
-  library. For example, here is some code:</p>
-  </div></div><pre><code class="code block m-pl3 m-pr3 m-pt3 m-pb3 overflow-auto-x language-swift">struct PredicateSet&lt;A&gt; {
-    let contains: (A) -&gt; Bool
-  }
-
-  func contramap&lt;A, B&gt;(_ f: @escaping (B) -&gt; A) -&gt; (PredicateSet&lt;A&gt;) -&gt; PredicateSet&lt;B&gt; {
-    return { set in PredicateSet(contains: f &gt;&gt;&gt; set.contains) }
-  }</code></pre><a class="w-100p relative m-mt3 m-mb3" href="" target="_blank" rel="noopener noreferrer"><img src="" alt="" class="w-100p bg-gray650"></a><div><div class=" md-ctn"><p>Cool stuff right?</p>
-  </div></div></div>]]></content></entry></feed>
+func contramap&lt;A, B&gt;(_ f: @escaping (B) -&gt; A) -&gt; (PredicateSet&lt;A&gt;) -&gt; PredicateSet&lt;B&gt; {
+  return { set in PredicateSet(contains: f &gt;&gt;&gt; set.contains) }
+}</code></pre><a class="w-100p relative m-mt3 m-mb3" href="" target="_blank" rel="noopener noreferrer"><img src="" alt="" class="w-100p bg-gray650"></a><div><div class=" md-ctn"><p>Cool stuff right?</p>
+</div></div></div>]]></content></entry></feed>

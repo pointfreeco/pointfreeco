@@ -132,7 +132,7 @@ private let episodeInfoColumnView = View<Episode> { ep in
         a(
           [href(path(to: .episode(.left(ep.slug)))), `class`([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
           [
-            "Watch episode",
+            text("Watch episode (\(ep.length / 60) min)"),
             img(
               base64: rightArrowSvgBase64(fill: "#974DFF"),
               mediaType: .image(.svg),

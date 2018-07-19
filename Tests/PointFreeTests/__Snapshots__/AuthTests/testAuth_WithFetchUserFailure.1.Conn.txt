@@ -1,13 +1,12 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/github-auth?code=deadbeef
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/github-auth?code=deadbeef
-  Cookie: pf_session={}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /
-  Set-Cookie: pf_session={"flash":{"message":"We were not able to log you in with GitHub. Please try again.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"We were not able to log you in with GitHub. Please try again.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

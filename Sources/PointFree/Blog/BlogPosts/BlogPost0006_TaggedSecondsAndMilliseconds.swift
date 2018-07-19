@@ -388,7 +388,7 @@ millis.map(Double.init).seconds // 0.5: Seconds<Double>
 
     .init(
       content: """
-If you accept that losing information is acceptable, then you must `map` twice: once to lift to a world with
+If losing information is acceptable, then you must `map` twice: once to lift to a world with
 division, and again to lower back to the world you want to be in. For example:
 """,
       timestamp: nil,
@@ -399,9 +399,9 @@ division, and again to lower back to the world you want to be in. For example:
       content: """
 let millis: Milliseconds<Int> = 500
 millis
-  .map(Double.init)
-  .seconds
-  .map(Int.init) // 0: Seconds<Int>
+  .map(Double.init) // 500.0: Milliseconds<Double>
+  .seconds          // 0.5: Seconds<Double>
+  .map(Int.init)    // 0: Seconds<Int>
 """,
       timestamp: nil,
       type: .code(lang: .swift)

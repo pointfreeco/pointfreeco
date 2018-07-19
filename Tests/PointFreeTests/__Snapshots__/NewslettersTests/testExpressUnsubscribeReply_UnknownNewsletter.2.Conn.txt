@@ -1,11 +1,12 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/newsletters/express-unsubscribe-reply
+Cookie: pf_session={}
 
-▿ Request
-  POST http://localhost:8080/newsletters/express-unsubscribe-reply
-  Cookie: pf_session={}
+sender=hello@pointfree.co&recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b474f20ba99d41b9776f40f0a6c0d7e8ef3@pointfree.co&timestamp=1517356800&token=deadbeef&signature=ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9
 
-  sender=hello@pointfree.co&recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b474f20ba99d41b9776f40f0a6c0d7e8ef3@pointfree.co&timestamp=1517356800&token=deadbeef&signature=ab77648a3a922e2aab8b0e309e898a6606d071438b6f2490d381c6ca4aa6d8c9
-
-▿ Response
-  Status 406 NOT ACCEPTABLE
+406 Not Acceptable
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

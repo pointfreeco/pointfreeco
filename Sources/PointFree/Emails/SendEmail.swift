@@ -20,7 +20,7 @@ public func prepareEmail(
         content,
         { plain in (plain, nil) },
         { nodes in (plainText(for: nodes), render(nodes)) },
-        second(render)
+        second { render($0) }
     )
 
     let headers: [(String, String)] = unsubscribeData

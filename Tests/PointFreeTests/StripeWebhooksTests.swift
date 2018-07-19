@@ -124,7 +124,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testValidHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
+    var hook = request(to: .webhooks(.stripe(.event(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=e576e9c1db4346e58a376714086c2372986266468e7b8fc0838fe0fa60814be1",
       forHTTPHeaderField: "Stripe-Signature"
@@ -139,7 +139,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testStaleHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
+    var hook = request(to: .webhooks(.stripe(.event(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=4e8996fd5a9a22aa8243ea29f0abf36fb41ec8b77807756cf8cb208b4d3d8150",
       forHTTPHeaderField: "Stripe-Signature"
@@ -154,7 +154,7 @@ final class StripeWebhooksTests: TestCase {
 
   func testInvalidHook() {
     #if !os(Linux)
-    var hook = request(to: .webhooks(.stripe(.invoice(.mock))))
+    var hook = request(to: .webhooks(.stripe(.event(.invoice))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=deadbeef",
       forHTTPHeaderField: "Stripe-Signature"
@@ -170,7 +170,7 @@ final class StripeWebhooksTests: TestCase {
   func testPastDueEmail() {
     let doc = pastDueEmailView.view(unit).first!
 
-    assertSnapshot(matching: render(doc, config: pretty), pathExtension: "html")
+    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

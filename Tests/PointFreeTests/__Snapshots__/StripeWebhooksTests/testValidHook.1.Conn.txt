@@ -1,12 +1,13 @@
-▿ Step
-  ResponseEnded
+POST http://localhost:8080/webhooks/stripe
+Cookie: pf_session={}
+Stripe-Signature: t=1517356800,v1=e576e9c1db4346e58a376714086c2372986266468e7b8fc0838fe0fa60814be1
 
-▿ Request
-  POST http://localhost:8080/webhooks/stripe
-  Cookie: pf_session={}
-  Stripe-Signature: t=1517356800,v1=e576e9c1db4346e58a376714086c2372986266468e7b8fc0838fe0fa60814be1
+{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"closed":true,"lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"currency":"usd","metadata":{},"interval":"month"}}]},"customer":"cus_test","charge":"ch_test","total":1700,"period_start":1517356800,"amount_remaining":0,"subtotal":1700,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
-  {"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"closed":true,"lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"currency":"usd","metadata":{},"interval":"month"}}]},"customer":"cus_test","charge":"ch_test","total":1700,"period_start":1517356800,"amount_remaining":0,"subtotal":1700,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
-
-▿ Response
-  Status 200 OK
+200 OK
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

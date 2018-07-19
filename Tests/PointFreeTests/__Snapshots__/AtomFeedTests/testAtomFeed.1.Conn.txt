@@ -1,16 +1,15 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/feed/atom.xml
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/feed/atom.xml
-  Cookie: pf_session={}
+200 OK
+Content-Length: 809
+Content-Type: application/atom+xml
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
 
-  (Data, 0 bytes)
-
-▿ Response
-  Status 200 OK
-  Content-Length: 809
-  Content-Type: application/atom+xml
-
-  <?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080"></link><updated>2016-12-20T00:00:00Z</updated><id>http://localhost:8080</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Proof in Functions</title><link href="http://localhost:8080/episodes/ep1-proof-in-functions"></link><updated>2016-12-20T00:00:00Z</updated><id>http://localhost:8080/episodes/ep1-proof-in-functions</id><content type="html"><![CDATA[This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-  text, no markdown allowed. Here is some more text just to have some filler.]]></content></entry></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Point-Free</title><link href="http://localhost:8080/feed/atom.xml" rel="self"></link><link href="http://localhost:8080"></link><updated>2016-12-20T00:00:00Z</updated><id>http://localhost:8080</id><author><name>Point-Free</name><email>support@pointfree.co</email></author><entry><title>Proof in Functions</title><link href="http://localhost:8080/episodes/ep1-proof-in-functions"></link><updated>2016-12-20T00:00:00Z</updated><id>http://localhost:8080/episodes/ep1-proof-in-functions</id><content type="html"><![CDATA[This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.]]></content></entry></feed>

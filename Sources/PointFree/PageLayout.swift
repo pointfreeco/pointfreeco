@@ -35,27 +35,6 @@ enum NavStyle {
       case .main:   return pointFreeHeroSvgBase64
       }
     }
-
-    var heroHref: String {
-      switch self {
-      case .blog:   return path(to: .blog(.index))
-      case .main:   return path(to: .home)
-      }
-    }
-
-    var navLinkName: String {
-      switch self {
-      case .blog:   return "Blog"
-      case .main:   return "Home"
-      }
-    }
-
-    var otherStyle: MountainsStyle {
-      switch self {
-      case .blog:   return .main
-      case .main:   return .blog
-      }
-    }
   }
 }
 
@@ -140,13 +119,17 @@ func respond<A, B>(
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >=> respond(
-          body: pageLayout.rendered(with: newLayoutData),
+          body: pageLayout.rendered(
+            with: newLayoutData,
+            config: Current.envVars.appEnv == .production ? .compact : .pretty
+          ),
           contentType: .html
       )
     }
 }
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+  let cssConfig: Css.Config = Current.envVars.appEnv == .production ? .compact : .pretty
   return View { layoutData in
     document([
       html([
@@ -154,8 +137,8 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           meta([charset(.utf8)]),
           title(layoutData.title),
           style(renderedNormalizeCss),
-          style(styleguide),
-          style(layoutData.extraStyles),
+          style(styleguide, config: cssConfig),
+          style(layoutData.extraStyles, config: cssConfig),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           link([
             href(url(to: .feed(.atom))),

@@ -1,12 +1,11 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/github-auth?code=deadbeef&redirect=http://localhost:8080/episodes/42
+Cookie: pf_session={}
 
-▿ Request
-  GET http://localhost:8080/github-auth?code=deadbeef&redirect=http://localhost:8080/episodes/42
-  Cookie: pf_session={}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /login?redirect=http://localhost:8080/episodes/42
+302 Found
+Location: /login?redirect=http://localhost:8080/episodes/42
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

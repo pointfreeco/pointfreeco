@@ -1,13 +1,12 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/newsletters/express-unsubscribe?payload=f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47a79ecf125a2b88742299ede4e79f7d707efe23881631a1eb3fceb031966cbb80562ef1a135067c604bc2ae15ab04e594
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-▿ Request
-  GET http://localhost:8080/newsletters/express-unsubscribe?payload=f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47a79ecf125a2b88742299ede4e79f7d707efe23881631a1eb3fceb031966cbb80562ef1a135067c604bc2ae15ab04e594
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /
-  Set-Cookie: pf_session={"flash":{"message":"You’re now unsubscribed.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"You’re now unsubscribed.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

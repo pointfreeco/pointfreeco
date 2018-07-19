@@ -15,13 +15,10 @@ let teamInviteId = Database.TeamInvite.Id(rawValue: UUID(uuidString: "deadbeef-d
 
 let req = request(to: .invite(.show(teamInviteId)), session: .loggedIn)
 let result = siteMiddleware(connection(from: req)).perform()
-let htmlString = String(
-  data: result.data,
-  encoding: .utf8
-)!
+let htmlStr = String(decoding: result.response.body, as: UTF8.self)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 376, height: 750))
-webView.loadHTMLString(htmlString, baseURL: nil)
+webView.loadHTMLString(htmlStr, baseURL: nil)
 print(htmlString)
 
 PlaygroundPage.current.liveView = webView

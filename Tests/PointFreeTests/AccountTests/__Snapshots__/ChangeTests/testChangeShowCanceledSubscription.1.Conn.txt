@@ -1,13 +1,12 @@
-▿ Step
-  ResponseEnded
+GET http://localhost:8080/account/subscription/change
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-▿ Request
-  GET http://localhost:8080/account/subscription/change
-  Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-
-  (Data, 0 bytes)
-
-▿ Response
-  Status 302 FOUND
-  Location: /pricing
-  Set-Cookie: pf_session={"flash":{"message":"You don’t have an active subscription. Would you like to subscribe?","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+302 Found
+Location: /pricing
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"You don’t have an active subscription. Would you like to subscribe?","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
