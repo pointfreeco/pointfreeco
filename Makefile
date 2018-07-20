@@ -1,5 +1,7 @@
 default: bootstrap
 
+SWIFT := $(if $(shell command -v xcrun 2> /dev/null),xcrun swift,swift)
+
 bootstrap:
 	@if test -e Sources/PointFree/Transcripts/.git; \
 		then \
@@ -98,7 +100,7 @@ db-drop:
 
 xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@swift package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
+	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
 		&& echo "  ✅ Generated!" \
 		|| (echo "  🛑 Failed!" && exit 1)
 
@@ -282,7 +284,7 @@ sourcery-tests: check-sourcery
 
 xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@swift package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
+	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
 	@xed .
 	@echo "  ✅ Generated!"
 
@@ -310,7 +312,7 @@ test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
-	@swift test -Xswiftc "-D" -Xswiftc "OSS"
+	@$(SWIFT) test -Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
 	@docker container ls --all --quiet \
