@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 59481
+Content-Length: 61814
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -606,13 +606,13 @@ a:link.btn-normal {
 }
 
 .col-m-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-m-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-m-3 {
@@ -621,13 +621,13 @@ a:link.btn-normal {
 }
 
 .col-m-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-m-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-m-6 {
@@ -636,13 +636,13 @@ a:link.btn-normal {
 }
 
 .col-m-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-m-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-m-9 {
@@ -651,13 +651,13 @@ a:link.btn-normal {
 }
 
 .col-m-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-m-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-m-12 {
@@ -1337,13 +1337,13 @@ html {
 }
 
 .col-d-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-d-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-d-3 {
@@ -1352,13 +1352,13 @@ html {
 }
 
 .col-d-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-d-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-d-6 {
@@ -1367,13 +1367,13 @@ html {
 }
 
 .col-d-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-d-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-d-9 {
@@ -1382,13 +1382,13 @@ html {
 }
 
 .col-d-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-d-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-d-12 {
@@ -1804,6 +1804,41 @@ input::-webkit-outer-spin-button {
       </div>
       <div class="d-pt0 m-pt4 col-m col-m-5" style="line-height:0">
         <img alt="" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjE1cHgiIGhlaWdodD0iMjMxcHgiIHZpZXdCb3g9IjAgMCA2MTUgMjMxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPGRlZnM+CiAgICAgICAgPHJlY3QgaWQ9InBhdGgtMSIgeD0iNzMuNzI2OTM0NCIgeT0iNzMuNzI2OTM0NCIgd2lkdGg9IjM1NS45ODUxMyIgaGVpZ2h0PSIzNTUuOTg1MTMiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0icGF0aC0zIiB4PSI3My43MjY5MzQ0IiB5PSI3My43MjY5MzQ0IiB3aWR0aD0iMzU1Ljk4NTEzIiBoZWlnaHQ9IjM1NS45ODUxMyI+PC9yZWN0PgogICAgPC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Im1vdW50YWlucy1jb3B5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTkuMDAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICA8cmVjdCBpZD0iTWFzayIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTY4LjAwMDAwMCwgMjMxLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTU2OC4wMDAwMDAsIC0yMzEuMDAwMDAwKSAiIHg9IjQ2NSIgeT0iMTI4IiB3aWR0aD0iMjA2IiBoZWlnaHQ9IjIwNiI+PC9yZWN0PgogICAgICAgICAgICA8cmVjdCBpZD0icmVjdCIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjIzLjUwMDAwMCwgMjIxLjUwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTIyMy41MDAwMDAsIC0yMjEuNTAwMDAwKSAiIHg9IjY3IiB5PSI2NSIgd2lkdGg9IjMxMyIgaGVpZ2h0PSIzMTMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weS0yIiBmaWxsPSIjNENDQ0ZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzNDYuNTAwMDAwLCAxODYuNTAwMDAwKSByb3RhdGUoLTMxNS4wMDAwMDApIHRyYW5zbGF0ZSgtMzQ2LjUwMDAwMCwgLTE4Ni41MDAwMDApICIgeD0iMjM1IiB5PSI3NSIgd2lkdGg9IjIyMyIgaGVpZ2h0PSIyMjMiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9InJlY3QtY29weSIgZmlsbD0iI0ZGRjA4MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgzLjAwMDAwMCwgMjIzLjAwMDAwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTE4My4wMDAwMDAsIC0yMjMuMDAwMDAwKSAiIHg9IjU0IiB5PSI5NCIgd2lkdGg9IjI1OCIgaGVpZ2h0PSIyNTgiPjwvcmVjdD4KICAgICAgICAgICAgPGcgaWQ9ImJnLXNxdWFyZS0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDMuMDAwMDAwLCA2MS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTIiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzc5RjJCMCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTEiPjwvdXNlPgogICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDguMDAwMDAwLCA3Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTQiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPC9tYXNrPgogICAgICAgICAgICAgICAgPHVzZSBpZD0iTWFzayIgZmlsbD0iIzk3NERGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjUxLjcxOTUwMCwgMjUxLjcxOTUwMCkgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTI1MS43MTk1MDAsIC0yNTEuNzE5NTAwKSAiIHhsaW5rOmhyZWY9IiNwYXRoLTMiPjwvdXNlPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIGZpbGw9IiNGRkZGRkYiIG1hc2s9InVybCgjbWFzay00KSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIyLjA0OTEyMywgMTk0LjYyODM2Mikgcm90YXRlKC0zMTUuMDAwMDAwKSB0cmFuc2xhdGUoLTMyMi4wNDkxMjMsIC0xOTQuNjI4MzYyKSAiIHg9IjIzMy41MjU3NjYiIHk9IjEwNi4xMDUwMDUiIHdpZHRoPSIxNzcuMDQ2NzE0IiBoZWlnaHQ9IjE3Ny4wNDY3MTQiPjwvcmVjdD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+" class="reflect-x w-100p">
+      </div>
+    </div>
+    <hr class="pf-divider border-top m-ml0 m-mr0 m-mt0 m-mb0 bg-white">
+    <div class=" row">
+      <div class=" col-m col-d-7 col-m-12">
+        <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
+          <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
+            #1 • Tuesday Dec 20, 2016
+          </strong>
+          <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
+            <a href="/episodes/ep1-proof-in-functions">
+              Proof in Functions
+            </a>
+          </h1>
+          <div class="body-leading fg-black normal lh-4">
+            <div class=" md-ctn">
+              <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+            </div>
+          </div>
+          <div class="m-mt3">
+            <a href="/episodes/ep1-proof-in-functions" class="align-middle pf-link-purple fg-black normal h5 lh-4">
+              Watch episode (23 min)
+              <img alt="" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4=" class="align-middle m-ml1" width="16" height="16">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="first-m last-d col-m col-d-5 col-m-12">
+        <div class="h-100p" style="line-height:0;background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);min-height:300px">
+          <a href="/episodes/ep1-proof-in-functions">
+            <img src="" alt="" class="w-100p h-100p" style="object-fit:cover">
+          </a>
+        </div>
       </div>
     </div>
     <hr class="pf-divider border-top m-ml0 m-mr0 m-mt0 m-mb0 bg-white">

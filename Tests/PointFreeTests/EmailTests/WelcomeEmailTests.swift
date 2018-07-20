@@ -16,11 +16,11 @@ final class WelcomeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
-    record=true
+//    record=true
   }
 
   func testWelcomeEmail1() {
-    let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.mock)
+    let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
@@ -35,7 +35,7 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail2() {
-    let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.mock)
+    let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 
@@ -50,7 +50,7 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail3() {
-    let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.mock)
+    let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
 

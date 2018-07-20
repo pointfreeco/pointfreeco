@@ -1,8 +1,11 @@
 import Foundation
+import Optics
+import Prelude
 @testable import PointFree
 
 extension Episode {
   public static let mock = paidEpisode
+  public static let free = paidEpisode |> \.permission .~ .free
 }
 
 private let paidEpisode = Episode(

@@ -14,7 +14,7 @@ extension Environment {
     database: .mock,
     date: unzurry(.mock),
     envVars: .mock,
-    episodes: unzurry([.mock]),
+    episodes: unzurry([.free, .mock]),
     features: .allFeatures,
     gitHub: .mock,
     logger: .mock,
@@ -94,6 +94,10 @@ extension Database.User {
     name: "Blob",
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
+
+  public static let newUser = mock
+    |> \.episodeCreditCount .~ 1
+    |> \.subscriptionId .~ nil
 
   public static let owner = mock
 
