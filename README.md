@@ -15,6 +15,12 @@ This repo contains the full source code for the [Point-Free](http://www.pointfre
 
 ## Getting Started
 
+Interested in a [video tour of the code base](https://www.pointfree.co/episodes/ep22-a-tour-of-point-free)?
+
+<a href="https://www.pointfree.co/episodes/ep22-a-tour-of-point-free">
+  <img alt="video poster image" src="https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg" width="480">
+</a>
+
 The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
 * Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
@@ -29,6 +35,7 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   brew install postgres # or your preferred installation method
   brew services start postgresql # or your preferred launch method
   ```
+  (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
 
 * Open up a terminal window and grab the code:
   ``` sh
