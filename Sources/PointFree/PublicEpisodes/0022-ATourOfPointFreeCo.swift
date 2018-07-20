@@ -973,10 +973,10 @@ This particular snapshot is just a blob of text right now and we do want to impr
   ),
   Episode.TranscriptBlock(
     content: """
-[CORRECTION WITH LINK]
+We [recently](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09) made our snapshots [a little prettier](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09#diff-322217894a1f0a55d5b4dd97aab3b5b1).
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
