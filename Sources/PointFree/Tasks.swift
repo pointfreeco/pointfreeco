@@ -137,7 +137,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
     .filter { !$0.subscriberOnly }
     .map {
       """
-      * [\($0.title)](\(url(to: .episode(.left($0.slug)))))"
+      * [\($0.title)](\(url(to: .episode(.left($0.slug)))))
       """
     }
     .joined(separator: "\n")
