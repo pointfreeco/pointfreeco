@@ -14,7 +14,7 @@ extension Environment {
     database: .mock,
     date: unzurry(.mock),
     envVars: .mock,
-    episodes: unzurry([.free, .mock]),
+    episodes: unzurry(.mock),
     features: .allFeatures,
     gitHub: .mock,
     logger: .mock,
@@ -26,6 +26,10 @@ extension Environment {
     |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+}
+
+extension Array where Element == Episode {
+  static let mock: [Element] = [.subscriberOnly, .free]
 }
 
 extension Assets {

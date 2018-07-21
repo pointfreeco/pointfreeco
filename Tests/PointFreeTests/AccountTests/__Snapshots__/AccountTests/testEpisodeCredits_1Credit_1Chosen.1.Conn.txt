@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 42818
+Content-Length: 42624
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1753,13 +1753,8 @@ html {
                 </h3>
                 <ul>
                   <li>
-                    <a href="/episodes/ep1-proof-in-functions" class="pf-link-purple">
-                      #1: Proof in Functions
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/episodes/ep1-proof-in-functions" class="pf-link-purple">
-                      #1: Proof in Functions
+                    <a href="/episodes/ep1-type-safe-html-in-swift" class="pf-link-purple">
+                      #1: Type-Safe HTML in Swift
                     </a>
                   </li>
                 </ul>

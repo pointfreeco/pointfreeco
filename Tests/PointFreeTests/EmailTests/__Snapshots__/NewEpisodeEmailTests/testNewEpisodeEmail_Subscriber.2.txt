@@ -1,15 +1,15 @@
 
 
-### #1: Proof in Functions
+### #2: Proof in Functions
 
- <http://localhost:8080/episodes/ep1-proof-in-functions>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+ <http://localhost:8080/episodes/ep2-proof-in-functions>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.
 
- <http://localhost:8080/episodes/ep1-proof-in-functions>
+ <http://localhost:8080/episodes/ep2-proof-in-functions>
 
 This episode is 23 minutes long.
 
-Watch now! <http://localhost:8080/episodes/ep1-proof-in-functions>
+Watch now! <http://localhost:8080/episodes/ep2-proof-in-functions>
 
 Your hosts,
 

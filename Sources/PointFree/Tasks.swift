@@ -102,7 +102,7 @@ let welcomeEmail1Content = View<Database.User> { user -> [Node] in
         subscriber-only episode, completely for free! Just visit [our site](\(url(to: .home))), go to an
         episode, and click the "\(useCreditCTA)" button!
 
-        Users typically spend their credit on these popular episodes:
+        Here are some of the top episodes that viewers have chosen to use their credits on:
 
         * [Dependency Injection Made Easy](https://www.pointfree.co/episodes/ep16-dependency-injection-made-easy)
         * [Algebraic Data Type: Part 1](https://www.pointfree.co/episodes/ep4-algebraic-data-types)
@@ -121,6 +121,7 @@ let welcomeEmail1Content = View<Database.User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
+    <> hostSignOffView.view(unit)
 }
 
 func welcomeEmail2(_ user: Database.User) -> Email {
@@ -146,7 +147,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
       """
       👋 Hey there!
 
-      You signed up for a Point-Free account a couple weeks ago but still haven't subscribed!
+      You signed up for a [Point-Free](\(url(to: .home))) account a couple weeks ago but still haven't subscribed!
 
       If you're still on the fence and want to see a little more of what we have to offer, we have a number
       of free episodes for you to check out!
@@ -158,7 +159,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
       ? markdownBlock(
         """
         You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
-        completely for free! Just visit our site, go to an episode, and click the "\(useCreditCTA)" button.
+        completely for free! Just visit [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
         )
       : nil
@@ -174,6 +175,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
+    <> hostSignOffView.view(unit)
 }
 
 func welcomeEmail3(_ user: Database.User) -> Email {
@@ -206,7 +208,7 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
     ,
     markdownBlock(
       """
-      Please use it to check out _any_ subscriber-only episode, completely free! Just visit our site, go to
+      Please use it to check out _any_ subscriber-only episode, completely free! Just visit [our site](\(url(to: .home))), go to
       an episode, and click the "\(useCreditCTA)" button.
 
       If you're having trouble deciding on an episode, here are a few of our favorites:
@@ -237,13 +239,14 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
+    <> hostSignOffView.view(unit)
 }
 
 private let subscribeButton = p(
+  [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
   [
-    a(
-      [href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+    a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["Subscribe to Point-Free!"]
-    )
+    ),
   ]
 )

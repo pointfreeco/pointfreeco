@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 61766
+Content-Length: 61882
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1812,10 +1812,10 @@ input::-webkit-outer-spin-button {
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #1 • Tuesday Dec 20, 2016
+            #2 • Tuesday Dec 20, 2016 • Subscriber-only
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
-            <a href="/episodes/ep1-proof-in-functions">
+            <a href="/episodes/ep2-proof-in-functions">
               Proof in Functions
             </a>
           </h1>
@@ -1827,7 +1827,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </div>
           </div>
           <div class="m-mt3">
-            <a href="/episodes/ep1-proof-in-functions" class="align-middle pf-link-purple fg-black normal h5 lh-4">
+            <a href="/episodes/ep2-proof-in-functions" class="align-middle pf-link-purple fg-black normal h5 lh-4">
               Watch episode (23 min)
               <img alt="" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4=" class="align-middle m-ml1" width="16" height="16">
             </a>
@@ -1836,7 +1836,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       </div>
       <div class="first-m last-d col-m col-d-5 col-m-12">
         <div class="h-100p" style="line-height:0;background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);min-height:300px">
-          <a href="/episodes/ep1-proof-in-functions">
+          <a href="/episodes/ep2-proof-in-functions">
             <img src="" alt="" class="w-100p h-100p" style="object-fit:cover">
           </a>
         </div>
@@ -1847,22 +1847,21 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #1 • Tuesday Dec 20, 2016 • Subscriber-only
+            #1 • Tuesday Jun 20, 2017
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
-            <a href="/episodes/ep1-proof-in-functions">
-              Proof in Functions
+            <a href="/episodes/ep1-type-safe-html-in-swift">
+              Type-Safe HTML in Swift
             </a>
           </h1>
           <div class="body-leading fg-black normal lh-4">
             <div class=" md-ctn">
-              <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
+              <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
             </div>
           </div>
           <div class="m-mt3">
-            <a href="/episodes/ep1-proof-in-functions" class="align-middle pf-link-purple fg-black normal h5 lh-4">
+            <a href="/episodes/ep1-type-safe-html-in-swift" class="align-middle pf-link-purple fg-black normal h5 lh-4">
               Watch episode (23 min)
               <img alt="" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiM5NzRERkYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4=" class="align-middle m-ml1" width="16" height="16">
             </a>
@@ -1871,8 +1870,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       </div>
       <div class="first-m last-d col-m col-d-5 col-m-12">
         <div class="h-100p" style="line-height:0;background:linear-gradient(to bottom, rgba(238,238,238,1) 0%, rgba(216,216,216,1) 100%);min-height:300px">
-          <a href="/episodes/ep1-proof-in-functions">
-            <img src="" alt="" class="w-100p h-100p" style="object-fit:cover">
+          <a href="/episodes/ep1-type-safe-html-in-swift">
+            <img src="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg" alt="" class="w-100p h-100p" style="object-fit:cover">
           </a>
         </div>
       </div>
