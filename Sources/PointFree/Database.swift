@@ -446,7 +446,6 @@ private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, 
         AND "users"."subscription_id" IS NULL
         AND "subscriptions"."user_id" IS NULL;
     """,
-    // TODO: protect against users that own a sub but are not using a sub
     [Database.EmailSetting.Newsletter.welcomeEmails.rawValue]
   )
 }
