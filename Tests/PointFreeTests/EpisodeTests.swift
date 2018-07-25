@@ -16,6 +16,7 @@ class EpisodeTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
+//    record=true
   }
 
   func testEpisodePage() {
@@ -130,7 +131,7 @@ class EpisodeTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let episode = Current.episodes()[0]
+    let episode = Current.episodes()[1]
       |> \.permission .~ .free
 
     update(
@@ -165,7 +166,7 @@ class EpisodeTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let episode = Current.episodes().first!
+    let episode = Current.episodes()[1]
       |> \.permission .~ .subscriberOnly
 
     update(
