@@ -60,11 +60,9 @@ extension Mailgun {
 
 extension Database {
   public static let mock = Database(
-    redeemEpisodeCredit: { _, _ in pure(unit) },
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
-    insertTeamInvite: { _, _ in pure(.mock) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
@@ -78,12 +76,15 @@ extension Database {
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     fetchUsersToWelcome: const(pure([.mock])),
+    incrementEpisodeCredits: const(pure(unit)),
+    insertTeamInvite: { _, _ in pure(.mock) },
+    migrate: unzurry(pure(unit)),
+    redeemEpisodeCredit: { _, _ in pure(unit) },
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
-    upsertUser: { _, _ in pure(.some(.mock)) },
-    migrate: unzurry(pure(unit))
+    upsertUser: { _, _ in pure(.some(.mock)) }
   )
 }
 

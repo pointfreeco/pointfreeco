@@ -4,11 +4,9 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   var fetchAdmins: () -> EitherIO<Error, [User]>
   var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
   var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
@@ -22,19 +20,20 @@ public struct Database {
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
   var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
+  var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, Prelude.Unit>
+  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  public var migrate: () -> EitherIO<Error, Prelude.Unit>
+  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
   var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
-  public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
-    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
-    insertTeamInvite: PointFree.insertTeamInvite,
     fetchAdmins: PointFree.fetchAdmins,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
     fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
@@ -48,12 +47,15 @@ public struct Database {
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
     fetchUsersToWelcome: PointFree.fetchUsersToWelcome(fromWeeksAgo:),
+    incrementEpisodeCredits: PointFree.incrementEpisodeCredits(for:),
+    insertTeamInvite: PointFree.insertTeamInvite,
+    migrate: PointFree.migrate,
+    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
-    upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
-    migrate: PointFree.migrate
+    upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:)
   )
 
   public struct EmailSetting: Codable, Equatable {
@@ -76,6 +78,12 @@ public struct Database {
         .newBlogPost,
         .newEpisode,
         .welcomeEmails
+      ]
+
+      public static let subscriberNewsletters: [Newsletter] = [
+        .announcements,
+        .newBlogPost,
+        .newEpisode
       ]
     }
   }
@@ -448,6 +456,18 @@ private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, 
     """,
     [Database.EmailSetting.Newsletter.welcomeEmails.rawValue]
   )
+}
+
+private func incrementEpisodeCredits(for userIds: [Database.User.Id]) -> EitherIO<Error, Prelude.Unit> {
+  return execute(
+    """
+    UPDATE "users"
+    SET "episode_credit_count" = "episode_credit_count" + 1
+    WHERE "id" IN $1
+    """,
+    [userIds.map(^\.rawValue)]
+    )
+    .map(const(unit))
 }
 
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {

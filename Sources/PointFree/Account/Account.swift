@@ -266,7 +266,7 @@ private let profileRowView = View<AccountData> { data -> Node in
           nameFields
             + emailFields
             + extraInvoiceInfoFields
-            + emailSettingCheckboxes.view(data.emailSettings)
+            + emailSettingCheckboxes.view((data.emailSettings, data.subscriberState))
             + submit
         )
         ])
@@ -274,11 +274,15 @@ private let profileRowView = View<AccountData> { data -> Node in
     ])
 }
 
-private let emailSettingCheckboxes = View<[Database.EmailSetting]> { currentEmailSettings in
-  [
+private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberState)> { currentEmailSettings, subscriberState -> [Node] in
+  let newsletters = subscriberState.isNonSubscriber
+    ? Database.EmailSetting.Newsletter.allNewsletters
+    : Database.EmailSetting.Newsletter.subscriberNewsletters
+
+  return [
     // TODO: hide `welcomeEmails` for subscribers?
     p(["Receive email for:"]),
-    p([`class`([Class.padding([.mobile: [.left: 1]])])], Database.EmailSetting.Newsletter.allNewsletters.map { newsletter in
+    p([`class`([Class.padding([.mobile: [.left: 1]])])], newsletters.map { newsletter in
       label([`class`([Class.display.block])], [
         input(
           [
