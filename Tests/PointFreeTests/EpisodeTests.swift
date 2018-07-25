@@ -19,7 +19,17 @@ class EpisodeTests: TestCase {
   }
 
   func testEpisodePage() {
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
+    let episodes: [Episode] = [
+      .mock |> \.id .~ 1 |> \.sequence .~ 1 |> \.title .~ "Functions Part 1",
+      .mock |> \.id .~ 2 |> \.sequence .~ 2 |> \.title .~ "Functions Part 2",
+      .mock |> \.id .~ 3 |> \.sequence .~ 3 |> \.title .~ "Functions Part 3",
+    ]
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ unzurry(episodes)
+    )
+    let episode = request(to: .episode(.left(episodes[1].slug)), session: .loggedOut)
 
     let conn = connection(from: episode)
     let result = conn |> siteMiddleware
