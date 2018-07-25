@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"An error has occurred!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 46791
+Content-Length: 46554
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1729,10 +1729,6 @@ html {
                     <label class="block">
                       <input type="checkbox" name="emailSettings[newEpisode]" checked class="m-mr1">
                       New episode is available (about once a week)
-                    </label>
-                    <label class="block">
-                      <input type="checkbox" name="emailSettings[welcomeEmails]" class="m-mr1">
-                      A short series of emails introducing Point-Free
                     </label>
                   </p>
                   <input type="submit" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2 m-mt3" value="Update profile">
