@@ -409,11 +409,23 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
             `class`([numberSpinner, Class.pf.colors.fg.black]),
             max(Pricing.validTeamQuantities.upperBound),
             min(Pricing.validTeamQuantities.lowerBound),
-            name("pricing[quantity]"),
-            onchange(
-              unsafeJavascript: """
-              var multiplier = this.valueAsNumber;
+            .init(
+              "onblur",
+              """
+              javascript:
+              this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
+              """
+            ),
+            .init(
+              "oninput",
+              """
+              javascript:
+              var value = +this.value;
+              var multiplier = Math.min(Math.max(value, +this.min), +this.max);
               var elements = document.getElementsByClassName('team-price');
+              if (this.value != "" && value != multiplier) {
+                this.value = multiplier;
+              }
               for (var idx = 0; idx < elements.length; idx++) {
                 var element = elements[idx];
                 element.textContent = (multiplier * element.dataset.price)
