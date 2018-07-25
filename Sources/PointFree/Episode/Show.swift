@@ -13,7 +13,7 @@ import Tuple
 
 let episodeResponse =
   filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
+    over1(episodes(current:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
     )
     <| writeStatus(.ok)
@@ -21,19 +21,19 @@ let episodeResponse =
     >=> map(lower)
     >>> respond(
       view: episodeView,
-      layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
+      layoutData: { permission, episodes, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
         return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (permission, currentUser, subscriberState, episode),
-          description: episode.blurb,
+          data: (permission, currentUser, subscriberState, episodes),
+          description: episodes.current.blurb,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
-          image: episode.image,
+          image: episodes.current.image,
           style: .base(navStyle),
-          title: "Episode #\(episode.sequence): \(episode.title)",
+          title: "Episode #\(episodes.current.sequence): \(episodes.current.title)",
           usePrismJs: true
         )
     }
@@ -41,19 +41,20 @@ let episodeResponse =
 
 let useCreditResponse =
   filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
+    over1(episodes(current:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
     )
     <<< { userEpisodePermission >=> $0 }
+//    <<< map(map(over2(^\.current)))
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
     <| applyCreditMiddleware
 
 private func applyCreditMiddleware<Z>(
-  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, Database.User, Z>>
+  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Zipper<Episode>, Database.User, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
-  let (episode, user) = (get2(conn.data), get3(conn.data))
+  let (episode, user) = (get2(conn.data).current, get3(conn.data))
 
   guard user.episodeCreditCount > 0 else {
     return conn
@@ -89,16 +90,16 @@ private func applyCreditMiddleware<Z>(
 }
 
 private func validateCreditRequest<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Zipper<Episode>, Database.User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Zipper<Episode>, Database.User, Z>, Data> {
 
   return { conn in
-    let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    let (permission, episodes, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episode(.left(episode.slug)),
+          to: .episode(.left(episodes.current.slug)),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
     }
@@ -109,18 +110,19 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episode(.left(episode.slug)),
+        to: .episode(.left(episodes.current.slug)),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
     )
   }
 }
 
 private func userEpisodePermission<I, Z>(
-  _ conn: Conn<I, T4<Episode, Database.User?, SubscriberState, Z>>
+  _ conn: Conn<I, T4<Zipper<Episode>, Database.User?, SubscriberState, Z>>
   )
-  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, SubscriberState, Z>>> {
+  -> IO<Conn<I, T5<EpisodePermission, Zipper<Episode>, Database.User?, SubscriberState, Z>>> {
 
-    let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    let (episodes, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
+    let episode = episodes.current
 
     guard let user = currentUser else {
       let permission: EpisodePermission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
@@ -153,20 +155,20 @@ private func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private let episodeView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
-  permission, user, subscriberState, episode in
+private let episodeView = View<(EpisodePermission, Database.User?, SubscriberState, Zipper<Episode>)> {
+  permission, user, subscriberState, episodes in
 
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
-        div(episodeInfoView.view(episode))
+        div(episodeInfoView.view(episodes))
         ])
       ]),
 
     gridRow([
       gridColumn(
         sizes: [.mobile: 12, .desktop: 7],
-        leftColumnView.view((permission, user, subscriberState, episode))
+        leftColumnView.view((permission, user, subscriberState, episodes))
       ),
 
       gridColumn(
@@ -176,7 +178,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
           div(
             [`class`([Class.position.sticky(.desktop), Class.position.top0])],
             rightColumnView.view(
-              (episode, isEpisodeViewable(for: permission))
+              (episodes.current, isEpisodeViewable(for: permission))
             )
           )
         ]
@@ -384,22 +386,22 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
-  permission, user, subscriberState, episode -> Node in
+private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Zipper<Episode>)> {
+  permission, user, subscriberState, episodes -> Node in
   div(
-    [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
+    [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episodes))]
       + dividerView.view(unit)
       + (
         isSubscribeBannerVisible(for: permission)
-          ? subscribeView.view((permission, user, episode))
+          ? subscribeView.view((permission, user, episodes.current))
           : []
       )
       + (
         isEpisodeViewable(for: permission)
-          ? transcriptView.view(episode.transcriptBlocks)
+          ? transcriptView.view(episodes.current.transcriptBlocks)
           : []
       )
-      + exercisesView.view(episode.exercises)
+      + exercisesView.view(episodes.current.exercises)
   )
 }
 
@@ -563,10 +565,37 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
   ]
 }
 
-private let episodeInfoView = View<Episode> { ep in
-  div(
-    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view(ep)
+private let episodeInfoView = View<Zipper<Episode>> { eps in
+  div([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 3], .desktop: [.top: 2, .bottom: 4, .leftRight: 4]]), Class.pf.colors.bg.white])], [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 6], [
+        eps.peekLeft.map {
+          a(
+            [
+              `class`([Class.pf.colors.link.purple, Class.type.underline]),
+              href(url(to: .episode(.left($0.slug))))
+            ],
+            [text("← \($0.title)")]
+          )
+        }
+        ].compactMap(id)
+      ),
+
+      gridColumn(sizes: [.mobile: 6], [`class`([Class.type.align.end])], [
+        eps.peekRight.map {
+          a(
+            [
+              `class`([Class.pf.colors.link.purple, Class.type.underline]),
+              href(url(to: .episode(.left($0.slug))))
+            ],
+            [text("\($0.title) →")]
+          )
+        }
+        ].compactMap(id)
+      )
+      ])
+    ]
+    <> topLevelEpisodeInfoView.view(eps.current)
   )
 }
 
@@ -767,11 +796,10 @@ private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, Su
     ])
 }
 
-private func episode(forParam param: Either<String, Int>) -> Episode? {
-  return Current.episodes()
-    .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
-    })
+private func episodes(current param: Either<String, Int>) -> Zipper<Episode>? {
+  return Zipper(Current.episodes(), where: {
+    param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
+  })
 }
 
 private let markdownContainerClass = CssSelector.class("md-ctn")

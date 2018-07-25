@@ -20,7 +20,75 @@ class EpisodeTests: TestCase {
   }
 
   func testEpisodePage() {
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
+    let episodes: [Episode] = [
+      .mock |> \.id .~ 1 |> \.sequence .~ 1 |> \.title .~ "Functions Part 1",
+      .mock |> \.id .~ 2 |> \.sequence .~ 2 |> \.title .~ "Functions Part 2",
+      .mock |> \.id .~ 3 |> \.sequence .~ 3 |> \.title .~ "Functions Part 3",
+      ]
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ unzurry(episodes)
+    )
+    let episode = request(to: .episode(.left(episodes[1].slug)), session: .loggedOut)
+
+    let conn = connection(from: episode)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
+
+      webView.frame.size.width = 500
+      assertSnapshot(matching: webView, named: "mobile")
+    }
+    #endif
+  }
+
+  func testFirstEpisodePage() {
+    let episodes: [Episode] = [
+      .mock |> \.id .~ 1 |> \.sequence .~ 1 |> \.title .~ "Functions Part 1",
+      .mock |> \.id .~ 2 |> \.sequence .~ 2 |> \.title .~ "Functions Part 2",
+    ]
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ unzurry(episodes)
+    )
+    let episode = request(to: .episode(.left(episodes[0].slug)), session: .loggedOut)
+
+    let conn = connection(from: episode)
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1800))
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
+
+      webView.frame.size.width = 500
+      assertSnapshot(matching: webView, named: "mobile")
+    }
+    #endif
+  }
+
+  func testLastEpisodePage() {
+    let episodes: [Episode] = [
+      .mock |> \.id .~ 1 |> \.sequence .~ 1 |> \.title .~ "Functions Part 1",
+      .mock |> \.id .~ 2 |> \.sequence .~ 2 |> \.title .~ "Functions Part 2",
+      ]
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ unzurry(episodes)
+    )
+    let episode = request(to: .episode(.left(episodes[1].slug)), session: .loggedOut)
 
     let conn = connection(from: episode)
     let result = conn |> siteMiddleware
@@ -40,7 +108,17 @@ class EpisodeTests: TestCase {
   }
 
   func testEpisodePageSubscriber() {
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+    let episodes: [Episode] = [
+      .mock |> \.id .~ 1 |> \.sequence .~ 1 |> \.title .~ "Functions Part 1",
+      .mock |> \.id .~ 2 |> \.sequence .~ 2 |> \.title .~ "Functions Part 2",
+      .mock |> \.id .~ 3 |> \.sequence .~ 3 |> \.title .~ "Functions Part 3",
+      ]
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ unzurry(episodes)
+    )
+    let episode = request(to: .episode(.left(episodes[1].slug)), session: .loggedIn)
 
     let conn = connection(from: episode)
     let result = conn |> siteMiddleware

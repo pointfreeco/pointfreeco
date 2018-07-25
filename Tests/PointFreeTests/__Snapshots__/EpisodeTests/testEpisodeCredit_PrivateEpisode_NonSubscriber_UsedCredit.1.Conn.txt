@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67235
+Content-Length: 67643
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1828,7 +1828,13 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <div class=" row">
       <div class="hide-d col-m col-m-12">
         <div>
-          <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
+          <div class="d-pb4 d-pt2 d-pl4 d-pr4 m-pb3 m-pt2 m-pl3 m-pr3 bg-white">
+            <div class="d-pb4 m-pb3 row">
+              <div class=" col-m col-m-6">
+              </div>
+              <div class="end-align col-m col-m-6">
+              </div>
+            </div>
             <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
               #1 • Tuesday Jun 20, 2017 • Subscriber-only
             </strong>
@@ -1851,7 +1857,13 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
       <div class=" col-m col-d-7 col-m-12">
         <div>
           <div class="hide-m">
-            <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
+            <div class="d-pb4 d-pt2 d-pl4 d-pr4 m-pb3 m-pt2 m-pl3 m-pr3 bg-white">
+              <div class="d-pb4 m-pb3 row">
+                <div class=" col-m col-m-6">
+                </div>
+                <div class="end-align col-m col-m-6">
+                </div>
+              </div>
               <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
                 #1 • Tuesday Jun 20, 2017 • Subscriber-only
               </strong>
