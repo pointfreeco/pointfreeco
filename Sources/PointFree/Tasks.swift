@@ -14,10 +14,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
         .map(map(welcomeEmail2))
         .run.parallel,
       Current.database.fetchUsersToWelcome(3)
-        .flatMap { users in
-          Current.database.incrementEpisodeCredits(users.map(^\.id))
-            .map(const(users))
-        }
+        .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
         .map(map(welcomeEmail3))
         .run.parallel
       ])
