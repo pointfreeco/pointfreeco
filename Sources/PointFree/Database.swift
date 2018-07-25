@@ -20,7 +20,7 @@ public struct Database {
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
   var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
-  var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, Prelude.Unit>
+  var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, [User]>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
   var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
@@ -458,16 +458,16 @@ private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, 
   )
 }
 
-private func incrementEpisodeCredits(for userIds: [Database.User.Id]) -> EitherIO<Error, Prelude.Unit> {
-  return execute(
+private func incrementEpisodeCredits(for userIds: [Database.User.Id]) -> EitherIO<Error, [Database.User]> {
+  return rows(
     """
     UPDATE "users"
     SET "episode_credit_count" = "episode_credit_count" + 1
-    WHERE "id" IN $1
+    WHERE "id" IN (\(userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ",")))
+    RETURNING *
     """,
-    [userIds.map(^\.rawValue)]
-    )
-    .map(const(unit))
+    []
+  )
 }
 
 private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Database.User?> {

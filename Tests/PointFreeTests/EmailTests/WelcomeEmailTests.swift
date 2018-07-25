@@ -15,11 +15,12 @@ import XCTest
 final class WelcomeEmailTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
   func testWelcomeEmail1() {
+    update(&Current, \.database .~ .mock)
+
     let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
@@ -35,6 +36,8 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail2() {
+    update(&Current, \.database .~ .mock)
+
     let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
@@ -50,6 +53,8 @@ final class WelcomeEmailTests: TestCase {
   }
 
   func testWelcomeEmail3() {
+    update(&Current, \.database .~ .mock)
+
     let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
 
     assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
@@ -62,5 +67,20 @@ final class WelcomeEmailTests: TestCase {
       assertSnapshot(matching: webView)
     }
     #endif
+  }
+
+  func testIncrementEpisodeCredits() {
+    let users = [1, 2, 3].map {
+      Current.database.registerUser(
+        .mock |> \.gitHubUser.id .~ .init(rawValue: $0),
+        .init(rawValue: "\($0)@pointfree.co")
+        ).run.perform().right!!
+    }
+
+    _ = Current.database.incrementEpisodeCredits(users.map(^\.id)).run.perform().right!
+
+    let updatedUsers = users.map { Current.database.fetchUserById($0.id).run.perform().right!! }
+
+    zip(users, updatedUsers).forEach { XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount) }
   }
 }

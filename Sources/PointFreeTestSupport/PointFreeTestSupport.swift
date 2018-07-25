@@ -76,7 +76,7 @@ extension Database {
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
     fetchUsersToWelcome: const(pure([.mock])),
-    incrementEpisodeCredits: const(pure(unit)),
+    incrementEpisodeCredits: const(pure([])),
     insertTeamInvite: { _, _ in pure(.mock) },
     migrate: unzurry(pure(unit)),
     redeemEpisodeCredit: { _, _ in pure(unit) },
