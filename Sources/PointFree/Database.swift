@@ -4,11 +4,9 @@ import Prelude
 import PostgreSQL
 
 public struct Database {
-  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   var fetchAdmins: () -> EitherIO<Error, [User]>
   var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
   var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
@@ -21,19 +19,21 @@ public struct Database {
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
   var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
+  var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
+  var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, [User]>
+  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  public var migrate: () -> EitherIO<Error, Prelude.Unit>
+  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
   var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
   var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
   var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
-  public var migrate: () -> EitherIO<Error, Prelude.Unit>
 
   static let live = Database(
-    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
-    insertTeamInvite: PointFree.insertTeamInvite,
     fetchAdmins: PointFree.fetchAdmins,
     fetchEmailSettingsForUserId: PointFree.fetchEmailSettings(forUserId:),
     fetchEpisodeCredits: PointFree.fetchEpisodeCredits(for:),
@@ -46,12 +46,16 @@ public struct Database {
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
     fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
+    fetchUsersToWelcome: PointFree.fetchUsersToWelcome(fromWeeksAgo:),
+    incrementEpisodeCredits: PointFree.incrementEpisodeCredits(for:),
+    insertTeamInvite: PointFree.insertTeamInvite,
+    migrate: PointFree.migrate,
+    redeemEpisodeCredit: PointFree.redeemEpisodeCredit(episodeSequence:userId:),
     registerUser: PointFree.registerUser(withGitHubEnvelope:email:),
     removeTeammateUserIdFromSubscriptionId: PointFree.remove(teammateUserId:fromSubscriptionId:),
     updateStripeSubscription: PointFree.update(stripeSubscription:),
     updateUser: PointFree.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
-    upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:),
-    migrate: PointFree.migrate
+    upsertUser: PointFree.upsertUser(withGitHubEnvelope:email:)
   )
 
   public struct EmailSetting: Codable, Equatable {
@@ -67,8 +71,20 @@ public struct Database {
       case announcements
       case newBlogPost
       case newEpisode
+      case welcomeEmails
 
-      public static let allNewsletters: [Newsletter] = [.announcements, .newBlogPost, .newEpisode]
+      public static let allNewsletters: [Newsletter] = [
+        .announcements,
+        .newBlogPost,
+        .newEpisode,
+        .welcomeEmails
+      ]
+
+      public static let subscriberNewsletters: [Newsletter] = [
+        .announcements,
+        .newBlogPost,
+        .newEpisode
+      ]
     }
   }
 
@@ -411,6 +427,46 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
     WHERE "email_settings"."newsletter" = $1
     """,
     [newsletter.rawValue]
+  )
+}
+
+private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, [Database.User]> {
+  let daysAgo = weeksAgo * 7
+  return rows(
+    """
+    SELECT
+        "users"."email",
+        "users"."episode_credit_count",
+        "users"."github_user_id",
+        "users"."github_access_token",
+        "users"."id",
+        "users"."is_admin",
+        "users"."name",
+        "users"."subscription_id"
+    FROM
+        "email_settings"
+        LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+        LEFT JOIN "subscriptions" on "users"."id" = "subscriptions"."user_id"
+    WHERE
+        "email_settings"."newsletter" = $1
+        AND "users"."created_at" BETWEEN CURRENT_DATE - INTERVAL '\(daysAgo) DAY'
+        AND CURRENT_DATE - INTERVAL '\(daysAgo - 1) DAY'
+        AND "users"."subscription_id" IS NULL
+        AND "subscriptions"."user_id" IS NULL;
+    """,
+    [Database.EmailSetting.Newsletter.welcomeEmails.rawValue]
+  )
+}
+
+private func incrementEpisodeCredits(for userIds: [Database.User.Id]) -> EitherIO<Error, [Database.User]> {
+  return rows(
+    """
+    UPDATE "users"
+    SET "episode_credit_count" = "episode_credit_count" + 1
+    WHERE "id" IN (\(userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ",")))
+    RETURNING *
+    """,
+    []
   )
 }
 

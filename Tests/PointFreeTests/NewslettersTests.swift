@@ -11,6 +11,11 @@ import HttpPipelineTestSupport
 import Optics
 
 class NewslettersTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
+
   func testExpressUnsubscribe() {
     let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run

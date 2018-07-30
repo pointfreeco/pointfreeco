@@ -8,6 +8,11 @@ import HttpPipeline
 import Optics
 
 class InviteTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
+
   func testShowInvite_LoggedOut() {
     update(&Current, \.database .~ .mock)
 

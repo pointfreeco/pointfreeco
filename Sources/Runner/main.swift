@@ -10,10 +10,6 @@ _ = try! PointFree
   .perform()
   .unwrap()
 
-_ = sendEmail(
-  to: adminEmails,
-  subject: "Testing cron!",
-  content: inj1("This cron fired correctly! The date is \(Date())).")
-  )
+_ = sendWelcomeEmails()
   .run
   .perform()

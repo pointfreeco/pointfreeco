@@ -283,7 +283,7 @@ The random API will return non-optional values when operating on the `NonEmpty` 
 
 [GraphQL](https://graphql.org/) is a query language for APIs that's getting more and more popular. We might
 write a client that generates a query from a list of fields for a GraphQL type, and we may default to using a
-plain ole array or set since that’s what’s available to us in the Standard Library. Here's an example of
+plain ole array or set since that’s what’s available to us in the standard library. Here's an example of
 a very simple fieldset and query builder:
 """,
       timestamp: nil,

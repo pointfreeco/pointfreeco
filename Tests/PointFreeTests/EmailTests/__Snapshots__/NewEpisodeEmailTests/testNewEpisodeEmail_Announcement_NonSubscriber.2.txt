@@ -4,16 +4,16 @@
 
 <p>This is an announcement for NON-subscribers.</p>
 
-### #1: Proof in Functions
+### #2: Proof in Functions
 
- <http://localhost:8080/episodes/ep1-proof-in-functions>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+ <http://localhost:8080/episodes/ep2-proof-in-functions>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.
 
- <http://localhost:8080/episodes/ep1-proof-in-functions>
+ <http://localhost:8080/episodes/ep2-proof-in-functions>
 
 This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!
 
-Subscribe to Point-Free! <http://localhost:8080/pricing>Watch preview <http://localhost:8080/episodes/ep1-proof-in-functions>
+Subscribe to Point-Free! <http://localhost:8080/pricing>Watch preview <http://localhost:8080/episodes/ep2-proof-in-functions>
 
 Your hosts,
 
