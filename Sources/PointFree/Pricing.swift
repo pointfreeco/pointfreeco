@@ -410,7 +410,7 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
             max(Pricing.validTeamQuantities.upperBound),
             min(Pricing.validTeamQuantities.lowerBound),
             name("pricing[quantity]"),
-            onchange(
+            oninput(
               unsafeJavascript: """
               var multiplier = this.valueAsNumber;
               var elements = document.getElementsByClassName('team-price');
