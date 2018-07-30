@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 42378
+Content-Length: 42624
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1705,7 +1705,7 @@ html {
                   </label>
                   <input class="font-family-inherit fg-black border-box rounded border border-gray-800 h-3r m-pl1 m-pr1 m-pt1 m-pb1 m-mb2 w-100p block" name="email" type="email" value="hello@pointfree.co">
                   <p>
-                    Receive email when:
+                    Receive email for:
                   </p>
                   <p class="m-pl1">
                     <label class="block">
@@ -1719,6 +1719,10 @@ html {
                     <label class="block">
                       <input type="checkbox" name="emailSettings[newEpisode]" checked class="m-mr1">
                       New episode is available (about once a week)
+                    </label>
+                    <label class="block">
+                      <input type="checkbox" name="emailSettings[welcomeEmails]" class="m-mr1">
+                      A short series of emails introducing Point-Free
                     </label>
                   </p>
                   <input type="submit" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2 m-mt3" value="Update profile">
@@ -1749,8 +1753,8 @@ html {
                 </h3>
                 <ul>
                   <li>
-                    <a href="/episodes/ep1-proof-in-functions" class="pf-link-purple">
-                      #1: Proof in Functions
+                    <a href="/episodes/ep1-type-safe-html-in-swift" class="pf-link-purple">
+                      #1: Type-Safe HTML in Swift
                     </a>
                   </li>
                 </ul>

@@ -69,6 +69,10 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
     return """
     You are receiving this email because you wanted to be notified whenever a new episode is available.
     """
+  case .welcomeEmails:
+    return """
+    You are receiving this email because you recently signed up for Point-Free.
+    """
   }
 }
 

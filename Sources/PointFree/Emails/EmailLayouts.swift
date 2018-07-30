@@ -32,7 +32,7 @@ struct SimpleEmailLayoutData<A> {
 }
 
 let emailStylesheet = styleguide
-  <> a % key("text-decoration", "underline")
+  <> a % key("border-bottom", "1px solid black")
 
 func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
   return View { layoutData in

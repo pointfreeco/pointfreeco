@@ -85,7 +85,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [Database
         to: adminEmails,
         subject: "New free episode email finished sending!",
         content: inj2(
-          freeEpisodeEmailAdminReportEmail.view(
+          adminEmailReport("New free episode").view(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

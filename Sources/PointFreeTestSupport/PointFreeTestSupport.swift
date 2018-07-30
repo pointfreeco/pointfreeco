@@ -9,12 +9,12 @@ import Prelude
 extension Environment {
   public static let mock = Environment.init(
     assets: .mock,
-    blogPosts: { [.mock] },
+    blogPosts: unzurry([.mock]),
     cookieTransform: .plaintext,
     database: .mock,
-    date: { .mock },
+    date: unzurry(.mock),
     envVars: .mock,
-    episodes: { [.mock] },
+    episodes: unzurry(.mock),
     features: .allFeatures,
     gitHub: .mock,
     logger: .mock,
@@ -26,6 +26,10 @@ extension Environment {
     |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+}
+
+extension Array where Element == Episode {
+  static let mock: [Element] = [.subscriberOnly, .free]
 }
 
 extension Assets {
@@ -56,11 +60,9 @@ extension Mailgun {
 
 extension Database {
   public static let mock = Database(
-    redeemEpisodeCredit: { _, _ in pure(unit) },
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
-    insertTeamInvite: { _, _ in pure(.mock) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
     fetchEpisodeCredits: const(pure([])),
@@ -73,12 +75,16 @@ extension Database {
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
     fetchUsersSubscribedToNewsletter: const(pure([.mock])),
+    fetchUsersToWelcome: const(pure([.mock])),
+    incrementEpisodeCredits: const(pure([])),
+    insertTeamInvite: { _, _ in pure(.mock) },
+    migrate: unzurry(pure(unit)),
+    redeemEpisodeCredit: { _, _ in pure(unit) },
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
-    upsertUser: { _, _ in pure(.some(.mock)) },
-    migrate: { pure(unit) }
+    upsertUser: { _, _ in pure(.some(.mock)) }
   )
 }
 
@@ -93,6 +99,10 @@ extension Database.User {
     name: "Blob",
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
+
+  public static let newUser = mock
+    |> \.episodeCreditCount .~ 1
+    |> \.subscriptionId .~ nil
 
   public static let owner = mock
 

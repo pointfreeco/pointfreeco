@@ -130,7 +130,7 @@ class EpisodeTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let episode = Current.episodes()[0]
+    let episode = Current.episodes()[1]
       |> \.permission .~ .free
 
     update(
@@ -165,7 +165,7 @@ class EpisodeTests: TestCase {
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
-    let episode = Current.episodes().first!
+    let episode = Current.episodes()[1]
       |> \.permission .~ .subscriberOnly
 
     update(
