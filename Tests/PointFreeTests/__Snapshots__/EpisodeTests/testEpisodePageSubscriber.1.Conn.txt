@@ -1,8 +1,8 @@
-GET http://localhost:8080/episodes/ep2-functions-part-2
+GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 59607
+Content-Length: 58567
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -16,7 +16,7 @@ X-XSS-Protection: 1; mode=block
   <head>
     <meta charset="utf-8">
     <title>
-      Episode #2: Functions Part 2
+      Episode #2: Proof in Functions
     </title>
     <style>
       /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
@@ -607,13 +607,13 @@ a:link.btn-normal {
 }
 
 .col-m-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-m-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-m-3 {
@@ -622,13 +622,13 @@ a:link.btn-normal {
 }
 
 .col-m-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-m-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-m-6 {
@@ -637,13 +637,13 @@ a:link.btn-normal {
 }
 
 .col-m-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-m-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-m-9 {
@@ -652,13 +652,13 @@ a:link.btn-normal {
 }
 
 .col-m-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-m-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-m-12 {
@@ -1338,13 +1338,13 @@ html {
 }
 
 .col-d-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-d-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-d-3 {
@@ -1353,13 +1353,13 @@ html {
 }
 
 .col-d-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-d-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-d-6 {
@@ -1368,13 +1368,13 @@ html {
 }
 
 .col-d-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-d-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-d-9 {
@@ -1383,13 +1383,13 @@ html {
 }
 
 .col-d-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-d-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-d-12 {
@@ -1778,14 +1778,14 @@ text, no markdown allowed. Here is some more text just to have some filler.">
 text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:image" content="">
     <meta property="og:image" content="">
-    <meta name="title" content="Episode #2: Functions Part 2">
-    <meta property="og:title" content="Episode #2: Functions Part 2">
-    <meta name="twitter:title" content="Episode #2: Functions Part 2">
+    <meta name="title" content="Episode #2: Proof in Functions">
+    <meta property="og:title" content="Episode #2: Proof in Functions">
+    <meta name="twitter:title" content="Episode #2: Proof in Functions">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@pointfreeco">
-    <meta property="og:url" content="http://localhost:8080/episodes/ep2-functions-part-2">
-    <meta name="twitter:url" content="http://localhost:8080/episodes/ep2-functions-part-2">
+    <meta property="og:url" content="http://localhost:8080/episodes/ep2-proof-in-functions">
+    <meta name="twitter:url" content="http://localhost:8080/episodes/ep2-proof-in-functions">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1826,25 +1826,13 @@ text, no markdown allowed. Here is some more text just to have some filler.">
     <div class=" row">
       <div class="hide-d col-m col-m-12">
         <div>
-          <div class="d-pb4 d-pt2 d-pl4 d-pr4 m-pb3 m-pt2 m-pl3 m-pr3 bg-white">
-            <div class="d-pb4 m-pb3 row">
-              <div class=" col-m col-m-6">
-                <a class="pf-link-purple underline" href="http://localhost:8080/episodes/ep1-functions-part-1">
-                  ← Functions Part 1
-                </a>
-              </div>
-              <div class="end-align col-m col-m-6">
-                <a class="pf-link-purple underline" href="http://localhost:8080/episodes/ep3-functions-part-3">
-                  Functions Part 3 →
-                </a>
-              </div>
-            </div>
+          <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
             <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
               #2 • Tuesday Dec 20, 2016 • Subscriber-only
             </strong>
             <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
-              <a href="/episodes/ep2-functions-part-2">
-                Functions Part 2
+              <a href="/episodes/ep2-proof-in-functions">
+                Proof in Functions
               </a>
             </h1>
             <div class="body-leading fg-black normal lh-4">
@@ -1862,25 +1850,13 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class=" col-m col-d-7 col-m-12">
         <div>
           <div class="hide-m">
-            <div class="d-pb4 d-pt2 d-pl4 d-pr4 m-pb3 m-pt2 m-pl3 m-pr3 bg-white">
-              <div class="d-pb4 m-pb3 row">
-                <div class=" col-m col-m-6">
-                  <a class="pf-link-purple underline" href="http://localhost:8080/episodes/ep1-functions-part-1">
-                    ← Functions Part 1
-                  </a>
-                </div>
-                <div class="end-align col-m col-m-6">
-                  <a class="pf-link-purple underline" href="http://localhost:8080/episodes/ep3-functions-part-3">
-                    Functions Part 3 →
-                  </a>
-                </div>
-              </div>
+            <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
               <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
                 #2 • Tuesday Dec 20, 2016 • Subscriber-only
               </strong>
               <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
-                <a href="/episodes/ep2-functions-part-2">
-                  Functions Part 2
+                <a href="/episodes/ep2-proof-in-functions">
+                  Proof in Functions
                 </a>
               </h1>
               <div class="body-leading fg-black normal lh-4">

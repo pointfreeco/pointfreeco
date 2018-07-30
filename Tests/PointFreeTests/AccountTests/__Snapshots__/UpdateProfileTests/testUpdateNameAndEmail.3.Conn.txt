@@ -1,7 +1,7 @@
 POST http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-name=Blobby%20McBlob&&email=blobby@blob.co
+email=blobby@blob.co&&name=Blobby%20McBlob
 
 302 Found
 Location: /account

@@ -397,39 +397,6 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-public struct Zipper<Element> {
-  public var left: [Element]
-  public var current: Element
-  public var right: [Element]
-
-  public init(_ left: [Element], _ current: Element, _ right: [Element]) {
-    self.left = left
-    self.current = current
-    self.right = right
-  }
-
-  public init?<C: Collection>(
-    _ collection: C, where predicate: (Element) -> Bool
-    )
-    where C.Element == Element {
-      guard let index = collection.index(where: predicate) else { return nil }
-      self.left = Array(collection[..<index])
-      self.current = collection[index]
-      self.right = Array(collection[collection.index(after: index)...])
-  }
-
-  public init?<C: Collection>(
-    _ collection: C, current: Element
-    )
-    where C.Element == Element, Element: Equatable {
-      self.init(collection, where: { $0 == current })
-  }
-
-  public var peekLeft: Element? {
-    return self.left.last
-  }
-
-  public var peekRight: Element? {
-    return self.right.first
-  }
+public func oninput<T: HasOnchange>(unsafeJavascript: String) -> Attribute<T> {
+  return .init("oninput", "javascript:\(unsafeJavascript)")
 }

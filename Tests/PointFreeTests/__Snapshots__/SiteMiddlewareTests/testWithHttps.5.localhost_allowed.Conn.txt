@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 200 OK
-Content-Length: 61882
+Content-Length: 62142
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -606,13 +606,13 @@ a:link.btn-normal {
 }
 
 .col-m-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-m-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-m-3 {
@@ -621,13 +621,13 @@ a:link.btn-normal {
 }
 
 .col-m-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-m-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-m-6 {
@@ -636,13 +636,13 @@ a:link.btn-normal {
 }
 
 .col-m-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-m-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-m-9 {
@@ -651,13 +651,13 @@ a:link.btn-normal {
 }
 
 .col-m-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-m-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-m-12 {
@@ -1337,13 +1337,13 @@ html {
 }
 
 .col-d-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-d-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-d-3 {
@@ -1352,13 +1352,13 @@ html {
 }
 
 .col-d-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-d-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-d-6 {
@@ -1367,13 +1367,13 @@ html {
 }
 
 .col-d-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-d-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-d-9 {
@@ -1382,13 +1382,13 @@ html {
 }
 
 .col-d-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-d-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-d-12 {
@@ -1925,8 +1925,14 @@ as episodes are released.
                         <p class="fg-black fg-black normal h5 lh-4">
                           How many in your team?
                         </p>
-                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" name="pricing[quantity]" onchange="javascript:var multiplier = this.valueAsNumber;
+                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" onblur="javascript:
+this.value = Math.min(Math.max(+this.value, +this.min), +this.max);" oninput="javascript:
+var value = +this.value;
+var multiplier = Math.min(Math.max(value, +this.min), +this.max);
 var elements = document.getElementsByClassName(&#39;team-price&#39;);
+if (this.value != &quot;&quot; &amp;&amp; value != multiplier) {
+  this.value = multiplier;
+}
 for (var idx = 0; idx &lt; elements.length; idx++) {
   var element = elements[idx];
   element.textContent = (multiplier * element.dataset.price)

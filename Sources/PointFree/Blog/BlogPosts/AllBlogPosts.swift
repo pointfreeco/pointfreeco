@@ -17,4 +17,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0006_taggedSecondsAndMilliseconds,
   post0007_openSourcingNonEmpty,
   post0008_conditionalCoding,
+  post0009_6moAnniversary,
 ]
