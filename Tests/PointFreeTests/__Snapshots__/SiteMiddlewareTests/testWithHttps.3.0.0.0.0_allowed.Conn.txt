@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 62094
+Content-Length: 62119
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1925,7 +1925,7 @@ as episodes are released.
                         <p class="fg-black fg-black normal h5 lh-4">
                           How many in your team?
                         </p>
-                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" onblur="javascript:
+                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" name="pricing[quantity]" onblur="javascript:
 this.value = Math.min(Math.max(+this.value, +this.min), +this.max);" oninput="javascript:
 var value = +this.value;
 var multiplier = Math.min(Math.max(value, +this.min), +this.max);
