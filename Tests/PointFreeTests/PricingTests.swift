@@ -34,7 +34,7 @@ class PricingTests: TestCase {
           document.getElementById('tab1').checked = true;
           var quantity = document.getElementsByName('pricing[quantity]')[0];
           quantity.value = 10;
-          quantity.onchange();
+          quantity.oninput();
           """, completionHandler: nil)
       assertSnapshot(matching: webView, named: "desktop-team")
 

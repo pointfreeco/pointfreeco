@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 59481
+Content-Length: 59480
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1892,7 +1892,7 @@ as episodes are released.
                         <p class="fg-black fg-black normal h5 lh-4">
                           How many in your team?
                         </p>
-                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" name="pricing[quantity]" onchange="javascript:var multiplier = this.valueAsNumber;
+                        <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" name="pricing[quantity]" oninput="javascript:var multiplier = this.valueAsNumber;
 var elements = document.getElementsByClassName(&#39;team-price&#39;);
 for (var idx = 0; idx &lt; elements.length; idx++) {
   var element = elements[idx];

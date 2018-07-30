@@ -372,3 +372,7 @@ public func responseTimeout(_ interval: TimeInterval)
       }
     }
 }
+
+public func oninput<T: HasOnchange>(unsafeJavascript: String) -> Attribute<T> {
+  return .init("oninput", "javascript:\(unsafeJavascript)")
+}
