@@ -199,8 +199,9 @@ public struct Stripe {
     public private(set) var id: Id
     public private(set) var interval: Interval
     public private(set) var metadata: [String: String]
-    public private(set) var name: String
-    public private(set) var statementDescriptor: String?
+//    public private(set) var name: String
+//    public private(set) var statementDescriptor: String?
+    public private(set) var product: Either<Product.Id, Product>
 
     public typealias Id = Tagged<Plan, String>
 
@@ -220,9 +221,15 @@ public struct Stripe {
       case id
       case interval
       case metadata
-      case name
-      case statementDescriptor = "statement_descriptor"
+      case product
     }
+  }
+
+  public struct Product: Codable {
+    public typealias Id = Tagged<Product, String>
+    public private(set) var id: Id
+    public private(set) var name: String
+    public private(set) var statementDescriptor: String?
   }
 
   public struct Subscription: Codable {
