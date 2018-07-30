@@ -2,15 +2,18 @@ import Either
 import Html
 import Prelude
 
-public func sendEmail(
-  from: EmailAddress = "Point-Free <support@pointfree.co>",
+public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
+public let mgDomain = "mg.pointfree.co"
+
+public func prepareEmail(
+  from: EmailAddress = supportEmail,
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
   content: Either3<String, [Node], (String, [Node])>,
-  domain: String = "mg.pointfree.co"
+  domain: String = mgDomain
   )
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> Email {
 
     let (plain, html): (String, String?) =
       either3(
@@ -37,23 +40,47 @@ public func sendEmail(
       }
       ?? []
 
+    return Email(
+      from: from,
+      to: to,
+      cc: nil,
+      bcc: nil,
+      subject: Current.envVars.appEnv == .production
+        ? subject
+        : "[\(Current.envVars.appEnv)] " + subject,
+      text: plain,
+      html: html,
+      testMode: nil,
+      tracking: nil,
+      trackingClicks: nil,
+      trackingOpens: nil,
+      domain: domain,
+      headers: headers
+    )
+}
+
+public func send(email: Email) -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  return Current.mailgun.sendEmail(email)
+}
+
+public func sendEmail(
+  from: EmailAddress = supportEmail,
+  to: [EmailAddress],
+  subject: String,
+  unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
+  content: Either3<String, [Node], (String, [Node])>,
+  domain: String = mgDomain
+  )
+  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+
     return Current.mailgun.sendEmail(
-      Email(
+      prepareEmail(
         from: from,
         to: to,
-        cc: nil,
-        bcc: nil,
-        subject: Current.envVars.appEnv == .production
-          ? subject
-          : "[\(Current.envVars.appEnv)] " + subject,
-        text: plain,
-        html: html,
-        testMode: nil,
-        tracking: nil,
-        trackingClicks: nil,
-        trackingOpens: nil,
-        domain: domain,
-        headers: headers
+        subject: subject,
+        unsubscribeData: unsubscribeData,
+        content: content,
+        domain: domain
       )
     )
 }

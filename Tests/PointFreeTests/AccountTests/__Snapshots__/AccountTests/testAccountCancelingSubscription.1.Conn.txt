@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 45897
+Content-Length: 45896
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1706,7 +1706,7 @@ html {
                     
                   </textarea>
                   <p>
-                    Receive email when:
+                    Receive email for:
                   </p>
                   <p class="m-pl1">
                     <label class="block">

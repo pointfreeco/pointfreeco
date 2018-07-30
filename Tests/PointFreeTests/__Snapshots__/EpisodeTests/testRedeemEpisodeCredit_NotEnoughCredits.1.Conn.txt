@@ -1,8 +1,8 @@
-POST http://localhost:8080/episodes/1/credit
+POST http://localhost:8080/episodes/2/credit
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
 302 Found
-Location: /episodes/ep1-proof-in-functions
+Location: /episodes/ep2-proof-in-functions
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"flash":{"message":"You do not have any credits to use.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff

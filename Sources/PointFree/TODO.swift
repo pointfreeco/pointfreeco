@@ -90,6 +90,30 @@ public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = ni
 
 private let defaultDecoder = JSONDecoder()
 
+extension Either: Monoid where R: Monoid {
+  public static var empty: Either {
+    return pure(R.empty)
+  }
+}
+
+public func retry<E, A>(maxRetries: Int) -> (EitherIO<E, A>) -> EitherIO<E, A> {
+  return { $0.retry(maxRetries: maxRetries) }
+}
+
+public func retry<E, A>(maxRetries: Int, backoff: @escaping (Int) -> DispatchTimeInterval)
+  -> (EitherIO<E, A>)
+  -> EitherIO<E, A> {
+  return { $0.retry(maxRetries: maxRetries, backoff: backoff) }
+}
+
+public func delay<E, A>(_ interval: DispatchTimeInterval) -> (EitherIO<E, A>) -> (EitherIO<E, A>) {
+  return { $0.delay(interval) }
+}
+
+public func delay<E, A>(_ interval: TimeInterval) -> (EitherIO<E, A>) -> (EitherIO<E, A>) {
+  return { $0.delay(interval) }
+}
+
 public func zip2<A, B>(_ lhs: Parallel<A>, _ rhs: Parallel<B>) -> Parallel<(A, B)> {
   return tuple <¢> lhs <*> rhs
 }

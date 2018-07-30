@@ -64,7 +64,7 @@ private func sendNewEpisodeEmails<I>(
     : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
 
   return users
-    .mapExcept(bimap(const(unit), id))
+    .withExcept(const(unit))
     .flatMap { users in
       sendEmail(
         forNewEpisode: episode,
@@ -110,7 +110,7 @@ private func sendEmail(
         to: adminEmails,
         subject: "New episode email finished sending!",
         content: inj2(
-          newEpisodeEmailAdminReportEmail.view(
+          adminEmailReport("New episode").view(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)
