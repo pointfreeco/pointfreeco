@@ -409,6 +409,7 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
             `class`([numberSpinner, Class.pf.colors.fg.black]),
             max(Pricing.validTeamQuantities.upperBound),
             min(Pricing.validTeamQuantities.lowerBound),
+            name("pricing[quantity]"),
             .init(
               "onblur",
               """
