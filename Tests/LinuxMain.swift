@@ -307,6 +307,15 @@ extension UpdateProfileTests {
     ("testUpdateExtraInvoiceInfo", testUpdateExtraInvoiceInfo)
   ]
 }
+extension WelcomeEmailTests {
+  static var allTests: [(String, (WelcomeEmailTests) -> () throws -> Void)] = [
+    ("testWelcomeEmail1", testWelcomeEmail1),
+    ("testWelcomeEmail2", testWelcomeEmail2),
+    ("testWelcomeEmail3", testWelcomeEmail3),
+    ("testIncrementEpisodeCredits", testIncrementEpisodeCredits),
+    ("testEpisodeEmails", testEpisodeEmails)
+  ]
+}
 
 // swiftlint:disable trailing_comma
 XCTMain([
@@ -347,5 +356,6 @@ XCTMain([
   testCase(SubscribeTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
+  testCase(WelcomeEmailTests.allTests),
 ])
 // swiftlint:enable trailing_comma

@@ -16,7 +16,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       Current.database.fetchUsersToWelcome(3)
         .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
         .map(map(welcomeEmail3))
-        .run.parallel
+        .run.parallel,
       ])
     .sequential
   )
@@ -35,13 +35,27 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       )
     }
     .map(const(unit))
+    .catch(notifyError(subject: "Welcome emails failed"))
+}
+
+private func notifyError<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
+  return { error in
+    var errorDump = ""
+    dump(error, to: &errorDump)
+
+    return sendEmail(
+      to: adminEmails,
+      subject: "[PointFree Error] \(subject)",
+      content: inj1(errorDump)
+      )
+      .flatMap(const(throwE(error)))
+  }
 }
 
 // TODO: team callouts
 
 private func prepareWelcomeEmail(to user: Database.User, subject: String, content: View<Database.User>)
   -> Email {
-
     return prepareEmail(
       to: [user.email],
       subject: subject,
