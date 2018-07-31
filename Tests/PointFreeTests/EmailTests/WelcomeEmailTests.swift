@@ -83,4 +83,13 @@ final class WelcomeEmailTests: TestCase {
 
     zip(users, updatedUsers).forEach { XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount) }
   }
+
+  func testEpisodeEmails() {
+    update(&Current, \.database .~ .mock)
+
+    _ = sendWelcomeEmails()
+      .run
+      .perform()
+      .right!
+  }
 }
