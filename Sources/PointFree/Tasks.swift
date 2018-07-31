@@ -5,8 +5,7 @@ import Prelude
 import Styleguide
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
-  let emails = EitherIO(
-    run: concat([
+  let zippedEmails = zip3(
       Current.database.fetchUsersToWelcome(1)
         .map(map(welcomeEmail1))
         .run.parallel,
@@ -16,10 +15,11 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       Current.database.fetchUsersToWelcome(3)
         .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
         .map(map(welcomeEmail3))
-        .run.parallel,
-      ])
-    .sequential
+        .run.parallel
   )
+  let flattenedEmails = zippedEmails
+    .map { curry { $0 + $1 + $2 } <¢> $0 <*> $1 <*> $2 }
+  let emails = EitherIO(run: flattenedEmails.sequential)
 
   let delayedSend = send(email:)
     >>> delay(.milliseconds(200))
