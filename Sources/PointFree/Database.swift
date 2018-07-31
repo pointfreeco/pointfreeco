@@ -459,6 +459,7 @@ private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, 
 }
 
 private func incrementEpisodeCredits(for userIds: [Database.User.Id]) -> EitherIO<Error, [Database.User]> {
+  guard !userIds.isEmpty else { return pure([]) }
   return rows(
     """
     UPDATE "users"
