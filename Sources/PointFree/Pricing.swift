@@ -247,7 +247,7 @@ private let studentDiscounts = View<Prelude.Unit> { _ in
   [
     h4(
       [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.text(unsafeUnencodedString("Do you offer student discounts?"))]
+      [text("Do you offer student discounts?")]
     ),
 
     p(
