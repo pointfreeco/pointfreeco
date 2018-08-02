@@ -272,12 +272,6 @@ public struct Stripe {
           case percentOff = "percent_off"
           case valid
         }
-
-        public enum Duration: String, Codable {
-          case forever
-          case once
-          case repeating
-        }
       }
     }
 
