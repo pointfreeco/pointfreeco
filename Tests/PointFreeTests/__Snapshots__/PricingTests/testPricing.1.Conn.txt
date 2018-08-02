@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 53053
+Content-Length: 53568
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1906,6 +1906,17 @@ of some of the things we’re excited to talk about
               Turning programming problems into algebraic problems
             </li>
           </ul>
+          <h4 class="fg-white fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-pt2">
+            Do you offer student discounts?
+          </h4>
+          <p class="fg-white">
+            We do! If you 
+            <a href="mailto:support@pointfree.co?subject=Student%20Discount" style="color:#4cccff;text-decoration:underline">
+              email us
+            </a>
+             proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the
+             individual plan.
+          </p>
           <h4 class="fg-white fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-pt2">
             Can I suggest a topic?
           </h4>

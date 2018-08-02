@@ -2,7 +2,7 @@ GET http://localhost:8080/account/payment-info
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 77003
+Content-Length: 77210
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2484,6 +2484,7 @@ html {
                       </div>
                     </div>
                     <input class="font-family-inherit fg-black border-box rounded border border-gray-800 h-3r m-pl1 m-pr1 m-pt1 m-pb1 m-mb2 w-100p block" name="vatNumber" placeholder="VAT Number (EU Customers Only)" type="text">
+                    <input class="font-family-inherit fg-black border-box rounded border border-gray-800 h-3r m-pl1 m-pr1 m-pt1 m-pb1 m-mb2 w-100p block" name="coupon" placeholder="Coupon Code" type="text">
                   </div>
                   <div class="font-family-inherit fg-black border-box rounded border border-gray-800 h-3r m-pl1 m-pr1 m-pt1 m-pb1 m-mb2 flex-column flex justify-center w-100p" data-stripe-key="pk_test" id="card-element">
                   </div>

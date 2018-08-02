@@ -141,6 +141,7 @@ public struct Stripe {
     public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
+    public private(set) var discount: Stripe.Subscription.Discount?
     public private(set) var id: Id
     public private(set) var lines: ListEnvelope<LineItem>
     public private(set) var number: Number
@@ -160,6 +161,7 @@ public struct Stripe {
       case closed
       case customer
       case date
+      case discount
       case id
       case lines
       case number
@@ -397,7 +399,7 @@ private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Error, Stripe.Plan> {
 }
 
 private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer&expand[]=discount")
+  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
 private func invoiceCustomer(_ customer: Stripe.Customer.Id)
