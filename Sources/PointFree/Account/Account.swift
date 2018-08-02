@@ -484,7 +484,6 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> N
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([text(discountDescription(for: discount))])
-          //
           ])
         ])
       ])
