@@ -26,12 +26,23 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
     >>> retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
 
   return emails
-    .flatMap(map(delayedSend) >>> sequence)
-    .flatMap { results in
-      sendEmail(
+    .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
+    .flatMap { (emails: [Email]) -> EitherIO<Error, Mailgun.SendEmailResponse> in
+      let stats = emails
+        .reduce(into: [String: [EmailAddress]]()) { dict, email in
+          dict[email.subject, default: []].append(contentsOf: email.to)
+        }
+        .map { subject, emails in
+          """
+          \(emails.count) \"\(subject)\" emails
+          \(emails.map { "  - " + $0.rawValue }.joined(separator: "\n"))
+          """
+        }
+        .joined(separator: "\n\n")
+      return sendEmail(
         to: adminEmails,
         subject: "Welcome emails sent",
-        content: inj1("\(results.count) welcome emails sent")
+        content: inj1("\(emails.count) welcome emails sent\n\n\(stats)")
       )
     }
     .map(const(unit))
