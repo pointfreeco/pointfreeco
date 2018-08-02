@@ -52,7 +52,7 @@ private func fetchAccountData<I>(
 
   let subscription = userSubscription <|> ownerSubscription
 
-  let stripeSubscription = subscription
+  let stripeSubscription: EitherIO<Error, Stripe.Subscription> = subscription
     .map(^\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
@@ -427,6 +427,7 @@ public func nextBilling(for subscription: Stripe.Subscription) -> String {
 }
 
 private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
+
   return div([`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])], [
     gridRow([
       gridColumn(sizes: [.mobile: 3], [

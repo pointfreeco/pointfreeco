@@ -6,6 +6,9 @@ import Prelude
 import Tuple
 
 public struct SubscribeData: Codable {
+  public typealias Coupon = Tagged<SubscribeData, String>
+
+  public let coupon: Coupon?
   public let pricing: Pricing
   public let token: Stripe.Token.Id
   public let vatNumber: String
@@ -39,7 +42,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
       }
       .flatMap {
         Current.stripe
-          .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity)
+          .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
       }
       .flatMap { stripeSubscription in
         Current.database

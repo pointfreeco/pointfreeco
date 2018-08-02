@@ -250,10 +250,15 @@ private let studentDiscounts = View<Prelude.Unit> { _ in
       [.text(unsafeUnencodedString("Do you offer student discounts?"))]
     ),
 
-    markdownBlock("""
-We do! If you [email us](mailto:support@pointfree.com?subject=Student%20Discount) proof of your student
-status (e.g. scan of ID card) we will give you a 50% discount off of the individual plan.
-"""),
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      [
+        "We do! If you ",
+        a([mailto("support@pointfree.co?subject=Student%20Discount"), style(faqLinkStyles)], ["email us"]),
+        " proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the",
+        " individual plan."
+      ]
+    )
   ]
 }
 

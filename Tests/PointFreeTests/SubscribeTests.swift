@@ -148,7 +148,7 @@ final class SubscribeTests: TestCase {
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
     )
 
     let conn = connection(
