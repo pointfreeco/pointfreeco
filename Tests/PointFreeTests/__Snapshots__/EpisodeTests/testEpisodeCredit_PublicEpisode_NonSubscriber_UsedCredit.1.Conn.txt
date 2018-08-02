@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67131
+Content-Length: 66933
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1773,8 +1773,8 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <meta name="description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
-    <meta name="twitter:image" content="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg">
-    <meta property="og:image" content="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg">
+    <meta name="twitter:image" content="">
+    <meta property="og:image" content="">
     <meta name="title" content="Episode #1: Type-Safe HTML in Swift">
     <meta property="og:title" content="Episode #1: Type-Safe HTML in Swift">
     <meta name="twitter:title" content="Episode #1: Type-Safe HTML in Swift">
@@ -2099,7 +2099,7 @@ video.play();event.preventDefault();" data-t="6" class="vid-time-link text-decor
       <div class="bg-purple150 first-m last-d col-m col-d-5 col-m-12">
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
-            <video class="h-100p w-100p absolute bg-gray650" controls playsinline autoplay poster="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg">
+            <video class="h-100p w-100p absolute bg-gray650" controls playsinline autoplay poster="">
               <source src="">
             </video>
           </div>

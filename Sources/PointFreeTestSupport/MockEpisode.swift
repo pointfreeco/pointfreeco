@@ -132,7 +132,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   codeSampleDirectory: "ep1-type-safe-html",
   id: 1,
   exercises: [],
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/poster.jpg",
+  image: "",
   length: 1380,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
