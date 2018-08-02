@@ -52,7 +52,7 @@ private func fetchAccountData<I>(
 
   let subscription = userSubscription <|> ownerSubscription
 
-  let stripeSubscription: EitherIO<Error, Stripe.Subscription> = subscription
+  let stripeSubscription = subscription
     .map(^\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
