@@ -25,6 +25,65 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  func testCoupon_Individual() {
+    let subscribeData = SubscribeData.individualMonthly
+      |> \.coupon .~ "deadbeef"
+    update(&Current, \.database .~ .live)
+
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> \.userId .~ user.id
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn)
+    #endif
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription)
+    #endif
+  }
+
+  func testCoupon_Team() {
+    let subscribeData = SubscribeData.teamYearly(quantity: 4)
+      |> \.coupon .~ "deadbeef"
+    update(&Current, \.database .~ .live)
+
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> \.userId .~ user.id
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn)
+    #endif
+
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!
+    XCTAssertNil(subscription)
+  }
+
   func testNotLoggedIn_IndividualYearly() {
     let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
       |> siteMiddleware

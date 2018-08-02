@@ -8,20 +8,33 @@ import Tuple
 public struct SubscribeData: Codable {
   public typealias Coupon = Tagged<SubscribeData, String>
 
-  public let coupon: Coupon?
-  public let pricing: Pricing
-  public let token: Stripe.Token.Id
-  public let vatNumber: String
+  public private(set) var coupon: Coupon?
+  public private(set) var pricing: Pricing
+  public private(set) var token: Stripe.Token.Id
+  public private(set) var vatNumber: String
 }
 
 let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
-    or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "Error creating subscription!"))
+    or: redirect(
+      to: .pricing(nil, expand: nil),
+      headersMiddleware: flash(.error, "Error creating subscription!")
+    )
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
-      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, "An invalid subscription quantity was used."))
+      or: redirect(
+        to: .pricing(nil, expand: nil),
+        headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
+      )
+    )
+    <<< filter(
+      get1 >>> validateCoupon(forSubscribeData:),
+      or: redirect(
+        to: .pricing(nil, expand: nil),
+        headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
+      )
     )
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
@@ -83,4 +96,8 @@ private func loginAndRedirectToPricing<A>(
 
   return conn
     |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing, expand: nil))))
+}
+
+private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
+  return subscribeData.coupon == nil || subscribeData.pricing.quantity == 1
 }
