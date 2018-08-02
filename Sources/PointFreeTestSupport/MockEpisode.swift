@@ -137,7 +137,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 1,
-  sourcesFull: ["https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8"],
+  sourcesFull: [""],
   sourcesTrailer: [],
   title: "Type-Safe HTML in Swift",
   transcriptBlocks: [
