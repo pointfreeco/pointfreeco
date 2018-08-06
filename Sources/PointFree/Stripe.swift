@@ -8,7 +8,7 @@ import UrlFormEncoding
 public struct Stripe {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
   public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Swift.Error, Customer>
-  public var createSubscription: (Customer.Id, Plan.Id, Int) -> EitherIO<Swift.Error, Subscription>
+  public var createSubscription: (Customer.Id, Plan.Id, Int, SubscribeData.Coupon?) -> EitherIO<Swift.Error, Subscription>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
   public var fetchInvoices: (Customer.Id) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
@@ -141,6 +141,7 @@ public struct Stripe {
     public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
+    public private(set) var discount: Stripe.Subscription.Discount?
     public private(set) var id: Id
     public private(set) var lines: ListEnvelope<LineItem>
     public private(set) var number: Number
@@ -160,6 +161,7 @@ public struct Stripe {
       case closed
       case customer
       case date
+      case discount
       case id
       case lines
       case number
@@ -232,6 +234,7 @@ public struct Stripe {
     public private(set) var currentPeriodStart: Date
     public private(set) var currentPeriodEnd: Date
     public private(set) var customer: Either<Customer.Id, Customer>
+    public private(set) var discount: Discount?
     public private(set) var endedAt: Date?
     public private(set) var id: Id
     public private(set) var items: ListEnvelope<Item>
@@ -249,6 +252,28 @@ public struct Stripe {
     }
 
     public typealias Id = Tagged<Subscription, String>
+
+    public struct Discount: Codable {
+      public private(set) var coupon: Coupon
+
+      public struct Coupon: Codable {
+        public typealias Id = Tagged<Coupon, String>
+
+        public private(set) var amountOff: Int?
+        public private(set) var id: Id
+        public private(set) var name: String
+        public private(set) var percentOff: Float?
+        public private(set) var valid: Bool
+
+        private enum CodingKeys: String, CodingKey {
+          case amountOff = "amount_off"
+          case id
+          case name
+          case percentOff = "percent_off"
+          case valid
+        }
+      }
+    }
 
     public struct Item: Codable {
       public private(set) var created: Date
@@ -274,6 +299,7 @@ public struct Stripe {
       case created
       case currentPeriodEnd = "current_period_end"
       case currentPeriodStart = "current_period_start"
+      case discount
       case endedAt = "ended_at"
       case id
       case items
@@ -333,15 +359,18 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumb
 private func createSubscription(
   customer: Stripe.Customer.Id,
   plan: Stripe.Plan.Id,
-  quantity: Int
+  quantity: Int,
+  coupon: SubscribeData.Coupon?
   )
   -> EitherIO<Error, Stripe.Subscription> {
 
-    return stripeDataTask("subscriptions?expand[]=customer", .post([
-      "customer": customer.rawValue,
-      "items[0][plan]": plan.rawValue,
-      "items[0][quantity]": String(quantity),
-      ]))
+    var params: [String: Any] = [:]
+    params["customer"] = customer.rawValue
+    params["items[0][plan]"] = plan.rawValue
+    params["items[0][quantity]"] = String(quantity)
+    params["coupon"] = coupon?.rawValue
+
+    return stripeDataTask("subscriptions?expand[]=customer", .post(params))
 }
 
 private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Customer> {

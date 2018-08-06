@@ -68,6 +68,12 @@ extension Stripe {
             placeholder("VAT Number (EU Customers Only)"),
             type(.text),
             ]),
+          input([
+            `class`([blockInputClass]),
+            name("coupon"),
+            placeholder("Coupon Code"),
+            type(.text),
+            ]),
           ]),
         div(
           [

@@ -156,9 +156,25 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
   )
 }
 
+private func discountDescription(for discount: Stripe.Subscription.Discount, invoice: Stripe.Invoice) -> String {
+  return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name))"
+}
+
 let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { subscription, currentUser, invoice -> Node in
 
-  gridRow([
+  let discountRow = invoice.discount.map { discount in
+    gridRow([`class`([Class.padding([.mobile: [.topBottom: 1]])])], [
+      gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
+      gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
+        div(["Discount"]),
+        ]),
+      gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+        div([text(discountDescription(for: discount, invoice: invoice))]),
+        ]),
+      ])
+  }
+
+  return gridRow([
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
@@ -272,7 +288,8 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
               gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
                 div([text(format(cents: invoice.subtotal))]),
                 ]),
-              ]),
+              ])
+            ] + [discountRow].compactMap(id) + [
             gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
               gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
               gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [

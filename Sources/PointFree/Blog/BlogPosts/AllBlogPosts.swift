@@ -18,4 +18,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0007_openSourcingNonEmpty,
   post0008_conditionalCoding,
   post0009_6moAnniversary,
+  post0010_studentDiscounts,
 ]
