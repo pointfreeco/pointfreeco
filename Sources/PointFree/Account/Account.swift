@@ -426,59 +426,83 @@ public func nextBilling(for subscription: Stripe.Subscription) -> String {
   }
 }
 
-private let subscriptionPlanRows = View<Stripe.Subscription> { subscription in
-  return div([`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])], [
-    gridRow([
-      gridColumn(sizes: [.mobile: 3], [
-        p([div(["Plan"])])
-        ]),
-      gridColumn(sizes: [.mobile: 9], [
-        gridRow([
-          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-              p([text(planName(for: subscription))])
-              ])
-            ]),
-          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
-              p([mainAction(for: subscription)])
-              ])
-            ])
-          ])
-        ])
+private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> Node in
+
+  let planRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Plan"])])
       ]),
-    gridRow([
-      gridColumn(sizes: [.mobile: 3], [
-        p([div(["Status"])])
-        ]),
-      gridColumn(sizes: [.mobile: 9], [
-        gridRow([
-          gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-              p([text(status(for: subscription))])
-              ])
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([text(planName(for: subscription))])
+            ])
+          ]),
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+            p([mainAction(for: subscription)])
             ])
           ])
         ])
       ])
-    ]
-    + (
-      subscription.cancelAtPeriodEnd || subscription.status == .canceled
-        ? []
-        : [
-          gridRow([
-            gridColumn(sizes: [.mobile: 3], [
-              p([div(["Next billing"])])
-              ]),
-            gridColumn(sizes: [.mobile: 9], [
-              div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-                p([text(nextBilling(for: subscription))])
-                ])
-              ])
+    ])
+
+  let statusRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Status"])])
+      ]),
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([text(status(for: subscription))])
             ])
-      ]
-    )
+          ])
+        ])
+      ])
+    ])
+
+  let nextBillingRow = subscription.cancelAtPeriodEnd || subscription.status == .canceled
+    ? nil
+    : gridRow([
+      gridColumn(sizes: [.mobile: 3], [
+        p([div(["Next billing"])])
+        ]),
+      gridColumn(sizes: [.mobile: 9], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          p([text(nextBilling(for: subscription))])
+          ])
+        ])
+      ])
+
+  let discountRow = subscription.discount.map { discount in
+    gridRow([
+      gridColumn(sizes: [.mobile: 3], [
+        p([div(["Discount"])])
+        ]),
+      gridColumn(sizes: [.mobile: 9], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          p([text(discountDescription(for: discount))])
+          ])
+        ])
+      ])
+  }
+
+  return div(
+    [`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
+    [planRow, statusRow] + [nextBillingRow, discountRow].compactMap(id)
   )
+}
+
+private func discountDescription(for discount: Stripe.Subscription.Discount) -> String {
+  var result = "\(discount.coupon.name): "
+  if let percentOff = discount.coupon.percentOff {
+    result += "\(Int(percentOff))% off"
+  } else if let amountOff = discount.coupon.amountOff {
+    result += "$\(amountOff) off"
+  }
+  return result
 }
 
 private func mainAction(for subscription: Stripe.Subscription) -> Node {

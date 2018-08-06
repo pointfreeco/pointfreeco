@@ -214,7 +214,7 @@ extension Stripe {
   public static let mock = Stripe(
     cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _, _ in pure(.mock) },
-    createSubscription: { _, _, _ in pure(.mock) },
+    createSubscription: { _, _, _, _ in pure(.mock) },
     fetchCustomer: const(pure(.mock)),
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
@@ -289,6 +289,7 @@ extension Stripe.Invoice {
       closed: true,
       customer: "cus_test",
       date: .mock,
+      discount: nil,
       id: "in_test",
       lines: .mock([.mock]),
       number: "0000000-0000",
@@ -359,6 +360,7 @@ extension Stripe.Subscription {
     currentPeriodStart: .mock,
     currentPeriodEnd: Date(timeInterval: 60 * 60 * 24 * 30, since: .mock),
     customer: .right(.mock),
+    discount: nil,
     endedAt: nil,
     id: "sub_test",
     items: .mock([.mock]),
@@ -394,6 +396,20 @@ extension Stripe.Subscription {
     |> \.status .~ .canceled
 }
 
+extension Stripe.Subscription.Discount {
+  public static let mock = Stripe.Subscription.Discount(coupon: .mock)
+}
+
+extension Stripe.Subscription.Discount.Coupon {
+  public static let mock = Stripe.Subscription.Discount.Coupon(
+    amountOff: nil,
+    id: "coupon-deadbeef",
+    name: "Student Discount",
+    percentOff: 50,
+    valid: true
+  )
+}
+
 extension Stripe.Subscription.Item {
   public static let mock = Stripe.Subscription.Item(
     created: .mock,
@@ -405,12 +421,14 @@ extension Stripe.Subscription.Item {
 
 extension SubscribeData {
   public static let individualMonthly = SubscribeData(
+    coupon: nil,
     pricing: .init(billing: .monthly, quantity: 1),
     token: "stripe-deadbeef",
     vatNumber: ""
   )
 
   public static let individualYearly = SubscribeData(
+    coupon: nil,
     pricing: .init(billing: .yearly, quantity: 1),
     token: "stripe-deadbeef",
     vatNumber: ""
@@ -418,6 +436,7 @@ extension SubscribeData {
 
   public static func teamYearly(quantity: Int) -> SubscribeData {
     return .init(
+      coupon: nil,
       pricing: .init(billing: .yearly, quantity: quantity),
       token: "stripe-deadbeef",
       vatNumber: ""
