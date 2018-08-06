@@ -31,6 +31,6 @@ any questions!
   ],
   coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
   id: 10,
-  publishedAt: Date(timeIntervalSince1970: 1533621423), 
+  publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
   title: "Announcing Student Discounts"
 )
