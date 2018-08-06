@@ -3,7 +3,7 @@ import Foundation
 let post0010_studentDiscounts = BlogPost(
   author: .brandon,
   blurb: """
-Get 50% of your Point-Free subscription with proof of enrollment at a university or coding school.
+Get 50% off your Point-Free subscription with proof of enrollment at a university or coding school.
 """,
   contentBlocks: [
 
@@ -11,12 +11,12 @@ Get 50% of your Point-Free subscription with proof of enrollment at a university
       content: """
 We're happy to announce that we now offer a 50% discount on individual subscriptions for students that are
 currently enrolled in a university or coding school. All you have to do is
-[email us](mailto:support@pointfree.com?subject=Student%20Discount) proof of your enrollment, such as
+[email us](mailto:support@pointfree.com?subject=Student%20Discount) proof of your enrollment, such as a
 scanned photo of your student ID or a proof of enrollment from the organization, and we'll give you a
 discount code that can be used on the [individual](\(url(to: .pricing(nil, expand: nil)))) subscription
 plan, both monthly and yearly.
 
-Some may think that our material isn't exactly beginner friendly, and although there is some truth to it
+Some may think that our material isn't exactly beginner friendly, and although there is some truth to that,
 we also believe that the ideas of functional programming are best introduced during the formative period
 of one's life in programming. Most introductory education materials put too much of an emphasis
 on getting things up on a screen and too little time on the fundamentals of where complexity lies in
