@@ -70,6 +70,30 @@ class PricingTests: TestCase {
     #endif
   }
 
+  func testPricingLoggedIn_NonSubscriber_Expanded() {
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+    let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result.perform())
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
+
+      webView.frame.size.width = 400
+      assertSnapshot(matching: webView, named: "mobile")
+
+    }
+    #endif
+  }
+
   func testPricingLoggedIn_Subscriber() {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware

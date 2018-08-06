@@ -243,6 +243,25 @@ private let suggestATopic = View<Prelude.Unit> { _ in
   ]
 }
 
+private let studentDiscounts = View<Prelude.Unit> { _ in
+  [
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [text("Do you offer student discounts?")]
+    ),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      [
+        "We do! If you ",
+        a([mailto("support@pointfree.co?subject=Student%20Discount"), style(faqLinkStyles)], ["email us"]),
+        " proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the",
+        " individual plan."
+      ]
+    )
+  ]
+}
+
 private let whoAreYou = View<Prelude.Unit> { _ in
   [
     h4(
@@ -283,6 +302,7 @@ private let faqView = View<Prelude.Unit> { _ in
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)
             <> topicsView.view(unit)
+            <> studentDiscounts.view(unit)
             <> suggestATopic.view(unit)
             <> whoAreYou.view(unit)
       )
