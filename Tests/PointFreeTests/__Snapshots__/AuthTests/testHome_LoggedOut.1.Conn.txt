@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62053
+Content-Length: 62360
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1927,9 +1927,17 @@ as episodes are released.
                           How many in your team?
                         </p>
                         <input class="num-spinner center fg-black bold ts-d-r4 ts-m-r3 lh-2 fg-black" max="100" min="2" name="pricing[quantity]" onblur="javascript:
-this.value = Math.min(Math.max(+this.value, +this.min), +this.max);" oninput="javascript:
+this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
+var multiplier = +this.value;
+var elements = document.getElementsByClassName(&#39;team-price&#39;);
+for (var idx = 0; idx &lt; elements.length; idx++) {
+  var element = elements[idx];
+  element.textContent = (multiplier * element.dataset.price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, &#39;,&#39;);
+}" oninput="javascript:
 var value = +this.value;
-var multiplier = Math.min(Math.max(value, +this.min), +this.max);
+var multiplier = Math.min(Math.max(value, 0), +this.max);
 var elements = document.getElementsByClassName(&#39;team-price&#39;);
 if (this.value != &quot;&quot; &amp;&amp; value != multiplier) {
   this.value = multiplier;

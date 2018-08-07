@@ -435,6 +435,14 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
               """
               javascript:
               this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
+              var multiplier = +this.value;
+              var elements = document.getElementsByClassName('team-price');
+              for (var idx = 0; idx < elements.length; idx++) {
+                var element = elements[idx];
+                element.textContent = (multiplier * element.dataset.price)
+                  .toString()
+                  .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+              }
               """
             ),
             .init(
@@ -442,7 +450,7 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
               """
               javascript:
               var value = +this.value;
-              var multiplier = Math.min(Math.max(value, +this.min), +this.max);
+              var multiplier = Math.min(Math.max(value, 0), +this.max);
               var elements = document.getElementsByClassName('team-price');
               if (this.value != "" && value != multiplier) {
                 this.value = multiplier;
