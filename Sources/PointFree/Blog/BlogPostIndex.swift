@@ -34,8 +34,8 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
 
   let allPosts = Current.blogPosts()
     .sorted(by: their(^\.id, >))
-  let newPosts = allPosts.prefix(3)
-  let oldPosts = allPosts.dropFirst(3)
+  let newPosts = allPosts.prefix(1)
+  let oldPosts = allPosts.dropFirst(1)
 
   return gridRow(
     [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
