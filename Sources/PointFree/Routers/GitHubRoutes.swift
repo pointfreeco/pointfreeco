@@ -15,6 +15,7 @@ public enum GitHubRoute: DerivePartialIsos {
     case pointfreeco
     case prelude = "swift-prelude"
     case tagged = "swift-tagged"
+    case validated = "swift-validated"
     case web = "swift-web"
   }
 }
