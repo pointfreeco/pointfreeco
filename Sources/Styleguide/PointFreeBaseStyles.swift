@@ -458,7 +458,7 @@ private let baseButtonStyles =
     <> baseUnderlineButtonStyles
 
 private let baseNormalButtonClass = CssSelector.class("btn-normal")
-private let baseNormalButtonStyles:  Stylesheet =
+private let baseNormalButtonStyles: Stylesheet =
   (baseNormalButtonClass & .pseudo(.hover)) % darken1
     <> (a & .pseudo(.active) & baseNormalButtonClass) % darken3
     <> (a & .pseudo(.link) & baseNormalButtonClass) % key("text-decoration", "none")

@@ -430,22 +430,3 @@ introductory series to `zip`! If you thought those were too easy, be sure to che
   publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800*2 + 60*60*24),
   title: "Solutions to Exercises: Zip Part 1"
 )
-
-/*
-
-    .init(
-      content: """
-}
-""",
-      timestamp: nil,
-      type: .code(lang: .swift)
-    ),
-
-    .init(
-      content: """
-""",
-      timestamp: nil,
-      type: .paragraph
-    ),
-
- */
