@@ -1,7 +1,7 @@
 import Foundation
 
 // todo: renumber
-let post0011_solutionsToZipExercises = BlogPost(
+let post0011_solutionsToZipExercisesPt1 = BlogPost(
   author: .brandon,
   blurb: """
 Today we solve the exercises to the first part of our introductory series on zip.
@@ -20,7 +20,7 @@ Today we solve the exercises to the first part of our introductory series on zip
 ---
 
 Last week we concluded our 3-part introductory series to the `zip` function. In the
-[first episode](/episodes/ep23-the-many-faces-of-zip-part-1) saw that `zip` goes well beyond the function
+[first episode](/episodes/ep23-the-many-faces-of-zip-part-1) we saw that `zip` goes well beyond the function
 that is defined in the Swift standard library, and in fact it generalizes the notion of `map` that we are
 familiar with on arrays. At the end of the episode we provided some exercises to help viewers dive a little
 deeper into what `zip` had to offer, and this week we solve most of those problems!
@@ -419,13 +419,13 @@ Short and sweet! To `zip` a nested optional array you simply `map` on the `zip` 
 And that's the solutions to the [first part](/episodes/ep23-the-many-faces-of-zip-part-1) of our 3 part
 introductory series to `zip`! If you thought those were too easy, be sure to check out the exercises to
 [part 2](/episodes/ep24-the-many-faces-of-zip-part-2) and
-[part 3](/episodes/ep25-the-many-faces-of-zip-part-3) too.
+[part 3](/episodes/ep25-the-many-faces-of-zip-part-3) too. Until next time!
 """,
       timestamp: nil,
       type: .paragraph
     ),
   ],
-  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0011-solutions-to-zip-pt1/poster.jpg",
   id: 11,
   publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800*2 + 60*60*24),
   title: "Solutions to Exercises: Zip Part 1"
