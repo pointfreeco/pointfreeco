@@ -303,7 +303,7 @@ func zip2<A, B, R>(_ r2a: Func<R, A>, _ r2b: Func<R, B>) -> Func<R, (A, B)> {
     .init(
       content: """
 This allows us to `zip` two functions together as long as their input types are the same. In the
-[epsiode](/episodes/ep24-the-many-faces-of-zip-part-2) we explored this idea a bit more and showed how it
+[episode](/episodes/ep24-the-many-faces-of-zip-part-2) we explored this idea a bit more and showed how it
 unlocks some interesting expressivity when dealing with lazy values.
 
 ---
