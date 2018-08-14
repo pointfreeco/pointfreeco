@@ -118,7 +118,7 @@ of the tuple:
 
     .init(
       content: """
-func `unzip2(_ pairs: [(A, B)]) -> ([A], [B]) {
+func unzip2(_ pairs: [(A, B)]) -> ([A], [B]) {
   return (pairs.map { $0.0 }, pairs.map { $0.1 })
 }
 """,
