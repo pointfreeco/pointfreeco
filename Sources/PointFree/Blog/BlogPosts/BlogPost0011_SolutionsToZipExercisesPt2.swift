@@ -9,7 +9,6 @@ Today we solve the exercises to the second part of our introductory series on zi
     .init(
       content: "",
       timestamp: nil,
-      //todo
       type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0012-solutions-to-zip-pt2/poster.jpg")
     ),
 
@@ -184,7 +183,6 @@ func zip2<A, B, R>(
 Ok, now that we have `zip` defined, how can we use it? Well, imagine we had some C function that was imported
 that operates on `UnsafeRawBufferPointer` values. Then we could `zip` up the `withUnsafeBytes` of two
 arrays and invoke that C function:
-
 """,
       timestamp: nil,
       type: .paragraph
@@ -196,11 +194,12 @@ var xs = [1, 2, 3]
 var ys = [4, 5, 6]
 
 func someCFunction(_ x: UnsafeRawBufferPointer, _ y: UnsafeRawBufferPointer) -> Int {
+  // Do something with the pointers here...
   return 1
 }
 
-try (zip2(xs.withUnsafeBytes, ys.withUnsafeBytes)) { a, b in
-  someCFunction(a, b)
+try (zip2(xs.withUnsafeBytes, ys.withUnsafeBytes)) { x, y in
+  someCFunction(x, y)
 }
 """,
       timestamp: nil,
@@ -211,7 +210,30 @@ try (zip2(xs.withUnsafeBytes, ys.withUnsafeBytes)) { a, b in
       content: """
 This allows you to clearly express that you want to grab the underlying bytes of the array storage
 and invoke a C function with those contents. The alternative way is to nest multiple calls to
-`withUnsafeBytes`, which leads to highly indented code and "callback hell."
+`withUnsafeBytes`, which leads to highly indented code and "callback hell":
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+var result: Int?
+try xs.withUnsafeBytes { x in
+  try ys.withUnsafeBytes { y in
+    result = someCFunction(x, y)
+  }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+Notice that we had to nest two layers deep, _and_ we had to create an optional result value to hold the
+result once we get into the innermost block. The `zip` method for handling unsafe bytes is shorter and
+more expressive.
 
 ---
 
