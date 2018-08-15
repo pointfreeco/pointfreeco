@@ -1,6 +1,5 @@
 import Foundation
 
-// todo: renumber
 let post0012_solutionsToZipExercisesPt2 = BlogPost(
   author: .brandon,
   blurb: """
@@ -11,7 +10,8 @@ Today we solve the exercises to the second part of our introductory series on zi
       content: "",
       timestamp: nil,
       //todo
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0011-solutions-to-zip-pt1/poster.jpg")
+      //https://d1iqsrac68iyd8.cloudfront.net/posts/0011-solutions-to-zip-pt1/poster.jpg
+      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0012-solutions-to-zip-pt2/poster.jpg")
     ),
 
     .init(
@@ -66,7 +66,9 @@ func zip2<A, B>(_ fa: Parallel<A>, _ fb: Parallel<B>) -> Parallel<(A, B)> {
     .init(
       content: """
 Here we have chosen to notify the group's completion on the main thread, but a more robust `Parallel`
-implementation might make that customizable.
+implementation might make that customizable. It's interesting to think of `DispatchGroup`'s as just
+GCD's version of a `zip` operation. We feel that `zip` is a little more expressive and composable
+than `DispatchGroup`'s are.
 
 ---
 
@@ -79,8 +81,8 @@ parameter.
 Although this `F4` type is closely related to `Parallel`, its `zip` implementation is a bit different.
 If we try to repeat what we did for `Parallel` above we will quickly run into the problem that we must
 return an `R` value from each of the `fa.run` and `fb.run` functions, and we don't have any such value.
-Instead, we can take the approach we first took in [episode two](todo) when trying to define `zip` on
-`Parallel`, and we will nest the `run` blocks:
+Instead, we can take the approach we first took in [episode two](/episodes/ep24-the-many-faces-of-zip-part-2)
+when trying to define `zip` on `Parallel`, and we will nest the `run` blocks:
 """,
       timestamp: nil,
       type: .paragraph
@@ -111,7 +113,7 @@ func zip2<A, B, R>(_ fa: F4<A, R>, _ fb: F4<B, R>) -> F4<(A, B), R> {
 > Find a function in the Swift standard library that resembles the function above. How could you use `zip2` on
 it?
 
-Have you ever looked at the method signature of `withUnsafeBytes`? I mean, _really` looked at it? Here it
+Have you ever looked at the method signature of `withUnsafeBytes`? I mean, _really_ looked at it? Here it
 is:
 """,
       timestamp: nil,
@@ -146,10 +148,13 @@ func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) -> R) -> R
     .init(
       content: """
 Ok interesting. If we focus on just the shape of this, we see it's a function of the form:
-`((UnsafeRawBufferPointer) -> R) -> R`. That is precisely `F4<UnsafeRawBufferPointer, R>` as defined
-in exercise 10.
+`((UnsafeRawBufferPointer) -> R) -> R`. That is basically `F4<UnsafeRawBufferPointer, R>` as defined
+in exercise 2!
 
-TODO
+Unfortunately, we cannot just wrap these functions up in an `F4` value, and then start zipping them. The
+`throws` and `rethrows` annotations make these function signatures distinct from that of `F4`. Instead
+of littering our `F4` type with `throws` annotations, let's just define a specialized `zip2` for functions
+of the form `((A) throws R) throws R`:
 """,
       timestamp: nil,
       type: .paragraph
@@ -157,6 +162,58 @@ TODO
 
     .init(
       content: """
+func zip2<A, B, R>(
+  _ f: @escaping ((A) throws -> R) throws -> R,
+  _ g: @escaping ((B) throws -> R) throws -> R
+  ) -> (@escaping (A, B) throws -> R) throws -> R {
+
+  return { callback in
+    try f { a in
+      try g { b in
+        try callback(a, b)
+      }
+    }
+  }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+Ok, now that we have `zip` defined, how can we use it? Well, imagine we had some C function that was imported
+that operates on `UnsafeRawBufferPointer` values. Then we could `zip` up the `withUnsafeBytes` of two
+arrays and invoke that C function:
+
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+var xs = [1, 2, 3]
+var ys = [4, 5, 6]
+
+func someCFunction(_ x: UnsafeRawBufferPointer, _ y: UnsafeRawBufferPointer) -> Int {
+  return 1
+}
+
+try (zip2(xs.withUnsafeBytes, ys.withUnsafeBytes)) { a, b in
+  someCFunction(a, b)
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+This allows you to clearly express that you want to grab the underlying bytes of the array storage
+and invoke a C function with those contents. The alternative way is to nest multiple calls to
+`withUnsafeBytes`, which leads to highly indented code and "callback hell."
+
 ---
 
 ## Exercise 4
@@ -170,7 +227,8 @@ each support a `zip` operation.
 the inner layer `Array`  has a `zip2`. Can we define a `zip2` on `[A]?` that makes use of both of these zip
 structures? Write the signature of such a function and implement it.
 
-We accidentally put in both part 1 and 2 episodes, so we already solved it [before](todo)!
+We accidentally put in both part 1 and 2 episodes, so we already solved it
+[before](\(path(to: .blog(.show(post0011_solutionsToZipExercisesPt1)))))!
 
 ### Exercise 4.2
 
@@ -215,26 +273,75 @@ func zip2<A, B, E>(_ a: [Validated<A, E>], _ b: [Validated<B, E>]) -> [Validated
 
     .init(
       content: """
+This allows us to express the idea of taking two lists of validated values, and combining them into one
+list, where if there are any errors they combine, and otherwise we get a tuple of the valid values.
+
 ---
 
 ### Exercise 4.3
-
-> Consider the type `Func<R, A?>`. Again we have a nesting of types, each of which have their own `zip2`
-operation. Can you define a `zip2` on this type that makes use of both structures? Write the signature of
-such a function and implement it.
-
-TODO
-
----
-
-### Exercise 4.4
 
 > Consider the type `Func<R, [A]>`. Again we have a nesting of types, each of which have their own `zip2`
 operation. Can you define a `zip2` on this type that makes use of both structures? Write the signature of
 such a function and implement it.
 
-TODO
+Let's start by writing the signature of the function we want to implement:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
 
+    .init(
+      content: """
+func zip2<A, B, R>(_ a: Func<R, [A]>, _ b: Func<R, [B]>) -> Func<R, [(A, B)]> {
+  fatalError()
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+We know how to perform `zip` on `Func` values, so we could start with that:
+
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+func zip2<A, B, R>(_ a: Func<R, [A]>, _ b: Func<R, [B]>) -> Func<R, [(A, B)]> {
+  zip2(a, b) // Func<R, ([A], [B])>
+  fatalError()
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+Also, `map` on `Func` operates on the second type parameter, in this case `([A], [B])`, and that's precisely
+the shape we like for `zip`, so sounds like we can do those two operations together:
+
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+func zip2<A, B, R>(_ a: Func<R, [A]>, _ b: Func<R, [B]>) -> Func<R, (A, B)> {
+  return zip2(a, b).map(zip2)
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
 ---
 
 ### Exercise 4.4
@@ -253,6 +360,26 @@ writing out the signature:
     .init(
       content: """
 func zip2<A, B, E>(_ a: Parallel<Validated<A, E>>, _ b: Parallel<Validated<B, E>>) -> Parallel<Validated<(A, B), E>> {
+  fatalError()
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+If we `zip` both of these parallel values together, we will arrive at another parallel value that holds
+two validated values. So, we can `map` into that new parallel value, and then `zip` the two validated
+values inside it. This implements the function:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+func zip2<A, B, E>(_ a: Parallel<Validated<A, E>>, _ b: Parallel<Validated<B, E>>) -> Parallel<Validated<(A, B), E>> {
   return zip2(a, b).map(zip2)
 }
 """,
@@ -262,6 +389,9 @@ func zip2<A, B, E>(_ a: Parallel<Validated<A, E>>, _ b: Parallel<Validated<B, E>
 
     .init(
       content: """
+This allows us to simultaneously perform two parallel tasks and two validations at the same time, bringing
+the results into one single value. Very powerful!
+
 ---
 
 ## Exercise 5
@@ -270,12 +400,12 @@ func zip2<A, B, E>(_ a: Parallel<Validated<A, E>>, _ b: Parallel<Validated<B, E>
 is showing is that nested zippable containers are also zippable containers because `zip` on the nesting can
 be defined in terms of zip on each of the containers.
 
-Every implementation of `zip` on nested contains looked identical. We first `zip` the outer containers, then
+Every implementation of `zip` on nested containers looked identical. We first `zip` the outer containers, then
 `map` on that container with the `zip` on the inner containers. What we are seeing here is that nested
-zippable containers are _always_ zippable themselves. Unfortunately Swift does not have the type features
-that allows us to express this algorithm generically, and so we are forced to write the
+zippable containers are _always_ zippable themselves. Unfortunately Swift does not have the type level
+features that allows us to express this algorithm generically, and so we are forced to write the
 `zip2(lhs, rhs).map(zip2)` boilerplate _every_ time we want to nest two zippable containers. Maybe someday
-though!
+this will be better!
 
 ---
 
@@ -288,7 +418,7 @@ introductory series to `zip`! If you thought those were too easy, be sure to che
     ),
 
   ],
-  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0012-solutions-to-zip-pt2/poster.jpg",
   id: 12,
   publishedAt: Date(timeIntervalSince1970: 1534312623),
   title: "Solutions to Exercises: Zip Part 2"
