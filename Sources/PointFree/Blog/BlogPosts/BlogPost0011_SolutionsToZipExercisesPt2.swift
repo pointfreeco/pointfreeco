@@ -10,8 +10,7 @@ Today we solve the exercises to the second part of our introductory series on zi
       content: "",
       timestamp: nil,
       //todo
-      //https://d1iqsrac68iyd8.cloudfront.net/posts/0011-solutions-to-zip-pt1/poster.jpg
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0012-solutions-to-zip-pt2/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0012-solutions-to-zip-pt2/poster.jpg")
     ),
 
     .init(
@@ -418,7 +417,7 @@ introductory series to `zip`! If you thought those were too easy, be sure to che
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0012-solutions-to-zip-pt2/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0012-solutions-to-zip-pt2/poster.jpg",
   id: 12,
   publishedAt: Date(timeIntervalSince1970: 1534312623),
   title: "Solutions to Exercises: Zip Part 2"
