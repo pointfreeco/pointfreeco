@@ -51,7 +51,7 @@ func unpack<A, B, C, D>(_ tuple: (A, (B, (C, D)))) -> (A, B, C, D) {
 }
 
 func unpack<A, B, C, D, E>(_ tuple: (A, (B, (C, (D, E))))) -> (A, B, C, D, E) {
-  return (tuple.0, tuple.1.0, tuple.1.1.0, tuple.1.1.1.0 tuple.1.1.1.0)
+  return (tuple.0, tuple.1.0, tuple.1.1.0, tuple.1.1.1.0 tuple.1.1.1.1)
 }
 """,
       timestamp: nil,
