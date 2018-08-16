@@ -521,6 +521,6 @@ Until next time!
   ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0013-solutions-to-zip-pt3/poster.jpg",
   id: 13,
-  publishedAt: Date(timeIntervalSince1970: 1534312623 + 86_400*2),
+  publishedAt: Date(timeIntervalSince1970: 1534312623 + 86_400),
   title: "Solutions to Exercises: Zip Part 3"
 )
