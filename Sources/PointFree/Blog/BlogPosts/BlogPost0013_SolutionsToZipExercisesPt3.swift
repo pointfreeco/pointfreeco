@@ -27,7 +27,7 @@ ideas, and this week we solve most of those problems!
 
 ---
 
-## Exercise 14
+## Exercise 1
 
 > In this series of episodes on `zip` we have described zipping types as a kind of way to swap the order of
 nested containers when one of those containers is a tuple, e.g. we can transform a tuple of arrays to an
@@ -36,7 +36,7 @@ type. Implement the following to the best of your ability, and describe in words
 
 ---
 
-### Exercise 14.1
+### Exercise 1.1
 
 > `sequence: ([A?]) -> [A]?`
 
@@ -71,7 +71,7 @@ func sequence<A>(_ xs: [A?]) -> [A]? {
       content: """
 ---
 
-### Exercise 14.2
+### Exercise 1.2
 
 > `sequence: ([Result<A, E>]) -> Result<[A], E>`
 
@@ -111,7 +111,7 @@ func sequence<A, E>(_ results: [Result<A, E>]) -> Result<[A], E> {
       content: """
 ---
 
-### Exercise 14.3
+### Exercise 1.3
 
 > `sequence: ([Validated<A, E>]) -> Validated<[A], E>`
 
@@ -177,7 +177,7 @@ func sequence<A, E>(_ results: [Validated<A, E>]) -> Validated<[A], E> {
       content: """
 ---
 
-### Exercise 14.4
+### Exercise 1.4
 
 > `sequence: ([Parallel<A>]) -> Parallel<[A]>`
 
@@ -222,7 +222,7 @@ bonus exercise might be to find ways to make this thread safe.
 
 ---
 
-### Exercise 14.5
+### Exercise 1.5
 
 > `sequence: (Result<A?, E>) -> Result<A, E>?`
 
@@ -253,7 +253,7 @@ func sequence<A>(_ result: Result<A?, E>) -> Result<A, E>?` {
       content: """
 ---
 
-### Exercise 14.6
+### Exercise 1.6
 
 > `sequence: (Validated<A?, E>) -> Validated<A, E>?`
 
@@ -282,7 +282,7 @@ func sequence<A>(_ result: Validated<A?, E>) -> Validated<A, E>?`
       content: """
 ---
 
-### Exercise 14.6
+### Exercise 1.7
 
 > Note that all of these functions also represent the flipping of containers, e.g. an array of optionals
 transforms into an optional array, an array of results transforms into a result of an array, or a
@@ -306,7 +306,7 @@ on this soon!
 
 ---
 
-## Exercise 15
+## Exercise 2
 
 > There is a function closely related to `zip` called `apply`. It has the following shape:
 `apply: (F<(A) -> B>, F<A>) -> F<B>`. Define `apply` for `Array`, `Optional`, `Result`, `Validated`,
@@ -351,7 +351,7 @@ and `map`.
 
 ---
 
-## Exercise 15
+## Exercise 3
 
 > Another closely related function to `zip` is called `alt`, and it has the following shape:
 `alt: (F<A>, F<A>) -> F<A>`. Define `alt` for `Array`, `Optional`, `Result`, `Validated` and `Parallel`.
