@@ -3,17 +3,28 @@ import Foundation
 let post0013_solutionsToZipExercisesPt3 = BlogPost(
   author: .brandon,
   blurb: """
-Today we solve the exercises to the third part of our introductory series on zip.
+Today we solve the exercises to the third and final part of our introductory series on zip.
 """,
   contentBlocks: [
     .init(
       content: "",
       timestamp: nil,
-      // todo
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0012-solutions-to-zip-pt2/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0013-solutions-to-zip-pt3/poster.jpg")
     ),
 
     .init(content: """
+---
+
+Last week we concluded our 3-part introductory series to the `zip` function. In the
+[third episode](/episodes/ep25-the-many-faces-of-zip-part-3) we finally answered the question: "what's
+the point?" It ultimately led us to the realization that with `zip` we could unify many wildly different
+ways of creating instances of types under the umbrella of one single concept. And that allowed us to
+write code that worked across arrays, optionals, results, validations, lazy values and even async
+values in an identical manner.
+
+At the end of the episode we provided some exercises to help viewers dive a little deeper into these
+ideas, and this week we solve most of those problems!
+
 ---
 
 ## Exercise 14
@@ -455,7 +466,7 @@ func alt<A>(_ lhs: Parallel<A>, _ rhs: Parallel<A>) -> Parallel<A> {
       f($0)
     }
     lhs.run(callback)
-    rhs().run(callback)
+    rhs.run(callback)
   }
 }
 """,
@@ -469,15 +480,18 @@ Semantically this means that we are _racing_ both parallels, and just picking th
 
 ---
 
+And that's the solutions to the [third part](/episodes/ep25-the-many-faces-of-zip-part-3) of our 3 part
+introductory series to `zip`! This is only the beginning of our journey with `zip`, there is still a
+lot more to come.
 
+Until next time!
 """,
       timestamp: nil,
       type: .paragraph
     ),
 
   ],
-  // todo
-  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0012-solutions-to-zip-pt2/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0013-solutions-to-zip-pt3/poster.jpg",
   id: 13,
   publishedAt: Date(timeIntervalSince1970: 1534312623 + 86_400*2),
   title: "Solutions to Exercises: Zip Part 3"
