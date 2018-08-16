@@ -12,6 +12,7 @@ COPY Sources ./Sources
 COPY Tests ./Tests
 
 # cmark
+RUN apt-get update
 RUN apt-get -y install cmake
 RUN git clone https://github.com/commonmark/cmark
 RUN make -C cmark INSTALL_PREFIX=/usr
