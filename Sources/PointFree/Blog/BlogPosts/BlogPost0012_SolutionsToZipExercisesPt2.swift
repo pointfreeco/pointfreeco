@@ -218,10 +218,9 @@ and invoke a C function with those contents. The alternative way is to nest mult
 
     .init(
       content: """
-var result: Int?
 try xs.withUnsafeBytes { x in
   try ys.withUnsafeBytes { y in
-    result = someCFunction(x, y)
+    someCFunction(x, y)
   }
 }
 """,
@@ -231,9 +230,8 @@ try xs.withUnsafeBytes { x in
 
     .init(
       content: """
-Notice that we had to nest two layers deep, _and_ we had to create an optional result value to hold the
-result once we get into the innermost block. The `zip` method for handling unsafe bytes is shorter and
-more expressive.
+Notice that we had to nest two layers deep, and if we were to need more unsafe bytes the indentation would
+continue to grow. The `zip` method for handling unsafe bytes is shorter and more expressive.
 
 ---
 
