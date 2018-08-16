@@ -104,9 +104,7 @@ func sequence<A, E>(_ results: [Result<A, E>]) -> Result<[A], E> {
 
 > `sequence: ([Validated<A, E>]) -> Validated<[A], E>`
 
-This is very similar to the previous exercise, however we get to take advantage of some key
-characteristics of `Validated`. Instead of bailing on the first error we come across, we
-can accumulate _all_ of the errors that we encounter:
+This one seems very similar to the previous exercise, however we must leverage some key characteristics of `Validated`. Instead of bailing on the first error we come across, we can accumulate _all_ of the errors that we encounter.
 """,
       timestamp: nil,
       type: .paragraph
@@ -115,17 +113,9 @@ can accumulate _all_ of the errors that we encounter:
     .init(
       content: """
 func sequence<A, E>(_ validations: [Validated<A, E>]) -> Validated<[A], E> {
-  var validValues: [A] = []
-  var errors: [E] = []
-  for result in results {
-    switch result {
-    case let .success(value):
-      successValues.append(value)
-    case let .failure(error):
-      .failure(error)
-    }
+  return validations.reduce(Validated<[A], E>.valid([])) { vs, v in
+    zip2(vs, v.map { [$0] }).map { $0 + $1 }
   }
-  return .success(successValues)
 }
 """,
       timestamp: nil,
@@ -134,7 +124,7 @@ func sequence<A, E>(_ validations: [Validated<A, E>]) -> Validated<[A], E> {
 
     .init(
       content: """
-TODO
+This one is a bit tricky! We take advantage of the fact that an empty array of validations should result in a valid validation of an empty array. We feed this initial value into `reduce`, which allows us to accumulate a valid array of `A`s or an invalid, non-empty array of `E`s.
 
 ---
 
