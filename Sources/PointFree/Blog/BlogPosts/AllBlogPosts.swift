@@ -22,5 +22,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0011_solutionsToZipExercisesPt1,
   post0012_solutionsToZipExercisesPt2,
   post0013_solutionsToZipExercisesPt3,
-  postxywz_openSourcingValidated
+  post0014_openSourcingValidated,
+  post0015_openSourcingValidated
 ]
