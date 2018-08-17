@@ -20,6 +20,17 @@ Today we are releasing Overture 0.3.0 with a bunch of useful zip functions.
 > Today we are releasing [Overture](\(gitHubUrl(to: .repo(.overture)))) 0.3.0 with a bunch of useful `zip` functions.
 
 ---
+
+Last week we concluded our 3-part introductory series on the `zip` function
+([part 1](/episodes/ep23-the-many-faces-of-zip-part-1), [part 2](/episodes/ep24-the-many-faces-of-zip-part-2),
+[part 3](\( url(to: .episode(.left(ep22.slug)))))). In that series we showed that `zip` goes far beyond
+what the Swift standard library gives us on sequences, and in fact it generalizes the notion of `map`
+on N-ary functions. This means we can feel empowered to define `zip` on our own types, even though we don't
+typically think of our types in that way, and it allows reuse to use the same "shapes" in our code across
+wildly different contexts.
+
+To celebrate the completion of that somewhat intent series of episodes, we are happy to release version 0.3.0
+of our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library, now with a _whole bunch_ of zips!
 """,
       timestamp: nil,
       type: .paragraph
@@ -47,12 +58,6 @@ let ids = [1, 2, 3]
 let emails = ["blob@pointfree.co", "blob.jr@pointfree.co", "blob.sr@pointfree.co"]
 let names = ["Blob", "Blob Junior", "Blob Senior"]
 
-struct User {
-  let id: Int
-  let email: String
-  let name: String
-}
-
 zip(ids, emails, names)
 // [
 //   (1, "blob@pointfree.co", "Blob"),
@@ -74,6 +79,12 @@ When combined with `map`, we have a succinct way of transforming tuples into oth
 
     .init(
       content: """
+struct User {
+  let id: Int
+  let email: String
+  let name: String
+}
+
 zip(ids, emails, names).map(User.init)
 // [
 //   User(id: 1, email: "blob@pointfree.co", name: "Blob"),
