@@ -10,7 +10,7 @@ Today we are releasing Overture 0.3.0 with a bunch of useful zip functions.
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0015-overture-now-with-zip/poster.png")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0015-overture-now-with-zip/poster.jpg")
     ),
 
         .init(
@@ -218,7 +218,7 @@ That's it for this release! Ready to add more `zip` to your code bases? Upgrade 
     ),
 
   ],
-  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0015-overture-now-with-zip/poster.png",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0015-overture-now-with-zip/poster.jpg",
   id: 15,
   publishedAt: .init(timeIntervalSince1970: 1534485424),
   title: "Overture 0.3.0: Now with Zip"
