@@ -10,9 +10,9 @@ public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
     .flatMap(const(print(message: "✅ PointFree Bootstrapped!")))
 }
 
-private func print(message: String) -> EitherIO<Error, Prelude.Unit> {
+private func print(message: @autoclosure @escaping () -> String) -> EitherIO<Error, Prelude.Unit> {
   return EitherIO<Error, Prelude.Unit>(run: IO {
-    print(message)
+    print(message())
     return .right(unit)
   })
 }
