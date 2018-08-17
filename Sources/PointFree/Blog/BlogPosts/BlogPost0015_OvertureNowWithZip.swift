@@ -133,11 +133,11 @@ Overture also defines `zip` for optional values. This is an expressive way of un
 
     .init(
       content: """
-let id: Int? = 1
-let email: String? = "blob@pointfree.co"
-let name: String? = "Blob"
+let optionalId: Int? = 1
+let optionalEmail: String? = "blob@pointfree.co"
+let optionalName: String? = "Blob"
 
-zip(id, email, name)
+zip(optionalId, optionalEmail, optionalName)
 // Optional<(Int, String, String)>.some((1, "blob@pointfree.co", "Blob"))
 """,
       timestamp: nil,
@@ -154,11 +154,7 @@ As we saw with `Sequence`, `zip` pairs well with `map`, and we already have `map
 
     .init(
       content: """
-let id: Int? = 1
-let email: String? = "blob@pointfree.co"
-let name: String? = "Blob"
-
-zip(id, email, name).map(User.init)
+zip(optionalId, optionalEmail, optionalName).map(User.init)
 // Optional<User>.some(User(id: 1, email: "blob@pointfree.co", name: "Blob"))
 """,
       timestamp: nil,
@@ -175,7 +171,7 @@ We once again have `zip(with:)` at our disposal, for ergonomics and composition.
 
     .init(
       content: """
-zip(with: User.init)(id, email, name)
+zip(with: User.init)(optionalId, optionalEmail, optionalName)
 // Optional<User>.some(User(id: 1, email: "blob@pointfree.co", name: "Blob"))
 """,
       timestamp: nil,
@@ -192,12 +188,12 @@ Using `zip` can be an expressive alternative to `let`-unwrapping!
 
     .init(
       content: """
-let optionalUser = zip(with: User.init)(id, email, name)
+let optionalUser = zip(with: User.init)(optionalId, optionalEmail, optionalName)
 
 // vs.
 
 let optionalUser: User?
-if let id = id, let email = email, let name = name {
+if let id = optionalId, let email = optionalEmail, let name = optionalName {
   optionalUser = User(id: id, email: email, name: name)
 } else {
   optionalUser = nil
