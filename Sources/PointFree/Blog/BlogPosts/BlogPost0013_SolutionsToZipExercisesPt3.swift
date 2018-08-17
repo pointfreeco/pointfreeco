@@ -445,7 +445,6 @@ Next we will consider `Result`. How can we combine two `Result<A, E>`'s into jus
 some inspiration from our comments on `Optional` above, and think about this semantically. We will define
 `alt` on `Result` to be the operation of returning the first `.success` value if it exists, and otherwise
 return the _last_ `.failure`. Here's the implementation:
-}
 """,
       timestamp: nil,
       type: .paragraph
