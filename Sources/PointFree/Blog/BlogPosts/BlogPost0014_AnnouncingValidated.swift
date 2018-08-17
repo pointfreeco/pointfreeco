@@ -17,12 +17,9 @@ Today we are open sourcing Validated, a tiny functional Swift library for handli
       content: """
 ---
 
-> Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a Swift library for handling
-multiple errors: functionality that you don't get from throwing functions and the `Result` type.
-
-TODO
-> Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a tiny functional Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
-
+> Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a tiny functional Swift
+library for handling multiple errors: functionality that you don't get from throwing functions and the
+`Result` type.
 
 ---
 """,
@@ -41,8 +38,9 @@ Having first-class support for error handling in Swift is nice, but its short-ci
 be limiting. There are times that we may want to throw multiple times in a function, and have all of those
 errors accumulated.
 
-Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a Swift library for handling
-multiple errors: functionality that you don't get from throwing functions and the `Result` type.
+Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a tiny functional Swift
+library for handling multiple errors: functionality that you don't get from throwing functions and the
+`Result` type.
 
 ## Short-circuiting `throws`
 
@@ -275,18 +273,12 @@ a compile-time guarantee that you will never encounter an empty `invalid` case.
     ),
 
     .init(
-      content: "Conclusion",
-      timestamp: nil,
-      type: .title
-    ),
-
-    .init(
       content: """
 ## `Validated` on GitHub
 
-That's about all there is to `Validated`! It's a tiny API that mostly mirrors one you may already be
-familiar with, `zip` and `map`, and are precisely what we need to describe the notion of error
-accumulation.
+That's about all there is to `Validated`! It's a tiny API that should be familiar to you if you've ever
+used the `Result` type, and it provides tangible benefits over the short-circuiting nature of `Result`
+and `throws`. It can enhance your error handling _today_, no need to wait for Swift to catch up!
 
 If you want to give it a spin, check out our
 [open source repo](\(gitHubUrl(to: .repo(.validated)))).
