@@ -19,4 +19,7 @@ private let _allBlogPosts: [BlogPost] = [
   post0008_conditionalCoding,
   post0009_6moAnniversary,
   post0010_studentDiscounts,
+  post0011_solutionsToZipExercisesPt1,
+  post0012_solutionsToZipExercisesPt2,
+  post0013_solutionsToZipExercisesPt3,
 ]
