@@ -1,6 +1,6 @@
 import Foundation
 
-let postxywz_openSourcingValidated = BlogPost(
+let post0014_openSourcingValidated = BlogPost(
   author: .stephen,
   blurb: """
 Today we are open sourcing Validated, a tiny functional Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
@@ -17,7 +17,7 @@ Today we are open sourcing Validated, a tiny functional Swift library for handli
       content: """
 ---
 
-> Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
+> Today we are open sourcing [Validated](\(gitHubUrl(to: .repo(.validated)))), a tiny functional Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
 
 ---
 """,

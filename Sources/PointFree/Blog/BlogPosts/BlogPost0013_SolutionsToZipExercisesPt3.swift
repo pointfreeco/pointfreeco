@@ -194,7 +194,7 @@ the callback:
 
     .init(
       content: """
-func sequence<A>(_ values: [Parallel<A>]) -> Parallel<[A]>` {
+func sequence<A>(_ values: [Parallel<A>]) -> Parallel<[A]> {
   return Parallel<[A]> { callback in
     var results = [A?](repeating: nil, count: Int(values.count))
     var completed = 0
@@ -377,7 +377,6 @@ func alt<A>(_ lhs: [A], _ rhs: [A]) -> [A] {
     .init(
       content: """
 For optionals, let's write down the signature and see what possible implementations there are:
-}
 """,
       timestamp: nil,
       type: .paragraph
