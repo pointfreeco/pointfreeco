@@ -3,14 +3,14 @@ import Foundation
 let postxywz_openSourcingValidated = BlogPost(
   author: .stephen,
   blurb: """
-Today we are open sourcing Validated, a Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
+Today we are open sourcing Validated, a tiny functional Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
 """,
   contentBlocks: [
 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "TODO: poster")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.png")
     ),
 
         .init(
@@ -35,6 +35,12 @@ Swift error handling short-circuits on the first failure. Because of this, it's 
 
     .init(
       content: """
+struct User {
+  let id: Int
+  let email: String
+  let name: String
+}
+
 func validate(id: Int) -> Int throws {
   guard id > 0 else {
     throw Invalid.error("id must be greater than zero")
@@ -70,7 +76,7 @@ func validateUser(id: Int, email: String, name: String) throws -> User {
 
     .init(
       content: """
-Here we've combined a few throwing functions into a single throwing function that returns a `User`.
+Here we've combined a few throwing functions into a single throwing function that may return a `User`.
 """,
       timestamp: nil,
       type: .paragraph
@@ -87,7 +93,7 @@ let user = try validateUser(id: 1, email: "blob@pointfree.co", name: "Blob")
 
     .init(
       content: """
-If any one of `id`, `email`, or `name` are invalid, an error is thrown.
+If the `id`, `email`, or `name` are invalid, an error is thrown.
 """,
       timestamp: nil,
       type: .paragraph
@@ -120,7 +126,7 @@ let user = try validateUser(id: -1, email: "blobpointfree.co", name: "")
     ),
 
     .init(
-      content: "Validated",
+      content: "Handling multiple errors with Validated",
       timestamp: nil,
       type: .title
     ),
@@ -159,7 +165,7 @@ func validate(name: String) -> Validated<String, String> {
 
     .init(
       content: """
-`Validated` provides a function, `zip(with:)`, which is responsible for converting a function that takes raw inputs into a function that takes validated inputs.
+To accumulate errors, we use a function that we may already be familiar with: `zip`.
 """,
       timestamp: nil,
       type: .paragraph
@@ -167,7 +173,12 @@ func validate(name: String) -> Validated<String, String> {
 
     .init(
       content: """
-let validateUser = Validated<User, String>.zip(with: User.init)
+let validInputs = zip(
+  validate(id: 1),
+  validate(email: "blob@pointfree.co"),
+  validate(name: "Blob")
+)
+// Validated<(Int, String, String), String>
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -175,7 +186,9 @@ let validateUser = Validated<User, String>.zip(with: User.init)
 
     .init(
       content: """
-In this case, we've created a brand new function, `validateUser`, from `User.init`, where `validateUser` operates with validated values.
+The `zip` function on `Validated` works much the same way it works on sequences, but rather than zipping a pair of sequences into a sequence pairs, it zips up a group of single `Validated` values into single `Validated` value of a group.
+
+From here, we can use another function that we may already be familiar with, `map`, which takes a transform function and produces a new `Validated` value with its valid case transformed.
 """,
       timestamp: nil,
       type: .paragraph
@@ -183,13 +196,8 @@ In this case, we've created a brand new function, `validateUser`, from `User.ini
 
     .init(
       content: """
-// User.init                          // validateUser
-// (                                  // (
-//   Int,                             //   Validated<Int, String>,
-//   String                           //   Validated<String, String>,
-//   String                           //   Validated<String, String>
-// )                                  // )
-// -> User                            // -> Validated<User, String>
+let validUser = validInputs.map(User.init)
+// valid(User(id: 1, email: "blob@pointfree.co", name: "Blob"))
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -197,7 +205,7 @@ In this case, we've created a brand new function, `validateUser`, from `User.ini
 
     .init(
       content: """
-Valid inputs yield a user wrapped in the `valid` case.
+For ergonomics, a `zip(with:)` function is provided that takes both a transform and `Validated` inputs at once.
 """,
       timestamp: nil,
       type: .paragraph
@@ -205,7 +213,7 @@ Valid inputs yield a user wrapped in the `valid` case.
 
     .init(
       content: """
-let validatedUser = validateUser(
+zip(with: User.init)(
   validate(id: 1),
   validate(email: "blob@pointfree.co"),
   validate(name: "Blob")
@@ -218,7 +226,9 @@ let validatedUser = validateUser(
 
     .init(
       content: """
-An invalid input yields an error in the `invalid` case.
+Valid inputs yield a user wrapped in the `valid` case.
+
+Meanwhile, an invalid input yields an error in the `invalid` case.
 """,
       timestamp: nil,
       type: .paragraph
@@ -226,7 +236,7 @@ An invalid input yields an error in the `invalid` case.
 
     .init(
       content: """
-let validatedUser = validateUser(
+zip(with: User.init)(
   validate(id: 1),
   validate(email: "blob@pointfree.co"),
   validate(name: "")
@@ -247,9 +257,9 @@ More importantly, multiple invalid inputs yield an `invalid` case with multiple 
 
     .init(
       content: """
-let validatedUser = validateUser(
+zip(with: User.init)(
   validate(id: -1),
-  validate(email: "blob@pointfree.co"),
+  validate(email: "blobpointfree.co"),
   validate(name: "")
 )
 // invalid([
@@ -278,7 +288,9 @@ Invalid errors are held in a [non-empty array](https://github.com/pointfreeco/sw
 
     .init(
       content: """
-If you want to give `Validated` a spin, then check out our
+That's about all there is to Validated! It's a tiny API that mostly mirrors one you may already be familiar with, `zip` and `map`, and are precisely what we need to describe the notion of error accumulation.
+
+If you want to give it a spin, check out our
 [open source repo](\(gitHubUrl(to: .repo(.validated)))).
 """,
       timestamp: nil,
@@ -286,8 +298,8 @@ If you want to give `Validated` a spin, then check out our
     ),
 
   ],
-  coverImage: "TODO",
-  id: 9, // TODO
-  publishedAt: .init(timeIntervalSince1970: 1_532_944_623), // TODO
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.png",
+  id: 14,
+  publishedAt: .init(timeIntervalSince1970: 1534485423),
   title: "Open Sourcing Validated"
 )
