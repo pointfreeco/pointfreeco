@@ -10,7 +10,7 @@ Today we are open sourcing Validated, a tiny functional Swift library for handli
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.png")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.jpg")
     ),
 
         .init(
@@ -288,7 +288,7 @@ If you want to give it a spin, check out our
     ),
 
   ],
-  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.png",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.jpg",
   id: 14,
   publishedAt: .init(timeIntervalSince1970: 1534485423),
   title: "Open Sourcing Validated"
