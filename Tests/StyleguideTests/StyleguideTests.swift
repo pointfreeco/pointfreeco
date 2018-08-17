@@ -1,5 +1,5 @@
 import Css
-import PointFreeTestSupport
+import PointFreeMocks
 import SnapshotTesting
 import Styleguide
 import XCTest

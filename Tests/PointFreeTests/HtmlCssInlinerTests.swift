@@ -2,7 +2,7 @@ import Css
 import Html
 import HtmlCssSupport
 import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import Prelude
 import SnapshotTesting
 import XCTest

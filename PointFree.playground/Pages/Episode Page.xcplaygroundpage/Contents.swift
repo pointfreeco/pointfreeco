@@ -1,7 +1,7 @@
 import HttpPipeline
 import PlaygroundSupport
 @testable import PointFree
-@testable import PointFreeTestSupport
+@testable import PointFreeMocks
 import WebKit
 
 Current = .mock

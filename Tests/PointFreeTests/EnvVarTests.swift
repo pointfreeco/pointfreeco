@@ -1,5 +1,5 @@
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import SnapshotTesting
 import XCTest
 

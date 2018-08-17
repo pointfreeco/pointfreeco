@@ -6,7 +6,8 @@ let package = Package(
   name: "PointFree",
   products: [
     .library(name: "PointFree", targets: ["PointFree"]),
-    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
+    .library(name: "PointFreeMocks", targets: ["PointFreeMocks"]),
+    .library(name: "PointFreeTestCase", targets: ["PointFreeTestCase"]),
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
@@ -46,19 +47,23 @@ let package = Package(
         "HtmlTestSupport",
         "HttpPipelineTestSupport",
         "PointFree",
-        "PointFreeTestSupport",
+        "PointFreeMocks",
+        "PointFreeTestCase"
         ]
     ),
 
     .target(
-      name: "PointFreeTestSupport",
+      name: "PointFreeMocks",
       dependencies: [
         "Either",
         "PointFree",
         "Prelude",
-        "SnapshotTesting",
         ]
     ),
+
+    .target(
+      name: "PointFreeTestCase",
+      dependencies: []),
 
     .target(
       name: "Runner",
@@ -66,7 +71,7 @@ let package = Package(
 
     .target(
       name: "Server",
-      dependencies: ["PointFree"]),
+      dependencies: ["PointFree", "PointFreeMocks"]),
 
     .target(
       name: "Styleguide",
@@ -74,7 +79,8 @@ let package = Package(
 
     .testTarget(
       name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
+      dependencies: ["Styleguide", "CssTestSupport", "PointFreeMocks", "PointFreeTestCase"]),
+
     ],
   swiftLanguageVersions: [4]
 )

@@ -6,7 +6,7 @@ import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics

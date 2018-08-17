@@ -2,7 +2,7 @@ import Html
 import HttpPipeline
 import Optics
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import Prelude
 import SnapshotTesting
 #if !os(Linux)

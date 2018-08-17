@@ -4,7 +4,7 @@ import HtmlPrettyPrint
 import HttpPipeline
 @testable import PointFree
 import Optics
-import PointFreeTestSupport
+import PointFreeMocks
 import Prelude
 import SnapshotTesting
 import XCTest

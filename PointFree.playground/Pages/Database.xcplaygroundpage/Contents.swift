@@ -1,6 +1,6 @@
 import Foundation
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
