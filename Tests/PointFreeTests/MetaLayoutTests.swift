@@ -5,7 +5,7 @@ import HtmlTestSupport
 import Prelude
 import SnapshotTesting
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import XCTest
 
 class MetaLayoutTests: TestCase {

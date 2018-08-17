@@ -296,7 +296,7 @@ Now that the site is up and running, let's take a quick tour of the project's st
 We also have a [`Package.swift`](https://github.com/pointfreeco/pointfreeco/blob/592f71175e01de1609f2c349d6301be360fdf132/Package.swift) file. We use the [Swift Package Manager](https://github.com/apple/swift-package-manager) to manage all of our dependencies. If we view this file, we'll find a couple of libraries and executables that ship with our site.
 
 - We have the `PointFree` library, which contains all the actual, real code that runs our site.
-- We have a `PointFreeTestSupport` library, which holds code that is very helpful for testing. The reason we pulled this into library is because we get access to it and playgrounds.
+- We have a `PointFreeMocks` library, which holds code that is very helpful for testing. The reason we pulled this into library is because we get access to it and playgrounds.
 - We have a `Runner` executable, which is how we're gonna do cron jobs, but we actually haven't done that yet it's just kind of sitting there waiting for us to use it.
 - We have the actual `Server` executable, which uses NIO to fire everything up and hand everything off to the `PointFree` library.
 - We have `Styleguide`, which is a fun little library that has all of our CSS styling, components, and colors. The vast majority of styling exist in that framework, and that framework knows nothing about the rest of our website. It's fully extracted and put away.
@@ -656,7 +656,7 @@ And we have a bunch of other values that are nice to mock out when we're in our 
   ),
   Episode.TranscriptBlock(
     content: """
-Speaking of tests, if we go over to [`PointFreeTestSupport.swift`](https://github.com/pointfreeco/pointfreeco/blob/592f71175e01de1609f2c349d6301be360fdf132/Sources/PointFreeTestSupport/PointFreeTestSupport.swift) we immediately see our mock `Environment`. It's also going to look pretty familiar. All these subdependencies have mocks. You can hop on over to the `Database` mock, and there is a lot going on there, but it gives us nice defaults for all these different queries that we make to our Postgres database.
+Speaking of tests, if we go over to [`PointFreeMocks.swift`](https://github.com/pointfreeco/pointfreeco/blob/592f71175e01de1609f2c349d6301be360fdf132/Sources/PointFreeMocks/PointFreeMocks.swift) we immediately see our mock `Environment`. It's also going to look pretty familiar. All these subdependencies have mocks. You can hop on over to the `Database` mock, and there is a lot going on there, but it gives us nice defaults for all these different queries that we make to our Postgres database.
 """,
     timestamp: (16*60 + 38),
     type: .paragraph

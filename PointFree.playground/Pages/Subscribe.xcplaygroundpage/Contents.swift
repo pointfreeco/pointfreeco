@@ -2,13 +2,13 @@ import HttpPipeline
 import Optics
 import PlaygroundSupport
 @testable import PointFree
-@testable import PointFreeTestSupport
+@testable import PointFreeMocks
 import Prelude
 import WebKit
 
 Current = .mock
 
-var request = PointFreeTestSupport.request(to: .pricing(nil, expand: nil))
+var request = PointFreeMocks.request(to: .pricing(nil, expand: nil))
 
 let result = siteMiddleware(connection(from: request)).perform()
 let htmlStr = String(decoding: result.response.body, as: UTF8.self)

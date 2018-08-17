@@ -1,7 +1,7 @@
 import Either
 import XCTest
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import Prelude
 
 class EitherIOTests: TestCase {

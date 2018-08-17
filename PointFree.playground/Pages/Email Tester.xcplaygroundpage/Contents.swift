@@ -2,7 +2,7 @@ import Either
 import Html
 import PlaygroundSupport
 @testable import PointFree
-@testable import PointFreeTestSupport
+@testable import PointFreeMocks
 import Prelude
 import WebKit
 

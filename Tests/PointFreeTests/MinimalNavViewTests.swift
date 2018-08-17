@@ -2,7 +2,7 @@ import Html
 import HtmlCssSupport
 import Optics
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import Prelude
 import SnapshotTesting
 import Styleguide

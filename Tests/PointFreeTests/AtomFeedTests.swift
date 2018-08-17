@@ -3,7 +3,7 @@ import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
-import PointFreeTestSupport
+import PointFreeMocks
 import HttpPipeline
 
 class AtomFeedTests: TestCase {
