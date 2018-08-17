@@ -1,6 +1,6 @@
 import Foundation
 
-let post0015_openSourcingValidated = BlogPost(
+let post0015_overtureNowWithZip = BlogPost(
   author: .stephen,
   blurb: """
 Today we are releasing Overture 0.3.0 with a bunch of useful zip functions.
