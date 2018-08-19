@@ -192,7 +192,7 @@ func validate(name: String) -> Validated<String, String> {
       content: """
 So, how do we create a `User` value from the form data and these functions? Previously we had to create a
 custom `validateUser` function to accomodate for the `throw`ing functions, but the `Validated` library
-comes with a special function that allows us to instantiate _any_ date type from validated values. It's
+comes with a special function that allows us to instantiate _any_ data type from validated values. It's
 our [old friend](/episodes/ep23-the-many-faces-of-zip-part-1) `zip(with:)`!
 """,
       timestamp: nil,
