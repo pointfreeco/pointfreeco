@@ -84,8 +84,8 @@ func validate(name: String) -> String throws {
 func validateUser(id: Int, email: String, name: String) throws -> User {
   return User(
     id: try validate(id: id),
-    email: try validate(id: email),
-    name: try validate(id: name)
+    email: try validate(email: email),
+    name: try validate(name: name)
   )
 }
 """,
