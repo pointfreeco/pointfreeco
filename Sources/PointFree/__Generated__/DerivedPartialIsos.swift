@@ -139,6 +139,18 @@ import Prelude
       }
 
 
+      extension PartialIso where A == (
+        String
+      ), B == Route {
+
+        public static let discounts = parenthesize <| PartialIso(
+          apply: Route.discounts,
+          unapply: {
+            guard case let .discounts(result) = $0 else { return nil }
+            return .some(result)
+        })
+      }
+
 
       extension PartialIso where A == (
             Either<String, Int>
