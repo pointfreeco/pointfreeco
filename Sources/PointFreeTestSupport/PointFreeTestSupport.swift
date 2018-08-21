@@ -451,8 +451,13 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
-public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
-  var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
+public func request(
+  with baseRequest: URLRequest,
+  session: Session = .loggedOut,
+  basicAuth: Bool = false
+  ) -> URLRequest {
+
+  var request = baseRequest
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
   //     if you edit fields on the request.
@@ -478,4 +483,38 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
     .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
+}
+
+public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
+  return request(
+    with: router.request(for: route, base: URL(string: "http://localhost:8080"))!,
+    session: session,
+    basicAuth: basicAuth
+  )
+//  var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
+//
+//  // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
+//  //     if you edit fields on the request.
+//  //     See: https://bugs.swift.org/browse/SR-6687
+//  let httpBody = request.httpBody
+//  request.httpBody = httpBody
+//  request.httpMethod = request.httpMethod?.uppercased()
+//
+//  if basicAuth {
+//    let username = Current.envVars.basicAuth.username
+//    let password = Current.envVars.basicAuth.password
+//    request.allHTTPHeaderFields = request.allHTTPHeaderFields ?? [:]
+//    request.allHTTPHeaderFields?["Authorization"] =
+//      "Basic " + Data("\(username):\(password)".utf8).base64EncodedString()
+//  }
+//
+//  guard
+//    let sessionData = try? cookieJsonEncoder.encode(session),
+//    let sessionCookie = String(data: sessionData, encoding: .utf8)
+//    else { return request }
+//
+//  request.allHTTPHeaderFields = (request.allHTTPHeaderFields ?? [:])
+//    .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
+//
+//  return request
 }
