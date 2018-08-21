@@ -42,7 +42,7 @@ class DiscountsTests: TestCase {
     )
   }
 
-  func testFika() {
+  func testFika_LoggedOut() {
     assertSnapshot(
       matching: connection(from: secureRequest("http://localhost:8080/fika"))
         |> siteMiddleware
