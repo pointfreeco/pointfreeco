@@ -58,7 +58,7 @@ class DiscountsTests: TestCase {
     )
 
     assertSnapshot(
-      matching: connection(from: secureRequest("http://localhost:8080/fika"))
+      matching: connection(from: request(with: secureRequest("http://localhost:8080/fika"), session: .loggedIn))
         |> siteMiddleware
         |> Prelude.perform
     )
