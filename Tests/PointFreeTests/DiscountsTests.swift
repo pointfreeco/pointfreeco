@@ -20,7 +20,7 @@ class DiscountsTests: TestCase {
     update(&Current, \.database .~ .mock)
   }
 
-  func testDiscounts() {
+  func testDiscounts_LoggedOut() {
     assertSnapshot(
       matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
         |> siteMiddleware
@@ -28,7 +28,35 @@ class DiscountsTests: TestCase {
     )
   }
 
+  func testDiscounts_LoggedIn() {
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    assertSnapshot(
+      matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn))
+        |> siteMiddleware
+        |> Prelude.perform
+    )
+  }
+
   func testFika() {
+    assertSnapshot(
+      matching: connection(from: secureRequest("http://localhost:8080/fika"))
+        |> siteMiddleware
+        |> Prelude.perform
+    )
+  }
+
+  func testFika_LoggedIn() {
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
     assertSnapshot(
       matching: connection(from: secureRequest("http://localhost:8080/fika"))
         |> siteMiddleware
