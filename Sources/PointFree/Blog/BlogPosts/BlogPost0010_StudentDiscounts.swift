@@ -11,7 +11,7 @@ Get 50% off your Point-Free subscription with proof of enrollment at a universit
       content: """
 We're happy to announce that we now offer a 50% discount on individual subscriptions for students that are
 currently enrolled in a university or coding school. All you have to do is
-[email us](mailto:support@pointfree.com?subject=Student%20Discount) proof of your enrollment, such as a
+[email us](mailto:support@pointfree.co?subject=Student%20Discount) proof of your enrollment, such as a
 scanned photo of your student ID or a proof of enrollment from the organization, and we'll give you a
 discount code that can be used on the [individual](\(url(to: .pricing(nil, expand: nil)))) subscription
 plan, both monthly and yearly.
@@ -22,7 +22,7 @@ of one's life in programming. Most introductory education materials put too much
 on getting things up on a screen and too little time on the fundamentals of where complexity lies in
 our applications and what tools help control it.
 
-Please feel free to [reach out](mailto:support@pointfree.com?subject=Student%20Discount) to us if you have
+Please feel free to [reach out](mailto:support@pointfree.co?subject=Student%20Discount) to us if you have
 any questions!
 """,
       timestamp: nil,
