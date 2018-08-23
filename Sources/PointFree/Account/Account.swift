@@ -767,4 +767,9 @@ private struct AccountData {
   var isSubscriptionOwner: Bool {
     return self.currentUser.id == self.subscriptionOwner?.id
   }
+
+  var isTeamSubscription: Bool {
+    guard let id = self.stripeSubscription?.plan.id else { return false }
+    return id == .teamMonthly || id == .teamYearly
+  }
 }
