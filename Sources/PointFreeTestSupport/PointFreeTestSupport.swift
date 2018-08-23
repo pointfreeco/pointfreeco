@@ -23,7 +23,7 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
+    |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
 
