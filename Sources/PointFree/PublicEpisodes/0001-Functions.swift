@@ -640,7 +640,7 @@ In use, we can call the new method on a value:
   ),
   Episode.TranscriptBlock(
     content: """
-3.incrAndSquare() // 9
+2.incrAndSquare() // 9
 """,
     timestamp: nil,
     type: .code(lang: .swift)
