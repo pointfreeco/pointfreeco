@@ -23,9 +23,13 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
+    |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.database.fetchTeamInvites .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+
+  public static let individualMonthly = mock
+    |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
+    |> \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
 }
 
 extension Array where Element == Episode {
