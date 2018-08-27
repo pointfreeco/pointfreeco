@@ -324,9 +324,9 @@ private func redirectCurrentSubscribers<A, B>(
             headersMiddleware: flash(
               .warning,
               """
-                You already have an active subscription. If you want to accept this team invite you need to
-                cancel your current subscription.
-                """
+              You already have an active subscription. If you want to accept this team invite you need to
+              cancel your current subscription.
+              """
             )
           )
         : middleware(conn)

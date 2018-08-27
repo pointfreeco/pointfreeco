@@ -116,6 +116,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
+    case .discounts:
+      return conn.map(const(user .*. .default .*. true .*. route .*. unit))
+        |> pricingResponse
+
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse
@@ -135,6 +139,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case .feed(.atom):
       return conn.map(const(Current.episodes()))
         |> atomFeedResponse
+
+    case .fika:
+      return conn.map(const(user .*. .default .*. true .*. route .*. unit))
+        |> pricingResponse
 
     case let .gitHubCallback(code, redirect):
       return conn.map(const(user .*. code .*. redirect .*. unit))
