@@ -455,8 +455,13 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
-public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
-  var request = router.request(for: route, base: URL(string: "http://localhost:8080"))!
+public func request(
+  with baseRequest: URLRequest,
+  session: Session = .loggedOut,
+  basicAuth: Bool = false
+  ) -> URLRequest {
+
+  var request = baseRequest
 
   // NB: This `httpBody` dance is necessary due to a strange Foundation bug in which the body gets cleared
   //     if you edit fields on the request.
@@ -482,4 +487,12 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
     .merging(["Cookie": "pf_session=\(sessionCookie)"], uniquingKeysWith: { $1 })
 
   return request
+}
+
+public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
+  return request(
+    with: router.request(for: route, base: URL(string: "http://localhost:8080"))!,
+    session: session,
+    basicAuth: basicAuth
+  )
 }
