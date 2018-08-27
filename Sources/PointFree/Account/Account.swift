@@ -334,7 +334,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
           gridColumn(
             sizes: [.mobile: 12],
             subscriptionPlanRows.view(subscription)
-              <> subscriptionTeamRow.view((data.currentUser, data.teammates))
+              <> subscriptionTeamRow.view(data)
               <> subscriptionInvitesRowView.view(data.teamInvites)
               <> subscriptionInviteMoreRowView.view((subscription, data.teamInvites, data.teammates))
               <> subscriptionPaymentInfoView.view(subscription)
@@ -535,8 +535,8 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   }
 }
 
-private let subscriptionTeamRow = View<(Database.User, [Database.User])> { currentUser, teammates -> [Node] in
-  guard !teammates.isEmpty else { return [] }
+private let subscriptionTeamRow = View<AccountData> { data -> [Node] in
+  guard !data.teammates.isEmpty && data.isTeamSubscription else { return [] }
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
@@ -548,7 +548,7 @@ private let subscriptionTeamRow = View<(Database.User, [Database.User])> { curre
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["Your current team:"])]
-              <> teammates.flatMap { teammateRowView.view((currentUser, $0)) }
+              <> data.teammates.flatMap { teammateRowView.view((data.currentUser, $0)) }
         )
         ])
       ])
@@ -766,5 +766,10 @@ private struct AccountData {
 
   var isSubscriptionOwner: Bool {
     return self.currentUser.id == self.subscriptionOwner?.id
+  }
+
+  var isTeamSubscription: Bool {
+    guard let id = self.stripeSubscription?.plan.id else { return false }
+    return id == .teamMonthly || id == .teamYearly
   }
 }
