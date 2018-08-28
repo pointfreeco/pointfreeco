@@ -29,7 +29,7 @@ on N-ary functions. This means we can feel empowered to define `zip` on our own 
 typically think of our types in that way, and it allows reuse to use the same "shapes" in our code across
 wildly different contexts.
 
-To celebrate the completion of that somewhat intent series of episodes, we are happy to release version 0.3.0
+To celebrate the completion of that somewhat intense series of episodes, we are happy to release version 0.3.0
 of our [Swift Overture](\(gitHubUrl(to: .repo(.overture)))) library, now with a _whole bunch_ of zips!
 """,
       timestamp: nil,
