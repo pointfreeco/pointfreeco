@@ -70,7 +70,7 @@ extension Rel {
 }
 
 public func feed(_ attribs: [Attribute<Tag.Feed>], _ content: [Node]) -> Node {
-  return .el("feed", attribs, content)
+  return .element("feed", attribs, content)
 }
 
 public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
@@ -78,39 +78,39 @@ public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
 }
 
 public func title(_ title: String) -> Node {
-  return .el("title", [.text(title)])
+  return .element("title", [.text(title)])
 }
 
-public func link(_ attribs: [Attribute<Tag.Link>]) -> Node {
-  return .el("link", attribs, [])
+public func link(_ attribs: [Attribute<Html.Tag.Link>]) -> Node {
+  return .element("link", attribs, [])
 }
 
 public func updated(_ date: Date) -> Node {
-  return .el("updated", [.text(atomDateFormatter.string(from: date))])
+  return .element("updated", [.text(atomDateFormatter.string(from: date))])
 }
 
 public func id(_ id: String) -> Node {
-  return .el("id", [.text(id)])
+  return .element("id", [.text(id)])
 }
 
 public func author(_ content: [ChildOf<Tag.Author>]) -> Node {
-  return .el("author", content.map(^\.node))
+  return .element("author", content.map(^\.node))
 }
 
 public func name(_ name: String) -> ChildOf<Tag.Author> {
-  return .init(.el("name", [.text(name)]))
+  return .init(.element("name", [.text(name)]))
 }
 
 public func email(_ email: String) -> ChildOf<Tag.Author> {
-  return .init(.el("email", [.text(email)]))
+  return .init(.element("email", [.text(email)]))
 }
 
 public func entry(_ content: [Node]) -> Node {
-  return .el("entry", content)
+  return .element("entry", content)
 }
 
 public func content(_ attribs: [Attribute<Tag.Content>], _ content: [Node]) -> Node {
-  return .el("content", attribs, [.raw("<![CDATA[" + render(content).string + "]]>")])
+  return .element("content", attribs, [.raw("<![CDATA[" + render(content).string + "]]>")])
 }
 
 public func type(_ type: String) -> Attribute<Tag.Content> {

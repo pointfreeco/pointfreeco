@@ -78,10 +78,6 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
 }
 
 // TODO: move into a package for html email helpers.
-// todo: public func emailTable(_ attribs: [Attribute<Element.Table>], _ content: [ChildOf<Element.Table>]) -> Node {
-//  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
-//}
-
-public func emailTable<A, B>(_ attribs: A, _ content: B) -> Node {
-  fatalError()
+public func emailTable(_ attribs: [Attribute<Html.Tag.Table>], _ content: [ChildOf<Html.Tag.Table>]) -> Node {
+  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
 }
