@@ -35,7 +35,7 @@ func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
   return a(
     [
       href(path(to: .login(redirect: redirect))),
-      `class`([type.buttonClass])
+      Styleguide.class([type.buttonClass])
     ],
     [
       img(
@@ -43,7 +43,7 @@ func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
         mediaType: .image(.svg),
         alt: "",
         [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
+          Styleguide.class([Class.margin([.mobile: [.right: 1]])]),
           style(margin(bottom: .px(-4))),
           width(20),
           height(20)]
@@ -78,7 +78,7 @@ func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
       """),
       target(.blank),
       rel(.value("noopener noreferrer")),
-      `class`([twitterLinkButtonClass]),
+      Styleguide.class([twitterLinkButtonClass]),
       style(twitterLinkButtonStyle)
     ],
     [
@@ -88,11 +88,11 @@ func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
         alt: "",
         [
           style(twitterButtonIconStyle),
-          `class`([twitterButtonIconClass])
+          Styleguide.class([twitterButtonIconClass])
         ]
       ),
       span(
-        [style(twitterButtonTextStyle), `class`([twitterButtonTextClass])],
+        [style(twitterButtonTextStyle), Styleguide.class([twitterButtonTextClass])],
         ["Tweet"]
       )
     ]

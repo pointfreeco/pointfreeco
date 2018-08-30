@@ -146,23 +146,23 @@ let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView)
 private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["Payment failed"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+      td([ // todo: valign(.top)], [
+        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
+          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Payment failed"]),
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
             """
             Your most recent subscription payment was declined. This could be due to a change in your card
             number, your card expiring, cancellation of your credit card, or the card issuer not recognizing
             the payment and therefore taking action to prevent it.
             """
             ]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
             """
             Please update your payment info to ensure uninterrupted access to Point-Free!
             """
             ]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .account(.paymentInfo(.show(expand: nil))))), `class`([Class.pf.components.button(color: .purple)])],
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .account(.paymentInfo(.show(expand: nil))))), Styleguide.class([Class.pf.components.button(color: .purple)])],
               ["Update payment info"])
             ])
           ])

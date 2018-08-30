@@ -39,6 +39,6 @@ private func atomEntry(for episode: Episode) -> AtomEntry {
     title: episode.title,
     siteUrl: url(to: .episode(.left(episode.slug))),
     updated: episode.publishedAt,
-    content: [text(episode.blurb)]
+    content: [.text(episode.blurb)]
   )
 }

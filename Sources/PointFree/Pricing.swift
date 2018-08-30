@@ -122,16 +122,16 @@ private let pricingOptionsRowClass =
 
 let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pricing, expand in
 
-  gridRow([`class`([pricingOptionsRowClass])], [
+  gridRow([Styleguide.class([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
       div([
         h2(
-          [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
-          [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+          [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
+          [.raw("Subscribe to Point&#8209;Free")]
         ),
 
         p(
-          [`class`([Class.pf.colors.fg.green])],
+          [Styleguide.class([Class.pf.colors.fg.green])],
           [
             """
             Become a subscriber to unlock every full episode and explore new functional programming concepts
@@ -140,7 +140,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pr
           ]
         ),
 
-        gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
+        gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
           gridColumn(sizes: [.mobile: 12], [], [
             form(
               [
@@ -150,7 +150,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pr
                 onsubmit(javascript: "event.preventDefault()")
               ],
               pricingTabsView.view(pricing)
-                <> [div([`class`([Class.margin([.mobile: [.bottom: 3]])])], [])]
+                <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
                 <> pricingIntervalRowView.view(pricing)
                 <> pricingFooterView.view((currentUser, expand))
@@ -178,12 +178,12 @@ private let whatToExpectStyles =
 private let whatToExpect = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4])],
-      [.text(unsafeUnencodedString("What to expect?"))]
+      [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4])],
+      [.raw("What to expect?")]
     ),
 
     p(
-      [`class`([Class.pf.colors.fg.white])],
+      [Styleguide.class([Class.pf.colors.fg.white])],
       [
         """
         Quality video content dissecting some of the most important topics in functional programming. Each
@@ -198,12 +198,12 @@ private let whatToExpect = View<Prelude.Unit> { _ in
 private let topicsView = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.text(unsafeUnencodedString("What kind of topics will you cover?"))]
+      [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [.raw("What kind of topics will you cover?")]
     ),
 
     p(
-      [`class`([Class.pf.colors.fg.white])],
+      [Styleguide.class([Class.pf.colors.fg.white])],
       [
         """
         We will of course cover all of the classic topics such as functors, monads and applicatives (oh
@@ -214,7 +214,7 @@ private let topicsView = View<Prelude.Unit> { _ in
     ),
 
     ul(
-      [`class`([Class.pf.colors.fg.green, Class.type.align.start])], [
+      [Styleguide.class([Class.pf.colors.fg.green, Class.type.align.start])], [
         li(["Pure functions and side effects"]),
         li(["Code reuse through function composition"]),
         li(["Maximizing use of the type-system"]),
@@ -226,12 +226,12 @@ private let topicsView = View<Prelude.Unit> { _ in
 private let suggestATopic = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.text(unsafeUnencodedString("Can I suggest a topic?"))]
+      [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [.raw("Can I suggest a topic?")]
     ),
 
     p(
-      [`class`([Class.pf.colors.fg.white])],
+      [Styleguide.class([Class.pf.colors.fg.white])],
       [
         "Sure thing! Send us an ",
         a(
@@ -247,12 +247,12 @@ private let suggestATopic = View<Prelude.Unit> { _ in
 private let studentDiscounts = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [text("Do you offer student discounts?")]
+      [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [.text("Do you offer student discounts?")]
     ),
 
     p(
-      [`class`([Class.pf.colors.fg.white])],
+      [Styleguide.class([Class.pf.colors.fg.white])],
       [
         "We do! If you ",
         a([mailto("support@pointfree.co?subject=Student%20Discount"), style(faqLinkStyles)], ["email us"]),
@@ -266,12 +266,12 @@ private let studentDiscounts = View<Prelude.Unit> { _ in
 private let whoAreYou = View<Prelude.Unit> { _ in
   [
     h4(
-      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.text(unsafeUnencodedString("Who are you?"))]
+      [Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [.raw("Who are you?")]
     ),
 
     p(
-      [`class`([Class.pf.colors.fg.white])],
+      [Styleguide.class([Class.pf.colors.fg.white])],
       [
         "We’re ",
         a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], ["Brandon Williams"]),
@@ -283,7 +283,7 @@ private let whoAreYou = View<Prelude.Unit> { _ in
     ),
 
     ul(
-      [`class`([Class.pf.colors.fg.blue, Class.type.align.start])], [
+      [Styleguide.class([Class.pf.colors.fg.blue, Class.type.align.start])], [
         li([
           a([href("http://www.fewbutripe.com/talks/"), style(faqLinkStyles)],
             ["Brandon’s talks"])
@@ -298,9 +298,9 @@ private let whoAreYou = View<Prelude.Unit> { _ in
 }
 
 private let faqView = View<Prelude.Unit> { _ in
-  gridRow([`class`([pricingOptionsRowClass])], [
+  gridRow([Styleguide.class([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
-      div([`class`([whatToExpectBoxClass])],
+      div([Styleguide.class([whatToExpectBoxClass])],
           whatToExpect.view(unit)
             <> topicsView.view(unit)
             <> studentDiscounts.view(unit)
@@ -319,29 +319,29 @@ private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
       checked(pricing.isIndividual),
-      `class`([Class.display.none]),
+      Styleguide.class([Class.display.none]),
       id(selectors.input.0),
       name("pricing[lane]"),
       type(.radio),
       value("individual"),
       role(.button)
       ]),
-    label([`for`(selectors.input.0), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
+    label([`for`(selectors.input.0), Styleguide.class([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For you"
       ]),
 
-    span([`class`([Class.padding([.mobile: [.leftRight: 2]]), Class.pf.colors.fg.gray850])], ["or"]),
+    span([Styleguide.class([Class.padding([.mobile: [.leftRight: 2]]), Class.pf.colors.fg.gray850])], ["or"]),
 
     input([
       checked(pricing.isTeam),
-      `class`([Class.display.none]),
+      Styleguide.class([Class.display.none]),
       id(selectors.input.1),
       name("pricing[lane]"),
       type(.radio),
       value("team"),
       role(.button)
       ]),
-    label([`for`(selectors.input.1), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
+    label([`for`(selectors.input.1), Styleguide.class([Class.pf.components.pricingTab]), style(extraTabStyles)], [
       "For your team"
       ])
   ]
@@ -349,13 +349,13 @@ private let pricingTabsView = View<Pricing> { pricing in
 
 private let pricingIntervalRowView = View<Pricing> { pricing in
   gridRow(
-    [`class`([Class.pf.colors.bg.white])],
+    [Styleguide.class([Class.pf.colors.bg.white])],
     individualPricingColumnView.view((.monthly, pricing))
       <> individualPricingColumnView.view((.yearly, pricing))
       <> [
-        gridColumn(sizes: [.mobile: 12], [`class`([Class.pf.colors.bg.white])], [
+        gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])], [
           p([
-            `class`([
+            Styleguide.class([
               selectors.content.1,
               Class.padding([.mobile: [.bottom: 1]]),
               Class.pf.colors.fg.gray400,
@@ -379,8 +379,8 @@ let teamPriceClass = CssSelector.class("team-price")
 
 private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
 return
-  gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
-    label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
+  gridColumn(sizes: [.mobile: 6], [Styleguide.class([Class.pf.colors.bg.white])], [
+    label([`for`(billing.rawValue), Styleguide.class([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
           checked(isChecked(billing, pricing)),
@@ -390,24 +390,24 @@ return
           value(billing.rawValue),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
-            span([`class`([selectors.content.0])], [
-              text(individualPricingText(for: billing)),
+          h2([Styleguide.class([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
+            span([Styleguide.class([selectors.content.0])], [
+              .text(individualPricingText(for: billing)),
               ]),
-            span([`class`([selectors.content.1])], [
+            span([Styleguide.class([selectors.content.1])], [
               "$",
               span(
-                [`class`([teamPriceClass]), data("price", String(defaultTeamPricing(for: billing)))],
-                [text(String(defaultTeamPricing(for: billing) * clamp(Pricing.validTeamQuantities)(pricing.quantity)))]
+                [Styleguide.class([teamPriceClass]), data("price", String(defaultTeamPricing(for: billing)))],
+                [.text(String(defaultTeamPricing(for: billing) * clamp(Pricing.validTeamQuantities)(pricing.quantity)))]
               ),
               "/",
-              text(pricingInterval(for: billing)),
+              .text(pricingInterval(for: billing)),
               ]),
             ]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
-            text(title(for: billing))
+          h6([Styleguide.class([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
+            .text(title(for: billing))
             ]),
           ]),
         ]),
@@ -419,15 +419,15 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
 
   let quantity = clamp(Pricing.validTeamQuantities) <| pricing.quantity
 
-  return div([`class`([Class.flex.flex])], [
-    gridRow([`class`([selectors.content.1, Class.pf.colors.bg.white, Class.size.width100pct])], [
+  return div([Styleguide.class([Class.flex.flex])], [
+    gridRow([Styleguide.class([selectors.content.1, Class.pf.colors.bg.white, Class.size.width100pct])], [
       gridColumn(sizes: [.mobile: 12], [], [
-        div([`class`([Class.padding([.mobile: [.top: 3, .left: 3, .right: 3]])])], [
+        div([Styleguide.class([Class.padding([.mobile: [.top: 3, .left: 3, .right: 3]])])], [
 
-          p([`class`([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
+          p([Styleguide.class([Class.pf.colors.fg.black, Class.pf.type.body.regular])], ["How many in your team?"]),
 
           input([
-            `class`([numberSpinner, Class.pf.colors.fg.black]),
+            Styleguide.class([numberSpinner, Class.pf.colors.fg.black]),
             max(Pricing.validTeamQuantities.upperBound),
             min(Pricing.validTeamQuantities.lowerBound),
             name("pricing[quantity]"),
@@ -470,7 +470,7 @@ private let quantityRowView = View<Pricing> { pricing -> Node in
             ]),
 
           hr([
-            `class`([
+            Styleguide.class([
               Class.pf.components.divider,
               Class.margin([.mobile: [.top: 3]])
               ]),
@@ -500,10 +500,10 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
 private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expand in
-  gridRow([`class`([Class.pf.colors.bg.white])], [
+  gridRow([Styleguide.class([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
-        [`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+        [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
           .map(const(stripeForm.view(expand)))
           ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: expand))]
@@ -514,14 +514,14 @@ private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expa
 
 private let stripeForm = View<Bool> { expand in
   div(
-    [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
+    [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3]])])],
     Stripe.html.cardInput(expand: expand)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [
         button(
-          [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-          ["Subscribe to Point", .text(unsafeUnencodedString("&#8209;")), "Free"]
+          [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+          ["Subscribe to Point", .raw("&#8209;"), "Free"]
         )
     ]
   )

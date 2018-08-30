@@ -159,7 +159,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
 
   [
     gridRow([
-      gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
+      gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.hide(.desktop)])], [
         div(episodeInfoView.view(episode))
         ])
       ]),
@@ -172,10 +172,10 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
 
       gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
-        [`class`([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
+        [Styleguide.class([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
           div(
-            [`class`([Class.position.sticky(.desktop), Class.position.top0])],
+            [Styleguide.class([Class.position.sticky(.desktop), Class.position.top0])],
             rightColumnView.view(
               (episode, isEpisodeViewable(for: permission))
             )
@@ -220,13 +220,13 @@ private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
   div(
     [
-      `class`([outerVideoContainerClass]),
+      Styleguide.class([outerVideoContainerClass]),
       style(outerVideoContainerStyle)
     ],
     [
       video(
         [
-          `class`([innerVideoContainerClass]),
+          Styleguide.class([innerVideoContainerClass]),
           controls(true),
           playsinline(true),
           autoplay(true),
@@ -241,9 +241,9 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
-  div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
+  div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
     h6(
-      [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+      [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
       ["Chapters"]
     ),
     ]
@@ -255,7 +255,7 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
   )
 }
 
-private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Element.A>] {
+private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Tag.A>] {
 
   return [
     useAnchors
@@ -285,8 +285,8 @@ private let tocChapterView = View<(title: String, timestamp: Int, isEpisodeViewa
 
     gridColumn(sizes: [.mobile: 2], [
       div(
-        [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
-        [text(timestampLabel(for: timestamp))]
+        [Styleguide.class([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
+        [.text(timestampLabel(for: timestamp))]
       )
       ])
     ])
@@ -296,19 +296,19 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
   if active {
     return
       [
-        div([`class`([Class.hide(.mobile)])], [
+        div([Styleguide.class([Class.hide(.mobile)])], [
           a(
             timestampLinkAttributes(timestamp: timestamp, useAnchors: true) +
-              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
-            [text(title)]
+              [Styleguide.class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
+            [.text(title)]
           )
           ]),
 
-        div([`class`([Class.hide(.desktop)])], [
+        div([Styleguide.class([Class.hide(.desktop)])], [
           a(
             timestampLinkAttributes(timestamp: timestamp, useAnchors: false) +
-              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
-            [text(title)]
+              [Styleguide.class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
+            [.text(title)]
           )
           ]),
     ]
@@ -316,8 +316,8 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
 
   return [
     div(
-      [`class`([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
-      [text(title)]
+      [Styleguide.class([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
+      [.text(title)]
     )
   ]
 }
@@ -326,24 +326,24 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   guard !codeSampleDirectory.isEmpty else { return [] }
 
   return [
-    div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+    div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
         [
           h6(
-            [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+            [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
             ["Downloads"]
           ),
           img(
             base64: gitHubSvgBase64(fill: "#FFF080"),
             mediaType: .image(.svg),
             alt: "",
-            [`class`([Class.align.middle]), width(20), height(20)]
+            [Styleguide.class([Class.align.middle]), width(20), height(20)]
           ),
           a(
             [
               href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-              `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+              Styleguide.class([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
             ],
-            [text("\(codeSampleDirectory).playground")]
+            [.text("\(codeSampleDirectory).playground")]
           )
       ]
     )
@@ -351,24 +351,24 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
 }
 
 private let hostsView = View<Prelude.Unit> { _ in
-  div([`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
+  div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
       [
         h6(
-          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+          [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
           ["Credits"]
         ),
         p(
-          [`class`([Class.pf.colors.fg.gray850])],
+          [Styleguide.class([Class.pf.colors.fg.gray850])],
           [
             "Hosted by ",
             a(
-              [`class`([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
-              [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]
+              [Styleguide.class([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
+              [.raw("Brandon&nbsp;Williams")]
             ),
             " and ",
             a(
-              [`class`([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")],
-              [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]
+              [Styleguide.class([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")],
+              [.raw("Stephen&nbsp;Celis")]
             ),
             ". Recorded in Brooklyn, NY."
           ]
@@ -388,7 +388,7 @@ private func timestampLabel(for timestamp: Int) -> String {
 private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode -> Node in
   div(
-    [div([`class`([Class.hide(.mobile)])], episodeInfoView.view(episode))]
+    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
       + (
         isSubscribeBannerVisible(for: permission)
@@ -460,7 +460,7 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
         )
       ],
       [
-        text("""
+        .text("""
           You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
           want to use it to view this episode for free right now?
           """)
@@ -473,7 +473,7 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
         input(
           [
             type(.submit),
-            `class`([Class.pf.components.button(color: .black, size: .small)]),
+            Styleguide.class([Class.pf.components.button(color: .black, size: .small)]),
             value(useCreditCTA)
           ]
         )
@@ -493,7 +493,7 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
 
   return [
     p(
-      [`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
+      [Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
       [
         """
         Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
@@ -505,7 +505,7 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
     a(
       [
         href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
-        `class`([Class.pf.components.button(color: .black)])
+        Styleguide.class([Class.pf.components.button(color: .black)])
       ],
       ["Sign up for free episode"]
     )
@@ -527,17 +527,17 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
       ],
       [
         h3(
-          [`class`([Class.pf.type.responsiveTitle4])],
-          [.text(unsafeUnencodedString("Subscribe to Point&#8209;Free"))]
+          [Styleguide.class([Class.pf.type.responsiveTitle4])],
+          [.raw("Subscribe to Point&#8209;Free")]
         ),
 
         p(
-          [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          [text(String(describing: subscribeBlurb(for: permission)))]
+          [Styleguide.class([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+          [.text(String(describing: subscribeBlurb(for: permission)))]
         ),
 
         a(
-          [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+          [href(path(to: .pricing(nil, expand: nil))), Styleguide.class([Class.pf.components.button(color: .purple)])],
           ["See subscription options"]
         )
         ]
@@ -553,11 +553,11 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
   guard user == nil else { return [] }
 
   return [
-    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+    span([Styleguide.class([Class.padding([.mobile: [.left: 2]])])], ["or"]),
     a(
       [
         href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
-        `class`([Class.pf.components.button(color: .black, style: .underline)])
+        Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
       ],
       ["Log in"]
     )
@@ -566,7 +566,7 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
 
 private let episodeInfoView = View<Episode> { ep in
   div(
-    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
+    [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
   )
 }
@@ -586,18 +586,18 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
 let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
-      [`class`([Class.pf.type.responsiveTitle8])],
-      [text(topLevelEpisodeMetadata(ep))]
+      [Styleguide.class([Class.pf.type.responsiveTitle8])],
+      [.text(topLevelEpisodeMetadata(ep))]
     ),
     h1(
-      [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
-      [a([href(path(to: .episode(.left(ep.slug))))], [text(ep.title)])]
+      [Styleguide.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
+      [a([href(path(to: .episode(.left(ep.slug))))], [.text(ep.title)])]
     ),
-    div([`class`([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
+    div([Styleguide.class([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
   ]
 }
 
-let divider = hr([`class`([Class.pf.components.divider])])
+let divider = hr([Styleguide.class([Class.pf.components.divider])])
 let dividerView = View<Prelude.Unit>(const(divider))
 
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
@@ -629,7 +629,7 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
       ],
       [
         h2(
-          [`class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+          [Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
           ["Exercises"]
         ),
         ol(
@@ -651,24 +651,24 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   case let .code(lang):
     return pre([
       code(
-        [`class`([Class.pf.components.code(lang: lang.identifier)])],
-        [text(block.content)]
+        [Styleguide.class([Class.pf.components.code(lang: lang.identifier)])],
+        [.text(block.content)]
       )
       ])
 
   case .correction:
     return div(
       [
-        `class`([
+        Styleguide.class([
           Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
           Class.padding([.mobile: [.all: 2]]),
           ]),
         style("background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
       ],
       [
-        h3([`class`([Class.pf.type.responsiveTitle6])], ["Correction"]),
+        h3([Styleguide.class([Class.pf.type.responsiveTitle6])], ["Correction"]),
         div(
-          [`class`([Class.pf.type.body.regular])],
+          [Styleguide.class([Class.pf.type.body.regular])],
           [markdownBlock(block.content)]
         ),
       ]
@@ -677,12 +677,12 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   case let .image(src):
     return a(
       [
-        `class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
+        Styleguide.class([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
         href(src),
         target(.blank),
         rel(.value("noopener noreferrer")),
       ],
-      [img(src: src, alt: "", [`class`([innerImageContainerClass])])]
+      [img([src(src), alt(""), Styleguide.class([innerImageContainerClass])])]
     )
 
   case .paragraph:
@@ -694,13 +694,13 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   case .title:
     return h2(
       [
-        `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
+        Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
         block.timestamp.map { id("t\($0)") }
         ]
         .compactMap(id),
       [
         a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
-          text(block.content)
+          .text(block.content)
           ])
       ]
     )
@@ -708,13 +708,13 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   case let .video(poster, sources):
     return div(
       [
-        `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
+        Styleguide.class([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
         style(outerVideoContainerStyle)
       ],
       [
         video(
           [
-            `class`([innerVideoContainerClass]),
+            Styleguide.class([innerVideoContainerClass]),
             controls(true),
             playsinline(true),
             autoplay(false),
@@ -732,12 +732,12 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   guard let timestamp = timestamp else { return [] }
 
   return [
-    div([id("t\(timestamp)"), `class`([Class.display.block])], [
+    div([id("t\(timestamp)"), Styleguide.class([Class.display.block])], [
       a(
         timestampLinkAttributes(timestamp: timestamp, useAnchors: false) + [
-          `class`([Class.pf.components.videoTimeLink])
+          Styleguide.class([Class.pf.components.videoTimeLink])
         ],
-        [text(timestampLabel(for: timestamp))])
+        [.text(timestampLabel(for: timestamp))])
       ])
   ]
 }
@@ -754,12 +754,12 @@ private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
 
 private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, SubscriberState, Route?)> { _, _, _, _ in
 
-  gridRow([`class`([Class.grid.center(.mobile)])], [
+  gridRow([Styleguide.class([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
       div([style(padding(topBottom: .rem(12)))], [
-        h5([`class`([Class.h5])], ["Episode not found :("]),
+        h5([Styleguide.class([Class.h5])], ["Episode not found :("]),
         pre([
-          code([`class`([Class.pf.components.code(lang: "swift")])], [
+          code([Styleguide.class([Class.pf.components.code(lang: "swift")])], [
             "f: (Episode) -> Never"
             ])
           ])
@@ -812,9 +812,9 @@ func markdownBlock(_ markdown: String) -> Node {
   return markdownBlock([], markdown)
 }
 
-func markdownBlock(_ attribs: [Attribute<Element.Div>] = [], _ markdown: String) -> Node {
+func markdownBlock(_ attribs: [Attribute<Tag.Div>] = [], _ markdown: String) -> Node {
   return div(addClasses([markdownContainerClass], to: attribs), [
-    .text(unsafeUnencodedString(unsafeMark(from: markdown)))
+    .raw(unsafeMark(from: markdown))
     ])
 }
 

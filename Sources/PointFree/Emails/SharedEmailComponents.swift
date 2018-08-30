@@ -7,23 +7,23 @@ import View
 
 let hostSignOffView = View<Prelude.Unit> { _ in
   [
-    p([`class`([Class.padding([.mobile: [.top: 2]])])], [
+    p([Styleguide.class([Class.padding([.mobile: [.top: 2]])])], [
       "Your hosts,"
       ]),
     p([
-      a([href(twitterUrl(to: .mbrandonw))], [.text(unsafeUnencodedString("Brandon&nbsp;Williams"))]),
+      a([href(twitterUrl(to: .mbrandonw))], [.raw("Brandon&nbsp;Williams")]),
       " & ",
-      a([href(twitterUrl(to: .stephencelis))], [.text(unsafeUnencodedString("Stephen&nbsp;Celis"))]),
+      a([href(twitterUrl(to: .stephencelis))], [.raw("Stephen&nbsp;Celis")]),
       ])
   ]
 }
 
 let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
+  emailTable([Styleguide.class([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          p([`class`([Class.pf.type.body.small])], [
+        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
+          p([Styleguide.class([Class.pf.type.body.small])], [
             "Contact us via email at ",
             a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
             ", or on Twitter ",
@@ -31,7 +31,7 @@ let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> 
             "."
             ]),
 
-          p([`class`([Class.pf.type.body.small])], [
+          p([Styleguide.class([Class.pf.type.body.small])], [
             "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
             ]),
 
@@ -45,8 +45,8 @@ private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsle
   guard let user = user, let newsletter = newsletter else { return [] }
 
   return [
-    p([`class`([Class.pf.type.body.small])], [
-      text(subscribedReason(newsletter: newsletter)),
+    p([Styleguide.class([Class.pf.type.body.small])], [
+      .text(subscribedReason(newsletter: newsletter)),
       " If you no longer wish to receive emails like this, you can unsubscribe ",
       a([href(url(to: .expressUnsubscribe(userId: user.id, newsletter: newsletter)))], ["here"]),
       "."
@@ -78,6 +78,10 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
 }
 
 // TODO: move into a package for html email helpers.
-public func emailTable(_ attribs: [Attribute<Element.Table>], _ content: [ChildOf<Element.Table>]) -> Node {
-  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
+// todo: public func emailTable(_ attribs: [Attribute<Element.Table>], _ content: [ChildOf<Element.Table>]) -> Node {
+//  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
+//}
+
+public func emailTable<A, B>(_ attribs: A, _ content: B) -> Node {
+  fatalError()
 }

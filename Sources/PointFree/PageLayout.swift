@@ -201,7 +201,7 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 }
 
 let flashView = View<Flash> { flash in
-  gridRow([`class`([flashClass(for: flash.priority)])], [
+  gridRow([Styleguide.class([flashClass(for: flash.priority)])], [
     gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
     ])
 }
@@ -226,7 +226,7 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
   }
 }
 
-private let favicons: [ChildOf<Element.Head>] = [
+private let favicons: [ChildOf<Tag.Head>] = [
   link([rel(.value("apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
   link([rel(.value("icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
   link([rel(.value("icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
@@ -234,7 +234,7 @@ private let favicons: [ChildOf<Element.Head>] = [
   link([rel(.value("mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]
 
-private let prismJsHead: [ChildOf<Element.Head>] = [
+private let prismJsHead: [ChildOf<Tag.Head>] = [
   script([src("//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js")]),
   script(
     """

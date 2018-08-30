@@ -63,7 +63,7 @@ let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand i
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
             <> updatePaymentInfoRowView.view(expand)
@@ -73,32 +73,32 @@ let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand i
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment Info"])
+        h1([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Payment Info"])
         ])
       ])
     ])
 }
 
 private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
-        p([text(card.brand.rawValue + " ending in " + String(card.last4))]),
-        p([text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
+        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
+        p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
+        p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
         ])
       ])
     ])
 }
 
 private let updatePaymentInfoRowView = View<Bool> { expand in
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
+  return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),
+        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
           Stripe.html.cardInput(expand: expand)
@@ -106,13 +106,13 @@ private let updatePaymentInfoRowView = View<Bool> { expand in
             <> Stripe.html.scripts
             <> [
               button(
-                [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+                [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
                 ["Update payment info"]
               ),
               a(
                 [
                   href(path(to: .account(.index))),
-                  `class`([Class.pf.components.button(color: .black, style: .underline)])
+                  Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
                 ],
                 ["Cancel"]
               )

@@ -30,20 +30,20 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
 let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([valign(.top)], [
+      td([ // todo: valign(.top)], [
         div(
-          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          [Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView.view(announcement)
         ),
 
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+        div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           a([href(url(to: .blog(.show(post))))], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], [text(post.title)]),
+            h3([Styleguide.class([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
             ]),
-          p([text(post.blurb)]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([.text(post.blurb)]),
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .blog(.show(post))))], [
-              img(src: post.coverImage, alt: "", [style(maxWidth(.pct(100)))])
+              img([src(post.coverImage), alt(""), style(maxWidth(.pct(100)))])
               ])
             ]),
 
@@ -63,7 +63,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
           ]),
 
         div(
-          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          [Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           hostSignOffView.view(unit)
         )
         ])
@@ -87,7 +87,7 @@ private let announcementView = View<String?> { announcement -> [Node] in
         )
       ],
       [
-        h5([`class`([Class.pf.type.responsiveTitle5])], ["Announcements"]),
+        h5([Styleguide.class([Class.pf.type.responsiveTitle5])], ["Announcements"]),
         markdownBlock(announcement)
       ]
     )
@@ -109,20 +109,20 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
 let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["New blog post email report"]),
+      td([ // todo: valign(.top)], [
+        div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
+          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["New blog post email report"]),
           p([
             "A total of ",
-            strong([text("\(totalAttempted)")]),
+            strong([.text("\(totalAttempted)")]),
             " emails were attempted to be sent, and of those, ",
-            strong([text("\(erroredUsers.count)")]),
+            strong([.text("\(erroredUsers.count)")]),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
             ]),
 
           ul(erroredUsers.map { user in
-            li([text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
+            li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
           })
           ])
         ])

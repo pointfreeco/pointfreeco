@@ -12,6 +12,7 @@ import Prelude
 import Styleguide
 import Tuple
 import UrlFormEncoding
+import View
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?

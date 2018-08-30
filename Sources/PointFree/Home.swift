@@ -84,7 +84,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
                   a(
                     [
                       href(path(to: .pricing(nil, expand: nil))),
-                      `class`([Class.pf.type.underlineLink])
+                      Styleguide.class([Class.pf.type.underlineLink])
                     ],
                     ["subscribing"]
                   ),
@@ -109,13 +109,11 @@ private let episodeRowView = View<Episode> { ep in
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
-      gridColumn(sizes: [.mobile: 12, .desktop: 5], [`class`([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
-        div([`class`([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
+      gridColumn(sizes: [.mobile: 12, .desktop: 5], [Styleguide.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
+        div([ // todo: Styleguide.class([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
-              src: ep.image,
-              alt: "",
-              [`class`([Class.size.width100pct, Class.size.height100pct]),
+              [src(ep.image), alt(""), Styleguide.class([Class.size.width100pct, Class.size.height100pct]),
                style(objectFit(.cover))]
             )
             ])
@@ -127,18 +125,18 @@ private let episodeRowView = View<Episode> { ep in
 
 private let episodeInfoColumnView = View<Episode> { ep in
   div(
-    [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
+    [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep) + [
-      div([`class`([Class.margin([.mobile: [.top: 3]])])], [
+      div([Styleguide.class([Class.margin([.mobile: [.top: 3]])])], [
         a(
-          [href(path(to: .episode(.left(ep.slug)))), `class`([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
+          [href(path(to: .episode(.left(ep.slug)))), Styleguide.class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
           [
-            text("Watch episode (\(ep.length / 60) min)"),
+            .text("Watch episode (\(ep.length / 60) min)"),
             img(
               base64: rightArrowSvgBase64(fill: "#974DFF"),
               mediaType: .image(.svg),
               alt: "",
-              [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
+              [Styleguide.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
             )
           ]
         ),

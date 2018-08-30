@@ -147,7 +147,7 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           currentUser
             .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
             ?? showInviteLoggedOutView.view((teamInvite, inviter))
@@ -157,14 +157,14 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
 }
 
 private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+  gridRow([Styleguide.class([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [text(inviter.displayName)]),
+          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
           """
            has invited you to join their team on Point-Free, a video series exploring functional programming
           concepts using the Swift programming language. Accepting this invitation gives you access to all of
@@ -176,7 +176,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
           "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
           ]),
 
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+        p([Styleguide.class([Class.padding([.mobile: [.top: 3]])])], [
           gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
           ])
         ])
@@ -185,14 +185,14 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
 }
 
 private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, Database.User)> { currentUser, teamInvite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+  gridRow([Styleguide.class([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [text(inviter.displayName)]),
+          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
           """
            has invited you to join their team account on Point-Free, a video series exploring functional
           programming concepts using the Swift programming language. Accepting this invitation gives you
@@ -204,7 +204,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
           input([
               type(.submit),
               value("Accept"),
-              `class`([Class.pf.components.button(color: .purple)])
+              Styleguide.class([Class.pf.components.button(color: .purple)])
             ])
           ])
         ])
@@ -216,8 +216,8 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
+      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
+        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
 
         p([
           """
@@ -226,11 +226,11 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
           """
           ]),
 
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+        p([Styleguide.class([Class.padding([.mobile: [.top: 3]])])], [
           a(
             [
               href(path(to: .pricing(nil, expand: nil))),
-              `class`([Class.pf.components.button(color: .purple)])
+              Styleguide.class([Class.pf.components.button(color: .purple)])
             ],
             ["Subscribe"])
           ])

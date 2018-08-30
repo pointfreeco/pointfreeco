@@ -33,12 +33,12 @@ extension Tag {
 
 public let pillTagsView = View<[Tag]> { tags in
   ol(
-    [`class`([Class.display.inlineBlock, Class.type.list.reset])],
+    [Styleguide.class([Class.display.inlineBlock, Class.type.list.reset])],
     tags
       .sorted(by: their(^\.name))
       .map(
         episodeTagView.view
-          >>> curry(li)([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
+          >>> curry(li)([Styleguide.class([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }
@@ -47,7 +47,7 @@ private let episodeTagView = View<Tag> { tag in
   a(
     [
       href("#"),
-      `class`([
+      Styleguide.class([
         Class.h6,
         Class.padding([.mobile: [.leftRight: 2, .topBottom: 1]]),
         Class.border.pill,
@@ -57,7 +57,7 @@ private let episodeTagView = View<Tag> { tag in
         Class.pf.colors.border.gray900
         ])
     ],
-    [text(tag.name)]
+    [.text(tag.name)]
   )
 }
 

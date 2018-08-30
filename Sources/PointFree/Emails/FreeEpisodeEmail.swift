@@ -29,8 +29,8 @@ Every once in awhile we release a past episode for free to all of our viewers, a
 let freeEpisodeEmailContent = View<Episode> { ep in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+      td([ // todo: valign(.top)], [
+        div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           blockquote(
             [
               `class`(
@@ -43,7 +43,7 @@ let freeEpisodeEmailContent = View<Episode> { ep in
               )
             ],
             [
-              text(freeEpisodeBlurb),
+              .text(freeEpisodeBlurb),
               " Please consider ",
               a([href(url(to: .pricing(nil, expand: nil)))], ["supporting us"]),
               " so that we can keep new episodes coming!"
@@ -52,26 +52,26 @@ let freeEpisodeEmailContent = View<Episode> { ep in
 
           a([href(url(to: .episode(.left(ep.slug))))], [
             h3(
-              [`class`([Class.pf.type.responsiveTitle3])],
-              [text("Episode #\(ep.sequence) is now free!")]
+              [Styleguide.class([Class.pf.type.responsiveTitle3])],
+              [.text("Episode #\(ep.sequence) is now free!")]
             )
             ]),
 
           h4(
-            [`class`([Class.pf.type.responsiveTitle5])],
-            [text(ep.title)]
+            [Styleguide.class([Class.pf.type.responsiveTitle5])],
+            [.text(ep.title)]
           ),
 
-          p([text(ep.blurb)]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([.text(ep.blurb)]),
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .episode(.left(ep.slug))))], [
-              img(src: ep.image, alt: "", [style(maxWidth(.pct(100)))])
+              img([src(ep.image), alt(""), style(maxWidth(.pct(100)))])
               ])
             ]),
 
-          p([text("This episode is \(ep.length / 60) minutes long.")]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
+          p([.text("This episode is \(ep.length / 60) minutes long.")]),
+          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .episode(.left(ep.slug)))), Styleguide.class([Class.pf.components.button(color: .purple)])],
               ["Watch now!"])
             ])
           ]
