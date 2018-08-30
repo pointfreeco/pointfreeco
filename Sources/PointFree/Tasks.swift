@@ -3,6 +3,7 @@ import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide
+import View
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let zippedEmails = zip3(

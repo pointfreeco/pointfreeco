@@ -8,6 +8,7 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 enum NavStyle {
   case minimal(MinimalStyle)

@@ -7,6 +7,7 @@ import HttpPipeline
 import Optics
 import Styleguide
 import Prelude
+import View
 
 let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 

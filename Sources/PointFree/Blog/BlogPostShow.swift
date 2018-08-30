@@ -7,6 +7,7 @@ import HttpPipeline
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)

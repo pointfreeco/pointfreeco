@@ -7,6 +7,7 @@ import HttpPipeline
 import Optics
 import Styleguide
 import Prelude
+import View
 
 let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   gridRow([`class`([newNavBarClass(for: style)])], [

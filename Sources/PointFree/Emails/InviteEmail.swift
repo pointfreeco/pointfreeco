@@ -3,6 +3,7 @@ import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide
+import View
 
 let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
   .contramap { inviter, invite in

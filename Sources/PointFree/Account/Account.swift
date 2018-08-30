@@ -9,6 +9,7 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -190,7 +191,7 @@ private let episodeLinkView = View<Episode> { episode in
         ]
       )
     ],
-    [text("#\(episode.sequence): \(episode.title)")]
+    [.text("#\(episode.sequence): \(episode.title)")]
   )
 }
 

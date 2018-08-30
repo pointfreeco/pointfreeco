@@ -9,6 +9,7 @@ import Prelude
 import Styleguide
 import Tuple
 import UrlFormEncoding
+import View
 
 let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)

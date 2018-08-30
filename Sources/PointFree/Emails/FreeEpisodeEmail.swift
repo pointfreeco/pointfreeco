@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import View
 
 let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent)
   .contramap { ep, user in

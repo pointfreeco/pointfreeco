@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import View
 
 func adminEmailReport(_ type: String) -> View<([Database.User], Int)> {
   return simpleEmailLayout(adminEmailReportContent)

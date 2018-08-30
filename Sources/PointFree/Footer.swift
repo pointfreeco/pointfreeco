@@ -3,6 +3,7 @@ import Html
 import HtmlCssSupport
 import Styleguide
 import Prelude
+import View
 
 let footerView: View<Database.User?> =
   curry(footer)([`class`([footerClass])]) >>> pure

@@ -1,6 +1,7 @@
 import Html
 import Prelude
 import Styleguide
+import View
 
 public struct Tag: Equatable {
   var name: String

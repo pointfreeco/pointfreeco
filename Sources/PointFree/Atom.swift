@@ -2,6 +2,7 @@ import Foundation
 import Html
 import Optics
 import Prelude
+import View
 
 public struct AtomAuthor {
   public var email: String

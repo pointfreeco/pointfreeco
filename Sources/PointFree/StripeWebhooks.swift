@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
+import View
 
 let stripeWebhookMiddleware =
   validateStripeSignature

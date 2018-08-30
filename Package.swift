@@ -14,7 +14,8 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("5d5005d")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("69b48c8")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("507379f")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("swift-html")),
+    .package(url: "https://github.com/mbrandonw/swift-html.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
@@ -36,6 +37,7 @@ let package = Package(
         "Styleguide",
         "Tuple",
         "UrlFormEncoding",
+        "View"
         ]
     ),
 

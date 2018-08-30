@@ -3,6 +3,7 @@ import HtmlCssSupport
 import Optics
 import Prelude
 import Styleguide
+import View
 
 let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
   .contramap { user, newEmailAddress in

@@ -7,6 +7,7 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)

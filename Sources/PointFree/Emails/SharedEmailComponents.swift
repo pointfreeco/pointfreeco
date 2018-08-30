@@ -3,6 +3,7 @@ import HtmlCssSupport
 import Foundation
 import Styleguide
 import Prelude
+import View
 
 let hostSignOffView = View<Prelude.Unit> { _ in
   [

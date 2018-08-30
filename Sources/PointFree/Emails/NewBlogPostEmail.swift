@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import Prelude
 import Styleguide
+import View
 
 let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
   .contramap { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
