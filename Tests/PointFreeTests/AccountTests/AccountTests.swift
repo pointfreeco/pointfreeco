@@ -40,12 +40,18 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_OwnerIsNotSubscriber() {
-    Current = .teamYearly
-      |> \.database.fetchUserById .~ const(pure(.some(.nonSubscriber)))
-      |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([]))
-      |> \.database.fetchSubscriptionById .~ const(pure(.some(.mock)))
+    let currentUser = Database.User.nonSubscriber
+    let subscription = Database.Subscription.mock
+      |> (\Database.Subscription.userId) .~ currentUser.id
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+    Current = .teamYearly
+      |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
+      |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([]))
+      |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
+
+    let session = Session.loggedIn
+      |> (\Session.userId) .~ currentUser.id
+    let conn = connection(from: request(to: .account(.index), session: session))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result.perform())
@@ -249,12 +255,12 @@ final class AccountTests: TestCase {
       |> \.episodeCreditCount .~ 1
 
     update(
-      &Current, 
+      &Current,
       (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
-    
+
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
     let result = conn |> siteMiddleware
 
