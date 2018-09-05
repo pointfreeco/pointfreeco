@@ -43,7 +43,7 @@ private func fetchAccountData<I>(
     .mapExcept(requireSome)
 
   let owner = ownerSubscription
-    .flatMap { Current.database.fetchUserById($0.userId) }
+    .flatMap(^\.userId >>> Current.database.fetchUserById)
     .mapExcept(requireSome)
 
   let subscription = userSubscription <|> ownerSubscription
