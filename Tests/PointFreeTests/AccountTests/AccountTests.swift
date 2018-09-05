@@ -41,8 +41,9 @@ final class AccountTests: TestCase {
 
   func testTeam_OwnerIsNotSubscriber() {
     Current = .teamYearly
-      |> (\Environment.database.fetchUserById) .~ const(pure(.some(.nonSubscriber)))
-      |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([]))
+      |> \.database.fetchUserById .~ const(pure(.some(.nonSubscriber)))
+      |> \.database.fetchSubscriptionTeammatesByOwnerId .~ const(pure([]))
+      |> \.database.fetchSubscriptionById .~ const(pure(.some(.mock)))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
     let result = conn |> siteMiddleware
