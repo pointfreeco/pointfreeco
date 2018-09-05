@@ -40,7 +40,6 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_OwnerIsNotSubscriber() {
-    record = true
     Current = .teamYearly
       |> (\Environment.database.fetchUserById) .~ const(pure(.some(.nonSubscriber)))
       |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([]))
