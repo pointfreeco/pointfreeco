@@ -86,8 +86,8 @@ public func currentSubscriptionMiddleware<A, I>(
     )
     ?? throwE(unit)
 
-  return (userSubscription.run.parallel <|> ownerSubscription.run.parallel)
-    .sequential
+  return (userSubscription <|> ownerSubscription)
+    .run
     .map(^\.right)
     .map { conn.map(const($0 .*. conn.data)) }
 }
