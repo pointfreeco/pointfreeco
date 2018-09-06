@@ -43,7 +43,7 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
     .reduce([]) { accum, idxAndEpisode in
       accum
         + [Either.left(idxAndEpisode.element)]
-        + (idxAndEpisode.offset % 4 == 3 ? [.right(subscriberState)] : [])
+        + (idxAndEpisode.offset != episodes.count - 1 && idxAndEpisode.offset % 3 == 2 ? [.right(subscriberState)] : [])
   }
 
   return
