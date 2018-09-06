@@ -38,10 +38,6 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
 
   let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
 
-  let ctaInsertionIndex = subscriberState.isNonSubscriber ? min(3, episodes.count) : 0
-  let firstBatch = episodes[0..<ctaInsertionIndex]
-  let secondBatch = episodes[ctaInsertionIndex...]
-
   let rowData = episodes
     .enumerated()
     .reduce([]) { accum, idxAndEpisode in
