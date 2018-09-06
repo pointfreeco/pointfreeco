@@ -32,6 +32,8 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Us
     }
 )
 
+import Either
+
 let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
 
   let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
@@ -40,10 +42,17 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
   let firstBatch = episodes[0..<ctaInsertionIndex]
   let secondBatch = episodes[ctaInsertionIndex...]
 
-  return episodesListView.view(firstBatch)
-    <> subscriberCalloutView.view(subscriberState)
-    <> episodesListView.view(secondBatch)
-    <> (subscriberState.isNonSubscriber ? pricingOptionsView.view((currentUser, .default, false)) : [])
+  let rowData = episodes
+    .enumerated()
+    .reduce([]) { accum, idxAndEpisode in
+      accum
+        + [Either.left(idxAndEpisode.1)]
+        + (idxAndEpisode.0 % 4 == 3 ? [.right(subscriberState)] : [])
+  }
+
+  return
+    rowData.foldMap(either(episodeRowView.view, subscriberCalloutView.view))
+      <> (subscriberState.isNonSubscriber ? pricingOptionsView.view((currentUser, .default, false)) : [])
 }
 
 private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
@@ -98,7 +107,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
   ]
 }
 
-private let episodesListView = View<ArraySlice<Episode>> { eps in
+private let episodesListView = View<[Episode]> { eps in
   eps.flatMap(episodeRowView.view)
 }
 
