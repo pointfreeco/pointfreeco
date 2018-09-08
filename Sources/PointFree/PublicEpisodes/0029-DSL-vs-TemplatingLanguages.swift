@@ -13,7 +13,8 @@ TODO
   publishedAt: Date(timeIntervalSince1970: 1536559023),
   sequence: 29,
   sourcesFull: [
-    // todo
+    "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
+    "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/dsl-wins.webm",
   ],
   sourcesTrailer: [
     // todo

@@ -36,10 +36,11 @@ And that has to do with templating languages…
 
 ## Templating Languages
 
-The current best practice for rendering HTML views is to use templating languages. These are languages
-that are embedded in a plain text document and provide various tokens for interpolating values into
-the document, and some basic logical and looping constructs. You can think of it as a fancier version of
-Swift's multiline string literals with interpolations, e.g. `"Hello \\(name)"`.
+The current best practice for rendering HTML views is to use templating languages. Some popular examples
+are Stencil, Mustache, Handlebars, and Leaf. These are languages that are embedded in a plain text document
+and provide various tokens for interpolating values into the document, and some basic logical and looping
+constructs. You can think of it as a fancier version of Swift's multiline string literals with
+interpolations, e.g. `"Hello \\(name)"`.
 
 Templating languages are very flexible, easy to get started with, and used by many in the community.
 However, they are not without their downsides:
@@ -54,9 +55,9 @@ in Swift, like the compiler catching typos and type mismatches, will go unnotice
 
 Templating languages are just that: programming languages. That means you should expect from these
 languages all of the niceties you get from other fully-fledged languages like Swift. That includes syntax
-highlighting, IDE autocompletion, static analysis, refactoring tools, and a whole slew of features that make
-Swift powerful like let-bindings, conditionals, loops and more. However, the reality is that no templating
-language supports all of these features.
+highlighting, IDE autocompletion, static analysis, refactoring tools, breakpoints, debugger, and a whole
+slew of features that make Swift powerful like let-bindings, conditionals, loops and more. However, the
+reality is that no templating language supports all of these features.
 
 ### Rigid
 
