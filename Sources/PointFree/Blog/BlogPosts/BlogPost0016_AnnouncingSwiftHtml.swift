@@ -11,7 +11,7 @@ type safe, and provides many benefits over templating languages.
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0016-announcing-swift-html/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg")
     ),
 
     .init(
@@ -284,8 +284,8 @@ building HTML in Swift.
 
   ],
   // todo
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0016-announcing-swift-html/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg",
   id: 16,
-  publishedAt: Date(timeIntervalSince1970: 1536559024),
+  publishedAt: Date(timeIntervalSince1970: 1536645424),
   title: "Announcing swift-html: A Swift HTML DSL" // todo
 )
