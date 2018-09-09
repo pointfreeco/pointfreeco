@@ -76,9 +76,11 @@ languages can offer us, what is the solution?
 The solution is to use Swift, not a whole new programming language!
 
 The library we are open sourcing today is written in the DSL style that we have been covering on Point-Free
-([part 1](todo), [part 2](todo), [part 3](todo)), which means you construct HTML documents by just building up
-plain Swift data types. It all begins with the `Node` type, which is an `enum` that decides whether you want
-an element node (such as `<header>`, `<div>`, etc.) or a text node. You can use it like so:
+([part 1](/episodes/ep26-domain-specific-languages-part-1),
+[part 2](/episodes/ep27-domain-specific-languages-part-2), [part 3](/episodes/ep28-an-html-dsl)), which means
+you construct HTML documents by just building up plain Swift data types. It all begins with the `Node` type,
+which is an `enum` that decides whether you want an element node (such as `<header>`, `<div>`, etc.) or a
+text node. You can use it like so:
 """,
       timestamp: nil,
       type: .paragraph
