@@ -3,8 +3,8 @@ import Foundation
 let post0016_announcingSwiftHtml = BlogPost(
   author: .brandon,
   blurb: """
-Today we are open sourcing a new DSL for building HTML documents in Swift. It's extensible, transformable,
-type safe, and provides many benefits over templating languages.
+Today we are open sourcing a new library for building HTML documents in Swift. It's extensible, transformable,
+type-safe, and provides many benefits over templating languages.
 """,
   contentBlocks: [
 
@@ -18,8 +18,8 @@ type safe, and provides many benefits over templating languages.
       content: """
 ---
 
-> Today we are [open sourcing](https://www.github.com/pointfreeco/swift-html) a new DSL for building HTML
-documents in Swift. It's extensible, transformable, type safe, and provides many benefits over templating
+> Today we are [open sourcing](https://www.github.com/pointfreeco/swift-html) a new library for building HTML
+documents in Swift. It's extensible, transformable, type-safe, and provides many benefits over templating
 languages.
 
 ---
@@ -287,5 +287,5 @@ building HTML in Swift.
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg",
   id: 16,
   publishedAt: Date(timeIntervalSince1970: 1536645424),
-  title: "Announcing swift-html: A Swift HTML DSL" // todo
+  title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift" // todo
 )
