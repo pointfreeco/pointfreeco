@@ -8,7 +8,7 @@ open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
 
-    record = true
+//    record = true
     Current = .mock
       |> \.database .~ .live
       |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
