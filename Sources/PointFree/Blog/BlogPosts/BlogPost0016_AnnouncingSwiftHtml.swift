@@ -75,8 +75,8 @@ languages can offer us, what is the solution?
 
 The solution is to use Swift, not a whole new programming language!
 
-The library we are open sourcing today is written in the DSL style that we have been covering on Point-Free
-([part 1](/episodes/ep26-domain-specific-languages-part-1),
+The library we are [open sourcing](https://www.github.com/pointfreeco/swift-html) today is written in the
+DSL style that we have been covering on Point-Free ([part 1](/episodes/ep26-domain-specific-languages-part-1),
 [part 2](/episodes/ep27-domain-specific-languages-part-2), [part 3](/episodes/ep28-an-html-dsl)), which means
 you construct HTML documents by just building up plain Swift data types. It all begins with the `Node` type,
 which is an `enum` that decides whether you want an element node (such as `<header>`, `<div>`, etc.) or a
@@ -133,9 +133,29 @@ And this looks pretty similar to how the HTML would look if coded by hand.
 ## Rendering HTML
 
 Representing HTML documents as Swift types is only half the story. You still need to be able to render the
-value out to a string so that it can actually be displayed in
+value out to a string so that it can actually be displayed in a browser. The library comes with a `render`
+function to render any HTML document into a string:
 
-// todo pretty print
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+render(document)
+// <header><h1>Point-Free</h1><p id="blurb">Functional programming in Swift. <a href="/about">Learn more</a>!</p><img src="logo.png" width="64" height="64"/></header>
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+You will notice that this string isn't formatted in a particularly nice way. However, it's valid HTML and
+is in its minimal form so takes up the least number of bytes. It's possible to create additional interpreters
+of this DSL for pretty printing, and even markdown or plain text printing, but we'll release that soon
+in another library.
 
 ## Type safety
 
@@ -204,6 +224,7 @@ replace every non-space character with "█". It might look something like this:
 
     .init(
       content: """
+// First a helper function to redacting a raw string.
 func redacted(string: String) -> String {
   return string
     .split(separator: " ")
@@ -211,6 +232,8 @@ func redacted(string: String) -> String {
     .joined(separator: " ")
 }
 
+// Then a function for redacting all of the comment, text
+// and raw text nodes in a Node.
 func redacted(node: Node) -> Node {
   switch node {
   case let .comment(string):
@@ -267,11 +290,11 @@ of code, and better yet the code is very straightforward and readable.
 And these kinds of transformations are not possible at all with templating languages. Instead, you have to
 bring in _another_ dependency that can parse your HTML into a data structure so that you can perform the
 transformation and then re-render it back out to a string. It may seem surprising, but it's actually quite
-popular for people to that kind of round trip parsing and printing.
+popular for people to that kind of round trip parsing and printing in practice.
 
 ## Conclusion
 
-The DSL style to modeling HTML in Swift is very powerful, and has many advantages over the traditional
+The DSL style of modeling HTML in Swift is very powerful, and has many advantages over the traditional
 style of templating languages. In this article we have demonstrated numerous wonderful things the DSL
 can accomplish, and how it can add safety and expressivity to HTML views built in Swift. However, this
 is only the beginning. There is still so much more to say about the `Node` type.
@@ -285,9 +308,8 @@ building HTML in Swift.
     ),
 
   ],
-  // todo
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg",
   id: 16,
   publishedAt: Date(timeIntervalSince1970: 1536645424),
-  title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift" // todo
+  title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift" 
 )

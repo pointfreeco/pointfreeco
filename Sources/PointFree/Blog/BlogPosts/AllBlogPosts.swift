@@ -25,5 +25,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0014_openSourcingValidated,
   post0015_overtureNowWithZip,
   post0016_announcingSwiftHtml,
-  postXYZW_typeSafeKitura
+  post0017_typeSafeVapor,
+  post0018_typeSafeKitura
 ]
