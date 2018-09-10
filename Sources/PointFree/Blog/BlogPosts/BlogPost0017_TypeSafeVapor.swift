@@ -28,6 +28,6 @@ todo
   ],
   coverImage: "", // TODO
   id: 17, // TODO
-  publishedAt: .init(timeIntervalSince1970: 1536724800),
+  publishedAt: .init(timeIntervalSince1970: 1536811200),
   title: "Type-safe HTML with Vapor"
 )
