@@ -39,13 +39,13 @@ And that has to do with templating languages…
 The current best practice for rendering HTML views is to use templating languages. Some popular examples
 are Stencil, Mustache, Handlebars, and Leaf. These are languages that are embedded in a plain text document
 and provide various tokens for interpolating values into the document, and some basic logical and looping
-constructs. You can think of it as a fancier version of Swift's multiline string literals with
+constructs. You can think of it as a fancier version of Swift's multi-line string literals with
 interpolations, e.g. `"Hello \\(name)"`.
 
 Templating languages are very flexible, easy to get started with, and used by many in the community.
 However, they are not without their downsides:
 
-### Stringy API's
+### Stringy APIs
 
 Templating languages are always stringly typed because you provide your template as a big ole string, and
 then at runtime the values are interpolated and logic is executed. This means things we take for granted
@@ -141,7 +141,7 @@ value out to a string so that it can actually be displayed in
 
 Because we are embedding our DSL in Swift we can take advantage of some advanced Swift features to add an
 extra layer of safety when constructing HTML documents. For a simple example, we can strengthen many HTML
-API’s to force their true types rather than just relying on strings.
+APIs to force their true types rather than just relying on strings.
 """,
       timestamp: nil,
       type: .paragraph
