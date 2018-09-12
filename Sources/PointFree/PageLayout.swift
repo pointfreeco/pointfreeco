@@ -234,7 +234,7 @@ private let favicons: [ChildOf<Element.Head>] = [
 ]
 
 private let prismJsHead: [ChildOf<Element.Head>] = [
-  script([src("//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js")]),
+  script([src("https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js")]),
   script(
     """
     Prism.languages.swift = Prism.languages.extend("clike", {
