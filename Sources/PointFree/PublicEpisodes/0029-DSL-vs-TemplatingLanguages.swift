@@ -542,10 +542,24 @@ print(try template.render(["users": ["Blob", "Blob Jr.", "Blob Sr."]])
   Episode.TranscriptBlock(
     content: """
 Ok, well this is very concerning. We now have a runtime crash. Not just an error being thrown which we can catch. This means that it could take down our server. We haven't yet updated the data being fed into the template, so when it tries to access `name` on the strings we're passing through, it presumably can't reconcile trying to find the `name` field of a string, and something in the library is causing a crash.
-
-We can fix this, but it's still pretty scary to think a crash could creep up so easily:
 """,
     timestamp: (10*60 + 30),
+    type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: """
+We opened a GitHub [issue](https://github.com/stencilproject/Stencil/issues/231) about this crash when
+we first released this episode, and a fix was [merged](https://github.com/stencilproject/Stencil/pull/234)
+just a few days later.
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
+    content: """
+We can fix this, but it's still pretty scary to think a crash could creep up so easily:
+""",
+    timestamp: nil,
     type: .paragraph
   ),
   Episode.TranscriptBlock(
