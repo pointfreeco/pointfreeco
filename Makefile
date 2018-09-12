@@ -305,6 +305,7 @@ deploy-local:
 	@heroku container:release web -a pointfreeco-local
 
 deploy-production:
+	@heroku container:login
 	@heroku container:push web -a pointfreeco
 	@heroku container:release web -a pointfreeco
 
