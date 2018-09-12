@@ -310,6 +310,6 @@ building HTML in Swift.
   ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg",
   id: 16,
-  publishedAt: Date(timeIntervalSince1970: 1536731824),
+  publishedAt: Date(timeIntervalSince1970: 1536731824 + 60*60),
   title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift" 
 )
