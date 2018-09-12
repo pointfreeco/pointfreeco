@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 111353
+Content-Length: 111359
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1682,7 +1682,7 @@ html {
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/atom.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
     <script>
       Prism.languages.swift = Prism.languages.extend("clike", {
