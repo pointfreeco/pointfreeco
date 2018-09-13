@@ -11,8 +11,8 @@ public enum GitHubRoute: DerivePartialIsos {
 
   public enum Repo: String, RawRepresentable {
     case html = "swift-html"
-    case htmlVapor = "swift-html-vapor"
     case htmlKitura = "swift-html-kitura"
+    case htmlVapor = "swift-html-vapor"
     case nonempty = "swift-nonempty"
     case overture = "swift-overture"
     case pointfreeco
