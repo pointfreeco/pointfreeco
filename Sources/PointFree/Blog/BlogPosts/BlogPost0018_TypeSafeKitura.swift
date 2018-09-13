@@ -29,7 +29,7 @@ sourcing of [swift-html](\(gitHubUrl(to: .repo(.html)))), our new Swift library 
 extensible and transformable HTML documents. The design of this library has been battle-tested for the past
 year, for it powers every single page on the [Point-Free](/) site. The entire code base of this site is
 [open source](\(gitHubUrl(to: .organization))), we built it from scratch in the functional style, and we even
-gave a tour of the site on a recent episode.
+gave a tour of the site on a [recent episode](\(path(to: .episode(.left(ep22.slug))))).
 
 However, we know that most people are not going to adopt all of our techniques in building a Swift web app
 (at least not yet 😉), and so we want to make sure that the HTML view layer is accessible to everyone.
