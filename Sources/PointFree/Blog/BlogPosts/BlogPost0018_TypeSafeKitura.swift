@@ -3,7 +3,8 @@ import Foundation
 let post0018_typeSafeKitura = BlogPost(
   author: .stephen,
   blurb: """
-Today we're releasing a [Kitura](https://www.kitura.io) plug-in for rendering type-safe HTML. It provides a Swift compile-time API to HTML that prevents many of the runtime errors and vulnerabilities of traditional templated HTML rendering.
+Today we're releasing a Kitura plug-in for rendering type-safe HTML. It provides a Swift compile-time API to
+HTML that prevents many of the runtime errors and vulnerabilities of traditional templated HTML rendering.
 """,
   contentBlocks: [
 
