@@ -11,7 +11,7 @@ HTML that prevents many of the runtime errors and vulnerabilities of traditional
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0018-type-safe-html-with-kitura/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0018-type-safe-html-with-kitura/poster.jpg")
     ),
 
     .init(
@@ -51,7 +51,7 @@ the following to a `.stencil` file:
     .init(
       content: """
 <ul>
-  {% for user in users %} {
+  {% for user in users %}
     <li>{% user.name %}</li>
   {% endfor %}
 </ul>
@@ -165,7 +165,7 @@ of opportunities for code reuse and composability when building HTML views in th
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0018-type-safe-html-with-kitura/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0018-type-safe-html-with-kitura/poster.jpg",
   id: 18,
   publishedAt: .init(timeIntervalSince1970: 1536818401),
   title: "Type-safe HTML with Kitura"
