@@ -1,7 +1,7 @@
 import Foundation
 
 let post0017_typeSafeVapor = BlogPost(
-  author: .stephen,
+  author: .brandon,
   blurb: """
 Today we're releasing a Vapor plug-in for rendering type-safe HTML. It provides a Swift compile-time API to
 HTML that prevents many of the runtime errors and vulnerabilities of traditional templated HTML rendering.
