@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 58494
+Content-Length: 58528
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1828,7 +1828,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
         <div>
           <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
             <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-              #2 • Tuesday Dec 20, 2016
+              #2 • Tuesday Dec 20, 2016 • Free Episode
             </strong>
             <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
               <a href="/episodes/ep2-proof-in-functions">
@@ -1852,7 +1852,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
           <div class="hide-m">
             <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
               <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-                #2 • Tuesday Dec 20, 2016
+                #2 • Tuesday Dec 20, 2016 • Free Episode
               </strong>
               <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
                 <a href="/episodes/ep2-proof-in-functions">
