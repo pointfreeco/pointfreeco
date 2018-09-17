@@ -15,9 +15,9 @@ class HomeTests: TestCase {
     super.setUp()
 
     let eps = [
-      ep10,
+      ep10 |> \.permission .~ .subscriberOnly,
       ep2,
-      ep1,
+      ep1 |> \.permission .~ .subscriberOnly,
       introduction,
       ]
       .suffix(4)
