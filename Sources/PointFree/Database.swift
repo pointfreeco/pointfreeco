@@ -106,9 +106,11 @@ public struct Database {
     public internal(set) var id: Id
     public internal(set) var isAdmin: Bool
     public internal(set) var name: String?
+    public private(set) var rssSalt: RssSalt
     public private(set) var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
+    public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
 
     public enum CodingKeys: String, CodingKey {
       case email
@@ -118,6 +120,7 @@ public struct Database {
       case id
       case isAdmin = "is_admin"
       case name
+      case rssSalt = "rss_salt"
       case subscriptionId = "subscription_id"
     }
 
@@ -741,6 +744,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       ALTER TABLE "episode_credits"
       ADD COLUMN IF NOT EXISTS
       "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
       """
     )))
     .map(const(unit))

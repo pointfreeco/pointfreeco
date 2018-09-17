@@ -17,7 +17,13 @@ private let accountRouters: [Router<Route.Account>] = [
   .confirmEmailChange
     <¢> get %> lit("account") %> lit("confirm-email-change")
     %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
-    <% end
+    <% end,
+
+  .invoices <<< .index
+    <¢> get %> lit("invoices") <% end,
+
+  .invoices <<< .show
+    <¢> get %> lit("invoices") %> pathParam(.string >>> .tagged) <% end,
 ]
 let accountRouter = accountRouters.reduce(.empty, <|>)
 
@@ -28,5 +34,7 @@ private let routers: [Router<Route>] = [
 let _router = routers.reduce(.empty, <|>)
 
 _router.absoluteString(for: Route.account(Route.Account.invoices(Route.Account.Invoices.index)))
+
+_router.match(url: URL.init(string: "http://localhost:8080/account/invoice/")!)
 
 //_router.absoluteString(for: Route.account(Route.Account.confirmEmailChange(userId: Database.User.Id.init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!), emailAddress: "mbw234@gmail.com")))

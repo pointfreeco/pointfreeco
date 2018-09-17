@@ -12,6 +12,7 @@ extension AboutTests {
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
@@ -106,6 +107,14 @@ extension ChangeTests {
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
+  ]
+}
+extension DiscountsTests {
+  static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
+    ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
+    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
+    ("testFika_LoggedOut", testFika_LoggedOut),
+    ("testFika_LoggedIn", testFika_LoggedIn)
   ]
 }
 extension EitherIOTests {
@@ -336,6 +345,7 @@ XCTMain([
   testCase(ChangeEmailConfirmationTests.allTests),
   testCase(ChangeTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(DiscountsTests.allTests),
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),

@@ -39,36 +39,6 @@ public enum Route: DerivePartialIsos {
     case show(BlogPost)
   }
 
-  public enum Account: DerivePartialIsos {
-    case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
-    case index
-    case invoices(Invoices)
-    case paymentInfo(PaymentInfo)
-    case subscription(Subscription)
-    case update(ProfileData?)
-
-    public enum Invoices: DerivePartialIsos {
-      case index
-      case show(Stripe.Invoice.Id)
-    }
-
-    public enum PaymentInfo: DerivePartialIsos {
-      case show(expand: Bool?)
-      case update(Stripe.Token.Id?)
-    }
-
-    public enum Subscription: DerivePartialIsos {
-      case cancel
-      case change(Change)
-      case reactivate
-
-      public enum Change: DerivePartialIsos {
-        case show
-        case update(Pricing?)
-      }
-    }
-  }
-
   public enum Admin: DerivePartialIsos {
     case episodeCredits(EpisodeCredit)
     case freeEpisodeEmail(FreeEpisodeEmail)
@@ -129,46 +99,8 @@ private let routers: [Router<Route>] = [
   .about
     <¢> get %> lit("about") <% end,
 
-  .account <<< .confirmEmailChange
-    <¢> get %> lit("account") %> lit("confirm-email-change")
-    %> queryParam("payload", .appDecrypted >>> payload(.uuid >>> .tagged, .tagged))
-    <% end,
-
-  .account <<< .index
-    <¢> get %> lit("account") <% end,
-
-  .account <<< .invoices <<< .index
-    <¢> get %> lit("account") %> lit("invoices") <% end,
-
-  .account <<< .invoices <<< .show
-    <¢> get %> lit("account") %> lit("invoices") %> pathParam(.string >>> .tagged) <% end,
-
-  .account <<< .paymentInfo <<< .show
-    <¢> get %> lit("account") %> lit("payment-info")
-    %> queryParam("expand", opt(.bool))
-    <% end,
-
-  .account <<< .paymentInfo <<< .update
-    <¢> post %> lit("account") %> lit("payment-info")
-    %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
-    <% end,
-
-  .account <<< .subscription <<< .cancel
-    <¢> post %> lit("account") %> lit("subscription") %> lit("cancel") <% end,
-
-  .account <<< .subscription <<< .change <<< .show
-    <¢> get %> lit("account") %> lit("subscription") %> lit("change") <% end,
-
-  .account <<< .subscription <<< .change <<< .update
-    <¢> post %> lit("account") %> lit("subscription") %> lit("change")
-    %> formBody(Pricing?.self, decoder: formDecoder)
-    <% end,
-
-  .account <<< .subscription <<< .reactivate
-    <¢> post %> lit("account") %> lit("subscription") %> lit("reactivate") <% end,
-
-  .account <<< .update
-    <¢> post %> lit("account") %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
+  .account
+    <¢> lit("account") %> accountRouter,
 
   .admin <<< .episodeCredits <<< .add
     <¢> post %> lit("admin") %> lit("episode-credits") %> lit("add")
@@ -315,7 +247,7 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("webhooks") %> lit("stripe") <% end,
 ]
 
-private let formDecoder = UrlFormDecoder()
+let formDecoder = UrlFormDecoder()
   |> \.parsingStrategy .~ .bracketsWithIndices
 
 public let router = routers.reduce(.empty, <|>)

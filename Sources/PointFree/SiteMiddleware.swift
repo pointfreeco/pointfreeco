@@ -52,6 +52,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. token .*. unit))
         |> updatePaymentInfoMiddleware
 
+    case .account(.rss):
+      // userId
+      // rssSalt
+      fatalError()
+
     case .account(.subscription(.cancel)):
       return conn.map(const(user .*. unit))
         |> cancelMiddleware
