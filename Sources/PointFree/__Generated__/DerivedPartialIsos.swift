@@ -439,7 +439,9 @@ import Prelude
 
 
       extension PartialIso where A == (
-            String
+            Database.User.Id
+          , 
+            Database.User.RssSalt
         ), B == Route.Account {
 
           public static let rss = parenthesize <| PartialIso(

@@ -37,4 +37,6 @@ _router.absoluteString(for: Route.account(Route.Account.invoices(Route.Account.I
 
 _router.match(url: URL.init(string: "http://localhost:8080/account/invoice/")!)
 
+Route.account(Route.Account.rss(userId: <#T##Database.User.Id#>, rssSalt: <#T##Database.User.RssSalt#>))
+
 //_router.absoluteString(for: Route.account(Route.Account.confirmEmailChange(userId: Database.User.Id.init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!), emailAddress: "mbw234@gmail.com")))

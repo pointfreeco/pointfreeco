@@ -1,6 +1,12 @@
 import ApplicativeRouter
+import ApplicativeRouterHttpPipelineSupport
+import Either
 import Foundation
+import HttpPipeline
+import Optics
 import Prelude
+import Styleguide
+import Tuple
 
 public let accountRouter = accountRouters.reduce(.empty, <|>)
 
@@ -10,7 +16,7 @@ extension Route {
     case index
     case invoices(Invoices)
     case paymentInfo(PaymentInfo)
-    case rss(payload: String)
+    case rss(userId: Database.User.Id, rssSalt: Database.User.RssSalt)
     case subscription(Subscription)
     case update(ProfileData?)
 
@@ -64,7 +70,10 @@ private let accountRouters: [Router<Route.Account>] = [
     <% end,
 
   .rss
-    <¢> get %> lit("rss") %> .string <% end,
+    <¢> get %> lit("rss")
+    %> pathParam(.appDecrypted >>> .uuid >>> .tagged)
+    <%> pathParam(.appDecrypted >>> .uuid >>> .tagged)
+    <% end,
 
   .subscription <<< .cancel
     <¢> post %> lit("subscription") %> lit("cancel") <% end,
@@ -85,7 +94,60 @@ private let accountRouters: [Router<Route.Account>] = [
 
 ]
 
-extension PartialIso where A == String, B == (Database.User.Id, Database.User.RssSalt) {
+func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Database.User?, Route, Route.Account>>)
+  -> IO<Conn<ResponseEnded, Data>> {
 
-  static 
+    let (subscription, user, route, account) = lower(conn.data)
+    let subscriberState = SubscriberState(user: user, subscription: subscription)
+
+    switch account {
+    case let .confirmEmailChange(userId, emailAddress):
+      return conn.map(const(userId .*. emailAddress .*. unit))
+        |> confirmEmailChangeMiddleware
+
+    case .index:
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> accountResponse
+
+    case .invoices(.index):
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> invoicesResponse
+
+    case let .invoices(.show(invoiceId)):
+      return conn.map(const(user .*. invoiceId .*. unit))
+        |> invoiceResponse
+
+    case let .paymentInfo(.show(expand)):
+      return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
+        |> paymentInfoResponse
+
+    case let .paymentInfo(.update(token)):
+      return conn.map(const(user .*. token .*. unit))
+        |> updatePaymentInfoMiddleware
+
+    case let .rss(userId, rssSalt):
+      // userId
+      // rssSalt
+      fatalError()
+
+    case .subscription(.cancel):
+      return conn.map(const(user .*. unit))
+        |> cancelMiddleware
+
+    case .subscription(.change(.show)):
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> subscriptionChangeShowResponse
+
+    case let .subscription(.change(.update(pricing))):
+      return conn.map(const(user .*. pricing .*. unit))
+        |> subscriptionChangeMiddleware
+
+    case .subscription(.reactivate):
+      return conn.map(const(user .*. unit))
+        |> reactivateMiddleware
+
+    case let .update(data):
+      return conn.map(const(user .*. data .*. unit))
+        |> updateProfileMiddleware
+    }
 }

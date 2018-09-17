@@ -95,17 +95,24 @@ private func fetchAccountData<I>(
 
 private let accountView = View<AccountData> { data in
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          titleRowView.view(unit)
-            <> profileRowView.view(data)
-            <> subscriptionOverview.view(data)
-            <> creditsView.view(data)
-            <> logoutView.view(unit)
-      )
-      ])
-    ])
+  [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+            titleRowView.view(unit)
+              <> profileRowView.view(data)
+              <> subscriptionOverview.view(data)
+              <> creditsView.view(data)
+              <> logoutView.view(unit)
+        )
+        ])
+      ]),
+
+    a(
+      [href(path(to: .account(.rss(userId: data.currentUser.id, rssSalt: data.currentUser.rssSalt))))],
+      ["RSS"]
+    )
+  ]
 }
 
 private let creditsView = View<AccountData> { data -> [Node] in

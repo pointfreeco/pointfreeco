@@ -282,7 +282,8 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
@@ -406,7 +407,8 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
            "id",
            "is_admin",
            "name",
-           "subscription_id"
+           "subscription_id",
+           "rss_salt"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -484,7 +486,8 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
            "id",
            "is_admin",
            "name",
-           "subscription_id"
+           "subscription_id",
+           "rss_salt"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -537,7 +540,8 @@ private func fetchAdmins() -> EitherIO<Error, [Database.User]> {
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     WHERE "users"."is_admin" = TRUE
     """,
@@ -606,7 +610,8 @@ private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Database.User]> {
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
     LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"
