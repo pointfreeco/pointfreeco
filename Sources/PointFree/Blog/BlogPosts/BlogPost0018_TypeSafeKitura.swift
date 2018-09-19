@@ -41,8 +41,8 @@ application, one of the most popular server-side Swift frameworks available toda
 
 Typically a Kitura app renders HTML views through the use of [Stencil](https://stencil.fuller.li/en/latest/),
 which is the templating language we explored in our most recent
-[episode](\(path(to: .episode(.left(ep29.slug))))). As an example, we could create a Leaf template by saving
-the following to a `.stencil` file:
+[episode](\(path(to: .episode(.left(ep29.slug))))). As an example, we could create a Stencil template by
+saving the following to a `.stencil` file:
 """,
       timestamp: nil,
       type: .paragraph

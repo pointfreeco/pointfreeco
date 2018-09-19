@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 55487
+Content-Length: 55561
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1806,7 +1806,7 @@ input::-webkit-outer-spin-button {
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #10 • Tuesday Mar 27, 2018
+            #10 • Tuesday Mar 27, 2018 • Subscriber-only
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
             <a href="/episodes/ep10-a-tale-of-two-flat-maps">
@@ -1842,7 +1842,7 @@ operation to other structures and derive new, useful code!</p>
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #2 • Monday Feb 5, 2018
+            #2 • Monday Feb 5, 2018 • Free Episode
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
             <a href="/episodes/ep2-side-effects">
@@ -1876,7 +1876,7 @@ operation to other structures and derive new, useful code!</p>
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #1 • Monday Jan 29, 2018
+            #1 • Monday Jan 29, 2018 • Subscriber-only
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
             <a href="/episodes/ep1-functions">
@@ -1910,7 +1910,7 @@ operation to other structures and derive new, useful code!</p>
       <div class=" col-m col-d-7 col-m-12">
         <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-white">
           <strong class="fg-black bold ts-m-r0_75 lh-1 caps">
-            #0 • Monday Jan 29, 2018
+            #0 • Monday Jan 29, 2018 • Free Episode
           </strong>
           <h1 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-mt2">
             <a href="/episodes/ep0-we-launched">
