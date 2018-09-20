@@ -210,6 +210,32 @@ any string by simply interspersing Zalgo characters between the string's charact
 
     .init(
       content: """
+func zalgoify(with zalgos: Gen<String>) -> (String) -> Gen<String> {
+  return { string in
+    return Gen {
+      string
+        .map { char in String(char) + zalgos.run() }
+        .joined()
+    }
+  }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+We wrote this function in the “[configuration first, data last](/episodes/ep5-higher-order-functions)”
+curried style. If you give it a Zalgo generator, it will give back a function that transforms any string
+into its Zalgo-ified version. Let’s use it!
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
 let tameZalgoify   = zalgoify(with: tameZalgos)
 let lowZalgoify    = zalgoify(with: lowZalgos)
 let mediumZalgoify = zalgoify(with: mediumZalgos)
