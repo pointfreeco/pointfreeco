@@ -3,21 +3,22 @@ import Foundation
 let post0019_randomZalgoGenerator = BlogPost(
   author: .brandon,
   blurb: """
-//todo
+Let's create a random Zalgo text generator using the simple Gen type we defined in this week's episode!
 """,
   contentBlocks: [
 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "") // todo
+      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0019-random-zalgo-generator/poster.jpg")
     ),
 
     .init(
       content: """
 ---
 
-todo
+> Let's create a random Zalgo text generator using the simple Gen type we defined in this week's
+[episode](/episodes/ep30-composable-randomness)!
 
 ---
 
@@ -134,8 +135,8 @@ So already `Gen` has given us a nice way to express something that does not exis
 ## Zalgo generator
 
 Let’s start simple… can we make a generator for a random Zalgo characters? We know the range that these
-characters live in, so its just a matter of choosing a random code point in that range and casting it to a
-`String`:
+characters live in, so its just a matter of choosing a random code point in that range and constructing
+a `String` from that value:
 """,
       timestamp: nil,
       type: .paragraph
@@ -201,7 +202,7 @@ Here we were able to build the `zalgos(intensity:)` function by transforming the
 hood. The `intensity` determines the maximum number of combined Zalgo characters we are allowed to have.
 
 Now that we have a way of building up many Zalgo characters of various intensities we can easily “Zalgo-ify”
-any string by simply interspersing Zalgo characters between the strings regular characters:
+any string by simply interspersing Zalgo characters between the string's characters:
 """,
       timestamp: nil,
       type: .paragraph
@@ -250,7 +251,7 @@ If this piques your interest, then you will probably be interested in this week�
     ),
 
   ],
-  coverImage: "", // todo
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0019-random-zalgo-generator/poster.jpg",
   id: 19,
   publishedAt: .init(timeIntervalSince1970: 1537424976),
   title: "Random Zalgo Generator"
