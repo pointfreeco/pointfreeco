@@ -181,16 +181,16 @@ let lowZalgos    = zalgos(intensity: 5)
 let mediumZalgos = zalgos(intensity: 10)
 let highZalgos   = zalgos(intensity: 20)
 
-"a\\(tameZalgos.run())"   // ạ
+"a" + tameZalgos.run()   // ạ
 
 
-"a\\(lowZalgos.run())"    // a͕̱̲ͫ
+"a" + lowZalgos.run()    // a͕̱̲ͫ
 
 
-"a\\(mediumZalgos.run())" // a̢̯̟̓̽ͮͫ
+"a" + mediumZalgos.run() // a̢̯̟̓̽ͮͫ
 
 
-"a\\(highZalgos.run())"   // ậ̵͇͚͍̗̿͌́͐̾̂͜͡
+"a" + highZalgos.run()   // ậ̵͇͚͍̗̿͌́͐̾̂͜͡
 """,
       timestamp: nil,
       type: .code(lang: .swift)
