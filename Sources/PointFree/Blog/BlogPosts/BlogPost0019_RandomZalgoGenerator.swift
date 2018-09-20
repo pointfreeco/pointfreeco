@@ -60,8 +60,9 @@ struct Gen<A> {
 
     .init(
       content: """
-We showed that it has a `map`-like function, which behaves much like the `map` you know and love from
-arrays and optionals, and its precisely what allows you to build new generators out of old:
+We showed that it has a [`map`-like function](/episodes/ep13-the-many-faces-of-map), which behaves much
+like the `map` you know and love from arrays and optionals, and its precisely what allows you to build
+new generators out of old:
 """,
       timestamp: nil,
       type: .paragraph
