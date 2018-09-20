@@ -10,7 +10,7 @@ Let's create a random Zalgo text generator using the simple Gen type we defined 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0019-random-zalgo-generator/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0019-random-zalgo-generator/poster.jpg")
     ),
 
     .init(
@@ -251,7 +251,7 @@ If this piques your interest, then you will probably be interested in this weekâ
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0019-random-zalgo-generator/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0019-random-zalgo-generator/poster.jpg",
   id: 19,
   publishedAt: .init(timeIntervalSince1970: 1537424976),
   title: "Random Zalgo Generator"
