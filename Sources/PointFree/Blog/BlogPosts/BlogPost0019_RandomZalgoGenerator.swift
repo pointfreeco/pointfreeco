@@ -30,7 +30,7 @@ how randomness can be made more composable by using function composition. We als
 which arguably is not composable, in the sense that it is not built from units that stand on their own and
 combine to form new units.
 
-In the episode we built up some complex generators for simpler pieces, like a random array generator and a
+In the episode we built up some complex generators from simpler pieces, like a random array generator and a
 random password generator. In today’s Point-Free Pointer we want to walk you through another one: a random
 Zalgo text generator.
 
