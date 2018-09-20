@@ -31,14 +31,14 @@ which arguably is not composable, in the sense that it is not built from units t
 combine to form new units.
 
 In the episode we built up some complex generators for simpler pieces, like a random array generator and a
-random password generator. In today’s Point-Free pointer we want to walk you through another one: A random
+random password generator. In today’s Point-Free Pointer we want to walk you through another one: a random
 Zalgo text generator.
 
 ## Zalgo
 
 Zalgo text is a style of text that introduces glitchy artifacts into the characters by inserting unicode
 combining characters, which build up and overlay on top of the characters you want to display. For example,
-P̨̀͞o̧͟in͡t̴-͠F͘re҉e͡. All of unicode’s combining characters are contained in the range 0x300 to 0x36F, and you can
+P̨̀͞o̧͟in͡t̴-͠F͘re҉e͡. All of unicode’s combining characters are contained in the range 0x300 to 0x36F, and you can
 insert as many as you want into a string in order to glitch it up.
 
 ## The Gen type
@@ -85,7 +85,7 @@ extension Gen {
       content: """
 ## Some simple generators
 
-It’s easy enough to cook up value of the `Gen` type. Often we can just wrap the new Swift 4.2 API in it:
+It’s easy enough to cook up values of the `Gen` type. Often we can just wrap the new Swift 4.2 API in it:
 """,
       timestamp: nil,
       type: .paragraph
@@ -134,7 +134,7 @@ So already `Gen` has given us a nice way to express something that does not exis
 
 ## Zalgo generator
 
-Let’s start simple… can we make a generator for a random Zalgo characters? We know the range that these
+Let’s start simple… can we make a generator for random Zalgo characters? We know the range that these
 characters live in, so its just a matter of choosing a random code point in that range and constructing
 a `String` from that value:
 """,
@@ -161,8 +161,8 @@ zalgo.run() // " ̓"
 That was quite easy!
 
 Next let’s create a generator of a random number of Zalgo characters together. We want this because the more
-Zalgo characters you use next to each other, the more intense the glitchiness is, e.g. P̅ö̔̇͆inͪt-F͛̑̓ͩrẽẻ versus
-P̡o҉̩̹̻̠ͅi͚̼͚̪ͅṋ̨t̘̹̯͚̭́-̡̗͉F̖́rẹ̛̖e̶̖̜̰̫͎.
+Zalgo characters you use next to each other, the more intense the glitchiness is, e.g., P̅ö̔̇͆inͪt-F͛̑̓ͩrẽẻ versus
+P̡o҉̩̹̻̠ͅi͚̼͚̪ͅṋ̨t̘̹̯͚̭́-̡̗͉F̖́rẹ̛̖e̶̖̜̰̫͎.
 """,
       timestamp: nil,
       type: .paragraph
@@ -181,16 +181,16 @@ let lowZalgos    = zalgos(intensity: 5)
 let mediumZalgos = zalgos(intensity: 10)
 let highZalgos   = zalgos(intensity: 20)
 
-"a\\(tameZalgos.run())"   // ạ
+"a\\(tameZalgos.run())"   // ạ
 
 
-"a\\(lowZalgos.run())"    // a͕̱̲ͫ
+"a\\(lowZalgos.run())"    // a͕̱̲ͫ
 
 
-"a\\(mediumZalgos.run())" // a̢̯̟̓̽ͮͫ
+"a\\(mediumZalgos.run())" // a̢̯̟̓̽ͮͫ
 
 
-"a\\(highZalgos.run())"   // ậ̵͇͚͍̗̿͌́͐̾̂͜͡
+"a\\(highZalgos.run())"   // ậ̵͇͚͍̗̿͌́͐̾̂͜͡
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -215,16 +215,16 @@ let lowZalgoify    = zalgoify(with: lowZalgos)
 let mediumZalgoify = zalgoify(with: mediumZalgos)
 let highZalgoify   = zalgoify(with: highZalgos)
 
-tameZalgoify("What’s the point?").run()   // "Wha̠t͟’͉s̍ thẻ ͪpoint̕?͖"
+tameZalgoify("What’s the point?").run()   // "Wha̠t͟’͉s̍ thẻ ͪpoint̕?͖"
 
 
-lowZalgoify("What’s the point?").run()    // "Wh̑͆aͭ̓̀͠͝t̵ͭ̓ͨ͟’̯̰̊s͢ ͉͏͂͝t̵̓̀hȇ̖̐͊ ̎͘p̡o̖̤͗͟i̓̿n̂t̰͑̉?ͭ"
+lowZalgoify("What’s the point?").run()    // "Wh̑͆aͭ̓̀͠͝t̵ͭ̓ͨ͟’̯̰̊s͢ ͉͏͂͝t̵̓̀hȇ̖̐͊ ̎͘p̡o̖̤͗͟i̓̿n̂t̰͑̉?ͭ"
 
 
-mediumZalgoify("What’s the point?").run() // "W̗̖͍̫͑́h̷̩̪̙̀ͪ͘͜ä̴̞͐̓̉̀͑t͈͍͚͑̎’̦͗̓̆̐̋̀s͎̻͚̾̒͐ͩ̀̚͝ ̥̥̫͚̘ṯ̷̢ͯͯ͗́͘ͅhͦẻ̢͓̥́̓ͦ͊͊͘ ̌ͣp̳̪̂̽͆ͨ͐õ̝ͬi̟̬͈͚̺̔n̦̂ẗ́̓ͨ͝?̨̈́̌̄"
+mediumZalgoify("What’s the point?").run() // "W̗̖͍̫͑́h̷̩̪̙̀ͪ͘͜ä̴̞͐̓̉̀͑t͈͍͚͑̎’̦͗̓̆̐̋̀s͎̻͚̾̒͐ͩ̀̚͝ ̥̥̫͚̘ṯ̷̢ͯͯ͗́͘ͅhͦẻ̢͓̥́̓ͦ͊͊͘ ̌ͣp̳̪̂̽͆ͨ͐õ̝ͬi̟̬͈͚̺̔n̦̂ẗ́̓ͨ͝?̨̈́̌̄"
 
 
-highZalgoify("What’s the point?").run()   // "W̷͍͕̱̎ͦ̂̔̓͋͘͢h̸͕͙̝̐̇a̧͎̟̺̥͖͂ͭ̓ͧ̄́͘̚͝t͈̳̼ͣ̍̈ͭ́ͯ’̡̟̺̫͈̍ͯ͐ͨ͂̚͟s̸͎̣̪̠̯͌ͬ͗͏̱̂ ̟t̜̗̼͕̲̩̪̗̦̾̈̅ͤ̾̿̾̍̚ͅh̝ë̢̩͈̰́ͥ̒ͫͩ̎̌͢ ̳̱̯̰ͫ͑ͧ͑̔͛͋ͬ̿p̸̧̼̻͎̱̺ͥͮ̅͌ͣͪ̍͘o̡͕̠̊͟ͅỉ̬͚͂ͥ̐ṇ̡ͤ̕t̢̤͎ͭ̔͒ͧ͒͐́ͅ?̨̯̺̩̗̬̣͌̌̾ͨ͠"
+highZalgoify("What’s the point?").run()   // "W̷͍͕̱̎ͦ̂̔̓͋͘͢h̸͕͙̝̐̇a̧͎̟̺̥͖͂ͭ̓ͧ̄́͘̚͝t͈̳̼ͣ̍̈ͭ́ͯ’̡̟̺̫͈̍ͯ͐ͨ͂̚͟s̸͎̣̪̠̯͌ͬ͗͏̱̂ ̟t̜̗̼͕̲̩̪̗̦̾̈̅ͤ̾̿̾̍̚ͅh̝ë̢̩͈̰́ͥ̒ͫͩ̎̌͢ ̳̱̯̰ͫ͑ͧ͑̔͛͋ͬ̿p̸̧̼̻͎̱̺ͥͮ̅͌ͣͪ̍͘o̡͕̠̊͟ͅỉ̬͚͂ͥ̐ṇ̡ͤ̕t̢̤͎ͭ̔͒ͧ͒͐́ͅ?̨̯̺̩̗̬̣͌̌̾ͨ͠"
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -238,8 +238,8 @@ all types of interesting ways.
 
 ## Conclusion
 
-This has been a fun demonstration of the power of composition. We started with a very simple type `Gen<A>`
-that had a `map` function, and a few generators (`int(in:)` and `array(count:)`), and from that built a
+This has been a fun demonstration of the power of composition. We started with a very simple type, `Gen<A>`,
+that had a `map` function, and a few generators (`int(in:)` and `array(count:)`), and from that we built a
 generator that can randomly Zalgo-ify any string. And it even comes with a dial to tune the intensity you
 want from your Zalgo-ification. This is the power of composition!
 
