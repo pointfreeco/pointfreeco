@@ -17,7 +17,7 @@ Let's create a random Zalgo text generator using the simple Gen type we defined 
       content: """
 ---
 
-> Let's create a random Zalgo text generator using the simple Gen type we defined in this week's
+> Let's create a random Zalgo text generator using the simple `Gen` type we defined in this week's
 [episode](/episodes/ep30-composable-randomness)!
 
 ---
@@ -134,7 +134,7 @@ So already `Gen` has given us a nice way to express something that does not exis
 
 ## Zalgo generator
 
-Let’s start simple… can we make a generator for random Zalgo characters? We know the range that these
+Let’s start simple… can we make a generator for a random Zalgo character? We know the range that these
 characters live in, so its just a matter of choosing a random code point in that range and constructing
 a `String` from that value:
 """,
