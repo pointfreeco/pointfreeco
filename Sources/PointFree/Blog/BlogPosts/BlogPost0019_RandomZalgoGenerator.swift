@@ -96,6 +96,11 @@ It’s easy enough to cook up values of the `Gen` type. Often we can just wrap t
 func int(in range: ClosedRange<Int>) -> Gen<Int> {
   return .init { Int.random(in: range) }
 }
+
+int(in: 0...10).run() // 3
+int(in: 0...10).run() // 1
+int(in: 0...10).run() // 7
+int(in: 0...10).run() // 10
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -123,6 +128,11 @@ extension Gen {
     }
   }
 }
+
+int(in: 0...10).array(count: int(in: 0...3)).run() // [2, 7]
+int(in: 0...10).array(count: int(in: 0...3)).run() // [6, 4, 3]
+int(in: 0...10).array(count: int(in: 0...3)).run() // [8, 0]
+int(in: 0...10).array(count: int(in: 0...3)).run() // []
 """,
       timestamp: nil,
       type: .code(lang: .swift)
