@@ -925,7 +925,7 @@ Let's define a function that returns a list of users, like our earlier template.
   Episode.TranscriptBlock(
     content: """
 func users(_ names: [String]) -> Node {
-  return ul(users.map { name in li([.text(name)]) })
+  return ul(names.map { name in li([.text(name)]) })
 }
 """,
     timestamp: nil,
