@@ -126,9 +126,8 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Dat
         |> updatePaymentInfoMiddleware
 
     case let .rss(userId, rssSalt):
-      // userId
-      // rssSalt
-      fatalError()
+      return conn.map(const(userId .*. rssSalt .*. unit))
+        |> accountRssMiddleware
 
     case .subscription(.cancel):
       return conn.map(const(user .*. unit))
