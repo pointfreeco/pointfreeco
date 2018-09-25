@@ -4,9 +4,11 @@ import Prelude
 public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
+  public private(set) var downloadVideoUrl: String?
   public private(set) var exercises: [Exercise]
   public private(set) var id: Id
   public private(set) var image: String
+  public private(set) var itunesImage: String?
   public private(set) var length: Int
   public private(set) var permission: Permission
   public private(set) var publishedAt: Date
@@ -19,9 +21,11 @@ public struct Episode {
   public init(
     blurb: String,
     codeSampleDirectory: String,
+    downloadVideoUrl: String? = nil,
     id: Id,
     exercises: [Exercise],
     image: String,
+    itunesImage: String? = nil,
     length: Int,
     permission: Permission,
     publishedAt: Date,
@@ -33,9 +37,11 @@ public struct Episode {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
+    self.downloadVideoUrl = downloadVideoUrl
     self.exercises = exercises
     self.id = id
     self.image = image
+    self.itunesImage = itunesImage
     self.length = length
     self.permission = permission
     self.publishedAt = publishedAt

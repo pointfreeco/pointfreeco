@@ -20,6 +20,8 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
+    print(conn.request.allHTTPHeaderFields)
+
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(user: user, subscription: subscription)
 

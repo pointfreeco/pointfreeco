@@ -5,6 +5,7 @@ import PostgreSQL
 
 public struct Database {
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  var createFeedRequestEvent: (String?, FeedRequestEvent.FeedType, String?, User.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var fetchAdmins: () -> EitherIO<Error, [User]>
@@ -32,6 +33,7 @@ public struct Database {
 
   static let live = Database(
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
+    createFeedRequestEvent: PointFree.createFeedRequestEvent(referrer:type:userAgent:userId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     fetchAdmins: PointFree.fetchAdmins,
@@ -98,6 +100,28 @@ public struct Database {
     }
   }
 
+  public struct FeedRequestEvent: Decodable, Equatable {
+    public typealias Id = Tagged<FeedRequestEvent, UUID>
+
+    public private(set) var id: Id
+    public private(set) var referrer: String?
+    public private(set) var type: FeedType
+    public private(set) var userAgent: String?
+    public private(set) var userId: User.Id
+
+    public enum CodingKeys: String, CodingKey {
+      case id
+      case referrer
+      case type
+      case userAgent = "user_agent"
+      case userId = "user_id"
+    }
+
+    public enum FeedType: String, Decodable {
+      case privateEpisodesFeed
+    }
+  }
+
   public struct User: Decodable, Equatable {
     public internal(set) var email: EmailAddress
     public internal(set) var episodeCreditCount: Int
@@ -160,6 +184,31 @@ public struct Database {
       case inviterUserId = "inviter_user_id"
     }
   }
+}
+
+private func createFeedRequestEvent(
+  referrer: String?,
+  type: Database.FeedRequestEvent.FeedType,
+  userAgent: String?,
+  userId: Database.User.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    INSERT INTO "feed_request_events"
+    ("referrer", "type", "user_agent", "user_id")
+    VALUES
+    ($1, $2, $3, $4)
+    ON CONFLICT DO NOTHING
+    """,
+    [
+      referrer,
+      type.rawValue,
+      userAgent,
+      userId.rawValue
+    ]
+    )
+    .map(const(unit))
 }
 
 private func createSubscription(
@@ -756,6 +805,24 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE IF NOT EXISTS "feed_request_events" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "referrer" character varying,
+        "type" character varying NOT NULL,
+        "user_agent" character varying,
+        "user_id" uuid REFERENCES "users" ("id"),
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+      )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_referrer_type_user_agent_user_id"
+      ON "feed_request_events" ("referrer", "type", "user_agent", "user_id")
       """
     )))
     .map(const(unit))

@@ -17,6 +17,7 @@ extension Route {
     case invoices(Invoices)
     case paymentInfo(PaymentInfo)
     case rss(userId: Database.User.Id, rssSalt: Database.User.RssSalt)
+    case rssVideo(userId: Database.User.Id, rssSalt: Database.User.RssSalt, episodeId: Episode.Id)
     case subscription(Subscription)
     case update(ProfileData?)
 
@@ -128,6 +129,11 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Dat
     case let .rss(userId, rssSalt):
       return conn.map(const(userId .*. rssSalt .*. unit))
         |> accountRssMiddleware
+
+    case let .rssVideo(userId, rssSalt, episodeId):
+      fatalError()
+//      return conn.map(const(userId .*. rssSalt .*. unit))
+//        |> accountRssMiddleware
 
     case .subscription(.cancel):
       return conn.map(const(user .*. unit))
