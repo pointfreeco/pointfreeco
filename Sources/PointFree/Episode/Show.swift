@@ -574,7 +574,7 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
   let components: [String?] = [
     "#\(ep.sequence)",
     episodeDateFormatter.string(from: ep.publishedAt),
-    ep.subscriberOnly ? "Subscriber-only" : nil
+    ep.subscriberOnly ? "Subscriber-only" : "Free Episode"
   ]
 
   return components
