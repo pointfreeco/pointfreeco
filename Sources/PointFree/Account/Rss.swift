@@ -72,7 +72,7 @@ private let feedView = View<Database.User> { user -> [Node] in
             node("link", [text( url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))) )]),
             node("language", ["en-US"]),
             node("itunes:author", [text("Brandon Williams & Stephen Celis")]),
-            node("itunes:subtitle", ["todo"]),
+            node("itunes:subtitle", ["Functional programming concepts explained simply."]),
             node("itunes:summary", ["todo"]),
             node("description", []),
             node("itunes:explicit", ["no"]),

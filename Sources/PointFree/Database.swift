@@ -104,9 +104,9 @@ public struct Database {
     public typealias Id = Tagged<FeedRequestEvent, UUID>
 
     public private(set) var id: Id
-    public private(set) var referrer: String?
+    public private(set) var referrer: String
     public private(set) var type: FeedType
-    public private(set) var userAgent: String?
+    public private(set) var userAgent: String
     public private(set) var userId: User.Id
 
     public enum CodingKeys: String, CodingKey {
@@ -811,9 +811,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE TABLE IF NOT EXISTS "feed_request_events" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "referrer" character varying,
+        "referrer" character varying DEFAULT '' NOT NULL,
         "type" character varying NOT NULL,
-        "user_agent" character varying,
+        "user_agent" character varying DEFAULT '' NOT NULL,
         "user_id" uuid REFERENCES "users" ("id"),
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       )

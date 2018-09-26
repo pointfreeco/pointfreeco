@@ -94,25 +94,18 @@ private func fetchAccountData<I>(
 }
 
 private let accountView = View<AccountData> { data in
-
-  [
-    gridRow([
-      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-            titleRowView.view(unit)
-              <> profileRowView.view(data)
-              <> subscriptionOverview.view(data)
-              <> creditsView.view(data)
-              <> logoutView.view(unit)
-        )
-        ])
-      ]),
-
-    a(
-      [href(path(to: .account(.rss(userId: data.currentUser.id, rssSalt: data.currentUser.rssSalt))))],
-      ["RSS"]
-    )
-  ]
+  gridRow([
+    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          titleRowView.view(unit)
+            <> profileRowView.view(data)
+            <> privateRssFeed.view(data)
+            <> subscriptionOverview.view(data)
+            <> creditsView.view(data)
+            <> logoutView.view(unit)
+      )
+      ])
+    ])
 }
 
 private let creditsView = View<AccountData> { data -> [Node] in
@@ -323,6 +316,76 @@ private let subscriptionOverview = View<AccountData> { data -> [Node] in
   } else {
     return []
   }
+}
+
+private let privateRssFeed = View<AccountData> { data -> [Node] in
+  guard data.subscriberState.isActiveSubscriber else { return [] }
+  let user = data.currentUser
+
+  return [
+    gridRow([
+      gridColumn(
+        sizes: [.desktop: 10, .mobile: 12],
+        [style(margin(leftRight: .auto))],
+        [
+          div(
+            [
+              `class`(
+                [
+                  Class.margin([.mobile: [.bottom: 4]]),
+                  Class.padding([.mobile: [.all: 3]]),
+                  Class.pf.colors.bg.gray900
+                ]
+              )
+            ],
+            [
+              h4(
+                [
+                  `class`(
+                    [
+                      Class.pf.type.responsiveTitle4,
+                      Class.padding([.mobile: [.bottom: 2]])
+                    ]
+                  )
+                ],
+                ["Private RSS Feed"]
+              ),
+              p(["""
+Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
+to consume our videos: an RSS feed that can be used with podcast apps!
+"""]),
+              p([
+                "The link below should work with most podcast apps out there today (please ",
+                a(
+                  [
+                    `class`([Class.pf.type.underlineLink]),
+                    href("mailto:support@pointfree.co")
+                  ],
+                  ["email us"]
+                ),
+                " if it doesn't). It is also tied directly to your Point-Free account, so please do not ",
+                "share with others."
+                ]),
+              p([
+                a(
+                  [
+                    `class`([Class.pf.type.underlineLink]),
+                    href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
+                  ],
+                  [
+                    text(
+                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(45))
+                        + "..."
+                    )
+                  ]
+                )
+                ])
+            ]
+          )
+        ]
+      )
+      ])
+  ]
 }
 
 private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
