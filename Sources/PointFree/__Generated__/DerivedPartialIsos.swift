@@ -777,16 +777,13 @@ import Prelude
 
 
 
-      extension PartialIso where A == (
-            Route.Feed
-        ), B == Route.Blog {
-
-          public static let feed = parenthesize <| PartialIso(
-            apply: Route.Blog.feed,
-            unapply: {
-              guard case let .feed(result) = $0 else { return nil }
-              return .some(result)
-          })
+      extension PartialIso where A == Prelude.Unit, B == Route.Blog {
+        public static let feed = parenthesize <| PartialIso<Prelude.Unit, Route.Blog>(
+          apply: const(.some(.feed)),
+          unapply: {
+            guard case .feed = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
@@ -825,6 +822,16 @@ import Prelude
         })
       }
 
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Feed {
+        public static let freeEpisodes = parenthesize <| PartialIso<Prelude.Unit, Route.Feed>(
+          apply: const(.some(.freeEpisodes)),
+          unapply: {
+            guard case .freeEpisodes = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
 
 
       extension PartialIso where A == (

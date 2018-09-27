@@ -34,7 +34,7 @@ public enum Route: DerivePartialIsos {
   case webhooks(Webhooks)
 
   public enum Blog: DerivePartialIsos {
-    case feed(Feed)
+    case feed
     case index
     case show(BlogPost)
   }
@@ -69,7 +69,7 @@ public enum Route: DerivePartialIsos {
 
   public enum Feed: DerivePartialIsos {
     case atom
-//    case freeEpisodes
+    case freeEpisodes
   }
 
   public enum Invite: DerivePartialIsos {
@@ -144,7 +144,7 @@ private let routers: [Router<Route>] = [
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
 
-  .blog <<< .feed <<< .atom
+  .blog <<< .feed
     <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
 
   .discounts

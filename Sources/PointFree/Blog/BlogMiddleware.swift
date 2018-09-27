@@ -14,7 +14,7 @@ func blogMiddleware(
   let (user, subscriberState, route, subRoute) = lower(conn.data)
 
   switch subRoute {
-  case .feed(.atom):
+  case .feed:
     return conn.map(const(Current.blogPosts()))
       |> blogAtomFeedResponse
 
