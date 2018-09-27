@@ -5,7 +5,7 @@ import PostgreSQL
 
 public struct Database {
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var createFeedRequestEvent: (String?, FeedRequestEvent.FeedType, String?, User.Id) -> EitherIO<Error, Prelude.Unit>
+  var createFeedRequestEvent: (String, FeedRequestEvent.FeedType, String, User.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var fetchAdmins: () -> EitherIO<Error, [User]>
@@ -187,9 +187,9 @@ public struct Database {
 }
 
 private func createFeedRequestEvent(
-  referrer: String?,
+  referrer: String,
   type: Database.FeedRequestEvent.FeedType,
-  userAgent: String?,
+  userAgent: String,
   userId: Database.User.Id
   ) -> EitherIO<Error, Prelude.Unit> {
 
@@ -811,9 +811,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE TABLE IF NOT EXISTS "feed_request_events" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "referrer" character varying DEFAULT '' NOT NULL,
+        "referrer" character varying NOT NULL,
         "type" character varying NOT NULL,
-        "user_agent" character varying DEFAULT '' NOT NULL,
+        "user_agent" character varying NOT NULL,
         "user_id" uuid REFERENCES "users" ("id"),
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       )

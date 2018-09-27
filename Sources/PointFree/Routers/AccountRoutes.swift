@@ -71,7 +71,7 @@ private let accountRouters: [Router<Route.Account>] = [
     <% end,
 
   .rss
-    <¢> get %> lit("rss")
+    <¢> (get <|> head) %> lit("rss")
     %> pathParam(.appDecrypted >>> .uuid >>> .tagged)
     <%> pathParam(.appDecrypted >>> .uuid >>> .tagged)
     <% end,
@@ -98,7 +98,7 @@ private let accountRouters: [Router<Route.Account>] = [
 func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Database.User?, Route, Route.Account>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscription, user, route, account) = lower(conn.data)
+    let (subscription, user, _, account) = lower(conn.data)
     let subscriberState = SubscriberState(user: user, subscription: subscription)
 
     switch account {

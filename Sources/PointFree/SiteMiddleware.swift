@@ -21,6 +21,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
   -> IO<Conn<ResponseEnded, Data>> {
 
     print(conn.request.allHTTPHeaderFields)
+    print(conn.request.httpMethod)
+    print("---------")
 
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(user: user, subscription: subscription)
