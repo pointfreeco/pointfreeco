@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.11.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -455,6 +455,24 @@ import Prelude
 
 
       extension PartialIso where A == (
+            Database.User.Id
+          , 
+            Database.User.RssSalt
+          , 
+            Episode.Id
+        ), B == Route.Account {
+
+          public static let rssVideo = parenthesize <| PartialIso(
+            apply: Route.Account.rssVideo,
+            unapply: {
+              guard case let .rssVideo(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Account.Subscription
         ), B == Route.Account {
 
@@ -832,6 +850,7 @@ import Prelude
             return .some(Prelude.unit)
         })
       }
+
 
 
       extension PartialIso where A == (

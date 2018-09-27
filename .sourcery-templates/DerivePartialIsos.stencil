@@ -9,7 +9,11 @@ import Prelude
 
       extension PartialIso where A == (
         {% for value in case.associatedValues %}
-          {{ value.typeName }}
+          {% if value.type and value.type.parent %}
+            {{ value.type.name }}
+          {% else %}
+            {{ value.typeName }}
+          {% endif %}
           {% if not forloop.last %}, {% endif %}
         {% endfor %}), B == {{ enum.name }} {
 
