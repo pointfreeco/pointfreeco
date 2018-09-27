@@ -15,7 +15,7 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
   <<< validateUserAndSalt
   <| trackFeedRequest
   >=> writeStatus(.ok)
-  >=> respond(feedView, contentType: .text(.init("xml"), charset: .utf8))
+  >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
   >=> clearHeadBody
 
 private func validateUserAndSalt<Z>(
@@ -44,6 +44,13 @@ private func trackFeedRequest<I>(_ conn: Conn<I, Database.User>) -> IO<Conn<I, D
     .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
     .run
     .map { _ in conn }
+}
+
+private let privateEpisodesFeedView = itunesRssFeedLayout <| View<Database.User> { user -> Node in
+  node(
+    rssChannel: privateRssChannel(user: user),
+    items: items(forUser: user)
+  )
 }
 
 func privateRssChannel(user: Database.User) -> RssChannel {
@@ -88,31 +95,6 @@ with anyone else.
     link: url(to: .home),
     title: title
   )
-}
-
-private let feedView = View<Database.User> { user -> [Node] in
-  [
-    .text(unsafeUnencodedString("""
-      <?xml version="1.0" encoding="utf-8" ?>
-      """)),
-    node(
-      "rss",
-      [
-        attribute("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd") as Attribute<Void>,
-        attribute("xmlns:rawvoice", "http://www.rawvoice.com/rawvoiceRssModule/"),
-        attribute("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
-        attribute("xmlns:media", "http://www.rssboard.org/media-rss"),
-        attribute("xmlns:atom", "http://www.w3.org/2005/Atom"),
-        attribute("version", "2.0")
-      ],
-      [
-        node(
-          rssChannel: privateRssChannel(user: user),
-          items: items(forUser: user)
-        )
-      ]
-    )
-  ]
 }
 
 private func items(forUser user: Database.User) -> [RssItem] {

@@ -69,6 +69,7 @@ public enum Route: DerivePartialIsos {
 
   public enum Feed: DerivePartialIsos {
     case atom
+//    case freeEpisodes
   }
 
   public enum Invite: DerivePartialIsos {
