@@ -20,10 +20,6 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    print(conn.request.allHTTPHeaderFields)
-    print(conn.request.httpMethod)
-    print("---------")
-
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(user: user, subscription: subscription)
 
@@ -33,7 +29,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> aboutResponse
 
     case let .account(account):
-      return conn.map(const(subscription .*. user .*. route .*. account .*. unit))
+      return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))
         |> renderAccount
 
     case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
@@ -105,7 +101,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> atomFeedResponse
 
     case .feed(.freeEpisodes):
-      fatalError()
+      return conn.map(const(subscriberState))
+        |> freeEpisodesRssMiddleware
 
     case .fika:
       return conn.map(const(user .*. .default .*. true .*. route .*. unit))

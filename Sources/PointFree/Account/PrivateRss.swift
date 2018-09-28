@@ -18,6 +18,11 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
   >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
   >=> clearHeadBody
 
+let freeEpisodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, SubscriberState, Data> =
+  writeStatus(.ok)
+    >=> respond(freeEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+    >=> clearHeadBody
+
 private func validateUserAndSalt<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.User, Database.User.RssSalt, Z>, Data> {
@@ -46,10 +51,56 @@ private func trackFeedRequest<I>(_ conn: Conn<I, Database.User>) -> IO<Conn<I, D
     .map { _ in conn }
 }
 
+private let freeEpisodesFeedView = itunesRssFeedLayout <| View<SubscriberState> { _ in
+  node(
+    rssChannel: freeEpisodeRssChannel,
+    items: []
+  )
+}
+
 private let privateEpisodesFeedView = itunesRssFeedLayout <| View<Database.User> { user -> Node in
   node(
     rssChannel: privateRssChannel(user: user),
     items: items(forUser: user)
+  )
+}
+
+var freeEpisodeRssChannel: RssChannel {
+  let description = """
+  Point-Free is a video series about functional programming and the Swift programming language. Each episode
+  covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
+  each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
+  how these ideas can improve the quality of your code today.
+  """
+  let title = "Point-Free Videos (Free Episodes)"
+
+  return RssChannel(
+    copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+    description: description,
+    image: .init(
+      link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
+      title: title,
+      url: url(to: .home)
+    ),
+    itunes: .init(
+      author: "Brandon Williams & Stephen Celis",
+      categories: [
+        .init(name: "Technology", subcategory: "Software How-To"),
+        .init(name: "Education", subcategory: "Training"),
+        ],
+      explicit: false,
+      keywords: [
+        "programming,development,mobile,ios,functional,swift,apple,developer,software engineering,server,app"
+      ],
+      image: .init(href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
+      owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
+      subtitle: "Functional programming concepts explained simply.",
+      summary: description,
+      type: .episodic
+    ),
+    language: "en-US",
+    link: url(to: .home),
+    title: title
   )
 }
 

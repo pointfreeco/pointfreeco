@@ -165,6 +165,9 @@ private let routers: [Router<Route>] = [
   .feed <<< .atom
     <¢> get %> lit("feed") %> lit("atom.xml") <% end,
 
+  .feed <<< .freeEpisodes
+    <¢> get %> lit("feed") %> lit("free-episodes.xml") <% end,
+
   .fika
     <¢> get %> lit("fika") <% end,
 
