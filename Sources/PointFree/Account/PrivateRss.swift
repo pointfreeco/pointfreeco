@@ -7,26 +7,22 @@ import Tuple
 
 let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User.RssSalt>, Data> =
 { fetchUser >=> $0 }
-  <<< filterMap(
-    require1 >>> pure,
-    // todo: redirect to atom feed with error summary
-    or: redirect(to: .home)
-  )
+  <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware)
   <<< validateUserAndSalt
   <<< fetchSubscription
-  <<< filterMap(
-    validateActiveSubscriber,
-    // todo: redirect to atom feed with error summary
-    or: redirect(to: .home)
-  )
-  <| privateRssFeedMiddleware
+  <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware)
+  <| map(lower)
+  >>> writeStatus(.ok)
+  >=> trackFeedRequest
+  >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+  >=> clearHeadBody
 
-private let privateRssFeedMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User>, Data> =
-  map(lower)
-    >>> writeStatus(.ok)
-    >=> trackFeedRequest
-    >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+private func invalidatedFeedMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
+  return conn.map(const(unit))
+    |> writeStatus(.ok)
+    >=> respond(invalidatedFeedView, contentType: .text(.init("xml"), charset: .utf8))
     >=> clearHeadBody
+}
 
 private func validateActiveSubscriber<Z>(
   data: T3<Database.Subscription?, Database.User, Z>
@@ -48,9 +44,8 @@ private func validateUserAndSalt<Z>(
 
     return { conn in
       guard get1(conn.data).rssSalt == get2(conn.data) else {
-        // todo: redirect to atom feed with error summary
         return conn
-          |> redirect(to: .home)
+          |> invalidatedFeedMiddleware
       }
       return conn.map(const(get1(conn.data) .*. rest(conn.data)))
         |> middleware
@@ -167,6 +162,89 @@ private func item(forUser user: Database.User, episode: Episode) -> RssItem {
     pubDate: episode.publishedAt,
     title: episode.title
   )
+}
+
+private let invalidatedFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
+  node(
+    rssChannel: invalidatedChannel,
+    items: [invalidatedItem]
+  )
+}
+
+private var invalidatedChannel: RssChannel {
+  return .init (
+    copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
+    description: invalidatedDescription,
+    image: .init(
+      link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
+      title: "Point-Free",
+      url: url(to: .home)
+    ),
+    itunes: .init(
+      author: "Brandon Williams & Stephen Celis",
+      categories: [
+        .init(name: "Technology", subcategory: "Software How-To"),
+        .init(name: "Education", subcategory: "Training"),
+        ],
+      explicit: false,
+      keywords: [
+        "programming,development,mobile,ios,functional,swift,apple,developer,software engineering,server,app"
+      ],
+      image: .init(href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
+      owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
+      subtitle: "Functional programming concepts explained simply.",
+      summary: invalidatedDescription,
+      type: .episodic
+    ),
+    language: "en-US",
+    link: url(to: .home),
+    title: "Point-Free"
+  )
+}
+
+private var invalidatedItem: RssItem {
+  return RssItem(
+    description: invalidatedDescription,
+    dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
+    enclosure: .init(
+      length: 0,
+      type: "video/mp4",
+      url: introduction.fullVideo?.downloadUrl ?? ""
+    ),
+    guid: String(Current.date().timeIntervalSince1970),
+    itunes: RssItem.Itunes(
+      author: "Brandon Williams & Stephen Celis",
+      duration: 0,
+      episode: 1,
+      episodeType: .full,
+      explicit: false,
+      image: introduction.itunesImage ?? "",
+      subtitle: invalidatedDescription,
+      summary: invalidatedDescription,
+      season: 1,
+      title: "Invalid Feed URL"
+    ),
+    link: url(to: .home),
+    media: .init(
+      content: .init(
+        length: introduction.fullVideo?.bytesLength ?? 0,
+        medium: "video",
+        type: "video/mp4",
+        url: introduction.fullVideo?.downloadUrl ?? ""
+      ),
+      title: "Invalid Feed URL"
+    ),
+    pubDate: introduction.publishedAt,
+    title: "Invalid Feed URL"
+  )
+}
+
+private var invalidatedDescription: String {
+  return """
+‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private \
+podcast URL by visiting your account page at \(url(to: .account(.index))). If you think this is an error, \
+please contact support@pointfree.co.
+"""
 }
 
 func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {

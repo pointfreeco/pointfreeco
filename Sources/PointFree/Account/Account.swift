@@ -319,6 +319,7 @@ private let subscriptionOverview = View<AccountData> { data -> [Node] in
 }
 
 private let privateRssFeed = View<AccountData> { data -> [Node] in
+  guard Current.features.hasAccess(to: .podcastRss, for: data.currentUser) else { return [] }
   guard data.subscriberState.isActiveSubscriber else { return [] }
   let user = data.currentUser
 
@@ -363,8 +364,8 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                   ],
                   ["email us"]
                 ),
-                " if it doesn't). It is also tied directly to your Point-Free account, so please do not ",
-                "share with others."
+                " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
+                " monitored, so please do not share with others."
                 ]),
               p([
                 a(
