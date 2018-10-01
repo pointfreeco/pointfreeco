@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.11.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -139,17 +139,19 @@ import Prelude
       }
 
 
-      extension PartialIso where A == (
-        String
-      ), B == Route {
 
-        public static let discounts = parenthesize <| PartialIso(
-          apply: Route.discounts,
-          unapply: {
-            guard case let .discounts(result) = $0 else { return nil }
-            return .some(result)
-        })
+      extension PartialIso where A == (
+            String
+        ), B == Route {
+
+          public static let discounts = parenthesize <| PartialIso(
+            apply: Route.discounts,
+            unapply: {
+              guard case let .discounts(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
+
 
 
       extension PartialIso where A == (
@@ -217,6 +219,17 @@ import Prelude
               guard case let .feed(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let fika = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.fika)),
+          unapply: {
+            guard case .fika = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
@@ -703,18 +716,6 @@ import Prelude
               return .some(result)
           })
       }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let fika = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.fika)),
-          unapply: {
-            guard case .fika = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
 
 
 
