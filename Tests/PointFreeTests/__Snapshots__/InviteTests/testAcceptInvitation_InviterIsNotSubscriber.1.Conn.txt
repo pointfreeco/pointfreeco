@@ -1,4 +1,4 @@
-POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000011/accept
+POST http://localhost:8080/invites/00000000-0000-0000-0000-000000000013/accept
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
 302 Found
