@@ -37,11 +37,11 @@ private let episodesFeedView = itunesRssFeedLayout <| View<SubscriberState> { su
 
 var freeEpisodeRssChannel: RssChannel {
   let description = """
-  Point-Free is a video series about functional programming and the Swift programming language. Each episode
-  covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
-  each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
-  how these ideas can improve the quality of your code today.
-  """
+Point-Free is a video series about functional programming and the Swift programming language. Each episode \
+covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of \
+each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show \
+how these ideas can improve the quality of your code today.
+"""
   let title = "Point-Free Videos"
 
   return RssChannel(
@@ -83,40 +83,66 @@ private func items(subscriberState: SubscriberState) -> [RssItem] {
 
 private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem {
 
-  func title(episode: Episode) -> String {
-    return episode.title
-  }
-
   func summary(episode: Episode) -> String {
     return episode.subscriberOnly
-      ? "(Subscriber-Only) \n\n\(episode.blurb)"
-      : episode.blurb
+      ? "[Subscriber-Only] \n\n\(episode.blurb)"
+      : "🆓 \(episode.blurb)"
   }
 
   func description(episode: Episode) -> String {
     return episode.subscriberOnly
       ? """
-Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you
+Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
 can access your private podcast feed by visiting \(url(to: .account(.index))).
+
+---
 
 \(episode.blurb)
 """
       : """
-Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is
+Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
 that day!
+
 ---
+
 \(episode.blurb)
 """
+  }
+
+  func enclosure(episode: Episode) -> RssItem.Enclosure {
+    return episode.subscriberOnly
+      ? .init(
+        length: episode.trailerVideo?.bytesLength ?? 0,
+        type: "video/mp4",
+        url: episode.trailerVideo?.downloadUrl ?? ""
+        )
+      : .init(
+        length: episode.fullVideo?.bytesLength ?? 0,
+        type: "video/mp4",
+        url: episode.fullVideo?.downloadUrl ?? ""
+    )
+  }
+
+  func mediaContent(episode: Episode) -> RssItem.Media.Content {
+    return episode.subscriberOnly
+      ? .init(
+        length: episode.trailerVideo?.bytesLength ?? 0,
+        medium: "video",
+        type: "video/mp4",
+        url: episode.trailerVideo?.downloadUrl ?? ""
+        )
+      : .init(
+        length: episode.fullVideo?.bytesLength ?? 0,
+        medium: "video",
+        type: "video/mp4",
+        url: episode.fullVideo?.downloadUrl ?? ""
+    )
   }
 
   return RssItem(
     description: description(episode: episode),
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
-    enclosure: .init(
-      length: episode.videoDownload?.length ?? 0,
-      type: "video/mp4",
-      url: episode.videoDownload?.url ?? ""
-    ),
+    enclosure: enclosure(episode: episode),
     guid: url(to: .episode(.left(episode.slug))),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
@@ -128,20 +154,15 @@ that day!
       subtitle: summary(episode: episode),
       summary: summary(episode: episode),
       season: 1,
-      title: title(episode: episode)
+      title: episode.title
     ),
     link: url(to: .episode(.left(episode.slug))),
     media: .init(
-      content: .init(
-        length: episode.videoDownload?.length ?? 0,
-        medium: "video",
-        type: "video/mp4",
-        url: episode.videoDownload?.url ?? ""
-      ),
+      content: mediaContent(episode: episode),
       title: episode.title
     ),
     pubDate: episode.publishedAt,
-    title: title(episode: episode)
+    title: episode.title
   )
 }
 

@@ -13,13 +13,37 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
     or: redirect(to: .home)
   )
   <<< validateUserAndSalt
-  <| trackFeedRequest
-  >=> writeStatus(.ok)
-  >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
-  >=> clearHeadBody
+  <<< fetchSubscription
+  <<< filterMap(
+    validateActiveSubscriber,
+    // todo: redirect to atom feed with error summary
+    or: redirect(to: .home)
+  )
+  <| privateRssFeedMiddleware
+
+private let privateRssFeedMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User>, Data> =
+  map(lower)
+    >>> writeStatus(.ok)
+    >=> trackFeedRequest
+    >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+    >=> clearHeadBody
+
+private func validateActiveSubscriber<Z>(
+  data: T3<Database.Subscription?, Database.User, Z>
+  ) -> IO<T2<Database.User, Z>?> {
+
+  return IO {
+    guard let subscription = get1(data) else { return nil }
+    let user = get2(data)
+
+    return SubscriberState(user: user, subscription: subscription).isActive
+      ? user .*. rest(data)
+      : nil
+  }
+}
 
 private func validateUserAndSalt<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Database.User, Data>)
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.User, Database.User.RssSalt, Z>, Data> {
 
     return { conn in
@@ -28,7 +52,7 @@ private func validateUserAndSalt<Z>(
         return conn
           |> redirect(to: .home)
       }
-      return conn.map(const(get1(conn.data)))
+      return conn.map(const(get1(conn.data) .*. rest(conn.data)))
         |> middleware
     }
 }
@@ -113,9 +137,9 @@ private func item(forUser user: Database.User, episode: Episode) -> RssItem {
     description: episode.blurb,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: .init(
-      length: episode.videoDownload?.length ?? 0,
+      length: episode.fullVideo?.bytesLength ?? 0,
       type: "video/mp4",
-      url: episode.videoDownload?.url ?? ""
+      url: episode.fullVideo?.downloadUrl ?? ""
     ),
     guid: url(to: .episode(.left(episode.slug))),
     itunes: RssItem.Itunes(
@@ -133,10 +157,10 @@ private func item(forUser user: Database.User, episode: Episode) -> RssItem {
     link: url(to: .episode(.left(episode.slug))),
     media: .init(
       content: .init(
-        length: episode.videoDownload?.length ?? 0,
+        length: episode.fullVideo?.bytesLength ?? 0,
         medium: "video",
         type: "video/mp4",
-        url: episode.videoDownload?.url ?? ""
+        url: episode.fullVideo?.downloadUrl ?? ""
       ),
       title: episode.title
     ),

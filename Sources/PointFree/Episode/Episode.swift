@@ -5,6 +5,7 @@ public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
   public private(set) var exercises: [Exercise]
+  public private(set) var fullVideo: Video?
   public private(set) var id: Id
   public private(set) var image: String
   public private(set) var itunesImage: String?
@@ -15,12 +16,13 @@ public struct Episode {
   public private(set) var sourcesFull: [String]
   public private(set) var sourcesTrailer: [String]
   public private(set) var title: String
+  public private(set) var trailerVideo: Video?
   public private(set) var transcriptBlocks: [TranscriptBlock]
-  public private(set) var videoDownload: VideoDownload?
 
-  public struct VideoDownload {
-    public private(set) var length: Int // TODO: Tagged<Bytes, Int>?
-    public private(set) var url: String
+  public struct Video {
+    public private(set) var bytesLength: Int // TODO: Tagged<Bytes, Int>?
+    public private(set) var downloadUrl: String
+    public private(set) var streamingSources: [String]
   }
 
   public init(
@@ -28,6 +30,7 @@ public struct Episode {
     codeSampleDirectory: String,
     id: Id,
     exercises: [Exercise],
+    fullVideo: Video? = nil,
     image: String,
     itunesImage: String? = nil,
     length: Int,
@@ -37,12 +40,13 @@ public struct Episode {
     sourcesFull: [String],
     sourcesTrailer: [String],
     title: String,
-    transcriptBlocks: [TranscriptBlock],
-    videoDownload: VideoDownload? = nil) {
+    trailerVideo: Video? = nil,
+    transcriptBlocks: [TranscriptBlock]) {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
+    self.fullVideo = fullVideo
     self.id = id
     self.image = image
     self.itunesImage = itunesImage
@@ -53,8 +57,8 @@ public struct Episode {
     self.sourcesFull = sourcesFull
     self.sourcesTrailer = sourcesTrailer
     self.title = title
+    self.trailerVideo = trailerVideo
     self.transcriptBlocks = transcriptBlocks
-    self.videoDownload = videoDownload
   }
 
   public typealias Id = Tagged<Episode, Int>

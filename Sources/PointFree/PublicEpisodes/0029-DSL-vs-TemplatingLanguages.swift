@@ -10,6 +10,14 @@ previously hidden.
   codeSampleDirectory: "0029-dsls-vs-templating-languages",
   id: 29,
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 665_928_011,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",
+      ]
+  ),
   image: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/poster.jpg",
   length: 33*60 + 17,
   permission: .free,
@@ -22,11 +30,8 @@ previously hidden.
   sourcesTrailer: [
   ],
   title: "DSLs vs. Templating Languages",
-  transcriptBlocks: transcriptBlocks,
-  videoDownload: .init(
-    length: 665_928_011,
-    url: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full-720p.mp4"
-  )
+  trailerVideo: nil,
+  transcriptBlocks: transcriptBlocks
 )
 
 private let exercises: [Episode.Exercise] = [
