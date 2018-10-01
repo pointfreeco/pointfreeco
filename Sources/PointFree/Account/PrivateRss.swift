@@ -55,7 +55,6 @@ private func validateUserAndSalt<Z>(
 private func trackFeedRequest<I>(_ conn: Conn<I, Database.User>) -> IO<Conn<I, Database.User>> {
 
   return Current.database.createFeedRequestEvent(
-    conn.request.allHTTPHeaderFields?["Referer"] ?? "",
     .privateEpisodesFeed,
     conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
     conn.data.id
