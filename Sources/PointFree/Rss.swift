@@ -134,7 +134,6 @@ func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
     [
       .text(unsafeUnencodedString("""
       <?xml version="1.0" encoding="utf-8" ?>
-
       """)),
       node(
         "rss",
