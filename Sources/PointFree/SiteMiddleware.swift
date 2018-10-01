@@ -100,9 +100,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(Current.episodes()))
         |> atomFeedResponse
 
-    case .feed(.freeEpisodes):
+    case .feed(.episodes):
       return conn.map(const(subscriberState))
-        |> freeEpisodesRssMiddleware
+        |> episodesRssMiddleware
 
     case .fika:
       return conn.map(const(user .*. .default .*. true .*. route .*. unit))

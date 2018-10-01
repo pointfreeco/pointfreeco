@@ -4,7 +4,6 @@ import Prelude
 public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
-  public private(set) var downloadVideoUrl: String?
   public private(set) var exercises: [Exercise]
   public private(set) var id: Id
   public private(set) var image: String
@@ -17,11 +16,16 @@ public struct Episode {
   public private(set) var sourcesTrailer: [String]
   public private(set) var title: String
   public private(set) var transcriptBlocks: [TranscriptBlock]
+  public private(set) var videoDownload: VideoDownload?
+
+  public struct VideoDownload {
+    public private(set) var length: Int // TODO: Tagged<Bytes, Int>?
+    public private(set) var url: String
+  }
 
   public init(
     blurb: String,
     codeSampleDirectory: String,
-    downloadVideoUrl: String? = nil,
     id: Id,
     exercises: [Exercise],
     image: String,
@@ -33,11 +37,11 @@ public struct Episode {
     sourcesFull: [String],
     sourcesTrailer: [String],
     title: String,
-    transcriptBlocks: [TranscriptBlock]) {
+    transcriptBlocks: [TranscriptBlock],
+    videoDownload: VideoDownload? = nil) {
 
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
-    self.downloadVideoUrl = downloadVideoUrl
     self.exercises = exercises
     self.id = id
     self.image = image
@@ -50,6 +54,7 @@ public struct Episode {
     self.sourcesTrailer = sourcesTrailer
     self.title = title
     self.transcriptBlocks = transcriptBlocks
+    self.videoDownload = videoDownload
   }
 
   public typealias Id = Tagged<Episode, Int>
@@ -66,6 +71,17 @@ public struct Episode {
       return !dateRange.contains(Current.date())
     case .subscriberOnly:
       return true
+    }
+  }
+
+  public var freeSince: Date? {
+    switch self.permission {
+    case .free:
+      return self.publishedAt
+    case let .freeDuring(dateRange):
+      return dateRange.lowerBound
+    case .subscriberOnly:
+      return nil
     }
   }
 

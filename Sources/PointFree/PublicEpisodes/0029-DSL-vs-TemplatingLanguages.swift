@@ -2,9 +2,9 @@ import Foundation
 
 let ep29 = Episode(
   blurb: """
-Templating languages are the most common way to render HTML in web frameworks, but we don't think they
-are the best way. We compare templating languages to the DSL we previously built, and show that
-the DSL fixes many problems that templates have, while also revealing amazing compositions that were
+Templating languages are the most common way to render HTML in web frameworks, but we don't think they \
+are the best way. We compare templating languages to the DSL we previously built, and show that \
+the DSL fixes many problems that templates have, while also revealing amazing compositions that were \
 previously hidden.
 """,
   codeSampleDirectory: "0029-dsls-vs-templating-languages",
@@ -22,7 +22,11 @@ previously hidden.
   sourcesTrailer: [
   ],
   title: "DSLs vs. Templating Languages",
-  transcriptBlocks: transcriptBlocks
+  transcriptBlocks: transcriptBlocks,
+  videoDownload: .init(
+    length: 665_928_011,
+    url: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full-720p.mp4"
+  )
 )
 
 private let exercises: [Episode.Exercise] = [

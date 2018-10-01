@@ -843,10 +843,10 @@ import Prelude
 
 
       extension PartialIso where A == Prelude.Unit, B == Route.Feed {
-        public static let freeEpisodes = parenthesize <| PartialIso<Prelude.Unit, Route.Feed>(
-          apply: const(.some(.freeEpisodes)),
+        public static let episodes = parenthesize <| PartialIso<Prelude.Unit, Route.Feed>(
+          apply: const(.some(.episodes)),
           unapply: {
-            guard case .freeEpisodes = $0 else { return nil }
+            guard case .episodes = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
