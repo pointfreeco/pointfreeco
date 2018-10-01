@@ -258,7 +258,7 @@ sourcery: sourcery-routes sourcery-tests
 sourcery-routes:
 	@echo "  ⚠️  Generating routes..."
 	@mkdir -p ./Sources/PointFree/__Generated__
-	@sourcery \
+	@.bin/sourcery \
 		--quiet \
 		--sources ./Sources/PointFree/ \
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
@@ -271,7 +271,7 @@ SOURCERY_TESTS_IMPORTS = \
 
 sourcery-tests: check-sourcery
 	@echo "  ⚠️  Generating tests..."
-	@sourcery \
+	@.bin/sourcery \
 		--quiet \
 		--sources ./Tests/ \
 		--templates ./.sourcery-templates/LinuxMain.stencil \
