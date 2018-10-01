@@ -9,8 +9,8 @@ import Prelude
 
       extension PartialIso where A == (
         {% for value in case.associatedValues %}
-          {% if value.type %}
-            {{ value.type.globalName }}{% if value.typeName.isOptional %}?{% endif %}
+          {% if value.type and value.type.parent %}
+            {{ value.type.name }}
           {% else %}
             {{ value.typeName }}
           {% endif %}
