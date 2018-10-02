@@ -74,7 +74,7 @@ extension Database {
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
