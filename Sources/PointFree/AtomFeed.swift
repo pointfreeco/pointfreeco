@@ -60,7 +60,17 @@ how these ideas can improve the quality of your code today.
         ],
       explicit: false,
       keywords: [
-        "programming,development,mobile,ios,functional,swift,apple,developer,software engineering,server,app"
+        "programming",
+        "development",
+        "mobile",
+        "ios",
+        "functional",
+        "swift",
+        "apple",
+        "developer",
+        "software engineering",
+        "server",
+        "app"
       ],
       image: .init(href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
       owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
