@@ -120,7 +120,8 @@ private func items(forUser user: Database.User) -> [RssItem] {
     Current
       .episodes()
       .filter { $0.sequence != 0 }
-      .sorted(by: their(^\.sequence, >))[1]
+      .sorted(by: their(^\.sequence, >))
+      .first
     ]
     .compactMap(id)
     .map { item(forUser: user, episode: $0) }
