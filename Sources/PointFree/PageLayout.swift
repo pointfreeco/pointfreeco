@@ -147,7 +147,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
             type(.application(.atom)),
             ]),
           link([
-            href(url(to: .blog(.feed(.atom)))),
+            href(url(to: .blog(.feed))),
             rel(.alternate),
             title("Point-Free Blog"),
             type(.application(.atom)),

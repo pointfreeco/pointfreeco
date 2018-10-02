@@ -104,7 +104,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogAtomFeed() {
-    let req = request(to: .blog(.feed(.atom)), basicAuth: true)
+    let req = request(to: .blog(.feed), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
@@ -113,7 +113,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogAtomFeed_Unauthed() {
-    let req = request(to: .blog(.feed(.atom)))
+    let req = request(to: .blog(.feed))
     let result = connection(from: req)
       |> siteMiddleware
       |> Prelude.perform
