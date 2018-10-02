@@ -65,6 +65,7 @@ extension Mailgun {
 extension Database {
   public static let mock = Database(
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
+    createFeedRequestEvent: { _, _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     fetchAdmins: unzurry(pure([])),
@@ -101,6 +102,7 @@ extension Database.User {
     id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     isAdmin: false,
     name: "Blob",
+    rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 

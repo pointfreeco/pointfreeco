@@ -28,49 +28,9 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> aboutResponse
 
-    case let .account(.confirmEmailChange(userId, emailAddress)):
-      return conn.map(const(userId .*. emailAddress .*. unit))
-        |> confirmEmailChangeMiddleware
-
-    case .account(.index):
-      return conn.map(const(user .*. subscriberState .*. unit))
-        |> accountResponse
-
-    case .account(.invoices(.index)):
-      return conn.map(const(user .*. subscriberState .*. unit))
-        |> invoicesResponse
-
-    case let .account(.invoices(.show(invoiceId))):
-      return conn.map(const(user .*. invoiceId .*. unit))
-        |> invoiceResponse
-
-    case let .account(.paymentInfo(.show(expand))):
-      return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
-        |> paymentInfoResponse
-
-    case let .account(.paymentInfo(.update(token))):
-      return conn.map(const(user .*. token .*. unit))
-        |> updatePaymentInfoMiddleware
-
-    case .account(.subscription(.cancel)):
-      return conn.map(const(user .*. unit))
-        |> cancelMiddleware
-
-    case .account(.subscription(.change(.show))):
-      return conn.map(const(user .*. subscriberState .*. unit))
-        |> subscriptionChangeShowResponse
-
-    case let .account(.subscription(.change(.update(pricing)))):
-      return conn.map(const(user .*. pricing .*. unit))
-        |> subscriptionChangeMiddleware
-
-    case .account(.subscription(.reactivate)):
-      return conn.map(const(user .*. unit))
-        |> reactivateMiddleware
-
-    case let .account(.update(data)):
-      return conn.map(const(user .*. data .*. unit))
-        |> updateProfileMiddleware
+    case let .account(account):
+      return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))
+        |> renderAccount
 
     case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
       return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
@@ -139,6 +99,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case .feed(.atom):
       return conn.map(const(Current.episodes()))
         |> atomFeedResponse
+
+    case .feed(.episodes):
+      return conn.map(const(subscriberState))
+        |> episodesRssMiddleware
 
     case .fika:
       return conn.map(const(user .*. .default .*. true .*. route .*. unit))

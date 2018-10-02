@@ -5,6 +5,7 @@ import PostgreSQL
 
 public struct Database {
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, User.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
   var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   var fetchAdmins: () -> EitherIO<Error, [User]>
@@ -32,6 +33,7 @@ public struct Database {
 
   static let live = Database(
     addUserIdToSubscriptionId: PointFree.add(userId:toSubscriptionId:),
+    createFeedRequestEvent: PointFree.createFeedRequestEvent(type:userAgent:userId:),
     createSubscription: PointFree.createSubscription,
     deleteTeamInvite: PointFree.deleteTeamInvite,
     fetchAdmins: PointFree.fetchAdmins,
@@ -98,6 +100,26 @@ public struct Database {
     }
   }
 
+  public struct FeedRequestEvent: Decodable, Equatable {
+    public typealias Id = Tagged<FeedRequestEvent, UUID>
+
+    public private(set) var id: Id
+    public private(set) var type: FeedType
+    public private(set) var userAgent: String
+    public private(set) var userId: User.Id
+
+    public enum CodingKeys: String, CodingKey {
+      case id
+      case type
+      case userAgent = "user_agent"
+      case userId = "user_id"
+    }
+
+    public enum FeedType: String, Decodable {
+      case privateEpisodesFeed
+    }
+  }
+
   public struct User: Decodable, Equatable {
     public internal(set) var email: EmailAddress
     public internal(set) var episodeCreditCount: Int
@@ -106,9 +128,11 @@ public struct Database {
     public internal(set) var id: Id
     public internal(set) var isAdmin: Bool
     public internal(set) var name: String?
+    public private(set) var rssSalt: RssSalt
     public private(set) var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
+    public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
 
     public enum CodingKeys: String, CodingKey {
       case email
@@ -118,6 +142,7 @@ public struct Database {
       case id
       case isAdmin = "is_admin"
       case name
+      case rssSalt = "rss_salt"
       case subscriptionId = "subscription_id"
     }
 
@@ -157,6 +182,29 @@ public struct Database {
       case inviterUserId = "inviter_user_id"
     }
   }
+}
+
+private func createFeedRequestEvent(
+  type: Database.FeedRequestEvent.FeedType,
+  userAgent: String,
+  userId: Database.User.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
+
+  return execute(
+    """
+    INSERT INTO "feed_request_events"
+    ("type", "user_agent", "user_id")
+    VALUES
+    ($1, $2, $3)
+    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE SET "count" = "feed_request_events"."count" + 1
+    """,
+    [
+      type.rawValue,
+      userAgent,
+      userId.rawValue
+    ]
+    )
+    .map(const(unit))
 }
 
 private func createSubscription(
@@ -279,7 +327,8 @@ private func fetchSubscriptionTeammates(ownerId: Database.User.Id) -> EitherIO<E
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
@@ -403,7 +452,8 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
            "id",
            "is_admin",
            "name",
-           "subscription_id"
+           "subscription_id",
+           "rss_salt"
     FROM "users"
     WHERE "id" = $1
     LIMIT 1
@@ -481,7 +531,8 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
            "id",
            "is_admin",
            "name",
-           "subscription_id"
+           "subscription_id",
+           "rss_salt"
     FROM "users"
     WHERE "github_user_id" = $1
     LIMIT 1
@@ -534,7 +585,8 @@ private func fetchAdmins() -> EitherIO<Error, [Database.User]> {
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     WHERE "users"."is_admin" = TRUE
     """,
@@ -603,7 +655,8 @@ private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Database.User]> {
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "users"
     LEFT JOIN "subscriptions" ON "subscriptions"."id" = "users"."subscription_id"
     LEFT JOIN "email_settings" ON "email_settings"."user_id" = "users"."id"
@@ -741,6 +794,31 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       ALTER TABLE "episode_credits"
       ADD COLUMN IF NOT EXISTS
       "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE TABLE IF NOT EXISTS "feed_request_events" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "type" character varying NOT NULL,
+        "user_agent" character varying NOT NULL,
+        "user_id" uuid REFERENCES "users" ("id"),
+        "count" integer NOT NULL DEFAULT 1,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
+      )
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
+      ON "feed_request_events" ("type", "user_agent", "user_id")
       """
     )))
     .map(const(unit))
