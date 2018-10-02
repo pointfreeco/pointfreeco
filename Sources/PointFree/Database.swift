@@ -196,7 +196,7 @@ private func createFeedRequestEvent(
     ("type", "user_agent", "user_id")
     VALUES
     ($1, $2, $3)
-    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE SET "request_count" = "request_count" + 1
+    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE SET "request_count" = "feed_request_events"."request_count" + 1
     """,
     [
       type.rawValue,
