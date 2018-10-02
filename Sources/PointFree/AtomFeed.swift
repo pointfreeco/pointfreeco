@@ -85,7 +85,7 @@ private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem
 
   func summary(episode: Episode) -> String {
     return episode.subscriberOnly
-      ? "[Subscriber-Only] \n\n\(episode.blurb)"
+      ? "🔒 \n\n\(episode.blurb)"
       : "🆓 \(episode.blurb)"
   }
 
