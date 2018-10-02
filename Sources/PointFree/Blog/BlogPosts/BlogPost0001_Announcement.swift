@@ -26,7 +26,7 @@ even deeper into functional programming, showing real world use cases and more!
       [Point-Free Pointers](\(url(to: .blog(.index))))! A
       supplementary blog for [Point-Free](\(url(to: .home))) where we will be diving
       even deeper into topics covered in our episodes. Keep up-to-date on new posts by add the
-      [RSS feed](\(url(to: .blog(.feed(.atom))))) to your reader of choice, follow us on
+      [RSS feed](\(url(to: .blog(.feed)))) to your reader of choice, follow us on
       [Twitter](\(twitterUrl(to: .pointfreeco))), or sign up for our
       [newsletter](\(url(to: .login(redirect: url(to: .account(.index)))))).
 
