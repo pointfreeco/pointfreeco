@@ -196,7 +196,7 @@ private func createFeedRequestEvent(
     ("type", "user_agent", "user_id")
     VALUES
     ($1, $2, $3)
-    ON CONFLICT DO NOTHING
+    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE SET "request_count" = "request_count" + 1
     """,
     [
       type.rawValue,
@@ -810,6 +810,7 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "type" character varying NOT NULL,
         "user_agent" character varying NOT NULL,
         "user_id" uuid REFERENCES "users" ("id"),
+        "request_count" integer NOT NULL DEFAULT 1,
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       )
       """

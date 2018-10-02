@@ -264,7 +264,7 @@ private let rssDateFormatter = DateFormatter()
 
 private func timestampLabel(for timestamp: Int) -> String {
   let hour = Int(timestamp / 60 / 60)
-  let minute = Int(timestamp / 60)
+  let minute = Int(timestamp / 60) % 60
   let second = Int(timestamp) % 60
   let hourString = hour >= 10 ? "\(hour)" : "0\(hour)"
   let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
