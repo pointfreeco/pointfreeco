@@ -472,7 +472,8 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
            "users"."id",
            "users"."is_admin",
            "users"."name",
-           "users"."subscription_id"
+           "users"."subscription_id",
+           "users"."rss_salt"
     FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
     WHERE "email_settings"."newsletter" = $1
     """,
@@ -492,7 +493,8 @@ private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, 
         "users"."id",
         "users"."is_admin",
         "users"."name",
-        "users"."subscription_id"
+        "users"."subscription_id",
+        "users"."rss_salt"
     FROM
         "email_settings"
         LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
