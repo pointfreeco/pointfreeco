@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7190
+Content-Length: 7260
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -120,7 +120,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         00:23:00
       </itunes:duration>
       <itunes:image>
-        
+        https://s3.amazonaws.com/itunes.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -187,7 +187,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         00:23:00
       </itunes:duration>
       <itunes:image>
-        
+        https://s3.amazonaws.com/itunes.jpg
       </itunes:image>
       <itunes:season>
         1

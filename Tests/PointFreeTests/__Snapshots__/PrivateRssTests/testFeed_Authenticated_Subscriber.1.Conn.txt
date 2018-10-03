@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 5062
+Content-Length: 5097
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -135,7 +135,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         00:23:00
       </itunes:duration>
       <itunes:image>
-        
+        https://s3.amazonaws.com/itunes.jpg
       </itunes:image>
       <itunes:season>
         1
