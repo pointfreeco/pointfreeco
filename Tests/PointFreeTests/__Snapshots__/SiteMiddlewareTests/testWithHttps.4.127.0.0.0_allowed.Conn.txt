@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 62429
+Content-Length: 62425
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1772,7 +1772,7 @@ input::-webkit-outer-spin-button {
               <a href="/blog" class="medium pf-link-black d-mr3 m-mr2">
                 Blog
               </a>
-              <a href="/pricing?" class="medium pf-link-black d-mr3 m-mr2">
+              <a href="/pricing" class="medium pf-link-black d-mr3 m-mr2">
                 Subscribe
               </a>
               <a href="/login?redirect=http://localhost:8080" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-black h5 m-pl2 m-pr2">
@@ -1884,7 +1884,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
           </h4>
           <p>
             👋 Hey there! See anything you like? You may be interested in 
-            <a href="/pricing?" class="underline-link">
+            <a href="/pricing" class="underline-link">
               subscribing
             </a>
              so that you get access to these episodes and all future ones.
@@ -2083,12 +2083,12 @@ for (var idx = 0; idx &lt; elements.length; idx++) {
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>

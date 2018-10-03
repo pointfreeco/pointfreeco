@@ -1,7 +1,7 @@
 GET http://localhost:8080/404
 
 404 Not Found
-Content-Length: 40978
+Content-Length: 40974
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1664,12 +1664,12 @@ html {
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing?" class="pf-link-black">
+            <a href="/pricing" class="pf-link-black">
               Subscribe
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/login?" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-black h5 m-pl2 m-pr2">
+            <a href="/login" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-black h5 m-pl2 m-pr2">
               <img alt="" src="data:image/svg+xml;base64, PHN2ZyBmaWxsPSIjZmZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg==" class="m-mr1" style="margin-bottom:-4px" width="20" height="20">
               <span>
                 Log in
@@ -1742,12 +1742,12 @@ html {
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>

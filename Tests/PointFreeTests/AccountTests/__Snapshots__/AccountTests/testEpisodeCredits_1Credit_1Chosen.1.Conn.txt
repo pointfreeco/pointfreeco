@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 42674
+Content-Length: 42672
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1665,7 +1665,7 @@ html {
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing?" class="pf-link-black">
+            <a href="/pricing" class="pf-link-black">
               Subscribe
             </a>
           </li>
@@ -1743,7 +1743,7 @@ html {
                 </p>
                 <p>
                   To get all past and future episodes, 
-                  <a class="pf-link-purple" href="/pricing?">
+                  <a class="pf-link-purple" href="/pricing">
                     become
                   </a>
                    a subscriber today!

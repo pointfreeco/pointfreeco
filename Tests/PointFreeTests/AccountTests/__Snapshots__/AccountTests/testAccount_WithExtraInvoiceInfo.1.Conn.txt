@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 48324
+Content-Length: 48323
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1859,7 +1859,7 @@ html {
                         <div class=" col-m col-d-6 col-m-12">
                           <div class="m-pl1 m-pr1 end-d">
                             <p>
-                              <a class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h6 m-pl1 m-pr1 m-pt1 m-pb1" href="/account/payment-info?">
+                              <a class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h6 m-pl1 m-pr1 m-pt1 m-pb1" href="/account/payment-info">
                                 Update payment method
                               </a>
                             </p>

@@ -1,4 +1,4 @@
-GET http://localhost:8080/account/payment-info?
+GET http://localhost:8080/account/payment-info
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK

@@ -1,6 +1,6 @@
 
 
-> Every once in awhile we release a past episode for free to all of our viewers, and today is that day! Please consider supporting us <http://localhost:8080/pricing?> so that we can keep new episodes coming!
+> Every once in awhile we release a past episode for free to all of our viewers, and today is that day! Please consider supporting us <http://localhost:8080/pricing> so that we can keep new episodes coming!
 
 ### Episode #2 is now free!
 

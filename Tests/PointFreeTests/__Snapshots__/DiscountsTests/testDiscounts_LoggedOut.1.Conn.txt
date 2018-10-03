@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 53872
+Content-Length: 53869
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1728,7 +1728,7 @@ input::-webkit-outer-spin-button {
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing?" class="pf-link-green">
+            <a href="/pricing" class="pf-link-green">
               Subscribe
             </a>
           </li>
@@ -2018,12 +2018,12 @@ of some of the things we’re excited to talk about
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>

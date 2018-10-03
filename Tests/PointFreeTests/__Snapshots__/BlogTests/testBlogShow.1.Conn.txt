@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 111410
+Content-Length: 111407
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1748,7 +1748,7 @@ text, no markdown.">
               <a href="/blog" class="medium pf-link-black d-mr3 m-mr2">
                 Blog
               </a>
-              <a href="/pricing?" class="medium pf-link-black d-mr3 m-mr2">
+              <a href="/pricing" class="medium pf-link-black d-mr3 m-mr2">
                 Subscribe
               </a>
               <a href="/login?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-black h5 m-pl2 m-pr2">
@@ -1911,12 +1911,12 @@ func contramap&lt;A, B&gt;(_ f: @escaping (B) -&gt; A) -&gt; (PredicateSet&lt;A&
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>

@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing?expand=true
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 92373
+Content-Length: 92372
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1727,7 +1727,7 @@ input::-webkit-outer-spin-button {
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing?" class="pf-link-green">
+            <a href="/pricing" class="pf-link-green">
               Subscribe
             </a>
           </li>

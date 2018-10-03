@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 50611
+Content-Length: 50608
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1692,7 +1692,7 @@ html {
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing?" class="pf-link-black">
+            <a href="/pricing" class="pf-link-black">
               Subscribe
             </a>
           </li>
@@ -1922,12 +1922,12 @@ functional convert and believer after years of objects.
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>

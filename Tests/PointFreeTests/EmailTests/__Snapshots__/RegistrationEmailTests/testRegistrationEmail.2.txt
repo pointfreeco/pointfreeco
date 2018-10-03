@@ -7,7 +7,7 @@ You’re one step closer to our video series!
 To get all that Point-Free has to offer, choose from one of our monthly or yearly plans by clicking
 the link below!
 
-Choose a subscription plan! <http://localhost:8080/pricing?>
+Choose a subscription plan! <http://localhost:8080/pricing>
 
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 

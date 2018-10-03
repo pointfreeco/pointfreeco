@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59497
+Content-Length: 59493
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1803,7 +1803,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
               <a href="/blog" class="medium pf-link-black d-mr3 m-mr2">
                 Blog
               </a>
-              <a href="/pricing?" class="medium pf-link-black d-mr3 m-mr2">
+              <a href="/pricing" class="medium pf-link-black d-mr3 m-mr2">
                 Subscribe
               </a>
               <a href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-black h5 m-pl2 m-pr2">
@@ -1891,7 +1891,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
 today!
             </p>
-            <a href="/pricing?" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2">
+            <a href="/pricing" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2">
               See subscription options
             </a>
             <span class="m-pl2">
@@ -2078,12 +2078,12 @@ document.addEventListener('keypress', function (event) {
           </h5>
           <ol class="list-reset">
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Subscribe
               </a>
             </li>
             <li>
-              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing?">
+              <a class="pf-link-purple fg-black normal h5 lh-4" href="/pricing">
                 Pricing
               </a>
             </li>
