@@ -19,6 +19,14 @@ private let subscriberOnlyEpisode = Episode(
   exercises: [
     .init(body: "This is an exercise.")
   ],
+  fullVideo: .init(
+    bytesLength: 500_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/video.webm"
+    ]
+  ),
   id: 2,
   image: "",
   length: 1380,
@@ -28,6 +36,14 @@ private let subscriberOnlyEpisode = Episode(
   sourcesFull: [""],
   sourcesTrailer: [""],
   title: "Proof in Functions",
+  trailerVideo: .init(
+    bytesLength: 5_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
+    ]
+  ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: "Introduction",
