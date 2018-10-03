@@ -6,8 +6,8 @@ The third, and final, part of our introductory series to `zip` finally answers t
 "What's the point?"
 """,
   codeSampleDirectory: "0025-zip-pt3",
-  id: 25,
   exercises: exercises,
+  id: 25,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/poster.jpg",
   length: 24*60 + 21,
   permission: .free,

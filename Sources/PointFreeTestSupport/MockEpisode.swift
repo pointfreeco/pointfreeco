@@ -16,10 +16,10 @@ private let subscriberOnlyEpisode = Episode(
   text, no markdown allowed. Here is some more text just to have some filler.
   """,
   codeSampleDirectory: "ep2-proof-in-functions",
-  id: 2,
   exercises: [
     .init(body: "This is an exercise.")
   ],
+  id: 2,
   image: "",
   length: 1380,
   permission: .subscriberOnly,
@@ -130,8 +130,16 @@ private let freeEpisode = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep1-type-safe-html",
-  id: 1,
   exercises: [],
+  fullVideo: .init(
+    bytesLength: 500_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/video.webm"
+    ]
+  ),
+  id: 1,
   image: "",
   length: 1380,
   permission: .free,
@@ -140,6 +148,14 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   sourcesFull: [""],
   sourcesTrailer: [],
   title: "Type-Safe HTML in Swift",
+  trailerVideo: .init(
+    bytesLength: 5_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
+    ]
+  ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: """

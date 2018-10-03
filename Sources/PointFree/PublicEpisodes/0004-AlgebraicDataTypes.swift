@@ -6,8 +6,8 @@ What does the Swift type system have to do with algebra? A lot! We’ll begin to
 and see how it can help us create type-safe data structures that can catch runtime errors at compile time.
 """,
   codeSampleDirectory: "0004-algebraic-data-types",
-  id: 4,
   exercises: exercises,
+  id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
   length: 2_172,
   permission: .free,

@@ -28,9 +28,9 @@ public struct Episode {
   public init(
     blurb: String,
     codeSampleDirectory: String,
-    id: Id,
     exercises: [Exercise],
     fullVideo: Video? = nil,
+    id: Id,
     image: String,
     itunesImage: String? = nil,
     length: Int,

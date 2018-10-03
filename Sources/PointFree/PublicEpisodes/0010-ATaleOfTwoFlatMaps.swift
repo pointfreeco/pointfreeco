@@ -7,8 +7,8 @@ the others? We'll explore this and how understanding that difference helps us ex
 operation to other structures and derive new, useful code!
 """,
   codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
-  id: 10,
   exercises: exercises,
+  id: 10,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",
   length: 25*60+4,
   permission: .free,
