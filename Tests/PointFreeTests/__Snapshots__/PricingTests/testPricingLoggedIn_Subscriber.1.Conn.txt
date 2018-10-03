@@ -1,4 +1,4 @@
-GET http://localhost:8080/pricing
+GET http://localhost:8080/pricing?
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 302 Found

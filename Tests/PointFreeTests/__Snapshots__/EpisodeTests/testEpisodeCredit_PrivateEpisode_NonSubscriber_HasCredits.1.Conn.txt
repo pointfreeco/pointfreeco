@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 52053
+Content-Length: 52103
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -607,13 +607,13 @@ a:link.btn-normal {
 }
 
 .col-m-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-m-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-m-3 {
@@ -622,13 +622,13 @@ a:link.btn-normal {
 }
 
 .col-m-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-m-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-m-6 {
@@ -637,13 +637,13 @@ a:link.btn-normal {
 }
 
 .col-m-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-m-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-m-9 {
@@ -652,13 +652,13 @@ a:link.btn-normal {
 }
 
 .col-m-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-m-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-m-12 {
@@ -1338,13 +1338,13 @@ html {
 }
 
 .col-d-1 {
-  flex-basis : 8.33333333333333%;
-  max-width  : 8.33333333333333%;
+  flex-basis : 8.333333333333334%;
+  max-width  : 8.333333333333334%;
 }
 
 .col-d-2 {
-  flex-basis : 16.6666666666667%;
-  max-width  : 16.6666666666667%;
+  flex-basis : 16.666666666666668%;
+  max-width  : 16.666666666666668%;
 }
 
 .col-d-3 {
@@ -1353,13 +1353,13 @@ html {
 }
 
 .col-d-4 {
-  flex-basis : 33.3333333333333%;
-  max-width  : 33.3333333333333%;
+  flex-basis : 33.333333333333336%;
+  max-width  : 33.333333333333336%;
 }
 
 .col-d-5 {
-  flex-basis : 41.6666666666667%;
-  max-width  : 41.6666666666667%;
+  flex-basis : 41.666666666666664%;
+  max-width  : 41.666666666666664%;
 }
 
 .col-d-6 {
@@ -1368,13 +1368,13 @@ html {
 }
 
 .col-d-7 {
-  flex-basis : 58.3333333333333%;
-  max-width  : 58.3333333333333%;
+  flex-basis : 58.333333333333336%;
+  max-width  : 58.333333333333336%;
 }
 
 .col-d-8 {
-  flex-basis : 66.6666666666667%;
-  max-width  : 66.6666666666667%;
+  flex-basis : 66.66666666666667%;
+  max-width  : 66.66666666666667%;
 }
 
 .col-d-9 {
@@ -1383,13 +1383,13 @@ html {
 }
 
 .col-d-10 {
-  flex-basis : 83.3333333333333%;
-  max-width  : 83.3333333333333%;
+  flex-basis : 83.33333333333333%;
+  max-width  : 83.33333333333333%;
 }
 
 .col-d-11 {
-  flex-basis : 91.6666666666667%;
-  max-width  : 91.6666666666667%;
+  flex-basis : 91.66666666666667%;
+  max-width  : 91.66666666666667%;
 }
 
 .col-d-12 {
@@ -1816,7 +1816,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
             </a>
           </li>
           <li class="m-pl3 inline">
-            <a href="/pricing" class="pf-link-black">
+            <a href="/pricing?" class="pf-link-black">
               Subscribe
             </a>
           </li>
@@ -1882,7 +1882,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
 today!
             </p>
-            <a href="/pricing" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2">
+            <a href="/pricing?" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2">
               See subscription options
             </a>
             <p class="fg-black normal h5 lh-4 m-pb2 m-pt4">

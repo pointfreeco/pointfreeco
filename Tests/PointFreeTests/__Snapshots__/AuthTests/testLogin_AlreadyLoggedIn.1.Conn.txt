@@ -1,4 +1,4 @@
-GET http://localhost:8080/login
+GET http://localhost:8080/login?
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 302 Found
