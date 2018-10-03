@@ -183,7 +183,14 @@ public extension Application {
 
 public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
-    conn |> respond(body: view.rendered(with: conn.data), contentType: contentType)
+    conn
+      |> respond(
+        body: view.rendered(
+          with: conn.data,
+          config: Current.envVars.appEnv == .testing ? .pretty : .compact
+        ),
+        contentType: contentType
+    )
   }
 }
 

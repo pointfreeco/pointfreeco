@@ -121,7 +121,7 @@ func respond<A, B>(
         >=> respond(
           body: pageLayout.rendered(
             with: newLayoutData,
-            config: Current.envVars.appEnv == .production ? .compact : .pretty
+            config: Current.envVars.appEnv == .testing ? .pretty : .compact
           ),
           contentType: .html
       )
@@ -129,7 +129,7 @@ func respond<A, B>(
 }
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
-  let cssConfig: Css.Config = Current.envVars.appEnv == .production ? .compact : .pretty
+  let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
   return View { layoutData in
     document([
       html([
