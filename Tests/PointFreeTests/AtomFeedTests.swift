@@ -15,7 +15,6 @@ class AtomFeedTests: TestCase {
   }
 
   func testEpisodeFeed() {
-    record = true
     let conn = connection(from: request(to: .feed(.episodes)))
     let result = conn |> siteMiddleware
 

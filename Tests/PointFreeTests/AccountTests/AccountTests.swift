@@ -40,7 +40,6 @@ final class AccountTests: TestCase {
   }
 
   func testAccount_WithRssFeatureFlag() {
-    record = true
     Current = .teamYearly
       |> \.features .~ [.podcastRss |> \.isEnabled .~ true]
 
