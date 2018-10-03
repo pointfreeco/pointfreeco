@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={}
 
-pricing[lane]=team&pricing[billing]=yearly&pricing[quantity]=5&token=stripe-deadbeef&vatNumber=
+pricing[billing]=yearly&pricing[lane]=team&pricing[quantity]=5&token=stripe-deadbeef&vatNumber=
 
 302 Found
 Location: /login?redirect=http://localhost:8080/pricing?plan%3Dyearly%26quantity%3D5
