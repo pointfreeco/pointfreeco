@@ -2,7 +2,7 @@ import Foundation
 
 let introduction = Episode(
   blurb: """
-Point-Free is here, bringing you videos covering functional programming concepts using the Swift language.
+Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. \
 Take a moment to hear from the hosts about what to expect from this new series.
 """,
   codeSampleDirectory: "",

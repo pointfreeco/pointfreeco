@@ -2,8 +2,7 @@ import Foundation
 
 let ep25 = Episode(
   blurb: """
-The third, and final, part of our introductory series to `zip` finally answers the question:
-"What's the point?"
+The third, and final, part of our introductory series to `zip` finally answers the question: "What's the point?"
 """,
   codeSampleDirectory: "0025-zip-pt3",
   exercises: exercises,
