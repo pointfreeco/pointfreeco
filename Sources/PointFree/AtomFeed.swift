@@ -8,7 +8,7 @@ let atomFeedResponse =
   writeStatus(.ok)
     >=> respond(pointFreeFeed, contentType: .application(.atom))
 
-let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, SubscriberState, Data> =
+let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
     >=> respond(episodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
     >=> clearHeadBody
@@ -28,10 +28,10 @@ let pointFreeFeed = View<[Episode]> { episodes in
   )
 }
 
-private let episodesFeedView = itunesRssFeedLayout <| View<SubscriberState> { subscriberState in
+private let episodesFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
   node(
     rssChannel: freeEpisodeRssChannel,
-    items: items(subscriberState: subscriberState)
+    items: items()
   )
 }
 
@@ -84,14 +84,14 @@ how these ideas can improve the quality of your code today.
   )
 }
 
-private func items(subscriberState: SubscriberState) -> [RssItem] {
+private func items() -> [RssItem] {
   return Current
     .episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
-    .map { item(episode: $0, subscriberState: subscriberState) }
+    .map { item(episode: $0) }
 }
 
-private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem {
+private func item(episode: Episode) -> RssItem {
 
   func summary(episode: Episode) -> String {
     return episode.subscriberOnly

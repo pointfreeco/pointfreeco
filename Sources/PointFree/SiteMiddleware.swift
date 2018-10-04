@@ -101,7 +101,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> atomFeedResponse
 
     case .feed(.episodes):
-      return conn.map(const(subscriberState))
+      return conn.map(const(unit))
         |> episodesRssMiddleware
 
     case .fika:
