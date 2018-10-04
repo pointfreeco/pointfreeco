@@ -5,8 +5,8 @@ let ep1 = Episode(
 Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
 """,
   codeSampleDirectory: "0001-functions",
-  id: 1,
   exercises: [],
+  id: 1,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/0001-poster.jpg",
   length: 1219,
   permission: .free,

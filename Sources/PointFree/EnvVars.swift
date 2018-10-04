@@ -20,8 +20,9 @@ public struct EnvVars: Codable {
 
   public enum AppEnv: String, Codable {
     case development
-    case staging
     case production
+    case staging
+    case testing
   }
 
   public struct BasicAuth: Codable {

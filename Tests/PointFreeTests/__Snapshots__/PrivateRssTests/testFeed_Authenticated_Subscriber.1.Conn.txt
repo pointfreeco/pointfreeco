@@ -1,0 +1,162 @@
+GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47847c7d6d216c635dd0cff1d0429f0567/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a
+Cookie: pf_session={}
+
+200 OK
+Content-Length: 5097
+Content-Type: text/xml; charset=utf-8
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
+
+<?xml version="1.0" encoding="utf-8" ?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://www.rssboard.org/media-rss" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>
+      Point-Free Videos (Private feed for hello@pointfree.co)
+    </title>
+    <link>
+      http://localhost:8080
+    </link>
+    <language>
+      en-US
+    </language>
+    <description>
+      Point-Free is a video series about functional programming and the Swift programming language. Each episode
+covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
+each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
+how these ideas can improve the quality of your code today.
+
+---
+
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
+with anyone else.
+    </description>
+    <copyright>
+      Copyright Point-Free, Inc. 2018
+    </copyright>
+    <image>
+      <url>
+        http://localhost:8080
+      </url>
+      <title>
+        Point-Free Videos (Private feed for hello@pointfree.co)
+      </title>
+      <link>
+        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
+      </link>
+    </image>
+    <itunes:author>
+      Brandon Williams &amp; Stephen Celis
+    </itunes:author>
+    <itunes:subtitle>
+      Functional programming concepts explained simply.
+    </itunes:subtitle>
+    <itunes:summary>
+      Point-Free is a video series about functional programming and the Swift programming language. Each episode
+covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
+each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
+how these ideas can improve the quality of your code today.
+
+---
+
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
+with anyone else.
+    </itunes:summary>
+    <itunes:explicit>
+      no
+    </itunes:explicit>
+    <itunes:owner>
+      <itunes:name>
+        Brandon Williams &amp; Stephen Celis
+      </itunes:name>
+      <itunes:email>
+        support@pointfree.co
+      </itunes:email>
+    </itunes:owner>
+    <itunes:type>
+      episodic
+    </itunes:type>
+    <itunes:keywords>
+      programming,development,mobile,ios,functional,swift,apple,developer,software engineering,server,app
+    </itunes:keywords>
+    <itunes:image href="https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg">
+    </itunes:image>
+    <itunes:category text="Technology">
+      <itunes:category>
+        Software How-To
+      </itunes:category>
+    </itunes:category>
+    <itunes:category text="Education">
+      <itunes:category>
+        Training
+      </itunes:category>
+    </itunes:category>
+    <item>
+      <title>
+        Proof in Functions
+      </title>
+      <pubDate>
+        Tue, 20 Dec 2016 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </guid>
+      <description>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams &amp; Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:subtitle>
+      <itunes:summary>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        2
+      </itunes:episode>
+      <itunes:title>
+        Proof in Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
+        <media:title>
+          Proof in Functions
+        </media:title>
+      </media:content>
+    </item>
+  </channel>
+</rss>
+

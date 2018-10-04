@@ -5,8 +5,8 @@ let ep3 = Episode(
 We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
 """,
   codeSampleDirectory: "0003-styling-with-functions",
-  id: 3,
   exercises: [],
+  id: 3,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg",
   length: 1_634,
   permission: .free,
