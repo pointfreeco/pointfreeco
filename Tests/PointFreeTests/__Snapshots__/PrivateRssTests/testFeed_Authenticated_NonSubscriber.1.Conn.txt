@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4466
+Content-Length: 4539
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -116,7 +116,7 @@ X-XSS-Protection: 1; mode=block
         00:00:00
       </itunes:duration>
       <itunes:image>
-        
+        https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg
       </itunes:image>
       <itunes:season>
         1

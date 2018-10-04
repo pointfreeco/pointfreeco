@@ -8,6 +8,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   exercises: [],
   id: 2,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/itunes-poster.jpg",
   length: 2676,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_811_069),

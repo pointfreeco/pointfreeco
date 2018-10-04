@@ -9,6 +9,7 @@ and see how it can help us create type-safe data structures that can catch runti
   exercises: exercises,
   id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/itunes-poster.jpg",
   length: 2_172,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),

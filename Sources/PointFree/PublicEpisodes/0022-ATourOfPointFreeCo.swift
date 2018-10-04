@@ -8,6 +8,7 @@ Join us for a tour of the code base that powers this very site and see what func
   exercises: exercises,
   id: 22,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/itunes-poster.jpg",
   length: 39*60 + 21,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1531735023),

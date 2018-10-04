@@ -19,6 +19,7 @@ previously hidden.
   ),
   id: 29,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/itunes-poster.jpg",
   length: 33*60 + 17,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1536559023),
