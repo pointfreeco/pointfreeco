@@ -153,7 +153,7 @@ that day!
     description: description(episode: episode),
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: enclosure(episode: episode),
-    guid: url(to: .episode(.left(episode.slug))),
+    guid: String(describing: episode.freeSince ?? episode.publishedAt),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: episode.length,
@@ -171,7 +171,7 @@ that day!
       content: mediaContent(episode: episode),
       title: episode.title
     ),
-    pubDate: episode.publishedAt,
+    pubDate: episode.freeSince ?? episode.publishedAt,
     title: episode.title
   )
 }

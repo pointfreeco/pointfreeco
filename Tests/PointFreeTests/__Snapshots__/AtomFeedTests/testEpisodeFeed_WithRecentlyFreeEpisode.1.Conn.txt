@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7199
+Content-Length: 7169
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -80,16 +80,83 @@ X-XSS-Protection: 1; mode=block
     </itunes:category>
     <item>
       <title>
-        Type-Safe HTML in Swift
+        Subscriber-Only Episode that is now free!
       </title>
       <pubDate>
-        Tue, 20 Jun 2017 12:00:00 +0000
+        Mon, 29 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+        http://localhost:8080/episodes/ep2-subscriber-only-episode-that-is-now-free
       </link>
       <guid>
-        2017-06-20 12:00:00 +0000
+        2018-01-29 00:00:00 +0000
+      </guid>
+      <description>
+        Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
+
+---
+
+This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams &amp; Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        🆓 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:subtitle>
+      <itunes:summary>
+        🆓 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        2
+      </itunes:episode>
+      <itunes:title>
+        Subscriber-Only Episode that is now free!
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
+        <media:title>
+          Subscriber-Only Episode that is now free!
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Free Episode
+      </title>
+      <pubDate>
+        Wed, 24 Jan 2018 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep1-free-episode
+      </link>
+      <guid>
+        2018-01-24 00:00:00 +0000
       </guid>
       <description>
         Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
@@ -129,7 +196,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         1
       </itunes:episode>
       <itunes:title>
-        Type-Safe HTML in Swift
+        Free Episode
       </itunes:title>
       <itunes:episodeType>
         full
@@ -138,74 +205,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
       </enclosure>
       <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
         <media:title>
-          Type-Safe HTML in Swift
-        </media:title>
-      </media:content>
-    </item>
-    <item>
-      <title>
-        Proof in Functions
-      </title>
-      <pubDate>
-        Tue, 20 Dec 2016 00:00:00 +0000
-      </pubDate>
-      <link>
-        http://localhost:8080/episodes/ep2-proof-in-functions
-      </link>
-      <guid>
-        2016-12-20 00:00:00 +0000
-      </guid>
-      <description>
-        Subscriber-Only: Today&#39;s episode is available only to subscribers. If you are a Point-Free subscriber you can access your private podcast feed by visiting http://localhost:8080/account.
-
----
-
-This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.
-      </description>
-      <dc:creator>
-        Brandon Williams
-      </dc:creator>
-      <dc:creator>
-        Stephen Celis
-      </dc:creator>
-      <itunes:author>
-        Brandon Williams &amp; Stephen Celis
-      </itunes:author>
-      <itunes:subtitle>
-        🔒 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.
-      </itunes:subtitle>
-      <itunes:summary>
-        🔒 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.
-      </itunes:summary>
-      <itunes:explicit>
-        no
-      </itunes:explicit>
-      <itunes:duration>
-        00:23:00
-      </itunes:duration>
-      <itunes:image>
-        https://s3.amazonaws.com/itunes.jpg
-      </itunes:image>
-      <itunes:season>
-        1
-      </itunes:season>
-      <itunes:episode>
-        2
-      </itunes:episode>
-      <itunes:title>
-        Proof in Functions
-      </itunes:title>
-      <itunes:episodeType>
-        trailer
-      </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/trailer.mp4" length="5000000" type="video/mp4">
-      </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/trailer.mp4" length="5000000" type="video/mp4" medium="video">
-        <media:title>
-          Proof in Functions
+          Free Episode
         </media:title>
       </media:content>
     </item>
