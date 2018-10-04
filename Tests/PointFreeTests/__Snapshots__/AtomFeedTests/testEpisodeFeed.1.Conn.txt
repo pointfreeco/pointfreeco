@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7304
+Content-Length: 7274
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -89,7 +89,7 @@ X-XSS-Protection: 1; mode=block
         http://localhost:8080/episodes/ep1-type-safe-html-in-swift
       </link>
       <guid>
-        2017-06-20 12:00:00 +0000
+        1497960000
       </guid>
       <description>
         Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy this episode, and if you find this interesting you may want to consider a subscription http://localhost:8080/pricing.
@@ -153,7 +153,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         http://localhost:8080/episodes/ep2-proof-in-functions
       </link>
       <guid>
-        2016-12-20 00:00:00 +0000
+        1482192000
       </guid>
       <description>
         Subscriber-Only: Today&#39;s episode is available only to subscribers. If you are a Point-Free subscriber you can access your private podcast feed by visiting http://localhost:8080/account.

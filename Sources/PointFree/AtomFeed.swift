@@ -167,7 +167,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
     description: description(episode: episode),
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: enclosure(episode: episode),
-    guid: String(describing: episode.freeSince ?? episode.publishedAt),
+    guid: String(Int((episode.freeSince ?? episode.publishedAt).timeIntervalSince1970)),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: episode.length,
