@@ -1815,9 +1815,7 @@ input::-webkit-outer-spin-button {
           </h1>
           <div class="body-leading fg-black normal lh-4">
             <div class=" md-ctn">
-              <p>Swift 4.1 deprecated and renamed a particular overload of <code>flatMap</code>. What made this <code>flatMap</code> different from
-the others? We’ll explore this and how understanding that difference helps us explore generalizations of the
-operation to other structures and derive new, useful code!</p>
+              <p>Swift 4.1 deprecated and renamed a particular overload of <code>flatMap</code>. What made this <code>flatMap</code> different from the others? We’ll explore this and how understanding that difference helps us explore generalizations of the operation to other structures and derive new, useful code!</p>
 
             </div>
           </div>
@@ -1919,8 +1917,7 @@ operation to other structures and derive new, useful code!</p>
           </h1>
           <div class="body-leading fg-black normal lh-4">
             <div class=" md-ctn">
-              <p>Point-Free is here, bringing you videos covering functional programming concepts using the Swift language.
-Take a moment to hear from the hosts about what to expect from this new series.</p>
+              <p>Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. Take a moment to hear from the hosts about what to expect from this new series.</p>
 
             </div>
           </div>

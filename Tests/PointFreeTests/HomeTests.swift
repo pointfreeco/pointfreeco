@@ -13,6 +13,7 @@ import WebKit
 class HomeTests: TestCase {
   override func setUp() {
     super.setUp()
+//    record = true
 
     let eps = [
       ep10 |> \.permission .~ .subscriberOnly,
