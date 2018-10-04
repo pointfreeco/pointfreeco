@@ -100,8 +100,29 @@ private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem
   }
 
   func description(episode: Episode) -> String {
-    return episode.subscriberOnly
-      ? """
+    switch episode.permission {
+    case .free:
+      return """
+Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
+this episode, and if you find this interesting you may want to consider a subscription \
+\(url(to: .pricing(nil, expand: nil))).
+
+---
+
+\(episode.blurb)
+"""
+    case let .freeDuring(range) where range.contains(Current.date()):
+      return """
+Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
+that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
+subscription \(url(to: .pricing(nil, expand: nil))).
+
+---
+
+\(episode.blurb)
+"""
+    case .freeDuring, .subscriberOnly:
+      return """
 Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
 can access your private podcast feed by visiting \(url(to: .account(.index))).
 
@@ -109,14 +130,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 
 \(episode.blurb)
 """
-      : """
-Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
-that day!
-
----
-
-\(episode.blurb)
-"""
+    }
   }
 
   func enclosure(episode: Episode) -> RssItem.Enclosure {

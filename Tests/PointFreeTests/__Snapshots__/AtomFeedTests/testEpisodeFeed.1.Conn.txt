@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7199
+Content-Length: 7304
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -92,7 +92,7 @@ X-XSS-Protection: 1; mode=block
         2017-06-20 12:00:00 +0000
       </guid>
       <description>
-        Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
+        Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy this episode, and if you find this interesting you may want to consider a subscription http://localhost:8080/pricing.
 
 ---
 
