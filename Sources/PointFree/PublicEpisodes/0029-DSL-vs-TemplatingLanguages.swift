@@ -8,7 +8,6 @@ the DSL fixes many problems that templates have, while also revealing amazing co
 previously hidden.
 """,
   codeSampleDirectory: "0029-dsls-vs-templating-languages",
-  id: 29,
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 665_928_011,
@@ -18,6 +17,7 @@ previously hidden.
       "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",
       ]
   ),
+  id: 29,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/poster.jpg",
   length: 33*60 + 17,
   permission: .free,

@@ -269,6 +269,8 @@ please contact support@pointfree.co.
 
 func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {
   return IO {
+    // TODO: this doesn't actually work. The `conn.request.httpBody` has all the
+    // data, and that's what needs to be cleared.
     conn.request.httpMethod == "HEAD"
       ? conn.map(const(Data()))
       : conn

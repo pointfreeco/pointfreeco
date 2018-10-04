@@ -2,13 +2,13 @@ import Foundation
 
 let ep10 = Episode(
   blurb: """
-Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from
-the others? We'll explore this and how understanding that difference helps us explore generalizations of the
+Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from \
+the others? We'll explore this and how understanding that difference helps us explore generalizations of the \
 operation to other structures and derive new, useful code!
 """,
   codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
-  id: 10,
   exercises: exercises,
+  id: 10,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",
   length: 25*60+4,
   permission: .free,
