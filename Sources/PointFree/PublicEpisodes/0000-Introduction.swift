@@ -9,6 +9,7 @@ Take a moment to hear from the hosts about what to expect from this new series.
   exercises: [],
   id: 0,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg",
   length: 179,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
