@@ -8,6 +8,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   exercises: [],
   id: 3,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/itunes-poster.jpg",
   length: 1_634,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_518_441_151),

@@ -10,6 +10,7 @@ operation to other structures and derive new, useful code!
   exercises: exercises,
   id: 10,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg",
   length: 25*60+4,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_522_144_623),

@@ -8,6 +8,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
   exercises: [],
   id: 1,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/0001-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg",
   length: 1219,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
