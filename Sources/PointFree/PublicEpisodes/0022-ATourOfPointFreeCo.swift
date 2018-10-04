@@ -5,8 +5,8 @@ let ep22 = Episode(
 Join us for a tour of the code base that powers this very site and see what functional programming can look like in a production code base! We'll walk through cloning the repo and getting the site running on your local machine before showing off some of the fun functional programming we do on a daily basis.
 """,
   codeSampleDirectory: "0022-a-tour-of-point-free",
-  id: 22,
   exercises: exercises,
+  id: 22,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",
   length: 39*60 + 21,
   permission: .free,

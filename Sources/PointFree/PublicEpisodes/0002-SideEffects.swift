@@ -5,8 +5,8 @@ let ep2 = Episode(
 Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
 """,
   codeSampleDirectory: "0002-side-effects",
-  id: 2,
   exercises: [],
+  id: 2,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
   length: 2676,
   permission: .free,

@@ -8,7 +8,7 @@ let atomFeedResponse =
   writeStatus(.ok)
     >=> respond(pointFreeFeed, contentType: .application(.atom))
 
-let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, SubscriberState, Data> =
+let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
     >=> respond(episodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
     >=> clearHeadBody
@@ -28,10 +28,10 @@ let pointFreeFeed = View<[Episode]> { episodes in
   )
 }
 
-private let episodesFeedView = itunesRssFeedLayout <| View<SubscriberState> { subscriberState in
+private let episodesFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
   node(
     rssChannel: freeEpisodeRssChannel,
-    items: items(subscriberState: subscriberState)
+    items: items()
   )
 }
 
@@ -84,14 +84,14 @@ how these ideas can improve the quality of your code today.
   )
 }
 
-private func items(subscriberState: SubscriberState) -> [RssItem] {
+private func items() -> [RssItem] {
   return Current
     .episodes()
     .sorted(by: their({ $0.freeSince ?? $0.publishedAt }, >))
-    .map { item(episode: $0, subscriberState: subscriberState) }
+    .map { item(episode: $0) }
 }
 
-private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem {
+private func item(episode: Episode) -> RssItem {
 
   func summary(episode: Episode) -> String {
     return episode.subscriberOnly
@@ -100,8 +100,29 @@ private func item(episode: Episode, subscriberState: SubscriberState) -> RssItem
   }
 
   func description(episode: Episode) -> String {
-    return episode.subscriberOnly
-      ? """
+    switch episode.permission {
+    case .free:
+      return """
+Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
+this episode, and if you find this interesting you may want to consider a subscription \
+\(url(to: .pricing(nil, expand: nil))).
+
+---
+
+\(episode.blurb)
+"""
+    case let .freeDuring(range) where range.contains(Current.date()):
+      return """
+Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
+that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
+subscription \(url(to: .pricing(nil, expand: nil))).
+
+---
+
+\(episode.blurb)
+"""
+    case .freeDuring, .subscriberOnly:
+      return """
 Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
 can access your private podcast feed by visiting \(url(to: .account(.index))).
 
@@ -109,14 +130,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 
 \(episode.blurb)
 """
-      : """
-Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
-that day!
-
----
-
-\(episode.blurb)
-"""
+    }
   }
 
   func enclosure(episode: Episode) -> RssItem.Enclosure {
@@ -153,7 +167,7 @@ that day!
     description: description(episode: episode),
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: enclosure(episode: episode),
-    guid: url(to: .episode(.left(episode.slug))),
+    guid: String(Int((episode.freeSince ?? episode.publishedAt).timeIntervalSince1970)),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: episode.length,
@@ -171,7 +185,7 @@ that day!
       content: mediaContent(episode: episode),
       title: episode.title
     ),
-    pubDate: episode.publishedAt,
+    pubDate: episode.freeSince ?? episode.publishedAt,
     title: episode.title
   )
 }
@@ -183,7 +197,14 @@ public extension Application {
 
 public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
-    conn |> respond(body: view.rendered(with: conn.data), contentType: contentType)
+    conn
+      |> respond(
+        body: view.rendered(
+          with: conn.data,
+          config: Current.envVars.appEnv == .testing ? .pretty : .compact
+        ),
+        contentType: contentType
+    )
   }
 }
 

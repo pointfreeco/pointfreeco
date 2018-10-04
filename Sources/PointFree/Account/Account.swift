@@ -375,7 +375,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                   ],
                   [
                     text(
-                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(45))
+                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40))
                         + "..."
                     )
                   ]

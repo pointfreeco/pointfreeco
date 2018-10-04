@@ -52,6 +52,7 @@ extension Logger {
 extension EnvVars {
   public static var mock: EnvVars {
     return EnvVars()
+      |> \.appEnv .~ EnvVars.AppEnv.testing
       |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
   }
 }

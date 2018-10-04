@@ -154,6 +154,7 @@ final class ChangeTests: TestCase {
   }
   
   func testChangeUpdateAddSeatsIndividualPlan() {
+//    record = true
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
     update(

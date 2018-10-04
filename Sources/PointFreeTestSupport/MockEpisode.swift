@@ -16,11 +16,20 @@ private let subscriberOnlyEpisode = Episode(
   text, no markdown allowed. Here is some more text just to have some filler.
   """,
   codeSampleDirectory: "ep2-proof-in-functions",
-  id: 2,
   exercises: [
     .init(body: "This is an exercise.")
   ],
+  fullVideo: .init(
+    bytesLength: 500_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/video.webm"
+    ]
+  ),
+  id: 2,
   image: "",
+  itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .subscriberOnly,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
@@ -28,6 +37,14 @@ private let subscriberOnlyEpisode = Episode(
   sourcesFull: [""],
   sourcesTrailer: [""],
   title: "Proof in Functions",
+  trailerVideo: .init(
+    bytesLength: 5_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
+    ]
+  ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: "Introduction",
@@ -130,9 +147,18 @@ private let freeEpisode = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep1-type-safe-html",
-  id: 1,
   exercises: [],
+  fullVideo: .init(
+    bytesLength: 500_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/video.webm"
+    ]
+  ),
+  id: 1,
   image: "",
+  itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
@@ -140,6 +166,14 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   sourcesFull: [""],
   sourcesTrailer: [],
   title: "Type-Safe HTML in Swift",
+  trailerVideo: .init(
+    bytesLength: 5_000_000,
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
+    streamingSources: [
+      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
+      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
+    ]
+  ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
       content: """
