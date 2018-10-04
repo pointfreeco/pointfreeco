@@ -130,9 +130,6 @@ func respond<A, B>(
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
-
-
-
   return View { layoutData -> Node in
 
     let hasPodcastRssFeature = Current.features.hasAccess(to: .podcastRss, for: layoutData.currentUser)
