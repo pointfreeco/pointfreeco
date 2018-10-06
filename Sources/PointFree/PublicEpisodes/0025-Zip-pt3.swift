@@ -21,14 +21,6 @@ The third, and final, part of our introductory series to `zip` finally answers t
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
   sequence: 25,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer/webm-trailer.webm",
-  ],
   title: "The Many Faces of Zip: Part 3",
   trailerVideo: .init(
     bytesLength: 41_732_099,

@@ -141,9 +141,9 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
         url: episode.trailerVideo?.downloadUrl ?? ""
         )
       : .init(
-        length: episode.fullVideo?.bytesLength ?? 0,
+        length: episode.fullVideo.bytesLength,
         type: "video/mp4",
-        url: episode.fullVideo?.downloadUrl ?? ""
+        url: episode.fullVideo.downloadUrl
     )
   }
 
@@ -156,10 +156,10 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
         url: episode.trailerVideo?.downloadUrl ?? ""
         )
       : .init(
-        length: episode.fullVideo?.bytesLength ?? 0,
+        length: episode.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: episode.fullVideo?.downloadUrl ?? ""
+        url: episode.fullVideo.downloadUrl
     )
   }
 

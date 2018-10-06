@@ -21,14 +21,6 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
   sequence: 2,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/hls-fish-and-diamonds.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/webm-fish-and-diamonds.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/hls.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/webm.webm"
-  ],
   title: "Side Effects",
   trailerVideo: .init(
     bytesLength: 19_742_767,
