@@ -176,8 +176,6 @@ class EpisodeTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    record = true
-
     let conn = connection(
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
