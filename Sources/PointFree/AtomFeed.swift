@@ -48,9 +48,9 @@ how these ideas can improve the quality of your code today.
     copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
     description: description,
     image: .init(
-      link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
+      link: url(to: .home),
       title: title,
-      url: url(to: .home)
+      url: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
