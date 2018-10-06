@@ -38,7 +38,16 @@ directly to your account.
 
 We hope that this feature allows our viewers to more freely view our videos in a manner that suits them
 best. We have even more features coming in the future for viewing our videos, but more on that later...
+
+---
+
+> Hey, did you know that the entire codebase that runs this site is written in Swift _and_
+[open source](https://github.com/pointfreeco/pointfreeco)? That means you can actually see the work that
+went into building this feature. Everything from routing and rendering the RSS feed, to 
+
 """,
+      //https://github.com/pointfreeco/pointfreeco/pull/317
+      //https://github.com/pointfreeco/pointfreeco/pull/312
       timestamp: nil,
       type: .paragraph
     ),
