@@ -226,7 +226,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       video(
         [
-          `class`([innerVideoContainerClass, videoClasses]),
+          `class`([innerVideoContainerClass, videoJsClasses]),
           style(position(.absolute)),
           controls(true),
           playsinline(true),

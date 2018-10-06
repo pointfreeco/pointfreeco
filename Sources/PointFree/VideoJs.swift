@@ -22,7 +22,7 @@ var videoJsHead: [ChildOf<Element.Head>] {
     + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
 
-let videoClasses: CssSelector =
+let videoJsClasses: CssSelector =
   ".video-js"
     | ".vjs-default-skin"
     | ".vjs-big-play-centered"
