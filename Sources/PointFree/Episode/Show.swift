@@ -30,6 +30,7 @@ let episodeResponse =
           currentUser: currentUser,
           data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
+          extraHead: videoJsHead,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
           style: .base(navStyle),
@@ -223,17 +224,23 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       style(outerVideoContainerStyle)
     ],
     [
-      video(
+      div(
+        [`class`([innerVideoContainerClass]),],
         [
-          `class`([innerVideoContainerClass]),
-          controls(true),
-          playsinline(true),
-          autoplay(true),
-          poster(episode.image)
-        ],
-        isEpisodeViewable
-          ? episode.sourcesFull.map { source(src: $0) }
-          : episode.sourcesTrailer.map { source(src: $0) }
+          video(
+            [
+              `class`([innerVideoContainerClass, videoClasses]),
+              controls(true),
+              playsinline(true),
+              autoplay(true),
+              poster(episode.image),
+              data("setup", VideoJsOptions.default.jsonString)
+            ],
+            isEpisodeViewable
+              ? episode.sourcesFull.map { source(src: $0) }
+              : episode.sourcesTrailer.map { source(src: $0) }
+          )
+        ]
       )
     ]
   )

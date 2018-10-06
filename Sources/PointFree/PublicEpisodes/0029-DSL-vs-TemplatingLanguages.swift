@@ -11,7 +11,7 @@ previously hidden.
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 665_928_011,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full-720p.mp4",
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full-720p.mp4",
     streamingSources: [
       "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
       "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",

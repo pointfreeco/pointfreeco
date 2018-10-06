@@ -54,6 +54,7 @@ struct SimplePageLayoutData<A> {
   private(set) var currentUser: Database.User?
   private(set) var data: A
   private(set) var description: String?
+  private(set) var extraHead: [ChildOf<Element.Head>]
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
@@ -69,6 +70,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     description: String? = nil,
+    extraHead: [ChildOf<Element.Head>] = [],
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
     openGraphType: OpenGraphType = .website,
@@ -83,6 +85,7 @@ struct SimplePageLayoutData<A> {
     self.currentUser = currentUser
     self.data = data
     self.description = description
+    self.extraHead = extraHead
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
@@ -143,7 +146,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
       ])
 
     return document([
-      html([
+      html([lang(.en)], [
         head([
           meta([charset(.utf8)]),
           title(layoutData.title),
@@ -161,6 +164,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           ]
           <> (layoutData.usePrismJs ? prismJsHead : [])
           <> favicons
+          <> layoutData.extraHead
         ),
         body(
           pastDueBanner(layoutData)
