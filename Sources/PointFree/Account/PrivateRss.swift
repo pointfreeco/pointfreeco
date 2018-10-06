@@ -142,9 +142,9 @@ private func item(forUser user: Database.User, episode: Episode) -> RssItem {
     description: episode.blurb,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: .init(
-      length: episode.fullVideo?.bytesLength ?? 0,
+      length: episode.fullVideo.bytesLength,
       type: "video/mp4",
-      url: episode.fullVideo?.downloadUrl ?? ""
+      url: episode.fullVideo.downloadUrl
     ),
     guid: url(to: .episode(.left(episode.slug))),
     itunes: RssItem.Itunes(
@@ -162,10 +162,10 @@ private func item(forUser user: Database.User, episode: Episode) -> RssItem {
     link: url(to: .episode(.left(episode.slug))),
     media: .init(
       content: .init(
-        length: episode.fullVideo?.bytesLength ?? 0,
+        length: episode.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: episode.fullVideo?.downloadUrl ?? ""
+        url: episode.fullVideo.downloadUrl
       ),
       title: episode.title
     ),
@@ -229,7 +229,7 @@ private var invalidatedItem: RssItem {
     enclosure: .init(
       length: 0,
       type: "video/mp4",
-      url: introduction.fullVideo?.downloadUrl ?? ""
+      url: introduction.fullVideo.downloadUrl
     ),
     guid: String(Current.date().timeIntervalSince1970),
     itunes: RssItem.Itunes(
@@ -247,10 +247,10 @@ private var invalidatedItem: RssItem {
     link: url(to: .home),
     media: .init(
       content: .init(
-        length: introduction.fullVideo?.bytesLength ?? 0,
+        length: introduction.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: introduction.fullVideo?.downloadUrl ?? ""
+        url: introduction.fullVideo.downloadUrl
       ),
       title: "Invalid Feed URL"
     ),
