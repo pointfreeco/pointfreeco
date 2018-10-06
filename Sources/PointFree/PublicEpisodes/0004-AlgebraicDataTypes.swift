@@ -7,6 +7,14 @@ and see how it can help us create type-safe data structures that can catch runti
 """,
   codeSampleDirectory: "0004-algebraic-data-types",
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 723_938_138,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
+      ]
+  ),
   id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/itunes-poster.jpg",
@@ -23,6 +31,14 @@ and see how it can help us create type-safe data structures that can catch runti
     "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
     ],
   title: "Algebraic Data Types",
+  trailerVideo: .init(
+    bytesLength: 43_693_973,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
+      ]
+  ),
   transcriptBlocks: transcriptBlocks
 )
 
