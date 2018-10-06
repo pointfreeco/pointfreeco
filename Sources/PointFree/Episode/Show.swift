@@ -224,23 +224,19 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
       style(outerVideoContainerStyle)
     ],
     [
-      div(
-        [`class`([innerVideoContainerClass]),],
+      video(
         [
-          video(
-            [
-              `class`([innerVideoContainerClass, videoClasses]),
-              controls(true),
-              playsinline(true),
-              autoplay(true),
-              poster(episode.image),
-              data("setup", VideoJsOptions.default.jsonString)
-            ],
-            isEpisodeViewable
-              ? episode.sourcesFull.map { source(src: $0) }
-              : episode.sourcesTrailer.map { source(src: $0) }
-          )
-        ]
+          `class`([innerVideoContainerClass, videoClasses]),
+          style(position(.absolute)),
+          controls(true),
+          playsinline(true),
+          autoplay(true),
+          poster(episode.image),
+          data("setup", VideoJsOptions.default.jsonString)
+        ],
+        isEpisodeViewable
+          ? episode.sourcesFull.map { source(src: $0) }
+          : episode.sourcesTrailer.map { source(src: $0) }
       )
     ]
   )
