@@ -22,14 +22,6 @@ and see how it can help us create type-safe data structures that can catch runti
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
   sequence: 4,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
-    ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
-    ],
   title: "Algebraic Data Types",
   trailerVideo: .init(
     bytesLength: 43_693_973,
