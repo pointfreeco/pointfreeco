@@ -4,20 +4,22 @@ import Html
 import HtmlCssSupport
 
 var videoJsHead: [ChildOf<Element.Head>] {
-  guard Current.envVars.appEnv != .testing else { return [] }
-
-  return [
-    style(".vjs-subs-caps-button" % display(.none)),
+  let videoJsAssets: [ChildOf<Element.Head>] = [
     link([
       href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
       rel(.stylesheet)
       ]),
-    script("window.HELP_IMPROVE_VIDEOJS = false;"),
     .init(script([
       src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
       `defer`(true)
       ]))
   ]
+
+  return [
+    style(".vjs-subs-caps-button" % display(.none)),
+    script("window.HELP_IMPROVE_VIDEOJS = false;")
+    ]
+    + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
 
 let videoClasses: CssSelector =

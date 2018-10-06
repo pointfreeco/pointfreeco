@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67253
+Content-Length: 67390
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1770,6 +1770,12 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <link rel="icon" type="image/png" sizes="16x16" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <style>
+      .vjs-subs-caps-button{display:none}
+    </style>
+    <script>
+      window.HELP_IMPROVE_VIDEOJS = false;
+    </script>
     <meta name="description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
