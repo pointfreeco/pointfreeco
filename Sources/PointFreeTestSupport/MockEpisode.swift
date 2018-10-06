@@ -34,8 +34,6 @@ private let subscriberOnlyEpisode = Episode(
   permission: .subscriberOnly,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 2,
-  sourcesFull: [""],
-  sourcesTrailer: [""],
   title: "Proof in Functions",
   trailerVideo: .init(
     bytesLength: 5_000_000,
@@ -163,8 +161,6 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 1,
-  sourcesFull: [""],
-  sourcesTrailer: [],
   title: "Type-Safe HTML in Swift",
   trailerVideo: .init(
     bytesLength: 5_000_000,

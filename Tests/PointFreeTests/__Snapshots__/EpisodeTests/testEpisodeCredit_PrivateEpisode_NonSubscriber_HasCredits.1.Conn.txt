@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 52101
+Content-Length: 52229
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1916,7 +1916,8 @@ want to use it to view this episode for free right now?
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
             <video class="h-100p w-100p absolute bg-gray650" controls playsinline autoplay poster="">
-              <source src="">
+              <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8">
+              <source src="https://s3.amazonaws.com/pointfreeco/trailer.webm">
             </video>
           </div>
           <div class="d-pl4 d-pr4 m-pl3 m-pr3 m-pt3 m-pb3">

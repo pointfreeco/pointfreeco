@@ -21,12 +21,8 @@ Our first episode is all about functions! We talk a bit about what makes functio
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 1,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/hls.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/webm.webm"
-  ],
-  sourcesTrailer: [],
   title: "Functions",
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 
