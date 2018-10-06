@@ -21,14 +21,6 @@ Join us for a tour of the code base that powers this very site and see what func
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1531735023),
   sequence: 22,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/webm-trailer.webm",
-  ],
   title: "A Tour of Point-Free",
   trailerVideo: .init(
     bytesLength: 29_662_893,

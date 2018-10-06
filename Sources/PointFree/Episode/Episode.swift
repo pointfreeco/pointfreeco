@@ -5,7 +5,7 @@ public struct Episode {
   public private(set) var blurb: String
   public private(set) var codeSampleDirectory: String
   public private(set) var exercises: [Exercise]
-  public private(set) var fullVideo: Video?
+  public private(set) var fullVideo: Video
   public private(set) var id: Id
   public private(set) var image: String
   public private(set) var itunesImage: String?
@@ -13,8 +13,6 @@ public struct Episode {
   public private(set) var permission: Permission
   public private(set) var publishedAt: Date
   public private(set) var sequence: Int
-  public private(set) var sourcesFull: [String]
-  public private(set) var sourcesTrailer: [String]
   public private(set) var title: String
   public private(set) var trailerVideo: Video?
   public private(set) var transcriptBlocks: [TranscriptBlock]
@@ -29,18 +27,16 @@ public struct Episode {
     blurb: String,
     codeSampleDirectory: String,
     exercises: [Exercise],
-    fullVideo: Video? = nil,
+    fullVideo: Video,
     id: Id,
     image: String,
-    itunesImage: String? = nil,
+    itunesImage: String,
     length: Int,
     permission: Permission,
     publishedAt: Date,
     sequence: Int,
-    sourcesFull: [String],
-    sourcesTrailer: [String],
     title: String,
-    trailerVideo: Video? = nil,
+    trailerVideo: Video?,
     transcriptBlocks: [TranscriptBlock]) {
 
     self.blurb = blurb
@@ -54,8 +50,6 @@ public struct Episode {
     self.permission = permission
     self.publishedAt = publishedAt
     self.sequence = sequence
-    self.sourcesFull = sourcesFull
-    self.sourcesTrailer = sourcesTrailer
     self.title = title
     self.trailerVideo = trailerVideo
     self.transcriptBlocks = transcriptBlocks
