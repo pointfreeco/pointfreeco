@@ -3,18 +3,22 @@ import Foundation
 import Html
 import HtmlCssSupport
 
-let videoJsHead: [ChildOf<Element.Head>] = [
-  style(".vjs-subs-caps-button" % display(.none)),
-  link([
-    href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
-    rel(.stylesheet)
-    ]),
-  script("window.HELP_IMPROVE_VIDEOJS = false;"),
-  .init(script([
-    src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
-    `defer`(true)
-    ]))
-]
+var videoJsHead: [ChildOf<Element.Head>] {
+  guard Current.envVars.appEnv != .testing else { return [] }
+
+  return [
+    style(".vjs-subs-caps-button" % display(.none)),
+    link([
+      href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
+      rel(.stylesheet)
+      ]),
+    script("window.HELP_IMPROVE_VIDEOJS = false;"),
+    .init(script([
+      src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
+      `defer`(true)
+      ]))
+  ]
+}
 
 let videoClasses: CssSelector =
   ".video-js"

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67036
+Content-Length: 67259
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,7 +12,7 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>
@@ -2099,9 +2099,11 @@ video.play();event.preventDefault();" data-t="6" class="vid-time-link text-decor
       <div class="bg-purple150 first-m last-d col-m col-d-5 col-m-12">
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
-            <video class="h-100p w-100p absolute bg-gray650" controls playsinline autoplay poster="">
-              <source src="">
-            </video>
+            <div class="h-100p w-100p absolute bg-gray650">
+              <video class="h-100p w-100p absolute bg-gray650 video-js vjs-default-skin vjs-big-play-centered" controls playsinline autoplay poster="" data-setup="{&quot;control&quot;:true,&quot;playbackRates&quot;:[0.5,1,1.5,2]}">
+                <source src="">
+              </video>
+            </div>
           </div>
           <div class="d-pl4 d-pr4 m-pl3 m-pr3 m-pt3 m-pb3">
             <h6 class="fg-black bold ts-m-r0_75 lh-1 caps fg-gray850 m-pb1">
