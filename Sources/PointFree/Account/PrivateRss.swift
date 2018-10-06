@@ -227,7 +227,7 @@ private var invalidatedItem: RssItem {
     description: invalidatedDescription,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: .init(
-      length: 0,
+      length: introduction.fullVideo.bytesLength,
       type: "video/mp4",
       url: introduction.fullVideo.downloadUrl
     ),

@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4759
+Content-Length: 4767
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -130,7 +130,7 @@ X-XSS-Protection: 1; mode=block
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4" length="0" type="video/mp4">
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4" length="411951213" type="video/mp4">
       </enclosure>
       <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4" length="411951213" type="video/mp4" medium="video">
         <media:title>
