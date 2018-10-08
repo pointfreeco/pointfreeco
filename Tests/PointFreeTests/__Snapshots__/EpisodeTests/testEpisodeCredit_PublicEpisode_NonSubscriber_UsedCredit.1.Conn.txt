@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67154
+Content-Length: 67158
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1736,7 +1736,7 @@ input::-webkit-outer-spin-button {
 
     </style>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/atom.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>

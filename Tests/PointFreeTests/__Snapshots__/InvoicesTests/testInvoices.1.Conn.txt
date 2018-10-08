@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 39812
+Content-Length: 39816
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1622,7 +1622,7 @@ html {
 
     </style>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/atom.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">

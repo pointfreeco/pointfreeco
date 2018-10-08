@@ -1,6 +1,6 @@
 import Foundation
 
-let post00XY_PodcastRSS = BlogPost(
+let post0020_PodcastRSS = BlogPost(
   author: .brandon,
   blurb: """
 Follow along with the newest Point-Free episodes using your favorite podcast app. We now support
@@ -53,8 +53,8 @@ it interesting!
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-production/social-assets/pf-avatar-square.jpg", // todo: cloudfront
-  id: 20, // todo
+  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg", 
+  id: 20,
   publishedAt: .init(timeIntervalSince1970: 1539152976),
   title: "Watch episodes in your favorite podcast app!"
 )
