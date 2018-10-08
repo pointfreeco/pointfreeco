@@ -8,13 +8,15 @@ APIs that interact with the outside world can be unpredictable and difficult to 
   contentBlocks: [
 
     .init(
-      content: "",
-      timestamp: nil,
-      type: .image(src: "TODO")
-    ),
-
-    .init(
       content: """
+<iframe src="https://player.vimeo.com/video/291588126"
+        width="100%"
+        height="360"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen></iframe>
+
 ---
 
 > APIs that interact with the outside world can be unpredictable and fail. We typically weave calls to these APIs throughout our applications, coupling our code to them tightly, and making it difficult to test and simulate certain flows.
