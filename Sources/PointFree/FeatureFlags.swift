@@ -3,7 +3,7 @@ public struct Feature: Equatable {
   public private(set) var isEnabled: Bool
   public private(set) var name: String
 
-  static let podcastRss = Feature(isAdminEnabled: true, isEnabled: false, name: "podcast-rss")
+  static let podcastRss = Feature(isAdminEnabled: true, isEnabled: true, name: "podcast-rss")
 }
 
 extension Array where Element == Feature {
