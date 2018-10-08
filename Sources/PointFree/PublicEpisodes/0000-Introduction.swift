@@ -7,6 +7,14 @@ Take a moment to hear from the hosts about what to expect from this new series.
 """,
   codeSampleDirectory: "",
   exercises: [],
+  fullVideo: .init(
+    bytesLength: 411_951_213,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/webm.webm"
+    ]
+  ),
   id: 0,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg",
@@ -14,12 +22,8 @@ Take a moment to hear from the hosts about what to expect from this new series.
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 0,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/webm.webm"
-  ],
-  sourcesTrailer: [],
   title: "We launched!",
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 

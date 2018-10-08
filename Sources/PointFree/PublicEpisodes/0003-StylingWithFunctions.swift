@@ -22,16 +22,6 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
   sequence: 3,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/hls-now-were-stylin.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/webm-now-were-stylin.webm",
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/webm-vp9-now-were-stylin.webm",
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/hls.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/webm.webm",
-    "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/webm-vp9.webm",
-  ],
   title: "UIKit Styling with Functions",
   trailerVideo: .init(
     bytesLength: 46_127_956,

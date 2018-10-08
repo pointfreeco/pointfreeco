@@ -24,12 +24,6 @@ previously hidden.
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1536559023),
   sequence: 29,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",
-  ],
-  sourcesTrailer: [
-  ],
   title: "DSLs vs. Templating Languages",
   trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
