@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 46602
+Content-Length: 48072
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1623,7 +1623,7 @@ html {
 
     </style>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/atom.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
@@ -1733,6 +1733,32 @@ html {
                   </p>
                   <input type="submit" class="medium cursor-pointer nowrap btn-normal rounded border-none text-decoration-none pf-link-white fg-white bg-purple h5 m-pl2 m-pr2 m-mt3" value="Update profile">
                 </form>
+              </div>
+            </div>
+          </div>
+          <div class=" row">
+            <div style="margin-right:auto;margin-left:auto" class=" col-m col-d-10 col-m-12">
+              <div class="m-mb4 m-pl3 m-pr3 m-pt3 m-pb3 bg-gray900">
+                <h4 class="fg-black bold ts-d-r1_5 ts-m-r1_25 lh-2 m-pb2">
+                  Private RSS Feed
+                </h4>
+                <p>
+                  Thanks for subscribing to Point-Free and supporting our efforts! We&#39;d like to offer you an alternate way
+to consume our videos: an RSS feed that can be used with podcast apps!
+                </p>
+                <p>
+                  The link below should work with most podcast apps out there today (please 
+                  <a class="underline-link" href="mailto:support@pointfree.co">
+                    email us
+                  </a>
+                   if it doesn&#39;t). It is also tied directly to your Point-Free account and regularly 
+                   monitored, so please do not share with others.
+                </p>
+                <p>
+                  <a class="underline-link" href="http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47847c7d6d216c635dd0cff1d0429f0567/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
+                    http://localhost:8080/account/rss/f9c46e...
+                  </a>
+                </p>
               </div>
             </div>
           </div>
