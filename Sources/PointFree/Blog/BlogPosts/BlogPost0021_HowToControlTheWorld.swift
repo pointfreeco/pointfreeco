@@ -169,7 +169,7 @@ Current.date() // 2018-10-08 17:45:24 UTC
     ),
     .init(
       content: """
-We like the way `Current.date()` reads: it's succinct and loud at the same time. While you could, alternatively, define a `static var` on `World` and reference `World.current.date()`, we prefer the slightly unusual precisely because it _is_ unusual and sticks out. It's also a bit shorter and reads a bit more nicely.
+We like the way `Current.date()` reads: it's succinct and loud at the same time. While you could, alternatively, define a `static var` on `World` and reference `World.current.date()`, we prefer the slightly unusual syntax precisely _because_ it's unusual: it sticks out! It's also a bit shorter and reads a bit more nicely.
 
 Now we can make this call anywhere in our application and we _should_. Wherever we call `Date()` we should update to call `Current.date()` instead. A simple find-and-replace usually suffices.
 
@@ -599,24 +599,13 @@ struct World {
     ),
     .init(
       content: """
-Let's compare all of this work to our struct-based approach:
+If we look at it all at once, it's a lot of work:
 """,
       timestamp: nil,
       type: .paragraph
     ),
     .init(
       content: """
-struct API {
-  var setToken = { APIClient.shared.token = $0 }
-  var fetchCurrentUser = APIClient.shared.fetchCurrentUser
-}
-
-struct World {
-  var api = API()
-}
-
-// vs.
-
 protocol APIClientProtocol {
   var token: String? { get set }
   func fetchCurrentUser(_ completionHandler: (Result<User, Error>) -> Void) -> Void
@@ -642,9 +631,30 @@ struct World {
     ),
     .init(
       content: """
-Over half the boilerplate goes away, and this boilerplate multiplies with every additional API endpoint we want to control.
+Let's compare all of this work to our struct-based approach:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+    .init(
+      content: """
+struct API {
+  var setToken = { APIClient.shared.token = $0 }
+  var fetchCurrentUser = APIClient.shared.fetchCurrentUser
+}
 
-It's interesting to note, though, that our `World` struct is still totally compatible with protocols. The protocol-based, boilerplate-filled example is still something that can live on the `World` struct. This means we don't have to rewrite existing protocol-based code if we don't want to.
+struct World {
+  var api = API()
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+    .init(
+      content: """
+Only 7 lines of code instead of 15! Over half the boilerplate goes away, and this boilerplate multiplies with every additional API endpoint we want to control.
+
+It's interesting to note here, though, that our `World` struct is still totally compatible with protocols. The protocol-based, boilerplate-filled example is still something that can live on the `World` struct. This means we don't have to rewrite existing protocol-based code if we don't want to.
 
 The main downside in using struct properties over protocol functions is that closures can't have argument labels. For example, given an `APIClient` method with an argument label:
 """,
@@ -653,7 +663,7 @@ The main downside in using struct properties over protocol functions is that clo
     ),
     .init(
       content: """
-APIClient.current.fetchUsers(byId: Int) { result in
+APIClient.current.fetchUser(byId: Int) { result in
   // …
 }
 """,
