@@ -1031,6 +1031,6 @@ We'll be diving deeper into this approach in the future. We'll show what it look
     ],
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0021-how-to-control-the-world/poster.jpg",
   id: 21,
-  publishedAt: .init(timeIntervalSince1970: 1_539_014_400),
+  publishedAt: .init(timeIntervalSince1970: 1_539_100_800),
   title: "How to Control the World"
 )
