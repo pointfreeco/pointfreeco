@@ -3,12 +3,18 @@ import Foundation
 let postXYZW_howToControlTheWorld = BlogPost(
   author: .stephen,
   blurb: """
-APIs that interact with the outside world can be unpredictable and difficult to test. Traditional solutions to this problem can be so verbose and cumbersome that we look to code generation or look away entirely. This post goes a bit more in depth with a technique we’ve covered on Point-Free and Stephen talked about at NSSpain.
+APIs that interact with the outside world are unpredictable and make it difficult to test and simulate code paths in our apps. Existing solutions to this problem are verbose and complicated, so let's explore a simpler solution by embracing singletons and global mutation, and rejecting protocol-oriented programming and dependency injection.
 """,
   contentBlocks: [
 
     .init(
       content: """
+---
+
+> APIs that interact with the outside world are unpredictable and make it difficult to test and simulate code paths in our apps. Existing solutions to this problem are verbose and complicated, so let's explore a simpler solution by embracing singletons and global mutation, and rejecting protocol-oriented programming and dependency injection.
+
+> We've covered this topic on Point-Free [two](/episodes/ep16-dependency-injection-made-easy) [times](/episodes/ep18-dependency-injection-made-comfortable) in the past and Stephen recently [talked about it](https://vimeo.com/291588126) at [NSSpain](https://2018.nsspain.com):
+
 <iframe src="https://player.vimeo.com/video/291588126"
         width="100%"
         height="360"
@@ -19,23 +25,17 @@ APIs that interact with the outside world can be unpredictable and difficult to 
 
 ---
 
-> APIs that interact with the outside world can be unpredictable and fail. We typically weave calls to these APIs throughout our applications, coupling our code to them tightly, and making it difficult to test and simulate certain flows.
-
-> APIs that interact with the outside world can be unpredictable and difficult to test. Traditional solutions to this problem can be so verbose and cumbersome that we look to code generation or look away entirely. This post goes a bit more in depth with a technique we’ve covered on Point-Free and Stephen talked about at NSSpain.
-
----
-
 Application state almost always accumulates from many calls to APIs that read from or write out to the outside world. This includes:
 
   * Fetching the current date or a random number
   * Reading from or writing to disk
   * Reading from or writing to the network, like making an API request or submitting an analytics event
   * Fetching device settings, like language or locale
-  * Fetching device state, like orientation and location information
+  * Fetching device state, like orientation or location information
 
-These kinds of calls can account for so much of our application code that we often don't distinguish or disentangle them from code that _doesn't_ interface with the outside world. When unpredictable, unreliable code is coupled to predictable, reliable code, the whole thing becomes unpredictable and unreliable: when code that renders data to screen gets that data from the outside world, that code becomes dependent on the outside world to run at all.
+These kinds of calls can account for so much of our application code that we often don't distinguish or disentangle them from code that _doesn't_ interface with the outside world. When unpredictable, unreliable code is coupled to predictable, reliable code, it all becomes unpredictable and unreliable. When code that renders data to the screen fetches that data from the outside world, that code becomes dependent on the outside world to run at all.
 
-There are many articles out there that cover traditional techniques of controlling these outside world dependencies in Swift and other languages, but we find these solutions to be overly verbose to little benefit, so we'd like to introduce a technique that we've used and refined over many years and many production applications that can be introduced into _any_ code base.
+There are many articles out there that cover traditional techniques of controlling these outside world dependencies in Swift (and in other languages), but we find these solutions to be overly verbose to no benefit, so we'd like to introduce a technique that we've used and refined over many years and many production applications that can be introduced into _any_ code base.
 
 ## Defining the World
 
@@ -56,7 +56,7 @@ struct World {
       content: """
 The properties of this struct will describe the dependencies that our application cares about.
 
-Many applications rely on the current date and time, so we find that this is a good first property to add to our `World` struct. In Swift, we fetch the current date and time using a `Date` initializer.
+Many applications rely on the current date and time, so we find that this is a good first property to add to our `World` struct. In Swift, we fetch the current date and time using a specific `Date` initializer.
 """,
       timestamp: nil,
       type: .paragraph
@@ -87,7 +87,7 @@ Date.init as () -> Date
     ),
     .init(
       content: """
-It's a function that takes zero arguments and returns a `Date`. This is the shape we'll use to control the date on our `World`.
+It's a function that takes zero arguments and returns a `Date`. This is the shape of the property we'll use to control the date on our `World`.
 """,
       timestamp: nil,
       type: .paragraph
@@ -135,7 +135,7 @@ struct World {
     ),
     .init(
       content: """
-With a minimal struct defined to control a single dependency of our application, we merely need to instantiate it. Traditionally, one may do so in the app delegate or main function, but we're going to define it globally at the module level, instead, right after where our `World` was defined.
+With a minimal struct defined to control a single dependency of our application, we merely need to instantiate it. Traditionally, one may be encouraged do so in the app delegate or main function, but we're going to define it globally at the module level.
 """,
       timestamp: nil,
       type: .paragraph
@@ -153,9 +153,9 @@ var Current = World()
     ),
     .init(
       content: """
-Now this may all look a little foreign and scary and not very "Swifty," but the benefits will hopefully be clear.
+Now this all may look a little foreign and scary, and not very "Swifty," but the benefits will hopefully become clear.
 
-Now how do we fetch the current date?
+How do we fetch the current date?
 """,
       timestamp: nil,
       type: .paragraph
@@ -169,11 +169,11 @@ Current.date() // 2018-10-08 17:45:24 UTC
     ),
     .init(
       content: """
-We like the way `Current.date()` reads: it's succinct and loud at the same time. (You could, alternatively, define a `static var` on `World` instead and reference the `World.current.date()`, though we prefer the shorter, readable, if slightly unusual, syntax.)
+We like the way `Current.date()` reads: it's succinct and loud at the same time. While you could, alternatively, define a `static var` on `World` and reference `World.current.date()`, we prefer the slightly unusual precisely because it _is_ unusual and sticks out. It's also a bit shorter and reads a bit more nicely.
 
-We can make this call anywhere in our application and we _should_. Wherever we call `Date()` we should update to call `Current.date()` instead. A simple find-and-replace usually suffices.
+Now we can make this call anywhere in our application and we _should_. Wherever we call `Date()` we should update to call `Current.date()` instead. A simple find-and-replace usually suffices.
 
-`Current.date()` has a distinct advantage over `Date()`: because `Current` is a mutable variable, and because `date` is a mutable property, we can swap out its implementation.
+Calls to `Current.date()` have a distinct advantage over calls to `Date()`: because `Current` is a mutable variable, and because `date` is a mutable property, we can swap out its implementation at will.
 """,
       timestamp: nil,
       type: .paragraph
@@ -188,7 +188,7 @@ Current.date = { Date.distantPast }
     ),
     .init(
       content: """
-We can use type inference to make things a bit shorter.
+We can even use type inference to make things a bit shorter.
 """,
       timestamp: nil,
       type: .paragraph
@@ -202,7 +202,7 @@ Current.date = { .distantPast }
     ),
     .init(
       content: """
-By overriding `Current`'s `date` property with a closure that returns a specific date, `Current.date()` will now return this specific date wherever it's called.
+By overriding `Current`'s `date` property with a closure that returns a specific date, `Current.date()` will now return this specific date wherever and whenever it's called.
 """,
       timestamp: nil,
       type: .paragraph
@@ -232,7 +232,7 @@ Current.date() // 0001-01-01 00:00:00 UTC
     ),
     .init(
       content: """
-By throwing this override into our app delegate, our entire app will behave as if it's running at that specific instant.
+If we throw this override into our app delegate, our entire app will behave as if it's running at that specific instant.
 """,
       timestamp: nil,
       type: .paragraph
@@ -255,7 +255,7 @@ func application(
     ),
     .init(
       content: """
-And this holds true in tests, too: we can now freeze time and make previously untestable things testable.
+This holds true in tests, too: we can now freeze time and make previously untestable things testable.
 
 # Adding to the World
 
@@ -279,7 +279,7 @@ formatter.string(from: Current.date())
     ),
     .init(
       content: """
-This format string depends on not only the device time, but on the calendar, locale, and time zone. Formatters hide these dependencies and look to the outside world by default.
+This formatted string depends on not only the device time, but on the calendar, locale, and time zone. Formatters hide these dependencies! They look to the outside world by default.
 """,
       timestamp: nil,
       type: .paragraph
@@ -295,7 +295,7 @@ formatter.timeZone // TimeZone
     ),
     .init(
       content: """
-In order to control these dependencies, we can add them to our `World`.
+In order to control these dependencies, we simply add them to our `World` struct.
 """,
       timestamp: nil,
       type: .paragraph
@@ -314,7 +314,7 @@ struct World {
     ),
     .init(
       content: """
-We can describe our dependencies by assigning the default values, and wherever our code depends on the current calendar, locale, or time zone---explicitly _or_ implicitly, as with our formatters---we should providing the instances that live on `Current`.
+We can describe them by assigning default values, and wherever our code depends on the current calendar, locale, or time zone---explicitly _or_ implicitly, as with our formatters---we should providing the instances that live on `Current`.
 """,
       timestamp: nil,
       type: .paragraph
@@ -330,7 +330,7 @@ formatter.timeZone = Current.timeZone
     ),
     .init(
       content: """
-And this completely controls the formatter so that it produces consistently-formatted strings.
+This code completely controls the formatter so that it produces consistently-formatted strings.
 
 We can even extend `World` to make it responsible for producing obedient formatters, reducing the amount of work at each call site that depends on a formatter.
 """,
@@ -364,7 +364,7 @@ extension World {
     ),
     .init(
       content: """
-And now we can swap out implementations. In a few lines of code, we can see the world from the perspective of a person from Spain observing the Buddhist calendar while on holiday in Oahu.
+And now, in a few lines of code, we can see the world from the perspective of a person from Spain observing the Buddhist calendar while on holiday in Oahu.
 """,
       timestamp: nil,
       type: .paragraph
@@ -388,7 +388,7 @@ Current.dateFormatter(dateStyle: .long, timeStyle: .long)
     ),
     .init(
       content: """
-And remember, we can simulate this perspective throughout our entire application with little ceremony. These changes normally require changing simulator settings and simulator restarts.
+And remember, we can simulate this perspective throughout our entire application with little ceremony: just a few extra lines in our app delegate. Seeing this perspective normally requires changing simulator settings and simulator restarts.
 
 # More Complex Dependencies
 
@@ -409,7 +409,7 @@ APIClient.shared.fetchCurrentUser { result in
     ),
     .init(
       content: """
-Here we have an API client with at least one property and one method. We could control each one individually on `Current`, but it makes more sense to group them in their own structure that mimics the way `World` controls things. Let’s define another struct:
+Here we have an API client with at least one property and one method. We could control each one individually on `Current`, but it makes more sense to group them in their own structure that mimics the way the `World` struct controls things. Let’s define another struct that is responsible for this subset of dependencies:
 """,
       timestamp: nil,
       type: .paragraph
@@ -426,7 +426,7 @@ struct API {
     ),
     .init(
       content: """
-It typically takes a single line to take control of each operation you care about. In this case, we can capture the assignment of our API client's token in a closure that does that assignment, while we can capture the method by referencing the uncalled member.
+It typically takes a single line to take control each operation you care about. In this case, we can capture the assignment of our API client's token in a closure that does that assignment, while we can capture the method that fetches the current user by referencing the method without calling it.
 
 This grouping becomes another property on `World`.
 """,
@@ -462,9 +462,11 @@ Current.api.fetchCurrentUser = { callback in
     ),
     .init(
       content: """
-Here we’ve forced the "current user" endpoint to always return a specific user, making our app think we're in a logged-in state.
+Here we’ve forced the "current user" endpoint to always return a specific user, making our app think that we're in a logged-in state.
 
-This is the first time we’re controlling code with callback, so it looks a bit different. The `fetchCurrentUser` method takes a trailing closure that gets called asynchronously with the result of a network request. This trailing closure is the `callback` specified in this override, and we can immediately and synchronouslty call that closure with a result of our choice, no need to worry about it being async.
+This is the first time we’re controlling code with a callback, so it looks a bit different. The `fetchCurrentUser` method takes a trailing closure that gets called asynchronously with the result of a network request. This trailing closure is the `callback` specified in our override, and we can immediately and synchronouslty call that closure with a result of our choice, no need to worry about it being async.
+
+Here's another example where we can easily simulate a specific failure when we hit an endpoint:
 """,
       timestamp: nil,
       type: .paragraph
@@ -481,39 +483,31 @@ Current.api.fetchCurrentUser = { callback in
     ),
     .init(
       content: """
-Here's another example where we can easily simulate a specific failure when we hit that endpoint.
+And now our application will consistently behave as if the current user has been suspended.
 
 Keep in mind that, with both of these overrides, `fetchCurrentUser` no longer hits the network. We can run our application code without an internet connection and still simulate network code.
 
-## FAQ
+## But Wait---or, Frequently Asked Questions (FAQ)
 
-I'd like to address some audience concerns, because I admit, this is _not_ how we're told we should be controlling this kind of code.
+We'd like to address some common concerns. This is certainly _not_ how we're told we should be controlling dependencies, but we believe that it stands up against any scrutiny.
 
 ### Isn't `Current` a singleton? Aren't singletons evil?
 
-Many of us have shunned away singletons as a moral imperative, only putting up with those that come from Apple and third-party libraries, and even then we typically do as much as we can to avoid using them as singletons.
+Many of us have shunned away singletons as a moral imperative, only putting up with those that come from Apple and third-party libraries, and even then we typically do as much as we can to avoid using them as singletons, but we've done a full-reversal here: we've created _and embraced_ a mega-singleton!
 
-Meanwhile, we've kinda done a full-reversal here, where we've created _and embraced_ some kind of mega-singleton!
+Are singletons evil? We'd like to propose that they're only evil when they're out of our control. Most of the time, when we reference a singleton directly in code, we've tightly coupled that code to the outside world. A call to a singleton like `FileManager.default` most likely couples that code to the file system and it can be quite cumbersome to temporarily decouple it.
 
-So are singletons evil? We'd like to propose that they're only evil when they're out of our control.
-
-Most of the time, when we reference a singleton directly in code, we've tightly coupled that code to the outside world. A call to `FileManager.default` probably couples code to the file system.
-
-`Current` doesn't have any of these problems because every property of our singleton can be overridden and controlled.
-
-When we sprinkle singleton use throughout our code bases, they become hard to see all at once
+`Current` doesn't have any of the problems traditional singletons have because every property of `Current` can be overridden and controlled, typically in a single, additional line of code. `Current` also unifies all of our calls to other singletons in a single, controllable package. We typically sprinkle singleton use throughout our code, making them hard to see all at once.
 
 ### What about global mutation? That's evil, surely!
 
-Another part of this approach that can make folks uneasy: our singleton is a global mutable variable.
+Another part of our approach that can make folks uneasy is that our singleton is a global mutable variable. Some of you may even have been wondering: "Why are functional programmers condoning global mutation? What’s going on here?"
 
-Some of you may even have been wondering: "why are functional programmers condoning global mutation? What’s going on here?"
-
-It's true that mutation is one of the biggest sources of complexity in our applications. It can lead to bugs that are incredibly hard to track down and logic that's much more difficult to reason about, but I don't think that applies here.
+It's true that mutation is one of the biggest sources of complexity in code. It can lead to bugs that are incredibly hard to track down and logic that's much more difficult to reason about, but we don't think that concern applies here.
 
 We've defined `Current` to be mutable for the purpose of making it as easy as possible to swap out dependencies for development and testing. Doing the same without mutation requires jumping through a _lot_ of hoops.
 
-As such, typically, the world isn't be mutated in production and you can even enforce that with a compiler directive.
+As such, typically, the world isn't mutated in release builds and you can even enforce that with a compiler directive.
 """,
       timestamp: nil,
       type: .paragraph
@@ -531,15 +525,13 @@ let Current = World()
     ),
     .init(
       content: """
-As long as `Current` is build from a tree of value types, it will not allow you to mutate it in release builds.
+As long as `Current` is built from a tree of value types, the compiler will not allow you to mutate it in release builds.
 
-### Why structs with properties over protocols? Aren't protocols the "Swifty" way of controlling dependencies?
+### Why structs with properties and not protocols? Aren't protocols the "Swifty" way of controlling dependencies?
 
-Don't get us wrong, protocols are wonderful, especially for things like `Sequence` and `Collection`, but when we only have two concrete implementations, it seems to be a bit heavy-handed for the task.
+Don't get us wrong, protocols are wonderful, especially when they have many conformances, as with `Sequence` and `Collection`, but when we only have two concrete implementations, it seems to be a bit heavy-handed for the task. Why? Protocols require a _ton_ of boilerplate!
 
-Why? They require a _ton_ of boilerplate! Let's see what it looks like to control our API example using a protocol.
-
-We start by defining an `APIClientProtocol` that describes the interface of `APIClient` that we care about controlling.
+Let's see what it looks like to control our API example using a protocol. We'll start by defining an `APIClientProtocol` that describes the interface of `APIClient` that we care about controlling.
 """,
       timestamp: nil,
       type: .paragraph
@@ -556,7 +548,7 @@ protocol APIClientProtocol {
     ),
     .init(
       content: """
-Then we need to extend the real-world client with this protocol.
+Next, we need to extend the real-world client with this protocol.
 """,
       timestamp: nil,
       type: .paragraph
@@ -570,7 +562,7 @@ extension APIClient: APIClientProtocol {}
     ),
     .init(
       content: """
-Then we need to define a mock version, which ends up being pretty verbose: we need to add an extra property to inject the behavior of simulating a logged-in state or failure.
+After that, we need to define a mock version, which ends up being pretty verbose: we need to add an extra property to inject the behavior of simulating a logged-in state or failure.
 """,
       timestamp: nil,
       type: .paragraph
@@ -591,7 +583,7 @@ class MockAPIClient: APIClientProtocol {
     ),
     .init(
       content: """
-Finally, wherever we use this API client, we need to explicitly erase the underlying type with our protocol.
+Finally, wherever we use this API client, we need to explicitly erase the underlying type with our protocol. For example, if we used the `World` as a more traditional container:
 """,
       timestamp: nil,
       type: .paragraph
@@ -607,7 +599,7 @@ struct World {
     ),
     .init(
       content: """
-Let's compare all of this work to our struct-based approach. Over half the boilerplate goes away!
+Let's compare all of this work to our struct-based approach:
 """,
       timestamp: nil,
       type: .paragraph
@@ -650,11 +642,11 @@ struct World {
     ),
     .init(
       content: """
-This boilerplate multiplies with every additional API endpoint we want to control.
+Over half the boilerplate goes away, and this boilerplate multiplies with every additional API endpoint we want to control.
 
-We _do_ see, though, that our `World` is still totally compatible with protocols. Our boilerplate-full example from before was still something that could live on the `World` struct, which means we don't have to rewrite existing protocol-based code if we don't want to.
+It's interesting to note, though, that our `World` struct is still totally compatible with protocols. The protocol-based, boilerplate-filled example is still something that can live on the `World` struct. This means we don't have to rewrite existing protocol-based code if we don't want to.
 
-Now, one downside is that closures lose argument labels.
+The main downside in using struct properties over protocol functions is that closures can't have argument labels. For example, given an `APIClient` method with an argument label:
 """,
       timestamp: nil,
       type: .paragraph
@@ -670,7 +662,7 @@ APIClient.current.fetchUsers(byId: Int) { result in
     ),
     .init(
       content: """
-We can usually simply move the label into the property name.
+Our approach would have to move the label name into the property name.
 """,
       timestamp: nil,
       type: .paragraph
@@ -681,13 +673,17 @@ struct API {
   var fetchUserById = APIClient.current.fetchUser(byId:)
   // …
 }
+
+Current.fetchUserById(1)
+// vs.
+APIClient.current.fetchUser(byId: 1)
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
     .init(
       content: """
-Operations with multiple arguments can make things quite a bit more awkward. For example:
+Operations with multiple arguments can make things quite a bit more awkward. For example, an `updateUser` function with multiple named arguments:
 """,
       timestamp: nil,
       type: .paragraph
@@ -708,7 +704,7 @@ APIClient.current.updateUser(
     ),
     .init(
       content: """
-What do we name this property? Do we include all the argument labels?
+What would we name this property if we were to control it? Do we include all the argument labels?
 """,
       timestamp: nil,
       type: .paragraph
@@ -722,14 +718,24 @@ struct API {
 
 Current.api.updateUserWithIdSetNameEmailStatus(
   1, "Blob", "blob@pointfree.co", "active"
-)
+) {
+  // …
+}
+// vs.
+APIClient.current.updateUser(
+  withId: 1, setName: "Blob", email: "blob@pointfree.co", status: "active"
+) {
+  // …
+}
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
     .init(
       content: """
-It's not too bad, but it's certainly awkward. If the types are self-documenting, it's perfectly reasonable to truncate the variable name.
+While the difference isn't too bad, it's certainly awkward.
+
+When the argument types are self-documenting, it's perfectly reasonable to truncate the variable name.
 """,
       timestamp: nil,
       type: .paragraph
@@ -744,7 +750,7 @@ Current.api.updateUser
     ),
     .init(
       content: """
-But if we're dealing with an `Int` and a bunch of `String`s, we could end up with subtle bugs where we pass email to the name argument and name to the email argument. We can either live with the awkward `updateUserWithIdSetNameEmailStatus`, or extend `API` with a little bit of boilerplate to smooth things over.
+But if we're dealing with an `Int` and a bunch of `String`s, we could end up with subtle bugs where we pass an email to the name argument or a name to the email argument. It seems most prudent to either live with the awkward and verbose `updateUserWithIdSetNameEmailStatus` property, or extend `API` with a little bit of boilerplate to smooth things over at the call site.
 """,
       timestamp: nil,
       type: .paragraph
@@ -765,21 +771,33 @@ extension API {
     )
   }
 }
+
+Current.api.updateUser(
+  withId: 1, setName: "Blob", email: "blob@pointfree.co", status: "active"
+) {
+  // …
+}
+// vs.
+APIClient.current.updateUser(
+  withId: 1, setName: "Blob", email: "blob@pointfree.co", status: "active"
+) {
+  // …
+}
 """,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
     .init(
       content: """
-It's up to you! You can add this boilerplate on the rare case you need it, but it's still less boilerplate than the protocol alternative.
+It's up to you! You can always add this boilerplate on the rare case that you need it and it's _still_ less boilerplate than the protocol alternative.
 
-### What about dependency injection? Isn't it a better to pass dependencies explicitly?
+### What about dependency injection? Isn't it better to pass dependencies explicitly?
 
-The more traditional approach to controlling the world is "dependency injection," which is just a fancy way of saying: "passing globals as arguments."
+The more traditional approach to controlling the world is with "dependency injection," which is a fancy way of saying: "passing globals as arguments."
 
 We think dependency injection should be avoided for the same reasons protocols should be avoided: it requires a _lot_ of boilerplate.
 
-Here's a view controller that takes dependencies when it's initialized (something called "constructor injection"):
+Here's a view controller that takes dependencies at initialization (something called "constructor injection"):
 """,
       timestamp: nil,
       type: .paragraph
@@ -810,9 +828,9 @@ class MyViewController: UIViewController {
     ),
     .init(
       content: """
-We have boilerplate around new properties for each dependency. We have boilerplate around assigning each property at initialization. And whenever a view controller needs a new dependency, this boilerplate grows.
+There's a bunch of boilerplate here. We have boilerplate that declares properties for each dependency. We have boilerplate that declares initializer arguments for each dependency. We have boilerplate that assigns these initializer arguments to properties for each dependency. And whenever a view controller needs an additional dependency, each instance of boilerplate grows.
 
-What if our view controller only needs dependencies to pass to another object, like another view controller?
+Sometimes a view controller only needs dependencies to pass them to another object, like another view controller. What does this look like?
 """,
       timestamp: nil,
       type: .paragraph
@@ -902,15 +920,25 @@ class MyViewController: UIViewController {
     ),
     .init(
       content: """
- This isn't uncommon code to find in a real-world app, but it's a _lot_ of boilerplate and enough work and friction that it may prevent you from controlling dependencies at all.
+This kind of code isn't uncommon to find in a real-world app, and it's even _more_ boilerplate than our first example! This is enough additional work and friction that it may prevent folks from controlling dependencies at all.
 
-And to top it off, constructor injection doesn't work with storyboards, so you're stuck with another potential runtime gotcha if you use storyboards and forget to set up your dependencies.
+To top it off, constructor injection doesn't work with storyboards, so you're stuck with another potential runtime gotcha if you use storyboards and forget to set up your dependencies.
 """,
       timestamp: nil,
       type: .paragraph
     ),
     .init(
       content: """
+protocol APIClientProvider {
+  var api: APIClientProtocol { get }
+}
+
+protocol DateProvider {
+  func date() -> Date
+}
+
+extension World: APIClientProvider, DateProvider {}
+
 class MyViewController: UIViewController {
   typealias Dependencies = APIClientProvider & DateProvider
 
@@ -946,7 +974,7 @@ class ChildViewController: UIViewController {
     ),
     .init(
       content: """
-Let's compare with `Current`:
+What would this last, most complicated example look like with `Current`:
 """,
       timestamp: nil,
       type: .paragraph
@@ -974,7 +1002,9 @@ class ChildViewController: UIViewController {
       content: """
 The boilerplate completely disappears. Parent view controllers don't need to worry about passing dependencies along. Storyboard glue code disappears. We're down to the bare essentials.
 
-Some may argue that in getting rid of the boilerplate we somehow have lost some documentation and have made the contract with dependencies less explicit. We don't think this is the case. We now have a single keyword of sorts, `Current` with a capital C, wherever _actual_ dependencies are being used. In fact, nothing prevented the older, boilerplate-ridden code from going stale. If we stopped using the current date in this `greet` function, the older code could still pass that dependency along but not use it. Here, we're able to clean up as we go! Describing dependencies in properties and in the initializer also don't make explicit _why_ the dependencies are needed. You still have to dig into the actual code to figure out what's going on. There's just a lot more code to wade through.
+Some may feel that constructor injection makes an object's contract with dependencies explicit, and that using `Current`, instead, somehow makes dependencies _less_ explicit. We don't think this is the case. We now have a single keyword of sorts, `Current` with a capital C, that occurs wherever _actual_ dependencies are being used. The extra boilerplate of properties, initializer arguments, and initializer assignment do nothing to guarantee that these dependencies are used: the child view controller could stop using a dependency and we could continue to pass a dependency along. We've found stale dependencies like this in many code bases that we've worked on that use constructor injection.
+
+In the end, in order to truly know how an object uses dependencies, you need to read the code and find the uses. This is true for both approaches, but one approach has a lot less code that you need to read.
 
 ### What about _x_?
 
@@ -982,17 +1012,17 @@ Are there any other concerns you have that we haven't addressed? [Email us](mail
 
 ## Conclusion
 
-While untraditional, we hope that it's obvious how this solution of controlling dependencies is superior to the traditional solutions in use today. It also gives us an opportunity to reevaluate deep-seated beliefs we have. We should continuously question and our assumptions. In this case, we think:
+While unconventional, we hope that it's obvious that this solution of controlling dependencies is superior to the traditional solutions in use today. It also gives us an opportunity to reevaluate deep-seated beliefs we may have. We should continuously question our assumptions. In this case, we found that:
 
-  * Singletons can be good (as long as we have a means to control them) and global mutation can be good (when it's limited to development and testing). Blanket statements against singletons and global mutation are fun to make but we were able to find real value in them.
+  * Singletons can be good (as long as we have a means to control them) and global mutation can be good (when it's limited to development and testing). Blanket statements against singletons and global mutation are fun to make, but we were able to find real value in using them.
 
   * Protocols aren't necessarily a good choice to control dependencies. Protocol-oriented programming is all too easy to reach for when a simple value type requires less work.
 
-  * Dependency injection is maybe an overcomplicated solution for controlling dependencies. Dependency injection has a long, complicated history, and maybe we have a better answer to it now.
+  * Dependency injection might be an overcomplicated solution for controlling dependencies. Dependency injection has a long, complicated history, but we may have a better solution now.
 
-`World` and `Current` are a simple means of controlling dependencies with minimal boilerplate and just goes to shows that we should always looks to make complicated, over-engineered things simpler. We highly recommend giving it a shot in your code base today!
+`World` and `Current` are a simple means of controlling dependencies with minimal boilerplate and studying them reinforces that we should always looks to make complicated, over-engineered code simpler. We highly recommend giving it a shot in your code base today!
 
-We'll be covering this approach in further depth in the future, by showing how we can write tests using `Current` and how we can control some even more complicated APIs.
+We'll be diving deeper into this approach in the future. We'll show what it looks like to write tests by swapping `Current` implementations, and we'll demonstrate what it looks like to control even more complicated APIs.
 """,
       timestamp: nil,
       type: .paragraph
