@@ -235,8 +235,8 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
           data("setup", VideoJsOptions.default.jsonString)
         ],
         isEpisodeViewable
-          ? episode.sourcesFull.map { source(src: $0) }
-          : episode.sourcesTrailer.map { source(src: $0) }
+          ? episode.fullVideo.streamingSources.map { source(src: $0) }
+          : (episode.trailerVideo?.streamingSources ?? []).map { source(src: $0) }
       )
     ]
   )

@@ -48,9 +48,9 @@ how these ideas can improve the quality of your code today.
     copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
     description: description,
     image: .init(
-      link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
+      link: url(to: .home),
       title: title,
-      url: url(to: .home)
+      url: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"
     ),
     itunes: .init(
       author: "Brandon Williams & Stephen Celis",
@@ -141,9 +141,9 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
         url: episode.trailerVideo?.downloadUrl ?? ""
         )
       : .init(
-        length: episode.fullVideo?.bytesLength ?? 0,
+        length: episode.fullVideo.bytesLength,
         type: "video/mp4",
-        url: episode.fullVideo?.downloadUrl ?? ""
+        url: episode.fullVideo.downloadUrl
     )
   }
 
@@ -156,10 +156,10 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
         url: episode.trailerVideo?.downloadUrl ?? ""
         )
       : .init(
-        length: episode.fullVideo?.bytesLength ?? 0,
+        length: episode.fullVideo.bytesLength,
         medium: "video",
         type: "video/mp4",
-        url: episode.fullVideo?.downloadUrl ?? ""
+        url: episode.fullVideo.downloadUrl
     )
   }
 

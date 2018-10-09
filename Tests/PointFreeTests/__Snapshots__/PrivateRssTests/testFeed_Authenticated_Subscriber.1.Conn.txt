@@ -39,13 +39,13 @@ with anyone else.
     </copyright>
     <image>
       <url>
-        http://localhost:8080
+        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
       </url>
       <title>
         Point-Free Videos (Private feed for hello@pointfree.co)
       </title>
       <link>
-        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
+        http://localhost:8080
       </link>
     </image>
     <itunes:author>

@@ -11,7 +11,7 @@ previously hidden.
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 665_928_011,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full-720p.mp4",
+    downloadUrl: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full-720p-DD72BEE3-57A5-46B1-95B7-E1BA62FE2CE8.mp4",
     streamingSources: [
       "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
       "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",
@@ -24,12 +24,6 @@ previously hidden.
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1536559023),
   sequence: 29,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/dsl-wins.webm",
-  ],
-  sourcesTrailer: [
-  ],
   title: "DSLs vs. Templating Languages",
   trailerVideo: nil,
   transcriptBlocks: transcriptBlocks

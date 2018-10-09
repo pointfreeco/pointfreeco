@@ -6,6 +6,14 @@ Our first episode is all about functions! We talk a bit about what makes functio
 """,
   codeSampleDirectory: "0001-functions",
   exercises: [],
+  fullVideo: .init(
+    bytesLength: 411_951_213,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/hls.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/webm.webm"
+      ]
+  ),
   id: 1,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/0001-poster.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg",
@@ -13,12 +21,8 @@ Our first episode is all about functions! We talk a bit about what makes functio
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 1,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/hls.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/webm.webm"
-  ],
-  sourcesTrailer: [],
   title: "Functions",
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 

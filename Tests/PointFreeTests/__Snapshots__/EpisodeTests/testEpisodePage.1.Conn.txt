@@ -1736,7 +1736,7 @@ input::-webkit-outer-spin-button {
 
     </style>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/atom.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
@@ -1937,7 +1937,8 @@ subscriber-only episode of your choosing!
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
             <video class="h-100p w-100p absolute bg-gray650 video-js vjs-default-skin vjs-big-play-centered" style="position:absolute" controls playsinline autoplay poster="" data-setup="{&quot;control&quot;:true,&quot;playbackRates&quot;:[0.5,1,1.5,2]}">
-              <source src="">
+              <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8">
+              <source src="https://s3.amazonaws.com/pointfreeco/trailer.webm">
             </video>
           </div>
           <div class="d-pl4 d-pr4 m-pl3 m-pr3 m-pt3 m-pb3">

@@ -6,6 +6,14 @@ Join us for a tour of the code base that powers this very site and see what func
 """,
   codeSampleDirectory: "0022-a-tour-of-point-free",
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 784_408_755,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.webm"
+      ]
+  ),
   id: 22,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/itunes-poster.jpg",
@@ -13,15 +21,15 @@ Join us for a tour of the code base that powers this very site and see what func
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1531735023),
   sequence: 22,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/webm-trailer.webm",
-  ],
   title: "A Tour of Point-Free",
+  trailerVideo: .init(
+    bytesLength: 29_662_893,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/hls-trailer.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/webm-trailer.webm",
+      ]
+  ),
   transcriptBlocks: transcriptBlocks
 )
 
