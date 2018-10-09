@@ -1,6 +1,6 @@
 import Foundation
 
-let postXYZW_howToControlTheWorld = BlogPost(
+let post0021_howToControlTheWorld = BlogPost(
   author: .stephen,
   blurb: """
 APIs that interact with the outside world are unpredictable and make it difficult to test and simulate code paths in our apps. Existing solutions to this problem are verbose and complicated, so let's explore a simpler solution by embracing singletons and global mutation, and rejecting protocol-oriented programming and dependency injection.
@@ -1029,8 +1029,8 @@ We'll be diving deeper into this approach in the future. We'll show what it look
     ),
 
     ],
-  coverImage: "", // TODO
-  id: 20,
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0021-how-to-control-the-world/poster.jpg",
+  id: 21,
   publishedAt: .init(timeIntervalSince1970: 1_539_014_400),
   title: "How to Control the World"
 )
