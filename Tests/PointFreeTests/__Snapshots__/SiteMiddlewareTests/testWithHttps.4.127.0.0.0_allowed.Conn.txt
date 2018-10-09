@@ -1,7 +1,7 @@
 GET http://127.0.0.1:8080/
 
 200 OK
-Content-Length: 62435
+Content-Length: 62439
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
