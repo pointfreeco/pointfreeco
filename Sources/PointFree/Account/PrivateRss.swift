@@ -10,7 +10,7 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
 { fetchUser >=> $0 }
   <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
   <<< validateUserAndSalt
-  <<< fetchSubscription
+  <<< fetchUserSubscription
   <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
   <| map(lower)
   >>> writeStatus(.ok)
@@ -288,4 +288,23 @@ func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {
       ? conn.map(const(Data()))
       : conn
   }
+}
+
+private func fetchUserSubscription<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription?, Database.User, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return { conn in
+      guard let subscriptionId = get1(conn.data).subscriptionId else {
+        return conn.map(const(nil .*. conn.data)) |> middleware
+      }
+
+      let subscription = Current.database.fetchSubscriptionById(subscriptionId)
+        .mapExcept(requireSome)
+        .run
+        .map(^\.right)
+
+      return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
+    }
 }
