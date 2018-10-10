@@ -1,4 +1,5 @@
 import Foundation
+import Either
 import Html
 import HttpPipeline
 import Optics
@@ -7,21 +8,33 @@ import Tuple
 
 let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User.RssSalt>, Data> =
 { fetchUser >=> $0 }
-  <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware)
+  <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
   <<< validateUserAndSalt
   <<< fetchUserSubscription
-  <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware)
+  <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
   <| map(lower)
   >>> writeStatus(.ok)
   >=> trackFeedRequest
   >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
   >=> clearHeadBody
 
-private func invalidatedFeedMiddleware<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  return conn.map(const(unit))
-    |> writeStatus(.ok)
-    >=> respond(invalidatedFeedView, contentType: .text(.init("xml"), charset: .utf8))
-    >=> clearHeadBody
+private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
+  return { conn in
+    conn.map(const(unit))
+      |> writeStatus(.ok)
+      >=> { (conn: Conn<HeadersOpen, Prelude.Unit>) -> IO<Conn<HeadersOpen, Prelude.Unit>> in
+        
+        sendEmail(
+          to: adminEmails,
+          subject: "[Private Rss Feed Error] \(errorMessage)",
+          content: inj1(errorMessage)
+          ).run.parallel.run { _ in }
+
+        return pure(conn)
+      }
+      >=> respond(invalidatedFeedView, contentType: .text(.init("xml"), charset: .utf8))
+      >=> clearHeadBody
+  }
 }
 
 private func validateActiveSubscriber<Z>(
@@ -45,7 +58,7 @@ private func validateUserAndSalt<Z>(
     return { conn in
       guard get1(conn.data).rssSalt == get2(conn.data) else {
         return conn
-          |> invalidatedFeedMiddleware
+          |> invalidatedFeedMiddleware(errorMessage: "Couldn't validate rss salt")
       }
       return conn.map(const(get1(conn.data) .*. rest(conn.data)))
         |> middleware

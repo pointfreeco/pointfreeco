@@ -28,4 +28,6 @@ private let _allBlogPosts: [BlogPost] = [
   post0017_typeSafeVapor,
   post0018_typeSafeKitura,
   post0019_randomZalgoGenerator,
+  post0020_PodcastRSS,
+  post0021_howToControlTheWorld,
 ]
