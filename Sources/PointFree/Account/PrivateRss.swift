@@ -23,13 +23,12 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
     conn.map(const(unit))
       |> writeStatus(.ok)
       >=> { (conn: Conn<HeadersOpen, Prelude.Unit>) -> IO<Conn<HeadersOpen, Prelude.Unit>> in
-        parallel(
-          sendEmail(
-            to: adminEmails,
-            subject: "[Private Rss Feed Error] \(errorMessage)",
-            content: inj1("")
-            ).run
-          ).run { _ in }
+        
+        sendEmail(
+          to: adminEmails,
+          subject: "[Private Rss Feed Error] \(errorMessage)",
+          content: inj1(errorMessage)
+          ).run.parallel.run { _ in }
 
         return pure(conn)
       }
