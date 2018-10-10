@@ -10,7 +10,7 @@ Let's create a type-safe interface for dealing with seconds and milliseconds in 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0006-tagged-seconds-and-milliseconds/poster.jpg")
     ),
 
     .init(
@@ -464,7 +464,7 @@ This is just one small, but powerful example of how we can encode additional mea
       type: .paragraph
     ),
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0006-tagged-seconds-and-milliseconds/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0006-tagged-seconds-and-milliseconds/poster.jpg",
   id: 6,
   publishedAt: .init(timeIntervalSince1970: 1_529_332_606),
   title: "Tagged Seconds and Milliseconds"

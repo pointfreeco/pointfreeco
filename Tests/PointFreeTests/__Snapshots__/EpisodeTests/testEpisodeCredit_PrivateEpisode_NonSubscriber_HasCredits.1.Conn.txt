@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 52233
+Content-Length: 52534
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,7 +12,7 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>
@@ -1770,6 +1770,12 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <link rel="icon" type="image/png" sizes="16x16" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <style>
+      .vjs-subs-caps-button{display:none}
+    </style>
+    <script>
+      window.HELP_IMPROVE_VIDEOJS = false;
+    </script>
     <meta name="description" content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.">
     <meta property="og:description" content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
@@ -1915,7 +1921,7 @@ want to use it to view this episode for free right now?
       <div class="bg-purple150 first-m last-d col-m col-d-5 col-m-12">
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
-            <video class="h-100p w-100p absolute bg-gray650" controls playsinline autoplay poster="">
+            <video class="h-100p w-100p absolute bg-gray650 video-js vjs-default-skin vjs-big-play-centered" style="position:absolute" controls playsinline autoplay poster="" data-setup="{&quot;control&quot;:true,&quot;playbackRates&quot;:[0.5,1,1.5,2]}">
               <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8">
               <source src="https://s3.amazonaws.com/pointfreeco/trailer.webm">
             </video>
