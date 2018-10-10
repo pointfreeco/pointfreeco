@@ -16,6 +16,7 @@ class EpisodeTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
+//    record = true
   }
 
   func testEpisodePage() {
