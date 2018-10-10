@@ -12,6 +12,7 @@ extension AboutTests {
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
@@ -32,7 +33,9 @@ extension AppleDeveloperMerchantIdDomainAssociationTests {
 }
 extension AtomFeedTests {
   static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
-    ("testAtomFeed", testAtomFeed)
+    ("testAtomFeed", testAtomFeed),
+    ("testEpisodeFeed", testEpisodeFeed),
+    ("testEpisodeFeed_WithRecentlyFreeEpisode", testEpisodeFeed_WithRecentlyFreeEpisode)
   ]
 }
 extension AuthTests {
@@ -258,6 +261,14 @@ extension PrivacyTests {
     ("testPrivacy", testPrivacy)
   ]
 }
+extension PrivateRssTests {
+  static var allTests: [(String, (PrivateRssTests) -> () throws -> Void)] = [
+    ("testFeed_Authenticated_Subscriber", testFeed_Authenticated_Subscriber),
+    ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
+    ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
+    ("testFeed_BadSalt", testFeed_BadSalt)
+  ]
+}
 extension RegistrationEmailTests {
   static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
     ("testRegistrationEmail", testRegistrationEmail)
@@ -365,6 +376,7 @@ XCTMain([
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
   testCase(PrivacyTests.allTests),
+  testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StripeTests.allTests),
