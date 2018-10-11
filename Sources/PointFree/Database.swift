@@ -120,7 +120,7 @@ public struct Database {
     }
   }
 
-  public struct User: Decodable, Equatable {
+  public struct User: Codable, Equatable {
     public internal(set) var email: EmailAddress
     public internal(set) var episodeCreditCount: Int
     public internal(set) var gitHubUserId: GitHub.User.Id
