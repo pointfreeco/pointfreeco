@@ -12,6 +12,7 @@ public enum Route: DerivePartialIsos {
   case about
   case account(Account)
   case admin(Admin)
+  case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(organization: String)
@@ -140,6 +141,9 @@ private let routers: [Router<Route>] = [
 
   .admin <<< .newEpisodeEmail <<< .show
     <¢> get %> lit("admin") %> lit("new-episode-email") <% end,
+
+  .api
+    <¢> lit("api") %> apiRouter,
 
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),

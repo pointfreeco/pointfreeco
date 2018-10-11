@@ -115,6 +115,20 @@ import Prelude
 
 
 
+      extension PartialIso where A == (
+            Route.Api
+        ), B == Route {
+
+          public static let api = parenthesize <| PartialIso(
+            apply: Route.api,
+            unapply: {
+              guard case let .api(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Route {
         public static let appleDeveloperMerchantIdDomainAssociation = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.appleDeveloperMerchantIdDomainAssociation)),
@@ -773,6 +787,31 @@ import Prelude
             guard case .show = $0 else { return nil }
             return .some(Prelude.unit)
         })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Api {
+        public static let account = parenthesize <| PartialIso<Prelude.Unit, Route.Api>(
+          apply: const(.some(.account)),
+          unapply: {
+            guard case .account = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == (
+            String?
+        ), B == Route.Api {
+
+          public static let auth = parenthesize <| PartialIso(
+            apply: Route.Api.auth,
+            unapply: {
+              guard case let .auth(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 

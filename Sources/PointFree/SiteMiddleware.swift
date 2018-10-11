@@ -68,6 +68,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
 
+    case let .api(api):
+      return conn.map(const(subscription .*. user .*. subscriberState .*. api .*. unit))
+        |> renderApi
+
     case .appleDeveloperMerchantIdDomainAssociation:
       return conn.map(const(unit))
         |> appleDeveloperMerchantIdDomainAssociationMiddleware
