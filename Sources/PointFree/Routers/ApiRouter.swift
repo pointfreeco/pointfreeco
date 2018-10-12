@@ -14,6 +14,8 @@ extension Route {
   public enum Api: DerivePartialIsos {
     case account
     case auth(String?)
+    case finishAuth
+    case startAuth
   }
 }
 
@@ -42,6 +44,12 @@ func renderApi(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Databas
         >=> respond(encoder: JSONEncoder())
 
     case .auth:
+      fatalError()
+
+    case .finishAuth:
+      fatalError()
+
+    case .startAuth:
       fatalError()
     }
 }

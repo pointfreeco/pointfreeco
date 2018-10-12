@@ -816,6 +816,28 @@ import Prelude
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Route.Api {
+        public static let finishAuth = parenthesize <| PartialIso<Prelude.Unit, Route.Api>(
+          apply: const(.some(.finishAuth)),
+          unapply: {
+            guard case .finishAuth = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Api {
+        public static let startAuth = parenthesize <| PartialIso<Prelude.Unit, Route.Api>(
+          apply: const(.some(.startAuth)),
+          unapply: {
+            guard case .startAuth = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Route.Blog {
         public static let feed = parenthesize <| PartialIso<Prelude.Unit, Route.Blog>(
           apply: const(.some(.feed)),
