@@ -2,27 +2,36 @@ import Foundation
 
 let ep10 = Episode(
   blurb: """
-Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from
-the others? We'll explore this and how understanding that difference helps us explore generalizations of the
+Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from \
+the others? We'll explore this and how understanding that difference helps us explore generalizations of the \
 operation to other structures and derive new, useful code!
 """,
   codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
-  id: 10,
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 537_822_190,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/best-of-flatmaps.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/best-of-flatmaps.webm"
+    ]
+  ),
+  id: 10,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg",
   length: 25*60+4,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
   sequence: 10,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/best-of-flatmaps.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/best-of-flatmaps.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/webm-trailer.webm",
-    "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/hls-trailer.m3u8"
-  ],
   title: "A Tale of Two Flat-Maps",
+  trailerVideo: .init(
+    bytesLength: 20_552_363,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/webm-trailer.webm",
+      "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/hls-trailer.m3u8"
+      ]
+  ),
   transcriptBlocks: transcriptBlocks
 )
 

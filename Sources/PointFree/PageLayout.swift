@@ -55,6 +55,7 @@ struct SimplePageLayoutData<A> {
   private(set) var currentUser: Database.User?
   private(set) var data: A
   private(set) var description: String?
+  private(set) var extraHead: [ChildOf<Element.Head>]
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
@@ -70,6 +71,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     description: String? = nil,
+    extraHead: [ChildOf<Element.Head>] = [],
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
     openGraphType: OpenGraphType = .website,
@@ -84,6 +86,7 @@ struct SimplePageLayoutData<A> {
     self.currentUser = currentUser
     self.data = data
     self.description = description
+    self.extraHead = extraHead
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
@@ -122,7 +125,7 @@ func respond<A, B>(
         >=> respond(
           body: pageLayout.rendered(
             with: newLayoutData,
-            config: Current.envVars.appEnv == .production ? .compact : .pretty
+            config: Current.envVars.appEnv == .testing ? .pretty : .compact
           ),
           contentType: .html
       )
@@ -130,10 +133,21 @@ func respond<A, B>(
 }
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
-  let cssConfig: Css.Config = Current.envVars.appEnv == .production ? .compact : .pretty
-  return View { layoutData in
-    document([
-      html([
+  let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
+  return View { layoutData -> Node in
+
+    let hasPodcastRssFeature = Current.features.hasAccess(to: .podcastRss, for: layoutData.currentUser)
+    let episodeAtomFeed = Html.link([
+      hasPodcastRssFeature
+        ? href(url(to: .feed(.episodes)))
+        : href(url(to: .feed(.atom))),
+      rel(.alternate),
+      title("Point-Free Episodes"),
+      type(.application(.atom))
+      ])
+
+    return document([
+      html([lang(.en)], [
         head([
           meta([charset(.utf8)]),
           title(layoutData.title),
@@ -141,14 +155,9 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           style(styleguide, config: cssConfig),
           style(layoutData.extraStyles, config: cssConfig),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
+          episodeAtomFeed,
           link([
-            href(url(to: .feed(.atom))),
-            rel(.alternate),
-            title("Point-Free Episodes"),
-            type(.application(.atom)),
-            ]),
-          link([
-            href(url(to: .blog(.feed(.atom)))),
+            href(url(to: .blog(.feed))),
             rel(.alternate),
             title("Point-Free Blog"),
             type(.application(.atom)),
@@ -156,6 +165,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           ]
           <> (layoutData.usePrismJs ? prismJsHead : [])
           <> favicons
+          <> layoutData.extraHead
         ),
         body(
           pastDueBanner(layoutData)
@@ -254,7 +264,7 @@ private let prismJsHead: [ChildOf<Tag.Head>] = [
           }
         }
       },
-      keyword: /\\b(?:as|associativity|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|higherThan|if|import|in|infix|init|inout|internal|is|lazy|left|let|lowerThan|mutating|new|none|nonmutating|operator|optional|override|postfix|precedencegroup|prefix|private|Protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\\b|@(?:autoclosure(?:\\(.*\\))?|availability\\(.*\\)|convention|discardableResult|escaping|GKInspectable|nonobjc|NSApplicationMain|NSCopying|NSManaged|objc|objcMembers|testable|UIApplicationMain)\\b/,
+      keyword: /\\b(?:as|associativity|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|higherThan|if|import|in|indirect|infix|init|inout|internal|is|lazy|left|let|lowerThan|mutating|new|none|nonmutating|operator|optional|override|postfix|precedencegroup|prefix|private|protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\\b|@(?:autoclosure(?:\\(.*\\))?|availability\\(.*\\)|convention|discardableResult|escaping|GKInspectable|nonobjc|NSApplicationMain|NSCopying|NSManaged|objc|objcMembers|testable|UIApplicationMain)\\b/,
       number: /\\b(?:[\\d_]+(?:\\.[\\de_]+)?|0x[a-f0-9_]+(?:\\.[a-f0-9p_]+)?|0b[01_]+|0o[0-7_]+)\\b/i,
       constant: /\\b(?:nil|[A-Z_]{2,}|k[A-Z][A-Za-z_]+)\\b/,atrule:/@\\b(?:IB(?:Outlet|Designable|Action|Inspectable)|class_protocol|exported|noreturn|NS(?:Copying|Managed)|objc|UIApplicationMain|auto_closure)\\b/,
       builtin: /\\b(?:[A-Z]\\S+|abs|advance|alignof(?:Value)?|assert|contains|count(?:Elements)?|debugPrint(?:ln)?|distance|drop(?:First|Last)|dump|enumerate|equal|filter|find|first|getVaList|indices|isEmpty|join|last|lexicographicalCompare|map|max(?:Element)?|min(?:Element)?|numericCast|overlaps|partition|print(?:ln)?|reduce|reflect|reverse|sizeof(?:Value)?|sort(?:ed)?|split|startsWith|stride(?:of(?:Value)?)?|suffix|swap|toDebugString|toString|transcode|underestimateCount|unsafeBitCast|with(?:ExtendedLifetime|Unsafe(?:MutablePointers?|Pointers?)|VaList))\\b/

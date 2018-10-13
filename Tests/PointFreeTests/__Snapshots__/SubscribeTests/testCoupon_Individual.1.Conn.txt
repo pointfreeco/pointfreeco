@@ -1,7 +1,7 @@
 POST http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
 
-pricing[lane]=individual&pricing[billing]=monthly&pricing[quantity]=1&coupon=deadbeef&vatNumber=&token=stripe-deadbeef
+coupon=deadbeef&pricing[billing]=monthly&pricing[lane]=individual&pricing[quantity]=1&token=stripe-deadbeef&vatNumber=
 
 302 Found
 Location: /account

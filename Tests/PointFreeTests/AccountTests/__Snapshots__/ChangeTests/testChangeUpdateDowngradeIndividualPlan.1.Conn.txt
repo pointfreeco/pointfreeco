@@ -1,7 +1,7 @@
 POST http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
-lane=individual&billing=monthly&quantity=1
+billing=monthly&lane=individual&quantity=1
 
 302 Found
 Location: /account

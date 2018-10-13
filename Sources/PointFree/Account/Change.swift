@@ -172,7 +172,7 @@ private func fetchSeatsTaken<A>(
 
       return invitesAndTeammates
         .sequential
-        .flatMap { middleware(conn.map(const(user .*. $0.reduce(1, +) .*. conn.data.second))) }
+        .flatMap { middleware(conn.map(const(user .*. $0.reduce(0, +) .*. conn.data.second))) }
     }
 }
 

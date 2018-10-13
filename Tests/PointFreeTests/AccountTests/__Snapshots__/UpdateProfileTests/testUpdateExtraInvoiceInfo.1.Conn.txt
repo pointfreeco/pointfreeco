@@ -1,7 +1,7 @@
 POST http://localhost:8080/account
 Cookie: pf_session={"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
 
-name=Blob&email=blob@pointfree.co&extraInvoiceInfo=VAT:%20123456789&emailSettings[newEpisode]=on
+email=blob%40pointfree.co&emailSettings[newEpisode]=on&extraInvoiceInfo=VAT%3A%20123456789&name=Blob
 
 302 Found
 Location: /account

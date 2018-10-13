@@ -31,6 +31,7 @@ let episodeResponse =
           currentUser: currentUser,
           data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
+          extraHead: videoJsHead,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
           style: .base(navStyle),
@@ -226,15 +227,17 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       video(
         [
-          Styleguide.class([innerVideoContainerClass]),
+          Styleguide.class([innerVideoContainerClass, videoJsClasses]),
+          style(position(.absolute)),
           controls(true),
           playsinline(true),
           autoplay(true),
-          poster(episode.image)
+          poster(episode.image),
+          data("setup", VideoJsOptions.default.jsonString)
         ],
         isEpisodeViewable
-          ? episode.sourcesFull.map { source(src: $0) }
-          : episode.sourcesTrailer.map { source(src: $0) }
+          ? episode.fullVideo.streamingSources.map { source(src: $0) }
+          : (episode.trailerVideo?.streamingSources ?? []).map { source(src: $0) }
       )
     ]
   )
@@ -575,7 +578,7 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
   let components: [String?] = [
     "#\(ep.sequence)",
     episodeDateFormatter.string(from: ep.publishedAt),
-    ep.subscriberOnly ? "Subscriber-only" : nil
+    ep.subscriberOnly ? "Subscriber-only" : "Free Episode"
   ]
 
   return components

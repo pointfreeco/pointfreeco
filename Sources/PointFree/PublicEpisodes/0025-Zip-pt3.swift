@@ -2,26 +2,34 @@ import Foundation
 
 let ep25 = Episode(
   blurb: """
-The third, and final, part of our introductory series to `zip` finally answers the question:
-"What's the point?"
+The third, and final, part of our introductory series to `zip` finally answers the question: "What's the point?"
 """,
   codeSampleDirectory: "0025-zip-pt3",
-  id: 25,
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 483_556_172,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/full-720p-1FD9673E-3713-4DF5-B11B-943B93088F9C.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.webm"
+      ]
+  ),
+  id: 25,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/itunes-poster.jpg",
   length: 24*60 + 21,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
   sequence: 25,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/zippy3.webm"
-  ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/trailer/webm-trailer.webm",
-  ],
   title: "The Many Faces of Zip: Part 3",
+  trailerVideo: .init(
+    bytesLength: 41_732_099,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer/hls-trailer.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer/webm-trailer.webm",
+      ]
+  ),
   transcriptBlocks: transcriptBlocks
 )
 

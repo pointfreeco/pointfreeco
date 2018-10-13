@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.11.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 import XCTest
@@ -12,6 +12,8 @@ extension AboutTests {
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
+    ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
@@ -31,7 +33,9 @@ extension AppleDeveloperMerchantIdDomainAssociationTests {
 }
 extension AtomFeedTests {
   static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
-    ("testAtomFeed", testAtomFeed)
+    ("testAtomFeed", testAtomFeed),
+    ("testEpisodeFeed", testEpisodeFeed),
+    ("testEpisodeFeed_WithRecentlyFreeEpisode", testEpisodeFeed_WithRecentlyFreeEpisode)
   ]
 }
 extension AuthTests {
@@ -106,6 +110,14 @@ extension ChangeTests {
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testCreate", testCreate)
+  ]
+}
+extension DiscountsTests {
+  static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
+    ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
+    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
+    ("testFika_LoggedOut", testFika_LoggedOut),
+    ("testFika_LoggedIn", testFika_LoggedIn)
   ]
 }
 extension EitherIOTests {
@@ -249,6 +261,14 @@ extension PrivacyTests {
     ("testPrivacy", testPrivacy)
   ]
 }
+extension PrivateRssTests {
+  static var allTests: [(String, (PrivateRssTests) -> () throws -> Void)] = [
+    ("testFeed_Authenticated_Subscriber", testFeed_Authenticated_Subscriber),
+    ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
+    ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
+    ("testFeed_BadSalt", testFeed_BadSalt)
+  ]
+}
 extension RegistrationEmailTests {
   static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
     ("testRegistrationEmail", testRegistrationEmail)
@@ -336,6 +356,7 @@ XCTMain([
   testCase(ChangeEmailConfirmationTests.allTests),
   testCase(ChangeTests.allTests),
   testCase(DatabaseTests.allTests),
+  testCase(DiscountsTests.allTests),
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
@@ -355,6 +376,7 @@ XCTMain([
   testCase(PaymentInfoTests.allTests),
   testCase(PricingTests.allTests),
   testCase(PrivacyTests.allTests),
+  testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StripeTests.allTests),

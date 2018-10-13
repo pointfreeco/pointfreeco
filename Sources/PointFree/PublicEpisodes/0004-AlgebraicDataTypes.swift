@@ -2,26 +2,35 @@ import Foundation
 
 let ep4 = Episode(
   blurb: """
-What does the Swift type system have to do with algebra? A lot! We’ll begin to explore this correspondence 
+What does the Swift type system have to do with algebra? A lot! We’ll begin to explore this correspondence \
 and see how it can help us create type-safe data structures that can catch runtime errors at compile time.
 """,
   codeSampleDirectory: "0004-algebraic-data-types",
-  id: 4,
   exercises: exercises,
+  fullVideo: .init(
+    bytesLength: 723_938_138,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
+      ]
+  ),
+  id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/itunes-poster.jpg",
   length: 2_172,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
   sequence: 4,
-  sourcesFull: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
-    ],
-  sourcesTrailer: [
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
-    "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
-    ],
   title: "Algebraic Data Types",
+  trailerVideo: .init(
+    bytesLength: 43_693_973,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer-720p.mp4",
+    streamingSources: [
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
+      ]
+  ),
   transcriptBlocks: transcriptBlocks
 )
 

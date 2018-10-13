@@ -52,6 +52,7 @@ extension Logger {
 extension EnvVars {
   public static var mock: EnvVars {
     return EnvVars()
+      |> \.appEnv .~ EnvVars.AppEnv.testing
       |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
   }
 }
@@ -65,6 +66,7 @@ extension Mailgun {
 extension Database {
   public static let mock = Database(
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
+    createFeedRequestEvent: { _, _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     fetchAdmins: unzurry(pure([])),
@@ -73,7 +75,7 @@ extension Database {
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchSubscriptionById: const(pure(.some(.mock))),
     fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([])),
+    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
@@ -101,6 +103,7 @@ extension Database.User {
     id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
     isAdmin: false,
     name: "Blob",
+    rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 
