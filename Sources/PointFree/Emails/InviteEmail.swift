@@ -20,7 +20,7 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
 private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
           p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
@@ -59,7 +59,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
 private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> { inviter, invitee in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         h3([Styleguide.class([Class.pf.type.responsiveTitle3]), Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
           "Your invitation was accepted!"
           ]),

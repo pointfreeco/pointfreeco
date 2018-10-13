@@ -110,7 +110,7 @@ private let episodeRowView = View<Episode> { ep in
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
       gridColumn(sizes: [.mobile: 12, .desktop: 5], [Styleguide.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])], [
-        div([ // todo: Styleguide.class([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
+        div([Styleguide.class([Class.size.height100pct]), style(lineHeight(0) <> gradient <> minHeight(.px(300)))], [
           a([href(path(to: .episode(.left(ep.slug))))], [
             img(
               [src(ep.image), alt(""), Styleguide.class([Class.size.width100pct, Class.size.height100pct]),

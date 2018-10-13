@@ -46,7 +46,8 @@ func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
           Styleguide.class([Class.margin([.mobile: [.right: 1]])]),
           style(margin(bottom: .px(-4))),
           width(20),
-          height(20)]
+          height(20)
+        ]
       ),
       span([.text(text)])
     ]

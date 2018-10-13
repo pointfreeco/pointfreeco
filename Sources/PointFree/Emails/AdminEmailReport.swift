@@ -27,7 +27,7 @@ func adminEmailReport(_ type: String) -> View<([Database.User], Int)> {
 let adminEmailReportContent = View<(String, [Database.User], Int)> { type, erroredUsers, totalAttempted in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["New episode email report"]),
           p([

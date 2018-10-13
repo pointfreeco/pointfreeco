@@ -20,7 +20,7 @@ let registrationEmailView = simpleEmailLayout(registrationEmailBody)
 private let registrationEmailBody = View<GitHub.User> { user in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Thanks for signing up!"]),
           p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [

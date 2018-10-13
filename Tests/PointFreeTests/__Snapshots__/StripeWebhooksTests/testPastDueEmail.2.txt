@@ -10,7 +10,20 @@ Please update your payment info to ensure uninterrupted access to Point-Free!
 
 Update payment info <http://localhost:8080/account/payment-info>
 
+
+
+
+
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 
 Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+
 

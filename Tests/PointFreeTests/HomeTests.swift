@@ -46,12 +46,7 @@ class HomeTests: TestCase {
       webView.frame.size.width = 400
       webView.frame.size.height = 3500
 
-      let render = expectation(description: "Render")
-      DispatchQueue.main.async {
-        self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
-        render.fulfill()
-      }
-      waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }
+      self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
     }
     #endif
   }
@@ -71,12 +66,7 @@ class HomeTests: TestCase {
       webView.frame.size.width = 400
       webView.frame.size.height = 2800
 
-      let render = expectation(description: "Render")
-      DispatchQueue.main.async {
-        self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
-        render.fulfill()
-      }
-      waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }
+      self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
     }
     #endif
   }

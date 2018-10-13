@@ -146,7 +146,7 @@ let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView)
 private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Payment failed"]),
           p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [

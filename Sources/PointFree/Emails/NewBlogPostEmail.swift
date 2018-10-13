@@ -30,7 +30,7 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
 let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div(
           [Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView.view(announcement)
@@ -109,7 +109,7 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
 let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["New blog post email report"]),
           p([

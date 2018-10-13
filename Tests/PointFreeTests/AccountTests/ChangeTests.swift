@@ -169,8 +169,9 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    let performed = result.perform()
     waitForExpectations(timeout: 0.1, handler: nil)
+    assertSnapshot(matching: performed)
     #endif
   }
 
@@ -206,8 +207,9 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    let performed = result.perform()
     waitForExpectations(timeout: 0.1, handler: nil)
+    assertSnapshot(matching: performed)
     #endif
   }
   

@@ -31,7 +31,7 @@ let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
 let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, announcement, isSubscriber in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
 
             announcementView.view(announcement) <> [

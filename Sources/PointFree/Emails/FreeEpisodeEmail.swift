@@ -29,7 +29,7 @@ Every once in awhile we release a past episode for free to all of our viewers, a
 let freeEpisodeEmailContent = View<Episode> { ep in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           blockquote(
             [

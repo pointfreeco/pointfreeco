@@ -59,7 +59,7 @@ let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody)
 private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { teamOwner, teammate in
   emailTable([style(contentTableStyles)], [
     tr([
-      td([ // todo: valign(.top)], [
+      td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
           h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Team removal"]),
           p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [

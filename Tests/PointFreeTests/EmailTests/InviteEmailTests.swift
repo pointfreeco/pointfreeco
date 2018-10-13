@@ -13,9 +13,9 @@ import WebKit
 
 class EmailInviteTests: TestCase {
   func testEmailInvite() {
-    let doc = teamInviteEmailView.view((.mock, .mock)).first!
+    let doc = teamInviteEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: doc)
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -31,9 +31,9 @@ class EmailInviteTests: TestCase {
   }
 
   func testInviteAcceptance() {
-    let doc = inviteeAcceptedEmailView.view((.mock, .mock)).first!
+    let doc = inviteeAcceptedEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: doc)
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

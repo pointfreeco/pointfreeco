@@ -38,7 +38,8 @@ class MetaLayoutTests: TestCase {
           type: .website,
           url: "http://www.pointfree.co"
         )
-      )
+      ),
+      with: .html
     )
   }
 }
