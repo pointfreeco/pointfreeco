@@ -121,7 +121,7 @@ private let hostView = View<Host> { host in
               "Twitter",
               img(
                 base64: rightArrowSvgBase64(fill: "#ffffff"),
-                mediaType: .image(.svg),
+                type: .image(.svg),
                 alt: "",
                 [Styleguide.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
               )

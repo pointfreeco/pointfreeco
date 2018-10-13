@@ -55,7 +55,7 @@ struct SimplePageLayoutData<A> {
   private(set) var currentUser: Database.User?
   private(set) var data: A
   private(set) var description: String?
-  private(set) var extraHead: [ChildOf<Element.Head>]
+  private(set) var extraHead: [ChildOf<Tag.Head>]
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
@@ -71,7 +71,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     description: String? = nil,
-    extraHead: [ChildOf<Element.Head>] = [],
+    extraHead: [ChildOf<Tag.Head>] = [],
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
     openGraphType: OpenGraphType = .website,
@@ -237,11 +237,11 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
 }
 
 private let favicons: [ChildOf<Tag.Head>] = [
-  link([rel(.value("apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
-  link([rel(.value("icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
-  link([rel(.value("icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
-  link([rel(.value("manifest")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")]),
-  link([rel(.value("mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
+  link([rel(.init(rawValue: "apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
+  link([rel(.init(rawValue: "icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
+  link([rel(.init(rawValue: "icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
+  link([rel(.init(rawValue: "manifest")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")]),
+  link([rel(.init(rawValue: "mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]
 
 private let prismJsHead: [ChildOf<Tag.Head>] = [

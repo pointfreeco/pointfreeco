@@ -251,7 +251,7 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
         max(Pricing.validTeamQuantities.upperBound),
         name("quantity"),
         onchange(
-          unsafeJavascript: """
+          unsafe: """
           var multiplier = this.valueAsNumber;
           console.log(multiplier);
           var elements = document.getElementsByClassName('price');

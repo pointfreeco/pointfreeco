@@ -264,10 +264,10 @@ public func url(to route: Route) -> String {
   return router.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
 }
 
-extension PartialIso where A == String, B == Tag {
-  public static var tag: PartialIso<String, Tag> {
-    return PartialIso<String, Tag>(
-      apply: Tag.init(slug:),
+extension PartialIso where A == String, B == SiteTag {
+  public static var tag: PartialIso<String, SiteTag> {
+    return PartialIso<String, SiteTag>(
+      apply: SiteTag.init(slug:),
       unapply: ^\.name
     )
   }

@@ -3,8 +3,8 @@ import Foundation
 import Html
 import HtmlCssSupport
 
-var videoJsHead: [ChildOf<Element.Head>] {
-  let videoJsAssets: [ChildOf<Element.Head>] = [
+var videoJsHead: [ChildOf<Tag.Head>] {
+  let videoJsAssets: [ChildOf<Tag.Head>] = [
     link([
       href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
       rel(.stylesheet)

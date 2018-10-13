@@ -134,7 +134,7 @@ private let episodeInfoColumnView = View<Episode> { ep in
             .text("Watch episode (\(ep.length / 60) min)"),
             img(
               base64: rightArrowSvgBase64(fill: "#974DFF"),
-              mediaType: .image(.svg),
+              type: .image(.svg),
               alt: "",
               [Styleguide.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
             )

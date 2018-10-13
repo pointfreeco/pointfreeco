@@ -37,12 +37,13 @@ let emailStylesheet = styleguide
 
 func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
   return View { layoutData in
-    document([
+    [
+      .doctype("html"),
       html([xmlns("http://www.w3.org/1999/xhtml")], [
         head([
           style(emailStylesheet),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
-          meta([httpEquiv(.contentType), content("html"), charset(.utf8)]),
+          meta([.init("http-equiv", "content-type"), content("html"), charset(.utf8)]),
           title(layoutData.title),
           ]),
 
@@ -66,7 +67,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
             ])
           ])
         ])
-      ])
+      ]
     }
     .map { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
 }

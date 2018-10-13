@@ -12,9 +12,9 @@ let package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("5d5005d")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("69b48c8")),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.1.1")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("f067724")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("8f9182d")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("e6952b9")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("442c64e")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
@@ -30,6 +30,8 @@ let package = Package(
         "Either",
         "Html",
         "HtmlCssSupport",
+        "HtmlPlainTextPrint",
+        "HtmlPrettyPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Optics",
@@ -37,7 +39,7 @@ let package = Package(
         "Styleguide",
         "Tuple",
         "UrlFormEncoding",
-        "View"
+        "View",
         ]
     ),
 

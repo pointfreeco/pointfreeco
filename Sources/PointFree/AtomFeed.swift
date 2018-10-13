@@ -1,5 +1,6 @@
 import Foundation
 import Html
+import HtmlPrettyPrint
 import HttpPipeline
 import Prelude
 import View
@@ -192,17 +193,16 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 
 // TODO: swift-web
 public extension Application {
-  public static var atom = Application("atom+xml")
+  public static var atom = Application(rawValue: "atom+xml")
 }
 
 public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: view.rendered(
-          with: conn.data,
-          config: Current.envVars.appEnv == .testing ? .pretty : .compact
-        ),
+        body: Current.envVars.appEnv == .testing
+          ? prettyPrint(view.view(conn.data))
+          : render(view.view(conn.data)),
         contentType: contentType
     )
   }

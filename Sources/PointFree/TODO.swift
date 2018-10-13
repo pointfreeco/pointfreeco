@@ -398,18 +398,6 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-public func oninput<T: HasOnchange>(unsafeJavascript: String) -> Attribute<T> {
-  return .init("oninput", "javascript:\(unsafeJavascript)")
-}
-
-public protocol HasAsync {}
-extension Element.Script: HasAsync {}
-public func async<T: HasAsync>(_ value: Bool) -> Attribute<T> {
-  return .init("async", value)
-}
-
-public protocol HasDefer {}
-extension Element.Script: HasDefer {}
-public func `defer`<T: HasDefer>(_ value: Bool) -> Attribute<T> {
-  return .init("defer", value)
+func text(_ string: String) -> Node {
+  return .text(string)
 }

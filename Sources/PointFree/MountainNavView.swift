@@ -16,7 +16,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
       gridRow([Styleguide.class([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
         gridColumn(sizes: [.mobile: 5], [Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-          img(base64: heroMountainSvgBase64, mediaType: .image(.svg), alt: "", [Styleguide.class([Class.size.width100pct])])
+          img(base64: heroMountainSvgBase64, type: .image(.svg), alt: "", [Styleguide.class([Class.size.width100pct])])
           ]),
 
         gridColumn(sizes: [.mobile: 2], [Styleguide.class([Class.position.z1])], [
@@ -28,7 +28,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
         gridColumn(sizes: [.mobile: 5], [Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
           img(
             base64: heroMountainSvgBase64,
-            mediaType: .image(.svg),
+            type: .image(.svg),
             alt: "",
             [Styleguide.class([Class.pf.components.reflectX, Class.size.width100pct])]
           )
@@ -60,7 +60,7 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
           a([href(path(to: .home))], [
             img(
               base64: mountainsStyle.heroLogoSvgBase64,
-              mediaType: .image(.svg),
+              type: .image(.svg),
               alt: "",
               [Styleguide.class([Class.pf.components.heroLogo])]
             )

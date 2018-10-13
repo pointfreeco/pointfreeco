@@ -16,7 +16,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberStat
         a([href(path(to: .home))], [
           img(
             base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
-            mediaType: .image(.svg),
+            type: .image(.svg),
             alt: "",
             [Styleguide.class([Class.hide(.desktop)])]
           )
@@ -30,7 +30,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberStat
           a([href(path(to: .home))], [
             img(
               base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
-              mediaType: .image(.svg),
+              type: .image(.svg),
               alt: "",
               [Styleguide.class([Class.hide(.mobile)])]
             )

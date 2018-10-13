@@ -265,7 +265,7 @@ private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attri
       ? href("#t\(timestamp)")
       : href("#"),
 
-    onclick(unsafeJavascript: """
+    onclick(unsafe: """
       var video = document.getElementsByTagName("video")[0];
       video.currentTime = event.target.dataset.t;
       video.play();
@@ -337,7 +337,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
           ),
           img(
             base64: gitHubSvgBase64(fill: "#FFF080"),
-            mediaType: .image(.svg),
+            type: .image(.svg),
             alt: "",
             [Styleguide.class([Class.align.middle]), width(20), height(20)]
           ),
@@ -683,7 +683,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         Styleguide.class([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
         href(src),
         target(.blank),
-        rel(.value("noopener noreferrer")),
+        rel(.init(rawValue: "noopener noreferrer")),
       ],
       [img([src(src), alt(""), Styleguide.class([innerImageContainerClass])])]
     )
