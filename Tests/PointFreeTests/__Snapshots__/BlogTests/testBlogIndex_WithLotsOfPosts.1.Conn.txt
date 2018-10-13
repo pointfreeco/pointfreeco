@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 128939
+Content-Length: 128932
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1693,7 +1693,6 @@ html {
                  Blog"
           type="application/atom+xml">
     <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
-      
     </script>
     <script>
       Prism.languages.swift = Prism.languages.extend("clike", {
