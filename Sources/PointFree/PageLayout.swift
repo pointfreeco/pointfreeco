@@ -2,6 +2,7 @@ import Css
 import Foundation
 import Html
 import HtmlCssSupport
+import HtmlPrettyPrint
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
@@ -123,10 +124,9 @@ func respond<A, B>(
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >=> respond(
-          body: pageLayout.rendered(
-            with: newLayoutData,
-            config: Current.envVars.appEnv == .testing ? .pretty : .compact
-          ),
+          body: Current.envVars.appEnv == .testing
+            ? prettyPrint(pageLayout.view(newLayoutData))
+            : render(pageLayout.view(newLayoutData)),
           contentType: .html
       )
     }
@@ -134,34 +134,37 @@ func respond<A, B>(
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
-  return View { layoutData -> Node in
+  return View { layoutData -> [Node] in
 
     let hasPodcastRssFeature = Current.features.hasAccess(to: .podcastRss, for: layoutData.currentUser)
+    let blogAtomFeed = Html.link([
+      href(url(to: .blog(.feed))),
+      rel(.alternate),
+      title("Point-Free Blog"),
+      type(.application(.atom)),
+      ])
+
     let episodeAtomFeed = Html.link([
       hasPodcastRssFeature
         ? href(url(to: .feed(.episodes)))
         : href(url(to: .feed(.atom))),
       rel(.alternate),
       title("Point-Free Episodes"),
-      type(.application(.atom))
+      type(.application(.atom)),
       ])
 
-    return document([
+    return [
+      doctype,
       html([lang(.en)], [
         head([
           meta([charset(.utf8)]),
           title(layoutData.title),
-          style(renderedNormalizeCss),
+          style(unsafe: renderedNormalizeCss),
           style(styleguide, config: cssConfig),
           style(layoutData.extraStyles, config: cssConfig),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           episodeAtomFeed,
-          link([
-            href(url(to: .blog(.feed))),
-            rel(.alternate),
-            title("Point-Free Blog"),
-            type(.application(.atom)),
-            ])
+          blogAtomFeed,
           ]
           <> (layoutData.usePrismJs ? prismJsHead : [])
           <> favicons
@@ -175,7 +178,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
             <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
         )
         ])
-      ])
+    ]
   }
 }
 
@@ -237,9 +240,9 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
 }
 
 private let favicons: [ChildOf<Tag.Head>] = [
-  link([rel(.init(rawValue: "apple-touch-icon")), sizes("180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
-  link([rel(.init(rawValue: "icon")), type(.png), sizes("32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
-  link([rel(.init(rawValue: "icon")), type(.png), sizes("16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
+  link([rel(.init(rawValue: "apple-touch-icon")), .init("sizes", "180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
+  link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
+  link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
   link([rel(.init(rawValue: "manifest")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")]),
   link([rel(.init(rawValue: "mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]

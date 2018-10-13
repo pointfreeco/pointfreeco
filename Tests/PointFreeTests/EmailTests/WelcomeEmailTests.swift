@@ -23,14 +23,14 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
 
-    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: emailNodes, with: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, with: .webView)
     }
     #endif
   }
@@ -40,14 +40,14 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
 
-    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: emailNodes)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, with: .webView)
     }
     #endif
   }
@@ -57,14 +57,14 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
 
-    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: emailNodes)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, with: .webView)
     }
     #endif
   }

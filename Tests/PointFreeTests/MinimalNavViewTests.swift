@@ -6,6 +6,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Styleguide
+import View
 #if !os(Linux)
 import WebKit
 #endif
@@ -28,11 +29,11 @@ class MinimalNavViewTests: TestCase {
       if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 180))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, named: "\(key)_desktop")
+        assertSnapshot(matching: webView, with: .webView, named: "\(key)_desktop")
 
         webView.frame.size.width = 500
         webView.frame.size.height = 140
-        assertSnapshot(matching: webView, named: "\(key)_mobile")
+        assertSnapshot(matching: webView, with: .webView, named: "\(key)_mobile")
       }
       #endif
     }
@@ -52,14 +53,15 @@ private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Subscriber
 ]
 
 private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  document([
+  [
+    doctype,
     html([
       head([
-        Html.style(renderedNormalizeCss),
+        Html.style(unsafe: renderedNormalizeCss),
         HtmlCssSupport.style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(minimalNavView.view((style, currentUser, subscriberState, currentRoute)))
       ])
-    ])
+  ]
 }

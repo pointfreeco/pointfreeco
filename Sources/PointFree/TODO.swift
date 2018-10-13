@@ -401,3 +401,7 @@ public func responseTimeout(_ interval: TimeInterval)
 func text(_ string: String) -> Node {
   return .text(string)
 }
+
+func playsinline(_ value: Bool) -> Attribute<Tag.Video> {
+  return .init("playslinline", value ? "" : nil)
+}

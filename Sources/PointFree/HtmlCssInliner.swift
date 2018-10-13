@@ -12,71 +12,56 @@ public func applyInlineStyles(nodes: [Node], stylesheet: Stylesheet) -> [Node] {
 /// Transforms `node` by applying a reasonable number of the styles from `stylesheet` to each element.
 public func applyInlineStyles(node: Node, stylesheet: Stylesheet) -> Node {
   switch node {
-  case .comment:
-    return node
+  case let .element(tag, attribs, children):
+    return applyInlineStyles(tag, attribs, children, stylesheet: stylesheet)
 
-  case let .document(nodes):
-    return .document(applyInlineStyles(nodes: nodes, stylesheet: stylesheet))
-
-  case let .element(element):
-    return .element(applyInlineStyles(element: element, stylesheet: stylesheet))
-
-  case .text:
+  case .comment, .doctype, .raw, .text:
     return node
   }
 }
 
-private func applyInlineStyles(element: Element, stylesheet: Stylesheet) -> Element {
-  let currentStyles = element.attribs
-    .first(where: { $0.key == "style" })?
-    .value
-    .renderedValue()?
-    .string
-    ?? ""
+private func applyInlineStyles(
+  _ tag: String,
+  _ attribs: [(key: String, value: String?)],
+  _ children: [Node],
+  stylesheet: Stylesheet
+  )
+  -> Node {
 
-  // Computes all inline styles based on the classes on this element
-  let classStyles = (
-    element.attribs
-      .first(where: { $0.key == "class" })?
-      .value
-      .renderedValue()?
-      .string
+    let currentStyles = attribs.first(where: { $0.key == "style" })?.value ?? ""
+
+    // Computes all inline styles based on the classes on this element
+    let classStyles = (attribs.first(where: { $0.key == "class" })?.value ?? "")
+      .components(separatedBy: " ")
+      .map { inlineStyles(for: .class($0), stylesheet: stylesheet) }
+      .joined(separator: ";")
+
+    // Computes all inline styles based on the name of the element tag.
+    let elemStyles = inlineStyles(for: .elem(.other(tag)), stylesheet: stylesheet)
+
+    // Computes all inline styles based on the id of the element.
+    let idStyles = (attribs.first(where: { $0.key == "id" })?.value)
+      .map { inlineStyles(for: .id($0), stylesheet: stylesheet) }
       ?? ""
+
+    let newStyles = [
+      elemStyles,
+      classStyles,
+      idStyles,
+      currentStyles,
+      ]
+      .filter { !$0.isEmpty }
+      .joined(separator: ";")
+
+    let newAttribs = attribs
+      .filter { $0.key != "style" }
+      + (newStyles.isEmpty ? [] : [("style", newStyles)])
+
+    return .element(
+      tag,
+      newAttribs,
+      applyInlineStyles(nodes: children, stylesheet: stylesheet)
     )
-    .components(separatedBy: " ")
-    .map { inlineStyles(for: .class($0), stylesheet: stylesheet) }
-    .joined(separator: ";")
-
-  // Computes all inline styles based on the name of the element tag.
-  let elemStyles = inlineStyles(for: .elem(.other(element.name)), stylesheet: stylesheet)
-
-  // Computes all inline styles based on the id of the element.
-  let idStyles = (
-    element.attribs
-      .first(where: { $0.key == "id" })?
-      .value
-      .renderedValue()?
-      .string
-    )
-    .map { inlineStyles(for: .id($0), stylesheet: stylesheet) }
-    ?? ""
-
-  let newStyles = [
-    elemStyles,
-    classStyles,
-    idStyles,
-    currentStyles,
-    ]
-    .filter { !$0.isEmpty }
-    .joined(separator: ";")
-
-  let newAttribs = element.attribs
-    .filter { $0.key != "style" }
-    + (newStyles.isEmpty ? [] : [AnyAttribute("style", newStyles)])
-
-  return element
-    |> \.attribs .~ newAttribs
-    |> \.content .~ applyInlineStyles(nodes: element.content ?? [], stylesheet: stylesheet)
 }
 
 // Computes the inline styles for a selector given a stylesheet.

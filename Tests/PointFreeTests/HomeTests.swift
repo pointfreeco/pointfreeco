@@ -41,14 +41,14 @@ class HomeTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 3000))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(matching: webView, with: .webView, named: "desktop")
 
       webView.frame.size.width = 400
       webView.frame.size.height = 3500
 
       let render = expectation(description: "Render")
       DispatchQueue.main.async {
-        assertSnapshot(matching: webView, named: "mobile")
+        self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
         render.fulfill()
       }
       waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }
@@ -66,14 +66,14 @@ class HomeTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2300))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(matching: webView, with: .webView, named: "desktop")
 
       webView.frame.size.width = 400
       webView.frame.size.height = 2800
 
       let render = expectation(description: "Render")
       DispatchQueue.main.async {
-        assertSnapshot(matching: webView, named: "mobile")
+        self.assertSnapshot(matching: webView, with: .webView, named: "mobile")
         render.fulfill()
       }
       waitForExpectations(timeout: 2) { XCTAssert($0 == nil) }

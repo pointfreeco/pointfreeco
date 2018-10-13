@@ -11,7 +11,7 @@ let atomFeedResponse =
 
 let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
-    >=> respond(episodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+    >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
 let pointFreeFeed = View<[Episode]> { episodes in

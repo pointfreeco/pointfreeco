@@ -1,5 +1,6 @@
 import Either
 import Html
+import HtmlPlainTextPrint
 import HtmlPrettyPrint
 import HttpPipeline
 @testable import PointFree
@@ -170,17 +171,17 @@ final class StripeWebhooksTests: TestCase {
   func testPastDueEmail() {
     let doc = pastDueEmailView.view(unit).first!
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, with: .webView)
 
       webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, with: .webView)
     }
     #endif
   }

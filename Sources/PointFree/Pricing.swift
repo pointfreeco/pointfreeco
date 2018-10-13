@@ -147,7 +147,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pr
                 action(path(to: .subscribe(nil))),
                 id(Stripe.html.formId),
                 method(.post),
-                onsubmit(javascript: "event.preventDefault()")
+                onsubmit("event.preventDefault()")
               ],
               pricingTabsView.view(pricing)
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]

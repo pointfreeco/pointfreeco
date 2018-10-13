@@ -9,6 +9,7 @@ import HttpPipelineHtmlSupport
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 private let title = "Privacy Policy"
 

@@ -2,6 +2,7 @@ import Foundation
 import Html
 import Optics
 import Prelude
+import View
 
 struct RssChannel {
   var copyright: String
@@ -106,21 +107,21 @@ struct RssItem {
 func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
   let itunesNodes = channel.itunes.map(nodes(itunes:)) ?? []
 
-  return node(
+  return element(
     "channel",
     [
-      node("title", [text(channel.title)]),
-      node("link", [text(channel.link)]),
-      node("language", [text(channel.language)]),
-      node("description", [text(channel.description)]),
-      node("copyright", [text(channel.copyright)]),
+      element("title", [text(channel.title)]),
+      element("link", [text(channel.link)]),
+      element("language", [text(channel.language)]),
+      element("description", [text(channel.description)]),
+      element("copyright", [text(channel.copyright)]),
 
-      node(
+      element(
         "image",
         [
-          node("url", [text(channel.image.url)]),
-          node("title", [text(channel.image.title)]),
-          node("link", [text(channel.image.link)]),
+          element("url", [text(channel.image.url)]),
+          element("title", [text(channel.image.title)]),
+          element("link", [text(channel.image.link)]),
           ]
       )
       ]
@@ -132,18 +133,20 @@ func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
 func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
   return View { a in
     [
-      .text(unsafeUnencodedString("""
-      <?xml version="1.0" encoding="utf-8" ?>
-      """)),
-      node(
+      .raw(
+        """
+        <?xml version="1.0" encoding="utf-8" ?>
+        """
+      ),
+      element(
         "rss",
         [
-          attribute("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd") as Attribute<Void>,
-          attribute("xmlns:rawvoice", "http://www.rawvoice.com/rawvoiceRssModule/"),
-          attribute("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
-          attribute("xmlns:media", "http://www.rssboard.org/media-rss"),
-          attribute("xmlns:atom", "http://www.w3.org/2005/Atom"),
-          attribute("version", "2.0")
+          .init("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd") as Attribute<Void>,
+          .init("xmlns:rawvoice", "http://www.rawvoice.com/rawvoiceRssModule/"),
+          .init("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
+          .init("xmlns:media", "http://www.rssboard.org/media-rss"),
+          .init("xmlns:atom", "http://www.w3.org/2005/Atom"),
+          .init("version", "2.0")
         ],
         view.view(a)
       )
@@ -152,32 +155,32 @@ func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
 }
 
 private func node(category: RssChannel.Itunes.Category) -> Node {
-  return node(
+  return element(
     "itunes:category",
-    [attribute("text", category.name) as Attribute<Void>],
-    [node("itunes:category", [text(category.subcategory)])]
+    [.init("text", category.name) as Attribute<Void>],
+    [element("itunes:category", [text(category.subcategory)])]
   )
 }
 
 private func nodes(itunes: RssChannel.Itunes) -> [Node] {
 
   return [
-    node("itunes:author", [text(itunes.author)]),
-    node("itunes:subtitle", [text(itunes.subtitle)]),
-    node("itunes:summary", [text(itunes.summary)]),
-    node("itunes:explicit", [text(yesOrNo(itunes.explicit))]),
-    node(
+    element("itunes:author", [text(itunes.author)]),
+    element("itunes:subtitle", [text(itunes.subtitle)]),
+    element("itunes:summary", [text(itunes.summary)]),
+    element("itunes:explicit", [text(yesOrNo(itunes.explicit))]),
+    element(
       "itunes:owner",
       [
-        node("itunes:name", [text(itunes.owner.name)]),
-        node("itunes:email", [text(itunes.owner.email)])
+        element("itunes:name", [text(itunes.owner.name)]),
+        element("itunes:email", [text(itunes.owner.email)])
       ]
     ),
-    node("itunes:type", [text(itunes.type.rawValue)]),
-    node("itunes:keywords", [text(itunes.keywords.joined(separator: ","))]),
-    node(
+    element("itunes:type", [text(itunes.type.rawValue)]),
+    element("itunes:keywords", [text(itunes.keywords.joined(separator: ","))]),
+    element(
       "itunes:image",
-      [attribute("href", itunes.image.href) as Attribute<Void>],
+      [.init("href", itunes.image.href) as Attribute<Void>],
       []
     )
     ]
@@ -186,32 +189,32 @@ private func nodes(itunes: RssChannel.Itunes) -> [Node] {
 
 private func nodes(itunes: RssItem.Itunes) -> [Node] {
   return [
-    node("itunes:author", [text(itunes.author)]),
-    node("itunes:subtitle", [text(itunes.subtitle)]),
-    node("itunes:summary", [text(itunes.summary)]),
-    node("itunes:explicit", ["no"]),
-    node("itunes:duration", [text(timestampLabel(for: itunes.duration))]),
-    node("itunes:image", [text(itunes.image)]),
-    node("itunes:season", [text("\(itunes.season)")]),
-    node("itunes:episode", [text("\(itunes.episode)")]),
-    node("itunes:title", [text(itunes.title)]),
-    node("itunes:episodeType", [text(itunes.episodeType.rawValue)])
+    element("itunes:author", [text(itunes.author)]),
+    element("itunes:subtitle", [text(itunes.subtitle)]),
+    element("itunes:summary", [text(itunes.summary)]),
+    element("itunes:explicit", ["no"]),
+    element("itunes:duration", [text(timestampLabel(for: itunes.duration))]),
+    element("itunes:image", [text(itunes.image)]),
+    element("itunes:season", [text("\(itunes.season)")]),
+    element("itunes:episode", [text("\(itunes.episode)")]),
+    element("itunes:title", [text(itunes.title)]),
+    element("itunes:episodeType", [text(itunes.episodeType.rawValue)])
   ]
 }
 
 private func node(rssItem: RssItem) -> Node {
   let creatorNodes = (rssItem.dublinCore?.creators ?? []).map {
-    node("dc:creator", [text($0)])
+    element("dc:creator", [text($0)])
   }
   let itunesNodes = rssItem.itunes.map(nodes(itunes:)) ?? []
   let enclosureNodes = [
     rssItem.enclosure.map { enclosure in
-      node(
+      element(
         "enclosure",
         [
-          attribute("url", enclosure.url) as Attribute<Void>,
-          attribute("length", "\(enclosure.length)"),
-          attribute("type", enclosure.type),
+          .init("url", enclosure.url) as Attribute<Void>,
+          .init("length", "\(enclosure.length)"),
+          .init("type", enclosure.type),
           ],
         []
       )
@@ -221,30 +224,30 @@ private func node(rssItem: RssItem) -> Node {
 
   let mediaNodes = [
     rssItem.media.map { media in
-      node(
+      element(
         "media:content",
         [
-          attribute("url", media.content.url) as Attribute<Void>,
-          attribute("length", "\(media.content.length)"),
-          attribute("type", media.content.type),
-          attribute("medium", media.content.medium)
+          .init("url", media.content.url) as Attribute<Void>,
+          .init("length", "\(media.content.length)"),
+          .init("type", media.content.type),
+          .init("medium", media.content.medium)
         ],
         [
-          node("media:title", [text(media.title)])
+          element("media:title", [text(media.title)])
         ]
       )
     }
     ]
     .compactMap(id)
 
-  return node(
+  return element(
     "item",
     [
-      node("title", [text(rssItem.title)]),
-      node("pubDate", [text(rssDateFormatter.string(from: rssItem.pubDate))]),
-      node("link", [text(rssItem.link)]),
-      node("guid", [text(rssItem.guid)]),
-      node("description", [text(rssItem.description)])
+      element("title", [text(rssItem.title)]),
+      element("pubDate", [text(rssDateFormatter.string(from: rssItem.pubDate))]),
+      element("link", [text(rssItem.link)]),
+      element("guid", [text(rssItem.guid)]),
+      element("description", [text(rssItem.description)])
       ]
       + creatorNodes
       + itunesNodes

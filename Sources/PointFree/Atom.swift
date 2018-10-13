@@ -66,11 +66,11 @@ extension Tag {
 }
 
 extension Rel {
-  public static let `self` = value("self")
+  public static let `self` = Rel(rawValue: "self")
 }
 
 public func feed(_ attribs: [Attribute<Tag.Feed>], _ content: [Node]) -> Node {
-  return .element("feed", attribs, content)
+  return element("feed", attribs, content)
 }
 
 public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
@@ -78,39 +78,39 @@ public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
 }
 
 public func title(_ title: String) -> Node {
-  return .element("title", [.text(title)])
+  return element("title", [.text(title)])
 }
 
 public func link(_ attribs: [Attribute<Html.Tag.Link>]) -> Node {
-  return .element("link", attribs, [])
+  return element("link", attribs, [])
 }
 
 public func updated(_ date: Date) -> Node {
-  return .element("updated", [.text(atomDateFormatter.string(from: date))])
+  return element("updated", [.text(atomDateFormatter.string(from: date))])
 }
 
 public func id(_ id: String) -> Node {
-  return .element("id", [.text(id)])
+  return element("id", [.text(id)])
 }
 
 public func author(_ content: [ChildOf<Tag.Author>]) -> Node {
-  return .element("author", content.map(^\.node))
+  return element("author", content.map(^\.rawValue))
 }
 
 public func name(_ name: String) -> ChildOf<Tag.Author> {
-  return .init(.element("name", [.text(name)]))
+  return .init(element("name", [.text(name)]))
 }
 
 public func email(_ email: String) -> ChildOf<Tag.Author> {
-  return .init(.element("email", [.text(email)]))
+  return .init(element("email", [.text(email)]))
 }
 
 public func entry(_ content: [Node]) -> Node {
-  return .element("entry", content)
+  return element("entry", content)
 }
 
 public func content(_ attribs: [Attribute<Tag.Content>], _ content: [Node]) -> Node {
-  return .element("content", attribs, [.raw("<![CDATA[" + render(content).string + "]]>")])
+  return element("content", attribs, [.raw("<![CDATA[" + render(content).string + "]]>")])
 }
 
 public func type(_ type: String) -> Attribute<Tag.Content> {
