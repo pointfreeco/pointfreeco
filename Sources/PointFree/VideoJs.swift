@@ -30,10 +30,14 @@ function videoJsLoaded() {
 
     controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1]);
 
-    var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0];
-    airplayControl.addEventListener('click', function() {
-      video.webkitShowPlaybackTargetPicker();
-    });
+    video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
+      if (event.availability != "available") { return }
+
+      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0];
+      airplayControl.addEventListener('click', function() {
+        video.webkitShowPlaybackTargetPicker();
+      });
+    })
   });
 }
 """)
