@@ -10,6 +10,7 @@ var videoJsHead: [ChildOf<Element.Head>] {
       rel(.stylesheet)
       ]),
     .init(script([
+      .init("onload", "videoJsLoaded();"),
       src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
       `defer`(true)
       ]))
@@ -17,7 +18,25 @@ var videoJsHead: [ChildOf<Element.Head>] {
 
   return [
     style(".vjs-subs-caps-button" % display(.none)),
-    script("window.HELP_IMPROVE_VIDEOJS = false;")
+    script("window.HELP_IMPROVE_VIDEOJS = false;"),
+    script("""
+function videoJsLoaded() {
+  videojs("episode-video").ready(function() {
+    var controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+    var video = document.getElementsByTagName('video')[0];
+
+    var template = document.createElement('div');
+    template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="Airplay" aria-disabled="false"><span aria-hidden="true" class="vjs-icon-placeholder"></span><span class="vjs-control-text" aria-live="polite">Airplay</span></button>';
+
+    controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1]);
+
+    var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0];
+    airplayControl.addEventListener('click', function() {
+      video.webkitShowPlaybackTargetPicker();
+    });
+  });
+}
+""")
     ]
     + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
