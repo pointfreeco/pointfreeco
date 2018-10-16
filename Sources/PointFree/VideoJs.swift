@@ -10,7 +10,7 @@ var videoJsHead: [ChildOf<Element.Head>] {
       rel(.stylesheet)
       ]),
     .init(script([
-      .init("onload", "videoJsLoaded();"),
+      .init("onload", "videoJsLoaded()"),
       src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
       `defer`(true)
       ]))
@@ -18,32 +18,53 @@ var videoJsHead: [ChildOf<Element.Head>] {
 
   return [
     style(".vjs-subs-caps-button" % display(.none)),
-    script("window.HELP_IMPROVE_VIDEOJS = false;"),
-    script("""
+    .init(node("script", [.text(unsafeUnencodedString("""
+window.HELP_IMPROVE_VIDEOJS = false
+
 function videoJsLoaded() {
-  videojs("episode-video").ready(function() {
-    var controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-    var video = document.getElementsByTagName('video')[0];
+  video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
+    if (event.availability != "available") { return }
 
-    var template = document.createElement('div');
-    template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="Airplay" aria-disabled="false"><span aria-hidden="true" class="vjs-icon-placeholder"></span><span class="vjs-control-text" aria-live="polite">Airplay</span></button>';
+    videojs("episode-video").ready(function() {
+      var existingAirplayControl = document.getElementsByClassName('vjs-airplay-control')
+      if (existingAirplayControl.length != 0) { return }
 
-    controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1]);
+      var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
+      var video = document.getElementsByTagName('video')[0]
 
-    video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
-      if (event.availability != "available") { return }
+      var template = document.createElement('div')
+      template.innerHTML = '\(render(airplayButton))'
+      //template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="Airplay" aria-disabled="false"><span aria-hidden="true" class="vjs-icon-placeholder"></span><span class="vjs-control-text" aria-live="polite">Airplay</span></button>'
 
-      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0];
+      controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
+
+      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0]
       airplayControl.addEventListener('click', function() {
-        video.webkitShowPlaybackTargetPicker();
-      });
+        video.webkitShowPlaybackTargetPicker()
+      })
     })
-  });
+  })
 }
-""")
+"""))]))
     ]
     + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
+
+let airplayButton = button(
+  [
+    `class`("vjs-airplay-control vjs-control vjs-button"),
+    type(.button),
+    title("Airplay")
+  ],
+  [
+    img(
+      base64: airplaySvgBase64,
+      mediaType: .image(.svg),
+      alt: "Airplay",
+      [style(verticalAlign(.middle))]
+    )
+  ]
+)
 
 let videoJsClasses: CssSelector =
   ".video-js"
