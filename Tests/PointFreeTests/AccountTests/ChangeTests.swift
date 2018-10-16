@@ -22,16 +22,16 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
     
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1800))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      assertSnapshot(matching: webView, named: "desktop")
       
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -40,7 +40,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedOut))
     let result = conn |> siteMiddleware
     
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
   
   func testChangeShowNoSubscription() {
@@ -49,7 +49,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
   
   func testChangeShowCancelingSubscription() {
@@ -58,16 +58,16 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1800))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -78,7 +78,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
   
   func testChangeUpdateUpgradeIndividualPlan() {
@@ -95,7 +95,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -113,7 +113,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -131,7 +131,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -149,7 +149,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -169,7 +169,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     waitForExpectations(timeout: 0.1, handler: nil)
     #endif
   }
@@ -188,7 +188,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -226,7 +226,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity -~ 1)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
   
@@ -246,7 +246,7 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
 }

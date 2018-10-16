@@ -20,13 +20,13 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil)))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.evaluateJavaScript(
         """
@@ -36,10 +36,10 @@ class PricingTests: TestCase {
           quantity.value = 10;
           quantity.oninput();
           """, completionHandler: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop-team")
+      assertSnapshot(matching: webView, named: "desktop-team")
 
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
 
     }
     #endif
@@ -55,16 +55,16 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
 
     }
     #endif
@@ -79,16 +79,16 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
 
     }
     #endif
@@ -98,7 +98,7 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testPricingLoggedIn_CanceledSubscriber() {
@@ -111,7 +111,7 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testPricingLoggedIn_PastDueSubscriber() {
@@ -124,6 +124,6 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 }

@@ -23,18 +23,17 @@ class BlogTests: TestCase {
     let req = request(to: .blog(.index), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
-      webView.loadHTMLString(String(decoding: result.data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 500
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -49,18 +48,17 @@ class BlogTests: TestCase {
     let req = request(to: .blog(.index), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2400))
-      webView.loadHTMLString(String(decoding: result.data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 500
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -69,27 +67,25 @@ class BlogTests: TestCase {
     let req = request(to: .blog(.index), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testBlogShow() {
     let req = request(to: .blog(.show(.mock)), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
-      webView.loadHTMLString(String(decoding: result.data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView, named: "desktop")
+      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      assertSnapshot(matching: webView, named: "desktop")
 
       webView.frame.size.width = 500
-      assertSnapshot(matching: webView, with: .webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -98,26 +94,23 @@ class BlogTests: TestCase {
     let req = request(to: .blog(.show(.mock))) 
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testBlogAtomFeed() {
     let req = request(to: .blog(.feed), basicAuth: true)
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testBlogAtomFeed_Unauthed() {
     let req = request(to: .blog(.feed))
     let result = connection(from: req)
       |> siteMiddleware
-      |> Prelude.perform
 
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, with: .ioConn)
   }
 }

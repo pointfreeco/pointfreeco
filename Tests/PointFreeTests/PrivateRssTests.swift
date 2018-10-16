@@ -31,7 +31,7 @@ class PrivateRssTests: TestCase {
       )
     )
     let result = conn |> siteMiddleware
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testFeed_Authenticated_NonSubscriber() {
@@ -51,7 +51,7 @@ class PrivateRssTests: TestCase {
       )
     )
     let result = conn |> siteMiddleware
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testFeed_Authenticated_InActiveSubscriber() {
@@ -71,7 +71,7 @@ class PrivateRssTests: TestCase {
       )
     )
     let result = conn |> siteMiddleware
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testFeed_BadSalt() {
@@ -90,6 +90,6 @@ class PrivateRssTests: TestCase {
       )
     )
     let result = conn |> siteMiddleware
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 }

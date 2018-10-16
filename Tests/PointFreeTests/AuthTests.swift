@@ -49,7 +49,7 @@ class AuthTests: TestCase {
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
@@ -60,7 +60,7 @@ class AuthTests: TestCase {
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
@@ -75,7 +75,7 @@ class AuthTests: TestCase {
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
@@ -90,7 +90,7 @@ class AuthTests: TestCase {
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testAuth_WithFetchUserFailure() {
@@ -101,7 +101,7 @@ class AuthTests: TestCase {
     let conn = connection(from: auth)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testLogin() {
@@ -110,7 +110,7 @@ class AuthTests: TestCase {
     let conn = connection(from: login)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testLogin_AlreadyLoggedIn() {
@@ -121,7 +121,7 @@ class AuthTests: TestCase {
     let conn = connection(from: login)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testLoginWithRedirect() {
@@ -130,14 +130,14 @@ class AuthTests: TestCase {
     let conn = connection(from: login)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testLogout() {
     let conn = connection(from: request(to: .logout))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testHome_LoggedOut() {
@@ -146,7 +146,7 @@ class AuthTests: TestCase {
     let conn = connection(from: request(to: .home, session: .loggedOut))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testHome_LoggedIn() {
@@ -155,6 +155,6 @@ class AuthTests: TestCase {
     let conn = connection(from: request(to: .home, session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 }

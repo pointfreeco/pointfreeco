@@ -1,13 +1,17 @@
 import Cryptor
 import Either
 import Foundation
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
+import HttpPipelineTestSupport
 import Optics
 @testable import PointFree
 import Prelude
+import SnapshotTesting
 
 extension Environment {
-  public static let mock = Environment.init(
+  public static let mock = Environment(
     assets: .mock,
     blogPosts: unzurry([.mock]),
     cookieTransform: .plaintext,
@@ -19,6 +23,7 @@ extension Environment {
     gitHub: .mock,
     logger: .mock,
     mailgun: .mock,
+    renderHtml: Html.render,
     stripe: .mock
   )
 
@@ -456,6 +461,18 @@ extension Session {
 
   public static let loggedIn = loggedOut
     |> \.userId .~ Database.User.mock.id
+}
+
+extension Strategy {
+  public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
+    return Strategy.conn.contramap { io in
+      let renderHtml = Current.renderHtml
+      update(&Current, \.renderHtml .~ { prettyPrint($0) })
+      let conn = io.perform()
+      update(&Current, \.renderHtml .~ renderHtml)
+      return conn
+    }
+  }
 }
 
 public func request(

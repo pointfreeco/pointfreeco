@@ -58,6 +58,8 @@ let package = Package(
       name: "PointFreeTestSupport",
       dependencies: [
         "Either",
+        "HtmlPrettyPrint",
+        "HttpPipelineTestSupport",
         "PointFree",
         "Prelude",
         "SnapshotTesting",

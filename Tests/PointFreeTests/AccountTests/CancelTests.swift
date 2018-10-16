@@ -23,14 +23,14 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelNoSubscription() {
@@ -39,7 +39,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelCancelingSubscription() {
@@ -48,7 +48,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelCanceledSubscription() {
@@ -57,7 +57,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelStripeFailure() {
@@ -66,7 +66,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testCancelEmail() {
@@ -79,10 +79,10 @@ final class CancelTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
 
       webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
     }
     #endif
   }
@@ -93,14 +93,14 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate))))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateNoSubscription() {
@@ -109,14 +109,14 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateActiveSubscription() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateCanceledSubscription() {
@@ -125,7 +125,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateStripeFailure() {
@@ -134,7 +134,7 @@ final class CancelTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testReactivateEmail() {
@@ -147,10 +147,10 @@ final class CancelTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
 
       webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
     }
     #endif
   }

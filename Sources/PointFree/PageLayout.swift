@@ -124,9 +124,7 @@ func respond<A, B>(
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >=> respond(
-          body: Current.envVars.appEnv == .testing
-            ? prettyPrint(pageLayout.view(newLayoutData))
-            : render(pageLayout.view(newLayoutData)),
+          body: Current.renderHtml(pageLayout.view(newLayoutData)),
           contentType: .html
       )
     }

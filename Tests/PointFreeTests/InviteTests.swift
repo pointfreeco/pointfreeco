@@ -20,7 +20,7 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
     let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
@@ -41,7 +41,7 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
     let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testShowInvite_LoggedIn_Subscriber() {
@@ -66,7 +66,7 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
     let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testResendInvite_HappyPath() {
@@ -83,7 +83,7 @@ class InviteTests: TestCase {
     let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: resendInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testResendInvite_CurrentUserIsNotInviter() {
@@ -111,7 +111,7 @@ class InviteTests: TestCase {
     let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: resendInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testRevokeInvite_HappyPath() {
@@ -128,7 +128,7 @@ class InviteTests: TestCase {
     let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: revokeInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchTeamInvite(teamInvite.id)
@@ -163,7 +163,7 @@ class InviteTests: TestCase {
     let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: revokeInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     XCTAssertNotNil(
       Current.database.fetchTeamInvite(teamInvite.id)
@@ -202,7 +202,7 @@ class InviteTests: TestCase {
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
 //    XCTAssertNil(
@@ -246,7 +246,7 @@ class InviteTests: TestCase {
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)
@@ -288,7 +288,7 @@ class InviteTests: TestCase {
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)
@@ -330,7 +330,7 @@ class InviteTests: TestCase {
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let result = siteMiddleware(connection(from: acceptInvite))
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)

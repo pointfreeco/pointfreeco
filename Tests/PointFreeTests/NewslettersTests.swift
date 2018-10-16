@@ -96,46 +96,48 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
     #if !os(Linux)
-      let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+    update(&Current, \.renderHtml .~ { prettyPrint($0) })
+
+    let user = Current.database.registerUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+
+    let unsubscribe = request(
+      to: .expressUnsubscribeReply(
+        .init(
+          recipient: unsubEmail,
+          timestamp: Int(Current.date().timeIntervalSince1970),
+          token: "deadbeef",
+          sender: user.email,
+          signature: "this is an invalid signature"
+        )
+      ),
+      session: .loggedOut
+    )
+
+    assertSnapshot(
+      matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
-        .right!!
+        .right!,
+      named: "email_settings_before_unsubscribe"
+    )
 
-      let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+    let output = connection(from: unsubscribe)
+      |> siteMiddleware
+      |> Prelude.perform
+    assertSnapshot(matching: output)
 
-      let unsubscribe = request(
-        to: .expressUnsubscribeReply(
-          .init(
-            recipient: unsubEmail,
-            timestamp: Int(Current.date().timeIntervalSince1970),
-            token: "deadbeef",
-            sender: user.email,
-            signature: "this is an invalid signature"
-          )
-        ),
-        session: .loggedOut
-      )
-
-      assertSnapshot(
-        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
-        named: "email_settings_before_unsubscribe"
-      )
-
-      let output = connection(from: unsubscribe)
-        |> siteMiddleware
-        |> Prelude.perform
-      assertSnapshot(matching: output)
-
-      assertSnapshot(
-        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
-          .run
-          .perform()
-          .right!,
-        named: "email_settings_after_unsubscribe"
-      )
+    assertSnapshot(
+      matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
+        .run
+        .perform()
+        .right!,
+      named: "email_settings_after_unsubscribe"
+    )
     #endif
   }
 

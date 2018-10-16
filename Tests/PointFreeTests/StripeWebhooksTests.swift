@@ -134,7 +134,7 @@ final class StripeWebhooksTests: TestCase {
     let conn = connection(from: hook)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
 
@@ -149,7 +149,7 @@ final class StripeWebhooksTests: TestCase {
     let conn = connection(from: hook)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
 
@@ -164,7 +164,7 @@ final class StripeWebhooksTests: TestCase {
     let conn = connection(from: hook)
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
     #endif
   }
 
@@ -178,10 +178,10 @@ final class StripeWebhooksTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
 
       webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
     }
     #endif
   }

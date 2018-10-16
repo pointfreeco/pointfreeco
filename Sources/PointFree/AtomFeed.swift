@@ -200,9 +200,7 @@ public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middl
   return { conn in
     conn
       |> respond(
-        body: Current.envVars.appEnv == .testing
-          ? prettyPrint(view.view(conn.data))
-          : render(view.view(conn.data)),
+        body: Current.renderHtml(view.view(conn.data)),
         contentType: contentType
     )
   }

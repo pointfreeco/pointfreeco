@@ -29,11 +29,11 @@ class MinimalNavViewTests: TestCase {
       if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 180))
         webView.loadHTMLString(render(doc), baseURL: nil)
-        assertSnapshot(matching: webView, with: .webView, named: "\(key)_desktop")
+        assertSnapshot(matching: webView, named: "\(key)_desktop")
 
         webView.frame.size.width = 500
         webView.frame.size.height = 140
-        assertSnapshot(matching: webView, with: .webView, named: "\(key)_mobile")
+        assertSnapshot(matching: webView, named: "\(key)_mobile")
       }
       #endif
     }

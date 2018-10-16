@@ -22,10 +22,10 @@ class FreeEpisodeEmailTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
 
       webView.frame.size = .init(width: 400, height: 1100)
-      assertSnapshot(matching: webView, with: .webView)
+      assertSnapshot(matching: webView)
     }
     #endif
   }
