@@ -53,13 +53,13 @@ let airplayButton = button(
   [
     `class`("vjs-airplay-control vjs-control vjs-button"),
     type(.button),
-    title("Airplay")
+    title("AirPlay")
   ],
   [
     img(
       base64: airplaySvgBase64,
       mediaType: .image(.svg),
-      alt: "Airplay",
+      alt: "AirPlay",
       [style(verticalAlign(.middle))]
     )
   ]
