@@ -34,7 +34,6 @@ function videoJsLoaded() {
 
       var template = document.createElement('div')
       template.innerHTML = '\(render(airplayButton))'
-      //template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="Airplay" aria-disabled="false"><span aria-hidden="true" class="vjs-icon-placeholder"></span><span class="vjs-control-text" aria-live="polite">Airplay</span></button>'
 
       controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
 
