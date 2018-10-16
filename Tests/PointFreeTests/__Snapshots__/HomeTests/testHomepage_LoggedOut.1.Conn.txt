@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 85609
+Content-Length: 81523
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1739,13 +1739,11 @@ input::-webkit-outer-spin-button {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1763,81 +1761,21 @@ input::-webkit-outer-spin-button {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free
-                   is
-                   a
-                   video
-                   series
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta property="og:description"
-          content="Point-Free
-                   is
-                   a
-                   video
-                   series
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta name="twitter:description"
-          content="Point-Free
-                   is
-                   a
-                   video
-                   series
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
-          content="Point-Free:
-                   A
-                   video
-                   series
-                   on
-                   functional
-                   programming
-                   and
-                   the
-                   Swift
-                   programming
-                   language.">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta property="og:title"
-          content="Point-Free:
-                   A
-                   video
-                   series
-                   on
-                   functional
-                   programming
-                   and
-                   the
-                   Swift
-                   programming
-                   language.">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta name="twitter:title"
-          content="Point-Free:
-                   A
-                   video
-                   series
-                   on
-                   functional
-                   programming
-                   and
-                   the
-                   Swift
-                   programming
-                   language.">
+          content="Point-Free: A video series on functional programming and the Swift programming language.">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -2489,101 +2427,27 @@ as episodes are released.
                                min="2"
                                name="pricing[quantity]"
                                onblur="javascript:
-this.value
-                                       =
-                                       Math.min(Math.max(+this.value,
-                                       +this.min),
-                                       +this.max);
-var
-                                       multiplier
-                                       =
-                                       +this.value;
-var
-                                       elements
-                                       =
-                                       document.getElementsByClassName('team-price');
-for
-                                       (var
-                                       idx
-                                       =
-                                       0;
-                                       idx
-                                       <
-                                       elements.length;
-                                       idx++)
-                                       {
-
-                                       var
-                                       element
-                                       =
-                                       elements[idx];
-
-                                       element.textContent
-                                       =
-                                       (multiplier
-                                       *
-                                       element.dataset.price)
-
-                                       .toString()
-
-                                       .replace(/\B(?=(\d{3})+(?!\d))/g,
-                                       ',');
+this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
+var multiplier = +this.value;
+var elements = document.getElementsByClassName('team-price');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  element.textContent = (multiplier * element.dataset.price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }"
                                oninput="javascript:
-var
-                                        value
-                                        =
-                                        +this.value;
-var
-                                        multiplier
-                                        =
-                                        Math.min(Math.max(value,
-                                        0),
-                                        +this.max);
-var
-                                        elements
-                                        =
-                                        document.getElementsByClassName('team-price');
-if
-                                        (this.value
-                                        !=
-                                        ""
-                                        &&
-                                        value
-                                        !=
-                                        multiplier)
-                                        {
-
-                                        this.value
-                                        =
-                                        multiplier;
+var value = +this.value;
+var multiplier = Math.min(Math.max(value, 0), +this.max);
+var elements = document.getElementsByClassName('team-price');
+if (this.value != "" && value != multiplier) {
+  this.value = multiplier;
 }
-for
-                                        (var
-                                        idx
-                                        =
-                                        0;
-                                        idx
-                                        <
-                                        elements.length;
-                                        idx++)
-                                        {
-
-                                        var
-                                        element
-                                        =
-                                        elements[idx];
-
-                                        element.textContent
-                                        =
-                                        (multiplier
-                                        *
-                                        element.dataset.price)
-
-                                        .toString()
-
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g,
-                                        ',');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  element.textContent = (multiplier * element.dataset.price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }"
                                step="1"
                                type="number"

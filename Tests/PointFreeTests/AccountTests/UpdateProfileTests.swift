@@ -19,7 +19,7 @@ class UpdateProfileTests: TestCase {
       .right!!
 
     assertSnapshot(
-      matching: user,
+      matchingAny: user,
       named: "user_before_update"
     )
 
@@ -35,7 +35,7 @@ class UpdateProfileTests: TestCase {
       |> Prelude.perform
 
     assertSnapshot(
-      matching: Current.database.fetchUserById(user.id)
+      matchingAny: Current.database.fetchUserById(user.id)
         .run
         .perform()
         .right!!,
@@ -58,7 +58,7 @@ class UpdateProfileTests: TestCase {
       .right!
 
     assertSnapshot(
-      matching: emailSettings,
+      matchingAny: emailSettings,
       named: "email_settings_before_update"
     )
 
@@ -74,7 +74,7 @@ class UpdateProfileTests: TestCase {
       |> Prelude.perform
 
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
+      matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 48303
+Content-Length: 48237
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1625,13 +1625,11 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1859,8 +1857,7 @@ html {
                                 m-pl2
                                 m-pr2
                                 m-mt3"
-                         value="Update
-                                profile">
+                         value="Update profile">
                 </form>
               </div>
             </div>

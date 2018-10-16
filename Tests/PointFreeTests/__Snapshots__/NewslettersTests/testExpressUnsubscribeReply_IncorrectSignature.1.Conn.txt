@@ -4,7 +4,7 @@ Cookie: pf_session={}
 recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b470d3fed478e73515f3ad396db9cb71d21c0abe5f9872e3e792de15f4b1ae5795e%40pointfree.co&sender=hello%40pointfree.co&signature=this%20is%20an%20invalid%20signature&timestamp=1517356800&token=deadbeef
 
 404 Not Found
-Content-Length: 44577
+Content-Length: 44429
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1627,13 +1627,11 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1651,17 +1649,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="title"
-          content="Page
-                   not
-                   found">
+          content="Page not found">
     <meta property="og:title"
-          content="Page
-                   not
-                   found">
+          content="Page not found">
     <meta name="twitter:title"
-          content="Page
-                   not
-                   found">
+          content="Page not found">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"

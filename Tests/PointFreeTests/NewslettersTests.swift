@@ -28,7 +28,7 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
+      matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
@@ -41,7 +41,7 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      matching: Current.database.fetchEmailSettingsForUserId(user.id)
+      matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
@@ -72,7 +72,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -85,7 +85,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -117,7 +117,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -130,7 +130,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -166,7 +166,7 @@ class NewslettersTests: TestCase {
       )
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,
@@ -179,7 +179,7 @@ class NewslettersTests: TestCase {
       assertSnapshot(matching: output)
 
       assertSnapshot(
-        matching: Current.database.fetchEmailSettingsForUserId(user.id)
+        matchingAny: Current.database.fetchEmailSettingsForUserId(user.id)
           .run
           .perform()
           .right!,

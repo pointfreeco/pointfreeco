@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 83944
+Content-Length: 78701
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1739,13 +1739,11 @@ input::-webkit-outer-spin-button {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
@@ -1796,132 +1794,21 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
       window.HELP_IMPROVE_VIDEOJS = false;
     </script>
     <meta name="description"
-          content="As
-                   server-side
-                   Swift
-                   becomes
-                   more
-                   popular
-                   and
-                   widely
-                   adopted,
-                   it
-                   will
-                   be
-                   important
-                   to
-                   re-examine
-                   some
-                   of
-                   the
-                   past
-                   “best-practices”
-                   of
-                   web
-                   frameworks
-                   to
-                   see
-                   how
-                   Swift’s
-                   type
-                   system
-                   can
-                   improve
-                   upon
-                   them.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description"
-          content="As
-                   server-side
-                   Swift
-                   becomes
-                   more
-                   popular
-                   and
-                   widely
-                   adopted,
-                   it
-                   will
-                   be
-                   important
-                   to
-                   re-examine
-                   some
-                   of
-                   the
-                   past
-                   “best-practices”
-                   of
-                   web
-                   frameworks
-                   to
-                   see
-                   how
-                   Swift’s
-                   type
-                   system
-                   can
-                   improve
-                   upon
-                   them.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:description"
-          content="As
-                   server-side
-                   Swift
-                   becomes
-                   more
-                   popular
-                   and
-                   widely
-                   adopted,
-                   it
-                   will
-                   be
-                   important
-                   to
-                   re-examine
-                   some
-                   of
-                   the
-                   past
-                   “best-practices”
-                   of
-                   web
-                   frameworks
-                   to
-                   see
-                   how
-                   Swift’s
-                   type
-                   system
-                   can
-                   improve
-                   upon
-                   them.">
+          content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta name="twitter:image"
           content="">
     <meta property="og:image"
           content="">
     <meta name="title"
-          content="Episode
-                   #1:
-                   Type-Safe
-                   HTML
-                   in
-                   Swift">
+          content="Episode #1: Type-Safe HTML in Swift">
     <meta property="og:title"
-          content="Episode
-                   #1:
-                   Type-Safe
-                   HTML
-                   in
-                   Swift">
+          content="Episode #1: Type-Safe HTML in Swift">
     <meta name="twitter:title"
-          content="Episode
-                   #1:
-                   Type-Safe
-                   HTML
-                   in
-                   Swift">
+          content="Episode #1: Type-Safe HTML in Swift">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -2158,13 +2045,8 @@ future episodes, become a subscriber today!
               <div id="t1"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="1"
                    class="vid-time-link
@@ -2191,13 +2073,8 @@ video.play();event.preventDefault();"
               <div id="t2"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="2"
                    class="vid-time-link
@@ -2228,13 +2105,8 @@ video.play();event.preventDefault();"
               <div id="t4"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="4"
                    class="vid-time-link
@@ -2265,13 +2137,8 @@ video.play();event.preventDefault();"
               <div id="t6"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="6"
                    class="vid-time-link
@@ -2302,13 +2169,8 @@ video.play();event.preventDefault();"
               <div id="t8"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="8"
                    class="vid-time-link
@@ -2355,13 +2217,8 @@ video.play();event.preventDefault();"
               <div id="t11"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="11"
                    class="vid-time-link
@@ -2380,13 +2237,8 @@ video.play();event.preventDefault();"
               <div id="t12"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="12"
                    class="vid-time-link
@@ -2405,13 +2257,8 @@ video.play();event.preventDefault();"
               <div id="t13"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="13"
                    class="vid-time-link
@@ -2430,13 +2277,8 @@ video.play();event.preventDefault();"
               <div id="t14"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="14"
                    class="vid-time-link
@@ -2463,13 +2305,8 @@ video.play();event.preventDefault();"
               <div id="t15"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="15"
                    class="vid-time-link
@@ -2513,13 +2350,8 @@ video.play();event.preventDefault();"
               <div id="t3"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="3"
                    class="vid-time-link
@@ -2546,13 +2378,8 @@ video.play();event.preventDefault();"
               <div id="t4"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="4"
                    class="vid-time-link
@@ -2571,13 +2398,8 @@ video.play();event.preventDefault();"
               <div id="t6"
                    class="block">
                 <a href="#"
-                   onclick="var
-                            video
-                            =
-                            document.getElementsByTagName("video")[0];
-video.currentTime
-                            =
-                            event.target.dataset.t;
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                    data-t="6"
                    class="vid-time-link
@@ -2644,13 +2466,8 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t0"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();"
                        data-t="0"
                        class="pf-link-green
@@ -2664,13 +2481,8 @@ video.play();"
                   </div>
                   <div class="hide-d">
                     <a href="#"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                        data-t="0"
                        class="pf-link-green
@@ -2699,13 +2511,8 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t3"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();"
                        data-t="3"
                        class="pf-link-green
@@ -2719,13 +2526,8 @@ video.play();"
                   </div>
                   <div class="hide-d">
                     <a href="#"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                        data-t="3"
                        class="pf-link-green
@@ -2754,13 +2556,8 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t7"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();"
                        data-t="7"
                        class="pf-link-green
@@ -2774,13 +2571,8 @@ video.play();"
                   </div>
                   <div class="hide-d">
                     <a href="#"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                        data-t="7"
                        class="pf-link-green
@@ -2809,13 +2601,8 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t9"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();"
                        data-t="9"
                        class="pf-link-green
@@ -2829,13 +2616,8 @@ video.play();"
                   </div>
                   <div class="hide-d">
                     <a href="#"
-                       onclick="var
-                                video
-                                =
-                                document.getElementsByTagName("video")[0];
-video.currentTime
-                                =
-                                event.target.dataset.t;
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
 video.play();event.preventDefault();"
                        data-t="9"
                        class="pf-link-green

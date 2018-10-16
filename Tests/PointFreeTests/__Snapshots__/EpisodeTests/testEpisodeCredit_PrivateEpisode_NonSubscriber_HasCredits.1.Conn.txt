@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62155
+Content-Length: 59928
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1739,13 +1739,11 @@ input::-webkit-outer-spin-button {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
@@ -1796,135 +1794,24 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
       window.HELP_IMPROVE_VIDEOJS = false;
     </script>
     <meta name="description"
-          content="This
-                   is
-                   a
-                   short
-                   blurb
-                   to
-                   give
-                   a
-                   high-level
-                   overview
-                   of
-                   what
-                   the
-                   episode
-                   is
-                   about.
-                   It
-                   can
-                   only
-                   be
-                   plain
-text,
-                   no
-                   markdown
-                   allowed.
-                   Here
-                   is
-                   some
-                   more
-                   text
-                   just
-                   to
-                   have
-                   some
-                   filler.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta property="og:description"
-          content="This
-                   is
-                   a
-                   short
-                   blurb
-                   to
-                   give
-                   a
-                   high-level
-                   overview
-                   of
-                   what
-                   the
-                   episode
-                   is
-                   about.
-                   It
-                   can
-                   only
-                   be
-                   plain
-text,
-                   no
-                   markdown
-                   allowed.
-                   Here
-                   is
-                   some
-                   more
-                   text
-                   just
-                   to
-                   have
-                   some
-                   filler.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:description"
-          content="This
-                   is
-                   a
-                   short
-                   blurb
-                   to
-                   give
-                   a
-                   high-level
-                   overview
-                   of
-                   what
-                   the
-                   episode
-                   is
-                   about.
-                   It
-                   can
-                   only
-                   be
-                   plain
-text,
-                   no
-                   markdown
-                   allowed.
-                   Here
-                   is
-                   some
-                   more
-                   text
-                   just
-                   to
-                   have
-                   some
-                   filler.">
+          content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.">
     <meta name="twitter:image"
           content="">
     <meta property="og:image"
           content="">
     <meta name="title"
-          content="Episode
-                   #2:
-                   Proof
-                   in
-                   Functions">
+          content="Episode #2: Proof in Functions">
     <meta property="og:title"
-          content="Episode
-                   #2:
-                   Proof
-                   in
-                   Functions">
+          content="Episode #2: Proof in Functions">
     <meta name="twitter:title"
-          content="Episode
-                   #2:
-                   Proof
-                   in
-                   Functions">
+          content="Episode #2: Proof in Functions">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -2169,10 +2056,7 @@ want to use it to view this episode for free right now?
                             m-pr1
                             m-pt1
                             m-pb1"
-                     value="Use
-                            an
-                            episode
-                            credit">
+                     value="Use an episode credit">
             </form>
           </div>
           <hr class="pf-divider

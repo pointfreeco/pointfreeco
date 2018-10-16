@@ -2,7 +2,7 @@ GET http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 51648
+Content-Length: 50351
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1647,13 +1647,11 @@ input::-webkit-outer-spin-button {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1671,14 +1669,11 @@ input::-webkit-outer-spin-button {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="title"
-          content="Modify
-                   subscription">
+          content="Modify subscription">
     <meta property="og:title"
-          content="Modify
-                   subscription">
+          content="Modify subscription">
     <meta name="twitter:title"
-          content="Modify
-                   subscription">
+          content="Modify subscription">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1808,54 +1803,17 @@ the current billing period.
                        min="1"
                        max="100"
                        name="quantity"
-                       onchange="var
-                                 multiplier
-                                 =
-                                 this.valueAsNumber;
+                       onchange="var multiplier = this.valueAsNumber;
 console.log(multiplier);
-var
-                                 elements
-                                 =
-                                 document.getElementsByClassName('price');
-for
-                                 (var
-                                 idx
-                                 =
-                                 0;
-                                 idx
-                                 <
-                                 elements.length;
-                                 idx++)
-                                 {
-
-                                 var
-                                 element
-                                 =
-                                 elements[idx];
-
-                                 var
-                                 price
-                                 =
-                                 multiplier
-                                 ==
-                                 1
-
-                                 ?
-                                 element.dataset.priceIndividual
-
-                                 :
-                                 element.dataset.priceTeam;
-
-                                 element.textContent
-                                 =
-                                 (multiplier
-                                 *
-                                 price)
-
-                                 .toString()
-
-                                 .replace(/\B(?=(\d{3})+(?!\d))/g,
-                                 ',');
+var elements = document.getElementsByClassName('price');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  var price = multiplier == 1
+    ? element.dataset.priceIndividual
+    : element.dataset.priceTeam;
+  element.textContent = (multiplier * price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }"
                        step="1"
                        value="1"

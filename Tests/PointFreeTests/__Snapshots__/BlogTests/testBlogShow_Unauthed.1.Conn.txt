@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 119102
+Content-Length: 117583
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1683,13 +1683,11 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
@@ -1734,96 +1732,24 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="This
-                   is
-                   the
-                   blurb
-                   to
-                   a
-                   mock
-                   blog
-                   post.
-                   This
-                   should
-                   just
-                   be
-                   short
-                   and
-                   to
-                   the
-                   point,
-                   using
-                   only
-                   plain
-text,
-                   no
-                   markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
+text, no markdown.">
     <meta property="og:description"
-          content="This
-                   is
-                   the
-                   blurb
-                   to
-                   a
-                   mock
-                   blog
-                   post.
-                   This
-                   should
-                   just
-                   be
-                   short
-                   and
-                   to
-                   the
-                   point,
-                   using
-                   only
-                   plain
-text,
-                   no
-                   markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
+text, no markdown.">
     <meta name="twitter:description"
-          content="This
-                   is
-                   the
-                   blurb
-                   to
-                   a
-                   mock
-                   blog
-                   post.
-                   This
-                   should
-                   just
-                   be
-                   short
-                   and
-                   to
-                   the
-                   point,
-                   using
-                   only
-                   plain
-text,
-                   no
-                   markdown.">
+          content="This is the blurb to a mock blog post. This should just be short and to the point, using only plain
+text, no markdown.">
     <meta name="twitter:image"
           content="">
     <meta property="og:image"
           content="">
     <meta name="title"
-          content="Mock
-                   Blog
-                   Post">
+          content="Mock Blog Post">
     <meta property="og:title"
-          content="Mock
-                   Blog
-                   Post">
+          content="Mock Blog Post">
     <meta name="twitter:title"
-          content="Mock
-                   Blog
-                   Post">
+          content="Mock Blog Post">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1994,16 +1920,12 @@ text,
             <div class="m-ml1">
               <a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco"
                  onclick="window.open(
-
-                          "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
-
-                          "newwindow",
-
-                          "width=500,height=500"
+  "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
+  "newwindow",
+  "width=500,height=500"
 );"
                  target="_blank"
-                 rel="noopener
-                      noreferrer"
+                 rel="noopener noreferrer"
                  class="lh-1
                         relative
                         medium
@@ -2098,8 +2020,7 @@ func contramap<A, B>(_ f: @escaping (B) -> A) -> (PredicateSet<A>) -> PredicateS
                       m-mb3"
                href=""
                target="_blank"
-               rel="noopener
-                    noreferrer">
+               rel="noopener noreferrer">
               <img src=""
                    alt=""
                    class="w-100p

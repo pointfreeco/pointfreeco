@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 111436
+Content-Length: 108100
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1686,13 +1686,11 @@ input::-webkit-outer-spin-button {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1710,17 +1708,11 @@ input::-webkit-outer-spin-button {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="title"
-          content="Subscribe
-                   to
-                   Point-Free">
+          content="Subscribe to Point-Free">
     <meta property="og:title"
-          content="Subscribe
-                   to
-                   Point-Free">
+          content="Subscribe to Point-Free">
     <meta name="twitter:title"
-          content="Subscribe
-                   to
-                   Point-Free">
+          content="Subscribe to Point-Free">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1931,101 +1923,27 @@ as episodes are released.
                                min="2"
                                name="pricing[quantity]"
                                onblur="javascript:
-this.value
-                                       =
-                                       Math.min(Math.max(+this.value,
-                                       +this.min),
-                                       +this.max);
-var
-                                       multiplier
-                                       =
-                                       +this.value;
-var
-                                       elements
-                                       =
-                                       document.getElementsByClassName('team-price');
-for
-                                       (var
-                                       idx
-                                       =
-                                       0;
-                                       idx
-                                       <
-                                       elements.length;
-                                       idx++)
-                                       {
-
-                                       var
-                                       element
-                                       =
-                                       elements[idx];
-
-                                       element.textContent
-                                       =
-                                       (multiplier
-                                       *
-                                       element.dataset.price)
-
-                                       .toString()
-
-                                       .replace(/\B(?=(\d{3})+(?!\d))/g,
-                                       ',');
+this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
+var multiplier = +this.value;
+var elements = document.getElementsByClassName('team-price');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  element.textContent = (multiplier * element.dataset.price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }"
                                oninput="javascript:
-var
-                                        value
-                                        =
-                                        +this.value;
-var
-                                        multiplier
-                                        =
-                                        Math.min(Math.max(value,
-                                        0),
-                                        +this.max);
-var
-                                        elements
-                                        =
-                                        document.getElementsByClassName('team-price');
-if
-                                        (this.value
-                                        !=
-                                        ""
-                                        &&
-                                        value
-                                        !=
-                                        multiplier)
-                                        {
-
-                                        this.value
-                                        =
-                                        multiplier;
+var value = +this.value;
+var multiplier = Math.min(Math.max(value, 0), +this.max);
+var elements = document.getElementsByClassName('team-price');
+if (this.value != "" && value != multiplier) {
+  this.value = multiplier;
 }
-for
-                                        (var
-                                        idx
-                                        =
-                                        0;
-                                        idx
-                                        <
-                                        elements.length;
-                                        idx++)
-                                        {
-
-                                        var
-                                        element
-                                        =
-                                        elements[idx];
-
-                                        element.textContent
-                                        =
-                                        (multiplier
-                                        *
-                                        element.dataset.price)
-
-                                        .toString()
-
-                                        .replace(/\B(?=(\d{3})+(?!\d))/g,
-                                        ',');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  element.textContent = (multiplier * element.dataset.price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }"
                                step="1"
                                type="number"
@@ -2197,8 +2115,7 @@ for
                                         w-100p
                                         block"
                                  name="stripe_name"
-                                 placeholder="Billing
-                                              Name"
+                                 placeholder="Billing Name"
                                  type="text">
                           <input class="font-family-inherit
                                         fg-black
@@ -3071,11 +2988,7 @@ for
                                         w-100p
                                         block"
                                  name="vatNumber"
-                                 placeholder="VAT
-                                              Number
-                                              (EU
-                                              Customers
-                                              Only)"
+                                 placeholder="VAT Number (EU Customers Only)"
                                  type="text">
                           <input class="font-family-inherit
                                         fg-black
@@ -3092,8 +3005,7 @@ for
                                         w-100p
                                         block"
                                  name="coupon"
-                                 placeholder="Coupon
-                                              Code"
+                                 placeholder="Coupon Code"
                                  type="text">
                         </div>
                         <div class="font-family-inherit

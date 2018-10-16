@@ -169,9 +169,8 @@ final class ChangeTests: TestCase {
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    let performed = result.perform()
+    assertSnapshot(matching: result.perform())
     waitForExpectations(timeout: 0.1, handler: nil)
-    assertSnapshot(matching: performed)
     #endif
   }
 

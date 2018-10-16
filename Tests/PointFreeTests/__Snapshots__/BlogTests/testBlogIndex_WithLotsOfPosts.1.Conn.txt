@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 128932
+Content-Length: 128013
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1684,13 +1684,11 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.10.0/prism.min.js">
     </script>
@@ -1735,51 +1733,21 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="A
-                   companion
-                   blog
-                   to
-                   Point-Free,
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="A companion blog to Point-Free, exploring functional programming and Swift.">
     <meta property="og:description"
-          content="A
-                   companion
-                   blog
-                   to
-                   Point-Free,
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="A companion blog to Point-Free, exploring functional programming and Swift.">
     <meta name="twitter:description"
-          content="A
-                   companion
-                   blog
-                   to
-                   Point-Free,
-                   exploring
-                   functional
-                   programming
-                   and
-                   Swift.">
+          content="A companion blog to Point-Free, exploring functional programming and Swift.">
     <meta name="twitter:image"
           content="https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg">
     <meta property="og:image"
           content="https://d1iqsrac68iyd8.cloudfront.net/common/pfp-social-logo.jpg">
     <meta name="title"
-          content="Point-Free
-                   Pointers">
+          content="Point-Free Pointers">
     <meta property="og:title"
-          content="Point-Free
-                   Pointers">
+          content="Point-Free Pointers">
     <meta name="twitter:title"
-          content="Point-Free
-                   Pointers">
+          content="Point-Free Pointers">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1951,16 +1919,12 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
               <div class="m-ml1">
                 <a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco"
                    onclick="window.open(
-
-                            "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
-
-                            "newwindow",
-
-                            "width=500,height=500"
+  "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
+  "newwindow",
+  "width=500,height=500"
 );"
                    target="_blank"
-                   rel="noopener
-                        noreferrer"
+                   rel="noopener noreferrer"
                    class="lh-1
                           relative
                           medium
@@ -2049,16 +2013,12 @@ library. For example, here is some code:</p>
               <div class="m-ml1">
                 <a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco"
                    onclick="window.open(
-
-                            "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
-
-                            "newwindow",
-
-                            "width=500,height=500"
+  "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
+  "newwindow",
+  "width=500,height=500"
 );"
                    target="_blank"
-                   rel="noopener
-                        noreferrer"
+                   rel="noopener noreferrer"
                    class="lh-1
                           relative
                           medium
@@ -2147,16 +2107,12 @@ library. For example, here is some code:</p>
               <div class="m-ml1">
                 <a href="https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco"
                    onclick="window.open(
-
-                            "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
-
-                            "newwindow",
-
-                            "width=500,height=500"
+  "https://twitter.com/intent/tweet?text=Mock%20Blog%20Post&url=http://localhost:8080/blog/posts/0-mock-blog-post&via=pointfreeco",
+  "newwindow",
+  "width=500,height=500"
 );"
                    target="_blank"
-                   rel="noopener
-                        noreferrer"
+                   rel="noopener noreferrer"
                    class="lh-1
                           relative
                           medium

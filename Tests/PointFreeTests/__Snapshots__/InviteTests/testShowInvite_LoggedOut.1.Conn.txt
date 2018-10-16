@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 47564
+Content-Length: 47416
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1625,13 +1625,11 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free
-                 Episodes"
+          title="Point-Free Episodes"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
-          title="Point-Free
-                 Blog"
+          title="Point-Free Blog"
           type="application/atom+xml">
     <link rel="apple-touch-icon"
           sizes="180x180"
@@ -1649,17 +1647,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="title"
-          content="Accept
-                   Team
-                   Invite?">
+          content="Accept Team Invite?">
     <meta property="og:title"
-          content="Accept
-                   Team
-                   Invite?">
+          content="Accept Team Invite?">
     <meta name="twitter:title"
-          content="Accept
-                   Team
-                   Invite?">
+          content="Accept Team Invite?">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
