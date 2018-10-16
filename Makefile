@@ -320,6 +320,9 @@ scorch-docker:
 		| xargs docker container stop \
 		&& docker system prune --all --force --volumes
 
+clean-snapshots:
+	find Tests -name "__Snapshots__" | xargs -n1 rm -fr
+
 SUDO = sudo --prompt=$(SUDO_PROMPT)
 SUDO_PROMPT = "  🔒 Please enter your password: "
 
