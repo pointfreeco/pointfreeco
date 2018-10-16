@@ -227,6 +227,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       video(
         [
+          id("episode-video"),
           Styleguide.class([innerVideoContainerClass, videoJsClasses]),
           style(position(.absolute)),
           controls(true),
