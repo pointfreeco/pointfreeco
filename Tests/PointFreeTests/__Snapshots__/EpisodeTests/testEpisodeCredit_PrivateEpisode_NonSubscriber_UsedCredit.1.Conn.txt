@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67465
+Content-Length: 70241
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1774,7 +1774,31 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
       .vjs-subs-caps-button{display:none}
     </style>
     <script>
-      window.HELP_IMPROVE_VIDEOJS = false;
+      window.HELP_IMPROVE_VIDEOJS = false
+
+function videoJsLoaded() {
+  video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
+    if (event.availability != "available") { return }
+
+    videojs("episode-video").ready(function() {
+      var existingAirplayControl = document.getElementsByClassName('vjs-airplay-control')
+      if (existingAirplayControl.length != 0) { return }
+
+      var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
+      var video = document.getElementsByTagName('video')[0]
+
+      var template = document.createElement('div')
+      template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="AirPlay"><img alt="AirPlay" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxM3B4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iTWVkaWEtQ29udHJvbC1TeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iX0Fzc2V0cy9JbmxpbmUvQWlycGxheSIgZmlsbD0iI2ZmZmZmZiI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik03LjU5MDI1MzMzLDcuMTQ2NTg2ODkgQzcuNzkxODA0NDksNi45NTMxMDU3NyA4LjExNDQ5MzQ0LDYuOTQ5MTc5NSA4LjMyMDEzNDY0LDcuMTQ2NTg2ODkgTDEzLjY4NTI2NDYsMTIuMjk2ODk4OCBDMTQuMDc5NzUxMSwxMi42NzU1OTAyIDEzLjk1NTg4NzIsMTIuOTgyNTgwMiAxMy4zOTg5MTU0LDEyLjk4MjU4MDIgTDIuNTExNDcyNTQsMTIuOTgyNTgwMiBDMS45NTg4Mzk3OSwxMi45ODI1ODAyIDEuODM5Mjc4NDksMTIuNjY3Mjk0NiAyLjIyNTEyMzM2LDEyLjI5Njg5ODggTDcuNTkwMjUzMzMsNy4xNDY1ODY4OSBaIiBpZD0iaU9TL0Z1bGxzY3JlZW4vQWlycGxheSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMsMTAgTDE0Ljk5OTEyODMsMTAgQzE1LjU1NTM2OTEsMTAgMTYsOS41NTQzNDUzMyAxNiw5LjAwNDYwMjQzIEwxNiwwLjk5NTM5NzU2OCBDMTYsMC40NTU2NjQzOTYgMTUuNTUxODk0NSwwIDE0Ljk5OTEyODMsMCBMMS4wMDA4NzE2NiwwIEMwLjQ0NDYzMDg2MSwwIDAsMC40NDU2NTQ2NzEgMCwwLjk5NTM5NzU2OCBMMCw5LjAwNDYwMjQzIEMwLDkuNTQ0MzM1NiAwLjQ0ODEwNTUwNSwxMCAxLjAwMDg3MTY2LDEwIEwzLDEwIEw0LDkgTDEuNDk4MjY3NDEsOSBDMS4yMjMwODE5Miw5IDEsOC43NjkyMDMxOSAxLDguNDk5NTY0MTcgTDEsMS41MDA0MzU4MyBDMSwxLjIyNDA1Mjc1IDEuMjE5OTA2NTcsMSAxLjQ5ODI2NzQxLDEgTDE0LjUwMTczMjYsMSBDMTQuNzc2OTE4MSwxIDE1LDEuMjMwNzk2ODEgMTUsMS41MDA0MzU4MyBMMTUsOC40OTk1NjQxNyBDMTUsOC43NzU5NDcyNSAxNC43ODAwOTM0LDkgMTQuNTAxNzMyNiw5IEwxMiw5IEwxMywxMCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" style="vertical-align:middle"></button>'
+
+      controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
+
+      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0]
+      airplayControl.addEventListener('click', function() {
+        video.webkitShowPlaybackTargetPicker()
+      })
+    })
+  })
+}
     </script>
     <meta name="description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description" content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
@@ -2105,7 +2129,7 @@ video.play();event.preventDefault();" data-t="6" class="vid-time-link text-decor
       <div class="bg-purple150 first-m last-d col-m col-d-5 col-m-12">
         <div class="sticky-d top-0">
           <div class="w-100p relative" style="padding-bottom:56.25%">
-            <video class="h-100p w-100p absolute bg-gray650 video-js vjs-default-skin vjs-big-play-centered" style="position:absolute" controls playsinline autoplay poster="" data-setup="{&quot;control&quot;:true,&quot;playbackRates&quot;:[0.5,1,1.5,2]}">
+            <video id="episode-video" class="h-100p w-100p absolute bg-gray650 video-js vjs-default-skin vjs-big-play-centered" style="position:absolute" controls playsinline autoplay poster="" data-setup="{&quot;control&quot;:true,&quot;playbackRates&quot;:[0.5,1,1.5,2]}">
               <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8">
               <source src="https://s3.amazonaws.com/pointfreeco/video.webm">
             </video>
