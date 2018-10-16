@@ -2,6 +2,8 @@ import Css
 import Foundation
 import Html
 import HtmlCssSupport
+import Optics
+import Prelude
 
 var videoJsHead: [ChildOf<Tag.Head>] {
   let videoJsAssets: [ChildOf<Tag.Head>] = [
@@ -77,7 +79,16 @@ struct VideoJsOptions: Encodable {
   static let `default` = VideoJsOptions(control: true, playbackRates: [0.5, 1, 1.5, 2])
 
   var jsonString: String {
-    return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-      ?? "{}"
+    if #available(OSX 10.13, *) {
+      return ((try? String(data: jsonEncoder.encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
+        ?? "{}"
+    } else {
+      return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
+        ?? "{}"
+    }
   }
 }
+
+@available(OSX 10.13, *)
+private let jsonEncoder = JSONEncoder()
+  |> \.outputFormatting .~ .sortedKeys
