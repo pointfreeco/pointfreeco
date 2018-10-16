@@ -18,7 +18,7 @@ var videoJsHead: [ChildOf<Tag.Head>] {
 
   return [
     style(".vjs-subs-caps-button" % display(.none)),
-    .init(node("script", [.text(unsafeUnencodedString("""
+    .init(.element("script", [], [.raw("""
 window.HELP_IMPROVE_VIDEOJS = false
 
 function videoJsLoaded() {
@@ -44,7 +44,7 @@ function videoJsLoaded() {
     })
   })
 }
-"""))]))
+""")]))
     ]
     + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
@@ -58,7 +58,7 @@ let airplayButton = button(
   [
     img(
       base64: airplaySvgBase64,
-      mediaType: .image(.svg),
+      type: .image(.svg),
       alt: "AirPlay",
       [style(verticalAlign(.middle))]
     )
