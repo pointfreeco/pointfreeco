@@ -1,3 +1,6 @@
+#if os(macOS)
+import Cocoa
+#endif
 import Cryptor
 import Either
 import Foundation
@@ -9,6 +12,9 @@ import Optics
 @testable import PointFree
 import Prelude
 import SnapshotTesting
+#if os(macOS)
+import WebKit
+#endif
 
 extension Environment {
   public static let mock = Environment(
@@ -463,9 +469,6 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
-import Cocoa
-import WebKit
-
 extension Strategy {
   public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
     return Strategy.conn.contramap { io in
@@ -477,6 +480,7 @@ extension Strategy {
     }
   }
 
+  #if os(macOS)
   @available(OSX 10.13, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
     return Strategy.webView.contramap { io in
@@ -485,6 +489,7 @@ extension Strategy {
       return webView
     }
   }
+  #endif
 }
 
 public func request(
