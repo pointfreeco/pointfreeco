@@ -20,40 +20,48 @@ final class NotFoundMiddlewareTests: TestCase {
   }
 
   func testNotFound() {
-    let result = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
-      |> siteMiddleware
+    let conn = connection(from: URLRequest(url: URL(string: "http://localhost:8080/404")!))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1000)),
+        named: "mobile"
+      )
     }
     #endif
   }
 
   func testNotFound_LoggedIn() {
-    let result = connection(
+    let conn = connection(
       from: request(to: .home, session: .loggedIn)
         |> (over(\.url) <<< map) %~ { $0.appendingPathComponent("404") }
-      )
-      |> siteMiddleware
+    )
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1000)),
+        named: "mobile"
+      )
     }
     #endif
   }

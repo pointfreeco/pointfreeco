@@ -20,19 +20,22 @@ class PaymentInfoTests: TestCase {
 
   func testRender() {
     let conn = connection(from: request(to: .account(.paymentInfo(.show(expand: nil))), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
-
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }

@@ -132,9 +132,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 
@@ -147,9 +146,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 
@@ -162,9 +160,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 

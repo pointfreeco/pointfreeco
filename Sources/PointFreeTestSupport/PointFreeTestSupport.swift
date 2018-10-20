@@ -463,6 +463,9 @@ extension Session {
     |> \.userId .~ Database.User.mock.id
 }
 
+import Cocoa
+import WebKit
+
 extension Strategy {
   public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
     return Strategy.conn.contramap { io in
@@ -471,6 +474,15 @@ extension Strategy {
       let conn = io.perform()
       update(&Current, \.renderHtml .~ renderHtml)
       return conn
+    }
+  }
+
+  @available(OSX 10.13, *)
+  public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
+    return Strategy.webView.contramap { io in
+      let webView = WKWebView(frame: .init(origin: .zero, size: size))
+      webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
+      return webView
     }
   }
 }

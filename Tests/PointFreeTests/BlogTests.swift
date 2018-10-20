@@ -20,20 +20,23 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex() {
-    let req = request(to: .blog(.index), basicAuth: true)
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1100, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 500, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -45,72 +48,70 @@ class BlogTests: TestCase {
       \.blogPosts .~ unzurry((1...6).map(const(shortMock)))
     )
 
-    let req = request(to: .blog(.index), basicAuth: true)
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2400))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1100, height: 2400)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 500, height: 2400)),
+        named: "mobile"
+      )
     }
     #endif
   }
 
   func testBlogIndex_Unauthed() {
-    let req = request(to: .blog(.index), basicAuth: true)
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testBlogShow() {
-    let req = request(to: .blog(.show(.mock)), basicAuth: true)
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.show(.mock)), basicAuth: true))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1100, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 500
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 500, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
 
   func testBlogShow_Unauthed() {
-    let req = request(to: .blog(.show(.mock))) 
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.show(.mock))))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testBlogAtomFeed() {
-    let req = request(to: .blog(.feed), basicAuth: true)
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.feed), basicAuth: true))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testBlogAtomFeed_Unauthed() {
-    let req = request(to: .blog(.feed))
-    let result = connection(from: req)
-      |> siteMiddleware
+    let conn = connection(from: request(to: .blog(.feed)))
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 }

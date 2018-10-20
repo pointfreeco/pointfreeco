@@ -21,52 +21,46 @@ final class CancelTests: TestCase {
 
   func testCancel() {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelNoSubscription() {
     update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelCancelingSubscription() {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelCanceledSubscription() {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelStripeFailure() {
     update(&Current, \.stripe.cancelSubscription .~ const(throwE(unit)))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testCancelEmail() {
@@ -91,50 +85,44 @@ final class CancelTests: TestCase {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate))))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateNoSubscription() {
     update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateActiveSubscription() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateCanceledSubscription() {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateStripeFailure() {
     update(&Current, \.stripe.updateSubscription .~ { _, _, _, _ in throwE(unit) })
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testReactivateEmail() {
