@@ -16,13 +16,13 @@ class AtomFeedTests: TestCase {
   func testAtomFeed() {
     let conn = connection(from: request(to: .feed(.atom)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testEpisodeFeed() {
     let conn = connection(from: request(to: .feed(.episodes)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testEpisodeFeed_WithRecentlyFreeEpisode() {
@@ -42,6 +42,6 @@ class AtomFeedTests: TestCase {
 
     let conn = connection(from: request(to: .feed(.episodes)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 }
