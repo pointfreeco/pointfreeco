@@ -15,7 +15,7 @@ class RegistrationEmailTests: TestCase {
   func testRegistrationEmail() {
     let doc = registrationEmailView.view(.mock)
 
-    assertSnapshot(matching: doc, with: .html)
+    assertSnapshot(of: .html, matching: doc)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

@@ -133,7 +133,7 @@ final class StripeWebhooksTests: TestCase {
 
     let conn = connection(from: hook)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
     #endif
   }
 
@@ -147,7 +147,7 @@ final class StripeWebhooksTests: TestCase {
 
     let conn = connection(from: hook)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
     #endif
   }
 
@@ -161,14 +161,14 @@ final class StripeWebhooksTests: TestCase {
 
     let conn = connection(from: hook)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
     #endif
   }
 
   func testPastDueEmail() {
     let doc = pastDueEmailView.view(unit)
 
-    assertSnapshot(matching: doc, with: .html)
+    assertSnapshot(of: .html, matching: doc)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

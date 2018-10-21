@@ -20,7 +20,7 @@ class EnvVarTests: TestCase {
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
-    ]
+      ]
 
     let envVars = try JSONDecoder()
       .decode(EnvVars.self, from: try JSONSerialization.data(withJSONObject: json))
@@ -28,6 +28,6 @@ class EnvVarTests: TestCase {
     let roundTrip = try JSONSerialization.jsonObject(with: try JSONEncoder().encode(envVars), options: [])
       as! [String: String]
 
-    assertSnapshot(matchingAny: roundTrip.sorted(by: { $0.key < $1.key }))
+    assertSnapshot(of: .any, matching: roundTrip.sorted(by: { $0.key < $1.key }))
   }
 }

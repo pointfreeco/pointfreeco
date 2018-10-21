@@ -23,9 +23,9 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedOut() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
@@ -37,17 +37,17 @@ class DiscountsTests: TestCase {
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
   func testFika_LoggedOut() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("http://localhost:8080/fika"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
@@ -59,9 +59,9 @@ class DiscountsTests: TestCase {
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: request(with: secureRequest("http://localhost:8080/fika"), session: .loggedIn))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 }

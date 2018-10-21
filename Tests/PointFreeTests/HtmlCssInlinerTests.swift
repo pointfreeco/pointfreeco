@@ -52,6 +52,6 @@ class HtmlCssInlinerTests: TestCase {
         ])
     ]
 
-    assertSnapshot(matching: applyInlineStyles(nodes: doc, stylesheet: stylesheet), with: .html)
+    assertSnapshot(of: .html, matching: applyInlineStyles(nodes: doc, stylesheet: stylesheet))
   }
 }
