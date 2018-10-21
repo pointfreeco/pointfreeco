@@ -1,8 +1,8 @@
 import Foundation
 import Html
 import HttpPipeline
-import MediaType
 import Prelude
+import View
 
 let blogAtomFeedResponse =
   writeStatus(.ok)

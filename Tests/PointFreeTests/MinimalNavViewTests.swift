@@ -6,6 +6,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Styleguide
+import View
 #if !os(Linux)
 import WebKit
 #endif
@@ -16,7 +17,7 @@ class MinimalNavViewTests: TestCase {
     states.forEach { key, state in
       let doc = testDocView.view(state)
 
-      assertSnapshot(matching: doc.first!, named: key)
+      assertSnapshot(matching: doc, with: .html, named: key)
     }
   }
 
@@ -52,14 +53,15 @@ private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Subscriber
 ]
 
 private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  document([
+  [
+    doctype,
     html([
       head([
-        Html.style(renderedNormalizeCss),
+        Html.style(unsafe: renderedNormalizeCss),
         HtmlCssSupport.style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
       body(minimalNavView.view((style, currentUser, subscriberState, currentRoute)))
       ])
-    ])
+  ]
 }

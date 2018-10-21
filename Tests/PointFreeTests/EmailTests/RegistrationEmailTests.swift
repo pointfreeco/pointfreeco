@@ -4,6 +4,7 @@ import Prelude
 import XCTest
 @testable import PointFree
 import PointFreeTestSupport
+import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 #if !os(Linux)
@@ -14,7 +15,7 @@ class RegistrationEmailTests: TestCase {
   func testRegistrationEmail() {
     let doc = registrationEmailView.view(.mock)
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

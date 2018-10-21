@@ -9,6 +9,7 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let showNewBlogPostEmailMiddleware =
   requireAdmin
@@ -26,7 +27,7 @@ private let showNewBlogPostView = View<Database.User> { _ in
 
 private let newBlogPostEmailRowView = View<BlogPost> { post in
   p([
-    text("Blog Post: \(post.title)"),
+    .text("Blog Post: \(post.title)"),
 
     form([action(path(to: .admin(.newBlogPostEmail(.send(post, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
 

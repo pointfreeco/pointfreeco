@@ -28,6 +28,6 @@ class EnvVarTests: TestCase {
     let roundTrip = try JSONSerialization.jsonObject(with: try JSONEncoder().encode(envVars), options: [])
       as! [String: String]
 
-    assertSnapshot(matching: roundTrip.sorted(by: { $0.key < $1.key }))
+    assertSnapshot(matchingAny: roundTrip.sorted(by: { $0.key < $1.key }))
   }
 }

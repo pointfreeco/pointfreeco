@@ -7,7 +7,20 @@ programming and the Swift programming language. To accept, simply click the link
 
 Click here to accept! <http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF>
 
+
+
+
+
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 
 Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+
 

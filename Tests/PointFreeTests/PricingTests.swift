@@ -18,14 +18,14 @@ class PricingTests: TestCase {
 
   func testPricing() {
     let conn = connection(from: request(to: .pricing(nil, expand: nil)))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
+      let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
       assertSnapshot(matching: webView, named: "desktop")
 
       webView.evaluateJavaScript(
@@ -53,19 +53,22 @@ class PricingTests: TestCase {
     )
     
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1900)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
-
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1900)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -77,19 +80,22 @@ class PricingTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
     let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1900)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
-
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1900)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -98,7 +104,7 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: result, with: .ioConn)
   }
 
   func testPricingLoggedIn_CanceledSubscriber() {
@@ -109,9 +115,8 @@ class PricingTests: TestCase {
     )
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testPricingLoggedIn_PastDueSubscriber() {
@@ -122,8 +127,7 @@ class PricingTests: TestCase {
     )
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 }

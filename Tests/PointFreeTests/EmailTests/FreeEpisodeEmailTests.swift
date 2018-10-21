@@ -1,4 +1,5 @@
 import Html
+import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -14,7 +15,7 @@ class FreeEpisodeEmailTests: TestCase {
   func testFreeEpisodeEmail() {
     let doc = freeEpisodeEmail.view((Current.episodes().first!, .mock))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

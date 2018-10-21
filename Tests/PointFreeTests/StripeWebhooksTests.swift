@@ -1,5 +1,6 @@
 import Either
 import Html
+import HtmlPlainTextPrint
 import HtmlPrettyPrint
 import HttpPipeline
 @testable import PointFree
@@ -131,9 +132,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 
@@ -146,9 +146,8 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 
@@ -161,16 +160,15 @@ final class StripeWebhooksTests: TestCase {
     )
 
     let conn = connection(from: hook)
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
     #endif
   }
 
   func testPastDueEmail() {
-    let doc = pastDueEmailView.view(unit).first!
+    let doc = pastDueEmailView.view(unit)
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

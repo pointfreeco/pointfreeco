@@ -11,22 +11,22 @@ extension Stripe {
         input([name("token"), type(.hidden)]),
         div([`class`(expand ? [] : [Class.display.none])], [
           input([
-            `class`([blockInputClass]),
+            Styleguide.class([blockInputClass]),
             name("stripe_name"),
             placeholder("Billing Name"),
             type(.text),
             ]),
           input([
-            `class`([blockInputClass]),
+            Styleguide.class([blockInputClass]),
             name("stripe_address_line1"),
             placeholder("Address"),
             type(.text),
             ]),
           gridRow([
             gridColumn(sizes: [.mobile: 12, .desktop: 4], [
-              div([`class`([Class.padding([.desktop: [.right: 1]])])], [
+              div([Styleguide.class([Class.padding([.desktop: [.right: 1]])])], [
                 input([
-                  `class`([blockInputClass]),
+                  Styleguide.class([blockInputClass]),
                   name("stripe_address_city"),
                   placeholder("City"),
                   type(.text),
@@ -34,9 +34,9 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              div([Styleguide.class([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
-                  `class`([blockInputClass]),
+                  Styleguide.class([blockInputClass]),
                   name("stripe_address_state"),
                   placeholder("State"),
                   type(.text),
@@ -44,9 +44,9 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 2], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              div([Styleguide.class([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
-                  `class`([blockInputClass]),
+                  Styleguide.class([blockInputClass]),
                   name("stripe_address_zip"),
                   placeholder("Zip"),
                   type(.text),
@@ -54,8 +54,8 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
-                select([`class`([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
+              div([Styleguide.class([Class.padding([.desktop: [.left: 1]])])], [
+                select([Styleguide.class([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
                   let (country, code) = pair
                   return option([value(code)], country)
                 })
@@ -63,13 +63,13 @@ extension Stripe {
               ]),
             ]),
           input([
-            `class`([blockInputClass]),
+            Styleguide.class([blockInputClass]),
             name("vatNumber"),
             placeholder("VAT Number (EU Customers Only)"),
             type(.text),
             ]),
           input([
-            `class`([blockInputClass]),
+            Styleguide.class([blockInputClass]),
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
@@ -77,7 +77,7 @@ extension Stripe {
           ]),
         div(
           [
-            `class`([stripeInputClass]),
+            Styleguide.class([stripeInputClass]),
             data("stripe-key", Current.envVars.stripe.publishableKey),
             id("card-element"),
           ],
@@ -89,7 +89,7 @@ extension Stripe {
     public static let errors = [
       div(
         [
-          `class`([Class.pf.colors.fg.red]),
+          Styleguide.class([Class.pf.colors.fg.red]),
           id("card-errors"),
           role(.alert),
         ],

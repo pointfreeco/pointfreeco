@@ -9,7 +9,20 @@ the link below!
 
 Choose a subscription plan! <http://localhost:8080/pricing>
 
+
+
+
+
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 
 Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
+
+
+
+
+
+
+
+
+
 
