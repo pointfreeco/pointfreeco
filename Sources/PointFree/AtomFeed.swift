@@ -1,8 +1,9 @@
 import Foundation
 import Html
+import HtmlPrettyPrint
 import HttpPipeline
-import MediaType
 import Prelude
+import View
 
 let atomFeedResponse =
   writeStatus(.ok)
@@ -10,7 +11,7 @@ let atomFeedResponse =
 
 let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
-    >=> respond(episodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+    >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
 let pointFreeFeed = View<[Episode]> { episodes in
@@ -192,17 +193,14 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 
 // TODO: swift-web
 public extension Application {
-  public static var atom = Application("atom+xml")
+  public static var atom = Application(rawValue: "atom+xml")
 }
 
 public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: view.rendered(
-          with: conn.data,
-          config: Current.envVars.appEnv == .testing ? .pretty : .compact
-        ),
+        body: Current.renderHtml(view.view(conn.data)),
         contentType: contentType
     )
   }
@@ -213,6 +211,6 @@ private func atomEntry(for episode: Episode) -> AtomEntry {
     title: episode.title,
     siteUrl: url(to: .episode(.left(episode.slug))),
     updated: episode.publishedAt,
-    content: [text(episode.blurb)]
+    content: [.text(episode.blurb)]
   )
 }

@@ -4,6 +4,7 @@ import Prelude
 import XCTest
 @testable import PointFree
 import PointFreeTestSupport
+import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 #if !os(Linux)
@@ -12,9 +13,9 @@ import WebKit
 
 class EmailInviteTests: TestCase {
   func testEmailInvite() {
-    let doc = teamInviteEmailView.view((.mock, .mock)).first!
+    let doc = teamInviteEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -30,9 +31,9 @@ class EmailInviteTests: TestCase {
   }
 
   func testInviteAcceptance() {
-    let doc = inviteeAcceptedEmailView.view((.mock, .mock)).first!
+    let doc = inviteeAcceptedEmailView.view((.mock, .mock))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

@@ -1,4 +1,5 @@
 import Html
+import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -14,7 +15,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Subscriber() {
     let doc = newEpisodeEmail.view((Current.episodes().first!, "", "", .mock))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -35,7 +36,7 @@ class NewEpisodeEmailTests: TestCase {
 
     let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -60,7 +61,7 @@ class NewEpisodeEmailTests: TestCase {
       .nonSubscriber
     ))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -85,7 +86,7 @@ class NewEpisodeEmailTests: TestCase {
       .mock
     ))
 
-    assertSnapshot(matching: render(doc, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: doc, with: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4767
+Content-Length: 4698
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,14 +12,17 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 <?xml version="1.0" encoding="utf-8" ?>
-<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://www.rssboard.org/media-rss" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://www.rssboard.org/media-rss"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     version="2.0">
   <channel>
     <title>
       Point-Free
     </title>
     <link>
-      http://localhost:8080
-    </link>
     <language>
       en-US
     </language>
@@ -37,11 +40,9 @@ X-XSS-Protection: 1; mode=block
         Point-Free
       </title>
       <link>
-        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
-      </link>
     </image>
     <itunes:author>
-      Brandon Williams &amp; Stephen Celis
+      Brandon Williams & Stephen Celis
     </itunes:author>
     <itunes:subtitle>
       Functional programming concepts explained simply.
@@ -54,7 +55,7 @@ X-XSS-Protection: 1; mode=block
     </itunes:explicit>
     <itunes:owner>
       <itunes:name>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:name>
       <itunes:email>
         support@pointfree.co
@@ -86,8 +87,6 @@ X-XSS-Protection: 1; mode=block
         Mon, 29 Jan 2018 06:11:09 +0000
       </pubDate>
       <link>
-        http://localhost:8080
-      </link>
       <guid>
         1517356800.0
       </guid>
@@ -101,7 +100,7 @@ X-XSS-Protection: 1; mode=block
         Stephen Celis
       </dc:creator>
       <itunes:author>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
         ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
@@ -130,9 +129,14 @@ X-XSS-Protection: 1; mode=block
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4" length="411951213" type="video/mp4">
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4"
+                 length="411951213"
+                 type="video/mp4">
       </enclosure>
-      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4" length="411951213" type="video/mp4" medium="video">
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4"
+                     length="411951213"
+                     type="video/mp4"
+                     medium="video">
         <media:title>
           Invalid Feed URL
         </media:title>

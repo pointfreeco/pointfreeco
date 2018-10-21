@@ -18,13 +18,14 @@ class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
+//    record=true
   }
 
   func testDiscounts_LoggedOut() {
     assertSnapshot(
       matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
-        |> siteMiddleware
-        |> Prelude.perform
+        |> siteMiddleware,
+      with: .ioConn
     )
   }
 
@@ -37,16 +38,16 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn))
-        |> siteMiddleware
-        |> Prelude.perform
+        |> siteMiddleware,
+      with: .ioConn
     )
   }
 
   func testFika_LoggedOut() {
     assertSnapshot(
       matching: connection(from: secureRequest("http://localhost:8080/fika"))
-        |> siteMiddleware
-        |> Prelude.perform
+        |> siteMiddleware,
+      with: .ioConn
     )
   }
 
@@ -59,8 +60,8 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(from: request(with: secureRequest("http://localhost:8080/fika"), session: .loggedIn))
-        |> siteMiddleware
-        |> Prelude.perform
+        |> siteMiddleware,
+      with: .ioConn
     )
   }
 }

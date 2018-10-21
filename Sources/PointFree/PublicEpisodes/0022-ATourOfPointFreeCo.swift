@@ -1444,7 +1444,7 @@ I can hop over to our footer view and locate the contact link.
   ),
   Episode.TranscriptBlock(
     content: """
-a([`class`([footerLinkClass]), mailto("support@pointfree.co")], ["Contact us"])
+a([Styleguide.class([footerLinkClass]), mailto("support@pointfree.co")], ["Contact us"])
 """,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -1458,7 +1458,7 @@ And I can update it to say "Support" and provide an `href`. I could just hard-co
   ),
   Episode.TranscriptBlock(
     content: """
-a([`class`([footerLinkClass]), href("/support")], ["Support"])
+a([Styleguide.class([footerLinkClass]), href("/support")], ["Support"])
 """,
     timestamp: nil,
     type: .code(lang: .swift)
@@ -1486,7 +1486,7 @@ We want to use our router and we have a little helper here that just calls out t
   ),
   Episode.TranscriptBlock(
     content: """
-a([`class`([footerLinkClass]), href(path(to: .support))], ["Support"])
+a([Styleguide.class([footerLinkClass]), href(path(to: .support))], ["Support"])
 """,
     timestamp: nil,
     type: .code(lang: .swift)

@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 5097
+Content-Length: 5047
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,14 +12,17 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 <?xml version="1.0" encoding="utf-8" ?>
-<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://www.rssboard.org/media-rss" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://www.rssboard.org/media-rss"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     version="2.0">
   <channel>
     <title>
       Point-Free Videos (Private feed for hello@pointfree.co)
     </title>
     <link>
-      http://localhost:8080
-    </link>
     <language>
       en-US
     </language>
@@ -45,11 +48,9 @@ with anyone else.
         Point-Free Videos (Private feed for hello@pointfree.co)
       </title>
       <link>
-        http://localhost:8080
-      </link>
     </image>
     <itunes:author>
-      Brandon Williams &amp; Stephen Celis
+      Brandon Williams & Stephen Celis
     </itunes:author>
     <itunes:subtitle>
       Functional programming concepts explained simply.
@@ -70,7 +71,7 @@ with anyone else.
     </itunes:explicit>
     <itunes:owner>
       <itunes:name>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:name>
       <itunes:email>
         support@pointfree.co
@@ -102,8 +103,6 @@ with anyone else.
         Tue, 20 Dec 2016 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep2-proof-in-functions
-      </link>
       <guid>
         http://localhost:8080/episodes/ep2-proof-in-functions
       </guid>
@@ -118,7 +117,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         Stephen Celis
       </dc:creator>
       <itunes:author>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
         This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
@@ -149,9 +148,14 @@ text, no markdown allowed. Here is some more text just to have some filler.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4">
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
       </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
         <media:title>
           Proof in Functions
         </media:title>

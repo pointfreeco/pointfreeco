@@ -1,4 +1,5 @@
 import Css
+import CssTestSupport
 import PointFreeTestSupport
 import SnapshotTesting
 import Styleguide
@@ -6,41 +7,17 @@ import XCTest
 
 class StyleguideTests: TestCase {
   func testStyleguide() {
-    assertSnapshot(
-      matching: render(config: .pretty, css: styleguide),
-      named: "pretty",
-      pathExtension: "css"
-    )
-    assertSnapshot(
-      matching: render(config: .compact, css: styleguide),
-      named: "mini",
-      pathExtension: "css"
-    )
+    assertSnapshot(matching: styleguide, named: "pretty")
+    assertSnapshot(matching: styleguide, with: .css(.compact), named: "mini")
   }
 
   func testDesignSystem() {
-    assertSnapshot(
-      matching: render(config: .pretty, css: designSystems),
-      named: "pretty",
-      pathExtension: "css"
-    )
-    assertSnapshot(
-      matching: render(config: .compact, css: designSystems),
-      named: "mini",
-      pathExtension: "css"
-    )
+    assertSnapshot(matching: designSystems, named: "pretty")
+    assertSnapshot(matching: designSystems, with: .css(.compact), named: "mini")
   }
 
   func testPointFreeStyles() {
-    assertSnapshot(
-      matching: render(config: .pretty, css: pointFreeBaseStyles),
-      named: "pretty",
-      pathExtension: "css"
-    )
-    assertSnapshot(
-      matching: render(config: .compact, css: pointFreeBaseStyles),
-      named: "mini",
-      pathExtension: "css"
-    )
+    assertSnapshot(matching: pointFreeBaseStyles, named: "pretty")
+    assertSnapshot(matching: pointFreeBaseStyles, with: .css(.compact), named: "mini")
   }
 }

@@ -2,9 +2,11 @@ import Css
 import Foundation
 import Html
 import HtmlCssSupport
+import Optics
+import Prelude
 
-var videoJsHead: [ChildOf<Element.Head>] {
-  let videoJsAssets: [ChildOf<Element.Head>] = [
+var videoJsHead: [ChildOf<Tag.Head>] {
+  let videoJsAssets: [ChildOf<Tag.Head>] = [
     link([
       href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
       rel(.stylesheet)
@@ -18,7 +20,7 @@ var videoJsHead: [ChildOf<Element.Head>] {
 
   return [
     style(".vjs-subs-caps-button" % display(.none)),
-    .init(node("script", [.text(unsafeUnencodedString("""
+    .init(.element("script", [], [.raw("""
 window.HELP_IMPROVE_VIDEOJS = false
 
 function videoJsLoaded() {
@@ -44,7 +46,7 @@ function videoJsLoaded() {
     })
   })
 }
-"""))]))
+""")]))
     ]
     + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
 }
@@ -58,7 +60,7 @@ let airplayButton = button(
   [
     img(
       base64: airplaySvgBase64,
-      mediaType: .image(.svg),
+      type: .image(.svg),
       alt: "AirPlay",
       [style(verticalAlign(.middle))]
     )
@@ -77,7 +79,16 @@ struct VideoJsOptions: Encodable {
   static let `default` = VideoJsOptions(control: true, playbackRates: [0.5, 1, 1.5, 2])
 
   var jsonString: String {
-    return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-      ?? "{}"
+    if #available(OSX 10.13, *) {
+      return ((try? String(data: jsonEncoder.encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
+        ?? "{}"
+    } else {
+      return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
+        ?? "{}"
+    }
   }
 }
+
+@available(OSX 10.13, *)
+private let jsonEncoder = JSONEncoder()
+  |> \.outputFormatting .~ .sortedKeys

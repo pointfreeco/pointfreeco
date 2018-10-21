@@ -9,6 +9,7 @@ import Optics
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
   requireAdmin

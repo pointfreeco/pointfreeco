@@ -13,11 +13,24 @@ Subscribe to Point-Free! <http://localhost:8080/pricing>Watch <http://localhost:
 
 Your hosts,
 
-Brandon Williams <https://www.twitter.com/mbrandonw> & Stephen Celis <https://www.twitter.com/stephencelis>
+Brandon&nbsp;Williams <https://www.twitter.com/mbrandonw> & Stephen&nbsp;Celis <https://www.twitter.com/stephencelis>
+
+
+
+
 
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 
 Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
 
 You are receiving this email because you wanted to be notified whenever a new episode is available. If you no longer wish to receive emails like this, you can unsubscribe here <http://localhost:8080/newsletters/express-unsubscribe?payload=f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b4738d82b4e060d069541557960935392cec34ad30aa92ad6c6191cf858e4f5b947d70e21f4fe4cc34437c9d66a41e346cf>.
+
+
+
+
+
+
+
+
+
 

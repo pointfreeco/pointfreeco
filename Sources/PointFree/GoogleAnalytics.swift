@@ -7,15 +7,15 @@ public func addGoogleAnalytics(_ nodes: [Node]) -> [Node] {
     switch node {
     case .comment:
       return node
-    case let .document(doc):
-      return .document(addGoogleAnalytics(doc))
-    case let .element(element):
-      if element.name == "head" {
-        return .element(element |> \.content %~ { ($0 ?? []) + [googleAnalytics] })
-      } else {
-        return .element(element |> \.content %~ map(addGoogleAnalytics))
-      }
-    case .text:
+    case let .element(tag, attribs, children):
+      return .element(
+        tag,
+        attribs,
+        tag == "head"
+          ? children + [googleAnalytics]
+          : addGoogleAnalytics(children)
+      )
+    case .doctype, .raw, .text:
       return node
     }
   }

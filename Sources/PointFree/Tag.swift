@@ -1,8 +1,9 @@
 import Html
 import Prelude
 import Styleguide
+import View
 
-public struct Tag: Equatable {
+public struct SiteTag: Equatable {
   var name: String
 
   var slug: String {
@@ -10,43 +11,43 @@ public struct Tag: Equatable {
   }
 
   public static let all = (
-    algebra: Tag(name: "Algebra"),
-    dsl: Tag(name: "DSL"),
-    generics: Tag(name: "Generics"),
-    html: Tag(name: "HTML"),
-    math: Tag(name: "Math"),
-    polymorphism: Tag(name: "Polymorphism"),
-    programming: Tag(name: "Programming"),
-    serverSideSwift: Tag(name: "Server-Side Swift"),
-    swift: Tag(name: "Swift")
+    algebra: SiteTag(name: "Algebra"),
+    dsl: SiteTag(name: "DSL"),
+    generics: SiteTag(name: "Generics"),
+    html: SiteTag(name: "HTML"),
+    math: SiteTag(name: "Math"),
+    polymorphism: SiteTag(name: "Polymorphism"),
+    programming: SiteTag(name: "Programming"),
+    serverSideSwift: SiteTag(name: "Server-Side Swift"),
+    swift: SiteTag(name: "Swift")
   )
 }
 
-extension Tag {
+extension SiteTag {
   public init?(slug: String) {
-    guard let tag = array(Tag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
+    guard let tag = array(SiteTag.all).first(where: { PointFree.slug(for: slug) == $0.slug })
       else { return nil }
     self = tag
   }
 }
 
-public let pillTagsView = View<[Tag]> { tags in
+public let pillTagsView = View<[SiteTag]> { tags in
   ol(
-    [`class`([Class.display.inlineBlock, Class.type.list.reset])],
+    [Styleguide.class([Class.display.inlineBlock, Class.type.list.reset])],
     tags
       .sorted(by: their(^\.name))
       .map(
         episodeTagView.view
-          >>> curry(li)([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
+          >>> curry(li)([Styleguide.class([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }
 
-private let episodeTagView = View<Tag> { tag in
+private let episodeTagView = View<SiteTag> { tag in
   a(
     [
       href("#"),
-      `class`([
+      Styleguide.class([
         Class.h6,
         Class.padding([.mobile: [.leftRight: 2, .topBottom: 1]]),
         Class.border.pill,
@@ -56,7 +57,7 @@ private let episodeTagView = View<Tag> { tag in
         Class.pf.colors.border.gray900
         ])
     ],
-    [text(tag.name)]
+    [.text(tag.name)]
   )
 }
 

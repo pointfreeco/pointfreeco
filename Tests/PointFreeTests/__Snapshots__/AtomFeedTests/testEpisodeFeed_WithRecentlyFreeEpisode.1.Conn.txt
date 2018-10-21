@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7375
+Content-Length: 7326
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,14 +12,17 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 <?xml version="1.0" encoding="utf-8" ?>
-<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://www.rssboard.org/media-rss" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://www.rssboard.org/media-rss"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     version="2.0">
   <channel>
     <title>
       Point-Free Videos
     </title>
     <link>
-      http://localhost:8080
-    </link>
     <language>
       en-US
     </language>
@@ -37,11 +40,9 @@ X-XSS-Protection: 1; mode=block
         Point-Free Videos
       </title>
       <link>
-        http://localhost:8080
-      </link>
     </image>
     <itunes:author>
-      Brandon Williams &amp; Stephen Celis
+      Brandon Williams & Stephen Celis
     </itunes:author>
     <itunes:subtitle>
       Functional programming concepts explained simply.
@@ -54,7 +55,7 @@ X-XSS-Protection: 1; mode=block
     </itunes:explicit>
     <itunes:owner>
       <itunes:name>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:name>
       <itunes:email>
         support@pointfree.co
@@ -86,8 +87,6 @@ X-XSS-Protection: 1; mode=block
         Mon, 29 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep2-subscriber-only-episode-that-is-now-free
-      </link>
       <guid>
         1517184000
       </guid>
@@ -106,7 +105,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         Stephen Celis
       </dc:creator>
       <itunes:author>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
         🆓 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
@@ -137,9 +136,14 @@ text, no markdown allowed. Here is some more text just to have some filler.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4">
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
       </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
         <media:title>
           Subscriber-Only Episode that is now free!
         </media:title>
@@ -153,8 +157,6 @@ text, no markdown allowed. Here is some more text just to have some filler.
         Wed, 24 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
-        http://localhost:8080/episodes/ep1-free-episode
-      </link>
       <guid>
         1516752000
       </guid>
@@ -172,7 +174,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         Stephen Celis
       </dc:creator>
       <itunes:author>
-        Brandon Williams &amp; Stephen Celis
+        Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
         🆓 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
@@ -201,9 +203,14 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4">
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
       </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4" length="500000000" type="video/mp4" medium="video">
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
         <media:title>
           Free Episode
         </media:title>
