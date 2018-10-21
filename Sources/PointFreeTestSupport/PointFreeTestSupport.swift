@@ -504,7 +504,7 @@ extension SnapshotTestCase {
     ) {
 
     strategies.forEach { name, strategy in
-      self.assertSnapshot(
+      assertSnapshot(
         of: strategy,
         matching: value,
         named: name,
@@ -528,10 +528,9 @@ extension SnapshotTestCase {
     ) {
 
     strategies.forEach { strategy in
-      self.assertSnapshot(
+      assertSnapshot(
         of: strategy,
         matching: value,
-        named: name,
         record: recording,
         timeout: timeout,
         file: file,
