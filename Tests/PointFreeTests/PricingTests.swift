@@ -19,7 +19,7 @@ class PricingTests: TestCase {
   func testPricing() {
     let conn = connection(from: request(to: .pricing(nil, expand: nil)))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -47,26 +47,26 @@ class PricingTests: TestCase {
 
   func testPricingLoggedIn_NonSubscriber() {
     update(
-      &Current, 
+      &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
-    
+
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 1080, height: 1900)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 1080, height: 1900)),
         named: "desktop"
       )
 
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 400, height: 1900)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 400, height: 1900)),
         named: "mobile"
       )
     }
@@ -81,19 +81,19 @@ class PricingTests: TestCase {
     )
     let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 1080, height: 1900)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 1080, height: 1900)),
         named: "desktop"
       )
 
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 400, height: 1900)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 400, height: 1900)),
         named: "mobile"
       )
     }
@@ -104,7 +104,7 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: result)
   }
 
   func testPricingLoggedIn_CanceledSubscriber() {
@@ -116,7 +116,7 @@ class PricingTests: TestCase {
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testPricingLoggedIn_PastDueSubscriber() {
@@ -128,6 +128,6 @@ class PricingTests: TestCase {
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 }

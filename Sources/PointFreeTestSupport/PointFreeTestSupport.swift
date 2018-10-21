@@ -471,7 +471,7 @@ extension Session {
 
 extension Strategy {
   public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
-    return Strategy.conn.contramap { io in
+    return Strategy.conn.pullback { io in
       let renderHtml = Current.renderHtml
       update(&Current, \.renderHtml .~ { prettyPrint($0) })
       let conn = io.perform()
@@ -483,13 +483,62 @@ extension Strategy {
   #if os(macOS)
   @available(OSX 10.13, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Strategy.webView.contramap { io in
+    return Strategy.webView.pullback { io in
       let webView = WKWebView(frame: .init(origin: .zero, size: size))
       webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
       return webView
     }
   }
   #endif
+}
+
+extension SnapshotTestCase {
+  public func assertSnapshots<A, B>(
+    of strategies: [String: Strategy<A, B>],
+    matching value: A,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    function: String = #function,
+    line: UInt = #line
+    ) {
+
+    strategies.forEach { name, strategy in
+      assertSnapshot(
+        of: strategy,
+        matching: value,
+        named: name,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        function: function,
+        line: line
+      )
+    }
+  }
+
+  public func assertSnapshots<A, B>(
+    of strategies: [Strategy<A, B>],
+    matching value: A,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    function: String = #function,
+    line: UInt = #line
+    ) {
+
+    strategies.forEach { strategy in
+      assertSnapshot(
+        of: strategy,
+        matching: value,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        function: function,
+        line: line
+      )
+    }
+  }
 }
 
 public func request(

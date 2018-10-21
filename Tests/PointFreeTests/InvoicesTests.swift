@@ -21,19 +21,19 @@ final class InvoicesTests: TestCase {
   func testInvoices() {
     let conn = connection(from: request(to: .account(.invoices(.index)), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 1080, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 1080, height: 800)),
         named: "desktop"
       )
 
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 400, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 400, height: 800)),
         named: "mobile"
       )
     }
@@ -43,19 +43,19 @@ final class InvoicesTests: TestCase {
   func testInvoice() {
     let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 1080, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 1080, height: 800)),
         named: "desktop"
       )
 
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 400, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 400, height: 800)),
         named: "mobile"
       )
     }
@@ -68,22 +68,22 @@ final class InvoicesTests: TestCase {
       |> \.total .~ 1455
       |> \.subtotal .~ 1700
     update(&Current, \.stripe.fetchInvoice .~ const(pure(invoice)))
-    
+
     let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 1080, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 1080, height: 800)),
         named: "desktop"
       )
 
       assertSnapshot(
+        of: .ioConnWebView(size: .init(width: 400, height: 800)),
         matching: conn |> siteMiddleware,
-        with: .ioConnWebView(size: .init(width: 400, height: 800)),
         named: "mobile"
       )
     }

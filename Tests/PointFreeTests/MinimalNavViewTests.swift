@@ -17,7 +17,7 @@ class MinimalNavViewTests: TestCase {
     states.forEach { key, state in
       let doc = testDocView.view(state)
 
-      assertSnapshot(matching: doc, with: .html, named: key)
+      assertSnapshot(of: .html, matching: doc, named: key)
     }
   }
 

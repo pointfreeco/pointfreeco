@@ -10,4 +10,3 @@ class EnvironmentTests: TestCase {
     XCTAssertEqual(.encrypted, env.cookieTransform)
   }
 }
-

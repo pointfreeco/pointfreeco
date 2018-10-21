@@ -24,79 +24,79 @@ class SiteMiddlewareTests: TestCase {
 
   func testWithoutWWW() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://pointfree.co"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://pointfree.co/episodes"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
   func testWithoutHeroku() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://pointfreeco.herokuapp.com/episodes"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
   func testWithWWW() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://www.pointfree.co"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: secureRequest("https://www.pointfree.co"))
-        |> siteMiddleware,
-      with: .ioConn
+        |> siteMiddleware
     )
   }
 
   func testWithHttps() {
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co")!))
         |> siteMiddleware,
-      with: .ioConn,
       named: "1.redirects_to_https"
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: URLRequest(url: URL(string: "http://www.pointfree.co/episodes")!))
         |> siteMiddleware,
-      with: .ioConn,
       named: "2.redirects_to_https"
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: URLRequest(url: URL(string: "http://0.0.0.0:8080/")!))
         |> siteMiddleware,
-      with: .ioConn,
       named: "0.0.0.0_allowed"
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: URLRequest(url: URL(string: "http://127.0.0.1:8080/")!))
         |> siteMiddleware,
-      with: .ioConn,
       named: "127.0.0.0_allowed"
     )
 
     assertSnapshot(
+      of: .ioConn,
       matching: connection(from: URLRequest(url: URL(string: "http://localhost:8080/")!))
         |> siteMiddleware,
-      with: .ioConn,
       named: "localhost_allowed"
     )
   }
