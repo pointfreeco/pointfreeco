@@ -492,6 +492,55 @@ extension Strategy {
   #endif
 }
 
+extension SnapshotTestCase {
+  public func assertSnapshots<A, B>(
+    of strategies: [String: Strategy<A, B>],
+    matching value: A,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    function: String = #function,
+    line: UInt = #line
+    ) {
+
+    strategies.forEach { name, strategy in
+      assertSnapshot(
+        of: strategy,
+        matching: value,
+        named: name,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        function: function,
+        line: line
+      )
+    }
+  }
+
+  public func assertSnapshots<A, B>(
+    of strategies: [Strategy<A, B>],
+    matching value: A,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    function: String = #function,
+    line: UInt = #line
+    ) {
+
+    strategies.forEach { strategy in
+      assertSnapshot(
+        of: strategy,
+        matching: value,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        function: function,
+        line: line
+      )
+    }
+  }
+}
+
 public func request(
   with baseRequest: URLRequest,
   session: Session = .loggedOut,
