@@ -22,7 +22,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -53,7 +53,7 @@ final class SubscribeTests: TestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(matchingAny: subscription)
+    assertSnapshot(of: .any, matching: subscription)
     #endif
   }
 
@@ -91,7 +91,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -101,7 +101,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -113,7 +113,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -141,7 +141,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn, named: "too_high")
+    assertSnapshot(matching: conn, named: "too_high")
     #endif
 
     let conn2 = connection(
@@ -151,7 +151,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn2, named: "too_low")
+    assertSnapshot(matching: conn2, named: "too_low")
     #endif
   }
 
@@ -171,7 +171,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
 
     let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
@@ -180,7 +180,7 @@ final class SubscribeTests: TestCase {
       .right!!
 
     #if !os(Linux)
-      assertSnapshot(matchingAny: subscription)
+    assertSnapshot(of: .any, matching: subscription)
     #endif
   }
 
@@ -199,7 +199,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -218,7 +218,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 
@@ -237,7 +237,7 @@ final class SubscribeTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-      assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn)
     #endif
   }
 }

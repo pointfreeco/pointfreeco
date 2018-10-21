@@ -15,18 +15,17 @@ class MetaLayoutTests: TestCase {
     let view = View<Prelude.Unit> { _ in
       [
         doctype,
-        html(
-          [
-            head([title("Point-Free")]),
-            body(["Hello world!"])
-          ]
-        )
+        html([
+          head([title("Point-Free")]),
+          body(["Hello world!"])
+          ])
       ]
     }
 
     let layoutView = metaLayout(view)
 
     assertSnapshot(
+      of: .html,
       matching: layoutView.view(
         .init(
           description: "A video series on functional programming.",
@@ -38,8 +37,7 @@ class MetaLayoutTests: TestCase {
           type: .website,
           url: "http://www.pointfree.co"
         )
-      ),
-      with: .html
+      )
     )
   }
 }

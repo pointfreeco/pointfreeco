@@ -8,16 +8,16 @@ import XCTest
 class StyleguideTests: TestCase {
   func testStyleguide() {
     assertSnapshot(matching: styleguide, named: "pretty")
-    assertSnapshot(matching: styleguide, with: .css(.compact), named: "mini")
+    assertSnapshot(of: .css(.compact), matching: styleguide, named: "mini")
   }
 
   func testDesignSystem() {
     assertSnapshot(matching: designSystems, named: "pretty")
-    assertSnapshot(matching: designSystems, with: .css(.compact), named: "mini")
+    assertSnapshot(of: .css(.compact), matching: designSystems, named: "mini")
   }
 
   func testPointFreeStyles() {
     assertSnapshot(matching: pointFreeBaseStyles, named: "pretty")
-    assertSnapshot(matching: pointFreeBaseStyles, with: .css(.compact), named: "mini")
+    assertSnapshot(of: .css(.compact), matching: pointFreeBaseStyles, named: "mini")
   }
 }

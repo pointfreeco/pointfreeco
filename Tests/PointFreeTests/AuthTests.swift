@@ -47,7 +47,7 @@ class AuthTests: TestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
@@ -56,7 +56,7 @@ class AuthTests: TestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCode() {
@@ -69,12 +69,12 @@ class AuthTests: TestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() {
     update(
-      &Current, 
+      &Current,
       \.gitHub.fetchAuthToken
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     )
@@ -82,7 +82,7 @@ class AuthTests: TestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testAuth_WithFetchUserFailure() {
@@ -91,14 +91,14 @@ class AuthTests: TestCase {
     let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
     let conn = connection(from: auth)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testLogin() {
     let login = request(to: .login(redirect: nil))
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testLogin_AlreadyLoggedIn() {
@@ -107,20 +107,20 @@ class AuthTests: TestCase {
     let login = request(to: .login(redirect: nil), session: .loggedIn)
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testLoginWithRedirect() {
     let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
     let conn = connection(from: login)
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testLogout() {
     let conn = connection(from: request(to: .logout))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testHome_LoggedOut() {
@@ -128,7 +128,7 @@ class AuthTests: TestCase {
 
     let conn = connection(from: request(to: .home, session: .loggedOut))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 
   func testHome_LoggedIn() {
@@ -136,6 +136,6 @@ class AuthTests: TestCase {
 
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
   }
 }
