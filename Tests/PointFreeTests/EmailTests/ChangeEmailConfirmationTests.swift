@@ -14,11 +14,11 @@ class ChangeEmailConfirmationTests: TestCase {
   func testChangeEmailConfirmationEmail() {
     let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co"))
 
-    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: emailNodes, with: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
       assertSnapshot(matching: webView)
@@ -29,11 +29,11 @@ class ChangeEmailConfirmationTests: TestCase {
   func testChangedEmail() {
     let emailNodes = emailChangedEmailView.view((.mock, "blobby@blob.co"))
 
-    assertSnapshot(matching: render(emailNodes, config: .pretty), pathExtension: "html")
+    assertSnapshot(matching: emailNodes, with: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
       assertSnapshot(matching: webView)

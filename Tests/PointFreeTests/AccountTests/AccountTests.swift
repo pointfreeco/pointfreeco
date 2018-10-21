@@ -23,18 +23,22 @@ final class AccountTests: TestCase {
     Current = .teamYearly
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -44,18 +48,22 @@ final class AccountTests: TestCase {
       |> \.features .~ [.podcastRss |> \.isEnabled .~ true]
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2500))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2500)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2500)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -73,18 +81,22 @@ final class AccountTests: TestCase {
     let session = Session.loggedIn
       |> (\Session.userId) .~ currentUser.id
     let conn = connection(from: request(to: .account(.index), session: session))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -102,18 +114,22 @@ final class AccountTests: TestCase {
     )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -122,18 +138,22 @@ final class AccountTests: TestCase {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -142,18 +162,22 @@ final class AccountTests: TestCase {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -162,18 +186,22 @@ final class AccountTests: TestCase {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -186,18 +214,22 @@ final class AccountTests: TestCase {
     )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -206,18 +238,22 @@ final class AccountTests: TestCase {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -226,18 +262,22 @@ final class AccountTests: TestCase {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -254,18 +294,22 @@ final class AccountTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1500)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1500)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -283,18 +327,22 @@ final class AccountTests: TestCase {
     )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1500))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 1500)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 1500)),
+        named: "mobile"
+      )
     }
     #endif
   }
@@ -306,18 +354,22 @@ final class AccountTests: TestCase {
       |> \.stripe.fetchSubscription .~ const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-    let result = conn |> siteMiddleware
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
-      webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 1080, height: 2000)),
+        named: "desktop"
+      )
 
-      webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(
+        matching: conn |> siteMiddleware,
+        with: .ioConnWebView(size: .init(width: 400, height: 2000)),
+        named: "mobile"
+      )
     }
     #endif
   }

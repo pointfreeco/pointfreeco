@@ -1,6 +1,7 @@
 import Html
 import Optics
 import Prelude
+import View
 
 // TODO: extract to swift-web
 
@@ -75,7 +76,7 @@ public struct Metadata<A> {
 
       ]
       |> catOptionals
-      |> map(^\.node)
+      |> map(^\.rawValue)
   }
 }
 
@@ -84,26 +85,16 @@ private func inserted<A>(meta: Metadata<A>, intoHeadOf nodes: [Node]) -> [Node] 
   return nodes.map { node -> Node in
 
     switch node {
-    case .comment:
-      return node
-
-    case let .document(nodes):
-      return .document(inserted(meta: meta, intoHeadOf: nodes))
-
-    case let .element(element) where element.name == "head":
-      return
-        .element(
-          element
-            |> \.content %~ map { $0 + meta.metaNodes }
-        )
-
-    case let .element(element):
+    case let .element(tag, attribs, children):
       return .element(
-        element
-          |> \.content %~ map { inserted(meta: meta, intoHeadOf: $0) }
+        tag,
+        attribs,
+        tag == "head"
+          ? children + meta.metaNodes
+          : inserted(meta: meta, intoHeadOf: children)
       )
 
-    case .text:
+    case .comment, .doctype, .raw, .text:
       return node
     }
   }

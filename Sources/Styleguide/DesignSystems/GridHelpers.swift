@@ -2,7 +2,7 @@ import Css
 import Html
 
 // TODO: extract to grid helpers in design systems?
-public func gridRow(_ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
+public func gridRow(_ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
   return div(addClasses([Class.grid.row], to: attribs), content)
 }
 
@@ -22,7 +22,7 @@ public func gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
   return gridColumn(sizes: sizes, [], content)
 }
 
-public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.Div>], _ content: [Node]) -> Node {
+public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
   let classes = [Class.grid.col(.mobile, nil)]
     + sizes
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
@@ -36,9 +36,9 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Element.D
 public func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
   return guaranteeClassAttributeExists(attributes)
     .map { attribute in
-      guard attribute.attrib.key == "class" else { return attribute }
+      guard attribute.key == "class" else { return attribute }
 
-      let newValue = (attribute.attrib.value.renderedValue()?.string ?? "")
+      let newValue = (attribute.value ?? "")
         + " "
         + render(classes: classes)
 
@@ -47,7 +47,7 @@ public func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>
 }
 
 private func guaranteeClassAttributeExists<T>(_ attributes: [Attribute<T>]) -> [Attribute<T>] {
-  return attributes.contains(where: { $0.attrib.key == "class" })
+  return attributes.contains(where: { $0.key == "class" })
     ? attributes
     : attributes + [Attribute<T>.init("class", "")]
 }

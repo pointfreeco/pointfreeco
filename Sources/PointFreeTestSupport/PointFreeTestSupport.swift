@@ -1,13 +1,23 @@
+#if os(macOS)
+import Cocoa
+#endif
 import Cryptor
 import Either
 import Foundation
+import Html
+import HtmlPrettyPrint
 import HttpPipeline
+import HttpPipelineTestSupport
 import Optics
 @testable import PointFree
 import Prelude
+import SnapshotTesting
+#if os(macOS)
+import WebKit
+#endif
 
 extension Environment {
-  public static let mock = Environment.init(
+  public static let mock = Environment(
     assets: .mock,
     blogPosts: unzurry([.mock]),
     cookieTransform: .plaintext,
@@ -19,6 +29,7 @@ extension Environment {
     gitHub: .mock,
     logger: .mock,
     mailgun: .mock,
+    renderHtml: Html.render,
     stripe: .mock
   )
 
@@ -456,6 +467,29 @@ extension Session {
 
   public static let loggedIn = loggedOut
     |> \.userId .~ Database.User.mock.id
+}
+
+extension Strategy {
+  public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
+    return Strategy.conn.contramap { io in
+      let renderHtml = Current.renderHtml
+      update(&Current, \.renderHtml .~ { prettyPrint($0) })
+      let conn = io.perform()
+      update(&Current, \.renderHtml .~ renderHtml)
+      return conn
+    }
+  }
+
+  #if os(macOS)
+  @available(OSX 10.13, *)
+  public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
+    return Strategy.webView.contramap { io in
+      let webView = WKWebView(frame: .init(origin: .zero, size: size))
+      webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
+      return webView
+    }
+  }
+  #endif
 }
 
 public func request(

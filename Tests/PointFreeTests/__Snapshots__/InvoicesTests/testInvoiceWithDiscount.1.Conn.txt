@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices/in_test
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 29796
+Content-Length: 32824
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1621,30 +1621,64 @@ html {
       
 
     </style>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
-    <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
-    <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
-    <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <meta name="title" content="Invoice">
-    <meta property="og:title" content="Invoice">
-    <meta name="twitter:title" content="Invoice">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@pointfreeco">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0">
+    <link href="http://localhost:8080/feed/episodes.xml"
+          rel="alternate"
+          title="Point-Free Episodes"
+          type="application/atom+xml">
+    <link href="http://localhost:8080/blog/feed/atom.xml"
+          rel="alternate"
+          title="Point-Free Blog"
+          type="application/atom+xml">
+    <link rel="apple-touch-icon"
+          sizes="180x180"
+          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
+    <link rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
+    <link rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
+    <link rel="manifest"
+          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
+    <link rel="mask-icon"
+          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <meta name="title"
+          content="Invoice">
+    <meta property="og:title"
+          content="Invoice">
+    <meta name="twitter:title"
+          content="Invoice">
+    <meta property="og:type"
+          content="website">
+    <meta name="twitter:card"
+          content="summary_large_image">
+    <meta name="twitter:site"
+          content="@pointfreeco">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
   </head>
   <body>
-    <div class=" row">
-      <div class=" col-m col-m-12">
-        <div class="d-pl4 d-pr4 d-pt4 d-pb4 m-pl3 m-pr3 m-pt3 m-pb3">
-          <div class="m-pt2 m-pb2 row">
-            <div class=" col-m col-m-12">
+    <div class="row">
+      <div class="col-m
+                  col-m-12">
+        <div class="d-pl4
+                    d-pr4
+                    d-pt4
+                    d-pb4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3">
+          <div class="m-pt2
+                      m-pb2
+                      row">
+            <div class="col-m
+                        col-m-12">
               <div>
                 Point-Free, Inc.
               </div>
@@ -1656,53 +1690,83 @@ html {
               </div>
             </div>
           </div>
-          <div class="m-pt3 m-pb3 row">
-            <div class=" col-m col-d-6 col-m-12">
-              <div class=" row">
-                <div class="bold col-m col-d-2 col-m-12">
+          <div class="m-pt3
+                      m-pb3
+                      row">
+            <div class="col-m
+                        col-d-6
+                        col-m-12">
+              <div class="row">
+                <div class="bold
+                            col-m
+                            col-d-2
+                            col-m-12">
                   <div>
                     Bill to
                   </div>
                 </div>
-                <div class="m-pb1 col-m col-d-10 col-m-12">
+                <div class="m-pb1
+                            col-m
+                            col-d-10
+                            col-m-12">
                   <div>
                     Blob
                   </div>
                 </div>
               </div>
             </div>
-            <div class=" col-m col-d-6 col-m-12">
-              <div class=" row">
-                <div class="bold col-m col-d-6 col-m-12">
+            <div class="col-m
+                        col-d-6
+                        col-m-12">
+              <div class="row">
+                <div class="bold
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     Invoice number
                   </div>
                 </div>
-                <div class="m-pb1 col-m col-d-6 col-m-12">
+                <div class="m-pb1
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     0000000-0000
                   </div>
                 </div>
               </div>
-              <div class=" row">
-                <div class="bold col-m col-d-6 col-m-12">
+              <div class="row">
+                <div class="bold
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     Billed on
                   </div>
                 </div>
-                <div class="m-pb1 col-m col-d-6 col-m-12">
+                <div class="m-pb1
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     1/31/18
                   </div>
                 </div>
               </div>
-              <div class=" row">
-                <div class="bold col-m col-d-6 col-m-12">
+              <div class="row">
+                <div class="bold
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     Payment method
                   </div>
                 </div>
-                <div class="m-pb1 col-m col-d-6 col-m-12">
+                <div class="m-pb1
+                            col-m
+                            col-d-6
+                            col-m-12">
                   <div>
                     Visa ⋯ 4242
                   </div>
@@ -1710,115 +1774,190 @@ html {
               </div>
             </div>
           </div>
-          <div class="m-pb2 bold row">
-            <div class=" col-m col-d-6 col-m-4">
+          <div class="m-pb2
+                      bold
+                      row">
+            <div class="col-m
+                        col-d-6
+                        col-m-4">
               <div>
                 Description
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 Quantity
               </div>
             </div>
-            <div class="end-align hide-m col-m col-d-2 col-m-0">
+            <div class="end-align
+                        hide-m
+                        col-m
+                        col-d-2
+                        col-m-0">
               <div>
                 Unit price
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 Amount
               </div>
             </div>
           </div>
-          <div class="m-pb1 row">
-            <div class=" col-m col-d-6 col-m-6">
+          <div class="m-pb1
+                      row">
+            <div class="col-m
+                        col-d-6
+                        col-m-6">
               <div>
                 Individual Monthly
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-2">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-2">
               <div>
                 1
               </div>
             </div>
-            <div class="end-align hide-m col-m col-m-0">
+            <div class="end-align
+                        hide-m
+                        col-m
+                        col-m-0">
               <div>
                 $17.00
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 $17.00
               </div>
             </div>
           </div>
-          <div class="m-pt1 m-pb1 row">
-            <div class=" col-m col-d-8 col-m-2">
+          <div class="m-pt1
+                      m-pb1
+                      row">
+            <div class="col-m
+                        col-d-8
+                        col-m-2">
             </div>
-            <div class="end-align col-m col-d-2 col-m-6">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-6">
               <div>
                 Subtotal
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 $17.00
               </div>
             </div>
           </div>
-          <div class="m-pt1 m-pb1 row">
-            <div class=" col-m col-d-8 col-m-2">
+          <div class="m-pt1
+                      m-pb1
+                      row">
+            <div class="col-m
+                        col-d-8
+                        col-m-2">
             </div>
-            <div class="end-align col-m col-d-2 col-m-6">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-6">
               <div>
                 Discount
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 -$2.45 (Student Discount)
               </div>
             </div>
           </div>
-          <div class="m-pb1 row">
-            <div class=" col-m col-d-8 col-m-2">
+          <div class="m-pb1
+                      row">
+            <div class="col-m
+                        col-d-8
+                        col-m-2">
             </div>
-            <div class="end-align col-m col-d-2 col-m-6">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-6">
               <div>
                 Total
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 $14.55
               </div>
             </div>
           </div>
-          <div class="m-pb1 row">
-            <div class=" col-m col-d-8 col-m-2">
+          <div class="m-pb1
+                      row">
+            <div class="col-m
+                        col-d-8
+                        col-m-2">
             </div>
-            <div class="end-align col-m col-d-2 col-m-6">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-6">
               <div>
                 Amount paid
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 -$17.00
               </div>
             </div>
           </div>
-          <div class="m-pt2 m-pb2 bold row">
-            <div class=" col-m col-d-8 col-m-2">
+          <div class="m-pt2
+                      m-pb2
+                      bold
+                      row">
+            <div class="col-m
+                        col-d-8
+                        col-m-2">
             </div>
-            <div class="end-align col-m col-d-2 col-m-6">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-6">
               <div>
                 Amount due
               </div>
             </div>
-            <div class="end-align col-m col-d-2 col-m-4">
+            <div class="end-align
+                        col-m
+                        col-d-2
+                        col-m-4">
               <div>
                 $0.00
               </div>

@@ -3,6 +3,7 @@ import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide
+import View
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let zippedEmails = zip3(
@@ -92,7 +93,7 @@ private let wrapper = { view in
     emailTable([style(contentTableStyles)], [
       tr([
         td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], view)
+          div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], view)
           ])
         ])
       ])
@@ -269,9 +270,9 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
 }
 
 private let subscribeButton = p(
-  [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
+  [Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])],
   [
-    a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+    a([href(url(to: .pricing(nil, expand: nil))), Styleguide.class([Class.pf.components.button(color: .purple)])],
       ["Subscribe to Point-Free!"]
     ),
   ]

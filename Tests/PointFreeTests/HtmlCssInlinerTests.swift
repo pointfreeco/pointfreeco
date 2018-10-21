@@ -23,7 +23,8 @@ class HtmlCssInlinerTests: TestCase {
 
     let stylesheet = stylesheet1 <> stylesheet2
 
-    let doc = document([
+    let doc = [
+      doctype,
       html([
         body([
           div([id("hero")], [
@@ -49,8 +50,8 @@ class HtmlCssInlinerTests: TestCase {
             ])
           ])
         ])
-      ])
+    ]
 
-    assertSnapshot(matching: applyInlineStyles(node: doc, stylesheet: stylesheet))
+    assertSnapshot(matching: applyInlineStyles(nodes: doc, stylesheet: stylesheet), with: .html)
   }
 }

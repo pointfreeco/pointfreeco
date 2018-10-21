@@ -18,9 +18,8 @@ class InviteTests: TestCase {
 
     let showInvite = request(to: .invite(.show(Database.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
-    let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
@@ -39,9 +38,8 @@ class InviteTests: TestCase {
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
-    let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testShowInvite_LoggedIn_Subscriber() {
@@ -64,9 +62,8 @@ class InviteTests: TestCase {
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
-    let result = siteMiddleware(conn)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testResendInvite_HappyPath() {
@@ -81,9 +78,9 @@ class InviteTests: TestCase {
       .right!
 
     let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: resendInvite))
+    let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testResendInvite_CurrentUserIsNotInviter() {
@@ -109,9 +106,9 @@ class InviteTests: TestCase {
       .right!
 
     let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: resendInvite))
+    let conn = connection(from: resendInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
   }
 
   func testRevokeInvite_HappyPath() {
@@ -126,9 +123,9 @@ class InviteTests: TestCase {
       .right!
 
     let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: revokeInvite))
+    let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchTeamInvite(teamInvite.id)
@@ -161,9 +158,9 @@ class InviteTests: TestCase {
       .right!
 
     let revokeInvite = request(to: .invite(.revoke(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: revokeInvite))
+    let conn = connection(from: revokeInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     XCTAssertNotNil(
       Current.database.fetchTeamInvite(teamInvite.id)
@@ -200,9 +197,9 @@ class InviteTests: TestCase {
       .right!
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: acceptInvite))
+    let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     // TODO: need `Parallel` to run on main queue during tests, otherwise we can make this assertion.
 //    XCTAssertNil(
@@ -244,9 +241,9 @@ class InviteTests: TestCase {
       .right!
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: acceptInvite))
+    let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)
@@ -286,9 +283,9 @@ class InviteTests: TestCase {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: acceptInvite))
+    let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)
@@ -328,9 +325,9 @@ class InviteTests: TestCase {
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
     
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let result = siteMiddleware(connection(from: acceptInvite))
+    let conn = connection(from: acceptInvite)
 
-    assertSnapshot(matching: result.perform())
+    assertSnapshot(matching: conn |> siteMiddleware, with: .ioConn)
 
     XCTAssertNil(
       Current.database.fetchUserById(currentUser.id)

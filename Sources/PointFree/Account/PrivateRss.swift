@@ -5,6 +5,7 @@ import HttpPipeline
 import Optics
 import Prelude
 import Tuple
+import View
 
 let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User.RssSalt>, Data> =
 { fetchUser >=> $0 }
@@ -15,7 +16,7 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
   <| map(lower)
   >>> writeStatus(.ok)
   >=> trackFeedRequest
-  >=> respond(privateEpisodesFeedView, contentType: .text(.init("xml"), charset: .utf8))
+  >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
   >=> clearHeadBody
 
 private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -32,7 +33,7 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
 
         return pure(conn)
       }
-      >=> respond(invalidatedFeedView, contentType: .text(.init("xml"), charset: .utf8))
+      >=> respond(invalidatedFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
       >=> clearHeadBody
   }
 }

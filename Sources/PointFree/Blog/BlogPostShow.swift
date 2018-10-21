@@ -7,6 +7,7 @@ import HttpPipeline
 import Prelude
 import Styleguide
 import Tuple
+import View
 
 let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
@@ -43,14 +44,14 @@ private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscri
 
   [
     gridRow(
-      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+      [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
         gridColumn(
           sizes: [.mobile: 12, .desktop: 9],
           [style(margin(leftRight: .auto))],
           [
             div(
-              [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
+              [Styleguide.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
               blogPostContentView.view(post)
                 <> subscriberCalloutView.view(subscriberState)
             )
@@ -65,7 +66,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
   guard !subscriberState.isActive else { return [] }
 
   return [
-    hr([`class`([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
+    hr([Styleguide.class([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
 
     div(
       [
@@ -96,7 +97,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
             a(
               [
                 href(path(to: .home)),
-                `class`([Class.pf.type.underlineLink])
+                Styleguide.class([Class.pf.type.underlineLink])
               ],
               ["Point-Free"]
             ),
@@ -111,24 +112,24 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
 let blogPostContentView = View<BlogPost> { post in
   [
     h1(
-      [`class`([Class.pf.type.responsiveTitle3]),],
+      [Styleguide.class([Class.pf.type.responsiveTitle3]),],
       [
         a(
           [href(url(to: .blog(.show(post))))],
-          [text(post.title)]
+          [.text(post.title)]
         )
       ]
     ),
 
     div(
       [
-        `class`([Class.flex.flex, Class.flex.items.baseline]),
+        Styleguide.class([Class.flex.flex, Class.flex.items.baseline]),
         style(flex(direction: .row))
       ],
       [
-        div([p([text(episodeDateFormatter.string(from: post.publishedAt))])]),
+        div([p([.text(episodeDateFormatter.string(from: post.publishedAt))])]),
         div(
-          [`class`([Class.margin([.mobile: [.left: 1]])])],
+          [Styleguide.class([Class.margin([.mobile: [.left: 1]])])],
           [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
         )
       ]
@@ -148,7 +149,7 @@ let blogPostContentView = View<BlogPost> { post in
     ),
 
     div(
-      [`class`([Class.pf.colors.bg.white])],
+      [Styleguide.class([Class.pf.colors.bg.white])],
       post.contentBlocks.flatMap(transcriptBlockView.view)
     )
   ]

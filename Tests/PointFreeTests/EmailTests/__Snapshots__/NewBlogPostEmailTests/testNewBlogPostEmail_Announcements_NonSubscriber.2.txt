@@ -4,6 +4,9 @@
 
 <p>Hey! You’re not a subscriber, but that’s ok. At least you’re interested in functional programming!</p>
 
+
+
+
 ### Announcing Point-Free Pointers!
 
  <http://localhost:8080/blog/posts/1-announcing-point-free-pointers>Today we are excited to announcement launch of Point-Free Pointers, a blog to supplement our video
@@ -15,7 +18,11 @@ even deeper into functional programming, showing real world use cases and more!
 Read the full post… <http://localhost:8080/blog/posts/1-announcing-point-free-pointers>
 Your hosts,
 
-Brandon Williams <https://www.twitter.com/mbrandonw> & Stephen Celis <https://www.twitter.com/stephencelis>
+Brandon&nbsp;Williams <https://www.twitter.com/mbrandonw> & Stephen&nbsp;Celis <https://www.twitter.com/stephencelis>
+
+
+
+
 
 Contact us via email at support@pointfree.co <mailto:support@pointfree.co>, or on Twitter @pointfreeco <https://www.twitter.com/pointfreeco>.
 
@@ -23,4 +30,13 @@ Our postal address: 139 Skillman #5C, Brooklyn, NY 11211
 
 You are receiving this email because you expressed interest in being notified about new posts on our
 blog, Point-Free Pointers. If you no longer wish to receive emails like this, you can unsubscribe here <http://localhost:8080/newsletters/express-unsubscribe?payload=f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b4738d82b4e060d069541557960935392ce01b587b47fb1a2c52034f619e65373dbeaec2d58a4cb9b116fa664c0bc900184>.
+
+
+
+
+
+
+
+
+
 
