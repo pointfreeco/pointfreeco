@@ -26,16 +26,12 @@ class BlogTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 1100, height: 2000)),
-        matching: conn |> siteMiddleware,
-        named: "desktop"
-      )
-
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 500, height: 2000)),
-        matching: conn |> siteMiddleware,
-        named: "mobile"
+      assertSnapshots(
+        of: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
+        ],
+        matching: conn |> siteMiddleware
       )
     }
     #endif
@@ -54,16 +50,12 @@ class BlogTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 1100, height: 2400)),
-        matching: conn |> siteMiddleware,
-        named: "desktop"
-      )
-
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 500, height: 2400)),
-        matching: conn |> siteMiddleware,
-        named: "mobile"
+      assertSnapshots(
+        of: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
+        ],
+        matching: conn |> siteMiddleware
       )
     }
     #endif
@@ -82,16 +74,12 @@ class BlogTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 1100, height: 2000)),
-        matching: conn |> siteMiddleware,
-        named: "desktop"
-      )
-
-      assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 500, height: 2000)),
-        matching: conn |> siteMiddleware,
-        named: "mobile"
+      assertSnapshots(
+        of: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
+        ],
+        matching: conn |> siteMiddleware
       )
     }
     #endif
