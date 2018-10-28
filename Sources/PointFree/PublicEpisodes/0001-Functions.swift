@@ -9,7 +9,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
   fullVideo: .init(
     bytesLength: 411_951_213,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/hls.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full/0001-functions.m3u8"
   ),
   id: 1,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/0001-poster.jpg",
