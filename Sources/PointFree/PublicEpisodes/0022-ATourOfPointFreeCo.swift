@@ -9,10 +9,7 @@ Join us for a tour of the code base that powers this very site and see what func
   fullVideo: .init(
     bytesLength: 784_408_755,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/tour-de-pointfree.webm"
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full/0022-tour-de-pointfree.m3u8"
   ),
   id: 22,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",
@@ -25,10 +22,7 @@ Join us for a tour of the code base that powers this very site and see what func
   trailerVideo: .init(
     bytesLength: 29_662_893,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer-720p.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/hls-trailer.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/webm-trailer.webm",
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/0022-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
