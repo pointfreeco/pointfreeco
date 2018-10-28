@@ -9,10 +9,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   fullVideo: .init(
     bytesLength: 890_410_175,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full-720p-BB35D372-8907-4CA2-AAEB-82B5BB5F1311.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/hls-fish-and-diamonds.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/webm-fish-and-diamonds.webm"
-    ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/hls-fish-and-diamonds.m3u8"
   ),
   id: 2,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
@@ -25,10 +22,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   trailerVideo: .init(
     bytesLength: 19_742_767,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer-720p.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/hls.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/webm.webm"
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/hls.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )

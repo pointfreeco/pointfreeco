@@ -227,8 +227,11 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       video(
         [
-          id("episode-video"),
-          Styleguide.class([innerVideoContainerClass, videoJsClasses]),
+          Html.id("episode-video"),
+          Styleguide.class([
+            innerVideoContainerClass,
+            videoJsClasses
+            ]),
           style(position(.absolute)),
           controls(true),
           playsinline(true),
@@ -236,9 +239,14 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
           poster(episode.image),
           data("setup", VideoJsOptions.default.jsonString)
         ],
-        isEpisodeViewable
-          ? episode.fullVideo.streamingSources.map { source(src: $0) }
-          : (episode.trailerVideo?.streamingSources ?? []).map { source(src: $0) }
+        [
+          source(
+            src: isEpisodeViewable
+              ? episode.fullVideo.streamingSource
+              : episode.trailerVideo?.streamingSource ?? "",
+            [type(.application(.init(rawValue: "vnd.apple.mpegurl")))]
+          )
+        ]
       )
     ]
   )

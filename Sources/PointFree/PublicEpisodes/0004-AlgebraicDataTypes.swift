@@ -10,10 +10,7 @@ and see how it can help us create type-safe data structures that can catch runti
   fullVideo: .init(
     bytesLength: 723_938_138,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8"
   ),
   id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
@@ -26,10 +23,7 @@ and see how it can help us create type-safe data structures that can catch runti
   trailerVideo: .init(
     bytesLength: 43_693_973,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer-720p.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )

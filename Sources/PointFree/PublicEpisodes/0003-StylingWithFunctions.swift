@@ -9,11 +9,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   fullVideo: .init(
     bytesLength: 556_949_587,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/hls-now-were-stylin.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/webm-now-were-stylin.webm",
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/webm-vp9-now-were-stylin.webm",
-    ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/hls-now-were-stylin.m3u8"
   ),
   id: 3,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg",
@@ -26,11 +22,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   trailerVideo: .init(
     bytesLength: 46_127_956,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer-720p.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/hls.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/webm.webm",
-      "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/webm-vp9.webm",
-      ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/hls.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
