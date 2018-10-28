@@ -1,6 +1,5 @@
 import Foundation
 
-// todo: cloudfront
 let post0022_someNewsAboutContramap = BlogPost(
   author: .brandon,
   blurb: """
