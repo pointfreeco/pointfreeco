@@ -19,11 +19,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
   sequence: 3,
   title: "UIKit Styling with Functions",
-  trailerVideo: .init(
-    bytesLength: 46_127_956,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer-720p.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/trailer/0003-trailer.m3u8"
-  ),
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 

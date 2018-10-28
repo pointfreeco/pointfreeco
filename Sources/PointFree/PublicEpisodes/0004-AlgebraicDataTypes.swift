@@ -20,11 +20,7 @@ and see how it can help us create type-safe data structures that can catch runti
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
   sequence: 4,
   title: "Algebraic Data Types",
-  trailerVideo: .init(
-    bytesLength: 43_693_973,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer-720p.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/0004-trailer.m3u8"
-  ),
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 

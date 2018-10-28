@@ -19,11 +19,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
   sequence: 2,
   title: "Side Effects",
-  trailerVideo: .init(
-    bytesLength: 19_742_767,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer-720p.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/trailer/0002-trailers.m3u8"
-  ),
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 

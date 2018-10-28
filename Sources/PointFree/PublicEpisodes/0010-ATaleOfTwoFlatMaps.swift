@@ -21,11 +21,7 @@ operation to other structures and derive new, useful code!
   publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
   sequence: 10,
   title: "A Tale of Two Flat-Maps",
-  trailerVideo: .init(
-    bytesLength: 20_552_363,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer-720p.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/trailer/0010-trailer.m3u8"
-  ),
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 
