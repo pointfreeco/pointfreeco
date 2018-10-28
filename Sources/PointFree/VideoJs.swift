@@ -8,12 +8,12 @@ import Prelude
 var videoJsHead: [ChildOf<Tag.Head>] {
   let videoJsAssets: [ChildOf<Tag.Head>] = [
     link([
-      href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/alt/video-js-cdn.min.css"),
+      href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/alt/video-js-cdn.min.css"),
       rel(.stylesheet)
       ]),
     .init(script([
-      .init("onload", "videoJsLoaded()"),
-      src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.2.4/video.min.js"),
+      onload("videoJsLoaded()"),
+      src("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video.min.js"),
       `defer`(true)
       ]))
   ]
