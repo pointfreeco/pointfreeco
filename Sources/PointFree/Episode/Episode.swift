@@ -20,7 +20,7 @@ public struct Episode {
   public struct Video {
     public private(set) var bytesLength: Int // TODO: Tagged<Bytes, Int>?
     public private(set) var downloadUrl: String
-    public private(set) var streamingSources: [String]
+    public private(set) var streamingSource: String
   }
 
   public init(

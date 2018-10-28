@@ -10,10 +10,7 @@ Take a moment to hear from the hosts about what to expect from this new series.
   fullVideo: .init(
     bytesLength: 411_951_213,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/hls.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/webm.webm"
-    ]
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full/0000-introduction.m3u8"
   ),
   id: 0,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
