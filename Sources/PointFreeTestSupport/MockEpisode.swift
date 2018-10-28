@@ -22,10 +22,7 @@ private let subscriberOnlyEpisode = Episode(
   fullVideo: .init(
     bytesLength: 500_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
-    streamingSources: [
-      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
-      "https://s3.amazonaws.com/pointfreeco/video.webm"
-    ]
+    streamingSource: "https://s3.amazonaws.com/pointfreeco/video.m3u8"
   ),
   id: 2,
   image: "",
@@ -38,10 +35,7 @@ private let subscriberOnlyEpisode = Episode(
   trailerVideo: .init(
     bytesLength: 5_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
-    streamingSources: [
-      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
-      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
-    ]
+    streamingSource: "https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
@@ -149,10 +143,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   fullVideo: .init(
     bytesLength: 500_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
-    streamingSources: [
-      "https://s3.amazonaws.com/pointfreeco/video.m3u8",
-      "https://s3.amazonaws.com/pointfreeco/video.webm"
-    ]
+    streamingSource: "https://s3.amazonaws.com/pointfreeco/video.m3u8"
   ),
   id: 1,
   image: "",
@@ -165,10 +156,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   trailerVideo: .init(
     bytesLength: 5_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
-    streamingSources: [
-      "https://s3.amazonaws.com/pointfreeco/trailer.m3u8",
-      "https://s3.amazonaws.com/pointfreeco/trailer.webm"
-    ]
+    streamingSource: "https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
