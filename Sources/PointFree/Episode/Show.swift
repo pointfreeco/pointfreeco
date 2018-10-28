@@ -232,7 +232,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
             innerVideoContainerClass,
             videoJsClasses
             ]),
-          style(position(.absolute)),
+          style(position(.absolute) <> objectFit(.cover)),
           controls(true),
           playsinline(true),
           autoplay(true),
@@ -730,7 +730,8 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
             controls(true),
             playsinline(true),
             autoplay(false),
-            Html.poster(poster)
+            Html.poster(poster),
+            style(objectFit(.cover))
           ],
 
           sources.map { source(src: $0) }
