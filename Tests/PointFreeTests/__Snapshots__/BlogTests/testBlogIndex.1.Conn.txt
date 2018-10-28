@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 116879
+Content-Length: 116927
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1983,7 +1983,8 @@ Prism.languages.swift.string.inside.interpolation.inside.rest = Prism.util.clone
                               bg-gray650"
                        controls
                        playslinline
-                       poster>
+                       poster
+                       style="object-fit:cover">
                 </video>
               </div>
               <div>
