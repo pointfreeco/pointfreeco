@@ -11,8 +11,7 @@ and see how it can help us create type-safe data structures that can catch runti
     bytesLength: 723_938_138,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
     streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/hls-math-is-useful.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/webm-math-is-useful.webm",
+      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full/0004-adt.m3u8"
       ]
   ),
   id: 4,
@@ -23,14 +22,7 @@ and see how it can help us create type-safe data structures that can catch runti
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
   sequence: 4,
   title: "Algebraic Data Types",
-  trailerVideo: .init(
-    bytesLength: 43_693_973,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer-720p.mp4",
-    streamingSources: [
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/hls-trailer.m3u8",
-      "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/trailer/webm-trailer.webm",
-      ]
-  ),
+  trailerVideo: nil,
   transcriptBlocks: transcriptBlocks
 )
 
