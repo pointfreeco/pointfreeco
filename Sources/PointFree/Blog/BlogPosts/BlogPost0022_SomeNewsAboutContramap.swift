@@ -29,9 +29,10 @@ more intuitive name for this operation, and in doing so make our code much easie
 ---
 
 A few months ago we introduced the idea of [contravariance](/episodes/ep14-contravriance), and showed that
-it’s a very natural idea hidden in a very counterintuitive package. It’s like the `map` we all know and love
-on arrays and optionals, but it goes in the opposite direction. We applied it to the idea of predicate sets,
-and showed that it helps us see a form of composition that we may not have looked for otherwise.
+it’s a very natural idea hidden in a very counterintuitive package. It’s like the
+[`map`](/episodes/ep13-the-many-faces-of-map) we all know and love on arrays and optionals, but it goes in
+the opposite direction. We applied it to the idea of predicate sets, and showed that it helps us see a form
+of composition that we may not have looked for otherwise.
 
 Then, [last week](/episodes/ep34-protocol-witnesses-part-2), in a very unexpected way, we showed that
 contramap surfaced when discussing how to convert protocols into concrete datatypes. That was very surprising,
@@ -58,7 +59,7 @@ great name for this operation.
 ## Taking `pullback` for a spin
 
 [Recall](/episodes/ep14-contravriance) that we previously defined a `PredicateSet` type that simply wrapped
-a function that returns boolean values:
+a function that returns boolean values.
 """,
       timestamp: nil,
       type: .paragraph
@@ -76,7 +77,10 @@ struct Predicate<A> {
 
     .init(
       content: """
-And we could create predicate sets easily enough, for example, one that holds all integers less than 10:
+This allows us to express sets that potentially hold infinitely many values, which Swift's `Set` is not
+capable of.
+
+And we could create predicate sets easily enough. For example, one that holds all integers less than 10:
 """,
       timestamp: nil,
       type: .paragraph
@@ -247,7 +251,7 @@ completely unrelated types.
 
 ## Naming is hard
 
-So, although it’s unfortunate to rename such a fundamental concept after having learned it many months ago,
+Although it’s unfortunate to rename such a fundamental concept after having learned it many months ago,
 we think it’s worth it. This name reads well and has a lot of great intuition, and we’re going to use it
 going forward on this series. We still think the `contramap` name is still important, mostly because the
 `contra`- prefix allows us to transform any concept into its contravariant dual concept, and it will be
