@@ -90,6 +90,7 @@ Like the color theme we use in our episodes? Run `make colortheme` to install lo
 
 Point-Free uses a bunch of interesting open-source software:
 
+  * 🗺 [swift-html](https://www.github.com/pointfreeco/swift-html): A Swift DSL for type-safe, extensible, and transformable HTML documents.
   * 🕸 [swift-web](https://www.github.com/pointfreeco/swift-web): A collection of types and functions for dealing with common web server concerns, such as HTML render, CSS preprocessing, middleware and more.
   * 🎶 [swift-prelude](https://www.github.com/pointfreeco/swift-prelude): Offers a standard library for experimental functional programming in Swift.
   * 🏷 [swift-tagged](https://www.github.com/pointfreeco/swift-tagged): Helps us create strong contracts with our data boundaries, like JSON from [GitHub](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/GitHub.swift#L56) and [Stripe](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Stripe.swift#L92), and our [PostgreSQL data](https://github.com/pointfreeco/pointfreeco/blob/d2dd9ff0f8caf0c8660eace050b7436c02e19aba/Sources/PointFree/Database.swift#L95).
