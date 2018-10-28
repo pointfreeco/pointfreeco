@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 117514
+Content-Length: 117560
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1984,7 +1984,8 @@ text, no markdown.">
                             bg-gray650"
                      controls
                      playslinline
-                     poster>
+                     poster
+                     style="object-fit:cover">
               </video>
             </div>
             <div>
