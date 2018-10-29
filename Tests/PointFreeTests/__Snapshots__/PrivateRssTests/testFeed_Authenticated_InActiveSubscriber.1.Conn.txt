@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4698
+Content-Length: 4877
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,6 +23,8 @@ X-XSS-Protection: 1; mode=block
       Point-Free
     </title>
     <link>
+      http://localhost:8080
+    </link>
     <language>
       en-US
     </language>
@@ -40,6 +42,8 @@ X-XSS-Protection: 1; mode=block
         Point-Free
       </title>
       <link>
+        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
+      </link>
     </image>
     <itunes:author>
       Brandon Williams & Stephen Celis
@@ -87,6 +91,8 @@ X-XSS-Protection: 1; mode=block
         Mon, 29 Jan 2018 06:11:09 +0000
       </pubDate>
       <link>
+        http://localhost:8080
+      </link>
       <guid>
         1517356800.0
       </guid>
