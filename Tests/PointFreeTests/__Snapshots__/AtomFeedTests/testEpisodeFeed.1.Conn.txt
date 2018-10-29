@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7232
+Content-Length: 7473
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,6 +23,8 @@ X-XSS-Protection: 1; mode=block
       Point-Free Videos
     </title>
     <link>
+      http://localhost:8080
+    </link>
     <language>
       en-US
     </language>
@@ -40,6 +42,8 @@ X-XSS-Protection: 1; mode=block
         Point-Free Videos
       </title>
       <link>
+        http://localhost:8080
+      </link>
     </image>
     <itunes:author>
       Brandon Williams & Stephen Celis
@@ -87,6 +91,8 @@ X-XSS-Protection: 1; mode=block
         Tue, 20 Jun 2017 12:00:00 +0000
       </pubDate>
       <link>
+        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+      </link>
       <guid>
         1497960000
       </guid>
@@ -154,6 +160,8 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         Tue, 20 Dec 2016 00:00:00 +0000
       </pubDate>
       <link>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </link>
       <guid>
         1482192000
       </guid>
