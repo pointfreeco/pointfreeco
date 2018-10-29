@@ -40,8 +40,10 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
             .init("href", atomFeed.atomUrl) as Attribute<Void>,
             .init("rel", "self")
           ],
+          // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
           [""]
         ),
+        // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
         element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], [""]),
         atomFeed.entries.map(^\.updated).max().map(updated),
         id(atomFeed.siteUrl),
@@ -59,6 +61,7 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
 public let atomEntry = View<AtomEntry> { atomEntry in
   return entry([
     title(atomEntry.title),
+    // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
     element("link", [.init("href", atomEntry.siteUrl) as Attribute<Void>], [""]),
     updated(atomEntry.updated),
     id(atomEntry.siteUrl),
