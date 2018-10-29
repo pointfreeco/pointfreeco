@@ -34,8 +34,15 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
       [xmlns("http://www.w3.org/2005/Atom")],
       [
         title(atomFeed.title),
-        link([href(atomFeed.atomUrl), rel(.self)]),
-        link([href(atomFeed.siteUrl)]),
+        element(
+          "link",
+          [
+            .init("href", atomFeed.atomUrl) as Attribute<Void>,
+            .init("rel", "self")
+          ],
+          [""]
+        ),
+        element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], [""]),
         atomFeed.entries.map(^\.updated).max().map(updated),
         id(atomFeed.siteUrl),
         author([
@@ -52,7 +59,7 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
 public let atomEntry = View<AtomEntry> { atomEntry in
   return entry([
     title(atomEntry.title),
-    link([href(atomEntry.siteUrl)]),
+    element("link", [.init("href", atomEntry.siteUrl) as Attribute<Void>], [""]),
     updated(atomEntry.updated),
     id(atomEntry.siteUrl),
     content([type("html")], atomEntry.content)

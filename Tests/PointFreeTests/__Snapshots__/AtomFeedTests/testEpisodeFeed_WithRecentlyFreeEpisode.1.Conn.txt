@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7326
+Content-Length: 7578
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,6 +23,8 @@ X-XSS-Protection: 1; mode=block
       Point-Free Videos
     </title>
     <link>
+      http://localhost:8080
+    </link>
     <language>
       en-US
     </language>
@@ -40,6 +42,8 @@ X-XSS-Protection: 1; mode=block
         Point-Free Videos
       </title>
       <link>
+        http://localhost:8080
+      </link>
     </image>
     <itunes:author>
       Brandon Williams & Stephen Celis
@@ -87,6 +91,8 @@ X-XSS-Protection: 1; mode=block
         Mon, 29 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
+        http://localhost:8080/episodes/ep2-subscriber-only-episode-that-is-now-free
+      </link>
       <guid>
         1517184000
       </guid>
@@ -157,6 +163,8 @@ text, no markdown allowed. Here is some more text just to have some filler.
         Wed, 24 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
+        http://localhost:8080/episodes/ep1-free-episode
+      </link>
       <guid>
         1516752000
       </guid>
