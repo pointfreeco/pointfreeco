@@ -10,7 +10,7 @@ and see how it can help us create type-safe data structures that can catch runti
   fullVideo: .init(
     bytesLength: 723_938_138,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full/0004-hls-math-is-useful.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full/0004-adt.m3u8"
   ),
   id: 4,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
