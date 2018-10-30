@@ -9,7 +9,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   fullVideo: .init(
     bytesLength: 556_949_587,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full/0003-hls-now-were-stylin.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full/0003-styling-with-functions.m3u8"
   ),
   id: 3,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg",
