@@ -471,7 +471,7 @@ extension Session {
 
 extension Strategy {
   public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
-    return Strategy.conn.pullback { io in
+    return Strategy<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
       let renderHtml = Current.renderHtml
       update(&Current, \.renderHtml .~ { prettyPrint($0) })
       let conn = io.perform()
@@ -483,7 +483,7 @@ extension Strategy {
   #if os(macOS)
   @available(OSX 10.13, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Strategy.webView.pullback { io in
+    return Strategy<NSView, NSImage>.view.pullback { io in
       let webView = WKWebView(frame: .init(origin: .zero, size: size))
       webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
       return webView

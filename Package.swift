@@ -12,10 +12,10 @@ let package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("1810294")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("7bc56c3")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("0a713d7")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("86c244e")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("0.1.3")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("aafef74d")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("9023be3")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
