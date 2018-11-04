@@ -12,7 +12,7 @@ import XCTest
 class PrivateRssTests: TestCase {
   override func setUp() {
     super.setUp()
-    record = true
+//    record = true
   }
 
   func testFeed_Authenticated_Subscriber() {
@@ -22,6 +22,16 @@ class PrivateRssTests: TestCase {
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user)))
+    )
+
+    update(
+      &Current,
+      \.episodes .~ unzurry([
+        .subscriberOnly
+          |> \.publishedAt .~ Current.date(),
+        .free
+          |> \.publishedAt .~ Current.date().addingTimeInterval(-2678400)
+        ])
     )
 
     let conn = connection(
