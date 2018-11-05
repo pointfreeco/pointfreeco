@@ -673,7 +673,23 @@ private let referencesView = View<[Episode.Reference]> { references -> [Node] in
                         href(reference.link),
                         `class`([Class.pf.colors.link.purple])
                       ],
-                      [.text(reference.link)]
+                      [
+                        img(
+                          base64: newWindowSvgBase64(fill: "#974DFF"),
+                          type: .image(.svg),
+                          alt: "",
+                          [
+                            `class`([
+                              Class.align.middle,
+                              Class.margin([.mobile: [.right: 1]])
+                              ]),
+                            width(16),
+                            height(16),
+                            style(margin(top: .px(-2)))
+                          ]
+                        ),
+                        .text(reference.link)
+                      ]
                     )
                   ]
                 )
