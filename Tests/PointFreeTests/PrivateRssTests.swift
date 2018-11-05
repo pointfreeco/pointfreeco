@@ -24,6 +24,16 @@ class PrivateRssTests: TestCase {
       \.database.fetchUserById .~ const(pure(.some(user)))
     )
 
+    update(
+      &Current,
+      \.episodes .~ unzurry([
+        .subscriberOnly
+          |> \.publishedAt .~ Current.date(),
+        .free
+          |> \.publishedAt .~ Current.date().addingTimeInterval(-2678400)
+        ])
+    )
+
     let conn = connection(
       from: request(
         to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),

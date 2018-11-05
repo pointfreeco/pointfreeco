@@ -104,7 +104,7 @@ with anyone else.
         Proof in Functions
       </title>
       <pubDate>
-        Tue, 20 Dec 2016 00:00:00 +0000
+        Wed, 31 Jan 2018 00:00:00 +0000
       </pubDate>
       <link>
         http://localhost:8080/episodes/ep2-proof-in-functions
