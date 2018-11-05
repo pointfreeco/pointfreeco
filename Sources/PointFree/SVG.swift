@@ -5,6 +5,16 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
+let newWindowSvgBase64 = base64EncodedString <| """
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="new-window" viewBox="0 0 24 24">
+    <g transform="scale(0.0234375 0.0234375)">
+      <path d="M598 128h298v298h-86v-152l-418 418-60-60 418-418h-152v-86zM810 810v-298h86v298c0 46-40 86-86 86h-596c-48 0-86-40-86-86v-596c0-46 38-86 86-86h298v86h-298v596h596z"></path>
+    </g>
+  </symbol>
+</svg>
+"""
+
 let airplaySvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

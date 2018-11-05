@@ -399,20 +399,21 @@ private func timestampLabel(for timestamp: Int) -> String {
 
 private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode -> Node in
-  div(
+
+  let subscribeNodes = isSubscribeBannerVisible(for: permission)
+    ? subscribeView.view((permission, user, episode))
+    : []
+  let transcriptNodes = isEpisodeViewable(for: permission)
+    ? transcriptView.view(episode.transcriptBlocks)
+    : []
+
+  return div(
     [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view(episode))]
       + dividerView.view(unit)
-      + (
-        isSubscribeBannerVisible(for: permission)
-          ? subscribeView.view((permission, user, episode))
-          : []
-      )
-      + (
-        isEpisodeViewable(for: permission)
-          ? transcriptView.view(episode.transcriptBlocks)
-          : []
-      )
+      + subscribeNodes
+      + transcriptNodes
       + exercisesView.view(episode.exercises)
+      + referencesView.view(episode.references)
   )
 }
 
@@ -624,6 +625,77 @@ private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
     ],
     blocks.flatMap(transcriptBlockView.view)
   )
+}
+
+private let referencesView = View<[Episode.Reference]> { references -> [Node] in
+  guard !references.isEmpty else { return [] }
+
+  return dividerView.view(unit) + [
+    div(
+      [
+        `class`(
+          [
+            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+            Class.pf.colors.bg.white
+          ]
+        )
+      ],
+      [
+        h2(
+          [Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+          ["References"]
+        ),
+        ul(
+          [id("references")],
+          zip(1..., references).map { idx, reference in
+            li(
+              [
+                id("reference-\(idx)"),
+                `class`([Class.margin([.mobile: [.bottom: 3]])])
+              ],
+              [
+                h4(
+                  [Styleguide.class([
+                    Class.pf.type.responsiveTitle6,
+                    Class.margin([.mobile: [.bottom: 0]])
+                    ])],
+                  [.text(reference.title)]
+                ),
+                strong(
+                  [Styleguide.class([Class.pf.type.body.small])],
+                  [.text(topLevelReferenceMetadata(reference))]
+                ),
+                div([markdownBlock(reference.blurb ?? "")]),
+                div(
+                  [
+                    a(
+                      [
+                        href(reference.link),
+                        `class`([Class.pf.colors.link.purple])
+                      ],
+                      [.text(reference.link)]
+                    )
+                  ]
+                )
+              ]
+            )
+          }
+        )
+      ]
+    )
+  ]
+}
+
+private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String {
+  return "Chris Eidhof • Monday Oct 22, 2018"
+//  let components: [String?] = [
+//    episodeDateFormatter.string(from: reference.publishedAt),
+//    ep.subscriberOnly ? "Subscriber-only" : "Free Episode"
+//  ]
+//
+//  return components
+//    .compactMap { $0 }
+//    .joined(separator: " • ")
 }
 
 private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
