@@ -23,16 +23,6 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
   return { conn in
     conn.map(const(unit))
       |> writeStatus(.ok)
-      >=> { (conn: Conn<HeadersOpen, Prelude.Unit>) -> IO<Conn<HeadersOpen, Prelude.Unit>> in
-        
-        sendEmail(
-          to: adminEmails,
-          subject: "[Private Rss Feed Error] \(errorMessage)",
-          content: inj1(errorMessage)
-          ).run.parallel.run { _ in }
-
-        return pure(conn)
-      }
       >=> respond(invalidatedFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
       >=> clearHeadBody
   }
@@ -140,14 +130,13 @@ with anyone else.
 }
 
 private func items(forUser user: Database.User) -> [RssItem] {
-  return [
-    Current
-      .episodes()
-      .filter { $0.sequence != 0 }
-      .sorted(by: their(^\.sequence, >))
-      .first
-    ]
-    .compactMap(id)
+  return Current
+    .episodes()
+    .filter {
+      $0.sequence != 0
+        && (Current.date().timeIntervalSince1970 - $0.publishedAt.timeIntervalSince1970) < 2592000.0
+    }
+    .sorted(by: their(^\.sequence, >))
     .map { item(forUser: user, episode: $0) }
 }
 
