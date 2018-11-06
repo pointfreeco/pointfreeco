@@ -597,7 +597,6 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
     .joined(separator: " • ")
 }
 
-// todo remove extra arguments
 let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(

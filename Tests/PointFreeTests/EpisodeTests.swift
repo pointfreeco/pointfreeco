@@ -384,7 +384,7 @@ class EpisodeTests: TestCase {
     XCTAssertTrue(episode.subscriberOnly)
   }
 
-  func testEpisodePage_ExercisesAndReferences() {
+  func testEpisodePage_ExercisesAndReferences() { 
     let episode = Current.episodes()[0]
       |> \.exercises .~ [.mock]
       |> \.references .~ [.mock]
@@ -406,7 +406,7 @@ class EpisodeTests: TestCase {
       assertSnapshots(
         of: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1600)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 1600))
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 1900))
         ],
         matching: conn |> siteMiddleware
       )
