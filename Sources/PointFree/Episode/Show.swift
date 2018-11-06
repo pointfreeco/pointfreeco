@@ -580,7 +580,7 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
 private let episodeInfoView = View<(EpisodePermission, SubscriberState, Episode)> { permission, subscriberState, ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view((permission, subscriberState, ep))
+    topLevelEpisodeInfoView.view(ep)
     + sectionsMenu(episode: ep, permission: permission, subscriberState: subscriberState)
   )
 }
@@ -598,7 +598,7 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
 }
 
 // todo remove extra arguments
-let topLevelEpisodeInfoView = View<(EpisodePermission?, SubscriberState?, Episode)> { permission, subscriberState, ep in
+let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [Styleguide.class([Class.pf.type.responsiveTitle8])],

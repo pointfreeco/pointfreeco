@@ -126,7 +126,7 @@ private let episodeRowView = View<Episode> { ep in
 private let episodeInfoColumnView = View<Episode> { ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view((nil, nil, ep)) + [
+    topLevelEpisodeInfoView.view(ep) + [
       div([Styleguide.class([Class.margin([.mobile: [.top: 3]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug)))), Styleguide.class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
