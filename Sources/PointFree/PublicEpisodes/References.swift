@@ -155,7 +155,7 @@ distinguishing otherwise indistinguishable types.
     author: "Matt Diephouse",
     blurb: """
 Matt gives another account of protocol-oriented programming gone awry, this time by breaking down the famous
-WWDC talk where a shape library is design using protocols. By rewriting the library without protocols Matt
+WWDC talk where a shape library is designed using protocols. By rewriting the library without protocols Matt
 ends up with something that can be tested without mocks, can be inspected at runtime, and more flexible.
 """,
     link: "https://matt.diephouse.com/2018/08/value-oriented-programming/",
