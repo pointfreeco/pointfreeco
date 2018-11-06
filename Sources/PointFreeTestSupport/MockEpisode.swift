@@ -10,6 +10,22 @@ extension Episode {
   public static let subscriberOnly = subscriberOnlyEpisode
 }
 
+extension Episode.Reference {
+  public static let mock = Episode.Reference(
+    author: "Blob",
+    blurb: "Blob uses functional programming to impress all of their friends.",
+    link: "https://www.pointfree.co",
+    publishedAt: Date(timeIntervalSince1970: 1234567890),
+    title: "Functional Programming is Fun!"
+  )
+}
+
+extension Episode.Exercise {
+  public static let mock = Episode.Exercise(
+    body: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere."
+  )
+}
+
 private let subscriberOnlyEpisode = Episode(
   blurb: """
   This is a short blurb to give a high-level overview of what the episode is about. It can only be plain

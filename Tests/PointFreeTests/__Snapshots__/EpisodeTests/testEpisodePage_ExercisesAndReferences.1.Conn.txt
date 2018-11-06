@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62735
+Content-Length: 65173
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1893,13 +1893,6 @@ text, no markdown allowed. Here is some more text just to have some filler.">
           </li>
           <li class="m-pl3
                      inline">
-            <a href="/pricing"
-               class="pf-link-black">
-              Subscribe
-            </a>
-          </li>
-          <li class="m-pl3
-                     inline">
             <a href="/account"
                class="pf-link-black">
               Account
@@ -1949,6 +1942,24 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
             </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#references">
+                References
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1995,6 +2006,24 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
                 </div>
               </div>
+              <div class="d-pt3
+                          m-pt2">
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#transcript">
+                  Transcript
+                </a>
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#exercises">
+                  Exercises
+                </a>
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#references">
+                  References
+                </a>
+              </div>
             </div>
           </div>
           <hr class="pf-divider
@@ -2004,92 +2033,49 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                      m-mt0
                      m-mb0
                      bg-white">
-          <div class="center
-                      d-ml4
-                      d-mr4
-                      d-mt4
-                      d-mb4
-                      m-ml3
-                      m-mr3
-                      m-mt3
-                      m-mb3
+          <div id="transcript"
+               class="d-pb4
                       d-pt2
-                      d-pl2
-                      d-pr2
+                      d-pl4
+                      d-pr4
+                      m-pl3
+                      m-pr3
+                      m-pt3
                       m-pb3
-                      m-pt1
-                      m-pl1
-                      m-pr1
-                      bg-gray900">
-            <h3 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2">
-              Subscribe to Point&#8209;Free
-            </h3>
-            <p class="body-leading
-                      fg-black
-                      normal
-                      lh-4
-                      m-pb3
-                      m-pt2">
-              This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
-today!
-            </p>
-            <a href="/pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-purple
-                      h5
-                      m-pl2
-                      m-pr2">
-              See subscription options
-            </a>
-            <p class="fg-black
-                      normal
-                      h5
-                      lh-4
-                      m-pb2
-                      m-pt4">
-              You currently have 1 episode credit available. Do you
-want to use it to view this episode for free right now?
-            </p>
-            <form action="/episodes/2/credit"
-                  method="post">
-              <input type="submit"
-                     class="medium
-                            cursor-pointer
-                            nowrap
-                            btn-normal
-                            rounded
-                            border-none
-                            text-decoration-none
-                            pf-link-white
-                            fg-white
-                            bg-black
-                            h6
-                            m-pl1
-                            m-pr1
-                            m-pt1
-                            m-pb1"
-                     value="Use an episode credit">
-            </form>
+                      bg-white">
+            <h2 class="h4
+                       lh-3
+                       m-pt2"
+                id="t0">
+              <a href="#t0">
+                Introduction
+              </a>
+            </h2>
+            <div>
+              <div id="t0"
+                   class="block">
+                <a href="#"
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();event.preventDefault();"
+                   data-t="0"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
+that timestamp jumps the video to that spot.</p>
+<p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+However, you cannot associate a timestamp with this paragraph.</p>
+
+              </div>
+            </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
           <hr class="pf-divider
                      border-top
                      m-ml0
@@ -2116,12 +2102,75 @@ want to use it to view this episode for free right now?
               <li id="exercise-1">
                 <div>
                   <div class="md-ctn">
-                    <p>This is an exercise.</p>
+                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
 
                   </div>
                 </div>
               </li>
             </ol>
+          </div>
+          <hr class="pf-divider
+                     border-top
+                     m-ml0
+                     m-mr0
+                     m-mt0
+                     m-mb0
+                     bg-white">
+          <div class="d-pb4
+                      d-pt2
+                      d-pl4
+                      d-pr4
+                      m-pl3
+                      m-pr3
+                      m-pt3
+                      m-pb3
+                      bg-white">
+            <h2 id="references"
+                class="h4
+                       lh-3
+                       m-pt2">
+              References
+            </h2>
+            <ul>
+              <li id="reference-1"
+                  class="m-mb3">
+                <h4 class="fg-black
+                           bold
+                           ts-d-r1_25
+                           ts-m-r1
+                           lh-1
+                           m-mb0">
+                  Functional Programming is Fun!
+                </h4>
+                <strong class="fg-black
+                               normal
+                               h6
+                               lh-4">
+                  Blob • Friday Feb 13, 2009
+                </strong>
+                <div>
+                  <div class="md-ctn">
+                    <p>Blob uses functional programming to impress all of their friends.</p>
+
+                  </div>
+                </div>
+                <div>
+                  <a href="https://www.pointfree.co"
+                     class="pf-link-purple"
+                     target="_blank"
+                     rel="noopener noreferrer">
+                    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMThweCIgaGVpZ2h0PSIxOHB4IiB2aWV3Qm94PSIwIDAgMTggMTgiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBmaWxsPSIjOTc0REZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNMTEuMDE1NjI1LDAgTDE4LDAgTDE4LDYuOTg0Mzc1IEwxNS45ODQzNzUsNi45ODQzNzUgTDE1Ljk4NDM3NSwzLjQyMTg3NSBMNi4xODc1LDEzLjIxODc1IEw0Ljc4MTI1LDExLjgxMjUgTDE0LjU3ODEyNSwyLjAxNTYyNSBMMTEuMDE1NjI1LDIuMDE1NjI1IEwxMS4wMTU2MjUsMCBaIE0xNS45ODQzNzUsMTUuOTg0Mzc1IEwxNS45ODQzNzUsOSBMMTgsOSBMMTgsMTUuOTg0Mzc1IEMxOCwxNy4wNjI1IDE3LjA2MjUsMTggMTUuOTg0Mzc1LDE4IEwyLjAxNTYyNSwxOCBDMC44OTA2MjUsMTggMCwxNy4wNjI1IDAsMTUuOTg0Mzc1IEwwLDIuMDE1NjI1IEMwLDAuOTM3NSAwLjg5MDYyNSwwIDIuMDE1NjI1LDAgTDksMCBMOSwyLjAxNTYyNSBMMi4wMTU2MjUsMi4wMTU2MjUgTDIuMDE1NjI1LDE1Ljk4NDM3NSBMMTUuOTg0Mzc1LDE1Ljk4NDM3NSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=="
+                         alt
+                         class="align-middle
+                                m-mr1"
+                         width="14"
+                         height="14"
+                         style="margin-top:-2px">
+                    https://www.pointfree.co
+                  </a>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -2151,7 +2200,7 @@ want to use it to view this episode for free right now?
                    autoplay
                    poster
                    data-setup="{"control":true,"playbackRates":[0.5,1,1.5,2]}">
-              <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
+              <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
           </div>
@@ -2174,12 +2223,35 @@ want to use it to view this episode for free right now?
               <div class="col-m
                           col-m-10">
                 <div>
-                  <div class="fg-green
+                  <div class="hide-m">
+                    <a href="#t0"
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();"
+                       data-t="0"
+                       class="pf-link-green
+                              text-decoration-none
                               fg-black
                               normal
                               h5
                               lh-4">
-                    Introduction
+                      Introduction
+                    </a>
+                  </div>
+                  <div class="hide-d">
+                    <a href="#"
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();event.preventDefault();"
+                       data-t="0"
+                       class="pf-link-green
+                              text-decoration-none
+                              fg-black
+                              normal
+                              h5
+                              lh-4">
+                      Introduction
+                    </a>
                   </div>
                 </div>
               </div>
@@ -2189,50 +2261,6 @@ want to use it to view this episode for free right now?
                             end-align
                             opacity-75">
                   00:00
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="fg-green
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                    Title Block
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  01:00
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-m
-                          col-m-10">
-                <div>
-                  <div class="fg-green
-                              fg-black
-                              normal
-                              h5
-                              lh-4">
-                    Another Title
-                  </div>
-                </div>
-              </div>
-              <div class="col-m
-                          col-m-2">
-                <div class="fg-purple
-                            end-align
-                            opacity-75">
-                  02:00
                 </div>
               </div>
             </div>

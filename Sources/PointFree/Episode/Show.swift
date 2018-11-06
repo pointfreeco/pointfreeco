@@ -161,7 +161,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.hide(.desktop)])], [
-        div(episodeInfoView.view(episode))
+        div(episodeInfoView.view((permission, episode)))
         ])
       ]),
 
@@ -399,20 +399,21 @@ private func timestampLabel(for timestamp: Int) -> String {
 
 private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode -> Node in
-  div(
-    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view(episode))]
+
+  let subscribeNodes = isSubscribeBannerVisible(for: permission)
+    ? subscribeView.view((permission, user, episode))
+    : []
+  let transcriptNodes = isEpisodeViewable(for: permission)
+    ? transcriptView.view(episode.transcriptBlocks)
+    : []
+
+  return div(
+    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, episode)))]
       + dividerView.view(unit)
-      + (
-        isSubscribeBannerVisible(for: permission)
-          ? subscribeView.view((permission, user, episode))
-          : []
-      )
-      + (
-        isEpisodeViewable(for: permission)
-          ? transcriptView.view(episode.transcriptBlocks)
-          : []
-      )
+      + subscribeNodes
+      + transcriptNodes
       + exercisesView.view(episode.exercises)
+      + referencesView.view(episode.references)
   )
 }
 
@@ -576,10 +577,11 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
   ]
 }
 
-private let episodeInfoView = View<Episode> { ep in
+private let episodeInfoView = View<(EpisodePermission, Episode)> { permission, ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
+    + sectionsMenu(episode: ep, permission: permission)
   )
 }
 
@@ -606,6 +608,38 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
       [a([href(path(to: .episode(.left(ep.slug))))], [.text(ep.title)])]
     ),
     div([Styleguide.class([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
+    ]
+}
+
+private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [Node] {
+  guard let permission = permission, isEpisodeViewable(for: permission) else { return [] }
+
+  let exercisesNode: Node? = episode.exercises.isEmpty
+    ? nil
+    : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#exercises")],
+        ["Exercises"])
+
+  let referencesNode: Node? = episode.references.isEmpty
+    ? nil
+    : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#references")],
+        ["References"])
+
+  // Don't show quick link menu if at least one of exercises or references are present.
+  guard exercisesNode != nil || referencesNode != nil else { return [] }
+
+  return [
+    div(
+      [`class`([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
+      [
+        a(
+          [`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#transcript")],
+          ["Transcript"]
+        ),
+        exercisesNode,
+        referencesNode
+        ]
+        .compactMap(id)
+    )
   ]
 }
 
@@ -615,6 +649,7 @@ let dividerView = View<Prelude.Unit>(const(divider))
 private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
   div(
     [
+      id("transcript"),
       `class`(
         [
           Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
@@ -624,6 +659,94 @@ private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
     ],
     blocks.flatMap(transcriptBlockView.view)
   )
+}
+
+private let referencesView = View<[Episode.Reference]> { references -> [Node] in
+  guard !references.isEmpty else { return [] }
+
+  return dividerView.view(unit) + [
+    div(
+      [
+        `class`(
+          [
+            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+            Class.pf.colors.bg.white
+          ]
+        )
+      ],
+      [
+        h2(
+          [
+            id("references"),
+            Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+          ],
+          ["References"]
+        ),
+        ul(
+          zip(1..., references).map { idx, reference in
+            li(
+              [
+                id("reference-\(idx)"),
+                `class`([Class.margin([.mobile: [.bottom: 3]])])
+              ],
+              [
+                h4(
+                  [Styleguide.class([
+                    Class.pf.type.responsiveTitle5,
+                    Class.margin([.mobile: [.bottom: 0]])
+                    ])],
+                  [.text(reference.title)]
+                ),
+                strong(
+                  [Styleguide.class([Class.pf.type.body.small])],
+                  [.text(topLevelReferenceMetadata(reference))]
+                ),
+                div([markdownBlock(reference.blurb ?? "")]),
+                div(
+                  [
+                    a(
+                      [
+                        href(reference.link),
+                        `class`([Class.pf.colors.link.purple]),
+                        target(.blank),
+                        rel(.init(rawValue: "noopener noreferrer"))
+                      ],
+                      [
+                        img(
+                          base64: newWindowSvgBase64(fill: "#974DFF"),
+                          type: .image(.svg),
+                          alt: "",
+                          [
+                            `class`([
+                              Class.align.middle,
+                              Class.margin([.mobile: [.right: 1]])
+                              ]),
+                            width(14),
+                            height(14),
+                            style(margin(top: .px(-2)))
+                          ]
+                        ),
+                        .text(reference.link)
+                      ]
+                    )
+                  ]
+                )
+              ]
+            )
+          }
+        )
+      ]
+    )
+  ]
+}
+
+private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String {
+  return [
+    reference.author,
+    reference.publishedAt.map(episodeDateFormatter.string(from:))
+    ]
+    .compactMap(id)
+    .joined(separator: " • ")
 }
 
 private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
@@ -641,11 +764,13 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
       ],
       [
         h2(
-          [Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+          [
+            id("exercises"),
+            Styleguide.class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+          ],
           ["Exercises"]
         ),
         ol(
-          [id("exercises")],
           zip(1..., exercises).map {
             li(
               [id("exercise-\($0)")],
@@ -836,15 +961,6 @@ func unsafeMark(from markdown: String) -> String {
     else { return markdown }
   defer { free(cString) }
   return String(cString: cString)
-}
-
-private func isEpisodeViewable(
-  _ permission: EpisodePermission,
-  _ episode: Episode,
-  _ subscriberState: SubscriberState
-  ) -> Bool {
-
-  return !episode.subscriberOnly || subscriberState.isActiveSubscriber
 }
 
 private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
