@@ -37,28 +37,24 @@ Stephen
   static let openSourcingSwiftHtml = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
-TODO
+After developing the ideas of DSLs in a series of episodes (
+[part 1](https://www.pointfree.co/episodes/ep26-domain-specific-languages-part-1) and
+[part 2](https://www.pointfree.co/episodes/ep27-domain-specific-languages-part-2)), we open sourced
+our own DSL library for constructing HTML in Swift. We use this library heavily for building every path
+on this very website, and it unlocks a lot of wonderful transformations and opportunities for code reuse.
 """,
     link: "https://www.pointfree.co/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift",
     publishedAt: Date(timeIntervalSince1970: 1541998800),
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
   )
 
-  static let overture = Episode.Reference(
-    author: "Brandon Williams & Stephen Celis",
-    blurb: """
-We open sourced the Overture library to give everyone access to functional compositions, even if you can't
-bring operators into your codebase.
-""",
-    link: "https://github.com/pointfreeco/swift-overture",
-    publishedAt: Date(timeIntervalSince1970: 1523246400),
-    title: "Swift Overture"
-  )
-
   static let playgroundDrivenDevelopmentAtKickstarter = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
-TODO
+We pioneered playground driven development while we were at Kickstarter, where we replaced the majority of
+our use for storyboards with playgrounds. It takes a little bit of work to get started, but once you do
+it really pays dividends. In this Swift Talk episode, Brandon sits down with Chris Eidhof to show
+the ins-and-outs of doing playground driven development.
 """,
     link: "https://talk.objc.io/episodes/S01E51-playground-driven-development-at-kickstarter",
     publishedAt: Date(timeIntervalSince1970: 1495166400),
@@ -68,11 +64,25 @@ TODO
   static let playgroundDrivenDevelopmentFrenchKit = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
-TODO
+Brandon gave an in-depth talk on playground driven development at FrenchKit 2017. In this talk he shows
+what it takes to get a codebase into shape for this style of development, and shows off some of the amazing
+things you can do once you have it.
 """,
     link: "https://www.youtube.com/watch?v=DrdxSNG-_DE",
     publishedAt: Date(timeIntervalSince1970: 1507262400),
     title: "Playground Driven Development"
+  )
+
+  static let pointfreeco = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+The entire codebase for this very site is completely written in Swift _and_ open source! Explore the code
+by browsing it on GitHub, or join us for a tour of the codebase in a
+[Point-Free episode](http://localhost:8080/episodes/ep22-a-tour-of-point-free).
+""",
+    link: "https://github.com/pointfreeco/pointfreeco",
+    publishedAt: Date(timeIntervalSince1970: 1505620800),
+    title: "PointFree.co Open Source"
   )
 
   static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
@@ -86,6 +96,18 @@ benefits, but does increase the complexity of the code.
     link: "http://chris.eidhof.nl/post/protocol-oriented-programming/",
     publishedAt: Date(timeIntervalSince1970: 1479963600),
     title: "Protocol Oriented Programming is Not a Silver Bullet"
+  )
+
+  static let randomZalgoGenerator = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+We apply the ideas of composable randomness to build a random Zalgo generator, which is a way to apply
+gitchy artifacts to a string by adding strange unicode characters to it. It shows that we can start with
+very simple, small pieces and then compose them together to create a really complicated machine.
+""",
+    link: "https://www.pointfree.co/blog/posts/19-random-zalgo-generator",
+    publishedAt: Date(timeIntervalSince1970: 1542690000),
+    title: "Random Zalgo Generator"
   )
 
   static let scrapYourTypeClasses = Episode.Reference(
@@ -119,7 +141,10 @@ the OOP style!
   static let serverSideSwiftFromScratch = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
-TODO
+Brandon gave this talk at Swift Summit 2017 to demonstrate how we approach writing websites in Swift.
+He gives a description of many of the problems that we have to solve in server-side Swift, and shows how
+with Swift's strong type system and a few ideas from functional programming we can create truly composable
+and expressive solutions to these problems.
 """,
     link: "https://www.skilled.io/u/swiftsummit/server-side-swift-from-scratch",
     publishedAt: Date(timeIntervalSince1970: 1509422400),
@@ -136,6 +161,76 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
     link: "https://www.pointfree.co/blog/posts/22-some-news-about-contramap",
     publishedAt: Date(timeIntervalSince1970: 1540785600),
     title: "Some news about contramap"
+  )
+
+  static let swiftNonEmpty = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+`NonEmpty` is one of our open source projects for expressing a type safe, compiler proven non-empty
+collection of values.
+""",
+    link: "https://github.com/pointfreeco/swift-nonempty",
+    publishedAt: Date(timeIntervalSince1970: 1532491200),
+    title: "NonEmpty"
+  )
+
+  static let swiftOverture = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+We open sourced the Overture library to give everyone access to functional compositions, even if you can't
+bring operators into your codebase.
+""",
+    link: "https://github.com/pointfreeco/swift-overture",
+    publishedAt: Date(timeIntervalSince1970: 1523246400),
+    title: "Swift Overture"
+  )
+
+  static let swiftTagged = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+`Tagged` is one of our open source projects for expressing a way to distinguish otherwise indistinguishable
+types at compile time.
+""",
+    link: "https://github.com/pointfreeco/swift-tagged",
+    publishedAt: Date(timeIntervalSince1970: 1523851200),
+    title: "Tagged"
+  )
+
+  static let swiftValidated = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+`Validated` is one of our open source projects that provides a `Result`-like type, which supports a `zip`
+operation. This means you can combine multiple validated values into a single one and accumulate all of
+their errors.
+""",
+    link: "https://github.com/pointfreeco/swift-validated",
+    publishedAt: Date(timeIntervalSince1970: 1534478400),
+    title: "Validated"
+  )
+
+  static let taggedSecondsAndMilliseconds = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+In this blog post we use the [`Tagged`](/episodes/ep12-tagged) type to provide a type safe way for
+interacting with seconds and milliseconds values. We are able to prove to ourselves that we do not misuse
+or mix up these values at compile time by using the tagged wrappers.
+""",
+    link: "https://www.pointfree.co/blog/posts/6-tagged-seconds-and-milliseconds",
+    publishedAt: Date(timeIntervalSince1970: 1531886400),
+    title: "Tagged Seconds and Milliseconds"
+  )
+
+  static let theoremsForFree = Episode.Reference(
+    author: "Philip Wadler",
+    blurb: """
+In this Swift Talk episode, Florian and special guess [Brandon Kase](https://twitter.com/bkase_) show how
+to apply the ideas of phantom types to create a type safe API for dealing with file paths. We've used
+phantom types in our episode on [Tagged](/episodes/ep12-tagged) to provide a compile-time mechanism for
+distinguishing otherwise indistinguishable types.
+""",
+    link: "https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf",
+    publishedAt: Date(timeIntervalSince1970: 615268800),
+    title: "Theorems for Free"
   )
 
   static let typeSafeFilePathsWithPhantomTypes = Episode.Reference(

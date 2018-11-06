@@ -162,6 +162,7 @@ func welcomeEmail2(_ user: Database.User) -> Email {
 
 let welcomeEmail2Content = View<Database.User> { user -> [Node] in
   let freeEpisodeLinks = Current.episodes()
+    .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
     .map {
       """

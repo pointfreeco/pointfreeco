@@ -17,6 +17,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
   length: 24*60 + 21,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_532_930_223 + 604_800),
+  references: [.swiftValidated],
   sequence: 25,
   title: "The Many Faces of Zip: Part 3",
   trailerVideo: .init(
