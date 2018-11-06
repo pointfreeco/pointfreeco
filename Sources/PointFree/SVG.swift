@@ -5,6 +5,19 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
+func newWindowSvgBase64(fill: String) -> String {
+  return base64EncodedString <| """
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g fill="\(fill)" fill-rule="nonzero">
+            <path d="M11.015625,0 L18,0 L18,6.984375 L15.984375,6.984375 L15.984375,3.421875 L6.1875,13.21875 L4.78125,11.8125 L14.578125,2.015625 L11.015625,2.015625 L11.015625,0 Z M15.984375,15.984375 L15.984375,9 L18,9 L18,15.984375 C18,17.0625 17.0625,18 15.984375,18 L2.015625,18 C0.890625,18 0,17.0625 0,15.984375 L0,2.015625 C0,0.9375 0.890625,0 2.015625,0 L9,0 L9,2.015625 L2.015625,2.015625 L2.015625,15.984375 L15.984375,15.984375 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
+"""
+}
+
 let airplaySvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
