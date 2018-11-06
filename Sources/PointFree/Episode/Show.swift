@@ -161,7 +161,7 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
   [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.hide(.desktop)])], [
-        div(episodeInfoView.view((permission, subscriberState, episode)))
+        div(episodeInfoView.view((permission, episode)))
         ])
       ]),
 
@@ -408,7 +408,7 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Subscriber
     : []
 
   return div(
-    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, subscriberState, episode)))]
+    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, episode)))]
       + dividerView.view(unit)
       + subscribeNodes
       + transcriptNodes
@@ -577,11 +577,11 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
   ]
 }
 
-private let episodeInfoView = View<(EpisodePermission, SubscriberState, Episode)> { permission, subscriberState, ep in
+private let episodeInfoView = View<(EpisodePermission, Episode)> { permission, ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
-    + sectionsMenu(episode: ep, permission: permission, subscriberState: subscriberState)
+    + sectionsMenu(episode: ep, permission: permission)
   )
 }
 
@@ -612,7 +612,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
     ]
 }
 
-private func sectionsMenu(episode: Episode, permission: EpisodePermission?, subscriberState: SubscriberState?) -> [Node] {
+private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [Node] {
   guard let permission = permission, isEpisodeViewable(for: permission) else { return [] }
 
   let exercisesNode: Node? = episode.exercises.isEmpty
