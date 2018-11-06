@@ -625,7 +625,7 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [
         ["References"])
 
   // Don't show quick link menu if at least one of exercises or references are present.
-  guard zip2(exercisesNode, referencesNode) != nil else { return [] }
+  guard exercisesNode != nil || referencesNode != nil else { return [] }
 
   return [
     div(
