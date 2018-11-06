@@ -383,4 +383,35 @@ class EpisodeTests: TestCase {
     update(&Current, \.date .~ { end.addingTimeInterval(1) })
     XCTAssertTrue(episode.subscriberOnly)
   }
+
+  func testEpisodePage_ExercisesAndReferences() {
+    let episode = Current.episodes()[0]
+      |> \.exercises .~ [.mock]
+      |> \.references .~ [.mock]
+      |> \.transcriptBlocks %~ { Array($0[0...1]) }
+
+    update(
+      &Current,
+      \.episodes .~ { [episode] }
+    )
+
+    let conn = connection(
+      from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+    )
+
+    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        of: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 1600)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 1600))
+        ],
+        matching: conn |> siteMiddleware
+      )
+    }
+    #endif
+  }
+
 }

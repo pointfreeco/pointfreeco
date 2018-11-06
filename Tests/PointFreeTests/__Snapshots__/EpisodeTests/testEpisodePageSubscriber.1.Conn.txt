@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 70094
+Content-Length: 70141
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1997,7 +1997,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                      m-mt0
                      m-mb0
                      bg-white">
-          <div class="d-pb4
+          <div id="transcript"
+               class="d-pb4
                       d-pt2
                       d-pl4
                       d-pr4
@@ -2212,12 +2213,13 @@ working how we expect:</p>
                       m-pt3
                       m-pb3
                       bg-white">
-            <h2 class="h4
+            <h2 id="exercises"
+                class="h4
                        lh-3
                        m-pt2">
               Exercises
             </h2>
-            <ol id="exercises">
+            <ol>
               <li id="exercise-1">
                 <div>
                   <div class="md-ctn">

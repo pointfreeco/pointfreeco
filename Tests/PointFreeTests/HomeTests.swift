@@ -16,9 +16,12 @@ class HomeTests: TestCase {
 //    record = true
 
     let eps = [
-      ep10 |> \.permission .~ .subscriberOnly,
+      ep10
+        |> \.permission .~ .subscriberOnly
+      |> \.references .~ [.mock],
       ep2,
-      ep1 |> \.permission .~ .subscriberOnly,
+      ep1
+        |> \.permission .~ .subscriberOnly,
       introduction,
       ]
       .suffix(4)
