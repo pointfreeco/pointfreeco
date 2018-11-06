@@ -18,7 +18,7 @@ class HomeTests: TestCase {
     let eps = [
       ep10
         |> \.permission .~ .subscriberOnly
-      |> \.references .~ [.mock],
+        |> \.references .~ [.mock],
       ep2,
       ep1
         |> \.permission .~ .subscriberOnly,
