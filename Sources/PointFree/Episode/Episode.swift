@@ -12,10 +12,19 @@ public struct Episode {
   public private(set) var length: Int
   public private(set) var permission: Permission
   public private(set) var publishedAt: Date
+  public private(set) var references: [Reference] = []
   public private(set) var sequence: Int
   public private(set) var title: String
   public private(set) var trailerVideo: Video?
   public private(set) var transcriptBlocks: [TranscriptBlock]
+
+  public struct Reference {
+    public private(set) var author: String?
+    public private(set) var blurb: String?
+    public private(set) var link: String
+    public private(set) var publishedAt: Date?
+    public private(set) var title: String
+  }
 
   public struct Video {
     public private(set) var bytesLength: Int // TODO: Tagged<Bytes, Int>?
@@ -34,6 +43,7 @@ public struct Episode {
     length: Int,
     permission: Permission,
     publishedAt: Date,
+    references: [Reference] = [],
     sequence: Int,
     title: String,
     trailerVideo: Video?,
@@ -49,6 +59,7 @@ public struct Episode {
     self.length = length
     self.permission = permission
     self.publishedAt = publishedAt
+    self.references = references
     self.sequence = sequence
     self.title = title
     self.trailerVideo = trailerVideo

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 71669
+Content-Length: 71685
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2184,12 +2184,13 @@ subscriber-only episode of your choosing!
                       m-pt3
                       m-pb3
                       bg-white">
-            <h2 class="h4
+            <h2 id="exercises"
+                class="h4
                        lh-3
                        m-pt2">
               Exercises
             </h2>
-            <ol id="exercises">
+            <ol>
               <li id="exercise-1">
                 <div>
                   <div class="md-ctn">
