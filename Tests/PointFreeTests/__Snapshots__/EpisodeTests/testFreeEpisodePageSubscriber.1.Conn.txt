@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 70135
+Content-Length: 70931
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1942,6 +1942,19 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
             </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1987,6 +2000,19 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 text, no markdown allowed. Here is some more text just to have some filler.</p>
 
                 </div>
+              </div>
+              <div class="d-pt3
+                          m-pt2">
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#transcript">
+                  Transcript
+                </a>
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#exercises">
+                  Exercises
+                </a>
               </div>
             </div>
           </div>
