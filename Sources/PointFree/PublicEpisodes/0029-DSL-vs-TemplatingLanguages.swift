@@ -20,6 +20,7 @@ previously hidden.
   length: 33*60 + 17,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1536559023),
+  references: [.openSourcingSwiftHtml],
   sequence: 29,
   title: "DSLs vs. Templating Languages",
   trailerVideo: nil,
