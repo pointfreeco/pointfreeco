@@ -986,7 +986,7 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
   }
 }
 
-enum EpisodePermission: Equatable {
+private enum EpisodePermission: Equatable {
   case loggedIn(user: Database.User, subscriptionPermission: SubscriberPermission)
   case loggedOut(isEpisodeSubscriberOnly: Bool)
 
