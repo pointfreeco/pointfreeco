@@ -236,10 +236,9 @@ or mix up these values at compile time by using the tagged wrappers.
   static let theoremsForFree = Episode.Reference(
     author: "Philip Wadler",
     blurb: """
-In this Swift Talk episode, Florian and special guess [Brandon Kase](https://twitter.com/bkase_) show how
-to apply the ideas of phantom types to create a type safe API for dealing with file paths. We've used
-phantom types in our episode on [Tagged](/episodes/ep12-tagged) to provide a compile-time mechanism for
-distinguishing otherwise indistinguishable types.
+This famous paper describes the "theorems for free" result, in which if you write down a generic function
+signature, you can derive theorems that the function satisfies. This works in any language that has
+parametric polymorphism, which Swift does.
 """,
     link: "https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf",
     publishedAt: Date(timeIntervalSince1970: 615268800),
