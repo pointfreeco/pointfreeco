@@ -19,6 +19,7 @@ operation to other structures and derive new, useful code!
   length: 25*60+4,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
+  references: [.introduceSequenceCompactMap],
   sequence: 10,
   title: "A Tale of Two Flat-Maps",
   trailerVideo: nil,

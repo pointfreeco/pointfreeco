@@ -27,11 +27,24 @@ focus on just the core ideas.
   static let howToControlTheWorld = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
-Stephen
+Stephen gave a talk on our `Environment`-based apporach to dependency injection at NSSpain 2018. He starts
+with the basics, and slowly builds up to controlling more and more complex dependencies.
 """,
     link: "https://vimeo.com/291588126",
     publishedAt: Date(timeIntervalSince1970: 1537761600),
     title: "How to Control the World"
+  )
+
+  static let introduceSequenceCompactMap = Episode.Reference(
+    author: "Max Moiseev",
+    blurb: """
+A Swift evolution proposal to rename a particular overload of `flatMap` to `compactMap`. The overload in
+question was subtly different from the `flatMap` that we are familiar with on arrays and optionals, and
+was a cause for confusion for beginners to functional terms.
+""",
+    link: "https://github.com/apple/swift-evolution/blob/master/proposals/0187-introduce-filtermap.md",
+    publishedAt: Date(timeIntervalSince1970: 1509681600),
+    title: "Introduce Sequence.compactMap(_:)"
   )
 
   static let openSourcingSwiftHtml = Episode.Reference(
@@ -40,7 +53,7 @@ Stephen
 After developing the ideas of DSLs in a series of episodes (
 [part 1](https://www.pointfree.co/episodes/ep26-domain-specific-languages-part-1) and
 [part 2](https://www.pointfree.co/episodes/ep27-domain-specific-languages-part-2)), we open sourced
-our own DSL library for constructing HTML in Swift. We use this library heavily for building every path
+our own DSL library for constructing HTML in Swift. We use this library heavily for building every page
 on this very website, and it unlocks a lot of wonderful transformations and opportunities for code reuse.
 """,
     link: "https://www.pointfree.co/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift",
