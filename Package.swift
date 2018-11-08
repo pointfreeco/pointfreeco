@@ -81,6 +81,5 @@ let package = Package(
     .testTarget(
       name: "StyleguideTests",
       dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
-    ],
-  swiftLanguageVersions: [4]
+    ]
 )
