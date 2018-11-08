@@ -24,16 +24,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -45,16 +45,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2500)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2500))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -74,16 +74,16 @@ final class AccountTests: TestCase {
       |> (\Session.userId) .~ currentUser.id
     let conn = connection(from: request(to: .account(.index), session: session))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -103,16 +103,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -123,16 +123,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -143,16 +143,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -163,16 +163,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -187,16 +187,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -207,16 +207,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -227,16 +227,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -255,16 +255,16 @@ final class AccountTests: TestCase {
     )
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1500))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -284,16 +284,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1500)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1500))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -307,16 +307,16 @@ final class AccountTests: TestCase {
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif

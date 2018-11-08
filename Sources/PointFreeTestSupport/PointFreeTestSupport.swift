@@ -483,7 +483,7 @@ extension Strategy {
   #if os(macOS)
   @available(OSX 10.13, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Strategy<NSView, NSImage>.view.pullback { io in
+    return Strategy<NSView, NSImage>.image.pullback { io in
       let webView = WKWebView(frame: .init(origin: .zero, size: size))
       webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
       return webView
@@ -492,10 +492,11 @@ extension Strategy {
   #endif
 }
 
+#if os(Linux)
 extension SnapshotTestCase {
   public func assertSnapshots<A, B>(
-    of strategies: [String: Strategy<A, B>],
     matching value: A,
+    as strategies: [String: Strategy<A, B>],
     record recording: Bool = false,
     timeout: TimeInterval = 5,
     file: StaticString = #file,
@@ -505,8 +506,8 @@ extension SnapshotTestCase {
 
     strategies.forEach { name, strategy in
       assertSnapshot(
-        of: strategy,
         matching: value,
+        as: strategy,
         named: name,
         record: recording,
         timeout: timeout,
@@ -518,8 +519,8 @@ extension SnapshotTestCase {
   }
 
   public func assertSnapshots<A, B>(
-    of strategies: [Strategy<A, B>],
     matching value: A,
+    as strategies: [Strategy<A, B>],
     record recording: Bool = false,
     timeout: TimeInterval = 5,
     file: StaticString = #file,
@@ -529,8 +530,8 @@ extension SnapshotTestCase {
 
     strategies.forEach { strategy in
       assertSnapshot(
-        of: strategy,
         matching: value,
+        as: strategy,
         record: recording,
         timeout: timeout,
         file: file,
@@ -540,6 +541,54 @@ extension SnapshotTestCase {
     }
   }
 }
+#else
+public func assertSnapshots<A, B>(
+  matching value: A,
+  as strategies: [String: Strategy<A, B>],
+  record recording: Bool = false,
+  timeout: TimeInterval = 5,
+  file: StaticString = #file,
+  function: String = #function,
+  line: UInt = #line
+  ) {
+
+  strategies.forEach { name, strategy in
+    assertSnapshot(
+      matching: value,
+      as: strategy,
+      named: name,
+      record: recording,
+      timeout: timeout,
+      file: file,
+      function: function,
+      line: line
+    )
+  }
+}
+
+public func assertSnapshots<A, B>(
+  matching value: A,
+  as strategies: [Strategy<A, B>],
+  record recording: Bool = false,
+  timeout: TimeInterval = 5,
+  file: StaticString = #file,
+  function: String = #function,
+  line: UInt = #line
+  ) {
+
+  strategies.forEach { strategy in
+    assertSnapshot(
+      matching: value,
+      as: strategy,
+      record: recording,
+      timeout: timeout,
+      file: file,
+      function: function,
+      line: line
+    )
+  }
+}
+#endif
 
 public func request(
   with baseRequest: URLRequest,

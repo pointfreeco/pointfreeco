@@ -23,7 +23,7 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
 
-    assertSnapshot(of: .html, matching: emailNodes)
+    assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -40,7 +40,7 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
 
-    assertSnapshot(of: .html, matching: emailNodes)
+    assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -57,7 +57,7 @@ final class WelcomeEmailTests: TestCase {
 
     let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
 
-    assertSnapshot(of: .html, matching: emailNodes)
+    assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {

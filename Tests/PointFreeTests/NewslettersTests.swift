@@ -28,11 +28,11 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -42,11 +42,11 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_after_unsubscribe"
     )
   }
@@ -74,11 +74,11 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -88,11 +88,11 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_after_unsubscribe"
     )
     #endif
@@ -123,11 +123,11 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -137,11 +137,11 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_after_unsubscribe"
     )
     #endif
@@ -174,11 +174,11 @@ class NewslettersTests: TestCase {
     )
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_before_unsubscribe"
     )
 
@@ -188,11 +188,11 @@ class NewslettersTests: TestCase {
     assertSnapshot(matching: output)
 
     assertSnapshot(
-      of: .any,
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
         .run
         .perform()
         .right!,
+      as: .dump,
       named: "email_settings_after_unsubscribe"
     )
     #endif
