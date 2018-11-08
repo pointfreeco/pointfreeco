@@ -1,4 +1,4 @@
-FROM norionomura/swift:41
+FROM norionomura/swift:421
 
 # postgres
 RUN apt-get update
