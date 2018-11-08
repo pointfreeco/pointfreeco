@@ -19,7 +19,7 @@ class PricingTests: TestCase {
   func testPricing() {
     let conn = connection(from: request(to: .pricing(nil, expand: nil)))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -54,16 +54,16 @@ class PricingTests: TestCase {
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -77,16 +77,16 @@ class PricingTests: TestCase {
     )
     let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -96,7 +96,7 @@ class PricingTests: TestCase {
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(of: .ioConn, matching: result)
+    assertSnapshot(matching: result, as: .ioConn)
   }
 
   func testPricingLoggedIn_CanceledSubscriber() {
@@ -108,7 +108,7 @@ class PricingTests: TestCase {
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testPricingLoggedIn_PastDueSubscriber() {
@@ -120,6 +120,6 @@ class PricingTests: TestCase {
 
     let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

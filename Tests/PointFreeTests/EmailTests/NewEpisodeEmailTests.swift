@@ -15,7 +15,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Subscriber() {
     let doc = newEpisodeEmail.view((Current.episodes().first!, "", "", .mock))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -36,7 +36,7 @@ class NewEpisodeEmailTests: TestCase {
 
     let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -61,7 +61,7 @@ class NewEpisodeEmailTests: TestCase {
       .nonSubscriber
     ))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -86,7 +86,7 @@ class NewEpisodeEmailTests: TestCase {
       .mock
     ))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
