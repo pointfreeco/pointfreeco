@@ -17,6 +17,7 @@ Join us for a tour of the code base that powers this very site and see what func
   length: 39*60 + 21,
   permission: .free,
   publishedAt: Date(timeIntervalSince1970: 1531735023),
+  references: [.serverSideSwiftFromScratch, .pointfreeco],
   sequence: 22,
   title: "A Tour of Point-Free",
   trailerVideo: .init(
