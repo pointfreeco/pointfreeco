@@ -24,16 +24,16 @@ class EpisodeTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -44,16 +44,16 @@ class EpisodeTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 2200)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 2200))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -69,16 +69,16 @@ class EpisodeTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -94,16 +94,16 @@ class EpisodeTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -114,13 +114,13 @@ class EpisodeTests: TestCase {
 
     let conn = connection(from: episode)
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshot(
-        of: .ioConnWebView(size: .init(width: 1100, height: 1000)),
-        matching: conn |> siteMiddleware
+        matching: conn |> siteMiddleware,
+        as: .ioConnWebView(size: .init(width: 1100, height: 1000))
       )
     }
     #endif
@@ -146,16 +146,16 @@ class EpisodeTests: TestCase {
       from: request(to: .episode(.left(episode.slug)), session: .loggedIn)
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -181,16 +181,16 @@ class EpisodeTests: TestCase {
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -216,16 +216,16 @@ class EpisodeTests: TestCase {
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -254,7 +254,7 @@ class EpisodeTests: TestCase {
       )
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     XCTAssertEqual(
       [credit],
@@ -287,7 +287,7 @@ class EpisodeTests: TestCase {
       )
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     XCTAssertEqual(
       [],
@@ -320,7 +320,7 @@ class EpisodeTests: TestCase {
       )
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     XCTAssertEqual(
       [],
@@ -356,7 +356,7 @@ class EpisodeTests: TestCase {
       )
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     XCTAssertEqual(
       [credit],
@@ -399,16 +399,16 @@ class EpisodeTests: TestCase {
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1100, height: 1600)),
           "mobile": .ioConnWebView(size: .init(width: 500, height: 1900))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif

@@ -38,7 +38,7 @@ class HomeTests: TestCase {
     let conn = connection(from: request(to: .home))
     let result = conn |> siteMiddleware
 
-    assertSnapshot(of: .ioConn, matching: result)
+    assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
@@ -49,7 +49,7 @@ class HomeTests: TestCase {
       webView.frame.size.width = 400
       webView.frame.size.height = 3500
 
-      self.assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(matching: webView, named: "mobile")
     }
     #endif
   }
@@ -57,16 +57,16 @@ class HomeTests: TestCase {
   func testHomepage_Subscriber() {
     let conn = connection(from: request(to: .home, session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -75,6 +75,6 @@ class HomeTests: TestCase {
   func testEpisodesIndex() {
     let conn = connection(from: request(to: .episodes))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

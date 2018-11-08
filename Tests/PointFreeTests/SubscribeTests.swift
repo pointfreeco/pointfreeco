@@ -53,7 +53,7 @@ final class SubscribeTests: TestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(of: .any, matching: subscription)
+    assertSnapshot(matching: subscription, as: .dump)
     #endif
   }
 
@@ -180,7 +180,7 @@ final class SubscribeTests: TestCase {
       .right!!
 
     #if !os(Linux)
-    assertSnapshot(of: .any, matching: subscription)
+    assertSnapshot(matching: subscription, as: .dump)
     #endif
   }
 
