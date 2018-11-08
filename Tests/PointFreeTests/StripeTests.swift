@@ -267,4 +267,67 @@ final class StripeTests: TestCase {
 
     XCTAssertEqual("15-percent", discount.coupon.id)
   }
+
+  func testRequests() {
+    assertSnapshot(
+      matching: PointFree.cancelSubscription(id: "sub_test").rawValue,
+      named: "cancel-subscription"
+    )
+    assertSnapshot(
+      matching: PointFree.createCustomer(user: .mock, token: "tok_test", vatNumber: nil).rawValue,
+      named: "create-customer"
+    )
+    assertSnapshot(
+      matching: PointFree.createCustomer(user: .mock, token: "tok_test", vatNumber: "1").rawValue,
+      named: "create-customer-vat"
+    )
+    assertSnapshot(
+      matching: PointFree
+        .createSubscription(customer: "cus_test", plan: .teamYearly, quantity: 2, coupon: nil)
+        .rawValue,
+      named: "create-subscription"
+    )
+    assertSnapshot(
+      matching: PointFree
+        .createSubscription(customer: "cus_test", plan: .individualMonthly, quantity: 1, coupon: "freebie")
+        .rawValue,
+      named: "create-subscription-coupon"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchCustomer(id: "cus_test").rawValue,
+      named: "fetch-customer"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchInvoice(id: "in_test").rawValue,
+      named: "fetch-invoice"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchInvoices(for: "cus_test").rawValue,
+      named: "fetch-invoices"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchPlans().rawValue,
+      named: "fetch-plans"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchPlan(id: .individualMonthly).rawValue,
+      named: "fetch-plan"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchSubscription(id: "sub_test").rawValue,
+      named: "fetch-subscription"
+    )
+    assertSnapshot(
+      matching: PointFree.invoiceCustomer("cus_test").rawValue,
+      named: "invoice-customer"
+    )
+    assertSnapshot(
+      matching: PointFree.updateCustomer(id: "cus_test", token: "tok_test").rawValue,
+      named: "update-customer"
+    )
+    assertSnapshot(
+      matching: PointFree.updateSubscription(.mock, .individualYearly, 1, nil)!.rawValue,
+      named: "update-subscription"
+    )
+  }
 }

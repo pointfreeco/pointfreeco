@@ -12,7 +12,7 @@ public struct Stripe {
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
   public var fetchInvoices: (Customer.Id) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
-  public var fetchPlans: EitherIO<Swift.Error, ListEnvelope<Plan>>
+  public var fetchPlans: () -> EitherIO<Swift.Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
   public var invoiceCustomer: (Customer.Id) -> EitherIO<Swift.Error, Invoice>
@@ -22,19 +22,20 @@ public struct Stripe {
   public var js: String
 
   public static let live = Stripe(
-    cancelSubscription: PointFree.cancelSubscription,
-    createCustomer: PointFree.createCustomer,
-    createSubscription: PointFree.createSubscription,
-    fetchCustomer: PointFree.fetchCustomer,
-    fetchInvoice: PointFree.fetchInvoice,
-    fetchInvoices: PointFree.fetchInvoices,
-    fetchPlans: PointFree.fetchPlans,
-    fetchPlan: PointFree.fetchPlan,
-    fetchSubscription: PointFree.fetchSubscription,
-    invoiceCustomer: PointFree.invoiceCustomer,
-    updateCustomer: PointFree.updateCustomer(id:token:),
-    updateCustomerExtraInvoiceInfo: PointFree.updateCustomer(id:extraInvoiceInfo:),
-    updateSubscription: PointFree.updateSubscription,
+    cancelSubscription: PointFree.cancelSubscription >>> runStripe,
+    createCustomer: { PointFree.createCustomer(user: $0, token: $1, vatNumber: $2) |> runStripe },
+    createSubscription: {
+      PointFree.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3) |> runStripe },
+    fetchCustomer: PointFree.fetchCustomer >>> runStripe,
+    fetchInvoice: PointFree.fetchInvoice >>> runStripe,
+    fetchInvoices: PointFree.fetchInvoices >>> runStripe,
+    fetchPlans: { PointFree.fetchPlans() |> runStripe },
+    fetchPlan: PointFree.fetchPlan >>> runStripe,
+    fetchSubscription: PointFree.fetchSubscription >>> runStripe,
+    invoiceCustomer: PointFree.invoiceCustomer >>> runStripe,
+    updateCustomer: { PointFree.updateCustomer(id: $0, token: $1) |> runStripe },
+    updateCustomerExtraInvoiceInfo: { PointFree.updateCustomer(id: $0, extraInvoiceInfo: $1) |> runStripe },
+    updateSubscription: { PointFree.updateSubscription($0, $1, $2, $3) |> runStripe },
     js: "https://js.stripe.com/v3/"
   )
 
@@ -227,6 +228,8 @@ public struct Stripe {
     }
   }
 
+  public typealias Request<A> = Tagged<A, URLRequest> where A: Decodable
+
   public struct Subscription: Codable {
     public private(set) var canceledAt: Date?
     public private(set) var cancelAtPeriodEnd: Bool
@@ -341,14 +344,16 @@ extension Tagged where Tag == Stripe.Plan, RawValue == String {
   }
 }
 
-private func cancelSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"]))
+func cancelSubscription(id: Stripe.Subscription.Id) -> Stripe.Request<Stripe.Subscription> {
+  return stripeRequest(
+    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
+  )
 }
 
-private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
-  -> EitherIO<Error, Stripe.Customer> {
+func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
+  -> Stripe.Request<Stripe.Customer> {
 
-    return stripeDataTask("customers", .post(filteredValues <| [
+    return stripeRequest("customers", .post(filteredValues <| [
       "business_vat_id": vatNumber,
       "description": user.id.rawValue.uuidString,
       "email": user.email.rawValue,
@@ -356,13 +361,13 @@ private func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumb
       ]))
 }
 
-private func createSubscription(
+func createSubscription(
   customer: Stripe.Customer.Id,
   plan: Stripe.Plan.Id,
   quantity: Int,
   coupon: SubscribeData.Coupon?
   )
-  -> EitherIO<Error, Stripe.Subscription> {
+  -> Stripe.Request<Stripe.Subscription> {
 
     var params: [String: Any] = [:]
     params["customer"] = customer.rawValue
@@ -370,66 +375,67 @@ private func createSubscription(
     params["items[0][quantity]"] = String(quantity)
     params["coupon"] = coupon?.rawValue
 
-    return stripeDataTask("subscriptions?expand[]=customer", .post(params))
+    return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
-private func fetchCustomer(id: Stripe.Customer.Id) -> EitherIO<Error, Stripe.Customer> {
-  return stripeDataTask("customers/" + id.rawValue)
+func fetchCustomer(id: Stripe.Customer.Id) -> Stripe.Request<Stripe.Customer> {
+  return stripeRequest("customers/" + id.rawValue)
 }
 
-private func fetchInvoice(id: Stripe.Invoice.Id) -> EitherIO<Error, Stripe.Invoice> {
-  return stripeDataTask("invoices/" + id.rawValue + "?expand[]=charge")
+func fetchInvoice(id: Stripe.Invoice.Id) -> Stripe.Request<Stripe.Invoice> {
+  return stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-private func fetchInvoices(for customer: Stripe.Customer.Id) -> EitherIO<Error, Stripe.ListEnvelope<Stripe.Invoice>> {
-  return stripeDataTask("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
+func fetchInvoices(for customer: Stripe.Customer.Id) -> Stripe.Request<Stripe.ListEnvelope<Stripe.Invoice>> {
+  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
 }
 
-private let fetchPlans: EitherIO<Error, Stripe.ListEnvelope<Stripe.Plan>> =
-  stripeDataTask("plans")
-
-private func fetchPlan(id: Stripe.Plan.Id) -> EitherIO<Error, Stripe.Plan> {
-  return stripeDataTask("plans/" + id.rawValue)
+func fetchPlans() -> Stripe.Request<Stripe.ListEnvelope<Stripe.Plan>> {
+  return stripeRequest("plans")
 }
 
-private func fetchSubscription(id: Stripe.Subscription.Id) -> EitherIO<Error, Stripe.Subscription> {
-  return stripeDataTask("subscriptions/" + id.rawValue + "?expand[]=customer")
+func fetchPlan(id: Stripe.Plan.Id) -> Stripe.Request<Stripe.Plan> {
+  return stripeRequest("plans/" + id.rawValue)
 }
 
-private func invoiceCustomer(_ customer: Stripe.Customer.Id)
-  -> EitherIO<Error, Stripe.Invoice> {
+func fetchSubscription(id: Stripe.Subscription.Id) -> Stripe.Request<Stripe.Subscription> {
+  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
+}
 
-    return stripeDataTask("invoices", .post([
+func invoiceCustomer(_ customer: Stripe.Customer.Id)
+  -> Stripe.Request<Stripe.Invoice> {
+
+    return stripeRequest("invoices", .post([
       "customer": customer.rawValue,
       ]))
 }
 
-private func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
-  -> EitherIO<Error, Stripe.Customer> {
+func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
+  -> Stripe.Request<Stripe.Customer> {
 
-    return stripeDataTask("customers/" + id.rawValue, .post([
+    return stripeRequest("customers/" + id.rawValue, .post([
       "source": token.rawValue,
       ]))
 }
 
-private func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> EitherIO<Swift.Error, Stripe.Customer> {
+func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> Stripe.Request<Stripe.Customer> {
 
-  return stripeDataTask("customers/" + id.rawValue, .post([
+  return stripeRequest("customers/" + id.rawValue, .post([
     "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
     ]))
 }
 
-private func updateSubscription(
+func updateSubscription(
   _ currentSubscription: Stripe.Subscription,
   _ plan: Stripe.Plan.Id,
   _ quantity: Int,
   _ prorate: Bool?
   )
-  -> EitherIO<Error, Stripe.Subscription> {
+  -> Stripe.Request<Stripe.Subscription>? {
 
-    guard let item = currentSubscription.items.data.first else { return throwE(unit) }
+    guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeDataTask("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
+    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
       "items[0][id]": item.id.rawValue,
       "items[0][plan]": plan.rawValue,
       "items[0][quantity]": String(quantity),
@@ -445,7 +451,7 @@ let stripeJsonEncoder = JSONEncoder()
   |> \.dateEncodingStrategy .~ .secondsSince1970
 //  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
-private enum Method {
+enum Method {
   case get
   case post([String: Any])
   case delete([String: String])
@@ -457,7 +463,7 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
     return \.httpMethod .~ "GET"
   case let .post(params):
     return (\.httpMethod .~ "POST")
-      <> setHeader("Idempotency-Key", UUID().uuidString)
+      <> setHeader("Idempotency-Key", Current.uuid().uuidString)
       <> attachFormData(params)
   case let .delete(params):
     return (\.httpMethod .~ "DELETE")
@@ -465,40 +471,34 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
   }
 }
 
-private func stripeUrlRequest(_ path: String, _ method: Method = .get) -> IO<URLRequest> {
-  return IO {
-    URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+func stripeRequest<A>(_ path: String, _ method: Method = .get) -> Stripe.Request<A> {
+  return Stripe.Request(
+    rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
       <> attachBasicAuth(username: Current.envVars.stripe.secretKey)
-  }
+  )
 }
 
-private func stripeDataTask<A>(_ path: String, _ method: Method = .get)
-  -> EitherIO<Error, A>
-  where A: Decodable {
+private func runStripe<A>(_ stripeRequest: Stripe.Request<A>?) -> EitherIO<Error, A> {
+  guard let stripeRequest = stripeRequest else { return throwE(unit) }
 
-    let task: EitherIO<Error, A> = lift(stripeUrlRequest(path, method))
-      .flatMap {
-        dataTask(with: $0)
-          .map(first)
-          .flatMap { data in
-            .wrap {
-              do {
-                return try stripeJsonDecoder.decode(A.self, from: data)
-              } catch {
-                throw (try? stripeJsonDecoder.decode(Stripe.ErrorEnvelope.self, from: data))
-                  ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
-              }
+  let task: EitherIO<Error, A> = pure(stripeRequest.rawValue)
+    .flatMap {
+      dataTask(with: $0)
+        .map(first)
+        .flatMap { data in
+          .wrap {
+            do {
+              return try stripeJsonDecoder.decode(A.self, from: data)
+            } catch {
+              throw (try? stripeJsonDecoder.decode(Stripe.ErrorEnvelope.self, from: data))
+                ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
             }
-        }
-    }
+          }
+      }
+  }
 
-    switch method {
-    case .delete, .get:
-      return task
-    case .post:
-      return task.retry(maxRetries: 3)
-    }
+  return task
 }
 
 // FIXME???
