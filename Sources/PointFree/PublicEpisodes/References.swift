@@ -4,7 +4,7 @@ extension Episode.Reference {
   static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
-Stephen gave at the [Functional Swift Conference](http://funswiftconf.com) about functional setters if
+Stephen spoke about functional setters at the [Functional Swift Conference](http://funswiftconf.com) if
 you're looking for more material on the topic to reinforce the ideas.
 """,
     link: "https://www.youtube.com/watch?v=I23AC09YnHo",
@@ -27,8 +27,8 @@ focus on just the core ideas.
   static let howToControlTheWorld = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
-Stephen gave a talk on our `Environment`-based apporach to dependency injection at NSSpain 2018. He starts
-with the basics, and slowly builds up to controlling more and more complex dependencies.
+Stephen gave a talk on our `Environment`-based approach to dependency injection at NSSpain 2018. He starts
+with the basics and slowly builds up to controlling more and more complex dependencies.
 """,
     link: "https://vimeo.com/291588126",
     publishedAt: Date(timeIntervalSince1970: 1537761600),
@@ -40,7 +40,7 @@ with the basics, and slowly builds up to controlling more and more complex depen
     blurb: """
 A Swift evolution proposal to rename a particular overload of `flatMap` to `compactMap`. The overload in
 question was subtly different from the `flatMap` that we are familiar with on arrays and optionals, and
-was a cause for confusion for beginners to functional terms.
+was a cause of confusion for those new to functional terms.
 """,
     link: "https://github.com/apple/swift-evolution/blob/master/proposals/0187-introduce-filtermap.md",
     publishedAt: Date(timeIntervalSince1970: 1509681600),
@@ -67,7 +67,7 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
 We pioneered playground driven development while we were at Kickstarter, where we replaced the majority of
 our use for storyboards with playgrounds. It takes a little bit of work to get started, but once you do
 it really pays dividends. In this Swift Talk episode, Brandon sits down with Chris Eidhof to show
-the ins-and-outs of doing playground driven development.
+the ins and outs of playground driven development.
 """,
     link: "https://talk.objc.io/episodes/S01E51-playground-driven-development-at-kickstarter",
     publishedAt: Date(timeIntervalSince1970: 1495166400),
@@ -91,7 +91,7 @@ things you can do once you have it.
     blurb: """
 The entire codebase for this very site is completely written in Swift _and_ open source! Explore the code
 by browsing it on GitHub, or join us for a tour of the codebase in a
-[Point-Free episode](http://localhost:8080/episodes/ep22-a-tour-of-point-free).
+[Point-Free episode](/episodes/ep22-a-tour-of-point-free).
 """,
     link: "https://github.com/pointfreeco/pointfreeco",
     publishedAt: Date(timeIntervalSince1970: 1505620800),
@@ -238,7 +238,7 @@ or mix up these values at compile time by using the tagged wrappers.
     blurb: """
 This famous paper describes the "theorems for free" result, in which if you write down a generic function
 signature, you can derive theorems that the function satisfies. This works in any language that has
-parametric polymorphism, which Swift does.
+parametric polymorphism, as Swift does.
 """,
     link: "https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf",
     publishedAt: Date(timeIntervalSince1970: 615268800),
@@ -248,7 +248,7 @@ parametric polymorphism, which Swift does.
   static let typeSafeFilePathsWithPhantomTypes = Episode.Reference(
     author: "Brandon Kase, Chris Eidhof, Florian Kugler",
     blurb: """
-In this Swift Talk episode, Florian and special guess [Brandon Kase](https://twitter.com/bkase_) show how
+In this Swift Talk episode, Florian and special guest [Brandon Kase](https://twitter.com/bkase_) show how
 to apply the ideas of phantom types to create a type safe API for dealing with file paths. We've used
 phantom types in our episode on [Tagged](/episodes/ep12-tagged) to provide a compile-time mechanism for
 distinguishing otherwise indistinguishable types.
@@ -263,7 +263,7 @@ distinguishing otherwise indistinguishable types.
     blurb: """
 Matt gives another account of protocol-oriented programming gone awry, this time by breaking down the famous
 WWDC talk where a shape library is designed using protocols. By rewriting the library without protocols Matt
-ends up with something that can be tested without mocks, can be inspected at runtime, and more flexible.
+ends up with something that can be tested without mocks, can be inspected at runtime, and is more flexible in general.
 """,
     link: "https://matt.diephouse.com/2018/08/value-oriented-programming/",
     publishedAt: Date(timeIntervalSince1970: 1532836800),
