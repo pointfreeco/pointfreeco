@@ -15,7 +15,7 @@ class EmailInviteTests: TestCase {
   func testEmailInvite() {
     let doc = teamInviteEmailView.view((.mock, .mock))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -33,7 +33,7 @@ class EmailInviteTests: TestCase {
   func testInviteAcceptance() {
     let doc = inviteeAcceptedEmailView.view((.mock, .mock))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

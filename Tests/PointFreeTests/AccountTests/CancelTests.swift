@@ -22,13 +22,13 @@ final class CancelTests: TestCase {
   func testCancel() {
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.cancel))))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelNoSubscription() {
@@ -36,7 +36,7 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelCancelingSubscription() {
@@ -44,7 +44,7 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelCanceledSubscription() {
@@ -52,7 +52,7 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelStripeFailure() {
@@ -60,13 +60,13 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testCancelEmail() {
     let doc = cancelEmailView.view((.mock, .mock))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)
@@ -86,13 +86,13 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate))))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateNoSubscription() {
@@ -100,13 +100,13 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateActiveSubscription() {
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateCanceledSubscription() {
@@ -114,7 +114,7 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateStripeFailure() {
@@ -122,13 +122,13 @@ final class CancelTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.reactivate)), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testReactivateEmail() {
     let doc = reactivateEmailView.view((.mock, .mock))
 
-    assertSnapshot(of: .html, matching: doc)
+    assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc))
 
     #if !os(Linux)

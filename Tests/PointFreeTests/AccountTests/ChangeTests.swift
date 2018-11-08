@@ -21,16 +21,16 @@ final class ChangeTests: TestCase {
   func testChangeShow() {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -39,7 +39,7 @@ final class ChangeTests: TestCase {
   func testChangeShowLoggedOut() {
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedOut))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testChangeShowNoSubscription() {
@@ -47,7 +47,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testChangeShowCancelingSubscription() {
@@ -55,16 +55,16 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       assertSnapshots(
-        of: [
+        matching: conn |> siteMiddleware,
+        as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ],
-        matching: conn |> siteMiddleware
+        ]
       )
     }
     #endif
@@ -75,7 +75,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testChangeUpdateUpgradeIndividualPlan() {
@@ -91,7 +91,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -108,7 +108,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -125,7 +125,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -142,7 +142,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -161,7 +161,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     waitForExpectations(timeout: 0.1, handler: nil)
     #endif
   }
@@ -179,7 +179,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -216,7 +216,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity -~ 1)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 
@@ -235,7 +235,7 @@ final class ChangeTests: TestCase {
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))
 
-    assertSnapshot(of: .ioConn, matching: conn |> siteMiddleware)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
   }
 }
