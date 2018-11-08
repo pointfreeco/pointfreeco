@@ -236,7 +236,7 @@ or mix up these values at compile time by using the tagged wrappers.
   static let theoremsForFree = Episode.Reference(
     author: "Philip Wadler",
     blurb: """
-This famous paper describes the "theorems for free" result, in which if you write down a generic function
+This famous paper describes "theorems for free", in which if you write down a generic function
 signature, you can derive theorems that the function satisfies. This works in any language that has
 parametric polymorphism, as Swift does.
 """,
