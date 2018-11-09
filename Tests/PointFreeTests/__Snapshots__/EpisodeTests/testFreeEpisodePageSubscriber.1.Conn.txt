@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 70842
+Content-Length: 70887
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2277,6 +2277,7 @@ working how we expect:</p>
                           video-js
                           vjs-default-skin
                           vjs-big-play-centered"
+                   style="position:absolute"
                    controls
                    playslinline
                    autoplay
