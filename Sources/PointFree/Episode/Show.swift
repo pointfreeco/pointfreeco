@@ -232,7 +232,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
             innerVideoContainerClass,
             videoJsClasses
             ]),
-          style(position(.absolute) <> objectFit(.cover)),
+          style(position(.absolute)),
           controls(true),
           playsinline(true),
           autoplay(true),
