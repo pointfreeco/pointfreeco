@@ -486,7 +486,7 @@ extension Strategy {
   }
 
   #if os(macOS)
-  @available(OSX 10.13, *)
+  @available(OSX 10.14, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
     return Strategy<NSView, NSImage>.image(size: size).pullback { io in
       let webView = WKWebView()
