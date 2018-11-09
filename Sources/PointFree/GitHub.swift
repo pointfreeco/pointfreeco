@@ -107,9 +107,15 @@ private func runGitHub<A>(_ gitHubRequest: DecodableRequest<A>) -> EitherIO<Erro
   return jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder)
 }
 
-@available(OSX 10.13, *)
-private let gitHubJsonEncoder = JSONEncoder()
-  |> \.outputFormatting .~ [.prettyPrinted, .sortedKeys]
+private let gitHubJsonEncoder: JSONEncoder = { () in
+  let encoder = JSONEncoder()
+
+  if #available(OSX 10.13, *) {
+    encoder.outputFormatting = [.sortedKeys]
+  }
+
+  return encoder
+}()
 
 private let gitHubJsonDecoder = JSONDecoder()
 //  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
