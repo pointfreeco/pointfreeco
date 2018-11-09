@@ -66,7 +66,7 @@ func fetchAuthToken(with code: String) -> DecodableRequest<Either<GitHub.OAuthEr
 
   var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
   request.httpMethod = "POST"
-  request.httpBody = try? JSONEncoder().encode(
+  request.httpBody = try? gitHubJsonEncoder.encode(
     [
       "client_id": Current.envVars.gitHub.clientId,
       "client_secret": Current.envVars.gitHub.clientSecret,
@@ -106,6 +106,10 @@ private func runGitHub<A>(_ gitHubRequest: DecodableRequest<A>) -> EitherIO<Erro
 
   return jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder)
 }
+
+@available(OSX 10.13, *)
+private let gitHubJsonEncoder = JSONEncoder()
+  |> \.outputFormatting .~ [.prettyPrinted, .sortedKeys]
 
 private let gitHubJsonDecoder = JSONDecoder()
 //  |> \.keyDecodingStrategy .~ .convertFromSnakeCase
