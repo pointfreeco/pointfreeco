@@ -18,10 +18,10 @@ class ChangeEmailConfirmationTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 800))
+      let webView = WKWebView()
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 600, height: 800)))
     }
     #endif
   }
@@ -33,10 +33,10 @@ class ChangeEmailConfirmationTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 600, height: 800))
+      let webView = WKWebView()
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 600, height: 800)))
     }
     #endif
   }

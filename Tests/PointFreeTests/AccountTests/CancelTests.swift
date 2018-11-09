@@ -71,12 +71,11 @@ final class CancelTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
+      let webView = WKWebView()
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 800, height: 800)))
 
-      webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 400, height: 700)))
     }
     #endif
   }
@@ -133,12 +132,11 @@ final class CancelTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
+      let webView = WKWebView()
       webView.loadHTMLString(render(doc), baseURL: nil)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 800, height: 800)))
 
-      webView.frame.size = .init(width: 400, height: 700)
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image(size: .init(width: 400, height: 700)))
     }
     #endif
   }

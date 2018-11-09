@@ -488,8 +488,8 @@ extension Strategy {
   #if os(macOS)
   @available(OSX 10.13, *)
   public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Strategy<NSView, NSImage>.image.pullback { io in
-      let webView = WKWebView(frame: .init(origin: .zero, size: size))
+    return Strategy<NSView, NSImage>.image(size: size).pullback { io in
+      let webView = WKWebView()
       webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
       return webView
     }
