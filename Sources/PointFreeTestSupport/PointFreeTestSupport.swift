@@ -30,7 +30,8 @@ extension Environment {
     logger: .mock,
     mailgun: .mock,
     renderHtml: Html.render,
-    stripe: .mock
+    stripe: .mock,
+    uuid: { .mock }
   )
 
   public static let teamYearly = mock
@@ -236,7 +237,7 @@ extension Stripe {
     fetchCustomer: const(pure(.mock)),
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
-    fetchPlans: pure(.mock([.mock])),
+    fetchPlans: { pure(.mock([.mock])) },
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
@@ -467,6 +468,10 @@ extension Session {
 
   public static let loggedIn = loggedOut
     |> \.userId .~ Database.User.mock.id
+}
+
+extension UUID {
+  public static let mock = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!
 }
 
 extension Strategy {

@@ -1,0 +1,4 @@
+DELETE https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer
+Authorization: Basic c2tfdGVzdDo=
+
+at_period_end=true
