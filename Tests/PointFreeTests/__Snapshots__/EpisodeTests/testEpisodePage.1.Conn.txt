@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 71685
+Content-Length: 71596
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2222,8 +2222,6 @@ subscriber-only episode of your choosing!
                           video-js
                           vjs-default-skin
                           vjs-big-play-centered"
-                   style="position:absolute;
-                          object-fit:cover"
                    controls
                    playslinline
                    autoplay
