@@ -72,6 +72,8 @@ enum JSONError: Error {
   case error(String, Error)
 }
 
+public typealias DecodableRequest<A> = Tagged<A, URLRequest> where A: Decodable
+
 public func jsonDataTask<A>(with request: URLRequest, decoder: JSONDecoder? = nil)
   -> EitherIO<Error, A>
   where A: Decodable {

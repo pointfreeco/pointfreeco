@@ -228,8 +228,6 @@ public struct Stripe {
     }
   }
 
-  public typealias Request<A> = Tagged<A, URLRequest> where A: Decodable
-
   public struct Subscription: Codable {
     public private(set) var canceledAt: Date?
     public private(set) var cancelAtPeriodEnd: Bool
@@ -344,14 +342,14 @@ extension Tagged where Tag == Stripe.Plan, RawValue == String {
   }
 }
 
-func cancelSubscription(id: Stripe.Subscription.Id) -> Stripe.Request<Stripe.Subscription> {
+func cancelSubscription(id: Stripe.Subscription.Id) -> DecodableRequest<Stripe.Subscription> {
   return stripeRequest(
     "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
   )
 }
 
 func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
-  -> Stripe.Request<Stripe.Customer> {
+  -> DecodableRequest<Stripe.Customer> {
 
     return stripeRequest("customers", .post(filteredValues <| [
       "business_vat_id": vatNumber,
@@ -367,7 +365,7 @@ func createSubscription(
   quantity: Int,
   coupon: SubscribeData.Coupon?
   )
-  -> Stripe.Request<Stripe.Subscription> {
+  -> DecodableRequest<Stripe.Subscription> {
 
     var params: [String: Any] = [:]
     params["customer"] = customer.rawValue
@@ -378,32 +376,32 @@ func createSubscription(
     return stripeRequest("subscriptions?expand[]=customer", .post(params))
 }
 
-func fetchCustomer(id: Stripe.Customer.Id) -> Stripe.Request<Stripe.Customer> {
+func fetchCustomer(id: Stripe.Customer.Id) -> DecodableRequest<Stripe.Customer> {
   return stripeRequest("customers/" + id.rawValue)
 }
 
-func fetchInvoice(id: Stripe.Invoice.Id) -> Stripe.Request<Stripe.Invoice> {
+func fetchInvoice(id: Stripe.Invoice.Id) -> DecodableRequest<Stripe.Invoice> {
   return stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-func fetchInvoices(for customer: Stripe.Customer.Id) -> Stripe.Request<Stripe.ListEnvelope<Stripe.Invoice>> {
+func fetchInvoices(for customer: Stripe.Customer.Id) -> DecodableRequest<Stripe.ListEnvelope<Stripe.Invoice>> {
   return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
 }
 
-func fetchPlans() -> Stripe.Request<Stripe.ListEnvelope<Stripe.Plan>> {
+func fetchPlans() -> DecodableRequest<Stripe.ListEnvelope<Stripe.Plan>> {
   return stripeRequest("plans")
 }
 
-func fetchPlan(id: Stripe.Plan.Id) -> Stripe.Request<Stripe.Plan> {
+func fetchPlan(id: Stripe.Plan.Id) -> DecodableRequest<Stripe.Plan> {
   return stripeRequest("plans/" + id.rawValue)
 }
 
-func fetchSubscription(id: Stripe.Subscription.Id) -> Stripe.Request<Stripe.Subscription> {
+func fetchSubscription(id: Stripe.Subscription.Id) -> DecodableRequest<Stripe.Subscription> {
   return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
 }
 
 func invoiceCustomer(_ customer: Stripe.Customer.Id)
-  -> Stripe.Request<Stripe.Invoice> {
+  -> DecodableRequest<Stripe.Invoice> {
 
     return stripeRequest("invoices", .post([
       "customer": customer.rawValue,
@@ -411,14 +409,14 @@ func invoiceCustomer(_ customer: Stripe.Customer.Id)
 }
 
 func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
-  -> Stripe.Request<Stripe.Customer> {
+  -> DecodableRequest<Stripe.Customer> {
 
     return stripeRequest("customers/" + id.rawValue, .post([
       "source": token.rawValue,
       ]))
 }
 
-func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> Stripe.Request<Stripe.Customer> {
+func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Stripe.Customer> {
 
   return stripeRequest("customers/" + id.rawValue, .post([
     "metadata": ["extraInvoiceInfo": extraInvoiceInfo],
@@ -431,7 +429,7 @@ func updateSubscription(
   _ quantity: Int,
   _ prorate: Bool?
   )
-  -> Stripe.Request<Stripe.Subscription>? {
+  -> DecodableRequest<Stripe.Subscription>? {
 
     guard let item = currentSubscription.items.data.first else { return nil }
 
@@ -471,15 +469,15 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
   }
 }
 
-func stripeRequest<A>(_ path: String, _ method: Method = .get) -> Stripe.Request<A> {
-  return Stripe.Request(
+func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableRequest<A> {
+  return DecodableRequest(
     rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
       <> attachBasicAuth(username: Current.envVars.stripe.secretKey)
   )
 }
 
-private func runStripe<A>(_ stripeRequest: Stripe.Request<A>?) -> EitherIO<Error, A> {
+private func runStripe<A>(_ stripeRequest: DecodableRequest<A>?) -> EitherIO<Error, A> {
   guard let stripeRequest = stripeRequest else { return throwE(unit) }
 
   let task: EitherIO<Error, A> = pure(stripeRequest.rawValue)
