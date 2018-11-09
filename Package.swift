@@ -15,7 +15,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("7a04ca2")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .revision("86f36c9")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("0.1.3")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("885d3cb")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("6bf151c")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
