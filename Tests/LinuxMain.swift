@@ -158,7 +158,8 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_NotEnoughCredits", testRedeemEpisodeCredit_NotEnoughCredits),
     ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
-    ("test_permission", test_permission)
+    ("test_permission", test_permission),
+    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences)
   ]
 }
 extension FreeEpisodeEmailTests {
@@ -287,7 +288,8 @@ extension StripeTests {
     ("testDecodingCustomer", testDecodingCustomer),
     ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
     ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
-    ("testDecodingDiscountJson", testDecodingDiscountJson)
+    ("testDecodingDiscountJson", testDecodingDiscountJson),
+    ("testRequests", testRequests)
   ]
 }
 extension StripeWebhooksTests {

@@ -1,0 +1,2 @@
+GET https://api.stripe.com/v1/plans/individual-monthly
+Authorization: Basic c2tfdGVzdDo=
