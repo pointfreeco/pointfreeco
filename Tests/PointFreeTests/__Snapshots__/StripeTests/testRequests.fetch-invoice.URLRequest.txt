@@ -1,0 +1,2 @@
+GET https://api.stripe.com/v1/invoices/in_test?expand%5B%5D=charge
+Authorization: Basic c2tfdGVzdDo=

@@ -1,0 +1,2 @@
+GET https://api.stripe.com/v1/plans
+Authorization: Basic c2tfdGVzdDo=
