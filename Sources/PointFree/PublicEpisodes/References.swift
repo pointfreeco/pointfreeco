@@ -1,4 +1,6 @@
 import Foundation
+import Optics
+import Prelude
 
 extension Episode.Reference {
   static let composableSetters = Episode.Reference(
@@ -33,6 +35,19 @@ with the basics and slowly builds up to controlling more and more complex depend
     link: "https://vimeo.com/291588126",
     publishedAt: Date(timeIntervalSince1970: 1537761600),
     title: "How to Control the World"
+  )
+
+  static let iosSnapshotTestCaseGithub = Episode.Reference(
+    author: "Uber, previously Facebook",
+    blurb: """
+Facebook released a snapshot testing framework known as `FBSnapshotTestCase` back in 2013, and many in the
+iOS community adopted it. The library gives you an API to assert snapshots of `UIView`'s that will take
+a screenshot of your UI and compare it against a reference image in your repo. If a single pixel is off
+it will fail the test. Since then Facebook has stopped maintaining it and transfered ownership to Uber.
+""",
+    link: "https://github.com/uber/ios-snapshot-test-case",
+    publishedAt: nil,
+    title: "uber/ios-snapshot-test-case"
   )
 
   static let introduceSequenceCompactMap = Episode.Reference(
@@ -111,6 +126,18 @@ benefits, but does increase the complexity of the code.
     title: "Protocol Oriented Programming is Not a Silver Bullet"
   )
 
+  static let protocolOrientedProgrammingWwdc = Episode.Reference(
+    author: "Apple",
+    blurb: """
+Apple's eponymous WWDC talk on protocol-oriented programming:
+
+> At the heart of Swift's design are two incredibly powerful ideas: protocol-oriented programming and first class value semantics. Each of these concepts benefit predictability, performance, and productivity, but together they can change the way we think about programming. Find out how you can apply these ideas to improve the code you write.
+""",
+    link: "https://developer.apple.com/videos/play/wwdc2015/408/",
+    publishedAt: referenceDateFormatter.date(from: "2015-06-16"),
+    title: "Protocol-Oriented Programming in Swift"
+  )
+
   static let randomZalgoGenerator = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
@@ -162,6 +189,16 @@ and expressive solutions to these problems.
     link: "https://www.skilled.io/u/swiftsummit/server-side-swift-from-scratch",
     publishedAt: Date(timeIntervalSince1970: 1509422400),
     title: "Server-Side Swift from Scratch"
+  )
+
+  static let snapshotTesting = Episode.Reference(
+    author: "Stephen Celis",
+    blurb: """
+Stephen gave an overview of snapshot testing, its benefits, and how one may snapshot Swift data types, walking through a minimal implementation.
+""",
+    link: "https://www.stephencelis.com/2017/09/snapshot-testing-in-swift",
+    publishedAt: Date(timeIntervalSince1970: 1504238400),
+    title: "Snapshot Testing in Swift"
   )
 
   static let someNewsAboutContramap = Episode.Reference(
@@ -263,7 +300,8 @@ distinguishing otherwise indistinguishable types.
     blurb: """
 Matt gives another account of protocol-oriented programming gone awry, this time by breaking down the famous
 WWDC talk where a shape library is designed using protocols. By rewriting the library without protocols Matt
-ends up with something that can be tested without mocks, can be inspected at runtime, and is more flexible in general.
+ends up with something that can be tested without mocks, can be inspected at runtime, and is more flexible in
+general.
 """,
     link: "https://matt.diephouse.com/2018/08/value-oriented-programming/",
     publishedAt: Date(timeIntervalSince1970: 1532836800),
@@ -271,3 +309,6 @@ ends up with something that can be tested without mocks, can be inspected at run
   )
 
 }
+
+private let referenceDateFormatter = DateFormatter()
+  |> \.dateFormat .~ "yyyy-MM-dd"
