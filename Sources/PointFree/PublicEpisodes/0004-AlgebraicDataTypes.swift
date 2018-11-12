@@ -1098,13 +1098,13 @@ There are a lot of representable states here that don't make sense. They even ju
 It was brought to our attention by one of our viewers, [Ole Begemann](http://twitter.com/olebegemann), that
 it is in fact possible for `URLResponse` and `Error` to be non-`nil` at the same time. He wrote a great
 [blog post](https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/) about this, and we
-discuss this correct at the beginning of our follow up episode,
+discuss this correction at the beginning of our follow up episode,
 [Algebraic Data Types: Exponents](/episodes/ep9-algebraic-data-types-exponents).
 """,
     timestamp: nil,
     type: .correction
   ),
-  
+
   .init(
     content: """
 When you work with this interface, you may notice that when you `if let` over the cases you expect, you inevitably end up with a branch that you need to `fatalError`, and just hope it never gets called.
