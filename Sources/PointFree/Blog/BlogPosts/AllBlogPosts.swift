@@ -31,4 +31,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0020_PodcastRSS,
   post0021_howToControlTheWorld,
   post0022_someNewsAboutContramap,
+  post0023_openSourcingSnapshotTesting
 ]
