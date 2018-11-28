@@ -178,6 +178,12 @@ the HTTP method, we would get a test failure with a nicely formatted failure mes
 
     .init(
       content: """
+It's worth comparing this to the more traditional way of unit testing using `XCTAssert`. You would have to
+create an entire `URLRequest` from scratch and assert against it. And then if it failed you wouldn't have any
+specific information of what went wrong. With snapshot testing we are getting very broad coverage on the full
+request, including URL, method, headers and body, with very little work. And when the snapshot fails we get a
+nice, human readable failure with a diff.
+
 ## Give it a spin today!
 
 ---
@@ -187,8 +193,10 @@ discussed the idea of protocol witnesses and how to translate protocols into con
 miniseries ([part 1](/episodes/ep33-protocol-witnesses-part-1)),
 [part 2](/episodes/ep34-protocol-witnesses-part-2). We then expanded on those ideas to show how to convert
 some of the more advanced concepts of Swift protocols into concrete types in another two-part miniseries
-([part 1](/episodes/ep35-advanced-protocol-witnesses-part-1), [part 2](/episodes/ep36-advanced-protocol-witnesses-part-2)). And finally, we applied all of those ideas to designing this very library, first in the
-protocol-oriented style ([part 1](/episodes/ep37-protocol-oriented-library-design-part-1),
+([part 1](/episodes/ep35-advanced-protocol-witnesses-part-1),
+[part 2](/episodes/ep36-advanced-protocol-witnesses-part-2)). And finally, we applied all of those ideas to
+designing this very library, first in the protocol-oriented style
+([part 1](/episodes/ep37-protocol-oriented-library-design-part-1),
 [part 2](/episodes/ep38-protocol-oriented-library-design-part-2)), and then refactored into the
 [witness-oriented style](/episodes/ep39-witness-oriented-library-design).
 """,
