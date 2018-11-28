@@ -16,14 +16,16 @@ TODO
 ---
 
 The Swift community has been a large proponent of snapshot testing, mostly thanks to the wonderful
-[iOSSnapshotTestCase](todo) library (formerly known as [FBSnapshotTestCase](todo)). It introduced a new kind
+[iOSSnapshotTestCase](https://github.com/uber/ios-snapshot-test-case) library
+(formerly known as [FBSnapshotTestCase](https://github.com/facebookarchive/ios-snapshot-test-case)). It
+introduced a new kind
 of test coverage for iOS applications by allowing us to assert against an image screenshot of a UI component.
 This is a whole new level of testing that can catch regressions in the pixel data of our UI so that you can
 make sure that future changes and refactors do not introduce visual regressions into your views.
 
 However, iOSSnapshotTestCase has not evolved much over the years, and its still largely written in
 Objective-C, which means the API isn't as generic and composable as it could be in Swift. Also, it only
-allows snapshotting `UIView`s into a PNG format, but there are many more types we might want to snapshot and
+allows snapshotting `CALayer`s and `UIView`s into a PNG format, but there are many more types we might want to snapshot and
 many more formats we want to snapshot _into_.
 
 That's why today we are excited to officially announce
@@ -41,7 +43,7 @@ worlds of new possibilities.
 
 Most importantly, it allows us to create multiple snapshot strategies for a single type, whereas types can
 conform to a protocol only a single time. This means we can have a image strategy for snapshotting
-`UIView`'s, but also a text snapshot strategy that prints out the view's hierarchy with all of its children
+`UIView`s, but also a text snapshot strategy that prints out the view's hierarchy with all of its children
 and their properties.
 
 We can also create strategies for types that cannot conform to protocols, like tuples, functions and `Any`.
@@ -50,7 +52,7 @@ using Swift's `dump` function, which is just not possible with protocols.
 
 ## Basic Usage
 
-SnapshotTesting supports Cocoapods, Carthage and Swift Package Manager, and so bringing it into your project
+SnapshotTesting supports CocoaPods, Carthage and the Swift Package Manager, so bringing it into your project
 should be a cinch. Once integrated, you can immediately start snapshotting your views. You don't even need
 to change the superclass of your test cases!
 """,
@@ -102,7 +104,7 @@ can put the test into record mode:
 
     .init(
       content: """
-Now when running this test a new screenshot will be generated and written to disk, and if you are happy
+Now when running this test a new screenshot will be generated and written to disk, and when you are happy
 with the new image you can remove the `record = true` flag.
 
 ## Advanced Usage
@@ -182,7 +184,7 @@ It's worth comparing this to the more traditional way of unit testing using `XCT
 create an entire `URLRequest` from scratch and assert against it. And then if it failed you wouldn't have any
 specific information of what went wrong. With snapshot testing we are getting very broad coverage on the full
 request, including URL, method, headers and body, with very little work. And when the snapshot fails we get a
-nice, human readable failure with a diff.
+nice, human-readable failure with a diff.
 
 ## Give it a spin today!
 
