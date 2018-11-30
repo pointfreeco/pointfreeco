@@ -474,9 +474,9 @@ extension UUID {
   public static let mock = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!
 }
 
-extension Strategy {
-  public static var ioConn: Strategy<IO<Conn<ResponseEnded, Data>>, String> {
-    return Strategy<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
+extension Snapshotting {
+  public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
+    return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
       let renderHtml = Current.renderHtml
       update(&Current, \.renderHtml .~ { prettyPrint($0) })
       let conn = io.perform()
@@ -487,8 +487,8 @@ extension Strategy {
 
   #if os(macOS)
   @available(OSX 10.13, *)
-  public static func ioConnWebView(size: CGSize) -> Strategy<IO<Conn<ResponseEnded, Data>>, NSImage> {
-    return Strategy<NSView, NSImage>.image.pullback { io in
+  public static func ioConnWebView(size: CGSize) -> Snapshotting<IO<Conn<ResponseEnded, Data>>, NSImage> {
+    return Snapshotting<NSView, NSImage>.image.pullback { io in
       let webView = WKWebView(frame: .init(origin: .zero, size: size))
       webView.loadHTMLString(String(decoding: io.perform().data, as: UTF8.self), baseURL: nil)
       return webView
@@ -501,11 +501,11 @@ extension Strategy {
 extension SnapshotTestCase {
   public func assertSnapshots<A, B>(
     matching value: A,
-    as strategies: [String: Strategy<A, B>],
+    as strategies: [String: Snapshotting<A, B>],
     record recording: Bool = false,
     timeout: TimeInterval = 5,
     file: StaticString = #file,
-    function: String = #function,
+    testName: String = #function,
     line: UInt = #line
     ) {
 
@@ -517,7 +517,7 @@ extension SnapshotTestCase {
         record: recording,
         timeout: timeout,
         file: file,
-        function: function,
+        testName: testName,
         line: line
       )
     }
@@ -525,11 +525,11 @@ extension SnapshotTestCase {
 
   public func assertSnapshots<A, B>(
     matching value: A,
-    as strategies: [Strategy<A, B>],
+    as strategies: [Snapshotting<A, B>],
     record recording: Bool = false,
     timeout: TimeInterval = 5,
     file: StaticString = #file,
-    function: String = #function,
+    testName: String = #function,
     line: UInt = #line
     ) {
 
@@ -540,7 +540,7 @@ extension SnapshotTestCase {
         record: recording,
         timeout: timeout,
         file: file,
-        function: function,
+        testName: testName,
         line: line
       )
     }
@@ -549,11 +549,11 @@ extension SnapshotTestCase {
 #else
 public func assertSnapshots<A, B>(
   matching value: A,
-  as strategies: [String: Strategy<A, B>],
+  as strategies: [String: Snapshotting<A, B>],
   record recording: Bool = false,
   timeout: TimeInterval = 5,
   file: StaticString = #file,
-  function: String = #function,
+  testName: String = #function,
   line: UInt = #line
   ) {
 
@@ -565,7 +565,7 @@ public func assertSnapshots<A, B>(
       record: recording,
       timeout: timeout,
       file: file,
-      function: function,
+      testName: testName,
       line: line
     )
   }
@@ -573,11 +573,11 @@ public func assertSnapshots<A, B>(
 
 public func assertSnapshots<A, B>(
   matching value: A,
-  as strategies: [Strategy<A, B>],
+  as strategies: [Snapshotting<A, B>],
   record recording: Bool = false,
   timeout: TimeInterval = 5,
   file: StaticString = #file,
-  function: String = #function,
+  testName: String = #function,
   line: UInt = #line
   ) {
 
@@ -588,7 +588,7 @@ public func assertSnapshots<A, B>(
       record: recording,
       timeout: timeout,
       file: file,
-      function: function,
+      testName: testName,
       line: line
     )
   }
