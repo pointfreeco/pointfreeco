@@ -45,7 +45,7 @@ class UpdateProfileTests: TestCase {
     )
 
     #if !os(Linux)
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
     #endif
   }
 
@@ -86,7 +86,7 @@ class UpdateProfileTests: TestCase {
     )
 
     #if !os(Linux)
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
     #endif
   }
 
@@ -125,7 +125,7 @@ class UpdateProfileTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
     #endif
 
     XCTAssertEqual("VAT: 123456789", updatedCustomerWithExtraInvoiceInfo)

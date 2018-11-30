@@ -271,62 +271,76 @@ final class StripeTests: TestCase {
   func testRequests() {
     assertSnapshot(
       matching: PointFree.cancelSubscription(id: "sub_test").rawValue,
+      as: .raw,
       named: "cancel-subscription"
     )
     assertSnapshot(
       matching: PointFree.createCustomer(user: .mock, token: "tok_test", vatNumber: nil).rawValue,
+      as: .raw,
       named: "create-customer"
     )
     assertSnapshot(
       matching: PointFree.createCustomer(user: .mock, token: "tok_test", vatNumber: "1").rawValue,
+      as: .raw,
       named: "create-customer-vat"
     )
     assertSnapshot(
       matching: PointFree
         .createSubscription(customer: "cus_test", plan: .teamYearly, quantity: 2, coupon: nil)
         .rawValue,
+      as: .raw,
       named: "create-subscription"
     )
     assertSnapshot(
       matching: PointFree
         .createSubscription(customer: "cus_test", plan: .individualMonthly, quantity: 1, coupon: "freebie")
         .rawValue,
+      as: .raw,
       named: "create-subscription-coupon"
     )
     assertSnapshot(
       matching: PointFree.fetchCustomer(id: "cus_test").rawValue,
+      as: .raw,
       named: "fetch-customer"
     )
     assertSnapshot(
       matching: PointFree.fetchInvoice(id: "in_test").rawValue,
+      as: .raw,
       named: "fetch-invoice"
     )
     assertSnapshot(
       matching: PointFree.fetchInvoices(for: "cus_test").rawValue,
+      as: .raw,
       named: "fetch-invoices"
     )
     assertSnapshot(
       matching: PointFree.fetchPlans().rawValue,
+      as: .raw,
       named: "fetch-plans"
     )
     assertSnapshot(
       matching: PointFree.fetchPlan(id: .individualMonthly).rawValue,
+      as: .raw,
       named: "fetch-plan"
     )
     assertSnapshot(
       matching: PointFree.fetchSubscription(id: "sub_test").rawValue,
+      as: .raw,
       named: "fetch-subscription"
     )
     assertSnapshot(
       matching: PointFree.invoiceCustomer("cus_test").rawValue,
+      as: .raw,
       named: "invoice-customer"
     )
     assertSnapshot(
       matching: PointFree.updateCustomer(id: "cus_test", token: "tok_test").rawValue,
+      as: .raw,
       named: "update-customer"
     )
     assertSnapshot(
       matching: PointFree.updateSubscription(.mock, .individualYearly, 1, nil)!.rawValue,
+      as: .raw,
       named: "update-subscription"
     )
   }

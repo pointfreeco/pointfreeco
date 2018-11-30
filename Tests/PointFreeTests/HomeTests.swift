@@ -44,12 +44,12 @@ class HomeTests: TestCase {
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 3000))
       webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(matching: webView, as: .image, named: "desktop")
 
       webView.frame.size.width = 400
       webView.frame.size.height = 3500
 
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(matching: webView, as: .image, named: "mobile")
     }
     #endif
   }
