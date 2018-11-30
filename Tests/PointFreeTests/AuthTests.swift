@@ -29,7 +29,7 @@ class AuthTests: TestCase {
       )
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: result)
+    assertSnapshot(matching: result, as: .conn)
 
     let registeredUser = Current.database
       .fetchUserByGitHub(gitHubUserEnvelope.gitHubUser.id)

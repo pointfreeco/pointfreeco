@@ -21,7 +21,7 @@ class TeamEmailsTests: TestCase {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image)
     }
     #endif
   }
@@ -36,7 +36,7 @@ class TeamEmailsTests: TestCase {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
-      assertSnapshot(matching: webView)
+      assertSnapshot(matching: webView, as: .image)
     }
     #endif
   }

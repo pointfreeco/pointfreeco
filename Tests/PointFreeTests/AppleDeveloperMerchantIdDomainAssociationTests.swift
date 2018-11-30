@@ -15,6 +15,6 @@ final class AppleDeveloperMerchantIdDomainAssociationTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    assertSnapshot(matching: conn)
+    assertSnapshot(matching: conn, as: .conn)
   }
 }

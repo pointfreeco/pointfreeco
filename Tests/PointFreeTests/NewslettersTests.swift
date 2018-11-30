@@ -39,7 +39,7 @@ class NewslettersTests: TestCase {
     let output = connection(from: unsubscribe)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
 
     assertSnapshot(
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
@@ -85,7 +85,7 @@ class NewslettersTests: TestCase {
     let output = connection(from: unsubscribe)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
 
     assertSnapshot(
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
@@ -134,7 +134,7 @@ class NewslettersTests: TestCase {
     let output = connection(from: unsubscribe)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
 
     assertSnapshot(
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
@@ -185,7 +185,7 @@ class NewslettersTests: TestCase {
     let output = connection(from: unsubscribe)
       |> siteMiddleware
       |> Prelude.perform
-    assertSnapshot(matching: output)
+    assertSnapshot(matching: output, as: .conn)
 
     assertSnapshot(
       matching: Current.database.fetchEmailSettingsForUserId(user.id)
