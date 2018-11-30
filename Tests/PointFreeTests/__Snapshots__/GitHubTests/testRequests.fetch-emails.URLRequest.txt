@@ -1,3 +1,0 @@
-GET https://api.github.com/user/emails
-Accept: application/vnd.github.v3+json
-Authorization: token deadbeef
