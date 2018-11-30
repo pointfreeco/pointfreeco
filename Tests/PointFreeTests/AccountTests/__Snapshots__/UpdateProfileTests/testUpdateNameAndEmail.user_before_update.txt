@@ -2,9 +2,9 @@
   ▿ email: hello@pointfree.co
     - rawValue: "hello@pointfree.co"
   - episodeCreditCount: 1
+  - gitHubAccessToken: "deadbeef"
   ▿ gitHubUserId: 1
     - rawValue: 1
-  - gitHubAccessToken: "deadbeef"
   ▿ id: 00000000-0000-0000-0000-000000000001
     - rawValue: 00000000-0000-0000-0000-000000000001
   - isAdmin: false

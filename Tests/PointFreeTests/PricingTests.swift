@@ -26,7 +26,7 @@ class PricingTests: TestCase {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
       let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
-      assertSnapshot(matching: webView, named: "desktop")
+      assertSnapshot(matching: webView, as: .image, named: "desktop")
 
       webView.evaluateJavaScript(
         """
@@ -36,10 +36,10 @@ class PricingTests: TestCase {
           quantity.value = 10;
           quantity.oninput();
           """, completionHandler: nil)
-      assertSnapshot(matching: webView, named: "desktop-team")
+      assertSnapshot(matching: webView, as: .image, named: "desktop-team")
 
       webView.frame.size.width = 400
-      assertSnapshot(matching: webView, named: "mobile")
+      assertSnapshot(matching: webView, as: .image, named: "mobile")
 
     }
     #endif

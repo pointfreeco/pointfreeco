@@ -1,0 +1,5 @@
+POST https://github.com/login/oauth/access_token
+Accept: application/json
+Content-Type: application/json
+
+{"accept":"json","client_id":"deadbeef-client-id","client_secret":"deadbeef-client-secret","code":"deadbeef"}

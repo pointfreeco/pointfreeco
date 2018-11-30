@@ -1,0 +1,5 @@
+POST https://api.stripe.com/v1/customers/cus_test
+Authorization: Basic c2tfdGVzdDo=
+Idempotency-Key: DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+
+source=tok_test

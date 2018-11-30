@@ -1,0 +1,5 @@
+POST https://api.stripe.com/v1/customers
+Authorization: Basic c2tfdGVzdDo=
+Idempotency-Key: DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+
+description=00000000-0000-0000-0000-000000000000&email=hello%40pointfree.co&source=tok_test

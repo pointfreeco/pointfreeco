@@ -199,7 +199,7 @@ final class ChangeTests: TestCase {
 
     let performed = result.perform()
     waitForExpectations(timeout: 0.1, handler: nil)
-    assertSnapshot(matching: performed)
+    assertSnapshot(matching: performed, as: .conn)
     #endif
   }
 

@@ -1,0 +1,2 @@
+GET https://api.stripe.com/v1/invoices?customer=cus_test&expand%5B%5D=data.charge&limit=100
+Authorization: Basic c2tfdGVzdDo=
