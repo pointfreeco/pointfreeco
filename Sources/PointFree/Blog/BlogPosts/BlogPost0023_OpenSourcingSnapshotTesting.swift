@@ -12,7 +12,8 @@ in Swift!
       content: """
 ---
 
-> TODO
+> Today we are open sourcing SnapshotTesting 1.0: a modern, composable snapshot testing library built
+entirely in Swift!
 
 ---
 
