@@ -188,6 +188,131 @@ nice, human-readable failure with a diff.
 
 ## Advanced Usage
 
+### Transforming snapshot strategies
+
+Not only are snapshot strategies extensible in the sense that you can create them for snapshotting a wide
+variety of types into a wide variety of formats, but they are also transformable. In particular, if
+you have a function `f: (A) -> B`, then you can pull back a snapshot strategy `Snapshotting<B, Format>`
+to a snapshot strategy `Snapshotting<A, Format>`. Notice that the `A` and `B` flipped positions, and this is
+due to [contravariance](/episodes/ep14-contravariance).
+
+We call this operation [`pullback`](/blog/posts/22-some-news-about-contramap), and it makes it easy to create
+all new snapshot strategies out of existing ones. For example, the library comes with a
+`Snapshotting<UIImage, UIImage>.image` value for snapshotting images into the image format. We can _pull_
+that back to work on layers very easily:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+extension Snapshotting where Value == CALayer, Format == UIImage {
+  static let image = Snapshotting<UIImage, UIImage>.image.pullback { layer in
+    return UIGraphicsImageRenderer(size: layer.bounds.size)
+      .image { ctx in layer.render(in: ctx.cgContext) }
+  }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+We can then _pull_ that back to work on views:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+extension Snapshotting where Value == UIView, Format == UIImage {
+  static let image: Snapshotting =
+    Snapshotting<CALayer, UIImage>.image.pullback { $0.layer }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+And finally _pull_ that back to work on view controllers:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+extension Snapshotting where Value == UIViewController, Format == UIImage {
+  static let image: Snapshotting =
+    Snapshotting<UIView, UIImage>.image.pullback { $0.view }
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+And with just a few lines of code we created 3 all new snapshot strategies from a single base one. This
+is the essence of composability that we should strive for in library design.
+
+### Async snapshots
+
+Some values need to perform a lot of work before they are ready to be snapshot, and many times that work
+happens with the use of async callbacks or delegates. A common example is `WKWebView` for snapshotting
+web content. This is why we also support async snapshots. When creating a `Snapshotting<Value, Format>`
+value you can provide a function `(Value) -> Async<Format>`, which allows you to asynchronously turn
+your value into the diffable format.
+
+We can use this to snapshot `WKWebView` by creating a private navigation delegate class, and using it inside
+the async function:
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+
+    .init(
+      content: """
+class NavigationDelegate: NSObject, WKNavigationDelegate {
+  var callback: (() -> Void)?
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    self.callback?()
+  }
+}
+
+extension Snapshotting where Value == Snapshotting, Format == UIImage {
+  static let image = Snapshotting(
+    diffing: .image,
+    pathExtension: "png",
+    snapshot: { webView in
+      Parallel<UIImage> { callback in
+        let delegate = NavigationDelegate()
+        delegate.callback = {
+          webView.takeSnapshot(with: nil) { image, error in
+            callback(image!)
+            _ = delegate
+          }
+        }
+        webView.navigationDelegate = delegate
+      }
+  })
+}
+""",
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+
+    .init(
+      content: """
+It took a little bit of extra work, but not we can determinstically snapshot web views without worrying
+about its contents not loading in time.
+
 ## Feature-Packed
 
 Not only is the API of SnapshotTesting a pleasure to use, but we've also packed a whole bunch of features
@@ -197,7 +322,7 @@ not found in any other snapshot library:
 textual description of a value. This is useful for large types that would be difficult to assert against
 directly.
 - **Test _any_ data structure.** Since any value in Swift can be turned into a string via the `dump`,
-we snapshot test any kind of value immediately.
+we can snapshot test any kind of value immediately.
 - **No configuration required.** Don’t fuss with scheme settings and environment variables. Snapshots are
 automatically saved alongside your tests.
 - **More hands-off.** New snapshots are automatically recorded.
