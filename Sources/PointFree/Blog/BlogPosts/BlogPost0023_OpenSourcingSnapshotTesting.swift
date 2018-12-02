@@ -12,8 +12,8 @@ in Swift!
       content: """
 ---
 
-> Today we are open sourcing SnapshotTesting 1.0: a modern, composable snapshot testing library built
-entirely in Swift!
+> Today we are open sourcing [SnapshotTesting 1.0](https://github.com/pointfreeco/swift-snapshot-testing):
+a modern, composable snapshot testing library built entirely in Swift!
 
 ---
 
@@ -194,7 +194,7 @@ nice, human-readable failure with a diff.
 
 Not only are snapshot strategies extensible in the sense that you can create them for snapshotting a wide
 variety of types into a wide variety of formats, but they are also transformable. In particular, if
-you have a function `f: (A) -> B`, then you can pull back a snapshot strategy `Snapshotting<B, Format>`
+you have a function `f: (A) -> B`, then you can transform a snapshot strategy `Snapshotting<B, Format>`
 to a snapshot strategy `Snapshotting<A, Format>`. Notice that the `A` and `B` flipped positions, and this is
 due to [contravariance](/episodes/ep14-contravariance).
 
