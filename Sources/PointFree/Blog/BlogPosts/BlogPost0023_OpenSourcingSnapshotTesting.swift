@@ -15,18 +15,18 @@ TODO
 
 ---
 
-The Swift community has been a large proponent of snapshot testing, mostly thanks to the wonderful
+The iOS community has been a large proponent of snapshot testing, mostly thanks to the wonderful
 [iOSSnapshotTestCase](https://github.com/uber/ios-snapshot-test-case) library
 (formerly known as [FBSnapshotTestCase](https://github.com/facebookarchive/ios-snapshot-test-case)). It
-introduced a new kind
-of test coverage for iOS applications by allowing us to assert against an image screenshot of a UI component.
-This is a whole new level of testing that can catch regressions in the pixel data of our UI so that you can
-make sure that future changes and refactors do not introduce visual regressions into your views.
+introduced a new kind of test coverage for iOS applications by allowing us to assert against an image
+screenshot of a UI component. This is a whole new level of testing that can catch regressions in the pixel
+data of our UI so that you can make sure that future changes and refactors do not introduce visual
+regressions into your views.
 
 However, iOSSnapshotTestCase has not evolved much over the years, and its still largely written in
 Objective-C, which means the API isn't as generic and composable as it could be in Swift. Also, it only
-allows snapshotting `CALayer`s and `UIView`s into a PNG format, but there are many more types we might want to snapshot and
-many more formats we want to snapshot _into_.
+allows snapshotting `CALayer`s and `UIView`s into a PNG format, but there are many more types we might want
+to snapshot and many more formats we want to snapshot _into_.
 
 That's why today we are excited to officially announce
 [SnapshotTesting 1.0](https://github.com/pointfreeco/swift-snapshot-testing): a modern, composable snapshot
@@ -54,7 +54,7 @@ using Swift's `dump` function, which is just not possible with protocols.
 
 SnapshotTesting supports CocoaPods, Carthage and the Swift Package Manager, so bringing it into your project
 should be a cinch. Once integrated, you can immediately start snapshotting your views. You don't even need
-to change the superclass of your test cases!
+to change the superclass of your test cases:
 """,
       timestamp: nil,
       type: .paragraph
@@ -186,7 +186,35 @@ specific information of what went wrong. With snapshot testing we are getting ve
 request, including URL, method, headers and body, with very little work. And when the snapshot fails we get a
 nice, human-readable failure with a diff.
 
+## Feature-Packed
+
+Not only is the API of SnapshotTesting a pleasure to use, but we've also packed a whole bunch of features
+not found in any other snapshot library:
+
+- **Snapshot into any format.** Snapshot testing isn’t just for UI. We can write tests that capture a
+textual description of a value. Useful for large types that would be difficult to assert against directly.
+- **Test _any_ data structure.** Since any value in Swift can be turned into a string via the `dump`,
+we snapshot test any kind of value immediately.
+- **No configuration required.** Don’t fuss with scheme settings and environment variables. Snapshots are
+automatically saved alongside your tests.
+- **More hands-off.** New snapshots are automatically recorded.
+- **Subclass-free.** Assert from any XCTest test case or Quick spec.
+- **Device-agnostic snapshots.** Render views and view controllers for specific devices and trait collections
+from a single simulator.
+- **First-class Xcode support.** Image differences are captured as XCTest attachments. Text differences are
+rendered in error messages inline!
+- **iOS, macOS, and tvOS support.**
+- **SceneKit, SpriteKit, and WebKit support.**
+- **Codable support**. Snapshot your data structures into JSON and property lists.
+- **Extensible and transformable.** Build your own snapshot strategies from scratch or build from existing
+ones.
+
 ## Give it a spin today!
+
+If you currently use a form of snapshot testing in your Swift applications, then you may be interested
+in giving this library a spin. Not only does it improve upon the classic snapshot tests of UI as images,
+but will also encourage you to begin snapshotting your data structures as strings to gain even more
+test coverage. [Check it out today!](https://github.com/pointfreeco/swift-snapshot-testing)
 
 ---
 
@@ -210,5 +238,5 @@ designing this very library, first in the protocol-oriented style
   coverImage: "TODO",
   id: 23,
   publishedAt: .init(timeIntervalSince1970: 1543827600),
-  title: "Open Sourcing SnapshotTesting" // todo
+  title: "Announcing SnapshotTesting 1.0"
 )
