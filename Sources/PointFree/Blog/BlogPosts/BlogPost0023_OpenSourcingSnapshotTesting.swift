@@ -3,7 +3,8 @@ import Foundation
 let post0023_openSourcingSnapshotTesting = BlogPost(
   author: .brandon,
   blurb: """
-TODO
+Today we are open sourcing SnapshotTesting 1.0: a modern, composable snapshot testing library built entirely
+in Swift!
 """,
   contentBlocks: [
 
