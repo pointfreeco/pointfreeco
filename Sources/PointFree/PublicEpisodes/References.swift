@@ -216,7 +216,10 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
   static let structureAndInterpretationOfSwiftPrograms = Episode.Reference(
     author: "Colin Barrett",
     blurb: """
-Colin Barrett discusses the problems of dependency injection, the upsides of singletons, and introduces the `Environment` construct.
+[Colin Barrett](https://twitter.com/cbarrett) discussed the problems of dependency injection, the upsides
+of singletons, and introduced the `Environment` construct at [Functional Swift 2015](http://2015.funswiftconf.com).
+This was the talk that first inspired us to test this construct at Kickstarter and refine it over the years and
+many other code bases.
 """,
     link: "https://www.youtube.com/watch?v=V-YvI83QdMs",
     publishedAt: Date(timeIntervalSince1970: 1450155600),
