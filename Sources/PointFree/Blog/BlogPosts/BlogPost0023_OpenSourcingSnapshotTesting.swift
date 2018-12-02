@@ -107,7 +107,7 @@ can put the test into record mode:
 Now when running this test a new screenshot will be generated and written to disk, and when you are happy
 with the new image you can remove the `record = true` flag.
 
-## Advanced Usage
+## Intermediate Usage
 
 SnapshotTesting goes well beyond just snapshotting views as PNG images. We can snapshot _any_ type into
 _any_ diffable format. For example, you may have an `ApiService` that is responsible for preparing requests
@@ -186,13 +186,16 @@ specific information of what went wrong. With snapshot testing we are getting ve
 request, including URL, method, headers and body, with very little work. And when the snapshot fails we get a
 nice, human-readable failure with a diff.
 
+## Advanced Usage
+
 ## Feature-Packed
 
 Not only is the API of SnapshotTesting a pleasure to use, but we've also packed a whole bunch of features
 not found in any other snapshot library:
 
 - **Snapshot into any format.** Snapshot testing isn’t just for UI. We can write tests that capture a
-textual description of a value. Useful for large types that would be difficult to assert against directly.
+textual description of a value. This is useful for large types that would be difficult to assert against
+directly.
 - **Test _any_ data structure.** Since any value in Swift can be turned into a string via the `dump`,
 we snapshot test any kind of value immediately.
 - **No configuration required.** Don’t fuss with scheme settings and environment variables. Snapshots are
