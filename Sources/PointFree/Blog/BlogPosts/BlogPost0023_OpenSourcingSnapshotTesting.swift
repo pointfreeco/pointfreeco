@@ -128,7 +128,7 @@ class ApiServiceTests: XCTestCase {
     let service = ApiService()
     let request = service.prepare(endpoint: .createArticle("Hello, world!"))
 
-    assertSnapshot(matching: request)
+    assertSnapshot(matching: request, as: .raw)
   }
 }
 """,
