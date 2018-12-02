@@ -213,6 +213,16 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
     title: "Some news about contramap"
   )
 
+  static let structureAndInterpretationOfSwiftPrograms = Episode.Reference(
+    author: "Colin Barrett",
+    blurb: """
+Colin Barrett discusses the problems of dependency injection, the upsides of singletons, and introduces the `Environment` construct.
+""",
+    link: "https://www.youtube.com/watch?v=V-YvI83QdMs",
+    publishedAt: Date(timeIntervalSince1970: 1450155600),
+    title: "Structure and Interpretation of Swift Programs"
+  )
+
   static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
