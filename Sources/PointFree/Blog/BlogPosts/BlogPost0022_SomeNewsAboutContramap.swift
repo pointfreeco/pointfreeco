@@ -3,7 +3,7 @@ import Foundation
 let post0022_someNewsAboutContramap = BlogPost(
   author: .brandon,
   blurb: """
-We've seen that contramap is a powerful operation, but the name isn't fantastic. We propse a much
+We've seen that contramap is a powerful operation, but the name isn't fantastic. We propose a much
 more intuitive name for this operation, and in doing so make our code much easier to read.
 """,
   contentBlocks: [
@@ -23,7 +23,7 @@ more intuitive name for this operation, and in doing so make our code much easie
       content: """
 ---
 
-> We've seen that `contramap` is a powerful operation, but the name isn't fantastic. We propse a much
+> We've seen that `contramap` is a powerful operation, but the name isn't fantastic. We propose a much
 more intuitive name for this operation, and in doing so make our code much easier to read.
 
 ---
