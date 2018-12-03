@@ -300,7 +300,7 @@ extension Snapshotting where Value == Snapshotting, Format == UIImage {
     diffing: .image,
     pathExtension: "png",
     snapshot: { webView in
-      Parallel<UIImage> { callback in
+      Async<UIImage> { callback in
         let delegate = NavigationDelegate()
         delegate.callback = {
           webView.takeSnapshot(with: nil) { image, error in
@@ -370,5 +370,5 @@ designing this very library, first in the protocol-oriented style
   coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0023-announcing-snapshot-testing/cover-1.jpg",
   id: 23,
   publishedAt: .init(timeIntervalSince1970: 1543827600),
-  title: "Announcing SnapshotTesting 1.0"
+  title: "SnapshotTesting 1.0: Delightful Swift snapshot testing"
 )
