@@ -319,7 +319,7 @@ extension Snapshotting where Value == Snapshotting, Format == UIImage {
 
     .init(
       content: """
-It took a little bit of extra work, but now we can determinstically snapshot web views without worrying
+It took a little bit of extra work, but now we can deterministically snapshot web views without worrying
 about its contents not loading in time.
 
 ## Feature-packed
@@ -327,8 +327,8 @@ about its contents not loading in time.
 Not only is the API of SnapshotTesting a pleasure to use, but we've also packed a whole bunch of features
 not found in any other snapshot library:
 
-  - [**Dozens of snapshot strategies**](Documentation/Available-Snapshot-Strategies.md). Snapshot testing isn't just for `UIView`s and `CALayer`s. Write snapshots against _any_ value, including…
-  - [**Write your own snapshot strategies**](Documentation/Defining-Custom-Snapshot-Strategies.md). If you can convert it to an image, string, data, or your own diffable format, you can snapshot test it! Build your own snapshot strategies from scratch or transform existing ones.
+  - [**Dozens of snapshot strategies**](https://github.com/pointfreeco/swift-snapshot-testing/blob/1.0.0/Documentation/Available-Snapshot-Strategies.md). Snapshot testing isn't just for `UIView`s and `CALayer`s. Write snapshots against _any_ value, including…
+  - [**Write your own snapshot strategies**](https://github.com/pointfreeco/swift-snapshot-testing/blob/1.0.0/Documentation/Defining-Custom-Snapshot-Strategies.md). If you can convert it to an image, string, data, or your own diffable format, you can snapshot test it! Build your own snapshot strategies from scratch or transform existing ones.
   - **No configuration required.** Don't fuss with scheme settings and environment variables. Snapshots are automatically saved alongside your tests.
   - **More hands-off.** New snapshots are recorded whether `record` mode is `true` or not.
   - **Subclass-free.** Assert from any XCTest case or Quick spec.
@@ -336,7 +336,7 @@ not found in any other snapshot library:
   - **First-class Xcode support.** Image differences are captured as XCTest attachments. Text differences are rendered inline in error messages.
   - **Supports any platform that supports Swift.** Write snapshot tests for iOS, Linux, macOS, and tvOS.
   - **SceneKit, SpriteKit, and WebKit support.** Most snapshot testing libraries don't support these view subclasses.
-  - **`Codable` support**. Snapshot encodable data structures into their [JSON](Documentation/Available-Snapshot-Strategies.md#json) and [property list](Documentation/Available-Snapshot-Strategies.md#plist) representations.
+  - **`Codable` support**. Snapshot encodable data structures into their [JSON](https://github.com/pointfreeco/swift-snapshot-testing/blob/1.0.0/Documentation/Available-Snapshot-Strategies.md#json) and [property list](Documentation/Available-Snapshot-Strategies.md#plist) representations.
   - **Custom diff tool integration.**
 
 And believe it or not, there's even more.
