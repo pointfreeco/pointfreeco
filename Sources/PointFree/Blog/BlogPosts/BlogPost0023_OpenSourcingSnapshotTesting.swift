@@ -7,6 +7,11 @@ Today we are open sourcing SnapshotTesting 1.0: a modern, composable snapshot te
 in Swift!
 """,
   contentBlocks: [
+    .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0023-announcing-snapshot-testing/cover-1.jpg")
+    ),
 
     .init(
       content: """
@@ -39,9 +44,9 @@ testing library built entirely in Swift!
 One of the most important decisions we made in designing this library is to eschew the liberal use of
 protocols, as is encouraged in "protocol-oriented programming", and instead use plain concrete datatypes.
 In the former style we would create a system of protocols that users of our library conform to in order to
-unlock functionality. In the latter style we provide a system of concrete generic types that the user will
-create for their types in order to unlock functionality. It's a seemingly small distinction, but it unlocks
-worlds of new possibilities.
+unlock functionality, whereas in the latter style we provide a system of concrete generic types that the user
+will create for their types in order to unlock functionality. It's a seemingly small distinction, but it
+unlocks worlds of new possibilities.
 
 Most importantly, it allows us to create multiple snapshot strategies for a single type, whereas types can
 conform to a protocol only a single time. This means we can have a image strategy for snapshotting
@@ -339,6 +344,8 @@ rendered in error messages inline!
 - **Extensible and transformable.** Build your own snapshot strategies from scratch or build from existing
 ones.
 
+And believe it or not, there's even more.
+
 ## Give it a spin today!
 
 If you currently use a form of snapshot testing in your Swift applications, then you may be interested
@@ -365,7 +372,7 @@ designing this very library, first in the protocol-oriented style
     )
 
     ],
-  coverImage: "TODO",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0023-announcing-snapshot-testing/cover-1.jpg",
   id: 23,
   publishedAt: .init(timeIntervalSince1970: 1543827600),
   title: "Announcing SnapshotTesting 1.0"
