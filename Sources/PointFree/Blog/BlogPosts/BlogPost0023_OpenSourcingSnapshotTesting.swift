@@ -319,10 +319,10 @@ extension Snapshotting where Value == Snapshotting, Format == UIImage {
 
     .init(
       content: """
-It took a little bit of extra work, but not we can determinstically snapshot web views without worrying
+It took a little bit of extra work, but now we can determinstically snapshot web views without worrying
 about its contents not loading in time.
 
-## Feature-Packed
+## Feature-packed
 
 Not only is the API of SnapshotTesting a pleasure to use, but we've also packed a whole bunch of features
 not found in any other snapshot library:
