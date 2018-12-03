@@ -206,7 +206,7 @@ due to [contravariance](/episodes/ep14-contravariance).
 We call this operation [`pullback`](/blog/posts/22-some-news-about-contramap), and it makes it easy to create
 all new snapshot strategies out of existing ones. For example, the library comes with a
 `Snapshotting<UIImage, UIImage>.image` value for snapshotting images into the image format. We can _pull_
-that back to work on layers very easily:
+that back to work on layers by using the function `(CALayer) -> UIImage` that renders a layer into an image:
 """,
       timestamp: nil,
       type: .paragraph
@@ -227,7 +227,8 @@ extension Snapshotting where Value == CALayer, Format == UIImage {
 
     .init(
       content: """
-We can then _pull_ that back to work on views:
+We can then _pull_ that back to work on views by using the function `(UIView) -> CALayer` that plucks out
+a view's layer:
 """,
       timestamp: nil,
       type: .paragraph
@@ -246,7 +247,8 @@ extension Snapshotting where Value == UIView, Format == UIImage {
 
     .init(
       content: """
-And finally _pull_ that back to work on view controllers:
+And finally _pull_ that back to work on view controllers by using the function `(UIViewController) -> UIView`
+that plucks out a view controller's view:
 """,
       timestamp: nil,
       type: .paragraph
@@ -328,8 +330,8 @@ not found in any other snapshot library:
 - **Snapshot into any format.** Snapshot testing isn’t just for UI. We can write tests that capture a
 textual description of a value. This is useful for large types that would be difficult to assert against
 directly.
-- **Test _any_ data structure.** Since any value in Swift can be turned into a string via the `dump`,
-we can snapshot test any kind of value immediately.
+- **Test _any_ data structure.** Since any value in Swift can be turned into a string via the `dump`
+function, we can snapshot test any kind of value immediately.
 - **No configuration required.** Don’t fuss with scheme settings and environment variables. Snapshots are
 automatically saved alongside your tests.
 - **More hands-off.** New snapshots are automatically recorded.
@@ -343,6 +345,7 @@ rendered in error messages inline!
 - **Codable support**. Snapshot your data structures into JSON and property lists.
 - **Extensible and transformable.** Build your own snapshot strategies from scratch or build from existing
 ones.
+- **Custom diff tool integration.**
 
 And believe it or not, there's even more.
 
