@@ -295,7 +295,7 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
   }
 }
 
-extension Snapshotting where Value == Snapshotting, Format == UIImage {
+extension Snapshotting where Value == WKWebView, Format == UIImage {
   static let image = Snapshotting(
     diffing: .image,
     pathExtension: "png",
