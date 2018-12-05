@@ -76,7 +76,7 @@ struct VideoJsOptions: Encodable {
   let control: Bool
   let playbackRates: [Double]
 
-  static let `default` = VideoJsOptions(control: true, playbackRates: [0.5, 1, 1.5, 2])
+  static let `default` = VideoJsOptions(control: true, playbackRates: [1, 1.25, 1.5, 1.75, 2])
 
   var jsonString: String {
     if #available(OSX 10.13, *) {
