@@ -99,11 +99,11 @@ let pricingResponse =
     >=> map(lower)
     >>> respond(
       view: pricingView,
-      layoutData: { currentUser, pricing, expand, route in
+      layoutData: { currentUser, pricing, formFields, route in
         SimplePageLayoutData(
           currentRoute: route,
           currentUser: currentUser,
-          data: (currentUser, pricing, expand),
+          data: (currentUser, pricing, formFields, route),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
           style: .base(.minimal(.dark)),
           title: "Subscribe to Point-Free"
@@ -120,7 +120,13 @@ private let pricingOptionsRowClass =
     | Class.grid.center(.mobile)
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
-let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pricing, expand in
+public enum PricingFormFields {
+  case partial
+  case partialWithCoupon(String?)
+  case full
+}
+
+let pricingOptionsView = View<(Database.User?, Pricing, PricingFormFields, Route?)> { currentUser, pricing, formFields, route in
 
   gridRow([Styleguide.class([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
@@ -153,7 +159,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, Bool)> { currentUser, pr
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
                 <> pricingIntervalRowView.view(pricing)
-                <> pricingFooterView.view((currentUser, expand))
+                <> pricingFooterView.view((currentUser, formFields, route))
             )
             ])
           ])
@@ -499,23 +505,28 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
-private let pricingFooterView = View<(Database.User?, Bool)> { currentUser, expand in
+private let pricingFooterView = View<(Database.User?, PricingFormFields, Route?)> { currentUser, formFields, route in
   gridRow([Styleguide.class([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map(const(stripeForm.view(expand)))
-          ?? [gitHubLink(text: "Sign in with GitHub", type: .black, redirectRoute: .pricing(nil, expand: expand))]
-        )
+          .map(const(stripeForm.view(formFields)))
+          ?? [
+            gitHubLink(
+              text: "Sign in with GitHub",
+              type: .black,
+              redirectRoute: route ?? .pricing(nil, expand: false)
+            )
+        ])
       ])
     ])
 }
 
-private let stripeForm = View<Bool> { expand in
+private let stripeForm = View<PricingFormFields> { formFields in
   div(
     [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(expand: expand)
+    Stripe.html.cardInput(formFields: formFields)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [

@@ -76,8 +76,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
-    case .discounts:
-      return conn.map(const(user .*. .default .*. true .*. route .*. unit))
+    case let .discounts(coupon):
+      return conn.map(const(user .*. .default .*. .partialWithCoupon(coupon) .*. route .*. unit))
         |> pricingResponse
 
     case let .episode(param):
@@ -103,10 +103,6 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
     case .feed(.episodes):
       return conn.map(const(unit))
         |> episodesRssMiddleware
-
-    case .fika:
-      return conn.map(const(user .*. .default .*. true .*. route .*. unit))
-        |> pricingResponse
 
     case let .gitHubCallback(code, redirect):
       return conn.map(const(user .*. code .*. redirect .*. unit))
@@ -141,7 +137,12 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
         |> logoutResponse
 
     case let .pricing(pricing, expand):
-      return conn.map(const(user .*. (pricing ?? .default) .*. (expand ?? false) .*. route .*. unit))
+      return conn
+        .map(
+          const(
+            user .*. (pricing ?? .default) .*. (expand == .some(true) ? .full : .partial) .*. route .*. unit
+          )
+        )
         |> pricingResponse
 
     case .privacy:

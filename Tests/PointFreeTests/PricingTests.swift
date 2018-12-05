@@ -14,6 +14,7 @@ class PricingTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
+//    record=true
   }
 
   func testPricing() {
@@ -45,6 +46,14 @@ class PricingTests: TestCase {
     #endif
   }
 
+  func testDiscount() {
+    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+  }
+
   func testPricingLoggedIn_NonSubscriber() {
     update(
       &Current,
@@ -52,7 +61,7 @@ class PricingTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let conn = connection(from: request(to: .discounts(code: "swiftcount"), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

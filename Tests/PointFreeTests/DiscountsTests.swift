@@ -42,26 +42,4 @@ class DiscountsTests: TestCase {
       as: .ioConn
     )
   }
-
-  func testFika_LoggedOut() {
-    assertSnapshot(
-      matching: connection(from: secureRequest("http://localhost:8080/fika"))
-        |> siteMiddleware,
-      as: .ioConn
-    )
-  }
-
-  func testFika_LoggedIn() {
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
-
-    assertSnapshot(
-      matching: connection(from: request(with: secureRequest("http://localhost:8080/fika"), session: .loggedIn))
-        |> siteMiddleware,
-      as: .ioConn
-    )
-  }
 }

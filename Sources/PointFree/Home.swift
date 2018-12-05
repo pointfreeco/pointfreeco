@@ -44,7 +44,11 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
   return episodesListView.view(firstBatch)
     <> subscriberCalloutView.view(subscriberState)
     <> episodesListView.view(secondBatch)
-    <> (subscriberState.isNonSubscriber ? pricingOptionsView.view((currentUser, .default, false)) : [])
+    <> (
+      subscriberState.isNonSubscriber
+        ? pricingOptionsView.view((currentUser, .default, .partial, nil))
+        : []
+  )
 }
 
 private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
