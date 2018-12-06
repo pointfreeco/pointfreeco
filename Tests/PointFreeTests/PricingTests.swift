@@ -47,11 +47,33 @@ class PricingTests: TestCase {
   }
 
   func testDiscount() {
-    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(
+      from: request(
+        to: Route.discounts(code: "swiftcount"),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
 
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
+        ]
+      )
+    }
+    #endif
   }
 
   func testPricingLoggedIn_NonSubscriber() {
