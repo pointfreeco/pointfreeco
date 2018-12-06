@@ -76,8 +76,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn.map(const(user .*. subscriberState .*. route .*. subRoute .*. unit))
         |> blogMiddleware
 
-    case let .discounts(coupon):
-      return conn.map(const(user .*. .default .*. .partialWithCoupon(coupon) .*. route .*. unit))
+    case let .discounts(code):
+      return conn.map(const(user .*. .default .*. .coupon(code) .*. route .*. unit))
         |> pricingResponse
 
     case let .episode(param):
@@ -140,7 +140,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
       return conn
         .map(
           const(
-            user .*. (pricing ?? .default) .*. (expand == .some(true) ? .full : .partial) .*. route .*. unit
+            user .*. (pricing ?? .default) .*. (expand == .some(true) ? .full : .minimal) .*. route .*. unit
           )
         )
         |> pricingResponse

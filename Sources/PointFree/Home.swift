@@ -46,7 +46,7 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
     <> episodesListView.view(secondBatch)
     <> (
       subscriberState.isNonSubscriber
-        ? pricingOptionsView.view((currentUser, .default, .partial, nil))
+        ? pricingOptionsView.view((currentUser, .default, .minimal, nil))
         : []
   )
 }

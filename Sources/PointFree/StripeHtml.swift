@@ -9,10 +9,10 @@ extension Stripe {
     public static func cardInput(formFields: PricingFormFields) -> [Node] {
       let (expand, coupon): (Bool, String?)
       switch formFields {
-      case .partial:
+      case .minimal:
         expand = false
         coupon = nil
-      case let .partialWithCoupon(code):
+      case let .coupon(code):
         expand = false
         coupon = code
       case .full:

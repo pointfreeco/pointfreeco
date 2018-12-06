@@ -121,8 +121,8 @@ private let pricingOptionsRowClass =
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
 public enum PricingFormFields {
-  case partial
-  case partialWithCoupon(String?)
+  case minimal
+  case coupon(String?)
   case full
 }
 
