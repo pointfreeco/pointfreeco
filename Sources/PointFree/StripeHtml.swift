@@ -6,7 +6,20 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(expand: Bool) -> [Node] {
+    public static func cardInput(formFields: PricingFormFields) -> [Node] {
+      let (expand, coupon): (Bool, String?)
+      switch formFields {
+      case .minimal:
+        expand = false
+        coupon = nil
+      case let .coupon(code):
+        expand = false
+        coupon = code
+      case .full:
+        expand = true
+        coupon = nil
+      }
+
       return [
         input([name("token"), type(.hidden)]),
         div([`class`(expand ? [] : [Class.display.none])], [
@@ -68,11 +81,14 @@ extension Stripe {
             placeholder("VAT Number (EU Customers Only)"),
             type(.text),
             ]),
+          ]),
+        div([`class`(coupon != nil ? [] : [Class.display.none])], [
           input([
             Styleguide.class([blockInputClass]),
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
+            value(coupon ?? "")
             ]),
           ]),
         div(

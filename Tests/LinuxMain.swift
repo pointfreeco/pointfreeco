@@ -115,9 +115,7 @@ extension DatabaseTests {
 extension DiscountsTests {
   static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
     ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
-    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
-    ("testFika_LoggedOut", testFika_LoggedOut),
-    ("testFika_LoggedIn", testFika_LoggedIn)
+    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn)
   ]
 }
 extension EitherIOTests {
@@ -165,6 +163,11 @@ extension EpisodeTests {
 extension FreeEpisodeEmailTests {
   static var allTests: [(String, (FreeEpisodeEmailTests) -> () throws -> Void)] = [
     ("testFreeEpisodeEmail", testFreeEpisodeEmail)
+  ]
+}
+extension GitHubTests {
+  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
+    ("testRequests", testRequests)
   ]
 }
 extension HomeTests {
@@ -250,6 +253,7 @@ extension PaymentInfoTests {
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
+    ("testDiscount", testDiscount),
     ("testPricingLoggedIn_NonSubscriber", testPricingLoggedIn_NonSubscriber),
     ("testPricingLoggedIn_NonSubscriber_Expanded", testPricingLoggedIn_NonSubscriber_Expanded),
     ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber),
@@ -365,6 +369,7 @@ XCTMain([
   testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
+  testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),

@@ -18,11 +18,11 @@ let paymentInfoResponse =
     >=> map(lower)
     >>> respond(
       view: paymentInfoView,
-      layoutData: { subscription, currentUser, expand, subscriberState in
+      layoutData: { subscription, currentUser, formFields, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (subscription, expand),
+          data: (subscription, formFields),
           title: "Update Payment Info"
         )
     }
@@ -59,14 +59,14 @@ let updatePaymentInfoMiddleware:
       }
 }
 
-let paymentInfoView = View<(Stripe.Subscription, Bool)> { subscription, expand in
+let paymentInfoView = View<(Stripe.Subscription, PricingFormFields)> { subscription, formFields in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-            <> updatePaymentInfoRowView.view(expand)
+            <> updatePaymentInfoRowView.view(formFields)
       )
       ])
     ])
@@ -94,14 +94,14 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
     ])
 }
 
-private let updatePaymentInfoRowView = View<Bool> { expand in
+private let updatePaymentInfoRowView = View<PricingFormFields> { formFields in
   return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(expand: expand)
+          Stripe.html.cardInput(formFields: formFields)
             <> Stripe.html.errors
             <> Stripe.html.scripts
             <> [

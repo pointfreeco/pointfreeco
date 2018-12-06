@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing?expand=true
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 108081
+Content-Length: 108194
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2987,6 +2987,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                  name="vatNumber"
                                  placeholder="VAT Number (EU Customers Only)"
                                  type="text">
+                        </div>
+                        <div class="none">
                           <input class="font-family-inherit
                                         fg-black
                                         border-box
@@ -3003,7 +3005,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                         block"
                                  name="coupon"
                                  placeholder="Coupon Code"
-                                 type="text">
+                                 type="text"
+                                 value>
                         </div>
                         <div class="font-family-inherit
                                     fg-black
