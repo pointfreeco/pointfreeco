@@ -117,7 +117,7 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Dat
         |> invoiceResponse
 
     case let .paymentInfo(.show(expand)):
-      return conn.map(const(user .*. (expand ?? false) .*. subscriberState .*. unit))
+      return conn.map(const(user .*. (expand == .some(true) ? .full : .minimal) .*. subscriberState .*. unit))
         |> paymentInfoResponse
 
     case let .paymentInfo(.update(token)):
