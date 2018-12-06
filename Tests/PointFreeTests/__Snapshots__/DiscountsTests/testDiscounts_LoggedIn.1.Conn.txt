@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 108031
+Content-Length: 108155
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2097,7 +2097,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                   m-pr3">
                         <input name="token"
                                type="hidden">
-                        <div class>
+                        <div class="none">
                           <input class="font-family-inherit
                                         fg-black
                                         border-box
@@ -2988,6 +2988,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                  name="vatNumber"
                                  placeholder="VAT Number (EU Customers Only)"
                                  type="text">
+                        </div>
+                        <div class>
                           <input class="font-family-inherit
                                         fg-black
                                         border-box
@@ -3004,7 +3006,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                         block"
                                  name="coupon"
                                  placeholder="Coupon Code"
-                                 type="text">
+                                 type="text"
+                                 value="blobfest">
                         </div>
                         <div class="font-family-inherit
                                     fg-black

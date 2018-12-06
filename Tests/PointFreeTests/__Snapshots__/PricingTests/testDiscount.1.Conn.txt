@@ -1,9 +1,8 @@
-GET http://localhost:8080/fika
+GET http://localhost:8080/discounts/swiftcount
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 108003
+Content-Length: 108161
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1720,9 +1719,9 @@ input::-webkit-outer-spin-button {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/fika">
+          content="http://localhost:8080/discounts/swiftcount">
     <meta name="twitter:url"
-          content="http://localhost:8080/fika">
+          content="http://localhost:8080/discounts/swiftcount">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -2097,7 +2096,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                   m-pr3">
                         <input name="token"
                                type="hidden">
-                        <div class>
+                        <div class="none">
                           <input class="font-family-inherit
                                         fg-black
                                         border-box
@@ -2988,6 +2987,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                  name="vatNumber"
                                  placeholder="VAT Number (EU Customers Only)"
                                  type="text">
+                        </div>
+                        <div class>
                           <input class="font-family-inherit
                                         fg-black
                                         border-box
@@ -3004,7 +3005,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                                         block"
                                  name="coupon"
                                  placeholder="Coupon Code"
-                                 type="text">
+                                 type="text"
+                                 value="swiftcount">
                         </div>
                         <div class="font-family-inherit
                                     fg-black
