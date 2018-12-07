@@ -551,9 +551,7 @@ private let loggedOutStripeForm = View<PricingFormFields> { formFields -> [Node]
           ? [
             div(
               [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
-              [
-                "Use this Advent of Swiftmas 2018 coupon code and save an annual 50%!"
-              ]
+              ["Use this Advent of Swiftmas 2018 coupon code and save 50% on the first year!"]
             )
             ]
           : []
