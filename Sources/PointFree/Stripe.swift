@@ -97,6 +97,17 @@ public struct Stripe {
     public private(set) var rate: Rate
     public private(set) var valid: Bool
 
+    public var formattedDescription: String {
+      switch duration {
+      case .forever:
+        return "\(self.rate.formattedDescription) every billing period"
+      case .once:
+        return "\(self.rate.formattedDescription) the first billing period"
+      case let .repeating(months: months):
+        return "\(self.rate.formattedDescription) every billing period for the first \(months) months"
+      }
+    }
+
     public enum Duration: Equatable {
       case forever
       case once
