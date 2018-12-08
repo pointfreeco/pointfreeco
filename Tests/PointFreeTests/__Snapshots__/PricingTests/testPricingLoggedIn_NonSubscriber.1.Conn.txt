@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/swiftcount
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 108161
+Content-Length: 108147
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1986,7 +1986,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                      light
                                      fg-gray650">
                             <span class="content0">
-                              $17/mo
+                              $8.50/mo
                             </span>
                             <span class="content1">
                               $
@@ -2040,7 +2040,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                      light
                                      fg-gray650">
                             <span class="content0">
-                              $170/yr
+                              $85/yr
                             </span>
                             <span class="content1">
                               $
@@ -2072,8 +2072,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                   <div class="bg-white
                               col-m
                               col-m-12">
-                    <p class="content1
-                              m-pb1
+                    <p class="m-pb1
                               fg-gray400
                               fg-black
                               normal
@@ -2082,7 +2081,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                               w-100p
                               center
                               normal">
-                      20% off the Individual Monthly plan
+                      You get 50% off for using the Student Discount coupon.
                     </p>
                   </div>
                 </div>
@@ -3006,7 +3005,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                  name="coupon"
                                  placeholder="Coupon Code"
                                  type="text"
-                                 value="swiftcount">
+                                 value="coupon-deadbeef">
                         </div>
                         <div class="font-family-inherit
                                     fg-black
