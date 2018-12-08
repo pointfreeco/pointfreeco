@@ -139,7 +139,6 @@ private let pricingOptionsRowClass =
 
 public enum PricingFormStyle {
   case minimal
-  case coupon(String?)
   case full
 }
 
@@ -176,7 +175,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Either
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
                 <> pricingIntervalRowView.view(pricing)
-                <> pricingFooterView.view((currentUser, formStyle, route))
+                <> pricingFooterView.view((currentUser, formStyle, coupon?.right?.id, route))
             )
             ])
           ])
@@ -522,13 +521,13 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
-private let pricingFooterView = View<(Database.User?, PricingFormStyle, Route?)> { currentUser, formStyle, route in
+private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.Coupon.Id?, Route?)> { currentUser, formStyle, couponId, route in
   gridRow([Styleguide.class([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map(const(stripeForm.view(formStyle)))
+          .map(const(stripeForm.view((couponId, formStyle))))
           ?? [
             gitHubLink(
               text: "Sign in with GitHub",
@@ -540,10 +539,10 @@ private let pricingFooterView = View<(Database.User?, PricingFormStyle, Route?)>
     ])
 }
 
-private let stripeForm = View<PricingFormStyle> { formStyle in
+private let stripeForm = View<(Stripe.Coupon.Id?, PricingFormStyle)> { couponId, formStyle in
   div(
     [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(formStyle: formStyle)
+    Stripe.html.cardInput(couponId: couponId, formStyle: formStyle)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [

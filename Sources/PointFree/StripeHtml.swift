@@ -6,19 +6,8 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(formStyle: PricingFormStyle) -> [Node] {
-      let (expand, coupon): (Bool, String?)
-      switch formStyle {
-      case .minimal:
-        expand = false
-        coupon = nil
-      case let .coupon(code):
-        expand = false
-        coupon = code
-      case .full:
-        expand = true
-        coupon = nil
-      }
+    public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> [Node] {
+      let expand = formStyle == .full
 
       return [
         input([name("token"), type(.hidden)]),
@@ -82,13 +71,13 @@ extension Stripe {
             type(.text),
             ]),
           ]),
-        div([`class`(coupon != nil ? [] : [Class.display.none])], [
+        div([`class`(couponId != nil ? [] : [Class.display.none])], [
           input([
             Styleguide.class([blockInputClass]),
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
-            value(coupon ?? "")
+            value(couponId?.rawValue ?? "")
             ]),
           ]),
         div(
