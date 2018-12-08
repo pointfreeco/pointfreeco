@@ -100,11 +100,11 @@ let pricingResponse =
     >=> map(lower)
     >>> respond(
       view: pricingView,
-      layoutData: { currentUser, pricing, formStyle, couponId, route in
+      layoutData: { currentUser, pricing, formStyle, coupon, route in
         SimplePageLayoutData(
           currentRoute: route,
           currentUser: currentUser,
-          data: (currentUser, pricing, formStyle, couponId, route),
+          data: (currentUser, pricing, formStyle, coupon, route),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
           style: .base(.minimal(.dark)),
           title: "Subscribe to Point-Free"
