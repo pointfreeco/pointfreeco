@@ -174,7 +174,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Either
               pricingTabsView.view(pricing)
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
-                <> pricingIntervalRowView.view(pricing)
+                <> pricingIntervalRowView.view((pricing, coupon?.right))
                 <> pricingFooterView.view((currentUser, formStyle, coupon?.right?.id, route))
             )
             ])
@@ -369,25 +369,31 @@ private let pricingTabsView = View<Pricing> { pricing in
   ]
 }
 
-private let pricingIntervalRowView = View<Pricing> { pricing in
+private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, coupon in
   gridRow(
     [Styleguide.class([Class.pf.colors.bg.white])],
-    individualPricingColumnView.view((.monthly, pricing))
-      <> individualPricingColumnView.view((.yearly, pricing))
+    individualPricingColumnView.view((.monthly, pricing, coupon))
+      <> individualPricingColumnView.view((.yearly, pricing, coupon))
       <> [
         gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])], [
           p([
             Styleguide.class([
-              selectors.content.1,
               Class.padding([.mobile: [.bottom: 1]]),
               Class.pf.colors.fg.gray400,
               Class.pf.type.body.small,
               Class.size.width100pct,
               Class.type.align.center,
               Class.type.normal,
-              ])
+              ]
+              <> (coupon == nil ? [selectors.content.1] : []))
             ],
-            ["20% off the Individual Monthly plan"])
+            [
+              .text(
+                coupon
+                  .map { "You get \(Int($0.percentOff ?? 0))% off for using the \($0.name) coupon." }
+                  ?? "20% off the Individual Monthly plan"
+              )
+            ])
           ])
     ]
   )
@@ -399,9 +405,8 @@ func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
 
 let teamPriceClass = CssSelector.class("team-price")
 
-private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
-return
-  gridColumn(sizes: [.mobile: 6], [Styleguide.class([Class.pf.colors.bg.white])], [
+private let individualPricingColumnView = View<(Pricing.Billing, Pricing, Stripe.Coupon?)> { billing, pricing, coupon -> Node in
+  return gridColumn(sizes: [.mobile: 6], [Styleguide.class([Class.pf.colors.bg.white])], [
     label([`for`(billing.rawValue), Styleguide.class([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
@@ -414,7 +419,7 @@ return
         gridColumn(sizes: [.mobile: 12], [], [
           h2([Styleguide.class([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
             span([Styleguide.class([selectors.content.0])], [
-              .text(individualPricingText(for: billing)),
+              .text(individualPricingText(for: billing, coupon: coupon)),
               ]),
             span([Styleguide.class([selectors.content.1])], [
               "$",
@@ -528,13 +533,16 @@ private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.C
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
           .map(const(stripeForm.view((couponId, formStyle))))
-          ?? [
-            gitHubLink(
-              text: "Sign in with GitHub",
-              type: .black,
-              redirectRoute: route ?? .pricing(nil, expand: false)
-            )
-        ])
+          ?? (
+            loggedOutStripeForm.view(couponId)
+              <> [
+                gitHubLink(
+                  text: "Sign in with GitHub",
+                  type: .black,
+                  redirectRoute: route ?? .pricing(nil, expand: false)
+                )
+            ])
+      )
       ])
     ])
 }
@@ -554,6 +562,27 @@ private let stripeForm = View<(Stripe.Coupon.Id?, PricingFormStyle)> { couponId,
   )
 }
 
+private let loggedOutStripeForm = View<Stripe.Coupon.Id?> { couponId -> [Node] in
+  guard let couponId = couponId else { return [] }
+  return [
+    div(
+      [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3, .bottom: 2]])])],
+      [
+        div([
+          input([
+            Styleguide.class([blockInputClass]),
+            disabled(true),
+            name("coupon"),
+            placeholder("Coupon Code"),
+            type(.text),
+            value(couponId.rawValue ?? "")
+            ]),
+          ]),
+        ]
+    )
+  ]
+}
+
 func title(for type: Pricing.Billing) -> String {
   switch type {
   case .monthly:
@@ -563,13 +592,25 @@ func title(for type: Pricing.Billing) -> String {
   }
 }
 
-func individualPricingText(for type: Pricing.Billing) -> String {
+private func individualTeamPricing(for type: Pricing.Billing, coupon: Stripe.Coupon?) -> Double {
+  let rate = Double(1 - ((coupon?.percentOff ?? 0) / 100))
+
   switch type {
   case .monthly:
-    return "$17/" + pricingInterval(for: type)
+    return 17 * rate
   case .yearly:
-    return "$170/" + pricingInterval(for: type)
+    return 170 * rate
   }
+}
+
+func individualPricingText(for type: Pricing.Billing, coupon: Stripe.Coupon?) -> String {
+  let value = Double(Int(individualTeamPricing(for: type, coupon: coupon) * 100)) / 100
+
+  let formatted = value.truncatingRemainder(dividingBy: 1) == 0
+    ? "$\(Int(value))"
+    : (currencyFormatter.string(from: NSNumber(value: value)) ?? "$\(value)")
+
+  return formatted + "/" + pricingInterval(for: type)
 }
 
 private func defaultTeamPricing(for type: Pricing.Billing) -> Int {
