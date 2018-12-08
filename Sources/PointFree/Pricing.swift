@@ -390,7 +390,7 @@ private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, 
             [
               .text(
                 coupon
-                  .map { "You get \($0.rate.formattedDescription) for using the \($0.name) coupon." }
+                  .map { "You get \($0.formattedDescription) for using the \($0.name) coupon." }
                   ?? "20% off the Individual Monthly plan"
               )
             ])

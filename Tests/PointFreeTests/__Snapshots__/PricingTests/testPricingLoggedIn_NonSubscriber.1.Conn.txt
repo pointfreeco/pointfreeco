@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/swiftcount
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 108147
+Content-Length: 108168
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2081,7 +2081,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                               w-100p
                               center
                               normal">
-                      You get 50% off for using the Student Discount coupon.
+                      You get 50% off every billing period for using the Student Discount coupon.
                     </p>
                   </div>
                 </div>

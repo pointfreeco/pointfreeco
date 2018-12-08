@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 65421
+Content-Length: 65442
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2102,7 +2102,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                               w-100p
                               center
                               normal">
-                      You get 50% off for using the Student Discount coupon.
+                      You get 50% off every billing period for using the Student Discount coupon.
                     </p>
                   </div>
                 </div>

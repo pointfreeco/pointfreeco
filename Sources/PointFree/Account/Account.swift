@@ -564,7 +564,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> N
 }
 
 private func discountDescription(for discount: Stripe.Discount) -> String {
-  return "\(discount.coupon.name): \(discount.coupon.rate.formattedDescription)"
+  return "\(discount.coupon.name): \(discount.coupon.formattedDescription)"
 }
 
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
