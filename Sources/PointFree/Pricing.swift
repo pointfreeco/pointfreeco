@@ -95,21 +95,38 @@ extension Pricing: Codable {
 
 let pricingResponse =
   redirectActiveSubscribers(user: get1)
-    <| writeStatus(.ok)
+    <| fetchCoupon
+    >=> writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: pricingView,
-      layoutData: { currentUser, pricing, formFields, route in
+      layoutData: { currentUser, pricing, formStyle, couponId, route in
         SimplePageLayoutData(
           currentRoute: route,
           currentUser: currentUser,
-          data: (currentUser, pricing, formFields, route),
+          data: (currentUser, pricing, formStyle, couponId, route),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
           style: .base(.minimal(.dark)),
           title: "Subscribe to Point-Free"
         )
     }
 )
+
+private func fetchCoupon<I>(
+  _ conn: Conn<I, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id?, Route?>>
+  ) -> IO<Conn<I, Tuple5<Database.User?, Pricing, PricingFormStyle, Either<String, Stripe.Coupon>?, Route?>>> {
+
+  guard let couponId = conn.data |> get4 else {
+    return pure(conn.map(over4(const(nil))))
+  }
+
+  return Current.stripe.fetchCoupon(couponId)
+    .run
+    .map { coupon in
+      let couponError = "The coupon code \"\(couponId)\" is invalid."
+      return conn.map(over4(const(coupon.bimap(const(couponError), id))))
+  }
+}
 
 private let pricingView =
   pricingOptionsView
@@ -120,13 +137,13 @@ private let pricingOptionsRowClass =
     | Class.grid.center(.mobile)
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
-public enum PricingFormFields {
+public enum PricingFormStyle {
   case minimal
   case coupon(String?)
   case full
 }
 
-let pricingOptionsView = View<(Database.User?, Pricing, PricingFormFields, Route?)> { currentUser, pricing, formFields, route in
+let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Either<String, Stripe.Coupon>?, Route?)> { currentUser, pricing, formStyle, coupon, route in
 
   gridRow([Styleguide.class([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
@@ -159,7 +176,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormFields, Route
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
                 <> pricingIntervalRowView.view(pricing)
-                <> pricingFooterView.view((currentUser, formFields, route))
+                <> pricingFooterView.view((currentUser, formStyle, route))
             )
             ])
           ])
@@ -505,13 +522,13 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
-private let pricingFooterView = View<(Database.User?, PricingFormFields, Route?)> { currentUser, formFields, route in
+private let pricingFooterView = View<(Database.User?, PricingFormStyle, Route?)> { currentUser, formStyle, route in
   gridRow([Styleguide.class([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
-          .map(const(stripeForm.view(formFields)))
+          .map(const(stripeForm.view(formStyle)))
           ?? [
             gitHubLink(
               text: "Sign in with GitHub",
@@ -523,10 +540,10 @@ private let pricingFooterView = View<(Database.User?, PricingFormFields, Route?)
     ])
 }
 
-private let stripeForm = View<PricingFormFields> { formFields in
+private let stripeForm = View<PricingFormStyle> { formStyle in
   div(
     [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(formFields: formFields)
+    Stripe.html.cardInput(formStyle: formStyle)
       <> Stripe.html.errors
       <> Stripe.html.scripts
       <> [

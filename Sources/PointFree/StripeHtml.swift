@@ -6,9 +6,9 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(formFields: PricingFormFields) -> [Node] {
+    public static func cardInput(formStyle: PricingFormStyle) -> [Node] {
       let (expand, coupon): (Bool, String?)
-      switch formFields {
+      switch formStyle {
       case .minimal:
         expand = false
         coupon = nil

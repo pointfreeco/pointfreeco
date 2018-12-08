@@ -59,7 +59,7 @@ let updatePaymentInfoMiddleware:
       }
 }
 
-let paymentInfoView = View<(Stripe.Subscription, PricingFormFields)> { subscription, formFields in
+let paymentInfoView = View<(Stripe.Subscription, PricingFormStyle)> { subscription, formFields in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
@@ -94,14 +94,14 @@ private let currentPaymentInfoRowView = View<Stripe.Card> { card in
     ])
 }
 
-private let updatePaymentInfoRowView = View<PricingFormFields> { formFields in
+private let updatePaymentInfoRowView = View<PricingFormStyle> { formStyle in
   return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
         h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Update"]),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(formFields: formFields)
+          Stripe.html.cardInput(formStyle: formStyle)
             <> Stripe.html.errors
             <> Stripe.html.scripts
             <> [
