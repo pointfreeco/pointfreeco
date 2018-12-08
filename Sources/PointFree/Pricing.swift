@@ -390,7 +390,7 @@ private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, 
             [
               .text(
                 coupon
-                  .map { "You get \(Int($0.percentOff ?? 0))% off for using the \($0.name) coupon." }
+                  .map { "You get \($0.rate.formattedDescription) off for using the \($0.name) coupon." }
                   ?? "20% off the Individual Monthly plan"
               )
             ])
@@ -593,7 +593,7 @@ func title(for type: Pricing.Billing) -> String {
 }
 
 private func individualTeamPricing(for type: Pricing.Billing, coupon: Stripe.Coupon?) -> Double {
-  let rate = Double(1 - ((coupon?.percentOff ?? 0) / 100))
+  let rate = Double(1 - ((coupon?.rate.percentOff ?? 0) / 100))
 
   switch type {
   case .monthly:

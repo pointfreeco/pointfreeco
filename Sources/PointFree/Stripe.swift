@@ -91,17 +91,30 @@ public struct Stripe {
   public struct Coupon {
     public typealias Id = Tagged<Coupon, String>
 
-    public private(set) var amountOff: Int?
     public private(set) var duration: Duration
     public private(set) var id: Id
     public private(set) var name: String
-    public private(set) var percentOff: Float?
+    public private(set) var rate: Rate
     public private(set) var valid: Bool
 
     public enum Duration: Equatable {
       case forever
       case once
       case repeating(months: Int)
+    }
+
+    public enum Rate: Equatable {
+      case amountOff(Cents)
+      case percentOff(Int)
+
+      public var formattedDescription: String {
+        switch self {
+        case let .amountOff(amountOff):
+          return "$\(amountOff) off"
+        case let .percentOff(percentOff):
+          return "\(percentOff)% off"
+        }
+      }
     }
   }
 
@@ -319,6 +332,42 @@ public struct Stripe {
   }
 }
 
+extension Stripe.Coupon.Rate: Codable {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    if let amountOff = try? container.decode(Stripe.Cents.self, forKey: .amountOff) {
+      self = .amountOff(amountOff)
+    } else {
+      self = try .percentOff(container.decode(Int.self, forKey: .percentOff))
+    }
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case let .amountOff(cents):
+      try container.encode(cents, forKey: .amountOff)
+    case let .percentOff(percent):
+      try container.encode(percent, forKey: .percentOff)
+    }
+  }
+
+  public var amountOff: Stripe.Cents? {
+    guard case let .amountOff(cents) = self else { return nil }
+    return cents
+  }
+
+  public var percentOff: Int? {
+    guard case let .percentOff(percent) = self else { return nil }
+    return percent
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case amountOff = "amount_off"
+    case percentOff = "percent_off"
+  }
+}
+
 extension Stripe.Coupon.Duration: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -363,30 +412,26 @@ extension Stripe.Coupon: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.init(
-      amountOff: try container.decodeIfPresent(Int.self, forKey: .amountOff),
       duration: try Stripe.Coupon.Duration(from: decoder),
       id: try container.decode(Stripe.Coupon.Id.self, forKey: .id),
       name: try container.decode(String.self, forKey: .name),
-      percentOff: try container.decodeIfPresent(Float.self, forKey: .percentOff),
+      rate: try Stripe.Coupon.Rate(from: decoder),
       valid: try container.decode(Bool.self, forKey: .valid)
     )
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.amountOff, forKey: .amountOff)
     try self.duration.encode(to: encoder)
     try container.encode(self.id, forKey: .id)
     try container.encode(self.name, forKey: .name)
-    try container.encode(self.percentOff, forKey: .percentOff)
+    try self.rate.encode(to: encoder)
     try container.encode(self.valid, forKey: .valid)
   }
 
   private enum CodingKeys: String, CodingKey {
-    case amountOff = "amount_off"
     case id
     case name
-    case percentOff = "percent_off"
     case valid
   }
 }

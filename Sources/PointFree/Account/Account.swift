@@ -564,13 +564,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> N
 }
 
 private func discountDescription(for discount: Stripe.Discount) -> String {
-  var result = "\(discount.coupon.name): "
-  if let percentOff = discount.coupon.percentOff {
-    result += "\(Int(percentOff))% off"
-  } else if let amountOff = discount.coupon.amountOff {
-    result += "$\(amountOff) off"
-  }
-  return result
+  return "\(discount.coupon.name): \(discount.coupon.rate.formattedDescription)"
 }
 
 private func mainAction(for subscription: Stripe.Subscription) -> Node {

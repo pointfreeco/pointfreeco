@@ -422,11 +422,10 @@ extension Stripe.Discount {
 
 extension Stripe.Coupon {
   public static let mock = Stripe.Coupon(
-    amountOff: nil,
     duration: .forever,
     id: "coupon-deadbeef",
     name: "Student Discount",
-    percentOff: 50,
+    rate: .percentOff(50),
     valid: true
   )
 }
