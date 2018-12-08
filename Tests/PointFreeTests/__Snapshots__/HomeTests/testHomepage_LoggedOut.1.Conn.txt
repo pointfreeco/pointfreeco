@@ -2577,7 +2577,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                   <div class="bg-white
                               col-m
                               col-m-12">
-                    <p class="m-pb1
+                    <p class="content1
+                              m-pb1
                               fg-gray400
                               fg-black
                               normal
@@ -2585,8 +2586,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                               lh-4
                               w-100p
                               center
-                              normal
-                              content1">
+                              normal">
                       20% off the Individual Monthly plan
                     </p>
                   </div>

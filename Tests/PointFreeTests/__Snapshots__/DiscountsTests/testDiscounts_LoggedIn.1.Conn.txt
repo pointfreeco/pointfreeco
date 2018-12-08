@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 108164
+Content-Length: 108659
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2073,7 +2073,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                   <div class="bg-white
                               col-m
                               col-m-12">
-                    <p class="m-pb1
+                    <p class="content0
+                              m-pb1
                               fg-gray400
                               fg-black
                               normal
@@ -2083,6 +2084,18 @@ for (var idx = 0; idx < elements.length; idx++) {
                               center
                               normal">
                       You get 50% off every billing period for using the Student Discount coupon.
+                    </p>
+                    <p class="content1
+                              m-pb1
+                              fg-gray400
+                              fg-black
+                              normal
+                              h6
+                              lh-4
+                              w-100p
+                              center
+                              normal">
+                      20% off the Individual Monthly plan
                     </p>
                   </div>
                 </div>

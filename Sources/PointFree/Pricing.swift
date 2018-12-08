@@ -375,28 +375,44 @@ private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, 
     individualPricingColumnView.view((.monthly, pricing, coupon))
       <> individualPricingColumnView.view((.yearly, pricing, coupon))
       <> [
-        gridColumn(sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])], [
-          p([
-            Styleguide.class([
-              Class.padding([.mobile: [.bottom: 1]]),
-              Class.pf.colors.fg.gray400,
-              Class.pf.type.body.small,
-              Class.size.width100pct,
-              Class.type.align.center,
-              Class.type.normal,
-              ]
-              <> (coupon == nil ? [selectors.content.1] : []))
-            ],
-            [
-              .text(
-                coupon
-                  .map { "You get \($0.formattedDescription) for using the \($0.name) coupon." }
-                  ?? "20% off the Individual Monthly plan"
+        gridColumn(
+          sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])],
+          (
+            coupon
+              .map {
+                [
+                  p([
+                    Styleguide.class([
+                      selectors.content.0,
+                      Class.padding([.mobile: [.bottom: 1]]),
+                      Class.pf.colors.fg.gray400,
+                      Class.pf.type.body.small,
+                      Class.size.width100pct,
+                      Class.type.align.center,
+                      Class.type.normal,
+                      ])
+                    ],
+                    [.text("You get \($0.formattedDescription) for using the \($0.name) coupon.")])
+                ]
+              }
+              ?? []
+            )
+            <> [
+              p([
+                Styleguide.class([
+                  selectors.content.1,
+                  Class.padding([.mobile: [.bottom: 1]]),
+                  Class.pf.colors.fg.gray400,
+                  Class.pf.type.body.small,
+                  Class.size.width100pct,
+                  Class.type.align.center,
+                  Class.type.normal,
+                  ])
+                ],
+                ["20% off the Individual Monthly plan"]
               )
-            ])
           ])
-    ]
-  )
+    ])
 }
 
 func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
