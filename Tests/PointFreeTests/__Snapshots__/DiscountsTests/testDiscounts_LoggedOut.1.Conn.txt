@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 64297
+Content-Length: 65433
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2113,6 +2113,31 @@ for (var idx = 0; idx < elements.length; idx++) {
                               col-m-12">
                     <div class="m-pb3
                                 m-pt2">
+                      <div class="m-pb2
+                                  m-pl3
+                                  m-pr3">
+                        <div>
+                          <input class="font-family-inherit
+                                        fg-black
+                                        border-box
+                                        rounded
+                                        border
+                                        border-gray-800
+                                        h-3r
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1
+                                        m-mb2
+                                        w-100p
+                                        block"
+                                 disabled
+                                 name="coupon"
+                                 placeholder="Coupon Code"
+                                 type="text"
+                                 value="blobfest">
+                        </div>
+                      </div>
                       <a href="/login?redirect=http://localhost:8080/discounts/blobfest"
                          class="medium
                                 cursor-pointer

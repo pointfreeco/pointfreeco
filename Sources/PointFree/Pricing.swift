@@ -512,13 +512,16 @@ private let pricingFooterView = View<(Database.User?, PricingFormFields, Route?)
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
           .map(const(stripeForm.view(formFields)))
-          ?? [
-            gitHubLink(
-              text: "Sign in with GitHub",
-              type: .black,
-              redirectRoute: route ?? .pricing(nil, expand: false)
-            )
-        ])
+          ?? (
+            loggedOutStripeForm.view(formFields)
+              <> [
+                gitHubLink(
+                  text: "Sign in with GitHub",
+                  type: .black,
+                  redirectRoute: route ?? .pricing(nil, expand: false)
+                )
+            ])
+      )
       ])
     ])
 }
@@ -536,6 +539,37 @@ private let stripeForm = View<PricingFormFields> { formFields in
         )
     ]
   )
+}
+
+private let loggedOutStripeForm = View<PricingFormFields> { formFields -> [Node] in
+  guard case let .coupon(code) = formFields else { return [] }
+  return [
+    div(
+      [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3, .bottom: 2]])])],
+      (
+        code == "advent-2018"
+          ? [
+            div(
+              [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+              ["Use this Advent of Swiftmas 2018 coupon code and save 50% on the first year!"]
+            )
+            ]
+          : []
+        )
+        <> [
+          div([
+            input([
+              Styleguide.class([blockInputClass]),
+              disabled(true),
+              name("coupon"),
+              placeholder("Coupon Code"),
+              type(.text),
+              value(code ?? "")
+              ]),
+            ]),
+      ]
+    )
+  ]
 }
 
 func title(for type: Pricing.Billing) -> String {
