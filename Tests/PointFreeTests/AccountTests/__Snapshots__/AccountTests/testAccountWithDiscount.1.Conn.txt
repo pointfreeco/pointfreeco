@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 61519
+Content-Length: 61540
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2039,7 +2039,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         <div class="m-pl1
                                     m-pr1">
                           <p>
-                            Student Discount: 50% off
+                            Student Discount: 50% off every billing period
                           </p>
                         </div>
                       </div>

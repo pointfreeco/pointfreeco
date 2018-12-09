@@ -234,6 +234,7 @@ extension Stripe {
     cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _, _ in pure(.mock) },
     createSubscription: { _, _, _, _ in pure(.mock) },
+    fetchCoupon: const(pure(.mock)),
     fetchCustomer: const(pure(.mock)),
     fetchInvoice: const(pure(.mock(charge: .right(.mock)))),
     fetchInvoices: const(pure(.mock([.mock(charge: .right(.mock))]))),
@@ -415,16 +416,16 @@ extension Stripe.Subscription {
     |> \.status .~ .canceled
 }
 
-extension Stripe.Subscription.Discount {
-  public static let mock = Stripe.Subscription.Discount(coupon: .mock)
+extension Stripe.Discount {
+  public static let mock = Stripe.Discount(coupon: .mock)
 }
 
-extension Stripe.Subscription.Discount.Coupon {
-  public static let mock = Stripe.Subscription.Discount.Coupon(
-    amountOff: nil,
+extension Stripe.Coupon {
+  public static let mock = Stripe.Coupon(
+    duration: .forever,
     id: "coupon-deadbeef",
     name: "Student Discount",
-    percentOff: 50,
+    rate: .percentOff(50),
     valid: true
   )
 }

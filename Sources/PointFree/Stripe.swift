@@ -9,6 +9,7 @@ public struct Stripe {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
   public var createCustomer: (Database.User, Token.Id, String?) -> EitherIO<Swift.Error, Customer>
   public var createSubscription: (Customer.Id, Plan.Id, Int, SubscribeData.Coupon?) -> EitherIO<Swift.Error, Subscription>
+  public var fetchCoupon: (Coupon.Id) -> EitherIO<Swift.Error, Coupon>
   public var fetchCustomer: (Customer.Id) -> EitherIO<Swift.Error, Customer>
   public var fetchInvoice: (Invoice.Id) -> EitherIO<Swift.Error, Invoice>
   public var fetchInvoices: (Customer.Id) -> EitherIO<Swift.Error, ListEnvelope<Invoice>>
@@ -26,6 +27,7 @@ public struct Stripe {
     createCustomer: { PointFree.createCustomer(user: $0, token: $1, vatNumber: $2) |> runStripe },
     createSubscription: {
       PointFree.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3) |> runStripe },
+    fetchCoupon: PointFree.fetchCoupon >>> runStripe,
     fetchCustomer: PointFree.fetchCustomer >>> runStripe,
     fetchInvoice: PointFree.fetchInvoice >>> runStripe,
     fetchInvoices: PointFree.fetchInvoices >>> runStripe,
@@ -86,6 +88,47 @@ public struct Stripe {
     public typealias Id = Tagged<Card, String>
   }
 
+  public struct Coupon {
+    public typealias Id = Tagged<Coupon, String>
+
+    public private(set) var duration: Duration
+    public private(set) var id: Id
+    public private(set) var name: String
+    public private(set) var rate: Rate
+    public private(set) var valid: Bool
+
+    public var formattedDescription: String {
+      switch duration {
+      case .forever:
+        return "\(self.rate.formattedDescription) every billing period"
+      case .once:
+        return "\(self.rate.formattedDescription) the first billing period"
+      case let .repeating(months: months):
+        return "\(self.rate.formattedDescription) every billing period for the first \(months) months"
+      }
+    }
+
+    public enum Duration: Equatable {
+      case forever
+      case once
+      case repeating(months: Int)
+    }
+
+    public enum Rate: Equatable {
+      case amountOff(Cents)
+      case percentOff(Int)
+
+      public var formattedDescription: String {
+        switch self {
+        case let .amountOff(amountOff):
+          return "$\(amountOff) off"
+        case let .percentOff(percentOff):
+          return "\(percentOff)% off"
+        }
+      }
+    }
+  }
+
   public struct Customer: Codable {
     public private(set) var businessVatId: Vat?
     public private(set) var defaultSource: Card.Id?
@@ -107,6 +150,10 @@ public struct Stripe {
     public var extraInvoiceInfo: String? {
       return self.metadata[#function]
     }
+  }
+
+  public struct Discount: Codable {
+    public private(set) var coupon: Coupon
   }
 
   public struct ErrorEnvelope: Codable, Swift.Error {
@@ -142,7 +189,7 @@ public struct Stripe {
     public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
-    public private(set) var discount: Stripe.Subscription.Discount?
+    public private(set) var discount: Discount?
     public private(set) var id: Id
     public private(set) var lines: ListEnvelope<LineItem>
     public private(set) var number: Number
@@ -254,28 +301,6 @@ public struct Stripe {
 
     public typealias Id = Tagged<Subscription, String>
 
-    public struct Discount: Codable {
-      public private(set) var coupon: Coupon
-
-      public struct Coupon: Codable {
-        public typealias Id = Tagged<Coupon, String>
-
-        public private(set) var amountOff: Int?
-        public private(set) var id: Id
-        public private(set) var name: String
-        public private(set) var percentOff: Float?
-        public private(set) var valid: Bool
-
-        private enum CodingKeys: String, CodingKey {
-          case amountOff = "amount_off"
-          case id
-          case name
-          case percentOff = "percent_off"
-          case valid
-        }
-      }
-    }
-
     public struct Item: Codable {
       public private(set) var created: Date
       public private(set) var id: Id
@@ -315,6 +340,110 @@ public struct Stripe {
     public private(set) var id: Id
 
     public typealias Id = Tagged<Token, String>
+  }
+}
+
+extension Stripe.Coupon.Rate: Codable {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    if let amountOff = try? container.decode(Stripe.Cents.self, forKey: .amountOff) {
+      self = .amountOff(amountOff)
+    } else {
+      self = try .percentOff(container.decode(Int.self, forKey: .percentOff))
+    }
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case let .amountOff(cents):
+      try container.encode(cents, forKey: .amountOff)
+    case let .percentOff(percent):
+      try container.encode(percent, forKey: .percentOff)
+    }
+  }
+
+  public var amountOff: Stripe.Cents? {
+    guard case let .amountOff(cents) = self else { return nil }
+    return cents
+  }
+
+  public var percentOff: Int? {
+    guard case let .percentOff(percent) = self else { return nil }
+    return percent
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case amountOff = "amount_off"
+    case percentOff = "percent_off"
+  }
+}
+
+extension Stripe.Coupon.Duration: Codable {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let durationKey = try container.decode(DurationKey.self, forKey: .duration)
+    switch durationKey {
+    case .forever:
+      self = .forever
+    case .once:
+      self = .once
+    case .repeating:
+      let months = try container.decode(Int.self, forKey: .durationInMonths)
+      self = .repeating(months: months)
+    }
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case .forever:
+      try container.encode(DurationKey.forever, forKey: .duration)
+    case .once:
+      try container.encode(DurationKey.once, forKey: .duration)
+    case let .repeating(months):
+      try container.encode(DurationKey.repeating, forKey: .duration)
+      try container.encode(months, forKey: .durationInMonths)
+    }
+  }
+
+  private enum DurationKey: String, Codable {
+    case forever
+    case once
+    case repeating
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case duration
+    case durationInMonths = "duration_in_months"
+  }
+}
+
+extension Stripe.Coupon: Codable {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.init(
+      duration: try Stripe.Coupon.Duration(from: decoder),
+      id: try container.decode(Stripe.Coupon.Id.self, forKey: .id),
+      name: try container.decode(String.self, forKey: .name),
+      rate: try Stripe.Coupon.Rate(from: decoder),
+      valid: try container.decode(Bool.self, forKey: .valid)
+    )
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try self.duration.encode(to: encoder)
+    try container.encode(self.id, forKey: .id)
+    try container.encode(self.name, forKey: .name)
+    try self.rate.encode(to: encoder)
+    try container.encode(self.valid, forKey: .valid)
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case valid
   }
 }
 
@@ -374,6 +503,10 @@ func createSubscription(
     params["coupon"] = coupon?.rawValue
 
     return stripeRequest("subscriptions?expand[]=customer", .post(params))
+}
+
+func fetchCoupon(id: Stripe.Coupon.Id) -> DecodableRequest<Stripe.Coupon> {
+  return stripeRequest("coupons/" + id.rawValue)
 }
 
 func fetchCustomer(id: Stripe.Customer.Id) -> DecodableRequest<Stripe.Customer> {
