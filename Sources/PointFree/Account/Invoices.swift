@@ -157,7 +157,7 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
   )
 }
 
-private func discountDescription(for discount: Stripe.Subscription.Discount, invoice: Stripe.Invoice) -> String {
+private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
   return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name))"
 }
 

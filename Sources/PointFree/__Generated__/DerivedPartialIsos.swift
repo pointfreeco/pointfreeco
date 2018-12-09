@@ -141,7 +141,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            String
+            Stripe.Coupon.Id
         ), B == Route {
 
           public static let discounts = parenthesize <| PartialIso(

@@ -243,8 +243,8 @@ final class StripeTests: TestCase {
       "amount_off": null,
       "created": 1515346678,
       "currency": null,
-      "duration": "forever",
-      "duration_in_months": null,
+      "duration": "repeating",
+      "duration_in_months": 12,
       "livemode": false,
       "max_redemptions": null,
       "metadata": {
@@ -263,9 +263,10 @@ final class StripeTests: TestCase {
   }
 """
 
-    let discount = try JSONDecoder().decode(Stripe.Subscription.Discount.self, from: Data(jsonString.utf8))
+    let discount = try JSONDecoder().decode(Stripe.Discount.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("15-percent", discount.coupon.id)
+    XCTAssertEqual(.repeating(months: 12), discount.coupon.duration)
   }
 
   func testRequests() {
@@ -297,6 +298,11 @@ final class StripeTests: TestCase {
         .rawValue,
       as: .raw,
       named: "create-subscription-coupon"
+    )
+    assertSnapshot(
+      matching: PointFree.fetchCoupon(id: "15-percent").rawValue,
+      as: .raw,
+      named: "fetch-coupon"
     )
     assertSnapshot(
       matching: PointFree.fetchCustomer(id: "cus_test").rawValue,
