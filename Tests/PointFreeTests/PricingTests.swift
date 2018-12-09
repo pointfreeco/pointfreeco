@@ -76,6 +76,25 @@ class PricingTests: TestCase {
     #endif
   }
 
+  func testInvalidDiscount() {
+    update(
+      &Current,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.fetchCoupon .~ const(throwE(unit))
+    )
+
+    let conn = connection(
+      from: request(
+        to: Route.discounts(code: "swiftcount"),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+  }
+
   func testPricingLoggedIn_NonSubscriber() {
     update(
       &Current,
