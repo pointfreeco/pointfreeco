@@ -78,7 +78,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Databa
 
     case let .discounts(couponId):
       return conn.map(const(user .*. .default .*. .minimal .*. couponId .*. route .*. unit))
-        |> pricingResponse
+        |> discountResponse
 
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))

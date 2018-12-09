@@ -93,10 +93,28 @@ extension Pricing: Codable {
   }
 }
 
-let pricingResponse =
+private let couponError = "That coupon code is invalid or has expired."
+
+let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id, Route?>, Data> =
   redirectActiveSubscribers(user: get1)
-    <| fetchCoupon
-    >=> writeStatus(.ok)
+    <<< filterMap(
+      over4(fetchCoupon) >>> sequence4 >>> map(require4),
+      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+    )
+    <<< filter(
+      get4 >>> ^\.valid,
+      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+    )
+    <| map(over4(Optional.some)) >>> pure
+    >=> basePricingResponse
+
+let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id?, Route?>, Data> =
+  redirectActiveSubscribers(user: get1)
+    <| map(over4(const(Stripe.Coupon?.none))) >>> pure
+    >=> basePricingResponse
+
+let basePricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?>, Data> =
+  writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: pricingView,
@@ -112,20 +130,10 @@ let pricingResponse =
     }
 )
 
-private func fetchCoupon<I>(
-  _ conn: Conn<I, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id?, Route?>>
-  ) -> IO<Conn<I, Tuple5<Database.User?, Pricing, PricingFormStyle, Either<String, Stripe.Coupon>?, Route?>>> {
-
-  guard let couponId = conn.data |> get4 else {
-    return pure(conn.map(over4(const(nil))))
-  }
-
+private func fetchCoupon(_ couponId: Stripe.Coupon.Id) -> IO<Stripe.Coupon?> {
   return Current.stripe.fetchCoupon(couponId)
     .run
-    .map { coupon in
-      let couponError = "The coupon code \"\(couponId)\" is invalid."
-      return conn.map(over4(const(coupon.bimap(const(couponError), id))))
-  }
+    .map(^\.right)
 }
 
 private let pricingView =
@@ -142,7 +150,7 @@ public enum PricingFormStyle {
   case full
 }
 
-let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Either<String, Stripe.Coupon>?, Route?)> { currentUser, pricing, formStyle, coupon, route in
+let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?)> { currentUser, pricing, formStyle, coupon, route in
 
   gridRow([Styleguide.class([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
@@ -174,8 +182,8 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Either
               pricingTabsView.view(pricing)
                 <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
                 <> quantityRowView.view(pricing)
-                <> pricingIntervalRowView.view((pricing, coupon?.right))
-                <> pricingFooterView.view((currentUser, formStyle, coupon?.right?.id, route))
+                <> pricingIntervalRowView.view((pricing, coupon))
+                <> pricingFooterView.view((currentUser, formStyle, coupon?.id, route))
             )
             ])
           ])
