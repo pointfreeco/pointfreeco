@@ -132,11 +132,9 @@ with anyone else.
 private func items(forUser user: Database.User) -> [RssItem] {
   return Current
     .episodes()
-    .filter {
-      $0.sequence != 0
-        && (Current.date().timeIntervalSince1970 - $0.publishedAt.timeIntervalSince1970) < 2592000.0
-    }
+    .filter { $0.sequence != 0 }
     .sorted(by: their(^\.sequence, >))
+    .suffix(4)
     .map { item(forUser: user, episode: $0) }
 }
 
