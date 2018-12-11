@@ -400,7 +400,7 @@ private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, 
                       Class.type.normal,
                       ])
                     ],
-                    [.text("You get \($0.formattedDescription) for using the \($0.name) coupon.")])
+                    [.text("You get \($0.formattedDescription) for using the \($0.name ?? $0.id.rawValue) coupon.")])
                 ]
               }
               ?? []

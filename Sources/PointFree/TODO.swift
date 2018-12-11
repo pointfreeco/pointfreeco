@@ -171,6 +171,20 @@ public func zip7<A, B, C, D, E, F, G>(
   return tuple7 <¢> a <*> b <*> c <*> d <*> e <*> f <*> g
 }
 
+public func zip8<A, B, C, D, E, F, G, H>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>,
+  _ f: Parallel<F>,
+  _ g: Parallel<G>,
+  _ h: Parallel<H>
+  ) -> Parallel<(A, B, C, D, E, F, G, H)> {
+
+  return tuple8 <¢> a <*> b <*> c <*> d <*> e <*> f <*> g <*> h
+}
+
 public func tuple5<A, B, C, D, E>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (A, B, C, D, E) {
   return { b in { c in { d in { e in (a, b, c, d, e) } } } }
 }
@@ -181,6 +195,10 @@ public func tuple6<A, B, C, D, E, F>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) 
 
 public func tuple7<A, B, C, D, E, F, G>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) -> (G) -> (A, B, C, D, E, F, G) {
   return { b in { c in { d in { e in { f in { g in (a, b, c, d, e, f, g) } } } } } }
+}
+
+public func tuple8<A, B, C, D, E, F, G, H>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) -> (G) -> (H) -> (A, B, C, D, E, F, G, H) {
+  return { b in { c in { d in { e in { f in { g in { h in (a, b, c, d, e, f, g, h) } } } } } } }
 }
 
 public typealias T8<A, B, C, D, E, F, G, Z> = Tuple<A, T7<B, C, D, E, F, G, Z>>

@@ -145,7 +145,7 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
             a(
               [
                 Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
-                href(path(to: .account(.invoices(.show(invoice.id))))),
+                href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
                 target(.blank),
               ],
               ["Print"]
@@ -158,7 +158,7 @@ private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoic
 }
 
 private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
-  return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name))"
+  return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name ?? discount.coupon.id.rawValue))"
 }
 
 let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { subscription, currentUser, invoice -> Node in
