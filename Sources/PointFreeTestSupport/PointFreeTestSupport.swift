@@ -35,9 +35,10 @@ extension Environment {
   )
 
   public static let teamYearly = mock
-    |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
-    |> \.database.fetchTeamInvites .~ const(pure([.mock]))
-    |> \.stripe.fetchSubscription .~ const(pure(.teamYearly))
+    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([Database.User.mock]))
+    |> (\Environment.database.fetchTeamInvites) .~ const(pure([Database.TeamInvite.mock]))
+    |> (\Environment.stripe.fetchSubscription) .~ const(pure(Stripe.Subscription.teamYearly))
+    |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(Stripe.Invoice.upcoming |> \.amountDue .~ 640_00))
 
   public static let individualMonthly = mock
     |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
@@ -241,6 +242,7 @@ extension Stripe {
     fetchPlans: { pure(.mock([.mock])) },
     fetchPlan: const(pure(.mock)),
     fetchSubscription: const(pure(.mock)),
+    fetchUpcomingInvoice: const(pure(.upcoming)),
     invoiceCustomer: const(pure(.mock(charge: .right(.mock)))),
     updateCustomer: { _, _ in pure(.mock) },
     updateCustomerExtraInvoiceInfo: { _, _ in pure(.mock) },
@@ -320,6 +322,11 @@ extension Stripe.Invoice {
       total: 17_00
     )
   }
+
+  public static let upcoming = mock(charge: .right(.mock))
+    |> \.amountDue .~ 17_00
+    |> \.amountPaid .~ 0
+    |> \.id .~ nil
 }
 
 extension Stripe.LineItem {
