@@ -16,6 +16,7 @@ public struct Stripe {
   public var fetchPlans: () -> EitherIO<Swift.Error, ListEnvelope<Plan>>
   public var fetchPlan: (Plan.Id) -> EitherIO<Swift.Error, Plan>
   public var fetchSubscription: (Subscription.Id) -> EitherIO<Swift.Error, Subscription>
+  public var fetchUpcomingInvoice: (Customer.Id) -> EitherIO<Swift.Error, Invoice>
   public var invoiceCustomer: (Customer.Id) -> EitherIO<Swift.Error, Invoice>
   public var updateCustomer: (Customer.Id, Token.Id) -> EitherIO<Swift.Error, Customer>
   public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Swift.Error, Customer>
@@ -34,6 +35,7 @@ public struct Stripe {
     fetchPlans: { PointFree.fetchPlans() |> runStripe },
     fetchPlan: PointFree.fetchPlan >>> runStripe,
     fetchSubscription: PointFree.fetchSubscription >>> runStripe,
+    fetchUpcomingInvoice: PointFree.fetchUpcomingInvoice >>> runStripe,
     invoiceCustomer: PointFree.invoiceCustomer >>> runStripe,
     updateCustomer: { PointFree.updateCustomer(id: $0, token: $1) |> runStripe },
     updateCustomerExtraInvoiceInfo: { PointFree.updateCustomer(id: $0, extraInvoiceInfo: $1) |> runStripe },
@@ -93,7 +95,7 @@ public struct Stripe {
 
     public private(set) var duration: Duration
     public private(set) var id: Id
-    public private(set) var name: String
+    public private(set) var name: String?
     public private(set) var rate: Rate
     public private(set) var valid: Bool
 
@@ -190,7 +192,7 @@ public struct Stripe {
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
     public private(set) var discount: Discount?
-    public private(set) var id: Id
+    public private(set) var id: Id?
     public private(set) var lines: ListEnvelope<LineItem>
     public private(set) var number: Number
     public private(set) var periodStart: Date
@@ -425,7 +427,7 @@ extension Stripe.Coupon: Codable {
     self.init(
       duration: try Stripe.Coupon.Duration(from: decoder),
       id: try container.decode(Stripe.Coupon.Id.self, forKey: .id),
-      name: try container.decode(String.self, forKey: .name),
+      name: try container.decodeIfPresent(String.self, forKey: .name),
       rate: try Stripe.Coupon.Rate(from: decoder),
       valid: try container.decode(Bool.self, forKey: .valid)
     )
@@ -531,6 +533,10 @@ func fetchPlan(id: Stripe.Plan.Id) -> DecodableRequest<Stripe.Plan> {
 
 func fetchSubscription(id: Stripe.Subscription.Id) -> DecodableRequest<Stripe.Subscription> {
   return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer")
+}
+
+func fetchUpcomingInvoice(_ customer: Stripe.Customer.Id) -> DecodableRequest<Stripe.Invoice> {
+  return stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
 }
 
 func invoiceCustomer(_ customer: Stripe.Customer.Id)
