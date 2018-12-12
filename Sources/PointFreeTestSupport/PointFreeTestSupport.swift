@@ -59,7 +59,7 @@ extension Assets {
 }
 
 extension Logger {
-  public static let mock = Logger(level: .debug, logger: { _ in })
+  public static let mock = Logger.init(level: .debug, output: .null, error: .null)
 }
 
 extension EnvVars {
