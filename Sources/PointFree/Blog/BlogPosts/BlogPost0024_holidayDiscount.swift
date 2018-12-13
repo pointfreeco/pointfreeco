@@ -10,13 +10,13 @@ on a Point-Free subscription.
     .init(
       content: """
 We launched on January 29 of this year, and so we've been live for just under a year. In that time we have
-released 41 episodes with over 19 hours of [video](\(url(to: .home))), published 24
-[blog posts](\(url(to: .blog(.index)))), had 57 thousand unique visitors, and
+released 41 episodes with over 19 hours of [video](\(url(to: .home))), 9 of the videos are free to all,
+published 24 [blog posts](\(url(to: .blog(.index)))), had 57 thousand unique visitors, and
 [open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes.
-
 We're really proud of everything we produced for 2018, and hope that 2019 will be even better. And if you're
 not a subscriber, then keep reading and you'll find a rare special discount code for 30% off, good only for
 a short period of time!
+
 """,
       timestamp: nil,
       type: .paragraph
@@ -26,7 +26,36 @@ a short period of time!
       content: """
 ## Episodes
 
-todo
+We produced 41 episodes this year, about one every 1.2 weeks. We covered a broad set of topics, from the
+foundational ideas that somehow come up again-and-again, to the more practical, everyday coding ideas
+that you can immediately bring into your code base _today_. The balance of these two sides is important
+because without the practical episodes it is hard to see the forest from the trees, but without the abstract
+episodes we will be stuck in an endless loop of adding superficial niceties to our code that don't
+meaningfully improve the code in any significant way.
+
+Here's a small selection of some of our favorite episodes from the past year:
+
+---
+
+## Protocol Witnesses
+
+---
+
+## Zip
+
+---
+
+## Tagged
+
+---
+
+## UIKit Styling
+
+---
+
+## Environment
+
+---
 
 ## Open Source
 
@@ -46,9 +75,12 @@ whole view hiearchy.
 
 The design of this library was covered in a whopping 9 episodes
 
-* [Protocol Witnesses: Part 1](todo), [Part 2](todo)
-* [Advanced Protocol Witnesses: Part 1](todo), [Part 2](todo)
-* [Protocol-Oriented Library Design: Part 1](todo), [Part 2](todo)
+* [Protocol Witnesses: Part 1](todo)
+* [Protocol Witnesses: Part 2](todo)
+* [Advanced Protocol Witnesses: Part 1](todo)
+* [Advanced Protocol Witnesses: Part 2](todo)
+* [Protocol-Oriented Library Design: Part 1](todo)
+* [Protocol-Oriented Library Design: Part 2](todo)
 * [Witness-Oriented Library Design](todo)
 * [Async Snapshot Testing](todo)
 * [A Tour of Snapshot Testing](todo) (free)
@@ -65,7 +97,8 @@ HTML and a way to render that data to an HTML string that can be sent to the bro
 
 The design of this library was covered in 4 episodes:
 
-* [Domain Specific Languages: Part 1](todo), [Part 2](todo)
+* [Domain Specific Languages: Part 1](todo)
+* [Domain Specific Languages: Part 2](todo)
 * [An HTML DSL](todo)
 * [DSLs vs. Templating Languages](todo) (free)
 
