@@ -134,7 +134,7 @@ private func items(forUser user: Database.User) -> [RssItem] {
     .episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(^\.sequence, >))
-    .suffix(4)
+    .prefix(4)
     .map { item(forUser: user, episode: $0) }
 }
 
