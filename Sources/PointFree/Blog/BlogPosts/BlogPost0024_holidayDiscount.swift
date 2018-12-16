@@ -9,14 +9,14 @@ on a Point-Free subscription.
   contentBlocks: [
     .init(
       content: """
-We launched on January 29 of this year, and so we've been live for just under a year. In that time we have
-released 41 episodes with over 19 hours of [video](\(url(to: .home))), 9 of the videos are free to all,
-published 24 [blog posts](\(url(to: .blog(.index)))), had 57 thousand unique visitors, and
-[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes.
-We're really proud of everything we produced for 2018, and hope that 2019 will be even better. And if you're
-not a subscriber, then keep reading and you'll find a rare special discount code for 30% off, good only for
+We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time we have
+released 41 episodes with over 19 hours of [video](\(url(to: .home))) (9 of which are free for all),
+published 24 [blog posts](\(url(to: .blog(.index)))), served over 57,000 unique visitors, and
+[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from topics covered in our episodes.
+We're really proud of everything we produced for 2018, and hope that 2019 will be even better.
+      
+If you're not a subscriber, then keep reading! You'll find a rare special discount code for 30% off, good only for
 a short period of time!
-
 """,
       timestamp: nil,
       type: .paragraph
@@ -29,9 +29,9 @@ a short period of time!
 We produced 41 episodes this year, about one every 1.2 weeks. We covered a broad set of topics, from the
 foundational ideas that somehow come up again-and-again, to the more practical, everyday coding ideas
 that you can immediately bring into your code base _today_. The balance of these two sides is important
-because without the practical episodes it is hard to see the forest from the trees, but without the abstract
-episodes we will be stuck in an endless loop of adding superficial niceties to our code that don't
-meaningfully improve the code in any significant way.
+because without the practical episodes it is hard to see the forest from the trees, and without the abstract
+episodes we'd be stuck in an endless loop of adding superficial niceties to our code that don't
+meaningfully improve it in a significant way.
 
 Here's a small selection of some of our favorite episodes from the past year:
 
@@ -39,13 +39,29 @@ Here's a small selection of some of our favorite episodes from the past year:
 
 ## Protocol Witnesses
 
-todo
+We ended the year with a bang! We've spent eight whole episodes rethinking the community best-practice of
+"protocol-oriented programming". We started our series on "protocol witnesses" by showing how many basic protocol
+features and functionality can be implemented with using concrete data types and functions. We even showed that
+this translation is completely mechanical: that given any protocol, there is a clear path to defining a data type
+equivalent ([part 1](TODO), [part 2](TODO)).
+      
+We then dove into some of the more complicated features of protocols ([part 1](TODO), [part 2](TODO)), some of which
+we only got recently, like conditional conformance. We saw how these features manifest in the "protocol witness" world
+as plain ole functions! With witnesses we we didn't have to wait. We were able to take advantage of conditional conformance with the very
+first version of Swift!
+      
+We wrapped things up with four down-to-earth episodes where we tool a real-world library, abstracted it to work with protocols
+([part 1](TODO), [part 2](TODO)), reabstracted it [to work with witnesses](TODO), showed how a simple API built around functions 
 
 ---
 
 ## Zip
 
-todo
+We spent several episodes diving deep into the `zip` function. While many of us are aware of `zip` on arrays and may have
+even reached for it on occasion, it may be surprising that `zip` appears on structures almost as often as `map`! The
+implications are perhaps even more interesting. We saw that `zip` on optionals mirrors optional sugar that we're used to with
+`if`-`let` binding. We saw that `zip` on the result type made us question the structure of the result type itself.
+And we saw that `zip` on an asynchronous type was a natural way to think about parallelism.
 
 ---
 
