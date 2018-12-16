@@ -73,13 +73,20 @@ todo
 
 ## UIKit Styling
 
-todo
+In our [_3rd_](TODO) of _41_ episodes we showed that composition was truly applicable to everyday code. It's still one of our
+most popular episodes to date!
+
+There are many different ways to combine and reuse styling logic for iOS views, but we showed that plain ole functions
+are the simplest solution.
 
 ---
 
 ## Environment
 
-todo
+We've had several episodes on managing dependencies using `Environment` thus far, and we have more to come. It's one
+of the easiest ways to make untestable parts of your code base testable.
+      
+Stephen gave [a talk this year at NSSpain](TODO)
 
 ---
 
@@ -99,7 +106,7 @@ can snapshot test `UIView`'s and `UIViewController`'s into an image format, whic
 kinds of libraries, but you can also snapshot those objects into a textual format so that you can see the
 whole view hiearchy.
 
-The design of this library was covered in a whopping 9 episodes
+The design of this library was covered in a whopping 8 episodes
 
 * [Protocol Witnesses: Part 1](todo)
 * [Protocol Witnesses: Part 2](todo)
@@ -109,7 +116,6 @@ The design of this library was covered in a whopping 9 episodes
 * [Protocol-Oriented Library Design: Part 2](todo)
 * [Witness-Oriented Library Design](todo)
 * [Async Snapshot Testing](todo)
-* [A Tour of Snapshot Testing](todo) (free)
 
 ---
 
@@ -177,7 +183,17 @@ a non-empty version of itself. We covered the design of this library in 4 episod
 
 ### `swift-validated`
 
-todo
+Swift error handling is built around `Optional`, `Result`, and `throws`. These constructs allow us to write a sequence
+of failable instructions to Swift and return `nil`, `failure`, or `throw` an error to short-circuit things and
+bail out of the happy path.
+
+This correspondence between `Optional`, `Result`, and `throws` is interesting on its own, but we spent several episodes
+exploring the `zip` function beyond its usualy definition on arrays, and we discovered something interesting: `zip`
+gives us the unique ability to accumulate multiple errors when more than one input is invalid, a common thing we want
+with form data, and something that short-circuiting `throws` can't do.
+
+To make this functionality available to everyone, we open sourced Validated, a Result-like type that can accumulate
+multiple errors.
 
 * [The Many Faces of Zip: Part 1](todo)
 * [The Many Faces of Zip: Part 2](todo)
