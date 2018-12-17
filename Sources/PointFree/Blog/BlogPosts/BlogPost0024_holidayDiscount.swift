@@ -116,7 +116,7 @@ bringing the dependency into your project.
 Our open source work has accrued over 3,800 stars on GitHub! We're so thankful that the community has
 expressed such an interest!
 
-### `swift-snapshot-testing`
+### [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))))
 
 Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))), take snapshot testing to the
 next level. It allows you to snapshot test any kind of data type into any kind of format. For example, you
