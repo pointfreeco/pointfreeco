@@ -251,11 +251,11 @@ Result-like type that can accumulate multiple errors.
 ## Here's to 2019!
 
 To end 2018 on a high note we're offering a 30% discount to new subscribers for their first year. Just
-[sign up](/discounts/point-free-2018) for an individual subscription plan using the code `point-free-2018`
-and the discount will be applied automatically. We hope you'll join us for all of the great material we have
-planned for 2019.
+[sign up](/discounts/point-free-2018) for an individual subscription plan using the code
+[`point-free-2018`](/discounts/point-free-2018) and the discount will be applied automatically. We hope
+you'll join us for all of the great material we have planned for 2019.
 
-Until next time!
+Until next year!
 """,
       timestamp: nil,
       type: .paragraph
