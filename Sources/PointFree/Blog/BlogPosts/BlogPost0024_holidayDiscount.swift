@@ -101,11 +101,20 @@ TODO: finish
 
 ## Open Source
 
-We open sourced many libraries from the content in our episodes, 8 libraries in total. Each of these libraries
-aims to solve a single problem in the simplest way possible in order to minimize the cost of bringing
-the dependency into your project.
+We knew we wanted to do as much of Point-Free in the open as possible, so this very site has
+been [open source](\(gitHubUrl(to: .repo(.pointfreeco))) from
+[the very beginning](https://github.com/pointfreeco/pointfreeco/commit/548dc6bffcb01cb0e0ec07559e5d33dece24c686).
+We built this site from first principles in a functional style, writing each component as open source along
+the way.
 
-todo: Mention source compatibility
+Since our launch, we even open sourced libraries from the content in our episodes: 8 in total! And 4 of these
+libraries has a home in the official
+[Swift Source Compatibility Suite](https://github.com/apple/swift-source-compat-suite). Each of these
+libraries aims to solve a single problem in the simplest way possible in order to minimize the cost of
+bringing the dependency into your project.
+
+Our open source work has accrued over 3,800 stars on GitHub! We're so thankful that the community has
+expressed such an interest!
 
 ### `swift-snapshot-testing`
 
