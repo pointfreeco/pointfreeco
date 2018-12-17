@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60852
+Content-Length: 60853
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2020,7 +2020,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                         <div class="m-pl1
                                     m-pr1">
                           <p>
-                            $17.00 on 3/2/18
+                            $640.00 on 3/2/18
                           </p>
                         </div>
                       </div>

@@ -53,7 +53,11 @@ private func fetchAccountData<I>(
     .map(^\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
-  let everything = zip7(
+  let upcomingInvoice = stripeSubscription
+    .map(^\.customer >>> either(id, ^\.id))
+    .flatMap(Current.stripe.fetchUpcomingInvoice)
+
+  let everything = zip8(
     Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] },
 
@@ -70,7 +74,9 @@ private func fetchAccountData<I>(
       .map { $0.right ?? [] },
 
     Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
-      .map { $0.right ?? [] }
+      .map { $0.right ?? [] },
+
+    upcomingInvoice.run.map(^\.right).parallel
   )
 
   return everything
@@ -86,7 +92,8 @@ private func fetchAccountData<I>(
             subscription: $3,
             subscriptionOwner: $4,
             teamInvites: $5,
-            teammates: $6
+            teammates: $6,
+            upcomingInvoice: $7
           )
         )
       )
@@ -401,7 +408,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
 
           gridColumn(
             sizes: [.mobile: 12],
-            subscriptionPlanRows.view(subscription)
+            subscriptionPlanRows.view((subscription, data.upcomingInvoice))
               <> subscriptionTeamRow.view(data)
               <> subscriptionInvitesRowView.view(data.teamInvites)
               <> subscriptionInviteMoreRowView.view((subscription, data.teamInvites, data.teammates))
@@ -475,26 +482,22 @@ public func status(for subscription: Stripe.Subscription) -> String {
   }
 }
 
-public func nextBilling(for subscription: Stripe.Subscription) -> String {
-  switch subscription.status {
-  case .active:
-    return totalAmount(for: subscription)
+public func nextBilling(for subscription: Stripe.Subscription, upcomingInvoice: Stripe.Invoice?) -> String {
+  switch (subscription.status, upcomingInvoice) {
+  case let (.active, .some(invoice)):
+    return format(cents: invoice.amountDue)
       + " on "
-      + dateFormatter.string(from: subscription.currentPeriodEnd)
-  case .canceled:
+      + dateFormatter.string(from: invoice.periodEnd)
+  case (.canceled, _):
     return subscription.currentPeriodEnd > Current.date()
       ? "Cancels " + dateFormatter.string(from: subscription.currentPeriodEnd)
       : "Canceled"
-  case .pastDue:
-    return "" // FIXME
-  case .unpaid:
-    return "" // FIXME
-  case .trialing:
+  case (.active, .none), (.pastDue, _), (.unpaid, _), (.trialing, _):
     return "" // FIXME
   }
 }
 
-private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> Node in
+private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> { subscription, upcomingInvoice -> Node in
 
   let planRow = gridRow([
     gridColumn(sizes: [.mobile: 3], [
@@ -539,7 +542,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> N
         ]),
       gridColumn(sizes: [.mobile: 9], [
         div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([.text(nextBilling(for: subscription))])
+          p([.text(nextBilling(for: subscription, upcomingInvoice: upcomingInvoice))])
           ])
         ])
       ])
@@ -564,7 +567,7 @@ private let subscriptionPlanRows = View<Stripe.Subscription> { subscription -> N
 }
 
 private func discountDescription(for discount: Stripe.Discount) -> String {
-  return "\(discount.coupon.name): \(discount.coupon.formattedDescription)"
+  return "\(discount.coupon.name ?? discount.coupon.id.rawValue): \(discount.coupon.formattedDescription)"
 }
 
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
@@ -760,10 +763,6 @@ public func format(cents: Stripe.Cents) -> String {
     ?? NumberFormatter.localizedString(from: dollars, number: .currency)
 }
 
-private func totalAmount(for subscription: Stripe.Subscription) -> String {
-  return format(cents: subscription.plan.amount * .init(rawValue: subscription.quantity))
-}
-
 private let logoutView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [
@@ -825,6 +824,7 @@ private struct AccountData {
   let subscriptionOwner: Database.User?
   let teamInvites: [Database.TeamInvite]
   let teammates: [Database.User]
+  let upcomingInvoice: Stripe.Invoice?
 
   var isSubscriptionOwner: Bool {
     return self.currentUser.id == self.subscriptionOwner?.id
