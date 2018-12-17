@@ -200,7 +200,7 @@ bail out of the happy path.
 
 This correspondence between `Optional`, `Result`, and `throws` is interesting on its own, but we spent several episodes
 exploring the `zip` function beyond its usualy definition on arrays, and we discovered something interesting: `zip`
-gives us the unique ability to accumulate multiple errors when more than one input is invalid, a common thing we want
+gives us the ability to accumulate multiple errors when more than one input is invalid, a common thing we want
 with form data, and something that short-circuiting `throws` can't do.
 
 To make this functionality available to everyone, we open sourced [Validated](\(gitHubUrl(to: .repo(.validated))), a
@@ -215,8 +215,9 @@ Result-like type that can accumulate multiple errors.
 ## Here's to 2019!
 
 To end 2018 on a high note we're offering a 30% discount to new subscribers for their first year. Just
-[sign up](/discounts/point-free-2018) for an individual subscription plan and the discount will be applied
-automatically. We hope you'll join us for all of the great material we have planned for 2019.
+[sign up](/discounts/point-free-2018) for an individual subscription plan using the code `point-free-2018`
+and the discount will be applied automatically. We hope you'll join us for all of the great material we have
+planned for 2019.
 
 Until next time!
 """,
