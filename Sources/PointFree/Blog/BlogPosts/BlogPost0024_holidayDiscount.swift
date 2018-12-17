@@ -113,6 +113,9 @@ libraries has a home in the official
 libraries aims to solve a single problem in the simplest way possible in order to minimize the cost of
 bringing the dependency into your project.
 
+Our open source work has accrued over 3,800 stars on GitHub! We're so thankful that the community has
+expressed such an interest!
+
 ### `swift-snapshot-testing`
 
 Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))), take snapshot testing to the
