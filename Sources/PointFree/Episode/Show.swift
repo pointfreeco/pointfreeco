@@ -918,17 +918,30 @@ let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
     hrMarkdownStyles
       <> aMarkdownStyles
-      <> blockquote % fontStyle(.italic)
-      <> p % key("word-wrap", "break-word")
-      <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
-      <> code % (
-        fontFamily(["monospace"])
-          <> padding(topBottom: .px(1), leftRight: .px(5))
-          <> borderWidth(all: .px(1))
-          <> borderRadius(all: .px(3))
-          <> backgroundColor(Color.other("#f7f7f7"))
-    )
+      <> ulMarkdownStyles
+      <> blockquoteMarkdownStyles
+      <> pMarkdownStyles
+      <> codeMarkdownStyles
 )
+
+private let ulMarkdownStyles: Stylesheet =
+  ul % margin(bottom: .rem(1.5))
+
+private let pMarkdownStyles: Stylesheet =
+  p % key("word-wrap", "break-word")
+    <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
+
+private let codeMarkdownStyles: Stylesheet =
+  code % (
+    fontFamily(["monospace"])
+      <> padding(topBottom: .px(1), leftRight: .px(5))
+      <> borderWidth(all: .px(1))
+      <> borderRadius(all: .px(3))
+      <> backgroundColor(Color.other("#f7f7f7"))
+)
+
+private let blockquoteMarkdownStyles: Stylesheet =
+  blockquote % fontStyle(.italic)
 
 private let aMarkdownStyles: Stylesheet =
   a % key("text-decoration", "underline")

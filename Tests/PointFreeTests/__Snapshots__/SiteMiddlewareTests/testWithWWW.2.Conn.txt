@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 74716
+Content-Length: 74758
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1646,6 +1646,10 @@ html {
 
 .md-ctn a:hover {
   color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
 }
 
 .md-ctn blockquote {
