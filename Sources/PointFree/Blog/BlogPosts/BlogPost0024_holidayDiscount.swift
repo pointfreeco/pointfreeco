@@ -137,12 +137,13 @@ The design of this library was covered in a whopping 8 episodes
 
 ### [`swift-html`](\(gitHubUrl(to: .repo(.html))))
 
-Server-side Swift is in its nascent stages, but there have been some promising developments in the field,
+Server-side Swift is still in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
 Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. We
 [open sourced](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift) the
-[`swift-html`](\(gitHubUrl(to: .repo(.html))) library to remedy these problems by providing a first-class data type to represent
-HTML and a way to render that data to an HTML string that can be sent to the browser.
+[`swift-html`](\(gitHubUrl(to: .repo(.html)))) library to remedy these problems by providing a first-class data type to represent
+HTML and a way to render that data to an HTML string that can be sent to the browser. In fact, this library
+powers the HTML rendering of this very site!
 
 The design of this library was covered in 4 episodes:
 
@@ -155,16 +156,16 @@ The design of this library was covered in 4 episodes:
 
 The two most popular server-side Swift frameworks are Kitura and Vapor, but both use templating languages
 as the default way to render HTML. Luckily each framework provides a way to use your own view layer, and so
-both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura)))
-and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))) are small libraries to help you use our
-[`swift-html`](\(gitHubUrl(to: .repo(.html))) library in either framework.
+both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))))
+and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor)))) are small libraries to help you use our
+[`swift-html`](\(gitHubUrl(to: .repo(.html)))) library in either framework.
 
 ### [`swift-overture`](\(gitHubUrl(to: .repo(.overture))))
 
 Functional programming tends to make heavy use of custom operators, and this is because infix notation and
 associativity are a powerful way of reducing clutter in an expression and exposing some really interesting
 algebraic properties. But, it's not for everyone. So, we open sourced
-[`swift-overture`](\(gitHubUrl(to: .repo(.overture))) to be a simple library that gives you access to lots of
+[`swift-overture`](\(gitHubUrl(to: .repo(.overture)))) to be a simple library that gives you access to lots of
 interesting function composition tools, without the use of operators. We discussed this idea in the following
 episode:
 
@@ -183,7 +184,7 @@ features, like conditional conformance, to make it easy to make your code safer.
 An adage of functional programmers is "make invalid states unrepresentable". This means that states of data
 that shouldn't be allowed to happen should actually be provable by the compiler as being impossible. We
 achieve this by using concepts from algebraic data types in order to chisel away the invalid values from
-our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty))) library applies
+our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty)))) library applies
 these ideas to model a "non-empty collection" type, which allows you to transform any collection type into
 a non-empty version of itself. We covered the design of this library in 4 episodes:
 
@@ -203,7 +204,7 @@ exploring the `zip` function beyond its usualy definition on arrays, and we disc
 gives us the unique ability to accumulate multiple errors when more than one input is invalid, a common thing we want
 with form data, and something that short-circuiting `throws` can't do.
 
-To make this functionality available to everyone, we open sourced [Validated](\(gitHubUrl(to: .repo(.validated))), a
+To make this functionality available to everyone, we open sourced [Validated](\(gitHubUrl(to: .repo(.validated)))), a
 Result-like type that can accumulate multiple errors.
 
 * [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)
