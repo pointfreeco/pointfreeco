@@ -80,8 +80,7 @@ question the structure of the result type itself. And we saw that `zip` on an as
 natural way to think about parallelism.
 
 Zip has popped up in a number of our open source libraries, including
-[`swift-non-empty`](\(gitHubUrl(to: .repo(.nonempty)))),
-[`swift-overture`](\(gitHubUrl(to: .repo(.overture)))), and
+[`swift-overture`](\(gitHubUrl(to: .repo(.overture)))) and
 [`swift-validation`](\(gitHubUrl(to: .repo(.overture)))).
 
 * [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)
@@ -90,7 +89,13 @@ Zip has popped up in a number of our open source libraries, including
 
 ### Tagged
 
-TODO.
+The `Tagged` type provides a lightweight wrapper around any type so that you can safely distinguish between,
+say, an `Int`-based user id and an `Int`-based blog post id. It uses a phantom generic and some powerful Swift
+features, like conditional conformance, to make it easy to make your code safer.
+
+We even open sourced our own implementation, [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged)))), to make it easy
+to take advantage of in your code base. The Point-Free web site makes heavy use of Tagged, and it's prevented
+quite a few bugs from going out in deploys! 😅
 
 * [Tagged](/episodes/ep12-tagged)
 
@@ -203,10 +208,9 @@ episode:
 
 ### [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged))))
 
-The `Tagged` type provides a lightweight wrapper around any type so that you can safely distinguish between,
-say, an `Int`-based user id and an `Int`-based blog post id. It uses a phantom generic and some powerful Swift
-features, like conditional conformance, to make it easy to make your code safer. We discussed this type in the
-following episode:
+After covering the Tagged type in [an episode](/episodes/ep12-tagged), we open sourced
+[`swift-tagged`](\(gitHubUrl(to: .repo(.tagged)))) to make it easier for everyone to benefit from this
+powerful type.
 
 * [Tagged](/episodes/ep12-tagged)
 
