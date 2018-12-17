@@ -135,7 +135,7 @@ The design of this library was covered in a whopping 8 episodes
 * [Witness-Oriented Library Design](/episodes/ep39-witness-oriented-library-design)
 * [Async Snapshot Testing](/episodes/ep40-async-functional-refactoring)
 
-### [`swift-html`](\(gitHubUrl(to: .repo(.html)))
+### [`swift-html`](\(gitHubUrl(to: .repo(.html))))
 
 Server-side Swift is in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
@@ -151,7 +151,7 @@ The design of this library was covered in 4 episodes:
 * [An HTML DSL](/episodes/ep28-an-html-dsl)
 * [DSLs vs. Templating Languages](/episodes/ep29-dsls-vs-templating-languages) 🆓
 
-### [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))), [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor)))
+### [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura)))), [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))))
 
 The two most popular server-side Swift frameworks are Kitura and Vapor, but both use templating languages
 as the default way to render HTML. Luckily each framework provides a way to use your own view layer, and so
@@ -159,7 +159,7 @@ both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura)))
 and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))) are small libraries to help you use our
 [`swift-html`](\(gitHubUrl(to: .repo(.html))) library in either framework.
 
-### [`swift-overture`](\(gitHubUrl(to: .repo(.overture)))
+### [`swift-overture`](\(gitHubUrl(to: .repo(.overture))))
 
 Functional programming tends to make heavy use of custom operators, and this is because infix notation and
 associativity are a powerful way of reducing clutter in an expression and exposing some really interesting
@@ -170,7 +170,7 @@ episode:
 
 * [Composition without Operators](/episodes/ep11-composition-without-operators)
 
-### [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged)))
+### [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged))))
 
 The `Tagged` type provides a lightweight wrapper around any type so that you can safely distinguish between,
 say, an `Int`-based user id and an `Int`-based blog post id. It uses a phantom generic and some powerful Swift
@@ -178,7 +178,7 @@ features, like conditional conformance, to make it easy to make your code safer.
 
 * [Tagged](/episodes/ep12-tagged)
 
-### [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty)))
+### [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty))))
 
 An adage of functional programmers is "make invalid states unrepresentable". This means that states of data
 that shouldn't be allowed to happen should actually be provable by the compiler as being impossible. We
@@ -192,7 +192,7 @@ a non-empty version of itself. We covered the design of this library in 4 episod
 * [Algebraic Data Types: Generics and Recursion](/episodes/ep19-algebraic-data-types-generics-and-recursion)
 * [NonEmpty](/episodes/ep20-nonempty)
 
-### [`swift-validated`](\(gitHubUrl(to: .repo(.validated)))
+### [`swift-validated`](\(gitHubUrl(to: .repo(.validated))))
 
 Swift error handling is built around `Optional`, `Result`, and `throws`. These constructs allow us to write a sequence
 of failable instructions to Swift and return `nil`, `failure`, or `throw` an error to short-circuit things and
