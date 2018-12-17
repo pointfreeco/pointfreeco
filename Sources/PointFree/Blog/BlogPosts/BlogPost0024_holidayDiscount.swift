@@ -77,7 +77,7 @@ todo: zip in validation
 
 ### Tagged
 
-todo
+* [Tagged](/episodes/ep12-tagged)
 
 ### UIKit Styling
 
@@ -139,8 +139,9 @@ The design of this library was covered in a whopping 8 episodes
 
 Server-side Swift is in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
-Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. The
-[`swift-html`](\(gitHubUrl(to: .repo(.html))) library aims to remedy these problems by providing a first-class data type to represent
+Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. We
+[open sourced](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift) the
+[`swift-html`](\(gitHubUrl(to: .repo(.html))) library to remedy these problems by providing a first-class data type to represent
 HTML and a way to render that data to an HTML string that can be sent to the browser.
 
 The design of this library was covered in 4 episodes:
@@ -153,23 +154,27 @@ The design of this library was covered in 4 episodes:
 ### [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))), [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor)))
 
 The two most popular server-side Swift frameworks are Kitura and Vapor, but both use templating languages
-as the default way to render HTML. Luckily each framework gives a way to use your own view layer, and so
-both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))) and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))) are small libraries to help you use our
-`swift-html` library in either framework.
+as the default way to render HTML. Luckily each framework provides a way to use your own view layer, and so
+both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura)))
+and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))) are small libraries to help you use our
+[`swift-html`](\(gitHubUrl(to: .repo(.html))) library in either framework.
 
 ### [`swift-overture`](\(gitHubUrl(to: .repo(.overture)))
 
 Functional programming tends to make heavy use of custom operators, and this is because infix notation and
 associativity are a powerful way of reducing clutter in an expression and exposing some really interesting
-algebraic properties. But, it's not for everyone. So, we open sourced [`swift-overture`](\(gitHubUrl(to: .repo(.overture))) to be a
-simple library that gives you access to lots of interesting function composition tools, without the use
-of operators. We discussed this idea in the following episode:
+algebraic properties. But, it's not for everyone. So, we open sourced
+[`swift-overture`](\(gitHubUrl(to: .repo(.overture))) to be a simple library that gives you access to lots of
+interesting function composition tools, without the use of operators. We discussed this idea in the following
+episode:
 
 * [Composition without Operators](/episodes/ep11-composition-without-operators)
 
 ### [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged)))
 
-The `Tagged` type is a phantom generic wrapper around a type that allows you to distinguish two equivalent types 
+The `Tagged` type provides a lightweight wrapper around any type so that you can safely distinguish between,
+say, an `Int`-based user id and an `Int`-based blog post id. It uses a phantom generic and some powerful Swift
+features, like conditional conformance, to make it easy to make your code safer.
 
 * [Tagged](/episodes/ep12-tagged)
 
