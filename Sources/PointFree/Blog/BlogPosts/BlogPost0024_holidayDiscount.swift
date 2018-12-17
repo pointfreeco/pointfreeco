@@ -95,7 +95,7 @@ the dependency into your project.
 
 ### `swift-snapshot-testing`
 
-Our [most recently](http://localhost:8080/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](http://github.com/pointfreeco/swift-snapshot-testing), take snapshot testing to the
+Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](http://github.com/pointfreeco/swift-snapshot-testing), take snapshot testing to the
 next level. It allows you to snapshot test any kind of data type into any kind of format. For example, you
 can snapshot test `UIView`'s and `UIViewController`'s into an image format, which is typical of these
 kinds of libraries, but you can also snapshot those objects into a textual format so that you can see the
@@ -110,22 +110,22 @@ The design of this library was covered in a whopping 8 episodes
 * [Protocol-Oriented Library Design: Part 1](/episodes/ep37-protocol-oriented-library-design-part-1)
 * [Protocol-Oriented Library Design: Part 2](/episodes/ep38-protocol-oriented-library-design-part-2)
 * [Witness-Oriented Library Design](/episodes/ep39-witness-oriented-library-design)
-* [Async Snapshot Testing](/episodes/ep40-no-regrets-functional-refactoring)
+* [Async Snapshot Testing](/episodes/ep40-async-functional-refactoring)
 
 ### `swift-html`
 
 Server-side Swift is in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
-Swift is with templating languages, but there are a lot of [problems](http://localhost:8080/episodes/ep29-dsls-vs-templating-languages) with templates. The
+Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. The
 [`swift-html`](http://github.com/pointfreeco/swift-html) library aims to remedy these problems by providing a first-class data type to represent
 HTML and a way to render that data to an HTML string that can be sent to the browser.
 
 The design of this library was covered in 4 episodes:
 
-* [Domain Specific Languages: Part 1](http://localhost:8080/episodes/ep26-domain-specific-languages-part-1)
-* [Domain Specific Languages: Part 2](http://localhost:8080/episodes/ep27-domain-specific-languages-part-2)
-* [An HTML DSL](http://localhost:8080/episodes/ep28-an-html-dsl)
-* [DSLs vs. Templating Languages](http://localhost:8080/episodes/ep29-dsls-vs-templating-languages) 🆓
+* [Domain Specific Languages: Part 1](/episodes/ep26-domain-specific-languages-part-1)
+* [Domain Specific Languages: Part 2](/episodes/ep27-domain-specific-languages-part-2)
+* [An HTML DSL](/episodes/ep28-an-html-dsl)
+* [DSLs vs. Templating Languages](/episodes/ep29-dsls-vs-templating-languages) 🆓
 
 ### `swift-html-kitura`, `swift-html-vapor`
 
@@ -142,7 +142,7 @@ algebraic properties. But, it's not for everyone. So, we open sourced [`swift-ov
 simple library that gives you access to lots of interesting function composition tools, without the use
 of operators. We discussed this idea in the following episode:
 
-* [Composition without Operators](http://localhost:8080/episodes/ep11-composition-without-operators)
+* [Composition without Operators](/episodes/ep11-composition-without-operators)
 
 ### `swift-tagged`
 
@@ -159,10 +159,10 @@ our types, and are hopefully only left with the valid states. Our [`swift-nonemp
 these ideas to model a "non-empty collection" type, which allows you to transform any collection type into
 a non-empty version of itself. We covered the design of this library in 4 episodes:
 
-* [Algebraic Data Types](http://localhost:8080/episodes/ep4-algebraic-data-types) 🆓
-* [Algebraic Data Types: Exponents](http://localhost:8080/episodes/ep9-algebraic-data-types-exponents)
-* [Algebraic Data Types: Generics and Recursion](http://localhost:8080/episodes/ep19-algebraic-data-types-generics-and-recursion)
-* [NonEmpty](http://localhost:8080/episodes/ep20-nonempty)
+* [Algebraic Data Types](/episodes/ep4-algebraic-data-types) 🆓
+* [Algebraic Data Types: Exponents](/episodes/ep9-algebraic-data-types-exponents)
+* [Algebraic Data Types: Generics and Recursion](/episodes/ep19-algebraic-data-types-generics-and-recursion)
+* [NonEmpty](/episodes/ep20-nonempty)
 
 ### `swift-validated`
 
@@ -178,9 +178,9 @@ with form data, and something that short-circuiting `throws` can't do.
 To make this functionality available to everyone, we open sourced Validated, a Result-like type that can accumulate
 multiple errors.
 
-* [The Many Faces of Zip: Part 1](http://localhost:8080/episodes/ep23-the-many-faces-of-zip-part-1)
-* [The Many Faces of Zip: Part 2](http://localhost:8080/episodes/ep24-the-many-faces-of-zip-part-2)
-* [The Many Faces of Zip: Part 3](http://localhost:8080/episodes/ep25-the-many-faces-of-zip-part-3) 🆓
+* [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)
+* [The Many Faces of Zip: Part 2](/episodes/ep24-the-many-faces-of-zip-part-2)
+* [The Many Faces of Zip: Part 3](/episodes/ep25-the-many-faces-of-zip-part-3) 🆓
 
 ---
 
