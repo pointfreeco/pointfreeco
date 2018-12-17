@@ -90,7 +90,7 @@ TODO: finish
 We've had several episodes on managing dependencies using `Environment` thus far, and we have more to come. It's one
 of the easiest ways to make untestable parts of your code base testable.
       
-Stephen gave [a talk this year at NSSpain](TODO)
+Stephen gave [a talk this year at NSSpain](https://vimeo.com/291588126)
 
 TODO: finish
 
@@ -155,9 +155,9 @@ of operators. We discussed this idea in the following episode:
 
 ### `swift-tagged`
 
-todo
+The `Tagged` type is a phantom generic wrapper around a type that allows you to distinguish two equivalent types 
 
-* [Tagged](todo)
+* [Tagged](/episodes/ep12-tagged)
 
 ### `swift-nonempty`
 
