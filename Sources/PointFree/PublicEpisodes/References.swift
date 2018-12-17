@@ -191,7 +191,7 @@ and expressive solutions to these problems.
     title: "Server-Side Swift from Scratch"
   )
 
-  static let snapshotTesting = Episode.Reference(
+  static let snapshotTestingBlogPost = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
 Stephen gave an overview of snapshot testing, its benefits, and how one may snapshot Swift data types, walking through a minimal implementation.
