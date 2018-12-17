@@ -102,7 +102,7 @@ TODO: finish
 ## Open Source
 
 We knew we wanted to do as much of Point-Free in the open as possible, so this very site has
-been [open source](\(gitHubUrl(to: .repo(.pointfreeco))) from
+been [open source](\(gitHubUrl(to: .repo(.pointfreeco)))) from
 [the very beginning](https://github.com/pointfreeco/pointfreeco/commit/548dc6bffcb01cb0e0ec07559e5d33dece24c686).
 We built this site from first principles in a functional style, writing each component as open source along
 the way.
