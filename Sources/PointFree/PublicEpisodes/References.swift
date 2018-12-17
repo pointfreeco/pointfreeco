@@ -191,7 +191,7 @@ and expressive solutions to these problems.
     title: "Server-Side Swift from Scratch"
   )
 
-  static let snapshotTesting = Episode.Reference(
+  static let snapshotTestingBlogPost = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
 Stephen gave an overview of snapshot testing, its benefits, and how one may snapshot Swift data types, walking through a minimal implementation.
@@ -246,6 +246,18 @@ bring operators into your codebase.
     link: "https://github.com/pointfreeco/swift-overture",
     publishedAt: Date(timeIntervalSince1970: 1523246400),
     title: "Swift Overture"
+  )
+
+  static let swiftSnapshotTesting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A delightful snapshot testing library that we designed over the course of many Point-Free episodes. It
+allows you to snapshot any type into any format, comes with many snapshot strategies out of the box, and
+allows you to define your own custom, domain-specific snapshot strategies for your types.
+""",
+    link: "https://github.com/pointfreeco/swift-snapshot-testing",
+    publishedAt: referenceDateFormatter.date(from: "2018-12-03"),
+    title: "pointfreeco/swift-snapshot-testing"
   )
 
   static let swiftTagged = Episode.Reference(
