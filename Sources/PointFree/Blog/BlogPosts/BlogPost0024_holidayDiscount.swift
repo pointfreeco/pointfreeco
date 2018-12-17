@@ -12,11 +12,12 @@ on a Point-Free subscription.
 We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time we have
 released 41 episodes with over 19 hours of [video](\(url(to: .home))) (9 of which are free for all),
 published 24 [blog posts](\(url(to: .blog(.index)))), served over 57,000 unique visitors, and
-[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from topics covered in our episodes.
-We're really proud of everything we produced for 2018, and hope that 2019 will be even better.
+[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes.
+We're really proud of everything we produced for 2018, so join us for a quick review of some of our
+favorite highlights
       
-If you're not a subscriber, then keep reading! You'll find a rare special discount code for 30% off, good only for
-a short period of time!
+If you're not a subscriber, then keep reading… You'll find a rare special discount code for 30% off, good
+only for a short period of time!
 
 ---
 """,
@@ -29,7 +30,7 @@ a short period of time!
 ## Episodes
 
 We produced 41 episodes this year, about one every 1.2 weeks. We covered a broad set of topics, from the
-foundational ideas that somehow come up again-and-again, to the more practical, everyday coding ideas
+foundational ideas that somehow come up again-and-again, to the more practical, down-to-earth ideas
 that you can immediately bring into your code base _today_. The balance of these two sides is important
 because without the practical episodes it is hard to see the forest from the trees, and without the abstract
 episodes we'd be stuck in an endless loop of adding superficial niceties to our code that don't
@@ -40,26 +41,34 @@ Here's a small selection of some of our favorite episodes from the past year:
 ### Protocol Witnesses
 
 We ended the year with a bang! We've spent eight whole episodes rethinking the community best-practice of
-"protocol-oriented programming". We started our series on "protocol witnesses" by showing how many basic protocol
-features and functionality can be implemented with using concrete data types and functions. We even showed that
-this translation is completely mechanical: that given any protocol, there is a clear path to defining a data type
-equivalent ([part 1](/episodes/ep33-protocol-witnesses-part-1), [part 2](/episodes/ep34-protocol-witnesses-part-2)).
+"protocol-oriented programming". We started our series on "protocol witnesses" by showing how many basic
+protocol features and functionality can be implemented using just concrete data types and functions. We even
+showed that this translation is completely mechanical: that given any protocol, there is a clear path to
+defining a data type equivalent ([part 1](/episodes/ep33-protocol-witnesses-part-1),
+[part 2](/episodes/ep34-protocol-witnesses-part-2)).
       
-We then dove into some of the more advanced features of protocols ([part 1](/episodes/ep35-advanced-protocol-witnesses-part-1), [part 2](/episodes/ep36-advanced-protocol-witnesses-part-2)), some of which
-we only got recently, like conditional conformance. We saw how these features manifest in the "protocol witness" world
-as plain ole functions! With witnesses we we didn't have to wait. We were able to take advantage of conditional conformance with the very
-first version of Swift!
+We then dove into some of the more advanced features of protocols
+([part 1](/episodes/ep35-advanced-protocol-witnesses-part-1),
+[part 2](/episodes/ep36-advanced-protocol-witnesses-part-2)), some of which we only got recently, like
+conditional conformance. We saw how these features manifest in the "protocol witness" world as plain ole
+functions. With witnesses we we didn't have to wait. We were able to take advantage of conditional
+conformance with the very first version of Swift.
       
-We wrapped things up with four down-to-earth episodes where we tool a real-world library, abstracted it to work with protocols
-([part 1](/episodes/ep37-protocol-oriented-library-design-part-1), [part 2](/episodes/ep38-protocol-oriented-library-design-part-2)), reabstracted it [to work with witnesses](/episodes/ep39-witness-oriented-library-design), showed how a simple API built around functions
+We wrapped things up with four down-to-earth episodes where we tool a real-world library, abstracted it to
+work with protocols ([part 1](/episodes/ep37-protocol-oriented-library-design-part-1),
+[part 2](/episodes/ep38-protocol-oriented-library-design-part-2)), reabstracted it
+[to work with witnesses](/episodes/ep39-witness-oriented-library-design), and finally
+[fixed a problem](/episodes/ep40-async-functional-refactoring) with the libary that prevented it from working
+on asynchronous values.
 
 ### Zip
 
-We spent several episodes diving deep into the `zip` function. While many of us are aware of `zip` on arrays and may have
-even reached for it on occasion, it may be surprising that `zip` appears on structures almost as often as `map`! The
-implications are perhaps even more interesting. We saw that `zip` on optionals mirrors optional sugar that we're used to with
-`if`-`let` binding. We saw that `zip` on the result type made us question the structure of the result type itself.
-And we saw that `zip` on an asynchronous type was a natural way to think about parallelism.
+We spent several episodes diving deep into the `zip` function. While many of us are aware of `zip` on arrays
+and may have even reached for it on occasion, it may be surprising that `zip` appears on structures almost
+as often as `map`! The implications are perhaps even more interesting. We saw that `zip` on optionals mirrors
+optional sugar that we're used to with `if`-`let` binding. We saw that `zip` on the result type made us
+question the structure of the result type itself. And we saw that `zip` on an asynchronous type was a
+natural way to think about parallelism.
 
 todo: links
 
@@ -74,7 +83,7 @@ In our [_3rd_](/episodes/ep3-uikit-styling-with-functions) of _41_ episodes we s
 There are many different ways to combine and reuse styling logic for iOS views, but we showed that plain ole functions
 are the simplest solution.
 
-TODO: clean up ^
+TODO: finish
 
 ### Environment
 
@@ -83,7 +92,7 @@ of the easiest ways to make untestable parts of your code base testable.
       
 Stephen gave [a talk this year at NSSpain](TODO)
 
-TODO: clean up ^
+TODO: finish
 
 ---
 
