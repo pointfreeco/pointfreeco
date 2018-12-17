@@ -9,12 +9,12 @@ on a Point-Free subscription.
   contentBlocks: [
     .init(
       content: """
-We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time we have
-released 41 episodes with over 19 hours of [video](\(url(to: .home))) (9 of which are free for all),
+We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time
+we have released 41 episodes with over 19 hours of [video](\(url(to: .home))) (9 of which are free for all),
 published 24 [blog posts](\(url(to: .blog(.index)))), served over 57,000 unique visitors, and
-[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes.
-We're really proud of everything we produced for 2018, so join us for a quick review of some of our
-favorite highlights
+[open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes!
+We're really proud of everything we produced for 2018, so join us for a quick review of some of our favorite
+highlights.
       
 If you're not a subscriber, then keep reading… You'll find a rare special discount code for 30% off, good
 only for a short period of time!
@@ -40,7 +40,7 @@ Here's a small selection of some of our favorite episodes from the past year:
 
 ### Protocol Witnesses
 
-We ended the year with a bang! We've spent eight whole episodes rethinking the community best-practice of
+We ended the year with a bang! We've spent _nine_ whole episodes rethinking the community best-practice of
 "protocol-oriented programming". We started our series on "protocol witnesses" by showing how many basic
 protocol features and functionality can be implemented using just concrete data types and functions. We even
 showed that this translation is completely mechanical: that given any protocol, there is a clear path to
@@ -71,6 +71,9 @@ question the structure of the result type itself. And we saw that `zip` on an as
 natural way to think about parallelism.
 
 todo: links
+todo: zip in non-empty?
+todo: zip in overture
+todo: zip in validation
 
 ### Tagged
 
@@ -102,9 +105,11 @@ We open sourced many libraries from the content in our episodes, 8 libraries in 
 aims to solve a single problem in the simplest way possible in order to minimize the cost of bringing
 the dependency into your project.
 
+todo: Mention source compatibility
+
 ### `swift-snapshot-testing`
 
-Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](http://github.com/pointfreeco/swift-snapshot-testing), take snapshot testing to the
+Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))), take snapshot testing to the
 next level. It allows you to snapshot test any kind of data type into any kind of format. For example, you
 can snapshot test `UIView`'s and `UIViewController`'s into an image format, which is typical of these
 kinds of libraries, but you can also snapshot those objects into a textual format so that you can see the
@@ -121,12 +126,12 @@ The design of this library was covered in a whopping 8 episodes
 * [Witness-Oriented Library Design](/episodes/ep39-witness-oriented-library-design)
 * [Async Snapshot Testing](/episodes/ep40-async-functional-refactoring)
 
-### `swift-html`
+### [`swift-html`](\(gitHubUrl(to: .repo(.html)))
 
 Server-side Swift is in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
 Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. The
-[`swift-html`](http://github.com/pointfreeco/swift-html) library aims to remedy these problems by providing a first-class data type to represent
+[`swift-html`](\(gitHubUrl(to: .repo(.html))) library aims to remedy these problems by providing a first-class data type to represent
 HTML and a way to render that data to an HTML string that can be sent to the browser.
 
 The design of this library was covered in 4 episodes:
@@ -136,35 +141,35 @@ The design of this library was covered in 4 episodes:
 * [An HTML DSL](/episodes/ep28-an-html-dsl)
 * [DSLs vs. Templating Languages](/episodes/ep29-dsls-vs-templating-languages) 🆓
 
-### `swift-html-kitura`, `swift-html-vapor`
+### [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))), [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor)))
 
 The two most popular server-side Swift frameworks are Kitura and Vapor, but both use templating languages
 as the default way to render HTML. Luckily each framework gives a way to use your own view layer, and so
-both [`swift-html-kitura`](http://github.com/pointfreeco/swift-html-kitura) and [`swift-html-vapor`](http://github.com/pointfreeco/swift-html-vapor) are small libraries to help you use our
+both [`swift-html-kitura`](\(gitHubUrl(to: .repo(.htmlKitura))) and [`swift-html-vapor`](\(gitHubUrl(to: .repo(.htmlVapor))) are small libraries to help you use our
 `swift-html` library in either framework.
 
-### `swift-overture`
+### [`swift-overture`](\(gitHubUrl(to: .repo(.overture)))
 
 Functional programming tends to make heavy use of custom operators, and this is because infix notation and
 associativity are a powerful way of reducing clutter in an expression and exposing some really interesting
-algebraic properties. But, it's not for everyone. So, we open sourced [`swift-overture`](http://github.com/pointfreeco/swift-overture) to be a
+algebraic properties. But, it's not for everyone. So, we open sourced [`swift-overture`](\(gitHubUrl(to: .repo(.overture))) to be a
 simple library that gives you access to lots of interesting function composition tools, without the use
 of operators. We discussed this idea in the following episode:
 
 * [Composition without Operators](/episodes/ep11-composition-without-operators)
 
-### `swift-tagged`
+### [`swift-tagged`](\(gitHubUrl(to: .repo(.tagged)))
 
 The `Tagged` type is a phantom generic wrapper around a type that allows you to distinguish two equivalent types 
 
 * [Tagged](/episodes/ep12-tagged)
 
-### `swift-nonempty`
+### [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty)))
 
 An adage of functional programmers is "make invalid states unrepresentable". This means that states of data
 that shouldn't be allowed to happen should actually be provable by the compiler as being impossible. We
 achieve this by using concepts from algebraic data types in order to chisel away the invalid values from
-our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](http://github.com/pointfreeco/swift-nonempty) library applies
+our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](\(gitHubUrl(to: .repo(.nonempty))) library applies
 these ideas to model a "non-empty collection" type, which allows you to transform any collection type into
 a non-empty version of itself. We covered the design of this library in 4 episodes:
 
@@ -173,7 +178,7 @@ a non-empty version of itself. We covered the design of this library in 4 episod
 * [Algebraic Data Types: Generics and Recursion](/episodes/ep19-algebraic-data-types-generics-and-recursion)
 * [NonEmpty](/episodes/ep20-nonempty)
 
-### `swift-validated`
+### [`swift-validated`](\(gitHubUrl(to: .repo(.validated)))
 
 Swift error handling is built around `Optional`, `Result`, and `throws`. These constructs allow us to write a sequence
 of failable instructions to Swift and return `nil`, `failure`, or `throw` an error to short-circuit things and
@@ -184,8 +189,8 @@ exploring the `zip` function beyond its usualy definition on arrays, and we disc
 gives us the unique ability to accumulate multiple errors when more than one input is invalid, a common thing we want
 with form data, and something that short-circuiting `throws` can't do.
 
-To make this functionality available to everyone, we open sourced Validated, a Result-like type that can accumulate
-multiple errors.
+To make this functionality available to everyone, we open sourced [Validated](\(gitHubUrl(to: .repo(.validated))), a
+Result-like type that can accumulate multiple errors.
 
 * [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)
 * [The Many Faces of Zip: Part 2](/episodes/ep24-the-many-faces-of-zip-part-2)
