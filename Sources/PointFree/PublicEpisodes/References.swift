@@ -3,6 +3,16 @@ import Optics
 import Prelude
 
 extension Episode.Reference {
+  static let bonMot = Episode.Reference(
+    author: "Zev Eisenberg @ Raizlabs",
+    blurb: """
+BonMot is an open source library for providing a nicer API to creating attributed strings in Swift. We integrated our [snapshot testing library](http://github.com/pointfreeco/swift-snapshot-testing) into BonMot for an [episode](/episodes/ep41-a-tour-of-snapshot-testing) to show how easy it is to integrate, and how easy it is to create your own snapshot strategies from scratch.
+""",
+    link: "http://github.com/raizlabs/BonMot/",
+    publishedAt: referenceDateFormatter.date(from: "2015-06-17"),
+    title: "BonMot"
+  )
+
   static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
