@@ -74,12 +74,16 @@ In our [_3rd_](/episodes/ep3-uikit-styling-with-functions) of _41_ episodes we s
 There are many different ways to combine and reuse styling logic for iOS views, but we showed that plain ole functions
 are the simplest solution.
 
+TODO: clean up ^
+
 ### Environment
 
 We've had several episodes on managing dependencies using `Environment` thus far, and we have more to come. It's one
 of the easiest ways to make untestable parts of your code base testable.
       
 Stephen gave [a talk this year at NSSpain](TODO)
+
+TODO: clean up ^
 
 ---
 
