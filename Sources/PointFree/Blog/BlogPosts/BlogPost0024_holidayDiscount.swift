@@ -210,7 +210,7 @@ Until next time!
       type: .paragraph
     )
     ],
-  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
+  coverImage: Current.assets.emailHeaderImgSrc,
   id: 24,
   publishedAt: .init(timeIntervalSince1970: 1544518800),
   title: "2018 Year-in-Review"
