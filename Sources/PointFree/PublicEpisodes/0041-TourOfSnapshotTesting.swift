@@ -49,7 +49,7 @@ of your projects, and write a snapshot test.
 Create a custom, domain-specific snapshot strategy for one of your types.
 """),
   .init(body: """
-Send us a [pull-request]((http://github.com/pointfreeco/swift-snapshot-testing/pulls) to add a snapshot strategy for a Swift standard library or cocoa data type that
+Send us a [pull request](http://github.com/pointfreeco/swift-snapshot-testing/pulls) to add a snapshot strategy for a Swift standard library or cocoa data type that
 we haven't yet implemented.
 """),
 ]
