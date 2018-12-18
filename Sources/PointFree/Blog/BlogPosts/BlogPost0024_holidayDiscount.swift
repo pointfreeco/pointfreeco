@@ -263,6 +263,6 @@ Until next year!
     ],
   coverImage: Current.assets.emailHeaderImgSrc,
   id: 24,
-  publishedAt: .init(timeIntervalSince1970: 1544605200),
+  publishedAt: .init(timeIntervalSince1970: 1545210000),
   title: "2018 Year-in-Review"
 )
