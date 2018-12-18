@@ -819,7 +819,21 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         target(.blank),
         rel(.init(rawValue: "noopener noreferrer")),
       ],
-      [img(src: src, alt: "", [Styleguide.class([innerImageContainerClass])])]
+      [
+        img(
+          src: src,
+          alt: "",
+          [
+            `class`([
+              innerImageContainerClass,
+              // TODO: allow `.image` blocks to be customized for full-width vs inset
+//              Class.margin([.mobile: [.topBottom: 3]]),
+//              Class.padding([.mobile: [.leftRight: 3]]),
+//              Class.pf.colors.bg.white
+              ])
+          ]
+        )
+      ]
     )
 
   case .paragraph:
