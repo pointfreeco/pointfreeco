@@ -97,7 +97,7 @@ private let accountRouters: [Router<Route.Account>] = [
 func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Database.User?, SubscriberState, Route.Account>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscription, user, subscriberState, account) = lower(conn.data)
+    let (_, user, subscriberState, account) = lower(conn.data)
 
     switch account {
     case let .confirmEmailChange(userId, emailAddress):
