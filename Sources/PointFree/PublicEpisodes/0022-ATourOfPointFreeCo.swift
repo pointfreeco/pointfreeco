@@ -98,7 +98,7 @@ $ git clone https://github.com/pointfreeco/pointfreeco.git
 Cloning into 'pointfreeco'...
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -126,7 +126,7 @@ LICENSE               PointFree.xcodeproj   docker-compose.yml
 Makefile              PointFree.xcworkspace
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -166,7 +166,7 @@ $ make
   🔒 Please enter your password:
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -188,7 +188,7 @@ In order to run our playgrounds, we need them to be able to access to our depend
   ✅ Bootstrapped! Opening Xcode...
 """,
     timestamp: (3*60 + 20),
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -265,7 +265,7 @@ And it's running! If you check out the log output, you'll see some text output t
 Listening on 0.0.0.0:8080...
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -945,7 +945,7 @@ The thing that gets emitted for our first assertion is this file.
   <!DOCTYPE html>…
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1217,7 +1217,7 @@ $ make sourcery
   ✅ Generated!
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1243,7 +1243,7 @@ Changes not staged for commit:
 no changes added to commit (use "git add" and/or "git commit -a")
 """,
     timestamp: nil,
-    type: .code(lang: .other("sh"))
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1264,7 +1264,7 @@ We can see that something in `__Generated__/DerivedPartialIsos.swift` has change
 +      }
 """,
     timestamp: nil,
-    type: .code(lang: .other("diff"))
+    type: .code(lang: .diff)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1341,7 +1341,7 @@ It's running! When I hop back over to the browser and navigate to `/support`, I'
 Support Page
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """

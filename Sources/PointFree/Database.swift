@@ -19,7 +19,7 @@ public struct Database {
   var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
   var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
   var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter) -> EitherIO<Error, [User]>
+  var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [User]>
   var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
   var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, [User]>
   var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
@@ -47,7 +47,7 @@ public struct Database {
     fetchTeamInvites: PointFree.fetchTeamInvites,
     fetchUserByGitHub: PointFree.fetchUser(byGitHubUserId:),
     fetchUserById: PointFree.fetchUser(byUserId:),
-    fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:),
+    fetchUsersSubscribedToNewsletter: PointFree.fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
     fetchUsersToWelcome: PointFree.fetchUsersToWelcome(fromWeeksAgo:),
     incrementEpisodeCredits: PointFree.incrementEpisodeCredits(for:),
     insertTeamInvite: PointFree.insertTeamInvite,
@@ -462,7 +462,16 @@ private func fetchUser(byUserId id: Database.User.Id) -> EitherIO<Error, Databas
   )
 }
 
-private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newsletter) -> EitherIO<Error, [Database.User]> {
+private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newsletter, nonsubscriberOrSubscriber: Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Database.User]> {
+  let condition: String
+  switch nonsubscriberOrSubscriber {
+  case .none:
+    condition = ""
+  case .some(.left):
+    condition = " AND \"users\".\"subscription_id\" IS NULL"
+  case .some(.right):
+    condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
+  }
   return rows(
     """
     SELECT "users"."email",
@@ -475,7 +484,7 @@ private func fetchUsersSubscribed(to newsletter: Database.EmailSetting.Newslette
            "users"."subscription_id",
            "users"."rss_salt"
     FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
-    WHERE "email_settings"."newsletter" = $1
+    WHERE "email_settings"."newsletter" = $1\(condition)
     """,
     [newsletter.rawValue]
   )

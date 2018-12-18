@@ -160,7 +160,7 @@ X-App-Version: 42
 title=Hello%20World
 """,
       timestamp: nil,
-      type: .code(lang: .other("txt"))
+      type: .code(lang: .plainText)
     ),
 
     .init(
@@ -182,7 +182,7 @@ the HTTP method, we would get a test failure with a nicely formatted failure mes
  title=Hello%20World
 """,
       timestamp: nil,
-      type: .code(lang: .other("diff"))
+      type: .code(lang: .diff)
     ),
 
     .init(

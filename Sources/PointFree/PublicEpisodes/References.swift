@@ -3,6 +3,16 @@ import Optics
 import Prelude
 
 extension Episode.Reference {
+  static let bonMot = Episode.Reference(
+    author: "Zev Eisenberg @ Raizlabs",
+    blurb: """
+BonMot is an open source library for providing a nicer API to creating attributed strings in Swift. We integrated our [snapshot testing library](http://github.com/pointfreeco/swift-snapshot-testing) into BonMot for an [episode](/episodes/ep41-a-tour-of-snapshot-testing) to show how easy it is to integrate, and how easy it is to create your own snapshot strategies from scratch.
+""",
+    link: "http://github.com/raizlabs/BonMot/",
+    publishedAt: referenceDateFormatter.date(from: "2015-06-17"),
+    title: "BonMot"
+  )
+
   static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
@@ -246,6 +256,18 @@ bring operators into your codebase.
     link: "https://github.com/pointfreeco/swift-overture",
     publishedAt: Date(timeIntervalSince1970: 1523246400),
     title: "Swift Overture"
+  )
+
+  static let swiftSnapshotTesting = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+A delightful snapshot testing library that we designed over the course of many Point-Free episodes. It
+allows you to snapshot any type into any format, comes with many snapshot strategies out of the box, and
+allows you to define your own custom, domain-specific snapshot strategies for your types.
+""",
+    link: "https://github.com/pointfreeco/swift-snapshot-testing",
+    publishedAt: referenceDateFormatter.date(from: "2018-12-03"),
+    title: "pointfreeco/swift-snapshot-testing"
   )
 
   static let swiftTagged = Episode.Reference(

@@ -93,7 +93,7 @@ extension Database {
     fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
     fetchUserById: const(pure(.mock)),
-    fetchUsersSubscribedToNewsletter: const(pure([.mock])),
+    fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },
     fetchUsersToWelcome: const(pure([.mock])),
     incrementEpisodeCredits: const(pure([])),
     insertTeamInvite: { _, _ in pure(.mock) },

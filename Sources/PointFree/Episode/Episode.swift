@@ -127,21 +127,16 @@ public struct Episode {
       case title
       case video(poster: String, sources: [String])
 
-      public enum CodeLang: Equatable {
-        case html
-        case other(String)
-        case swift
+      public struct CodeLang: Equatable {
+        public let identifier: String
 
-        public var identifier: String {
-          switch self {
-          case .html:
-            return "html"
-          case let .other(other):
-            return other
-          case .swift:
-            return "swift"
-          }
-        }
+        static let diff = CodeLang(identifier: "diff")
+        static let html = CodeLang(identifier: "html")
+        static let plainText = CodeLang(identifier: "txt")
+        static let ruby = CodeLang(identifier: "ruby")
+        static let shell = CodeLang(identifier: "sh")
+        static let sql = CodeLang(identifier: "sql")
+        static let swift = CodeLang(identifier: "swift")
       }
     }
   }

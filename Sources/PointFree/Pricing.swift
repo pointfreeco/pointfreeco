@@ -599,7 +599,7 @@ private let loggedOutStripeForm = View<Stripe.Coupon.Id?> { couponId -> [Node] i
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
-            value(couponId.rawValue ?? "")
+            value(couponId.rawValue)
             ]),
           ]),
         ]

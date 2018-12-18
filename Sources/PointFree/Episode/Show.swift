@@ -819,7 +819,21 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         target(.blank),
         rel(.init(rawValue: "noopener noreferrer")),
       ],
-      [img(src: src, alt: "", [Styleguide.class([innerImageContainerClass])])]
+      [
+        img(
+          src: src,
+          alt: "",
+          [
+            `class`([
+              innerImageContainerClass,
+              // TODO: allow `.image` blocks to be customized for full-width vs inset
+//              Class.margin([.mobile: [.topBottom: 3]]),
+//              Class.padding([.mobile: [.leftRight: 3]]),
+//              Class.pf.colors.bg.white
+              ])
+          ]
+        )
+      ]
     )
 
   case .paragraph:
@@ -918,17 +932,30 @@ let markdownBlockStyles: Stylesheet =
   markdownContainerClass % (
     hrMarkdownStyles
       <> aMarkdownStyles
-      <> blockquote % fontStyle(.italic)
-      <> p % key("word-wrap", "break-word")
-      <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
-      <> code % (
-        fontFamily(["monospace"])
-          <> padding(topBottom: .px(1), leftRight: .px(5))
-          <> borderWidth(all: .px(1))
-          <> borderRadius(all: .px(3))
-          <> backgroundColor(Color.other("#f7f7f7"))
-    )
+      <> ulMarkdownStyles
+      <> blockquoteMarkdownStyles
+      <> pMarkdownStyles
+      <> codeMarkdownStyles
 )
+
+private let ulMarkdownStyles: Stylesheet =
+  ul % margin(bottom: .rem(1.5))
+
+private let pMarkdownStyles: Stylesheet =
+  p % key("word-wrap", "break-word")
+    <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
+
+private let codeMarkdownStyles: Stylesheet =
+  code % (
+    fontFamily(["monospace"])
+      <> padding(topBottom: .px(1), leftRight: .px(5))
+      <> borderWidth(all: .px(1))
+      <> borderRadius(all: .px(3))
+      <> backgroundColor(Color.other("#f7f7f7"))
+)
+
+private let blockquoteMarkdownStyles: Stylesheet =
+  blockquote % fontStyle(.italic)
 
 private let aMarkdownStyles: Stylesheet =
   a % key("text-decoration", "underline")
