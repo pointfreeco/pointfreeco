@@ -254,6 +254,7 @@ extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
     ("testDiscount", testDiscount),
+    ("testInvalidDiscount", testInvalidDiscount),
     ("testPricingLoggedIn_NonSubscriber", testPricingLoggedIn_NonSubscriber),
     ("testPricingLoggedIn_NonSubscriber_Expanded", testPricingLoggedIn_NonSubscriber_Expanded),
     ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber),

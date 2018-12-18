@@ -17,6 +17,7 @@ public enum GitHubRoute: DerivePartialIsos {
     case overture = "swift-overture"
     case pointfreeco
     case prelude = "swift-prelude"
+    case snapshotTesting = "swift-snapshot-testing"
     case tagged = "swift-tagged"
     case validated = "swift-validated"
     case web = "swift-web"

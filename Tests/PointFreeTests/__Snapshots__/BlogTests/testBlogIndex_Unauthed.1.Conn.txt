@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 119653
+Content-Length: 119695
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1647,6 +1647,10 @@ html {
 
 .md-ctn a:hover {
   color : #121212;
+}
+
+.md-ctn ul {
+  margin-bottom : 1.5rem;
 }
 
 .md-ctn blockquote {
