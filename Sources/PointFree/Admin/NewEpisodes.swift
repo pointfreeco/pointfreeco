@@ -62,7 +62,7 @@ private func sendNewEpisodeEmails<I>(
 
   let users = isTest
     ? Current.database.fetchAdmins()
-    : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode)
+    : Current.database.fetchUsersSubscribedToNewsletter(.newEpisode, nil)
 
   return users
     .withExcept(const(unit))

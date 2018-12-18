@@ -161,7 +161,7 @@ But if we look at our console, there's some _additional_ output here.
 Computed 5
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -192,7 +192,7 @@ Computed 5
 Computed 5
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -248,7 +248,7 @@ Computed 101
 Computed 10202
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -409,7 +409,7 @@ Computed 5
 Computed 26
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1303,7 +1303,7 @@ We get a compiler error!
 Cannot pass immutable value as inout argument: 'config' is a 'let' constant
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1335,7 +1335,7 @@ But that wasn't enough. We have another compiler error!
 Passing value of type 'NumberFormatterConfig' to an inout parameter requires explicit '&'
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1606,7 +1606,7 @@ Our `inout` version produces an error.
 Cannot convert value of type '(inout Int) -> ()' to expected argument type '(_) -> _'
 """,
     timestamp: nil,
-    type: .code(lang: .other("txt"))
+    type: .code(lang: .plainText)
   ),
   Episode.TranscriptBlock(
     content: """
