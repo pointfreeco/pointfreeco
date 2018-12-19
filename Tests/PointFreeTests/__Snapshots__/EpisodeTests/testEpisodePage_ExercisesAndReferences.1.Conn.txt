@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67055
+Content-Length: 66884
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2067,8 +2067,6 @@ video.play();event.preventDefault();"
                 <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
-<p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
-However, you cannot associate a timestamp with this paragraph.</p>
 
               </div>
             </div>

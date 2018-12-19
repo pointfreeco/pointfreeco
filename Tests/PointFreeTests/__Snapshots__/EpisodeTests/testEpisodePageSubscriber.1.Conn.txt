@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 72819
+Content-Length: 75238
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2057,7 +2057,34 @@ video.play();event.preventDefault();"
                 <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
-<p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+
+              </div>
+            </div>
+            <h2 class="h4
+                       lh-3
+                       m-pt2"
+                id="t0">
+              <a href="#t0">
+                Title
+              </a>
+            </h2>
+            <div>
+              <div id="t0"
+                   class="block">
+                <a href="#"
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();event.preventDefault();"
+                   data-t="0"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
 However, you cannot associate a timestamp with this paragraph.</p>
 
               </div>
@@ -2331,6 +2358,51 @@ video.play();event.preventDefault();"
                               h5
                               lh-4">
                       Introduction
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-m
+                          col-m-2">
+                <div class="fg-purple
+                            end-align
+                            opacity-75">
+                  00:00
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-m
+                          col-m-10">
+                <div>
+                  <div class="hide-m">
+                    <a href="#t0"
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();"
+                       data-t="0"
+                       class="pf-link-green
+                              text-decoration-none
+                              fg-black
+                              normal
+                              h5
+                              lh-4">
+                      Title
+                    </a>
+                  </div>
+                  <div class="hide-d">
+                    <a href="#"
+                       onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();event.preventDefault();"
+                       data-t="0"
+                       class="pf-link-green
+                              text-decoration-none
+                              fg-black
+                              normal
+                              h5
+                              lh-4">
+                      Title
                     </a>
                   </div>
                 </div>
