@@ -372,9 +372,7 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Subscriber
   let subscribeNodes = isSubscribeBannerVisible(for: permission)
     ? subscribeView.view((permission, user, episode))
     : []
-  let transcriptNodes = isEpisodeViewable(for: permission)
-    ? transcriptView.view(episode.transcriptBlocks)
-    : []
+  let transcriptNodes = transcriptView.view((episode.transcriptBlocks, isEpisodeViewable(for: permission)))
 
   return div(
     [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, episode)))]
@@ -615,7 +613,7 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [
 let divider = hr([Styleguide.class([Class.pf.components.divider])])
 let dividerView = View<Prelude.Unit>(const(divider))
 
-private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
+private let transcriptView = View<([Episode.TranscriptBlock], Bool)> { blocks, isEpisodeViewable in
   div(
     [
       id("transcript"),
@@ -626,8 +624,73 @@ private let transcriptView = View<[Episode.TranscriptBlock]> { blocks in
         ]
       )
     ],
-    blocks.flatMap(transcriptBlockView.view)
+    transcript(blocks: blocks, isEpisodeViewable: isEpisodeViewable)
   )
+}
+
+private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> [Node] {
+  struct State { var nodes: [Node] = [], titleCount = 0 }
+
+  return blocks
+    .reduce(into: State()) { state, block in
+      if case .title = block.type { state.titleCount += 1 }
+      state.nodes += state.titleCount <= 1 || isEpisodeViewable
+        ? transcriptBlockView.view(block)
+        : []
+    }
+    .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+}
+
+private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
+  guard !isEpisodeViewable else { return [] }
+
+  return [
+    gridRow([
+      gridColumn(
+        sizes: [.mobile: 12],
+        [style(margin(leftRight: .auto))],
+        [
+          div(
+            [
+              `class`(
+                [
+                  Class.margin([.mobile: [.top: 4]]),
+                  Class.padding([.mobile: [.all: 3]]),
+                  Class.pf.colors.bg.gray900
+                ]
+              )
+            ],
+            [
+              h4(
+                [
+                  `class`(
+                    [
+                      Class.pf.type.responsiveTitle4,
+                      Class.padding([.mobile: [.bottom: 2]])
+                    ]
+                  )
+                ],
+                ["Subscribe to Point-Free"]
+              ),
+              p(
+                [
+                  "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
+                  a(
+                    [
+                      href(path(to: .pricing(nil, expand: nil))),
+                      Styleguide.class([Class.pf.type.underlineLink])
+                    ],
+                    ["subscribe"]
+                  ),
+                  " so that you get access to this episodes and more!",
+                  ]
+              )
+            ]
+          )
+        ]
+      )
+      ])
+  ]
 }
 
 private let referencesView = View<[Episode.Reference]> { references -> [Node] in

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 64617
+Content-Length: 67792
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2087,6 +2087,77 @@ want to use it to view this episode for free right now?
                      m-mt0
                      m-mb0
                      bg-white">
+          <div id="transcript"
+               class="d-pb4
+                      d-pt2
+                      d-pl4
+                      d-pr4
+                      m-pl3
+                      m-pr3
+                      m-pt3
+                      m-pb3
+                      bg-white">
+            <h2 class="h4
+                       lh-3
+                       m-pt2"
+                id="t0">
+              <a href="#t0">
+                Introduction
+              </a>
+            </h2>
+            <div>
+              <div id="t0"
+                   class="block">
+                <a href="#"
+                   onclick="var video = document.getElementsByTagName("video")[0];
+video.currentTime = event.target.dataset.t;
+video.play();event.preventDefault();"
+                   data-t="0"
+                   class="vid-time-link
+                          text-decoration-none
+                          pf-link-gray650
+                          h6">
+                  00:00
+                </a>
+              </div>
+              <div class="md-ctn">
+                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
+that timestamp jumps the video to that spot.</p>
+
+              </div>
+            </div>
+            <div class="row">
+              <div style="margin-right:auto;
+                          margin-left:auto"
+                   class="col-m
+                          col-m-12">
+                <div class="m-mt4
+                            m-pl3
+                            m-pr3
+                            m-pt3
+                            m-pb3
+                            bg-gray900">
+                  <h4 class="fg-black
+                             bold
+                             ts-d-r1_5
+                             ts-m-r1_25
+                             lh-2
+                             m-pb2">
+                    Subscribe to Point-Free
+                  </h4>
+                  <p>
+                    👋 Hey there! Does this episode sound interesting? Well, then you may want to 
+                    <a href="/pricing"
+                       class="underline-link">
+                      subscribe
+                    </a>
+                     so that you get access to this episodes and more!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
           <hr class="pf-divider
                      border-top
                      m-ml0
@@ -2176,6 +2247,28 @@ want to use it to view this episode for free right now?
                               h5
                               lh-4">
                     Introduction
+                  </div>
+                </div>
+              </div>
+              <div class="col-m
+                          col-m-2">
+                <div class="fg-purple
+                            end-align
+                            opacity-75">
+                  00:00
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-m
+                          col-m-10">
+                <div>
+                  <div class="fg-green
+                              fg-black
+                              normal
+                              h5
+                              lh-4">
+                    Title
                   </div>
                 </div>
               </div>
