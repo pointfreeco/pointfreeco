@@ -795,13 +795,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         target(.blank),
         rel(.init(rawValue: "noopener noreferrer")),
       ],
-      [
-        img(
-          src: src,
-          alt: "",
-          [`class`(imageClasses)]
-        )
-      ]
+      [img(src: src, alt: "", [`class`(imageClasses)])]
     )
 
   case .paragraph:
