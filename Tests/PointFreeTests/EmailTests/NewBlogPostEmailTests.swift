@@ -92,14 +92,14 @@ class NewBlogPostEmailTests: TestCase {
     var req = URLRequest(
       url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!
     )
-    req.httpMethod = "post"
+    req.httpMethod = "POST"
     req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
     XCTAssertNil(router.match(request: req))
 
     let formData = urlFormEncode(
       value: [
         "nonsubscriber_announcement": "",
-        "nonsubscriber_deliver": "1",
+        "nonsubscriber_deliver": "true",
         "subscriber_announcement": "Hello!",
         "test": "Test email!"
       ]
@@ -111,8 +111,6 @@ class NewBlogPostEmailTests: TestCase {
       subscriberAnnouncement: "Hello!",
       subscriberDeliver: nil
     )
-
-//    let x = request(to: .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))))
 
     XCTAssertEqual(
       .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))),
