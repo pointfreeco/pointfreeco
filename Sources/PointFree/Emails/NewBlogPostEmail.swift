@@ -40,7 +40,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
           a([href(url(to: .blog(.show(post))))], [
             h3([Styleguide.class([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
             ]),
-            markdownBlock(post.blurb)
+            p([post.blurb])
           ]
           + (
             post.coverImage.map {
