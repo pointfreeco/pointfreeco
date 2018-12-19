@@ -64,7 +64,17 @@ private let subscriberOnlyEpisode = Episode(
       This is a `paragraph` transcript block. It just contains some markdown text. A paragraph block can
       also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
       that timestamp jumps the video to that spot.
-
+     """,
+      timestamp: 0,
+      type: .paragraph
+    ),
+    Episode.TranscriptBlock(
+      content: "Title",
+      timestamp: 0,
+      type: .title
+    ),
+    Episode.TranscriptBlock(
+      content: """
       You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
       However, you cannot associate a timestamp with this paragraph.
       """,
