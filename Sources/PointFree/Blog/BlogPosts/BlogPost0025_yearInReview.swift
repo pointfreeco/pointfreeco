@@ -3,14 +3,14 @@ import Foundation
 let post0025_2018YearInReview = BlogPost(
   author: .pointfree,
   blurb: """
-We're rounding out 2018 with a review of what we did over Point-Free's first year: a lot!
+41 episodes, 19 hours of video, 25 blog posts, 8 open source libraries, 3.8K stars, 36K visitors, and we’re just getting started?
 """,
   contentBlocks: [
     .init(
       content: """
 We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time
 we have released 41 episodes with over 19 hours of [video](\(url(to: .home))) (9 of which are free for all),
-published 24 [blog posts](\(url(to: .blog(.index)))), served over 57,000 unique visitors, and
+published 25 [blog posts](\(url(to: .blog(.index)))), served over 36,000 unique visitors, and
 [open sourced](\(gitHubUrl(to: .organization))) 8 (!) libraries from the topics covered in our episodes!
 We're really proud of everything we produced for 2018, so join us for a quick review of some of our favorite
 highlights.
