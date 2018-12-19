@@ -122,10 +122,19 @@ public struct Episode {
     public enum BlockType: Equatable {
       case code(lang: CodeLang)
       case correction
-      case image(src: String)
+      case image(src: String, sizing: ImageSizing)
       case paragraph
       case title
       case video(poster: String, sources: [String])
+
+      public static func image(src: String) -> BlockType {
+        return .image(src: src, sizing: .fullWidth)
+      }
+
+      public enum ImageSizing {
+        case fullWidth
+        case inset
+      }
 
       public struct CodeLang: Equatable {
         public let identifier: String
