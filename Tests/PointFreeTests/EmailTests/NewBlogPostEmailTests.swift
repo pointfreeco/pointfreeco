@@ -13,6 +13,11 @@ import XCTest
 
 class NewBlogPostEmailTests: TestCase {
 
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() {
     let doc = newBlogPostEmail.view((post, "", "", .mock))
 
