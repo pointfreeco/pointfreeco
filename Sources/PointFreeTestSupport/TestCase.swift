@@ -12,7 +12,7 @@ open class TestCase: SnapshotTestCase {
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
-//    record = true
+    record = true
     Current = .mock
       |> \.database .~ .live
       |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }

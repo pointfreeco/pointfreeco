@@ -4,7 +4,7 @@ Cookie: pf_session={}
 recipient=unsub-f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b470d3fed478e73515f3ad396db9cb71d21c0abe5f9872e3e792de15f4b1ae5795e%40pointfree.co&sender=hello%40pointfree.co&signature=this%20is%20an%20invalid%20signature&timestamp=1517356800&token=deadbeef
 
 404 Not Found
-Content-Length: 45057
+Content-Length: 44420
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1648,16 +1648,6 @@ html {
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
-    <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
-    <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
-    <meta name="twitter:image"
-          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
-    <meta property="og:image"
-          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
           content="Page not found">
     <meta property="og:title"
