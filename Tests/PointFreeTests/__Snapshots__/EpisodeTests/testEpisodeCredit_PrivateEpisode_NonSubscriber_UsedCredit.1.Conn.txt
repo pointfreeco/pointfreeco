@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 84261
+Content-Length: 83413
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1948,7 +1948,7 @@ function videoJsLoaded() {
     </div>
     <div class="row">
       <div class="col-m
-                  col-d-7
+                  col-d-6
                   col-m-12">
         <div>
           <div class="hide-m">
@@ -2443,7 +2443,7 @@ video.play();event.preventDefault();"
                   first-m
                   last-d
                   col-m
-                  col-d-5
+                  col-d-6
                   col-m-12">
         <div class="sticky-d
                     top-0">
@@ -2667,7 +2667,8 @@ video.play();event.preventDefault();"
           <div class="d-pl4
                       d-pr4
                       m-pl3
-                      m-pr3">
+                      m-pr3
+                      m-pb3">
             <h6 class="fg-black
                        bold
                        ts-m-r0_75
@@ -2688,35 +2689,6 @@ video.play();event.preventDefault();"
                       align-middle">
               ep1-type-safe-html.playground
             </a>
-          </div>
-          <div class="d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3">
-            <h6 class="fg-black
-                       bold
-                       ts-m-r0_75
-                       lh-1
-                       caps
-                       fg-gray850
-                       m-pb1">
-              Credits
-            </h6>
-            <p class="fg-gray850">
-              Hosted by 
-              <a class="pf-link-white"
-                 href="mailto:brandon@pointfree.co">
-                Brandon&nbsp;Williams
-              </a>
-               and 
-              <a class="pf-link-white"
-                 href="mailto:stephen@pointfree.co">
-                Stephen&nbsp;Celis
-              </a>
-              . Recorded in Brooklyn, NY.
-            </p>
           </div>
         </div>
       </div>
