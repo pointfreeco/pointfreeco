@@ -56,7 +56,7 @@ public enum Route: DerivePartialIsos {
     }
 
     public enum NewBlogPostEmail: DerivePartialIsos {
-      case send(BlogPost, formData: NewBlogPostFormData, isTest: Bool?)
+      case send(BlogPost, formData: NewBlogPostFormData?, isTest: Bool?)
       case index
     }
 
@@ -125,7 +125,7 @@ private let routers: [Router<Route>] = [
 
   .admin <<< .newBlogPostEmail <<< PartialIso.send
     <¢> post %> lit("admin") %> lit("new-blog-post-email") %> pathParam(.int >>> .tagged >>> .blogPostFromId) <%> lit("send")
-    %> formBody(NewBlogPostFormData.self, decoder: formDecoder)
+    %> formBody(NewBlogPostFormData?.self, decoder: formDecoder)
     <%> isTest
     <% end,
 

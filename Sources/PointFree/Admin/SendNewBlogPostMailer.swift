@@ -29,7 +29,7 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
   p([
     .text("Blog Post: \(post.title)"),
 
-    form([action(path(to: .admin(.newBlogPostEmail(.send(post, formData: NewBlogPostFormData(), isTest: nil))))), method(.post)], [
+    form([action(path(to: .admin(.newBlogPostEmail(.send(post, formData: nil, isTest: nil))))), method(.post)], [
 
       input([
         checked(true),
@@ -59,10 +59,10 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
 }
 
 public struct NewBlogPostFormData: Codable {
-  let nonsubscriberAnnouncement = ""
-  let nonsubscriberDeliver = Bool?.some(true)
-  let subscriberAnnouncement = ""
-  let subscriberDeliver = Bool?.some(true)
+  let nonsubscriberAnnouncement: String
+  let nonsubscriberDeliver: Bool?
+  let subscriberAnnouncement: String
+  let subscriberDeliver: Bool?
 
   fileprivate enum CodingKeys: String, CodingKey {
     case nonsubscriberAnnouncement = "nonsubscriber_announcement"
@@ -73,7 +73,7 @@ public struct NewBlogPostFormData: Codable {
 }
 
 let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple4<Database.User?, BlogPost, NewBlogPostFormData, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple4<Database.User?, BlogPost, NewBlogPostFormData?, Bool?>, Data> =
   requireAdmin
     <<< filterMap(
       require4 >>> pure,
@@ -88,10 +88,14 @@ func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
 }
 
 private func sendNewBlogPostEmails<I>(
-  _ conn: Conn<I, Tuple4<Database.User, BlogPost, NewBlogPostFormData, Bool>>
+  _ conn: Conn<I, Tuple4<Database.User, BlogPost, NewBlogPostFormData?, Bool>>
   ) -> IO<Conn<I, Prelude.Unit>> {
 
-  let (_, post, formData, isTest) = lower(conn.data)
+  let (_, post, optionalFormData, isTest) = lower(conn.data)
+
+  guard let formData = optionalFormData else {
+    return pure(conn.map(const(unit)))
+  }
 
   let nonsubscriberOrSubscribersOnly: Either<Prelude.Unit, Prelude.Unit>?
   switch (formData.nonsubscriberDeliver, formData.subscriberDeliver) {
