@@ -221,7 +221,7 @@ extension NewBlogPostEmailTests {
     ("testNewBlogPostEmail_NoAnnouncements_NonSubscriber", testNewBlogPostEmail_NoAnnouncements_NonSubscriber),
     ("testNewBlogPostEmail_Announcements_Subscriber", testNewBlogPostEmail_Announcements_Subscriber),
     ("testNewBlogPostEmail_Announcements_NonSubscriber", testNewBlogPostEmail_Announcements_NonSubscriber),
-    ("testNewBlogPostEmail_NoCoverImage", testNewBlogPostEmail_NoCoverImage)
+    ("testNewBlogPostRoute", testNewBlogPostRoute)
   ]
 }
 extension NewEpisodeEmailTests {
