@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 76740
+Content-Length: 76742
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2225,12 +2225,12 @@ that timestamp jumps the video to that spot.</p>
                     Subscribe to Point-Free
                   </h4>
                   <p>
-                    👋 Hey there! See anything you like? You may be interested in 
+                    👋 Hey there! Does this episode sound interesting? Well, then you may want to 
                     <a href="/pricing"
                        class="underline-link">
-                      subscribing
+                      subscribe
                     </a>
-                     so that you get access to these episodes and all future ones.
+                     so that you get access to this episodes and more!
                   </p>
                 </div>
               </div>
