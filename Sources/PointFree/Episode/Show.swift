@@ -167,12 +167,12 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
 
     gridRow([
       gridColumn(
-        sizes: [.mobile: 12, .desktop: 7],
+        sizes: [.mobile: 12, .desktop: 6],
         leftColumnView.view((permission, user, subscriberState, episode))
       ),
 
       gridColumn(
-        sizes: [.mobile: 12, .desktop: 5],
+        sizes: [.mobile: 12, .desktop: 6],
         [Styleguide.class([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
           div(
@@ -207,15 +207,11 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
   ]
 }
 
-private let downloadsAndHosts =
-  downloadsView
-    <> hostsView.contramap(const(unit))
-
 private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable in
 
   videoView.view((episode, isEpisodeViewable))
     <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
-    <> downloadsAndHosts.view(episode.codeSampleDirectory)
+    <> downloadsView.view(episode.codeSampleDirectory)
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
@@ -338,7 +334,7 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   guard !codeSampleDirectory.isEmpty else { return [] }
 
   return [
-    div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+    div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 3]])])],
         [
           h6(
             [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
@@ -360,33 +356,6 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
       ]
     )
   ]
-}
-
-private let hostsView = View<Prelude.Unit> { _ in
-  div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
-      [
-        h6(
-          [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Credits"]
-        ),
-        p(
-          [Styleguide.class([Class.pf.colors.fg.gray850])],
-          [
-            "Hosted by ",
-            a(
-              [Styleguide.class([Class.pf.colors.link.white]), mailto("brandon@pointfree.co")],
-              [.raw("Brandon&nbsp;Williams")]
-            ),
-            " and ",
-            a(
-              [Styleguide.class([Class.pf.colors.link.white]), mailto("stephen@pointfree.co")],
-              [.raw("Stephen&nbsp;Celis")]
-            ),
-            ". Recorded in Brooklyn, NY."
-          ]
-        )
-    ]
-  )
 }
 
 private func timestampLabel(for timestamp: Int) -> String {
@@ -811,7 +780,14 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
       ]
     )
 
-  case let .image(src):
+  case let .image(src, sizing):
+    let imageClasses = sizing == .inset
+      ? [innerImageContainerClass,
+         Class.margin([.mobile: [.topBottom: 3]]),
+         Class.padding([.mobile: [.leftRight: 3]]),
+         Class.pf.colors.bg.white]
+      : [innerImageContainerClass]
+
     return a(
       [
         Styleguide.class([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
@@ -819,21 +795,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         target(.blank),
         rel(.init(rawValue: "noopener noreferrer")),
       ],
-      [
-        img(
-          src: src,
-          alt: "",
-          [
-            `class`([
-              innerImageContainerClass,
-              // TODO: allow `.image` blocks to be customized for full-width vs inset
-//              Class.margin([.mobile: [.topBottom: 3]]),
-//              Class.padding([.mobile: [.leftRight: 3]]),
-//              Class.pf.colors.bg.white
-              ])
-          ]
-        )
-      ]
+      [img(src: src, alt: "", [`class`(imageClasses)])]
     )
 
   case .paragraph:
