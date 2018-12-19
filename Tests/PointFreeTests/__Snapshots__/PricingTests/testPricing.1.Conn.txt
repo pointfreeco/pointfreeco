@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 64361
+Content-Length: 65136
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1706,6 +1706,16 @@ input::-webkit-outer-spin-button {
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <meta name="description"
+          content="Subscribe to an individual or team membership on Point-Free, a video series exploring Swift and Functional Programming">
+    <meta property="og:description"
+          content="Subscribe to an individual or team membership on Point-Free, a video series exploring Swift and Functional Programming">
+    <meta name="twitter:description"
+          content="Subscribe to an individual or team membership on Point-Free, a video series exploring Swift and Functional Programming">
+    <meta name="twitter:image"
+          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta property="og:image"
+          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
           content="Subscribe to Point-Free">
     <meta property="og:title"
