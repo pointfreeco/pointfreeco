@@ -681,7 +681,7 @@ We've now recorded a new artifact. Let's take a look.
   Episode.TranscriptBlock(
     content: "",
     timestamp: (20*60 + 28),
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/assets/testSnapshot.2.png")
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/assets/testSnapshot.2.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -806,7 +806,7 @@ This has now recorded some snapshots so let's check em out:
   Episode.TranscriptBlock(
     content: "",
     timestamp: (24*60 + 49),
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/assets/testLowercase.1.png")
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/assets/testLowercase.1.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
