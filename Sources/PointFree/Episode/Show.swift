@@ -333,9 +333,6 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
 private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   guard !codeSampleDirectory.isEmpty else { return [] }
 
-//  div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.topBottom: 3]])])],
-
-
   return [
     div([Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 3]])])],
         [
