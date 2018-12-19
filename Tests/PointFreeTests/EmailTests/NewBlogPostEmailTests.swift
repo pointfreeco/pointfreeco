@@ -6,6 +6,7 @@ import Optics
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import UrlFormEncoding
 #if !os(Linux)
 import WebKit
 #endif
@@ -84,6 +85,41 @@ class NewBlogPostEmailTests: TestCase {
     }
     #endif
   }
+
+  func testNewBlogPostRoute() {
+    let blogPost = Current.blogPosts().first!
+
+    var req = URLRequest(
+      url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!
+    )
+    req.httpMethod = "post"
+    req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
+    XCTAssertNil(router.match(request: req))
+
+    let formData = urlFormEncode(
+      value: [
+        "nonsubscriber_announcement": "",
+        "nonsubscriber_deliver": "1",
+        "subscriber_announcement": "Hello!",
+        "test": "Test email!"
+      ]
+    )
+    req.httpBody = Data(formData.utf8)
+    let formDataData = NewBlogPostFormData(
+      nonsubscriberAnnouncement: "",
+      nonsubscriberDeliver: true,
+      subscriberAnnouncement: "Hello!",
+      subscriberDeliver: nil
+    )
+
+//    let x = request(to: .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))))
+
+    XCTAssertEqual(
+      .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))),
+      router.match(request: req)
+    )
+  }
+
 }
 
 private let post = post0001_welcome

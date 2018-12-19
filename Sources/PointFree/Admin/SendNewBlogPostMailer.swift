@@ -58,7 +58,7 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
     ])
 }
 
-public struct NewBlogPostFormData: Codable {
+public struct NewBlogPostFormData: Codable, Equatable {
   let nonsubscriberAnnouncement: String
   let nonsubscriberDeliver: Bool?
   let subscriberAnnouncement: String

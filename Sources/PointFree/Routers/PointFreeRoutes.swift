@@ -8,7 +8,7 @@ import UrlFormEncoding
 
 public protocol DerivePartialIsos {}
 
-public enum Route: DerivePartialIsos {
+public enum Route: DerivePartialIsos, Equatable {
   case about
   case account(Account)
   case admin(Admin)
@@ -32,46 +32,46 @@ public enum Route: DerivePartialIsos {
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
 
-  public enum Blog: DerivePartialIsos {
+  public enum Blog: DerivePartialIsos, Equatable {
     case feed
     case index
     case show(BlogPost)
   }
 
-  public enum Admin: DerivePartialIsos {
+  public enum Admin: DerivePartialIsos, Equatable {
     case episodeCredits(EpisodeCredit)
     case freeEpisodeEmail(FreeEpisodeEmail)
     case index
     case newBlogPostEmail(NewBlogPostEmail)
     case newEpisodeEmail(NewEpisodeEmail)
 
-    public enum EpisodeCredit: DerivePartialIsos {
+    public enum EpisodeCredit: DerivePartialIsos, Equatable {
       case add(userId: Database.User.Id?, episodeSequence: Int?)
       case show
     }
 
-    public enum FreeEpisodeEmail: DerivePartialIsos {
+    public enum FreeEpisodeEmail: DerivePartialIsos, Equatable {
       case send(Episode.Id)
       case index
     }
 
-    public enum NewBlogPostEmail: DerivePartialIsos {
+    public enum NewBlogPostEmail: DerivePartialIsos, Equatable {
       case send(BlogPost, formData: NewBlogPostFormData?, isTest: Bool?)
       case index
     }
 
-    public enum NewEpisodeEmail: DerivePartialIsos {
+    public enum NewEpisodeEmail: DerivePartialIsos, Equatable {
       case send(Episode.Id, subscriberAnnouncement: String?, nonSubscriberAnnouncement: String?, isTest: Bool?)
       case show
     }
   }
 
-  public enum Feed: DerivePartialIsos {
+  public enum Feed: DerivePartialIsos, Equatable {
     case atom
     case episodes
   }
 
-  public enum Invite: DerivePartialIsos {
+  public enum Invite: DerivePartialIsos, Equatable {
     case accept(Database.TeamInvite.Id)
     case resend(Database.TeamInvite.Id)
     case revoke(Database.TeamInvite.Id)
@@ -79,15 +79,15 @@ public enum Route: DerivePartialIsos {
     case show(Database.TeamInvite.Id)
   }
 
-  public enum Team: DerivePartialIsos {
+  public enum Team: DerivePartialIsos, Equatable {
     case leave
     case remove(Database.User.Id)
   }
 
-  public enum Webhooks: DerivePartialIsos {
+  public enum Webhooks: DerivePartialIsos, Equatable {
     case stripe(Stripe)
 
-    public enum Stripe: DerivePartialIsos {
+    public enum Stripe: DerivePartialIsos, Equatable {
       case event(PointFree.Stripe.Event<Either<PointFree.Stripe.Invoice, PointFree.Stripe.Subscription>>)
       case `fallthrough`
     }
@@ -268,7 +268,7 @@ extension PartialIso where A == String, B == SiteTag {
   }
 }
 
-public struct MailgunForwardPayload: Codable {
+public struct MailgunForwardPayload: Codable, Equatable {
   public let recipient: EmailAddress
   public let timestamp: Int
   public let token: String

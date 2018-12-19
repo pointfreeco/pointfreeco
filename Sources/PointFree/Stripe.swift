@@ -82,7 +82,7 @@ public struct Stripe {
 
   public typealias Cents = Tagged<Stripe, Int>
 
-  public struct Charge: Codable {
+  public struct Charge: Codable, Equatable {
     public private(set) var amount: Cents
     public private(set) var id: Id
     public private(set) var source: Card
@@ -90,7 +90,7 @@ public struct Stripe {
     public typealias Id = Tagged<Card, String>
   }
 
-  public struct Coupon {
+  public struct Coupon: Equatable {
     public typealias Id = Tagged<Coupon, String>
 
     public private(set) var duration: Duration
@@ -131,7 +131,7 @@ public struct Stripe {
     }
   }
 
-  public struct Customer: Codable {
+  public struct Customer: Codable, Equatable {
     public private(set) var businessVatId: Vat?
     public private(set) var defaultSource: Card.Id?
     public private(set) var id: Id
@@ -154,7 +154,7 @@ public struct Stripe {
     }
   }
 
-  public struct Discount: Codable {
+  public struct Discount: Codable, Equatable {
     public private(set) var coupon: Coupon
   }
 
@@ -166,25 +166,25 @@ public struct Stripe {
     let message: String
   }
 
-  public struct Event<T: Codable>: Codable {
+  public struct Event<T: Codable & Equatable>: Equatable, Codable {
     public private(set) var data: Data
     public private(set) var id: Id
     public private(set) var type: `Type`
 
     public typealias Id = Tagged<Event, String>
 
-    public struct Data: Codable {
+    public struct Data: Codable, Equatable {
       public private(set) var object: T
     }
 
-    public enum `Type`: String, Codable {
+    public enum `Type`: String, Codable, Equatable {
       case customerSubscriptionDeleted = "customer.subscription.deleted"
       case invoicePaymentFailed = "invoice.payment_failed"
       case invoicePaymentSucceeded = "invoice.payment_succeeded"
     }
   }
 
-  public struct Invoice: Codable {
+  public struct Invoice: Codable, Equatable {
     public private(set) var amountDue: Cents
     public private(set) var amountPaid: Cents
     public private(set) var charge: Either<Charge.Id, Charge>?
@@ -223,7 +223,7 @@ public struct Stripe {
     }
   }
 
-  public struct LineItem: Codable {
+  public struct LineItem: Codable, Equatable {
     public private(set) var amount: Cents
     public private(set) var description: String?
     public private(set) var id: Id
@@ -234,7 +234,7 @@ public struct Stripe {
     public typealias Id = Tagged<LineItem, String>
   }
 
-  public struct ListEnvelope<A: Codable>: Codable {
+  public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
     private(set) var data: [A]
     private(set) var hasMore: Bool
 
@@ -244,7 +244,7 @@ public struct Stripe {
     }
   }
 
-  public struct Plan: Codable {
+  public struct Plan: Codable, Equatable {
     public private(set) var amount: Cents
     public private(set) var created: Date
     public private(set) var currency: Currency
@@ -277,7 +277,7 @@ public struct Stripe {
     }
   }
 
-  public struct Subscription: Codable {
+  public struct Subscription: Codable, Equatable {
     public private(set) var canceledAt: Date?
     public private(set) var cancelAtPeriodEnd: Bool
     public private(set) var created: Date
@@ -303,7 +303,7 @@ public struct Stripe {
 
     public typealias Id = Tagged<Subscription, String>
 
-    public struct Item: Codable {
+    public struct Item: Codable, Equatable {
       public private(set) var created: Date
       public private(set) var id: Id
       public private(set) var plan: Plan
@@ -446,12 +446,6 @@ extension Stripe.Coupon: Codable {
     case id
     case name
     case valid
-  }
-}
-
-extension Stripe.ListEnvelope: Equatable where A: Equatable {
-  public static func == (lhs: Stripe.ListEnvelope<A>, rhs: Stripe.ListEnvelope<A>) -> Bool {
-    return lhs.data == rhs.data && lhs.hasMore == rhs.hasMore
   }
 }
 

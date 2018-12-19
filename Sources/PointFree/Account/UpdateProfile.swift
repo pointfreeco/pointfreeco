@@ -5,7 +5,7 @@ import Prelude
 import Tuple
 
 // NB: remove this `Encodable` to get a runtime crash
-public struct ProfileData: Encodable {
+public struct ProfileData: Encodable, Equatable {
   public let email: EmailAddress
   public let extraInvoiceInfo: String?
   public let emailSettings: [String: String]
