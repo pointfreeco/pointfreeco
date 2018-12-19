@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 64645
+Content-Length: 64617
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2237,7 +2237,6 @@ want to use it to view this episode for free right now?
                       d-pr4
                       m-pl3
                       m-pr3
-                      m-pt3
                       m-pb3">
             <h6 class="fg-black
                        bold

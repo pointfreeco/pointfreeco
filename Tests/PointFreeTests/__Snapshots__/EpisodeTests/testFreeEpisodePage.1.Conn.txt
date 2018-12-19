@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 84780
+Content-Length: 84752
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2610,7 +2610,6 @@ video.play();event.preventDefault();"
                       d-pr4
                       m-pl3
                       m-pr3
-                      m-pt3
                       m-pb3">
             <h6 class="fg-black
                        bold
