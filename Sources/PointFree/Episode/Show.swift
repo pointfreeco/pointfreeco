@@ -674,15 +674,15 @@ private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
               ),
               p(
                 [
-                  "👋 Hey there! See anything you like? You may be interested in ",
+                  "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
                   a(
                     [
                       href(path(to: .pricing(nil, expand: nil))),
                       Styleguide.class([Class.pf.type.underlineLink])
                     ],
-                    ["subscribing"]
+                    ["subscribe"]
                   ),
-                  " so that you get access to these episodes and all future ones.",
+                  " so that you get access to this episodes and more!",
                   ]
               )
             ]
