@@ -24,12 +24,15 @@ public struct BlogPost {
 
   public enum Author {
     case brandon
+    case pointfree
     case stephen
 
     public var twitterUrl: String {
       switch self {
       case .brandon:
         return PointFree.twitterUrl(to: .mbrandonw)
+      case .pointfree:
+        return PointFree.twitterUrl(to: .pointfreeco)
       case .stephen:
         return PointFree.twitterUrl(to: .stephencelis)
       }

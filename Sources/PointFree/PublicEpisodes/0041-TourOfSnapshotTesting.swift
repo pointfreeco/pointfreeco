@@ -8,12 +8,12 @@ Our snapshot testing library is now official open source! In order to show just 
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 2013890736,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing-full-.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing.m3u8"
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing-full-.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing.m3u8"
   ),
   id: 41,
-  image: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/0041-poster.jpg",
-  itunesImage: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/0041-itunes-poster.jpg",
+  image: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-itunes-poster.jpg",
   length: 29*60+16,
   permission: .free,
   publishedAt: .init(timeIntervalSince1970: 1545116400),
@@ -28,8 +28,8 @@ Our snapshot testing library is now official open source! In order to show just 
   title: "A Tour of Snapshot Testing",
   trailerVideo: .init(
     bytesLength: 178376389,
-  downloadUrl: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/trailer/0041-trailer-trailer-.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/trailer/0041-trailer.m3u8"
+  downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/trailer/0041-trailer-trailer-.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/trailer/0041-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
