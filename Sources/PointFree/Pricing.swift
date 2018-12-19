@@ -123,12 +123,24 @@ let basePricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Databa
           currentRoute: route,
           currentUser: currentUser,
           data: (currentUser, pricing, formStyle, coupon, route),
+          description: pricingPageDescription(coupon: coupon),
           extraStyles: pricingExtraStyles <> whatToExpectStyles,
           style: .base(.minimal(.dark)),
           title: "Subscribe to Point-Free"
         )
     }
 )
+
+private func pricingPageDescription(coupon: Stripe.Coupon?) -> String {
+  return coupon.map {
+    """
+Limited time Point-Free discount: Get \($0.formattedDescription). Subscribe today!
+"""
+  } ?? """
+Subscribe to an individual or team membership on Point-Free, a video series exploring Swift \
+and Functional Programming
+"""
+}
 
 private func fetchCoupon(_ couponId: Stripe.Coupon.Id) -> IO<Stripe.Coupon?> {
   return Current.stripe.fetchCoupon(couponId)

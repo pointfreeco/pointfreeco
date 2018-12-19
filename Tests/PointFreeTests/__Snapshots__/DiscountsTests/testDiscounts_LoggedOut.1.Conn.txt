@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 65937
+Content-Length: 66610
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1707,6 +1707,16 @@ input::-webkit-outer-spin-button {
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <meta name="description"
+          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+    <meta property="og:description"
+          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+    <meta name="twitter:description"
+          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+    <meta name="twitter:image"
+          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta property="og:image"
+          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
           content="Subscribe to Point-Free">
     <meta property="og:title"
