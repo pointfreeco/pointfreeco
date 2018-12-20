@@ -2,7 +2,7 @@ GET http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 53260
+Content-Length: 53261
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1846,7 +1846,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                            ts-d-r1_5
                            ts-m-r1_25
                            lh-2">
-                  Change to yearly billing?
+                  Change to monthly billing?
                 </h3>
                 <p>
                   Your regular billing rate will be reflected below. Upgrades and downgrades will take
@@ -1863,7 +1863,6 @@ place at the end of the current billing period.
                       <div style="flex-direction:column-reverse"
                            class="row">
                         <input class="h3"
-                               checked
                                id="monthly"
                                name="billing"
                                type="radio"
@@ -1913,6 +1912,7 @@ place at the end of the current billing period.
                       <div style="flex-direction:column-reverse"
                            class="row">
                         <input class="h3"
+                               checked
                                id="yearly"
                                name="billing"
                                type="radio"
