@@ -96,6 +96,7 @@ extension ChangeTests {
     ("testChangeShowNoSubscription", testChangeShowNoSubscription),
     ("testChangeShowCancelingSubscription", testChangeShowCancelingSubscription),
     ("testChangeShowCanceledSubscription", testChangeShowCanceledSubscription),
+    ("testChangeShowDiscountSubscription", testChangeShowDiscountSubscription),
     ("testChangeUpdateUpgradeIndividualPlan", testChangeUpdateUpgradeIndividualPlan),
     ("testChangeUpdateDowngradeIndividualPlan", testChangeUpdateDowngradeIndividualPlan),
     ("testChangeUpdateUpgradeTeamPlan", testChangeUpdateUpgradeTeamPlan),
@@ -221,7 +222,8 @@ extension NewBlogPostEmailTests {
     ("testNewBlogPostEmail_NoAnnouncements_NonSubscriber", testNewBlogPostEmail_NoAnnouncements_NonSubscriber),
     ("testNewBlogPostEmail_Announcements_Subscriber", testNewBlogPostEmail_Announcements_Subscriber),
     ("testNewBlogPostEmail_Announcements_NonSubscriber", testNewBlogPostEmail_Announcements_NonSubscriber),
-    ("testNewBlogPostRoute", testNewBlogPostRoute)
+    ("testNewBlogPostRoute", testNewBlogPostRoute),
+    ("testNewBlogPostEmail_NoCoverImage", testNewBlogPostEmail_NoCoverImage)
   ]
 }
 extension NewEpisodeEmailTests {
@@ -270,7 +272,8 @@ extension PrivacyTests {
 }
 extension PrivateRssTests {
   static var allTests: [(String, (PrivateRssTests) -> () throws -> Void)] = [
-    ("testFeed_Authenticated_Subscriber", testFeed_Authenticated_Subscriber),
+    ("testFeed_Authenticated_Subscriber_Monthly", testFeed_Authenticated_Subscriber_Monthly),
+    ("testFeed_Authenticated_Subscriber_Yearly", testFeed_Authenticated_Subscriber_Yearly),
     ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
     ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
     ("testFeed_BadSalt", testFeed_BadSalt)
