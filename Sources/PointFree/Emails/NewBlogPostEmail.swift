@@ -27,7 +27,7 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
     )
 }
 
-let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
+let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> Node in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -40,26 +40,32 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement in
           a([href(url(to: .blog(.show(post))))], [
             h3([Styleguide.class([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
             ]),
-          p([.text(post.blurb)]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .blog(.show(post))))], [
-              img([src(post.coverImage), alt(""), style(maxWidth(.pct(100)))])
-              ])
-            ]),
-
-          a(
-            [
-              href(url(to: .blog(.show(post)))),
-              `class`(
-                [
-                  Class.pf.colors.link.purple,
-                  Class.pf.colors.fg.purple,
-                  Class.pf.type.body.leading
+            p([text(post.blurb)])
+          ]
+          + (
+            post.coverImage.map {
+              [
+                p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+                  a([href(url(to: .blog(.show(post))))], [
+                    img([src($0), alt(""), style(maxWidth(.pct(100)))])
+                    ])
+                  ]),
                 ]
-              )
-            ],
-            ["Read the full post…"]
-          )
+              } ?? [])
+          + [
+            a(
+              [
+                href(url(to: .blog(.show(post)))),
+                `class`(
+                  [
+                    Class.pf.colors.link.purple,
+                    Class.pf.colors.fg.purple,
+                    Class.pf.type.body.leading
+                  ]
+                )
+              ],
+              ["Read the full post…"]
+            )
           ]),
 
         div(

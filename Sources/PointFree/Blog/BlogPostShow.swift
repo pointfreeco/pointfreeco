@@ -22,7 +22,7 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Blo
           data: (post, subscriberState),
           description: post.blurb,
           extraStyles: markdownBlockStyles,
-          image: post.coverImage,
+          image: post.coverImage ?? Current.assets.emailHeaderImgSrc,
           openGraphType: .website,
           style: .base(.mountains(.blog)),
           title: post.title,
