@@ -1,0 +1,429 @@
+GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47847c7d6d216c635dd0cff1d0429f0567/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a
+Cookie: pf_session={}
+
+200 OK
+Content-Length: 15886
+Content-Type: text/xml; charset=utf-8
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
+
+<?xml version="1.0" encoding="utf-8" ?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://www.rssboard.org/media-rss"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     version="2.0">
+  <channel>
+    <title>
+      Point-Free Videos (Private feed for hello@pointfree.co)
+    </title>
+    <link>
+      http://localhost:8080
+    </link>
+    <language>
+      en-US
+    </language>
+    <description>
+      Point-Free is a video series about functional programming and the Swift programming language. Each episode
+covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
+each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
+how these ideas can improve the quality of your code today.
+
+---
+
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
+with anyone else.
+    </description>
+    <copyright>
+      Copyright Point-Free, Inc. 2018
+    </copyright>
+    <image>
+      <url>
+        https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg
+      </url>
+      <title>
+        Point-Free Videos (Private feed for hello@pointfree.co)
+      </title>
+      <link>
+        http://localhost:8080
+      </link>
+    </image>
+    <itunes:author>
+      Brandon Williams & Stephen Celis
+    </itunes:author>
+    <itunes:subtitle>
+      Functional programming concepts explained simply.
+    </itunes:subtitle>
+    <itunes:summary>
+      Point-Free is a video series about functional programming and the Swift programming language. Each episode
+covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
+each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
+how these ideas can improve the quality of your code today.
+
+---
+
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
+with anyone else.
+    </itunes:summary>
+    <itunes:explicit>
+      no
+    </itunes:explicit>
+    <itunes:owner>
+      <itunes:name>
+        Brandon Williams & Stephen Celis
+      </itunes:name>
+      <itunes:email>
+        support@pointfree.co
+      </itunes:email>
+    </itunes:owner>
+    <itunes:type>
+      episodic
+    </itunes:type>
+    <itunes:keywords>
+      programming,development,mobile,ios,functional,swift,apple,developer,software engineering,server,app
+    </itunes:keywords>
+    <itunes:image href="https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg">
+    </itunes:image>
+    <itunes:category text="Technology">
+      <itunes:category>
+        Software How-To
+      </itunes:category>
+    </itunes:category>
+    <itunes:category text="Education">
+      <itunes:category>
+        Training
+      </itunes:category>
+    </itunes:category>
+    <item>
+      <title>
+        A Tour of Point-Free
+      </title>
+      <pubDate>
+        Mon, 16 Jul 2018 09:57:03 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep22-a-tour-of-point-free
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep22-a-tour-of-point-free
+      </guid>
+      <description>
+        Join us for a tour of the code base that powers this very site and see what functional programming can look like in a production code base! We'll walk through cloning the repo and getting the site running on your local machine before showing off some of the fun functional programming we do on a daily basis.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        Join us for a tour of the code base that powers this very site and see what functional programming can look like in a production code base! We'll walk through cloning the repo and getting the site running on your local machine before showing off some of the fun functional programming we do on a daily basis.
+      </itunes:subtitle>
+      <itunes:summary>
+        Join us for a tour of the code base that powers this very site and see what functional programming can look like in a production code base! We'll walk through cloning the repo and getting the site running on your local machine before showing off some of the fun functional programming we do on a daily basis.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:39:21
+      </itunes:duration>
+      <itunes:image>
+        https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/itunes-poster.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        22
+      </itunes:episode>
+      <itunes:title>
+        A Tour of Point-Free
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4"
+                 length="784408755"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4"
+                     length="784408755"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          A Tour of Point-Free
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        A Tale of Two Flat-Maps
+      </title>
+      <pubDate>
+        Tue, 27 Mar 2018 09:57:03 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep10-a-tale-of-two-flat-maps
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep10-a-tale-of-two-flat-maps
+      </guid>
+      <description>
+        Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from the others? We'll explore this and how understanding that difference helps us explore generalizations of the operation to other structures and derive new, useful code!
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from the others? We'll explore this and how understanding that difference helps us explore generalizations of the operation to other structures and derive new, useful code!
+      </itunes:subtitle>
+      <itunes:summary>
+        Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from the others? We'll explore this and how understanding that difference helps us explore generalizations of the operation to other structures and derive new, useful code!
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:25:04
+      </itunes:duration>
+      <itunes:image>
+        https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        10
+      </itunes:episode>
+      <itunes:title>
+        A Tale of Two Flat-Maps
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4"
+                 length="537822190"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4"
+                     length="537822190"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          A Tale of Two Flat-Maps
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        UIKit Styling with Functions
+      </title>
+      <pubDate>
+        Mon, 12 Feb 2018 13:12:31 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep3-uikit-styling-with-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep3-uikit-styling-with-functions
+      </guid>
+      <description>
+        We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
+      </itunes:subtitle>
+      <itunes:summary>
+        We bring tools from previous episodes down to earth and apply them to an everyday task: UIKit styling. Plain functions unlock worlds of composability and reusability in styling of UI components. Have we finally solved the styling problem?
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:27:14
+      </itunes:duration>
+      <itunes:image>
+        https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/itunes-poster.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        3
+      </itunes:episode>
+      <itunes:title>
+        UIKit Styling with Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4"
+                 length="556949587"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4"
+                     length="556949587"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          UIKit Styling with Functions
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Side Effects
+      </title>
+      <pubDate>
+        Mon, 05 Feb 2018 06:11:09 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep2-side-effects
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep2-side-effects
+      </guid>
+      <description>
+        Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+      </itunes:subtitle>
+      <itunes:summary>
+        Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:44:36
+      </itunes:duration>
+      <itunes:image>
+        https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/itunes-poster.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        2
+      </itunes:episode>
+      <itunes:title>
+        Side Effects
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full-720p-BB35D372-8907-4CA2-AAEB-82B5BB5F1311.mp4"
+                 length="890410175"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full-720p-BB35D372-8907-4CA2-AAEB-82B5BB5F1311.mp4"
+                     length="890410175"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Side Effects
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Functions
+      </title>
+      <pubDate>
+        Mon, 29 Jan 2018 06:11:09 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep1-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep1-functions
+      </guid>
+      <description>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </itunes:subtitle>
+      <itunes:summary>
+        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:20:19
+      </itunes:duration>
+      <itunes:image>
+        https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        1
+      </itunes:episode>
+      <itunes:title>
+        Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
+                 length="411951213"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
+                     length="411951213"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Functions
+        </media:title>
+      </media:content>
+    </item>
+  </channel>
+</rss>
+
