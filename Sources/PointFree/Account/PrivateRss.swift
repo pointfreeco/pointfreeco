@@ -57,7 +57,7 @@ private func validateUserAndSalt<Z>(
     }
 }
 
-private func trackFeedRequest<I, A>(_ conn: Conn<I, (A, Database.User)>) -> IO<Conn<I, (A, Database.User)>> {
+private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, Database.User)>) -> IO<Conn<I, (Stripe.Subscription?, Database.User)>> {
 
   return Current.database.createFeedRequestEvent(
     .privateEpisodesFeed,
