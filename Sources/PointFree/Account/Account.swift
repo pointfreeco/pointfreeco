@@ -388,13 +388,36 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                     )
                   ]
                 )
-                ])
-            ]
+                ]
+              )
+            ] + rssTerms(stripeSubscription: data.stripeSubscription)
           )
         ]
       )
       ])
   ]
+}
+
+private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
+  return stripeSubscription?.plan.interval == .some(.month)
+    ? [
+      p([
+        `class`([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.top: 2]])]),
+        style(backgroundColor(.rgb(0xff, 0xff, 0xdd)))
+        ],
+        [
+          "Because you are on a monthly subscription plan, you get access to the last ",
+          .text("\(nonYearlyMaxRssItems) episodes in your RSS feed. To unlock access to all "),
+          "episodes in this feed, please consider ",
+          a(
+            [`class`([Class.pf.type.underlineLink]), href(path(to: .account(.subscription(.change(.show)))))],
+            ["upgrading"]
+          ),
+          " to a yearly subscription."
+        ]
+      )
+      ]
+    : []
 }
 
 private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in

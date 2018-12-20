@@ -149,12 +149,14 @@ with anyone else.
   )
 }
 
+let nonYearlyMaxRssItems = 4
+
 private func items(forUser user: Database.User, subscription: Stripe.Subscription?) -> [RssItem] {
   return Current
     .episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(^\.sequence, >))
-    .prefix(subscription?.plan.interval == .some(.year) ? 99999 : 4)
+    .prefix(subscription?.plan.interval == .some(.year) ? 99999 : nonYearlyMaxRssItems)
     .map { item(forUser: user, episode: $0) }
 }
 
