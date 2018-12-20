@@ -9,7 +9,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   fullVideo: .init(
     bytesLength: 890_410_175,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full-720p-BB35D372-8907-4CA2-AAEB-82B5BB5F1311.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full/0002-fish-and-diamonds.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full/0002-side-effects.m3u8"
   ),
   id: 2,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
