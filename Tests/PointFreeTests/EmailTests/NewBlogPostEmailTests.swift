@@ -14,6 +14,11 @@ import XCTest
 
 class NewBlogPostEmailTests: TestCase {
 
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() {
     let doc = newBlogPostEmail.view((post, "", "", .mock))
 
@@ -116,6 +121,13 @@ class NewBlogPostEmailTests: TestCase {
       .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))),
       router.match(request: req)
     )
+  }
+
+  func testNewBlogPostEmail_NoCoverImage() {
+    let doc = newBlogPostEmail.view((post |> \.coverImage .~ nil, "", "", .mock))
+
+    assertSnapshot(matching: doc, as: .html)
+    assertSnapshot(matching: plainText(for: doc), as: .lines)
   }
 
 }
