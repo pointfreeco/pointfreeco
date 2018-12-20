@@ -707,7 +707,7 @@ import Prelude
       extension PartialIso where A == (
             BlogPost
           , 
-            NewBlogPostFormData
+            NewBlogPostFormData?
           , 
             Bool?
         ), B == Route.Admin.NewBlogPostEmail {

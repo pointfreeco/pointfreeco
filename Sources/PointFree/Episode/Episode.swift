@@ -108,7 +108,7 @@ public struct Episode {
     case subscriberOnly
   }
 
-  public struct TranscriptBlock {
+  public struct TranscriptBlock: Equatable {
     public private(set) var content: String
     public private(set) var timestamp: Int?
     public private(set) var type: BlockType
