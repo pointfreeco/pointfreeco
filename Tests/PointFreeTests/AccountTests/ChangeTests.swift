@@ -78,6 +78,26 @@ final class ChangeTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
+  func testChangeShowDiscountSubscription() {
+    update(&Current, \.stripe.fetchSubscription .~ const(pure(.discounted)))
+
+    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testChangeUpdateUpgradeIndividualPlan() {
     #if !os(Linux)
     update(
