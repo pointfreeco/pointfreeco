@@ -5,7 +5,7 @@ import Optics
 import Prelude
 import Tuple
 
-public struct SubscribeData: Codable {
+public struct SubscribeData: Codable, Equatable {
   public typealias Coupon = Tagged<SubscribeData, String>
 
   public private(set) var coupon: Coupon?

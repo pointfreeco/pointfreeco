@@ -69,7 +69,7 @@ public struct Database {
       case userId = "user_id"
     }
 
-    public enum Newsletter: String, RawRepresentable, Codable {
+    public enum Newsletter: String, RawRepresentable, Codable, Equatable {
       case announcements
       case newBlogPost
       case newEpisode

@@ -11,7 +11,7 @@ import Tuple
 public let accountRouter = accountRouters.reduce(.empty, <|>)
 
 extension Route {
-  public enum Account: DerivePartialIsos {
+  public enum Account: DerivePartialIsos, Equatable {
     case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
     case index
     case invoices(Invoices)
@@ -20,22 +20,22 @@ extension Route {
     case subscription(Subscription)
     case update(ProfileData?)
 
-    public enum Invoices: DerivePartialIsos {
+    public enum Invoices: DerivePartialIsos, Equatable {
       case index
       case show(Stripe.Invoice.Id)
     }
 
-    public enum PaymentInfo: DerivePartialIsos {
+    public enum PaymentInfo: DerivePartialIsos, Equatable {
       case show(expand: Bool?)
       case update(Stripe.Token.Id?)
     }
 
-    public enum Subscription: DerivePartialIsos {
+    public enum Subscription: DerivePartialIsos, Equatable {
       case cancel
       case change(Change)
       case reactivate
 
-      public enum Change: DerivePartialIsos {
+      public enum Change: DerivePartialIsos, Equatable {
         case show
         case update(Pricing?)
       }

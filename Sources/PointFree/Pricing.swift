@@ -11,7 +11,7 @@ import Styleguide
 import Tuple
 import View
 
-public struct Pricing {
+public struct Pricing: Equatable {
   var billing: Billing
   var quantity: Int
 
