@@ -335,6 +335,11 @@ final class StripeTests: TestCase {
       named: "fetch-subscription"
     )
     assertSnapshot(
+      matching: PointFree.fetchUpcomingInvoice("cus_test").rawValue,
+      as: .raw,
+      named: "fetch-upcoming-invoice"
+    )
+    assertSnapshot(
       matching: PointFree.invoiceCustomer("cus_test").rawValue,
       as: .raw,
       named: "invoice-customer"

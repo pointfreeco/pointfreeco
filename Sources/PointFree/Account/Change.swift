@@ -295,7 +295,23 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
         [],
         individualPricingColumnView.view((.monthly, pricing))
           <> individualPricingColumnView.view((.yearly, pricing))
-      ),
+      )]
+      + (
+        subscription.discount?.coupon.valid == .some(true)
+          ? [
+            div([`class`([
+              Class.padding([.mobile: [.all: 1]]),
+              Class.pf.colors.bg.yellow,
+              Class.type.align.center,
+              ])], [
+                strong([
+                  text("⚠️ Changes to your subscription will remove your current discount.")
+                  ])
+              ])
+            ]
+          : []
+      )
+      + [
       button(
         [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
         [subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"]
