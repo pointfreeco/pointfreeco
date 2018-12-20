@@ -366,14 +366,15 @@ extension Stripe.Plan {
   public static let individualYearly = mock
     |> \.amount .~ 170_00
     |> \.id .~ .individualYearly
+    |> \.interval .~ .year
     |> \.name .~ "Individual Yearly"
 
-  public static let teamMonthly = mock
+  public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
     |> \.id .~ .teamMonthly
     |> \.name .~ "Team Monthly"
 
-  public static let teamYearly = mock
+  public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
     |> \.id .~ .teamYearly
     |> \.name .~ "Team Yearly"

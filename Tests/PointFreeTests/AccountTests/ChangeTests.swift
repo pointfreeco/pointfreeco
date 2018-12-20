@@ -16,6 +16,7 @@ final class ChangeTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
+//    record = true
   }
 
   func testChangeShow() {
