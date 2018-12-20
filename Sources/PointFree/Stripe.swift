@@ -567,6 +567,7 @@ func updateSubscription(
     guard let item = currentSubscription.items.data.first else { return nil }
 
     return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
+      "coupon": "",
       "items[0][id]": item.id.rawValue,
       "items[0][plan]": plan.rawValue,
       "items[0][quantity]": String(quantity),
