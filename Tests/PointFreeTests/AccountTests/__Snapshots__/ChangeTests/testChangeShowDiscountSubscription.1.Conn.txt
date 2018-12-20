@@ -2,7 +2,7 @@ GET http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 53030
+Content-Length: 53260
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1786,9 +1786,6 @@ input::-webkit-outer-spin-button {
                   .
                   
                 </p>
-                <strong>
-                  Please note that changes to your subscription will remove your current discount.
-                </strong>
               </div>
             </div>
           </div>
@@ -1955,6 +1952,16 @@ place at the end of the current billing period.
                       </div>
                     </label>
                   </div>
+                </div>
+                <div class="m-pl1
+                            m-pr1
+                            m-pt1
+                            m-pb1
+                            bg-yellow
+                            center">
+                  <strong>
+                    ⚠️ Changes to your subscription will remove your current discount.
+                  </strong>
                 </div>
                 <button class="medium
                                cursor-pointer
