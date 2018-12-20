@@ -6,6 +6,7 @@ import Optics
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import UrlFormEncoding
 #if !os(Linux)
 import WebKit
 #endif
@@ -88,6 +89,38 @@ class NewBlogPostEmailTests: TestCase {
       assertSnapshot(matching: webView, as: .image)
     }
     #endif
+  }
+
+  func testNewBlogPostRoute() {
+    let blogPost = Current.blogPosts().first!
+
+    var req = URLRequest(
+      url: URL(string: "http://localhost:8080/admin/new-blog-post-email/\(blogPost.id)/send")!
+    )
+    req.httpMethod = "POST"
+    req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
+    XCTAssertNil(router.match(request: req))
+
+    let formData = urlFormEncode(
+      value: [
+        "nonsubscriber_announcement": "",
+        "nonsubscriber_deliver": "true",
+        "subscriber_announcement": "Hello!",
+        "test": "Test email!"
+      ]
+    )
+    req.httpBody = Data(formData.utf8)
+    let formDataData = NewBlogPostFormData(
+      nonsubscriberAnnouncement: "",
+      nonsubscriberDeliver: true,
+      subscriberAnnouncement: "Hello!",
+      subscriberDeliver: nil
+    )
+
+    XCTAssertEqual(
+      .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))),
+      router.match(request: req)
+    )
   }
 
   func testNewBlogPostEmail_NoCoverImage() {
