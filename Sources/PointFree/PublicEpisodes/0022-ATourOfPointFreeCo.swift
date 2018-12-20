@@ -9,7 +9,7 @@ Join us for a tour of the code base that powers this very site and see what func
   fullVideo: .init(
     bytesLength: 784_408_755,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full/0022-tour-de-pointfree.m3u8"
+    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0022-tour-of-pointfreeco/full/0022-tour-of-pointfreeco.m3u8"
   ),
   id: 22,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",

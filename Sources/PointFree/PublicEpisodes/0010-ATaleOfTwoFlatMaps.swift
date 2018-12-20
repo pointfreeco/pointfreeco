@@ -11,7 +11,7 @@ operation to other structures and derive new, useful code!
   fullVideo: .init(
     bytesLength: 537_822_190,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full/0010-best-of-flatmaps.m3u8"
+    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0010-a-tale-of-two-flatmaps/full/0010-tale-of-two-flatmaps.m3u8"
   ),
   id: 10,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",

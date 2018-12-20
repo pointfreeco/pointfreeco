@@ -9,7 +9,7 @@ Our snapshot testing library is now official open source! In order to show just 
   fullVideo: .init(
     bytesLength: 2013890736,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing-full-.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing.m3u8"
+    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing.m3u8"
   ),
   id: 41,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-poster.jpg",

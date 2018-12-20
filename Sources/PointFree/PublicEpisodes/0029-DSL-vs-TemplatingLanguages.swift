@@ -12,7 +12,7 @@ previously hidden.
   fullVideo: .init(
     bytesLength: 665_928_011,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full-720p-DD72BEE3-57A5-46B1-95B7-E1BA62FE2CE8.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full/0029-dsl-wins.m3u8"
+    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0029-dsl-vs-templating-languages/full/0029-dsl-vs-templating-languages.m3u8"
   ),
   id: 29,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/poster.jpg",
