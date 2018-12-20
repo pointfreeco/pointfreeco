@@ -18,20 +18,11 @@ class PrivateRssTests: TestCase {
   func testFeed_Authenticated_Subscriber() {
     let user = Database.User.mock
 
-    let episodes: [Episode] = (1...3).flatMap { idx -> [Episode] in
-      [
-        .subscriberOnly
-          |> \.publishedAt .~ Current.date(),
-        .free
-          |> \.publishedAt .~ Current.date().addingTimeInterval(-2678400)
-      ]
-    }
-
     update(
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry(episodes)
+      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6)))
     )
 
     let conn = connection(
