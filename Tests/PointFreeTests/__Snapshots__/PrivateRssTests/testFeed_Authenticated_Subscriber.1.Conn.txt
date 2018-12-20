@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7470
+Content-Length: 16292
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -164,6 +164,272 @@ text, no markdown allowed. Here is some more text just to have some filler.
                      medium="video">
         <media:title>
           Proof in Functions
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Proof in Functions
+      </title>
+      <pubDate>
+        Wed, 31 Jan 2018 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </guid>
+      <description>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:subtitle>
+      <itunes:summary>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        2
+      </itunes:episode>
+      <itunes:title>
+        Proof in Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Proof in Functions
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Proof in Functions
+      </title>
+      <pubDate>
+        Wed, 31 Jan 2018 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep2-proof-in-functions
+      </guid>
+      <description>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:subtitle>
+      <itunes:summary>
+        This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        2
+      </itunes:episode>
+      <itunes:title>
+        Proof in Functions
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Proof in Functions
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Type-Safe HTML in Swift
+      </title>
+      <pubDate>
+        Sun, 31 Dec 2017 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+      </guid>
+      <description>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </itunes:subtitle>
+      <itunes:summary>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        1
+      </itunes:episode>
+      <itunes:title>
+        Type-Safe HTML in Swift
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Type-Safe HTML in Swift
+        </media:title>
+      </media:content>
+    </item>
+    <item>
+      <title>
+        Type-Safe HTML in Swift
+      </title>
+      <pubDate>
+        Sun, 31 Dec 2017 00:00:00 +0000
+      </pubDate>
+      <link>
+        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+      </link>
+      <guid>
+        http://localhost:8080/episodes/ep1-type-safe-html-in-swift
+      </guid>
+      <description>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </description>
+      <dc:creator>
+        Brandon Williams
+      </dc:creator>
+      <dc:creator>
+        Stephen Celis
+      </dc:creator>
+      <itunes:author>
+        Brandon Williams & Stephen Celis
+      </itunes:author>
+      <itunes:subtitle>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </itunes:subtitle>
+      <itunes:summary>
+        As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+      </itunes:summary>
+      <itunes:explicit>
+        no
+      </itunes:explicit>
+      <itunes:duration>
+        00:23:00
+      </itunes:duration>
+      <itunes:image>
+        https://s3.amazonaws.com/itunes.jpg
+      </itunes:image>
+      <itunes:season>
+        1
+      </itunes:season>
+      <itunes:episode>
+        1
+      </itunes:episode>
+      <itunes:title>
+        Type-Safe HTML in Swift
+      </itunes:title>
+      <itunes:episodeType>
+        full
+      </itunes:episodeType>
+      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                 length="500000000"
+                 type="video/mp4">
+      </enclosure>
+      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+                     length="500000000"
+                     type="video/mp4"
+                     medium="video">
+        <media:title>
+          Type-Safe HTML in Swift
         </media:title>
       </media:content>
     </item>
