@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 15886
+Content-Length: 13523
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -356,71 +356,6 @@ with anyone else.
                      medium="video">
         <media:title>
           Side Effects
-        </media:title>
-      </media:content>
-    </item>
-    <item>
-      <title>
-        Functions
-      </title>
-      <pubDate>
-        Mon, 29 Jan 2018 06:11:09 +0000
-      </pubDate>
-      <link>
-        http://localhost:8080/episodes/ep1-functions
-      </link>
-      <guid>
-        http://localhost:8080/episodes/ep1-functions
-      </guid>
-      <description>
-        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
-      </description>
-      <dc:creator>
-        Brandon Williams
-      </dc:creator>
-      <dc:creator>
-        Stephen Celis
-      </dc:creator>
-      <itunes:author>
-        Brandon Williams & Stephen Celis
-      </itunes:author>
-      <itunes:subtitle>
-        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
-      </itunes:subtitle>
-      <itunes:summary>
-        Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
-      </itunes:summary>
-      <itunes:explicit>
-        no
-      </itunes:explicit>
-      <itunes:duration>
-        00:20:19
-      </itunes:duration>
-      <itunes:image>
-        https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg
-      </itunes:image>
-      <itunes:season>
-        1
-      </itunes:season>
-      <itunes:episode>
-        1
-      </itunes:episode>
-      <itunes:title>
-        Functions
-      </itunes:title>
-      <itunes:episodeType>
-        full
-      </itunes:episodeType>
-      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
-                 length="411951213"
-                 type="video/mp4">
-      </enclosure>
-      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
-                     length="411951213"
-                     type="video/mp4"
-                     medium="video">
-        <media:title>
-          Functions
         </media:title>
       </media:content>
     </item>

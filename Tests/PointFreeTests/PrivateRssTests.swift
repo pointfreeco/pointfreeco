@@ -15,14 +15,36 @@ class PrivateRssTests: TestCase {
 //    record = true
   }
 
-  func testFeed_Authenticated_Subscriber() {
+  func testFeed_Authenticated_Subscriber_Monthly() {
     let user = Database.User.mock
 
     update(
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6)))
+      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6))),
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+    )
+
+    let conn = connection(
+      from: request(
+        to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),
+        session: .loggedOut
+      )
+    )
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_Authenticated_Subscriber_Yearly() {
+    let user = Database.User.mock
+
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
+      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6))),
+      \.stripe.fetchSubscription .~ const(pure(.individualYearly))
     )
 
     let conn = connection(
