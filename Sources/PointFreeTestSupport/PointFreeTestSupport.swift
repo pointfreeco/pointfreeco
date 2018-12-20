@@ -421,6 +421,11 @@ extension Stripe.Subscription {
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
+
+  public static let discounted = mock
+    |> \.plan .~ .individualYearly
+    |> \.quantity .~ 1
+    |> \.discount .~ .mock
 }
 
 extension Stripe.Discount {
