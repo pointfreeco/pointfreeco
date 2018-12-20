@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62178
+Content-Length: 62837
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1918,6 +1918,21 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                      href="http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47847c7d6d216c635dd0cff1d0429f0567/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
                     http://localhost:8080/account/rss/f9c46e...
                   </a>
+                </p>
+                <p class="m-pl2
+                          m-pr2
+                          m-pt2
+                          m-pb2
+                          m-mt2"
+                   style="background-color:#ffffdd">
+                  Because you are on a monthly subscription plan, you get access to the last 
+                  4 episodes in your RSS feed. To unlock access to all 
+                  episodes in this feed, please consider 
+                  <a class="underline-link"
+                     href="/account/subscription/change">
+                    upgrading
+                  </a>
+                   to a yearly subscription.
                 </p>
               </div>
             </div>

@@ -13,6 +13,7 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Datab
   <<< validateUserAndSalt
   <<< fetchUserSubscription
   <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
+  <<< fetchStripeSubscriptionForUser
   <| map(lower)
   >>> writeStatus(.ok)
   >=> trackFeedRequest
@@ -56,22 +57,41 @@ private func validateUserAndSalt<Z>(
     }
 }
 
-private func trackFeedRequest<I>(_ conn: Conn<I, Database.User>) -> IO<Conn<I, Database.User>> {
+private func trackFeedRequest<I, A>(_ conn: Conn<I, (A, Database.User)>) -> IO<Conn<I, (A, Database.User)>> {
 
   return Current.database.createFeedRequestEvent(
     .privateEpisodesFeed,
     conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
-    conn.data.id
+    conn.data.1.id
     )
     .withExcept(notifyError(subject: "Create Feed Request Event Failed"))
     .run
     .map { _ in conn }
 }
 
-private let privateEpisodesFeedView = itunesRssFeedLayout <| View<Database.User> { user -> Node in
+private func fetchStripeSubscriptionForUser<A>(
+  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription?, Database.User, A>, Data>)
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+
+    return { conn in
+      conn.data.first.subscriptionId
+        .map {
+          Current.database.fetchSubscriptionById($0)
+            .mapExcept(requireSome)
+            .flatMap(Current.stripe.fetchSubscription <<< ^\.stripeSubscriptionId)
+            .run
+            .map(^\.right)
+            .flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
+        }
+        ?? (conn.map(const(nil .*. conn.data)) |> middleware)
+    }
+}
+
+private let privateEpisodesFeedView = itunesRssFeedLayout <| View<(Stripe.Subscription?, Database.User)> { subscription, user -> Node in
   node(
     rssChannel: privateRssChannel(user: user),
-    items: items(forUser: user)
+    items: items(forUser: user, subscription: subscription)
   )
 }
 
@@ -129,12 +149,14 @@ with anyone else.
   )
 }
 
-private func items(forUser user: Database.User) -> [RssItem] {
+let nonYearlyMaxRssItems = 4
+
+private func items(forUser user: Database.User, subscription: Stripe.Subscription?) -> [RssItem] {
   return Current
     .episodes()
     .filter { $0.sequence != 0 }
     .sorted(by: their(^\.sequence, >))
-    .prefix(4)
+    .prefix(subscription?.plan.interval == .some(.year) ? 99999 : nonYearlyMaxRssItems)
     .map { item(forUser: user, episode: $0) }
 }
 
