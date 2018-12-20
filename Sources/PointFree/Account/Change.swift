@@ -206,7 +206,15 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
             ? ""
             : " Reactivate your subscription by submitting the form below."
           ]),
-        ])
+        ]
+        + (
+          subscription.discount?.coupon.valid == .some(true)
+            ? [
+                strong([text("Please note that changes to your subscription will remove your current discount.")])
+              ]
+            : []
+        )
+      )
       ])
     ])
 }
