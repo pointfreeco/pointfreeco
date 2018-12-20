@@ -9,7 +9,7 @@ public struct BlogPost {
   public private(set) var author: Author?
   public private(set) var blurb: String
   public private(set) var contentBlocks: [Episode.TranscriptBlock]
-  public private(set) var coverImage: String
+  public private(set) var coverImage: String?
   public private(set) var id: Id
   public private(set) var publishedAt: Date
   public private(set) var title: String
