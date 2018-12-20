@@ -9,7 +9,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
   fullVideo: .init(
     bytesLength: 483_556_172,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/full-720p-1FD9673E-3713-4DF5-B11B-943B93088F9C.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0025-zip-pt3/full/0025-zip-pt-3-AC022B4FFFEB.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/full/0025-zip-pt-3-AC022B4FFFEB.m3u8"
   ),
   id: 25,
   image: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/poster.jpg",
@@ -23,7 +23,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
   trailerVideo: .init(
     bytesLength: 41_732_099,
     downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer-720p.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0025-zip-pt3/trailer/0025-trailer.m3u8"
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0025-zip-pt3/trailer/0025-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
