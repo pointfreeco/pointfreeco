@@ -1,5 +1,6 @@
 POST https://api.stripe.com/v1/invoices
 Authorization: Basic c2tfdGVzdDo=
 Idempotency-Key: DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+Stripe-Version: 2018-11-08
 
 customer=cus_test

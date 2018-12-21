@@ -11,6 +11,11 @@ import XCTest
 
 final class StripeTests: TestCase {
 
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
+
   func testDecodingCustomer() throws {
     let jsonString = """
 {
@@ -112,52 +117,223 @@ final class StripeTests: TestCase {
   func testDecodingSubscriptionWithDiscount() throws {
     let jsonString = """
 {
-  "id": "sub_DLOCPKtT3ezRQ7",
+  "id": "sub_ECM9mhcaGwDgMJ",
   "object": "subscription",
   "application_fee_percent": null,
   "billing": "charge_automatically",
-  "billing_cycle_anchor": 1533218660,
+  "billing_cycle_anchor": 1545435002,
   "cancel_at_period_end": false,
   "canceled_at": null,
-  "created": 1533218660,
-  "current_period_end": 1535897060,
-  "current_period_start": 1533218660,
-  "customer": "cus_DLOB6Ix7b7Xu83",
+  "created": 1545435002,
+  "current_period_end": 1548113402,
+  "current_period_start": 1545435002,
+  "customer": {
+    "id": "cus_ECM94AarJHEcsW",
+    "object": "customer",
+    "account_balance": 0,
+    "created": 1545435001,
+    "currency": "usd",
+    "default_source": "card_1DjxRMD0Nyli3dRgAWNJI1Ys",
+    "delinquent": false,
+    "description": "F3155E12-C5EF-11E8-8F82-1395D5C5FDA4",
+    "discount": null,
+    "email": "stephen.celis@gmail.com",
+    "invoice_prefix": "FD447C4",
+    "livemode": false,
+    "metadata": {
+    },
+    "shipping": null,
+    "sources": {
+      "object": "list",
+      "data": [
+        {
+          "id": "card_1DjxRMD0Nyli3dRgAWNJI1Ys",
+          "object": "card",
+          "address_city": "",
+          "address_country": "",
+          "address_line1": "",
+          "address_line1_check": null,
+          "address_line2": null,
+          "address_state": "",
+          "address_zip": "42424",
+          "address_zip_check": "pass",
+          "brand": "Visa",
+          "country": "US",
+          "customer": "cus_ECM94AarJHEcsW",
+          "cvc_check": "pass",
+          "dynamic_last4": null,
+          "exp_month": 4,
+          "exp_year": 2024,
+          "fingerprint": "oXX2ywFlilbt08Hu",
+          "funding": "credit",
+          "last4": "4242",
+          "metadata": {
+          },
+          "name": "",
+          "tokenization_method": null
+        }
+      ],
+      "has_more": false,
+      "total_count": 1,
+      "url": "/v1/customers/cus_ECM94AarJHEcsW/sources"
+    },
+    "subscriptions": {
+      "object": "list",
+      "data": [
+        {
+          "id": "sub_ECM9mhcaGwDgMJ",
+          "object": "subscription",
+          "application_fee_percent": null,
+          "billing": "charge_automatically",
+          "billing_cycle_anchor": 1545435002,
+          "cancel_at_period_end": false,
+          "canceled_at": null,
+          "created": 1545435002,
+          "current_period_end": 1548113402,
+          "current_period_start": 1545435002,
+          "customer": "cus_ECM94AarJHEcsW",
+          "days_until_due": null,
+          "default_source": null,
+          "discount": {
+            "object": "discount",
+            "coupon": {
+              "id": "WIZagOd4",
+              "object": "coupon",
+              "amount_off": null,
+              "created": 1534642706,
+              "currency": null,
+              "duration": "repeating",
+              "duration_in_months": 12,
+              "livemode": false,
+              "max_redemptions": null,
+              "metadata": {
+              },
+              "name": "SWIFT-FIKA-2018",
+              "percent_off": 25.0,
+              "redeem_by": null,
+              "times_redeemed": 1,
+              "valid": true
+            },
+            "customer": "cus_ECM94AarJHEcsW",
+            "end": null,
+            "start": 1545435002,
+            "subscription": "sub_ECM9mhcaGwDgMJ"
+          },
+          "ended_at": null,
+          "items": {
+            "object": "list",
+            "data": [
+              {
+                "id": "si_ECM9A1tGQcqXos",
+                "object": "subscription_item",
+                "created": 1545435002,
+                "metadata": {
+                },
+                "plan": {
+                  "id": "individual-monthly",
+                  "object": "plan",
+                  "active": true,
+                  "aggregate_usage": null,
+                  "amount": 1700,
+                  "billing_scheme": "per_unit",
+                  "created": 1513818719,
+                  "currency": "usd",
+                  "interval": "month",
+                  "interval_count": 1,
+                  "livemode": false,
+                  "metadata": {
+                  },
+                  "nickname": "Individual Monthly",
+                  "product": "prod_BzH9x8QMPSEtMQ",
+                  "tiers": null,
+                  "tiers_mode": null,
+                  "transform_usage": null,
+                  "trial_period_days": null,
+                  "usage_type": "licensed"
+                },
+                "quantity": 1,
+                "subscription": "sub_ECM9mhcaGwDgMJ"
+              }
+            ],
+            "has_more": false,
+            "total_count": 1,
+            "url": "/v1/subscription_items?subscription=sub_ECM9mhcaGwDgMJ"
+          },
+          "livemode": false,
+          "metadata": {
+          },
+          "plan": {
+            "id": "individual-monthly",
+            "object": "plan",
+            "active": true,
+            "aggregate_usage": null,
+            "amount": 1700,
+            "billing_scheme": "per_unit",
+            "created": 1513818719,
+            "currency": "usd",
+            "interval": "month",
+            "interval_count": 1,
+            "livemode": false,
+            "metadata": {
+            },
+            "nickname": "Individual Monthly",
+            "product": "prod_BzH9x8QMPSEtMQ",
+            "tiers": null,
+            "tiers_mode": null,
+            "transform_usage": null,
+            "trial_period_days": null,
+            "usage_type": "licensed"
+          },
+          "quantity": 1,
+          "start": 1545435002,
+          "status": "active",
+          "tax_percent": null,
+          "trial_end": null,
+          "trial_start": null
+        }
+      ],
+      "has_more": false,
+      "total_count": 1,
+      "url": "/v1/customers/cus_ECM94AarJHEcsW/subscriptions"
+    },
+    "tax_info": null,
+    "tax_info_verification": null
+  },
   "days_until_due": null,
+  "default_source": null,
   "discount": {
     "object": "discount",
     "coupon": {
       "id": "15-percent",
       "object": "coupon",
       "amount_off": null,
-      "created": 1515346678,
+      "created": 1534642706,
       "currency": null,
-      "duration": "forever",
-      "duration_in_months": null,
+      "duration": "repeating",
+      "duration_in_months": 12,
       "livemode": false,
       "max_redemptions": null,
       "metadata": {
       },
-      "name": "15% Off",
-      "percent_off": 15,
-      "percent_off_precise": 15.0,
+      "name": "SWIFT-FIKA-2018",
+      "percent_off": 25.0,
       "redeem_by": null,
-      "times_redeemed": 2,
+      "times_redeemed": 1,
       "valid": true
     },
-    "customer": "cus_DLOB6Ix7b7Xu83",
+    "customer": "cus_ECM94AarJHEcsW",
     "end": null,
-    "start": 1533218660,
-    "subscription": "sub_DLOCPKtT3ezRQ7"
+    "start": 1545435002,
+    "subscription": "sub_ECM9mhcaGwDgMJ"
   },
   "ended_at": null,
   "items": {
     "object": "list",
     "data": [
       {
-        "id": "si_DLOCbdDWbIZn1f",
+        "id": "si_ECM9A1tGQcqXos",
         "object": "subscription_item",
-        "created": 1533218660,
+        "created": 1545435002,
         "metadata": {
         },
         "plan": {
@@ -174,10 +350,8 @@ final class StripeTests: TestCase {
           "livemode": false,
           "metadata": {
           },
-          "name": "Individual Monthly",
-          "nickname": null,
+          "nickname": "Individual Monthly",
           "product": "prod_BzH9x8QMPSEtMQ",
-          "statement_descriptor": null,
           "tiers": null,
           "tiers_mode": null,
           "transform_usage": null,
@@ -185,12 +359,12 @@ final class StripeTests: TestCase {
           "usage_type": "licensed"
         },
         "quantity": 1,
-        "subscription": "sub_DLOCPKtT3ezRQ7"
+        "subscription": "sub_ECM9mhcaGwDgMJ"
       }
     ],
     "has_more": false,
     "total_count": 1,
-    "url": "/v1/subscription_items?subscription=sub_DLOCPKtT3ezRQ7"
+    "url": "/v1/subscription_items?subscription=sub_ECM9mhcaGwDgMJ"
   },
   "livemode": false,
   "metadata": {
@@ -209,10 +383,8 @@ final class StripeTests: TestCase {
     "livemode": false,
     "metadata": {
     },
-    "name": "Individual Monthly",
-    "nickname": null,
+    "nickname": "Individual Monthly",
     "product": "prod_BzH9x8QMPSEtMQ",
-    "statement_descriptor": null,
     "tiers": null,
     "tiers_mode": null,
     "transform_usage": null,
@@ -220,7 +392,7 @@ final class StripeTests: TestCase {
     "usage_type": "licensed"
   },
   "quantity": 1,
-  "start": 1533218660,
+  "start": 1545435002,
   "status": "active",
   "tax_percent": null,
   "trial_end": null,
@@ -231,42 +403,6 @@ final class StripeTests: TestCase {
     let subscription = try JSONDecoder().decode(Stripe.Subscription.self, from: Data(jsonString.utf8))
 
     XCTAssertEqual("15-percent", subscription.discount?.coupon.id)
-  }
-
-  func testDecodingDiscountJson() throws {
-    let jsonString = """
-  {
-    "object": "discount",
-    "coupon": {
-      "id": "15-percent",
-      "object": "coupon",
-      "amount_off": null,
-      "created": 1515346678,
-      "currency": null,
-      "duration": "repeating",
-      "duration_in_months": 12,
-      "livemode": false,
-      "max_redemptions": null,
-      "metadata": {
-      },
-      "name": "15% Off",
-      "percent_off": 15,
-      "percent_off_precise": 15.0,
-      "redeem_by": null,
-      "times_redeemed": 2,
-      "valid": true
-    },
-    "customer": "cus_DLOB6Ix7b7Xu83",
-    "end": null,
-    "start": 1533218660,
-    "subscription": "sub_DLOCPKtT3ezRQ7"
-  }
-"""
-
-    let discount = try JSONDecoder().decode(Stripe.Discount.self, from: Data(jsonString.utf8))
-
-    XCTAssertEqual("15-percent", discount.coupon.id)
-    XCTAssertEqual(.repeating(months: 12), discount.coupon.duration)
   }
 
   func testRequests() {

@@ -308,7 +308,6 @@ extension Stripe.Invoice {
       amountDue: 0_00,
       amountPaid: 17_00,
       charge: charge,
-      closed: true,
       customer: "cus_test",
       date: .mock,
       discount: nil,
@@ -357,7 +356,7 @@ extension Stripe.Plan {
     id: .individualMonthly,
     interval: .month,
     metadata: [:],
-    name: "Individual Monthly",
+    nickname: "Individual Monthly",
     statementDescriptor: nil
   )
 

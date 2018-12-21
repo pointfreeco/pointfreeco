@@ -1,2 +1,3 @@
 GET https://api.stripe.com/v1/coupons/15-percent
 Authorization: Basic c2tfdGVzdDo=
+Stripe-Version: 2018-11-08

@@ -27,59 +27,165 @@ final class StripeWebhooksTests: TestCase {
   "type": "invoice.payment_succeeded",
   "data": {
     "object": {
-      "id": "in_test",
+      "id": "in_1DjxROD0Nyli3dRgq1vs0OHQ",
       "object": "invoice",
-      "amount_due": 1700,
-      "amount_paid": 1700,
+      "amount_due": 1275,
+      "amount_paid": 1275,
       "amount_remaining": 0,
       "application_fee": null,
       "attempt_count": 1,
       "attempted": true,
+      "auto_advance": false,
       "billing": "charge_automatically",
-      "charge": "ch_test",
-      "closed": true,
+      "billing_reason": "subscription_create",
+      "charge": {
+        "id": "ch_1DjxROD0Nyli3dRgJIgfkdLq",
+        "object": "charge",
+        "amount": 1275,
+        "amount_refunded": 0,
+        "application": null,
+        "application_fee": null,
+        "balance_transaction": "txn_1DjxROD0Nyli3dRgwaA8dHvT",
+        "captured": true,
+        "created": 1545435002,
+        "currency": "usd",
+        "customer": "cus_ECM94AarJHEcsW",
+        "description": null,
+        "destination": null,
+        "dispute": null,
+        "failure_code": null,
+        "failure_message": null,
+        "fraud_details": {
+        },
+        "invoice": "in_1DjxROD0Nyli3dRgq1vs0OHQ",
+        "livemode": false,
+        "metadata": {
+        },
+        "on_behalf_of": null,
+        "order": null,
+        "outcome": {
+          "network_status": "approved_by_network",
+          "reason": null,
+          "risk_level": "normal",
+          "risk_score": 1,
+          "seller_message": "Payment complete.",
+          "type": "authorized"
+        },
+        "paid": true,
+        "payment_intent": null,
+        "receipt_email": null,
+        "receipt_number": null,
+        "refunded": false,
+        "refunds": {
+          "object": "list",
+          "data": [
+
+          ],
+          "has_more": false,
+          "total_count": 0,
+          "url": "/v1/charges/ch_1DjxROD0Nyli3dRgJIgfkdLq/refunds"
+        },
+        "review": null,
+        "shipping": null,
+        "source": {
+          "id": "card_1DjxRMD0Nyli3dRgAWNJI1Ys",
+          "object": "card",
+          "address_city": "",
+          "address_country": "",
+          "address_line1": "",
+          "address_line1_check": null,
+          "address_line2": null,
+          "address_state": "",
+          "address_zip": "42424",
+          "address_zip_check": "pass",
+          "brand": "Visa",
+          "country": "US",
+          "customer": "cus_ECM94AarJHEcsW",
+          "cvc_check": null,
+          "dynamic_last4": null,
+          "exp_month": 4,
+          "exp_year": 2024,
+          "fingerprint": "oXX2ywFlilbt08Hu",
+          "funding": "credit",
+          "last4": "4242",
+          "metadata": {
+          },
+          "name": "",
+          "tokenization_method": null
+        },
+        "source_transfer": null,
+        "statement_descriptor": null,
+        "status": "succeeded",
+        "transfer_group": null
+      },
       "currency": "usd",
-      "customer": "cus_test",
-      "date": 1526000000,
+      "customer": "cus_ECM94AarJHEcsW",
+      "date": 1545435002,
+      "default_source": null,
       "description": null,
-      "discount": null,
+      "discount": {
+        "object": "discount",
+        "coupon": {
+          "id": "WIZagOd4",
+          "object": "coupon",
+          "amount_off": null,
+          "created": 1534642706,
+          "currency": null,
+          "duration": "forever",
+          "duration_in_months": null,
+          "livemode": false,
+          "max_redemptions": null,
+          "metadata": {
+          },
+          "name": "SWIFT-FIKA-2018",
+          "percent_off": 25.0,
+          "redeem_by": null,
+          "times_redeemed": 1,
+          "valid": true
+        },
+        "customer": "cus_ECM94AarJHEcsW",
+        "end": null,
+        "start": 1545435002,
+        "subscription": "sub_ECM9mhcaGwDgMJ"
+      },
       "due_date": null,
       "ending_balance": 0,
-      "forgiven": false,
+      "finalized_at": 1545435002,
+      "hosted_invoice_url": "https://pay.stripe.com/invoice/invst_6OSZ2vw7t4fQ1R0Ajjip4i3uRv",
+      "invoice_pdf": "https://pay.stripe.com/invoice/invst_6OSZ2vw7t4fQ1R0Ajjip4i3uRv/pdf",
       "lines": {
         "object": "list",
         "data": [
           {
-            "id": "sub_test",
+            "id": "sli_35ef4d1bf4c81d",
             "object": "line_item",
             "amount": 1700,
             "currency": "usd",
-            "description": null,
+            "description": "1 × Individual Monthly (at $17.00 / month)",
             "discountable": true,
-            "livemode": true,
+            "livemode": false,
             "metadata": {
             },
             "period": {
-              "end": 1529000000,
-              "start": 1526000000
+              "end": 1548113402,
+              "start": 1545435002
             },
             "plan": {
               "id": "individual-monthly",
               "object": "plan",
+              "active": true,
               "aggregate_usage": null,
               "amount": 1700,
               "billing_scheme": "per_unit",
-              "created": 1515000000,
+              "created": 1513818719,
               "currency": "usd",
               "interval": "month",
               "interval_count": 1,
-              "livemode": true,
+              "livemode": false,
               "metadata": {
               },
-              "name": "Individual Monthly",
-              "nickname": null,
-              "product": "prod_test",
-              "statement_descriptor": null,
+              "nickname": "Individual Monthly",
+              "product": "prod_BzH9x8QMPSEtMQ",
               "tiers": null,
               "tiers_mode": null,
               "transform_usage": null,
@@ -88,32 +194,33 @@ final class StripeWebhooksTests: TestCase {
             },
             "proration": false,
             "quantity": 1,
-            "subscription": null,
-            "subscription_item": "si_test",
+            "subscription": "sub_ECM9mhcaGwDgMJ",
+            "subscription_item": "si_ECM9A1tGQcqXos",
             "type": "subscription"
           }
         ],
         "has_more": false,
         "total_count": 1,
-        "url": "/v1/invoices/in_test/lines"
+        "url": "/v1/invoices/in_1DjxROD0Nyli3dRgq1vs0OHQ/lines"
       },
-      "livemode": true,
+      "livemode": false,
       "metadata": {
       },
       "next_payment_attempt": null,
-      "number": "DEADBEE-0001",
+      "number": "FD447C4-0001",
       "paid": true,
-      "period_end": 1526000000,
-      "period_start": 1523000000,
+      "period_end": 1545435002,
+      "period_start": 1545435002,
       "receipt_number": null,
       "starting_balance": 0,
       "statement_descriptor": null,
-      "subscription": "sub_test",
+      "status": "paid",
+      "subscription": "sub_ECM9mhcaGwDgMJ",
       "subtotal": 1700,
-      "tax": null,
+      "tax": 0,
       "tax_percent": null,
-      "total": 1700,
-      "webhooks_delivered_at": 1526000000
+      "total": 1275,
+      "webhooks_delivered_at": 1545435002
     },
     "previous_attributes": null
   }
@@ -127,7 +234,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.event(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=e576e9c1db4346e58a376714086c2372986266468e7b8fc0838fe0fa60814be1",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=ff6889fe2026eba03829e44f16a95c4e91867b7bceb72deb6ec1fe67e8b1ecc0",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -141,7 +248,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.event(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=4e8996fd5a9a22aa8243ea29f0abf36fb41ec8b77807756cf8cb208b4d3d8150",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=9a958df6326b3ccedf54bb9009ace87fd46c44513d4ce3ec31041c18ad3eb7d9",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
