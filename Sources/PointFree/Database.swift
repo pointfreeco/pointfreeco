@@ -107,12 +107,14 @@ public struct Database {
     public private(set) var type: FeedType
     public private(set) var userAgent: String
     public private(set) var userId: User.Id
+    public private(set) var updatedAt: Date
 
     public enum CodingKeys: String, CodingKey {
       case id
       case type
       case userAgent = "user_agent"
       case userId = "user_id"
+      case updatedAt = "updated_at"
     }
 
     public enum FeedType: String, Decodable {
@@ -196,7 +198,9 @@ private func createFeedRequestEvent(
     ("type", "user_agent", "user_id")
     VALUES
     ($1, $2, $3)
-    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE SET "count" = "feed_request_events"."count" + 1
+    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE
+    SET "count" = "feed_request_events"."count" + 1,
+    "updated_at" = NOW()
     """,
     [
       type.rawValue,
@@ -830,6 +834,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
       ON "feed_request_events" ("type", "user_agent", "user_id")
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      ALTER TABLE "feed_request_events"
+      ADD COLUMN IF NOT EXISTS
+      "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
     )))
     .map(const(unit))
