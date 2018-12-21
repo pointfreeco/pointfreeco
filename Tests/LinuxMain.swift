@@ -297,7 +297,6 @@ extension StripeTests {
     ("testDecodingCustomer", testDecodingCustomer),
     ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
     ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
-    ("testDecodingDiscountJson", testDecodingDiscountJson),
     ("testRequests", testRequests)
   ]
 }
