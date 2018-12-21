@@ -843,6 +843,12 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
     )))
+    .flatMap(const(execute(
+      """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
+      ON "email_settings" ("newsletter", "user_id")
+      """
+    )))
     .map(const(unit))
 }
 
