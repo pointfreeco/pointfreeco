@@ -867,13 +867,13 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
           WHERE column_name = 'updated_at'
         LOOP
           EXECUTE format(
-            'DROP TRIGGER IF EXISTS "update_updated_at_%I" ON %I',
+            'DROP TRIGGER IF EXISTS "update_updated_at_%I" ON "%I"',
             "table", "table"
           );
           EXECUTE format(
             '
-            CREATE TRIGGER update_updated_at_%I
-            BEFORE UPDATE ON %I
+            CREATE TRIGGER "update_updated_at_%I"
+            BEFORE UPDATE ON "%I"
             FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
             ',
             "table", "table"
