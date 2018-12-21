@@ -267,7 +267,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
           <> invoice.lines.data.map { item in
             gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 1]])])], [
               gridColumn(sizes: [.mobile: 6, .desktop: 6], [], [
-                div([.text(item.description ?? subscription.plan.name)])
+                div([.text(item.description ?? subscription.plan.nickname)])
                 ]),
               gridColumn(sizes: [.mobile: 2, .desktop: 2], [Styleguide.class([Class.type.align.end])], [
                 div([.text("\(item.quantity)")]),

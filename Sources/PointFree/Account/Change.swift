@@ -196,7 +196,7 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
       div([
         h1([Styleguide.class([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
         p([
-          "You are currently enrolled in the ", strong([.text(subscription.plan.name)]), " plan. ",
+          "You are currently enrolled in the ", strong([.text(subscription.plan.nickname)]), " plan. ",
           "Your subscription will ",
           subscription.isRenewing ? "renew" : "end",
           " on ",

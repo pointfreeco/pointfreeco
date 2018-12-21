@@ -367,17 +367,17 @@ extension Stripe.Plan {
     |> \.amount .~ 170_00
     |> \.id .~ .individualYearly
     |> \.interval .~ .year
-    |> \.name .~ "Individual Yearly"
+    |> \.nickname .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
     |> \.id .~ .teamMonthly
-    |> \.name .~ "Team Monthly"
+    |> \.nickname .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
     |> \.id .~ .teamYearly
-    |> \.name .~ "Team Yearly"
+    |> \.nickname .~ "Team Yearly"
 }
 
 extension Stripe.Subscription {

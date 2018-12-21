@@ -188,7 +188,6 @@ public struct Stripe {
     public private(set) var amountDue: Cents
     public private(set) var amountPaid: Cents
     public private(set) var charge: Either<Charge.Id, Charge>?
-    public private(set) var closed: Bool
     public private(set) var customer: Customer.Id
     public private(set) var date: Date
     public private(set) var discount: Discount?
@@ -208,7 +207,6 @@ public struct Stripe {
       case amountDue = "amount_remaining"
       case amountPaid = "amount_paid"
       case charge
-      case closed
       case customer
       case date
       case discount
@@ -251,7 +249,7 @@ public struct Stripe {
     public private(set) var id: Id
     public private(set) var interval: Interval
     public private(set) var metadata: [String: String]
-    public private(set) var name: String
+    public private(set) var nickname: String
     public private(set) var statementDescriptor: String?
 
     public typealias Id = Tagged<Plan, String>
@@ -272,7 +270,7 @@ public struct Stripe {
       case id
       case interval
       case metadata
-      case name
+      case nickname
       case statementDescriptor = "statement_descriptor"
     }
   }
@@ -468,9 +466,9 @@ extension Tagged where Tag == Stripe.Plan, RawValue == String {
 }
 
 func cancelSubscription(id: Stripe.Subscription.Id) -> DecodableRequest<Stripe.Subscription> {
-  return stripeRequest(
-    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
-  )
+  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
+    "cancel_at_period_end": "true"
+    ]))
 }
 
 func createCustomer(user: Database.User, token: Stripe.Token.Id, vatNumber: String?)
@@ -513,8 +511,10 @@ func fetchInvoice(id: Stripe.Invoice.Id) -> DecodableRequest<Stripe.Invoice> {
   return stripeRequest("invoices/" + id.rawValue + "?expand[]=charge")
 }
 
-func fetchInvoices(for customer: Stripe.Customer.Id) -> DecodableRequest<Stripe.ListEnvelope<Stripe.Invoice>> {
-  return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
+func fetchInvoices(for customer: Stripe.Customer.Id)
+  -> DecodableRequest<Stripe.ListEnvelope<Stripe.Invoice>> {
+
+    return stripeRequest("invoices?customer=" + customer.rawValue + "&expand[]=data.charge&limit=100")
 }
 
 func fetchPlans() -> DecodableRequest<Stripe.ListEnvelope<Stripe.Plan>> {
@@ -533,20 +533,12 @@ func fetchUpcomingInvoice(_ customer: Stripe.Customer.Id) -> DecodableRequest<St
   return stripeRequest("invoices/upcoming?customer=" + customer.rawValue + "&expand[]=charge")
 }
 
-func invoiceCustomer(_ customer: Stripe.Customer.Id)
-  -> DecodableRequest<Stripe.Invoice> {
-
-    return stripeRequest("invoices", .post([
-      "customer": customer.rawValue,
-      ]))
+func invoiceCustomer(_ customer: Stripe.Customer.Id) -> DecodableRequest<Stripe.Invoice> {
+  return stripeRequest("invoices", .post(["customer": customer.rawValue,]))
 }
 
-func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id)
-  -> DecodableRequest<Stripe.Customer> {
-
-    return stripeRequest("customers/" + id.rawValue, .post([
-      "source": token.rawValue,
-      ]))
+func updateCustomer(id: Stripe.Customer.Id, token: Stripe.Token.Id) -> DecodableRequest<Stripe.Customer> {
+  return stripeRequest("customers/" + id.rawValue, .post(["source": token.rawValue]))
 }
 
 func updateCustomer(id: Stripe.Customer.Id, extraInvoiceInfo: String) -> DecodableRequest<Stripe.Customer> {
@@ -566,12 +558,14 @@ func updateSubscription(
 
     guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
-      "coupon": "",
-      "items[0][id]": item.id.rawValue,
-      "items[0][plan]": plan.rawValue,
-      "items[0][quantity]": String(quantity),
-      "prorate": prorate.map(String.init(describing:)),
+    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
+      filteredValues <| [
+        "cancel_at_period_end": "false",
+        "coupon": "",
+        "items[0][id]": item.id.rawValue,
+        "items[0][plan]": plan.rawValue,
+        "items[0][quantity]": String(quantity),
+        "prorate": prorate.map(String.init(describing:)),
       ]))
 }
 
@@ -608,6 +602,7 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
     rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
       <> attachBasicAuth(username: Current.envVars.stripe.secretKey)
+      <> setHeader("Stripe-Version", "2018-11-08")
   )
 }
 
@@ -631,12 +626,4 @@ private func runStripe<A>(_ stripeRequest: DecodableRequest<A>?) -> EitherIO<Err
   }
 
   return task
-}
-
-// FIXME???
-func tap<A>(_ f: @autoclosure @escaping () -> (@autoclosure () -> (A)) -> Void) -> (A) -> A {
-  return {
-    f()($0)
-    return $0
-  }
 }

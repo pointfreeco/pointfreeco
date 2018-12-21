@@ -483,8 +483,8 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
 
 private func planName(for subscription: Stripe.Subscription) -> String {
   return subscription.quantity > 1
-    ? subscription.plan.name + " (×" + String(subscription.quantity) + ")"
-    : subscription.plan.name
+    ? subscription.plan.nickname + " (×" + String(subscription.quantity) + ")"
+    : subscription.plan.nickname
 }
 
 public func status(for subscription: Stripe.Subscription) -> String {
