@@ -147,7 +147,7 @@ expressed such an interest!
 
 ### [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))))
 
-Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting))), takes snapshot testing to the
+Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](\(gitHubUrl(to: .repo(.snapshotTesting)))), takes snapshot testing to the
 next level. It allows you to snapshot test any kind of data type into any kind of format. For example, you
 can snapshot test `UIView`s and `UIViewController`s into an image format, which is typical of these
 kinds of libraries, but you can also snapshot those objects into a textual format so that you can see the
