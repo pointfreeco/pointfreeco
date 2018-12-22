@@ -356,7 +356,9 @@ extension Stripe.Plan {
     id: .individualMonthly,
     interval: .month,
     metadata: [:],
-    nickname: "Individual Monthly",
+    name: nil, // FIXME: remove
+    _nickname: "Individual Monthly", // FIXME: remove
+//    nickname: "Individual Monthly", // FIXME: comment in
     statementDescriptor: nil
   )
 
@@ -366,17 +368,20 @@ extension Stripe.Plan {
     |> \.amount .~ 170_00
     |> \.id .~ .individualYearly
     |> \.interval .~ .year
-    |> \.nickname .~ "Individual Yearly"
+    |> \._nickname .~ "Individual Yearly" // FIXME: remove
+//    |> \.nickname .~ "Individual Yearly" // FIXME: comment in
 
   public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
     |> \.id .~ .teamMonthly
-    |> \.nickname .~ "Team Monthly"
+    |> \._nickname .~ "Team Monthly" // FIXME: remove
+//    |> \.nickname .~ "Team Monthly" // FIXME: comment in
 
   public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
     |> \.id .~ .teamYearly
-    |> \.nickname .~ "Team Yearly"
+    |> \._nickname .~ "Team Yearly" // FIXME: remove
+//    |> \.nickname .~ "Team Yearly" // FIXME: comment in
 }
 
 extension Stripe.Subscription {

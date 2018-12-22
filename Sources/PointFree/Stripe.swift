@@ -249,8 +249,13 @@ public struct Stripe {
     public private(set) var id: Id
     public private(set) var interval: Interval
     public private(set) var metadata: [String: String]
-    public private(set) var nickname: String
+    public private(set) var name: String? // FIXME: remove
+    public private(set) var _nickname: String? // FIXME: remove
     public private(set) var statementDescriptor: String?
+
+    public var nickname: String {
+      return self.name ?? self._nickname ?? ""
+    }
 
     public typealias Id = Tagged<Plan, String>
 
@@ -270,7 +275,8 @@ public struct Stripe {
       case id
       case interval
       case metadata
-      case nickname
+      case name
+      case _nickname = "nickname" // FIXME: remove
       case statementDescriptor = "statement_descriptor"
     }
   }
