@@ -866,18 +866,19 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
           SELECT "table_name" FROM "information_schema"."columns"
           WHERE column_name = 'updated_at'
         LOOP
-          EXECUTE format(
-            'DROP TRIGGER IF EXISTS "update_updated_at_%I" ON "%I"',
-            "table", "table"
-          );
-          EXECUTE format(
-            '
-            CREATE TRIGGER "update_updated_at_%I"
-            BEFORE UPDATE ON "%I"
-            FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
-            ',
-            "table", "table"
-          );
+          IF NOT EXISTS (
+            SELECT 1 FROM "information_schema"."triggers"
+            WHERE "trigger_name" = 'update_updated_at_' || "table"
+          ) THEN
+            EXECUTE format(
+              '
+              CREATE TRIGGER "update_updated_at_%I"
+              BEFORE UPDATE ON "%I"
+              FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
+              ',
+              "table", "table"
+            );
+          END IF;
         END LOOP;
       END;
       $$ LANGUAGE PLPGSQL;
