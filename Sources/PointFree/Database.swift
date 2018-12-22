@@ -199,8 +199,7 @@ private func createFeedRequestEvent(
     VALUES
     ($1, $2, $3)
     ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE
-    SET "count" = "feed_request_events"."count" + 1,
-    "updated_at" = NOW()
+    SET "count" = "feed_request_events"."count" + 1
     """,
     [
       type.rawValue,
@@ -231,7 +230,7 @@ private func createSubscription(
         execute(
           """
           UPDATE "users"
-          SET "subscription_id" = $1, "updated_at" = NOW()
+          SET "subscription_id" = $1
           WHERE "users"."id" = $2
           """,
           [
@@ -247,7 +246,7 @@ private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, 
   return firstRow(
     """
     UPDATE "subscriptions"
-    SET "stripe_subscription_status" = $1, "updated_at" = NOW()
+    SET "stripe_subscription_status" = $1
     WHERE "subscriptions"."stripe_subscription_id" = $2
     RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
     """,
@@ -262,8 +261,7 @@ private func add(userId: Database.User.Id, toSubscriptionId subscriptionId: Data
   return execute(
     """
     UPDATE "users"
-    SET "subscription_id" = $1,
-        "updated_at" = NOW()
+    SET "subscription_id" = $1
     WHERE "users"."id" = $2
     """,
     [
@@ -282,8 +280,7 @@ private func remove(
   return execute(
     """
     UPDATE "users"
-    SET "subscription_id" = NULL,
-        "updated_at" = NOW()
+    SET "subscription_id" = NULL
     WHERE "users"."id" = $1
     AND "users"."subscription_id" = $2
     """,
@@ -354,8 +351,7 @@ private func updateUser(
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
         "email" = COALESCE($2, "email"),
-        "episode_credit_count" = COALESCE($3, "episode_credit_count"),
-        "updated_at" = NOW()
+        "episode_credit_count" = COALESCE($3, "episode_credit_count")
     WHERE "id" = $4
     """,
     [
@@ -847,6 +843,45 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
       ON "email_settings" ("newsletter", "user_id")
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      CREATE OR REPLACE FUNCTION update_updated_at()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        NEW."updated_at" = NOW();
+        RETURN NEW;
+      END;
+      $$ LANGUAGE PLPGSQL;
+      """
+    )))
+    .flatMap(const(execute(
+      """
+      DO $$
+      DECLARE
+        "table" text;
+      BEGIN
+        FOR "table" IN
+          SELECT "table_name" FROM "information_schema"."columns"
+          WHERE column_name = 'updated_at'
+        LOOP
+          IF NOT EXISTS (
+            SELECT 1 FROM "information_schema"."triggers"
+            WHERE "trigger_name" = 'update_updated_at_' || "table"
+          ) THEN
+            EXECUTE format(
+              '
+              CREATE TRIGGER "update_updated_at_%I"
+              BEFORE UPDATE ON "%I"
+              FOR EACH ROW EXECUTE PROCEDURE update_updated_at()
+              ',
+              "table", "table"
+            );
+          END IF;
+        END LOOP;
+      END;
+      $$ LANGUAGE PLPGSQL;
       """
     )))
     .map(const(unit))
