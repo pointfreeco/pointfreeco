@@ -164,7 +164,7 @@ The design of this library was covered in a whopping 9 episodes
 * [Protocol-Oriented Library Design: Part 2](/episodes/ep38-protocol-oriented-library-design-part-2)
 * [Witness-Oriented Library Design](/episodes/ep39-witness-oriented-library-design)
 * [Async Snapshot Testing](/episodes/ep40-async-functional-refactoring)
-* [A Tour of Snapshot Testing](/episodes/ep41-a-tour-of-snapshot-testing)
+* [A Tour of Snapshot Testing](/episodes/ep41-a-tour-of-snapshot-testing) 🆓
 
 ### [`swift-html`](\(gitHubUrl(to: .repo(.html))))
 
