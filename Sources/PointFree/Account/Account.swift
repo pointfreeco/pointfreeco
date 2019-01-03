@@ -102,53 +102,58 @@ private func fetchAccountData<I>(
 }
 
 private let accountView = View<AccountData> { data in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          titleRowView.view(unit)
-            <> profileRowView.view(data)
-            <> privateRssFeed.view(data)
-            <> subscriptionOverview.view(data)
-            <> creditsView.view(data)
-            <> logoutView.view(unit)
+  gridRow(
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        titleRowView.view(unit),
+        profileRowView.view(data),
+        privateRssFeed.view(data),
+        subscriptionOverview.view(data),
+        creditsView.view(data),
+        logoutView.view(unit)
       )
-      ])
-    ])
+    )
+  )
 }
 
-private let creditsView = View<AccountData> { data -> [Node] in
+private let creditsView = View<AccountData> { data in
 
   guard !data.subscriberState.isActiveSubscriber else { return [] }
   guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
-      gridColumn(sizes: [.mobile: 12], [
+    gridRow(
+      [Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])],
+      gridColumn(
+        sizes: [.mobile: 12],
         div(
           [
-            h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Episode Credits"]),
+            h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Episode Credits"),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
               .text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
               "remaining."
               ])
-            ]
-            <> subscribeCallout.view(data.subscriberState)
-            <> episodeCreditsView.view(data.episodeCredits)
+            ,
+            subscribeCallout.view(data.subscriberState),
+            episodeCreditsView.view(data.episodeCredits)
+          ]
         )
-        ])
-      ])
+      )
+    )
   ]
 }
 
-private let subscribeCallout = View<SubscriberState> { subscriberState -> [Node] in
+private let subscribeCallout = View<SubscriberState> { subscriberState in
 
   guard !subscriberState.isActiveSubscriber else { return [] }
 
   return [
     p([
       "To get all past and future episodes, ",
-      a([Styleguide.class([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+      a([Styleguide.class([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], "become"),
       " a subscriber today!"
       ])
   ]
@@ -160,7 +165,7 @@ private func pluralizedCredits(count: Int) -> String {
     : "\(count) credits"
 }
 
-private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [Node] in
+private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits in
   guard credits.count > 0 else { return [] }
 
   return [
@@ -172,12 +177,12 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [No
             Class.padding([.mobile: [.top: 2]])
           ]
         ),
-      ],
+        ],
       ["Chosen episodes"]
     ),
 
     ul(
-      episodes(from: credits)
+      ...episodes(from: credits)
         .reversed()
         .map { ep in li(episodeLinkView.view(ep)) }
     )
@@ -209,19 +214,21 @@ private func episode(atSequence sequence: Int) -> Episode? {
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], ["Account"])
-        ])
-      ])
-    ])
+  gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+    gridColumn(
+      sizes: [.mobile: 12],
+      div(
+        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], "Account")
+      )
+    )
+  )
 }
 
 private let profileRowView = View<AccountData> { data -> Node in
 
-  let nameFields = [
-    label([Styleguide.class([labelClass])], ["Name"]),
+  let nameFields: Node = [
+    label([Styleguide.class([labelClass])], "Name"),
     input([
       Styleguide.class([blockInputClass]),
       name(ProfileData.CodingKeys.name.stringValue),
@@ -230,8 +237,8 @@ private let profileRowView = View<AccountData> { data -> Node in
       ])
   ]
 
-  let emailFields = [
-    label([Styleguide.class([labelClass])], ["Email"]),
+  let emailFields: Node = [
+    label([Styleguide.class([labelClass])], "Email"),
     input([
       Styleguide.class([blockInputClass]),
       name(ProfileData.CodingKeys.email.stringValue),
@@ -240,8 +247,8 @@ private let profileRowView = View<AccountData> { data -> Node in
       ])
   ]
 
-  let extraInvoiceInfoFields = !data.isSubscriptionOwner ? [] : [
-    label([Styleguide.class([labelClass])], ["Extra Invoice Info"]),
+  let extraInvoiceInfoFields: Node = !data.isSubscriptionOwner ? [] : [
+    label([Styleguide.class([labelClass])], "Extra Invoice Info"),
     textarea(
       [
         placeholder("Company name, billing address, VAT number, ..."),
@@ -252,7 +259,7 @@ private let profileRowView = View<AccountData> { data -> Node in
     )
   ]
 
-  let submit = [
+  let submit: Node = [
     input([
       type(.submit),
       Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
@@ -263,22 +270,24 @@ private let profileRowView = View<AccountData> { data -> Node in
   return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Profile"]),
+        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Profile"),
 
         form(
           [action(path(to: .account(.update(nil)))), method(.post)],
-          nameFields
-            + emailFields
-            + extraInvoiceInfoFields
-            + emailSettingCheckboxes.view((data.emailSettings, data.subscriberState))
-            + submit
+          [
+            nameFields,
+            emailFields,
+            extraInvoiceInfoFields,
+            emailSettingCheckboxes.view((data.emailSettings, data.subscriberState)),
+            submit
+          ]
         )
         ])
       ])
     ])
 }
 
-private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberState)> { currentEmailSettings, subscriberState -> [Node] in
+private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberState)> { currentEmailSettings, subscriberState in
   let newsletters = subscriberState.isNonSubscriber
     ? Database.EmailSetting.Newsletter.allNewsletters
     : Database.EmailSetting.Newsletter.subscriberNewsletters
@@ -286,7 +295,7 @@ private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberSt
   return [
     // TODO: hide `welcomeEmails` for subscribers?
     p(["Receive email for:"]),
-    p([Styleguide.class([Class.padding([.mobile: [.left: 1]])])], newsletters.map { newsletter in
+    p([Styleguide.class([Class.padding([.mobile: [.left: 1]])])], ...newsletters.map { newsletter in
       label([Styleguide.class([Class.display.block])], [
         input(
           [
@@ -298,7 +307,8 @@ private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberSt
         ),
         .text(newsletterDescription(newsletter))
         ])
-    })
+      }
+    )
   ]
 }
 
@@ -315,7 +325,7 @@ private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> 
   }
 }
 
-private let subscriptionOverview = View<AccountData> { data -> [Node] in
+private let subscriptionOverview = View<AccountData> { data in
 
   if data.isSubscriptionOwner {
     return subscriptionOwnerOverview.view(data)
@@ -326,79 +336,58 @@ private let subscriptionOverview = View<AccountData> { data -> [Node] in
   }
 }
 
-private let privateRssFeed = View<AccountData> { data -> [Node] in
+private let privateRssFeed = View<AccountData> { data in
   guard Current.features.hasAccess(to: .podcastRss, for: data.currentUser) else { return [] }
   guard data.subscriberState.isActiveSubscriber else { return [] }
   let user = data.currentUser
 
-  return [
-    gridRow([
-      gridColumn(
-        sizes: [.desktop: 10, .mobile: 12],
-        [style(margin(leftRight: .auto))],
+  return gridRow(
+    gridColumn(
+      sizes: [.desktop: 10, .mobile: 12],
+      [HtmlCssSupport.style(margin(leftRight: .auto))],
+      div(
         [
-          div(
-            [
-              `class`(
-                [
-                  Class.margin([.mobile: [.bottom: 4]]),
-                  Class.padding([.mobile: [.all: 3]]),
-                  Class.pf.colors.bg.gray900
-                ]
-              )
-            ],
-            [
-              h4(
-                [
-                  `class`(
-                    [
-                      Class.pf.type.responsiveTitle4,
-                      Class.padding([.mobile: [.bottom: 2]])
-                    ]
-                  )
-                ],
-                ["Private RSS Feed"]
-              ),
-              p(["""
+          `class`([
+            Class.margin([.mobile: [.bottom: 4]]),
+            Class.padding([.mobile: [.all: 3]]),
+            Class.pf.colors.bg.gray900,
+            ])
+        ],
+        h4(
+          [`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.bottom: 2]])])],
+          "Private RSS Feed"
+        ),
+        p("""
 Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
 to consume our videos: an RSS feed that can be used with podcast apps!
-"""]),
-              p([
-                "The link below should work with most podcast apps out there today (please ",
-                a(
-                  [
-                    `class`([Class.pf.type.underlineLink]),
-                    href("mailto:support@pointfree.co")
-                  ],
-                  ["email us"]
-                ),
-                " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
-                " monitored, so please do not share with others."
-                ]),
-              p([
-                a(
-                  [
-                    `class`([Class.pf.type.underlineLink]),
-                    href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
-                  ],
-                  [
-                    text(
-                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40))
-                        + "..."
-                    )
-                  ]
-                )
-                ]
-              )
-            ] + rssTerms(stripeSubscription: data.stripeSubscription)
+"""),
+        p(
+          "The link below should work with most podcast apps out there today (please ",
+          a(
+            [`class`([Class.pf.type.underlineLink]), href("mailto:support@pointfree.co")],
+            "email us"
+          ),
+          " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
+          " monitored, so please do not share with others."
+        ),
+        p(
+          a(
+            [
+              `class`([Class.pf.type.underlineLink]),
+              href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
+            ],
+            text(
+              String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40)) + "..."
+            )
           )
-        ]
+        ),
+        rssTerms(stripeSubscription: data.stripeSubscription)
       )
-      ])
-  ]
+    )
+  )
 }
 
-private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
+private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
   return stripeSubscription?.plan.interval == .some(.month)
     ? [
       p([
@@ -420,30 +409,33 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
     : []
 }
 
-private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
+private let subscriptionOwnerOverview = View<AccountData> { data in
   guard let subscription = data.stripeSubscription else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
-      gridColumn(sizes: [.mobile: 12], [
+    gridRow(
+      [Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])],
+      gridColumn(
+        sizes: [.mobile: 12],
         div([
-          h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
+          h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Subscription overview"),
 
           gridColumn(
-            sizes: [.mobile: 12],
-            subscriptionPlanRows.view((subscription, data.upcomingInvoice))
-              <> subscriptionTeamRow.view(data)
-              <> subscriptionInvitesRowView.view(data.teamInvites)
-              <> subscriptionInviteMoreRowView.view((subscription, data.teamInvites, data.teammates))
-              <> subscriptionPaymentInfoView.view(subscription)
+            sizes: [.mobile: 12], [
+              subscriptionPlanRows.view((subscription, data.upcomingInvoice)),
+              subscriptionTeamRow.view(data),
+              subscriptionInvitesRowView.view(data.teamInvites),
+              subscriptionInviteMoreRowView.view((subscription, data.teamInvites, data.teammates)),
+              subscriptionPaymentInfoView.view(subscription)
+            ]
           )
           ])
-        ])
-      ])
+      )
+    )
   ]
 }
 
-private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
+private let subscriptionTeammateOverview = View<AccountData> { data in
   guard let subscription = data.stripeSubscription else { return [] }
 
   return [
@@ -585,7 +577,7 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
 
   return div(
     [Styleguide.class([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
-    [planRow, statusRow] + [nextBillingRow, discountRow].compactMap(id)
+    [planRow, statusRow, nextBillingRow ?? [], discountRow ?? []]
   )
 }
 
@@ -623,24 +615,22 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   }
 }
 
-private let subscriptionTeamRow = View<AccountData> { data -> [Node] in
+private let subscriptionTeamRow = View<AccountData> { data in
   guard !data.teammates.isEmpty && data.isTeamSubscription else { return [] }
 
-  return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
-      gridColumn(sizes: [.mobile: 3], [
-        div([
-          p(["Team"])
-          ])
-        ]),
-      gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            [p(["Your current team:"])]
-              <> data.teammates.flatMap { teammateRowView.view((data.currentUser, $0)) }
-        )
-        ])
-      ])
-  ]
+  return gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridColumn(sizes: [.mobile: 3], div(p("Team"))),
+    gridColumn(
+      sizes: [.mobile: 9],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
+        [
+          p("Your current team:"),
+          ...data.teammates.flatMap { teammateRowView.view((data.currentUser, $0)) }
+        ]
+      )
+    )
+    ])
 }
 
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
@@ -659,23 +649,22 @@ private let teammateRowView = View<(Database.User, Database.User)> { currentUser
     ])
 }
 
-private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -> [Node] in
+private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites in
   guard !invites.isEmpty else { return [] }
 
-  return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
-      gridColumn(sizes: [.mobile: 3], [
-        div([
-          p(["Invites"])
-          ])
-        ]),
-      gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            [p(["These teammates have been invited, but have not yet accepted."])]
-              <> invites.flatMap(inviteRowView.view))
-        ])
-      ])
-  ]
+  return gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridColumn(sizes: [.mobile: 3], div(p("Invites"))),
+    gridColumn(
+      sizes: [.mobile: 9],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
+        [
+          p("These teammates have been invited, but have not yet accepted."),
+          ...invites.flatMap(inviteRowView.view)
+        ]
+      )
+    )
+    ])
 }
 
 private let inviteRowView = View<Database.TeamInvite> { invite in
@@ -695,7 +684,7 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     ])
 }
 
-private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
+private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates in
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
@@ -738,7 +727,7 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
   ]
 }
 
-private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscription -> [Node] in
+private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscription in
   guard let card = subscription.customer.right?.sources.data.first else { return [] }
 
   return [

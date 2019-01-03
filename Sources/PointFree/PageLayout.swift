@@ -56,7 +56,7 @@ struct SimplePageLayoutData<A> {
   private(set) var currentUser: Database.User?
   private(set) var data: A
   private(set) var description: String?
-  private(set) var extraHead: [ChildOf<Tag.Head>]
+  private(set) var extraHead: ChildOf<Tag.Head>
   private(set) var extraStyles: Stylesheet
   private(set) var flash: Flash?
   private(set) var image: String?
@@ -72,7 +72,7 @@ struct SimplePageLayoutData<A> {
     currentUser: Database.User?,
     data: A,
     description: String? = "Point-Free is a video series exploring functional programming and Swift.",
-    extraHead: [ChildOf<Tag.Head>] = [],
+    extraHead: ChildOf<Tag.Head> = [],
     extraStyles: Stylesheet = .empty,
     image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
     openGraphType: OpenGraphType = .website,
@@ -132,7 +132,7 @@ func respond<A, B>(
 
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
-  return View { layoutData -> [Node] in
+  return View { layoutData in
 
     let hasPodcastRssFeature = Current.features.hasAccess(to: .podcastRss, for: layoutData.currentUser)
     let blogAtomFeed = Html.link([
@@ -153,8 +153,9 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
 
     return [
       doctype,
-      html([lang(.en)], [
-        head([
+      html(
+        [lang(.en)],
+        head(
           meta([charset(.utf8)]),
           title(layoutData.title),
           style(unsafe: renderedNormalizeCss),
@@ -163,24 +164,23 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
           episodeAtomFeed,
           blogAtomFeed,
-          ]
-          <> (layoutData.usePrismJs ? prismJsHead : [])
-          <> favicons
-          <> layoutData.extraHead
+          layoutData.usePrismJs ? prismJsHead : [],
+          favicons,
+          layoutData.extraHead
         ),
         body(
-          pastDueBanner(layoutData)
-            <> (layoutData.flash.map(flashView.view) ?? [])
-            <> navView(layoutData)
-            <> contentView.view(layoutData.data)
-            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
+          pastDueBanner(layoutData),
+          layoutData.flash.map(flashView.view) ?? [],
+          navView(layoutData),
+          contentView.view(layoutData.data),
+          layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser)
         )
-        ])
+      )
     ]
   }
 }
 
-func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> Node {
   guard data.currentSubscriberState.isPastDue else { return [] }
 
   // TODO: custom messages for owner vs teammate
@@ -197,7 +197,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   )
 }
 
-private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+private func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
 
   switch data.style {
   case let .base(.some(.mountains(style))):
@@ -237,7 +237,7 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
   }
 }
 
-private let favicons: [ChildOf<Tag.Head>] = [
+private let favicons: ChildOf<Tag.Head> = [
   link([rel(.init(rawValue: "apple-touch-icon")), .init("sizes", "180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
   link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
   link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
@@ -245,7 +245,7 @@ private let favicons: [ChildOf<Tag.Head>] = [
   link([rel(.init(rawValue: "mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]
 
-private let prismJsHead: [ChildOf<Tag.Head>] = [
+private let prismJsHead: ChildOf<Tag.Head> = [
   style(unsafe: """
 .language-diff .token.inserted {
   background-color: #f0fff4;

@@ -5,27 +5,32 @@ import Styleguide
 import Prelude
 import View
 
-let footerView: View<Database.User?> =
-  curry(footer)([Styleguide.class([footerClass])]) >>> pure
-    <¢> footerInfoColumnsView
+let footerView = View<Database.User?> { user in
+  footer([Styleguide.class([footerClass])], footerInfoColumnsView.view(user))
+}
 
-private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
-  return gridColumn(sizes: sizes) >>> pure
+private func column(sizes: [Breakpoint: Int]) -> (Node) -> Node {
+  return gridColumn(sizes: sizes)
 }
 
 private let footerInfoColumn = column(sizes: [.mobile: 12, .desktop: 6])
 
-private let footerInfoColumnsView =
-  pointFreeView.map(footerInfoColumn).contramap(const(unit))
-    <> linksColumnsView
-    <> legalView.map(footerInfoColumn).contramap(const(unit))
+private let footerInfoColumnsView = View {
+  [
+    pointFreeView.map(footerInfoColumn).contramap(const(unit)).view($0),
+    linksColumnsView.view($0),
+    legalView.map(footerInfoColumn).contramap(const(unit)).view($0)
+  ]
+}
 
 private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
 private let linksColumnsView = View<Database.User?> { currentUser in
-  contentColumnView.map(linksColumn).view(currentUser)
-    <> (currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [])
-    <> moreColumnView.map(linksColumn).view(unit)
+  [
+    contentColumnView.map(linksColumn).view(currentUser),
+    currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [],
+    moreColumnView.map(linksColumn).view(unit)
+  ]
 }
 
 private let legalView = View<Prelude.Unit> { _ in

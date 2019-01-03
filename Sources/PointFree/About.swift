@@ -27,31 +27,31 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
 )
 
 private let aboutView = View<Prelude.Unit> { _ in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 7], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          aboutSectionView.view(unit)
-            + openSourceSection.view(unit)
+  gridRow(
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 7],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        aboutSectionView.view(unit),
+        openSourceSection.view(unit)
       )
-      ]),
-
+    ),
     gridColumn(
       sizes: [.mobile: 12, .desktop: 5],
       [Styleguide.class([Class.pf.colors.bg.purple150])],
-      [
-        div(
-          [
-            Styleguide.class([
-              Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-              Class.pf.colors.bg.purple150,
-              Class.position.sticky(.desktop),
-              Class.position.top0
-              ])
-          ],
-          hostsView.view(unit)
-        )
-      ])
-    ])
+      div(
+        [
+          Styleguide.class([
+            Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+            Class.pf.colors.bg.purple150,
+            Class.position.sticky(.desktop),
+            Class.position.top0
+            ])
+        ],
+        hostsView.view(unit)
+      )
+    )
+  )
 }
 
 private let hostsView = View<Prelude.Unit> { _ in
@@ -64,9 +64,7 @@ private let hostsView = View<Prelude.Unit> { _ in
           Class.padding([.mobile: [.bottom: 2]])
           ])
       ],
-      [
-        "Your hosts"
-      ]
+      "Your hosts"
     ),
     p([Styleguide.class([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
       "Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped ",
@@ -76,10 +74,10 @@ private let hostsView = View<Prelude.Unit> { _ in
       " the ",
       a([Styleguide.class([Class.pf.colors.link.green, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
       " mobile apps."
-      ])
-    ]
-    + hostView.view(.brandon)
-    + hostView.view(.stephen)
+      ]),
+      hostView.view(.brandon),
+      hostView.view(.stephen)
+  ]
 }
 
 private let hostView = View<Host> { host in

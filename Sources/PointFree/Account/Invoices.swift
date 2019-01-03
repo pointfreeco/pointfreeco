@@ -107,54 +107,63 @@ private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, Databa
 
 let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, Database.User)> { subscription, invoicesEnvelope, currentUser -> Node in
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          titleRowView.view(unit)
-            <> invoicesRowView.view(invoicesEnvelope)
+  gridRow(
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        titleRowView.view(unit),
+        invoicesRowView.view(invoicesEnvelope)
       )
-      ])
-    ])
+    )
+  )
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], ["Payment history"])
-        ])
-      ])
-    ])
+  gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+    gridColumn(
+      sizes: [.mobile: 12],
+      div(
+        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], "Payment history")
+      )
+    )
+  )
 }
 
 private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoicesEnvelope in
   div(
-    invoicesEnvelope.data.map { invoice in
-      gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
-        gridColumn(sizes: [.mobile: 4], [Styleguide.class([Class.type.fontFamily.monospace])], [
-          div([.text("#" + invoice.number.rawValue)])
-          ]),
-        gridColumn(sizes: [.mobile: 4], [Styleguide.class([Class.type.align.end, Class.type.fontFamily.monospace])], [
-          div([.text(dateFormatter.string(from: invoice.date))])
-          ]),
-        gridColumn(sizes: [.mobile: 2], [Styleguide.class([Class.type.align.end, Class.type.fontFamily.monospace])], [
-          div([.text(format(cents: invoice.total))])
-          ]),
-        gridColumn(sizes: [.mobile: 2], [Styleguide.class([Class.grid.end(.mobile), Class.grid.end(.desktop)])], [
-          div([
+    .fragment(invoicesEnvelope.data.map { invoice in
+      gridRow(
+        [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+        gridColumn(
+          sizes: [.mobile: 4], [Styleguide.class([Class.type.fontFamily.monospace])],
+          div(text("#" + invoice.number.rawValue))
+        ),
+        gridColumn(
+          sizes: [.mobile: 4], [Styleguide.class([Class.type.align.end, Class.type.fontFamily.monospace])],
+          div(text(dateFormatter.string(from: invoice.date)))
+        ),
+        gridColumn(
+          sizes: [.mobile: 2], [Styleguide.class([Class.type.align.end, Class.type.fontFamily.monospace])],
+          div(text(format(cents: invoice.total)))
+        ),
+        gridColumn(
+          sizes: [.mobile: 2], [Styleguide.class([Class.grid.end(.mobile), Class.grid.end(.desktop)])],
+          div(
             a(
               [
-                Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
-                href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
-                target(.blank),
+              Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
+              href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
+              target(.blank),
               ],
-              ["Print"]
+              "Print"
             )
-            ])
-          ]),
-        ])
+          )
+        )
+      )
     }
-  )
+  ))
 }
 
 private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
@@ -175,8 +184,9 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
       ])
   }
 
-  return gridRow([
-    gridColumn(sizes: [.mobile: 12], [], [
+  return gridRow(
+    gridColumn(
+      sizes: [.mobile: 12], [],
       div(
         [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         [
@@ -215,8 +225,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                   div([.text(dateFormatter.string(from: invoice.date))]),
                   ]),
                 ]),
-              ]
-              <> (
+
                 invoice.charge?.right.map {
                   [
                     gridRow([
@@ -229,9 +238,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                       ])
                   ]
                   }
-                  ?? []
-              )
-              <> (
+                  ?? [],
                 subscription.customer.right?.businessVatId.map {
                   [
                     gridRow([
@@ -244,9 +251,9 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                       ])
                   ]
                   }
-                  ?? []
-              )
-              <> extraInvoiceInfo(subscription: subscription)
+                  ?? [],
+                extraInvoiceInfo(subscription: subscription)
+              ]
             ),
             ]),
           gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]]), Class.type.bold])], [
@@ -263,8 +270,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
               div(["Amount"]),
               ]),
             ]),
-          ]
-          <> invoice.lines.data.map { item in
+          ...invoice.lines.data.map { item in
             gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 1]])])], [
               gridColumn(sizes: [.mobile: 6, .desktop: 6], [], [
                 div([.text(item.description ?? subscription.plan.name)])
@@ -279,8 +285,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
                 div([.text(format(cents: item.amount))]),
                 ]),
               ])
-          }
-          <> [
+          },
             gridRow([Styleguide.class([Class.padding([.mobile: [.topBottom: 1]])])], [
               gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
               gridColumn(sizes: [.mobile: 6, .desktop: 2], [Styleguide.class([Class.type.align.end])], [
@@ -289,8 +294,8 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
               gridColumn(sizes: [.mobile: 4, .desktop: 2], [Styleguide.class([Class.type.align.end])], [
                 div([.text(format(cents: invoice.subtotal))]),
                 ]),
-              ])
-            ] + [discountRow].compactMap(id) + [
+              ]),
+            discountRow ?? [],
             gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 1]])])], [
               gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
               gridColumn(sizes: [.mobile: 6, .desktop: 2], [Styleguide.class([Class.type.align.end])], [
@@ -320,11 +325,11 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
               ]),
         ]
       )
-      ])
-    ])
+    )
+  )
 }
 
-private func extraInvoiceInfo(subscription: Stripe.Subscription) -> [Node] {
+private func extraInvoiceInfo(subscription: Stripe.Subscription) -> Node {
   guard let extraInvoiceInfo = subscription.customer.right?.extraInvoiceInfo else { return [] }
 
   let extraInvoiceInfoNodes = intersperse(Html.br)
@@ -340,7 +345,7 @@ private func extraInvoiceInfo(subscription: Stripe.Subscription) -> [Node] {
         ]),
       gridColumn(sizes: [.mobile: 12, .desktop: 6], [Styleguide.class([Class.padding([.mobile: [.bottom: 1]])])], [
         div(
-          extraInvoiceInfoNodes
+          ...extraInvoiceInfoNodes
         )
         ])
       ])

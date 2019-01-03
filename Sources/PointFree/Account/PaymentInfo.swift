@@ -60,65 +60,70 @@ let updatePaymentInfoMiddleware:
 }
 
 let paymentInfoView = View<(Stripe.Subscription, PricingFormStyle)> { subscription, formFields in
-
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          titleRowView.view(unit)
-            <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-            <> updatePaymentInfoRowView.view(formFields)
+  gridRow(
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        titleRowView.view(unit),
+        subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [],
+        updatePaymentInfoRowView.view(formFields)
       )
-      ])
-    ])
+    )
+  )
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Payment Info"])
-        ])
-      ])
-    ])
+  gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+    gridColumn(
+      sizes: [.mobile: 12],
+      div(
+        h1([Styleguide.class([Class.pf.type.responsiveTitle3])], "Payment Info")
+      )
+    )
+  )
 }
 
 private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
-        p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
-        p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
-        ])
-      ])
-    ])
+  gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])],
+    gridColumn(
+      sizes: [.mobile: 12],
+      div(
+        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Current Payment Info"),
+        p(text(card.brand.rawValue + " ending in " + String(card.last4))),
+        p(text("Expires " + String(card.expMonth) + "/" + String(card.expYear)))
+      )
+    )
+  )
 }
 
 private let updatePaymentInfoRowView = View<PricingFormStyle> { formStyle in
-  return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Update"]),
+  return gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])],
+    gridColumn(
+      sizes: [.mobile: 12],
+      div(
+        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Update"),
         form(
           [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(couponId: nil, formStyle: formStyle)
-            <> Stripe.html.errors
-            <> Stripe.html.scripts
-            <> [
-              button(
-                [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-                ["Update payment info"]
-              ),
-              a(
-                [
-                  href(path(to: .account(.index))),
-                  Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
-                ],
-                ["Cancel"]
-              )
-          ]
+          Stripe.html.cardInput(couponId: nil, formStyle: formStyle),
+          Stripe.html.errors,
+          Stripe.html.scripts,
+          button(
+            [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+            "Update payment info"
+          ),
+          a(
+            [
+              href(path(to: .account(.index))),
+              Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
+            ],
+            "Cancel"
+          )
         )
-      ])
-    ])
-  ])
+      )
+    )
+  )
 }

@@ -181,11 +181,11 @@ let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)>
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
-        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        titleRowView.view(subscription)
-          <> formRowView.view((subscription, seatsTaken))
-          <> cancelRowView.view(subscription)
-      )
+        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
+          titleRowView.view(subscription),
+          formRowView.view((subscription, seatsTaken)),
+          cancelRowView.view(subscription)
+        ])
       ])
     ])
 }
@@ -214,11 +214,10 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
 private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
 
   return form(
-    [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])],
-    changeSeatsRowView.view((subscription, seatsTaken))
-      <> changeBillingIntervalRowView.view(subscription)
-      <> [
-        hr([Styleguide.class([Class.pf.components.divider])])
+    [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [
+      changeSeatsRowView.view((subscription, seatsTaken)),
+      changeBillingIntervalRowView.view(subscription),
+      hr([Styleguide.class([Class.pf.components.divider])])
     ]
   )
 }
@@ -229,8 +228,8 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
   let subtitle = pricing.isIndividual
     ? "Change to a team subscription?"
     : "Add or remove seats?"
-  let description: [Node] = pricing.isIndividual
-    ? ["Specify the total number of seats you’d like."]
+  let description: Node = pricing.isIndividual
+    ? "Specify the total number of seats you’d like."
     : [
       "You are currently using ", strong([.text(String(seatsTaken)), " of ",
       strong([.text(String(subscription.quantity))]), " seats"]), " available."
@@ -239,7 +238,7 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
   return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       h3([Styleguide.class([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
-      p(description + [" ",
+      p([description, " ",
         """
         Additional costs will be billed immediately, prorated against the remaining time of
         the current billing period.
@@ -285,46 +284,34 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
 
   return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
-      h3([Styleguide.class([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
+      h3([Styleguide.class([Class.pf.type.responsiveTitle4])], [text(subtitle)]),
       p([
         """
         Your regular billing rate will be reflected below. Upgrades and downgrades will take
         place at the end of the current billing period.
         """]),
-      gridRow(
-        [],
-        individualPricingColumnView.view((.monthly, pricing))
-          <> individualPricingColumnView.view((.yearly, pricing))
-      )]
-      + (
-        subscription.discount?.coupon.valid == .some(true)
-          ? [
-            div([`class`([
-              Class.padding([.mobile: [.all: 1]]),
-              Class.pf.colors.bg.yellow,
-              Class.type.align.center,
-              ])], [
-                strong([
-                  text("⚠️ Changes to your subscription will remove your current discount.")
-                  ])
-              ])
-            ]
-          : []
-      )
-      + [
+      gridRow([], [
+        individualPricingColumnView.view((.monthly, pricing)),
+        individualPricingColumnView.view((.yearly, pricing))
+        ]),
+      subscription.discount?.coupon.valid == .some(true)
+        ? div([`class`([
+          Class.padding([.mobile: [.all: 1]]),
+          Class.pf.colors.bg.yellow,
+          Class.type.align.center,
+          ])], strong("⚠️ Changes to your subscription will remove your current discount."))
+        : [],
       button(
         [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-        [subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"]
+        subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"
       ),
-      a(
-        [
-          href(path(to: .account(.index))),
-          Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
+      a([
+        href(path(to: .account(.index))),
+        Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
         ],
-        ["Never mind"]
+        "Never mind"
       )
-      ]
-    )
+      ])
     ])
 }
 
@@ -378,7 +365,7 @@ private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) ->
   }
 }
 
-private let cancelRowView = View<Stripe.Subscription> { subscription -> [Node] in
+private let cancelRowView = View<Stripe.Subscription> { subscription in
 
   guard subscription.isRenewing else { return [] }
 

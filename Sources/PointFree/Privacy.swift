@@ -34,31 +34,32 @@ private let privacyView = View<Prelude.Unit> { _ in
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
         [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        [h1([Styleguide.class([Class.pf.type.responsiveTitle2])], [.text(title)])]
-          <> privacyPolicy
-          <> [
-            p(
-              [Styleguide.class([Class.padding([.mobile: [.top: 2]])])],
-              ["This document was last updated on January 7, 2018."]
-            )
+        [
+          h1([Styleguide.class([Class.pf.type.responsiveTitle2])], text(title)),
+          privacyPolicy,
+          p(
+            [Styleguide.class([Class.padding([.mobile: [.top: 2]])])],
+            "This document was last updated on January 7, 2018."
+          )
         ]
       )
       ])
     ])
 }
 
-private let privacyPolicy =
-  personalIdentificationInformation
-    <> nonPersonalIdentificationInformation
-    <> webBrowserCookies
-    <> howWeUseCollectedInformation
-    <> howWeProtectYourInformation
-    <> sharingYourPersonalInformation
-    <> complianceWithChildrensOnlinePrivacyProtectionAct
-    <> changesToThisPrivacyPolicy
-    <> contactingUs
+private let privacyPolicy = ...[
+  personalIdentificationInformation,
+  nonPersonalIdentificationInformation,
+  webBrowserCookies,
+  howWeUseCollectedInformation,
+  howWeProtectYourInformation,
+  sharingYourPersonalInformation,
+  complianceWithChildrensOnlinePrivacyProtectionAct,
+  changesToThisPrivacyPolicy,
+  contactingUs
+]
 
-private let personalIdentificationInformation = [
+private let personalIdentificationInformation = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Personal identification information"]),
@@ -70,7 +71,7 @@ private let personalIdentificationInformation = [
     """]),
 ]
 
-private let nonPersonalIdentificationInformation = [
+private let nonPersonalIdentificationInformation = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Non-personal identification information"]),
@@ -82,7 +83,7 @@ private let nonPersonalIdentificationInformation = [
     """]),
 ]
 
-private let webBrowserCookies = [
+private let webBrowserCookies = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Web browser cookies"]),
@@ -94,7 +95,7 @@ private let webBrowserCookies = [
     """]),
 ]
 
-private let howWeUseCollectedInformation = [
+private let howWeUseCollectedInformation = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["How we use collected information"]),
@@ -124,7 +125,7 @@ private let howWeUseCollectedInformation = [
     ]),
 ]
 
-private let howWeProtectYourInformation = [
+private let howWeProtectYourInformation = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["How we protect your information"]),
@@ -141,7 +142,7 @@ private let howWeProtectYourInformation = [
     """]),
 ]
 
-private let sharingYourPersonalInformation = [
+private let sharingYourPersonalInformation = ...[
   h2(
     [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Sharing your personal information"]),
@@ -154,7 +155,7 @@ private let sharingYourPersonalInformation = [
     """]),
 ]
 
-private let complianceWithChildrensOnlinePrivacyProtectionAct = [
+private let complianceWithChildrensOnlinePrivacyProtectionAct = ...[
   h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Compliance with children's online privacy protection act"]),
   p([
     """
@@ -164,7 +165,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct = [
     """]),
 ]
 
-private let changesToThisPrivacyPolicy = [
+private let changesToThisPrivacyPolicy = ...[
   h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Changes to this privacy policy"]),
   p([
     """
@@ -173,7 +174,7 @@ private let changesToThisPrivacyPolicy = [
     """]),
 ]
 
-private let contactingUs = [
+private let contactingUs = ...[
   h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Contacting us"]),
   p([
     "Questions about this policy can be sent to ",

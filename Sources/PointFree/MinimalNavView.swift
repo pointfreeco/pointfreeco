@@ -10,41 +10,47 @@ import Prelude
 import View
 
 let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  gridRow([Styleguide.class([newNavBarClass(for: style)])], [
-    gridColumn(sizes: [:], [
-      div([Styleguide.class([Class.hide(.desktop)])], [
-        a([href(path(to: .home))], [
+  gridRow(
+    [Styleguide.class([newNavBarClass(for: style)])],
+    gridColumn(
+      sizes: [:],
+      div(
+        [Styleguide.class([Class.hide(.desktop)])],
+        a(
+          [href(path(to: .home))],
           img(
             base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
             type: .image(.svg),
             alt: "",
             [Styleguide.class([Class.hide(.desktop)])]
           )
-          ])
-        ])
-      ]),
-
-    gridColumn(sizes: [:], [
-      div([Styleguide.class([Class.grid.center(.mobile)])], [
-        div([Styleguide.class([Class.hide(.mobile)])], [
-          a([href(path(to: .home))], [
+        )
+      )
+    ),
+    gridColumn(
+      sizes: [:],
+      div(
+        [Styleguide.class([Class.grid.center(.mobile)])],
+        div(
+          [Styleguide.class([Class.hide(.mobile)])],
+          a(
+            [href(path(to: .home))],
             img(
               base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
               type: .image(.svg),
               alt: "",
               [Styleguide.class([Class.hide(.mobile)])]
             )
-            ])
-          ])
-        ])
-      ]),
-
+          )
+        )
+      )
+    ),
     gridColumn(
       sizes: [:],
       currentUser.map { loggedInNavItemsView.view((style, $0, subscriberState)) }
         ?? loggedOutNavItemsView.view((style, currentRoute))
-    ),
-    ])
+    )
+  )
 }
 
 private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, SubscriberState)> { style, currentUser, subscriberState in
@@ -67,25 +73,28 @@ private let loggedOutNavItemsView = navItems([
 
 private func navItems<A>(_ views: [View<A>]) -> View<A> {
   return View { a in
-    ul([Styleguide.class([navListClass])],
-       views
-        .map { (curry(li)([Styleguide.class([navListItemClass])]) >>> pure) <¢> $0 }
-        .concat()
-        .view(a)
+    ul(
+      [Styleguide.class([navListClass])],
+      ...views.map { v in
+        li(
+          [Styleguide.class([navListItemClass])],
+          v.view(a)
+        )
+      }
     )
   }
 }
 
 private let blogLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .blog(.index))), Styleguide.class([navLinkClass(for: style)])], ["Blog"])
+  a([href(path(to: .blog(.index))), Styleguide.class([navLinkClass(for: style)])], "Blog")
 }
 
 private let subscribeLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .pricing(nil, expand: nil))), Styleguide.class([navLinkClass(for: style)])], ["Subscribe"])
+  a([href(path(to: .pricing(nil, expand: nil))), Styleguide.class([navLinkClass(for: style)])], "Subscribe")
 }
 
 private let accountLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .account(.index))), Styleguide.class([navLinkClass(for: style)])], ["Account"])
+  a([href(path(to: .account(.index))), Styleguide.class([navLinkClass(for: style)])], "Account")
 }
 
 private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, currentRoute in

@@ -34,14 +34,14 @@ let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> 
           p([Styleguide.class([Class.pf.type.body.small])], [
             "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
             ]),
-
-          ] + unsubscribeView.view((user, newsletter)))
+          unsubscribeView.view((user, newsletter))
+          ])
         ])
       ])
     ])
 }
 
-private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
+private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter in
   guard let user = user, let newsletter = newsletter else { return [] }
 
   return [
@@ -78,6 +78,6 @@ private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> S
 }
 
 // TODO: move into a package for html email helpers.
-public func emailTable(_ attribs: [Attribute<Html.Tag.Table>], _ content: [ChildOf<Html.Tag.Table>]) -> Node {
+public func emailTable(_ attribs: [Attribute<Html.Tag.Table>], _ content: ChildOf<Html.Tag.Table>) -> Node {
   return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
 }

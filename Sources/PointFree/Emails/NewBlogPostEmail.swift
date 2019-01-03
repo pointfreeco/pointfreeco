@@ -37,35 +37,31 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
         ),
 
         div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
-          a([href(url(to: .blog(.show(post))))], [
-            h3([Styleguide.class([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
-            ]),
-            p([text(post.blurb)])
-          ]
-          + (
-            post.coverImage.map {
-              [
-                p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
-                  a([href(url(to: .blog(.show(post))))], [
-                    img([src($0), alt(""), style(maxWidth(.pct(100)))])
-                    ])
-                  ]),
+          a([href(url(to: .blog(.show(post))))],
+            h3([Styleguide.class([Class.pf.type.responsiveTitle3])], text(post.title))
+          ),
+          p(text(post.blurb)),
+          post.coverImage.map {
+            p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+              a([href(url(to: .blog(.show(post))))],
+                img([src($0), alt(""), style(maxWidth(.pct(100)))])
+              )
+              ])
+            }
+            ?? [],
+          a(
+            [
+              href(url(to: .blog(.show(post)))),
+              `class`(
+                [
+                  Class.pf.colors.link.purple,
+                  Class.pf.colors.fg.purple,
+                  Class.pf.type.body.leading
                 ]
-              } ?? [])
-          + [
-            a(
-              [
-                href(url(to: .blog(.show(post)))),
-                `class`(
-                  [
-                    Class.pf.colors.link.purple,
-                    Class.pf.colors.fg.purple,
-                    Class.pf.type.body.leading
-                  ]
-                )
-              ],
-              ["Read the full post…"]
-            )
+              )
+            ],
+            "Read the full post…"
+          )
           ]),
 
         div(
@@ -77,7 +73,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
     ])
 }
 
-private let announcementView = View<String?> { announcement -> [Node] in
+private let announcementView = View<String?> { announcement in
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
 
   return [
@@ -117,19 +113,23 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
     tr([
       td([valign(.top)], [
         div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["New blog post email report"]),
+          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], "New blog post email report"),
           p([
             "A total of ",
-            strong([.text("\(totalAttempted)")]),
+            strong(text("\(totalAttempted)")),
             " emails were attempted to be sent, and of those, ",
-            strong([.text("\(erroredUsers.count)")]),
+            strong(text("\(erroredUsers.count)")),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
             ]),
 
-          ul(erroredUsers.map { user in
-            li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
-          })
+          ul(
+            .fragment(
+              erroredUsers.map { user in
+                li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
+              }
+            )
+          )
           ])
         ])
       ])

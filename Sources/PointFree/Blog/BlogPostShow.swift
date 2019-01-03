@@ -41,28 +41,23 @@ func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
 }
 
 private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
-
-  [
-    gridRow(
-      [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
-      [
-        gridColumn(
-          sizes: [.mobile: 12, .desktop: 9],
-          [style(margin(leftRight: .auto))],
-          [
-            div(
-              [Styleguide.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
-              blogPostContentView.view(post)
-                <> subscriberCalloutView.view(subscriberState)
-            )
-          ]
-        )
-      ]
+  gridRow(
+    [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 9],
+      [style(margin(leftRight: .auto))],
+      div(
+        [Styleguide.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
+        [
+          blogPostContentView.view(post),
+          subscriberCalloutView.view(subscriberState)
+        ]
+      )
     )
-  ]
+  )
 }
 
-private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+private let subscriberCalloutView = View<SubscriberState> { subscriberState in
   guard !subscriberState.isActive else { return [] }
 
   return [
@@ -99,7 +94,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
                 href(path(to: .home)),
                 Styleguide.class([Class.pf.type.underlineLink])
               ],
-              ["Point-Free"]
+              "Point-Free"
             ),
             ", a video series on functional programming and Swift."
           ]
@@ -111,46 +106,26 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
 
 let blogPostContentView = View<BlogPost> { post in
   [
-    h1(
-      [Styleguide.class([Class.pf.type.responsiveTitle3]),],
-      [
-        a(
-          [href(url(to: .blog(.show(post))))],
-          [.text(post.title)]
-        )
-      ]
+    h1([Styleguide.class([Class.pf.type.responsiveTitle3])], a(
+      [href(url(to: .blog(.show(post))))],
+      text(post.title)
+      )
     ),
-
-    div(
-      [
-        Styleguide.class([Class.flex.flex, Class.flex.items.baseline]),
-        style(flex(direction: .row))
-      ],
-      [
-        div([p([.text(episodeDateFormatter.string(from: post.publishedAt))])]),
-        div(
-          [Styleguide.class([Class.margin([.mobile: [.left: 1]])])],
-          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
-        )
-      ]
+    div([Styleguide.class([Class.flex.flex, Class.flex.items.baseline]), style(flex(direction: .row))], [
+      div(p(text(episodeDateFormatter.string(from: post.publishedAt)))),
+      div(
+        [Styleguide.class([Class.margin([.mobile: [.left: 1]])])],
+        twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")
+      )
+      ]),
+    div([
+      style(width(.rem(3)) <> height(.px(2))),
+      `class`([Class.pf.colors.bg.green, Class.margin([.mobile: [.bottom: 3]])])
+      ], []
     ),
- 
-    div(
-      [
-        style(width(.rem(3)) <> height(.px(2))),
-        `class`(
-          [
-            Class.pf.colors.bg.green,
-            Class.margin([.mobile: [.bottom: 3]])
-          ]
-        )
-      ],
-      []
-    ),
-
     div(
       [Styleguide.class([Class.pf.colors.bg.white])],
-      post.contentBlocks.flatMap(transcriptBlockView.view)
+      ...post.contentBlocks.flatMap(transcriptBlockView.view)
     )
   ]
 }

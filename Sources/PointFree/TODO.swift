@@ -428,5 +428,11 @@ func text(_ string: String) -> Node {
 }
 
 func playsinline(_ value: Bool) -> Attribute<Tag.Video> {
-  return .init("playslinline", value ? "" : nil)
+  return .init("playsinline", value ? "" : nil)
+}
+
+extension Node: Semigroup {
+  public static func <> (lhs: Node, rhs: Node) -> Node {
+    return ...[lhs, rhs]
+  }
 }

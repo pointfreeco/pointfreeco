@@ -2,33 +2,33 @@ import Css
 import Html
 
 // TODO: extract to grid helpers in design systems?
-public func gridRow(_ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
-  return div(addClasses([Class.grid.row], to: attribs), content)
+public func gridRow(_ attribs: [Attribute<Tag.Div>], _ content: Node...) -> Node {
+  return div(addClasses([Class.grid.row], to: attribs), ...content)
 }
 
 // TODO: extract to grid helpers in design systems?
-public func gridRow(_ content: [Node]) -> Node {
-  return gridRow([], content)
+public func gridRow(_ content: Node...) -> Node {
+  return gridRow([], ...content)
 }
 
 // TODO: extract to grid helpers in design systems?
-public func gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> Node {
+public func gridColumn(sizes: [Breakpoint: Int]) -> (Node) -> Node {
   return { content in
     gridColumn(sizes: sizes, [], content)
   }
 }
 
-public func gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
-  return gridColumn(sizes: sizes, [], content)
+public func gridColumn(sizes: [Breakpoint: Int], _ content: Node...) -> Node {
+  return gridColumn(sizes: sizes, [], ...content)
 }
 
-public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
+public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: Node...) -> Node {
   let classes = [Class.grid.col(.mobile, nil)]
     + sizes
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
       .map(Class.grid.col(_:_:))
 
-  return div(addClasses(classes, to: attribs), content)
+  return div(addClasses(classes, to: attribs), ...content)
 }
 
 // todo: where should this live?

@@ -5,8 +5,8 @@ import HtmlCssSupport
 import Optics
 import Prelude
 
-var videoJsHead: [ChildOf<Tag.Head>] {
-  let videoJsAssets: [ChildOf<Tag.Head>] = [
+var videoJsHead: ChildOf<Tag.Head> {
+  let videoJsAssets: ChildOf<Tag.Head> = [
     link([
       href("https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/alt/video-js-cdn.min.css"),
       rel(.stylesheet)
@@ -46,9 +46,9 @@ function videoJsLoaded() {
     })
   })
 }
-""")]))
-    ]
-    + (Current.envVars.appEnv == .testing ? [] : videoJsAssets)
+""")])),
+    Current.envVars.appEnv == .testing ? [] : videoJsAssets
+  ]
 }
 
 let airplayButton = button(

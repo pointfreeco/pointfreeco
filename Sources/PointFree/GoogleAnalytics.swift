@@ -2,22 +2,20 @@ import Html
 import Optics
 import Prelude
 
-public func addGoogleAnalytics(_ nodes: [Node]) -> [Node] {
-  return nodes.map { node in
-    switch node {
-    case .comment:
-      return node
-    case let .element(tag, attribs, children):
-      return .element(
-        tag,
-        attribs,
-        tag == "head"
-          ? children + [googleAnalytics]
-          : addGoogleAnalytics(children)
-      )
-    case .doctype, .raw, .text:
-      return node
-    }
+public func addGoogleAnalytics(_ node: Node) -> Node {
+  switch node {
+  case .comment:
+    return node
+  case let .element(tag, attribs, children):
+    return .element(
+      tag,
+      attribs,
+      tag == "head" ? [children, googleAnalytics] : addGoogleAnalytics(children)
+    )
+  case let .fragment(children):
+    return ...children.map(addGoogleAnalytics)
+  case .doctype, .raw, .text:
+    return node
   }
 }
 

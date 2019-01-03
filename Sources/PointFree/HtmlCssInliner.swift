@@ -15,6 +15,9 @@ public func applyInlineStyles(node: Node, stylesheet: Stylesheet) -> Node {
   case let .element(tag, attribs, children):
     return applyInlineStyles(tag, attribs, children, stylesheet: stylesheet)
 
+  case let .fragment(children):
+    return .fragment(applyInlineStyles(nodes: children, stylesheet: stylesheet))
+
   case .comment, .doctype, .raw, .text:
     return node
   }
@@ -23,7 +26,7 @@ public func applyInlineStyles(node: Node, stylesheet: Stylesheet) -> Node {
 private func applyInlineStyles(
   _ tag: String,
   _ attribs: [(key: String, value: String?)],
-  _ children: [Node],
+  _ children: Node,
   stylesheet: Stylesheet
   )
   -> Node {
@@ -60,7 +63,7 @@ private func applyInlineStyles(
     return .element(
       tag,
       newAttribs,
-      applyInlineStyles(nodes: children, stylesheet: stylesheet)
+      applyInlineStyles(node: children, stylesheet: stylesheet)
     )
 }
 

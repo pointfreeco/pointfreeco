@@ -191,11 +191,11 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe
                 method(.post),
                 onsubmit("event.preventDefault()")
               ],
-              pricingTabsView.view(pricing)
-                <> [div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], [])]
-                <> quantityRowView.view(pricing)
-                <> pricingIntervalRowView.view((pricing, coupon))
-                <> pricingFooterView.view((currentUser, formStyle, coupon?.id, route))
+              pricingTabsView.view(pricing),
+              div([Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])], []),
+              quantityRowView.view(pricing),
+              pricingIntervalRowView.view((pricing, coupon)),
+              pricingFooterView.view((currentUser, formStyle, coupon?.id, route))
             )
             ])
           ])
@@ -340,17 +340,20 @@ private let whoAreYou = View<Prelude.Unit> { _ in
 }
 
 private let faqView = View<Prelude.Unit> { _ in
-  gridRow([Styleguide.class([pricingOptionsRowClass])], [
-    gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
-      div([Styleguide.class([whatToExpectBoxClass])],
-          whatToExpect.view(unit)
-            <> topicsView.view(unit)
-            <> studentDiscounts.view(unit)
-            <> suggestATopic.view(unit)
-            <> whoAreYou.view(unit)
+  gridRow(
+    [Styleguide.class([pricingOptionsRowClass])],
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 7],
+      div(
+        [Styleguide.class([whatToExpectBoxClass])],
+        whatToExpect.view(unit),
+        topicsView.view(unit),
+        studentDiscounts.view(unit),
+        suggestATopic.view(unit),
+        whoAreYou.view(unit)
       )
-      ])
-    ])
+    )
+  )
 }
 
 private let faqLinkStyles =
@@ -392,47 +395,42 @@ private let pricingTabsView = View<Pricing> { pricing in
 private let pricingIntervalRowView = View<(Pricing, Stripe.Coupon?)> { pricing, coupon in
   gridRow(
     [Styleguide.class([Class.pf.colors.bg.white])],
-    individualPricingColumnView.view((.monthly, pricing, coupon))
-      <> individualPricingColumnView.view((.yearly, pricing, coupon))
-      <> [
-        gridColumn(
-          sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])],
-          (
-            coupon
-              .map {
-                [
-                  p([
-                    Styleguide.class([
-                      selectors.content.0,
-                      Class.padding([.mobile: [.bottom: 1]]),
-                      Class.pf.colors.fg.gray400,
-                      Class.pf.type.body.small,
-                      Class.size.width100pct,
-                      Class.type.align.center,
-                      Class.type.normal,
-                      ])
-                    ],
-                    [.text("You get \($0.formattedDescription) for using the \($0.name ?? $0.id.rawValue) coupon.")])
-                ]
-              }
-              ?? []
-            )
-            <> [
-              p([
-                Styleguide.class([
-                  selectors.content.1,
-                  Class.padding([.mobile: [.bottom: 1]]),
-                  Class.pf.colors.fg.gray400,
-                  Class.pf.type.body.small,
-                  Class.size.width100pct,
-                  Class.type.align.center,
-                  Class.type.normal,
-                  ])
-                ],
-                ["20% off the Individual Monthly plan"]
-              )
+    individualPricingColumnView.view((.monthly, pricing, coupon)),
+    individualPricingColumnView.view((.yearly, pricing, coupon)),
+    gridColumn(
+      sizes: [.mobile: 12], [Styleguide.class([Class.pf.colors.bg.white])],
+      coupon
+        .map {
+          p([
+            Styleguide.class([
+              selectors.content.0,
+              Class.padding([.mobile: [.bottom: 1]]),
+              Class.pf.colors.fg.gray400,
+              Class.pf.type.body.small,
+              Class.size.width100pct,
+              Class.type.align.center,
+              Class.type.normal,
+              ])
+            ],
+            text("You get \($0.formattedDescription) for using the \($0.name ?? $0.id.rawValue) coupon.")
+          )
+        }
+        ?? [],
+      p([
+        Styleguide.class([
+          selectors.content.1,
+          Class.padding([.mobile: [.bottom: 1]]),
+          Class.pf.colors.fg.gray400,
+          Class.pf.type.body.small,
+          Class.size.width100pct,
+          Class.type.align.center,
+          Class.type.normal,
           ])
-    ])
+        ],
+        "20% off the Individual Monthly plan"
+      )
+    )
+  )
 }
 
 func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
@@ -569,15 +567,14 @@ private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.C
         [Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
         currentUser
           .map(const(stripeForm.view((couponId, formStyle))))
-          ?? (
-            loggedOutStripeForm.view(couponId)
-              <> [
-                gitHubLink(
-                  text: "Sign in with GitHub",
-                  type: .black,
-                  redirectRoute: route ?? .pricing(nil, expand: false)
-                )
-            ])
+          ?? [
+            loggedOutStripeForm.view(couponId),
+            gitHubLink(
+              text: "Sign in with GitHub",
+              type: .black,
+              redirectRoute: route ?? .pricing(nil, expand: false)
+            )
+        ]
       )
       ])
     ])
@@ -586,37 +583,31 @@ private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.C
 private let stripeForm = View<(Stripe.Coupon.Id?, PricingFormStyle)> { couponId, formStyle in
   div(
     [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(couponId: couponId, formStyle: formStyle)
-      <> Stripe.html.errors
-      <> Stripe.html.scripts
-      <> [
-        button(
-          [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-          ["Subscribe to Point", .raw("&#8209;"), "Free"]
-        )
-    ]
+    Stripe.html.cardInput(couponId: couponId, formStyle: formStyle),
+    Stripe.html.errors,
+    Stripe.html.scripts,
+    button(
+      [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+      "Subscribe to Point", .raw("&#8209;"), "Free"
+    )
   )
 }
 
-private let loggedOutStripeForm = View<Stripe.Coupon.Id?> { couponId -> [Node] in
+private let loggedOutStripeForm = View<Stripe.Coupon.Id?> { couponId in
   guard let couponId = couponId else { return [] }
-  return [
+  return div(
+    [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3, .bottom: 2]])])],
     div(
-      [Styleguide.class([Class.padding([.mobile: [.left: 3, .right: 3, .bottom: 2]])])],
-      [
-        div([
-          input([
-            Styleguide.class([blockInputClass]),
-            disabled(true),
-            name("coupon"),
-            placeholder("Coupon Code"),
-            type(.text),
-            value(couponId.rawValue)
-            ]),
-          ]),
-        ]
+      input([
+        Styleguide.class([blockInputClass]),
+        disabled(true),
+        name("coupon"),
+        placeholder("Coupon Code"),
+        type(.text),
+        value(couponId.rawValue)
+        ])
     )
-  ]
+  )
 }
 
 func title(for type: Pricing.Billing) -> String {

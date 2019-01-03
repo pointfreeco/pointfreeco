@@ -31,7 +31,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Us
     }
 )
 
-let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
+let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState in
 
   let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
 
@@ -39,75 +39,74 @@ let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriber
   let firstBatch = episodes[0..<ctaInsertionIndex]
   let secondBatch = episodes[ctaInsertionIndex...]
 
-  return episodesListView.view(firstBatch)
-    <> subscriberCalloutView.view(subscriberState)
-    <> episodesListView.view(secondBatch)
-    <> (
-      subscriberState.isNonSubscriber
-        ? pricingOptionsView.view((currentUser, .default, .minimal, nil, nil))
-        : []
-  )
+  return [
+    episodesListView.view(firstBatch),
+    subscriberCalloutView.view(subscriberState),
+    episodesListView.view(secondBatch),
+    subscriberState.isNonSubscriber
+      ? pricingOptionsView.view((currentUser, .default, .minimal, nil, nil))
+      : []
+  ]
 }
 
-private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+private let subscriberCalloutView = View<SubscriberState> { subscriberState in
   guard subscriberState.isNonSubscriber else { return [] }
 
-  return dividerView.view(unit) <> [
-    gridRow([
+  return [
+    dividerView.view(unit),
+    gridRow(
       gridColumn(
         sizes: [.desktop: 9, .mobile: 12],
         [style(margin(leftRight: .auto))],
-        [
-          div(
-            [
-              `class`(
-                [
-                  Class.margin([.mobile: [.all: 4]]),
-                  Class.padding([.mobile: [.all: 3]]),
-                  Class.pf.colors.bg.gray900
-                ]
-              )
-            ],
-            [
-              h4(
-                [
-                  `class`(
-                    [
-                      Class.pf.type.responsiveTitle4,
-                      Class.padding([.mobile: [.bottom: 2]])
-                    ]
-                  )
-                ],
-                ["Subscribe to Point-Free"]
-              ),
-              p(
-                [
-                  "👋 Hey there! See anything you like? You may be interested in ",
-                  a(
-                    [
-                      href(path(to: .pricing(nil, expand: nil))),
-                      Styleguide.class([Class.pf.type.underlineLink])
-                    ],
-                    ["subscribing"]
-                  ),
-                  " so that you get access to these episodes and all future ones.",
+        div(
+          [
+            `class`(
+              [
+                Class.margin([.mobile: [.all: 4]]),
+                Class.padding([.mobile: [.all: 3]]),
+                Class.pf.colors.bg.gray900
+              ]
+            )
+          ],
+          [
+            h4(
+              [
+                `class`(
+                  [
+                    Class.pf.type.responsiveTitle4,
+                    Class.padding([.mobile: [.bottom: 2]])
                   ]
-              )
-            ]
-          )
-        ]
+                )
+              ],
+              "Subscribe to Point-Free"
+            ),
+            p(
+              [
+                "👋 Hey there! See anything you like? You may be interested in ",
+                a(
+                  [
+                    href(path(to: .pricing(nil, expand: nil))),
+                    Styleguide.class([Class.pf.type.underlineLink])
+                  ],
+                  "subscribing"
+                ),
+                " so that you get access to these episodes and all future ones."
+              ]
+            )
+          ]
+        )
       )
-      ])
+    )
   ]
 }
 
 private let episodesListView = View<ArraySlice<Episode>> { eps in
-  eps.flatMap(episodeRowView.view)
+  ...eps.flatMap(episodeRowView.view)
 }
 
 private let episodeRowView = View<Episode> { ep in
-
-  dividerView.view(unit) + [
+  [
+    dividerView.view(unit),
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
@@ -128,12 +127,13 @@ private let episodeRowView = View<Episode> { ep in
 private let episodeInfoColumnView = View<Episode> { ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view(ep) + [
+    [
+      topLevelEpisodeInfoView.view(ep),
       div([Styleguide.class([Class.margin([.mobile: [.top: 3]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug)))), Styleguide.class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
           [
-            .text("Watch episode (\(ep.length / 60) min)"),
+            text("Watch episode (\(ep.length / 60) min)"),
             img(
               base64: rightArrowSvgBase64(fill: "#974DFF"),
               type: .image(.svg),

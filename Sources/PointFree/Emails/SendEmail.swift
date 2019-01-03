@@ -11,7 +11,7 @@ public func prepareEmail(
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
-  content: Either3<String, [Node], (String, [Node])>,
+  content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
   )
   -> Email {
@@ -69,7 +69,7 @@ public func sendEmail(
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
-  content: Either3<String, [Node], (String, [Node])>,
+  content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
   )
   -> EitherIO<Error, Mailgun.SendEmailResponse> {

@@ -123,10 +123,10 @@ func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
           element("title", [text(channel.image.title)]),
           element("link", [text(channel.image.link)]),
           ]
-      )
-      ]
-      + itunesNodes
-      + items.map(node(rssItem:))
+      ),
+      itunesNodes,
+      ...items.map(node(rssItem:))
+    ]
   )
 }
 
@@ -162,7 +162,7 @@ private func node(category: RssChannel.Itunes.Category) -> Node {
   )
 }
 
-private func nodes(itunes: RssChannel.Itunes) -> [Node] {
+private func nodes(itunes: RssChannel.Itunes) -> Node {
 
   return [
     element("itunes:author", [text(itunes.author)]),
@@ -182,9 +182,9 @@ private func nodes(itunes: RssChannel.Itunes) -> [Node] {
       "itunes:image",
       [.init("href", itunes.image.href) as Attribute<Void>],
       []
-    )
-    ]
-    + itunes.categories.map(node(category:))
+    ),
+    ...itunes.categories.map(node(category:))
+  ]
 }
 
 private func nodes(itunes: RssItem.Itunes) -> [Node] {
@@ -247,12 +247,12 @@ private func node(rssItem: RssItem) -> Node {
       element("pubDate", [text(rssDateFormatter.string(from: rssItem.pubDate))]),
       element("link", [text(rssItem.link)]),
       element("guid", [text(rssItem.guid)]),
-      element("description", [text(rssItem.description)])
-      ]
-      + creatorNodes
-      + itunesNodes
-      + enclosureNodes
-      + mediaNodes
+      element("description", [text(rssItem.description)]),
+      ...creatorNodes,
+      ...itunesNodes,
+      ...enclosureNodes,
+      ...mediaNodes
+    ]
   )
 }
 

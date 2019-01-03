@@ -18,26 +18,24 @@ let indexFreeEpisodeEmailMiddleware =
 
 private let freeEpisodeView = View<Database.User> { _ in
   [
-    h2(["Send free episode email"]),
-
+    h2("Send free episode email"),
     ul(
-      Current.episodes()
+      ...Current.episodes()
         .filter((!) <<< ^\.subscriberOnly)
         .sorted(by: their(^\.sequence))
-        .map(li <<< freeEpisodeEmailRowView.view)
+        .map { li(freeEpisodeEmailRowView.view($0)) }
     )
   ]
 }
 
 private let freeEpisodeEmailRowView = View<Episode> { ep in
-  [
-    p([
-      .text(ep.title),
-      form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)], [
-        input([type(.submit), value("Send email!")])
-        ])
-      ])
-  ]
+  p(
+    text(ep.title),
+    form(
+      [action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)],
+      input([type(.submit), value("Send email!")])
+    )
+  )
 }
 
 let sendFreeEpisodeEmailMiddleware:

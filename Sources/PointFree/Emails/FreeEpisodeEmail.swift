@@ -73,9 +73,9 @@ let freeEpisodeEmailContent = View<Episode> { ep in
           p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .episode(.left(ep.slug)))), Styleguide.class([Class.pf.components.button(color: .purple)])],
               ["Watch now!"])
-            ])
-          ]
-          <> hostSignOffView.view(unit))
+            ]),
+          hostSignOffView.view(unit)
+          ])
         ])
       ])
     ])

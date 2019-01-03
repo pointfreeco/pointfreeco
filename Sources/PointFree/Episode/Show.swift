@@ -208,10 +208,11 @@ private let episodeView = View<(EpisodePermission, Database.User?, SubscriberSta
 }
 
 private let rightColumnView = View<(Episode, Bool)> { episode, isEpisodeViewable in
-
-  videoView.view((episode, isEpisodeViewable))
-    <> episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable))
-    <> downloadsView.view(episode.codeSampleDirectory)
+  [
+    videoView.view((episode, isEpisodeViewable)),
+    episodeTocView.view((episode.transcriptBlocks, isEpisodeViewable)),
+    downloadsView.view(episode.codeSampleDirectory)
+  ]
 }
 
 private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEpisodeViewable in
@@ -254,12 +255,12 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
       [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
       ["Chapters"]
     ),
-    ]
-    <> blocks
+    ...blocks
       .filter { $0.type == .title && $0.timestamp != nil }
       .flatMap { block in
         tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
     }
+    ]
   )
 }
 
@@ -300,7 +301,7 @@ private let tocChapterView = View<(title: String, timestamp: Int, isEpisodeViewa
     ])
 }
 
-private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bool)> { title, timestamp, active -> [Node] in
+private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bool)> { title, timestamp, active -> Node in
   if active {
     return
       [
@@ -330,7 +331,7 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
   ]
 }
 
-private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
+private let downloadsView = View<String> { codeSampleDirectory in
   guard !codeSampleDirectory.isEmpty else { return [] }
 
   return [
@@ -375,12 +376,14 @@ private let leftColumnView = View<(EpisodePermission, Database.User?, Subscriber
   let transcriptNodes = transcriptView.view((episode.transcriptBlocks, isEpisodeViewable(for: permission)))
 
   return div(
-    [div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, episode)))]
-      + dividerView.view(unit)
-      + subscribeNodes
-      + transcriptNodes
-      + exercisesView.view(episode.exercises)
-      + referencesView.view(episode.references)
+    [
+      div([Styleguide.class([Class.hide(.mobile)])], episodeInfoView.view((permission, episode))),
+      dividerView.view(unit),
+      subscribeNodes,
+      transcriptNodes,
+      exercisesView.view(episode.exercises),
+      referencesView.view(episode.references)
+    ]
   )
 }
 
@@ -423,7 +426,7 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
 
 let useCreditCTA = "Use an episode credit"
 
-private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episode in
   guard
     case let .loggedIn(user, .isNotSubscriber(.hasNotUsedCredit(true))) = permission,
     user.episodeCreditCount > 0
@@ -439,25 +442,23 @@ private let creditBlurb = View<(EpisodePermission, Episode)> { permission, episo
           ]
         )
       ],
-      [
-        .text("""
-          You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
-          want to use it to view this episode for free right now?
-          """)
-      ]
+      text(
+        """
+        You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
+        want to use it to view this episode for free right now?
+        """
+      )
     ),
 
     form(
       [action(path(to: .useEpisodeCredit(episode.id))), method(.post)],
-      [
-        input(
-          [
-            type(.submit),
-            Styleguide.class([Class.pf.components.button(color: .black, size: .small)]),
-            value(useCreditCTA)
-          ]
-        )
-      ]
+      input(
+        [
+          type(.submit),
+          Styleguide.class([Class.pf.components.button(color: .black, size: .small)]),
+          value(useCreditCTA)
+        ]
+      )
     )
   ]
 }
@@ -468,18 +469,16 @@ private func pluralizedEpisodeCredits(count: Int) -> String {
     : "\(count) episode credits"
 }
 
-private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episode -> [Node] in
+private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episode in
   guard case .loggedOut = permission else { return [] }
 
   return [
     p(
       [Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
-      [
-        """
-        Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
-        subscriber-only episode of your choosing!
-        """
-      ]
+      """
+      Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
+      subscriber-only episode of your choosing!
+      """
     ),
 
     a(
@@ -487,12 +486,12 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
         href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
         Styleguide.class([Class.pf.components.button(color: .black)])
       ],
-      ["Sign up for free episode"]
+      "Sign up for free episode"
     )
   ]
 }
 
-private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
+private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode in
   [
     div(
       [
@@ -508,38 +507,38 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
       [
         h3(
           [Styleguide.class([Class.pf.type.responsiveTitle4])],
-          [.raw("Subscribe to Point&#8209;Free")]
+          .raw("Subscribe to Point&#8209;Free")
         ),
 
         p(
           [Styleguide.class([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          [.text(String(describing: subscribeBlurb(for: permission)))]
+          text(String(describing: subscribeBlurb(for: permission)))
         ),
 
         a(
           [href(path(to: .pricing(nil, expand: nil))), Styleguide.class([Class.pf.components.button(color: .purple)])],
-          ["See subscription options"]
-        )
-        ]
-        <> loginLink.view((user, episode))
-        <> creditBlurb.view((permission, episode))
-        <> signUpBlurb.view((permission, episode))
+          "See subscription options"
+        ),
+        loginLink.view((user, episode)),
+        creditBlurb.view((permission, episode)),
+        signUpBlurb.view((permission, episode))
+      ]
     ),
     divider
   ]
 }
 
-private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
+private let loginLink = View<(Database.User?, Episode)> { user, ep in
   guard user == nil else { return [] }
 
   return [
-    span([Styleguide.class([Class.padding([.mobile: [.left: 2]])])], ["or"]),
+    span([Styleguide.class([Class.padding([.mobile: [.left: 2]])])], "or"),
     a(
       [
         href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
         Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
       ],
-      ["Log in"]
+      "Log in"
     )
   ]
 }
@@ -547,8 +546,10 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
 private let episodeInfoView = View<(EpisodePermission, Episode)> { permission, ep in
   div(
     [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view(ep)
-    + sectionsMenu(episode: ep, permission: permission)
+    [
+      topLevelEpisodeInfoView.view(ep),
+      sectionsMenu(episode: ep, permission: permission)
+    ]
   )
 }
 
@@ -578,7 +579,7 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
     ]
 }
 
-private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [Node] {
+private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> Node {
   guard let permission = permission, isEpisodeViewable(for: permission) else { return [] }
 
   let exercisesNode: Node? = episode.exercises.isEmpty
@@ -602,10 +603,9 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [
           [`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#transcript")],
           ["Transcript"]
         ),
-        exercisesNode,
-        referencesNode
-        ]
-        .compactMap(id)
+        exercisesNode ?? [],
+        referencesNode ?? []
+      ]
     )
   ]
 }
@@ -628,20 +628,23 @@ private let transcriptView = View<([Episode.TranscriptBlock], Bool)> { blocks, i
   )
 }
 
-private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> [Node] {
+private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
   struct State { var nodes: [Node] = [], titleCount = 0 }
 
-  return blocks
-    .reduce(into: State()) { state, block in
-      if case .title = block.type { state.titleCount += 1 }
-      state.nodes += state.titleCount <= 1 || isEpisodeViewable
-        ? transcriptBlockView.view(block)
-        : []
-    }
-    .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+  return [
+    ...blocks
+      .reduce(into: State()) { state, block in
+        if case .title = block.type { state.titleCount += 1 }
+        state.nodes += state.titleCount <= 1 || isEpisodeViewable
+          ? [transcriptBlockView.view(block)]
+          : []
+      }
+      .nodes,
+    subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+  ]
 }
 
-private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
+private func subscriberCalloutView(isEpisodeViewable: Bool) -> Node {
   guard !isEpisodeViewable else { return [] }
 
   return [
@@ -693,10 +696,11 @@ private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
   ]
 }
 
-private let referencesView = View<[Episode.Reference]> { references -> [Node] in
+private let referencesView = View<[Episode.Reference]> { references in
   guard !references.isEmpty else { return [] }
 
-  return dividerView.view(unit) + [
+  return [
+    dividerView.view(unit),
     div(
       [
         `class`(
@@ -715,7 +719,7 @@ private let referencesView = View<[Episode.Reference]> { references -> [Node] in
           ["References"]
         ),
         ul(
-          zip(1..., references).map { idx, reference in
+          ...zip(1..., references).map { idx, reference in
             li(
               [
                 id("reference-\(idx)"),
@@ -781,10 +785,11 @@ private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String
     .joined(separator: " • ")
 }
 
-private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
+private let exercisesView = View<[Episode.Exercise]> { exercises in
   guard !exercises.isEmpty else { return [] }
 
-  return dividerView.view(unit) + [
+  return [
+    dividerView.view(unit),
     div(
       [
         `class`(
@@ -803,7 +808,7 @@ private let exercisesView = View<[Episode.Exercise]> { exercises -> [Node] in
           ["Exercises"]
         ),
         ol(
-          zip(1..., exercises).map {
+          ...zip(1..., exercises).map {
             li(
               [id("exercise-\($0)")],
               [div([markdownBlock($1.body)])]
@@ -863,8 +868,10 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
 
   case .paragraph:
     return div(
-      timestampLinkView.view(block.timestamp)
-        + [markdownBlock(block.content)]
+      [
+        timestampLinkView.view(block.timestamp),
+        markdownBlock(block.content)
+      ]
     )
 
   case .title:
@@ -898,14 +905,14 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
             style(objectFit(.cover))
           ],
 
-          sources.map { source(src: $0) }
+          ...sources.map { source(src: $0) }
         )
       ]
     )
   }
 }
 
-private let timestampLinkView = View<Int?> { timestamp -> [Node] in
+private let timestampLinkView = View<Int?> { timestamp in
   guard let timestamp = timestamp else { return [] }
 
   return [
@@ -914,7 +921,8 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
         timestampLinkAttributes(timestamp: timestamp, useAnchors: false) + [
           Styleguide.class([Class.pf.components.videoTimeLink])
         ],
-        [.text(timestampLabel(for: timestamp))])
+        text(timestampLabel(for: timestamp))
+      )
       ])
   ]
 }

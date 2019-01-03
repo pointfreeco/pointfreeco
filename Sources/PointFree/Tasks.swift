@@ -88,7 +88,7 @@ func welcomeEmailView(_ subject: String, _ content: View<Database.User>) -> View
   }
 }
 
-private let wrapper = { view in
+private let wrapper = { (view: Node) -> Node in
   [
     emailTable([style(contentTableStyles)], [
       tr([
@@ -109,7 +109,7 @@ func welcomeEmail1(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail1Content = View<Database.User> { user -> [Node] in
+let welcomeEmail1Content = View<Database.User> { user in
   [
     markdownBlock(
       """
@@ -137,7 +137,7 @@ let welcomeEmail1Content = View<Database.User> { user -> [Node] in
         * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
         """
         )
-      : nil
+      : []
     ,
     markdownBlock(
       """
@@ -146,9 +146,8 @@ let welcomeEmail1Content = View<Database.User> { user -> [Node] in
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    <> hostSignOffView.view(unit)
+    hostSignOffView.view(unit)
+  ]
 }
 
 func welcomeEmail2(_ user: Database.User) -> Email {
@@ -160,7 +159,7 @@ func welcomeEmail2(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail2Content = View<Database.User> { user -> [Node] in
+let welcomeEmail2Content = View<Database.User> { user in
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -190,7 +189,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
         completely for free! Just visit [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
         )
-      : nil
+      : []
     ,
     markdownBlock(
       """
@@ -201,9 +200,8 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    <> hostSignOffView.view(unit)
+    hostSignOffView.view(unit)
+  ]
 }
 
 func welcomeEmail3(_ user: Database.User) -> Email {
@@ -215,7 +213,7 @@ func welcomeEmail3(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail3Content = View<Database.User> { user -> [Node] in
+let welcomeEmail3Content = View<Database.User> { user in
   [
     markdownBlock(
       """
@@ -232,7 +230,7 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
         \(user.episodeCreditCount), so it's time to cash one in! 🤑
         """
         )
-      : nil
+      : []
     ,
     markdownBlock(
       """
@@ -265,9 +263,8 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    <> hostSignOffView.view(unit)
+    hostSignOffView.view(unit)
+  ]
 }
 
 private let subscribeButton = p(

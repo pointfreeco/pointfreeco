@@ -10,30 +10,31 @@ import Prelude
 import View
 
 let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
+  [
+    menuAndLogoHeaderView.view((mountainsStyle, currentUser, subscriberState, currentRoute)),
+    gridRow([Styleguide.class([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
 
-  menuAndLogoHeaderView.view((mountainsStyle, currentUser, subscriberState, currentRoute))
-    + [
-      gridRow([Styleguide.class([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
-
-        gridColumn(sizes: [.mobile: 5], [Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-          img(base64: heroMountainSvgBase64, type: .image(.svg), alt: "", [Styleguide.class([Class.size.width100pct])])
-          ]),
-
-        gridColumn(sizes: [.mobile: 2], [Styleguide.class([Class.position.z1])], [
-          div([Styleguide.class([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))], [
-            .text(mountainsStyle.heroTagline)
-            ])
-          ]),
-
-        gridColumn(sizes: [.mobile: 5], [Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))], [
-          img(
-            base64: heroMountainSvgBase64,
-            type: .image(.svg),
-            alt: "",
-            [Styleguide.class([Class.pf.components.reflectX, Class.size.width100pct])]
-          )
-          ]),
-        ])
+      gridColumn(
+        sizes: [.mobile: 5],[Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))],
+        img(base64: heroMountainSvgBase64, type: .image(.svg), alt: "", [Styleguide.class([Class.size.width100pct])])
+      ),
+      gridColumn(
+        sizes: [.mobile: 2], [Styleguide.class([Class.position.z1])],
+        div(
+          [Styleguide.class([Class.type.align.center, Class.pf.type.body.leading]), style(margin(leftRight: .rem(-6)))],
+          text(mountainsStyle.heroTagline)
+        )
+      ),
+      gridColumn(
+        sizes: [.mobile: 5], [Styleguide.class([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))],
+        img(
+          base64: heroMountainSvgBase64,
+          type: .image(.svg),
+          alt: "",
+          [Styleguide.class([Class.pf.components.reflectX, Class.size.width100pct])]
+        )
+      ),
+      ])
   ]
 }
 
@@ -71,23 +72,23 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
     ])
 }
 
-private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute -> [Node] in
+private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
   return [
     a(
       [href(path(to: .blog(.index))), Styleguide.class([navLinkClasses])],
-      ["Blog"]
+      "Blog"
     ),
-
     subscriberState.isNonSubscriber
-      ? a([href(path(to: .pricing(nil, expand: nil))), Styleguide.class([navLinkClasses])], ["Subscribe"])
-      : nil,
-
+      ? a([href(path(to: .pricing(nil, expand: nil))), Styleguide.class([navLinkClasses])], "Subscribe")
+      : [],
     currentUser == nil
       ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)
-      : a([href(path(to: .account(.index))), Styleguide.class([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
-    ]
-    .compactMap(id)
+      : a(
+        [href(path(to: .account(.index))), Styleguide.class([Class.type.medium, Class.pf.colors.link.black])],
+        "Account"
+    )
+  ]
 }
 
 

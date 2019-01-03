@@ -6,7 +6,7 @@ extension Stripe {
   public enum html {
     public static let formId = "card-form"
 
-    public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> [Node] {
+    public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> Node {
       let expand = formStyle == .full
 
       return [
@@ -57,10 +57,15 @@ extension Stripe {
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 3], [
               div([Styleguide.class([Class.padding([.desktop: [.left: 1]])])], [
-                select([Styleguide.class([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
-                  let (country, code) = pair
-                  return option([value(code)], country)
-                })
+                select([Styleguide.class([blockSelectClass]), name("stripe_address_country")], [
+                  option([disabled(true), selected(true), value("")], "Country"),
+                  .fragment(
+                    countries.map { pair in
+                      let (country, code) = pair
+                      return option([value(code)], country)
+                    }
+                  )
+                  ])
                 ]),
               ]),
             ]),
@@ -91,7 +96,7 @@ extension Stripe {
       ]
     }
 
-    public static let errors = [
+    public static let errors = ...[
       div(
         [
           Styleguide.class([Class.pf.colors.fg.red]),
@@ -102,7 +107,7 @@ extension Stripe {
       )
     ]
 
-    public static var scripts: [Node] {
+    public static var scripts: Node {
       return [
         script([src(Current.stripe.js)]),
         script(
