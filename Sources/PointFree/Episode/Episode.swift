@@ -150,3 +150,17 @@ public struct Episode {
     }
   }
 }
+
+func reference(forEpisode episode: Episode, additionalBlurb: String) -> Episode.Reference {
+  return Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+    \(additionalBlurb)
+
+    > \(episode.blurb)
+    """,
+    link: url(to: .episode(.left(episode.slug))),
+    publishedAt: episode.publishedAt,
+    title: episode.title
+  )
+}
