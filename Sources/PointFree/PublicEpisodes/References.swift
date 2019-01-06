@@ -148,6 +148,20 @@ Apple's eponymous WWDC talk on protocol-oriented programming:
     title: "Protocol-Oriented Programming in Swift"
   )
 
+  static let railwayOrientedProgramming = Episode.Reference(
+    author: "Scott Wlaschin",
+    blurb: """
+This talk explains a nice metaphor to understand how `flatMap` unlocks stateless error handling.
+
+> When you build real world applications, you are not always on the "happy path". You must deal with validation, logging, network and service errors, and other annoyances. How do you manage all this within a functional paradigm, when you can't use exceptions, or do early returns, and when you have no stateful data?
+>
+> This talk will demonstrate a common approach to this challenge, using a fun and easy-to-understand "railway oriented programming" analogy. You'll come away with insight into a powerful technique that handles errors in an elegant way using a simple, self-documenting design.
+""",
+    link: "https://vimeo.com/97344498",
+    publishedAt: referenceDateFormatter.date(from: "2014-06-04"),
+    title: "Railway Oriented Programming — error handling in functional languages"
+  )
+
   static let randomZalgoGenerator = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
