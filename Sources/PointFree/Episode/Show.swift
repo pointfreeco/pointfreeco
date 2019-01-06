@@ -727,7 +727,16 @@ private let referencesView = View<[Episode.Reference]> { references -> [Node] in
                     Class.pf.type.responsiveTitle5,
                     Class.margin([.mobile: [.bottom: 0]])
                     ])],
-                  [.text(reference.title)]
+                  [
+                    a(
+                      [
+                        href(reference.link),
+                        target(.blank),
+                        rel(.init(rawValue: "noopener noreferrer"))
+                      ],
+                      [.text(reference.title)]
+                    )
+                  ]
                 ),
                 strong(
                   [Styleguide.class([Class.pf.type.body.small])],
