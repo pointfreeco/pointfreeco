@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 66884
+Content-Length: 67047
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2135,7 +2135,11 @@ that timestamp jumps the video to that spot.</p>
                            ts-m-r1
                            lh-1
                            m-mb0">
-                  Functional Programming is Fun!
+                  <a href="https://www.pointfree.co"
+                     target="_blank"
+                     rel="noopener noreferrer">
+                    Functional Programming is Fun!
+                  </a>
                 </h4>
                 <strong class="fg-black
                                normal
