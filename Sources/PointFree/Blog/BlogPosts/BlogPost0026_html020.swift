@@ -64,7 +64,7 @@ While this rendering format is not suitable for rendering in a browser (it intro
 
 Speaking of snapshot testing, swift-html now comes with a helper module, `HtmlSnapshotTesting`!
 
-A couple months ago we had [our first official release](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) of [SnapshotTesting](\(gitHubUrl(to: .repo(.html)))), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
+A couple months ago we had [our first official release](\(path(to: .blog(.show(post0023_openSourcingSnapshotTesting))))) of [SnapshotTesting](\(gitHubUrl(to: .repo(.html)))), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
 
 You can snapshot test swift-html's `Node` type using the `html` strategy.
 """,
