@@ -1,6 +1,5 @@
 import Html
-import HtmlPrettyPrint
-import HtmlTestSupport
+import HtmlSnapshotTesting
 @testable import HttpPipeline
 import Prelude
 import SnapshotTesting
