@@ -8,19 +8,15 @@ Announcing swift-html 0.2.0: support for CocoaPods, Carthage, SnapshotTesting, a
   contentBlocks: [
     .init(
       content: """
-Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](\(gitHubUrl(to: .repo(.html)))).
+Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](\(gitHubUrl(to: .repo(.html)))), a Swift DSL for type-safe, extensible, and transformable HTML documents. In fact, this very page was rendered with it!
 
-It contain a number of new features and fixes, including patches from the community!
+We've been battle-testing this library for awhile now, long before its [initial release last September](\(path(to: .blog(.show(post0016_announcingSwiftHtml))))). Today's release contains a number of new features and fixes, including several patches from the community!
 
-## What's new?
+### Support for new platforms and dependency managers
 
-### iOS Support
+While we imagined swift-html to be most useful on the server with server-side Swift becoming more and more popular, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now support being embedded in your iOS, tvOS, and watchOS apps. Now you can render HTML in a type-safe manner just about anywhere!
 
-While we imagined swift-html to be most useful on the server, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now  support being embedded in iOS, tvOS, and watchOS.
-
-### Carthage and CocoaPods Support
-
-After adding support for iOS we figured it'd be best to add support for its popular dependency management tools!
+We've also made installing swift-html on these platforms easier than ever by adding support for [Carthage](https://github.com/Carthage/Carthage) and [CocoaPods](https://cocoapods.org). Check out [the installation instructions](https://github.com/pointfreeco/swift-html#installation) to get started.
 
 ### `debugRender`
 
@@ -58,7 +54,7 @@ debugRender(doc)
     ),
     .init(
       content: """
-While this rendering format is not suitable for rendering in a browser (it introduces additional whitespace), it's perfect for reading and snapshot testing.
+While this rendering format is not suitable for the browser (it can introduce additional, unwanted whitespace), it's perfect for reading and snapshot testing.
 
 ### `HtmlSnapshotTesting`
 
@@ -73,9 +69,24 @@ You can snapshot test swift-html's `Node` type using the `html` strategy.
     ),
     .init(
       content: """
+import Html
 import HtmlSnapshotTesting
+import SnpashotTesting
+import XCTest
 
-assertSnapshot(matching: doc, as: .html)
+class MyWebPageTests: XCTestCase {
+  func testMyWebPage() {
+    let doc = html([
+      body([
+        h1(["Welcome!"]),
+        p(["You’ve found our site!"])
+        ])
+      ])
+
+    // Assert against an HTML reference on disk
+    assertSnapshot(matching: doc, as: .html)
+  }
+}
 """,
       timestamp: nil,
       type: .code(lang: .swift)
@@ -84,7 +95,7 @@ assertSnapshot(matching: doc, as: .html)
       content: """
 ### Bug fixes and performance improvements
 
-This release also contains a few bug fixes from the community, and rendering performance improvements thanks to a heavy dose of `inout`.
+This release also contains a few bug fixes from the community and free rendering performance improvements thanks to a heavy dose of `inout`.
 
 ---
 
@@ -97,5 +108,5 @@ To give swift-html a try today, check out [its GitHub page](\(gitHubUrl(to: .rep
   coverImage: Current.assets.emailHeaderImgSrc,
   id: 26,
   publishedAt: .init(timeIntervalSince1970: 1546938000),
-  title: "swift-html 0.2.0"
+  title: "Announcing swift-html 0.2.0"
 )
