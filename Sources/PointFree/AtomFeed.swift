@@ -1,6 +1,5 @@
 import Foundation
 import Html
-import HtmlPrettyPrint
 import HttpPipeline
 import Prelude
 import View

@@ -1,6 +1,5 @@
 import Html
-import HtmlTestSupport
-import HtmlPrettyPrint
+import HtmlSnapshotTesting
 import SnapshotTesting
 import Prelude
 import XCTest
@@ -100,7 +99,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
     #if !os(Linux)
-    update(&Current, \.renderHtml .~ { prettyPrint($0) })
+    update(&Current, \.renderHtml .~ { debugRender($0) })
 
     let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
