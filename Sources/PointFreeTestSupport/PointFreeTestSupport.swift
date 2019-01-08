@@ -5,7 +5,6 @@ import Cryptor
 import Either
 import Foundation
 import Html
-import HtmlPrettyPrint
 import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
@@ -492,7 +491,7 @@ extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
       let renderHtml = Current.renderHtml
-      update(&Current, \.renderHtml .~ { prettyPrint($0) })
+      update(&Current, \.renderHtml .~ { debugRender($0) })
       let conn = io.perform()
       update(&Current, \.renderHtml .~ renderHtml)
       return conn
