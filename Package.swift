@@ -14,8 +14,8 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("8cbc934")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.1.0"),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("a494cde")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("bf58a5c")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", from: "0.2.0"),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("0243fbe")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
@@ -31,7 +31,6 @@ let package = Package(
         "Html",
         "HtmlCssSupport",
         "HtmlPlainTextPrint",
-        "HtmlPrettyPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Optics",
@@ -47,7 +46,7 @@ let package = Package(
       name: "PointFreeTests",
       dependencies: [
         "CssTestSupport",
-        "HtmlTestSupport",
+        "HtmlSnapshotTesting",
         "HttpPipelineTestSupport",
         "PointFree",
         "PointFreeTestSupport",
@@ -58,7 +57,6 @@ let package = Package(
       name: "PointFreeTestSupport",
       dependencies: [
         "Either",
-        "HtmlPrettyPrint",
         "HttpPipelineTestSupport",
         "PointFree",
         "Prelude",
