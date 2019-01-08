@@ -73,6 +73,8 @@ You can snapshot test swift-html's `Node` type using the `html` strategy.
     ),
     .init(
       content: """
+import HtmlSnapshotTesting
+
 assertSnapshot(matching: doc, as: .html)
 """,
       timestamp: nil,
