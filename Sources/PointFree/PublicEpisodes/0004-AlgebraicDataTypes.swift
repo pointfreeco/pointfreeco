@@ -399,7 +399,7 @@ With this intuition, let's wipe away all of the names of the types, and just foc
   ),
   Episode.TranscriptBlock(
     content: """
-We call `A * B` the product of the types `A` and `B`. And now that we are thinking a little bit more abstractly, we don't can even loosen our intuition around `Pair<A, B>` being the literal multiplication of the number of elements in `A` and `B`. While that is indeed true for types with finitely many values, that doesn't really help us with things like:
+We call `A * B` the product of the types `A` and `B`. And now that we are thinking a little bit more abstractly, we can even loosen our intuition around `Pair<A, B>` being the literal multiplication of the number of elements in `A` and `B`. While that is indeed true for types with finitely many values, that doesn't really help us with things like:
 """,
     timestamp: nil,
     type: .paragraph
