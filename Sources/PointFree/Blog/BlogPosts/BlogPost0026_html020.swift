@@ -16,7 +16,7 @@ It contain a number of new features and fixes, including patches from the commun
 
 ### iOS Support
 
-While we imagined swift-html to be most useful on the server, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now  support being embedded in iOS, tvOS, and watchOS
+While we imagined swift-html to be most useful on the server, [a pull request](https://github.com/pointfreeco/swift-html/pull/27) let us know that there was interest in using our library on iOS, as well! With the help of the community we now  support being embedded in iOS, tvOS, and watchOS.
 
 ### Carthage and CocoaPods Support
 
