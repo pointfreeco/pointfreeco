@@ -33,12 +33,12 @@ extension SiteTag {
 
 public let pillTagsView = View<[SiteTag]> { tags in
   ol(
-    [Styleguide.class([Class.display.inlineBlock, Class.type.list.reset])],
+    [`class`([Class.display.inlineBlock, Class.type.list.reset])],
     tags
       .sorted(by: their(^\.name))
       .map(
         episodeTagView.view
-          >>> curry(li)([Styleguide.class([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
+          >>> curry(li)([`class`([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])])
     )
   )
 }
@@ -47,7 +47,7 @@ private let episodeTagView = View<SiteTag> { tag in
   a(
     [
       href("#"),
-      Styleguide.class([
+      `class`([
         Class.h6,
         Class.padding([.mobile: [.leftRight: 2, .topBottom: 1]]),
         Class.border.pill,

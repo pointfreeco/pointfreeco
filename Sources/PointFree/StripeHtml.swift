@@ -13,22 +13,22 @@ extension Stripe {
         input([name("token"), type(.hidden)]),
         div([`class`(expand ? [] : [Class.display.none])], [
           input([
-            Styleguide.class([blockInputClass]),
+            `class`([blockInputClass]),
             name("stripe_name"),
             placeholder("Billing Name"),
             type(.text),
             ]),
           input([
-            Styleguide.class([blockInputClass]),
+            `class`([blockInputClass]),
             name("stripe_address_line1"),
             placeholder("Address"),
             type(.text),
             ]),
           gridRow([
             gridColumn(sizes: [.mobile: 12, .desktop: 4], [
-              div([Styleguide.class([Class.padding([.desktop: [.right: 1]])])], [
+              div([`class`([Class.padding([.desktop: [.right: 1]])])], [
                 input([
-                  Styleguide.class([blockInputClass]),
+                  `class`([blockInputClass]),
                   name("stripe_address_city"),
                   placeholder("City"),
                   type(.text),
@@ -36,9 +36,9 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([Styleguide.class([Class.padding([.desktop: [.leftRight: 1]])])], [
+              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
-                  Styleguide.class([blockInputClass]),
+                  `class`([blockInputClass]),
                   name("stripe_address_state"),
                   placeholder("State"),
                   type(.text),
@@ -46,9 +46,9 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 2], [
-              div([Styleguide.class([Class.padding([.desktop: [.leftRight: 1]])])], [
+              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
                 input([
-                  Styleguide.class([blockInputClass]),
+                  `class`([blockInputClass]),
                   name("stripe_address_zip"),
                   placeholder("Zip"),
                   type(.text),
@@ -56,8 +56,8 @@ extension Stripe {
                 ])
               ]),
             gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([Styleguide.class([Class.padding([.desktop: [.left: 1]])])], [
-                select([Styleguide.class([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
+              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
+                select([`class`([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
                   let (country, code) = pair
                   return option([value(code)], country)
                 })
@@ -65,7 +65,7 @@ extension Stripe {
               ]),
             ]),
           input([
-            Styleguide.class([blockInputClass]),
+            `class`([blockInputClass]),
             name("vatNumber"),
             placeholder("VAT Number (EU Customers Only)"),
             type(.text),
@@ -73,7 +73,7 @@ extension Stripe {
           ]),
         div([`class`(couponId != nil ? [] : [Class.display.none])], [
           input([
-            Styleguide.class([blockInputClass]),
+            `class`([blockInputClass]),
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
@@ -82,7 +82,7 @@ extension Stripe {
           ]),
         div(
           [
-            Styleguide.class([stripeInputClass]),
+            `class`([stripeInputClass]),
             data("stripe-key", Current.envVars.stripe.publishableKey),
             id("card-element"),
           ],
@@ -94,7 +94,7 @@ extension Stripe {
     public static let errors = [
       div(
         [
-          Styleguide.class([Class.pf.colors.fg.red]),
+          `class`([Class.pf.colors.fg.red]),
           id("card-errors"),
           role(.alert),
         ],

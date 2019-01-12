@@ -181,7 +181,7 @@ let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)>
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
-        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         titleRowView.view(subscription)
           <> formRowView.view((subscription, seatsTaken))
           <> cancelRowView.view(subscription)
@@ -191,10 +191,10 @@ let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)>
 }
 
 private let titleRowView = View<Stripe.Subscription> { subscription in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
+        h1([`class`([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
         p([
           "You are currently enrolled in the ", strong([.text(subscription.plan.name)]), " plan. ",
           "Your subscription will ",
@@ -214,11 +214,11 @@ private let titleRowView = View<Stripe.Subscription> { subscription in
 private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
 
   return form(
-    [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), Styleguide.class([Class.margin([.mobile: [.bottom: 3]])])],
+    [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), `class`([Class.margin([.mobile: [.bottom: 3]])])],
     changeSeatsRowView.view((subscription, seatsTaken))
       <> changeBillingIntervalRowView.view(subscription)
       <> [
-        hr([Styleguide.class([Class.pf.components.divider])])
+        hr([`class`([Class.pf.components.divider])])
     ]
   )
 }
@@ -236,9 +236,9 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
       strong([.text(String(subscription.quantity))]), " seats"]), " available."
   ]
 
-  return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
+  return gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
-      h3([Styleguide.class([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
+      h3([`class`([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
       p(description + [" ",
         """
         Additional costs will be billed immediately, prorated against the remaining time of
@@ -268,7 +268,7 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
         ),
         step(1),
         value(clamp(1..<Pricing.validTeamQuantities.upperBound) <| subscription.quantity),
-        Styleguide.class([numberSpinner, Class.pf.colors.fg.black])
+        `class`([numberSpinner, Class.pf.colors.fg.black])
         ])
       ])
     ])
@@ -283,9 +283,9 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
     ? "Change to yearly billing?"
     : "Change to monthly billing?"
 
-  return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
-      h3([Styleguide.class([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
+      h3([`class`([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
       p([
         """
         Your regular billing rate will be reflected below. Upgrades and downgrades will take
@@ -313,13 +313,13 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
       )
       + [
       button(
-        [Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
+        [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
         [subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"]
       ),
       a(
         [
           href(path(to: .account(.index))),
-          Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
+          `class`([Class.pf.components.button(color: .black, style: .underline)])
         ],
         ["Never mind"]
       )
@@ -329,11 +329,11 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
 }
 
 private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
-  return gridColumn(sizes: [.mobile: 16], [Styleguide.class([Class.pf.colors.bg.white])], [
-    label([`for`(billing.rawValue), Styleguide.class([Class.display.block, Class.margin([.mobile: [.topBottom: 3]])])], [
+  return gridColumn(sizes: [.mobile: 16], [`class`([Class.pf.colors.bg.white])], [
+    label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.topBottom: 3]])])], [
       gridRow([style(flex(direction: .columnReverse))], [
         input([
-          Styleguide.class([Class.h3]),
+          `class`([Class.h3]),
           checked(isChecked(billing, pricing)),
           id(billing.rawValue),
           name("billing"),
@@ -341,11 +341,11 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { bil
           value(billing.rawValue),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h2([Styleguide.class([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
+          h2([`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
             "$",
             span(
               [
-                Styleguide.class([priceClass]),
+                `class`([priceClass]),
                 data("price-individual", String(defaultPricing(for: .individual, billing: billing))),
                 data("price-team", String(defaultPricing(for: .team, billing: billing)))
               ],
@@ -356,7 +356,7 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { bil
             ]),
           ]),
         gridColumn(sizes: [.mobile: 12], [], [
-          h6([Styleguide.class([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
+          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
             .text(title(for: billing))
             ])
           ])
@@ -383,9 +383,9 @@ private let cancelRowView = View<Stripe.Subscription> { subscription -> [Node] i
   guard subscription.isRenewing else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
-        h3([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Cancel your subscription?"]),
+        h3([`class`([Class.pf.type.responsiveTitle4])], ["Cancel your subscription?"]),
         p([
           "If you cancel your subscription, you’ll lose access to Point-Free on ",
           strong([.text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
@@ -396,13 +396,13 @@ private let cancelRowView = View<Stripe.Subscription> { subscription -> [Node] i
           ]),
         form([action(path(to: .account(.subscription(.cancel)))), method(.post)], [
           button(
-            [Styleguide.class([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
+            [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
             ["Yes, cancel my subscription"]
           ),
           a(
             [
               href(path(to: .account(.index))),
-              Styleguide.class([Class.pf.components.button(color: .black, style: .underline)])
+              `class`([Class.pf.components.button(color: .black, style: .underline)])
             ],
             ["Never mind"]
           )
