@@ -101,7 +101,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState in
 }
 
 private let episodesListView = View<ArraySlice<Episode>> { eps in
-  ...eps.flatMap(episodeRowView.view)
+  .fragment(eps.flatMap(episodeRowView.view))
 }
 
 private let episodeRowView = View<Episode> { ep in

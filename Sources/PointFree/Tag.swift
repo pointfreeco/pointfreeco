@@ -34,14 +34,16 @@ extension SiteTag {
 public let pillTagsView = View<[SiteTag]> { tags in
   ol(
     [Styleguide.class([Class.display.inlineBlock, Class.type.list.reset])],
-    ...tags
-      .sorted(by: their(^\.name))
-      .map { tag in
-        li(
-          [Styleguide.class([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])],
-          episodeTagView.view(tag)
-        )
-    }
+    .fragment(
+      tags
+        .sorted(by: their(^\.name))
+        .map { tag in
+          li(
+            [Styleguide.class([Class.display.inlineBlock, Class.margin([.mobile: [.right: 1, .bottom: 1]])])],
+            episodeTagView.view(tag)
+          )
+      }
+    )
   )
 }
 

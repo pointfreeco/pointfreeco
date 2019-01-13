@@ -13,7 +13,7 @@ public func addGoogleAnalytics(_ node: Node) -> Node {
       tag == "head" ? [children, googleAnalytics] : addGoogleAnalytics(children)
     )
   case let .fragment(children):
-    return ...children.map(addGoogleAnalytics)
+    return .fragment(children.map(addGoogleAnalytics))
   case .doctype, .raw, .text:
     return node
   }

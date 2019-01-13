@@ -42,7 +42,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
     [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
     gridColumn(
       sizes: [.mobile: 12, .desktop: 9], [HtmlCssSupport.style(margin(leftRight: .auto))],
-      div(...newPosts.map(newBlogPostView.view)),
+      div(.fragment(newPosts.map(newBlogPostView.view))),
       oldBlogPostsView.view(oldPosts)
     )
   )
@@ -68,7 +68,7 @@ private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts in
     ),
     div(
       [Styleguide.class([Class.padding([.mobile: [.bottom: 3]])])],
-      ...posts.map(oldBlogPostView.view)
+      .fragment(posts.map(oldBlogPostView.view))
     )
   ]
 }

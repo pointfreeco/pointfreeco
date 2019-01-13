@@ -20,10 +20,12 @@ private let freeEpisodeView = View<Database.User> { _ in
   [
     h2("Send free episode email"),
     ul(
-      ...Current.episodes()
-        .filter((!) <<< ^\.subscriberOnly)
-        .sorted(by: their(^\.sequence))
-        .map { li(freeEpisodeEmailRowView.view($0)) }
+      .fragment(
+        Current.episodes()
+          .filter((!) <<< ^\.subscriberOnly)
+          .sorted(by: their(^\.sequence))
+          .map { li(freeEpisodeEmailRowView.view($0)) }
+      )
     )
   ]
 }

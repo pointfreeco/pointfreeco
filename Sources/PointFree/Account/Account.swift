@@ -131,12 +131,12 @@ private let creditsView = View<AccountData> { data in
         div(
           [
             h2([Styleguide.class([Class.pf.type.responsiveTitle4])], "Episode Credits"),
-            p([
-              "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
-              .text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
-              "remaining."
-              ])
-            ,
+            p(
+              "Episode credits allow you to see subscriber-only episodes before commiting to a full",
+              "subscription. You currently have ",
+              .text(pluralizedCredits(count: data.currentUser.episodeCreditCount)),
+              " remaining."
+            ),
             subscribeCallout.view(data.subscriberState),
             episodeCreditsView.view(data.episodeCredits)
           ]
@@ -147,16 +147,13 @@ private let creditsView = View<AccountData> { data in
 }
 
 private let subscribeCallout = View<SubscriberState> { subscriberState in
-
   guard !subscriberState.isActiveSubscriber else { return [] }
 
-  return [
-    p([
-      "To get all past and future episodes, ",
-      a([Styleguide.class([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], "become"),
-      " a subscriber today!"
-      ])
-  ]
+  return p(
+    "To get all past and future episodes, ",
+    a([Styleguide.class([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], "become"),
+    " a subscriber today!"
+  )
 }
 
 private func pluralizedCredits(count: Int) -> String {
@@ -170,36 +167,23 @@ private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits in
 
   return [
     h3(
-      [
-        `class`(
-          [
-            Class.pf.type.responsiveTitle5,
-            Class.padding([.mobile: [.top: 2]])
-          ]
-        ),
-        ],
-      ["Chosen episodes"]
+      [`class`([Class.pf.type.responsiveTitle5, Class.padding([.mobile: [.top: 2]])])],
+      "Chosen episodes"
     ),
-
     ul(
-      ...episodes(from: credits)
-        .reversed()
-        .map { ep in li(episodeLinkView.view(ep)) }
+      .fragment(
+        episodes(from: credits)
+          .reversed()
+          .map { ep in li(episodeLinkView.view(ep)) }
+      )
     )
   ]
 }
 
 private let episodeLinkView = View<Episode> { episode in
   a(
-    [
-      href(path(to: .episode(.left(episode.slug)))),
-      `class`(
-        [
-          Class.pf.colors.link.purple
-        ]
-      )
-    ],
-    [.text("#\(episode.sequence): \(episode.title)")]
+    [href(path(to: .episode(.left(episode.slug)))), `class`([Class.pf.colors.link.purple])],
+    text("#\(episode.sequence): \(episode.title)")
   )
 }
 
@@ -295,19 +279,24 @@ private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberSt
   return [
     // TODO: hide `welcomeEmails` for subscribers?
     p(["Receive email for:"]),
-    p([Styleguide.class([Class.padding([.mobile: [.left: 1]])])], ...newsletters.map { newsletter in
-      label([Styleguide.class([Class.display.block])], [
-        input(
-          [
-            type(.checkbox),
-            name("emailSettings[\(newsletter.rawValue)]"),
-            checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
-            Styleguide.class([Class.margin([.mobile: [.right: 1]])])
-          ]
-        ),
-        .text(newsletterDescription(newsletter))
-        ])
-      }
+    p(
+      [Styleguide.class([Class.padding([.mobile: [.left: 1]])])],
+      .fragment(
+        newsletters.map { newsletter in
+          label(
+            [Styleguide.class([Class.display.block])],
+            input(
+              [
+                type(.checkbox),
+                name("emailSettings[\(newsletter.rawValue)]"),
+                checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
+                Styleguide.class([Class.margin([.mobile: [.right: 1]])])
+              ]
+            ),
+            .text(newsletterDescription(newsletter))
+          )
+        }
+      )
     )
   ]
 }
@@ -394,16 +383,14 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
         `class`([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.top: 2]])]),
         style(backgroundColor(.rgb(0xff, 0xff, 0xdd)))
         ],
-        [
-          "Because you are on a monthly subscription plan, you get access to the last ",
-          .text("\(nonYearlyMaxRssItems) episodes in your RSS feed. To unlock access to all "),
-          "episodes in this feed, please consider ",
-          a(
-            [`class`([Class.pf.type.underlineLink]), href(path(to: .account(.subscription(.change(.show)))))],
-            ["upgrading"]
-          ),
-          " to a yearly subscription."
-        ]
+        "Because you are on a monthly subscription plan, you get access to the last ",
+        .text("\(nonYearlyMaxRssItems) episodes in your RSS feed. To unlock access to all "),
+        "episodes in this feed, please consider ",
+        a(
+          [`class`([Class.pf.type.underlineLink]), href(path(to: .account(.subscription(.change(.show)))))],
+          "upgrading"
+        ),
+        " to a yearly subscription."
       )
       ]
     : []
@@ -618,19 +605,22 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
 private let subscriptionTeamRow = View<AccountData> { data in
   guard !data.teammates.isEmpty && data.isTeamSubscription else { return [] }
 
-  return gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+  return gridRow(
+    [Styleguide.class([subscriptionInfoRowClass])],
     gridColumn(sizes: [.mobile: 3], div(p("Team"))),
     gridColumn(
       sizes: [.mobile: 9],
       div(
         [Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        [
-          p("Your current team:"),
-          ...data.teammates.flatMap { teammateRowView.view((data.currentUser, $0)) }
-        ]
+        p("Your current team:"),
+        .fragment(
+          data.teammates.flatMap {
+            teammateRowView.view((data.currentUser, $0))
+          }
+        )
       )
     )
-    ])
+  )
 }
 
 private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
@@ -639,49 +629,78 @@ private let teammateRowView = View<(Database.User, Database.User)> { currentUser
     ? "\(teammate.displayName) (you)"
     : teammate.name.map { "\($0) (\(teammate.email))" } ?? teammate.email.rawValue
 
-  return gridRow([
-    gridColumn(sizes: [.mobile: 8], [p([.text(teammateLabel)])]),
-    gridColumn(sizes: [.mobile: 4], [Styleguide.class([Class.grid.end(.desktop)])], [
-      form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
-        ]),
-      ])
-    ])
+  return gridRow(
+    gridColumn(sizes: [.mobile: 8], p(.text(teammateLabel))),
+    gridColumn(
+      sizes: [.mobile: 4], [Styleguide.class([Class.grid.end(.desktop)])],
+      form(
+        [action(path(to: .team(.remove(teammate.id)))), method(.post)],
+        p(
+          input(
+            [
+              type(.submit),
+              `class`([Class.pf.components.button(color: .purple, size: .small)]),
+              value("Remove")
+            ]
+          )
+        )
+      )
+    )
+  )
 }
 
 private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites in
   guard !invites.isEmpty else { return [] }
 
-  return gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+  return gridRow(
+    [Styleguide.class([subscriptionInfoRowClass])],
     gridColumn(sizes: [.mobile: 3], div(p("Invites"))),
     gridColumn(
       sizes: [.mobile: 9],
       div(
         [Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
-        [
-          p("These teammates have been invited, but have not yet accepted."),
-          ...invites.flatMap(inviteRowView.view)
-        ]
+        p("These teammates have been invited, but have not yet accepted."),
+        .fragment(invites.flatMap(inviteRowView.view))
       )
     )
-    ])
+  )
 }
 
 private let inviteRowView = View<Database.TeamInvite> { invite in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-      p([.text(invite.email.rawValue)])
-      ]),
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [Styleguide.class([Class.grid.end(.desktop)])], [
-      form([action(path(to: .invite(.resend(invite.id)))), method(.post), Styleguide.class([Class.display.inlineBlock])], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
-          ])]),
-
-      form([action(path(to: .invite(.revoke(invite.id)))), method(.post), Styleguide.class([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
-          ])]),
-      ]),
-    ])
+  gridRow(
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], p(.text(invite.email.rawValue))),
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 6], [Styleguide.class([Class.grid.end(.desktop)])],
+      form(
+        [action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])],
+        p(
+          input(
+            [
+              type(.submit),
+              `class`([Class.pf.components.button(color: .purple, size: .small)]),
+              value("Resend")
+            ]
+          )
+        )
+      ),
+      form(
+        [
+          action(path(to: .invite(.revoke(invite.id)))),
+          method(.post),
+          `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])
+        ],
+        p(
+          input(
+            [
+              type(.submit),
+              `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]),
+              value("Revoke")
+            ]
+          )
+        )
+      )
+    )
+  )
 }
 
 private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates in

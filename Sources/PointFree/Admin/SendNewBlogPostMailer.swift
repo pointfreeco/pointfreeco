@@ -18,10 +18,12 @@ let showNewBlogPostEmailMiddleware =
 
 private let showNewBlogPostView = View<Database.User> { _ in
   ul(
-    ...Current.blogPosts()
-      .sorted(by: their(^\.id, >))
-      .prefix(upTo: 3)
-      .map { li(newBlogPostEmailRowView.view($0)) }
+    .fragment(
+      Current.blogPosts()
+        .sorted(by: their(^\.id, >))
+        .prefix(upTo: 3)
+        .map { li(newBlogPostEmailRowView.view($0)) }
+    )
   )
 }
 

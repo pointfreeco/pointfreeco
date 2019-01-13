@@ -18,10 +18,12 @@ let showNewEpisodeEmailMiddleware =
 
 private let showNewEpisodeView = View<Database.User> { _ in
   ul(
-    ...Current.episodes()
-      .sorted(by: their(^\.sequence, >))
-      .prefix(upTo: 1)
-      .map { li(newEpisodeEmailRowView.view($0)) }
+    .fragment(
+      Current.episodes()
+        .sorted(by: their(^\.sequence, >))
+        .prefix(upTo: 1)
+        .map { li(newEpisodeEmailRowView.view($0)) }
+    )
   )
 }
 

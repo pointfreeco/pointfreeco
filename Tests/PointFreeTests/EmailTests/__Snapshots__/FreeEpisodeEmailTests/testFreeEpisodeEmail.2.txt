@@ -4,7 +4,7 @@
 
 ### Episode #2 is now free!
 
- <http://localhost:8080/episodes/ep2-proof-in-functions>#### Proof in Functions
+ <http://localhost:8080/episodes/ep2-proof-in-functions>#### Proof in Functions)
 
 This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.

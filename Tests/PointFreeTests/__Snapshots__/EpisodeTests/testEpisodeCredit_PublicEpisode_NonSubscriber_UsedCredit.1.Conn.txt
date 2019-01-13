@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 83407
+Content-Length: 83406
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2460,7 +2460,7 @@ video.play();event.preventDefault();"
                           vjs-big-play-centered"
                    style="position:absolute"
                    controls
-                   playslinline
+                   playsinline
                    autoplay
                    poster
                    data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">

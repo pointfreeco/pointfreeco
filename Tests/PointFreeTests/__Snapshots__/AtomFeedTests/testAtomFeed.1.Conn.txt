@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/atom.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 1586
+Content-Length: 1518
 Content-Type: application/atom+xml
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -18,11 +18,7 @@ X-XSS-Protection: 1; mode=block
   </title>
   <link href="http://localhost:8080/feed/atom.xml"
         rel="self">
-    
-  </link>
   <link href="http://localhost:8080">
-    
-  </link>
   <updated>
     2017-06-20T12:00:00Z
   </updated>
@@ -42,8 +38,6 @@ X-XSS-Protection: 1; mode=block
       Proof in Functions
     </title>
     <link href="http://localhost:8080/episodes/ep2-proof-in-functions">
-      
-    </link>
     <updated>
       2016-12-20T00:00:00Z
     </updated>
@@ -60,8 +54,6 @@ text, no markdown allowed. Here is some more text just to have some filler.]]>
       Type-Safe HTML in Swift
     </title>
     <link href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
-      
-    </link>
     <updated>
       2017-06-20T12:00:00Z
     </updated>

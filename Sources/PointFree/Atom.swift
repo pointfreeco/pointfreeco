@@ -33,27 +33,25 @@ public let atomLayout = View<AtomFeed> { atomFeed in
     ),
     feed(
       [xmlns("http://www.w3.org/2005/Atom")],
-      [
-        title(atomFeed.title),
-        element(
-          "link",
-          [
-            .init("href", atomFeed.atomUrl) as Attribute<Void>,
-            .init("rel", "self")
-          ],
-          // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-          [""]
-        ),
+      title(atomFeed.title),
+      element(
+        "link",
+        [
+          .init("href", atomFeed.atomUrl) as Attribute<Void>,
+          .init("rel", "self")
+        ],
         // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-        element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], ""),
-        atomFeed.entries.map(^\.updated).max().map(updated) ?? [],
-        id(atomFeed.siteUrl),
-        author([
-          name(atomFeed.author.name),
-          email(atomFeed.author.email)
-          ]),
-        ...atomFeed.entries.flatMap(atomEntry.view)
-      ]
+        ""
+      ),
+      // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+      element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], ""),
+      atomFeed.entries.map(^\.updated).max().map(updated) ?? [],
+      id(atomFeed.siteUrl),
+      author(
+        name(atomFeed.author.name),
+        email(atomFeed.author.email)
+      ),
+      .fragment(atomFeed.entries.map(atomEntry.view))
     )
   ]
 }
@@ -79,8 +77,8 @@ extension Rel {
   public static let `self` = Rel(rawValue: "self")
 }
 
-public func feed(_ attribs: [Attribute<Tag.Feed>], _ content: Node) -> Node {
-  return element("feed", attribs, content)
+public func feed(_ attribs: [Attribute<Tag.Feed>], _ content: Node...) -> Node {
+  return element("feed", attribs, .fragment(content))
 }
 
 public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
@@ -103,8 +101,8 @@ public func id(_ id: String) -> Node {
   return element("id", text(id))
 }
 
-public func author(_ content: ChildOf<Tag.Author>) -> Node {
-  return element("author", content.rawValue)
+public func author(_ content: ChildOf<Tag.Author>...) -> Node {
+  return element("author", ChildOf.fragment(content).rawValue)
 }
 
 public func name(_ name: String) -> ChildOf<Tag.Author> {
@@ -119,8 +117,8 @@ public func entry(_ content: Node) -> Node {
   return element("entry", content)
 }
 
-public func content(_ attribs: [Attribute<Tag.Content>], _ content: Node) -> Node {
-  return element("content", attribs, .raw("<![CDATA[" + render(content).string + "]]>"))
+public func content(_ attribs: [Attribute<Tag.Content>], _ content: Node...) -> Node {
+  return element("content", attribs, .raw("<![CDATA[" + render(.fragment(content)).string + "]]>"))
 }
 
 public func type(_ type: String) -> Attribute<Tag.Content> {

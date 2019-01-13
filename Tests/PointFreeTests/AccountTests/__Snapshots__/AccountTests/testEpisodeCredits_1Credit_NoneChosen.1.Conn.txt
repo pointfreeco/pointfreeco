@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 48210
+Content-Length: 48228
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1882,9 +1882,10 @@ html {
                   Episode Credits
                 </h2>
                 <p>
-                  Episode credits allow you to see subscriber-only episodes before commiting to a full 
-                  subscription. You currently have 1 credit 
-                  remaining.
+                  Episode credits allow you to see subscriber-only episodes before commiting to a full
+                  subscription. You currently have 
+                  1 credit
+                   remaining.
                 </p>
                 <p>
                   To get all past and future episodes, 

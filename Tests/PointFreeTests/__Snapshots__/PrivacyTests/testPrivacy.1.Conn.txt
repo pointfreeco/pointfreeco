@@ -2,7 +2,7 @@ GET http://localhost:8080/privacy
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51066
+Content-Length: 51070
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1863,8 +1863,8 @@ protect against unauthorized access, alteration, disclosure or destruction of yo
 information, username, password, transaction information and data stored on our Site.
           </p>
           <p>
-            Sensitive and private data exchange between the Site and its Users happens over a SSL secured
-communication channel and is encrypted and protected with digital signatures.
+              Sensitive and private data exchange between the Site and its Users happens over a SSL secured
+  communication channel and is encrypted and protected with digital signatures.
           </p>
           <h2 class="fg-black
                      bold

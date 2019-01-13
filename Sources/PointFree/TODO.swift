@@ -433,6 +433,6 @@ func playsinline(_ value: Bool) -> Attribute<Tag.Video> {
 
 extension Node: Semigroup {
   public static func <> (lhs: Node, rhs: Node) -> Node {
-    return ...[lhs, rhs]
+    return .fragment([lhs, rhs])
   }
 }

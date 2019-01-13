@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 120328
+Content-Length: 120327
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1981,7 +1981,7 @@ text, no markdown.">
                             absolute
                             bg-gray650"
                      controls
-                     playslinline
+                     playsinline
                      poster
                      style="object-fit:cover">
               </video>

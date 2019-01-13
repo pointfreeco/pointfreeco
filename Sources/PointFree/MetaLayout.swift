@@ -100,16 +100,17 @@ public struct Metadata<A> {
       }
       ?? []
 
-    return (
-      ...[
-        description,
-        image,
-        title,
-        type,
-        twitterCard,
-        twitterSite,
-        url,
-      ]
+    return ChildOf
+      .fragment(
+        [
+          description,
+          image,
+          title,
+          type,
+          twitterCard,
+          twitterSite,
+          url
+        ]
       ).rawValue
   }
 }
@@ -124,7 +125,7 @@ private func inserted<A>(meta: Metadata<A>, intoHeadOf node: Node) -> Node {
     return .element(tag, attribs, inserted(meta: meta, intoHeadOf: children))
 
   case let .fragment(children):
-    return ...children.map { inserted(meta: meta, intoHeadOf: $0) }
+    return .fragment(children.map { inserted(meta: meta, intoHeadOf: $0) })
 
   case .comment, .doctype, .raw, .text:
     return node

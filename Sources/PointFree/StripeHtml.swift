@@ -96,16 +96,18 @@ extension Stripe {
       ]
     }
 
-    public static let errors = ...[
-      div(
-        [
-          Styleguide.class([Class.pf.colors.fg.red]),
-          id("card-errors"),
-          role(.alert),
-        ],
-        []
-      )
-    ]
+    public static let errors = Node.fragment(
+      [
+        div(
+          [
+            Styleguide.class([Class.pf.colors.fg.red]),
+            id("card-errors"),
+            role(.alert),
+            ],
+          []
+        )
+      ]
+    )
 
     public static var scripts: Node {
       return [

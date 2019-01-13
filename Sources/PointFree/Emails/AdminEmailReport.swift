@@ -40,9 +40,11 @@ let adminEmailReportContent = View<(String, [Database.User], Int)> { type, error
             ]),
 
           ul(
-            ...erroredUsers.map { user in
-              li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
-            }
+            .fragment(
+              erroredUsers.map { user in
+                li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
+              }
+            )
           )
           ])
         ])

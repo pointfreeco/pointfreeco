@@ -3,12 +3,12 @@ import Html
 
 // TODO: extract to grid helpers in design systems?
 public func gridRow(_ attribs: [Attribute<Tag.Div>], _ content: Node...) -> Node {
-  return div(addClasses([Class.grid.row], to: attribs), ...content)
+  return div(addClasses([Class.grid.row], to: attribs), .fragment(content))
 }
 
 // TODO: extract to grid helpers in design systems?
 public func gridRow(_ content: Node...) -> Node {
-  return gridRow([], ...content)
+  return gridRow([], .fragment(content))
 }
 
 // TODO: extract to grid helpers in design systems?
@@ -19,7 +19,7 @@ public func gridColumn(sizes: [Breakpoint: Int]) -> (Node) -> Node {
 }
 
 public func gridColumn(sizes: [Breakpoint: Int], _ content: Node...) -> Node {
-  return gridColumn(sizes: sizes, [], ...content)
+  return gridColumn(sizes: sizes, [], .fragment(content))
 }
 
 public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: Node...) -> Node {
@@ -28,7 +28,7 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>]
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
       .map(Class.grid.col(_:_:))
 
-  return div(addClasses(classes, to: attribs), ...content)
+  return div(addClasses(classes, to: attribs), .fragment(content))
 }
 
 // todo: where should this live?

@@ -75,12 +75,14 @@ private func navItems<A>(_ views: [View<A>]) -> View<A> {
   return View { a in
     ul(
       [Styleguide.class([navListClass])],
-      ...views.map { v in
-        li(
-          [Styleguide.class([navListItemClass])],
-          v.view(a)
-        )
-      }
+      .fragment(
+        views.map { v in
+          li(
+            [Styleguide.class([navListItemClass])],
+            v.view(a)
+          )
+        }
+      )
     )
   }
 }

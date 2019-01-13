@@ -250,17 +250,19 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
 }
 
 private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool)> { blocks, isEpisodeViewable in
-  div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
+  div(
+    [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])],
     h6(
       [Styleguide.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-      ["Chapters"]
+      "Chapters"
     ),
-    ...blocks
-      .filter { $0.type == .title && $0.timestamp != nil }
-      .flatMap { block in
-        tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
-    }
-    ]
+    .fragment(
+      blocks
+        .filter { $0.type == .title && $0.timestamp != nil }
+        .flatMap { block in
+          tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
+      }
+    )
   )
 }
 
@@ -632,14 +634,16 @@ private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bo
   struct State { var nodes: [Node] = [], titleCount = 0 }
 
   return [
-    ...blocks
-      .reduce(into: State()) { state, block in
-        if case .title = block.type { state.titleCount += 1 }
-        state.nodes += state.titleCount <= 1 || isEpisodeViewable
-          ? [transcriptBlockView.view(block)]
-          : []
-      }
-      .nodes,
+    .fragment(
+      blocks
+        .reduce(into: State()) { state, block in
+          if case .title = block.type { state.titleCount += 1 }
+          state.nodes += state.titleCount <= 1 || isEpisodeViewable
+            ? [transcriptBlockView.view(block)]
+            : []
+        }
+        .nodes
+    ),
     subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
   ]
 }
@@ -719,66 +723,68 @@ private let referencesView = View<[Episode.Reference]> { references in
           ["References"]
         ),
         ul(
-          ...zip(1..., references).map { idx, reference in
-            li(
-              [
-                id("reference-\(idx)"),
-                `class`([Class.margin([.mobile: [.bottom: 3]])])
-              ],
-              [
-                h4(
-                  [Styleguide.class([
-                    Class.pf.type.responsiveTitle5,
-                    Class.margin([.mobile: [.bottom: 0]])
-                    ])],
-                  [
-                    a(
-                      [
-                        href(reference.link),
-                        target(.blank),
-                        rel(.init(rawValue: "noopener noreferrer"))
-                      ],
-                      [.text(reference.title)]
-                    )
-                  ]
-                ),
-                strong(
-                  [Styleguide.class([Class.pf.type.body.small])],
-                  [.text(topLevelReferenceMetadata(reference))]
-                ),
-                div([markdownBlock(reference.blurb ?? "")]),
-                div(
-                  [
-                    a(
-                      [
-                        href(reference.link),
-                        `class`([Class.pf.colors.link.purple]),
-                        target(.blank),
-                        rel(.init(rawValue: "noopener noreferrer"))
-                      ],
-                      [
-                        img(
-                          base64: newWindowSvgBase64(fill: "#974DFF"),
-                          type: .image(.svg),
-                          alt: "",
-                          [
-                            `class`([
-                              Class.align.middle,
-                              Class.margin([.mobile: [.right: 1]])
-                              ]),
-                            width(14),
-                            height(14),
-                            style(margin(top: .px(-2)))
-                          ]
-                        ),
-                        .text(reference.link)
-                      ]
-                    )
-                  ]
-                )
-              ]
-            )
-          }
+          .fragment(
+            zip(1..., references).map { idx, reference in
+              li(
+                [
+                  id("reference-\(idx)"),
+                  `class`([Class.margin([.mobile: [.bottom: 3]])])
+                ],
+                [
+                  h4(
+                    [Styleguide.class([
+                      Class.pf.type.responsiveTitle5,
+                      Class.margin([.mobile: [.bottom: 0]])
+                      ])],
+                    [
+                      a(
+                        [
+                          href(reference.link),
+                          target(.blank),
+                          rel(.init(rawValue: "noopener noreferrer"))
+                        ],
+                        [.text(reference.title)]
+                      )
+                    ]
+                  ),
+                  strong(
+                    [Styleguide.class([Class.pf.type.body.small])],
+                    [.text(topLevelReferenceMetadata(reference))]
+                  ),
+                  div([markdownBlock(reference.blurb ?? "")]),
+                  div(
+                    [
+                      a(
+                        [
+                          href(reference.link),
+                          `class`([Class.pf.colors.link.purple]),
+                          target(.blank),
+                          rel(.init(rawValue: "noopener noreferrer"))
+                        ],
+                        [
+                          img(
+                            base64: newWindowSvgBase64(fill: "#974DFF"),
+                            type: .image(.svg),
+                            alt: "",
+                            [
+                              `class`([
+                                Class.align.middle,
+                                Class.margin([.mobile: [.right: 1]])
+                                ]),
+                              width(14),
+                              height(14),
+                              style(margin(top: .px(-2)))
+                            ]
+                          ),
+                          .text(reference.link)
+                        ]
+                      )
+                    ]
+                  )
+                ]
+              )
+            }
+          )
         )
       ]
     )
@@ -817,12 +823,14 @@ private let exercisesView = View<[Episode.Exercise]> { exercises in
           ["Exercises"]
         ),
         ol(
-          ...zip(1..., exercises).map {
-            li(
-              [id("exercise-\($0)")],
-              [div([markdownBlock($1.body)])]
-            )
-          }
+          .fragment(
+            zip(1..., exercises).map {
+              li(
+                [id("exercise-\($0)")],
+                [div([markdownBlock($1.body)])]
+              )
+            }
+          )
         )
       ]
     )
@@ -914,7 +922,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
             style(objectFit(.cover))
           ],
 
-          ...sources.map { source(src: $0) }
+          .fragment(sources.map { source(src: $0) })
         )
       ]
     )
