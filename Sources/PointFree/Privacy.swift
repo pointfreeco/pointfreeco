@@ -30,21 +30,20 @@ let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.U
 )
 
 private let privacyView = View<Prelude.Unit> { _ in
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+  gridRow(
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))],
       div(
         [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        [
-          h1([`class`([Class.pf.type.responsiveTitle2])], text(title)),
-          privacyPolicy,
-          p(
-            [`class`([Class.padding([.mobile: [.top: 2]])])],
-            "This document was last updated on January 7, 2018."
-          )
-        ]
+        h1([`class`([Class.pf.type.responsiveTitle2])], text(title)),
+        privacyPolicy,
+        p(
+          [`class`([Class.padding([.mobile: [.top: 2]])])],
+          "This document was last updated on January 7, 2018."
+        )
       )
-      ])
-    ])
+    )
+  )
 }
 
 private let privacyPolicy = Node.fragment(
@@ -162,7 +161,7 @@ private let howWeProtectYourInformation = Node.fragment(
       """
       Sensitive and private data exchange between the Site and its Users happens over a SSL secured
       communication channel and is encrypted and protected with digital signatures.
-    """
+      """
     )
   ]
 )

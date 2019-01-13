@@ -164,26 +164,28 @@ public enum PricingFormStyle {
 
 let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?)> { currentUser, pricing, formStyle, coupon, route in
 
-  gridRow([`class`([pricingOptionsRowClass])], [
-    gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
-      div([
+  gridRow(
+    [`class`([pricingOptionsRowClass])],
+    gridColumn(
+      sizes: [.mobile: 12, .desktop: 7], [],
+      div(
         h2(
           [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
-          [.raw("Subscribe to Point&#8209;Free")]
+          .raw("Subscribe to Point&#8209;Free")
         ),
 
         p(
           [`class`([Class.pf.colors.fg.green])],
-          [
-            """
-            Become a subscriber to unlock every full episode and explore new functional programming concepts
-            as episodes are released.
-            """
-          ]
+          """
+          Become a subscriber to unlock every full episode and explore new functional programming concepts
+          as episodes are released.
+          """
         ),
 
-        gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])], [
-          gridColumn(sizes: [.mobile: 12], [], [
+        gridRow(
+          [`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]])])],
+          gridColumn(
+            sizes: [.mobile: 12], [],
             form(
               [
                 action(path(to: .subscribe(nil))),
@@ -197,11 +199,11 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe
               pricingIntervalRowView.view((pricing, coupon)),
               pricingFooterView.view((currentUser, formStyle, coupon?.id, route))
             )
-            ])
-          ])
-        ])
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }
 
 private let _whatToExpectBoxClass = CssSelector.class("what-to-expect")
@@ -241,27 +243,25 @@ private let topicsView = View<Prelude.Unit> { _ in
   [
     h4(
       [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.raw("What kind of topics will you cover?")]
+      .raw("What kind of topics will you cover?")
     ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      [
-        """
-        We will of course cover all of the classic topics such as functors, monads and applicatives (oh
-        my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
-        of some of the things we’re excited to talk about
-        """
-      ]
+      """
+      We will of course cover all of the classic topics such as functors, monads and applicatives (oh
+      my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
+      of some of the things we’re excited to talk about
+      """
     ),
 
     ul(
-      [`class`([Class.pf.colors.fg.green, Class.type.align.start])], [
-        li(["Pure functions and side effects"]),
-        li(["Code reuse through function composition"]),
-        li(["Maximizing use of the type-system"]),
-        li(["Turning programming problems into algebraic problems"]),
-        ])
+      [`class`([Class.pf.colors.fg.green, Class.type.align.start])],
+      li("Pure functions and side effects"),
+      li("Code reuse through function composition"),
+      li("Maximizing use of the type-system"),
+      li("Turning programming problems into algebraic problems")
+    )
   ]
 }
 
@@ -269,19 +269,17 @@ private let suggestATopic = View<Prelude.Unit> { _ in
   [
     h4(
       [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.raw("Can I suggest a topic?")]
+      .raw("Can I suggest a topic?")
     ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      [
-        "Sure thing! Send us an ",
-        a(
-          [mailto("support@pointfree.co"), style(faqLinkStyles)],
-          ["email"]
-        ),
-        "."
-      ]
+      "Sure thing! Send us an ",
+      a(
+        [mailto("support@pointfree.co"), style(faqLinkStyles)],
+        "email"
+      ),
+      "."
     )
   ]
 }
@@ -290,17 +288,15 @@ private let studentDiscounts = View<Prelude.Unit> { _ in
   [
     h4(
       [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.text("Do you offer student discounts?")]
+      .text("Do you offer student discounts?")
     ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      [
-        "We do! If you ",
-        a([mailto("support@pointfree.co?subject=Student%20Discount"), style(faqLinkStyles)], ["email us"]),
-        " proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the",
-        " individual plan."
-      ]
+      "We do! If you ",
+      a([mailto("support@pointfree.co?subject=Student%20Discount"), style(faqLinkStyles)], "email us"),
+      " proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the",
+      " individual plan."
     )
   ]
 }
@@ -309,19 +305,17 @@ private let whoAreYou = View<Prelude.Unit> { _ in
   [
     h4(
       [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
-      [.raw("Who are you?")]
+      .raw("Who are you?")
     ),
 
     p(
       [`class`([Class.pf.colors.fg.white])],
-      [
-        "We’re ",
-        a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], ["Brandon Williams"]),
-        " and ",
-        a([href("https://www.stephencelis.com"), style(faqLinkStyles)], ["Stephen Celis"]),
-        ". We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of ",
-        "talks on various topics. Check out some of our talks here:"
-      ]
+      "We’re ",
+      a([href("http://www.fewbutripe.com"), style(faqLinkStyles)], "Brandon Williams"),
+      " and ",
+      a([href("https://www.stephencelis.com"), style(faqLinkStyles)], "Stephen Celis"),
+      ". We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of ",
+      "talks on various topics. Check out some of our talks here:"
     ),
 
     ul(
@@ -371,11 +365,15 @@ private let pricingTabsView = View<Pricing> { pricing in
       value("individual"),
       role(.button)
       ]),
-    label([`for`(selectors.input.0), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
+    label(
+      [`for`(selectors.input.0), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)],
       "For you"
-      ]),
+    ),
 
-    span([`class`([Class.padding([.mobile: [.leftRight: 2]]), Class.pf.colors.fg.gray850])], ["or"]),
+    span(
+      [`class`([Class.padding([.mobile: [.leftRight: 2]]), Class.pf.colors.fg.gray850])],
+      "or"
+    ),
 
     input([
       checked(pricing.isTeam),
@@ -386,9 +384,10 @@ private let pricingTabsView = View<Pricing> { pricing in
       value("team"),
       role(.button)
       ]),
-    label([`for`(selectors.input.1), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)], [
+    label(
+      [`for`(selectors.input.1), `class`([Class.pf.components.pricingTab]), style(extraTabStyles)],
       "For your team"
-      ])
+    )
   ]
 }
 
@@ -440,9 +439,12 @@ func isChecked(_ billing: Pricing.Billing, _ pricing: Pricing) -> Bool {
 let teamPriceClass = CssSelector.class("team-price")
 
 private let individualPricingColumnView = View<(Pricing.Billing, Pricing, Stripe.Coupon?)> { billing, pricing, coupon -> Node in
-  return gridColumn(sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])], [
-    label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])], [
-      gridRow([style(flex(direction: .columnReverse))], [
+  return gridColumn(
+    sizes: [.mobile: 6], [`class`([Class.pf.colors.bg.white])],
+    label(
+      [`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.all: 3]])])],
+      gridRow(
+        [style(flex(direction: .columnReverse))],
         input([
           checked(isChecked(billing, pricing)),
           id(billing.rawValue),
@@ -450,30 +452,36 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing, Stripe
           type(.radio),
           value(billing.rawValue),
           ]),
-        gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
-            span([`class`([selectors.content.0])], [
-              .text(individualPricingText(for: billing, coupon: coupon)),
-              ]),
-            span([`class`([selectors.content.1])], [
+        gridColumn(
+          sizes: [.mobile: 12], [],
+          h2(
+            [`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])],
+            span(
+              [`class`([selectors.content.0])],
+              .text(individualPricingText(for: billing, coupon: coupon))
+            ),
+            span(
+              [`class`([selectors.content.1])],
               "$",
               span(
                 [`class`([teamPriceClass]), data("price", String(defaultTeamPricing(for: billing)))],
-                [.text(String(defaultTeamPricing(for: billing) * clamp(Pricing.validTeamQuantities)(pricing.quantity)))]
+                .text(String(defaultTeamPricing(for: billing) * clamp(Pricing.validTeamQuantities)(pricing.quantity)))
               ),
               "/",
-              .text(pricingInterval(for: billing)),
-              ]),
-            ]),
-          ]),
-        gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
+              .text(pricingInterval(for: billing))
+            )
+          )
+        ),
+        gridColumn(
+          sizes: [.mobile: 12], [],
+          h6(
+            [`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])],
             .text(title(for: billing))
-            ]),
-          ]),
-        ]),
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }
 
 private let quantityRowView = View<Pricing> { pricing -> Node in

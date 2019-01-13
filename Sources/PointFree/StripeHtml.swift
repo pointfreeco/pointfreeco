@@ -11,7 +11,8 @@ extension Stripe {
 
       return [
         input([name("token"), type(.hidden)]),
-        div([`class`(expand ? [] : [Class.display.none])], [
+        div(
+          [`class`(expand ? [] : [Class.display.none])],
           input([
             `class`([blockInputClass]),
             name("stripe_name"),
@@ -24,40 +25,49 @@ extension Stripe {
             placeholder("Address"),
             type(.text),
             ]),
-          gridRow([
-            gridColumn(sizes: [.mobile: 12, .desktop: 4], [
-              div([`class`([Class.padding([.desktop: [.right: 1]])])], [
+          gridRow(
+            gridColumn(
+              sizes: [.mobile: 12, .desktop: 4],
+              div(
+                [`class`([Class.padding([.desktop: [.right: 1]])])],
                 input([
                   `class`([blockInputClass]),
                   name("stripe_address_city"),
                   placeholder("City"),
                   type(.text),
                   ])
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              )
+            ),
+            gridColumn(
+              sizes: [.mobile: 12, .desktop: 3],
+              div(
+                [`class`([Class.padding([.desktop: [.leftRight: 1]])])],
                 input([
                   `class`([blockInputClass]),
                   name("stripe_address_state"),
                   placeholder("State"),
                   type(.text),
                   ])
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 2], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              )
+            ),
+            gridColumn(
+              sizes: [.mobile: 12, .desktop: 2],
+              div(
+                [`class`([Class.padding([.desktop: [.leftRight: 1]])])],
                 input([
                   `class`([blockInputClass]),
                   name("stripe_address_zip"),
                   placeholder("Zip"),
                   type(.text),
-                  ]),
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
-                select([`class`([blockSelectClass]), name("stripe_address_country")], [
+                  ])
+              )
+            ),
+            gridColumn(
+              sizes: [.mobile: 12, .desktop: 3],
+              div(
+                [`class`([Class.padding([.desktop: [.left: 1]])])],
+                select(
+                  [`class`([blockSelectClass]), name("stripe_address_country")],
                   option([disabled(true), selected(true), value("")], "Country"),
                   .fragment(
                     countries.map { pair in
@@ -65,47 +75,42 @@ extension Stripe {
                       return option([value(code)], country)
                     }
                   )
-                  ])
-                ]),
-              ]),
-            ]),
+                )
+              )
+            )
+          ),
           input([
             `class`([blockInputClass]),
             name("vatNumber"),
             placeholder("VAT Number (EU Customers Only)"),
             type(.text),
-            ]),
-          ]),
-        div([`class`(couponId != nil ? [] : [Class.display.none])], [
+            ])
+        ),
+        div(
+          [`class`(couponId != nil ? [] : [Class.display.none])],
           input([
             `class`([blockInputClass]),
             name("coupon"),
             placeholder("Coupon Code"),
             type(.text),
             value(couponId?.rawValue ?? "")
-            ]),
-          ]),
+            ])
+        ),
         div(
           [
             `class`([stripeInputClass]),
             data("stripe-key", Current.envVars.stripe.publishableKey),
             id("card-element"),
-          ],
-          []
+          ]
         )
       ]
     }
 
-    public static let errors = Node.fragment(
+    public static let errors = div(
       [
-        div(
-          [
-            `class`([Class.pf.colors.fg.red]),
-            id("card-errors"),
-            role(.alert),
-            ],
-          []
-        )
+        `class`([Class.pf.colors.fg.red]),
+        id("card-errors"),
+        role(.alert),
       ]
     )
 

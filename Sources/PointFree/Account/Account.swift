@@ -404,7 +404,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data in
       [`class`([Class.padding([.mobile: [.bottom: 4]])])],
       gridColumn(
         sizes: [.mobile: 12],
-        div([
+        div(
           h2([`class`([Class.pf.type.responsiveTitle4])], "Subscription overview"),
 
           gridColumn(
@@ -416,7 +416,7 @@ private let subscriptionOwnerOverview = View<AccountData> { data in
               subscriptionPaymentInfoView.view(subscription)
             ]
           )
-          ])
+        )
       )
     )
   ]

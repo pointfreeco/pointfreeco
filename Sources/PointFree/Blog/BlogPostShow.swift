@@ -106,26 +106,27 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState in
 
 let blogPostContentView = View<BlogPost> { post in
   [
-    h1([`class`([Class.pf.type.responsiveTitle3])], a(
-      [href(url(to: .blog(.show(post))))],
-      text(post.title)
-      )
+    h1(
+      [`class`([Class.pf.type.responsiveTitle3])],
+      a([href(url(to: .blog(.show(post))))], text(post.title))
     ),
-    div([`class`([Class.flex.flex, Class.flex.items.baseline]), style(flex(direction: .row))], [
+    div(
+      [`class`([Class.flex.flex, Class.flex.items.baseline]), style(flex(direction: .row))],
       div(p(text(episodeDateFormatter.string(from: post.publishedAt)))),
       div(
         [`class`([Class.margin([.mobile: [.left: 1]])])],
         twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")
       )
-      ]),
-    div([
-      style(width(.rem(3)) <> height(.px(2))),
-      `class`([Class.pf.colors.bg.green, Class.margin([.mobile: [.bottom: 3]])])
-      ], []
+    ),
+    div(
+      [
+        style(width(.rem(3)) <> height(.px(2))),
+        `class`([Class.pf.colors.bg.green, Class.margin([.mobile: [.bottom: 3]])])
+      ]
     ),
     div(
       [`class`([Class.pf.colors.bg.white])],
-      .fragment(post.contentBlocks.flatMap(transcriptBlockView.view))
+      .fragment(post.contentBlocks.map(transcriptBlockView.view))
     )
   ]
 }

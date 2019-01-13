@@ -224,7 +224,7 @@ private let videoView = View<(Episode, isEpisodeViewable: Bool)> { episode, isEp
     [
       video(
         [
-          Html.id("episode-video"),
+          id("episode-video"),
           `class`([
             innerVideoContainerClass,
             videoJsClasses
@@ -259,7 +259,7 @@ private let episodeTocView = View<(blocks: [Episode.TranscriptBlock], isEpisodeV
     .fragment(
       blocks
         .filter { $0.type == .title && $0.timestamp != nil }
-        .flatMap { block in
+        .map { block in
           tocChapterView.view((block.content, block.timestamp ?? 0, isEpisodeViewable))
       }
     )
@@ -506,25 +506,23 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
           ]
         )
       ],
-      [
-        h3(
-          [`class`([Class.pf.type.responsiveTitle4])],
-          .raw("Subscribe to Point&#8209;Free")
-        ),
+      h3(
+        [`class`([Class.pf.type.responsiveTitle4])],
+        .raw("Subscribe to Point&#8209;Free")
+      ),
 
-        p(
-          [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          text(String(describing: subscribeBlurb(for: permission)))
-        ),
+      p(
+        [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+        text(String(describing: subscribeBlurb(for: permission)))
+      ),
 
-        a(
-          [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-          "See subscription options"
-        ),
-        loginLink.view((user, episode)),
-        creditBlurb.view((permission, episode)),
-        signUpBlurb.view((permission, episode))
-      ]
+      a(
+        [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+        "See subscription options"
+      ),
+      loginLink.view((user, episode)),
+      creditBlurb.view((permission, episode)),
+      signUpBlurb.view((permission, episode))
     ),
     divider
   ]
@@ -548,10 +546,8 @@ private let loginLink = View<(Database.User?, Episode)> { user, ep in
 private let episodeInfoView = View<(EpisodePermission, Episode)> { permission, ep in
   div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    [
-      topLevelEpisodeInfoView.view(ep),
-      sectionsMenu(episode: ep, permission: permission)
-    ]
+    topLevelEpisodeInfoView.view(ep),
+    sectionsMenu(episode: ep, permission: permission)
   )
 }
 
@@ -571,14 +567,14 @@ let topLevelEpisodeInfoView = View<Episode> { ep in
   [
     strong(
       [`class`([Class.pf.type.responsiveTitle8])],
-      [.text(topLevelEpisodeMetadata(ep))]
+      .text(topLevelEpisodeMetadata(ep))
     ),
     h1(
       [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
-      [a([href(path(to: .episode(.left(ep.slug))))], [.text(ep.title)])]
+      a([href(path(to: .episode(.left(ep.slug))))], .text(ep.title))
     ),
-    div([`class`([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
-    ]
+    div([`class`([Class.pf.type.body.leading])], markdownBlock(ep.blurb))
+  ]
 }
 
 private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> Node {
@@ -587,29 +583,25 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> N
   let exercisesNode: Node? = episode.exercises.isEmpty
     ? nil
     : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#exercises")],
-        ["Exercises"])
+        "Exercises")
 
   let referencesNode: Node? = episode.references.isEmpty
     ? nil
     : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#references")],
-        ["References"])
+        "References")
 
   // Don't show quick link menu if at least one of exercises or references are present.
   guard exercisesNode != nil || referencesNode != nil else { return [] }
 
-  return [
-    div(
-      [`class`([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
-      [
-        a(
-          [`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#transcript")],
-          ["Transcript"]
-        ),
-        exercisesNode ?? [],
-        referencesNode ?? []
-      ]
-    )
-  ]
+  return div(
+    [`class`([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
+    a(
+      [`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#transcript")],
+      "Transcript"
+    ),
+    exercisesNode ?? [],
+    referencesNode ?? []
+  )
 }
 
 let divider = hr([`class`([Class.pf.components.divider])])
@@ -651,53 +643,27 @@ private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bo
 private func subscriberCalloutView(isEpisodeViewable: Bool) -> Node {
   guard !isEpisodeViewable else { return [] }
 
-  return [
-    gridRow([
-      gridColumn(
-        sizes: [.mobile: 12],
-        [style(margin(leftRight: .auto))],
-        [
-          div(
-            [
-              `class`(
-                [
-                  Class.margin([.mobile: [.top: 4]]),
-                  Class.padding([.mobile: [.all: 3]]),
-                  Class.pf.colors.bg.gray900
-                ]
-              )
-            ],
-            [
-              h4(
-                [
-                  `class`(
-                    [
-                      Class.pf.type.responsiveTitle4,
-                      Class.padding([.mobile: [.bottom: 2]])
-                    ]
-                  )
-                ],
-                ["Subscribe to Point-Free"]
-              ),
-              p(
-                [
-                  "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
-                  a(
-                    [
-                      href(path(to: .pricing(nil, expand: nil))),
-                      `class`([Class.pf.type.underlineLink])
-                    ],
-                    ["subscribe"]
-                  ),
-                  " so that you get access to this episodes and more!",
-                  ]
-              )
-            ]
-          )
-        ]
+  return gridRow(
+    gridColumn(
+      sizes: [.mobile: 12],
+      [style(margin(leftRight: .auto))] as [Attribute<Tag.Div>],
+      div(
+        [`class`([Class.margin([.mobile: [.top: 4]]), Class.padding([.mobile: [.all: 3]]), Class.pf.colors.bg.gray900])],
+        h4(
+          [`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.bottom: 2]])])],
+          "Subscribe to Point-Free"
+        ),
+        p(
+          "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
+          a(
+            [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.type.underlineLink])],
+            "subscribe"
+          ),
+          " so that you get access to this episodes and more!"
+        )
       )
-      ])
-  ]
+    )
+  )
 }
 
 private let referencesView = View<[Episode.Reference]> { references in
@@ -716,72 +682,47 @@ private let referencesView = View<[Episode.Reference]> { references in
       ],
       [
         h2(
-          [
-            id("references"),
-            `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
-          ],
-          ["References"]
+          [id("references"), `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+          "References"
         ),
         ul(
           .fragment(
             zip(1..., references).map { idx, reference in
               li(
-                [
-                  id("reference-\(idx)"),
-                  `class`([Class.margin([.mobile: [.bottom: 3]])])
-                ],
-                [
-                  h4(
-                    [`class`([
-                      Class.pf.type.responsiveTitle5,
-                      Class.margin([.mobile: [.bottom: 0]])
-                      ])],
-                    [
-                      a(
-                        [
-                          href(reference.link),
-                          target(.blank),
-                          rel(.init(rawValue: "noopener noreferrer"))
-                        ],
-                        [.text(reference.title)]
-                      )
-                    ]
-                  ),
-                  strong(
-                    [`class`([Class.pf.type.body.small])],
-                    [.text(topLevelReferenceMetadata(reference))]
-                  ),
-                  div([markdownBlock(reference.blurb ?? "")]),
-                  div(
-                    [
-                      a(
-                        [
-                          href(reference.link),
-                          `class`([Class.pf.colors.link.purple]),
-                          target(.blank),
-                          rel(.init(rawValue: "noopener noreferrer"))
-                        ],
-                        [
-                          img(
-                            base64: newWindowSvgBase64(fill: "#974DFF"),
-                            type: .image(.svg),
-                            alt: "",
-                            [
-                              `class`([
-                                Class.align.middle,
-                                Class.margin([.mobile: [.right: 1]])
-                                ]),
-                              width(14),
-                              height(14),
-                              style(margin(top: .px(-2)))
-                            ]
-                          ),
-                          .text(reference.link)
-                        ]
-                      )
-                    ]
+                [id("reference-\(idx)"), `class`([Class.margin([.mobile: [.bottom: 3]])])],
+                h4(
+                  [`class`([Class.pf.type.responsiveTitle5, Class.margin([.mobile: [.bottom: 0]])])],
+                  a([href(reference.link), target(.blank), rel(.init(rawValue: "noopener noreferrer"))],
+                    .text(reference.title)
                   )
-                ]
+                ),
+                strong(
+                  [`class`([Class.pf.type.body.small])],
+                  .text(topLevelReferenceMetadata(reference))
+                ),
+                div([markdownBlock(reference.blurb ?? "")]),
+                div(
+                  a(
+                    [
+                      href(reference.link),
+                      `class`([Class.pf.colors.link.purple]),
+                      target(.blank),
+                      rel(.init(rawValue: "noopener noreferrer"))
+                    ],
+                    img(
+                      base64: newWindowSvgBase64(fill: "#974DFF"),
+                      type: .image(.svg),
+                      alt: "",
+                      [
+                        `class`([Class.align.middle, Class.margin([.mobile: [.right: 1]])]),
+                        width(14),
+                        height(14),
+                        style(margin(top: .px(-2)))
+                      ]
+                    ),
+                    .text(reference.link)
+                  )
+                )
               )
             }
           )
@@ -806,33 +747,18 @@ private let exercisesView = View<[Episode.Exercise]> { exercises in
   return [
     dividerView.view(unit),
     div(
-      [
-        `class`(
-          [
-            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-            Class.pf.colors.bg.white
-          ]
+      [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]), Class.pf.colors.bg.white])],
+      h2(
+        [id("exercises"), `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])],
+        "Exercises"
+      ),
+      ol(
+        .fragment(
+          zip(1..., exercises).map {
+            li([id("exercise-\($0)")], div(markdownBlock($1.body)))
+          }
         )
-      ],
-      [
-        h2(
-          [
-            id("exercises"),
-            `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
-          ],
-          ["Exercises"]
-        ),
-        ol(
-          .fragment(
-            zip(1..., exercises).map {
-              li(
-                [id("exercise-\($0)")],
-                [div([markdownBlock($1.body)])]
-              )
-            }
-          )
-        )
-      ]
+      )
     )
   ]
 }
@@ -840,29 +766,24 @@ private let exercisesView = View<[Episode.Exercise]> { exercises in
 let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   switch block.type {
   case let .code(lang):
-    return pre([
+    return pre(
       code(
         [`class`([Class.pf.components.code(lang: lang.identifier)])],
-        [.text(block.content)]
+        .text(block.content)
       )
-      ])
+    )
 
   case .correction:
     return div(
       [
-        `class`([
-          Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
-          Class.padding([.mobile: [.all: 2]]),
-          ]),
+        `class`([Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]), Class.padding([.mobile: [.all: 2]])]),
         style("background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
       ],
-      [
-        h3([`class`([Class.pf.type.responsiveTitle6])], ["Correction"]),
-        div(
-          [`class`([Class.pf.type.body.regular])],
-          [markdownBlock(block.content)]
-        ),
-      ]
+      h3([`class`([Class.pf.type.responsiveTitle6])], "Correction"),
+      div(
+        [`class`([Class.pf.type.body.regular])],
+        markdownBlock(block.content)
+      )
     )
 
   case let .image(src, sizing):
@@ -880,15 +801,13 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         target(.blank),
         rel(.init(rawValue: "noopener noreferrer")),
       ],
-      [img(src: src, alt: "", [`class`(imageClasses)])]
+      img(src: src, alt: "", [`class`(imageClasses)])
     )
 
   case .paragraph:
     return div(
-      [
-        timestampLinkView.view(block.timestamp),
-        markdownBlock(block.content)
-      ]
+      timestampLinkView.view(block.timestamp),
+      markdownBlock(block.content)
     )
 
   case .title:
@@ -898,11 +817,7 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         block.timestamp.map { id("t\($0)") }
         ]
         .compactMap(id),
-      [
-        a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
-          .text(block.content)
-          ])
-      ]
+      a(block.timestamp.map { [href("#t\($0)")] } ?? [], .text(block.content))
     )
 
   case let .video(poster, sources):
@@ -911,20 +826,17 @@ let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
         `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
         style(outerVideoContainerStyle)
       ],
-      [
-        video(
-          [
-            `class`([innerVideoContainerClass]),
-            controls(true),
-            playsinline(true),
-            autoplay(false),
-            Html.poster(poster),
-            style(objectFit(.cover))
-          ],
-
-          .fragment(sources.map { source(src: $0) })
-        )
-      ]
+      video(
+        [
+          `class`([innerVideoContainerClass]),
+          controls(true),
+          playsinline(true),
+          autoplay(false),
+          Html.poster(poster),
+          style(objectFit(.cover))
+        ] as [Attribute<Tag.Video>],
+        ChildOf.fragment(sources.map { source(src: $0) })
+      )
     )
   }
 }

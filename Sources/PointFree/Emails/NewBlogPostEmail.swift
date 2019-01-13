@@ -28,49 +28,53 @@ let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
 }
 
 let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> Node in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
+  emailTable(
+    [style(contentTableStyles)],
+    tr(
+      td(
+        [valign(.top)],
         div(
           [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView.view(announcement)
         ),
 
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
-          a([href(url(to: .blog(.show(post))))],
-            h3([`class`([Class.pf.type.responsiveTitle3])], text(post.title))
+        div(
+          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          a(
+            [href(url(to: .blog(.show(post))))],
+            h3(
+              [`class`([Class.pf.type.responsiveTitle3])],
+              text(post.title)
+            )
           ),
           p(text(post.blurb)),
-          post.coverImage.map {
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              a([href(url(to: .blog(.show(post))))],
-                img([src($0), alt(""), style(maxWidth(.pct(100)))])
+          post.coverImage
+            .map {
+              p(
+                [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
+                a(
+                  [href(url(to: .blog(.show(post))))],
+                  img([src($0), alt(""), style(maxWidth(.pct(100)))])
+                )
               )
-              ])
             }
             ?? [],
           a(
             [
               href(url(to: .blog(.show(post)))),
-              `class`(
-                [
-                  Class.pf.colors.link.purple,
-                  Class.pf.colors.fg.purple,
-                  Class.pf.type.body.leading
-                ]
-              )
+              `class`([Class.pf.colors.link.purple, Class.pf.colors.fg.purple, Class.pf.type.body.leading])
             ],
             "Read the full post…"
           )
-          ]),
+        ),
 
         div(
           [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           hostSignOffView.view(unit)
         )
-        ])
-      ])
-    ])
+      )
+    )
+  )
 }
 
 private let announcementView = View<String?> { announcement in
@@ -109,19 +113,25 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
 }
 
 let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], "New blog post email report"),
-          p([
+  emailTable(
+    [style(contentTableStyles)],
+    tr(
+      td(
+        [valign(.top)],
+        div(
+          [`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])],
+          h3(
+            [`class`([Class.pf.type.responsiveTitle3])],
+            "New blog post email report"
+          ),
+          p(
             "A total of ",
             strong(text("\(totalAttempted)")),
             " emails were attempted to be sent, and of those, ",
             strong(text("\(erroredUsers.count)")),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
-            ]),
+          ),
 
           ul(
             .fragment(
@@ -130,8 +140,8 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
               }
             )
           )
-          ])
-        ])
-      ])
-    ])
+        )
+      )
+    )
+  )
 }

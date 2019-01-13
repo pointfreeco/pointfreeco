@@ -25,29 +25,32 @@ func adminEmailReport(_ type: String) -> View<([Database.User], Int)> {
 }
 
 let adminEmailReportContent = View<(String, [Database.User], Int)> { type, erroredUsers, totalAttempted in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
+  emailTable(
+    [style(contentTableStyles)],
+    tr(
+      td(
+        [valign(.top)],
+        div(
+          [`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])],
           h3([`class`([Class.pf.type.responsiveTitle3])], "New episode email report"),
-          p([
+          p(
             "A total of ",
             strong([.text("\(totalAttempted)")]),
             " emails were attempted to be sent, and of those, ",
             strong([.text("\(erroredUsers.count)")]),
             " emails failed to send. Here is the list of users that we ",
             "had trouble sending to their emails:"
-            ]),
+          ),
 
           ul(
             .fragment(
               erroredUsers.map { user in
-                li([.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue)])
+                li(.text(user.name.map { "\($0) (\(user.email)" } ?? user.email.rawValue))
               }
             )
           )
-          ])
-        ])
-      ])
-    ])
+        )
+      )
+    )
+  )
 }

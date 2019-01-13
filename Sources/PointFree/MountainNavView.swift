@@ -12,7 +12,8 @@ import View
 let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
   [
     menuAndLogoHeaderView.view((mountainsStyle, currentUser, subscriberState, currentRoute)),
-    gridRow([`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])], [
+    gridRow(
+      [`class`([Class.grid.top(.mobile), Class.grid.between(.mobile), Class.padding([.mobile: [.top: 3], .desktop: [.top: 0]])])],
 
       gridColumn(
         sizes: [.mobile: 5],[`class`([Class.padding([.mobile: [.top: 4], .desktop: [.top: 0]])]), style(lineHeight(0))],
@@ -33,8 +34,8 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
           alt: "",
           [`class`([Class.pf.components.reflectX, Class.size.width100pct])]
         )
-      ),
-      ])
+      )
+    )
   ]
 }
 

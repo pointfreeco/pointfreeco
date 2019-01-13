@@ -133,37 +133,39 @@ private let titleRowView = View<Prelude.Unit> { _ in
 
 private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoicesEnvelope in
   div(
-    .fragment(invoicesEnvelope.data.map { invoice in
-      gridRow(
-        [`class`([Class.padding([.mobile: [.bottom: 2]])])],
-        gridColumn(
-          sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])],
-          div(text("#" + invoice.number.rawValue))
-        ),
-        gridColumn(
-          sizes: [.mobile: 4], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])],
-          div(text(dateFormatter.string(from: invoice.date)))
-        ),
-        gridColumn(
-          sizes: [.mobile: 2], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])],
-          div(text(format(cents: invoice.total)))
-        ),
-        gridColumn(
-          sizes: [.mobile: 2], [`class`([Class.grid.end(.mobile), Class.grid.end(.desktop)])],
-          div(
-            a(
-              [
-              `class`([Class.pf.components.button(color: .purple, size: .small)]),
-              href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
-              target(.blank),
-              ],
-              "Print"
+    .fragment(invoicesEnvelope.data
+      .map { invoice in
+        gridRow(
+          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+          gridColumn(
+            sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])],
+            div(text("#" + invoice.number.rawValue))
+          ),
+          gridColumn(
+            sizes: [.mobile: 4], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])],
+            div(text(dateFormatter.string(from: invoice.date)))
+          ),
+          gridColumn(
+            sizes: [.mobile: 2], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])],
+            div(text(format(cents: invoice.total)))
+          ),
+          gridColumn(
+            sizes: [.mobile: 2], [`class`([Class.grid.end(.mobile), Class.grid.end(.desktop)])],
+            div(
+              a(
+                [
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
+                  target(.blank),
+                  ],
+                "Print"
+              )
             )
           )
         )
-      )
-    }
-  ))
+      }
+    )
+  )
 }
 
 private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
@@ -365,7 +367,7 @@ let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { s
 private func extraInvoiceInfo(subscription: Stripe.Subscription) -> Node {
   guard let extraInvoiceInfo = subscription.customer.right?.extraInvoiceInfo else { return [] }
 
-  let extraInvoiceInfoNodes = intersperse(Html.br)
+  let extraInvoiceInfoNodes = intersperse(br)
     <| extraInvoiceInfo
       .components(separatedBy: CharacterSet.newlines)
       .filter { !$0.isEmpty }

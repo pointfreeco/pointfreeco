@@ -77,10 +77,7 @@ private func navItems<A>(_ views: [View<A>]) -> View<A> {
       [`class`([navListClass])],
       .fragment(
         views.map { v in
-          li(
-            [`class`([navListItemClass])],
-            v.view(a)
-          )
+          li([`class`([navListItemClass])], v.view(a))
         }
       )
     )
