@@ -104,7 +104,7 @@ private func fetchAccountData<I>(
 private let accountView = View<AccountData> { data in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
             <> profileRowView.view(data)
             <> privateRssFeed.view(data)
@@ -122,11 +122,11 @@ private let creditsView = View<AccountData> { data -> [Node] in
   guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div(
           [
-            h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Episode Credits"]),
+            h2([`class`([Class.pf.type.responsiveTitle4])], ["Episode Credits"]),
             p([
               "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
               .text("subscription. You currently have \(pluralizedCredits(count: data.currentUser.episodeCreditCount)) "),
@@ -148,7 +148,7 @@ private let subscribeCallout = View<SubscriberState> { subscriberState -> [Node]
   return [
     p([
       "To get all past and future episodes, ",
-      a([Styleguide.class([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+      a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
       " a subscriber today!"
       ])
   ]
@@ -209,10 +209,10 @@ private func episode(atSequence sequence: Int) -> Episode? {
 }
 
 private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h1([Styleguide.class([Class.pf.type.responsiveTitle2])], ["Account"])
+        h1([`class`([Class.pf.type.responsiveTitle2])], ["Account"])
         ])
       ])
     ])
@@ -221,9 +221,9 @@ private let titleRowView = View<Prelude.Unit> { _ in
 private let profileRowView = View<AccountData> { data -> Node in
 
   let nameFields = [
-    label([Styleguide.class([labelClass])], ["Name"]),
+    label([`class`([labelClass])], ["Name"]),
     input([
-      Styleguide.class([blockInputClass]),
+      `class`([blockInputClass]),
       name(ProfileData.CodingKeys.name.stringValue),
       type(.text),
       value(data.currentUser.name ?? ""),
@@ -231,9 +231,9 @@ private let profileRowView = View<AccountData> { data -> Node in
   ]
 
   let emailFields = [
-    label([Styleguide.class([labelClass])], ["Email"]),
+    label([`class`([labelClass])], ["Email"]),
     input([
-      Styleguide.class([blockInputClass]),
+      `class`([blockInputClass]),
       name(ProfileData.CodingKeys.email.stringValue),
       type(.email),
       value(data.currentUser.email.rawValue)
@@ -241,11 +241,11 @@ private let profileRowView = View<AccountData> { data -> Node in
   ]
 
   let extraInvoiceInfoFields = !data.isSubscriptionOwner ? [] : [
-    label([Styleguide.class([labelClass])], ["Extra Invoice Info"]),
+    label([`class`([labelClass])], ["Extra Invoice Info"]),
     textarea(
       [
         placeholder("Company name, billing address, VAT number, ..."),
-        Styleguide.class([blockInputClass]),
+        `class`([blockInputClass]),
         name(ProfileData.CodingKeys.extraInvoiceInfo.stringValue),
       ],
       data.stripeSubscription?.customer.right?.extraInvoiceInfo ?? ""
@@ -255,15 +255,15 @@ private let profileRowView = View<AccountData> { data -> Node in
   let submit = [
     input([
       type(.submit),
-      Styleguide.class([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
+      `class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])]),
       value("Update profile")
       ])
   ]
 
-  return gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Profile"]),
+        h2([`class`([Class.pf.type.responsiveTitle4])], ["Profile"]),
 
         form(
           [action(path(to: .account(.update(nil)))), method(.post)],
@@ -286,14 +286,14 @@ private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberSt
   return [
     // TODO: hide `welcomeEmails` for subscribers?
     p(["Receive email for:"]),
-    p([Styleguide.class([Class.padding([.mobile: [.left: 1]])])], newsletters.map { newsletter in
-      label([Styleguide.class([Class.display.block])], [
+    p([`class`([Class.padding([.mobile: [.left: 1]])])], newsletters.map { newsletter in
+      label([`class`([Class.display.block])], [
         input(
           [
             type(.checkbox),
             name("emailSettings[\(newsletter.rawValue)]"),
             checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
-            Styleguide.class([Class.margin([.mobile: [.right: 1]])])
+            `class`([Class.margin([.mobile: [.right: 1]])])
           ]
         ),
         .text(newsletterDescription(newsletter))
@@ -424,10 +424,10 @@ private let subscriptionOwnerOverview = View<AccountData> { data -> [Node] in
   guard let subscription = data.stripeSubscription else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           gridColumn(
             sizes: [.mobile: 12],
@@ -447,17 +447,17 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
   guard let subscription = data.stripeSubscription else { return [] }
 
   return [
-    gridRow([Styleguide.class([Class.padding([.mobile: [.bottom: 4]])])], [
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
       gridColumn(sizes: [.mobile: 12], [
         div([
-          h2([Styleguide.class([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
 
           p([
             "You are currently on a team subscription. Contact ",
             a(
               [
                 mailto(data.subscriptionOwner?.email.rawValue ?? ""),
-                Styleguide.class([Class.pf.colors.link.purple])
+                `class`([Class.pf.colors.link.purple])
               ],
               [
                 .text(data.subscriptionOwner?.name ?? "the owner")
@@ -469,7 +469,7 @@ private let subscriptionTeammateOverview = View<AccountData> { data -> [Node] in
           form([action(path(to: .team(.leave))), method(.post)], [
             input(
               [
-                Styleguide.class([Class.pf.components.button(color: .red, size: .small)]),
+                `class`([Class.pf.components.button(color: .red, size: .small)]),
                 type(.submit),
                 value("Leave this team")
               ]
@@ -529,12 +529,12 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
     gridColumn(sizes: [.mobile: 9], [
       gridRow([
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-          div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
             p([.text(planName(for: subscription))])
             ])
           ]),
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-          div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
             p([mainAction(for: subscription)])
             ])
           ])
@@ -549,7 +549,7 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
     gridColumn(sizes: [.mobile: 9], [
       gridRow([
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-          div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
             p([.text(status(for: subscription))])
             ])
           ])
@@ -564,7 +564,7 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
         p([div(["Next billing"])])
         ]),
       gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([.text(nextBilling(for: subscription, upcomingInvoice: upcomingInvoice))])
           ])
         ])
@@ -576,7 +576,7 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
         p([div(["Discount"])])
         ]),
       gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([.text(discountDescription(for: discount))])
           ])
         ])
@@ -584,7 +584,7 @@ private let subscriptionPlanRows = View<(Stripe.Subscription, Stripe.Invoice?)> 
   }
 
   return div(
-    [Styleguide.class([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
+    [`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
     [planRow, statusRow] + [nextBillingRow, discountRow].compactMap(id)
   )
 }
@@ -599,7 +599,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       [action(path(to: .account(.subscription(.reactivate)))), method(.post)],
       [
         button(
-          [Styleguide.class([Class.pf.components.button(color: .purple, size: .small)])],
+          [`class`([Class.pf.components.button(color: .purple, size: .small)])],
           ["Reactivate"]
         )
       ]
@@ -607,7 +607,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   } else if subscription.status == .canceled {
     return a(
       [
-        Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
+        `class`([Class.pf.components.button(color: .purple, size: .small)]),
         href(path(to: .pricing(nil, expand: nil)))
       ],
       ["Resubscribe"]
@@ -615,7 +615,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
   } else {
     return a(
       [
-        Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
+        `class`([Class.pf.components.button(color: .purple, size: .small)]),
         href(path(to: .account(.subscription(.change(.show)))))
       ],
       ["Modify subscription"]
@@ -627,14 +627,14 @@ private let subscriptionTeamRow = View<AccountData> { data -> [Node] in
   guard !data.teammates.isEmpty && data.isTeamSubscription else { return [] }
 
   return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridRow([`class`([subscriptionInfoRowClass])], [
       gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Team"])
           ])
         ]),
       gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["Your current team:"])]
               <> data.teammates.flatMap { teammateRowView.view((data.currentUser, $0)) }
         )
@@ -651,9 +651,9 @@ private let teammateRowView = View<(Database.User, Database.User)> { currentUser
 
   return gridRow([
     gridColumn(sizes: [.mobile: 8], [p([.text(teammateLabel)])]),
-    gridColumn(sizes: [.mobile: 4], [Styleguide.class([Class.grid.end(.desktop)])], [
+    gridColumn(sizes: [.mobile: 4], [`class`([Class.grid.end(.desktop)])], [
       form([action(path(to: .team(.remove(teammate.id)))), method(.post)], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Remove")])])
         ]),
       ])
     ])
@@ -663,14 +663,14 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
   guard !invites.isEmpty else { return [] }
 
   return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridRow([`class`([subscriptionInfoRowClass])], [
       gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Invites"])
           ])
         ]),
       gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])],
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])],
             [p(["These teammates have been invited, but have not yet accepted."])]
               <> invites.flatMap(inviteRowView.view))
         ])
@@ -683,13 +683,13 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
       p([.text(invite.email.rawValue)])
       ]),
-    gridColumn(sizes: [.mobile: 12, .desktop: 6], [Styleguide.class([Class.grid.end(.desktop)])], [
-      form([action(path(to: .invite(.resend(invite.id)))), method(.post), Styleguide.class([Class.display.inlineBlock])], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
+    gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.grid.end(.desktop)])], [
+      form([action(path(to: .invite(.resend(invite.id)))), method(.post), `class`([Class.display.inlineBlock])], [
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .purple, size: .small)]), value("Resend")])
           ])]),
 
-      form([action(path(to: .invite(.revoke(invite.id)))), method(.post), Styleguide.class([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
-        p([input([type(.submit), Styleguide.class([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
+      form([action(path(to: .invite(.revoke(invite.id)))), method(.post), `class`([Class.display.inlineBlock, Class.padding([.mobile: [.left: 1], .desktop: [.left: 2]])])], [
+        p([input([type(.submit), `class`([Class.pf.components.button(color: .red, size: .small, style: .underline)]), value("Revoke")])
           ])]),
       ]),
     ])
@@ -703,29 +703,29 @@ private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Databas
   guard invitesRemaining > 0 else { return [] }
 
   return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridRow([`class`([subscriptionInfoRowClass])], [
       gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Invite more"])
           ])
         ]),
       gridColumn(sizes: [.mobile: 9], [
-        div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           p([.text("You have \(invitesRemaining) open spots on your team. Invite a team member below:")]),
 
           form([
             action(path(to: .invite(.send(nil)))), method(.post),
-            Styleguide.class([Class.flex.flex])
+            `class`([Class.flex.flex])
             ], [
               input([
-                Styleguide.class([smallInputClass, Class.align.middle, Class.size.width100pct]),
+                `class`([smallInputClass, Class.align.middle, Class.size.width100pct]),
                 name("email"),
                 placeholder("blob@example.com"),
                 type(.email),
                 ]),
               input([
                 type(.submit),
-                Styleguide.class([
+                `class`([
                   Class.pf.components.button(color: .purple, size: .small),
                   Class.align.middle,
                   Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]])
@@ -742,7 +742,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
   guard let card = subscription.customer.right?.sources.data.first else { return [] }
 
   return [
-    gridRow([Styleguide.class([subscriptionInfoRowClass])], [
+    gridRow([`class`([subscriptionInfoRowClass])], [
       gridColumn(sizes: [.mobile: 3], [
         div([
           p(["Payment"])
@@ -751,23 +751,23 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
       gridColumn(sizes: [.desktop: 9], [
         gridRow([
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]])])], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
               p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
               p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
               ])
             ]),
           gridColumn(sizes: [.mobile: 12, .desktop: 6], [
-            div([Styleguide.class([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+            div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
               p([
                 a([
-                  Styleguide.class([Class.pf.components.button(color: .purple, size: .small)]),
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
                   href(path(to: .account(.paymentInfo(.show(expand: nil))))),
                   ],
                   ["Update payment method"])
                 ]),
               p([
                 a([
-                  Styleguide.class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
+                  `class`([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
                   href(path(to: .account(.invoices(.index)))),
                   ],
                   ["Payment history"])
@@ -789,7 +789,7 @@ public func format(cents: Stripe.Cents) -> String {
 private let logoutView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12], [
-      a([Styleguide.class([Class.pf.components.button(color: .black)]), href(path(to: .logout))], ["Logout"])
+      a([`class`([Class.pf.components.button(color: .black)]), href(path(to: .logout))], ["Logout"])
       ])
     ])
 }

@@ -21,25 +21,25 @@ private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { 
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Confirm email change"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Confirm email change"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "We received a request to change your email on Point-Free. Your current email is ",
-            span([Styleguide.class([Class.type.semiBold])], [.text(user.email.rawValue)]),
+            span([`class`([Class.type.semiBold])], [.text(user.email.rawValue)]),
             ", and the new email is ",
-            span([Styleguide.class([Class.type.semiBold])], [.text(newEmailAddress.rawValue)]),
+            span([`class`([Class.type.semiBold])], [.text(newEmailAddress.rawValue)]),
             ". If you want to make this change, just click the confirmation link below:"
             ]),
 
-          p([Styleguide.class([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
+          p([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
             a(
               [ href(url(to: .account(.confirmEmailChange(userId: user.id, emailAddress: newEmailAddress)))),
-                Styleguide.class([Class.pf.components.button(color: .purple)]) ],
+                `class`([Class.pf.components.button(color: .purple)]) ],
               ["Confirm email change"]
             )
             ]),
 
-          p([Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
             """
             If you do not want to make this change, or did not request to make this change, simply ignore
             this email.
@@ -67,11 +67,11 @@ private let emailChangedEmailBody = View<EmailAddress> { newEmailAddress in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Your email has been changed"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Your email has been changed"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your email has been successfully changed to ",
-            strong([span([Styleguide.class([Class.type.semiBold])], [.text(newEmailAddress.rawValue)])]),
+            strong([span([`class`([Class.type.semiBold])], [.text(newEmailAddress.rawValue)])]),
             ". If you did not make this change, please get in touch with us immediately: ",
             a([mailto("support@pointfree.co")], ["support@pointfree.co"])
             ])
