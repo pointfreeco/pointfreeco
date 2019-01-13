@@ -33,12 +33,12 @@ private let privacyView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
-        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
         [
-          h1([Styleguide.class([Class.pf.type.responsiveTitle2])], text(title)),
+          h1([`class`([Class.pf.type.responsiveTitle2])], text(title)),
           privacyPolicy,
           p(
-            [Styleguide.class([Class.padding([.mobile: [.top: 2]])])],
+            [`class`([Class.padding([.mobile: [.top: 2]])])],
             "This document was last updated on January 7, 2018."
           )
         ]
@@ -64,7 +64,7 @@ private let privacyPolicy = Node.fragment(
 private let personalIdentificationInformation = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Personal identification information"
     ),
     p(
@@ -80,7 +80,7 @@ private let personalIdentificationInformation = Node.fragment(
 private let nonPersonalIdentificationInformation = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Non-personal identification information"
     ),
     p(
@@ -96,7 +96,7 @@ private let nonPersonalIdentificationInformation = Node.fragment(
 private let webBrowserCookies = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Web browser cookies"
     ),
     p(
@@ -112,7 +112,7 @@ private let webBrowserCookies = Node.fragment(
 private let howWeUseCollectedInformation = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "How we use collected information"
     ),
     p(
@@ -148,7 +148,7 @@ private let howWeUseCollectedInformation = Node.fragment(
 private let howWeProtectYourInformation = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "How we protect your information"
     ),
     p(
@@ -170,7 +170,7 @@ private let howWeProtectYourInformation = Node.fragment(
 private let sharingYourPersonalInformation = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Sharing your personal information"
     ),
     p(
@@ -187,7 +187,7 @@ private let sharingYourPersonalInformation = Node.fragment(
 private let complianceWithChildrensOnlinePrivacyProtectionAct = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Compliance with children's online privacy protection act"
     ),
     p(
@@ -203,7 +203,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct = Node.fragment(
 private let changesToThisPrivacyPolicy = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Changes to this privacy policy"
     ),
     p(
@@ -218,7 +218,7 @@ private let changesToThisPrivacyPolicy = Node.fragment(
 private let contactingUs = Node.fragment(
   [
     h2(
-      [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+      [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
       "Contacting us"
     ),
     p(

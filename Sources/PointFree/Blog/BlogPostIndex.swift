@@ -39,7 +39,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
   let oldPosts = allPosts.dropFirst(3)
 
   return gridRow(
-    [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+    [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
     gridColumn(
       sizes: [.mobile: 12, .desktop: 9], [HtmlCssSupport.style(margin(leftRight: .auto))],
       div(.fragment(newPosts.map(newBlogPostView.view))),
@@ -51,7 +51,7 @@ private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUse
 private let newBlogPostView = View<BlogPost> { post in
   [
     div(
-      [Styleguide.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
+      [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
       blogPostContentView.view(post)
     ),
     divider
@@ -63,11 +63,11 @@ private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts in
   
   return [
     div(
-      [Styleguide.class([Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
-      h5([Styleguide.class([Class.pf.type.responsiveTitle6])], "Older blog posts")
+      [`class`([Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
+      h5([`class`([Class.pf.type.responsiveTitle6])], "Older blog posts")
     ),
     div(
-      [Styleguide.class([Class.padding([.mobile: [.bottom: 3]])])],
+      [`class`([Class.padding([.mobile: [.bottom: 3]])])],
       .fragment(posts.map(oldBlogPostView.view))
     )
   ]
@@ -75,15 +75,15 @@ private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts in
 
 private let oldBlogPostView = View<BlogPost> { post in
   div(
-    [Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])],
+    [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
     div(
       p(
-        [Styleguide.class([Class.pf.colors.fg.gray400, Class.pf.type.body.small])],
+        [`class`([Class.pf.colors.fg.gray400, Class.pf.type.body.small])],
         text(episodeDateFormatter.string(from: post.publishedAt))
       )
     ),
     h1(
-      [Styleguide.class([Class.pf.type.responsiveTitle5]),],
+      [`class`([Class.pf.type.responsiveTitle5]),],
       a(
         [href(url(to: .blog(.show(post))))],
         text(post.title)
@@ -91,7 +91,7 @@ private let oldBlogPostView = View<BlogPost> { post in
     ),
     div(
       p(
-        [Styleguide.class([Class.pf.type.body.regular])],
+        [`class`([Class.pf.type.body.regular])],
         text(post.blurb)
       )
     )

@@ -28,8 +28,8 @@ let adminEmailReportContent = View<(String, [Database.User], Int)> { type, error
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], "New episode email report"),
+        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], "New episode email report"),
           p([
             "A total of ",
             strong([.text("\(totalAttempted)")]),

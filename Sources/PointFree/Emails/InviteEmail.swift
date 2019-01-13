@@ -21,9 +21,9 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your colleague ",
             .text(inviter.displayName),
             """
@@ -31,10 +31,10 @@ private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)>
             programming and the Swift programming language. To accept, simply click the link below!
             """
             ]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
               href(url(to: .invite(.show(invite.id)))),
-              Styleguide.class([Class.pf.components.button(color: .purple)])
+              `class`([Class.pf.components.button(color: .purple)])
               ],
               ["Click here to accept!"])
             ])
@@ -60,7 +60,7 @@ private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> 
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        h3([Styleguide.class([Class.pf.type.responsiveTitle3]), Styleguide.class([Class.padding([.mobile: [.bottom: 2]])])], [
+        h3([`class`([Class.pf.type.responsiveTitle3]), `class`([Class.padding([.mobile: [.bottom: 2]])])], [
           "Your invitation was accepted!"
           ]),
         p([

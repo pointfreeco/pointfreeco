@@ -42,12 +42,12 @@ func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
 
 private let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
   gridRow(
-    [Styleguide.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+    [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
     gridColumn(
       sizes: [.mobile: 12, .desktop: 9],
       [style(margin(leftRight: .auto))],
       div(
-        [Styleguide.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
+        [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
         [
           blogPostContentView.view(post),
           subscriberCalloutView.view(subscriberState)
@@ -61,7 +61,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState in
   guard !subscriberState.isActive else { return [] }
 
   return [
-    hr([Styleguide.class([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
+    hr([`class`([Class.pf.components.divider, Class.margin([.mobile: [.topBottom: 4]])])]),
 
     div(
       [
@@ -92,7 +92,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState in
             a(
               [
                 href(path(to: .home)),
-                Styleguide.class([Class.pf.type.underlineLink])
+                `class`([Class.pf.type.underlineLink])
               ],
               "Point-Free"
             ),
@@ -106,15 +106,15 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState in
 
 let blogPostContentView = View<BlogPost> { post in
   [
-    h1([Styleguide.class([Class.pf.type.responsiveTitle3])], a(
+    h1([`class`([Class.pf.type.responsiveTitle3])], a(
       [href(url(to: .blog(.show(post))))],
       text(post.title)
       )
     ),
-    div([Styleguide.class([Class.flex.flex, Class.flex.items.baseline]), style(flex(direction: .row))], [
+    div([`class`([Class.flex.flex, Class.flex.items.baseline]), style(flex(direction: .row))], [
       div(p(text(episodeDateFormatter.string(from: post.publishedAt)))),
       div(
-        [Styleguide.class([Class.margin([.mobile: [.left: 1]])])],
+        [`class`([Class.margin([.mobile: [.left: 1]])])],
         twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")
       )
       ]),
@@ -124,7 +124,7 @@ let blogPostContentView = View<BlogPost> { post in
       ], []
     ),
     div(
-      [Styleguide.class([Class.pf.colors.bg.white])],
+      [`class`([Class.pf.colors.bg.white])],
       .fragment(post.contentBlocks.flatMap(transcriptBlockView.view))
     )
   ]

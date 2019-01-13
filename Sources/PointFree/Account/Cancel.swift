@@ -221,24 +221,31 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
 }
 
 private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+  emailTable(
+    [style(contentTableStyles)],
+    tr(
+      td(
+        [valign(.top)],
+        div(
+          [`class`([Class.padding([.mobile: [.all: 2]])])],
+          h3(
+            [`class`([Class.pf.type.responsiveTitle3])],
+            "Subscription canceled"
+          ),
+          p(
+            [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
             "Your ",
             strong([.text(subscription.plan.name)]),
             " subscription has been canceled and will remain active through ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
-            a([href(url(to: .account(.index)))], ["your account page"]),
+            a([href(url(to: .account(.index)))], "your account page"),
             "."
-            ])
-          ])
-        ])
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }
 
 private func sendReactivateEmail(to owner: Database.User, for subscription: Stripe.Subscription)
@@ -264,20 +271,27 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
 }
 
 private let reactivateEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+  emailTable(
+    [style(contentTableStyles)],
+    tr(
+      td(
+        [valign(.top)],
+        div(
+          [`class`([Class.padding([.mobile: [.all: 2]])])],
+          h3(
+            [`class`([Class.pf.type.responsiveTitle3])],
+            "Subscription reactivated"
+          ),
+          p(
+            [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
             "Thanks for sticking with us! Your ",
             strong([.text(subscription.plan.name)]),
             " subscription has been reactivated and will renew on ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             "."
-            ])
-          ])
-        ])
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }

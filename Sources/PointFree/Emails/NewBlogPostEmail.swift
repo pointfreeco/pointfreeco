@@ -32,17 +32,17 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
     tr([
       td([valign(.top)], [
         div(
-          [Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView.view(announcement)
         ),
 
-        div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           a([href(url(to: .blog(.show(post))))],
-            h3([Styleguide.class([Class.pf.type.responsiveTitle3])], text(post.title))
+            h3([`class`([Class.pf.type.responsiveTitle3])], text(post.title))
           ),
           p(text(post.blurb)),
           post.coverImage.map {
-            p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
               a([href(url(to: .blog(.show(post))))],
                 img([src($0), alt(""), style(maxWidth(.pct(100)))])
               )
@@ -65,7 +65,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
           ]),
 
         div(
-          [Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           hostSignOffView.view(unit)
         )
         ])
@@ -89,7 +89,7 @@ private let announcementView = View<String?> { announcement in
         )
       ],
       [
-        h5([Styleguide.class([Class.pf.type.responsiveTitle5])], ["Announcements"]),
+        h5([`class`([Class.pf.type.responsiveTitle5])], ["Announcements"]),
         markdownBlock(announcement)
       ]
     )
@@ -112,8 +112,8 @@ let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { err
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], "New blog post email report"),
+        div([`class`([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], "New blog post email report"),
           p([
             "A total of ",
             strong(text("\(totalAttempted)")),

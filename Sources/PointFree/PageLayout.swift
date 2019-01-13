@@ -211,7 +211,7 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
 }
 
 let flashView = View<Flash> { flash in
-  gridRow([Styleguide.class([flashClass(for: flash.priority)])], [
+  gridRow([`class`([flashClass(for: flash.priority)])], [
     gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
     ])
 }

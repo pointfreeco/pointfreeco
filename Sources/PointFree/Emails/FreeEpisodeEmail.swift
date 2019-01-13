@@ -30,7 +30,7 @@ let freeEpisodeEmailContent = View<Episode> { ep in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
           blockquote(
             [
               `class`(
@@ -52,26 +52,26 @@ let freeEpisodeEmailContent = View<Episode> { ep in
 
           a([href(url(to: .episode(.left(ep.slug))))], [
             h3(
-              [Styleguide.class([Class.pf.type.responsiveTitle3])],
+              [`class`([Class.pf.type.responsiveTitle3])],
               [.text("Episode #\(ep.sequence) is now free!")]
             )
             ]),
 
           h4(
-            [Styleguide.class([Class.pf.type.responsiveTitle5])],
+            [`class`([Class.pf.type.responsiveTitle5])],
             [.text(ep.title)]
           ),
 
           p([.text(ep.blurb)]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([href(url(to: .episode(.left(ep.slug))))], [
               img([src(ep.image), alt(""), style(maxWidth(.pct(100)))])
               ])
             ]),
 
           p([.text("This episode is \(ep.length / 60) minutes long.")]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([href(url(to: .episode(.left(ep.slug)))), Styleguide.class([Class.pf.components.button(color: .purple)])],
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
               ["Watch now!"])
             ]),
           hostSignOffView.view(unit)
