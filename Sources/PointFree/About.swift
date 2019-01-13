@@ -29,7 +29,7 @@ let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Use
 private let aboutView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           aboutSectionView.view(unit)
             + openSourceSection.view(unit)
       )
@@ -37,11 +37,11 @@ private let aboutView = View<Prelude.Unit> { _ in
 
     gridColumn(
       sizes: [.mobile: 12, .desktop: 5],
-      [Styleguide.class([Class.pf.colors.bg.purple150])],
+      [`class`([Class.pf.colors.bg.purple150])],
       [
         div(
           [
-            Styleguide.class([
+            `class`([
               Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
               Class.pf.colors.bg.purple150,
               Class.position.sticky(.desktop),
@@ -58,7 +58,7 @@ private let hostsView = View<Prelude.Unit> { _ in
   [
     h1(
       [
-        Styleguide.class([
+        `class`([
           Class.pf.type.responsiveTitle3,
           Class.pf.colors.fg.white,
           Class.padding([.mobile: [.bottom: 2]])
@@ -68,13 +68,13 @@ private let hostsView = View<Prelude.Unit> { _ in
         "Your hosts"
       ]
     ),
-    p([Styleguide.class([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
+    p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
       "Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped ",
       "build and ",
-      a([Styleguide.class([Class.pf.colors.link.green, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
+      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
         ["open source"]),
       " the ",
-      a([Styleguide.class([Class.pf.colors.link.green, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
+      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
       " mobile apps."
       ])
     ]
@@ -84,19 +84,19 @@ private let hostsView = View<Prelude.Unit> { _ in
 
 private let hostView = View<Host> { host in
   div(
-    [Styleguide.class([Class.padding([.mobile: [.bottom: 3]])])],
+    [`class`([Class.padding([.mobile: [.bottom: 3]])])],
     [
       img(
-        [src(host.image), alt("Photo of \(host.name)"), Styleguide.class([hostImgClass])]
+        [src(host.image), alt("Photo of \(host.name)"), `class`([hostImgClass])]
       ),
 
       div(
-        [Styleguide.class([hostBioClass])],
+        [`class`([hostBioClass])],
         [
           a(
             [
               href(host.website),
-              Styleguide.class([
+              `class`([
                 Class.pf.colors.link.white,
                 Class.h5,
                 Class.type.bold
@@ -107,12 +107,12 @@ private let hostView = View<Host> { host in
             ]
           ),
 
-          p([Styleguide.class([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [.text(host.bio)]),
+          p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [.text(host.bio)]),
 
           a(
             [
               href(twitterUrl(to: host.twitterRoute)),
-              Styleguide.class([
+              `class`([
                 Class.pf.colors.link.white,
                 Class.padding([.mobile: [.top: 2]])
                 ])
@@ -123,7 +123,7 @@ private let hostView = View<Host> { host in
                 base64: rightArrowSvgBase64(fill: "#ffffff"),
                 type: .image(.svg),
                 alt: "",
-                [Styleguide.class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
+                [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
               )
             ]
           )
@@ -135,7 +135,7 @@ private let hostView = View<Host> { host in
 
 private let aboutSectionView = View<Prelude.Unit> { _ in
   [
-    h1([Styleguide.class([Class.pf.type.responsiveTitle3])], ["About"]),
+    h1([`class`([Class.pf.type.responsiveTitle3])], ["About"]),
     markdownBlock("""
       Point-Free is a video series about functional programming and the Swift programming language. Each
       episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
@@ -147,10 +147,10 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
     ),
 
     p([
-      ul([Styleguide.class([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])], [
+      ul([`class`([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])], [
         li([
-          h5([Styleguide.class([bulletPointTitleClass])], ["Pure functions and side effects"]),
-          p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+          h5([`class`([bulletPointTitleClass])], ["Pure functions and side effects"]),
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             Side effects are one of the greatest sources of complexity in an application, and every program
             has this in common. After giving a proper definition of side effects and pure functions, we will
@@ -160,8 +160,8 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
           ]),
 
         li([
-          h5([Styleguide.class([bulletPointTitleClass])], ["Code reuse through function composition"]),
-          p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+          h5([`class`([bulletPointTitleClass])], ["Code reuse through function composition"]),
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             The most basic unit of code reusability comes in the form of simple function composition. We will
             show that by focusing on small atomic units that compose well, we can build large complex
@@ -170,8 +170,8 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
           ]),
 
         li([
-          h5([Styleguide.class([bulletPointTitleClass])], ["Maximizing the use of the type system"]),
-          p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+          h5([`class`([bulletPointTitleClass])], ["Maximizing the use of the type system"]),
+          p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
             """
             You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally
             add an integer to a string, or call a method on a “null” value, but it can do so much more. You
@@ -182,7 +182,7 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
           ]),
 
         li([
-          h5([Styleguide.class([bulletPointTitleClass])], ["Turning programming problems into algebraic problems"]),
+          h5([`class`([bulletPointTitleClass])], ["Turning programming problems into algebraic problems"]),
           markdownBlock("""
             Algebraic problems are nice because they carry structure that can be manipulated in predictable
             and understandable ways. For example, if you have ever simplified a complicated boolean
@@ -201,16 +201,16 @@ private let aboutSectionView = View<Prelude.Unit> { _ in
 
 private let openSourceSection = View<Prelude.Unit> { _ in
   [
-    h1([Styleguide.class([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], ["Open source"]),
-    p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+    h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], ["Open source"]),
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
       "When we ",
-      a([href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"), Styleguide.class([Class.pf.colors.link.purple])], ["open-sourced"]),
+      a([href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"), `class`([Class.pf.colors.link.purple])], ["open-sourced"]),
       " the entire ",
-      a([href("http://github.com/kickstarter/ios-oss"), Styleguide.class([Class.pf.colors.link.purple])], ["iOS"]),
+      a([href("http://github.com/kickstarter/ios-oss"), `class`([Class.pf.colors.link.purple])], ["iOS"]),
       " and ",
-      a([href("http://github.com/kickstarter/android-oss"), Styleguide.class([Class.pf.colors.link.purple])], ["Android"]),
+      a([href("http://github.com/kickstarter/android-oss"), `class`([Class.pf.colors.link.purple])], ["Android"]),
       " codebases at ",
-      a([href("http://www.kickstarter.com"), Styleguide.class([Class.pf.colors.link.purple])], ["Kickstarter"]),
+      a([href("http://www.kickstarter.com"), `class`([Class.pf.colors.link.purple])], ["Kickstarter"]),
       """
       , we saw that it was one of the best resources to show people how to build a large application in
       the functional style. It transcended any talks about the theoretical benefits or proposed
@@ -219,23 +219,23 @@ private let openSourceSection = View<Prelude.Unit> { _ in
       """
       ]),
 
-    p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
       """
       We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift,
       all in the functional style! This meant we had to build nearly everything from scratch, from server
       middleware and routing to HTML views and CSS.
       """]),
 
-    p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
       """
       We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an
       iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend
       language rivaling almost every other language out there.
       """]),
 
-    p([Styleguide.class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+    p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
       "You can view the entire source code to this site on our GitHub organization, ",
-      a([href(gitHubUrl(to: .organization)), Styleguide.class([Class.pf.colors.link.purple])], [.text(gitHubUrl(to: .organization))]),
+      a([href(gitHubUrl(to: .organization)), `class`([Class.pf.colors.link.purple])], [.text(gitHubUrl(to: .organization))]),
       "."
       ])
   ]

@@ -93,7 +93,7 @@ private let wrapper = { view in
     emailTable([style(contentTableStyles)], [
       tr([
         td([valign(.top)], [
-          div([Styleguide.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], view)
+          div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], view)
           ])
         ])
       ])
@@ -271,9 +271,9 @@ let welcomeEmail3Content = View<Database.User> { user -> [Node] in
 }
 
 private let subscribeButton = p(
-  [Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])],
+  [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
   [
-    a([href(url(to: .pricing(nil, expand: nil))), Styleguide.class([Class.pf.components.button(color: .purple)])],
+    a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
       ["Subscribe to Point-Free!"]
     ),
   ]
