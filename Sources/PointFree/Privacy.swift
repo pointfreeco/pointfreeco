@@ -33,12 +33,12 @@ private let privacyView = View<Prelude.Unit> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
-        [Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        [h1([Styleguide.class([Class.pf.type.responsiveTitle2])], [.text(title)])]
+        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+        [h1([`class`([Class.pf.type.responsiveTitle2])], [.text(title)])]
           <> privacyPolicy
           <> [
             p(
-              [Styleguide.class([Class.padding([.mobile: [.top: 2]])])],
+              [`class`([Class.padding([.mobile: [.top: 2]])])],
               ["This document was last updated on January 7, 2018."]
             )
         ]
@@ -60,7 +60,7 @@ private let privacyPolicy =
 
 private let personalIdentificationInformation = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Personal identification information"]),
   p([
     """
@@ -72,7 +72,7 @@ private let personalIdentificationInformation = [
 
 private let nonPersonalIdentificationInformation = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Non-personal identification information"]),
   p([
     """
@@ -84,7 +84,7 @@ private let nonPersonalIdentificationInformation = [
 
 private let webBrowserCookies = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Web browser cookies"]),
   p([
     """
@@ -96,7 +96,7 @@ private let webBrowserCookies = [
 
 private let howWeUseCollectedInformation = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["How we use collected information"]),
   p([
     """
@@ -126,7 +126,7 @@ private let howWeUseCollectedInformation = [
 
 private let howWeProtectYourInformation = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["How we protect your information"]),
   p([
     """
@@ -143,7 +143,7 @@ private let howWeProtectYourInformation = [
 
 private let sharingYourPersonalInformation = [
   h2(
-    [Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    [`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     ["Sharing your personal information"]),
   p([
     """
@@ -155,7 +155,7 @@ private let sharingYourPersonalInformation = [
 ]
 
 private let complianceWithChildrensOnlinePrivacyProtectionAct = [
-  h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Compliance with children's online privacy protection act"]),
+  h2([`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Compliance with children's online privacy protection act"]),
   p([
     """
     Protecting the privacy of the very young is especially important. For that reason, we never collect
@@ -165,7 +165,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct = [
 ]
 
 private let changesToThisPrivacyPolicy = [
-  h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Changes to this privacy policy"]),
+  h2([`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Changes to this privacy policy"]),
   p([
     """
     Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will
@@ -174,7 +174,7 @@ private let changesToThisPrivacyPolicy = [
 ]
 
 private let contactingUs = [
-  h2([Styleguide.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Contacting us"]),
+  h2([`class`([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])], ["Contacting us"]),
   p([
     "Questions about this policy can be sent to ",
     a([mailto("support@pointfree.co")], ["support@pointfree.co"]),

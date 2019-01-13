@@ -7,7 +7,7 @@ import Prelude
 import View
 
 let footerView: View<Database.User?> =
-  curry(footer)([Styleguide.class([footerClass])]) >>> pure
+  curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
 
 private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
@@ -30,33 +30,33 @@ private let linksColumnsView = View<Database.User?> { currentUser in
 }
 
 private let legalView = View<Prelude.Unit> { _ in
-  p([Styleguide.class([legalClass, Class.padding([.mobile: [.top: 2]])])], [
+  p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
     .text("© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "),
     "All other content is licensed under ",
-    a([Styleguide.class([Class.pf.colors.link.gray650]),
+    a([`class`([Class.pf.colors.link.gray650]),
        href("https://creativecommons.org/licenses/by-nc-sa/4.0/")],
       ["CC BY-NC-SA 4.0"]),
     ", and the underlying ",
-    a([Styleguide.class([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
+    a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .repo(.pointfreeco)))], ["source code"]),
     " to run this site is licensed under the ",
-    a([Styleguide.class([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .license))], ["MIT license"])
+    a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .license))], ["MIT license"])
     ])
 }
 
 private let pointFreeView = View<Prelude.Unit> { _ -> Node in
-  div([Styleguide.class([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
-    h4([Styleguide.class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])], [
-      a([href(path(to: .home)), Styleguide.class([Class.pf.colors.link.white])], ["Point-Free"])
+  div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
+    h4([`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])], [
+      a([href(path(to: .home)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
       ]),
-    p([Styleguide.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])], [
+    p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white])], [
       "A video series on functional programming and the Swift programming language. Hosted by ",
       a(
-        [href(twitterUrl(to: .mbrandonw)), Styleguide.class([Class.type.textDecorationNone, Class.pf.colors.link.green])],
+        [href(twitterUrl(to: .mbrandonw)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
         [.raw("Brandon&nbsp;Williams")]
       ),
       " and ",
       a(
-        [href(twitterUrl(to: .stephencelis)), Styleguide.class([Class.type.textDecorationNone, Class.pf.colors.link.green])],
+        [href(twitterUrl(to: .stephencelis)), `class`([Class.type.textDecorationNone, Class.pf.colors.link.green])],
         [.raw("Stephen&nbsp;Celis")]
       ),
       "."
@@ -67,18 +67,18 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
 private let contentColumnView = View<Database.User?> { currentUser -> Node in
 
   return div([
-    h5([Styleguide.class([columnTitleClass])], ["Content"]),
+    h5([`class`([columnTitleClass])], ["Content"]),
     ol(
-      [Styleguide.class([Class.type.list.reset])],
+      [`class`([Class.type.list.reset])],
       [
         li([
-          a([Styleguide.class([footerLinkClass]), href(path(to: .home))], ["Videos"])
+          a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
           ]),
         li([
-          a([Styleguide.class([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
+          a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
           ]),
         li([
-          a([Styleguide.class([footerLinkClass]), href(path(to: .about))], ["About Us"])
+          a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
           ])
       ]
     )
@@ -87,13 +87,13 @@ private let contentColumnView = View<Database.User?> { currentUser -> Node in
 
 private let accountColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([Styleguide.class([columnTitleClass])], ["Account"]),
-    ol([Styleguide.class([Class.type.list.reset])], [
+    h5([`class`([columnTitleClass])], ["Account"]),
+    ol([`class`([Class.type.list.reset])], [
       li([
-        a([Styleguide.class([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Subscribe"])
+        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Subscribe"])
         ]),
       li([
-        a([Styleguide.class([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Pricing"])
+        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Pricing"])
         ]),
       ])
     ])
@@ -101,19 +101,19 @@ private let accountColumnView = View<Prelude.Unit> { _ in
 
 private let moreColumnView = View<Prelude.Unit> { _ in
   div([
-    h5([Styleguide.class([columnTitleClass])], ["More"]),
-    ol([Styleguide.class([Class.type.list.reset])], [
+    h5([`class`([columnTitleClass])], ["More"]),
+    ol([`class`([Class.type.list.reset])], [
       li([
-        a([Styleguide.class([footerLinkClass]), href(twitterUrl(to: .pointfreeco))], ["Twitter"])
+        a([`class`([footerLinkClass]), href(twitterUrl(to: .pointfreeco))], ["Twitter"])
         ]),
       li([
-        a([Styleguide.class([footerLinkClass]), href(gitHubUrl(to: .organization))], ["GitHub"])
+        a([`class`([footerLinkClass]), href(gitHubUrl(to: .organization))], ["GitHub"])
         ]),
       li([
-        a([Styleguide.class([footerLinkClass]), mailto("support@pointfree.co")], ["Contact us"])
+        a([`class`([footerLinkClass]), mailto("support@pointfree.co")], ["Contact us"])
         ]),
       li([
-        a([Styleguide.class([footerLinkClass]), href(path(to: .privacy))], ["Privacy Policy"])
+        a([`class`([footerLinkClass]), href(path(to: .privacy))], ["Privacy Policy"])
         ]),
       ])
     ])

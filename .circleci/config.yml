@@ -13,6 +13,10 @@ jobs:
           command: system_profiler SPSoftwareDataType
 
       - run:
+          name: Brew upgrade
+          command: brew upgrade || brew upgrade
+
+      - run:
           name: Install Postgres
           command: brew install postgresql
 

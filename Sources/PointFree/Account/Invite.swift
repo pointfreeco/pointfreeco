@@ -147,7 +147,7 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           currentUser
             .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
             ?? showInviteLoggedOutView.view((teamInvite, inviter))
@@ -157,10 +157,10 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
 }
 
 private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.topBottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
@@ -176,7 +176,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
           "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
           ]),
 
-        p([Styleguide.class([Class.padding([.mobile: [.top: 3]])])], [
+        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
           gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
           ])
         ])
@@ -185,10 +185,10 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
 }
 
 private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, Database.User)> { currentUser, teamInvite, inviter in
-  gridRow([Styleguide.class([Class.padding([.mobile: [.topBottom: 4]])])], [
+  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
-        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
         p([
           "Your colleague ",
@@ -204,7 +204,7 @@ private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, D
           input([
               type(.submit),
               value("Accept"),
-              Styleguide.class([Class.pf.components.button(color: .purple)])
+              `class`([Class.pf.components.button(color: .purple)])
             ])
           ])
         ])
@@ -216,8 +216,8 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([Styleguide.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
-        h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
+      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
+        h3([`class`([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
 
         p([
           """
@@ -226,11 +226,11 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
           """
           ]),
 
-        p([Styleguide.class([Class.padding([.mobile: [.top: 3]])])], [
+        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
           a(
             [
               href(path(to: .pricing(nil, expand: nil))),
-              Styleguide.class([Class.pf.components.button(color: .purple)])
+              `class`([Class.pf.components.button(color: .purple)])
             ],
             ["Subscribe"])
           ])

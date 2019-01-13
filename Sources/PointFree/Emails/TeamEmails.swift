@@ -21,9 +21,9 @@ private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> {
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Team removal"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             .text("""
               You have been removed from \(teamOwner.displayName)’s Point-Free team, which means you no longer
               have access to full episodes and transcripts. If you wish to subscribe to an individual plan,
@@ -31,10 +31,10 @@ private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> {
               """)
             ]),
 
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
               href(url(to: .pricing(nil, expand: nil))),
-              Styleguide.class([Class.pf.components.button(color: .purple)])
+              `class`([Class.pf.components.button(color: .purple)])
               ],
               ["See subscription plans"])
             ])
@@ -60,9 +60,9 @@ private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { te
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
-        div([Styleguide.class([Class.padding([.mobile: [.all: 2]])])], [
-          h3([Styleguide.class([Class.pf.type.responsiveTitle3])], ["Team removal"]),
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             .text("""
               You have removed \(teammate.displayName) from your Point-Free team, which means they no longer
               have access to full episodes and transcripts. You can add them back anytime from your account
@@ -70,10 +70,10 @@ private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { te
               """)
             ]),
 
-          p([Styleguide.class([Class.padding([.mobile: [.topBottom: 2]])])], [
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
               href(url(to: .account(.index))),
-              Styleguide.class([Class.pf.components.button(color: .purple)])
+              `class`([Class.pf.components.button(color: .purple)])
               ],
               ["Account settings"])
             ])
