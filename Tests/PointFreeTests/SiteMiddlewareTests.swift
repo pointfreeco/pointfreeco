@@ -1,6 +1,5 @@
 import Html
-import HtmlTestSupport
-import HtmlPrettyPrint
+import HtmlSnapshotTesting
 import SnapshotTesting
 import Prelude
 import XCTest

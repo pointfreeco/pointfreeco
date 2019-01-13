@@ -1,7 +1,6 @@
 import Either
 import Html
 import HtmlPlainTextPrint
-import HtmlPrettyPrint
 import HttpPipeline
 @testable import PointFree
 import PointFreeTestSupport

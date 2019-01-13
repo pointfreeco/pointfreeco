@@ -1,4 +1,5 @@
 import Css
+import Foundation
 import Html
 import HtmlCssSupport
 import Styleguide
@@ -35,7 +36,7 @@ private let linksColumnsView = View<Database.User?> { currentUser in
 
 private let legalView = View<Prelude.Unit> { _ in
   p([Styleguide.class([legalClass, Class.padding([.mobile: [.top: 2]])])], [
-    "© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. ",
+    .text("© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "),
     "All other content is licensed under ",
     a([Styleguide.class([Class.pf.colors.link.gray650]),
        href("https://creativecommons.org/licenses/by-nc-sa/4.0/")],
@@ -139,3 +140,7 @@ private let columnTitleClass =
 private let legalClass =
   Class.pf.colors.fg.gray400
     | Class.pf.type.body.small
+
+private var year: Int {
+  return Calendar(identifier: .gregorian).component(.year, from: Current.date())
+}

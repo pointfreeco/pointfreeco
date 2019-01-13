@@ -2,7 +2,6 @@ import Css
 import Foundation
 import Html
 import HtmlCssSupport
-import HtmlPrettyPrint
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
