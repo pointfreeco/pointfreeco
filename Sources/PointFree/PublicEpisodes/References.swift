@@ -36,6 +36,16 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
+  static let se0235AddResultToTheStandardLibrary = Episode.Reference(
+    author: nil,
+    blurb: """
+The Swift evolution review of the proposal to add a `Result` type to the standard library. It discussed many functional facets of the `Result` type, including which operators to include (including `map` and `flatMap`), and how they should be defined.
+""",
+    link: "https://forums.swift.org/t/se-0235-add-result-to-the-standard-library/17752",
+    publishedAt: Date(timeIntervalSince1970: 1541610000),
+    title: "SE-0235 - Add Result to the Standard Library"
+  )
+
   static let howToControlTheWorld = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
