@@ -50,8 +50,8 @@ public func requireSome<A>(
 // TODO: Move to PreludeFoundation?
 
 private let sessionConfig = URLSessionConfiguration.default
-  |> \.timeoutIntervalForRequest .~ 30
-  |> \.timeoutIntervalForResource .~ 30
+  |> \.timeoutIntervalForRequest .~ 25
+  |> \.timeoutIntervalForResource .~ 25
 
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
   return .init(
