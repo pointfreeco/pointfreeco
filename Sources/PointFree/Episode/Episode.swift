@@ -141,6 +141,7 @@ public struct Episode {
 
         static let diff = CodeLang(identifier: "diff")
         static let html = CodeLang(identifier: "html")
+        static let json = CodeLang(identifier: "json")
         static let plainText = CodeLang(identifier: "txt")
         static let ruby = CodeLang(identifier: "ruby")
         static let shell = CodeLang(identifier: "sh")
