@@ -82,6 +82,16 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
+  static let nioRenameThenToFlatMap = Episode.Reference(
+    author: "Apple",
+    blurb: """
+Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as a super charged version of the `Parallel` type we've used many times on this series. It comes with a method that has the same signature as `flatMap`, but originally it was named `then`. This pull-request renames the method to `flatMap`, which brings it inline with the naming for `Optional`, `Array` _and_ `Result` in the standard libary.
+""",
+    link: "https://github.com/apple/swift-nio/pull/760",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-21"),
+    title: "rename ELF.then to ELF.flatMap"
+  )
+
   static let openSourcingSwiftHtml = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
