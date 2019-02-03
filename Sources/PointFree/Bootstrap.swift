@@ -51,6 +51,13 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
+  print("    ✅ App environment: \(envVars.appEnv)")
+  print("    ✅ Base URL: \(envVars.baseUrl)")
+  print("    ✅ GitHub Client: \(envVars.gitHub.clientId)")
+  print("    ✅ Mailgun Domain: \(envVars.mailgun.domain)")
+  print("    ✅ Postgres: \(envVars.postgres.databaseUrl)")
+  print("    ✅ Stripe Public Key: \(envVars.stripe.publishableKey)")
+
   update(&Current, \.envVars .~ envVars)
   return pure(unit)
 }
