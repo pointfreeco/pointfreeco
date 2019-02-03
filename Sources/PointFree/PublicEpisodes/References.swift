@@ -377,6 +377,15 @@ general.
     title: "Value-Oriented Programming"
   )
 
+  static let wikipediaMonad = Episode.Reference(
+    author: nil,
+    blurb: """
+The Wikipedia entry for monads.
+""",
+    link: "https://en.wikipedia.org/wiki/Monad_(functional_programming)",
+    publishedAt: nil,
+    title: "Monad (functional programming)"
+  )
 }
 
 private let referenceDateFormatter = DateFormatter()
