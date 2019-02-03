@@ -95,7 +95,6 @@ private func sendEmail(
       .flatMap { nodes -> EitherIO<Error, Mailgun.SendEmailResponse> in
 
         print("Sending email to \(user.email)")
-        print("Callstack size: \(Thread.callStackSymbols.count)")
 
         return sendEmail(
           to: [user.email],
@@ -103,7 +102,7 @@ private func sendEmail(
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
           )
-          .delay(.milliseconds(200))
+          .delay(.milliseconds(10))
 //          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
     }
   }
