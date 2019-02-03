@@ -92,15 +92,19 @@ private func sendEmail(
   // A personalized email to send to each user.
   let newEpisodeEmails = users.map { user in
     lift(IO { newEpisodeEmail.view((episode, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
-      .flatMap { nodes in
-        sendEmail(
+      .flatMap { nodes -> EitherIO<Error, Mailgun.SendEmailResponse> in
+
+        print("Sending email to \(user.email)")
+        print("Callstack size: \(Thread.callStackSymbols.count)")
+
+        return sendEmail(
           to: [user.email],
           subject: "\(subjectPrefix)New Point-Free Episode: \(episode.title)",
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
           )
           .delay(.milliseconds(200))
-          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
+//          .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
     }
   }
 
