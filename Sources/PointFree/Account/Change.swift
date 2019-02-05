@@ -250,22 +250,8 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
         min(max(1, seatsTaken)),
         max(Pricing.validTeamQuantities.upperBound),
         name("quantity"),
-        onchange(
-          unsafe: """
-          var multiplier = this.valueAsNumber;
-          console.log(multiplier);
-          var elements = document.getElementsByClassName('price');
-          for (var idx = 0; idx < elements.length; idx++) {
-            var element = elements[idx];
-            var price = multiplier == 1
-              ? element.dataset.priceIndividual
-              : element.dataset.priceTeam;
-            element.textContent = (multiplier * price)
-              .toString()
-              .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
-          }
-          """
-        ),
+        oninput(unsafe: recalculatePriceScript),
+        onblur(unsafe: recalculatePriceScript),
         step(1),
         value(clamp(1..<Pricing.validTeamQuantities.upperBound) <| subscription.quantity),
         `class`([numberSpinner, Class.pf.colors.fg.black])
@@ -273,6 +259,21 @@ private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription
       ])
     ])
 }
+
+private let recalculatePriceScript = """
+var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
+
+var elements = document.getElementsByClassName('price');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  var price = multiplier == 1
+    ? element.dataset.priceIndividual
+    : element.dataset.priceTeam;
+  element.textContent = (multiplier * price)
+    .toString()
+    .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+}
+"""
 
 let priceClass = CssSelector.class("price")
 

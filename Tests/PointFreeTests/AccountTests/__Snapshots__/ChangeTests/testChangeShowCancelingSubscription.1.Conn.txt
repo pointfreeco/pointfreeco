@@ -2,7 +2,7 @@ GET http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 50940
+Content-Length: 51395
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1813,8 +1813,20 @@ the current billing period.
                        min="1"
                        max="100"
                        name="quantity"
-                       onchange="var multiplier = this.valueAsNumber;
-console.log(multiplier);
+                       oninput="var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
+
+var elements = document.getElementsByClassName('price');
+for (var idx = 0; idx < elements.length; idx++) {
+  var element = elements[idx];
+  var price = multiplier == 1
+    ? element.dataset.priceIndividual
+    : element.dataset.priceTeam;
+  element.textContent = (multiplier * price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}"
+                       onblur="var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
+
 var elements = document.getElementsByClassName('price');
 for (var idx = 0; idx < elements.length; idx++) {
   var element = elements[idx];
