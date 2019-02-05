@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/feed/atom.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4394
+Content-Length: 4377
 Content-Type: application/atom+xml
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -18,10 +18,8 @@ X-XSS-Protection: 1; mode=block
   </title>
   <link href="http://localhost:8080/feed/atom.xml"
         rel="self">
-    
   </link>
   <link href="http://localhost:8080/blog">
-    
   </link>
   <updated>
     2018-04-16T09:57:03Z
@@ -42,7 +40,6 @@ X-XSS-Protection: 1; mode=block
       Mock Blog Post
     </title>
     <link href="http://localhost:8080/blog/posts/0-mock-blog-post">
-      
     </link>
     <updated>
       2018-04-16T09:57:03Z
