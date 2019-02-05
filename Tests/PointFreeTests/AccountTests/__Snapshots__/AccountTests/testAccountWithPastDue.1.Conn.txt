@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 56102
+Content-Length: 56081
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1850,7 +1850,6 @@ Point-Free!</p>
                                    w-100p
                                    block"
                             name="extraInvoiceInfo">
-                    
                   </textarea>
                   <p>
                     Receive email for:
