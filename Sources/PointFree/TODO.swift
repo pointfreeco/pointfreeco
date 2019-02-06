@@ -62,10 +62,24 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
           defer { session.finishTasksAndInvalidate() }
           if let error = error {
             callback(.left(error))
+            return
           }
           if let data = data, let response = response {
             callback(.right((data, response)))
+            return
           }
+
+          // If the code gets here, then something really bad has happened and let's notify admins.
+          sendEmail(
+            to: adminEmails,
+            subject: "[PointFree Error] JSON Data Task Never Invoked Callback",
+            content: inj1("""
+              Request: \(request)
+              Data: \(String(describing: data))
+              Response: \(String(describing: response))
+              Error: \(String(describing: error))
+              """)
+            ).run.parallel.run { _ in }
         }
         .resume()
     }
