@@ -13,7 +13,7 @@ import View
 
 public let adminEmails: [EmailAddress] = [
   "mbw234@gmail.com",
-  "stephen.celis@gmail.com"
+//  "stephen.celis@gmail.com"
 ]
 
 func requireAdmin<A>(

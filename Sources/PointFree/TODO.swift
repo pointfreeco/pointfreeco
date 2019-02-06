@@ -56,10 +56,26 @@ private let sessionConfig = URLSessionConfiguration.default
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
   return .init(
     run: .init { callback in
+
+      let startTime = Current.date().timeIntervalSince1970
+      Current.logger.debug("[Data Task Started] \(request.httpMethod ?? "UNKNOWN") \(request.url?.absoluteString ?? "nil")")
+
       let session = URLSession(configuration: sessionConfig)
       session
         .dataTask(with: request) { data, response, error in
           defer { session.finishTasksAndInvalidate() }
+
+          let endTime = Current.date().timeIntervalSince1970
+          let delta = Int((endTime - startTime) * 1000)
+          let dataMsg = data.map { _ in "some" } ?? "none"
+
+          Current.logger.debug("""
+            [Data Task Finished] \(delta)ms, \
+            (data, response, error) = \
+            (\(dataMsg), \(String(describing: response)), \(String(describing: error)))
+            """
+          )
+
           if let error = error {
             callback(.left(error))
             return
@@ -74,8 +90,8 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
             to: adminEmails,
             subject: "[PointFree Error] JSON Data Task Never Invoked Callback",
             content: inj1("""
-              Request: \(request)
-              Data: \(String(describing: data))
+              Request: \(request.debugDescription)
+              Data: \(dataMsg)
               Response: \(String(describing: response))
               Error: \(String(describing: error))
               """)
