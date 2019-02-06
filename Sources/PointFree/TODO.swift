@@ -66,13 +66,16 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
 
           let endTime = Current.date().timeIntervalSince1970
           let delta = Int((endTime - startTime) * 1000)
+
           let dataMsg = data.map { _ in "some" } ?? "none"
+          let responseMsg = response.map { _ in "some" } ?? "none"
+          let errorMsg = error.map(String.init(describing:)) ?? "none"
 
           Current.logger.debug("""
             [Data Task] \(delta)ms, \
             \(request.httpMethod ?? "UNKNOWN") \(request.url?.absoluteString ?? "nil"), \
             (data, response, error) = \
-            (\(dataMsg), \(String(describing: response)), \(String(describing: error)))
+            (\(dataMsg), \(responseMsg), \(errorMsg))
             """
           )
 
@@ -92,8 +95,8 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
             content: inj1("""
               Request: \(request.debugDescription)
               Data: \(dataMsg)
-              Response: \(String(describing: response))
-              Error: \(String(describing: error))
+              Response: \(responseMsg)
+              Error: \(errorMsg)
               """)
             ).run.parallel.run { _ in }
         }
