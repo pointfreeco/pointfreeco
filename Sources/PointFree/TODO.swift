@@ -56,16 +56,49 @@ private let sessionConfig = URLSessionConfiguration.default
 public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResponse)> {
   return .init(
     run: .init { callback in
+
+      let startTime = Current.date().timeIntervalSince1970
+
       let session = URLSession(configuration: sessionConfig)
       session
         .dataTask(with: request) { data, response, error in
           defer { session.finishTasksAndInvalidate() }
+
+          let endTime = Current.date().timeIntervalSince1970
+          let delta = Int((endTime - startTime) * 1000)
+
+          let dataMsg = data.map { _ in "some" } ?? "none"
+          let responseMsg = response.map { _ in "some" } ?? "none"
+          let errorMsg = error.map(String.init(describing:)) ?? "none"
+
+          Current.logger.debug("""
+            [Data Task] \(delta)ms, \
+            \(request.httpMethod ?? "UNKNOWN") \(request.url?.absoluteString ?? "nil"), \
+            (data, response, error) = \
+            (\(dataMsg), \(responseMsg), \(errorMsg))
+            """
+          )
+
           if let error = error {
             callback(.left(error))
+            return
           }
           if let data = data, let response = response {
             callback(.right((data, response)))
+            return
           }
+
+          // If the code gets here, then something really bad has happened and let's notify admins.
+          sendEmail(
+            to: adminEmails,
+            subject: "[PointFree Error] JSON Data Task Never Invoked Callback",
+            content: inj1("""
+              Request: \(request.debugDescription)
+              Data: \(dataMsg)
+              Response: \(responseMsg)
+              Error: \(errorMsg)
+              """)
+            ).run.parallel.run { _ in }
         }
         .resume()
     }
