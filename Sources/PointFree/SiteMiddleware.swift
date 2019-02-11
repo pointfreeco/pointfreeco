@@ -8,7 +8,7 @@ import Styleguide
 import Tuple
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger { Current.logger.info($0) }
+  requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
     <<< route(router: router, notFound: routeNotFoundMiddleware)
