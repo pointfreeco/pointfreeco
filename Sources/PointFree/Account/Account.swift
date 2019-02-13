@@ -407,8 +407,11 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
         ],
         [
           "Because you are on a monthly subscription plan, you get access to the last ",
-          .text("\(nonYearlyMaxRssItems) episodes in your RSS feed. To unlock access to all "),
-          "episodes in this feed, please consider ",
+          .text("\(nonYearlyMaxRssItems)"),
+          """
+          episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).
+          To access all episodes from the RSS feed, please consider
+          """,
           a(
             [`class`([Class.pf.type.underlineLink]), href(path(to: .account(.subscription(.change(.show)))))],
             ["upgrading"]
