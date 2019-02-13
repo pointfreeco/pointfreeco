@@ -289,8 +289,8 @@ private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscript
       h3([`class`([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
       p([
         """
-        Your regular billing rate will be reflected below. Upgrades and downgrades will take
-        place at the end of the current billing period.
+        Your regular billing rate will be reflected below. Upgrades are prorated against the remaining time of
+        the current billing period. Downgrades will take place at the end of the current billing period.
         """]),
       gridRow(
         [],

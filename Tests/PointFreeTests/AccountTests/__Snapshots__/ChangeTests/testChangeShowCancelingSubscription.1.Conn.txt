@@ -2,7 +2,7 @@ GET http://localhost:8080/account/subscription/change
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 51395
+Content-Length: 51462
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1861,8 +1861,8 @@ for (var idx = 0; idx < elements.length; idx++) {
                   Change to yearly billing?
                 </h3>
                 <p>
-                  Your regular billing rate will be reflected below. Upgrades and downgrades will take
-place at the end of the current billing period.
+                  Your regular billing rate will be reflected below. Upgrades are prorated against the remaining time of
+the current billing period. Downgrades will take place at the end of the current billing period.
                 </p>
                 <div class="row">
                   <div class="bg-white
