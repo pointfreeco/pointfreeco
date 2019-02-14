@@ -935,11 +935,11 @@ func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = 
       return .wrap { () -> Node in
         let uuid = UUID().uuidString
         let startTime = Current.date().timeIntervalSince1970
-        Current.logger.info("[DB] \(uuid) \(query)")
+        Current.logger.debug("[DB] \(uuid) \(query)")
         let result = try conn.execute(query, representable)
         let endTime = Current.date().timeIntervalSince1970
         let delta = Int((endTime - startTime) * 1000)
-        Current.logger.info("[DB] \(uuid) \(delta)ms")
+        Current.logger.debug("[DB] \(uuid) \(delta)ms")
         return result
       }
     }
