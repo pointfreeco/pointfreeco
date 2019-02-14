@@ -932,6 +932,15 @@ func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = 
   -> EitherIO<Error, PostgreSQL.Node> {
 
     return conn.flatMap { conn in
-      return .wrap { return try conn.execute(query, representable) }
+      return .wrap { () -> Node in
+        let uuid = UUID().uuidString
+        let startTime = Current.date().timeIntervalSince1970
+        Current.logger.debug("[DB] \(uuid) \(query)")
+        let result = try conn.execute(query, representable)
+        let endTime = Current.date().timeIntervalSince1970
+        let delta = Int((endTime - startTime) * 1000)
+        Current.logger.debug("[DB] \(uuid) \(delta)ms")
+        return result
+      }
     }
 }

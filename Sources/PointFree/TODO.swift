@@ -58,6 +58,8 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
     run: .init { callback in
 
       let startTime = Current.date().timeIntervalSince1970
+      let uuid = UUID().uuidString
+      Current.logger.debug("[Data Task] \(uuid) \(request.httpMethod ?? "UNKNOWN")")
 
       let session = URLSession(configuration: sessionConfig)
       session
@@ -72,8 +74,8 @@ public func dataTask(with request: URLRequest) -> EitherIO<Error, (Data, URLResp
           let errorMsg = error.map(String.init(describing:)) ?? "none"
 
           Current.logger.debug("""
-            [Data Task] \(delta)ms, \
-            \(request.httpMethod ?? "UNKNOWN") \(request.url?.absoluteString ?? "nil"), \
+            [Data Task] \(uuid) \(delta)ms, \
+            \(request.url?.absoluteString ?? "nil"), \
             (data, response, error) = \
             (\(dataMsg), \(responseMsg), \(errorMsg))
             """
