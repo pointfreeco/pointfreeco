@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62212
+Content-Length: 62232
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1927,8 +1927,8 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                    style="background-color:#ffffdd">
                   Because you are on a monthly subscription plan, you get access to the last 
                   4
-                  episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).
-To access all episodes from the RSS feed, please consider
+                  episodes in your RSS feed (don't worry, you can watch every past episode directly on this site). 
+                  To access all episodes from the RSS feed, please consider 
                   <a class="underline-link"
                      href="/account/subscription/change">
                     upgrading
