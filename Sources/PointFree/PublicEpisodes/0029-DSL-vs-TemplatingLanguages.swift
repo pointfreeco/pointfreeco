@@ -28,14 +28,14 @@ previously hidden.
 )
 
 private let exercises: [Episode.Exercise] = [
-  .init(body: """
+  .init(problem: """
 In this episode we expressed a lot of HTML “views” as just plain functions from some data type into the
 `Node` type. In past episodes we saw that functions `(A) -> B` have both a `map` and `contramap` defined, the
 former corresponding to post-composition and the latter pre-composition. What does `map` and `contramap`
 represent in the context of an HTML view `(A) -> Node`?
 """),
 
-  .init(body: """
+  .init(problem: """
 When building a website you often realize that you want to be able to reuse an outer "shell" of a view,
 and plug smaller views into it. For example, the header, nav and footer would consist of the "shell", and
 then the content of your homepage, about page, contact page, etc. make up the inside. This is a kind of
@@ -46,7 +46,7 @@ Formulate what this form of view composition looks like when you think of views 
 form `(A) -> Node`.
 """),
 
-  .init(body: """
+  .init(problem: """
 In previous episodes on this series we have discussed the `<>` (diamond) operator. We have remarked that this
 operator comes up anytime we have a nice way of combining two values of the same type together into a third
 value of the same type, i.e. functions of the form `(A, A) -> A`.
@@ -55,7 +55,7 @@ Given two views of the form `v, w: (A) -> [Node]`, it is possible to combine the
 the diamond operator that performs this operation: `<>: ((A) -> [Node], (A) -> [Node]) -> (A) -> [Node]`.
 """),
 
-  .init(body: """
+  .init(problem: """
 Right now any node is allowed to be embedded inside any other node, even though certain HTML semantics
 forbid that. For example, the list item tag `<li>` is only allowed to be embedded in unordered lists `<ul>`
 and ordered lists `<ol>`. We can't enforce this property through the `Node` type, but we can do it through
