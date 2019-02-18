@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 76742
+Content-Length: 77440
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2262,9 +2262,26 @@ that timestamp jumps the video to that spot.</p>
               <li id="exercise-1">
                 <div>
                   <div class="md-ctn">
-                    <p>This is an exercise.</p>
+                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
 
                   </div>
+                  <details>
+                    <summary>
+                      Solution
+                    </summary>
+                    <div class="bg-gray900
+                                m-pl2
+                                m-pr2
+                                m-pt1
+                                m-pb1
+                                m-mb3
+                                overflow-auto-x">
+                      <div class="md-ctn">
+                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                      </div>
+                    </div>
+                  </details>
                 </div>
               </li>
             </ol>

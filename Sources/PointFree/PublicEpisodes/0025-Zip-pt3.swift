@@ -30,7 +30,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
 
 private let exercises: [Episode.Exercise] = [
 
-  .init(body: """
+  .init(problem: """
 In this series of episodes on `zip` we have described zipping types as a kind of way to swap the order of
 nested containers when one of those containers is a tuple, e.g. we can transform a tuple of arrays to an
 array of tuples `([A], [B]) -> [(A, B)]`. There's a more general concept that aims to flip containers of any
@@ -54,13 +54,13 @@ Do the implementations of these functions have anything in common, or do they se
 each other?
 """),
 
-  .init(body: """
+  .init(problem: """
 There is a function closely related to `zip` called `apply`. It has the following shape:
 `apply: (F<(A) -> B>, F<A>) -> F<B>`. Define `apply` for `Array`, `Optional`, `Result`, `Validated`,
 `Func` and `Parallel`.
 """),
 
-  .init(body: """
+  .init(problem: """
 Another closely related function to `zip` is called `alt`, and it has the following shape:
 `alt: (F<A>, F<A>) -> F<A>`. Define `alt` for `Array`, `Optional`, `Result`, `Validated` and `Parallel`.
 Describe what this function semantically means for each of the types.
