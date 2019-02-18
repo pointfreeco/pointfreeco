@@ -833,21 +833,20 @@ private func solution(to exercise: Episode.Exercise) -> [Node] {
   guard let solution = exercise.solution else { return [] }
 
   return [
-    details(
-      [
-        summary(
-          [
-            "Solution"
-          ]
-          ).rawValue, // todo: update details to take children of details
-        div(
-          [
-            `class`([Class.pf.colors.bg.gray900, Class.padding([.mobile: [.all: 2]])])
-          ],
-          [markdownBlock(solution)]
-        )
-      ]
-    )
+    details([
+      summary(["Solution"]).rawValue, // todo: update details to take children of details
+      div(
+        [
+          `class`([
+            Class.pf.colors.bg.gray900,
+            Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]]),
+            Class.margin([.mobile: [.bottom: 3]]),
+            Class.layout.overflowAuto(.x)
+            ])
+        ],
+        [markdownBlock(solution)]
+      )
+      ])
   ]
 }
 
