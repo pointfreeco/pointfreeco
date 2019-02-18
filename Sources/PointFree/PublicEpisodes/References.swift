@@ -3,6 +3,23 @@ import Optics
 import Prelude
 
 extension Episode.Reference {
+
+  static let aLittleRespectForAnySequence = Episode.Reference(
+    author: "Rob Napier",
+    blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
+    link: "http://robnapier.net/erasure",
+    publishedAt: Date(timeIntervalSince1970: 1438660800),
+    title: "A Little Respect for AnySequence"
+  )
+
+  static let allowErrorToConformToItself = Episode.Reference(
+    author: "John McCall",
+    blurb: "Swift 5.0 finally introduced the `Result` type to the standard library, and with it a patch that conforms `Error` to itself, allowing Result's `Failure` parameter to be constrained to `Error` in an ergonomic fashion. While this conformance is a special case, Swift may automatically conform certain protocols to themselves in the future.",
+    link: "https://github.com/apple/swift/pull/20629",
+    publishedAt: Date(timeIntervalSince1970: 1543986000),
+    title: "Allow Error to conform to itself"
+  )
+
   static let bonMot = Episode.Reference(
     author: "Zev Eisenberg @ Raizlabs",
     blurb: """
@@ -361,6 +378,14 @@ parametric polymorphism, as Swift does.
     title: "Theorems for Free"
   )
 
+  static let typeErasureInSwift = Episode.Reference(
+    author: "Mike Ash",
+    blurb: "This edition of Friday Q&A shows how type erasure can manifest itself in many different ways. While you can wrap the functionality of a protocol in a concrete data type, as we explored in our series on [protocol witnesses](/episodes/ep33-protocol-witnesses-part-1), you can also use subclasses and plain ole functions.",
+    link: "https://www.mikeash.com/pyblog/friday-qa-2017-12-08-type-erasure-in-swift.html",
+    publishedAt: Date(timeIntervalSince1970: 1512709200),
+    title: "Type Erasure in Swift"
+  )
+  
   static let typeSafeFilePathsWithPhantomTypes = Episode.Reference(
     author: "Brandon Kase, Chris Eidhof, Florian Kugler",
     blurb: """
@@ -396,6 +421,7 @@ The Wikipedia entry for monads.
     publishedAt: nil,
     title: "Monad (functional programming)"
   )
+
 }
 
 private let referenceDateFormatter = DateFormatter()
