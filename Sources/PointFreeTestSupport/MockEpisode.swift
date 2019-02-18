@@ -22,7 +22,8 @@ extension Episode.Reference {
 
 extension Episode.Exercise {
   public static let mock = Episode.Exercise(
-    body: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere."
+    problem: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.",
+    solution: "Let g be a Riemannian metric on X, and consider the Ricci flow..."
   )
 }
 
@@ -32,9 +33,7 @@ private let subscriberOnlyEpisode = Episode(
   text, no markdown allowed. Here is some more text just to have some filler.
   """,
   codeSampleDirectory: "ep2-proof-in-functions",
-  exercises: [
-    .init(body: "This is an exercise.")
-  ],
+  exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
@@ -165,7 +164,7 @@ private let freeEpisode = Episode(
 As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
 """,
   codeSampleDirectory: "ep1-type-safe-html",
-  exercises: [],
+  exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
     downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",

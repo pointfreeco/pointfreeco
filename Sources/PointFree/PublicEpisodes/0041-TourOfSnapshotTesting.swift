@@ -35,19 +35,19 @@ Our snapshot testing library is now official open source! In order to show just 
 )
 
 private let exercises: [Episode.Exercise] = [
-  .init(body: """
+  .init(problem: """
 Write an `.html` strategy for snapshotting `NSAttributedString`. You will want to use the
 `data(from:documentAttributes:)` method on `NSAttributedString` with the
 `NSAttributedString.DocumentType.html` attribute to convert any attribtued string into an HTML document.
 """),
-  .init(body: """
+  .init(problem: """
 Integrate the [snapshot testing library](http://github.com/pointfreeco/swift-snapshot-testing) into one
 of your projects, and write a snapshot test.
 """),
-  .init(body: """
+  .init(problem: """
 Create a custom, domain-specific snapshot strategy for one of your types.
 """),
-  .init(body: """
+  .init(problem: """
 Send us a [pull request](http://github.com/pointfreeco/swift-snapshot-testing/pulls) to add a snapshot strategy for a Swift standard library or cocoa data type that
 we haven't yet implemented.
 """),
