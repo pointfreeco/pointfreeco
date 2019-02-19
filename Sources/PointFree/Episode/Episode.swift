@@ -95,10 +95,12 @@ public struct Episode {
   }
 
   public struct Exercise {
-    public private(set) var body: String
+    public var problem: String
+    public var solution: String?
 
-    public init(body: String) {
-      self.body = body
+    public init(problem: String, solution: String? = nil) {
+      self.problem = problem
+      self.solution = solution
     }
   }
 

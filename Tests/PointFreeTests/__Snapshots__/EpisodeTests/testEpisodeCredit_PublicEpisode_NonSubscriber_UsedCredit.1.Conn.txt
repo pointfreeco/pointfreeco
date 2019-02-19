@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 83407
+Content-Length: 85785
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1942,6 +1942,19 @@ function videoJsLoaded() {
 
               </div>
             </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1986,6 +1999,19 @@ function videoJsLoaded() {
                   <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
                 </div>
+              </div>
+              <div class="d-pt3
+                          m-pt2">
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#transcript">
+                  Transcript
+                </a>
+                <a class="pf-link-purple
+                          m-mr2"
+                   href="#exercises">
+                  Exercises
+                </a>
               </div>
             </div>
           </div>
@@ -2436,6 +2462,56 @@ video.play();event.preventDefault();"
 
               </div>
             </div>
+          </div>
+          <hr class="pf-divider
+                     border-top
+                     m-ml0
+                     m-mr0
+                     m-mt0
+                     m-mb0
+                     bg-white">
+          <div class="d-pb4
+                      d-pt2
+                      d-pl4
+                      d-pr4
+                      m-pl3
+                      m-pr3
+                      m-pt3
+                      m-pb3
+                      bg-white">
+            <h2 id="exercises"
+                class="h4
+                       lh-3
+                       m-pt2">
+              Exercises
+            </h2>
+            <ol>
+              <li id="exercise-1">
+                <div>
+                  <div class="md-ctn">
+                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+
+                  </div>
+                  <details>
+                    <summary>
+                      Solution
+                    </summary>
+                    <div class="bg-gray900
+                                m-pl2
+                                m-pr2
+                                m-pt1
+                                m-pb1
+                                m-mb3
+                                overflow-auto-x">
+                      <div class="md-ctn">
+                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </li>
+            </ol>
           </div>
         </div>
       </div>

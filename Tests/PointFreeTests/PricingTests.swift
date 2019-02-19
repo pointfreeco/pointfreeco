@@ -41,7 +41,6 @@ class PricingTests: TestCase {
 
       webView.frame.size.width = 400
       assertSnapshot(matching: webView, as: .image, named: "mobile")
-
     }
     #endif
   }
