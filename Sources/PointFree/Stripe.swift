@@ -616,7 +616,7 @@ private func runStripe<A>(_ stripeRequest: DecodableRequest<A>?) -> EitherIO<Err
 
   let task: EitherIO<Error, A> = pure(stripeRequest.rawValue)
     .flatMap {
-      dataTask(with: $0)
+      dataTask(with: $0, logger: Current.logger)
         .map(first)
         .flatMap { data in
           .wrap {

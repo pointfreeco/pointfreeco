@@ -116,7 +116,7 @@ private func apiDataTask<A>(_ path: String, token: GitHub.AccessToken) -> Decoda
 }
 
 private func runGitHub<A>(_ gitHubRequest: DecodableRequest<A>) -> EitherIO<Error, A> {
-  return jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder)
+  return jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder, logger: Current.logger)
 }
 
 private let gitHubJsonEncoder: JSONEncoder = { () in
