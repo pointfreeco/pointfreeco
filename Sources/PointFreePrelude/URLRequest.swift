@@ -90,6 +90,22 @@ public func dataTask(
   )
 }
 
+public func logError<A>(
+  subject: String,
+  logger: Logger,
+  file: StaticString = #file,
+  line: UInt = #line
+  ) -> (Error) -> EitherIO<Error, A> {
+
+  return { error in
+    var errorDump = ""
+    dump(error, to: &errorDump)
+    logger.log(.error, errorDump, file: file, line: line)
+
+    return throwE(error)
+  }
+}
+
 public enum JSONError: Error {
   case error(String, Error)
 }
