@@ -5,10 +5,15 @@ import PackageDescription
 let package = Package(
   name: "PointFree",
   products: [
-    .library(name: "PointFree", targets: ["PointFree"]),
-    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .library(name: "Database", targets: ["Database"]),
+    .library(name: "GitHub", targets: ["GitHub"]),
+    .library(name: "Logger", targets: ["Logger"]),
+    .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
+    .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
+    .library(name: "Stripe", targets: ["Stripe"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     ],
   dependencies: [
@@ -21,6 +26,34 @@ let package = Package(
     ],
   targets: [
     .target(
+      name: "Database",
+      dependencies: [
+        "Either",
+        "GitHub",
+        "PostgreSQL",
+        "Prelude",
+        "Stripe",
+        ]
+    ),
+
+    .target(
+      name: "GitHub",
+      dependencies: [
+        "Either",
+        "Optics",
+        "PointFreePrelude",
+        "Prelude",
+        ]
+    ),
+
+    .target(
+      name: "Logger",
+      dependencies: [
+        "Either",
+        ]
+    ),
+
+    .target(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
@@ -28,12 +61,14 @@ let package = Package(
         "Css",
         "CssReset",
         "Either",
+        "GitHub",
         "Html",
         "HtmlCssSupport",
         "HtmlPlainTextPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Optics",
+        "PointFreePrelude",
         "PostgreSQL",
         "Styleguide",
         "Tuple",
@@ -50,6 +85,17 @@ let package = Package(
         "HttpPipelineTestSupport",
         "PointFree",
         "PointFreeTestSupport",
+        ]
+    ),
+
+    .target(
+      name: "PointFreePrelude",
+      dependencies: [
+        "Either",
+        "Logger",
+        "Optics",
+        "Prelude",
+        "UrlFormEncoding",
         ]
     ),
 
@@ -71,6 +117,16 @@ let package = Package(
     .target(
       name: "Server",
       dependencies: ["PointFree"]),
+
+    .target(
+      name: "Stripe",
+      dependencies: [
+        "Either",
+        "Optics",
+        "PointFreePrelude",
+        "Prelude",
+        ]
+    ),
 
     .target(
       name: "Styleguide",

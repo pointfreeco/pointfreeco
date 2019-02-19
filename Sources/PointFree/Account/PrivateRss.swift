@@ -3,6 +3,7 @@ import Either
 import Html
 import HttpPipeline
 import Optics
+import PointFreePrelude
 import Prelude
 import Tuple
 import View

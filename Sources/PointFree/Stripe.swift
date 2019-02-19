@@ -1,7 +1,7 @@
 import Either
 import Foundation
-import HttpPipeline
 import Prelude
+import PointFreePrelude
 import Optics
 import UrlFormEncoding
 
@@ -631,12 +631,4 @@ private func runStripe<A>(_ stripeRequest: DecodableRequest<A>?) -> EitherIO<Err
   }
 
   return task
-}
-
-// FIXME???
-func tap<A>(_ f: @autoclosure @escaping () -> (@autoclosure () -> (A)) -> Void) -> (A) -> A {
-  return {
-    f()($0)
-    return $0
-  }
 }

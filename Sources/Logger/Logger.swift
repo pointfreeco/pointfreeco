@@ -1,3 +1,4 @@
+import Either
 import Foundation
 #if os(Linux)
 import Glibc
@@ -5,7 +6,7 @@ import Glibc
 import Darwin.C
 #endif
 
-public class StandardFileHandle: TextOutputStream {
+public final class StandardFileHandle: TextOutputStream {
   fileprivate let handle: FileHandle
 
   public static let error = StandardFileHandle(handle: .standardError)
@@ -21,12 +22,12 @@ public class StandardFileHandle: TextOutputStream {
   }
 }
 
-public class Logger {
+public final class Logger {
   private let level: Level
   private var output: StandardFileHandle
   private var error: StandardFileHandle
 
-  init(
+  public init(
     level: Level = .debug,
     output: StandardFileHandle = .output,
     error: StandardFileHandle = .error) {
@@ -105,10 +106,9 @@ public class Logger {
   }
 }
 
-import Either
-
 public func logError<A>(
   subject: String,
+  logger: Logger,
   file: StaticString = #file,
   line: UInt = #line
   ) -> (Error) -> EitherIO<Error, A> {
@@ -116,7 +116,7 @@ public func logError<A>(
   return { error in
     var errorDump = ""
     dump(error, to: &errorDump)
-    Current.logger.log(.error, errorDump, file: file, line: line)
+    logger.log(.error, errorDump, file: file, line: line)
 
     return throwE(error)
   }

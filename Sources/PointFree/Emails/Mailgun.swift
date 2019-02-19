@@ -3,6 +3,7 @@ import Foundation
 import Html
 import HttpPipeline
 import Optics
+import PointFreePrelude
 import Prelude
 import UrlFormEncoding
 
@@ -18,8 +19,6 @@ public struct Mailgun {
     public let message: String
   }
 }
-
-public typealias EmailAddress = Tagged<Email, String>
 
 enum Tracking: String {
   case no
@@ -78,7 +77,7 @@ private func mailgunSend(email: Email) -> EitherIO<Error, Mailgun.SendEmailRespo
     |> \.allHTTPHeaderFields %~ attachedMailgunAuthorization
     |> \.httpBody .~ Data(urlFormEncode(value: params).utf8)
 
-  return jsonDataTask(with: request)
+  return jsonDataTask(with: request, logger: Current.logger)
 }
 
 private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [String: String]? {
