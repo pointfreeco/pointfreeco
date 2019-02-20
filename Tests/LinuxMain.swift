@@ -4,11 +4,6 @@
 import XCTest
 
 @testable import GitHubTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
-extension GitHubTests {
-  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
-    ("testRequests", testRequests)
-  ]
-}
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout)
@@ -171,6 +166,11 @@ extension FreeEpisodeEmailTests {
     ("testFreeEpisodeEmail", testFreeEpisodeEmail)
   ]
 }
+extension GitHubTests {
+  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
+    ("testRequests", testRequests)
+  ]
+}
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
     ("testHomepage_LoggedOut", testHomepage_LoggedOut),
@@ -292,6 +292,15 @@ extension SiteMiddlewareTests {
     ("testWithHttps", testWithHttps)
   ]
 }
+extension StripeTests {
+  static var allTests: [(String, (StripeTests) -> () throws -> Void)] = [
+    ("testDecodingCustomer", testDecodingCustomer),
+    ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
+    ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
+    ("testDecodingDiscountJson", testDecodingDiscountJson),
+    ("testRequests", testRequests)
+  ]
+}
 extension StripeWebhooksTests {
   static var allTests: [(String, (StripeWebhooksTests) -> () throws -> Void)] = [
     ("testDecoding", testDecoding),
@@ -365,6 +374,7 @@ XCTMain([
   testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
+  testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
@@ -381,6 +391,7 @@ XCTMain([
   testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
+  testCase(StripeTests.allTests),
   testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
