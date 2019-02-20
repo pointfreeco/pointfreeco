@@ -1,17 +1,18 @@
 import XCTest
 
 {{ argument.testimports }}
-{% for type in types.classes %}{% if type.name|hasSuffix:"Tests" %}
-{% if not type.annotations.disableTests %}extension {{ type.name }} {
+{% for type in types.classes where type.name|hasSuffix:"Tests" and not type.annotations.disableTests %}
+extension {{ type.name }} {
   static var allTests: [(String, ({{ type.name }}) -> () throws -> Void)] = [
-  {% for method in type.methods %}{% if method.parameters.count == 0 and method.shortName|hasPrefix:"test" %}  ("{{ method.shortName }}", {{ method.shortName }}){% if not forloop.last %},{% endif %}
-  {% endif %}{% endfor %}]
+  {% for method in type.methods where method.parameters.count == 0 and method.shortName|hasPrefix:"test" %}
+    ("{{ method.shortName }}", {{ method.shortName }}),{% endfor %}
+  ]
 }
-{% endif %}{% endif %}{% endfor %}
+{% endfor %}
 
 // swiftlint:disable trailing_comma
 XCTMain([
-{% for type in types.classes %}{% if type.name|hasSuffix:"Tests" %}{% if not type.annotations.disableTests %}  testCase({{ type.name }}.allTests),
-{% endif %}{% endif %}{% endfor %}
+{% for type in types.classes where type.name|hasSuffix:"Tests" and not type.annotations.disableTests %}
+  testCase({{ type.name }}.allTests),{% endfor %}
 ])
 // swiftlint:enable trailing_comma
