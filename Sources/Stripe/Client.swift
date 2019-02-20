@@ -181,7 +181,6 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
     return \.httpMethod .~ "GET"
   case let .post(params):
     return (\.httpMethod .~ "POST")
-      <> setHeader("Idempotency-Key", UUID().uuidString) // FIXME
       <> attachFormData(params)
   case let .delete(params):
     return (\.httpMethod .~ "DELETE")

@@ -1,4 +1,3 @@
 POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer
-Idempotency-Key: 7D055B65-E52D-4DFD-BD99-00AE6B080C85
 
 coupon=freebie&customer=cus_test&items[0][plan]=individual-monthly&items[0][quantity]=1

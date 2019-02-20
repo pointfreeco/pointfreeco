@@ -1,4 +1,3 @@
 POST https://api.stripe.com/v1/customers/cus_test
-Idempotency-Key: AB02B6A5-AABD-417F-9F1F-018C52EE367B
 
 source=tok_test

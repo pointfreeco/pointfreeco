@@ -1,4 +1,3 @@
 POST https://api.stripe.com/v1/customers
-Idempotency-Key: B4625B45-431D-401D-BB03-B0C540F6F528
 
 description=blob&email=blob%40pointfree.co&source=tok_test

@@ -11,6 +11,11 @@ typealias SnapshotTestCase = XCTestCase
 
 final class StripeTests: SnapshotTestCase {
 
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testDecodingCustomer() throws {
     let jsonString = """
 {
