@@ -36,13 +36,30 @@ let package = Package(
         ]
     ),
 
+    .testTarget(
+      name: "DatabaseTests",
+      dependencies: [
+        "Database",
+        "SnapshotTesting",
+        ]
+    ),
+
     .target(
       name: "GitHub",
       dependencies: [
         "Either",
+        "Logger",
         "Optics",
         "PointFreePrelude",
         "Prelude",
+        ]
+    ),
+
+    .testTarget(
+      name: "GitHubTests",
+      dependencies: [
+        "GitHub",
+        "SnapshotTesting",
         ]
     ),
 
@@ -102,21 +119,30 @@ let package = Package(
     .target(
       name: "PointFreeTestSupport",
       dependencies: [
+        "Database",
         "Either",
+        "GitHub",
         "HttpPipelineTestSupport",
+        "Logger",
         "PointFree",
+        "PointFreePrelude",
         "Prelude",
         "SnapshotTesting",
+        "Stripe",
         ]
     ),
 
     .target(
       name: "Runner",
-      dependencies: ["PointFree"]),
+      dependencies: [
+        "PointFree",
+        ]),
 
     .target(
       name: "Server",
-      dependencies: ["PointFree"]),
+      dependencies: [
+        "PointFree",
+        ]),
 
     .target(
       name: "Stripe",
@@ -128,12 +154,27 @@ let package = Package(
         ]
     ),
 
+    .testTarget(
+      name: "StripeTests",
+      dependencies: [
+        "SnapshotTesting",
+        "Stripe",
+        ]
+    ),
+
     .target(
       name: "Styleguide",
-      dependencies: ["Html", "Css"]),
+      dependencies: [
+        "Css",
+        "Html",
+        ]),
 
     .testTarget(
       name: "StyleguideTests",
-      dependencies: ["Styleguide", "CssTestSupport", "PointFreeTestSupport"]),
+      dependencies: [
+        "CssTestSupport",
+        "PointFreeTestSupport",
+        "Styleguide",
+        ]),
     ]
 )

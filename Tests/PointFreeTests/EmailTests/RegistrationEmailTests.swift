@@ -1,15 +1,16 @@
-import SnapshotTesting
+@testable import GitHub
 import Html
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
 import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
+@testable import PointFree
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
 #if !os(Linux)
 import WebKit
 #endif
+import XCTest
 
 class RegistrationEmailTests: TestCase {
   func testRegistrationEmail() {

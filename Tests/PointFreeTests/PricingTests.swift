@@ -1,14 +1,15 @@
 import Either
-import SnapshotTesting
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
 import HttpPipeline
 import Optics
+@testable import PointFree
+import PointFreePrelude
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
 #if !os(Linux)
 import WebKit
 #endif
+import XCTest
 
 class PricingTests: TestCase {
   override func setUp() {

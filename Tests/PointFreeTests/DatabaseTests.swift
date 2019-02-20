@@ -1,5 +1,6 @@
-@testable import PointFree
+@testable import GitHub
 import Optics
+@testable import PointFree
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting

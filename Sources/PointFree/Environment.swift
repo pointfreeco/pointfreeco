@@ -16,7 +16,7 @@ public struct Environment {
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
   public var features = [Feature].allFeatures
-  public var gitHub = GitHub(clientId: "", clientSecret: "")
+  public var gitHub = GitHub.Client(clientId: "", clientSecret: "")
   public var logger = Logger()
   public var mailgun = Mailgun.live
   public var renderHtml: ([Node]) -> String = Html.render

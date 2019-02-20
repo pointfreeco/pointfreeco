@@ -1,10 +1,11 @@
 import Either
 import Foundation
+import Logger
 import Optics
 import PointFreePrelude
 import Prelude
 
-public struct GitHub {
+public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
   public var fetchAuthToken: (String) -> EitherIO<Error, Either<OAuthError, AccessToken>>
 
@@ -15,60 +16,13 @@ public struct GitHub {
   public var fetchUser: (AccessToken) -> EitherIO<Error, User>
 }
 
-extension GitHub {
-  public init(clientId: String, clientSecret: String) {
+extension Client {
+  public init(clientId: String, clientSecret: String, logger: Logger? = nil) {
     self.init(
-      fetchAuthToken: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret) >>> runGitHub,
-      fetchEmails: fetchGitHubEmails >>> runGitHub,
-      fetchUser: fetchGitHubUser >>> runGitHub
+      fetchAuthToken: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret) >>> runGitHub(logger),
+      fetchEmails: fetchGitHubEmails >>> runGitHub(logger),
+      fetchUser: fetchGitHubUser >>> runGitHub(logger)
     )
-  }
-
-  public struct AccessToken: Codable {
-    public private(set) var accessToken: String
-
-    private enum CodingKeys: String, CodingKey {
-      case accessToken = "access_token"
-    }
-  }
-
-  public struct OAuthError: Codable {
-    public private(set) var description: String
-    public private(set) var error: Error
-    public private(set) var errorUri: String
-
-    public enum Error: String, Codable {
-      /// <https://developer.github.com/apps/managing-oauth-apps/troubleshooting-oauth-app-access-token-request-errors/#bad-verification-code>
-      case badVerificationCode = "bad_verification_code"
-    }
-
-    private enum CodingKeys: String, CodingKey {
-      case description
-      case error
-      case errorUri = "error_uri"
-    }
-  }
-
-  public struct User: Codable {
-    public private(set) var id: Id
-    public private(set) var name: String?
-
-    public struct Email: Codable {
-      public private(set) var email: EmailAddress
-      public private(set) var primary: Bool
-    }
-
-    public typealias Id = Tagged<User, Int>
-  }
-
-  public struct UserEnvelope: Codable {
-    public private(set) var accessToken: AccessToken
-    public private(set) var gitHubUser: User
-
-    public init(accessToken: AccessToken, gitHubUser: User) {
-      self.accessToken = accessToken
-      self.gitHubUser = gitHubUser
-    }
   }
 }
 
@@ -76,7 +30,7 @@ func fetchGitHubAuthToken(
   clientId: String, clientSecret: String
   )
   -> (String)
-  -> DecodableRequest<Either<GitHub.OAuthError, GitHub.AccessToken>> {
+  -> DecodableRequest<Either<OAuthError, AccessToken>> {
 
     return { code in
       var request = URLRequest(url: URL(string: "https://github.com/login/oauth/access_token")!)
@@ -97,15 +51,15 @@ func fetchGitHubAuthToken(
     }
 }
 
-func fetchGitHubEmails(token: GitHub.AccessToken) -> DecodableRequest<[GitHub.User.Email]> {
+func fetchGitHubEmails(token: AccessToken) -> DecodableRequest<[User.Email]> {
   return apiDataTask("user/emails", token: token)
 }
 
-internal func fetchGitHubUser(with token: GitHub.AccessToken) -> DecodableRequest<GitHub.User> {
+internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<User> {
   return apiDataTask("user", token: token)
 }
 
-private func apiDataTask<A>(_ path: String, token: GitHub.AccessToken) -> DecodableRequest<A> {
+private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableRequest<A> {
   return DecodableRequest(
     rawValue: URLRequest(url: URL(string: "https://api.github.com/" + path)!)
       |> \.allHTTPHeaderFields .~ [
@@ -115,8 +69,10 @@ private func apiDataTask<A>(_ path: String, token: GitHub.AccessToken) -> Decoda
   )
 }
 
-private func runGitHub<A>(_ gitHubRequest: DecodableRequest<A>) -> EitherIO<Error, A> {
-  return jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder, logger: Current.logger)
+private func runGitHub<A>(_ logger: Logger?) -> (DecodableRequest<A>) -> EitherIO<Error, A> {
+  return { gitHubRequest in
+    jsonDataTask(with: gitHubRequest.rawValue, decoder: gitHubJsonDecoder, logger: logger)
+  }
 }
 
 private let gitHubJsonEncoder: JSONEncoder = { () in
