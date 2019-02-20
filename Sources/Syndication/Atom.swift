@@ -1,59 +1,84 @@
 import Foundation
 import Html
-import Optics
-import Prelude
 import View
 
 public struct AtomAuthor {
   public var email: String
   public var name: String
+
+  public init (email: String, name: String) {
+    self.email = email
+    self.name = name
+  }
 }
 
 public struct AtomEntry {
-  public var title: String
-  public var siteUrl: String
-  public var updated: Date
   public var content: [Node]
+  public var siteUrl: String
+  public var title: String
+  public var updated: Date
+
+  public init (content: [Node], siteUrl: String, title: String, updated: Date) {
+    self.title = title
+    self.siteUrl = siteUrl
+    self.updated = updated
+    self.content = content
+  }
 }
 
 public struct AtomFeed {
+  public var atomUrl: String
   public var author: AtomAuthor
   public var entries: [AtomEntry]
-  public var atomUrl: String
   public var siteUrl: String
   public var title: String
+
+  public init(atomUrl: String, author: AtomAuthor, entries: [AtomEntry], siteUrl: String, title: String) {
+    self.atomUrl = atomUrl
+    self.author = author
+    self.entries = entries
+    self.siteUrl = siteUrl
+    self.title = title
+  }
 }
 
 public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
-  [
+  let updatedFields = atomFeed.entries
+    .max { $0.updated < $1.updated }
+    .map { updated($0.updated) }
+    .map { [$0] } ?? []
+
+  return [
     .raw("""
       <?xml version="1.0" encoding="utf-8"?>
       """
     ),
     feed(
       [xmlns("http://www.w3.org/2005/Atom")],
-      [
-        title(atomFeed.title),
-        element(
-          "link",
-          [
-            .init("href", atomFeed.atomUrl) as Attribute<Void>,
-            .init("rel", "self")
-          ],
+      (
+        [
+          title(atomFeed.title),
+          element(
+            "link",
+            [
+              .init("href", atomFeed.atomUrl) as Attribute<Void>,
+              .init("rel", "self")
+            ],
+            // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+            [""]
+          ),
           // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-          [""]
-        ),
-        // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-        element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], [""]),
-        atomFeed.entries.map(^\.updated).max().map(updated),
-        id(atomFeed.siteUrl),
-        author([
-          name(atomFeed.author.name),
-          email(atomFeed.author.email)
-          ]),
-        ]
-        <> atomFeed.entries.flatMap(atomEntry.view)
-        |> catOptionals
+          element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], [""]),
+          id(atomFeed.siteUrl),
+          author([
+            name(atomFeed.author.name),
+            email(atomFeed.author.email)
+            ]),
+          ]
+          + updatedFields
+          + atomFeed.entries.flatMap(atomEntry.view)
+        )
+        .compactMap { $0 }
     )
   ]
 }
@@ -104,7 +129,7 @@ public func id(_ id: String) -> Node {
 }
 
 public func author(_ content: [ChildOf<Tag.Author>]) -> Node {
-  return element("author", content.map(^\.rawValue))
+  return element("author", content.map { $0.rawValue })
 }
 
 public func name(_ name: String) -> ChildOf<Tag.Author> {
@@ -120,14 +145,17 @@ public func entry(_ content: [Node]) -> Node {
 }
 
 public func content(_ attribs: [Attribute<Tag.Content>], _ content: [Node]) -> Node {
-  return element("content", attribs, [.raw("<![CDATA[" + render(content).string + "]]>")])
+  return element("content", attribs, [.raw("<![CDATA[" + render(content) + "]]>")])
 }
 
 public func type(_ type: String) -> Attribute<Tag.Content> {
   return .init("type", type)
 }
 
-private let atomDateFormatter = DateFormatter()
-  |> \.dateFormat .~ "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-  |> \.locale .~ Locale(identifier: "en_US_POSIX")
-  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+private let atomDateFormatter = { () -> DateFormatter in
+  let df = DateFormatter()
+  df.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+  df.locale = Locale(identifier: "en_US_POSIX")
+  df.timeZone = TimeZone(secondsFromGMT: 0)
+  return df
+}()
