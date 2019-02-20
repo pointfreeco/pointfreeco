@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests;
+@testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension GitHubTests {
   static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
     ("testRequests", testRequests)
