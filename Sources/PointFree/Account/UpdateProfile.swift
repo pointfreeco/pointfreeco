@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import HttpPipeline
+import PointFreePrelude
 import Prelude
 import Tuple
 
@@ -81,7 +82,7 @@ let updateProfileMiddleware =
         updateFlash = flash(.notice, "We’ve updated your profile!")
       }
 
-      let updateCustomerExtraInvoiceInfo = zip2(
+      let updateCustomerExtraInvoiceInfo = zip(
         subscription?.customer.left ?? subscription?.customer.right?.id,
         data.extraInvoiceInfo
         )

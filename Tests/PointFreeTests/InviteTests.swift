@@ -1,11 +1,13 @@
+@testable import GitHub
 import Either
-import SnapshotTesting
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
 import HttpPipeline
 import Optics
+@testable import PointFree
+import PointFreePrelude
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
+import XCTest
 
 class InviteTests: TestCase {
   override func setUp() {

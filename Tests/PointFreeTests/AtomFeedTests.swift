@@ -4,6 +4,7 @@ import Optics
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 import HttpPipeline
 

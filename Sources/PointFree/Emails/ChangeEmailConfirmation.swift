@@ -1,6 +1,7 @@
 import Html
 import HtmlCssSupport
 import Optics
+import PointFreePrelude
 import Prelude
 import Styleguide
 import View

@@ -1,6 +1,7 @@
 import Either
 import Html
 import HtmlCssSupport
+import PointFreePrelude
 import Prelude
 import Styleguide
 import View

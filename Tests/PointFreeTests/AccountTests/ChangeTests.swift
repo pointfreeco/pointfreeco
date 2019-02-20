@@ -1,15 +1,16 @@
 import Either
 import Html
 import HttpPipeline
+import Optics
 @testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
-import XCTest
 #if !os(Linux)
 import WebKit
 #endif
+import XCTest
 
 final class ChangeTests: TestCase {
   override func setUp() {

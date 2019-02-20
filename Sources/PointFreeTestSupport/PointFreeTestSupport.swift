@@ -4,11 +4,14 @@ import Cocoa
 import Cryptor
 import Either
 import Foundation
+@testable import GitHub
 import Html
 import HttpPipeline
 import HttpPipelineTestSupport
+import Logger
 import Optics
 @testable import PointFree
+import PointFreePrelude
 import Prelude
 import SnapshotTesting
 #if os(macOS)
@@ -172,41 +175,6 @@ extension Database.EpisodeCredit {
 
 extension Date {
   public static let mock = Date(timeIntervalSince1970: 1517356800)
-}
-
-extension GitHub {
-  public static let mock = GitHub(
-    fetchAuthToken: const(pure(pure(.mock))),
-    fetchEmails: const(pure([.mock])),
-    fetchUser: const(pure(.mock))
-  )
-}
-
-extension GitHub.User.Email {
-  public static let mock = GitHub.User.Email(
-    email: "hello@pointfree.co",
-    primary: true
-  )
-}
-
-extension GitHub.AccessToken {
-  public static let mock = GitHub.AccessToken(
-    accessToken: "deadbeef"
-  )
-}
-
-extension GitHub.User {
-  public static let mock = GitHub.User(
-    id: 1,
-    name: "Blob"
-  )
-}
-
-extension GitHub.UserEnvelope {
-  public static let mock = GitHub.UserEnvelope(
-    accessToken: .mock,
-    gitHubUser: .mock
-  )
 }
 
 extension Pricing {

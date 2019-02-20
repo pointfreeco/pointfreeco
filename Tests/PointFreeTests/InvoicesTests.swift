@@ -2,6 +2,7 @@ import Either
 import Html
 import HttpPipeline
 @testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import Optics

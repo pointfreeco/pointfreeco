@@ -1,13 +1,14 @@
 import Html
 import HtmlSnapshotTesting
-import SnapshotTesting
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
+@testable import PointFree
+import PointFreePrelude
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
+import XCTest
 
 private func secureRequest(_ urlString: String) -> URLRequest {
   return URLRequest(url: URL(string: urlString)!)

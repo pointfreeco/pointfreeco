@@ -4,6 +4,7 @@ import Either
 import Foundation
 import HttpPipeline
 import Optics
+import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
