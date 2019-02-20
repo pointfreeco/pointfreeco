@@ -4,6 +4,7 @@
 
 import ApplicativeRouter
 import Either
+import Models
 import PointFreePrelude
 import Prelude
 

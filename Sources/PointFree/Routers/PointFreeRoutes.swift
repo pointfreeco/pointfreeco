@@ -2,6 +2,7 @@ import ApplicativeRouter
 import Foundation
 import Either
 import HttpPipeline
+import Models
 import Optics
 import PointFreePrelude
 import Prelude

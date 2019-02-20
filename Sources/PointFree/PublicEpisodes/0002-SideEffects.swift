@@ -1,4 +1,5 @@
 import Foundation
+import Models
 
 let ep2 = Episode(
   blurb: """

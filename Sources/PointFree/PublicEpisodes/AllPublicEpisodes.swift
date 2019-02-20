@@ -1,3 +1,5 @@
+import Models
+
 public let allPublicEpisodes: [Episode] = [
   introduction,
   ep1,

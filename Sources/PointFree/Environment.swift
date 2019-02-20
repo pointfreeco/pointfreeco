@@ -1,6 +1,7 @@
 import Css
 import Foundation
 import GitHub
+import Models
 import Logger
 import Prelude
 import Html

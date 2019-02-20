@@ -1,4 +1,5 @@
 import Foundation
+import Models
 import Optics
 import Prelude
 
