@@ -387,7 +387,7 @@ class EpisodeTests: TestCase {
 
   func testEpisodePage_ExercisesAndReferences() { 
     let episode = Current.episodes()[0]
-      |> \.exercises .~ [.mock]
+      |> \.exercises .~ [.mock, .mock]
       |> \.references .~ [.mock]
       |> \.transcriptBlocks %~ { Array($0[0...1]) }
 
@@ -400,19 +400,24 @@ class EpisodeTests: TestCase {
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
 
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 1600)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 1900))
-        ]
-      )
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
+      assertSnapshot(matching: webView, as: .image, named: "desktop")
+
+      webView.evaluateJavaScript(
+        """
+          document.getElementsByTagName('details')[0].open = true
+          """, completionHandler: nil)
+      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+
+      webView.frame.size.width = 500
+      webView.frame.size.width = 1900
+      assertSnapshot(matching: webView, as: .image, named: "mobile")
     }
     #endif
   }
-
 }
