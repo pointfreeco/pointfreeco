@@ -260,15 +260,6 @@ public func url(to route: Route) -> String {
   return router.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
 }
 
-extension PartialIso where A == String, B == SiteTag {
-  public static var tag: PartialIso<String, SiteTag> {
-    return PartialIso<String, SiteTag>(
-      apply: SiteTag.init(slug:),
-      unapply: ^\.name
-    )
-  }
-}
-
 public struct MailgunForwardPayload: Codable, Equatable {
   public let recipient: EmailAddress
   public let timestamp: Int
