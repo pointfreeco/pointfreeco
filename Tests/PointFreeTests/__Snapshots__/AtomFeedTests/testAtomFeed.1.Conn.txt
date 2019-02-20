@@ -21,9 +21,6 @@ X-XSS-Protection: 1; mode=block
   </link>
   <link href="http://localhost:8080">
   </link>
-  <updated>
-    2017-06-20T12:00:00Z
-  </updated>
   <id>
     http://localhost:8080
   </id>
@@ -35,6 +32,9 @@ X-XSS-Protection: 1; mode=block
       support@pointfree.co
     </email>
   </author>
+  <updated>
+    2017-06-20T12:00:00Z
+  </updated>
   <entry>
     <title>
       Proof in Functions
