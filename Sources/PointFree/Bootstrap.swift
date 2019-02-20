@@ -1,6 +1,8 @@
 import Either
 import Foundation
+import GitHub
 import Optics
+import PointFreePrelude
 import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
@@ -51,7 +53,13 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
-  update(&Current, \.envVars .~ envVars)
+  Current.envVars = envVars
+  Current.gitHub = .init(
+    clientId: Current.envVars.gitHub.clientId,
+    clientSecret: Current.envVars.gitHub.clientSecret,
+    logger: Current.logger
+  )
+
   return pure(unit)
 }
 

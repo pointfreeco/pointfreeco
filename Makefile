@@ -266,6 +266,7 @@ sourcery-routes:
 	@echo "  ✅ Generated!"
 
 SOURCERY_TESTS_IMPORTS = \
+	@testable import GitHubTests; \
 	@testable import PointFreeTests; \
 	@testable import StyleguideTests;
 

@@ -1,5 +1,7 @@
 import Either
 import Foundation
+import GitHub
+import PointFreePrelude
 import Prelude
 import PostgreSQL
 
@@ -301,7 +303,7 @@ private func fetchSubscription(id: Database.Subscription.Id) -> EitherIO<Error, 
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-    [id.rawValue.rawValue]
+    [id.rawValue.uuidString]
   )
 }
 

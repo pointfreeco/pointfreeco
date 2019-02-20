@@ -2,15 +2,16 @@ import Either
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
-@testable import PointFree
 import Optics
+@testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-import XCTest
 #if !os(Linux)
 import WebKit
 #endif
+import XCTest
 
 final class StripeWebhooksTests: TestCase {
   override func setUp() {

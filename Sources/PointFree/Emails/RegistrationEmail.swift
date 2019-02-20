@@ -1,3 +1,4 @@
+import GitHub
 import Html
 import HtmlCssSupport
 import Optics

@@ -1,9 +1,11 @@
+@testable import GitHub
 import Html
 import HtmlSnapshotTesting
 import SnapshotTesting
 import Prelude
 import XCTest
 @testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport

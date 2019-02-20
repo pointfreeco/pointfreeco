@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PointFree::StyleguideTests"
+               BuildableName = "StyleguideTests.xctest"
+               BlueprintName = "StyleguideTests"
+               ReferencedContainer = "container:PointFree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "PointFree::Styleguide"
+            BuildableName = "Styleguide.framework"
+            BlueprintName = "Styleguide"
+            ReferencedContainer = "container:PointFree.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

@@ -3,7 +3,12 @@
 
 import XCTest
 
-@testable import PointFreeTests; @testable import StyleguideTests;
+@testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests;
+extension GitHubTests {
+  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
+    ("testRequests", testRequests)
+  ]
+}
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout)
@@ -164,11 +169,6 @@ extension EpisodeTests {
 extension FreeEpisodeEmailTests {
   static var allTests: [(String, (FreeEpisodeEmailTests) -> () throws -> Void)] = [
     ("testFreeEpisodeEmail", testFreeEpisodeEmail)
-  ]
-}
-extension GitHubTests {
-  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
-    ("testRequests", testRequests)
   ]
 }
 extension HomeTests {
@@ -357,6 +357,7 @@ extension WelcomeEmailTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
+  testCase(GitHubTests.allTests),
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
@@ -374,7 +375,6 @@ XCTMain([
   testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
-  testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),
