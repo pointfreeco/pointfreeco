@@ -7,36 +7,56 @@ import PostgreSQL
 import Stripe
 
 public struct Client {
-  var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, User.Id) -> EitherIO<Error, Prelude.Unit>
-  var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
-  var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  var fetchAdmins: () -> EitherIO<Error, [User]>
-  var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
-  var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
-  var fetchFreeEpisodeUsers: () -> EitherIO<Error, [User]>
-  var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
-  var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
-  var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
-  var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
-  var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
-  var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
-  var fetchUserById: (User.Id) -> EitherIO<Error, User?>
-  var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [User]>
-  var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
-  var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, [User]>
-  var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
+  public var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createSubscription: (Stripe.Subscription, User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
+  public var fetchAdmins: () -> EitherIO<Error, [User]>
+  public var fetchEmailSettingsForUserId: (User.Id) -> EitherIO<Error, [EmailSetting]>
+  public var fetchEpisodeCredits: (User.Id) -> EitherIO<Error, [EpisodeCredit]>
+  public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [User]>
+  public var fetchSubscriptionById: (Subscription.Id) -> EitherIO<Error, Subscription?>
+  public var fetchSubscriptionByOwnerId: (User.Id) -> EitherIO<Error, Subscription?>
+  public var fetchSubscriptionTeammatesByOwnerId: (User.Id) -> EitherIO<Error, [User]>
+  public var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
+  public var fetchTeamInvites: (User.Id) -> EitherIO<Error, [TeamInvite]>
+  public var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, User?>
+  public var fetchUserById: (User.Id) -> EitherIO<Error, User?>
+  public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [User]>
+  public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [User]>
+  public var incrementEpisodeCredits: ([User.Id]) -> EitherIO<Error, [User]>
+  public var insertTeamInvite: (EmailAddress, User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
-  var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
-  var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
-  var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
-  var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
+  public var redeemEpisodeCredit: (Int, User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
+  public var removeTeammateUserIdFromSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Subscription?>
+  public var updateUser: (User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
+  public var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, User?>
 }
 
 extension Client {
-  init() {
+  init(databaseUrl: String) {
+    let connInfo: Either<Error, PostgreSQL.ConnInfo> =
+      URLComponents(string: databaseUrl)
+        .flatMap { url -> PostgreSQL.ConnInfo? in
+          curry(PostgreSQL.ConnInfo.basic)
+            <¢> url.host
+            <*> url.port
+            <*> String(url.path.dropFirst())
+            <*> url.user
+            <*> url.password
+        }
+        .map(Either.right)
+        ??
+        .left(DatabaseError.invalidUrl as Error)
+
+    let postgres = lift(connInfo)
+      .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
+
+    let conn = postgres
+      .flatMap { db in .wrap(db.makeConnection) }
+
     self.init(
       addUserIdToSubscriptionId: PointFreeDatabase.add(userId:toSubscriptionId:),
       createFeedRequestEvent: PointFreeDatabase.createFeedRequestEvent(type:userAgent:userId:),
@@ -887,59 +907,41 @@ public enum DatabaseError: Error {
   case invalidUrl
 }
 
-private let connInfo: Either<Error, PostgreSQL.ConnInfo> =
-//  URLComponents(string: Current.envVars.postgres.databaseUrl)
-//  .flatMap { url -> PostgreSQL.ConnInfo? in
-//    curry(PostgreSQL.ConnInfo.basic)
-//      <¢> url.host
-//      <*> url.port
-//      <*> String(url.path.dropFirst())
-//      <*> url.user
-//      <*> url.password
-//  }
-//  .map(Either.right)
-//  ??
-  .left(DatabaseError.invalidUrl as Error)
+fileprivate extension EitherIO where A == PostgreSQL.Connection, E == Error {
+  func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+    -> EitherIO<Error, [T]> {
 
-private let postgres = lift(connInfo)
-  .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
+      return execute(query, representable)
+        .flatMap { node in
+          EitherIO<Error, [T]>.wrap {
+            try DatabaseDecoder().decode([T].self, from: node)
+          }
+      }
+  }
 
-private let conn = postgres
-  .flatMap { db in .wrap(db.makeConnection) }
+  private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+    -> EitherIO<Error, T?> {
 
-private func rows<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
-  -> EitherIO<Error, [T]> {
+      return rows(query, representable)
+        .map(^\.first)
+  }
 
-    return execute(query, representable)
-      .flatMap { node in
-        EitherIO.wrap {
-          try DatabaseDecoder().decode([T].self, from: node)
+  // public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
+  func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
+    -> EitherIO<Error, PostgreSQL.Node> {
+
+      fatalError()
+      return self.flatMap { conn in
+        return .wrap { () -> Node in
+//          let uuid = UUID().uuidString
+//          let startTime = Current.date().timeIntervalSince1970
+//          Current.logger.debug("[DB] \(uuid) \(query)")
+          let result = try conn.execute(query, representable)
+//          let endTime = Current.date().timeIntervalSince1970
+//          let delta = Int((endTime - startTime) * 1000)
+//          Current.logger.debug("[DB] \(uuid) \(delta)ms")
+          return result
         }
-    }
-}
-
-private func firstRow<T: Decodable>(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
-  -> EitherIO<Error, T?> {
-
-    return rows(query, representable)
-      .map(^\.first)
-}
-
-// public let execute = EitherIO.init <<< IO.wrap(Either.wrap(conn.execute))
-func execute(_ query: String, _ representable: [PostgreSQL.NodeRepresentable] = [])
-  -> EitherIO<Error, PostgreSQL.Node> {
-
-    fatalError()
-//    return conn.flatMap { conn in
-//      return .wrap { () -> Node in
-//        let uuid = UUID().uuidString
-//        let startTime = Current.date().timeIntervalSince1970
-//        Current.logger.debug("[DB] \(uuid) \(query)")
-//        let result = try conn.execute(query, representable)
-//        let endTime = Current.date().timeIntervalSince1970
-//        let delta = Int((endTime - startTime) * 1000)
-//        Current.logger.debug("[DB] \(uuid) \(delta)ms")
-//        return result
-//      }
-//    }
+      }
+  }
 }
