@@ -2,6 +2,10 @@
 import SnapshotTesting
 import XCTest
 
+#if !os(Linux)
+typealias SnapshotTestCase = XCTestCase
+#endif
+
 final class GitHubTests: SnapshotTestCase {
   func testRequests() {
     let fetchAuthToken = fetchGitHubAuthToken(clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")
