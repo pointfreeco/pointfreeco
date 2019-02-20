@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import PointFreePrelude
 import Prelude
 import Styleguide
 import View

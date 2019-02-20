@@ -1,6 +1,7 @@
 import Either
 import Html
 import HtmlPlainTextPrint
+import PointFreePrelude
 import Prelude
 
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"

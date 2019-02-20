@@ -1,22 +1,25 @@
 import Css
 import Foundation
+import GitHub
+import Logger
+import Prelude
 import Html
 
 public var Current = Environment()
 
 public struct Environment {
-  public private(set) var assets = Assets()
-  public private(set) var blogPosts = allBlogPosts
-  public private(set) var cookieTransform = CookieTransform.encrypted
-  public private(set) var database = Database.live
-  public private(set) var date: () -> Date = Date.init
-  public private(set) var envVars = EnvVars()
-  public private(set) var episodes = { [Episode]() }
-  public private(set) var features = [Feature].allFeatures
-  public private(set) var gitHub = GitHub.live
-  public private(set) var logger = Logger()
-  public private(set) var mailgun = Mailgun.live
-  public private(set) var renderHtml: ([Node]) -> String = Html.render
-  public private(set) var stripe = Stripe.live
-  public private(set) var uuid: () -> UUID = UUID.init
+  public var assets = Assets()
+  public var blogPosts = allBlogPosts
+  public var cookieTransform = CookieTransform.encrypted
+  public var database = Database.live
+  public var date: () -> Date = Date.init
+  public var envVars = EnvVars()
+  public var episodes = { [Episode]() }
+  public var features = [Feature].allFeatures
+  public var gitHub = GitHub.Client(clientId: "", clientSecret: "")
+  public var logger = Logger()
+  public var mailgun = Mailgun.live
+  public var renderHtml: ([Node]) -> String = Html.render
+  public var stripe = Stripe.live
+  public var uuid: () -> UUID = UUID.init
 }

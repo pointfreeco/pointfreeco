@@ -1,10 +1,11 @@
 import Either
 import Html
 import HttpPipeline
+import Optics
 @testable import PointFree
+import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
 import XCTest
 
