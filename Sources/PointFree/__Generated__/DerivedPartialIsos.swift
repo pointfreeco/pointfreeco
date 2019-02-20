@@ -934,7 +934,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>
+            Event<Either<Invoice, Subscription>>
         ), B == Route.Webhooks.Stripe {
 
           public static let event = parenthesize <| PartialIso(

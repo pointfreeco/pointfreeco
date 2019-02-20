@@ -3,12 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests;
-extension GitHubTests {
-  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
-    ("testRequests", testRequests)
-  ]
-}
+@testable import GitHubTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout)
@@ -292,15 +287,6 @@ extension SiteMiddlewareTests {
     ("testWithHttps", testWithHttps)
   ]
 }
-extension StripeTests {
-  static var allTests: [(String, (StripeTests) -> () throws -> Void)] = [
-    ("testDecodingCustomer", testDecodingCustomer),
-    ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
-    ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
-    ("testDecodingDiscountJson", testDecodingDiscountJson),
-    ("testRequests", testRequests)
-  ]
-}
 extension StripeWebhooksTests {
   static var allTests: [(String, (StripeWebhooksTests) -> () throws -> Void)] = [
     ("testDecoding", testDecoding),
@@ -357,7 +343,6 @@ extension WelcomeEmailTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
-  testCase(GitHubTests.allTests),
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
@@ -391,7 +376,6 @@ XCTMain([
   testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
-  testCase(StripeTests.allTests),
   testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),

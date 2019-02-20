@@ -8,6 +8,7 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+@testable import Stripe
 import XCTest
 
 final class SubscribeTests: TestCase {
@@ -190,7 +191,7 @@ final class SubscribeTests: TestCase {
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createCustomer .~ { _, _, _ in throwE(unit as Error) }
+      \.stripe.createCustomer .~ { _, _, _, _ in throwE(unit as Error) }
     )
 
     let conn = connection(
@@ -209,7 +210,7 @@ final class SubscribeTests: TestCase {
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(Stripe.ErrorEnvelope.mock as Error) }
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
     )
 
     let conn = connection(

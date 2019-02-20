@@ -7,6 +7,7 @@ import PointFreeTestSupport
 import Prelude
 import Optics
 import SnapshotTesting
+@testable import Stripe
 import XCTest
 #if !os(Linux)
 import WebKit
