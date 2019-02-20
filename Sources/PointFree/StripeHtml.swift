@@ -1,191 +1,190 @@
 import Css
 import Html
+import Stripe
 import Styleguide
 
-extension Stripe {
-  public enum html {
-    public static let formId = "card-form"
+public enum StripeHtml {
+  public static let formId = "card-form"
 
-    public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> [Node] {
-      let expand = formStyle == .full
+  public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> [Node] {
+    let expand = formStyle == .full
 
-      return [
-        input([name("token"), type(.hidden)]),
-        div([`class`(expand ? [] : [Class.display.none])], [
-          input([
-            `class`([blockInputClass]),
-            name("stripe_name"),
-            placeholder("Billing Name"),
-            type(.text),
+    return [
+      input([name("token"), type(.hidden)]),
+      div([`class`(expand ? [] : [Class.display.none])], [
+        input([
+          `class`([blockInputClass]),
+          name("stripe_name"),
+          placeholder("Billing Name"),
+          type(.text),
+          ]),
+        input([
+          `class`([blockInputClass]),
+          name("stripe_address_line1"),
+          placeholder("Address"),
+          type(.text),
+          ]),
+        gridRow([
+          gridColumn(sizes: [.mobile: 12, .desktop: 4], [
+            div([`class`([Class.padding([.desktop: [.right: 1]])])], [
+              input([
+                `class`([blockInputClass]),
+                name("stripe_address_city"),
+                placeholder("City"),
+                type(.text),
+                ])
+              ])
             ]),
-          input([
-            `class`([blockInputClass]),
-            name("stripe_address_line1"),
-            placeholder("Address"),
-            type(.text),
+          gridColumn(sizes: [.mobile: 12, .desktop: 3], [
+            div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              input([
+                `class`([blockInputClass]),
+                name("stripe_address_state"),
+                placeholder("State"),
+                type(.text),
+                ])
+              ])
             ]),
-          gridRow([
-            gridColumn(sizes: [.mobile: 12, .desktop: 4], [
-              div([`class`([Class.padding([.desktop: [.right: 1]])])], [
-                input([
-                  `class`([blockInputClass]),
-                  name("stripe_address_city"),
-                  placeholder("City"),
-                  type(.text),
-                  ])
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
-                input([
-                  `class`([blockInputClass]),
-                  name("stripe_address_state"),
-                  placeholder("State"),
-                  type(.text),
-                  ])
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 2], [
-              div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
-                input([
-                  `class`([blockInputClass]),
-                  name("stripe_address_zip"),
-                  placeholder("Zip"),
-                  type(.text),
-                  ]),
-                ])
-              ]),
-            gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-              div([`class`([Class.padding([.desktop: [.left: 1]])])], [
-                select([`class`([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
-                  let (country, code) = pair
-                  return option([value(code)], country)
-                })
+          gridColumn(sizes: [.mobile: 12, .desktop: 2], [
+            div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
+              input([
+                `class`([blockInputClass]),
+                name("stripe_address_zip"),
+                placeholder("Zip"),
+                type(.text),
                 ]),
+              ])
+            ]),
+          gridColumn(sizes: [.mobile: 12, .desktop: 3], [
+            div([`class`([Class.padding([.desktop: [.left: 1]])])], [
+              select([`class`([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
+                let (country, code) = pair
+                return option([value(code)], country)
+              })
               ]),
             ]),
-          input([
-            `class`([blockInputClass]),
-            name("vatNumber"),
-            placeholder("VAT Number (EU Customers Only)"),
-            type(.text),
-            ]),
           ]),
-        div([`class`(couponId != nil ? [] : [Class.display.none])], [
-          input([
-            `class`([blockInputClass]),
-            name("coupon"),
-            placeholder("Coupon Code"),
-            type(.text),
-            value(couponId?.rawValue ?? "")
-            ]),
+        input([
+          `class`([blockInputClass]),
+          name("vatNumber"),
+          placeholder("VAT Number (EU Customers Only)"),
+          type(.text),
           ]),
-        div(
-          [
-            `class`([stripeInputClass]),
-            data("stripe-key", Current.envVars.stripe.publishableKey),
-            id("card-element"),
-          ],
-          []
-        )
-      ]
-    }
-
-    public static let errors = [
+        ]),
+      div([`class`(couponId != nil ? [] : [Class.display.none])], [
+        input([
+          `class`([blockInputClass]),
+          name("coupon"),
+          placeholder("Coupon Code"),
+          type(.text),
+          value(couponId?.rawValue ?? "")
+          ]),
+        ]),
       div(
         [
-          `class`([Class.pf.colors.fg.red]),
-          id("card-errors"),
-          role(.alert),
+          `class`([stripeInputClass]),
+          data("stripe-key", Current.envVars.stripe.publishableKey),
+          id("card-element"),
         ],
         []
       )
     ]
+  }
 
-    public static var scripts: [Node] {
-      return [
-        script([src(Current.stripe.js)]),
-        script(
-          """
-          function setFormEnabled(form, isEnabled, elementsMatching) {
-            for (var idx = 0; idx < form.length; idx++) {
-              var formElement = form[idx];
-              if (elementsMatching(formElement)) {
-                formElement.disabled = !isEnabled;
-                if (formElement.tagName == 'BUTTON') {
-                  formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
-                }
+  public static let errors = [
+    div(
+      [
+        `class`([Class.pf.colors.fg.red]),
+        id("card-errors"),
+        role(.alert),
+      ],
+      []
+    )
+  ]
+
+  public static var scripts: [Node] {
+    return [
+      script([src(Current.stripe.js)]),
+      script(
+        """
+        function setFormEnabled(form, isEnabled, elementsMatching) {
+          for (var idx = 0; idx < form.length; idx++) {
+            var formElement = form[idx];
+            if (elementsMatching(formElement)) {
+              formElement.disabled = !isEnabled;
+              if (formElement.tagName == 'BUTTON') {
+                formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
               }
             }
           }
+        }
 
-          var apiKey = document.getElementById('card-element').dataset.stripeKey;
-          var stripe = Stripe(apiKey);
-          var elements = stripe.elements();
+        var apiKey = document.getElementById('card-element').dataset.stripeKey;
+        var stripe = Stripe(apiKey);
+        var elements = stripe.elements();
 
-          var style = {
-            base: {
-              color: '#32325d',
-              fontSize: '16px',
-            }
-          };
+        var style = {
+          base: {
+            color: '#32325d',
+            fontSize: '16px',
+          }
+        };
 
-          var card = elements.create('card', {style: style});
-          card.mount('#card-element');
+        var card = elements.create('card', {style: style});
+        card.mount('#card-element');
 
-          card.addEventListener('change', function(event) {
-            var displayError = document.getElementById('card-errors');
-            if (event.error) {
-              displayError.textContent = event.error.message;
-            } else {
-              displayError.textContent = '';
-            }
+        card.addEventListener('change', function(event) {
+          var displayError = document.getElementById('card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = '';
+          }
+        });
+
+        var form = document.getElementById('card-form');
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          setFormEnabled(form, false, function() {
+            return true;
           });
 
-          var form = document.getElementById('card-form');
-          form.addEventListener('submit', function(event) {
-            event.preventDefault();
+          stripe.createToken(
+            card,
+            {
+              name: form.stripe_name.value,
+              address_line1: form.stripe_address_line1.value,
+              address_city: form.stripe_address_city.value,
+              address_state: form.stripe_address_state.value,
+              address_zip: form.stripe_address_zip.value,
+              address_country: form.stripe_address_country.value
+            }
+          ).then(function(result) {
+            if (result.error) {
+              var errorElement = document.getElementById('card-errors');
+              errorElement.textContent = result.error.message;
 
-            setFormEnabled(form, false, function() {
-              return true;
-            });
-
-            stripe.createToken(
-              card,
-              {
-                name: form.stripe_name.value,
-                address_line1: form.stripe_address_line1.value,
-                address_city: form.stripe_address_city.value,
-                address_state: form.stripe_address_state.value,
-                address_zip: form.stripe_address_zip.value,
-                address_country: form.stripe_address_country.value
-              }
-            ).then(function(result) {
-              if (result.error) {
-                var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = result.error.message;
-
-                setFormEnabled(form, true, function(el) {
-                  return true;
-                });
-              } else {
-                setFormEnabled(form, true, function(el) {
-                  return el.tagName != 'BUTTON';
-                });
-
-                form.token.value = result.token.id;
-                form.submit();
-              }
-            }).catch(function() {
               setFormEnabled(form, true, function(el) {
                 return true;
               });
+            } else {
+              setFormEnabled(form, true, function(el) {
+                return el.tagName != 'BUTTON';
+              });
+
+              form.token.value = result.token.id;
+              form.submit();
+            }
+          }).catch(function() {
+            setFormEnabled(form, true, function(el) {
+              return true;
             });
           });
-          """
-        )
-      ]
-    }
+        });
+        """
+      )
+    ]
   }
 }
 

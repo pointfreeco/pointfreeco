@@ -7,6 +7,7 @@ import Optics
 import PointFreePrelude
 import Prelude
 import Styleguide
+import Stripe
 import Tuple
 
 public let accountRouter = accountRouters.reduce(.empty, <|>)

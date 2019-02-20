@@ -5,6 +5,7 @@ import HttpPipeline
 import Optics
 import PointFreePrelude
 import Prelude
+import Stripe
 import Tuple
 import View
 
