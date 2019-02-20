@@ -1,5 +1,4 @@
 POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer
-Authorization: Basic c2tfdGVzdDo=
-Idempotency-Key: DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
+Idempotency-Key: 4E320362-BE56-44CE-983D-1AF880E1ACB6
 
 coupon=&items[0][id]=si_test&items[0][plan]=individual-yearly&items[0][quantity]=1

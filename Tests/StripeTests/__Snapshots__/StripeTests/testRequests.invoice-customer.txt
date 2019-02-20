@@ -1,0 +1,4 @@
+POST https://api.stripe.com/v1/invoices
+Idempotency-Key: 017BB221-04DF-47B2-AF62-FA5460BB21E9
+
+customer=cus_test
