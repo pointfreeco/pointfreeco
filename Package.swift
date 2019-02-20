@@ -112,6 +112,7 @@ let package = Package(
         "Logger",
         "Optics",
         "Prelude",
+        "Tuple",
         "UrlFormEncoding",
         ]
     ),
