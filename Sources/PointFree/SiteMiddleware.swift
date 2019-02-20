@@ -4,6 +4,7 @@ import Foundation
 import HttpPipeline
 import Optics
 import Prelude
+import Stripe
 import Styleguide
 import Tuple
 

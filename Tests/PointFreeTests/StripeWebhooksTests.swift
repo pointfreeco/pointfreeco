@@ -120,7 +120,7 @@ final class StripeWebhooksTests: TestCase {
 }
 """
 
-    _ = try stripeJsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
+    _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
   }
 
   func testValidHook() {
