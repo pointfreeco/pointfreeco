@@ -2,6 +2,7 @@ import Foundation
 import Html
 import HttpPipeline
 import Prelude
+import Syndication
 import View
 
 let atomFeedResponse =
@@ -16,12 +17,12 @@ let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 let pointFreeFeed = View<[Episode]> { episodes in
   atomLayout.view(
     AtomFeed(
+      atomUrl: url(to: .feed(.atom)),
       author: AtomAuthor(
         email: "support@pointfree.co",
         name: "Point-Free"
       ),
       entries: episodes.map(atomEntry(for:)),
-      atomUrl: url(to: .feed(.atom)),
       siteUrl: url(to: .home),
       title: "Point-Free"
     )
@@ -207,9 +208,9 @@ public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middl
 
 private func atomEntry(for episode: Episode) -> AtomEntry {
   return AtomEntry(
-    title: episode.title,
+    content: [.text(episode.blurb)],
     siteUrl: url(to: .episode(.left(episode.slug))),
-    updated: episode.publishedAt,
-    content: [.text(episode.blurb)]
+    title: episode.title,
+    updated: episode.publishedAt
   )
 }

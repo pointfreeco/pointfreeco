@@ -2,6 +2,7 @@ import Foundation
 import Html
 import HttpPipeline
 import Prelude
+import Syndication
 import View
 
 let blogAtomFeedResponse =
@@ -11,12 +12,12 @@ let blogAtomFeedResponse =
 private let feedView = View<[BlogPost]> { posts in
   atomLayout.view(
     AtomFeed(
+      atomUrl: url(to: .feed(.atom)),
       author: AtomAuthor(
         email: "support@pointfree.co",
         name: "Point-Free"
       ),
       entries: posts.map(atomEntry(for:)),
-      atomUrl: url(to: .feed(.atom)),
       siteUrl: url(to: .blog(.index)),
       title: "Point-Free Pointers"
     )
@@ -25,9 +26,9 @@ private let feedView = View<[BlogPost]> { posts in
 
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   return AtomEntry(
-    title: post.title,
+    content: blogPostContentView.view(post),
     siteUrl: url(to: .blog(.show(post))),
-    updated: post.publishedAt,
-    content: blogPostContentView.view(post)
+    title: post.title,
+    updated: post.publishedAt
   )
 }

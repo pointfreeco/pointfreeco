@@ -268,7 +268,8 @@ sourcery-routes:
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \
 	@testable import PointFreeTests; \
-	@testable import StyleguideTests;
+	@testable import StyleguideTests; \
+	@testable import SyndicationTests;
 
 sourcery-tests: check-sourcery
 	@echo "  ⚠️  Generating tests..."
