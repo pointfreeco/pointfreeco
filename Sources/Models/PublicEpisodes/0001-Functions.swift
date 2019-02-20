@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep1 = Episode(
+public let ep1 = Episode(
   blurb: """
 Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
 """,

@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep25 = Episode(
+public let ep25 = Episode(
   blurb: """
 The third, and final, part of our introductory series to `zip` finally answers the question: "What's the point?"
 """,

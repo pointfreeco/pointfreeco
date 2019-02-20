@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep10 = Episode(
+public let ep10 = Episode(
   blurb: """
 Swift 4.1 deprecated and renamed a particular overload of `flatMap`. What made this `flatMap` different from \
 the others? We'll explore this and how understanding that difference helps us explore generalizations of the \

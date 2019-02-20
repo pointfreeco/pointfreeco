@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep2 = Episode(
+public let ep2 = Episode(
   blurb: """
 Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
 """,

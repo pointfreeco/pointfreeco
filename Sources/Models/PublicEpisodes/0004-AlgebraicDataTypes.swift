@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep4 = Episode(
+public let ep4 = Episode(
   blurb: """
 What does the Swift type system have to do with algebra? A lot! We’ll begin to explore this correspondence \
 and see how it can help us create type-safe data structures that can catch runtime errors at compile time.

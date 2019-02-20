@@ -1,11 +1,7 @@
 import Foundation
-import Models
-import Optics
-import Prelude
 
 extension Episode.Reference {
-
-  static let aLittleRespectForAnySequence = Episode.Reference(
+  public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
     link: "http://robnapier.net/erasure",
@@ -13,7 +9,7 @@ extension Episode.Reference {
     title: "A Little Respect for AnySequence"
   )
 
-  static let allowErrorToConformToItself = Episode.Reference(
+  public static let allowErrorToConformToItself = Episode.Reference(
     author: "John McCall",
     blurb: "Swift 5.0 finally introduced the `Result` type to the standard library, and with it a patch that conforms `Error` to itself, allowing Result's `Failure` parameter to be constrained to `Error` in an ergonomic fashion. While this conformance is a special case, Swift may automatically conform certain protocols to themselves in the future.",
     link: "https://github.com/apple/swift/pull/20629",
@@ -21,7 +17,7 @@ extension Episode.Reference {
     title: "Allow Error to conform to itself"
   )
 
-  static let bonMot = Episode.Reference(
+  public static let bonMot = Episode.Reference(
     author: "Zev Eisenberg @ Raizlabs",
     blurb: """
 BonMot is an open source library for providing a nicer API to creating attributed strings in Swift. We integrated our [snapshot testing library](http://github.com/pointfreeco/swift-snapshot-testing) into BonMot for an [episode](/episodes/ep41-a-tour-of-snapshot-testing) to show how easy it is to integrate, and how easy it is to create your own snapshot strategies from scratch.
@@ -31,7 +27,7 @@ BonMot is an open source library for providing a nicer API to creating attribute
     title: "BonMot"
   )
 
-  static let composableSetters = Episode.Reference(
+  public static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
 Stephen spoke about functional setters at the [Functional Swift Conference](http://funswiftconf.com) if
@@ -42,7 +38,7 @@ you're looking for more material on the topic to reinforce the ideas.
     title: "Composable Setters"
   )
 
-  static let contravariance = Episode.Reference(
+  public static let contravariance = Episode.Reference(
     author: "Julie Moronuki & Chris Martin",
     blurb: """
 This article describes the ideas of contravariance using the Haskell language. In many ways exploring
@@ -54,7 +50,7 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
-  static let se0235AddResultToTheStandardLibrary = Episode.Reference(
+  public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
     author: nil,
     blurb: """
 The Swift evolution review of the proposal to add a `Result` type to the standard library. It discussed many functional facets of the `Result` type, including which operators to include (including `map` and `flatMap`), and how they should be defined.
@@ -64,7 +60,7 @@ The Swift evolution review of the proposal to add a `Result` type to the standar
     title: "SE-0235 - Add Result to the Standard Library"
   )
 
-  static let howToControlTheWorld = Episode.Reference(
+  public static let howToControlTheWorld = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
 Stephen gave a talk on our `Environment`-based approach to dependency injection at NSSpain 2018. He starts
@@ -75,7 +71,7 @@ with the basics and slowly builds up to controlling more and more complex depend
     title: "How to Control the World"
   )
 
-  static let iosSnapshotTestCaseGithub = Episode.Reference(
+  public static let iosSnapshotTestCaseGithub = Episode.Reference(
     author: "Uber, previously Facebook",
     blurb: """
 Facebook released a snapshot testing framework known as `FBSnapshotTestCase` back in 2013, and many in the
@@ -88,7 +84,7 @@ it will fail the test. Since then Facebook has stopped maintaining it and transf
     title: "uber/ios-snapshot-test-case"
   )
 
-  static let introduceSequenceCompactMap = Episode.Reference(
+  public static let introduceSequenceCompactMap = Episode.Reference(
     author: "Max Moiseev",
     blurb: """
 A Swift evolution proposal to rename a particular overload of `flatMap` to `compactMap`. The overload in
@@ -100,7 +96,7 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
-  static let nioRenameThenToFlatMap = Episode.Reference(
+  public static let nioRenameThenToFlatMap = Episode.Reference(
     author: "Apple",
     blurb: """
 Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as a super charged version of the `Parallel` type we've used many times on this series. It comes with a method that has the same signature as `flatMap`, but originally it was named `then`. This pull-request renames the method to `flatMap`, which brings it inline with the naming for `Optional`, `Array` _and_ `Result` in the standard libary.
@@ -110,7 +106,7 @@ Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as
     title: "rename ELF.then to ELF.flatMap"
   )
 
-  static let openSourcingSwiftHtml = Episode.Reference(
+  public static let openSourcingSwiftHtml = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 After developing the ideas of DSLs in a series of episodes (
@@ -124,7 +120,7 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
   )
 
-  static let playgroundDrivenDevelopmentAtKickstarter = Episode.Reference(
+  public static let playgroundDrivenDevelopmentAtKickstarter = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 We pioneered playground driven development while we were at Kickstarter, where we replaced the majority of
@@ -137,7 +133,7 @@ the ins and outs of playground driven development.
     title: "Playground Driven Development at Kickstarter"
   )
 
-  static let playgroundDrivenDevelopmentFrenchKit = Episode.Reference(
+  public static let playgroundDrivenDevelopmentFrenchKit = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 Brandon gave an in-depth talk on playground driven development at FrenchKit 2017. In this talk he shows
@@ -149,7 +145,7 @@ things you can do once you have it.
     title: "Playground Driven Development"
   )
 
-  static let pointfreeco = Episode.Reference(
+  public static let pointfreeco = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 The entire codebase for this very site is completely written in Swift _and_ open source! Explore the code
@@ -161,7 +157,7 @@ by browsing it on GitHub, or join us for a tour of the codebase in a
     title: "PointFree.co Open Source"
   )
 
-  static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
+  public static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
     author: "Chris Eidhof",
     blurb: """
 An old article detailing many of the pitfalls of Swift protocols, and how often you can simplify your code
@@ -174,7 +170,7 @@ benefits, but does increase the complexity of the code.
     title: "Protocol Oriented Programming is Not a Silver Bullet"
   )
 
-  static let protocolOrientedProgrammingWwdc = Episode.Reference(
+  public static let protocolOrientedProgrammingWwdc = Episode.Reference(
     author: "Apple",
     blurb: """
 Apple's eponymous WWDC talk on protocol-oriented programming:
@@ -186,7 +182,7 @@ Apple's eponymous WWDC talk on protocol-oriented programming:
     title: "Protocol-Oriented Programming in Swift"
   )
 
-  static let railwayOrientedProgramming = Episode.Reference(
+  public static let railwayOrientedProgramming = Episode.Reference(
     author: "Scott Wlaschin",
     blurb: """
 This talk explains a nice metaphor to understand how `flatMap` unlocks stateless error handling.
@@ -200,7 +196,7 @@ This talk explains a nice metaphor to understand how `flatMap` unlocks stateless
     title: "Railway Oriented Programming — error handling in functional languages"
   )
 
-  static let randomnUnification = Episode.Reference(
+  public static let randomnUnification = Episode.Reference(
     author: "Alejandro Alonso",
     blurb: """
 This Swift Evolution proposal to create a unified random API, and a secure random API for all platforms, was accepted and implemented in Swift 4.2.
@@ -210,7 +206,7 @@ This Swift Evolution proposal to create a unified random API, and a secure rando
     title: "SE-0202: Random Unification"
   )
 
-  static let randomZalgoGenerator = Episode.Reference(
+  public static let randomZalgoGenerator = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 We apply the ideas of composable randomness to build a random Zalgo generator, which is a way to apply
@@ -222,7 +218,7 @@ very simple, small pieces and then compose them together to create a really comp
     title: "Random Zalgo Generator"
   )
 
-  static let scrapYourTypeClasses = Episode.Reference(
+  public static let scrapYourTypeClasses = Episode.Reference(
     author: "Gabriel Gonzalez",
     blurb: """
 Haskell's notion of protocols are called "type classes," and the designers of Swift have often stated
@@ -235,7 +231,7 @@ lays down the case for scrapping type classes and just using simple datatypes.
     title: "Scrap your type classes"
   )
 
-  static let semanticEditorCombinators = Episode.Reference(
+  public static let semanticEditorCombinators = Episode.Reference(
     author: "Conal Elliott",
     blurb: """
 Conal Elliott describes the setter composition we explored in this episode from first principles, using
@@ -250,7 +246,7 @@ the OOP style!
     title: "Semantic editor combinators"
   )
 
-  static let serverSideSwiftFromScratch = Episode.Reference(
+  public static let serverSideSwiftFromScratch = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 Brandon gave this talk at Swift Summit 2017 to demonstrate how we approach writing websites in Swift.
@@ -263,7 +259,7 @@ and expressive solutions to these problems.
     title: "Server-Side Swift from Scratch"
   )
 
-  static let snapshotTestingBlogPost = Episode.Reference(
+  public static let snapshotTestingBlogPost = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
 Stephen gave an overview of snapshot testing, its benefits, and how one may snapshot Swift data types, walking through a minimal implementation.
@@ -273,7 +269,7 @@ Stephen gave an overview of snapshot testing, its benefits, and how one may snap
     title: "Snapshot Testing in Swift"
   )
 
-  static let someNewsAboutContramap = Episode.Reference(
+  public static let someNewsAboutContramap = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 A few months after releasing our episode on [Contravariance](/episodes/ep14-contravariance) we decided to
@@ -285,7 +281,7 @@ and provides some nice intuitions when dealing with such a counterintuitive idea
     title: "Some news about contramap"
   )
 
-  static let structureAndInterpretationOfSwiftPrograms = Episode.Reference(
+  public static let structureAndInterpretationOfSwiftPrograms = Episode.Reference(
     author: "Colin Barrett",
     blurb: """
 [Colin Barrett](https://twitter.com/cbarrett) discussed the problems of dependency injection, the upsides
@@ -298,7 +294,7 @@ many other code bases.
     title: "Structure and Interpretation of Swift Programs"
   )
 
-  static let swiftNonEmpty = Episode.Reference(
+  public static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 `NonEmpty` is one of our open source projects for expressing a type safe, compiler proven non-empty
@@ -309,7 +305,7 @@ collection of values.
     title: "NonEmpty"
   )
 
-  static let swiftOverture = Episode.Reference(
+  public static let swiftOverture = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 We open sourced the Overture library to give everyone access to functional compositions, even if you can't
@@ -320,7 +316,7 @@ bring operators into your codebase.
     title: "Swift Overture"
   )
 
-  static let swiftSnapshotTesting = Episode.Reference(
+  public static let swiftSnapshotTesting = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 A delightful snapshot testing library that we designed over the course of many Point-Free episodes. It
@@ -332,7 +328,7 @@ allows you to define your own custom, domain-specific snapshot strategies for yo
     title: "pointfreeco/swift-snapshot-testing"
   )
 
-  static let swiftTagged = Episode.Reference(
+  public static let swiftTagged = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 `Tagged` is one of our open source projects for expressing a way to distinguish otherwise indistinguishable
@@ -343,7 +339,7 @@ types at compile time.
     title: "Tagged"
   )
 
-  static let swiftValidated = Episode.Reference(
+  public static let swiftValidated = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
 `Validated` is one of our open source projects that provides a `Result`-like type, which supports a `zip`
@@ -355,7 +351,7 @@ their errors.
     title: "Validated"
   )
 
-  static let taggedSecondsAndMilliseconds = Episode.Reference(
+  public static let taggedSecondsAndMilliseconds = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
 In this blog post we use the [`Tagged`](/episodes/ep12-tagged) type to provide a type safe way for
@@ -367,7 +363,7 @@ or mix up these values at compile time by using the tagged wrappers.
     title: "Tagged Seconds and Milliseconds"
   )
 
-  static let theoremsForFree = Episode.Reference(
+  public static let theoremsForFree = Episode.Reference(
     author: "Philip Wadler",
     blurb: """
 This famous paper describes "theorems for free", in which if you write down a generic function
@@ -379,7 +375,7 @@ parametric polymorphism, as Swift does.
     title: "Theorems for Free"
   )
 
-  static let typeErasureInSwift = Episode.Reference(
+  public static let typeErasureInSwift = Episode.Reference(
     author: "Mike Ash",
     blurb: "This edition of Friday Q&A shows how type erasure can manifest itself in many different ways. While you can wrap the functionality of a protocol in a concrete data type, as we explored in our series on [protocol witnesses](/episodes/ep33-protocol-witnesses-part-1), you can also use subclasses and plain ole functions.",
     link: "https://www.mikeash.com/pyblog/friday-qa-2017-12-08-type-erasure-in-swift.html",
@@ -387,7 +383,7 @@ parametric polymorphism, as Swift does.
     title: "Type Erasure in Swift"
   )
   
-  static let typeSafeFilePathsWithPhantomTypes = Episode.Reference(
+  public static let typeSafeFilePathsWithPhantomTypes = Episode.Reference(
     author: "Brandon Kase, Chris Eidhof, Florian Kugler",
     blurb: """
 In this Swift Talk episode, Florian and special guest [Brandon Kase](https://twitter.com/bkase_) show how
@@ -400,7 +396,7 @@ distinguishing otherwise indistinguishable types.
     title: "Type-Safe File Paths with Phantom Types"
   )
 
-  static let valueOrientedProgramming = Episode.Reference(
+  public static let valueOrientedProgramming = Episode.Reference(
     author: "Matt Diephouse",
     blurb: """
 Matt gives another account of protocol-oriented programming gone awry, this time by breaking down the famous
@@ -413,7 +409,7 @@ general.
     title: "Value-Oriented Programming"
   )
 
-  static let wikipediaMonad = Episode.Reference(
+  public static let wikipediaMonad = Episode.Reference(
     author: nil,
     blurb: """
 The Wikipedia entry for monads.
@@ -422,8 +418,10 @@ The Wikipedia entry for monads.
     publishedAt: nil,
     title: "Monad (functional programming)"
   )
-
 }
 
-private let referenceDateFormatter = DateFormatter()
-  |> \.dateFormat .~ "yyyy-MM-dd"
+private let referenceDateFormatter = { () -> DateFormatter in
+  let df = DateFormatter()
+  df.dateFormat = "yyyy-MM-dd"
+  return df
+}()

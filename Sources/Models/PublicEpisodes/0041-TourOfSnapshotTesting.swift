@@ -1,7 +1,6 @@
 import Foundation
-import Models
 
-let ep41 = Episode(
+public let ep41 = Episode(
   blurb: """
 Our snapshot testing library is now official open source! In order to show just how easy it is to integrate the library into any existing code base, we add some snapshot tests to a popular open source library for attributed strings. This gives us the chance to see how easy it is to write all new, domain-specific snapshot strategies from scratch.
 """,

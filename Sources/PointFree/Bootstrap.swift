@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import GitHub
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
