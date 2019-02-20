@@ -200,7 +200,7 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
   .invite <<< .show
-    <¢> get %> lit("invites") %> pathParam(.uuid >>> .rawRepresentable) <% end,
+    <¢> get %> lit("invites") %> pathParam(.uuid >>> .tagged) <% end,
 
   .login
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
