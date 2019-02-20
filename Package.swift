@@ -7,10 +7,10 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
-    .library(name: "Database", targets: ["Database"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "Logger", targets: ["Logger"]),
     .library(name: "PointFree", targets: ["PointFree"]),
+    .library(name: "PointFreeDatabase", targets: ["PointFreeDatabase"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     .library(name: "Stripe", targets: ["Stripe"]),
@@ -26,25 +26,6 @@ let package = Package(
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
-    .target(
-      name: "Database",
-      dependencies: [
-        "Either",
-        "GitHub",
-        "PostgreSQL",
-        "Prelude",
-        "Stripe",
-        ]
-    ),
-
-    .testTarget(
-      name: "DatabaseTests",
-      dependencies: [
-        "Database",
-        "SnapshotTesting",
-        ]
-    ),
-
     .target(
       name: "GitHub",
       dependencies: [
@@ -109,6 +90,26 @@ let package = Package(
     ),
 
     .target(
+      name: "PointFreeDatabase",
+      dependencies: [
+        "Either",
+        "GitHub",
+        "PointFreePrelude",
+        "PostgreSQL",
+        "Prelude",
+        "Stripe",
+        ]
+    ),
+
+    .testTarget(
+      name: "PointFreeDatabaseTests",
+      dependencies: [
+        "PointFreeDatabase",
+        "SnapshotTesting",
+        ]
+    ),
+
+    .target(
       name: "PointFreePrelude",
       dependencies: [
         "Either",
@@ -123,12 +124,12 @@ let package = Package(
     .target(
       name: "PointFreeTestSupport",
       dependencies: [
-        "Database",
         "Either",
         "GitHub",
         "HttpPipelineTestSupport",
         "Logger",
         "PointFree",
+        "PointFreeDatabase",
         "PointFreePrelude",
         "Prelude",
         "SnapshotTesting",
