@@ -22,9 +22,6 @@ X-XSS-Protection: 1; mode=block
   </link>
   <link href="http://localhost:8080/blog">
   </link>
-  <updated>
-    2018-04-16T09:57:03Z
-  </updated>
   <id>
     http://localhost:8080/blog
   </id>
@@ -36,6 +33,9 @@ X-XSS-Protection: 1; mode=block
       support@pointfree.co
     </email>
   </author>
+  <updated>
+    2018-04-16T09:57:03Z
+  </updated>
   <entry>
     <title>
       Mock Blog Post
