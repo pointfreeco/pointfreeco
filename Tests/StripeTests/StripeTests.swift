@@ -6,7 +6,7 @@ import SnapshotTesting
 import XCTest
 
 #if !os(Linux)
-typealias SnapshotTestCase = XCTest
+typealias SnapshotTestCase = XCTestCase
 #endif
 
 final class StripeTests: SnapshotTestCase {

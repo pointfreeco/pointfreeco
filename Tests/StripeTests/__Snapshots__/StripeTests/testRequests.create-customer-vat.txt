@@ -1,0 +1,4 @@
+POST https://api.stripe.com/v1/customers
+Idempotency-Key: 1001EA59-2DFD-4DB2-A403-7AA3907ACAA7
+
+business_vat_id=1&description=blob&email=blob%40pointfree.co&source=tok_test
