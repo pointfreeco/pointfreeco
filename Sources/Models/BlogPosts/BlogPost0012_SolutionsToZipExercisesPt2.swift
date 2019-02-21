@@ -247,7 +247,7 @@ the inner layer `Array`  has a `zip2`. Can we define a `zip2` on `[A]?` that mak
 structures? Write the signature of such a function and implement it.
 
 We accidentally put in both part 1 and 2 episodes, so we already solved it
-[before](https:///blog/posts/11-solutions-to-exercises-zip-part-1)!
+[before](/blog/posts/11-solutions-to-exercises-zip-part-1)!
 
 ### Exercise 4.2
 
