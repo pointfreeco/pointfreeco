@@ -4,6 +4,32 @@
 import XCTest
 
 @testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+extension BlogPostTests {
+  static var allTests: [(String, (BlogPostTests) -> () throws -> Void)] = [
+    ("testSlug", testSlug)
+  ]
+}
+extension EpisodeTests {
+  static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
+    ("testEpisodePage", testEpisodePage),
+    ("testEpisodePageSubscriber", testEpisodePageSubscriber),
+    ("testFreeEpisodePage", testFreeEpisodePage),
+    ("testFreeEpisodePageSubscriber", testFreeEpisodePageSubscriber),
+    ("testEpisodeNotFound", testEpisodeNotFound),
+    ("testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit),
+    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits", testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits),
+    ("testRedeemEpisodeCredit_HappyPath", testRedeemEpisodeCredit_HappyPath),
+    ("testRedeemEpisodeCredit_NotEnoughCredits", testRedeemEpisodeCredit_NotEnoughCredits),
+    ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
+    ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
+    ("test_permission", test_permission),
+    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
+    ("testSlug", testSlug),
+    ("testIsSubscriberOnly", testIsSubscriberOnly),
+    ("testFreeSince", testFreeSince)
+  ]
+}
 extension GitHubTests {
   static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
     ("testRequests", testRequests)
@@ -163,7 +189,10 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
     ("test_permission", test_permission),
-    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences)
+    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
+    ("testSlug", testSlug),
+    ("testIsSubscriberOnly", testIsSubscriberOnly),
+    ("testFreeSince", testFreeSince)
   ]
 }
 extension FreeEpisodeEmailTests {
@@ -357,6 +386,8 @@ extension WelcomeEmailTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
+  testCase(BlogPostTests.allTests),
+  testCase(EpisodeTests.allTests),
   testCase(GitHubTests.allTests),
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
