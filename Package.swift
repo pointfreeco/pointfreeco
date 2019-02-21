@@ -7,7 +7,6 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
-    .library(name: "Blog", targets: ["Blog"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "Logger", targets: ["Logger"]),
@@ -29,44 +28,6 @@ let package = Package(
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
-
-    .target(
-      name: "Blog",
-      dependencies: [
-        "ApplicativeRouter",
-        "Either",
-        "Tagged",
-        ]
-    ),
-
-    .testTarget(
-      name: "BlogTests",
-      dependencies: [
-        "Blog",
-        "SnapshotTesting",
-        ]
-    ),
-
-
-
-    .target(
-      name: "Models",
-      dependencies: [
-        "Tagged",
-        ]
-    ),
-
-    .testTarget(
-      name: "ModelsTests",
-      dependencies: [
-        "Models",
-        ]
-    ),
-
-
-
-
-
 
     .target(
       name: "Database",
@@ -110,6 +71,20 @@ let package = Package(
       name: "Logger",
       dependencies: [
         "Either",
+        ]
+    ),
+
+    .target(
+      name: "Models",
+      dependencies: [
+        "Tagged",
+        ]
+    ),
+
+    .testTarget(
+      name: "ModelsTests",
+      dependencies: [
+        "Models",
         ]
     ),
 
