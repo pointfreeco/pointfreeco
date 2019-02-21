@@ -1,6 +1,6 @@
 import ApplicativeRouter
 import SnapshotTesting
-import Models
+@testable import Models
 import Optics
 import Prelude
 import XCTest

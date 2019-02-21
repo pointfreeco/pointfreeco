@@ -135,9 +135,9 @@ public struct Episode {
   }
 
   public struct TranscriptBlock: Equatable {
-    public private(set) var content: String
-    public private(set) var timestamp: Int?
-    public private(set) var type: BlockType
+    public var content: String
+    public var timestamp: Int?
+    public var type: BlockType
 
     public init(content: String, timestamp: Int?, type: BlockType) {
       self.content = content

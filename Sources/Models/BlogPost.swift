@@ -4,13 +4,13 @@ import Tagged
 public struct BlogPost: Equatable {
   public typealias Id = Tagged<BlogPost, Int>
 
-  public private(set) var author: Author?
-  public private(set) var blurb: String
-  public private(set) var contentBlocks: [Episode.TranscriptBlock]
-  public private(set) var coverImage: String?
-  public private(set) var id: Id
-  public private(set) var publishedAt: Date
-  public private(set) var title: String
+  public var author: Author?
+  public var blurb: String
+  public var contentBlocks: [Episode.TranscriptBlock]
+  public var coverImage: String?
+  public var id: Id
+  public var publishedAt: Date
+  public var title: String
 
   public init(
     author: Author?,
@@ -30,7 +30,7 @@ public struct BlogPost: Equatable {
   }
 
   public struct Video: Equatable {
-    public private(set) var sources: [String]
+    public var sources: [String]
   }
 
   public var slug: String {

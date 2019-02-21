@@ -1,18 +1,13 @@
 import Foundation
-import Models
-import Optics
-import Prelude
-@testable import PointFree
 
 extension Episode {
-  public static let mock = subscriberOnlyEpisode
-
-  public static let free = freeEpisode
-  public static let subscriberOnly = subscriberOnlyEpisode
+  static let mock = subscriberOnlyEpisode
+  static let free = freeEpisode
+  static let subscriberOnly = subscriberOnlyEpisode
 }
 
 extension Episode.Reference {
-  public static let mock = Episode.Reference(
+  static let mock = Episode.Reference(
     author: "Blob",
     blurb: "Blob uses functional programming to impress all of their friends.",
     link: "https://www.pointfree.co",
@@ -22,7 +17,7 @@ extension Episode.Reference {
 }
 
 extension Episode.Exercise {
-  public static let mock = Episode.Exercise(
+  static let mock = Episode.Exercise(
     problem: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.",
     solution: "Let g be a Riemannian metric on X, and consider the Ricci flow..."
   )

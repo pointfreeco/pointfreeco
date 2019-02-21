@@ -2,7 +2,7 @@ import Either
 @testable import GitHub
 import Html
 import HttpPipeline
-import Models
+@testable import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude

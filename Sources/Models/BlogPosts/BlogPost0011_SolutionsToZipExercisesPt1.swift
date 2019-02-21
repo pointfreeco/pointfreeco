@@ -1,6 +1,5 @@
 import Foundation
 
-// todo: renumber
 public let post0011_solutionsToZipExercisesPt1 = BlogPost(
   author: .brandon,
   blurb: """
@@ -10,8 +9,6 @@ Today we solve the exercises to the first part of our introductory series on zip
     .init(
       content: "",
       timestamp: nil,
-      //todo
-
       type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0011-solutions-to-zip-pt1/poster.jpg")
     ),
 
