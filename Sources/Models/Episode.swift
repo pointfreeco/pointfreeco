@@ -184,3 +184,21 @@ func slug(for string: String) -> String {
     .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
     .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
 }
+
+func reference(
+  forEpisode episode: Episode,
+  additionalBlurb: String,
+  episodeUrl: String
+  ) -> Episode.Reference {
+  return Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+    \(additionalBlurb)
+
+    > \(episode.blurb)
+    """,
+    link: episodeUrl,
+    publishedAt: episode.publishedAt,
+    title: episode.title
+  )
+}
