@@ -9,6 +9,7 @@ import Html
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
+@testable import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude

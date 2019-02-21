@@ -169,6 +169,7 @@ let package = Package(
         "Either",
         "GitHub",
         "HttpPipelineTestSupport",
+        "Models",
         "Logger",
         "PointFree",
         "PointFreePrelude",

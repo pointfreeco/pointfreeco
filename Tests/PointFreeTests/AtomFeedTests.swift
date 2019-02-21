@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import SnapshotTesting
+import Models
 import Optics
 import Prelude
 import XCTest
