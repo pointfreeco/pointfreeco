@@ -72,5 +72,6 @@ Packages/*
 Package.resolved
 .env
 Sources/PointFree/Transcripts
+Sources/Models/Transcripts
 .ssl/*
 bin/*
