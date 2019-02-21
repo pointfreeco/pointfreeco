@@ -304,3 +304,10 @@ private let isTest: Router<Bool?> =
 
 private let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
 private let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
+
+func slug(for string: String) -> String {
+  return string
+    .lowercased()
+    .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
+    .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
+}
