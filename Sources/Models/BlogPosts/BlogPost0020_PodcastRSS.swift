@@ -33,6 +33,19 @@ If you are a subscriber, then we have one more additional RSS feed for you, and 
 [account](/account) page. This gives you full access to _every_ episode on Point-Free
 as they are released. We ask that you please do not share this URL with anyone, as it is private and tied
 directly to your account.
+""",
+      timestamp: nil,
+      type: .paragraph
+    ),
+    .init(
+      content: """
+Since the time we launched this feature we have changed this slightly. Only yearly subscribers get access to the entire catalogue of episodes in their podcast RSS feed, and monthly subscribers get access to the last 4 episodes.
+""",
+      timestamp: nil,
+      type: .correction
+    ),
+    .init(
+      content: """
 
 ### Functional Programming Everywhere
 
