@@ -14,7 +14,7 @@ import WebKit
 #endif
 import XCTest
 
-class EpisodeTests: TestCase {
+class EpisodePageTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)

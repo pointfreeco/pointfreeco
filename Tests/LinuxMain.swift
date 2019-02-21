@@ -11,20 +11,6 @@ extension BlogPostTests {
 }
 extension EpisodeTests {
   static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
-    ("testEpisodePage", testEpisodePage),
-    ("testEpisodePageSubscriber", testEpisodePageSubscriber),
-    ("testFreeEpisodePage", testFreeEpisodePage),
-    ("testFreeEpisodePageSubscriber", testFreeEpisodePageSubscriber),
-    ("testEpisodeNotFound", testEpisodeNotFound),
-    ("testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit),
-    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit", testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit),
-    ("testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits", testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits),
-    ("testRedeemEpisodeCredit_HappyPath", testRedeemEpisodeCredit_HappyPath),
-    ("testRedeemEpisodeCredit_NotEnoughCredits", testRedeemEpisodeCredit_NotEnoughCredits),
-    ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
-    ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
-    ("test_permission", test_permission),
-    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
     ("testSlug", testSlug),
     ("testIsSubscriberOnly", testIsSubscriberOnly),
     ("testFreeSince", testFreeSince)
@@ -174,8 +160,8 @@ extension EnvironmentTests {
     ("testDefault", testDefault)
   ]
 }
-extension EpisodeTests {
-  static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
+extension EpisodePageTests {
+  static var allTests: [(String, (EpisodePageTests) -> () throws -> Void)] = [
     ("testEpisodePage", testEpisodePage),
     ("testEpisodePageSubscriber", testEpisodePageSubscriber),
     ("testFreeEpisodePage", testFreeEpisodePage),
@@ -189,10 +175,7 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
     ("test_permission", test_permission),
-    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
-    ("testSlug", testSlug),
-    ("testIsSubscriberOnly", testIsSubscriberOnly),
-    ("testFreeSince", testFreeSince)
+    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences)
   ]
 }
 extension FreeEpisodeEmailTests {
@@ -404,7 +387,7 @@ XCTMain([
   testCase(EmailInviteTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
-  testCase(EpisodeTests.allTests),
+  testCase(EpisodePageTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
