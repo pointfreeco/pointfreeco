@@ -17,7 +17,7 @@ Today we are open sourcing Validated, a tiny functional Swift library for handli
       content: """
 ---
 
-> Today we are open sourcing [Validated](https://www.github.com/pointfreeco/swift-validated), a tiny functional Swift
+> Today we are open sourcing [Validated](https://github.com/pointfreeco/swift-validated), a tiny functional Swift
 library for handling multiple errors: functionality that you don't get from throwing functions and the
 `Result` type.
 
@@ -38,7 +38,7 @@ Having first-class support for error handling in Swift is nice, but its short-ci
 be limiting. There are times that we may want to throw multiple times in a function, and have all of those
 errors accumulated.
 
-Today we are open sourcing [Validated](https://www.github.com/pointfreeco/swift-validated), a tiny functional Swift
+Today we are open sourcing [Validated](https://github.com/pointfreeco/swift-validated), a tiny functional Swift
 library for handling multiple errors: functionality that you don't get from throwing functions and the
 `Result` type.
 
@@ -281,7 +281,7 @@ used the `Result` type, and it provides tangible benefits over the short-circuit
 and `throws`. It can enhance your error handling _today_, no need to wait for Swift to catch up!
 
 If you want to give it a spin, check out our
-[open source repo](https://www.github.com/pointfreeco/swift-validated).
+[open source repo](https://github.com/pointfreeco/swift-validated).
 """,
       timestamp: nil,
       type: .paragraph

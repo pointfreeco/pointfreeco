@@ -18,23 +18,23 @@ HTML that prevents many of the runtime errors and vulnerabilities of traditional
       content: """
 ---
 
-> Today we're open sourcing a [plugin](https://www.github.com/pointfreeco/swift-html-vapor) for [Vapor](http://vapor.codes)
+> Today we're open sourcing a [plugin](https://github.com/pointfreeco/swift-html-vapor) for [Vapor](http://vapor.codes)
 to render type-safe HTML. It provides a Swift compile-time API to HTML that prevents many of the runtime
 errors and vulnerabilities of traditional templated HTML rendering.
 
 ---
 
 We’ve spent the past 4 weeks discussing DSLs in Swift, and yesterday it all culminated with the open
-sourcing of [swift-html](https://www.github.com/pointfreeco/swift-html), our new Swift library for building type-safe,
+sourcing of [swift-html](https://github.com/pointfreeco/swift-html), our new Swift library for building type-safe,
 extensible and transformable HTML documents. The design of this library has been battle-tested for the past
 year, for it powers every single page on the [Point-Free](/) site. The entire code base of this site is
-[open source](https://www.github.com/pointfreeco), we built it from scratch in the functional style, and we even
+[open source](https://github.com/pointfreeco), we built it from scratch in the functional style, and we even
 gave a tour of the site on a [recent episode](/episodes/ep22-a-tour-of-point-free).
 
 However, we know that most people are not going to adopt all of our techniques in building a Swift web app
 (at least not yet 😉), and so we want to make sure that the HTML view layer is accessible to everyone.
-That's why today we are open sourcing a new [micro library](https://www.github.com/pointfreeco/swift-html-vapor) for bringing
-our [swift-html](https://www.github.com/pointfreeco/swift-html) library into any [Vapor](http://vapor.codes) web
+That's why today we are open sourcing a new [micro library](https://github.com/pointfreeco/swift-html-vapor) for bringing
+our [swift-html](https://github.com/pointfreeco/swift-html) library into any [Vapor](http://vapor.codes) web
 application, one of the most popular server-side Swift frameworks available today!
 
 ## Vapor Leaf Templates
@@ -151,7 +151,7 @@ And that's all there is to it!
 ## Conclusion
 
 If you are building a Swift web app using Vapor we hope that you will consider using our
-[swift-html-vapor](https://www.github.com/pointfreeco/swift-html-vapor) plugin as way to create your HTML views. We think
+[swift-html-vapor](https://github.com/pointfreeco/swift-html-vapor) plugin as way to create your HTML views. We think
 you'll be pleasantly surprised how nice it is to code up views in Swift and Xcode, and there are lots
 of opportunities for code reuse and composability when building HTML views in this way.
 """,

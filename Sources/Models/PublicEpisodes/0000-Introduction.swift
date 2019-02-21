@@ -77,14 +77,14 @@ deep breath, and see how these ideas are in fact applicable to our everyday prog
   Episode.TranscriptBlock(
     content: """
 We also practice what we preach. This entire site is
-[open source](https://www.github.com/pointfreeco/pointfreeco) in server-side Swift, and written in a
+[open source](https://github.com/pointfreeco/pointfreeco) in server-side Swift, and written in a
 function style. The entire site is basically one function, taking a request from you, the viewer, and
 sending back a response to your browser. Everything is built on top of small components that compose
 well. There's a function that handles the routing to figure out what page to serve up, a function that
 produces the view built from lots of smaller view functions… everything is just functions!
 
 We will have episodes dissecting pieces of the site's codebase in the future, and we encourage everyone
-to take a look on [GitHub](https://www.github.com/pointfreeco/pointfreeco) and open up issues or pull
+to take a look on [GitHub](https://github.com/pointfreeco/pointfreeco) and open up issues or pull
 requests if that interests you.
 """,
     timestamp: 113,

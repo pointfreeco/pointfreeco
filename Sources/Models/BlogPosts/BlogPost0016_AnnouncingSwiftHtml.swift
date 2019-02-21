@@ -18,17 +18,17 @@ type-safe, and provides many benefits over templating languages.
       content: """
 ---
 
-> Today we are [open sourcing](https://www.github.com/pointfreeco/swift-html) a new library for building HTML
+> Today we are [open sourcing](https://github.com/pointfreeco/swift-html) a new library for building HTML
 documents in Swift. It's extensible, transformable, type-safe, and provides many benefits over templating
 languages.
 
 ---
 
 The entire [Point-Free](https://www.pointfree.co) website is built using server-side Swift, and the code
-base has been [open source](https://www.github.com/pointfreeco/pointfreeco) from day one. When we set out
+base has been [open source](https://github.com/pointfreeco/pointfreeco) from day one. When we set out
 to build the site we wanted to rethink a lot of industry best practices when it came to how to build a
 web framework, and we started with the view layer. So, today we are excited to announce an official release
-of [`swift-html`](https://www.github.com/pointfreeco/swift-html), an HTML library written in
+of [`swift-html`](https://github.com/pointfreeco/swift-html), an HTML library written in
 Swift and perfect for building HTML views for websites that are powered by Swift.
 
 Before we show off the library, we must first show our motivation to create the library in the first place.
@@ -75,7 +75,7 @@ languages can offer us, what is the solution?
 
 The solution is to use Swift, not a whole new programming language!
 
-The library we are [open sourcing](https://www.github.com/pointfreeco/swift-html) today is written in the
+The library we are [open sourcing](https://github.com/pointfreeco/swift-html) today is written in the
 DSL style that we have been covering on Point-Free ([part 1](/episodes/ep26-domain-specific-languages-part-1),
 [part 2](/episodes/ep27-domain-specific-languages-part-2), [part 3](/episodes/ep28-an-html-dsl)), which means
 you construct HTML documents by just building up plain Swift data types. It all begins with the `Node` type,
@@ -300,7 +300,7 @@ can accomplish, and how it can add safety and expressivity to HTML views built i
 is only the beginning. There is still so much more to say about the `Node` type.
 
 We'll have to save that for another time, but until then please check out
-[`swift-html`](https://www.github.com/pointfreeco/swift-html), our brand new open source library for
+[`swift-html`](https://github.com/pointfreeco/swift-html), our brand new open source library for
 building HTML in Swift.
 """,
       timestamp: nil,

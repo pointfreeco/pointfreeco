@@ -13,7 +13,7 @@ the public!
 This week marks 6 months since we launched [Point-Free](/). In that time we’ve
 released 24 episodes with over 12 hours of video, published 9 [blog posts](/blog), had
 33 thousand unique visitors, more than 400 subscriptions, and
-[open sourced](https://www.github.com/pointfreeco) 3 libraries from the topics covered in our episodes.
+[open sourced](https://github.com/pointfreeco) 3 libraries from the topics covered in our episodes.
 
 The content covered so far spans a broad range of topics, from core functional programming concepts
 that will be the building block of later ideas, to the immediately useful ideas that can be brought into

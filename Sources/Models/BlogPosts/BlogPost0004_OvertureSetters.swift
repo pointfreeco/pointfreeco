@@ -20,7 +20,7 @@ transformations out of smaller units.
 
 > This week's [episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance) explored providing a friendlier API to functional setters, and improved
 their performance by leveraging Swift's value mutation semantics. To make these ideas accessible to everyone
-we have updated our [Swift Overture](https://www.github.com/pointfreeco/swift-overture) library to add these
+we have updated our [Swift Overture](https://github.com/pointfreeco/swift-overture) library to add these
 helper functions and more!
 
 ---
@@ -31,7 +31,7 @@ helper functions and more!
 
     .init(
       content: """
-We released [Swift Overture](https://www.github.com/pointfreeco/swift-overture), a library for embracing
+We released [Swift Overture](https://github.com/pointfreeco/swift-overture), a library for embracing
 function composition, a little over a month ago, and the reception has been great! It has helped people
 see that function composition is an important tool to have at your disposal, and that Swift has
 some really nice features to support composition (generics, free functions, variadics, module namespaces, etc.).
@@ -74,7 +74,7 @@ let newUser = with(user, concat(
 That is already really powerful, but as we explored in this [week's episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance), the ergonomics of using
 the API isn't quite right, and it creates a copy for each setter application, so its performance could be improved.
 
-In the newest release of [Overture](https://www.github.com/pointfreeco/swift-overture) we've added more
+In the newest release of [Overture](https://github.com/pointfreeco/swift-overture) we've added more
 key path helpers to make the API friendlier:
 """,
       timestamp: nil,

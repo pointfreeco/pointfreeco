@@ -17,7 +17,7 @@ Today we are releasing Overture 0.3.0 with a bunch of useful zip functions.
       content: """
 ---
 
-> Today we are releasing [Overture](https://www.github.com/pointfreeco/swift-overture) 0.3.0 with a bunch of useful `zip` functions.
+> Today we are releasing [Overture](https://github.com/pointfreeco/swift-overture) 0.3.0 with a bunch of useful `zip` functions.
 
 ---
 
@@ -30,7 +30,7 @@ typically think of our types in that way, and it allows reuse to use the same "s
 wildly different contexts.
 
 To celebrate the completion of that somewhat intense series of episodes, we are happy to release version 0.3.0
-of our [Swift Overture](https://www.github.com/pointfreeco/swift-overture) library, now with a _whole bunch_ of zips!
+of our [Swift Overture](https://github.com/pointfreeco/swift-overture) library, now with a _whole bunch_ of zips!
 """,
       timestamp: nil,
       type: .paragraph

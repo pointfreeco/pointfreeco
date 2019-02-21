@@ -256,7 +256,7 @@ from using this tool in your code base today.
 
 If this interests you then you may also want to check out our latest episode on
 “[Styling with Overture](https://www.pointfree.co/episodes/ep17-styling-with-overture)”, which improves
-on the ideas discussed in this blog post by using our [Overture](https://www.github.com/pointfreeco/swift-overture)
+on the ideas discussed in this blog post by using our [Overture](https://github.com/pointfreeco/swift-overture)
 library.
 """,
       timestamp: nil,

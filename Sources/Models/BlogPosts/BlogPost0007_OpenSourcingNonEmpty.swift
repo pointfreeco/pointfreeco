@@ -18,7 +18,7 @@ library can help make your code safer and more expressive with very little work.
       content: """
 ---
 
-> Today we are open sourcing [NonEmpty](https://www.github.com/pointfreeco/swift-nonempty), a Swift library for modeling
+> Today we are open sourcing [NonEmpty](https://github.com/pointfreeco/swift-nonempty), a Swift library for modeling
 non-empty collection types. This small library can help make your code safer and more expressive with very
 little work.
 
@@ -41,7 +41,7 @@ naturally lead us to a type that gives us compile-time guarantees that a collect
 
 We believe that a compiler proven non-empty type is incredibly important for every developer to have at
 their disposal, and so that's why today we are open sourcing our
-[NonEmpty](https://www.github.com/pointfreeco/swift-nonempty) library.
+[NonEmpty](https://github.com/pointfreeco/swift-nonempty) library.
 """,
       timestamp: nil,
       type: .paragraph
@@ -473,7 +473,7 @@ the type level you get to enforce this invariant in a single place rather than s
 into your code.
 
 If you want to give `NonEmpty` a spin, then check out our
-[open source repo](https://www.github.com/pointfreeco/swift-nonempty).
+[open source repo](https://github.com/pointfreeco/swift-nonempty).
 """,
       timestamp: nil,
       type: .paragraph

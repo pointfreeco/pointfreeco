@@ -11,7 +11,7 @@ public let post0025_2018YearInReview = BlogPost(
 We launched on January 29 of this year, and next month are approaching our one year anniversay. In that time
 we have released 41 episodes with over 19 hours of [video](/) (9 of which are free for all),
 published 25 [blog posts](/blog), served over 36,000 unique visitors, and
-[open sourced](https://www.github.com/pointfreeco) 8 (!) libraries from the topics covered in our episodes!
+[open sourced](https://github.com/pointfreeco) 8 (!) libraries from the topics covered in our episodes!
 We're really proud of everything we produced for 2018, so join us for a quick review of some of our favorite
 highlights.
 
@@ -76,8 +76,8 @@ question the structure of the result type itself. And we saw that `zip` on an as
 natural way to think about parallelism.
 
 Zip has popped up in a number of our open source libraries, including
-[`swift-overture`](https://www.github.com/pointfreeco/swift-overture) and
-[`swift-validation`](https://www.github.com/pointfreeco/swift-validation).
+[`swift-overture`](https://github.com/pointfreeco/swift-overture) and
+[`swift-validation`](https://github.com/pointfreeco/swift-validation).
 
 * [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)
 * [The Many Faces of Zip: Part 2](/episodes/ep24-the-many-faces-of-zip-part-2)
@@ -89,7 +89,7 @@ The `Tagged` type provides a lightweight wrapper around any type so that you can
 say, an `Int`-based user id and an `Int`-based blog post id. It uses a phantom generic and some powerful Swift
 features, like conditional conformance, to make it easy to make your code safer.
 
-We even open sourced our own implementation, [`swift-tagged`](https://www.github.com/pointfreeco/swift-tagged), to make it easy
+We even open sourced our own implementation, [`swift-tagged`](https://github.com/pointfreeco/swift-tagged), to make it easy
 to take advantage of in your code base. The Point-Free web site makes heavy use of Tagged, and it's prevented
 quite a few bugs from going out in deploys! 😅
 
@@ -104,7 +104,7 @@ There are many different ways to combine and reuse styling logic for iOS views, 
 functions are the simplest solution.
 
 Later on in the year we [revisited UIKit styling](/episodes/ep17-styling-with-overture) using
-our [`swift-overture`](https://www.github.com/pointfreeco/swift-overture) library, allowing us to introduce the concept of
+our [`swift-overture`](https://github.com/pointfreeco/swift-overture) library, allowing us to introduce the concept of
 composing styling functions _without_ the need for operators, and with the addition of some expressive
 [setter functions]() using Swift key paths.
 
@@ -131,7 +131,7 @@ available [in blog form](/blog/posts/21-how-to-control-the-world) soonafter.
 ## Open Source
 
 We knew we wanted to do as much of Point-Free in the open as possible, so this very site has
-been [open source](https://www.github.com/pointfreeco/pointfreeco) from
+been [open source](https://github.com/pointfreeco/pointfreeco) from
 [the very beginning](https://github.com/pointfreeco/pointfreeco/commit/548dc6bffcb01cb0e0ec07559e5d33dece24c686).
 We built this site from first principles in a functional style, writing each component as open source along
 the way.
@@ -145,9 +145,9 @@ bringing the dependency into your project.
 Our open source work has accrued over 3,800 stars on GitHub! We're so thankful that the community has
 expressed such an interest!
 
-### [`swift-snapshot-testing`](https://www.github.com/pointfreeco/swift-snapshot-testing)
+### [`swift-snapshot-testing`](https://github.com/pointfreeco/swift-snapshot-testing)
 
-Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](https://www.github.com/pointfreeco/swift-snapshot-testing), takes snapshot testing to the
+Our [most recently](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) open sourced library, [`swift-snapshot-testing`](https://github.com/pointfreeco/swift-snapshot-testing), takes snapshot testing to the
 next level. It allows you to snapshot test any kind of data type into any kind of format. For example, you
 can snapshot test `UIView`s and `UIViewController`s into an image format, which is typical of these
 kinds of libraries, but you can also snapshot those objects into a textual format so that you can see the
@@ -166,13 +166,13 @@ The design of this library was covered in a whopping 9 episodes
 * [Async Snapshot Testing](/episodes/ep40-async-functional-refactoring)
 * [A Tour of Snapshot Testing](/episodes/ep41-a-tour-of-snapshot-testing) 🆓
 
-### [`swift-html`](https://www.github.com/pointfreeco/swift-html)
+### [`swift-html`](https://github.com/pointfreeco/swift-html)
 
 Server-side Swift is still in its nascent stages, but there have been some promising developments in the field,
 such as the [Swift NIO](http://github.com/apple/swift-nio) project. Currently the most popular way to render HTML pages in server-side
 Swift is with templating languages, but there are a lot of [problems](/episodes/ep29-dsls-vs-templating-languages) with templates. We
 [open sourced](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift) the
-[`swift-html`](https://www.github.com/pointfreeco/swift-html) library to remedy these problems by providing a first-class data type to represent
+[`swift-html`](https://github.com/pointfreeco/swift-html) library to remedy these problems by providing a first-class data type to represent
 HTML and a way to render that data to an HTML string that can be sent to the browser. In fact, this library
 powers the HTML rendering of this very site!
 
@@ -183,39 +183,39 @@ The design of this library was covered in 4 episodes:
 * [An HTML DSL](/episodes/ep28-an-html-dsl)
 * [DSLs vs. Templating Languages](/episodes/ep29-dsls-vs-templating-languages) 🆓
 
-### [`swift-html-kitura`](https://www.github.com/pointfreeco/swift-html-kitura), [`swift-html-vapor`](https://www.github.com/pointfreeco/swift-html-vapor)
+### [`swift-html-kitura`](https://github.com/pointfreeco/swift-html-kitura), [`swift-html-vapor`](https://github.com/pointfreeco/swift-html-vapor)
 
 The two most popular server-side Swift frameworks are Kitura and Vapor, but both use templating languages
 as the default way to render HTML. Luckily each framework provides a way to use your own view layer, and so
-both [`swift-html-kitura`](https://www.github.com/pointfreeco/swift-html-kitura)
-and [`swift-html-vapor`](https://www.github.com/pointfreeco/swift-html-vapor) are small libraries to help you use our
-[`swift-html`](https://www.github.com/pointfreeco/swift-html) library in either framework.
+both [`swift-html-kitura`](https://github.com/pointfreeco/swift-html-kitura)
+and [`swift-html-vapor`](https://github.com/pointfreeco/swift-html-vapor) are small libraries to help you use our
+[`swift-html`](https://github.com/pointfreeco/swift-html) library in either framework.
 
-### [`swift-overture`](https://www.github.com/pointfreeco/swift-overture)
+### [`swift-overture`](https://github.com/pointfreeco/swift-overture)
 
 Functional programming tends to make heavy use of custom operators, and this is because infix notation and
 associativity are a powerful way of reducing clutter in an expression and exposing some really interesting
 algebraic properties. But, it's not for everyone. So, we open sourced
-[`swift-overture`](https://www.github.com/pointfreeco/swift-overture) to be a simple library that gives you access to lots of
+[`swift-overture`](https://github.com/pointfreeco/swift-overture) to be a simple library that gives you access to lots of
 interesting function composition tools, without the use of operators. We discussed this idea in the following
 episode:
 
 * [Composition without Operators](/episodes/ep11-composition-without-operators)
 
-### [`swift-tagged`](https://www.github.com/pointfreeco/swift-tagged)
+### [`swift-tagged`](https://github.com/pointfreeco/swift-tagged)
 
 After covering the Tagged type in [an episode](/episodes/ep12-tagged), we open sourced
-[`swift-tagged`](https://www.github.com/pointfreeco/swift-tagged) to make it easier for everyone to benefit from this
+[`swift-tagged`](https://github.com/pointfreeco/swift-tagged) to make it easier for everyone to benefit from this
 powerful type.
 
 * [Tagged](/episodes/ep12-tagged)
 
-### [`swift-nonempty`](https://www.github.com/pointfreeco/swift-nonempty)
+### [`swift-nonempty`](https://github.com/pointfreeco/swift-nonempty)
 
 An adage of functional programmers is "make invalid states unrepresentable". This means that states of data
 that shouldn't be allowed to happen should actually be provable by the compiler as being impossible. We
 achieve this by using concepts from algebraic data types in order to chisel away the invalid values from
-our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](https://www.github.com/pointfreeco/swift-nonempty) library applies
+our types, and are hopefully only left with the valid states. Our [`swift-nonempty`](https://github.com/pointfreeco/swift-nonempty) library applies
 these ideas to model a "non-empty collection" type, which allows you to transform any collection type into
 a non-empty version of itself. We covered the design of this library in 4 episodes:
 
@@ -224,7 +224,7 @@ a non-empty version of itself. We covered the design of this library in 4 episod
 * [Algebraic Data Types: Generics and Recursion](/episodes/ep19-algebraic-data-types-generics-and-recursion)
 * [NonEmpty](/episodes/ep20-nonempty)
 
-### [`swift-validated`](https://www.github.com/pointfreeco/swift-validated)
+### [`swift-validated`](https://github.com/pointfreeco/swift-validated)
 
 Swift error handling is built around `Optional`, `Result`, and `throws`. These constructs allow us to write a sequence
 of failable instructions to Swift and return `nil`, `failure`, or `throw` an error to short-circuit things and
@@ -235,7 +235,7 @@ exploring the `zip` function beyond its usualy definition on arrays, and we disc
 gives us the ability to accumulate multiple errors when more than one input is invalid, a common thing we want
 with form data, and something that short-circuiting `throws` can't do.
 
-To make this functionality available to everyone, we open sourced [Validated](https://www.github.com/pointfreeco/swift-validated), a
+To make this functionality available to everyone, we open sourced [Validated](https://github.com/pointfreeco/swift-validated), a
 Result-like type that can accumulate multiple errors.
 
 * [The Many Faces of Zip: Part 1](/episodes/ep23-the-many-faces-of-zip-part-1)

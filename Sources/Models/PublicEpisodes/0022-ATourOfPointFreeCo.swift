@@ -351,7 +351,7 @@ Everything in the `PointFree` directory is application code: the business logic 
   ),
   Episode.TranscriptBlock(
     content: """
-This is the entirety of [Swift NIO](https://www.github.com/apple/swift-nio) in our application: `run` is a helper that we've written that sits in the [`swift-web`](https://github.com/pointfreeco/swift-web) library. It connects what we call middleware to what their lower-level library. This is all the server is! And it's our entire dependence on NIO.
+This is the entirety of [Swift NIO](https://github.com/apple/swift-nio) in our application: `run` is a helper that we've written that sits in the [`swift-web`](https://github.com/pointfreeco/swift-web) library. It connects what we call middleware to what their lower-level library. This is all the server is! And it's our entire dependence on NIO.
 """,
     timestamp: (9*60 + 07),
     type: .paragraph

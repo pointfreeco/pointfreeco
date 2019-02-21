@@ -8,7 +8,7 @@ Announcing swift-html 0.2.0: support for CocoaPods, Carthage, SnapshotTesting, a
   contentBlocks: [
     .init(
       content: """
-Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](https://www.github.com/pointfreeco/swift-html), a Swift DSL for type-safe, extensible, and transformable HTML documents. In fact, this very page was rendered with it!
+Today we're releasing our [first minor update](https://github.com/pointfreeco/swift-html/releases/tag/0.2.0) to [swift-html](https://github.com/pointfreeco/swift-html), a Swift DSL for type-safe, extensible, and transformable HTML documents. In fact, this very page was rendered with it!
 
 We've been battle-testing this library for awhile now, long before its [initial release last September](/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift). Today's release contains a number of new features and fixes, including several patches from the community!
 
@@ -60,7 +60,7 @@ While this rendering format is not suitable for the browser (it can introduce ad
 
 Speaking of snapshot testing, swift-html now comes with a helper module, `HtmlSnapshotTesting`!
 
-A couple months ago we had [our first official release](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) of [SnapshotTesting](https://www.github.com/pointfreeco/swift-snapshot-testing), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
+A couple months ago we had [our first official release](/blog/posts/23-snapshottesting-1-0-delightful-swift-snapshot-testing) of [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing), a library that lets you snapshot test not only `UIView`s to images, but _any_ value to _any_ format. We've been snapshot testing the HTML of the Point-Free web site since day one, so we're excited to make this kind of testing easier for everyone.
 
 You can snapshot test swift-html's `Node` type using the `html` strategy.
 """,
@@ -99,7 +99,7 @@ This release also contains a few bug fixes from the community and free rendering
 
 ---
 
-To give swift-html a try today, check out [its GitHub page](https://www.github.com/pointfreeco/swift-html).
+To give swift-html a try today, check out [its GitHub page](https://github.com/pointfreeco/swift-html).
 """,
       timestamp: nil,
       type: .paragraph
