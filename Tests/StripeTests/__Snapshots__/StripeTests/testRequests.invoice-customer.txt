@@ -1,0 +1,3 @@
+POST https://api.stripe.com/v1/invoices
+
+customer=cus_test

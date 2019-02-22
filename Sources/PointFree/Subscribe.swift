@@ -3,15 +3,14 @@ import Foundation
 import HttpPipeline
 import Optics
 import Prelude
+import Stripe
 import Tuple
 
 public struct SubscribeData: Codable, Equatable {
-  public typealias Coupon = Tagged<SubscribeData, String>
-
-  public private(set) var coupon: Coupon?
+  public private(set) var coupon: Stripe.Coupon.Id?
   public private(set) var pricing: Pricing
   public private(set) var token: Stripe.Token.Id
-  public private(set) var vatNumber: String
+  public private(set) var vatNumber: Stripe.Customer.Vat?
 }
 
 let subscribeMiddleware =
@@ -50,7 +49,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
       .withExcept(const(unit))
       .flatMap { subscribeData in
         Current.stripe
-          .createCustomer(user, subscribeData.token, subscribeData.vatNumber.isEmpty ? nil : subscribeData.vatNumber)
+          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, subscribeData.vatNumber)
           .map { ($0, subscribeData) }
       }
       .flatMap {
@@ -66,7 +65,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Databa
     return subscriptionOrError.flatMap(
       either(
         { error in
-          let errorMessage = (error as? Stripe.ErrorEnvelope)?.error.message
+          let errorMessage = (error as? StripeErrorEnvelope)?.error.message
             ?? "Error creating subscription!"
           return conn
             |> redirect(

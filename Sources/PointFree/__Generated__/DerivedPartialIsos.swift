@@ -6,6 +6,7 @@ import ApplicativeRouter
 import Either
 import PointFreePrelude
 import Prelude
+import Stripe
 
 
 
@@ -933,7 +934,7 @@ import Prelude
 
 
       extension PartialIso where A == (
-            PointFree.Stripe.Event<Either<PointFree.Stripe.Invoice, PointFree.Stripe.Subscription>>
+            Event<Either<Invoice, Subscription>>
         ), B == Route.Webhooks.Stripe {
 
           public static let event = parenthesize <| PartialIso(

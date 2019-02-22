@@ -5,6 +5,7 @@ import HttpPipeline
 import Optics
 import PointFreePrelude
 import Prelude
+import Stripe
 import UrlFormEncoding
 
 public protocol DerivePartialIsos {}
@@ -89,7 +90,7 @@ public enum Route: DerivePartialIsos, Equatable {
     case stripe(Stripe)
 
     public enum Stripe: DerivePartialIsos, Equatable {
-      case event(PointFree.Stripe.Event<Either<PointFree.Stripe.Invoice, PointFree.Stripe.Subscription>>)
+      case event(Event<Either<Invoice, Subscription>>)
       case `fallthrough`
     }
   }
@@ -238,8 +239,8 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("webhooks") %> lit("stripe")
     %> jsonBody(
       Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-      encoder: stripeJsonEncoder,
-      decoder: stripeJsonDecoder
+      encoder: Stripe.jsonEncoder,
+      decoder: Stripe.jsonDecoder
     )
     <% end,
 
