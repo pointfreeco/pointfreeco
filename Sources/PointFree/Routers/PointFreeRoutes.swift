@@ -261,15 +261,6 @@ public func url(to route: Route) -> String {
   return router.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
 }
 
-extension PartialIso where A == String, B == SiteTag {
-  public static var tag: PartialIso<String, SiteTag> {
-    return PartialIso<String, SiteTag>(
-      apply: SiteTag.init(slug:),
-      unapply: ^\.name
-    )
-  }
-}
-
 public struct MailgunForwardPayload: Codable, Equatable {
   public let recipient: EmailAddress
   public let timestamp: Int
@@ -314,3 +305,10 @@ private let isTest: Router<Bool?> =
 
 private let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
 private let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
+
+func slug(for string: String) -> String {
+  return string
+    .lowercased()
+    .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
+    .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
+}
