@@ -3,24 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeTests; @testable import StyleguideTests; @testable import SyndicationTests;
-extension BlogPostTests {
-  static var allTests: [(String, (BlogPostTests) -> () throws -> Void)] = [
-    ("testSlug", testSlug)
-  ]
-}
-extension EpisodeTests {
-  static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
-    ("testSlug", testSlug),
-    ("testIsSubscriberOnly", testIsSubscriberOnly),
-    ("testFreeSince", testFreeSince)
-  ]
-}
-extension GitHubTests {
-  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
-    ("testRequests", testRequests)
-  ]
-}
+@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
@@ -69,6 +52,11 @@ extension AuthTests {
     ("testLogout", testLogout),
     ("testHome_LoggedOut", testHome_LoggedOut),
     ("testHome_LoggedIn", testHome_LoggedIn),
+  ]
+}
+extension BlogPostTests {
+  static var allTests: [(String, (BlogPostTests) -> () throws -> Void)] = [
+    ("testSlug", testSlug),
   ]
 }
 extension BlogTests {
@@ -176,6 +164,13 @@ extension EpisodePageTests {
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
     ("test_permission", test_permission),
     ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
+  ]
+}
+extension EpisodeTests {
+  static var allTests: [(String, (EpisodeTests) -> () throws -> Void)] = [
+    ("testSlug", testSlug),
+    ("testIsSubscriberOnly", testIsSubscriberOnly),
+    ("testFreeSince", testFreeSince),
   ]
 }
 extension FreeEpisodeEmailTests {
@@ -374,14 +369,12 @@ extension WelcomeEmailTests {
 
 // swiftlint:disable trailing_comma
 XCTMain([
-  testCase(BlogPostTests.allTests),
-  testCase(EpisodeTests.allTests),
-  testCase(GitHubTests.allTests),
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
+  testCase(BlogPostTests.allTests),
   testCase(BlogTests.allTests),
   testCase(CancelTests.allTests),
   testCase(ChangeEmailConfirmationTests.allTests),
@@ -393,6 +386,7 @@ XCTMain([
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
   testCase(EpisodePageTests.allTests),
+  testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
   testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
