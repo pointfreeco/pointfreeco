@@ -19,7 +19,7 @@ let package = Package(
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("8cbc934")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.1.0"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-html.git", from: "0.2.1"),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("ad19b2d")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
