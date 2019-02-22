@@ -7,7 +7,7 @@ import Prelude
 import PostgreSQL
 import Stripe
 
-public struct Database {
+public struct Client {
   var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
@@ -35,7 +35,7 @@ public struct Database {
   var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
 
-  static let live = Database(
+  static let live = Client(
     addUserIdToSubscriptionId: add(userId:toSubscriptionId:),
     createFeedRequestEvent: createFeedRequestEvent(type:userAgent:userId:),
     createSubscription: createSubscription(with:for:),
