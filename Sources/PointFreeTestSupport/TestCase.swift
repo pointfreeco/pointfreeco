@@ -1,3 +1,4 @@
+import Models
 import Optics
 @testable import PointFree
 import Prelude

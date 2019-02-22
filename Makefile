@@ -3,7 +3,7 @@ default: bootstrap
 SWIFT := $(if $(shell command -v xcrun 2> /dev/null),xcrun swift,swift)
 
 bootstrap:
-	@if test -e Sources/PointFree/Transcripts/.git; \
+	@if test -e Sources/Models/Transcripts/.git; \
 		then \
 			$(MAKE) bootstrap-private; \
 		else \
@@ -34,7 +34,7 @@ bootstrap-private:
 uninstall: uninstall-mm db-drop
 
 install-mm:
-	@if test -d Sources/PointFree/Transcripts/.git; \
+	@if test -d Sources/Models/Transcripts/.git; \
 		then \
 			echo "  ⚠️  Installing module maps into SDK path..."; \
 		else \
@@ -267,6 +267,7 @@ sourcery-routes:
 
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \
+	@testable import ModelsTests; \
 	@testable import PointFreeTests; \
 	@testable import StripeTests; \
 	@testable import StyleguideTests; \

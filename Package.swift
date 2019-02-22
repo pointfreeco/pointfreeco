@@ -10,6 +10,7 @@ let package = Package(
     .library(name: "Database", targets: ["Database"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "Logger", targets: ["Logger"]),
+    .library(name: "Models", targets: ["Models"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
@@ -21,11 +22,13 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("8cbc934")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-html.git", from: "0.2.1"),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.2.0"),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("ad19b2d")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
+
     .target(
       name: "Database",
       dependencies: [
@@ -72,6 +75,20 @@ let package = Package(
     ),
 
     .target(
+      name: "Models",
+      dependencies: [
+        "Tagged",
+        ]
+    ),
+
+    .testTarget(
+      name: "ModelsTests",
+      dependencies: [
+        "Models",
+        ]
+    ),
+
+    .target(
       name: "PointFree",
       dependencies: [
         "ApplicativeRouter",
@@ -85,6 +102,7 @@ let package = Package(
         "HtmlPlainTextPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
+        "Models",
         "Optics",
         "PointFreePrelude",
         "PostgreSQL",
@@ -127,6 +145,7 @@ let package = Package(
         "Either",
         "GitHub",
         "HttpPipelineTestSupport",
+        "Models",
         "Logger",
         "PointFree",
         "PointFreePrelude",

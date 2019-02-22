@@ -6,6 +6,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import Prelude
 import Styleguide

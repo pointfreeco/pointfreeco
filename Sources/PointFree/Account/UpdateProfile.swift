@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import HttpPipeline
+import Models
 import PointFreePrelude
 import Prelude
 import Stripe
