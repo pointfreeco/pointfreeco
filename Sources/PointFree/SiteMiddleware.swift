@@ -2,6 +2,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
+import Models
 import Optics
 import Prelude
 import Stripe

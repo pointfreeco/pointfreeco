@@ -1,6 +1,7 @@
 import Either
 import Html
 import HttpPipeline
+@testable import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude
@@ -23,7 +24,7 @@ class PrivateRssTests: TestCase {
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6))),
+      \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
     )
 
@@ -44,7 +45,7 @@ class PrivateRssTests: TestCase {
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
-      \.episodes .~ unzurry(Array(allPublicEpisodes.prefix(6))),
+      \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
       \.stripe.fetchSubscription .~ const(pure(.individualYearly))
     )
 

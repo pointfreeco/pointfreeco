@@ -1,6 +1,7 @@
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
+import Models
 import Optics
 @testable import PointFree
 import PointFreeTestSupport
