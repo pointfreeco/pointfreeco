@@ -9,6 +9,7 @@ import Optics
 import PointFreePrelude
 import Prelude
 import Styleguide
+import Stripe
 import Tuple
 import View
 

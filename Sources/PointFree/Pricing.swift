@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import Optics
 import PointFreePrelude
 import Prelude
+import Stripe
 import Styleguide
 import Tuple
 import View
@@ -188,7 +189,7 @@ let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe
             form(
               [
                 action(path(to: .subscribe(nil))),
-                id(Stripe.html.formId),
+                id(StripeHtml.formId),
                 method(.post),
                 onsubmit("event.preventDefault()")
               ],
@@ -587,9 +588,9 @@ private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.C
 private let stripeForm = View<(Stripe.Coupon.Id?, PricingFormStyle)> { couponId, formStyle in
   div(
     [`class`([Class.padding([.mobile: [.left: 3, .right: 3]])])],
-    Stripe.html.cardInput(couponId: couponId, formStyle: formStyle)
-      <> Stripe.html.errors
-      <> Stripe.html.scripts
+    StripeHtml.cardInput(couponId: couponId, formStyle: formStyle)
+      <> StripeHtml.errors
+      <> StripeHtml.scripts
       <> [
         button(
           [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],

@@ -3,15 +3,10 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import PointFreeTests; @testable import StyleguideTests; @testable import SyndicationTests;
-extension GitHubTests {
-  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
-    ("testRequests", testRequests)
-  ]
-}
+@testable import GitHubTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
-    ("testAbout", testAbout)
+    ("testAbout", testAbout),
   ]
 }
 extension AccountTests {
@@ -28,19 +23,19 @@ extension AccountTests {
     ("testAccountCanceledSubscription", testAccountCanceledSubscription),
     ("testEpisodeCredits_1Credit_NoneChosen", testEpisodeCredits_1Credit_NoneChosen),
     ("testEpisodeCredits_1Credit_1Chosen", testEpisodeCredits_1Credit_1Chosen),
-    ("testAccountWithDiscount", testAccountWithDiscount)
+    ("testAccountWithDiscount", testAccountWithDiscount),
   ]
 }
 extension AppleDeveloperMerchantIdDomainAssociationTests {
   static var allTests: [(String, (AppleDeveloperMerchantIdDomainAssociationTests) -> () throws -> Void)] = [
-    ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly)
+    ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly),
   ]
 }
 extension AtomFeedTests {
   static var allTests: [(String, (AtomFeedTests) -> () throws -> Void)] = [
     ("testAtomFeed", testAtomFeed),
     ("testEpisodeFeed", testEpisodeFeed),
-    ("testEpisodeFeed_WithRecentlyFreeEpisode", testEpisodeFeed_WithRecentlyFreeEpisode)
+    ("testEpisodeFeed_WithRecentlyFreeEpisode", testEpisodeFeed_WithRecentlyFreeEpisode),
   ]
 }
 extension AuthTests {
@@ -56,7 +51,7 @@ extension AuthTests {
     ("testLoginWithRedirect", testLoginWithRedirect),
     ("testLogout", testLogout),
     ("testHome_LoggedOut", testHome_LoggedOut),
-    ("testHome_LoggedIn", testHome_LoggedIn)
+    ("testHome_LoggedIn", testHome_LoggedIn),
   ]
 }
 extension BlogTests {
@@ -67,7 +62,7 @@ extension BlogTests {
     ("testBlogShow", testBlogShow),
     ("testBlogShow_Unauthed", testBlogShow_Unauthed),
     ("testBlogAtomFeed", testBlogAtomFeed),
-    ("testBlogAtomFeed_Unauthed", testBlogAtomFeed_Unauthed)
+    ("testBlogAtomFeed_Unauthed", testBlogAtomFeed_Unauthed),
   ]
 }
 extension CancelTests {
@@ -85,13 +80,13 @@ extension CancelTests {
     ("testReactivateActiveSubscription", testReactivateActiveSubscription),
     ("testReactivateCanceledSubscription", testReactivateCanceledSubscription),
     ("testReactivateStripeFailure", testReactivateStripeFailure),
-    ("testReactivateEmail", testReactivateEmail)
+    ("testReactivateEmail", testReactivateEmail),
   ]
 }
 extension ChangeEmailConfirmationTests {
   static var allTests: [(String, (ChangeEmailConfirmationTests) -> () throws -> Void)] = [
     ("testChangeEmailConfirmationEmail", testChangeEmailConfirmationEmail),
-    ("testChangedEmail", testChangedEmail)
+    ("testChangedEmail", testChangedEmail),
   ]
 }
 extension ChangeTests {
@@ -110,18 +105,18 @@ extension ChangeTests {
     ("testChangeUpgradeIndividualMonthlyToTeamYearly", testChangeUpgradeIndividualMonthlyToTeamYearly),
     ("testChangeUpdateAddSeatsTeamPlan", testChangeUpdateAddSeatsTeamPlan),
     ("testChangeUpdateRemoveSeats", testChangeUpdateRemoveSeats),
-    ("testChangeUpdateRemoveSeatsInvalidNumber", testChangeUpdateRemoveSeatsInvalidNumber)
+    ("testChangeUpdateRemoveSeatsInvalidNumber", testChangeUpdateRemoveSeatsInvalidNumber),
   ]
 }
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
-    ("testCreate", testCreate)
+    ("testCreate", testCreate),
   ]
 }
 extension DiscountsTests {
   static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
     ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
-    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn)
+    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
   ]
 }
 extension EitherIOTests {
@@ -129,23 +124,23 @@ extension EitherIOTests {
     ("testRetry_Fails", testRetry_Fails),
     ("testRetry_Succeeds", testRetry_Succeeds),
     ("testRetry_MaxRetriesZero_Success", testRetry_MaxRetriesZero_Success),
-    ("testRetry_MaxRetriesZero_Failure", testRetry_MaxRetriesZero_Failure)
+    ("testRetry_MaxRetriesZero_Failure", testRetry_MaxRetriesZero_Failure),
   ]
 }
 extension EmailInviteTests {
   static var allTests: [(String, (EmailInviteTests) -> () throws -> Void)] = [
     ("testEmailInvite", testEmailInvite),
-    ("testInviteAcceptance", testInviteAcceptance)
+    ("testInviteAcceptance", testInviteAcceptance),
   ]
 }
 extension EnvVarTests {
   static var allTests: [(String, (EnvVarTests) -> () throws -> Void)] = [
-    ("testDecoding", testDecoding)
+    ("testDecoding", testDecoding),
   ]
 }
 extension EnvironmentTests {
   static var allTests: [(String, (EnvironmentTests) -> () throws -> Void)] = [
-    ("testDefault", testDefault)
+    ("testDefault", testDefault),
   ]
 }
 extension EpisodeTests {
@@ -163,24 +158,29 @@ extension EpisodeTests {
     ("testRedeemEpisodeCredit_PublicEpisode", testRedeemEpisodeCredit_PublicEpisode),
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
     ("test_permission", test_permission),
-    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences)
+    ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
   ]
 }
 extension FreeEpisodeEmailTests {
   static var allTests: [(String, (FreeEpisodeEmailTests) -> () throws -> Void)] = [
-    ("testFreeEpisodeEmail", testFreeEpisodeEmail)
+    ("testFreeEpisodeEmail", testFreeEpisodeEmail),
+  ]
+}
+extension GitHubTests {
+  static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
+    ("testRequests", testRequests),
   ]
 }
 extension HomeTests {
   static var allTests: [(String, (HomeTests) -> () throws -> Void)] = [
     ("testHomepage_LoggedOut", testHomepage_LoggedOut),
     ("testHomepage_Subscriber", testHomepage_Subscriber),
-    ("testEpisodesIndex", testEpisodesIndex)
+    ("testEpisodesIndex", testEpisodesIndex),
   ]
 }
 extension HtmlCssInlinerTests {
   static var allTests: [(String, (HtmlCssInlinerTests) -> () throws -> Void)] = [
-    ("testHtmlCssInliner", testHtmlCssInliner)
+    ("testHtmlCssInliner", testHtmlCssInliner),
   ]
 }
 extension InviteTests {
@@ -195,25 +195,25 @@ extension InviteTests {
     ("testAcceptInvitation_HappyPath", testAcceptInvitation_HappyPath),
     ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
     ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
-    ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription)
+    ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription),
   ]
 }
 extension InvoicesTests {
   static var allTests: [(String, (InvoicesTests) -> () throws -> Void)] = [
     ("testInvoices", testInvoices),
     ("testInvoice", testInvoice),
-    ("testInvoiceWithDiscount", testInvoiceWithDiscount)
+    ("testInvoiceWithDiscount", testInvoiceWithDiscount),
   ]
 }
 extension MetaLayoutTests {
   static var allTests: [(String, (MetaLayoutTests) -> () throws -> Void)] = [
-    ("testMetaTagsWithStyleTag", testMetaTagsWithStyleTag)
+    ("testMetaTagsWithStyleTag", testMetaTagsWithStyleTag),
   ]
 }
 extension MinimalNavViewTests {
   static var allTests: [(String, (MinimalNavViewTests) -> () throws -> Void)] = [
     ("testNav_Html", testNav_Html),
-    ("testNav_Screenshots", testNav_Screenshots)
+    ("testNav_Screenshots", testNav_Screenshots),
   ]
 }
 extension NewBlogPostEmailTests {
@@ -223,7 +223,7 @@ extension NewBlogPostEmailTests {
     ("testNewBlogPostEmail_Announcements_Subscriber", testNewBlogPostEmail_Announcements_Subscriber),
     ("testNewBlogPostEmail_Announcements_NonSubscriber", testNewBlogPostEmail_Announcements_NonSubscriber),
     ("testNewBlogPostRoute", testNewBlogPostRoute),
-    ("testNewBlogPostEmail_NoCoverImage", testNewBlogPostEmail_NoCoverImage)
+    ("testNewBlogPostEmail_NoCoverImage", testNewBlogPostEmail_NoCoverImage),
   ]
 }
 extension NewEpisodeEmailTests {
@@ -231,7 +231,7 @@ extension NewEpisodeEmailTests {
     ("testNewEpisodeEmail_Subscriber", testNewEpisodeEmail_Subscriber),
     ("testNewEpisodeEmail_FreeEpisode_NonSubscriber", testNewEpisodeEmail_FreeEpisode_NonSubscriber),
     ("testNewEpisodeEmail_Announcement_NonSubscriber", testNewEpisodeEmail_Announcement_NonSubscriber),
-    ("testNewEpisodeEmail_Announcement_Subscriber", testNewEpisodeEmail_Announcement_Subscriber)
+    ("testNewEpisodeEmail_Announcement_Subscriber", testNewEpisodeEmail_Announcement_Subscriber),
   ]
 }
 extension NewslettersTests {
@@ -239,18 +239,18 @@ extension NewslettersTests {
     ("testExpressUnsubscribe", testExpressUnsubscribe),
     ("testExpressUnsubscribeReply", testExpressUnsubscribeReply),
     ("testExpressUnsubscribeReply_IncorrectSignature", testExpressUnsubscribeReply_IncorrectSignature),
-    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter)
+    ("testExpressUnsubscribeReply_UnknownNewsletter", testExpressUnsubscribeReply_UnknownNewsletter),
   ]
 }
 extension NotFoundMiddlewareTests {
   static var allTests: [(String, (NotFoundMiddlewareTests) -> () throws -> Void)] = [
     ("testNotFound", testNotFound),
-    ("testNotFound_LoggedIn", testNotFound_LoggedIn)
+    ("testNotFound_LoggedIn", testNotFound_LoggedIn),
   ]
 }
 extension PaymentInfoTests {
   static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
-    ("testRender", testRender)
+    ("testRender", testRender),
   ]
 }
 extension PricingTests {
@@ -262,12 +262,12 @@ extension PricingTests {
     ("testPricingLoggedIn_NonSubscriber_Expanded", testPricingLoggedIn_NonSubscriber_Expanded),
     ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber),
     ("testPricingLoggedIn_CanceledSubscriber", testPricingLoggedIn_CanceledSubscriber),
-    ("testPricingLoggedIn_PastDueSubscriber", testPricingLoggedIn_PastDueSubscriber)
+    ("testPricingLoggedIn_PastDueSubscriber", testPricingLoggedIn_PastDueSubscriber),
   ]
 }
 extension PrivacyTests {
   static var allTests: [(String, (PrivacyTests) -> () throws -> Void)] = [
-    ("testPrivacy", testPrivacy)
+    ("testPrivacy", testPrivacy),
   ]
 }
 extension PrivateRssTests {
@@ -276,12 +276,12 @@ extension PrivateRssTests {
     ("testFeed_Authenticated_Subscriber_Yearly", testFeed_Authenticated_Subscriber_Yearly),
     ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
     ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
-    ("testFeed_BadSalt", testFeed_BadSalt)
+    ("testFeed_BadSalt", testFeed_BadSalt),
   ]
 }
 extension RegistrationEmailTests {
   static var allTests: [(String, (RegistrationEmailTests) -> () throws -> Void)] = [
-    ("testRegistrationEmail", testRegistrationEmail)
+    ("testRegistrationEmail", testRegistrationEmail),
   ]
 }
 extension SiteMiddlewareTests {
@@ -289,7 +289,7 @@ extension SiteMiddlewareTests {
     ("testWithoutWWW", testWithoutWWW),
     ("testWithoutHeroku", testWithoutHeroku),
     ("testWithWWW", testWithWWW),
-    ("testWithHttps", testWithHttps)
+    ("testWithHttps", testWithHttps),
   ]
 }
 extension StripeTests {
@@ -298,7 +298,7 @@ extension StripeTests {
     ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
     ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
     ("testDecodingDiscountJson", testDecodingDiscountJson),
-    ("testRequests", testRequests)
+    ("testRequests", testRequests),
   ]
 }
 extension StripeWebhooksTests {
@@ -307,14 +307,14 @@ extension StripeWebhooksTests {
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
-    ("testPastDueEmail", testPastDueEmail)
+    ("testPastDueEmail", testPastDueEmail),
   ]
 }
 extension StyleguideTests {
   static var allTests: [(String, (StyleguideTests) -> () throws -> Void)] = [
     ("testStyleguide", testStyleguide),
     ("testDesignSystem", testDesignSystem),
-    ("testPointFreeStyles", testPointFreeStyles)
+    ("testPointFreeStyles", testPointFreeStyles),
   ]
 }
 extension SubscribeTests {
@@ -329,20 +329,20 @@ extension SubscribeTests {
     ("testHappyPath", testHappyPath),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
-    ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure)
+    ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure),
   ]
 }
 extension TeamEmailsTests {
   static var allTests: [(String, (TeamEmailsTests) -> () throws -> Void)] = [
     ("testYouHaveBeenRemovedEmailView", testYouHaveBeenRemovedEmailView),
-    ("testTeammateRemovedEmailView", testTeammateRemovedEmailView)
+    ("testTeammateRemovedEmailView", testTeammateRemovedEmailView),
   ]
 }
 extension UpdateProfileTests {
   static var allTests: [(String, (UpdateProfileTests) -> () throws -> Void)] = [
     ("testUpdateNameAndEmail", testUpdateNameAndEmail),
     ("testUpdateEmailSettings", testUpdateEmailSettings),
-    ("testUpdateExtraInvoiceInfo", testUpdateExtraInvoiceInfo)
+    ("testUpdateExtraInvoiceInfo", testUpdateExtraInvoiceInfo),
   ]
 }
 extension WelcomeEmailTests {
@@ -351,13 +351,12 @@ extension WelcomeEmailTests {
     ("testWelcomeEmail2", testWelcomeEmail2),
     ("testWelcomeEmail3", testWelcomeEmail3),
     ("testIncrementEpisodeCredits", testIncrementEpisodeCredits),
-    ("testEpisodeEmails", testEpisodeEmails)
+    ("testEpisodeEmails", testEpisodeEmails),
   ]
 }
 
 // swiftlint:disable trailing_comma
 XCTMain([
-  testCase(GitHubTests.allTests),
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
@@ -375,6 +374,7 @@ XCTMain([
   testCase(EnvironmentTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
+  testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
   testCase(InviteTests.allTests),

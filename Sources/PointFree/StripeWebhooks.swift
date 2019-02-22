@@ -8,6 +8,7 @@ import HttpPipelineHtmlSupport
 import PointFreePrelude
 import Prelude
 import Styleguide
+import Stripe
 import View
 
 let stripeWebhookMiddleware =
