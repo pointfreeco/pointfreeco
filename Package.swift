@@ -106,6 +106,7 @@ let package = Package(
         "Optics",
         "PointFreePrelude",
         "PostgreSQL",
+        "Stripe",
         "Styleguide",
         "Syndication",
         "Tuple",

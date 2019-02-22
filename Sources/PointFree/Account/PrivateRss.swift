@@ -6,6 +6,7 @@ import Models
 import Optics
 import PointFreePrelude
 import Prelude
+import Stripe
 import Syndication
 import Tuple
 import View

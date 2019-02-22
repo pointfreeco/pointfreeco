@@ -4,7 +4,7 @@ import GitHub
 import Models
 import Logger
 import Prelude
-import Html
+import Stripe
 
 public var Current = Environment()
 
@@ -21,6 +21,6 @@ public struct Environment {
   public var logger = Logger()
   public var mailgun = Mailgun.live
   public var renderHtml: ([Node]) -> String = Html.render
-  public var stripe = Stripe.live
+  public var stripe = Stripe.Client(secretKey: "")
   public var uuid: () -> UUID = UUID.init
 }

@@ -3,6 +3,7 @@ import Either
 import Models
 import PointFreePrelude
 import Prelude
+import Stripe
 
 {% for enum in types.implementing.DerivePartialIsos|enum %}
   {% for case in enum.cases %}

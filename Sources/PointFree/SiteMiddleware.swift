@@ -5,6 +5,7 @@ import HttpPipeline
 import Models
 import Optics
 import Prelude
+import Stripe
 import Styleguide
 import Tuple
 

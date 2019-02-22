@@ -6,6 +6,7 @@ import Models
 import Optics
 import PointFreePrelude
 import Prelude
+import Stripe
 import UrlFormEncoding
 
 public protocol DerivePartialIsos {}
@@ -90,7 +91,7 @@ public enum Route: DerivePartialIsos, Equatable {
     case stripe(Stripe)
 
     public enum Stripe: DerivePartialIsos, Equatable {
-      case event(PointFree.Stripe.Event<Either<PointFree.Stripe.Invoice, PointFree.Stripe.Subscription>>)
+      case event(Event<Either<Invoice, Subscription>>)
       case `fallthrough`
     }
   }
@@ -239,8 +240,8 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("webhooks") %> lit("stripe")
     %> jsonBody(
       Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-      encoder: stripeJsonEncoder,
-      decoder: stripeJsonDecoder
+      encoder: Stripe.jsonEncoder,
+      decoder: Stripe.jsonDecoder
     )
     <% end,
 
@@ -259,15 +260,6 @@ public func path(to route: Route) -> String {
 
 public func url(to route: Route) -> String {
   return router.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
-}
-
-extension PartialIso where A == String, B == SiteTag {
-  public static var tag: PartialIso<String, SiteTag> {
-    return PartialIso<String, SiteTag>(
-      apply: SiteTag.init(slug:),
-      unapply: ^\.name
-    )
-  }
 }
 
 public struct MailgunForwardPayload: Codable, Equatable {
@@ -314,3 +306,10 @@ private let isTest: Router<Bool?> =
 
 private let isPresent = PartialIso<String, Bool>(apply: const(true), unapply: { $0 ? "" : nil })
 private let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
+
+func slug(for string: String) -> String {
+  return string
+    .lowercased()
+    .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
+    .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
+}

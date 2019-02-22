@@ -4,6 +4,7 @@ import HttpPipeline
 import Models
 import PointFreePrelude
 import Prelude
+import Stripe
 import Tuple
 
 // NB: remove this `Encodable` to get a runtime crash

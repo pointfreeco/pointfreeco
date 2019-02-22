@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
+import Stripe
 import Styleguide
 import Tuple
 import View

@@ -2,15 +2,16 @@ import Either
 @testable import GitHub
 import Html
 import HtmlSnapshotTesting
-import SnapshotTesting
-import Prelude
-import XCTest
-@testable import PointFree
-import PointFreePrelude
-import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Optics
+@testable import PointFree
+import PointFreePrelude
+import PointFreeTestSupport
+import Prelude
+import SnapshotTesting
+@testable import Stripe
+import XCTest
 
 class UpdateProfileTests: TestCase {
   func testUpdateNameAndEmail() {

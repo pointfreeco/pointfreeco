@@ -60,6 +60,9 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     clientSecret: Current.envVars.gitHub.clientSecret,
     logger: Current.logger
   )
+  Current.stripe = .init(
+    secretKey: Current.envVars.stripe.secretKey
+  )
 
   return pure(unit)
 }
