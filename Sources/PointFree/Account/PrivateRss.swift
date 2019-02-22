@@ -2,6 +2,7 @@ import Foundation
 import Either
 import Html
 import HttpPipeline
+import Models
 import Optics
 import PointFreePrelude
 import Prelude

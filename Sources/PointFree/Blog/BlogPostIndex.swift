@@ -3,6 +3,7 @@ import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
+import Models
 import Prelude
 import Styleguide
 import Tuple

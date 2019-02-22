@@ -2,6 +2,7 @@ import Css
 import Foundation
 import GitHub
 import Html
+import Models
 import Logger
 import Prelude
 import Stripe

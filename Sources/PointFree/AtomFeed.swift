@@ -1,6 +1,7 @@
 import Foundation
 import Html
 import HttpPipeline
+import Models
 import Prelude
 import Syndication
 import View
