@@ -34,6 +34,7 @@ let package = Package(
       dependencies: [
         "Either",
         "GitHub",
+        "Models",
         "PostgreSQL",
         "Prelude",
         "Stripe",
@@ -77,6 +78,9 @@ let package = Package(
     .target(
       name: "Models",
       dependencies: [
+        "GitHub",
+        "PointFreePrelude",
+        "Stripe",
         "Tagged",
         ]
     ),
