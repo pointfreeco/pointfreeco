@@ -7,6 +7,7 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+@testable import Stripe
 import XCTest
 
 class PrivateRssTests: TestCase {

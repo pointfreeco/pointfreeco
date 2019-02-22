@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
 import Prelude
+import Stripe
 import Styleguide
 import Tuple
 import View
@@ -100,10 +101,10 @@ private let updatePaymentInfoRowView = View<PricingFormStyle> { formStyle in
       div([
         h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),
         form(
-          [action(path(to: .account(.paymentInfo(.update(nil))))), id(Stripe.html.formId), method(.post)],
-          Stripe.html.cardInput(couponId: nil, formStyle: formStyle)
-            <> Stripe.html.errors
-            <> Stripe.html.scripts
+          [action(path(to: .account(.paymentInfo(.update(nil))))), id(StripeHtml.formId), method(.post)],
+          StripeHtml.cardInput(couponId: nil, formStyle: formStyle)
+            <> StripeHtml.errors
+            <> StripeHtml.scripts
             <> [
               button(
                 [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],

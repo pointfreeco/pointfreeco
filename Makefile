@@ -268,6 +268,7 @@ sourcery-routes:
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \
 	@testable import PointFreeTests; \
+	@testable import StripeTests; \
 	@testable import StyleguideTests; \
 	@testable import SyndicationTests;
 

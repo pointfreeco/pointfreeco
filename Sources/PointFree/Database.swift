@@ -4,6 +4,7 @@ import GitHub
 import PointFreePrelude
 import Prelude
 import PostgreSQL
+import Stripe
 
 public struct Database {
   var addUserIdToSubscriptionId: (User.Id, Subscription.Id) -> EitherIO<Error, Prelude.Unit>
@@ -105,11 +106,11 @@ public struct Database {
   public struct FeedRequestEvent: Decodable, Equatable {
     public typealias Id = Tagged<FeedRequestEvent, UUID>
 
-    public private(set) var id: Id
-    public private(set) var type: FeedType
-    public private(set) var userAgent: String
-    public private(set) var userId: User.Id
-    public private(set) var updatedAt: Date
+    public var id: Id
+    public var type: FeedType
+    public var userAgent: String
+    public var userId: User.Id
+    public var updatedAt: Date
 
     public enum CodingKeys: String, CodingKey {
       case id
@@ -125,15 +126,15 @@ public struct Database {
   }
 
   public struct User: Decodable, Equatable {
-    public internal(set) var email: EmailAddress
-    public internal(set) var episodeCreditCount: Int
-    public internal(set) var gitHubUserId: GitHub.User.Id
-    public internal(set) var gitHubAccessToken: String
-    public internal(set) var id: Id
-    public internal(set) var isAdmin: Bool
-    public internal(set) var name: String?
-    public private(set) var rssSalt: RssSalt
-    public private(set) var subscriptionId: Subscription.Id?
+    public var email: EmailAddress
+    public var episodeCreditCount: Int
+    public var gitHubUserId: GitHub.User.Id
+    public var gitHubAccessToken: String
+    public var id: Id
+    public var isAdmin: Bool
+    public var name: String?
+    public var rssSalt: RssSalt
+    public var subscriptionId: Subscription.Id?
 
     public typealias Id = Tagged<User, UUID>
     public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
@@ -156,10 +157,10 @@ public struct Database {
   }
 
   public struct Subscription: Decodable {
-    internal(set) var id: Id
-    internal(set) var stripeSubscriptionId: Stripe.Subscription.Id
-    internal(set) var stripeSubscriptionStatus: Stripe.Subscription.Status
-    internal(set) var userId: User.Id
+    public var id: Id
+    public var stripeSubscriptionId: Stripe.Subscription.Id
+    public var stripeSubscriptionStatus: Stripe.Subscription.Status
+    public var userId: User.Id
 
     public typealias Id = Tagged<Subscription, UUID>
 
@@ -172,10 +173,10 @@ public struct Database {
   }
 
   public struct TeamInvite: Decodable {
-    internal(set) var createdAt: Date
-    internal(set) var email: EmailAddress
-    internal(set) var id: Id
-    internal(set) var inviterUserId: User.Id
+    public var createdAt: Date
+    public var email: EmailAddress
+    public var id: Id
+    public var inviterUserId: User.Id
 
     public typealias Id = Tagged<TeamInvite, UUID>
 
