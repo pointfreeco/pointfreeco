@@ -196,7 +196,7 @@ This talk explains a nice metaphor to understand how `flatMap` unlocks stateless
     title: "Railway Oriented Programming — error handling in functional languages"
   )
 
-  public static let randomnUnification = Episode.Reference(
+  public static let randomUnification = Episode.Reference(
     author: "Alejandro Alonso",
     blurb: """
 This Swift Evolution proposal to create a unified random API, and a secure random API for all platforms, was accepted and implemented in Swift 4.2.
