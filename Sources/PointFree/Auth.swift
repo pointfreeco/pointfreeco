@@ -6,6 +6,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -25,7 +26,7 @@ private let missingGitHubAuthCodeMiddleware: Middleware<StatusLineOpen, Response
     >=> respond(text: "GitHub code wasn't found :(")
 
 /// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, String?>, Data> =
+let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, String?>, Data> =
   requireLoggedOutUser
     <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: get1($0.data))) }
 
@@ -41,7 +42,7 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 }
 
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
-  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+  -> IO<Conn<StatusLineOpen, T2<User?, A>>> {
 
     let user = conn.request.session.userId
       .flatMap {
@@ -56,7 +57,7 @@ public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
 
 public func requireLoggedOutUser<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, A>, Data> {
 
   return { conn in
     return conn.map(const(conn.data.second))
@@ -69,8 +70,8 @@ public func requireLoggedOutUser<A>(
 }
 
 public func currentSubscriptionMiddleware<A, I>(
-  _ conn: Conn<I, T2<Database.User?, A>>
-  ) -> IO<Conn<I, T3<Database.Subscription?, Database.User?, A>>> {
+  _ conn: Conn<I, T2<User?, A>>
+  ) -> IO<Conn<I, T3<Models.Subscription?, User?, A>>> {
 
   let user = conn.data.first
 
@@ -94,21 +95,21 @@ public func currentSubscriptionMiddleware<A, I>(
     .map { conn.map(const($0 .*. conn.data)) }
 }
 
-public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Database.User.Id, A>>)
-  -> IO<Conn<StatusLineOpen, T2<Database.User?, A>>> {
+public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<User.Id, A>>)
+  -> IO<Conn<StatusLineOpen, T2<User?, A>>> {
 
     return Current.database.fetchUserById(get1(conn.data))
       .run
       .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
+private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, User> {
 
   return Current.database.fetchUserByGitHub(env.gitHubUser.id)
     .flatMap { user in user.map(pure) ?? registerUser(env: env) }
 }
 
-private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.User> {
+private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, User> {
 
   return Current.gitHub.fetchEmails(env.accessToken)
     .map { emails in emails.first(where: { $0.primary }) }
@@ -118,7 +119,7 @@ private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Database.
       Current.database.registerUser(env, email.email)
         .mapExcept(requireSome)
         .flatMap { user in
-          EitherIO(run: IO { () -> Either<Error, Database.User> in
+          EitherIO(run: IO { () -> Either<Error, User> in
 
             // Fire-and-forget notify user that they signed up
             parallel(
@@ -202,7 +203,7 @@ private func requireAccessToken<A>(
     }
 }
 
-private func refreshStripeSubscription(for user: Database.User) -> EitherIO<Error, Prelude.Unit> {
+private func refreshStripeSubscription(for user: User) -> EitherIO<Error, Prelude.Unit> {
   guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 
   return Current.database.fetchSubscriptionById(subscriptionId)

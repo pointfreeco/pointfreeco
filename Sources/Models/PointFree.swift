@@ -92,7 +92,7 @@ public struct User: Decodable, Equatable {
     case subscriptionId = "subscription_id"
   }
 
-  var displayName: String {
+  public var displayName: String {
     return name ?? email.rawValue
   }
 }

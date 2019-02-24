@@ -17,7 +17,7 @@ let indexFreeEpisodeEmailMiddleware =
     <| writeStatus(.ok)
     >=> respond(freeEpisodeView.contramap(lower))
 
-private let freeEpisodeView = View<Database.User> { _ in
+private let freeEpisodeView = View<User> { _ in
   [
     h2(["Send free episode email"]),
 
@@ -42,7 +42,7 @@ private let freeEpisodeEmailRowView = View<Episode> { ep in
 }
 
 let sendFreeEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Episode.Id>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Episode.Id>, Data> =
   requireAdmin
     <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
     <| sendFreeEpisodeEmails
@@ -63,7 +63,7 @@ private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Pr
     .map { _ in conn.map(const(unit)) }
 }
 
-private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [Database.User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
+private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -> EitherIO<Prelude.Unit, Prelude.Unit> {
 
   // A personalized email to send to each user.
   let freeEpisodeEmails = users.map { user in

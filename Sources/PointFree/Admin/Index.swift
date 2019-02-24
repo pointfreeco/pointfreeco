@@ -18,9 +18,9 @@ public let adminEmails: [EmailAddress] = [
 ]
 
 func requireAdmin<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User?, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, A>, Data> {
 
     return filterMap(require1 >>> pure, or: loginAndRedirect)
       <<< filter(get1 >>> ^\.isAdmin, or: redirect(to: .home))
@@ -32,7 +32,7 @@ let adminIndex =
     <| writeStatus(.ok)
     >=> respond(adminIndexView.contramap(lower))
 
-private let adminIndexView = View<Database.User> { currentUser in
+private let adminIndexView = View<User> { currentUser in
   ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),

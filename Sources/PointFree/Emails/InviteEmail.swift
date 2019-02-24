@@ -1,6 +1,7 @@
 import Css
 import Html
 import HtmlCssSupport
+import Models
 import Prelude
 import Styleguide
 import View
@@ -17,7 +18,7 @@ let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView)
     )
 }
 
-private let teamInviteEmailBodyView = View<(Database.User, Database.TeamInvite)> { inviter, invite in
+private let teamInviteEmailBodyView = View<(User, TeamInvite)> { inviter, invite in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -56,7 +57,7 @@ let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView)
     )
 }
 
-private let inviteeAcceptedEmailBodyView = View<(Database.User, Database.User)> { inviter, invitee in
+private let inviteeAcceptedEmailBodyView = View<(User, User)> { inviter, invitee in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

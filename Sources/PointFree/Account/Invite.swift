@@ -33,7 +33,7 @@ let showInviteMiddleware =
 
 private let genericInviteError = "You need to be the inviter to do that!"
 
-let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
+let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
   requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filter(
@@ -46,7 +46,7 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
-let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
+let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< requireTeamInvite
     <<< filter(
@@ -65,7 +65,7 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
       )
 }
 
-let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.TeamInvite.Id, Database.User?>, Data> =
+let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
   redirectCurrentSubscribers
     <<< requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
@@ -122,7 +122,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Dat
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, Database.User>>) in
+    <| { (conn: Conn<StatusLineOpen, Tuple2<EmailAddress, User>>) in
 
       let (email, inviter) = lower(conn.data)
 
@@ -146,7 +146,7 @@ let sendInviteMiddleware =
       }
 }
 
-let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> { teamInvite, inviter, currentUser in
+let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, currentUser in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
@@ -159,7 +159,7 @@ let showInviteView = View<(Database.TeamInvite, Database.User, Database.User?)> 
     ])
 }
 
-private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)> { invite, inviter in
+private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
   gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
@@ -187,7 +187,7 @@ private let showInviteLoggedOutView = View<(Database.TeamInvite, Database.User)>
     ])
 }
 
-private let showInviteLoggedInView = View<(Database.User, Database.TeamInvite, Database.User)> { currentUser, teamInvite, inviter in
+private let showInviteLoggedInView = View<(User, TeamInvite, User)> { currentUser, teamInvite, inviter in
   gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
@@ -243,8 +243,8 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
 }
 
 private func requireTeamInvite<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite, A>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.TeamInvite.Id, A>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite, A>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite.Id, A>, Data> {
 
   return { conn in
     Current.database.fetchTeamInvite(get1(conn.data))
@@ -275,7 +275,7 @@ private func requireTeamInvite<A>(
 }
 
 private func sendInviteEmail(
-  invite: Database.TeamInvite, inviter: Database.User
+  invite: TeamInvite, inviter: User
   ) ->  EitherIO<Error, Mailgun.SendEmailResponse> {
 
   return sendEmail(
@@ -285,7 +285,7 @@ private func sendInviteEmail(
   )
 }
 
-private func validateIsNot(currentUser: Database.User) -> (Database.User) -> EitherIO<Error, Database.User> {
+private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User> {
   return { user in
     user.id == currentUser.id
       ? lift(.left(unit))
@@ -304,8 +304,8 @@ private func validateActiveStripeSubscription(
 }
 
 private func redirectCurrentSubscribers<A, B>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<A, Database.User?, B>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<A, Database.User?, B>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<A, User?, B>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<A, User?, B>, Data> {
 
   return { conn in
     guard
@@ -338,17 +338,17 @@ private func redirectCurrentSubscribers<A, B>(
   }
 }
 
-private func validateCurrentUserIsInviter<A>(_ data: T3<Database.TeamInvite, Database.User, A>) -> Bool {
+private func validateCurrentUserIsInviter<A>(_ data: T3<TeamInvite, User, A>) -> Bool {
   let (teamInvite, currentUser) = (get1(data), get2(data))
   return currentUser.id == teamInvite.inviterUserId
 }
 
-private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, Database.User, A>) -> Bool {
+private func validateEmailDoesNotBelongToInviter<A>(_ data: T3<EmailAddress, User, A>) -> Bool {
   let (email, inviter) = (get1(data), get2(data))
   return email.rawValue.lowercased() != inviter.email.rawValue.lowercased()
 }
 
-private func fetchTeamInviter<A>(_ data: T2<Database.TeamInvite, A>) -> IO<T3<Database.TeamInvite, Database.User, A>?> {
+private func fetchTeamInviter<A>(_ data: T2<TeamInvite, A>) -> IO<T3<TeamInvite, User, A>?> {
 
   return Current.database.fetchUserById(get1(data).inviterUserId)
     .mapExcept(requireSome)

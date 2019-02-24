@@ -8,32 +8,32 @@ import PostgreSQL
 import Stripe
 
 public struct Client {
-  var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  var fetchAdmins: () -> EitherIO<Error, [Models.User]>
-  var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
-  var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
-  var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
-  var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
-  var fetchSubscriptionByOwnerId: (Models.User.Id) -> EitherIO<Error, Models.Subscription?>
-  var fetchSubscriptionTeammatesByOwnerId: (Models.User.Id) -> EitherIO<Error, [Models.User]>
-  var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
-  var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
-  var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, Models.User?>
-  var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
-  var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
-  var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
-  var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
-  var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
+  public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
+  public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
+  public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
+  public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
+  public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
+  public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
+  public var fetchSubscriptionByOwnerId: (Models.User.Id) -> EitherIO<Error, Models.Subscription?>
+  public var fetchSubscriptionTeammatesByOwnerId: (Models.User.Id) -> EitherIO<Error, [Models.User]>
+  public var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
+  public var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
+  public var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
+  public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
+  public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
+  public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
-  var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
-  var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
-  var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
-  var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
+  public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
+  public var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
 }
 
 extension Client {

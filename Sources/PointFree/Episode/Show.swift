@@ -53,7 +53,7 @@ let useCreditResponse =
     <| applyCreditMiddleware
 
 private func applyCreditMiddleware<Z>(
-  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, Database.User, Z>>
+  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (episode, user) = (get2(conn.data), get3(conn.data))
@@ -92,8 +92,8 @@ private func applyCreditMiddleware<Z>(
 }
 
 private func validateCreditRequest<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, Database.User, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, User, Z>, Data> {
 
   return { conn in
     let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -119,9 +119,9 @@ private func validateCreditRequest<Z>(
 }
 
 private func userEpisodePermission<I, Z>(
-  _ conn: Conn<I, T4<Episode, Database.User?, SubscriberState, Z>>
+  _ conn: Conn<I, T4<Episode, User?, SubscriberState, Z>>
   )
-  -> IO<Conn<I, T5<EpisodePermission, Episode, Database.User?, SubscriberState, Z>>> {
+  -> IO<Conn<I, T5<EpisodePermission, Episode, User?, SubscriberState, Z>>> {
 
     let (episode, currentUser, subscriberState) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
@@ -156,7 +156,7 @@ private func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private let episodeView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
+private let episodeView = View<(EpisodePermission, User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode in
 
   [
@@ -367,7 +367,7 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private let leftColumnView = View<(EpisodePermission, Database.User?, SubscriberState, Episode)> {
+private let leftColumnView = View<(EpisodePermission, User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode -> Node in
 
   let subscribeNodes = isSubscribeBannerVisible(for: permission)
@@ -493,7 +493,7 @@ private let signUpBlurb = View<(EpisodePermission, Episode)> { permission, episo
   ]
 }
 
-private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> { permission, user, episode -> [Node] in
+private let subscribeView = View<(EpisodePermission, User?, Episode)> { permission, user, episode -> [Node] in
   [
     div(
       [
@@ -530,7 +530,7 @@ private let subscribeView = View<(EpisodePermission, Database.User?, Episode)> {
   ]
 }
 
-private let loginLink = View<(Database.User?, Episode)> { user, ep -> [Node] in
+private let loginLink = View<(User?, Episode)> { user, ep -> [Node] in
   guard user == nil else { return [] }
 
   return [
@@ -965,7 +965,7 @@ private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
     )
 }
 
-private let _episodeNotFoundView = View<(Either<String, Int>, Database.User?, SubscriberState, Route?)> { _, _, _, _ in
+private let _episodeNotFoundView = View<(Either<String, Int>, User?, SubscriberState, Route?)> { _, _, _, _ in
 
   gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
@@ -1074,7 +1074,7 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
 }
 
 private enum EpisodePermission: Equatable {
-  case loggedIn(user: Database.User, subscriptionPermission: SubscriberPermission)
+  case loggedIn(user: User, subscriptionPermission: SubscriberPermission)
   case loggedOut(isEpisodeSubscriberOnly: Bool)
 
   enum SubscriberPermission: Equatable {

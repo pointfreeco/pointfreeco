@@ -1,5 +1,6 @@
 import Html
 import HtmlCssSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -18,7 +19,7 @@ let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
     )
 }
 
-private let confirmEmailChangeEmailBody = View<(Database.User, EmailAddress)> { user, newEmailAddress in
+private let confirmEmailChangeEmailBody = View<(User, EmailAddress)> { user, newEmailAddress in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
