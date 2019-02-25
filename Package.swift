@@ -171,6 +171,7 @@ let package = Package(
       name: "Stripe",
       dependencies: [
         "Either",
+        "Logger",
         "Optics",
         "PointFreePrelude",
         "Prelude",

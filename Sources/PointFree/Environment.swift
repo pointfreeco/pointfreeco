@@ -22,6 +22,6 @@ public struct Environment {
   public var logger = Logger()
   public var mailgun = Mailgun.live
   public var renderHtml: ([Node]) -> String = Html.render
-  public var stripe = Stripe.Client(secretKey: "")
+  public var stripe = Stripe.Client(secretKey: "", logger: nil)
   public var uuid: () -> UUID = UUID.init
 }

@@ -17,7 +17,7 @@ public struct Client {
 }
 
 extension Client {
-  public init(clientId: String, clientSecret: String, logger: Logger? = nil) {
+  public init(clientId: String, clientSecret: String, logger: Logger?) {
     self.init(
       fetchAuthToken: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret) >>> runGitHub(logger),
       fetchEmails: fetchGitHubEmails >>> runGitHub(logger),
