@@ -61,6 +61,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     logger: Current.logger
   )
   Current.stripe = .init(
+    logger: Current.logger,
     secretKey: Current.envVars.stripe.secretKey
   )
 

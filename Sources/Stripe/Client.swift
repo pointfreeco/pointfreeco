@@ -1,5 +1,6 @@
 import Either
 import Foundation
+import Logger
 import Optics
 import Prelude
 import PointFreePrelude
@@ -26,23 +27,23 @@ public struct Client {
 }
 
 extension Client {
-  public init(secretKey: String) {
+  public init(logger: Logger?, secretKey: String) {
     self.init(
-      cancelSubscription: Stripe.cancelSubscription >>> runStripe(secretKey),
-      createCustomer: { Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3) |> runStripe(secretKey) },
-      createSubscription: { Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3) |> runStripe(secretKey) },
-      fetchCoupon: Stripe.fetchCoupon >>> runStripe(secretKey),
-      fetchCustomer: Stripe.fetchCustomer >>> runStripe(secretKey),
-      fetchInvoice: Stripe.fetchInvoice >>> runStripe(secretKey),
-      fetchInvoices: Stripe.fetchInvoices >>> runStripe(secretKey),
-      fetchPlans: { Stripe.fetchPlans() |> runStripe(secretKey) },
-      fetchPlan: Stripe.fetchPlan >>> runStripe(secretKey),
-      fetchSubscription: Stripe.fetchSubscription >>> runStripe(secretKey),
-      fetchUpcomingInvoice: Stripe.fetchUpcomingInvoice >>> runStripe(secretKey),
-      invoiceCustomer: Stripe.invoiceCustomer >>> runStripe(secretKey),
-      updateCustomer: { Stripe.updateCustomer(id: $0, token: $1) |> runStripe(secretKey) },
-      updateCustomerExtraInvoiceInfo: { Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1) |> runStripe(secretKey) },
-      updateSubscription: { Stripe.updateSubscription($0, $1, $2, $3) |> runStripe(secretKey) },
+      cancelSubscription: Stripe.cancelSubscription >>> runStripe(secretKey, logger),
+      createCustomer: { Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3) |> runStripe(secretKey, logger) },
+      createSubscription: { Stripe.createSubscription(customer: $0, plan: $1, quantity: $2, coupon: $3) |> runStripe(secretKey, logger) },
+      fetchCoupon: Stripe.fetchCoupon >>> runStripe(secretKey, logger),
+      fetchCustomer: Stripe.fetchCustomer >>> runStripe(secretKey, logger),
+      fetchInvoice: Stripe.fetchInvoice >>> runStripe(secretKey, logger),
+      fetchInvoices: Stripe.fetchInvoices >>> runStripe(secretKey, logger),
+      fetchPlans: { Stripe.fetchPlans() |> runStripe(secretKey, logger) },
+      fetchPlan: Stripe.fetchPlan >>> runStripe(secretKey, logger),
+      fetchSubscription: Stripe.fetchSubscription >>> runStripe(secretKey, logger),
+      fetchUpcomingInvoice: Stripe.fetchUpcomingInvoice >>> runStripe(secretKey, logger),
+      invoiceCustomer: Stripe.invoiceCustomer >>> runStripe(secretKey, logger),
+      updateCustomer: { Stripe.updateCustomer(id: $0, token: $1) |> runStripe(secretKey, logger) },
+      updateCustomerExtraInvoiceInfo: { Stripe.updateCustomer(id: $0, extraInvoiceInfo: $1) |> runStripe(secretKey, logger) },
+      updateSubscription: { Stripe.updateSubscription($0, $1, $2, $3) |> runStripe(secretKey, logger) },
       js: "https://js.stripe.com/v3/"
     )
   }
@@ -195,7 +196,7 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
   )
 }
 
-private func runStripe<A>(_ secretKey: String) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+private func runStripe<A>(_ secretKey: String, _ logger: Logger?) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
   return { stripeRequest in
     guard
       let stripeRequest = stripeRequest?.map(attachBasicAuth(username: secretKey))
@@ -203,7 +204,7 @@ private func runStripe<A>(_ secretKey: String) -> (DecodableRequest<A>?) -> Eith
 
     let task: EitherIO<Error, A> = pure(stripeRequest.rawValue)
       .flatMap {
-        dataTask(with: $0)
+        dataTask(with: $0, logger: logger)
           .map(first)
           .flatMap { data in
             .wrap {

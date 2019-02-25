@@ -46,7 +46,7 @@ private let sessionConfig = URLSessionConfiguration.default
 
 public func dataTask(
   with request: URLRequest,
-  logger: Logger? = nil
+  logger: Logger?
   )
   -> EitherIO<Error, (Data, URLResponse)> {
   return .init(
@@ -54,7 +54,7 @@ public func dataTask(
 
       let startTime = Date().timeIntervalSince1970
       let uuid = UUID().uuidString
-      logger?.debug("[Data Task] \(uuid) \(request.httpMethod ?? "UNKNOWN")")
+      logger?.debug("[Data Task] \(uuid) \(request.url?.absoluteString ?? "nil") \(request.httpMethod ?? "UNKNOWN")")
 
       let session = URLSession(configuration: sessionConfig)
       session
@@ -115,7 +115,7 @@ public typealias DecodableRequest<A> = Tagged<A, URLRequest> where A: Decodable
 public func jsonDataTask<A>(
   with request: URLRequest,
   decoder: JSONDecoder? = nil,
-  logger: Logger? = nil
+  logger: Logger?
   )
   -> EitherIO<Error, A>
   where A: Decodable {
