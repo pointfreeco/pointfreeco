@@ -27,7 +27,7 @@ public struct Client {
 }
 
 extension Client {
-  public init(secretKey: String, logger: Logger) {
+  public init(logger: Logger?, secretKey: String) {
     self.init(
       cancelSubscription: Stripe.cancelSubscription >>> runStripe(secretKey, logger),
       createCustomer: { Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3) |> runStripe(secretKey, logger) },
