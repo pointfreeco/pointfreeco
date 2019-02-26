@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import HttpPipeline
+import Models
 import Optics
 import Prelude
 import Stripe
@@ -39,7 +40,7 @@ let subscribeMiddleware =
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
     <| subscribe
 
-private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, Database.User>>)
+private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscribeData, user) = conn.data

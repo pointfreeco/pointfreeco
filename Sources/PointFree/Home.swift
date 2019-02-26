@@ -12,12 +12,12 @@ import Tuple
 import UrlFormEncoding
 import View
 
-let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
+let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: homeView,
-      layoutData: { (currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
+      layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -32,7 +32,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.Us
     }
 )
 
-let homeView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
+let homeView = View<(User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
 
   let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
 

@@ -6,6 +6,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Prelude
 import Styleguide
 import Tuple
@@ -13,7 +14,7 @@ import View
 
 private let title = "Privacy Policy"
 
-let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
+let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(

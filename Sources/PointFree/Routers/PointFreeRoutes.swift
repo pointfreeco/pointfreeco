@@ -20,7 +20,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case discounts(code: Stripe.Coupon.Id)
   case episode(Either<String, Int>)
   case episodes
-  case expressUnsubscribe(userId: Database.User.Id, newsletter: Database.EmailSetting.Newsletter)
+  case expressUnsubscribe(userId: User.Id, newsletter: EmailSetting.Newsletter)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
@@ -49,7 +49,7 @@ public enum Route: DerivePartialIsos, Equatable {
     case newEpisodeEmail(NewEpisodeEmail)
 
     public enum EpisodeCredit: DerivePartialIsos, Equatable {
-      case add(userId: Database.User.Id?, episodeSequence: Int?)
+      case add(userId: User.Id?, episodeSequence: Int?)
       case show
     }
 
@@ -75,23 +75,23 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 
   public enum Invite: DerivePartialIsos, Equatable {
-    case accept(Database.TeamInvite.Id)
-    case resend(Database.TeamInvite.Id)
-    case revoke(Database.TeamInvite.Id)
+    case accept(TeamInvite.Id)
+    case resend(TeamInvite.Id)
+    case revoke(TeamInvite.Id)
     case send(EmailAddress?)
-    case show(Database.TeamInvite.Id)
+    case show(TeamInvite.Id)
   }
 
   public enum Team: DerivePartialIsos, Equatable {
     case leave
-    case remove(Database.User.Id)
+    case remove(User.Id)
   }
 
   public enum Webhooks: DerivePartialIsos, Equatable {
-    case stripe(Stripe)
+    case stripe(_Stripe)
 
-    public enum Stripe: DerivePartialIsos, Equatable {
-      case event(Event<Either<Invoice, Subscription>>)
+    public enum _Stripe: DerivePartialIsos, Equatable {
+      case event(Event<Either<Invoice, Stripe.Subscription>>)
       case `fallthrough`
     }
   }

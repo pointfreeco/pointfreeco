@@ -4,12 +4,13 @@ import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
+import Models
 import Optics
 import Styleguide
 import Prelude
 import View
 
-let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
+let minimalNavView = View<(NavStyle.MinimalStyle, User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   gridRow([`class`([newNavBarClass(for: style)])], [
     gridColumn(sizes: [:], [
       div([`class`([Class.hide(.desktop)])], [
@@ -47,7 +48,7 @@ let minimalNavView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberStat
     ])
 }
 
-private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, Database.User, SubscriberState)> { style, currentUser, subscriberState in
+private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, User, SubscriberState)> { style, currentUser, subscriberState in
   navItems(
     [
       blogLinkView,

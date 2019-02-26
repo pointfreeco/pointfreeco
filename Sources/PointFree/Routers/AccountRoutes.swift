@@ -3,6 +3,7 @@ import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -14,11 +15,11 @@ public let accountRouter = accountRouters.reduce(.empty, <|>)
 
 extension Route {
   public enum Account: DerivePartialIsos, Equatable {
-    case confirmEmailChange(userId: Database.User.Id, emailAddress: EmailAddress)
+    case confirmEmailChange(userId: User.Id, emailAddress: EmailAddress)
     case index
     case invoices(Invoices)
     case paymentInfo(PaymentInfo)
-    case rss(userId: Database.User.Id, rssSalt: Database.User.RssSalt)
+    case rss(userId: User.Id, rssSalt: User.RssSalt)
     case subscription(Subscription)
     case update(ProfileData?)
 
@@ -96,7 +97,7 @@ private let accountRouters: [Router<Route.Account>] = [
 
 ]
 
-func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Database.Subscription?, Database.User?, SubscriberState, Route.Account>>)
+func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?, SubscriberState, Route.Account>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (_, user, subscriberState, account) = lower(conn.data)
