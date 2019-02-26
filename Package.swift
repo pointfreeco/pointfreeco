@@ -34,6 +34,7 @@ let package = Package(
       dependencies: [
         "Either",
         "GitHub",
+        "Logger",
         "Models",
         "PostgreSQL",
         "Prelude",
