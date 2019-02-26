@@ -28,26 +28,26 @@ import WebKit
 extension Environment {
   public static let mock = Environment(
     assets: .mock,
-    blogPosts: unzurry([.mock]),
+    blogPosts: { [.mock] },
     cookieTransform: .plaintext,
-    database: .mock,
+    database: .some(.mock),
     date: unzurry(.mock),
     envVars: .mock,
     episodes: unzurry(.mock),
     features: .allFeatures,
-    gitHub: .mock,
+    gitHub: .some(.mock),
     logger: .mock,
     mailgun: .mock,
     renderHtml: Html.render,
-    stripe: .mock,
-    uuid: { .mock }
+    stripe: .some(.mock),
+    uuid: unzurry(.mock)
   )
 
   public static let teamYearly = mock
-    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([Database.User.mock]))
-    |> (\Environment.database.fetchTeamInvites) .~ const(pure([Database.TeamInvite.mock]))
-    |> (\Environment.stripe.fetchSubscription) .~ const(pure(Stripe.Subscription.teamYearly))
-    |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(Stripe.Invoice.upcoming |> \.amountDue .~ 640_00))
+    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
+    |> (\Environment.database.fetchTeamInvites) .~ const(pure([.mock]))
+    |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
+    |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(.upcoming |> \.amountDue .~ 640_00))
 
   public static let individualMonthly = mock
     |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
@@ -138,7 +138,7 @@ extension Session {
   public static let loggedOut = empty
 
   public static let loggedIn = loggedOut
-    |> \.userId .~ Database.User.mock.id
+    |> \.userId .~ Models.User.mock.id
 }
 
 extension UUID {
