@@ -134,8 +134,7 @@ final class SubscribeTests: TestCase {
     update(
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.database .~ .mock
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
     let conn = connection(
@@ -144,9 +143,7 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    #if !os(Linux)
     assertSnapshot(matching: conn, as: .conn, named: "too_high")
-    #endif
 
     let conn2 = connection(
       from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
@@ -154,9 +151,7 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    #if !os(Linux)
     assertSnapshot(matching: conn2, as: .conn, named: "too_low")
-    #endif
   }
 
   func testHappyPath() {
