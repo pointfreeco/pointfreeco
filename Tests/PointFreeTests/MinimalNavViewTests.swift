@@ -1,5 +1,7 @@
 import Html
 import HtmlCssSupport
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreeTestSupport
@@ -40,7 +42,7 @@ class MinimalNavViewTests: TestCase {
   }
 }
 
-private let states: [(String, (NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?))] = [
+private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberState, Route?))] = [
   ("dark_logged-out_no-route", (.dark, nil, .nonSubscriber, nil)),
   ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricing(nil, expand: nil))),
   ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
@@ -52,7 +54,7 @@ private let states: [(String, (NavStyle.MinimalStyle, Database.User?, Subscriber
   ("light_logged-in_active-subscriber", (.light, .mock, .teammate(status: .active), nil)),
 ]
 
-private let testDocView = View<(NavStyle.MinimalStyle, Database.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
+private let testDocView = View<(NavStyle.MinimalStyle, Models.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   [
     doctype,
     html([

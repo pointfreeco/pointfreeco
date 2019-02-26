@@ -2,13 +2,14 @@ import ApplicativeRouterHttpPipelineSupport
 import Either
 import Foundation
 import HttpPipeline
+import Models
 import Optics
 import Prelude
 import Styleguide
 import Tuple
 
 func blogMiddleware(
-  conn: Conn<StatusLineOpen, Tuple4<Database.User?, SubscriberState, Route, Route.Blog>>
+  conn: Conn<StatusLineOpen, Tuple4<User?, SubscriberState, Route, Route.Blog>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (user, subscriberState, route, subRoute) = lower(conn.data)

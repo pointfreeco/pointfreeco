@@ -2,11 +2,12 @@ import Css
 import Foundation
 import Html
 import HtmlCssSupport
+import Models
 import Styleguide
 import Prelude
 import View
 
-let footerView: View<Database.User?> =
+let footerView: View<User?> =
   curry(footer)([`class`([footerClass])]) >>> pure
     <¢> footerInfoColumnsView
 
@@ -23,7 +24,7 @@ private let footerInfoColumnsView =
 
 private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
-private let linksColumnsView = View<Database.User?> { currentUser in
+private let linksColumnsView = View<User?> { currentUser in
   contentColumnView.map(linksColumn).view(currentUser)
     <> (currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [])
     <> moreColumnView.map(linksColumn).view(unit)
@@ -64,7 +65,7 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
     ])
 }
 
-private let contentColumnView = View<Database.User?> { currentUser -> Node in
+private let contentColumnView = View<User?> { currentUser -> Node in
 
   return div([
     h5([`class`([columnTitleClass])], ["Content"]),

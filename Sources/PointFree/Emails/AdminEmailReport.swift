@@ -5,12 +5,13 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import Prelude
 import Styleguide
 import View
 
-func adminEmailReport(_ type: String) -> View<([Database.User], Int)> {
+func adminEmailReport(_ type: String) -> View<([User], Int)> {
   return simpleEmailLayout(adminEmailReportContent)
     .contramap { erroredUsers, totalAttempted in
       SimpleEmailLayoutData(
@@ -24,7 +25,7 @@ func adminEmailReport(_ type: String) -> View<([Database.User], Int)> {
   }
 }
 
-let adminEmailReportContent = View<(String, [Database.User], Int)> { type, erroredUsers, totalAttempted in
+let adminEmailReportContent = View<(String, [User], Int)> { type, erroredUsers, totalAttempted in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

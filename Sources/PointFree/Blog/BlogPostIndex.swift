@@ -9,7 +9,7 @@ import Styleguide
 import Tuple
 import View
 
-let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
+let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -32,7 +32,7 @@ let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<Database.User?, Subscriber
     }
 )
 
-private let blogIndexView = View<(Database.User?, SubscriberState)> { currentUser, subscriberState -> Node in
+private let blogIndexView = View<(User?, SubscriberState)> { currentUser, subscriberState -> Node in
 
   let allPosts = Current.blogPosts()
     .sorted(by: their(^\.id, >))

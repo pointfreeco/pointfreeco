@@ -1,14 +1,15 @@
 import Either
 import Html
 import HttpPipeline
-@testable import Models
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-@testable import Stripe
+import Stripe
 import XCTest
 
 class PrivateRssTests: TestCase {
@@ -18,7 +19,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_Subscriber_Monthly() {
-    let user = Database.User.mock
+    let user = Models.User.mock
 
     update(
       &Current,
@@ -39,7 +40,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_Subscriber_Yearly() {
-    let user = Database.User.mock
+    let user = Models.User.mock
 
     update(
       &Current,
@@ -60,7 +61,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_NonSubscriber() {
-    let user = Database.User.nonSubscriber
+    let user = Models.User.nonSubscriber
 
     update(
       &Current,
@@ -80,7 +81,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_Authenticated_InActiveSubscriber() {
-    let user = Database.User.nonSubscriber
+    let user = Models.User.nonSubscriber
 
     update(
       &Current,
@@ -100,7 +101,7 @@ class PrivateRssTests: TestCase {
   }
 
   func testFeed_BadSalt() {
-    let user = Database.User.mock
+    let user = Models.User.mock
 
     update(
       &Current,

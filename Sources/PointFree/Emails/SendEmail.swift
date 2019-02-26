@@ -1,6 +1,7 @@
 import Either
 import Html
 import HtmlPlainTextPrint
+import Models
 import PointFreePrelude
 import Prelude
 
@@ -11,7 +12,7 @@ public func prepareEmail(
   from: EmailAddress = supportEmail,
   to: [EmailAddress],
   subject: String,
-  unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
+  unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = mgDomain
   )
@@ -69,7 +70,7 @@ public func sendEmail(
   from: EmailAddress = supportEmail,
   to: [EmailAddress],
   subject: String,
-  unsubscribeData: (Database.User.Id, Database.EmailSetting.Newsletter)? = nil,
+  unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = mgDomain
   )

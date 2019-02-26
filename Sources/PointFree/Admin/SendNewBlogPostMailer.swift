@@ -18,7 +18,7 @@ let showNewBlogPostEmailMiddleware =
     <| writeStatus(.ok)
     >=> respond(showNewBlogPostView.contramap(lower))
 
-private let showNewBlogPostView = View<Database.User> { _ in
+private let showNewBlogPostView = View<User> { _ in
   ul(
     Current.blogPosts()
       .sorted(by: their(^\.id, >))
@@ -75,7 +75,7 @@ public struct NewBlogPostFormData: Codable, Equatable {
 }
 
 let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple4<Database.User?, BlogPost, NewBlogPostFormData?, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple4<User?, BlogPost, NewBlogPostFormData?, Bool?>, Data> =
   requireAdmin
     <<< filterMap(
       require4 >>> pure,
@@ -90,7 +90,7 @@ func fetchBlogPost(forId id: BlogPost.Id) -> BlogPost? {
 }
 
 private func sendNewBlogPostEmails<I>(
-  _ conn: Conn<I, Tuple4<Database.User, BlogPost, NewBlogPostFormData?, Bool>>
+  _ conn: Conn<I, Tuple4<User, BlogPost, NewBlogPostFormData?, Bool>>
   ) -> IO<Conn<I, Prelude.Unit>> {
 
   let (_, post, optionalFormData, isTest) = lower(conn.data)
@@ -134,7 +134,7 @@ private func sendNewBlogPostEmails<I>(
 
 private func sendEmail(
   forNewBlogPost post: BlogPost,
-  toUsers users: [Database.User],
+  toUsers users: [User],
   subscriberAnnouncement: String,
   subscriberDeliver: Bool?,
   nonsubscriberAnnouncement: String,

@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -97,7 +98,7 @@ extension Pricing: Codable {
 
 private let couponError = "That coupon code is invalid or has expired."
 
-let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id, Route?>, Data> =
+let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Pricing, PricingFormStyle, Stripe.Coupon.Id, Route?>, Data> =
   redirectActiveSubscribers(user: get1)
     <<< filterMap(
       over4(fetchCoupon) >>> sequence4 >>> map(require4),
@@ -110,12 +111,12 @@ let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.
     <| map(over4(Optional.some)) >>> pure
     >=> basePricingResponse
 
-let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon.Id?, Route?>, Data> =
+let pricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Pricing, PricingFormStyle, Stripe.Coupon.Id?, Route?>, Data> =
   redirectActiveSubscribers(user: get1)
     <| map(over4(const(Stripe.Coupon?.none))) >>> pure
     >=> basePricingResponse
 
-let basePricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?>, Data> =
+let basePricingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -164,7 +165,7 @@ public enum PricingFormStyle {
   case full
 }
 
-let pricingOptionsView = View<(Database.User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?)> { currentUser, pricing, formStyle, coupon, route in
+let pricingOptionsView = View<(User?, Pricing, PricingFormStyle, Stripe.Coupon?, Route?)> { currentUser, pricing, formStyle, coupon, route in
 
   gridRow([`class`([pricingOptionsRowClass])], [
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
@@ -564,7 +565,7 @@ let extraSpinnerStyles =
     <> (input & .elem(.other("::-webkit-inner-spin-button"))) % opacity(1)
     <> (input & .elem(.other("::-webkit-outer-spin-button"))) % opacity(1)
 
-private let pricingFooterView = View<(Database.User?, PricingFormStyle, Stripe.Coupon.Id?, Route?)> { currentUser, formStyle, couponId, route in
+private let pricingFooterView = View<(User?, PricingFormStyle, Stripe.Coupon.Id?, Route?)> { currentUser, formStyle, couponId, route in
   gridRow([`class`([Class.pf.colors.bg.white])], [
     gridColumn(sizes: [.mobile: 12], [], [
       div(
@@ -718,7 +719,7 @@ private func tabStyles(
 }
 
 func redirectActiveSubscribers<A>(
-  user: @escaping (A) -> Database.User?
+  user: @escaping (A) -> User?
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {

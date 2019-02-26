@@ -1,13 +1,18 @@
-@testable import GitHub
+import Database
+import DatabaseTestSupport
+import GitHub
 import Either
 import HttpPipeline
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-@testable import Stripe
+import Stripe
+import StripeTestSupport
 import XCTest
 
 class InviteTests: TestCase {
@@ -19,21 +24,21 @@ class InviteTests: TestCase {
   func testShowInvite_LoggedOut() {
     update(&Current, \.database .~ .mock)
 
-    let showInvite = request(to: .invite(.show(Database.TeamInvite.mock.id)))
+    let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
-    let currentUser = Database.User.mock
+    let currentUser = Models.User.mock
       |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
-    let invite = Database.TeamInvite.mock
+    let invite = Models.TeamInvite.mock
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    let db = Database.mock
-      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
+    let db = Database.Client.mock
+      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
       |> \.fetchTeamInvite .~ const(pure(.some(invite)))
       |> \.fetchSubscriptionById .~ const(pure(nil))
 
@@ -46,14 +51,14 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedIn_Subscriber() {
-    let currentUser = Database.User.mock
+    let currentUser = User.mock
       |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
-    let invite = Database.TeamInvite.mock
+    let invite = TeamInvite.mock
       |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    let db = Database.mock
-      |> (\Database.fetchUserById) .~ const(pure(.some(currentUser)))
+    let db = Database.Client.mock
+      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
       |> \.fetchTeamInvite .~ const(pure(.some(invite)))
       |> \.fetchSubscriptionById .~ const(pure(.mock))
 

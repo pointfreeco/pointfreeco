@@ -4,6 +4,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import Prelude
 import Styleguide
@@ -52,7 +53,7 @@ struct SimplePageLayoutData<A> {
 
   private(set) var currentRoute: Route?
   private(set) var currentSubscriberState: SubscriberState
-  private(set) var currentUser: Database.User?
+  private(set) var currentUser: User?
   private(set) var data: A
   private(set) var description: String?
   private(set) var extraHead: [ChildOf<Tag.Head>]
@@ -68,7 +69,7 @@ struct SimplePageLayoutData<A> {
   init(
     currentRoute: Route? = nil,
     currentSubscriberState: SubscriberState = .nonSubscriber,
-    currentUser: Database.User?,
+    currentUser: User?,
     data: A,
     description: String? = "Point-Free is a video series exploring functional programming and Swift.",
     extraHead: [ChildOf<Tag.Head>] = [],

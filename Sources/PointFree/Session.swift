@@ -1,5 +1,6 @@
 import Foundation
 import HttpPipeline
+import Models
 import Optics
 import Prelude
 import Tuple
@@ -51,7 +52,7 @@ extension URLRequest {
 
 public struct Session: Codable, Equatable {
   public var flash: Flash?
-  public var userId: Database.User.Id?
+  public var userId: User.Id?
 
   public static let empty = Session(flash: nil, userId: nil)
 }

@@ -10,12 +10,12 @@ import Styleguide
 import Tuple
 import View
 
-let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, Database.User?, SubscriberState, Route?>, Data> =
+let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: blogPostShowView,
-      layoutData: { (post: BlogPost, currentUser: Database.User?, subscriberState: SubscriberState, currentRoute: Route?) in
+      layoutData: { (post: BlogPost, currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,

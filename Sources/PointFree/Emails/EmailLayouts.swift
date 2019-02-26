@@ -1,6 +1,7 @@
 import Css
 import Html
 import HtmlCssSupport
+import Models
 import Prelude
 import Styleguide
 import View
@@ -21,8 +22,8 @@ enum EmailLayoutTemplate {
 
 /// The data needed to use the simple email layout.
 struct SimpleEmailLayoutData<A> {
-  let user: Database.User?
-  let newsletter: Database.EmailSetting.Newsletter?
+  let user: User?
+  let newsletter: EmailSetting.Newsletter?
   let title: String
   /// Content of the hidden preheader tag at the top of the body. Many email clients will render this as a
   /// preview of the email in the inbox.

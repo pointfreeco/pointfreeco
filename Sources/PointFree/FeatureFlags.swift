@@ -1,3 +1,5 @@
+import Models
+
 public struct Feature: Equatable {
   public private(set) var isAdminEnabled: Bool
   public private(set) var isEnabled: Bool
@@ -11,7 +13,7 @@ extension Array where Element == Feature {
     .podcastRss
   ]
 
-  func hasAccess(to feature: Feature, for user: Database.User?) -> Bool {
+  func hasAccess(to feature: Feature, for user: User?) -> Bool {
     return self
       .first(where: { $0.name == feature.name })
       .map {

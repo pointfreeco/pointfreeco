@@ -1,3 +1,4 @@
+import Database
 import Models
 import Optics
 @testable import PointFree
@@ -11,23 +12,24 @@ open class TestCase: SnapshotTestCase {
     diffTool = "ksdiff"
 //    record = true
     Current = .mock
-      |> \.database .~ .live
-      |> \.envVars %~ { $0.assigningValuesFrom(ProcessInfo.processInfo.environment) }
+    Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
+    Current.database = .init(databaseUrl: Current.envVars.postgres.databaseUrl, logger: Current.logger)
 
-    _ = try! execute("DROP SCHEMA IF EXISTS public CASCADE")
-      .flatMap(const(execute("CREATE SCHEMA public")))
-      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO pointfreeco")))
-      .flatMap(const(execute("GRANT ALL ON SCHEMA public TO public")))
+    _ = try! Current.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
+      .flatMap(const(Current.database.execute("CREATE SCHEMA public", [])))
+      .flatMap(const(Current.database.execute("GRANT ALL ON SCHEMA public TO pointfreeco", [])))
+      .flatMap(const(Current.database.execute("GRANT ALL ON SCHEMA public TO public", [])))
       .flatMap(const(Current.database.migrate()))
-      .flatMap(const(execute("CREATE SEQUENCE test_uuids")))
-      .flatMap(const(execute(
+      .flatMap(const(Current.database.execute("CREATE SEQUENCE test_uuids", [])))
+      .flatMap(const(Current.database.execute(
         """
         CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
         BEGIN
           RETURN ('00000000-0000-0000-0000-'||LPAD(nextval('test_uuids')::text, 12, '0'))::uuid;
         END; $$
         LANGUAGE PLPGSQL;
-        """
+        """,
+        []
       )))
       .run
       .perform()

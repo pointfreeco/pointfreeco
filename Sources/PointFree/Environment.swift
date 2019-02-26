@@ -1,4 +1,4 @@
-import Css
+import Database
 import Foundation
 import GitHub
 import Html
@@ -13,15 +13,15 @@ public struct Environment {
   public var assets = Assets()
   public var blogPosts = allBlogPosts
   public var cookieTransform = CookieTransform.encrypted
-  public var database = Database.live
+  public var database: Database.Client!
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
   public var features = [Feature].allFeatures
-  public var gitHub = GitHub.Client(clientId: "", clientSecret: "", logger: nil)
+  public var gitHub: GitHub.Client!
   public var logger = Logger()
   public var mailgun = Mailgun.live
   public var renderHtml: ([Node]) -> String = Html.render
-  public var stripe = Stripe.Client(logger: nil, secretKey: "")
+  public var stripe: Stripe.Client!
   public var uuid: () -> UUID = UUID.init
 }

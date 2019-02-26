@@ -183,9 +183,9 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.User.Id
+            User.Id
           , 
-            Database.EmailSetting.Newsletter
+            EmailSetting.Newsletter
         ), B == Route {
 
           public static let expressUnsubscribe = parenthesize <| PartialIso(
@@ -376,7 +376,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.User.Id
+            User.Id
           , 
             EmailAddress
         ), B == Route.Account {
@@ -431,9 +431,9 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.User.Id
+            User.Id
           , 
-            Database.User.RssSalt
+            User.RssSalt
         ), B == Route.Account {
 
           public static let rss = parenthesize <| PartialIso(
@@ -656,7 +656,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.User.Id?
+            User.Id?
           , 
             Int?
         ), B == Route.Admin.EpisodeCredit {
@@ -826,7 +826,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.TeamInvite.Id
+            TeamInvite.Id
         ), B == Route.Invite {
 
           public static let accept = parenthesize <| PartialIso(
@@ -840,7 +840,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.TeamInvite.Id
+            TeamInvite.Id
         ), B == Route.Invite {
 
           public static let resend = parenthesize <| PartialIso(
@@ -854,7 +854,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.TeamInvite.Id
+            TeamInvite.Id
         ), B == Route.Invite {
 
           public static let revoke = parenthesize <| PartialIso(
@@ -882,7 +882,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.TeamInvite.Id
+            TeamInvite.Id
         ), B == Route.Invite {
 
           public static let show = parenthesize <| PartialIso(
@@ -907,7 +907,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Database.User.Id
+            User.Id
         ), B == Route.Team {
 
           public static let remove = parenthesize <| PartialIso(
@@ -921,7 +921,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Route.Webhooks.Stripe
+            Route.Webhooks._Stripe
         ), B == Route.Webhooks {
 
           public static let stripe = parenthesize <| PartialIso(
@@ -935,11 +935,11 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Event<Either<Invoice, Subscription>>
-        ), B == Route.Webhooks.Stripe {
+            Event<Either<Invoice, Stripe.Subscription>>
+        ), B == Route.Webhooks._Stripe {
 
           public static let event = parenthesize <| PartialIso(
-            apply: Route.Webhooks.Stripe.event,
+            apply: Route.Webhooks._Stripe.event,
             unapply: {
               guard case let .event(result) = $0 else { return nil }
               return .some(result)
@@ -948,8 +948,8 @@ import Stripe
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route.Webhooks.Stripe {
-        public static let `fallthrough` = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks.Stripe>(
+      extension PartialIso where A == Prelude.Unit, B == Route.Webhooks._Stripe {
+        public static let `fallthrough` = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks._Stripe>(
           apply: const(.some(.`fallthrough`)),
           unapply: {
             guard case .`fallthrough` = $0 else { return nil }

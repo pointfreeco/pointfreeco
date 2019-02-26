@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -101,13 +102,13 @@ We had some trouble loading your invoice! Please try again later.
 If the problem persists, please notify <support@pointfree.co>.
 """
 
-private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, Database.User, Stripe.Invoice>) -> Bool {
+private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, User, Stripe.Invoice>) -> Bool {
   return get1(data).customer.either(id, ^\.id) == get3(data).customer
 }
 
 // MARK: Views
 
-let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, Database.User)> { subscription, invoicesEnvelope, currentUser -> Node in
+let invoicesView = View<(Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, User)> { subscription, invoicesEnvelope, currentUser -> Node in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
@@ -163,7 +164,7 @@ private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.
   return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name ?? discount.coupon.id.rawValue))"
 }
 
-let invoiceView = View<(Stripe.Subscription, Database.User, Stripe.Invoice)> { subscription, currentUser, invoice -> Node in
+let invoiceView = View<(Stripe.Subscription, User, Stripe.Invoice)> { subscription, currentUser, invoice -> Node in
 
   let discountRow = invoice.discount.map { discount in
     gridRow([`class`([Class.padding([.mobile: [.topBottom: 1]])])], [

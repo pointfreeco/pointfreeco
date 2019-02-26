@@ -11,7 +11,7 @@ import Syndication
 import Tuple
 import View
 
-let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User.RssSalt>, Data> =
+let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data> =
 { fetchUser >=> $0 }
   <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
   <<< validateUserAndSalt
@@ -34,8 +34,8 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
 }
 
 private func validateActiveSubscriber<Z>(
-  data: T3<Database.Subscription?, Database.User, Z>
-  ) -> IO<T2<Database.User, Z>?> {
+  data: T3<Models.Subscription?, User, Z>
+  ) -> IO<T2<User, Z>?> {
 
   return IO {
     guard let subscription = get1(data) else { return nil }
@@ -48,8 +48,8 @@ private func validateActiveSubscriber<Z>(
 }
 
 private func validateUserAndSalt<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<Database.User, Database.User.RssSalt, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<User, User.RssSalt, Z>, Data> {
 
     return { conn in
       guard get1(conn.data).rssSalt == get2(conn.data) else {
@@ -61,7 +61,7 @@ private func validateUserAndSalt<Z>(
     }
 }
 
-private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, Database.User)>) -> IO<Conn<I, (Stripe.Subscription?, Database.User)>> {
+private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, User)>) -> IO<Conn<I, (Stripe.Subscription?, User)>> {
 
   return Current.database.createFeedRequestEvent(
     .privateEpisodesFeed,
@@ -74,9 +74,9 @@ private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, Database
 }
 
 private func fetchStripeSubscriptionForUser<A>(
-  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription?, Database.User, A>, Data>)
+  _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription?, User, A>, Data>)
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return { conn in
       conn.data.first.subscriptionId
@@ -92,14 +92,14 @@ private func fetchStripeSubscriptionForUser<A>(
     }
 }
 
-private let privateEpisodesFeedView = itunesRssFeedLayout <| View<(Stripe.Subscription?, Database.User)> { subscription, user -> Node in
+private let privateEpisodesFeedView = itunesRssFeedLayout <| View<(Stripe.Subscription?, User)> { subscription, user -> Node in
   node(
     rssChannel: privateRssChannel(user: user),
     items: items(forUser: user, subscription: subscription)
   )
 }
 
-func privateRssChannel(user: Database.User) -> RssChannel {
+func privateRssChannel(user: User) -> RssChannel {
   let description = """
 Point-Free is a video series about functional programming and the Swift programming language. Each episode
 covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
@@ -155,7 +155,7 @@ with anyone else.
 
 let nonYearlyMaxRssItems = 4
 
-private func items(forUser user: Database.User, subscription: Stripe.Subscription?) -> [RssItem] {
+private func items(forUser user: User, subscription: Stripe.Subscription?) -> [RssItem] {
   return Current
     .episodes()
     .filter { $0.sequence != 0 }
@@ -164,7 +164,7 @@ private func items(forUser user: Database.User, subscription: Stripe.Subscriptio
     .map { item(forUser: user, episode: $0) }
 }
 
-private func item(forUser user: Database.User, episode: Episode) -> RssItem {
+private func item(forUser user: User, episode: Episode) -> RssItem {
   return RssItem(
     description: episode.blurb,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
@@ -305,9 +305,9 @@ func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {
 }
 
 private func fetchUserSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription?, Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Models.Subscription?, User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return { conn in
       guard let subscriptionId = get1(conn.data).subscriptionId else {
