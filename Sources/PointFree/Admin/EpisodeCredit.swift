@@ -13,12 +13,12 @@ import Styleguide
 import Tuple
 import View
 
-let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<Database.User?>, Data> =
+let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
   requireAdmin
     <| writeStatus(.ok)
     >=> respond(showEpisodeCreditsView.contramap(const(unit)))
 
-let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, Database.User.Id?, Int?>, Data> =
+let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, User.Id?, Int?>, Data> =
   requireAdmin
     <<< filterMap(
       over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
@@ -31,7 +31,7 @@ let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tup
     <| creditUserMiddleware
 
 private func creditUserMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple3<Database.User, Database.User, Episode>>
+  _ conn: Conn<StatusLineOpen, Tuple3<User, User, Episode>>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
   let (user, episode) = (get2(conn.data), get3(conn.data))
@@ -46,7 +46,7 @@ private func creditUserMiddleware(
   )
 }
 
-private func fetchUser(id: Database.User.Id?) -> IO<Database.User?> {
+private func fetchUser(id: User.Id?) -> IO<User?> {
   guard let id = id else { return pure(nil) }
 
   return Current.database.fetchUserById(id)

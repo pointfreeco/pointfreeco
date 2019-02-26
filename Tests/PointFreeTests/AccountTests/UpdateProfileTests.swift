@@ -119,7 +119,7 @@ class UpdateProfileTests: TestCase {
           )
         )
       ),
-      session: .init(flash: nil, userId: Database.User.Id.init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+      session: .init(flash: nil, userId: .init(rawValue: UUID.init(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
     )
 
     let output = connection(from: update)

@@ -1,13 +1,18 @@
+import Database
+import DatabaseTestSupport
 import Either
 import Html
 import HttpPipeline
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
-@testable import Stripe
+import Stripe
+import StripeTestSupport
 #if !os(Linux)
 import WebKit
 #endif
@@ -62,9 +67,9 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_OwnerIsNotSubscriber() {
-    let currentUser = Database.User.nonSubscriber
-    let subscription = Database.Subscription.mock
-      |> (\Database.Subscription.userId) .~ currentUser.id
+    let currentUser = User.nonSubscriber
+    let subscription = Subscription.mock
+      |> \.userId .~ currentUser.id
 
     Current = .teamYearly
       |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
@@ -244,7 +249,7 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() {
-    let user = Database.User.mock
+    let user = User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
@@ -272,7 +277,7 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_1Chosen() {
-    let user = Database.User.mock
+    let user = User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 

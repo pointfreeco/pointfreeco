@@ -1,8 +1,12 @@
+import Database
+import DatabaseTestSupport
 import Either
-@testable import GitHub
+import GitHub
+import GitHubTestSupport
 import Html
 import HttpPipeline
-@testable import Models
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
@@ -17,11 +21,12 @@ import XCTest
 class EpisodePageTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record = true
   }
 
   func testEpisodePage() {
+    update(&Current, \.database .~ .mock)
+
     let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
 
     let conn = connection(from: episode)
@@ -42,6 +47,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePageSubscriber() {
+    update(&Current, \.database .~ .mock)
     let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
 
     let conn = connection(from: episode)
@@ -65,7 +71,11 @@ class EpisodePageTests: TestCase {
     let freeEpisode = Current.episodes()[0]
       |> \.permission .~ .free
 
-    update(&Current, \.episodes .~ { [freeEpisode] })
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ { [freeEpisode] }
+    )
 
     let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedOut)
 
@@ -90,7 +100,11 @@ class EpisodePageTests: TestCase {
     let freeEpisode = Current.episodes()[0]
       |> \.permission .~ .free
 
-    update(&Current, \.episodes .~ { [freeEpisode] })
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.episodes .~ { [freeEpisode] }
+    )
 
     let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedIn)
 
@@ -112,6 +126,8 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeNotFound() {
+    update(&Current, \.database .~ .mock)
+
     let episode = request(to: .episode(.left("object-oriented-programming")))
 
     let conn = connection(from: episode)
@@ -129,7 +145,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PublicEpisode_NonSubscriber_UsedCredit() {
-    let user = Database.User.mock
+    let user = Models.User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
@@ -138,7 +154,8 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current,
-      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
+      (\Environment.database) .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -164,7 +181,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_UsedCredit() {
-    let user = Database.User.mock
+    let user = Models.User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
@@ -173,7 +190,8 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current,
-      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
+      (\Environment.database) .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([.mock])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -199,7 +217,7 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeCredit_PrivateEpisode_NonSubscriber_HasCredits() {
-    let user = Database.User.mock
+    let user = Models.User.mock
       |> \.subscriptionId .~ nil
       |> \.episodeCreditCount .~ 1
 
@@ -208,7 +226,8 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current,
-      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
+      (\Environment.database) .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode]),
       \.database.fetchEpisodeCredits .~ const(pure([])),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
@@ -239,7 +258,6 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .live,
       \.episodes .~ unzurry([episode])
     )
 
@@ -248,7 +266,7 @@ class EpisodePageTests: TestCase {
       .run.perform().right!!
     _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
 
-    let credit = Database.EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+    let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
     let conn = connection(
       from: request(
@@ -272,13 +290,12 @@ class EpisodePageTests: TestCase {
     let episode = Episode.mock
       |> \.permission .~ .subscriberOnly
 
-    let user = Database.User.mock
+    let user = User.mock
       |> \.episodeCreditCount .~ 0
       |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     update(
       &Current,
-      \.database .~ .live,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode])
     )
@@ -305,13 +322,12 @@ class EpisodePageTests: TestCase {
     let episode = Episode.mock
       |> \.permission .~ .free
 
-    let user = Database.User.mock
+    let user = User.mock
       |> \.episodeCreditCount .~ 1
       |> \.id .~ .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
 
     update(
       &Current,
-      \.database .~ .live,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([episode])
     )
@@ -340,7 +356,6 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current, 
-      \.database .~ .live,
       \.episodes .~ unzurry([episode])
     )
 
@@ -350,7 +365,7 @@ class EpisodePageTests: TestCase {
     _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
     _ = Current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
 
-    let credit = Database.EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
+    let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
     let conn = connection(
       from: request(
@@ -394,13 +409,13 @@ class EpisodePageTests: TestCase {
 
     update(
       &Current,
+      \.database .~ .mock,
       \.episodes .~ { [episode] }
     )
 
     let conn = connection(
       from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
     )
-
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {

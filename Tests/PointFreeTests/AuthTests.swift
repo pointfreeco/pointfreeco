@@ -20,7 +20,6 @@ class AuthTests: TestCase {
 
     update(
       &Current,
-      (\Environment.database) .~ .live,
       \.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)),
       \.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken)))
     )

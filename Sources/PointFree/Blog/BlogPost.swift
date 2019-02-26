@@ -17,19 +17,15 @@ extension BlogPost.Author {
 }
 
 extension PartialIso where A == Either<String, Int>, B == BlogPost {
-  static var blogPostFromParam: PartialIso {
-    return PartialIso(
-      apply: fetchBlogPost(forParam:),
-      unapply: Either.left <<< ^\.slug
-    )
-  }
+  static let blogPostFromParam = PartialIso(
+    apply: fetchBlogPost(forParam:),
+    unapply: Either.left <<< ^\.slug
+  )
 }
 
 extension PartialIso where A == BlogPost.Id, B == BlogPost {
-  static var blogPostFromId: PartialIso {
-    return PartialIso(
-      apply: fetchBlogPost(forId:),
-      unapply: ^\.id
-    )
-  }
+  static var blogPostFromId = PartialIso(
+    apply: fetchBlogPost(forId:),
+    unapply: ^\.id
+  )
 }

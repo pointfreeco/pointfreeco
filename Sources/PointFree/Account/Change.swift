@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import Prelude
 import Stripe
@@ -53,7 +54,7 @@ let subscriptionChangeMiddleware =
     <| map(lower)
     >>> subscriptionChange
 
-private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User, Int, Pricing)>)
+private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (currentSubscription, _, _, newPricing) = conn.data
@@ -126,9 +127,9 @@ func requireActiveSubscription<A>(
 }
 
 private func requireValidSeating(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, Database.User, Int, Pricing>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, Database.User, Int, Pricing>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data> {
 
     return filter(
       seatsAvailable,
@@ -143,7 +144,7 @@ private func requireValidSeating(
       <| middleware
 }
 
-private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, Database.User, Int, Pricing>) -> Bool {
+private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Pricing>) -> Bool {
   let (_, _, seatsTaken, pricing) = lower(data)
 
   return pricing.quantity >= seatsTaken
@@ -157,9 +158,9 @@ private let extraStyles =
     <> extraSpinnerStyles
 
 private func fetchSeatsTaken<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.User, Int, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User, Int, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return { conn -> IO<Conn<ResponseEnded, Data>> in
       let user = conn.data.first
@@ -177,7 +178,7 @@ private func fetchSeatsTaken<A>(
     }
 }
 
-let subscriptionChangeShowView = View<(Stripe.Subscription, Database.User, Int)> { subscription, currentUser, seatsTaken -> Node in
+let subscriptionChangeShowView = View<(Stripe.Subscription, User, Int)> { subscription, currentUser, seatsTaken -> Node in
 
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [

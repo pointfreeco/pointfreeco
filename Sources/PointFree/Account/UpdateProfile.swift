@@ -40,7 +40,7 @@ func isValidEmail(_ email: EmailAddress) -> Bool {
 private func fetchStripeSubscription<A>(
   _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>)
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.Subscription?, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription?, A>, Data> {
 
     return { conn -> IO<Conn<ResponseEnded, Data>> in
       guard let subscription = get1(conn.data)
@@ -62,11 +62,11 @@ let updateProfileMiddleware =
     )
     <<< fetchSubscription
     <<< fetchStripeSubscription
-    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription?, Database.User, ProfileData>>) -> IO<Conn<ResponseEnded, Data>> in
+    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription?, User, ProfileData>>) -> IO<Conn<ResponseEnded, Data>> in
       let (subscription, user, data) = lower(conn.data)
 
       let emailSettings = data.emailSettings.keys
-        .compactMap(Database.EmailSetting.Newsletter.init(rawValue:))
+        .compactMap(EmailSetting.Newsletter.init(rawValue:))
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
@@ -102,7 +102,7 @@ let updateProfileMiddleware =
       )
 }
 
-let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, EmailAddress>, Data> = { conn in
+let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, EmailAddress>, Data> = { conn in
   let (userId, newEmailAddress) = lower(conn.data)
 
   parallel(

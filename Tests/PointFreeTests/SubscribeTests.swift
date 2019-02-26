@@ -14,7 +14,6 @@ import XCTest
 final class SubscribeTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
@@ -22,6 +21,7 @@ final class SubscribeTests: TestCase {
     let conn = connection(from: request(to: .subscribe(.some(.individualMonthly))))
       |> siteMiddleware
       |> Prelude.perform
+    update(&Current, \.database .~ .mock)
 
     #if !os(Linux)
     assertSnapshot(matching: conn, as: .conn)
@@ -31,7 +31,6 @@ final class SubscribeTests: TestCase {
   func testCoupon_Individual() {
     let subscribeData = SubscribeData.individualMonthly
       |> \.coupon .~ "deadbeef"
-    update(&Current, \.database .~ .live)
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
@@ -62,7 +61,6 @@ final class SubscribeTests: TestCase {
   func testCoupon_Team() {
     let subscribeData = SubscribeData.teamYearly(quantity: 4)
       |> \.coupon .~ "deadbeef"
-    update(&Current, \.database .~ .live)
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
@@ -88,6 +86,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testNotLoggedIn_IndividualYearly() {
+    update(&Current, \.database .~ .mock)
     let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
       |> siteMiddleware
       |> Prelude.perform
@@ -98,6 +97,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testNotLoggedIn_Team() {
+    update(&Current, \.database .~ .mock)
     let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
       |> siteMiddleware
       |> Prelude.perform
@@ -108,6 +108,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCurrentSubscribers() {
+    update(&Current, \.database .~ .mock)
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
@@ -130,8 +131,10 @@ final class SubscribeTests: TestCase {
   //  }
 
   func testInvalidQuantity() {
+    #if !os(Linux)
     update(
       &Current,
+      \.database .~ .mock,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
@@ -142,24 +145,19 @@ final class SubscribeTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
-    #if !os(Linux)
     assertSnapshot(matching: conn, as: .conn, named: "too_high")
-    #endif
 
     let conn2 = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
-    #if !os(Linux)
     assertSnapshot(matching: conn2, as: .conn, named: "too_low")
     #endif
   }
 
   func testHappyPath() {
-    update(&Current, \.database .~ .live)
-
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
       .perform()
@@ -189,6 +187,7 @@ final class SubscribeTests: TestCase {
   func testCreateCustomerFailure() {
     update(
       &Current,
+      \.database .~ .mock,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
       \.stripe.createCustomer .~ { _, _, _, _ in throwE(unit as Error) }
@@ -208,6 +207,7 @@ final class SubscribeTests: TestCase {
   func testCreateStripeSubscriptionFailure() {
     update(
       &Current,
+      \.database .~ .mock,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
       \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -226,7 +226,8 @@ final class SubscribeTests: TestCase {
 
   func testCreateDatabaseSubscriptionFailure() {
     update(
-      &Current, 
+      &Current,
+      \.database .~ .mock,
       \.database.createSubscription .~ { _, _ in throwE(unit as Error) },
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))

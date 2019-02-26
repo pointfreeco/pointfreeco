@@ -2,6 +2,7 @@ import Either
 import Foundation
 import Html
 import HttpPipeline
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -87,8 +88,8 @@ private func attachedMailgunAuthorization(_ headers: [String: String]?) -> [Stri
 }
 
 func unsubscribeEmail(
-  fromUserId userId: Database.User.Id,
-  andNewsletter newsletter: Database.EmailSetting.Newsletter,
+  fromUserId userId: User.Id,
+  andNewsletter newsletter: EmailSetting.Newsletter,
   boundary: String = "--"
   ) -> EmailAddress? {
 
@@ -103,7 +104,7 @@ func unsubscribeEmail(
 func userIdAndNewsletter(
   fromUnsubscribeEmail email: EmailAddress,
   boundary: String = "--"
-  ) -> (Database.User.Id, Database.EmailSetting.Newsletter)? {
+  ) -> (User.Id, EmailSetting.Newsletter)? {
 
   let payload = email.rawValue
     .components(separatedBy: "unsub-")
@@ -116,7 +117,7 @@ func userIdAndNewsletter(
     .map { $0.components(separatedBy: boundary) }
     .flatMap {
       tuple
-        <¢> $0.first.flatMap(UUID.init(uuidString:) >=> Database.User.Id.init)
-        <*> $0.last.flatMap(Database.EmailSetting.Newsletter.init(rawValue:))
+        <¢> $0.first.flatMap(UUID.init(uuidString:) >=> User.Id.init)
+        <*> $0.last.flatMap(EmailSetting.Newsletter.init(rawValue:))
   }
 }

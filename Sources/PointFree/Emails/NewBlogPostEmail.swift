@@ -113,7 +113,7 @@ let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminRe
     )
 }
 
-let newBlogPostEmailAdminReportEmailContent = View<([Database.User], Int)> { erroredUsers, totalAttempted in
+let newBlogPostEmailAdminReportEmailContent = View<([User], Int)> { erroredUsers, totalAttempted in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

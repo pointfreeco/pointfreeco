@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import Prelude
 import Stripe
@@ -35,7 +36,7 @@ We couldn’t update your payment info at this time. Please try again later or c
 """
 
 let updatePaymentInfoMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, Stripe.Token.Id?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Stripe.Token.Id?>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       require2 >>> pure,

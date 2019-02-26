@@ -4,12 +4,13 @@ import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
+import Models
 import Optics
 import Styleguide
 import Prelude
 import View
 
-let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
+let mountainNavView = View<(NavStyle.MountainsStyle, User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
   menuAndLogoHeaderView.view((mountainsStyle, currentUser, subscriberState, currentRoute))
     + [
@@ -37,7 +38,7 @@ let mountainNavView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberS
   ]
 }
 
-private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
+private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
   gridRow([`class`([Class.padding([.mobile: [.leftRight: 3, .top: 3, .bottom: 1], .desktop: [.leftRight: 4, .top: 4, .bottom: 4]]), Class.grid.top(.desktop), Class.grid.middle(.mobile), Class.grid.between(.mobile), Class.pf.components.blueGradient])], [
 
@@ -71,7 +72,7 @@ private let menuAndLogoHeaderView = View<(NavStyle.MountainsStyle, Database.User
     ])
 }
 
-private let headerLinks = View<(NavStyle.MountainsStyle, Database.User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute -> [Node] in
+private let headerLinks = View<(NavStyle.MountainsStyle, User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute -> [Node] in
 
   return [
     a(

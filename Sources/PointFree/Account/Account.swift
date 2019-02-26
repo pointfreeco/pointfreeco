@@ -11,10 +11,11 @@ import PointFreePrelude
 import Prelude
 import Stripe
 import Styleguide
+import Tagged
 import Tuple
 import View
 
-let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
+let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >=> writeStatus(.ok)
@@ -31,7 +32,7 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.U
 )
 
 private func fetchAccountData<I>(
-  _ conn: Conn<I, Tuple2<Database.User, SubscriberState>>
+  _ conn: Conn<I, Tuple2<User, SubscriberState>>
   ) -> IO<Conn<I, AccountData>> {
 
   let (user, subscriberState) = lower(conn.data)
@@ -163,7 +164,7 @@ private func pluralizedCredits(count: Int) -> String {
     : "\(count) credits"
 }
 
-private let episodeCreditsView = View<[Database.EpisodeCredit]> { credits -> [Node] in
+private let episodeCreditsView = View<[EpisodeCredit]> { credits -> [Node] in
   guard credits.count > 0 else { return [] }
 
   return [
@@ -201,7 +202,7 @@ private let episodeLinkView = View<Episode> { episode in
   )
 }
 
-private func episodes(from credits: [Database.EpisodeCredit]) -> [Episode] {
+private func episodes(from credits: [EpisodeCredit]) -> [Episode] {
   return Current.episodes()
     .filter { ep in credits.contains(where: { $0.episodeSequence == ep.sequence }) }
 }
@@ -281,10 +282,10 @@ private let profileRowView = View<AccountData> { data -> Node in
     ])
 }
 
-private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberState)> { currentEmailSettings, subscriberState -> [Node] in
+private let emailSettingCheckboxes = View<([EmailSetting], SubscriberState)> { currentEmailSettings, subscriberState -> [Node] in
   let newsletters = subscriberState.isNonSubscriber
-    ? Database.EmailSetting.Newsletter.allNewsletters
-    : Database.EmailSetting.Newsletter.subscriberNewsletters
+    ? EmailSetting.Newsletter.allNewsletters
+    : EmailSetting.Newsletter.subscriberNewsletters
 
   return [
     // TODO: hide `welcomeEmails` for subscribers?
@@ -305,7 +306,7 @@ private let emailSettingCheckboxes = View<([Database.EmailSetting], SubscriberSt
   ]
 }
 
-private func newsletterDescription(_ type: Database.EmailSetting.Newsletter) -> String {
+private func newsletterDescription(_ type: EmailSetting.Newsletter) -> String {
   switch type {
   case .announcements:
     return "New announcements (very infrequently)"
@@ -647,7 +648,7 @@ private let subscriptionTeamRow = View<AccountData> { data -> [Node] in
   ]
 }
 
-private let teammateRowView = View<(Database.User, Database.User)> { currentUser, teammate -> Node in
+private let teammateRowView = View<(User, User)> { currentUser, teammate -> Node in
 
   let teammateLabel = currentUser.id == teammate.id
     ? "\(teammate.displayName) (you)"
@@ -663,7 +664,7 @@ private let teammateRowView = View<(Database.User, Database.User)> { currentUser
     ])
 }
 
-private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -> [Node] in
+private let subscriptionInvitesRowView = View<[TeamInvite]> { invites -> [Node] in
   guard !invites.isEmpty else { return [] }
 
   return [
@@ -682,7 +683,7 @@ private let subscriptionInvitesRowView = View<[Database.TeamInvite]> { invites -
   ]
 }
 
-private let inviteRowView = View<Database.TeamInvite> { invite in
+private let inviteRowView = View<TeamInvite> { invite in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 6], [
       p([.text(invite.email.rawValue)])
@@ -699,7 +700,7 @@ private let inviteRowView = View<Database.TeamInvite> { invite in
     ])
 }
 
-private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [Database.TeamInvite], [Database.User])> { subscription, invites, teammates -> [Node] in
+private let subscriptionInviteMoreRowView = View<(Stripe.Subscription?, [TeamInvite], [User])> { subscription, invites, teammates -> [Node] in
 
   guard let subscription = subscription else { return [] }
   guard subscription.quantity > 1 else { return [] }
@@ -842,15 +843,15 @@ let blockSelectClass =
     | Class.type.fontFamily.inherit
 
 private struct AccountData {
-  let currentUser: Database.User
-  let emailSettings: [Database.EmailSetting]
-  let episodeCredits: [Database.EpisodeCredit]
+  let currentUser: User
+  let emailSettings: [EmailSetting]
+  let episodeCredits: [EpisodeCredit]
   let stripeSubscription: Stripe.Subscription?
   let subscriberState: SubscriberState
-  let subscription: Database.Subscription?
-  let subscriptionOwner: Database.User?
-  let teamInvites: [Database.TeamInvite]
-  let teammates: [Database.User]
+  let subscription: Models.Subscription?
+  let subscriptionOwner: User?
+  let teamInvites: [TeamInvite]
+  let teammates: [User]
   let upcomingInvoice: Stripe.Invoice?
 
   var isSubscriptionOwner: Bool {
