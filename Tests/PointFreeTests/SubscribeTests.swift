@@ -131,8 +131,10 @@ final class SubscribeTests: TestCase {
   //  }
 
   func testInvalidQuantity() {
+    #if !os(Linux)
     update(
       &Current,
+      \.database .~ .mock,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
@@ -146,12 +148,13 @@ final class SubscribeTests: TestCase {
     assertSnapshot(matching: conn, as: .conn, named: "too_high")
 
     let conn2 = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 1))), session: .loggedIn)
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform
 
     assertSnapshot(matching: conn2, as: .conn, named: "too_low")
+    #endif
   }
 
   func testHappyPath() {
