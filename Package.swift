@@ -99,6 +99,7 @@ let package = Package(
         "ApplicativeRouterHttpPipelineSupport",
         "Css",
         "CssReset",
+        "Database",
         "Either",
         "GitHub",
         "Html",

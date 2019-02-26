@@ -55,183 +55,181 @@ extension Client {
 
     let conn = postgres
       .flatMap { db in .wrap(db.makeConnection) }
+    let client = _Client(conn: conn)
 
     self.init(
-      addUserIdToSubscriptionId: { add(userId: $0, toSubscriptionId: $1) <| conn },
-      createFeedRequestEvent: createFeedRequestEvent(type:userAgent:userId:),
-      createSubscription: createSubscription(with:for:),
-      deleteTeamInvite: deleteTeamInvite(id:),
-      // TODO
-      fetchAdmins: { fatalError() },// { fetchAdmins() },
-      fetchEmailSettingsForUserId: fetchEmailSettings(forUserId:),
-      fetchEpisodeCredits: fetchEpisodeCredits(for:),
-      // TODO
-      fetchFreeEpisodeUsers: { fatalError() },// fetchFreeEpisodeUsers,
-      fetchSubscriptionById: fetchSubscription(id:),
-      fetchSubscriptionByOwnerId: fetchSubscription(ownerId:),
-      fetchSubscriptionTeammatesByOwnerId: fetchSubscriptionTeammates(ownerId:),
-      fetchTeamInvite: fetchTeamInvite(id:),
-      fetchTeamInvites: fetchTeamInvites(inviterId:),
-      fetchUserByGitHub: fetchUser(byGitHubUserId:),
-      fetchUserById: fetchUser(byUserId:),
-      fetchUsersSubscribedToNewsletter: fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
-      fetchUsersToWelcome: fetchUsersToWelcome(fromWeeksAgo:),
-      incrementEpisodeCredits: incrementEpisodeCredits(for:),
-      insertTeamInvite: insertTeamInvite(email:inviterUserId:),
-      // TODO
-      migrate: { fatalError() }, //Database.migrate,
-      redeemEpisodeCredit: redeemEpisodeCredit(episodeSequence:userId:),
-      registerUser: registerUser(withGitHubEnvelope:email:),
-      removeTeammateUserIdFromSubscriptionId: remove(teammateUserId:fromSubscriptionId:),
-      updateStripeSubscription: update(stripeSubscription:),
-      updateUser: updateUser(withId:name:email:emailSettings:episodeCreditCount:),
-      upsertUser: upsertUser(withGitHubEnvelope:email:)
+      addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
+      createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
+      createSubscription: client.createSubscription(with:for:),
+      deleteTeamInvite: client.deleteTeamInvite(id:),
+      fetchAdmins: { client.fetchAdmins() },
+      fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
+      fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
+      fetchFreeEpisodeUsers: { client.fetchFreeEpisodeUsers() },
+      fetchSubscriptionById: client.fetchSubscription(id:),
+      fetchSubscriptionByOwnerId: client.fetchSubscription(ownerId:),
+      fetchSubscriptionTeammatesByOwnerId: client.fetchSubscriptionTeammates(ownerId:),
+      fetchTeamInvite: client.fetchTeamInvite(id:),
+      fetchTeamInvites: client.fetchTeamInvites(inviterId:),
+      fetchUserByGitHub: client.fetchUser(byGitHubUserId:),
+      fetchUserById: client.fetchUser(byUserId:),
+      fetchUsersSubscribedToNewsletter: client.fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
+      fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
+      incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
+      insertTeamInvite: client.insertTeamInvite(email:inviterUserId:),
+      migrate: { client.migrate() },
+      redeemEpisodeCredit: client.redeemEpisodeCredit(episodeSequence:userId:),
+      registerUser: client.registerUser(withGitHubEnvelope:email:),
+      removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
+      updateStripeSubscription: client.update(stripeSubscription:),
+      updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
+      upsertUser: client.upsertUser(withGitHubEnvelope:email:)
     )
   }
 }
 
-private func add(
-  userId: Models.User.Id,
-  toSubscriptionId subscriptionId: Models.Subscription.Id
-  )
-  -> (EitherIO<Swift.Error, Connection>)
-  -> EitherIO<Error, Prelude.Unit> {
-    return { c in
-      c.execute(
-        """
+private struct _Client {
+  let conn: EitherIO<Error, Connection>
+
+  func add(
+    userId: Models.User.Id,
+    toSubscriptionId subscriptionId: Models.Subscription.Id
+    ) -> EitherIO<Error, Prelude.Unit> {
+
+    return self.conn.execute(
+      """
       UPDATE "users"
       SET "subscription_id" = $1
       WHERE "users"."id" = $2
       """,
-        [
-          subscriptionId.rawValue.uuidString,
-          userId.rawValue.uuidString,
-          ]
-        )
-        .map(const(unit))
-    }
-}
+      [
+        subscriptionId.rawValue.uuidString,
+        userId.rawValue.uuidString,
+        ]
+      )
+      .map(const(unit))
+  }
 
-private func createFeedRequestEvent(
-  type: FeedRequestEvent.FeedType,
-  userAgent: String,
-  userId: Models.User.Id
-  ) -> EitherIO<Error, Prelude.Unit> {
+  func createFeedRequestEvent(
+    type: FeedRequestEvent.FeedType,
+    userAgent: String,
+    userId: Models.User.Id
+    ) -> EitherIO<Error, Prelude.Unit> {
 
-  return conn.execute(
-    """
-    INSERT INTO "feed_request_events"
-    ("type", "user_agent", "user_id")
-    VALUES
-    ($1, $2, $3)
-    ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE
-    SET "count" = "feed_request_events"."count" + 1
-    """,
-    [
-      type.rawValue,
-      userAgent,
-      userId.rawValue
-    ]
-    )
-    .map(const(unit))
-}
-
-private func createSubscription(
-  with stripeSubscription: Stripe.Subscription, for userId: Models.User.Id
-  )
-  -> EitherIO<Error, Prelude.Unit> {
-    return conn.execute(
+    return self.conn.execute(
       """
+      INSERT INTO "feed_request_events"
+      ("type", "user_agent", "user_id")
+      VALUES
+      ($1, $2, $3)
+      ON CONFLICT ("type", "user_agent", "user_id") DO UPDATE
+      SET "count" = "feed_request_events"."count" + 1
+      """,
+      [
+        type.rawValue,
+        userAgent,
+        userId.rawValue
+      ]
+      )
+      .map(const(unit))
+  }
+
+  func createSubscription(
+    with stripeSubscription: Stripe.Subscription, for userId: Models.User.Id
+    )
+    -> EitherIO<Error, Prelude.Unit> {
+      return self.conn.execute(
+        """
       INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
       VALUES ($1, $2, $3)
       RETURNING "id"
       """,
-      [
-        stripeSubscription.id.rawValue,
-        stripeSubscription.status.rawValue,
-        userId.rawValue.uuidString,
-        ]
-      )
-      .flatMap { node in
-        conn.execute(
-          """
+        [
+          stripeSubscription.id.rawValue,
+          stripeSubscription.status.rawValue,
+          userId.rawValue.uuidString,
+          ]
+        )
+        .flatMap { node in
+          self.conn.execute(
+            """
           UPDATE "users"
           SET "subscription_id" = $1
           WHERE "users"."id" = $2
           """,
-          [
-            node[0, "id"]?.string,
-            userId.rawValue.uuidString
-          ]
-        )
-      }
-      .map(const(unit))
-}
+            [
+              node[0, "id"]?.string,
+              userId.rawValue.uuidString
+            ]
+          )
+        }
+        .map(const(unit))
+  }
 
-private func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Models.Subscription?> {
-  return conn.firstRow(
-    """
+  func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Models.Subscription?> {
+    return self.conn.firstRow(
+      """
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
     WHERE "subscriptions"."stripe_subscription_id" = $2
     RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
     """,
-    [
-      stripeSubscription.status.rawValue,
-      stripeSubscription.id.rawValue
-    ]
-  )
-}
+      [
+        stripeSubscription.status.rawValue,
+        stripeSubscription.id.rawValue
+      ]
+    )
+  }
 
-private func remove(
-  teammateUserId: Models.User.Id,
-  fromSubscriptionId subscriptionId: Models.Subscription.Id
-  ) -> EitherIO<Error, Prelude.Unit> {
+  func remove(
+    teammateUserId: Models.User.Id,
+    fromSubscriptionId subscriptionId: Models.Subscription.Id
+    ) -> EitherIO<Error, Prelude.Unit> {
 
-  return conn.execute(
-    """
+    return self.conn.execute(
+      """
     UPDATE "users"
     SET "subscription_id" = NULL
     WHERE "users"."id" = $1
     AND "users"."subscription_id" = $2
     """,
-    [
-      teammateUserId.rawValue.uuidString,
-      subscriptionId.rawValue.uuidString,
-      ]
-    )
-    .map(const(unit))
-}
+      [
+        teammateUserId.rawValue.uuidString,
+        subscriptionId.rawValue.uuidString,
+        ]
+      )
+      .map(const(unit))
+  }
 
-private func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
-  return conn.firstRow(
-    """
+  func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
+    return self.conn.firstRow(
+      """
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "id" = $1
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-    [id.rawValue.uuidString]
-  )
-}
+      [id.rawValue.uuidString]
+    )
+  }
 
-private func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
-  return conn.firstRow(
-    """
+  func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
+    return self.conn.firstRow(
+      """
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
     WHERE "user_id" = $1
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-    [ownerId.rawValue.uuidString]
-  )
-}
+      [ownerId.rawValue.uuidString]
+    )
+  }
 
-private func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Error, [Models.User]> {
-  return conn.rows(
-    """
+  func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Error, [Models.User]> {
+    return self.conn.rows(
+      """
     SELECT "users"."email",
            "users"."episode_credit_count",
            "users"."github_user_id",
@@ -245,114 +243,114 @@ private func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Err
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
     """,
-    [ownerId.rawValue.uuidString]
-  )
-}
+      [ownerId.rawValue.uuidString]
+    )
+  }
 
-private func updateUser(
-  withId userId: Models.User.Id,
-  name: String?,
-  email: EmailAddress?,
-  emailSettings: [EmailSetting.Newsletter]?,
-  episodeCreditCount: Int?
-  ) -> EitherIO<Error, Prelude.Unit> {
+  func updateUser(
+    withId userId: Models.User.Id,
+    name: String?,
+    email: EmailAddress?,
+    emailSettings: [EmailSetting.Newsletter]?,
+    episodeCreditCount: Int?
+    ) -> EitherIO<Error, Prelude.Unit> {
 
-  return conn.execute(
-    """
+    return self.conn.execute(
+      """
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
         "email" = COALESCE($2, "email"),
         "episode_credit_count" = COALESCE($3, "episode_credit_count")
     WHERE "id" = $4
     """,
-    [
-      name,
-      email?.rawValue,
-      episodeCreditCount,
-      userId.rawValue.uuidString
-    ]
-    )
-    .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
-}
-
-// TODO: This should return a non-optional user
-private func registerUser(
-  withGitHubEnvelope envelope: GitHub.UserEnvelope,
-  email: EmailAddress
-  ) -> EitherIO<Error, Models.User?> {
-
-  return upsertUser(withGitHubEnvelope: envelope, email: email)
-    .flatMap { optionalUser in
-      guard let user = optionalUser else { return pure(optionalUser) }
-
-      return updateEmailSettings(settings: EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
-        .map(const(optionalUser))
+      [
+        name,
+        email?.rawValue,
+        episodeCreditCount,
+        userId.rawValue.uuidString
+      ]
+      )
+      .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
   }
-}
 
-private func updateEmailSettings(
-  settings: [EmailSetting.Newsletter]?,
-  forUserId userId: Models.User.Id
-  )
-  -> EitherIO<Error, Prelude.Unit> {
+  // TODO: This should return a non-optional user
+  func registerUser(
+    withGitHubEnvelope envelope: GitHub.UserEnvelope,
+    email: EmailAddress
+    ) -> EitherIO<Error, Models.User?> {
 
-    guard let settings = settings else { return pure(unit) }
+    return upsertUser(withGitHubEnvelope: envelope, email: email)
+      .flatMap { optionalUser in
+        guard let user = optionalUser else { return pure(optionalUser) }
 
-    let deleteEmailSettings = conn.execute(
-      """
+        return self.updateEmailSettings(settings: EmailSetting.Newsletter.allNewsletters, forUserId: user.id)
+          .map(const(optionalUser))
+    }
+  }
+
+  func updateEmailSettings(
+    settings: [EmailSetting.Newsletter]?,
+    forUserId userId: Models.User.Id
+    )
+    -> EitherIO<Error, Prelude.Unit> {
+
+      guard let settings = settings else { return pure(unit) }
+
+      let deleteEmailSettings = self.conn.execute(
+        """
       DELETE FROM "email_settings"
       WHERE "user_id" = $1
       """,
-      [userId.rawValue.uuidString]
-      )
-      .map(const(unit))
+        [userId.rawValue.uuidString]
+        )
+        .map(const(unit))
 
-    let updateEmailSettings = sequence(
-      settings.map { type in
-        conn.execute(
-          """
+      let updateEmailSettings = sequence(
+        settings.map { type in
+          self.conn.execute(
+            """
           INSERT INTO "email_settings" ("newsletter", "user_id")
           VALUES ($1, $2)
           """,
-          [
-            type.rawValue,
-            userId.rawValue.uuidString
-          ]
+            [
+              type.rawValue,
+              userId.rawValue.uuidString
+            ]
+          )
+        }
         )
-      }
-      )
-      .map(const(unit))
+        .map(const(unit))
 
-    return sequence([deleteEmailSettings, updateEmailSettings])
-      .map(const(unit))
-}
+      return sequence([deleteEmailSettings, updateEmailSettings])
+        .map(const(unit))
+  }
 
-// TODO: This should return a non-optional user
-private func upsertUser(
-  withGitHubEnvelope envelope: GitHub.UserEnvelope,
-  email: EmailAddress
-  ) -> EitherIO<Error, Models.User?> {
+  // TODO: This should return a non-optional user
+  func upsertUser(
+    withGitHubEnvelope envelope: GitHub.UserEnvelope,
+    email: EmailAddress
+    ) -> EitherIO<Error, Models.User?> {
 
-  return conn.execute(
-    """
+    return self.conn.execute(
+      """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
     VALUES ($1, $2, $3, $4, 1)
     ON CONFLICT ("github_user_id") DO UPDATE
     SET "github_access_token" = $3, "name" = $4
     """,
-    [
-      email.rawValue,
-      envelope.gitHubUser.id.rawValue,
-      envelope.accessToken.accessToken,
-      envelope.gitHubUser.name
-    ]
-    )
-    .flatMap { _ in fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
-}
+      [
+        email.rawValue,
+        envelope.gitHubUser.id.rawValue,
+        envelope.accessToken.accessToken,
+        envelope.gitHubUser.name
+      ]
+      )
+      .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
+  }
 
-private func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
-  return conn.firstRow(
-    """
+  func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
+    return self.conn.firstRow(
+      """
     SELECT "email",
            "episode_credit_count",
            "github_user_id",
@@ -366,83 +364,83 @@ private func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.Us
     WHERE "id" = $1
     LIMIT 1
     """,
-    [id.rawValue.uuidString]
-  )
-}
-
-private func fetchUsersSubscribed(to newsletter: EmailSetting.Newsletter, nonsubscriberOrSubscriber: Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]> {
-  let condition: String
-  switch nonsubscriberOrSubscriber {
-  case .none:
-    condition = ""
-  case .some(.left):
-    condition = " AND \"users\".\"subscription_id\" IS NULL"
-  case .some(.right):
-    condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
+      [id.rawValue.uuidString]
+    )
   }
-  return conn.rows(
-    """
-    SELECT "users"."email",
-    "users"."episode_credit_count",
-    "users"."github_user_id",
-    "users"."github_access_token",
-    "users"."id",
-    "users"."is_admin",
-    "users"."name",
-    "users"."subscription_id",
-    "users"."rss_salt"
-    FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
-    WHERE "email_settings"."newsletter" = $1\(condition)
-    """,
-    [newsletter.rawValue]
-  )
-}
 
-private func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, [Models.User]> {
-  let daysAgo = weeksAgo * 7
-  return conn.rows(
-    """
-    SELECT
-    "users"."email",
-    "users"."episode_credit_count",
-    "users"."github_user_id",
-    "users"."github_access_token",
-    "users"."id",
-    "users"."is_admin",
-    "users"."name",
-    "users"."subscription_id",
-    "users"."rss_salt"
-    FROM
-    "email_settings"
-    LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
-    LEFT JOIN "subscriptions" on "users"."id" = "subscriptions"."user_id"
-    WHERE
-    "email_settings"."newsletter" = $1
-    AND "users"."created_at" BETWEEN CURRENT_DATE - INTERVAL '\(daysAgo) DAY'
-    AND CURRENT_DATE - INTERVAL '\(daysAgo - 1) DAY'
-    AND "users"."subscription_id" IS NULL
-    AND "subscriptions"."user_id" IS NULL;
-    """,
-    [EmailSetting.Newsletter.welcomeEmails.rawValue]
-  )
-}
+  func fetchUsersSubscribed(to newsletter: EmailSetting.Newsletter, nonsubscriberOrSubscriber: Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]> {
+    let condition: String
+    switch nonsubscriberOrSubscriber {
+    case .none:
+      condition = ""
+    case .some(.left):
+      condition = " AND \"users\".\"subscription_id\" IS NULL"
+    case .some(.right):
+      condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
+    }
+    return self.conn.rows(
+      """
+      SELECT "users"."email",
+      "users"."episode_credit_count",
+      "users"."github_user_id",
+      "users"."github_access_token",
+      "users"."id",
+      "users"."is_admin",
+      "users"."name",
+      "users"."subscription_id",
+      "users"."rss_salt"
+      FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+      WHERE "email_settings"."newsletter" = $1\(condition)
+      """,
+      [newsletter.rawValue]
+    )
+  }
 
-private func incrementEpisodeCredits(for userIds: [Models.User.Id]) -> EitherIO<Error, [Models.User]> {
-  guard !userIds.isEmpty else { return pure([]) }
-  return conn.rows(
-    """
-    UPDATE "users"
-    SET "episode_credit_count" = "episode_credit_count" + 1
-    WHERE "id" IN (\(userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ",")))
-    RETURNING *
-    """,
-    []
-  )
-}
+  func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, [Models.User]> {
+    let daysAgo = weeksAgo * 7
+    return self.conn.rows(
+      """
+      SELECT
+      "users"."email",
+      "users"."episode_credit_count",
+      "users"."github_user_id",
+      "users"."github_access_token",
+      "users"."id",
+      "users"."is_admin",
+      "users"."name",
+      "users"."subscription_id",
+      "users"."rss_salt"
+      FROM
+      "email_settings"
+      LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
+      LEFT JOIN "subscriptions" on "users"."id" = "subscriptions"."user_id"
+      WHERE
+      "email_settings"."newsletter" = $1
+      AND "users"."created_at" BETWEEN CURRENT_DATE - INTERVAL '\(daysAgo) DAY'
+      AND CURRENT_DATE - INTERVAL '\(daysAgo - 1) DAY'
+      AND "users"."subscription_id" IS NULL
+      AND "subscriptions"."user_id" IS NULL;
+      """,
+      [EmailSetting.Newsletter.welcomeEmails.rawValue]
+    )
+  }
 
-private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Models.User?> {
-  return conn.firstRow(
-    """
+  func incrementEpisodeCredits(for userIds: [Models.User.Id]) -> EitherIO<Error, [Models.User]> {
+    guard !userIds.isEmpty else { return pure([]) }
+    return self.conn.rows(
+      """
+      UPDATE "users"
+      SET "episode_credit_count" = "episode_credit_count" + 1
+      WHERE "id" IN (\(userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ",")))
+      RETURNING *
+      """,
+      []
+    )
+  }
+
+  func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Models.User?> {
+    return self.conn.firstRow(
+      """
     SELECT "email",
            "episode_credit_count",
            "github_user_id",
@@ -456,47 +454,47 @@ private func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error,
     WHERE "github_user_id" = $1
     LIMIT 1
     """,
-    [userId.rawValue]
-  )
-}
+      [userId.rawValue]
+    )
+  }
 
-private func fetchTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, TeamInvite?> {
-  return conn.firstRow(
-    """
+  func fetchTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, TeamInvite?> {
+    return self.conn.firstRow(
+      """
     SELECT "created_at", "email", "id", "inviter_user_id"
     FROM "team_invites"
     WHERE "id" = $1
     LIMIT 1
     """,
-    [id.rawValue.uuidString]
-  )
-}
+      [id.rawValue.uuidString]
+    )
+  }
 
-private func deleteTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
-  return conn.execute(
-    """
+  func deleteTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
+    return self.conn.execute(
+      """
     DELETE FROM "team_invites"
     WHERE "id" = $1
     """,
-    [id.rawValue.uuidString]
-    )
-    .map(const(unit))
-}
+      [id.rawValue.uuidString]
+      )
+      .map(const(unit))
+  }
 
-private func fetchTeamInvites(inviterId: Models.User.Id) -> EitherIO<Error, [Models.TeamInvite]> {
-  return conn.rows(
-    """
+  func fetchTeamInvites(inviterId: Models.User.Id) -> EitherIO<Error, [Models.TeamInvite]> {
+    return self.conn.rows(
+      """
     SELECT "created_at", "email", "id", "inviter_user_id"
     FROM "team_invites"
     WHERE "inviter_user_id" = $1
     """,
-    [inviterId.rawValue.uuidString]
-  )
-}
+      [inviterId.rawValue.uuidString]
+    )
+  }
 
-private func fetchAdmins() -> EitherIO<Error, [Models.User]> {
-  return conn.rows(
-    """
+  func fetchAdmins() -> EitherIO<Error, [Models.User]> {
+    return self.conn.rows(
+      """
     SELECT "users"."email",
            "users"."episode_credit_count",
            "users"."github_user_id",
@@ -509,64 +507,64 @@ private func fetchAdmins() -> EitherIO<Error, [Models.User]> {
     FROM "users"
     WHERE "users"."is_admin" = TRUE
     """,
-    []
-  )
-}
+      []
+    )
+  }
 
-private func insertTeamInvite(
-  email: EmailAddress,
-  inviterUserId: Models.User.Id
-  ) -> EitherIO<Error, TeamInvite> {
+  func insertTeamInvite(
+    email: EmailAddress,
+    inviterUserId: Models.User.Id
+    ) -> EitherIO<Error, TeamInvite> {
 
-  return conn.execute(
-    """
+    return self.conn.execute(
+      """
     INSERT INTO "team_invites" ("email", "inviter_user_id")
     VALUES ($1, $2)
     RETURNING "id"
     """,
-    [
-      email.rawValue,
-      inviterUserId.rawValue.uuidString
-    ]
-    )
-    .flatMap { node -> EitherIO<Error, TeamInvite> in
-      node[0, "id"]?.string
-        .flatMap(UUID.init(uuidString:))
-        .map(
-          TeamInvite.Id.init
-            >>> fetchTeamInvite
-            >>> mapExcept(requireSome)
-        )
-        ?? throwE(unit)
+      [
+        email.rawValue,
+        inviterUserId.rawValue.uuidString
+      ]
+      )
+      .flatMap { node -> EitherIO<Error, TeamInvite> in
+        node[0, "id"]?.string
+          .flatMap(UUID.init(uuidString:))
+          .map(
+            TeamInvite.Id.init
+              >>> self.fetchTeamInvite
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+    }
   }
-}
 
-private func fetchEmailSettings(forUserId userId: Models.User.Id) -> EitherIO<Error, [EmailSetting]> {
+  func fetchEmailSettings(forUserId userId: Models.User.Id) -> EitherIO<Error, [EmailSetting]> {
 
-  return conn.rows(
-    """
+    return self.conn.rows(
+      """
     SELECT "newsletter", "user_id"
     FROM "email_settings"
     WHERE "user_id" = $1
     """,
-    [userId.rawValue.uuidString]
-  )
-}
+      [userId.rawValue.uuidString]
+    )
+  }
 
-private func fetchEpisodeCredits(for userId: Models.User.Id) -> EitherIO<Error, [EpisodeCredit]> {
-  return conn.rows(
-    """
+  func fetchEpisodeCredits(for userId: Models.User.Id) -> EitherIO<Error, [EpisodeCredit]> {
+    return self.conn.rows(
+      """
     SELECT "episode_sequence", "user_id"
     FROM "episode_credits"
     WHERE "user_id" = $1
     """,
-    [userId.rawValue.uuidString]
-  )
-}
+      [userId.rawValue.uuidString]
+    )
+  }
 
-private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
-  return conn.rows(
-    """
+  func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
+    return self.conn.rows(
+      """
     SELECT "users"."email",
            "users"."episode_credit_count",
            "users"."github_user_id",
@@ -585,46 +583,46 @@ private func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
     )
     AND "email_settings"."newsletter" = $2;
     """,
-    [
-      Stripe.Subscription.Status.active.rawValue,
-      EmailSetting.Newsletter.newEpisode.rawValue
-    ]
-  )
-}
+      [
+        Stripe.Subscription.Status.active.rawValue,
+        EmailSetting.Newsletter.newEpisode.rawValue
+      ]
+    )
+  }
 
-private func redeemEpisodeCredit(episodeSequence: Int, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
+  func redeemEpisodeCredit(episodeSequence: Int, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
-  return conn.execute(
-    """
+    return self.conn.execute(
+      """
     INSERT INTO "episode_credits" ("episode_sequence", "user_id")
     VALUES ($1, $2)
     """,
-    [
-      episodeSequence,
-      userId.rawValue.uuidString
-    ]
-    )
-    .map(const(unit))
-}
+      [
+        episodeSequence,
+        userId.rawValue.uuidString
+      ]
+      )
+      .map(const(unit))
+  }
 
-private func migrate() -> EitherIO<Error, Prelude.Unit> {
-  return conn.execute(
-    """
+  func migrate() -> EitherIO<Error, Prelude.Unit> {
+    return self.conn.execute(
+      """
     CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
     """
-    )
-    .flatMap(const(conn.execute(
-      """
+      )
+      .flatMap(const(conn.execute(
+        """
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "users" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "email" citext NOT NULL UNIQUE,
@@ -636,9 +634,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "updated_at" timestamp without time zone
       )
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "subscriptions" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL,
@@ -647,9 +645,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "updated_at" timestamp without time zone
       );
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "team_invites" (
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "email" character varying,
@@ -657,73 +655,73 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "inviter_user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "email_settings" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "newsletter" character varying,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "subscriptions"
       ADD COLUMN IF NOT EXISTS
       "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "is_admin" boolean NOT NULL DEFAULT FALSE
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
       ON "subscriptions" ("stripe_subscription_id")
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "episode_credits" (
         "episode_sequence" integer,
         "user_id" uuid REFERENCES "users" ("id") NOT NULL
       )
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
       ON "episode_credits" ("episode_sequence", "user_id")
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "episode_credit_count" integer NOT NULL DEFAULT 0
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "episode_credits"
       ADD COLUMN IF NOT EXISTS
       "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE TABLE IF NOT EXISTS "feed_request_events" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "type" character varying NOT NULL,
@@ -733,28 +731,28 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       )
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
       ON "feed_request_events" ("type", "user_agent", "user_id")
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       ALTER TABLE "feed_request_events"
       ADD COLUMN IF NOT EXISTS
       "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
       ON "email_settings" ("newsletter", "user_id")
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       CREATE OR REPLACE FUNCTION update_updated_at()
       RETURNS TRIGGER AS $$
       BEGIN
@@ -763,9 +761,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       END;
       $$ LANGUAGE PLPGSQL;
       """
-    )))
-    .flatMap(const(conn.execute(
-      """
+      )))
+      .flatMap(const(conn.execute(
+        """
       DO $$
       DECLARE
         "table" text;
@@ -791,8 +789,9 @@ private func migrate() -> EitherIO<Error, Prelude.Unit> {
       END;
       $$ LANGUAGE PLPGSQL;
       """
-    )))
-    .map(const(unit))
+      )))
+      .map(const(unit))
+  }
 }
 
 public enum DatabaseError: Error {
