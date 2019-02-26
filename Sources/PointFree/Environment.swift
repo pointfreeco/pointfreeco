@@ -1,4 +1,3 @@
-import Css
 import Database
 import Foundation
 import GitHub
@@ -14,7 +13,7 @@ public struct Environment {
   public var assets = Assets()
   public var blogPosts = allBlogPosts
   public var cookieTransform = CookieTransform.encrypted
-  public var database = Database.Client.init(databaseUrl: "")
+  public var database: Database.Client!
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
