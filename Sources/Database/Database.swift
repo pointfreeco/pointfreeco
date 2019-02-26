@@ -13,6 +13,7 @@ public struct Client {
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
+  public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
@@ -35,6 +36,64 @@ public struct Client {
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+
+  public init(
+    addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
+    execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
+    fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
+    fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
+    fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
+    fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
+    fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
+    fetchSubscriptionByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
+    fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, [Models.User]>,
+    fetchTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>,
+    fetchTeamInvites: @escaping (Models.User.Id) -> EitherIO<Error, [TeamInvite]>,
+    fetchUserByGitHub: @escaping (GitHub.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
+    fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
+    incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
+    insertTeamInvite: @escaping (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>,
+    migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
+    redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    registerUser: @escaping (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
+    removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
+    updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>,
+    upsertUser: @escaping (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+    ) {
+    self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
+    self.createFeedRequestEvent = createFeedRequestEvent
+    self.createSubscription = createSubscription
+    self.deleteTeamInvite = deleteTeamInvite
+    self.execute = execute
+    self.fetchAdmins = fetchAdmins
+    self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
+    self.fetchEpisodeCredits = fetchEpisodeCredits
+    self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
+    self.fetchSubscriptionById = fetchSubscriptionById
+    self.fetchSubscriptionByOwnerId = fetchSubscriptionByOwnerId
+    self.fetchSubscriptionTeammatesByOwnerId = fetchSubscriptionTeammatesByOwnerId
+    self.fetchTeamInvite = fetchTeamInvite
+    self.fetchTeamInvites = fetchTeamInvites
+    self.fetchUserByGitHub = fetchUserByGitHub
+    self.fetchUserById = fetchUserById
+    self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
+    self.fetchUsersToWelcome = fetchUsersToWelcome
+    self.incrementEpisodeCredits = incrementEpisodeCredits
+    self.insertTeamInvite = insertTeamInvite
+    self.migrate = migrate
+    self.redeemEpisodeCredit = redeemEpisodeCredit
+    self.registerUser = registerUser
+    self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
+    self.updateStripeSubscription = updateStripeSubscription
+    self.updateUser = updateUser
+    self.upsertUser = upsertUser
+  }
 }
 
 extension Client {
@@ -63,6 +122,7 @@ extension Client {
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
+      execute: client.execute,
       fetchAdmins: { client.fetchAdmins() },
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),

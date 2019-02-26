@@ -50,6 +50,12 @@ let package = Package(
       name: "DatabaseTestSupport",
       dependencies: [
         "Database",
+        "Either",
+        "Models",
+        "ModelsTestSupport",
+        "PointFreePrelude",
+        "PostgreSQL",
+        "Prelude",
         ]
     ),
 
