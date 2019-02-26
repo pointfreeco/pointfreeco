@@ -1,4 +1,5 @@
 @testable import GitHub
+import GitHubTestSupport
 import SnapshotTesting
 import XCTest
 

@@ -1,5 +1,6 @@
 import XCTest
-@testable import Models
+import Models
+import ModelsTestSupport
 
 final class BlogPostTests: XCTestCase {
 
