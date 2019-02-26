@@ -8,13 +8,17 @@ let package = Package(
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Database", targets: ["Database"]),
+    .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "GitHub", targets: ["GitHub"]),
+    .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
     .library(name: "Models", targets: ["Models"]),
+    .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     .library(name: "Stripe", targets: ["Stripe"]),
+    .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     ],
@@ -41,6 +45,13 @@ let package = Package(
         ]
     ),
 
+    .target(
+      name: "DatabaseTestSupport",
+      dependencies: [
+        "Database",
+        ]
+    ),
+
     .testTarget(
       name: "DatabaseTests",
       dependencies: [
@@ -56,6 +67,15 @@ let package = Package(
         "Logger",
         "Optics",
         "PointFreePrelude",
+        "Prelude",
+        ]
+    ),
+
+    .target(
+      name: "GitHubTestSupport",
+      dependencies: [
+        "Either",
+        "GitHub",
         "Prelude",
         ]
     ),
@@ -85,10 +105,25 @@ let package = Package(
         ]
     ),
 
+    .target(
+      name: "ModelsTestSupport",
+      dependencies: [
+        "GitHub",
+        "GitHubTestSupport",
+        "Models",
+        "Optics",
+        "Prelude",
+        "PointFreePrelude",
+        "Stripe",
+        "StripeTestSupport",
+        ]
+    ),
+
     .testTarget(
       name: "ModelsTests",
       dependencies: [
         "Models",
+        "ModelsTestSupport",
         ]
     ),
 
@@ -147,16 +182,20 @@ let package = Package(
       name: "PointFreeTestSupport",
       dependencies: [
         "Database",
+        "DatabaseTestSupport",
         "Either",
         "GitHub",
+        "GitHubTestSupport",
         "HttpPipelineTestSupport",
         "Models",
+        "ModelsTestSupport",
         "Logger",
         "PointFree",
         "PointFreePrelude",
         "Prelude",
         "SnapshotTesting",
         "Stripe",
+        "StripeTestSupport",
         ]
     ),
 
@@ -177,9 +216,20 @@ let package = Package(
       dependencies: [
         "Either",
         "Logger",
+        "PointFreePrelude",
+        "Prelude",
+        ]
+    ),
+
+    .target(
+      name: "StripeTestSupport",
+      dependencies: [
+        "Either",
+        "Logger",
         "Optics",
         "PointFreePrelude",
         "Prelude",
+        "Stripe",
         ]
     ),
 

@@ -1,4 +1,5 @@
 import Foundation
+import Models
 
 extension Episode {
   static let mock = subscriberOnlyEpisode

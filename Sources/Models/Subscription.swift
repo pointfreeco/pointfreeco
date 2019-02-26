@@ -8,6 +8,18 @@ public struct Subscription: Decodable {
   public var stripeSubscriptionStatus: Stripe.Subscription.Status
   public var userId: User.Id
 
+  public init(
+    id: Id,
+    stripeSubscriptionId: Stripe.Subscription.Id,
+    stripeSubscriptionStatus: Stripe.Subscription.Status,
+    userId: User.Id
+    ) {
+    self.id = id
+    self.stripeSubscriptionId = stripeSubscriptionId
+    self.stripeSubscriptionStatus = stripeSubscriptionStatus
+    self.userId = userId
+  }
+
   public typealias Id = Tagged<Subscription, UUID>
 
   private enum CodingKeys: String, CodingKey {

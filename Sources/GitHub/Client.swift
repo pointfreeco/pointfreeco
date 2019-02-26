@@ -14,6 +14,16 @@ public struct Client {
 
   /// Fetches a GitHub user from an access token.
   public var fetchUser: (AccessToken) -> EitherIO<Error, User>
+
+  public init(
+    fetchAuthToken: @escaping (String) -> EitherIO<Error, Either<OAuthError, AccessToken>>,
+    fetchEmails: @escaping (AccessToken) -> EitherIO<Error, [User.Email]>,
+    fetchUser: @escaping (AccessToken) -> EitherIO<Error, User>
+    ) {
+    self.fetchAuthToken = fetchAuthToken
+    self.fetchEmails = fetchEmails
+    self.fetchUser = fetchUser
+  }
 }
 
 extension Client {

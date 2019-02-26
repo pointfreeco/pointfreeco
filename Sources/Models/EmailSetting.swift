@@ -2,6 +2,11 @@ public struct EmailSetting: Codable, Equatable {
   public var newsletter: Newsletter
   public var userId: User.Id
 
+  public init(newsletter: Newsletter, userId: User.Id) {
+    self.newsletter = newsletter
+    self.userId = userId
+  }
+
   public enum CodingKeys: String, CodingKey {
     case newsletter
     case userId = "user_id"

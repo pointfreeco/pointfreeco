@@ -2,9 +2,10 @@ import Either
 import Foundation
 import Optics
 import Prelude
+import Stripe
 
 extension Client {
-  static let mock = Client(
+  public static let mock = Client(
     cancelSubscription: const(pure(.canceling)),
     createCustomer: { _, _, _, _ in pure(.mock) },
     createSubscription: { _, _, _, _ in pure(.mock) },
@@ -25,7 +26,7 @@ extension Client {
 }
 
 extension Card {
-  static let mock = Card(
+  public static let mock = Card(
     brand: .visa,
     customer: "cus_test",
     expMonth: 1,
@@ -36,7 +37,7 @@ extension Card {
 }
 
 extension Charge {
-  static let mock = Charge(
+  public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
     source: .mock
@@ -44,7 +45,7 @@ extension Charge {
 }
 
 extension Customer {
-  static let mock = Customer(
+  public static let mock = Customer(
     businessVatId: nil,
     defaultSource: "card_test",
     id: "cus_test",
@@ -54,19 +55,19 @@ extension Customer {
 }
 
 extension StripeError {
-  static let mock = StripeError(
+  public static let mock = StripeError(
     message: "Your card has insufficient funds."
   )
 }
 
 extension StripeErrorEnvelope {
-  static let mock = StripeErrorEnvelope(
+  public static let mock = StripeErrorEnvelope(
     error: .mock
   )
 }
 
 extension Event where T == Either<Invoice, Subscription> {
-  static var invoice: Event<Either<Invoice, Subscription>> {
+  public static var invoice: Event<Either<Invoice, Subscription>> {
     return .init(
       data: .init(object: .left(.mock(charge: .left("ch_test")))),
       id: "evt_test",
@@ -76,7 +77,7 @@ extension Event where T == Either<Invoice, Subscription> {
 }
 
 extension Invoice {
-  static func mock(charge: Either<Charge.Id, Charge>?) -> Invoice {
+  public static func mock(charge: Either<Charge.Id, Charge>?) -> Invoice {
     return Invoice(
       amountDue: 0_00,
       amountPaid: 17_00,
@@ -96,14 +97,14 @@ extension Invoice {
     )
   }
 
-  static let upcoming = mock(charge: .right(.mock))
+  public static let upcoming = mock(charge: .right(.mock))
     |> \.amountDue .~ 17_00
     |> \.amountPaid .~ 0
     |> \.id .~ nil
 }
 
 extension LineItem {
-  static let mock = LineItem(
+  public static let mock = LineItem(
     amount: 17_00,
     description: nil,
     id: "ii_test",
@@ -114,7 +115,7 @@ extension LineItem {
 }
 
 extension ListEnvelope {
-  static func mock(_ xs: [A]) -> ListEnvelope<A> {
+  public static func mock(_ xs: [A]) -> ListEnvelope<A> {
     return .init(
       data: xs,
       hasMore: false
@@ -123,7 +124,7 @@ extension ListEnvelope {
 }
 
 extension Plan {
-  static let mock = Plan(
+  public static let mock = Plan(
     amount: 17_00,
     created: .mock,
     currency: .usd,
@@ -134,27 +135,27 @@ extension Plan {
     statementDescriptor: nil
   )
 
-  static let individualMonthly = mock
+  public static let individualMonthly = mock
 
-  static let individualYearly = mock
+  public static let individualYearly = mock
     |> \.amount .~ 170_00
     |> \.id .~ .individualYearly
     |> \.interval .~ .year
     |> \.name .~ "Individual Yearly"
 
-  static let teamMonthly = individualMonthly
+  public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
     |> \.id .~ .teamMonthly
     |> \.name .~ "Team Monthly"
 
-  static let teamYearly = individualYearly
+  public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
     |> \.id .~ .teamYearly
     |> \.name .~ "Team Yearly"
 }
 
 extension Subscription {
-  static let mock = Subscription(
+  public static let mock = Subscription(
     canceledAt: nil,
     cancelAtPeriodEnd: false,
     created: .mock,
@@ -171,43 +172,43 @@ extension Subscription {
     status: .active
   )
 
-  static let individualMonthly = mock
+  public static let individualMonthly = mock
     |> \.plan .~ .individualMonthly
     |> \.quantity .~ 1
 
-  static let individualYearly = mock
+  public static let individualYearly = mock
     |> \.plan .~ .individualYearly
     |> \.quantity .~ 1
 
-  static let teamMonthly = mock
+  public static let teamMonthly = mock
     |> \.plan .~ .teamMonthly
     |> \.quantity .~ 4
 
-  static let teamYearly = mock
+  public static let teamYearly = mock
     |> \.plan .~ .teamYearly
     |> \.quantity .~ 4
 
-  static let canceling = mock
+  public static let canceling = mock
     |> \.cancelAtPeriodEnd .~ true
 
-  static let canceled = canceling
+  public static let canceled = canceling
     |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
 
-  static let discounted = mock
+  public static let discounted = mock
     |> \.plan .~ .individualYearly
     |> \.quantity .~ 1
     |> \.discount .~ .mock
 }
 
 extension Discount {
-  static let mock = Discount(coupon: .mock)
+  public static let mock = Discount(coupon: .mock)
 }
 
 extension Coupon {
-  static let mock = Coupon(
+  public static let mock = Coupon(
     duration: .forever,
     id: "coupon-deadbeef",
     name: "Student Discount",
@@ -217,7 +218,7 @@ extension Coupon {
 }
 
 extension Subscription.Item {
-  static let mock = Subscription.Item(
+  public static let mock = Subscription.Item(
     created: .mock,
     id: "si_test",
     plan: .mock,
