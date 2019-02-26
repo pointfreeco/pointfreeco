@@ -1,6 +1,7 @@
 import Html
 import HtmlCssSupport
 import Foundation
+import Models
 import Styleguide
 import Prelude
 import View
@@ -18,7 +19,7 @@ let hostSignOffView = View<Prelude.Unit> { _ in
   ]
 }
 
-let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter in
+let emailFooterView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter in
   emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -41,7 +42,7 @@ let emailFooterView = View<(Database.User?, Database.EmailSetting.Newsletter?)> 
     ])
 }
 
-private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
+private let unsubscribeView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
   guard let user = user, let newsletter = newsletter else { return [] }
 
   return [
@@ -54,7 +55,7 @@ private let unsubscribeView = View<(Database.User?, Database.EmailSetting.Newsle
   ]
 }
 
-private func subscribedReason(newsletter: Database.EmailSetting.Newsletter) -> String {
+private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
   switch newsletter {
   case .announcements:
     return """

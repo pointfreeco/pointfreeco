@@ -18,7 +18,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T3<Database.Subscription?, Database.User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
@@ -220,7 +220,7 @@ enum SubscriberState {
   case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
   case teammate(status: Stripe.Subscription.Status)
 
-  init(user: Database.User?, subscription: Database.Subscription?) {
+  init(user: User?, subscription: Models.Subscription?) {
     switch (user, subscription) {
     case let (.some(user), .some(subscription)):
       if subscription.userId == user.id {

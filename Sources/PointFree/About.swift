@@ -4,12 +4,13 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Prelude
 import Styleguide
 import Tuple
 import View
 
-let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<Database.User?, SubscriberState, Route?>, Data> =
+let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(

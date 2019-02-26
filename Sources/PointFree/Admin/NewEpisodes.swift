@@ -18,7 +18,7 @@ let showNewEpisodeEmailMiddleware =
     <| writeStatus(.ok)
     >=> respond(showNewEpisodeView.contramap(lower))
 
-private let showNewEpisodeView = View<Database.User> { _ in
+private let showNewEpisodeView = View<User> { _ in
   ul(
     Current.episodes()
       .sorted(by: their(^\.sequence, >))
@@ -43,7 +43,7 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
 }
 
 let sendNewEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple5<Database.User?, Episode.Id, String?, String?, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Episode.Id, String?, String?, Bool?>, Data> =
   requireAdmin
     <<< filterMap(
       over2(fetchEpisode) >>> require2 >>> pure,
@@ -57,7 +57,7 @@ let sendNewEpisodeEmailMiddleware:
     >=> redirect(to: .admin(.index))
 
 private func sendNewEpisodeEmails<I>(
-  _ conn: Conn<I, Tuple5<Database.User, Episode, String?, String? , Bool>>
+  _ conn: Conn<I, Tuple5<User, Episode, String?, String? , Bool>>
   ) -> IO<Conn<I, Prelude.Unit>> {
 
   let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
@@ -83,7 +83,7 @@ private func sendNewEpisodeEmails<I>(
 
 private func sendEmail(
   forNewEpisode episode: Episode,
-  toUsers users: [Database.User],
+  toUsers users: [User],
   subscriberAnnouncement: String?,
   nonSubscriberAnnouncement: String?,
   isTest: Bool

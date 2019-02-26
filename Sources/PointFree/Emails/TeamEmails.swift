@@ -1,6 +1,7 @@
 import Css
 import Html
 import HtmlCssSupport
+import Models
 import Prelude
 import Styleguide
 import View
@@ -17,7 +18,7 @@ let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody)
     )
 }
 
-private let youHaveBeenRemovedEmailBody = View<(Database.User, Database.User)> { teamOwner, teammate in
+private let youHaveBeenRemovedEmailBody = View<(User, User)> { teamOwner, teammate in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -56,7 +57,7 @@ let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody)
     )
 }
 
-private let teammateRemovedEmailBody = View<(Database.User, Database.User)> { teamOwner, teammate in
+private let teammateRemovedEmailBody = View<(User, User)> { teamOwner, teammate in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

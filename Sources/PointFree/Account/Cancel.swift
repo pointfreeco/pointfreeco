@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
@@ -44,7 +45,7 @@ let reactivateMiddleware =
 
 // MARK: -
 
-private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.User)>)
+private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (subscription, user) = conn.data
@@ -70,7 +71,7 @@ private func cancel(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, Database.
     )
 }
 
-private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, Stripe.Subscription, Database.User)>)
+private func reactivate(_ conn: Conn<StatusLineOpen, (Stripe.Subscription.Item, Stripe.Subscription, User)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (item, subscription, user) = conn.data
@@ -122,9 +123,9 @@ func requireSubscriptionItem<A>(
 }
 
 func requireStripeSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return requireSubscriptionAndOwner
       <<< fetchStripeSubscription
@@ -139,9 +140,9 @@ func requireStripeSubscription<A>(
 }
 
 private func requireSubscriptionAndOwner<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription, Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Models.Subscription, User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return fetchSubscription
       <<< filterMap(
@@ -162,9 +163,9 @@ private func requireSubscriptionAndOwner<A>(
 }
 
 func fetchSubscription<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Database.Subscription?, Database.User, A>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Models.Subscription?, User, A>, Data>
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<User, A>, Data> {
 
     return { conn in
       let subscription = Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
@@ -176,7 +177,7 @@ func fetchSubscription<A>(
     }
 }
 
-private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Database.Subscription, Database.User, A>)
+private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Models.Subscription, User, A>)
   -> Bool {
 
     return get1(subscriptionAndUser).userId == get2(subscriptionAndUser).id
@@ -185,7 +186,7 @@ private func isSubscriptionOwner<A>(_ subscriptionAndUser: T3<Database.Subscript
 private func fetchStripeSubscription<A>(
   _ middleware: (@escaping Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription?, A>, Data>)
   )
-  -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.Subscription, A>, Data> {
+  -> Middleware<StatusLineOpen, ResponseEnded, T2<Models.Subscription, A>, Data> {
 
     return { conn in
       Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
@@ -197,7 +198,7 @@ private func fetchStripeSubscription<A>(
 
 // MARK: - Emails
 
-private func sendCancelEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscription)
   -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     return sendEmail(
@@ -222,7 +223,7 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
     )
 }
 
-private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+private let cancelEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -243,7 +244,7 @@ private let cancelEmailBodyView = View<(Database.User, Stripe.Subscription)> { u
     ])
 }
 
-private func sendReactivateEmail(to owner: Database.User, for subscription: Stripe.Subscription)
+private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
   -> EitherIO<Error, Mailgun.SendEmailResponse> {
 
     return sendEmail(
@@ -265,7 +266,7 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
     )
 }
 
-private let reactivateEmailBodyView = View<(Database.User, Stripe.Subscription)> { user, subscription in
+private let reactivateEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

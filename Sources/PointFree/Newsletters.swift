@@ -2,6 +2,7 @@ import ApplicativeRouter
 import Either
 import HttpPipeline
 import Foundation
+import Models
 import Prelude
 import Tuple
 
@@ -15,7 +16,7 @@ let expressUnsubscribeReplyMiddleware =
     >=> head(.ok)
 
 private func requireUserAndNewsletter(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, EmailSetting.Newsletter>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
 
   return { conn in
@@ -32,7 +33,7 @@ private func requireUserAndNewsletter(
 }
 
 private func unsubscribeMiddleware<I>(
-  _ conn: Conn<I, Tuple2<Database.User.Id, Database.EmailSetting.Newsletter>>
+  _ conn: Conn<I, Tuple2<User.Id, EmailSetting.Newsletter>>
   ) -> IO<Conn<I, Prelude.Unit>> {
 
   let (userId, newsletter) = lower(conn.data)

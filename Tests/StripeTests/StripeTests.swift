@@ -3,6 +3,7 @@ import Optics
 import Prelude
 import SnapshotTesting
 @testable import Stripe
+import StripeTestSupport
 import XCTest
 
 #if !os(Linux)

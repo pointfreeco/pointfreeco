@@ -5,13 +5,14 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
 
-let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User?, SubscriberState>, Data> =
+let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filter(
       get2 >>> ^\.isOwner >>> (!),
@@ -27,8 +28,8 @@ let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Databa
 )
 
 private func leaveTeam<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<Database.User, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
 
   return { conn in
     let user = get1(conn.data)
@@ -57,7 +58,7 @@ private func leaveTeam<Z>(
   }
 }
 
-let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Database.User.Id, Database.User?>, Data> =
+let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User?>, Data> =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(
       over1(
@@ -105,7 +106,7 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<D
     }
     >=> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
 
-private func sendEmailsForTeammateRemoval(owner: Database.User, teammate: Database.User) -> Parallel<Prelude.Unit> {
+private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parallel<Prelude.Unit> {
 
   guard owner.id != teammate.id else {
     return pure(unit)

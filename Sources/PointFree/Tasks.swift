@@ -68,7 +68,7 @@ private func notifyError<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
 
 // TODO: team callouts
 
-private func prepareWelcomeEmail(to user: Database.User, subject: String, content: View<Database.User>)
+private func prepareWelcomeEmail(to user: User, subject: String, content: View<User>)
   -> Email {
     return prepareEmail(
       to: [user.email],
@@ -77,7 +77,7 @@ private func prepareWelcomeEmail(to user: Database.User, subject: String, conten
     )
 }
 
-func welcomeEmailView(_ subject: String, _ content: View<Database.User>) -> View<Database.User> {
+func welcomeEmailView(_ subject: String, _ content: View<User>) -> View<User> {
   return simpleEmailLayout(content.map(wrapper)).contramap { user in
     SimpleEmailLayoutData(
       user: user,
@@ -102,7 +102,7 @@ private let wrapper = { view in
   ]
 }
 
-func welcomeEmail1(_ user: Database.User) -> Email {
+func welcomeEmail1(_ user: User) -> Email {
   let subject = "Thanks for signing up to Point-Free!"
   return prepareWelcomeEmail(
     to: user,
@@ -111,7 +111,7 @@ func welcomeEmail1(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail1Content = View<Database.User> { user -> [Node] in
+let welcomeEmail1Content = View<User> { user -> [Node] in
   [
     markdownBlock(
       """
@@ -153,7 +153,7 @@ let welcomeEmail1Content = View<Database.User> { user -> [Node] in
     <> hostSignOffView.view(unit)
 }
 
-func welcomeEmail2(_ user: Database.User) -> Email {
+func welcomeEmail2(_ user: User) -> Email {
   let subject = "Free episodes on Point-Free"
   return prepareWelcomeEmail(
     to: user,
@@ -162,7 +162,7 @@ func welcomeEmail2(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail2Content = View<Database.User> { user -> [Node] in
+let welcomeEmail2Content = View<User> { user -> [Node] in
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -208,7 +208,7 @@ let welcomeEmail2Content = View<Database.User> { user -> [Node] in
     <> hostSignOffView.view(unit)
 }
 
-func welcomeEmail3(_ user: Database.User) -> Email {
+func welcomeEmail3(_ user: User) -> Email {
   let subject = "Here's a free episode!"
   return prepareWelcomeEmail(
     to: user,
@@ -217,7 +217,7 @@ func welcomeEmail3(_ user: Database.User) -> Email {
   )
 }
 
-let welcomeEmail3Content = View<Database.User> { user -> [Node] in
+let welcomeEmail3Content = View<User> { user -> [Node] in
   [
     markdownBlock(
       """
