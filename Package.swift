@@ -63,6 +63,7 @@ let package = Package(
       name: "DatabaseTests",
       dependencies: [
         "Database",
+        "DatabaseTestSupport",
         "SnapshotTesting",
         ]
     ),
@@ -91,6 +92,7 @@ let package = Package(
       name: "GitHubTests",
       dependencies: [
         "GitHub",
+        "GitHubTestSupport",
         "SnapshotTesting",
         ]
     ),
@@ -245,6 +247,7 @@ let package = Package(
       dependencies: [
         "SnapshotTesting",
         "Stripe",
+        "StripeTestSupport",
         ]
     ),
 
