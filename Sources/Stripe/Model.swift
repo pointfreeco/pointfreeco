@@ -14,6 +14,22 @@ public struct Card: Codable, Equatable {
   public var id: Id
   public var last4: String
 
+  public init(
+    brand: Brand,
+    customer: Customer.Id,
+    expMonth: Int,
+    expYear: Int,
+    id: Id,
+    last4: String
+    ) {
+    self.brand = brand
+    self.customer = customer
+    self.expMonth = expMonth
+    self.expYear = expYear
+    self.id = id
+    self.last4 = last4
+  }
+
   public typealias Id = Tagged<Card, String>
 
   public enum Brand: String, Codable, Equatable {
@@ -51,17 +67,29 @@ public struct Charge: Codable, Equatable {
   public var id: Id
   public var source: Card
 
-  public typealias Id = Tagged<Card, String>
+  public init(amount: Cents, id: Id, source: Card) {
+    self.amount = amount
+    self.id = id
+    self.source = source
+  }
+
+  public typealias Id = Tagged<Charge, String>
 }
 
 public struct Coupon: Equatable {
-  public typealias Id = Tagged<Coupon, String>
-
   public var duration: Duration
   public var id: Id
   public var name: String?
   public var rate: Rate
   public var valid: Bool
+
+  public init(duration: Duration, id: Id, name: String?, rate: Rate, valid: Bool) {
+    self.duration = duration
+    self.id = id
+    self.name = name
+    self.rate = rate
+    self.valid = valid
+  }
 
   public var formattedDescription: String {
     switch duration {
@@ -73,6 +101,8 @@ public struct Coupon: Equatable {
       return "\(self.rate.formattedDescription) every billing period for the first \(months) months"
     }
   }
+
+  public typealias Id = Tagged<Coupon, String>
 
   public enum Duration: Equatable {
     case forever
@@ -102,6 +132,20 @@ public struct Customer: Codable, Equatable {
   public var metadata: [String: String]
   public var sources: ListEnvelope<Card>
 
+  public init(
+    businessVatId: Vat?,
+    defaultSource: Card.Id?,
+    id: Id,
+    metadata: [String: String],
+    sources: ListEnvelope<Card>
+    ) {
+    self.businessVatId = businessVatId
+    self.defaultSource = defaultSource
+    self.id = id
+    self.metadata = metadata
+    self.sources = sources
+  }
+
   public typealias Id = Tagged<(Customer, id: ()), String>
   public typealias Vat = Tagged<(Customer, vat: ()), String>
 
@@ -120,14 +164,26 @@ public struct Customer: Codable, Equatable {
 
 public struct Discount: Codable, Equatable {
   public var coupon: Coupon
+
+  public init(coupon: Coupon) {
+    self.coupon = coupon
+  }
 }
 
 public struct StripeErrorEnvelope: Codable, Error {
-  public let error: StripeError
+  public var error: StripeError
+
+  public init(error: StripeError) {
+    self.error = error
+  }
 }
 
 public struct StripeError: Codable {
-  public let message: String
+  public var message: String
+
+  public init(message: String) {
+    self.message = message
+  }
 }
 
 public struct Event<T: Codable & Equatable>: Equatable, Codable {
@@ -135,10 +191,20 @@ public struct Event<T: Codable & Equatable>: Equatable, Codable {
   public var id: Id
   public var type: `Type`
 
+  public init(data: Data, id: Id, type: `Type`) {
+    self.data = data
+    self.id = id
+    self.type = type
+  }
+
   public typealias Id = Tagged<Event, String>
 
   public struct Data: Codable, Equatable {
     public var object: T
+
+    public init(object: T) {
+      self.object = object
+    }
   }
 
   public enum `Type`: String, Codable, Equatable {
@@ -164,6 +230,40 @@ public struct Invoice: Codable, Equatable {
   public var subscription: Subscription.Id?
   public var subtotal: Cents
   public var total: Cents
+
+  public init(
+    amountDue: Cents,
+    amountPaid: Cents,
+    charge: Either<Charge.Id, Charge>?,
+    closed: Bool,
+    customer: Customer.Id,
+    date: Date,
+    discount: Discount?,
+    id: Id?,
+    lines: ListEnvelope<LineItem>,
+    number: Number,
+    periodStart: Date,
+    periodEnd: Date,
+    subscription: Subscription.Id?,
+    subtotal: Cents,
+    total: Cents
+    ) {
+    self.amountDue = amountDue
+    self.amountPaid = amountPaid
+    self.charge = charge
+    self.closed = closed
+    self.customer = customer
+    self.date = date
+    self.discount = discount
+    self.id = id
+    self.lines = lines
+    self.number = number
+    self.periodStart = periodStart
+    self.periodEnd = periodEnd
+    self.subscription = subscription
+    self.subtotal = subtotal
+    self.total = total
+  }
 
   public typealias Id = Tagged<(Invoice, id: ()), String>
   public typealias Number = Tagged<(Invoice, number: ()), String>
@@ -195,12 +295,33 @@ public struct LineItem: Codable, Equatable {
   public var quantity: Int
   public var subscription: Subscription.Id?
 
+  public init(
+    amount: Cents,
+    description: String?,
+    id: Id,
+    plan: Plan,
+    quantity: Int,
+    subscription: Subscription.Id?
+    ) {
+    self.amount = amount
+    self.description = description
+    self.id = id
+    self.plan = plan
+    self.quantity = quantity
+    self.subscription = subscription
+  }
+
   public typealias Id = Tagged<LineItem, String>
 }
 
 public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
   public var data: [A]
   public var hasMore: Bool
+
+  public init(data: [A], hasMore: Bool) {
+    self.data = data
+    self.hasMore = hasMore
+  }
 
   private enum CodingKeys: String, CodingKey {
     case data
@@ -217,6 +338,26 @@ public struct Plan: Codable, Equatable {
   public var metadata: [String: String]
   public var name: String
   public var statementDescriptor: String?
+
+  public init(
+    amount: Cents,
+    created: Date,
+    currency: Currency,
+    id: Id,
+    interval: Interval,
+    metadata: [String: String],
+    name: String,
+    statementDescriptor: String?
+    ) {
+    self.amount = amount
+    self.created = created
+    self.currency = currency
+    self.id = id
+    self.interval = interval
+    self.metadata = metadata
+    self.name = name
+    self.statementDescriptor = statementDescriptor
+  }
 
   public typealias Id = Tagged<Plan, String>
 
@@ -257,6 +398,38 @@ public struct Subscription: Codable, Equatable {
   public var start: Date
   public var status: Status
 
+  public init(
+    canceledAt: Date?,
+    cancelAtPeriodEnd: Bool,
+    created: Date,
+    currentPeriodStart: Date,
+    currentPeriodEnd: Date,
+    customer: Either<Customer.Id, Customer>,
+    discount: Discount?,
+    endedAt: Date?,
+    id: Id,
+    items: ListEnvelope<Item>,
+    plan: Plan,
+    quantity: Int,
+    start: Date,
+    status: Status
+    ) {
+    self.canceledAt = canceledAt
+    self.cancelAtPeriodEnd = cancelAtPeriodEnd
+    self.created = created
+    self.currentPeriodStart = currentPeriodStart
+    self.currentPeriodEnd = currentPeriodEnd
+    self.customer = customer
+    self.discount = discount
+    self.endedAt = endedAt
+    self.id = id
+    self.items = items
+    self.plan = plan
+    self.quantity = quantity
+    self.start = start
+    self.status = status
+  }
+
   public var isCanceling: Bool {
     return self.status == .active && self.cancelAtPeriodEnd
   }
@@ -272,6 +445,18 @@ public struct Subscription: Codable, Equatable {
     public var id: Id
     public var plan: Plan
     public var quantity: Int
+
+    public init(
+      created: Date,
+      id: Id,
+      plan: Plan,
+      quantity: Int
+      ) {
+      self.created = created
+      self.id = id
+      self.plan = plan
+      self.quantity = quantity
+    }
 
     public typealias Id = Tagged<Item, String>
   }
@@ -304,6 +489,10 @@ public struct Subscription: Codable, Equatable {
 
 public struct Token: Codable {
   public var id: Id
+
+  public init(id: Id) {
+    self.id = id
+  }
 
   public typealias Id = Tagged<Token, String>
 }

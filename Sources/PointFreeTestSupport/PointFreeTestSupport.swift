@@ -2,20 +2,25 @@
 import Cocoa
 #endif
 import Cryptor
+import Database
+import DatabaseTestSupport
 import Either
 import Foundation
-@testable import GitHub
+import GitHub
+import GitHubTestSupport
 import Html
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
-@testable import Models
+import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import Prelude
 import SnapshotTesting
-@testable import Stripe
+import Stripe
+import StripeTestSupport
 #if os(macOS)
 import WebKit
 #endif
@@ -77,101 +82,6 @@ extension EnvVars {
 extension Mailgun {
   public static let mock = Mailgun(
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
-  )
-}
-
-extension Database {
-  public static let mock = Database(
-    addUserIdToSubscriptionId: { _, _ in pure(unit) },
-    createFeedRequestEvent: { _, _, _ in pure(unit) },
-    createSubscription: { _, _ in pure(unit) },
-    deleteTeamInvite: const(pure(unit)),
-    fetchAdmins: unzurry(pure([])),
-    fetchEmailSettingsForUserId: const(pure([.mock])),
-    fetchEpisodeCredits: const(pure([])),
-    fetchFreeEpisodeUsers: { pure([.mock]) },
-    fetchSubscriptionById: const(pure(.some(.mock))),
-    fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
-    fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
-    fetchTeamInvite: const(pure(.mock)),
-    fetchTeamInvites: const(pure([])),
-    fetchUserByGitHub: const(pure(.mock)),
-    fetchUserById: const(pure(.mock)),
-    fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },
-    fetchUsersToWelcome: const(pure([.mock])),
-    incrementEpisodeCredits: const(pure([])),
-    insertTeamInvite: { _, _ in pure(.mock) },
-    migrate: unzurry(pure(unit)),
-    redeemEpisodeCredit: { _, _ in pure(unit) },
-    registerUser: { _, _ in pure(.some(.mock)) },
-    removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
-    updateStripeSubscription: const(pure(.mock)),
-    updateUser: { _, _, _, _, _ in pure(unit) },
-    upsertUser: { _, _ in pure(.some(.mock)) }
-  )
-}
-
-extension Database.User {
-  public static let mock = Database.User(
-    email: "hello@pointfree.co",
-    episodeCreditCount: 0,
-    gitHubUserId: 1,
-    gitHubAccessToken: "deadbeef",
-    id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
-    isAdmin: false,
-    name: "Blob",
-    rssSalt: .init(rawValue: UUID(uuidString: "00000000-5A17-0000-0000-000000000000")!),
-    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
-  )
-
-  public static let newUser = mock
-    |> \.episodeCreditCount .~ 1
-    |> \.subscriptionId .~ nil
-
-  public static let owner = mock
-
-  public static let teammate = mock
-    |> \.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
-
-  public static let nonSubscriber = mock
-    |> \.subscriptionId .~ nil
-}
-
-extension Database.Subscription {
-  public static let mock = Database.Subscription(
-    id: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!),
-    stripeSubscriptionId: Stripe.Subscription.mock.id,
-    stripeSubscriptionStatus: .active,
-    userId: Database.User.mock.id
-  )
-
-  public static let canceled = mock
-    |> \.stripeSubscriptionStatus .~ .canceled
-
-  public static let pastDue = mock
-    |> \.stripeSubscriptionStatus .~ .pastDue
-}
-
-extension Database.TeamInvite {
-  public static let mock = Database.TeamInvite(
-    createdAt: .mock,
-    email: "blob@pointfree.co",
-    id: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!),
-    inviterUserId: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
-  )
-}
-
-extension Database.EmailSetting {
-  public static let mock = Database.EmailSetting(
-    newsletter: .newEpisode,
-    userId: .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!)
-  )
-}
-
-extension Database.EpisodeCredit {
-  public static let mock = Database.EpisodeCredit(
-    episodeSequence: 1,
-    userId: Database.User.mock.id
   )
 }
 

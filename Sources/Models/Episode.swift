@@ -2,8 +2,6 @@ import Foundation
 import Tagged
 
 public struct Episode {
-  public typealias Id = Tagged<Episode, Int>
-
   public var blurb: String
   public var codeSampleDirectory: String
   public var exercises: [Exercise]
@@ -20,44 +18,6 @@ public struct Episode {
   public var trailerVideo: Video?
   public var transcriptBlocks: [TranscriptBlock]
 
-  public struct Reference {
-    public var author: String?
-    public var blurb: String?
-    public var link: String
-    public var publishedAt: Date?
-    public var title: String
-
-    public init(
-      author: String?,
-      blurb: String?,
-      link: String,
-      publishedAt: Date?,
-      title: String
-      ) {
-      self.author = author
-      self.blurb = blurb
-      self.link = link
-      self.publishedAt = publishedAt
-      self.title = title
-    }
-  }
-
-  public struct Video {
-    // TODO: Tagged<Bytes, Int>?
-    public var bytesLength: Int
-    public var downloadUrl: String
-    public var streamingSource: String
-
-    public init(
-      bytesLength: Int,
-      downloadUrl: String,
-      streamingSource: String) {
-      self.bytesLength = bytesLength
-      self.downloadUrl = downloadUrl
-      self.streamingSource = streamingSource
-    }
-  }
-
   public init(
     blurb: String,
     codeSampleDirectory: String,
@@ -73,8 +33,8 @@ public struct Episode {
     sequence: Int,
     title: String,
     trailerVideo: Video?,
-    transcriptBlocks: [TranscriptBlock]) {
-
+    transcriptBlocks: [TranscriptBlock]
+    ) {
     self.blurb = blurb
     self.codeSampleDirectory = codeSampleDirectory
     self.exercises = exercises
@@ -118,6 +78,8 @@ public struct Episode {
     }
   }
 
+  public typealias Id = Tagged<Episode, Int>
+
   public struct Exercise {
     public var problem: String
     public var solution: String?
@@ -132,6 +94,28 @@ public struct Episode {
     case free
     case freeDuring(Range<Date>)
     case subscriberOnly
+  }
+
+  public struct Reference {
+    public var author: String?
+    public var blurb: String?
+    public var link: String
+    public var publishedAt: Date?
+    public var title: String
+
+    public init(
+      author: String?,
+      blurb: String?,
+      link: String,
+      publishedAt: Date?,
+      title: String
+      ) {
+      self.author = author
+      self.blurb = blurb
+      self.link = link
+      self.publishedAt = publishedAt
+      self.title = title
+    }
   }
 
   public struct TranscriptBlock: Equatable {
@@ -174,6 +158,23 @@ public struct Episode {
         public static let sql = CodeLang(identifier: "sql")
         public static let swift = CodeLang(identifier: "swift")
       }
+    }
+  }
+  
+  public struct Video {
+    // TODO: Tagged<Bytes, Int>?
+    public var bytesLength: Int
+    public var downloadUrl: String
+    public var streamingSource: String
+
+    public init(
+      bytesLength: Int,
+      downloadUrl: String,
+      streamingSource: String
+      ) {
+      self.bytesLength = bytesLength
+      self.downloadUrl = downloadUrl
+      self.streamingSource = streamingSource
     }
   }
 }

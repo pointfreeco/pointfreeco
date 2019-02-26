@@ -24,6 +24,42 @@ public struct Client {
   public var updateCustomerExtraInvoiceInfo: (Customer.Id, String) -> EitherIO<Error, Customer>
   public var updateSubscription: (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>
   public var js: String
+
+  public init(
+    cancelSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
+    createCustomer: @escaping (Token.Id, String?, EmailAddress?, Customer.Vat?) -> EitherIO<Error, Customer>,
+    createSubscription: @escaping (Customer.Id, Plan.Id, Int, Coupon.Id?) -> EitherIO<Error, Subscription>,
+    fetchCoupon: @escaping (Coupon.Id) -> EitherIO<Error, Coupon>,
+    fetchCustomer: @escaping (Customer.Id) -> EitherIO<Error, Customer>,
+    fetchInvoice: @escaping (Invoice.Id) -> EitherIO<Error, Invoice>,
+    fetchInvoices: @escaping (Customer.Id) -> EitherIO<Error, ListEnvelope<Invoice>>,
+    fetchPlans: @escaping () -> EitherIO<Error, ListEnvelope<Plan>>,
+    fetchPlan: @escaping (Plan.Id) -> EitherIO<Error, Plan>,
+    fetchSubscription: @escaping (Subscription.Id) -> EitherIO<Error, Subscription>,
+    fetchUpcomingInvoice: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
+    invoiceCustomer: @escaping (Customer.Id) -> EitherIO<Error, Invoice>,
+    updateCustomer: @escaping (Customer.Id, Token.Id) -> EitherIO<Error, Customer>,
+    updateCustomerExtraInvoiceInfo: @escaping (Customer.Id, String) -> EitherIO<Error, Customer>,
+    updateSubscription: @escaping (Subscription, Plan.Id, Int, Bool?) -> EitherIO<Error, Subscription>,
+    js: String
+    ) {
+    self.cancelSubscription = cancelSubscription
+    self.createCustomer = createCustomer
+    self.createSubscription = createSubscription
+    self.fetchCoupon = fetchCoupon
+    self.fetchCustomer = fetchCustomer
+    self.fetchInvoice = fetchInvoice
+    self.fetchInvoices = fetchInvoices
+    self.fetchPlans = fetchPlans
+    self.fetchPlan = fetchPlan
+    self.fetchSubscription = fetchSubscription
+    self.fetchUpcomingInvoice = fetchUpcomingInvoice
+    self.invoiceCustomer = invoiceCustomer
+    self.updateCustomer = updateCustomer
+    self.updateCustomerExtraInvoiceInfo = updateCustomerExtraInvoiceInfo
+    self.updateSubscription = updateSubscription
+    self.js = js
+  }
 }
 
 extension Client {

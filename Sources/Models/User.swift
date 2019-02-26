@@ -15,6 +15,28 @@ public struct User: Decodable, Equatable {
   public var rssSalt: RssSalt
   public var subscriptionId: Subscription.Id?
 
+  public init(
+    email: EmailAddress,
+    episodeCreditCount: Int,
+    gitHubUserId: GitHub.User.Id,
+    gitHubAccessToken: String,
+    id: Id,
+    isAdmin: Bool,
+    name: String?,
+    rssSalt: RssSalt,
+    subscriptionId: Subscription.Id?
+    ) {
+    self.email = email
+    self.episodeCreditCount = episodeCreditCount
+    self.gitHubUserId = gitHubUserId
+    self.gitHubAccessToken = gitHubAccessToken
+    self.id = id
+    self.isAdmin = isAdmin
+    self.name = name
+    self.rssSalt = rssSalt
+    self.subscriptionId = subscriptionId
+  }
+
   public typealias Id = Tagged<User, UUID>
   public typealias RssSalt = Tagged<(User, rssSalt: ()), UUID>
 
