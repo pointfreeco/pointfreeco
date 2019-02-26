@@ -798,24 +798,6 @@ public enum DatabaseError: Error {
   case invalidUrl
 }
 
-private let connInfo = URLComponents(string: "") // TODO: Current.envVars.postgres.databaseUrl)
-  .flatMap { url -> PostgreSQL.ConnInfo? in
-    curry(PostgreSQL.ConnInfo.basic)
-      <¢> url.host
-      <*> url.port
-      <*> String(url.path.dropFirst())
-      <*> url.user
-      <*> url.password
-  }
-  .map(Either.right)
-  ?? .left(DatabaseError.invalidUrl as Error)
-
-private let postgres = lift(connInfo)
-  .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
-
-private let conn = postgres
-  .flatMap { db in .wrap(db.makeConnection) }
-
 extension EitherIO where E == Swift.Error, A == Connection {
   fileprivate func rows<T: Decodable>(
     _ query: String,
