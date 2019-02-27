@@ -4,6 +4,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple

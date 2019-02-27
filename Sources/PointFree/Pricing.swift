@@ -7,94 +7,13 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
 import Optics
+import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Stripe
 import Styleguide
 import Tuple
 import View
-
-public struct Pricing: Equatable {
-  var billing: Billing
-  var quantity: Int
-
-  public static let `default` = Pricing(billing: .monthly, quantity: 1)
-
-  public static let validTeamQuantities = 2..<100
-
-  public enum Billing: String, Codable {
-    case monthly
-    case yearly
-  }
-
-  enum Lane: String, Codable {
-    case individual
-    case team
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case lane
-    case billing
-    case quantity
-  }
-
-  var interval: Stripe.Plan.Interval {
-    switch self.billing {
-    case .monthly:
-      return .month
-    case .yearly:
-      return .year
-    }
-  }
-
-  var isIndividual: Bool {
-    return self.lane == .individual
-  }
-
-  var isTeam: Bool {
-    return self.lane == .team
-  }
-
-  var lane: Lane {
-    return self.quantity == 1
-      ? .individual
-      : .team
-  }
-
-  var plan: Stripe.Plan.Id {
-    switch (self.billing, self.quantity) {
-    case (.monthly, 1):
-      return .individualMonthly
-    case (.yearly, 1):
-      return .individualYearly
-    case (.monthly, _):
-      return .teamMonthly
-    case (.yearly, _):
-      return .teamYearly
-    }
-  }
-}
-
-extension Pricing: Codable {
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
-    let billing = try container.decode(Billing.self, forKey: .billing)
-    if lane == .some(.individual) {
-      self.init(billing: billing, quantity: 1)
-    } else {
-      let quantity = try container.decode(Int.self, forKey: .quantity)
-      self.init(billing: billing, quantity: quantity)
-    }
-  }
-
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.lane, forKey: .lane)
-    try container.encode(self.billing, forKey: .billing)
-    try container.encode(self.quantity, forKey: .quantity)
-  }
-}
 
 private let couponError = "That coupon code is invalid or has expired."
 

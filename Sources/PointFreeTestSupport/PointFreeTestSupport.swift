@@ -16,6 +16,7 @@ import Models
 import ModelsTestSupport
 import Optics
 @testable import PointFree
+import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import SnapshotTesting
@@ -87,51 +88,6 @@ extension Mailgun {
 
 extension Date {
   public static let mock = Date(timeIntervalSince1970: 1517356800)
-}
-
-extension Pricing {
-  public static let mock = `default`
-
-  public static let individualMonthly = mock
-    |> \.billing .~ .monthly
-    |> \.quantity .~ 1
-
-  public static let individualYearly = mock
-    |> \.billing .~ .yearly
-    |> \.quantity .~ 1
-
-  public static let teamMonthly = mock
-    |> \.billing .~ .monthly
-    |> \.quantity .~ 4
-
-  public static let teamYearly = mock
-    |> \.billing .~ .yearly
-    |> \.quantity .~ 4
-}
-
-extension SubscribeData {
-  public static let individualMonthly = SubscribeData(
-    coupon: nil,
-    pricing: .init(billing: .monthly, quantity: 1),
-    token: "stripe-deadbeef",
-    vatNumber: ""
-  )
-
-  public static let individualYearly = SubscribeData(
-    coupon: nil,
-    pricing: .init(billing: .yearly, quantity: 1),
-    token: "stripe-deadbeef",
-    vatNumber: ""
-  )
-
-  public static func teamYearly(quantity: Int) -> SubscribeData {
-    return .init(
-      coupon: nil,
-      pricing: .init(billing: .yearly, quantity: quantity),
-      token: "stripe-deadbeef",
-      vatNumber: ""
-    )
-  }
 }
 
 extension Session {
