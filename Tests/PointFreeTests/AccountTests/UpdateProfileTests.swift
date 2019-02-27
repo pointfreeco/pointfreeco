@@ -4,6 +4,7 @@ import Html
 import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport
+import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude

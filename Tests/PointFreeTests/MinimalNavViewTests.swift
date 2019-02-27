@@ -4,6 +4,7 @@ import Models
 import ModelsTestSupport
 import Optics
 @testable import PointFree
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting

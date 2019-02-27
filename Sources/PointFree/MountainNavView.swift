@@ -6,6 +6,7 @@ import HtmlCssSupport
 import HttpPipeline
 import Models
 import Optics
+import PointFreeRouter
 import Styleguide
 import Prelude
 import View

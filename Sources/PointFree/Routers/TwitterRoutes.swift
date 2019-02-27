@@ -2,6 +2,8 @@ import ApplicativeRouter
 import Foundation
 import Prelude
 
+private protocol DerivePartialIsos {}
+
 public enum TwitterRoute: DerivePartialIsos {
   case mbrandonw
   case pointfreeco

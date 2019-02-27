@@ -2,8 +2,10 @@ import Html
 import HtmlPlainTextPrint
 import HttpPipeline
 import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
@@ -119,7 +121,7 @@ class NewBlogPostEmailTests: TestCase {
     )
 
     XCTAssertEqual(
-      .admin(.newBlogPostEmail(.send(blogPost, formData: formDataData, isTest: true))),
+      .admin(.newBlogPostEmail(.send(blogPost.id, formData: formDataData, isTest: true))),
       router.match(request: req)
     )
   }

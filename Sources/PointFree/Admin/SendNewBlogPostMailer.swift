@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
 import Optics
+import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
@@ -31,7 +32,7 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
   p([
     .text("Blog Post: \(post.title)"),
 
-    form([action(path(to: .admin(.newBlogPostEmail(.send(post, formData: nil, isTest: nil))))), method(.post)], [
+    form([action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))), method(.post)], [
 
       input([
         checked(true),
@@ -60,23 +61,13 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
     ])
 }
 
-public struct NewBlogPostFormData: Codable, Equatable {
-  let nonsubscriberAnnouncement: String
-  let nonsubscriberDeliver: Bool?
-  let subscriberAnnouncement: String
-  let subscriberDeliver: Bool?
-
-  fileprivate enum CodingKeys: String, CodingKey {
-    case nonsubscriberAnnouncement = "nonsubscriber_announcement"
-    case nonsubscriberDeliver = "nonsubscriber_deliver"
-    case subscriberAnnouncement = "subscriber_announcement"
-    case subscriberDeliver = "subscriber_deliver"
-  }
-}
-
 let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple4<User?, BlogPost, NewBlogPostFormData?, Bool?>, Data> =
+  Middleware<StatusLineOpen, ResponseEnded, Tuple4<User?, BlogPost.Id, NewBlogPostFormData?, Bool?>, Data> =
   requireAdmin
+    <<< filterMap(
+      over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
+      or: redirect(to: .admin(.newBlogPostEmail(.index)))
+    )
     <<< filterMap(
       require4 >>> pure,
       or: redirect(to: .admin(.newBlogPostEmail(.index)))

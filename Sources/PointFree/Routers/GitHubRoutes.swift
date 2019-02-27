@@ -2,6 +2,8 @@ import ApplicativeRouter
 import Foundation
 import Prelude
 
+private protocol DerivePartialIsos {}
+
 public enum GitHubRoute: DerivePartialIsos {
   case authorize(clientId: String, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)

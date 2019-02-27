@@ -3,6 +3,7 @@ import HttpPipeline
 import Optics
 @testable import PointFree
 import PointFreePrelude
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting

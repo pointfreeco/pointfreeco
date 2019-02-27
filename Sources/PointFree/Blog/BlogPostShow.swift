@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import Models
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
@@ -115,10 +116,11 @@ let blogPostContentView = View<BlogPost> { post in
     h1(
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
-        a(
-          [href(url(to: .blog(.show(post))))],
-          [.text(post.title)]
-        )
+        // TODO
+//        a(
+//          [href(url(to: .blog(.show(post))))],
+//          [.text(post.title)]
+//        )
       ]
     ),
 
@@ -129,10 +131,11 @@ let blogPostContentView = View<BlogPost> { post in
       ],
       [
         div([p([.text(episodeDateFormatter.string(from: post.publishedAt))])]),
-        div(
-          [`class`([Class.margin([.mobile: [.left: 1]])])],
-          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
-        )
+        // TODO
+//        div(
+//          [`class`([Class.margin([.mobile: [.left: 1]])])],
+//          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
+//        )
       ]
     ),
  

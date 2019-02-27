@@ -2,9 +2,11 @@ import Either
 import Html
 import HttpPipeline
 @testable import Models
+import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
@@ -69,7 +71,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() {
-    let conn = connection(from: request(to: .blog(.show(.mock)), basicAuth: true))
+    let postId = Current.blogPosts().first!.id
+    let conn = connection(from: request(to: .blog(.show(.right(postId.rawValue))), basicAuth: true))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -87,7 +90,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow_Unauthed() {
-    let conn = connection(from: request(to: .blog(.show(.mock))))
+    let postId = Current.blogPosts().first!.id
+    let conn = connection(from: request(to: .blog(.show(.right(postId.rawValue)))))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
