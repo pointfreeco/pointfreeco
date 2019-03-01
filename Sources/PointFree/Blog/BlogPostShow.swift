@@ -10,6 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 import View
+import Views
 
 let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
