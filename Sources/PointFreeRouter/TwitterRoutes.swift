@@ -2,16 +2,13 @@ import ApplicativeRouter
 import Foundation
 import Prelude
 
-private protocol DerivePartialIsos {}
-
 public enum TwitterRoute: DerivePartialIsos {
   case mbrandonw
   case pointfreeco
   case stephencelis
 }
 
-let twitterRouter = [
-
+public let twitterRouter = [
   .mbrandonw
     <¢> get %> lit("mbrandonw") <% end,
 
@@ -20,12 +17,11 @@ let twitterRouter = [
 
   .stephencelis
     <¢> get %> lit("stephencelis") <% end,
-
   ]
   .reduce(.empty, <|>)
 
-private let twitterBaseUrl = URL(string: "https://www.twitter.com")!
-
-func twitterUrl(to route: TwitterRoute) -> String {
+public func twitterUrl(to route: TwitterRoute) -> String {
   return twitterRouter.url(for: route, base: twitterBaseUrl)?.absoluteString ?? ""
 }
+
+private let twitterBaseUrl = URL(string: "https://www.twitter.com")!

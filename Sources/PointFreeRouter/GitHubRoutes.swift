@@ -2,8 +2,6 @@ import ApplicativeRouter
 import Foundation
 import Prelude
 
-private protocol DerivePartialIsos {}
-
 public enum GitHubRoute: DerivePartialIsos {
   case authorize(clientId: String, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
@@ -26,7 +24,7 @@ public enum GitHubRoute: DerivePartialIsos {
   }
 }
 
-let gitHubRouter = [
+public let gitHubRouter = [
 
   PartialIso.authorize
     <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
@@ -52,8 +50,8 @@ let gitHubRouter = [
   ]
   .reduce(.empty, <|>)
 
-private let gitHubBaseUrl = URL(string: "https://github.com")!
-
-func gitHubUrl(to route: GitHubRoute) -> String {
+public func gitHubUrl(to route: GitHubRoute) -> String {
   return gitHubRouter.url(for: route, base: gitHubBaseUrl)?.absoluteString ?? ""
 }
+
+private let gitHubBaseUrl = URL(string: "https://github.com")!

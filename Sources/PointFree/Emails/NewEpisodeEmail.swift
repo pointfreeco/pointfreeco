@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import View
