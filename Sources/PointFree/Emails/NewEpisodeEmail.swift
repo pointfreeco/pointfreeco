@@ -11,6 +11,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import View
+import Views
 
 public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
   .contramap { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in

@@ -22,6 +22,7 @@ let package = Package(
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
+    .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("8cbc934")),
@@ -164,6 +165,7 @@ let package = Package(
         "Tuple",
         "UrlFormEncoding",
         "View",
+        "Views",
         ]
     ),
 
@@ -301,6 +303,40 @@ let package = Package(
       name: "SyndicationTests",
       dependencies: [
         "Syndication",
+        ]),
+
+    .target(
+      name: "Views",
+      dependencies: [
+        "ApplicativeRouter",
+        "ApplicativeRouterHttpPipelineSupport",
+        "Css",
+        "CssReset",
+        "Database",
+        "Either",
+        "GitHub",
+        "Html",
+        "HtmlCssSupport",
+        "HtmlPlainTextPrint",
+        "HttpPipeline",
+        "HttpPipelineHtmlSupport",
+        "Models",
+        "Optics",
+        "PointFreeRouter",
+        "PointFreePrelude",
+        "PostgreSQL",
+        "Stripe",
+        "Styleguide",
+        "Syndication",
+        "Tuple",
+        "UrlFormEncoding",
+        "View",
+        ]),
+
+    .testTarget(
+      name: "ViewsTests",
+      dependencies: [
+        "Views",
         ]),
     ]
 )

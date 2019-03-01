@@ -11,6 +11,7 @@ import Prelude
 import Styleguide
 import Tuple
 import View
+import Views
 
 enum NavStyle {
   case minimal(MinimalStyle)
