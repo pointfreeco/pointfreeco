@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PointFree::PointFreeRouterTests"
+               BuildableName = "PointFreeRouterTests.xctest"
+               BlueprintName = "PointFreeRouterTests"
+               ReferencedContainer = "container:PointFree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "PointFree::PointFreeRouter"
+            BuildableName = "PointFreeRouter.framework"
+            BlueprintName = "PointFreeRouter"
+            ReferencedContainer = "container:PointFree.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

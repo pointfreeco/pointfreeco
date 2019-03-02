@@ -189,6 +189,14 @@ let package = Package(
       ]
     ),
 
+    .testTarget(
+      name: "PointFreeRouterTests",
+      dependencies: [
+        "PointFreeRouter",
+        "UrlFormEncoding"
+      ]
+    ),
+
     .target(
       name: "PointFreePrelude",
       dependencies: [
