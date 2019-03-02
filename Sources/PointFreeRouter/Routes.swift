@@ -33,6 +33,14 @@ public enum Route: DerivePartialIsos, Equatable {
     case feed
     case index
     case show(Either<String, BlogPost.Id>)
+
+    public static func show(slug: String) -> Blog {
+      return .show(.left(slug))
+    }
+
+    public static func show(id: BlogPost.Id) -> Blog {
+      return .show(.right(id))
+    }
   }
 
   public enum Feed: DerivePartialIsos, Equatable {

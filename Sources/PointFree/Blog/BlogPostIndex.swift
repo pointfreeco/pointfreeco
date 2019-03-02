@@ -96,11 +96,10 @@ private let oldBlogPostView = View<BlogPost> { post in
         h1(
           [`class`([Class.pf.type.responsiveTitle5]),],
           [
-            // TODO
-//            a(
-//              [href(url(to: .blog(.show(post))))],
-//              [.text(post.title)]
-//            )
+            a(
+              [href(url(to: .blog(.show(id: post.id))))],
+              [.text(post.title)]
+            )
           ]
         ),
 

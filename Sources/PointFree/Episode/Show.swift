@@ -966,7 +966,7 @@ private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
     )
 }
 
-private let _episodeNotFoundView = View<(Either<String, Int>, User?, SubscriberState, Route?)> { _, _, _, _ in
+private let _episodeNotFoundView = View<(Either<String, Episode.Id>, User?, SubscriberState, Route?)> { _, _, _, _ in
 
   gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
@@ -982,10 +982,10 @@ private let _episodeNotFoundView = View<(Either<String, Int>, User?, SubscriberS
     ])
 }
 
-private func episode(forParam param: Either<String, Int>) -> Episode? {
+private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
   return Current.episodes()
     .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id.rawValue)
+      param.left == .some($0.slug) || param.right == .some($0.id)
     })
 }
 

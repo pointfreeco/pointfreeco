@@ -6,13 +6,18 @@ import HtmlCssSupport
 import HttpPipeline
 import Models
 import PointFreeRouter
+import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
 import View
 
-let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<BlogPost, User?, SubscriberState, Route?>, Data> =
-  writeStatus(.ok)
+let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, Route?>, Data> =
+  filterMap(
+    over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),
+    or: redirect(to: .home)
+    )
+    <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: blogPostShowView,
@@ -34,10 +39,10 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Blo
     }
 )
 
-func fetchBlogPost(forParam param: Either<String, Int>) -> BlogPost? {
+func fetchBlogPost(forParam param: Either<String, BlogPost.Id>) -> BlogPost? {
   return Current.blogPosts()
     .first(where: {
-      param.right == .some($0.id.rawValue)
+      param.right == .some($0.id)
         || param.left == .some($0.slug)
     })
 }
@@ -116,11 +121,10 @@ let blogPostContentView = View<BlogPost> { post in
     h1(
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
-        // TODO
-//        a(
-//          [href(url(to: .blog(.show(post))))],
-//          [.text(post.title)]
-//        )
+        a(
+          [href(url(to: .blog(.show(id: post.id))))],
+          [.text(post.title)]
+        )
       ]
     ),
 
@@ -131,11 +135,16 @@ let blogPostContentView = View<BlogPost> { post in
       ],
       [
         div([p([.text(episodeDateFormatter.string(from: post.publishedAt))])]),
-        // TODO
-//        div(
-//          [`class`([Class.margin([.mobile: [.left: 1]])])],
-//          [twitterShareLink(text: post.title, url: url(to: .blog(.show(post))), via: "pointfreeco")]
-//        )
+        div(
+          [`class`([Class.margin([.mobile: [.left: 1]])])],
+          [
+            twitterShareLink(
+              text: post.title,
+              url: url(to: .blog(.show(id: post.id))),
+              via: "pointfreeco"
+            )
+          ]
+        )
       ]
     ),
  
