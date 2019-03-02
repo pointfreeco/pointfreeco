@@ -71,8 +71,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow() {
-    let postId = Current.blogPosts().first!.id
-    let conn = connection(from: request(to: .blog(.show(.right(postId.rawValue))), basicAuth: true))
+    let slug = Current.blogPosts().first!.slug
+    let conn = connection(from: request(to: .blog(.show(slug: slug)), basicAuth: true))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -90,8 +90,8 @@ class BlogTests: TestCase {
   }
 
   func testBlogShow_Unauthed() {
-    let postId = Current.blogPosts().first!.id
-    let conn = connection(from: request(to: .blog(.show(.right(postId.rawValue)))))
+    let slug = Current.blogPosts().first!.slug
+    let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }

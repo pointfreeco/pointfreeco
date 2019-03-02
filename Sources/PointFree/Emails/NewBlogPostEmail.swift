@@ -39,7 +39,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
         ),
 
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
-          a([href(url(to: .blog(.show(id: post.id))))], [
+          a([href(url(to: .blog(.show(slug: post.slug))))], [
             h3([`class`([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
             ]),
           p([text(post.blurb)])
@@ -48,7 +48,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
             post.coverImage.map {
               [
                 p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                  a([href(url(to: .blog(.show(id: post.id))))], [
+                  a([href(url(to: .blog(.show(slug: post.slug))))], [
                     img([src($0), alt(""), style(maxWidth(.pct(100)))])
                     ])
                   ]),
@@ -57,7 +57,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
           + [
             a(
               [
-                href(url(to: .blog(.show(id: post.id)))),
+                href(url(to: .blog(.show(slug: post.slug)))),
                 `class`(
                   [
                     Class.pf.colors.link.purple,

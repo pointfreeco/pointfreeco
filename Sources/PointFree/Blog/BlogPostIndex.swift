@@ -97,7 +97,7 @@ private let oldBlogPostView = View<BlogPost> { post in
           [`class`([Class.pf.type.responsiveTitle5]),],
           [
             a(
-              [href(url(to: .blog(.show(id: post.id))))],
+              [href(url(to: .blog(.show(slug: post.slug))))],
               [.text(post.title)]
             )
           ]
