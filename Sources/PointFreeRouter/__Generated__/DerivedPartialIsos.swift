@@ -551,7 +551,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Either<String, Int>
+            Either<String, Episode.Id>
         ), B == Route {
 
           public static let episode = parenthesize <| PartialIso(
@@ -791,7 +791,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            Either<String, Int>
+            Either<String, BlogPost.Id>
         ), B == Route.Blog {
 
           public static let show = parenthesize <| PartialIso(

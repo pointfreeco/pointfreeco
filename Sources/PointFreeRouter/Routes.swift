@@ -12,7 +12,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id)
-  case episode(Either<String, Int>)
+  case episode(Either<String, Episode.Id>)
   case episodes
   case expressUnsubscribe(userId: User.Id, newsletter: EmailSetting.Newsletter)
   case expressUnsubscribeReply(MailgunForwardPayload)
@@ -32,8 +32,7 @@ public enum Route: DerivePartialIsos, Equatable {
   public enum Blog: DerivePartialIsos, Equatable {
     case feed
     case index
-    // TODO: strengthen Int to BlogPost.Id
-    case show(Either<String, Int>)
+    case show(Either<String, BlogPost.Id>)
   }
 
   public enum Feed: DerivePartialIsos, Equatable {
@@ -93,10 +92,12 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
       <¢> get %> lit("blog") <% end,
 
     .blog <<< .show
-      <¢> get %> lit("blog") %> lit("posts") %> pathParam(.intOrString) <% end,
+      <¢> get %> lit("blog") %> lit("posts")
+      %> pathParam(.blogPostIdOrString)
+      <% end,
 
     .episode
-      <¢> get %> lit("episodes") %> pathParam(.intOrString) <% end,
+      <¢> get %> lit("episodes") %> pathParam(.episodeIdOrString) <% end,
 
     .episodes
       <¢> get %> lit("episodes") <% end,
@@ -186,4 +187,22 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
     .webhooks <<< .stripe <<< .fallthrough
       <¢> post %> lit("webhooks") %> lit("stripe") <% end,
     ]
+}
+
+extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
+  static var blogPostIdOrString: PartialIso {
+    return PartialIso(
+      apply: { Int($0).map(BlogPost.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
+      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
+    )
+  }
+}
+
+extension PartialIso where A == String, B == Either<String, Episode.Id> {
+  static var episodeIdOrString: PartialIso {
+    return PartialIso(
+      apply: { Int($0).map(Episode.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
+      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
+    )
+  }
 }
