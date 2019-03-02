@@ -54,7 +54,6 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 
   public enum Webhooks: DerivePartialIsos, Equatable {
-    // TODO: what to do about this _
     case stripe(_Stripe)
 
     public enum _Stripe: DerivePartialIsos, Equatable {
