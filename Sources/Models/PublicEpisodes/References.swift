@@ -396,6 +396,16 @@ distinguishing otherwise indistinguishable types.
     title: "Type-Safe File Paths with Phantom Types"
   )
 
+  public static let unknownPleasures = Episode.Reference(
+    author: "Wikipedia contributors",
+    blurb: """
+The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
+""",
+    link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    title: "Unknown Pleasures – Artwork and packaging"
+  )
+
   public static let valueOrientedProgramming = Episode.Reference(
     author: "Matt Diephouse",
     blurb: """
