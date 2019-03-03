@@ -12,9 +12,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            User.Id
-          , 
-            EmailAddress
+            Encrypted<String>
         ), B == Account {
 
           public static let confirmEmailChange = parenthesize <| PartialIso(
@@ -67,9 +65,9 @@ import Stripe
 
 
       extension PartialIso where A == (
-            User.Id
+            Encrypted<String>
           , 
-            User.RssSalt
+            Encrypted<String>
         ), B == Account {
 
           public static let rss = parenthesize <| PartialIso(
@@ -575,9 +573,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            User.Id
-          , 
-            EmailSetting.Newsletter
+            Encrypted<String>
         ), B == Route {
 
           public static let expressUnsubscribe = parenthesize <| PartialIso(

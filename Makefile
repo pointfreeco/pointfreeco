@@ -262,8 +262,8 @@ routes:
 		--quiet \
 		--sources ./Sources/PointFreeRouter/ \
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
-		--output ./Sources/PointFreeRouter/__Generated__/DerivedPartialIsos.swift
-	@echo "  ✅ Generated!"
+		--output ./Sources/PointFreeRouter/__Generated__/DerivedPartialIsos.swift \
+		&& echo "  ✅ Generated!"
 
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \

@@ -110,6 +110,7 @@ let package = Package(
       name: "Models",
       dependencies: [
         "GitHub",
+        "HttpPipeline",
         "PointFreePrelude",
         "Stripe",
         "Tagged",

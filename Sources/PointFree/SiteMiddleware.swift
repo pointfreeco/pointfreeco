@@ -14,7 +14,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
-    <<< route(router: router, notFound: routeNotFoundMiddleware)
+    <<< route(router: pointFreeRouter, notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
@@ -90,9 +90,11 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn
         |> redirect(to: path(to: .home))
 
-    case let .expressUnsubscribe(userId, newsletter):
-      return conn.map(const(userId .*. newsletter .*. unit))
-        |> expressUnsubscribeMiddleware
+    case let .expressUnsubscribe(payload):
+      // FIXME
+      fatalError()
+//      return conn.map(const(userId .*. newsletter .*. unit))
+//        |> expressUnsubscribeMiddleware
 
     case let .expressUnsubscribeReply(payload):
       return conn.map(const(payload))
