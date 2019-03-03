@@ -8,13 +8,13 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   codeSampleDirectory: "0049-generative-art-pt1", // TODO
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 0, // TODO
-    downloadUrl: "TODO",
-    streamingSource: "TODO"
+    bytesLength: 1_000_000_000,
+  downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1-d6ad970a-full.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1.m3u8"
   ),
   id: 49,
-  image: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0049-generative-art-pt1/poster.jpg",
-  itunesImage: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0049-generative-art-pt1/itunes-poster.jpg",
+  image: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/itunes-poster.jpg",
   length: 32*60 + 06,
   permission: .free,
   publishedAt: .init(timeIntervalSince1970: 1551682800),
@@ -25,9 +25,9 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   sequence: 49,
   title: "Generative Art: Part 1",
   trailerVideo: .init(
-    bytesLength: 0, // TODO
-    downloadUrl: "TODO",
-    streamingSource: "TODO"
+    bytesLength: 67_900_000,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0048-trailer-trailer.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0048-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
