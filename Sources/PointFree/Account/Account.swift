@@ -383,14 +383,15 @@ to consume our videos: an RSS feed that can be used with podcast apps!
               p([
                 a(
                   [
-                    `class`([Class.pf.type.underlineLink]),
-                    href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
+                    // FIXME
+//                    `class`([Class.pf.type.underlineLink]),
+//                    href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
                   ],
                   [
-                    text(
-                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40))
-                        + "..."
-                    )
+//                    text(
+//                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40))
+//                        + "..."
+//                    )
                   ]
                 )
                 ]

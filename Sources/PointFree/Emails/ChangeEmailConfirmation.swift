@@ -34,11 +34,12 @@ private let confirmEmailChangeEmailBody = View<(User, EmailAddress)> { user, new
             ]),
 
           p([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
-            a(
-              [ href(url(to: .account(.confirmEmailChange(userId: user.id, emailAddress: newEmailAddress)))),
-                `class`([Class.pf.components.button(color: .purple)]) ],
-              ["Confirm email change"]
-            )
+            // FIXME
+//            a(
+//              [ href(url(to: .account(.confirmEmailChange(userId: user.id, emailAddress: newEmailAddress)))),
+//                `class`([Class.pf.components.button(color: .purple)]) ],
+//              ["Confirm email change"]
+//            )
             ]),
 
           p([`class`([Class.padding([.mobile: [.bottom: 2]])])], [

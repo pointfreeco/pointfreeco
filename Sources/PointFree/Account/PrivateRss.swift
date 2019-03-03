@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import Foundation
 import Either
 import Html
@@ -5,24 +6,26 @@ import HttpPipeline
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Stripe
 import Syndication
 import Tuple
 import View
 
-let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data> =
-{ fetchUser >=> $0 }
-  <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
-  <<< validateUserAndSalt
-  <<< fetchUserSubscription
-  <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
-  <<< fetchStripeSubscriptionForUser
-  <| map(lower)
-  >>> writeStatus(.ok)
-  >=> trackFeedRequest
-  >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
-  >=> clearHeadBody
+let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data> =
+  filterMap(decryptUserIdAndRssSalt, or: invalidatedFeedMiddleware(errorMessage: "Malformed URL"))
+    <<< { fetchUser >=> $0 }
+    <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
+    <<< validateUserAndSalt
+    <<< fetchUserSubscription
+    <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
+    <<< fetchStripeSubscriptionForUser
+    <| map(lower)
+    >>> writeStatus(.ok)
+    >=> trackFeedRequest
+    >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
+    >=> clearHeadBody
 
 private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   return { conn in
@@ -30,6 +33,25 @@ private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusL
       |> writeStatus(.ok)
       >=> respond(invalidatedFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
       >=> clearHeadBody
+  }
+}
+
+private func decryptUserIdAndRssSalt<Z>(
+  data: T3<Encrypted<String>, Encrypted<String>, Z>
+  ) -> IO<T3<User.Id, User.RssSalt, Z>?> {
+
+  return IO {
+    let encryptedUserId = get1(data)
+    let encryptedRssSalt = get2(data)
+    guard
+      let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
+        .flatMap(UUID.init(uuidString:))
+        .map(User.Id.init),
+      let rssSalt = encryptedRssSalt.decrypt(with: Current.envVars.appSecret)
+        .flatMap(UUID.init(uuidString:))
+        .map(User.RssSalt.init)
+      else { return nil }
+    return userId .*. rssSalt .*. rest(data)
   }
 }
 

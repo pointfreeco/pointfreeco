@@ -5,7 +5,7 @@ import Prelude
 import Tagged
 import UrlFormEncoding
 
-func payload<A, B>(
+public func payload<A, B>(
   _ iso1: PartialIso<String, A>,
   _ iso2: PartialIso<String, B>,
   separator: String = "--POINT-FREE-BOUNDARY--"
@@ -27,24 +27,6 @@ func payload<A, B>(
           else { return nil }
         return "\(first)\(separator)\(second)"
     })
-}
-
-extension PartialIso where A == String, B == String {
-  static func decrypted(withSecret secret: String) -> PartialIso<String, String> {
-    return PartialIso(
-      apply: { HttpPipeline.decrypted(text: $0, secret: secret) },
-      unapply: { encrypted(text: $0, secret: secret) }
-    )
-  }
-}
-
-extension PartialIso where B: TaggedType, A == B.RawValue {
-  static var tagged: PartialIso<B.RawValue, B> {
-    return PartialIso(
-      apply: B.init(rawValue:),
-      unapply: ^\.rawValue
-    )
-  }
 }
 
 let isTest: Router<Bool?> =
@@ -78,22 +60,4 @@ func slug(for string: String) -> String {
     .lowercased()
     .replacingOccurrences(of: "[\\W]+", with: "-", options: .regularExpression)
     .replacingOccurrences(of: "\\A-|-\\z", with: "", options: .regularExpression)
-}
-
-extension PartialIso where A == MailgunForwardPayload, B == MailgunForwardPayload {
-  static func signatureVerification(apiKey: String) -> PartialIso {
-    return PartialIso(
-      apply: { verify(payload: $0, apiKey: apiKey) ? .some($0) : nil },
-      unapply: { $0 }
-    )
-  }
-}
-
-private func verify(payload: MailgunForwardPayload, apiKey: String) -> Bool {
-  let digest = hexDigest(
-    value: "\(payload.timestamp)\(payload.token)",
-    asciiSecret: apiKey
-  )
-  return payload.signature == digest
-
 }

@@ -31,15 +31,20 @@ public func prepareEmail(
         guard let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter)
           else { return [] }
 
-        return [
-          (
-            "List-Unsubscribe",
-            """
-            <mailto:\(unsubEmail)>, \
-            <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
-            """
-          )
-        ]
+//        let
+
+        fatalError()
+
+        // FIXME
+//        return [
+//          (
+//            "List-Unsubscribe",
+//            """
+//            <mailto:\(unsubEmail)>, \
+//            <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
+//            """
+//          )
+//        ]
       }
       ?? []
 
