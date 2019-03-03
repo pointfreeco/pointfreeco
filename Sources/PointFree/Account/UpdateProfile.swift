@@ -1,3 +1,4 @@
+import ApplicativeRouter
 import Either
 import Foundation
 import HttpPipeline
@@ -88,8 +89,20 @@ let updateProfileMiddleware =
       )
 }
 
-let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, EmailAddress>, Data> = { conn in
-  let (userId, newEmailAddress) = lower(conn.data)
+let emailChangeIso: PartialIso<String, (User.Id, EmailAddress)> = payload(.uuid >>> .tagged, .tagged)
+
+let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> = { conn in
+
+  guard
+    let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
+    let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
+    else {
+      // FIXME?
+      return conn |> redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.error, "An error occurred.")
+      )
+  }
 
   parallel(
     Current.database.fetchUserById(userId)
