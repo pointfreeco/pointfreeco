@@ -4,6 +4,7 @@ import Foundation
 import HttpPipeline
 import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
@@ -23,8 +24,8 @@ func blogMiddleware(
     return conn.map(const(user .*. subscriberState .*. route .*. unit))
       |> blogIndexMiddleware
 
-  case let .show(post):
-    return conn.map(const(post .*. user .*. subscriberState .*. route .*. unit))
+  case let .show(postParam):
+    return conn.map(const(postParam .*. user .*. subscriberState .*. route .*. unit))
       |> blogPostShowMiddleware
   }
 }
