@@ -255,14 +255,14 @@ uninstall-colortheme:
 
 sourcery: sourcery-routes sourcery-tests
 
-sourcery-routes:
+routes:
 	@echo "  ⚠️  Generating routes..."
-	@mkdir -p ./Sources/PointFree/__Generated__
+	@mkdir -p ./Sources/PointFreeRouter/__Generated__
 	@.bin/sourcery \
 		--quiet \
-		--sources ./Sources/PointFree/ \
+		--sources ./Sources/PointFreeRouter/ \
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
-		--output ./Sources/PointFree/__Generated__/DerivedPartialIsos.swift
+		--output ./Sources/PointFreeRouter/__Generated__/DerivedPartialIsos.swift
 	@echo "  ✅ Generated!"
 
 SOURCERY_TESTS_IMPORTS = \

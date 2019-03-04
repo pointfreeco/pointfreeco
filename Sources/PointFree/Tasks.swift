@@ -2,6 +2,7 @@ import Either
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
