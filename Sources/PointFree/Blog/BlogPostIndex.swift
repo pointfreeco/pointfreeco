@@ -4,6 +4,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import Models
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
@@ -96,7 +97,7 @@ private let oldBlogPostView = View<BlogPost> { post in
           [`class`([Class.pf.type.responsiveTitle5]),],
           [
             a(
-              [href(url(to: .blog(.show(post))))],
+              [href(url(to: .blog(.show(slug: post.slug))))],
               [.text(post.title)]
             )
           ]
