@@ -9,7 +9,7 @@ class PointFreeRouterTests: XCTestCase {
     let profileData = ProfileData(
       email: "blobby@blob.co",
       extraInvoiceInfo: nil,
-      emailSettings: [:],
+      emailSettings: ["a":"b"],
       name: "Blobby McBlob"
     )
     let route = Route.account(.update(profileData))
@@ -21,11 +21,6 @@ class PointFreeRouterTests: XCTestCase {
 
     XCTAssertEqual("POST", request.httpMethod)
     XCTAssertEqual("account", request.url?.path)
-    XCTAssertEqual(
-      profileData,
-      try UrlFormDecoder().decode(ProfileData.self, from: request.httpBody!)
-    )
-
     XCTAssertEqual(route, router.match(request: request))
   }
 }
