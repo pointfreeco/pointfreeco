@@ -9,7 +9,7 @@ class PointFreeRouterTests: XCTestCase {
     let profileData = ProfileData(
       email: "blobby@blob.co",
       extraInvoiceInfo: nil,
-      emailSettings: ["a":"b"],
+      emailSettings: [:],
       name: "Blobby McBlob"
     )
     let route = Route.account(.update(profileData))
