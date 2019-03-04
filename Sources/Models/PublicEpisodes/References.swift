@@ -60,6 +60,14 @@ The Swift evolution review of the proposal to add a `Result` type to the standar
     title: "SE-0235 - Add Result to the Standard Library"
   )
 
+  public static let haskellUnderstandingMonadsState = Episode.Reference(
+      author: "Wikibooks contributors",
+      blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
+      link: "https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State",
+      publishedAt: referenceDateFormatter.date(from: "2019-02-27"),
+      title: "Haskell/Understanding monads/State"
+  )
+
   public static let howToControlTheWorld = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
@@ -269,6 +277,14 @@ Stephen gave an overview of snapshot testing, its benefits, and how one may snap
     title: "Snapshot Testing in Swift"
   )
 
+  public static let stateMonadTutorialForTheConfused = Episode.Reference(
+    author: "Brandon Simmons",
+    blurb: "The `Gen` type has a more general shape in the functional programming world as the `State` monad. In this post Brandon Simmons introduces the type and how it works compared to other flat-mappable types.",
+    link: "http://brandon.si/code/the-state-monad-a-tutorial-for-the-confused/",
+    publishedAt: Date(timeIntervalSince1970: 1256357760),
+    title: "The State Monad: A Tutorial for the Confused?"
+  )
+
   public static let someNewsAboutContramap = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
@@ -396,6 +412,16 @@ distinguishing otherwise indistinguishable types.
     title: "Type-Safe File Paths with Phantom Types"
   )
 
+  public static let unknownPleasures = Episode.Reference(
+    author: "Wikipedia contributors",
+    blurb: """
+The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
+""",
+    link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    title: "Unknown Pleasures – Artwork and packaging"
+  )
+
   public static let valueOrientedProgramming = Episode.Reference(
     author: "Matt Diephouse",
     blurb: """
@@ -420,7 +446,7 @@ The Wikipedia entry for monads.
   )
 }
 
-private let referenceDateFormatter = { () -> DateFormatter in
+let referenceDateFormatter = { () -> DateFormatter in
   let df = DateFormatter()
   df.dateFormat = "yyyy-MM-dd"
   return df
