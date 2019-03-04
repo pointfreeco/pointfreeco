@@ -478,7 +478,7 @@ There is a class of functions in math known as "bump functions". They are simple
   ),
   Episode.TranscriptBlock(
     content: """
-So, how do you construct a bump function? We are going to do this with a bunch of steps, and to visualize it along the way we have a little function graphing helper. You can give `graph` any function `(CGFloat) → CGFloat` and you will get back a plot of that graph as a `UIImage`:
+So, how do you construct a bump function? We are going to do this with a bunch of steps, and to visualize it along the way we have a little function graphing helper. You can give `graph` any function `(CGFloat) -> CGFloat` and you will get back a plot of that graph as a `UIImage`:
 """,
     timestamp: (13*60 + 08),
     type: .paragraph
