@@ -20,7 +20,24 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   publishedAt: .init(timeIntervalSince1970: 1551682800),
   references: [
     .randomUnification,
-    .unknownPleasures
+    Episode.Reference(
+      author: "Wikipedia contributors",
+      blurb: """
+The artwork used as inspiration in this episode comes from the album cover from the band Joy Division.
+""",
+      link: "https://en.wikipedia.org/wiki/Unknown_Pleasures#Artwork_and_packaging",
+      publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+      title: "Unknown Pleasures – Artwork and packaging"
+    ),
+    Episode.Reference(
+      author: "Wikipedia contributors",
+      blurb: """
+We used "bump functions" in this episode to construct functions that are zero everywhere except in a small region where they smoothly climb to 1 and then plateau. They are useful in mathematics for taking lots of local descriptions of a function and patching them together into a global function.
+""",
+      link: "https://en.wikipedia.org/wiki/Bump_function",
+      publishedAt: referenceDateFormatter.date(from: "2018-04-06"),
+      title: "Bump Function"
+    )
     ],
   sequence: 49,
   title: "Generative Art: Part 1",
@@ -33,7 +50,8 @@ Now that we have made randomness both composable _and_ testable, let's have a li
 )
 
 private let exercises: [Episode.Exercise] = [
-  .init(problem: """
+  .init(
+    problem: """
 Create a generator `Gen<UIColor>` of colors. Can this be expressed in terms of multiple `Gen<CGFloat>` generators?
 """),
   .init(problem: """
@@ -55,7 +73,7 @@ private let transcriptBlocks: [Episode.TranscriptBlock] = [
   ),
   Episode.TranscriptBlock(
     content: """
-In the last two episodes we finally made the `Gen` type testable. We did this by altering the type so that it wasn't a function that goes from `Void` to a type `A`, but instead it takes an `inout` parameter of a random number generator and then produces a random `A` value. This meant that we could no longer just hit `run` on our generators and get a random value back, but instead we had to provide a random number generator. This was a good thing because it meant that in production we could supply the system random number generator that comes with Swift, but in tests we could provide a pseudo random number generator that is seedable so that we could produce the same pattern of randomness with each run of the tests.
+In the last two episodes ([part 1](/episodes/ep47-predictable-randomness-part-1) and [part 2](/episodes/ep48-predictable-randomness-part-2)) we finally made the `Gen` type testable. We did this by altering the type so that it wasn't a function that goes from `Void` to a type `A`, but instead it takes an `inout` parameter of a random number generator and then produces a random `A` value. This meant that we could no longer just hit `run` on our generators and get a random value back, but instead we had to provide a random number generator. This was a good thing because it meant that in production we could supply the system random number generator that comes with Swift, but in tests we could provide a pseudo random number generator that is seedable so that we could produce the same pattern of randomness with each run of the tests.
 """,
     timestamp: (0*60 + 05),
     type: .paragraph
@@ -69,7 +87,7 @@ The best part of all of this was that we achieved testability of the `Gen` type 
   ),
   Episode.TranscriptBlock(
     content: """
-The trick we employed to make `Gen` testable, where we fed it an inout parameter, is a universal one, and goes to the heart of how one can manage complex state. We'll get into that in more detail someday, but today we are going to have some fun with the `Gen` type to show how to break down a complex problem into a bunch of simple pieces that plug together.
+The trick we employed to make `Gen` testable, where we fed it an inout parameter, is a [universal one](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State), and goes to the heart of how one can manage complex state. We'll get into that in more detail someday, but today we are going to have some fun with the `Gen` type to show how to break down a complex problem into a bunch of simple pieces that plug together.
 """,
     timestamp: (1*60 + 09),
     type: .paragraph
