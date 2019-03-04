@@ -112,6 +112,11 @@ We are going to take some inspiration from the album artwork of the band Joy Div
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/01.jpg", sizing: .fullWidth)
+  ),
+  Episode.TranscriptBlock(
     content: """
 We'll build up lots of little generator helpers that will plug together to form mega generator for generating `UIImage`s.
 """,
@@ -413,6 +418,11 @@ And for the first time we've actually got something on the screen and it's kinda
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/02.png", sizing: .fullWidth)
+  ),
+  Episode.TranscriptBlock(
     content: """
 Now let's increase the complexity of this just a bit by not simply drawing a single line from left-to-right, but drawing a whole bunch of little line segments using the `min` and `max` values:
 """,
@@ -462,6 +472,11 @@ There is a class of functions in math known as "bump functions". They are simple
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/03.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 So, how do you construct a bump function? We are going to do this with a bunch of steps, and to visualize it along the way we have a little function graphing helper. You can give `graph` any function `(CGFloat) → CGFloat` and you will get back a plot of that graph as a `UIImage`:
 """,
@@ -497,6 +512,11 @@ PlaygroundPage.current.liveView = UIImageView(image: graph { $0 })
     type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/04.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 It's just a simple straight line from the bottom-left corner to the top-right corner. We could also try graphing the parabola:
 """,
@@ -511,6 +531,11 @@ PlaygroundPage.current.liveView = UIImageView(image: graph { $0 * 0 })
     type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/05.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 And finally we could plot a sine curve:
 """,
@@ -523,6 +548,11 @@ PlaygroundPage.current.liveView = UIImageView(image: graph { sin($0) })
 """,
     timestamp: nil,
     type: .code(lang: .swift)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/06.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -612,6 +642,26 @@ PlaygroundPage.current.liveView = UIImageView(image: graph({ bump($0) })
     type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/07.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/08.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/09.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/10.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 Now we have a real bump! We just have to figure out how to parameterize it so that we can control its height, width and positioning.
 """,
@@ -691,6 +741,21 @@ And we now have all the parameters necessary to move and scale this bump functio
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/11.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/12.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/13.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 This is a lot to take in at once, but what's cool is had you known you were looking for equations of functions that have bumps in them, you would have been able to search Wikipedia or Google for bump functions and you would have been able to code up these functions by translating them to Swift.
 """,
@@ -764,6 +829,11 @@ Running this and we get something a little weird.
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/14.png", sizing: .fullWidth)
+  ),
+  Episode.TranscriptBlock(
     content: """
 Remember how we said `CoreGraphics`' y-axis points down? Well, our `graph` helper accommodated for that, but now we have to do it ourselves. The fix is easy, just use a negative amplitude:
 """,
@@ -799,6 +869,11 @@ And now we're getting closer.
 """,
     timestamp: (24*60 + 27),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/15.png", sizing: .fullWidth)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -902,9 +977,21 @@ func path(from min: CGFloat, to max: CGFloat, baseline: CGFloat) -> Gen<CGPath> 
   ),
   Episode.TranscriptBlock(
     content: """
-And, oops, looks like we forgot to negate the amplitude again. Let's do that:
+And, oops, looks like we forgot to negate the amplitude again.
 """,
     timestamp: (27*60 + 57),
+    type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/16.png", sizing: .fullWidth)
+  ),
+  Episode.TranscriptBlock(
+    content: """
+Let's fix that.
+""",
+    timestamp: nil,
     type: .paragraph
   ),
   Episode.TranscriptBlock(
@@ -916,10 +1003,15 @@ let amplitude = Gen<CGFloat>.float(in: -20...(-1))
   ),
   Episode.TranscriptBlock(
     content: """
-And now we're getting somewhere:
+And now we're getting somewhere.
 """,
     timestamp: (28*60 + 10),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/17.png", sizing: .fullWidth)
   ),
   Episode.TranscriptBlock(
     content: """
