@@ -581,6 +581,11 @@ This functions is `0` for all values of `x` less than or equal to `0`, but right
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/07.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 There's a trick we can employ to turn this into a function that smoothly transitions from 0 to 1 as `x` ranges from 0 to 1:
 """,
@@ -606,11 +611,21 @@ Now we're getting somewhere. This functions travels from `(0, 0)` to `(1, 1)` in
     type: .paragraph
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/08.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 We can make this seem more "bump"-like by plugging `x^2` into the equation, because then it will be symmetric across the y-axis:
 """,
     timestamp: (16*60 + 18),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/09.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -644,21 +659,6 @@ PlaygroundPage.current.liveView = UIImageView(image: graph({ bump($0) })
   Episode.TranscriptBlock(
     content: "",
     timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/07.png", sizing: .inset)
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/08.png", sizing: .inset)
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/09.png", sizing: .inset)
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
     type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/10.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
@@ -687,11 +687,21 @@ PlaygroundPage.current.liveView = UIImageView(image: graph { bump(amplitude: 0.5
     type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/11.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 Next let's figure out how to move it along the x-axis. This is just a matter of precomposing with a transformation that translates the `x` parameter of the function. Only tricky part here is that to translate we need to actually subtract, not add:
 """,
     timestamp: (18*60 + 09),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/12.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -734,26 +744,16 @@ PlaygroundPage.current.liveView = UIImageView(image: graph { bump(amplitude: 0.5
     type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
+    content: "",
+    timestamp: nil,
+    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/13.png", sizing: .inset)
+  ),
+  Episode.TranscriptBlock(
     content: """
 And we now have all the parameters necessary to move and scale this bump function to anywhere we want. This will form the basis of our image.
 """,
     timestamp: (21*60 + 02),
     type: .paragraph
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/11.png", sizing: .inset)
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/12.png", sizing: .inset)
-  ),
-  Episode.TranscriptBlock(
-    content: "",
-    timestamp: nil,
-    type: .image(src: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/assets/13.png", sizing: .inset)
   ),
   Episode.TranscriptBlock(
     content: """
