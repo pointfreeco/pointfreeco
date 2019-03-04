@@ -3,6 +3,7 @@ import Foundation
 import Html
 import HtmlCssSupport
 import Models
+import PointFreeRouter
 import Styleguide
 import Prelude
 import View

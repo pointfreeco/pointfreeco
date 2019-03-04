@@ -3,6 +3,7 @@ import Either
 import HttpPipeline
 import Foundation
 import Models
+import PointFreeRouter
 import Prelude
 import Tuple
 

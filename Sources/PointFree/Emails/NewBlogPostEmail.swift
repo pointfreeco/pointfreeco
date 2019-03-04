@@ -7,6 +7,7 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import View
@@ -38,16 +39,16 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
         ),
 
         div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
-          a([href(url(to: .blog(.show(post))))], [
+          a([href(url(to: .blog(.show(slug: post.slug))))], [
             h3([`class`([Class.pf.type.responsiveTitle3])], [.text(post.title)]),
             ]),
-            p([text(post.blurb)])
+          p([text(post.blurb)])
           ]
           + (
             post.coverImage.map {
               [
                 p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                  a([href(url(to: .blog(.show(post))))], [
+                  a([href(url(to: .blog(.show(slug: post.slug))))], [
                     img([src($0), alt(""), style(maxWidth(.pct(100)))])
                     ])
                   ]),
@@ -56,7 +57,7 @@ let newBlogPostEmailContent = View<(BlogPost, String?)> { post, announcement -> 
           + [
             a(
               [
-                href(url(to: .blog(.show(post)))),
+                href(url(to: .blog(.show(slug: post.slug)))),
                 `class`(
                   [
                     Class.pf.colors.link.purple,

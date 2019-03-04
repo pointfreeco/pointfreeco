@@ -7,6 +7,7 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "GitHub", targets: ["GitHub"]),
@@ -153,6 +154,7 @@ let package = Package(
         "HttpPipelineHtmlSupport",
         "Models",
         "Optics",
+        "PointFreeRouter",
         "PointFreePrelude",
         "PostgreSQL",
         "Stripe",
@@ -173,6 +175,26 @@ let package = Package(
         "PointFree",
         "PointFreeTestSupport",
         ]
+    ),
+
+    .target(
+      name: "PointFreeRouter",
+      dependencies: [
+        "ApplicativeRouter",
+        "HttpPipeline",
+        "Models",
+        "Prelude",
+        "Tagged",
+        "UrlFormEncoding"
+      ]
+    ),
+
+    .testTarget(
+      name: "PointFreeRouterTests",
+      dependencies: [
+        "PointFreeRouter",
+        "UrlFormEncoding"
+      ]
     ),
 
     .target(

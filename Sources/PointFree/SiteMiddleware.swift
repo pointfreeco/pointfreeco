@@ -4,6 +4,7 @@ import Foundation
 import HttpPipeline
 import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
@@ -53,8 +54,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn.map(const(user .*. episodeId .*. unit))
         |> sendFreeEpisodeEmailMiddleware
 
-    case let .admin(.newBlogPostEmail(.send(blogPost, formData, isTest))):
-      return conn.map(const(user .*. blogPost .*. formData .*. isTest .*. unit))
+    case let .admin(.newBlogPostEmail(.send(blogPostId, formData, isTest))):
+      return conn.map(const(user .*. blogPostId .*. formData .*. isTest .*. unit))
         |> sendNewBlogPostEmailMiddleware
 
     case .admin(.newBlogPostEmail(.index)):
@@ -172,7 +173,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
         |> removeTeammateMiddleware
 
     case let .useEpisodeCredit(episodeId):
-      return conn.map(const(Either.right(episodeId.rawValue) .*. user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
     case let .webhooks(.stripe(.event(event))):

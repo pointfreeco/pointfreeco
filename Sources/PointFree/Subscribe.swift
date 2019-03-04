@@ -3,16 +3,10 @@ import Foundation
 import HttpPipeline
 import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Stripe
 import Tuple
-
-public struct SubscribeData: Codable, Equatable {
-  public private(set) var coupon: Stripe.Coupon.Id?
-  public private(set) var pricing: Pricing
-  public private(set) var token: Stripe.Token.Id
-  public private(set) var vatNumber: Stripe.Customer.Vat?
-}
 
 let subscribeMiddleware =
   filterMap(
