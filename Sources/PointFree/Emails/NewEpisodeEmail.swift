@@ -12,7 +12,7 @@ import Prelude
 import Styleguide
 import View
 
-let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
+public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
   .contramap { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
     SimpleEmailLayoutData(
       user: user,

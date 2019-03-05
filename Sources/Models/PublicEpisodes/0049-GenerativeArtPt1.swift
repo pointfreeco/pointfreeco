@@ -1,7 +1,7 @@
 
 import Foundation
 
-let ep49 = Episode(
+public let ep49 = Episode(
   blurb: """
 Now that we have made randomness both composable _and_ testable, let's have a little fun with it! We are going to explore making some complex generative art that is built from simple, composable units.
 """,
@@ -186,11 +186,11 @@ If we had that we could simply run the generator to get an image and then plug i
   ),
   Episode.TranscriptBlock(
     content: """
-    import PlaygroundSupport
-    PlaygroundPage.current.liveView = UIImageView(image: image.run())
+import PlaygroundSupport
+PlaygroundPage.current.liveView = UIImageView(image: image.run())
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
