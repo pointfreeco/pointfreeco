@@ -160,6 +160,7 @@ let package = Package(
         "Stripe",
         "Styleguide",
         "Syndication",
+        "TaggedMoney",
         "Tuple",
         "UrlFormEncoding",
         "View",
