@@ -13,6 +13,7 @@ import Prelude
 import Stripe
 import Styleguide
 import Tagged
+import TaggedMoney
 import Tuple
 import View
 
@@ -786,7 +787,7 @@ private let subscriptionPaymentInfoView = View<Stripe.Subscription> { subscripti
   ]
 }
 
-public func format(cents: Stripe.Cents) -> String {
+public func format(cents: Cents<Int>) -> String {
   let dollars = NSNumber(value: Double(cents.rawValue) / 100)
   return currencyFormatter.string(from: dollars)
     ?? NumberFormatter.localizedString(from: dollars, number: .currency)
