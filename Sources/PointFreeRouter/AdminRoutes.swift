@@ -35,7 +35,7 @@ public let adminRouter = routers.reduce(.empty, <|>)
 private let routers: [Router<Admin>] = [
   .episodeCredits <<< .add
     <¢> post %> lit("episode-credits") %> lit("add")
-    %> formField("user_id", Optional.iso.some >>> opt(.uuid >>> .tagged))
+    %> formField("user_id", Optional.iso.some >>> opt(.tagged(.uuid)))
     <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
     <% end,
 
@@ -46,7 +46,7 @@ private let routers: [Router<Admin>] = [
     <¢> get <% end,
 
   .freeEpisodeEmail <<< .send
-    <¢> post %> lit("free-episode-email") %> pathParam(.int >>> .tagged) <% lit("send") <% end,
+    <¢> post %> lit("free-episode-email") %> pathParam(.tagged(.int)) <% lit("send") <% end,
 
   .freeEpisodeEmail <<< .index
     <¢> get %> lit("free-episode-email") <% end,
@@ -55,13 +55,13 @@ private let routers: [Router<Admin>] = [
     <¢> get %> lit("new-blog-post-email") <% end,
 
   .newBlogPostEmail <<< PartialIso.send
-    <¢> post %> lit("new-blog-post-email") %> pathParam(.int >>> .tagged) <%> lit("send")
+    <¢> post %> lit("new-blog-post-email") %> pathParam(.tagged(.int)) <%> lit("send")
     %> formBody(NewBlogPostFormData?.self, decoder: formDecoder)
     <%> isTest
     <% end,
 
   .newEpisodeEmail <<< PartialIso.send
-    <¢> post %> lit("new-episode-email") %> pathParam(.int >>> .tagged) <%> lit("send")
+    <¢> post %> lit("new-episode-email") %> pathParam(.tagged(.int)) <%> lit("send")
     %> formField("subscriber_announcement", .string).map(Optional.iso.some)
     <%> formField("nonsubscriber_announcement", .string).map(Optional.iso.some)
     <%> isTest
