@@ -93,7 +93,7 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
       <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
 
     .discounts
-      <¢> get %> lit("discounts") %> pathParam(.string >>> .tagged) <% end,
+      <¢> get %> lit("discounts") %> pathParam(.tagged(.string)) <% end,
 
     .blog <<< .index
       <¢> get %> lit("blog") <% end,
@@ -117,7 +117,7 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
 
     .expressUnsubscribe
       <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
-      %> queryParam("payload", .decrypted(withSecret: appSecret) >>> payload(.uuid >>> .tagged, .rawRepresentable))
+      %> queryParam("payload", .decrypted(withSecret: appSecret) >>> payload(.tagged(.uuid), .rawRepresentable))
       <% end,
 
     .expressUnsubscribeReply
@@ -134,13 +134,13 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
       <¢> get <% end,
 
     .invite <<< .accept
-      <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("accept") <% end,
+      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
 
     .invite <<< .resend
-      <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("resend") <% end,
+      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("resend") <% end,
 
     .invite <<< .revoke
-      <¢> post %> lit("invites") %> pathParam(.uuid >>> .tagged) <% lit("revoke") <% end,
+      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("revoke") <% end,
 
     .invite <<< .send
       // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
@@ -148,7 +148,7 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
       <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
     .invite <<< .show
-      <¢> get %> lit("invites") %> pathParam(.uuid >>> .tagged) <% end,
+      <¢> get %> lit("invites") %> pathParam(.tagged(.uuid)) <% end,
 
     .login
       <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
@@ -175,12 +175,12 @@ private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>
 
     .team <<< .remove
       <¢> post %> lit("account") %> lit("team") %> lit("members")
-      %> pathParam(.uuid >>> .tagged)
+      %> pathParam(.tagged(.uuid))
       <% lit("remove")
       <% end,
 
     .useEpisodeCredit
-      <¢> post %> lit("episodes") %> pathParam(.int >>> .tagged) <% lit("credit") <% end,
+      <¢> post %> lit("episodes") %> pathParam(.tagged(.int)) <% lit("credit") <% end,
 
     .webhooks <<< .stripe <<< .event
       <¢> post %> lit("webhooks") %> lit("stripe")
