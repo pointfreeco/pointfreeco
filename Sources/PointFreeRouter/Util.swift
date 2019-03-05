@@ -97,3 +97,16 @@ private func verify(payload: MailgunForwardPayload, apiKey: String) -> Bool {
   return payload.signature == digest
 
 }
+
+extension PartialIso {
+  /// Promotes a partial iso to one that deals with tagged values, e.g.
+  ///
+  ///    PartialIso<String, User.Id>.tagged(.string)
+  public static func tagged<T, C>(
+    _ iso: PartialIso<A, C>
+    ) -> PartialIso<A, B>
+    where B == Tagged<T, C> {
+
+      return iso >>> .tagged
+  }
+}

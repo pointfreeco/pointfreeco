@@ -43,7 +43,7 @@ private func accountRouters(appSecret: String) -> [Router<Account>] {
   return [
     .confirmEmailChange
       <¢> get %> lit("confirm-email-change")
-      %> queryParam("payload", .decrypted(withSecret: appSecret) >>> payload(.uuid >>> .tagged, .tagged))
+      %> queryParam("payload", .decrypted(withSecret: appSecret) >>> payload(.tagged(.uuid), .tagged))
       <% end,
 
     .index
@@ -53,7 +53,7 @@ private func accountRouters(appSecret: String) -> [Router<Account>] {
       <¢> get %> lit("invoices") <% end,
 
     .invoices <<< .show
-      <¢> get %> lit("invoices") %> pathParam(.string >>> .tagged) <% end,
+      <¢> get %> lit("invoices") %> pathParam(.tagged(.string)) <% end,
 
     .paymentInfo <<< .show
       <¢> get %> lit("payment-info")
@@ -62,13 +62,13 @@ private func accountRouters(appSecret: String) -> [Router<Account>] {
 
     .paymentInfo <<< .update
       <¢> post %> lit("payment-info")
-      %> formField("token", Optional.iso.some >>> opt(.string >>> .tagged))
+      %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
       <% end,
 
     .rss
       <¢> (get <|> head) %> lit("rss")
-      %> pathParam(.decrypted(withSecret: appSecret) >>> .uuid >>> .tagged)
-      <%> pathParam(.decrypted(withSecret: appSecret) >>> .uuid >>> .tagged)
+      %> pathParam(.decrypted(withSecret: appSecret) >>> .tagged(.uuid))
+      <%> pathParam(.decrypted(withSecret: appSecret) >>> .tagged(.uuid))
       <% end,
 
     .subscription <<< .cancel
