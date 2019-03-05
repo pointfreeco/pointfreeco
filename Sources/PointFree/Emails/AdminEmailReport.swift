@@ -11,7 +11,7 @@ import Prelude
 import Styleguide
 import View
 
-func adminEmailReport(_ type: String) -> View<([User], Int)> {
+public func adminEmailReport(_ type: String) -> View<([User], Int)> {
   return simpleEmailLayout(adminEmailReportContent)
     .contramap { erroredUsers, totalAttempted in
       SimpleEmailLayoutData(
