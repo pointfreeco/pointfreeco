@@ -4,6 +4,7 @@ import Optics
 import Prelude
 import PointFreePrelude
 import Tagged
+import TaggedMoney
 import UrlFormEncoding
 
 public struct Card: Codable, Equatable {
@@ -59,15 +60,12 @@ public struct Card: Codable, Equatable {
   }
 }
 
-public enum CentsTag {}
-public typealias Cents = Tagged<CentsTag, Int>
-
 public struct Charge: Codable, Equatable {
-  public var amount: Cents
+  public var amount: Cents<Int>
   public var id: Id
   public var source: Card
 
-  public init(amount: Cents, id: Id, source: Card) {
+  public init(amount: Cents<Int>, id: Id, source: Card) {
     self.amount = amount
     self.id = id
     self.source = source
@@ -111,7 +109,7 @@ public struct Coupon: Equatable {
   }
 
   public enum Rate: Equatable {
-    case amountOff(Cents)
+    case amountOff(Cents<Int>)
     case percentOff(Int)
 
     public var formattedDescription: String {
@@ -215,8 +213,8 @@ public struct Event<T: Codable & Equatable>: Equatable, Codable {
 }
 
 public struct Invoice: Codable, Equatable {
-  public var amountDue: Cents
-  public var amountPaid: Cents
+  public var amountDue: Cents<Int>
+  public var amountPaid: Cents<Int>
   public var charge: Either<Charge.Id, Charge>?
   public var closed: Bool
   public var customer: Customer.Id
@@ -228,12 +226,12 @@ public struct Invoice: Codable, Equatable {
   public var periodStart: Date
   public var periodEnd: Date
   public var subscription: Subscription.Id?
-  public var subtotal: Cents
-  public var total: Cents
+  public var subtotal: Cents<Int>
+  public var total: Cents<Int>
 
   public init(
-    amountDue: Cents,
-    amountPaid: Cents,
+    amountDue: Cents<Int>,
+    amountPaid: Cents<Int>,
     charge: Either<Charge.Id, Charge>?,
     closed: Bool,
     customer: Customer.Id,
@@ -245,8 +243,8 @@ public struct Invoice: Codable, Equatable {
     periodStart: Date,
     periodEnd: Date,
     subscription: Subscription.Id?,
-    subtotal: Cents,
-    total: Cents
+    subtotal: Cents<Int>,
+    total: Cents<Int>
     ) {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
@@ -288,7 +286,7 @@ public struct Invoice: Codable, Equatable {
 }
 
 public struct LineItem: Codable, Equatable {
-  public var amount: Cents
+  public var amount: Cents<Int>
   public var description: String?
   public var id: Id
   public var plan: Plan
@@ -296,7 +294,7 @@ public struct LineItem: Codable, Equatable {
   public var subscription: Subscription.Id?
 
   public init(
-    amount: Cents,
+    amount: Cents<Int>,
     description: String?,
     id: Id,
     plan: Plan,
@@ -330,7 +328,7 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-  public var amount: Cents
+  public var amount: Cents<Int>
   public var created: Date
   public var currency: Currency
   public var id: Id
@@ -340,7 +338,7 @@ public struct Plan: Codable, Equatable {
   public var statementDescriptor: String?
 
   public init(
-    amount: Cents,
+    amount: Cents<Int>,
     created: Date,
     currency: Currency,
     id: Id,
@@ -500,7 +498,7 @@ public struct Token: Codable {
 extension Coupon.Rate: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    if let amountOff = try? container.decode(Cents.self, forKey: .amountOff) {
+    if let amountOff = try? container.decode(Cents<Int>.self, forKey: .amountOff) {
       self = .amountOff(amountOff)
     } else {
       self = try .percentOff(container.decode(Int.self, forKey: .percentOff))
@@ -517,7 +515,7 @@ extension Coupon.Rate: Codable {
     }
   }
 
-  public var amountOff: Cents? {
+  public var amountOff: Cents<Int>? {
     guard case let .amountOff(cents) = self else { return nil }
     return cents
   }
