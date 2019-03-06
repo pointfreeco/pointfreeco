@@ -253,7 +253,7 @@ uninstall-colortheme:
 
 # sourcery
 
-sourcery: sourcery-routes sourcery-tests
+sourcery: routes sourcery-tests
 
 routes:
 	@echo "  ⚠️  Generating routes..."
@@ -268,6 +268,7 @@ routes:
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \
 	@testable import ModelsTests; \
+	@testable import PointFreeRouterTests; \
 	@testable import PointFreeTests; \
 	@testable import StripeTests; \
 	@testable import StyleguideTests; \
