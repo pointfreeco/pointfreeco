@@ -268,6 +268,7 @@ routes:
 SOURCERY_TESTS_IMPORTS = \
 	@testable import GitHubTests; \
 	@testable import ModelsTests; \
+	@testable import PointFreeRouterTests; \
 	@testable import PointFreeTests; \
 	@testable import StripeTests; \
 	@testable import StyleguideTests; \

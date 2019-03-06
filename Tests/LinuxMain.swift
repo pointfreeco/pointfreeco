@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
