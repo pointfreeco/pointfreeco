@@ -253,7 +253,7 @@ uninstall-colortheme:
 
 # sourcery
 
-sourcery: sourcery-routes sourcery-tests
+sourcery: routes sourcery-tests
 
 routes:
 	@echo "  ⚠️  Generating routes..."

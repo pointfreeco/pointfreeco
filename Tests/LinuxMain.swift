@@ -265,6 +265,11 @@ extension PaymentInfoTests {
     ("testRender", testRender),
   ]
 }
+extension PointFreeRouterTests {
+  static var allTests: [(String, (PointFreeRouterTests) -> () throws -> Void)] = [
+    ("testUpdateProfile", testUpdateProfile),
+  ]
+}
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
@@ -400,6 +405,7 @@ XCTMain([
   testCase(NewslettersTests.allTests),
   testCase(NotFoundMiddlewareTests.allTests),
   testCase(PaymentInfoTests.allTests),
+  testCase(PointFreeRouterTests.allTests),
   testCase(PricingTests.allTests),
   testCase(PrivacyTests.allTests),
   testCase(PrivateRssTests.allTests),
