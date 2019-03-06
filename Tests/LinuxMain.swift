@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
@@ -265,6 +265,11 @@ extension PaymentInfoTests {
     ("testRender", testRender),
   ]
 }
+extension PointFreeRouterTests {
+  static var allTests: [(String, (PointFreeRouterTests) -> () throws -> Void)] = [
+    ("testUpdateProfile", testUpdateProfile),
+  ]
+}
 extension PricingTests {
   static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
     ("testPricing", testPricing),
@@ -400,6 +405,7 @@ XCTMain([
   testCase(NewslettersTests.allTests),
   testCase(NotFoundMiddlewareTests.allTests),
   testCase(PaymentInfoTests.allTests),
+  testCase(PointFreeRouterTests.allTests),
   testCase(PricingTests.allTests),
   testCase(PrivacyTests.allTests),
   testCase(PrivateRssTests.allTests),

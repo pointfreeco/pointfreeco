@@ -6,7 +6,6 @@ import ApplicativeRouter
 import Either
 import Models
 import PointFreePrelude
-import PointFreeRouter
 import Prelude
 import Stripe
 
