@@ -207,20 +207,24 @@ private let routers: [Router<Route>] = [
     <¢> post %> lit("webhooks") %> lit("stripe") <% end,
 ]
 
-extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
-  static var blogPostIdOrString: PartialIso {
-    return PartialIso(
-      apply: { Int($0).map(BlogPost.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
-      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
+extension PartialIso {
+  static func either<Left, Right>(
+    _ l: PartialIso<A, Left>,
+    _ r: PartialIso<A, Right>
     )
+    -> PartialIso
+    where B == Either<Left, Right> {
+      return PartialIso(
+        apply: { l.apply($0).map(Either.left) ?? r.apply($0).map(Either.right) },
+        unapply: { $0.either(l.unapply, r.unapply) }
+      )
   }
 }
 
+extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
+  static let blogPostIdOrString = either(.string, .tagged(.int))
+}
+
 extension PartialIso where A == String, B == Either<String, Episode.Id> {
-  static var episodeIdOrString: PartialIso {
-    return PartialIso(
-      apply: { Int($0).map(Episode.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
-      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
-    )
-  }
+  static var episodeIdOrString = either(.string, .tagged(.int))
 }
