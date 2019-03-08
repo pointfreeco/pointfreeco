@@ -3,6 +3,11 @@ import PointFreePrelude
 public struct SendEmailResponse: Decodable {
   public let id: String
   public let message: String
+
+  public init(id: String, message: String) {
+    self.id = id
+    self.message = message
+  }
 }
 
 public enum Tracking: String {

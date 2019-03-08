@@ -1,7 +1,6 @@
 import Either
 import Foundation
 import HttpPipeline
-import Mailgun
 import Models
 import PointFreeRouter
 import PointFreePrelude

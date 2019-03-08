@@ -14,6 +14,13 @@ public struct Client {
   public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
 
   public init(
+    appSecret: String,
+    sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>) {
+    self.appSecret = appSecret
+    self.sendEmail = sendEmail
+  }
+
+  public init(
     apiKey: String,
     appSecret: String,
     domain: String,
