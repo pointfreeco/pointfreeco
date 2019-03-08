@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import Optics
 import PointFreeRouter

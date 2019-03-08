@@ -1,6 +1,7 @@
 import Either
 import Foundation
 import GitHub
+import Mailgun
 import Models
 import Optics
 import PointFreePrelude
@@ -62,6 +63,12 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
   Current.gitHub = .init(
     clientId: Current.envVars.gitHub.clientId,
     clientSecret: Current.envVars.gitHub.clientSecret,
+    logger: Current.logger
+  )
+  Current.mailgun = .init(
+    apiKey: Current.envVars.mailgun.apiKey,
+    appSecret: Current.envVars.appSecret,
+    domain: Current.envVars.mailgun.domain,
     logger: Current.logger
   )
   Current.stripe = .init(

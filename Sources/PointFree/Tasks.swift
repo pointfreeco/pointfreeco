@@ -1,6 +1,7 @@
 import Either
 import Html
 import HtmlCssSupport
+import Mailgun
 import Models
 import PointFreeRouter
 import PointFreePrelude
