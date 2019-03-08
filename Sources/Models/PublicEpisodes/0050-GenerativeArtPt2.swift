@@ -8,13 +8,13 @@ TODO
   codeSampleDirectory: "0050-generative-art-pt2", // TODO
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 0, // todo
-  downloadUrl: "todo",
-    streamingSource: "todo"
+    bytesLength: 957_000_000,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/full/0050-generative-art-pt2-6730eb10-full.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/full/0050-generative-art-pt2.m3u8"
   ),
   id: 50,
-  image: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0050-generative-art-pt2/poster.jpg",
-  itunesImage: "https://s3.amazonaws.com/pointfreeco-episodes-processed/0050-generative-art-pt2/itunes-poster.jpg",
+  image: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/poster.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/itunes-poster.jpg",
   length: 27*60 + 22,
   permission: .free,
   publishedAt: .init(timeIntervalSince1970: 1552287600),
@@ -43,9 +43,9 @@ We used "bump functions" in this episode to construct functions that are zero ev
   sequence: 50,
   title: "Generative Art: Part 2",
   trailerVideo: .init(
-    bytesLength: 0, // todo
-    downloadUrl: "todo",
-    streamingSource: "todo"
+    bytesLength: 38_100_000,
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/trailer/0050-trailer-trailer.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/trailer/0050-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
