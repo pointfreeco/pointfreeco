@@ -23,6 +23,7 @@ public struct Client {
     self.sendEmail = mailgunSend >>> runMailgun(apiKey: apiKey, domain: domain, logger: logger)
   }
 
+  /// Constructs the email address that users can email in order to unsubscribe from a particular newsletter.
   public func unsubscribeEmail(
     fromUserId userId: User.Id,
     andNewsletter newsletter: EmailSetting.Newsletter,
@@ -37,6 +38,7 @@ public struct Client {
     return .init(rawValue: "unsub-\(payload)@pointfree.co")
   }
 
+  // Decodes an unsubscribe email address into the user and newsletter that is represented by the address.
   public func userIdAndNewsletter(
     fromUnsubscribeEmail email: EmailAddress,
     boundary: String = "--"
@@ -62,10 +64,12 @@ public struct Client {
   }
 }
 
-private func setBaseUrl(_ baseUrl: URL, for request: URLRequest) -> URLRequest {
-  var request = request
-  request.url = URL(string: request.url?.relativePath ?? "", relativeTo: baseUrl)
-  return request
+private func setBaseUrl(_ baseUrl: URL) -> (URLRequest) -> URLRequest {
+  return { request in
+    var request = request
+    request.url = baseUrl.appendingPathComponent(request.url?.relativePath ?? "")
+    return request
+  }
 }
 
 private func runMailgun<A>(
@@ -80,29 +84,26 @@ private func runMailgun<A>(
     guard var mailgunRequest = mailgunRequest
       else { return throwE(unit) }
 
-    mailgunRequest.rawValue = setBaseUrl(baseUrl, for: mailgunRequest.rawValue)
+    mailgunRequest.rawValue = mailgunRequest.rawValue
+      |> setBaseUrl(baseUrl)
+      |> attachBasicAuth(username: "api", password: apiKey)
 
-    let task: EitherIO<Error, A> = pure(mailgunRequest.rawValue)
-      .flatMap {
-        dataTask(with: $0, logger: logger)
-          .map(first)
-          .flatMap { data in
-            .wrap {
-              do {
-                return try jsonDecoder.decode(A.self, from: data)
-              } catch {
-                throw (try? jsonDecoder.decode(MailgunError.self, from: data))
-                  ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
-              }
-            }
+    return dataTask(with: mailgunRequest.rawValue, logger: logger)
+      .map(first)
+      .flatMap { data in
+        .wrap {
+          do {
+            return try jsonDecoder.decode(A.self, from: data)
+          } catch {
+            throw (try? jsonDecoder.decode(MailgunError.self, from: data))
+              ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
+          }
         }
     }
-
-    return task
   }
 }
 
-enum Method {
+private enum Method {
   case get
   case post([String: Any])
   case delete([String: String])
@@ -152,5 +153,5 @@ public struct MailgunError: Codable, Swift.Error {
   }
 }
 
-public let jsonDecoder = JSONDecoder()
+private let jsonDecoder = JSONDecoder()
   |> \.dateDecodingStrategy .~ .secondsSince1970
