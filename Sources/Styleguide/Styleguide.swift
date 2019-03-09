@@ -1,5 +1,6 @@
-import Html
 import Css
+import DesignSystem
+import Html
 import Prelude
 
 public let styleguide =

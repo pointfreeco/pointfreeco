@@ -10,6 +10,7 @@ let package = Package(
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "DesignSystem", targets: ["DesignSystem"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
@@ -57,6 +58,14 @@ let package = Package(
         "PointFreePrelude",
         "PostgreSQL",
         "Prelude",
+        ]
+    ),
+
+    .target(
+      name: "DesignSystem",
+      dependencies: [
+        "Css",
+        "Prelude"
         ]
     ),
 
@@ -279,7 +288,10 @@ let package = Package(
       name: "Styleguide",
       dependencies: [
         "Css",
+        "DesignSystem",
         "Html",
+        "HtmlCssSupport",
+        "Prelude",
         ]),
 
     .testTarget(
