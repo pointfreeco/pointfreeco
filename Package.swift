@@ -70,6 +70,15 @@ let package = Package(
     ),
 
     .testTarget(
+      name: "DesignSystemTests",
+      dependencies: [
+        "CssTestSupport",
+        "DesignSystem",
+        "SnapshotTesting",
+        ]
+    ),
+
+    .testTarget(
       name: "DatabaseTests",
       dependencies: [
         "Database",
@@ -298,7 +307,8 @@ let package = Package(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "PointFreeTestSupport",
+        "HtmlSnapshotTesting",
+        "SnapshotTesting",
         "Styleguide",
         ]),
 
