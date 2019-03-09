@@ -181,7 +181,12 @@ private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter
           ]),
 
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
+          // TODO
+          gitHubLink(
+            text: "Login with GitHub",
+            type: .black,
+            redirect: url(to: .invite(.show(invite.id)))
+          )
           ])
         ])
       ])

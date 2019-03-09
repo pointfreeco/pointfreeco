@@ -91,7 +91,11 @@ private let accountLinkView = View<NavStyle.MinimalStyle> { style in
 }
 
 private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, currentRoute in
-  gitHubLink(text: "Log in", type: gitHubLinkType(for: style), redirectRoute: currentRoute)
+  gitHubLink(
+    text: "Log in",
+    type: gitHubLinkType(for: style),
+    redirect: currentRoute.map(url(to:))
+  )
 }
 
 private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {

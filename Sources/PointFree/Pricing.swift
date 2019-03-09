@@ -497,7 +497,7 @@ private let pricingFooterView = View<(User?, PricingFormStyle, Stripe.Coupon.Id?
                 gitHubLink(
                   text: "Sign in with GitHub",
                   type: .black,
-                  redirectRoute: route ?? .pricing(nil, expand: false)
+                  redirect: url(to: route ?? .pricing(nil, expand: false))
                 )
             ])
       )

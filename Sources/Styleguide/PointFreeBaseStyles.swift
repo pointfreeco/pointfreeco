@@ -1,4 +1,5 @@
 import Css
+import DesignSystem
 import Prelude
 
 public enum Colors {
