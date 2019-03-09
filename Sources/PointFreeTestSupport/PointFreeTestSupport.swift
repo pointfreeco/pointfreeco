@@ -83,7 +83,7 @@ extension EnvVars {
 
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
-    appSecret: "deadbeef",
+    appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
   )
 }
