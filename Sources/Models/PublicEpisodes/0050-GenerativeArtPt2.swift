@@ -288,7 +288,7 @@ This is looking pretty nice! To get here, all we needed to do was insert one mor
   Episode.TranscriptBlock(
     content: "Combining multiple bumps",
     timestamp: (4*60 + 32),
-    type: .paragraph
+    type: .title
   ),
   Episode.TranscriptBlock(
     content: """
@@ -381,7 +381,7 @@ This is looking even more fun!
   Episode.TranscriptBlock(
     content: "Testing an app with randomness",
     timestamp: (8*60 + 38),
-    type: .paragraph
+    type: .title
   ),
   Episode.TranscriptBlock(
     content: """
