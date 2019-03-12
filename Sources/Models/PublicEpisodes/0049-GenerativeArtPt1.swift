@@ -9,7 +9,7 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 1_000_000_000,
-  downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1-d6ad970a-full.mp4",
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1-d6ad970a-full.mp4",
     streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1.m3u8"
   ),
   id: 49,
@@ -43,8 +43,8 @@ We used "bump functions" in this episode to construct functions that are zero ev
   title: "Generative Art: Part 1",
   trailerVideo: .init(
     bytesLength: 67_900_000,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0048-trailer-trailer.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0048-trailer.m3u8"
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0049-trailer-trailer.mp4",
+    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0049-trailer.m3u8"
   ),
   transcriptBlocks: transcriptBlocks
 )
