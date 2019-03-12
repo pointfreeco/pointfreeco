@@ -123,7 +123,7 @@ class PrivateRssTests: TestCase {
     )
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
-    let rssSalt = Encrypted("baadbaad-baad-baad-baad-baadbaadbaad", with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
 
     let conn = connection(
       from: request(
