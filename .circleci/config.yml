@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.1.0"
 
     steps:
       - checkout
@@ -15,22 +15,18 @@ jobs:
       - run:
           name: Install Postgres
           command: brew install postgresql
+          environment:
+            HOMEBREW_NO_AUTO_UPDATE: 1
 
       - run:
           name: Install CommonMark
           command: brew install cmark
+          environment:
+            HOMEBREW_NO_AUTO_UPDATE: 1
 
       - run:
           name: Start Postgres
           command: brew services start postgresql
-
-      - run:
-          name: Install Sourcery
-          command: brew install sourcery
-
-      - run:
-          name: Run Bootstrap OSS
-          command: make bootstrap-oss
 
       - run:
           name: Run Swift tests
