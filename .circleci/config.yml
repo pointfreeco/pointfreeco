@@ -18,11 +18,15 @@ jobs:
 
       - run:
           name: Install Postgres
-          command: HOMEBREW_NO_AUTO_UPDATE=1 brew install postgresql
+          command: brew install postgresql
+          environment:
+            HOMEBREW_NO_AUTO_UPDATE: 1
 
       - run:
           name: Install CommonMark
-          command: HOMEBREW_NO_AUTO_UPDATE=1 brew install cmark
+          command: brew install cmark
+          environment:
+            HOMEBREW_NO_AUTO_UPDATE: 1
 
       - run:
           name: Start Postgres
