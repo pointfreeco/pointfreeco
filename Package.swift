@@ -61,12 +61,21 @@ let package = Package(
         ]
     ),
 
+    .testTarget(
+      name: "DatabaseTests",
+      dependencies: [
+        "Database",
+        "DatabaseTestSupport",
+        "SnapshotTesting",
+        ]
+    ),
+
     .target(
       name: "FunctionalCss",
       dependencies: [
         "Css",
         "Prelude"
-        ]
+      ]
     ),
 
     .testTarget(
@@ -74,15 +83,6 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
-        "SnapshotTesting",
-        ]
-    ),
-
-    .testTarget(
-      name: "DatabaseTests",
-      dependencies: [
-        "Database",
-        "DatabaseTestSupport",
         "SnapshotTesting",
         ]
     ),
