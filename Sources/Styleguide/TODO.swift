@@ -1,24 +1,8 @@
 import Css
+import FunctionalCss
 import Html
 import Foundation
 import Prelude
-
-// TODO: move to swift-web
-
-public func render(classes: [CssSelector]) -> String {
-  return classes.map(render(class:)).joined(separator: " ")
-}
-
-public func render(class selector: CssSelector) -> String {
-  switch selector {
-  case .star, .elem, .id, .pseudo, .pseudoElem, .attr, .child, .sibling, .deep, .adjacent, .combined:
-    return ""
-  case let .class(str):
-    return str
-  case let .union(lhs, rhs):
-    return render(class: lhs) + " " + render(class: rhs)
-  }
-}
 
 // TODO: move to a support package in swift-web
 public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
@@ -53,10 +37,6 @@ public let textarea = CssSelector.elem(textareaElement)
 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
-}
-
-public func zIndex(_ n: Int) -> Stylesheet {
-  return key("z-index", "\(n)")
 }
 
 public func bgcolor<T>(_ value: String) -> Attribute<T> {

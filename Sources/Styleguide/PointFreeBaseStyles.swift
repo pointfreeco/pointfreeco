@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Prelude
 
 public enum Colors {

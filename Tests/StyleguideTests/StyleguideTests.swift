@@ -1,23 +1,109 @@
 import Css
 import CssTestSupport
-import PointFreeTestSupport
+import Html
+import HtmlSnapshotTesting
 import SnapshotTesting
 import Styleguide
+#if !os(Linux)
+import WebKit
+#endif
 import XCTest
 
-class StyleguideTests: TestCase {
+class StyleguideTests: SnapshotTestCase {
+  override func setUp() {
+    super.setUp()
+    diffTool = "ksdiff"
+//    record = true
+  }
+
   func testStyleguide() {
     assertSnapshot(matching: styleguide, as: .css, named: "pretty")
     assertSnapshot(matching: styleguide, as: .css(.compact), named: "mini")
   }
 
-  func testDesignSystem() {
-    assertSnapshot(matching: designSystems, as: .css, named: "pretty")
-    assertSnapshot(matching: designSystems, as: .css(.compact), named: "mini")
-  }
-
   func testPointFreeStyles() {
     assertSnapshot(matching: pointFreeBaseStyles, as: .css, named: "pretty")
     assertSnapshot(matching: pointFreeBaseStyles, as: .css(.compact), named: "mini")
+  }
+
+  func testGitHubLink_Black() {
+    let doc: [Node] = [
+      .doctype("html"),
+      html([
+        head([
+          style(unsafe: render(config: .compact, css: styleguide))
+          ]),
+        body([
+          gitHubLink(
+            text: "Login with GitHub",
+            type: .black,
+            href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
+          )
+          ])
+        ])
+    ]
+
+    assertSnapshot(matching: doc, as: .html)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
+  }
+
+  func testGitHubLink_White() {
+    let doc: [Node] = [
+      .doctype("html"),
+      html([
+        head([
+          style(unsafe: render(config: .compact, css: styleguide))
+          ]),
+        body(
+          [style("background: #000")],
+          [gitHubLink(
+            text: "Login with GitHub",
+            type: .white,
+            href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
+            )]
+        )
+        ])
+    ]
+
+    assertSnapshot(matching: doc, as: .html)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
+  }
+
+  func testTwitterLink() {
+    let doc: [Node] = [
+      .doctype("html"),
+      html([
+        head([
+          style(unsafe: render(config: .compact, css: styleguide))
+          ]),
+        body(
+          [twitterShareLink(text: "Tweet", url: "https://www.pointfree.co", via: "pointfreeco")]
+        )
+        ])
+    ]
+
+    assertSnapshot(matching: doc, as: .html)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
   }
 }
