@@ -4,7 +4,7 @@ import FunctionalCss
 import SnapshotTesting
 import XCTest
 
-class FunctionalCssTests: XCTestCase {
+class FunctionalCssTests: SnapshotTestCase {
   func testFunctionalCss() {
     assertSnapshot(matching: functionalCss, as: .css, named: "pretty")
     assertSnapshot(matching: functionalCss, as: .css(.compact), named: "mini")
