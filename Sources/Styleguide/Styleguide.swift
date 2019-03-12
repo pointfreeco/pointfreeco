@@ -1,8 +1,8 @@
 import Css
-import DesignSystem
+import FunctionalCss
 import Html
 import Prelude
 
 public let styleguide =
   pointFreeBaseStyles
-    <> designSystems
+    <> functionalCss

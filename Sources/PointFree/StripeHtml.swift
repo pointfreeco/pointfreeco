@@ -1,5 +1,5 @@
 import Css
-import DesignSystem
+import FunctionalCss
 import Html
 import Stripe
 import Styleguide

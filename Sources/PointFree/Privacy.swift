@@ -1,6 +1,6 @@
 import Css
 import CssReset
-import DesignSystem
+import FunctionalCss
 import Either
 import Foundation
 import Html

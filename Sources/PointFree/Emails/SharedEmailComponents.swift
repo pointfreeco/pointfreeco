@@ -1,4 +1,4 @@
-import DesignSystem
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import Foundation
