@@ -4,7 +4,9 @@ import Html
 import HtmlSnapshotTesting
 import SnapshotTesting
 import Styleguide
+#if !os(Linux)
 import WebKit
+#endif
 import XCTest
 
 class StyleguideTests: XCTestCase {
@@ -38,9 +40,13 @@ class StyleguideTests: XCTestCase {
 
     assertSnapshot(matching: doc, as: .html)
 
-    let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
-    webView.loadHTMLString(render(doc), baseURL: nil)
-    assertSnapshot(matching: webView, as: .image)
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
   }
 
   func testGitHubLink_White() {
@@ -59,9 +65,13 @@ class StyleguideTests: XCTestCase {
 
     assertSnapshot(matching: doc, as: .html)
 
-    let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
-    webView.loadHTMLString(render(doc), baseURL: nil)
-    assertSnapshot(matching: webView, as: .image)
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
   }
 
   func testTwitterLink() {
@@ -79,8 +89,12 @@ class StyleguideTests: XCTestCase {
 
     assertSnapshot(matching: doc, as: .html)
 
-    let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
-    webView.loadHTMLString(render(doc), baseURL: nil)
-    assertSnapshot(matching: webView, as: .image)
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
+      webView.loadHTMLString(render(doc), baseURL: nil)
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
   }
 }
