@@ -5,7 +5,7 @@ import XCTest
 
 class PointFreeRouterTests: XCTestCase {
   func testUpdateProfile() {
-    let router = pointFreeRouter(appSecret: "deadbeef", mailgunApiKey: "deadbeef")
+    let router = pointFreeRouter(appSecret: "deadbeefdeadbeefdeadbeefdeadbeef", mailgunApiKey: "deadbeef")
     let profileData = ProfileData(
       email: "blobby@blob.co",
       extraInvoiceInfo: nil,

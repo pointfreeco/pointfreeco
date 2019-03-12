@@ -62,7 +62,7 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+    let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
 
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
@@ -111,7 +111,7 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+    let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
 
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
