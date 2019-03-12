@@ -8,17 +8,6 @@ import Prelude
 import Stripe
 import Tuple
 
-extension ProfileData: Decodable {
-  public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-
-    self.email = try container.decode(EmailAddress.self, forKey: .email)
-    self.emailSettings = (try? container.decode([String: String].self, forKey: .emailSettings)) ?? [:]
-    self.extraInvoiceInfo = try? container.decode(String.self, forKey: .extraInvoiceInfo)
-    self.name = try container.decodeIfPresent(String.self, forKey: .name)
-  }
-}
-
 func isValidEmail(_ email: EmailAddress) -> Bool {
   return email.rawValue.range(of: "^.+@.+$", options: .regularExpression) != nil
 }
