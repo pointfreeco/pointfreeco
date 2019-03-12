@@ -1,6 +1,5 @@
 import ApplicativeRouter
 import Either
-import HttpPipeline
 import Models
 import PointFreePrelude
 import Prelude
@@ -8,19 +7,6 @@ import Stripe
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
-
-extension Tagged where Tag == EncryptedTag, RawValue == String {
-  public init?(_ text: String, with secret: String) {
-    guard
-      let string = encrypted(text: text, secret: secret)
-      else { return nil }
-    self.init(rawValue: string)
-  }
-
-  public func decrypt(with secret: String) -> String? {
-    return decrypted(text: self.rawValue, secret: secret)
-  }
-}
 
 public enum Route: DerivePartialIsos, Equatable {
   case about
