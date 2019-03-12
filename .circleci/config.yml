@@ -9,8 +9,8 @@ jobs:
       - checkout
 
       - restore_cache:
-        keys:
-          - brew
+          keys:
+            - brew
 
       - run:
           name: Mac Info
@@ -35,6 +35,6 @@ jobs:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
 
       - save_cache:
+          key: brew
           paths:
             - /usr/local/Homebrew
-          key: brew
