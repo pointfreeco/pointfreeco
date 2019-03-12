@@ -1,12 +1,17 @@
+import ApplicativeRouter
 import Either
 import Html
 import HtmlPlainTextPrint
 import Models
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
+
+let expressUnsubscribeIso: PartialIso<String, (User.Id, EmailSetting.Newsletter)>
+  = payload(.tagged(.uuid), .rawRepresentable)
 
 public func prepareEmail(
   from: EmailAddress = supportEmail,
@@ -28,23 +33,23 @@ public func prepareEmail(
 
     let headers: [(String, String)] = unsubscribeData
       .map { userId, newsletter in
-        guard let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter)
-          else { return [] }
+        guard
+          let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
+          let unsubUrl = expressUnsubscribeIso
+            .unapply((userId, newsletter))
+            .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+            .map({ url(to: .expressUnsubscribe(payload: $0)) })
+          else {
+            Current.logger.error("Failed to generate unsubscribe link for user \(userId)")
+            return []
+        }
 
-//        let
-
-        fatalError()
-
-        // FIXME
-//        return [
-//          (
-//            "List-Unsubscribe",
-//            """
-//            <mailto:\(unsubEmail)>, \
-//            <\(url(to: .expressUnsubscribe(userId: userId, newsletter: newsletter)))>
-//            """
-//          )
-//        ]
+        return [
+          (
+            "List-Unsubscribe",
+            "<mailto:\(unsubEmail)>, <\(unsubUrl)>"
+          )
+        ]
       }
       ?? []
 

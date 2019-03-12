@@ -16,7 +16,7 @@ let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
       title: "Email change confirmation",
       preheader: "We received a request to change your email on Point-Free.",
       template: .default,
-      data: (user, newEmailAddress)
+      data: (user, newEmailAddress, payload)
     )
 }
 
