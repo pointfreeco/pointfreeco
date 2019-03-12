@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
@@ -497,7 +498,7 @@ private let pricingFooterView = View<(User?, PricingFormStyle, Stripe.Coupon.Id?
                 gitHubLink(
                   text: "Sign in with GitHub",
                   type: .black,
-                  redirectRoute: route ?? .pricing(nil, expand: false)
+                  href: path(to: .login(redirect: url(to: route ?? .pricing(nil, expand: false))))
                 )
             ])
       )

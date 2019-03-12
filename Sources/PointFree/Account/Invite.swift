@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
@@ -182,7 +183,11 @@ private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter
           ]),
 
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
+          gitHubLink(
+            text: "Login with GitHub",
+            type: .black,
+            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
+          )
           ])
         ])
       ])

@@ -10,6 +10,7 @@ let package = Package(
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
@@ -66,6 +67,23 @@ let package = Package(
       dependencies: [
         "Database",
         "DatabaseTestSupport",
+        "SnapshotTesting",
+        ]
+    ),
+
+    .target(
+      name: "FunctionalCss",
+      dependencies: [
+        "Css",
+        "Prelude"
+      ]
+    ),
+
+    .testTarget(
+      name: "FunctionalCssTests",
+      dependencies: [
+        "CssTestSupport",
+        "FunctionalCss",
         "SnapshotTesting",
         ]
     ),
@@ -293,14 +311,18 @@ let package = Package(
       name: "Styleguide",
       dependencies: [
         "Css",
+        "FunctionalCss",
         "Html",
+        "HtmlCssSupport",
+        "Prelude",
         ]),
 
     .testTarget(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "PointFreeTestSupport",
+        "HtmlSnapshotTesting",
+        "SnapshotTesting",
         "Styleguide",
         ]),
 

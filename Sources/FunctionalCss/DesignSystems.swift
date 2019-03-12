@@ -1,7 +1,7 @@
 import Css
 import Prelude
 
-public let designSystems =
+public let functionalCss =
   typescale
     <> hideStyles
     <> flexStyles
