@@ -22,7 +22,7 @@ private func requireUserAndNewsletter(
 
   return { conn in
 
-    guard let (userId, newsletter) = userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
+    guard let (userId, newsletter) = Current.mailgun.userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient)
       else {
         return conn
           |> head(.notAcceptable)
