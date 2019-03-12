@@ -42,6 +42,19 @@ enum NavStyle {
   }
 }
 
+func map<A, B>(_ f: @escaping (A) -> B) -> (SimplePageLayoutData<A>) -> SimplePageLayoutData<B> {
+  return { $0.map(f) }
+}
+
+// SimplePageLayoutData<CurrentUser, Data> ???
+
+/**
+ Conn<I, A> = (Env) ->
+ Middleware<Env, I, J, A, B>: ((Env) -> Conn<I, A>) -> (Env) -> Conn<J, B>
+
+ writeStatus: Middleware<Env, StatusLineOpen, HeadersOpen, A, B>
+ */
+
 struct SimplePageLayoutData<A> {
   enum Style {
     case minimal
@@ -53,6 +66,32 @@ struct SimplePageLayoutData<A> {
     }
   }
 
+  static func map<B>(_ f: @escaping (A) -> B) -> (SimplePageLayoutData<A>) -> SimplePageLayoutData<B> {
+    return { $0.map(f) }
+  }
+
+  func map<B>(_ f: @escaping (A) -> B) -> SimplePageLayoutData<B> {
+    return SimplePageLayoutData<B>(
+      currentRoute: self.currentRoute,
+      currentSubscriberState: self.currentSubscriberState,
+      currentUser: self.currentUser,
+      data: f(self.data),
+      description: self.description,
+      extraHead: self.extraHead,
+      extraStyles: self.extraStyles,
+      image: self.image,
+      openGraphType: self.openGraphType,
+      // TODO: wtf
+//      style: self.style,
+      title: self.title,
+      twitterCard: self.twitterCard,
+      usePrismJs: self.usePrismJs
+    )
+  }
+
+
+  // var baseUrl: URL
+  // var requestId = UUID()
   private(set) var currentRoute: Route?
   private(set) var currentSubscriberState: SubscriberState
   private(set) var currentUser: User?
@@ -99,6 +138,36 @@ struct SimplePageLayoutData<A> {
     self.twitterCard = twitterCard
     self.usePrismJs = usePrismJs
   }
+}
+
+func respond<A>(
+  view: View<SimplePageLayoutData<A>>
+  )
+  -> Middleware<HeadersOpen, ResponseEnded, SimplePageLayoutData<A>, Data> {
+
+    return { conn in
+      let newLayoutData = conn.data |> \.flash .~ conn.request.session.flash
+      let pageLayout = metaLayout(view)
+        .contramap(
+          Metadata.create(
+            description: newLayoutData.description,
+            image: newLayoutData.image,
+            title: newLayoutData.title,
+            twitterCard: newLayoutData.twitterCard,
+            twitterSite: "@pointfreeco",
+            type: newLayoutData.openGraphType,
+            url: newLayoutData.currentRoute.map(url(to:))
+          )
+      )
+
+      return conn
+        |> writeSessionCookieMiddleware(\.flash .~ nil)
+        >=> respond(
+          // TODO: move renderHtml to SimplePageLayoutData
+          body: Current.renderHtml(pageLayout.view(newLayoutData)),
+          contentType: .html
+      )
+    }
 }
 
 func respond<A, B>(

@@ -12,24 +12,30 @@ import Styleguide
 import Tuple
 import View
 
-let aboutResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
+let aboutResponse: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  SimplePageLayoutData<Prelude.Unit>,
+  Data>
+  =
   writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: aboutView,
-      layoutData: { currentUser, subscriberState, currentRoute in
-        SimplePageLayoutData(
-          currentRoute: currentRoute,
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: unit,
-          extraStyles: hostImgStyles <> hostBioStyles,
-          title: "About"
-        )
-    }
-)
+    >=> respond(view: aboutView)
+//    >=> map(lower)
+//    >>> respond(
+//      view: aboutView,
+//      layoutData: { currentUser, subscriberState, currentRoute in
+//        SimplePageLayoutData(
+//          currentRoute: currentRoute,
+//          currentSubscriberState: subscriberState,
+//          currentUser: currentUser,
+//          data: unit,
+//          extraStyles: hostImgStyles <> hostBioStyles,
+//          title: "About"
+//        )
+//    }
+//)
 
-private let aboutView = View<Prelude.Unit> { _ in
+private let aboutView = View<SimplePageLayoutData<Prelude.Unit>> { _ in
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 7], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
