@@ -91,10 +91,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
         |> redirect(to: path(to: .home))
 
     case let .expressUnsubscribe(payload):
-      // FIXME
-      fatalError()
-//      return conn.map(const(userId .*. newsletter .*. unit))
-//        |> expressUnsubscribeMiddleware
+      return conn.map(const(payload))
+        |> expressUnsubscribeMiddleware
 
     case let .expressUnsubscribeReply(payload):
       return conn.map(const(payload))
