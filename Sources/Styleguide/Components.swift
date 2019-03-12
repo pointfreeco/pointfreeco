@@ -62,7 +62,11 @@ public func twitterShareLink(text: String, url: String, via: String? = nil) -> N
     [
       href(tweetHref),
       onclick(unsafe: """
-        window.open("\(tweetHref)", "newwindow", "width=500,height=500");
+        window.open(
+          "\(tweetHref)",
+          "newwindow",
+          "width=500,height=500"
+        );
         """),
       target(.blank),
       rel(.init(rawValue: "noopener noreferrer")),
