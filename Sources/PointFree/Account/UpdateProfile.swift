@@ -47,10 +47,11 @@ let updateProfileMiddleware =
       get2 >>> ^\.email >>> isValidEmail,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
     )
+    <<< encryptPayload
     <<< fetchSubscription
     <<< fetchStripeSubscription
-    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription?, User, ProfileData>>) -> IO<Conn<ResponseEnded, Data>> in
-      let (subscription, user, data) = lower(conn.data)
+    <| { (conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>) -> IO<Conn<ResponseEnded, Data>> in
+      let (subscription, user, data, emailChangePayload) = lower(conn.data)
 
       let emailSettings = data.emailSettings.keys
         .compactMap(EmailSetting.Newsletter.init(rawValue:))
@@ -62,7 +63,7 @@ let updateProfileMiddleware =
           sendEmail(
             to: [user.email],
             subject: "Email change confirmation",
-            content: inj2(confirmEmailChangeEmailView.view((user, data.email)))
+            content: inj2(confirmEmailChangeEmailView.view((user, data.email, emailChangePayload)))
             )
             .run
           )
@@ -89,6 +90,32 @@ let updateProfileMiddleware =
       )
 }
 
+func encryptPayload<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, ProfileData, Encrypted<String>, A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, T3<User, ProfileData, A>, Data> {
+
+    return { conn in
+      let (user, data) = (get1(conn.data), get2(conn.data))
+
+      guard
+        let emailChangePayload = emailChangeIso
+          .unapply((user.id, data.email))
+          .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+        else {
+          Current.logger.error("Failed to encrypt email change for user: \(user.id)")
+
+          return conn |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(.error, "An error occurred.")
+          )
+      }
+
+      return conn.map(const(user .*. data .*. emailChangePayload .*. rest(conn.data)))
+        |> middleware
+    }
+}
+
 let emailChangeIso: PartialIso<String, (User.Id, EmailAddress)> = payload(.uuid >>> .tagged, .tagged)
 
 let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> = { conn in
@@ -97,7 +124,8 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
     let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
     let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
     else {
-      // FIXME?
+      Current.logger.error("Failed to decrypt email change payload: \(conn.data.rawValue)")
+
       return conn |> redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "An error occurred.")
