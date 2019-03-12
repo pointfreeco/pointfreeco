@@ -12,7 +12,7 @@ import WebKit
 
 class ChangeEmailConfirmationTests: TestCase {
   func testChangeEmailConfirmationEmail() {
-    let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co"))
+    let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co", ""))
 
     assertSnapshot(matching: emailNodes, as: .html)
 

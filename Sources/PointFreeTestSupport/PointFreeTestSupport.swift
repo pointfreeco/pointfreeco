@@ -160,7 +160,7 @@ public func request(
 
 public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
   return request(
-    with: router.request(for: route, base: URL(string: "http://localhost:8080"))!,
+    with: pointFreeRouter.request(for: route, base: URL(string: "http://localhost:8080"))!,
     session: session,
     basicAuth: basicAuth
   )

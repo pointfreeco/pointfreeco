@@ -26,8 +26,12 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
+    let payload = expressUnsubscribeIso
+      .unapply((user.id, .announcements))
+      .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+
     let unsubscribe = request(
-      to: .expressUnsubscribe(userId: user.id, newsletter: .announcements),
+      to: .expressUnsubscribe(payload: payload!),
       session: .loggedIn
     )
 
