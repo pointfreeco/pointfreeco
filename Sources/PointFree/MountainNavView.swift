@@ -87,7 +87,11 @@ private let headerLinks = View<(NavStyle.MountainsStyle, User?, SubscriberState,
       : nil,
 
     currentUser == nil
-      ? gitHubLink(text: "Login", type: .black, redirect: currentRoute.map(url(to:)))
+      ? gitHubLink(
+        text: "Login",
+        type: .black,
+        redirect: path(to: .login(redirect: currentRoute.map(url(to:))))
+        )
       : a([href(path(to: .account(.index))), `class`([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
     ]
     .compactMap(id)

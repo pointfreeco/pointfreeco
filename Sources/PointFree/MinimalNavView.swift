@@ -95,7 +95,7 @@ private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, curre
   gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),
-    redirect: currentRoute.map(url(to:))
+    redirect: path(to: .login(redirect: currentRoute.map(url(to:))))
   )
 }
 

@@ -185,7 +185,7 @@ private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter
           gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            redirect: url(to: .invite(.show(invite.id)))
+            redirect: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
           )
           ])
         ])
