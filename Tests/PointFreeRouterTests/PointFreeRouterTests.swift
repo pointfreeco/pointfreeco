@@ -5,7 +5,6 @@ import XCTest
 
 class PointFreeRouterTests: XCTestCase {
   func testUpdateProfile() {
-    let router = pointFreeRouter
     let profileData = ProfileData(
       email: "blobby@blob.co",
       extraInvoiceInfo: nil,
@@ -14,13 +13,13 @@ class PointFreeRouterTests: XCTestCase {
     )
     let route = Route.account(.update(profileData))
 
-    guard let request = router.request(for: route) else {
+    guard let request = pointFreeRouter.request(for: route) else {
         XCTFail("")
         return
     }
 
     XCTAssertEqual("POST", request.httpMethod)
     XCTAssertEqual("account", request.url?.path)
-    XCTAssertEqual(route, router.match(request: request))
+    XCTAssertEqual(route, pointFreeRouter.match(request: request))
   }
 }

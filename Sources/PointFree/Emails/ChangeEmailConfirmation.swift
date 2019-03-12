@@ -1,3 +1,4 @@
+import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models

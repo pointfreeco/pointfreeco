@@ -266,6 +266,7 @@ routes:
 		&& echo "  ✅ Generated!"
 
 SOURCERY_TESTS_IMPORTS = \
+	@testable import FunctionalCssTests; \
 	@testable import GitHubTests; \
 	@testable import ModelsTests; \
 	@testable import PointFreeRouterTests; \

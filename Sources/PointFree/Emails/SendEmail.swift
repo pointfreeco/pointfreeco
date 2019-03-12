@@ -2,6 +2,7 @@ import ApplicativeRouter
 import Either
 import Html
 import HtmlPlainTextPrint
+import Mailgun
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -34,7 +35,7 @@ public func prepareEmail(
     let headers: [(String, String)] = unsubscribeData
       .map { userId, newsletter in
         guard
-          let unsubEmail = unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
+          let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: userId, andNewsletter: newsletter),
           let unsubUrl = expressUnsubscribeIso
             .unapply((userId, newsletter))
             .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
@@ -72,7 +73,7 @@ public func prepareEmail(
     )
 }
 
-public func send(email: Email) -> EitherIO<Error, Mailgun.SendEmailResponse> {
+public func send(email: Email) -> EitherIO<Error, SendEmailResponse> {
   return Current.mailgun.sendEmail(email)
 }
 
@@ -84,7 +85,7 @@ public func sendEmail(
   content: Either3<String, [Node], (String, [Node])>,
   domain: String = mgDomain
   )
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse> {
 
     return Current.mailgun.sendEmail(
       prepareEmail(

@@ -10,9 +10,11 @@ let package = Package(
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
+    .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
@@ -71,6 +73,23 @@ let package = Package(
     ),
 
     .target(
+      name: "FunctionalCss",
+      dependencies: [
+        "Css",
+        "Prelude"
+      ]
+    ),
+
+    .testTarget(
+      name: "FunctionalCssTests",
+      dependencies: [
+        "CssTestSupport",
+        "FunctionalCss",
+        "SnapshotTesting",
+        ]
+    ),
+
+    .target(
       name: "GitHub",
       dependencies: [
         "Either",
@@ -103,6 +122,18 @@ let package = Package(
       name: "Logger",
       dependencies: [
         "Either",
+        ]
+    ),
+
+    .target(
+      name: "Mailgun",
+      dependencies: [
+        "Either",
+        "HttpPipeline",
+        "Logger",
+        "Models",
+        "PointFreePrelude",
+        "UrlFormEncoding",
         ]
     ),
 
@@ -154,6 +185,7 @@ let package = Package(
         "HtmlPlainTextPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
+        "Mailgun",
         "Models",
         "Optics",
         "PointFreeRouter",
@@ -282,14 +314,18 @@ let package = Package(
       name: "Styleguide",
       dependencies: [
         "Css",
+        "FunctionalCss",
         "Html",
+        "HtmlCssSupport",
+        "Prelude",
         ]),
 
     .testTarget(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "PointFreeTestSupport",
+        "HtmlSnapshotTesting",
+        "SnapshotTesting",
         "Styleguide",
         ]),
 

@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+@testable import FunctionalCssTests; @testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
@@ -178,6 +178,11 @@ extension FreeEpisodeEmailTests {
     ("testFreeEpisodeEmail", testFreeEpisodeEmail),
   ]
 }
+extension FunctionalCssTests {
+  static var allTests: [(String, (FunctionalCssTests) -> () throws -> Void)] = [
+    ("testFunctionalCss", testFunctionalCss),
+  ]
+}
 extension GitHubTests {
   static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
     ("testRequests", testRequests),
@@ -330,8 +335,10 @@ extension StripeWebhooksTests {
 extension StyleguideTests {
   static var allTests: [(String, (StyleguideTests) -> () throws -> Void)] = [
     ("testStyleguide", testStyleguide),
-    ("testDesignSystem", testDesignSystem),
     ("testPointFreeStyles", testPointFreeStyles),
+    ("testGitHubLink_Black", testGitHubLink_Black),
+    ("testGitHubLink_White", testGitHubLink_White),
+    ("testTwitterLink", testTwitterLink),
   ]
 }
 extension SubscribeTests {
@@ -393,6 +400,7 @@ XCTMain([
   testCase(EpisodePageTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
+  testCase(FunctionalCssTests.allTests),
   testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),

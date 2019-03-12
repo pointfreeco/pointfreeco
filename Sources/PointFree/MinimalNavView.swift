@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
@@ -91,7 +92,11 @@ private let accountLinkView = View<NavStyle.MinimalStyle> { style in
 }
 
 private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, currentRoute in
-  gitHubLink(text: "Log in", type: gitHubLinkType(for: style), redirectRoute: currentRoute)
+  gitHubLink(
+    text: "Log in",
+    type: gitHubLinkType(for: style),
+    href: path(to: .login(redirect: currentRoute.map(url(to:))))
+  )
 }
 
 private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {
