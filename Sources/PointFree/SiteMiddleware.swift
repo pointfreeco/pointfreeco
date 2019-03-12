@@ -25,9 +25,17 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
     let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(user: user, subscription: subscription)
 
+    var layout = SimplePageLayoutData<Prelude.Unit>(
+      currentRoute: route,
+      currentSubscriberState: subscriberState,
+      currentUser: user,
+      data: unit,
+      title: ""
+    )
+
     switch route {
     case .about:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+      return conn.map(const(layout))
         |> aboutResponse
 
     case let .account(account):
@@ -43,7 +51,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
         |> showEpisodeCreditsMiddleware
 
     case .admin(.index):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(layout))
         |> adminIndex
 
     case .admin(.freeEpisodeEmail(.index)):

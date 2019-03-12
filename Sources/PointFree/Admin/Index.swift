@@ -29,12 +29,27 @@ func requireAdmin<A>(
       <| middleware
 }
 
-let adminIndex =
-  requireAdmin
-    <| writeStatus(.ok)
-    >=> respond(adminIndexView.contramap(lower))
+func _requireAdmin<A>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, SimplePageLayoutData<A>, Data>
+  )
+  -> Middleware<StatusLineOpen, ResponseEnded, SimplePageLayoutData<A>, Data> {
 
-private let adminIndexView = View<User> { currentUser in
+    return { (conn: Conn<StatusLineOpen, SimplePageLayoutData<A>>) in
+
+      fatalError()
+    }
+
+//    return filterMap(require1 >>> pure, or: loginAndRedirect)
+//      <<< filter(get1 >>> ^\.isAdmin, or: redirect(to: .home))
+//      <| middleware
+}
+
+let adminIndex =
+  _requireAdmin
+    <| writeStatus(.ok)
+    >=> respond(view: adminIndexView)
+
+private let adminIndexView = View<SimplePageLayoutData<Prelude.Unit>> { _ in
   ul([
     li([
       a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
