@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import Optics
 import PointFreePrelude
@@ -199,7 +200,7 @@ private func fetchStripeSubscription<A>(
 // MARK: - Emails
 
 private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscription)
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],
@@ -245,7 +246,7 @@ private let cancelEmailBodyView = View<(User, Stripe.Subscription)> { user, subs
 }
 
 private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],

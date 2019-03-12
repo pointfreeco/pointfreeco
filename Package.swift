@@ -13,6 +13,7 @@ let package = Package(
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
+    .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
@@ -106,6 +107,18 @@ let package = Package(
     ),
 
     .target(
+      name: "Mailgun",
+      dependencies: [
+        "Either",
+        "HttpPipeline",
+        "Logger",
+        "Models",
+        "PointFreePrelude",
+        "UrlFormEncoding",
+        ]
+    ),
+
+    .target(
       name: "Models",
       dependencies: [
         "GitHub",
@@ -152,6 +165,7 @@ let package = Package(
         "HtmlPlainTextPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
+        "Mailgun",
         "Models",
         "Optics",
         "PointFreeRouter",

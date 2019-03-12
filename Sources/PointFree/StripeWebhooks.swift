@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import PointFreePrelude
 import Prelude
@@ -125,7 +126,7 @@ private func handleFailedPayment(
 }
 
 private func sendPastDueEmail(to owner: User)
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],
