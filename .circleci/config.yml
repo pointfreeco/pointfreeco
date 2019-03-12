@@ -8,6 +8,10 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+        keys:
+          - brew
+
       - run:
           name: Mac Info
           command: system_profiler SPSoftwareDataType
