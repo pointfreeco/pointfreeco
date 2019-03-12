@@ -336,6 +336,24 @@ private let privateRssFeed = View<AccountData> { data -> [Node] in
   guard Current.features.hasAccess(to: .podcastRss, for: data.currentUser) else { return [] }
   guard data.subscriberState.isActiveSubscriber else { return [] }
   let user = data.currentUser
+  let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)
+  let encryptedRssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)
+  let rssUrl = zip(encryptedUserId, encryptedRssSalt)
+    .map { url(to: .account(.rss(userId: $0, rssSalt: $1))) }
+  let rssLink = rssUrl
+    .map { rssUrl in
+      [
+        p([
+          a(
+            [`class`([Class.pf.type.underlineLink]), href(rssUrl)],
+            [text(String(rssUrl.prefix(40)) + "...")]
+          )
+          ]
+        )
+        ]
+        + rssTerms(stripeSubscription: data.stripeSubscription)
+    }
+    ?? []
 
   return [
     gridRow([
@@ -380,24 +398,9 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                 ),
                 " if it doesn't). It is also tied directly to your Point-Free account and regularly ",
                 " monitored, so please do not share with others."
-                ]),
-              p([
-                a(
-                  [
-                    // FIXME
-//                    `class`([Class.pf.type.underlineLink]),
-//                    href(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))))
-                  ],
-                  [
-//                    text(
-//                      String(url(to: .account(.rss(userId: user.id, rssSalt: user.rssSalt))).prefix(40))
-//                        + "..."
-//                    )
-                  ]
-                )
-                ]
-              )
-            ] + rssTerms(stripeSubscription: data.stripeSubscription)
+                ])
+              ]
+              + rssLink
           )
         ]
       )
