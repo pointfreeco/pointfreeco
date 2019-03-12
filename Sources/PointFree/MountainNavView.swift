@@ -90,7 +90,7 @@ private let headerLinks = View<(NavStyle.MountainsStyle, User?, SubscriberState,
       ? gitHubLink(
         text: "Login",
         type: .black,
-        redirect: path(to: .login(redirect: currentRoute.map(url(to:))))
+        href: path(to: .login(redirect: currentRoute.map(url(to:))))
         )
       : a([href(path(to: .account(.index))), `class`([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
     ]

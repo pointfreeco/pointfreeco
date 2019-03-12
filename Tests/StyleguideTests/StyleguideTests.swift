@@ -13,6 +13,7 @@ class StyleguideTests: XCTestCase {
   override func setUp() {
     super.setUp()
     diffTool = "ksdiff"
+//    record = true
   }
 
   func testStyleguide() {
@@ -33,7 +34,11 @@ class StyleguideTests: XCTestCase {
           style(unsafe: render(config: .compact, css: styleguide))
           ]),
         body([
-          gitHubLink(text: "Login with GitHub", type: .black, redirect: "https://www.pointfree.co")
+          gitHubLink(
+            text: "Login with GitHub",
+            type: .black,
+            href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
+          )
           ])
         ])
     ]
@@ -58,7 +63,11 @@ class StyleguideTests: XCTestCase {
           ]),
         body(
           [style("background: #000")],
-          [gitHubLink(text: "Login with GitHub", type: .white, redirect: "https://www.pointfree.co")]
+          [gitHubLink(
+            text: "Login with GitHub",
+            type: .white,
+            href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
+            )]
         )
         ])
     ]

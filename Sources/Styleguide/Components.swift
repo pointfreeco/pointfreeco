@@ -24,10 +24,10 @@ public enum GitHubLinkType {
   }
 }
 
-public func gitHubLink(text: String, type: GitHubLinkType, redirect: String?) -> Node {
+public func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Node {
   return a(
     [
-      href(redirect ?? ""),
+      Html.href(href ?? ""),
       `class`([type.buttonClass])
     ],
     [
