@@ -6,6 +6,7 @@ import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import Optics
 import PointFreeRouter
@@ -282,7 +283,7 @@ private func requireTeamInvite<A>(
 
 private func sendInviteEmail(
   invite: TeamInvite, inviter: User
-  ) ->  EitherIO<Error, Mailgun.SendEmailResponse> {
+  ) ->  EitherIO<Error, SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],

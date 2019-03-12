@@ -12,6 +12,7 @@ import Html
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
+import Mailgun
 import Models
 import ModelsTestSupport
 import Optics
@@ -80,8 +81,9 @@ extension EnvVars {
   }
 }
 
-extension Mailgun {
-  public static let mock = Mailgun(
+extension Mailgun.Client {
+  public static let mock = Mailgun.Client(
+    appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
   )
 }
