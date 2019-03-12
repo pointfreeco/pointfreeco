@@ -8,10 +8,6 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - brew
-
       - run:
           name: Mac Info
           command: system_profiler SPSoftwareDataType
@@ -37,8 +33,3 @@ jobs:
           command: make test-oss
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
-
-      - save_cache:
-          key: brew
-          paths:
-            - /usr/local/Homebrew
