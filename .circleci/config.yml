@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.1.0"
 
     steps:
       - checkout
@@ -25,15 +25,12 @@ jobs:
           command: brew services start postgresql
 
       - run:
-          name: Install Sourcery
-          command: brew install sourcery
-
-      - run:
-          name: Run Bootstrap OSS
-          command: make bootstrap-oss
-
-      - run:
           name: Run Swift tests
           command: make test-oss
           environment:
             SNAPSHOT_ARTIFACTS: $CIRCLE_ARTIFACTS
+
+      - save_cache:
+          paths:
+            - /usr/local/Homebrew
+          key: brew
