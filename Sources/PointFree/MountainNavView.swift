@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
@@ -86,7 +87,11 @@ private let headerLinks = View<(NavStyle.MountainsStyle, User?, SubscriberState,
       : nil,
 
     currentUser == nil
-      ? gitHubLink(text: "Login", type: .black, redirectRoute: currentRoute)
+      ? gitHubLink(
+        text: "Login",
+        type: .black,
+        href: path(to: .login(redirect: currentRoute.map(url(to:))))
+        )
       : a([href(path(to: .account(.index))), `class`([Class.type.medium, Class.pf.colors.link.black])], ["Account"]),
     ]
     .compactMap(id)
