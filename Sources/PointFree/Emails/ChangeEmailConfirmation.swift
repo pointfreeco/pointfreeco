@@ -4,24 +4,25 @@ import HtmlCssSupport
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import View
 
 let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody)
-  .contramap { user, newEmailAddress in
+  .contramap { user, newEmailAddress, payload in
     SimpleEmailLayoutData(
       user: user,
       newsletter: nil,
       title: "Email change confirmation",
       preheader: "We received a request to change your email on Point-Free.",
       template: .default,
-      data: (user, newEmailAddress)
+      data: (user, newEmailAddress, payload)
     )
 }
 
-private let confirmEmailChangeEmailBody = View<(User, EmailAddress)> { user, newEmailAddress in
-  emailTable([style(contentTableStyles)], [
+private let confirmEmailChangeEmailBody = View<(User, EmailAddress, Encrypted<String>)> { user, newEmailAddress, payload -> Node in
+  return emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
@@ -36,7 +37,7 @@ private let confirmEmailChangeEmailBody = View<(User, EmailAddress)> { user, new
 
           p([`class`([Class.padding([.mobile: [.top: 2, .bottom: 3]])])], [
             a(
-              [ href(url(to: .account(.confirmEmailChange(userId: user.id, emailAddress: newEmailAddress)))),
+              [ href(url(to: .account(.confirmEmailChange(payload: payload)))),
                 `class`([Class.pf.components.button(color: .purple)]) ],
               ["Confirm email change"]
             )

@@ -5,6 +5,9 @@ import PointFreePrelude
 import Prelude
 import Stripe
 
+public enum EncryptedTag {}
+public typealias Encrypted<A> = Tagged<EncryptedTag, A>
+
 public enum Route: DerivePartialIsos, Equatable {
   case about
   case account(PointFreeRouter.Account)
@@ -14,7 +17,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case discounts(code: Stripe.Coupon.Id)
   case episode(Either<String, Episode.Id>)
   case episodes
-  case expressUnsubscribe(userId: User.Id, newsletter: EmailSetting.Newsletter)
+  case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
@@ -71,145 +74,143 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 }
 
-public func pointFreeRouter(appSecret: String, mailgunApiKey: String) -> Router<Route> {
-  return routers(appSecret: appSecret, mailgunApiKey: mailgunApiKey).reduce(.empty, <|>)
-}
+public let pointFreeRouter = routers.reduce(.empty, <|>)
 
-private func routers(appSecret: String, mailgunApiKey: String) -> [Router<Route>] {
-  return [
-    .about
-      <¢> get %> lit("about") <% end,
+private let routers: [Router<Route>] = [
+  .about
+    <¢> get %> lit("about") <% end,
 
-    .account
-      <¢> lit("account") %> accountRouter(appSecret: appSecret),
+  .account
+    <¢> lit("account") %> accountRouter,
 
-    .admin
-      <¢> lit("admin") %> adminRouter,
+  .admin
+    <¢> lit("admin") %> adminRouter,
 
-    .appleDeveloperMerchantIdDomainAssociation
-      <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
+  .appleDeveloperMerchantIdDomainAssociation
+    <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
 
-    .blog <<< .feed
-      <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
+  .blog <<< .feed
+    <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
 
-    .discounts
-      <¢> get %> lit("discounts") %> pathParam(.tagged(.string)) <% end,
+  .discounts
+    <¢> get %> lit("discounts") %> pathParam(.tagged(.string)) <% end,
 
-    .blog <<< .index
-      <¢> get %> lit("blog") <% end,
+  .blog <<< .index
+    <¢> get %> lit("blog") <% end,
 
-    .blog <<< .show
-      <¢> get %> lit("blog") %> lit("posts")
-      %> pathParam(.blogPostIdOrString)
-      <% end,
+  .blog <<< .show
+    <¢> get %> lit("blog") %> lit("posts") %> pathParam(.blogPostIdOrString) <% end,
 
-    .episode
-      <¢> get %> lit("episodes") %> pathParam(.episodeIdOrString) <% end,
+  .episode
+    <¢> get %> lit("episodes") %> pathParam(.episodeIdOrString) <% end,
 
-    .episodes
-      <¢> get %> lit("episodes") <% end,
+  .episodes
+    <¢> get %> lit("episodes") <% end,
 
-    .feed <<< .atom
-      <¢> get %> lit("feed") %> lit("atom.xml") <% end,
+  .feed <<< .atom
+    <¢> get %> lit("feed") %> lit("atom.xml") <% end,
 
-    .feed <<< .episodes
-      <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
+  .feed <<< .episodes
+    <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
 
-    .expressUnsubscribe
-      <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
-      %> queryParam("payload", .decrypted(withSecret: appSecret) >>> payload(.tagged(.uuid), .rawRepresentable))
-      <% end,
+  .expressUnsubscribe
+    <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
+    %> queryParam("payload", .tagged)
+    <% end,
 
-    .expressUnsubscribeReply
-      <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
-      %> formBody(MailgunForwardPayload.self, decoder: formDecoder).map(.signatureVerification(apiKey: mailgunApiKey))
-      <% end,
+  .expressUnsubscribeReply
+    <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
+    %> formBody(MailgunForwardPayload.self, decoder: formDecoder)
+    <% end,
 
-    .gitHubCallback
-      <¢> get %> lit("github-auth")
-      %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
-      <% end,
+  .gitHubCallback
+    <¢> get %> lit("github-auth")
+    %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
+    <% end,
 
-    .home
-      <¢> get <% end,
+  .home
+    <¢> get <% end,
 
-    .invite <<< .accept
-      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
+  .invite <<< .accept
+    <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
 
-    .invite <<< .resend
-      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("resend") <% end,
+  .invite <<< .resend
+    <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("resend") <% end,
 
-    .invite <<< .revoke
-      <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("revoke") <% end,
+  .invite <<< .revoke
+    <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("revoke") <% end,
 
-    .invite <<< .send
-      // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
-      //       `(String?) -> A` like it is for `queryParam`.
-      <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
+  .invite <<< .send
+    // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
+    //       `(String?) -> A` like it is for `queryParam`.
+    <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
-    .invite <<< .show
-      <¢> get %> lit("invites") %> pathParam(.tagged(.uuid)) <% end,
+  .invite <<< .show
+    <¢> get %> lit("invites") %> pathParam(.tagged(.uuid)) <% end,
 
-    .login
-      <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
+  .login
+    <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
 
-    .logout
-      <¢> get %> lit("logout") <% end,
+  .logout
+    <¢> get %> lit("logout") <% end,
 
-    .pricing
-      <¢> get %> lit("pricing")
-      %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
-        .map(PartialIso.pricing >>> Optional.iso.some)
-      <%> queryParam("expand", opt(.bool))
-      <% end,
+  .pricing
+    <¢> get %> lit("pricing")
+    %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
+      .map(PartialIso.pricing >>> Optional.iso.some)
+    <%> queryParam("expand", opt(.bool))
+    <% end,
 
-    .privacy
-      <¢> get %> lit("privacy") <% end,
+  .privacy
+    <¢> get %> lit("privacy") <% end,
 
-    .subscribe
-      <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+  .subscribe
+    <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
-    .team <<< .leave
-      <¢> post %> lit("account") %> lit("team") %> lit("leave")
-      <% end,
+  .team <<< .leave
+    <¢> post %> lit("account") %> lit("team") %> lit("leave")
+    <% end,
 
-    .team <<< .remove
-      <¢> post %> lit("account") %> lit("team") %> lit("members")
-      %> pathParam(.tagged(.uuid))
-      <% lit("remove")
-      <% end,
+  .team <<< .remove
+    <¢> post %> lit("account") %> lit("team") %> lit("members")
+    %> pathParam(.tagged(.uuid))
+    <% lit("remove")
+    <% end,
 
-    .useEpisodeCredit
-      <¢> post %> lit("episodes") %> pathParam(.tagged(.int)) <% lit("credit") <% end,
+  .useEpisodeCredit
+    <¢> post %> lit("episodes") %> pathParam(.tagged(.int)) <% lit("credit") <% end,
 
-    .webhooks <<< .stripe <<< .event
-      <¢> post %> lit("webhooks") %> lit("stripe")
-      %> jsonBody(
-        Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-        encoder: Stripe.jsonEncoder,
-        decoder: Stripe.jsonDecoder
+  .webhooks <<< .stripe <<< .event
+    <¢> post %> lit("webhooks") %> lit("stripe")
+    %> jsonBody(
+      Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+      encoder: Stripe.jsonEncoder,
+      decoder: Stripe.jsonDecoder
+    )
+    <% end,
+
+  .webhooks <<< .stripe <<< .fallthrough
+    <¢> post %> lit("webhooks") %> lit("stripe") <% end,
+]
+
+extension PartialIso {
+  static func either<Left, Right>(
+    _ l: PartialIso<A, Left>,
+    _ r: PartialIso<A, Right>
+    )
+    -> PartialIso
+    where B == Either<Left, Right> {
+      return PartialIso(
+        apply: { l.apply($0).map(Either.left) ?? r.apply($0).map(Either.right) },
+        unapply: { $0.either(l.unapply, r.unapply) }
       )
-      <% end,
-
-    .webhooks <<< .stripe <<< .fallthrough
-      <¢> post %> lit("webhooks") %> lit("stripe") <% end,
-    ]
+  }
 }
 
 extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
-  static var blogPostIdOrString: PartialIso {
-    return PartialIso(
-      apply: { Int($0).map(BlogPost.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
-      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
-    )
-  }
+  static let blogPostIdOrString = either(.string, .tagged(.int))
 }
 
 extension PartialIso where A == String, B == Either<String, Episode.Id> {
-  static var episodeIdOrString: PartialIso {
-    return PartialIso(
-      apply: { Int($0).map(Episode.Id.init(rawValue:) >>> Either.right) ?? .left($0) },
-      unapply: { ($0.right?.rawValue).map(String.init) ?? $0.left }
-    )
-  }
+  static var episodeIdOrString = either(.string, .tagged(.int))
 }

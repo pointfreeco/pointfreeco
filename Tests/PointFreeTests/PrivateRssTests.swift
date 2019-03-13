@@ -6,6 +6,7 @@ import ModelsTestSupport
 import Optics
 @testable import PointFree
 import PointFreePrelude
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
@@ -29,9 +30,12 @@ class PrivateRssTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
     )
 
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
         session: .loggedOut
       )
     )
@@ -50,9 +54,12 @@ class PrivateRssTests: TestCase {
       \.stripe.fetchSubscription .~ const(pure(.individualYearly))
     )
 
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
         session: .loggedOut
       )
     )
@@ -70,9 +77,12 @@ class PrivateRssTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(throwE(unit))
     )
 
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
         session: .loggedOut
       )
     )
@@ -90,9 +100,12 @@ class PrivateRssTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
     )
 
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: user.id, rssSalt: user.rssSalt)),
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
         session: .loggedOut
       )
     )
@@ -109,9 +122,12 @@ class PrivateRssTests: TestCase {
       \.database.fetchUserById .~ const(pure(.some(user)))
     )
 
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+
     let conn = connection(
       from: request(
-        to: .account(.rss(userId: user.id, rssSalt: .init(rawValue: UUID(uuidString: "baadbaad-baad-baad-baad-baadbaadbaad")!))),
+        to: .account(.rss(userId: userId, rssSalt: rssSalt)),
         session: .loggedOut
       )
     )

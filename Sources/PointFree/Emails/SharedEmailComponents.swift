@@ -45,13 +45,26 @@ let emailFooterView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter
 }
 
 private let unsubscribeView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
-  guard let user = user, let newsletter = newsletter else { return [] }
+  guard
+    let user = user,
+    let newsletter = newsletter
+    else { return [] }
+
+  guard
+    let unsubUrl = expressUnsubscribeIso
+      .unapply((user.id, newsletter))
+      .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+      .map({ url(to: .expressUnsubscribe(payload: $0)) })
+    else {
+      Current.logger.error("Failed to generate unsubscribe link for user \(user.id)")
+      return []
+  }
 
   return [
     p([`class`([Class.pf.type.body.small])], [
       .text(subscribedReason(newsletter: newsletter)),
       " If you no longer wish to receive emails like this, you can unsubscribe ",
-      a([href(url(to: .expressUnsubscribe(userId: user.id, newsletter: newsletter)))], ["here"]),
+      a([href(unsubUrl)], ["here"]),
       "."
       ])
   ]
