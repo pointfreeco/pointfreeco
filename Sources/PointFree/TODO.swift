@@ -8,11 +8,25 @@ import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 import UrlFormEncoding
 import View
+
+extension Tagged where Tag == EncryptedTag, RawValue == String {
+  public init?(_ text: String, with secret: String) {
+    guard
+      let string = encrypted(text: text, secret: secret)
+      else { return nil }
+    self.init(rawValue: string)
+  }
+
+  public func decrypt(with secret: String) -> String? {
+    return decrypted(text: self.rawValue, secret: secret)
+  }
+}
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?

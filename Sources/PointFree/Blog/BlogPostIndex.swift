@@ -10,6 +10,7 @@ import Prelude
 import Styleguide
 import Tuple
 import View
+import Views
 
 let blogIndexMiddleware: (Conn<StatusLineOpen, Tuple3<User?, SubscriberState, Route?>>) -> IO<Conn<ResponseEnded, Data>> =
   writeStatus(.ok)
