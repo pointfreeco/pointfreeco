@@ -10,15 +10,15 @@ public struct Client {
   public var fetchAuthToken: (String) -> EitherIO<Error, Either<OAuthError, AccessToken>>
 
   /// Fetches a GitHub user's emails.
-  public var fetchEmails: (AccessToken) -> EitherIO<Error, [User.Email]>
+  public var fetchEmails: (AccessToken) -> EitherIO<Error, [GitHubUser.Email]>
 
   /// Fetches a GitHub user from an access token.
-  public var fetchUser: (AccessToken) -> EitherIO<Error, User>
+  public var fetchUser: (AccessToken) -> EitherIO<Error, GitHubUser>
 
   public init(
     fetchAuthToken: @escaping (String) -> EitherIO<Error, Either<OAuthError, AccessToken>>,
-    fetchEmails: @escaping (AccessToken) -> EitherIO<Error, [User.Email]>,
-    fetchUser: @escaping (AccessToken) -> EitherIO<Error, User>
+    fetchEmails: @escaping (AccessToken) -> EitherIO<Error, [GitHubUser.Email]>,
+    fetchUser: @escaping (AccessToken) -> EitherIO<Error, GitHubUser>
     ) {
     self.fetchAuthToken = fetchAuthToken
     self.fetchEmails = fetchEmails
@@ -64,11 +64,11 @@ func fetchGitHubAuthToken(
     }
 }
 
-func fetchGitHubEmails(token: AccessToken) -> DecodableRequest<[User.Email]> {
+func fetchGitHubEmails(token: AccessToken) -> DecodableRequest<[GitHubUser.Email]> {
   return apiDataTask("user/emails", token: token)
 }
 
-internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<User> {
+internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<GitHubUser> {
   return apiDataTask("user", token: token)
 }
 

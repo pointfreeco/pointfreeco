@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Either
+import GitHub
 import Models
 import PointFreePrelude
 import Prelude
