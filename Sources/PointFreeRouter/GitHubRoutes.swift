@@ -3,6 +3,7 @@ import Foundation
 import Prelude
 
 public enum GitHubRoute: DerivePartialIsos {
+  // FIXME: Use GitHub.Client.Id
   case authorize(clientId: String, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
   case license

@@ -1,8 +1,25 @@
+import Database
 import Foundation
+import GitHub
+import Mailgun
+import Stripe
+import Tagged
+
+public typealias GitHubClientId = GitHub.Client.Id
+public typealias GitHubClientSecret = GitHub.Client.Secret
+
+public typealias MailgunApiKey = Mailgun.Client.ApiKey
+public typealias MailgunDomain = Mailgun.Client.Domain
+
+public typealias StripeEndpointSecret = Stripe.Client.EndpointSecret
+public typealias StripePublishableKey = Stripe.Client.PublishableKey
+public typealias StripeSecretKey = Stripe.Client.SecretKey
 
 public struct EnvVars: Codable {
+  public typealias Secret = Tagged<EnvVars, String>
+
   public var appEnv = AppEnv.development
-  public var appSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
+  public var appSecret: Secret = "deadbeefdeadbeefdeadbeefdeadbeef"
   public var baseUrl = URL(string: "http://localhost:8080")!
   public var basicAuth = BasicAuth()
   public var gitHub = GitHub()
@@ -36,8 +53,8 @@ public struct EnvVars: Codable {
   }
 
   public struct GitHub: Codable {
-    public var clientId = "deadbeef-client-id"
-    public var clientSecret = "deadbeef-client-secret"
+    public var clientId: GitHubClientId = "deadbeef-client-id"
+    public var clientSecret: GitHubClientSecret = "deadbeef-client-secret"
 
     private enum CodingKeys: String, CodingKey {
       case clientId = "GITHUB_CLIENT_ID"
@@ -46,8 +63,8 @@ public struct EnvVars: Codable {
   }
 
   public struct Mailgun: Codable {
-    public var apiKey = "key-deadbeefdeadbeefdeadbeefdeadbeef"
-    public var domain = "mg.domain.com"
+    public var apiKey: MailgunApiKey = "key-deadbeefdeadbeefdeadbeefdeadbeef"
+    public var domain: MailgunDomain = "mg.domain.com"
 
     private enum CodingKeys: String, CodingKey {
       case apiKey = "MAILGUN_PRIVATE_API_KEY"
@@ -56,6 +73,8 @@ public struct EnvVars: Codable {
   }
 
   public struct Postgres: Codable {
+    public typealias DatabaseUrl = Tagged<Postgres, String>
+
     public var databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_development"
 
     private enum CodingKeys: String, CodingKey {
@@ -64,9 +83,9 @@ public struct EnvVars: Codable {
   }
 
   public struct Stripe: Codable {
-    public var endpointSecret = "whsec_test"
-    public var publishableKey = "pk_test"
-    public var secretKey = "sk_test"
+    public var endpointSecret: StripeEndpointSecret = "whsec_test"
+    public var publishableKey: StripePublishableKey = "pk_test"
+    public var secretKey: StripeSecretKey = "sk_test"
 
     private enum CodingKeys: String, CodingKey {
       case endpointSecret = "STRIPE_ENDPOINT_SECRET"
@@ -81,7 +100,7 @@ extension EnvVars {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
-    self.appSecret = try values.decode(String.self, forKey: .appSecret)
+    self.appSecret = try values.decode(EnvVars.Secret.self, forKey: .appSecret)
     self.baseUrl = try values.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
     self.gitHub = try .init(from: decoder)

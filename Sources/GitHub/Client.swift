@@ -27,7 +27,10 @@ public struct Client {
 }
 
 extension Client {
-  public init(clientId: String, clientSecret: String, logger: Logger?) {
+  public typealias Id = Tagged<(Client, id: ()), String>
+  public typealias Secret = Tagged<(Client, secret: ()), String>
+
+  public init(clientId: Id, clientSecret: Secret, logger: Logger?) {
     self.init(
       fetchAuthToken: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret) >>> runGitHub(logger),
       fetchEmails: fetchGitHubEmails >>> runGitHub(logger),
@@ -37,7 +40,7 @@ extension Client {
 }
 
 func fetchGitHubAuthToken(
-  clientId: String, clientSecret: String
+  clientId: Client.Id, clientSecret: Client.Secret
   )
   -> (String)
   -> DecodableRequest<Either<OAuthError, AccessToken>> {
@@ -47,8 +50,8 @@ func fetchGitHubAuthToken(
       request.httpMethod = "POST"
       request.httpBody = try? gitHubJsonEncoder.encode(
         [
-          "client_id": clientId,
-          "client_secret": clientSecret,
+          "client_id": clientId.rawValue,
+          "client_secret": clientSecret.rawValue,
           "code": code,
           "accept": "json"
         ])

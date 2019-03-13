@@ -6,9 +6,13 @@ import Models
 import Optics
 import PointFreePrelude
 import Prelude
+import Tagged
 import UrlFormEncoding
 
 public struct Client {
+  public typealias ApiKey = MailgunForwardPayload.ApiKey
+  public typealias Domain = Tagged<(Client, domain: ()), String>
+
   private let appSecret: String
 
   public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
@@ -21,9 +25,9 @@ public struct Client {
   }
 
   public init(
-    apiKey: String,
+    apiKey: ApiKey,
     appSecret: String,
-    domain: String,
+    domain: Domain,
     logger: Logger) {
     self.appSecret = appSecret
 
@@ -80,8 +84,8 @@ private func setBaseUrl(_ baseUrl: URL) -> (URLRequest) -> URLRequest {
 }
 
 private func runMailgun<A>(
-  apiKey: String,
-  domain: String,
+  apiKey: Client.ApiKey,
+  domain: Client.Domain,
   logger: Logger
   ) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
 
@@ -93,7 +97,7 @@ private func runMailgun<A>(
 
     mailgunRequest.rawValue = mailgunRequest.rawValue
       |> setBaseUrl(baseUrl)
-      |> attachBasicAuth(username: "api", password: apiKey)
+      |> attachBasicAuth(username: "api", password: apiKey.rawValue)
 
     return dataTask(with: mailgunRequest.rawValue, logger: logger)
       .map(first)

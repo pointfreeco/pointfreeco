@@ -221,7 +221,7 @@ private func refreshStripeSubscription(for user: Models.User) -> EitherIO<Error,
 private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return gitHubUrl(
     to: .authorize(
-      clientId: Current.envVars.gitHub.clientId,
+      clientId: Current.envVars.gitHub.clientId.rawValue,
       redirectUri: url(to: .gitHubCallback(code: nil, redirect: redirect)),
       scope: "user:email"
     )

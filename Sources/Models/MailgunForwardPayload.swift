@@ -1,7 +1,10 @@
 import HttpPipeline
 import PointFreePrelude
+import Tagged
 
 public struct MailgunForwardPayload: Codable, Equatable {
+  public typealias ApiKey = Tagged<MailgunForwardPayload, String>
+
   public let recipient: EmailAddress
   public let timestamp: Int
   public let token: String
@@ -21,10 +24,10 @@ public struct MailgunForwardPayload: Codable, Equatable {
     self.signature = signature
   }
 
-  public func verify(with apiKey: String) -> Bool {
+  public func verify(with apiKey: ApiKey) -> Bool {
     let digest = hexDigest(
       value: "\(self.timestamp)\(self.token)",
-      asciiSecret: apiKey
+      asciiSecret: apiKey.rawValue
     )
     return self.signature == digest
   }

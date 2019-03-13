@@ -84,7 +84,8 @@ public enum StripeHtml {
       div(
         [
           `class`([stripeInputClass]),
-          data("stripe-key", Current.envVars.stripe.publishableKey),
+          // TODO: StripeHtmlSupport?
+          data("stripe-key", Current.envVars.stripe.publishableKey.rawValue),
           id("card-element"),
         ],
         []
