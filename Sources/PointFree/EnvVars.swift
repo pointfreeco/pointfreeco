@@ -16,10 +16,10 @@ public typealias StripePublishableKey = Stripe.Client.PublishableKey
 public typealias StripeSecretKey = Stripe.Client.SecretKey
 
 public struct EnvVars: Codable {
-  public typealias Secret = Tagged<EnvVars, String>
+  public typealias AppSecret = Tagged<EnvVars, String>
 
   public var appEnv = AppEnv.development
-  public var appSecret: Secret = "deadbeefdeadbeefdeadbeefdeadbeef"
+  public var appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef"
   public var baseUrl = URL(string: "http://localhost:8080")!
   public var basicAuth = BasicAuth()
   public var gitHub = GitHub()
@@ -100,7 +100,7 @@ extension EnvVars {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
-    self.appSecret = try values.decode(EnvVars.Secret.self, forKey: .appSecret)
+    self.appSecret = try values.decode(EnvVars.AppSecret.self, forKey: .appSecret)
     self.baseUrl = try values.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
     self.gitHub = try .init(from: decoder)

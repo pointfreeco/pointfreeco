@@ -16,14 +16,14 @@ import UrlFormEncoding
 import View
 
 extension Tagged where Tag == EncryptedTag, RawValue == String {
-  public init?(_ text: String, with secret: EnvVars.Secret) {
+  public init?(_ text: String, with secret: EnvVars.AppSecret) {
     guard
       let string = encrypted(text: text, secret: secret.rawValue)
       else { return nil }
     self.init(rawValue: string)
   }
 
-  public func decrypt(with secret: EnvVars.Secret) -> String? {
+  public func decrypt(with secret: EnvVars.AppSecret) -> String? {
     return decrypted(text: self.rawValue, secret: secret.rawValue)
   }
 }
