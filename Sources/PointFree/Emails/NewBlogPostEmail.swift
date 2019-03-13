@@ -12,6 +12,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import View
+import Views
 
 let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
   .contramap { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
