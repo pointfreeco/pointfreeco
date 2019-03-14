@@ -43,7 +43,7 @@ extension URLRequest {
           return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
         case .encrypted:
           return Response.Header
-            .verifiedValue(signedCookieValue: value, secret: Current.envVars.appSecret)
+            .verifiedValue(signedCookieValue: value, secret: Current.envVars.appSecret.rawValue)
         }
       }
       ?? .empty
@@ -83,7 +83,7 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
         key: key,
         value: value,
         options: options,
-        secret: Current.envVars.appSecret,
+        secret: Current.envVars.appSecret.rawValue,
         encrypt: true
     )
   }

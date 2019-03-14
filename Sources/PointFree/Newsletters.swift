@@ -25,7 +25,7 @@ private func requireUserAndNewsletter(
 
     guard
       let (userId, newsletter) = Current.mailgun.userIdAndNewsletter(fromUnsubscribeEmail: conn.data.recipient),
-      conn.data.verify(with: Current.envVars.mailgun.apiKey)
+      Current.mailgun.verify(payload: conn.data, with: Current.envVars.mailgun.apiKey)
       else {
         return conn |> head(.notAcceptable)
     }

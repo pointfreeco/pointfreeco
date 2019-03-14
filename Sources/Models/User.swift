@@ -7,7 +7,7 @@ import Tagged
 public struct User: Decodable, Equatable {
   public var email: EmailAddress
   public var episodeCreditCount: Int
-  public var gitHubUserId: GitHub.User.Id
+  public var gitHubUserId: GitHubUser.Id
   public var gitHubAccessToken: String
   public var id: Id
   public var isAdmin: Bool
@@ -18,7 +18,7 @@ public struct User: Decodable, Equatable {
   public init(
     email: EmailAddress,
     episodeCreditCount: Int,
-    gitHubUserId: GitHub.User.Id,
+    gitHubUserId: GitHubUser.Id,
     gitHubAccessToken: String,
     id: Id,
     isAdmin: Bool,
