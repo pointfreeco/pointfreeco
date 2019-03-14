@@ -67,7 +67,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
   )
   Current.mailgun = .init(
     apiKey: Current.envVars.mailgun.apiKey,
-    appSecret: Current.envVars.appSecret.rawValue,
+    appSecret: Current.envVars.appSecret,
     domain: Current.envVars.mailgun.domain,
     logger: Current.logger
   )
