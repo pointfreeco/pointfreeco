@@ -4,6 +4,7 @@
 
 import ApplicativeRouter
 import Either
+import GitHub
 import Models
 import PointFreePrelude
 import Prelude
@@ -402,7 +403,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            String
+            GitHub.Client.Id
           , 
             String?
           , 

@@ -1,9 +1,10 @@
 import ApplicativeRouter
 import Foundation
+import GitHub
 import Prelude
 
 public enum GitHubRoute: DerivePartialIsos {
-  case authorize(clientId: String, redirectUri: String?, scope: String)
+  case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
   case license
   case organization
@@ -28,7 +29,7 @@ public let gitHubRouter = [
 
   PartialIso.authorize
     <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
-    %> queryParam("client_id", .string)
+    %> queryParam("client_id", .tagged(.string))
     <%> queryParam("redirect_uri", opt(.string))
     <%> queryParam("scope", .string)
     <% end,

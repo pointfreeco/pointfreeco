@@ -23,7 +23,7 @@ public struct Client {
   public var fetchSubscriptionTeammatesByOwnerId: (Models.User.Id) -> EitherIO<Error, [Models.User]>
   public var fetchTeamInvite: (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>
   public var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
-  public var fetchUserByGitHub: (GitHub.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUserByGitHub: (GitHubUser.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
   public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
@@ -31,11 +31,11 @@ public struct Client {
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
   public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var registerUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
-  public var upsertUser: (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+  public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
@@ -52,7 +52,7 @@ public struct Client {
     fetchSubscriptionTeammatesByOwnerId: @escaping (Models.User.Id) -> EitherIO<Error, [Models.User]>,
     fetchTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, TeamInvite?>,
     fetchTeamInvites: @escaping (Models.User.Id) -> EitherIO<Error, [TeamInvite]>,
-    fetchUserByGitHub: @escaping (GitHub.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUserByGitHub: @escaping (GitHubUser.Id) -> EitherIO<Error, Models.User?>,
     fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
     fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
     fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
@@ -60,11 +60,11 @@ public struct Client {
     insertTeamInvite: @escaping (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>,
     migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
     redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    registerUser: @escaping (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
+    registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>,
-    upsertUser: @escaping (GitHub.UserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
+    upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createFeedRequestEvent = createFeedRequestEvent
@@ -337,7 +337,7 @@ private struct _Client {
 
   // TODO: This should return a non-optional user
   func registerUser(
-    withGitHubEnvelope envelope: GitHub.UserEnvelope,
+    withGitHubEnvelope envelope: GitHubUserEnvelope,
     email: EmailAddress
     ) -> EitherIO<Error, Models.User?> {
 
@@ -389,7 +389,7 @@ private struct _Client {
 
   // TODO: This should return a non-optional user
   func upsertUser(
-    withGitHubEnvelope envelope: GitHub.UserEnvelope,
+    withGitHubEnvelope envelope: GitHubUserEnvelope,
     email: EmailAddress
     ) -> EitherIO<Error, Models.User?> {
 
@@ -500,7 +500,7 @@ private struct _Client {
     )
   }
 
-  func fetchUser(byGitHubUserId userId: GitHub.User.Id) -> EitherIO<Error, Models.User?> {
+  func fetchUser(byGitHubUserId userId: GitHubUser.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
     SELECT "email",
