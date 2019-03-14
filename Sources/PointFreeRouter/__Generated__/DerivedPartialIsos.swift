@@ -935,10 +935,24 @@ import Stripe
             Event<Either<Invoice, Stripe.Subscription>>
         ), B == Route.Webhooks._Stripe {
 
-          public static let event = parenthesize <| PartialIso(
-            apply: Route.Webhooks._Stripe.event,
+          public static let knownEvent = parenthesize <| PartialIso(
+            apply: Route.Webhooks._Stripe.knownEvent,
             unapply: {
-              guard case let .event(result) = $0 else { return nil }
+              guard case let .knownEvent(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            Event<Prelude.Unit>
+        ), B == Route.Webhooks._Stripe {
+
+          public static let unknownEvent = parenthesize <| PartialIso(
+            apply: Route.Webhooks._Stripe.unknownEvent,
+            unapply: {
+              guard case let .unknownEvent(result) = $0 else { return nil }
               return .some(result)
           })
       }
@@ -946,10 +960,10 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Route.Webhooks._Stripe {
-        public static let `fallthrough` = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks._Stripe>(
-          apply: const(.some(.`fallthrough`)),
+        public static let fatal = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks._Stripe>(
+          apply: const(.some(.fatal)),
           unapply: {
-            guard case .`fallthrough` = $0 else { return nil }
+            guard case .fatal = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
