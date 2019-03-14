@@ -180,7 +180,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn.map(const(event))
         |> stripeWebhookMiddleware
 
-    case .webhooks(.stripe(.fallthrough)):
+    case let .webhooks(.stripe(.fallthrough(event))):
+      Current.logger.error("Received invalid webhook \(event.type)")
       return conn
         |> writeStatus(.internalServerError)
         >=> respond(text: "We don't support this event.")

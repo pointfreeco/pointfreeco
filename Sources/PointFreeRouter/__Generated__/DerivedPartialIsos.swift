@@ -945,13 +945,16 @@ import Stripe
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route.Webhooks._Stripe {
-        public static let `fallthrough` = parenthesize <| PartialIso<Prelude.Unit, Route.Webhooks._Stripe>(
-          apply: const(.some(.`fallthrough`)),
-          unapply: {
-            guard case .`fallthrough` = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
+      extension PartialIso where A == (
+            Event<Prelude.Unit>
+        ), B == Route.Webhooks._Stripe {
+
+          public static let `fallthrough` = parenthesize <| PartialIso(
+            apply: Route.Webhooks._Stripe.`fallthrough`,
+            unapply: {
+              guard case let .`fallthrough`(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 
