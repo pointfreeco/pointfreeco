@@ -6,24 +6,28 @@ import Models
 import Optics
 import PointFreePrelude
 import Prelude
+import Tagged
 import UrlFormEncoding
 
 public struct Client {
-  private let appSecret: String
+  public typealias ApiKey = Tagged<(Client, apiKey: ()), String>
+  public typealias Domain = Tagged<(Client, domain: ()), String>
+
+  private let appSecret: AppSecret
 
   public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
 
   public init(
-    appSecret: String,
+    appSecret: AppSecret,
     sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>) {
     self.appSecret = appSecret
     self.sendEmail = sendEmail
   }
 
   public init(
-    apiKey: String,
-    appSecret: String,
-    domain: String,
+    apiKey: ApiKey,
+    appSecret: AppSecret,
+    domain: Domain,
     logger: Logger) {
     self.appSecret = appSecret
 
@@ -39,7 +43,7 @@ public struct Client {
 
     guard let payload = encrypted(
       text: "\(userId.rawValue.uuidString)\(boundary)\(newsletter.rawValue)",
-      secret: self.appSecret
+      secret: self.appSecret.rawValue
       ) else { return nil }
 
     return .init(rawValue: "unsub-\(payload)@pointfree.co")
@@ -58,7 +62,7 @@ public struct Client {
       .map(String.init)
 
     return payload
-      .flatMap { decrypted(text: $0, secret: self.appSecret) }
+      .flatMap { decrypted(text: $0, secret: self.appSecret.rawValue) }
       .map { $0.components(separatedBy: boundary) }
       .flatMap { components in
         guard
@@ -68,6 +72,14 @@ public struct Client {
 
         return (userId, newsletter)
     }
+  }
+
+  public func verify(payload: MailgunForwardPayload, with apiKey: ApiKey) -> Bool {
+    let digest = hexDigest(
+      value: "\(payload.timestamp)\(payload.token)",
+      asciiSecret: apiKey.rawValue
+    )
+    return payload.signature == digest
   }
 }
 
@@ -80,8 +92,8 @@ private func setBaseUrl(_ baseUrl: URL) -> (URLRequest) -> URLRequest {
 }
 
 private func runMailgun<A>(
-  apiKey: String,
-  domain: String,
+  apiKey: Client.ApiKey,
+  domain: Client.Domain,
   logger: Logger
   ) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
 
@@ -93,7 +105,7 @@ private func runMailgun<A>(
 
     mailgunRequest.rawValue = mailgunRequest.rawValue
       |> setBaseUrl(baseUrl)
-      |> attachBasicAuth(username: "api", password: apiKey)
+      |> attachBasicAuth(username: "api", password: apiKey.rawValue)
 
     return dataTask(with: mailgunRequest.rawValue, logger: logger)
       .map(first)

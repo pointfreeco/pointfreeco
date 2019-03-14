@@ -72,7 +72,7 @@ private func validateStripeSignature<A>(
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
     let secret = Current.envVars.stripe.endpointSecret
-    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret) else { return false }
+    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret.rawValue) else { return false }
 
     let constantTimeSignature =
       signature.count == digest.count
