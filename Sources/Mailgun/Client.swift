@@ -10,7 +10,7 @@ import Tagged
 import UrlFormEncoding
 
 public struct Client {
-  public typealias ApiKey = MailgunForwardPayload.ApiKey
+  public typealias ApiKey = Tagged<(Client, apiKey: ()), String>
   public typealias Domain = Tagged<(Client, domain: ()), String>
 
   private let appSecret: String
@@ -72,6 +72,14 @@ public struct Client {
 
         return (userId, newsletter)
     }
+  }
+
+  public func verify(payload: MailgunForwardPayload, with apiKey: ApiKey) -> Bool {
+    let digest = hexDigest(
+      value: "\(payload.timestamp)\(payload.token)",
+      asciiSecret: apiKey.rawValue
+    )
+    return payload.signature == digest
   }
 }
 

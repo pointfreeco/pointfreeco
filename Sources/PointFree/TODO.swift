@@ -7,6 +7,7 @@ import Foundation
 import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
 import PointFreeRouter
 import Prelude
@@ -16,14 +17,14 @@ import UrlFormEncoding
 import View
 
 extension Tagged where Tag == EncryptedTag, RawValue == String {
-  public init?(_ text: String, with secret: EnvVars.AppSecret) {
+  public init?(_ text: String, with secret: AppSecret) {
     guard
       let string = encrypted(text: text, secret: secret.rawValue)
       else { return nil }
     self.init(rawValue: string)
   }
 
-  public func decrypt(with secret: EnvVars.AppSecret) -> String? {
+  public func decrypt(with secret: AppSecret) -> String? {
     return decrypted(text: self.rawValue, secret: secret.rawValue)
   }
 }
