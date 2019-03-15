@@ -8,11 +8,10 @@ import Stripe
 
 public struct PointFreeRouter {
   private let baseUrl: URL
-  private let router: Router<Route>
+  private let router = routers.reduce(.empty, <|>)
 
-  public init(baseUrl: URL, router: Router<Route>) {
+  public init(baseUrl: URL) {
     self.baseUrl = baseUrl
-    self.router = router
   }
 
   public func path(to route: Route) -> String {
@@ -24,7 +23,7 @@ public struct PointFreeRouter {
   }
 }
 
-public var _pointFreeRouter: PointFreeRouter!
+public var _pointFreeRouter = PointFreeRouter(baseUrl: URL(string: "http://localhost:8080")!)
 public let pointFreeRouter = routers.reduce(.empty, <|>)
 
 public enum EncryptedTag {}

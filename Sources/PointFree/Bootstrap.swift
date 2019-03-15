@@ -56,7 +56,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
-  _pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl, router: pointFreeRouter)
+  _pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
   Current.envVars = envVars
   Current.database = .init(
     databaseUrl: Current.envVars.postgres.databaseUrl,
