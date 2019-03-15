@@ -482,7 +482,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            PointFreeRouter.Account
+            Account
         ), B == Route {
 
           public static let account = parenthesize <| PartialIso(
@@ -496,7 +496,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            PointFreeRouter.Admin
+            Admin
         ), B == Route {
 
           public static let admin = parenthesize <| PartialIso(

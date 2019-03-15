@@ -19,7 +19,7 @@ class PointFreeRouterTests: XCTestCase {
     }
 
     XCTAssertEqual("POST", request.httpMethod)
-    XCTAssertEqual("account", request.url?.path)
+    XCTAssertEqual("/account", request.url?.path)
     XCTAssertEqual(route, pointFreeRouter.match(request: request))
   }
 }
