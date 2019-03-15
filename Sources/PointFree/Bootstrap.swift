@@ -5,6 +5,7 @@ import Mailgun
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
@@ -75,6 +76,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     logger: Current.logger,
     secretKey: Current.envVars.stripe.secretKey
   )
+  pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
 
   return pure(unit)
 }
