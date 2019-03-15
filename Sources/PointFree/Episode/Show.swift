@@ -305,14 +305,6 @@ private let downloadsView = View<String> { codeSampleDirectory -> [Node] in
   ]
 }
 
-private func timestampLabel(for timestamp: Int) -> String {
-  let minute = Int(timestamp / 60)
-  let second = Int(timestamp) % 60
-  let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
-  let secondString = second >= 10 ? "\(second)" : "0\(second)"
-  return "\(minuteString):\(secondString)"
-}
-
 private let leftColumnView = View<(EpisodePermission, User?, SubscriberState, Episode)> {
   permission, user, subscriberState, episode -> Node in
 

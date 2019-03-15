@@ -66,29 +66,3 @@ let airplayButton = button(
     )
   ]
 )
-//
-//let videoJsClasses: CssSelector =
-//  ".video-js"
-//    | ".vjs-default-skin"
-//    | ".vjs-big-play-centered"
-//
-//struct VideoJsOptions: Encodable {
-//  let control: Bool
-//  let playbackRates: [Double]
-//
-//  static let `default` = VideoJsOptions(control: true, playbackRates: [1, 1.25, 1.5, 1.75, 2])
-//
-//  var jsonString: String {
-//    if #available(OSX 10.13, *) {
-//      return ((try? String(data: jsonEncoder.encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-//        ?? "{}"
-//    } else {
-//      return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-//        ?? "{}"
-//    }
-//  }
-//}
-
-//@available(OSX 10.13, *)
-//private let jsonEncoder = JSONEncoder()
-//  |> \.outputFormatting .~ .sortedKeys

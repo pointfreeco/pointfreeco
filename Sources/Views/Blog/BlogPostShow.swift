@@ -1,16 +1,12 @@
 import Css
-import FunctionalCss
-import Either
 import Foundation
+import FunctionalCss
 import Html
 import HtmlCssSupport
-import HttpPipeline
 import Models
 import PointFreeRouter
-import PointFreePrelude
 import Prelude
 import Styleguide
-import Tuple
 import View
 
 public let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in

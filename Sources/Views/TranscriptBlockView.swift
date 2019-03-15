@@ -1,15 +1,11 @@
 import Css
 import FunctionalCss
-import Either
-import Foundation
 import Html
 import HtmlCssSupport
-import HttpPipeline
 import Models
-import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
-import Tuple
 import View
 
 public let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
@@ -116,7 +112,7 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   ]
 }
 
-private func timestampLabel(for timestamp: Int) -> String {
+public func timestampLabel(for timestamp: Int) -> String {
   let minute = Int(timestamp / 60)
   let second = Int(timestamp) % 60
   let minuteString = minute >= 10 ? "\(minute)" : "0\(minute)"
