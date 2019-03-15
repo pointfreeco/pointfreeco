@@ -8,7 +8,7 @@ import Prelude
 import Stripe
 import Tuple
 
-func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?, SubscriberState, PointFreeRouter.Account>>)
+func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?, SubscriberState, Account>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (_, user, subscriberState, account) = lower(conn.data)

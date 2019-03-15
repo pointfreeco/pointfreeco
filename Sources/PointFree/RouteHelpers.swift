@@ -1,9 +1,9 @@
 import PointFreeRouter
 
 public func path(to route: Route) -> String {
-  return pointFreeRouter.absoluteString(for: route) ?? "/"
+  return pointFreeRouter.path(to: route)
 }
 
 public func url(to route: Route) -> String {
-  return pointFreeRouter.url(for: route, base: Current.envVars.baseUrl)?.absoluteString ?? ""
+  return pointFreeRouter.url(to: route)
 }
