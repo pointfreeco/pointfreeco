@@ -207,6 +207,16 @@ public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middl
   }
 }
 
+public func respond<A>(_ nodes: [Node], contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+  return { conn in
+    conn
+      |> respond(
+        body: Current.renderHtml(nodes),
+        contentType: contentType
+    )
+  }
+}
+
 private func atomEntry(for episode: Episode) -> AtomEntry {
   return AtomEntry(
     content: [.text(episode.blurb)],

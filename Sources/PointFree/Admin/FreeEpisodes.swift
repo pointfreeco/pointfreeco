@@ -14,38 +14,10 @@ import Tuple
 import View
 import Views
 
-let indexFreeEpisodeEmailMiddleware =
+let indexFreeEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
   requireAdmin
     <| writeStatus(.ok)
-//    >=> respond(freeEpisodeView.contramap(lower))
-    >=> { conn in
-      conn
-      |> respond
-}
-//
-//private let freeEpisodeView = View<User> { _ in
-//  [
-//    h2(["Send free episode email"]),
-//
-//    ul(
-//      Current.episodes()
-//        .filter((!) <<< ^\.subscriberOnly)
-//        .sorted(by: their(^\.sequence))
-//        .map(li <<< freeEpisodeEmailRowView.view)
-//    )
-//  ]
-//}
-//
-//private let freeEpisodeEmailRowView = View<Episode> { ep in
-//  [
-//    p([
-//      .text(ep.title),
-//      form([action(path(to: .admin(.freeEpisodeEmail(.send(ep.id))))), method(.post)], [
-//        input([type(.submit), value("Send email!")])
-//        ])
-//      ])
-//  ]
-//}
+    >=> respond(freeEpisodeView(episodes: Current.episodes(), today: Current.date()))
 
 let sendFreeEpisodeEmailMiddleware:
   Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Episode.Id>, Data> =

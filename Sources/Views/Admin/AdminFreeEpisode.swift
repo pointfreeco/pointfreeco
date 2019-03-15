@@ -6,7 +6,7 @@ import PointFreeRouter
 import Prelude
 import View
 
-private func freeEpisodeView(episodes: [Episode], today: Date) -> [Node] {
+public func freeEpisodeView(episodes: [Episode], today: Date) -> [Node] {
   return [
     h2(["Send free episode email"]),
 
