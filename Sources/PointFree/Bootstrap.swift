@@ -5,6 +5,7 @@ import Mailgun
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
@@ -55,6 +56,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
+  _pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl, router: pointFreeRouter)
   Current.envVars = envVars
   Current.database = .init(
     databaseUrl: Current.envVars.postgres.databaseUrl,

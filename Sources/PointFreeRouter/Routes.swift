@@ -1,17 +1,39 @@
 import ApplicativeRouter
 import Either
+import Foundation
 import Models
 import PointFreePrelude
 import Prelude
 import Stripe
+
+public struct PointFreeRouter {
+  private let baseUrl: URL
+  private let router: Router<Route>
+
+  public init(baseUrl: URL, router: Router<Route>) {
+    self.baseUrl = baseUrl
+    self.router = router
+  }
+
+  public func path(to route: Route) -> String {
+    return self.router.absoluteString(for: route) ?? "/"
+  }
+
+  public func url(to route: Route) -> String {
+    return self.router.url(for: route, base: self.baseUrl)?.absoluteString ?? ""
+  }
+}
+
+public var _pointFreeRouter: PointFreeRouter!
+public let pointFreeRouter = routers.reduce(.empty, <|>)
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
 public enum Route: DerivePartialIsos, Equatable {
   case about
-  case account(PointFreeRouter.Account)
-  case admin(PointFreeRouter.Admin)
+  case account(Account)
+  case admin(Admin)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id)
@@ -74,8 +96,6 @@ public enum Route: DerivePartialIsos, Equatable {
     }
   }
 }
-
-public let pointFreeRouter = routers.reduce(.empty, <|>)
 
 private let routers: [Router<Route>] = [
   .about
