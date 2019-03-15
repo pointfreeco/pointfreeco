@@ -32,15 +32,13 @@ public let blogIndexView = View<([BlogPost], User?, SubscriberState)> { blogPost
   )
 }
 
-let divider = hr([`class`([Class.pf.components.divider])])
-
 private let newBlogPostView = View<BlogPost> { post in
   [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
       blogPostContentView.view(post)
     ),
-    divider
+    hr([`class`([Class.pf.components.divider])])
   ]
 }
 

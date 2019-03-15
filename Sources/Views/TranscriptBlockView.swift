@@ -12,7 +12,7 @@ import Styleguide
 import Tuple
 import View
 
-let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
+public let transcriptBlockView = View<Episode.TranscriptBlock> { block -> Node in
   switch block.type {
   case let .code(lang):
     return pre([
@@ -124,7 +124,7 @@ private func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-private func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Tag.A>] {
+public func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Tag.A>] {
 
   return [
     useAnchors
