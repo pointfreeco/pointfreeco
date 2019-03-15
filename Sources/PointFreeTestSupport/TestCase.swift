@@ -15,7 +15,7 @@ open class TestCase: SnapshotTestCase {
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
     Current.database = .init(databaseUrl: Current.envVars.postgres.databaseUrl, logger: Current.logger)
-    _pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
+    pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
 
     _ = try! Current.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
       .flatMap(const(Current.database.execute("CREATE SCHEMA public", [])))

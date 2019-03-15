@@ -6,26 +6,6 @@ import PointFreePrelude
 import Prelude
 import Stripe
 
-public struct PointFreeRouter {
-  private let baseUrl: URL
-  private let router = routers.reduce(.empty, <|>)
-
-  public init(baseUrl: URL) {
-    self.baseUrl = baseUrl
-  }
-
-  public func path(to route: Route) -> String {
-    return self.router.absoluteString(for: route) ?? "/"
-  }
-
-  public func url(to route: Route) -> String {
-    return self.router.url(for: route, base: self.baseUrl)?.absoluteString ?? ""
-  }
-}
-
-public var _pointFreeRouter = PointFreeRouter(baseUrl: URL(string: "http://localhost:8080")!)
-public let pointFreeRouter = routers.reduce(.empty, <|>)
-
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
@@ -96,7 +76,7 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 }
 
-private let routers: [Router<Route>] = [
+let routers: [Router<Route>] = [
   .about
     <¢> get %> lit("about") <% end,
 

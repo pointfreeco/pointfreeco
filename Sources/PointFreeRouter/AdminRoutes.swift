@@ -30,9 +30,9 @@ public enum Admin: DerivePartialIsos, Equatable {
   }
 }
 
-public let adminRouter = routers.reduce(.empty, <|>)
+public let adminRouter = adminRouters.reduce(.empty, <|>)
 
-private let routers: [Router<Admin>] = [
+private let adminRouters: [Router<Admin>] = [
   .episodeCredits <<< .add
     <¢> post %> lit("episode-credits") %> lit("add")
     %> formField("user_id", Optional.iso.some >>> opt(.tagged(.uuid)))

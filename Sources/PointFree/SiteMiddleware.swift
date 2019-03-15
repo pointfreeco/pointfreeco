@@ -14,7 +14,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
-    <<< route(router: pointFreeRouter, notFound: routeNotFoundMiddleware)
+    <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
