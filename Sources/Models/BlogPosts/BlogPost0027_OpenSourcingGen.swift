@@ -6,8 +6,6 @@ public let post0027_openSourcingGen = BlogPost(
 Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness API's that makes randomess more composable, transformable and controllable!
 """,
   contentBlocks: [
-
-    //https://carbon.now.sh/?bg=rgba(121%2C242%2C176%2C1)&t=duotone-dark&wt=none&l=swift&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=120px&ph=100px&ln=false&fm=Hack&fs=18px&lh=133%25&si=false&code=let%2520randomColor%2520%253D%2520zip(with%253A%2520UIColor.init(red%253Agreen%253Ablue%253Aalpha)%252C%250A%2520%2520.float(in%253A%25200...1)%252C%2520%250A%2520%2520.float(in%253A%25200...1)%252C%2520%250A%2520%2520.float(in%253A%25200...1)%252C%250A%2520%2520.always(1)%250A)%250A%250Alet%2520randomRect%2520%253D%2520zip(with%253A%2520CGRect.init(x%253Ay%253Awidth%253Aheight%253A)%252C%250A%2520%2520.always(0)%252C%250A%2520%2520.always(0)%252C%250A%2520%2520.float(in%253A%252020...400)%252C%250A%2520%2520.float(in%253A%252020...400)%250A)%250A%250Alet%2520randomView%2520%253D%2520zip(randomColor%252C%2520randomRect)%250A%2520%2520.map%2520%257B%2520color%252C%2520rect%2520in%2520%250A%2520%2520%2520%2520let%2520view%2520%253D%2520UIView(frame%253A%2520rect)%250A%2520%2520%2520%2520view.backgroundColor%2520%253D%2520color%250A%2520%2520%2520%2520return%2520view%250A%257D&es=2x&wm=false
     .init(
       content: "",
       timestamp: nil,
