@@ -9,7 +9,7 @@ Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0027-open-sourcing-gen/cover.jpg ")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0027-open-sourcing-gen/cover.jpg ")
     ),
 
     .init(
@@ -162,7 +162,7 @@ The official 0.1.0 release of [Gen](http://github.com/pointfreeco/swift-gen) is 
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0027-open-sourcing-gen/cover.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0027-open-sourcing-gen/cover.jpg",
   id: 27,
   publishedAt: .init(timeIntervalSince1970: 1552888800),
   title: "Open Sourcing Gen"
