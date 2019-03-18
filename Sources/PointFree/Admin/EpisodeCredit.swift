@@ -13,6 +13,7 @@ import Prelude
 import Styleguide
 import Tuple
 import View
+import Views
 
 let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
   requireAdmin
@@ -60,20 +61,4 @@ private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
   guard let sequence = sequence else { return nil }
   return Current.episodes()
     .first(where: { $0.sequence == sequence })
-}
-
-private let showEpisodeCreditsView = View<Prelude.Unit> { _ in
-  [
-    h3(["Create an episode credit!"]),
-    form(
-      [method(.post), action(path(to: .admin(.episodeCredits(.add(userId: nil, episodeSequence: nil)))))],
-      [
-        label(["User id:"]),
-        input([type(.text), name("user_id")]),
-        label(["Episode sequence #:"]),
-        input([type(.text), name("episode_sequence")]),
-        input([type(.submit), value("Create")])
-      ]
-    )
-  ]
 }

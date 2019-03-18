@@ -21,7 +21,7 @@ func blogMiddleware(
       |> blogAtomFeedResponse
 
   case .index:
-    return conn.map(const(user .*. subscriberState .*. route .*. unit))
+    return conn.map(const(Current.blogPosts() .*. user .*. subscriberState .*. route .*. unit))
       |> blogIndexMiddleware
 
   case let .show(postParam):
