@@ -9,18 +9,18 @@ Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0027-open-sourcing-gen/cover.jpg ")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0027-open-sourcing-gen/cover.jpg")
     ),
 
     .init(
       content: """
 ---
 
-> Today we are open sourcing [Gen](https://github.com/pointfreeco-swift-gen): a lightweight wrapper around Swift's randomness API's that makes randomess more composable, transformable and controllable!
+> Today we are open sourcing [Gen](https://github.com/pointfreeco/swift-gen): a lightweight wrapper around Swift's randomness API's that makes randomess more composable, transformable and controllable!
 
 ---
 
-We are excited to announce the 0.1.0 release of [Gen](https://github.com/pointfreeco-swift-gen), a new API for expressing randomness in Swift. Its focus is on composability (combining multiple forms of randomness into new forms of randomness), transformability (applying functions to randomness), and controllability (deterministic pseudo-randomness for times we need it). With these three features you can break down large, complex forms of randomness into smaller, simpler pieces, _and_ you can write tests for it!
+We are excited to announce the 0.1.0 release of [Gen](https://github.com/pointfreeco/swift-gen), a new API for expressing randomness in Swift. Its focus is on composability (combining multiple forms of randomness into new forms of randomness), transformability (applying functions to randomness), and controllability (deterministic pseudo-randomness for times we need it). With these three features you can break down large, complex forms of randomness into smaller, simpler pieces, _and_ you can write tests for it!
 
 ## Motivation
 
