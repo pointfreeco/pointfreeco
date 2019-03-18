@@ -113,6 +113,10 @@ Already this is a form of randomness that Swift's API's do not provide out of th
 
 Gen provides many operators for generating new types of randomness, such as `map`, `flatMap` and `zip`, as well as helper functions for generating random arrays, sets, dictionaries, string, distributions and more! A random password generator, for example, is just a few operators away.
 """,
+      timestamp: nil,
+      type: .paragraph
+    ),
+
     .init(
       content: """
 // Take a generator of random letters and numbers.
@@ -127,7 +131,7 @@ let password = Gen.letterOrNumber
 password.run() // "9BiGYA-fmvsOf-VYDtDv"
 password.run() // "dS2MGr-FQSuC4-ZLEicl"
 password.run() // "YusZGF-HILrCo-rNGfCA"
-"""
+""",
       timestamp: nil,
       type: .code(lang: .swift)
     ),
@@ -166,12 +170,6 @@ The `Gen` type has been explored on [Point-Free](https://www.pointfree.com) nume
 In order to show just how powerful composable randomness is, we wrote a [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) demonstrating how to create a [Zalgo text](http://www.eeemo.net) generator. This consisted of defining small generators that do a specific thing, such as generating special unicode characters, and the piecing them together to finally give us the generator that allows us to create bizarre strings such as: P̵̙̬̬̝̹̰̜ͧ̿o̎ĩͪͪ͗n͓̪̝̓t̊̏̾̊̆-̦̲̥͉F̠͖͈̮̾́ͨ͐͝r̸͋̆̅̅ͪ̚ë̝͑ͣ̒̏̈́̉e̟̺̪͕̹͆ͩͯ̑ͣ͂̉.
 
 Then we showed how randomness can be made controllable ([part 1](https://www.pointfree.co/episodes/ep47-predictable-randomness-part-1) and [part 2](https://www.pointfree.co/episodes/ep48-predictable-randomness-part-2)) by slightly tweaking `Gen` definition so that it took a `RandomNumberGenerator`, which is the Swift protocol that powers all of Swift's randomness API's. This allowed us to keep all of `Gen`'s nice compositional properties while also allowing us to plug in our own random number generators. In particular, we can use a deterministic, seedable, pseudo-random number generator in tests so that we can still test code that invokes randomness API's.
-
-
-
-<!--
-For more examples of using Gen to build complex randomness, see our [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) on creating a Zalgo generator and our two-part video series ([part 1](https://www.pointfree.co/episodes/ep49-generative-art-part-1) and [part 2](https://www.pointfree.co/episodes/ep50-generative-art-part-2)) on creating generative art.
--->
 
 ## Try it out today!
 
