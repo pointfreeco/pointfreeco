@@ -111,8 +111,28 @@ stringDigit.run() // "3"
       content: """
 Already this is a form of randomness that Swift's API's do not provide out of the box.
 
-Gen provides many operators for generating new types of randomness, such as `map`, `flatMap` and `zip`, as well as helper functions for generating random arrays, sets, dictionaries, string, distributions and more!
+Gen provides many operators for generating new types of randomness, such as `map`, `flatMap` and `zip`, as well as helper functions for generating random arrays, sets, dictionaries, string, distributions and more! A random password generator, for example, is just a few operators away.
+""",
+    .init(
+      content: """
+// Take a generator of random letters and numbers.
+let password = Gen.letterOrNumber
+  // Generate 6-character strings of them.
+  .string(of: .always(6))
+  // Generate 3 segments of these strings.
+  .array(of: .always(3))
+  // And join them.
+  .map { $0.joined(separator: "-") }
 
+password.run() // "9BiGYA-fmvsOf-VYDtDv"
+password.run() // "dS2MGr-FQSuC4-ZLEicl"
+password.run() // "YusZGF-HILrCo-rNGfCA"
+"""
+      timestamp: nil,
+      type: .code(lang: .swift)
+    ),
+    .init(
+      content: """
 But composability isn't the only reason the `Gen` type shines. By delaying the creation of random values until the `run` method is invoked, we allow ourselves to control randomness in circumstances where we need determinism, such as tests. The `run` method has an overload that takes a `RandomNumberGenerator` value, which is Swift's protocol that powers their randomness API. By default it uses the `SystemRandomNumberGenerator`, which is a good source of randomness, but we can also provide a seedable "pseudo" random number generator, so that we can get predictable results in tests:
 """,
       timestamp: nil,
@@ -143,7 +163,7 @@ This means you don't have to sacrifice testability when leveraging randomness in
 
 The `Gen` type has been explored on [Point-Free](https://www.pointfree.com) numerous times. We [began](https://www.pointfree.co/episodes/ep30-composable-randomness) by showing that randomness can be made composable by expressiong it as a function. This allowed us to define `map`, `flatMap` and `zip` operations on randomness, which helped us create very complex forms of randomness for just a few small, simple pieces.
 
-In order to show just how powerful composable randomness is, we wrote a [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) demonstrating how to create a [Zalgo text](http://www.eeemo.net) generator. This consisted of defining small generators that do a specific thing, such as generating special unicode characters, and the piecing them together to finally give us the generator that allows us to create bizarre strings such as: P̵̙̬̬̝̹̰̜ͧ̿o̎ĩͪͪ͗n͓̪̝̓t̊̏̾̊̆-̦̲̥͉F̠͖͈̮̾́ͨ͐͝r̸͋̆̅̅ͪ̚ë̝͑ͣ̒̏̈́̉e̟̺̪͕̹͆ͩͯ̑ͣ͂̉.
+In order to show just how powerful composable randomness is, we wrote a [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) demonstrating how to create a [Zalgo text](http://www.eeemo.net) generator. This consisted of defining small generators that do a specific thing, such as generating special unicode characters, and the piecing them together to finally give us the generator that allows us to create bizarre strings such as: P̵̙̬̬̝̹̰̜ͧ̿o̎ĩͪͪ͗n͓̪̝̓t̊̏̾̊̆-̦̲̥͉F̠͖͈̮̾́ͨ͐͝r̸͋̆̅̅ͪ̚ë̝͑ͣ̒̏̈́̉e̟̺̪͕̹͆ͩͯ̑ͣ͂̉.
 
 Then we showed how randomness can be made controllable ([part 1](https://www.pointfree.co/episodes/ep47-predictable-randomness-part-1) and [part 2](https://www.pointfree.co/episodes/ep48-predictable-randomness-part-2)) by slightly tweaking `Gen` definition so that it took a `RandomNumberGenerator`, which is the Swift protocol that powers all of Swift's randomness API's. This allowed us to keep all of `Gen`'s nice compositional properties while also allowing us to plug in our own random number generators. In particular, we can use a deterministic, seedable, pseudo-random number generator in tests so that we can still test code that invokes randomness API's.
 
