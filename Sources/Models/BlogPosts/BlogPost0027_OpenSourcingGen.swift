@@ -7,10 +7,11 @@ Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness 
 """,
   contentBlocks: [
 
+    //https://carbon.now.sh/?bg=rgba(121%2C242%2C176%2C1)&t=duotone-dark&wt=none&l=swift&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=120px&ph=100px&ln=false&fm=Hack&fs=18px&lh=133%25&si=false&code=let%2520randomColor%2520%253D%2520zip(with%253A%2520UIColor.init(red%253Agreen%253Ablue%253Aalpha)%252C%250A%2520%2520.float(in%253A%25200...1)%252C%2520%250A%2520%2520.float(in%253A%25200...1)%252C%2520%250A%2520%2520.float(in%253A%25200...1)%252C%250A%2520%2520.always(1)%250A)%250A%250Alet%2520randomRect%2520%253D%2520zip(with%253A%2520CGRect.init(x%253Ay%253Awidth%253Aheight%253A)%252C%250A%2520%2520.always(0)%252C%250A%2520%2520.always(0)%252C%250A%2520%2520.float(in%253A%252020...400)%252C%250A%2520%2520.float(in%253A%252020...400)%250A)%250A%250Alet%2520randomView%2520%253D%2520zip(randomColor%252C%2520randomRect)%250A%2520%2520.map%2520%257B%2520color%252C%2520rect%2520in%2520%250A%2520%2520%2520%2520let%2520view%2520%253D%2520UIView(frame%253A%2520rect)%250A%2520%2520%2520%2520view.backgroundColor%2520%253D%2520color%250A%2520%2520%2520%2520return%2520view%250A%257D&es=2x&wm=false
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0027-open-sourcing-gen/cover.jpg")
+      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0027-open-sourcing-gen/cover.jpg ")
     ),
 
     .init(
@@ -21,9 +22,7 @@ Today we are open sourcing Gen: a lightweight wrapper around Swift's randomness 
 
 ---
 
-For the past 2 weeks we have been creating generative art in Swift ([part 1](https://www.pointfree.co/episodes/ep49-generative-art-part-1) and [part 2](https://www.pointfree.co/episodes/ep50-generative-art-part-2)), and we've done it in such a way that we could create complex randomness from a few simple, small pieces, _and_ we could control the randomness so that we could write screenshot tests against our generative art.
-
-All of that work rested on the shoulders of the `Gen` type, which we first [discussed](https://www.pointfree.co/episodes/ep30-composable-randomness) 6 months ago to show how randomness could be made composable, and then picked up again recently ([part 1](https://www.pointfree.co/episodes/ep47-predictable-randomness-part-1) and [part 2](https://www.pointfree.co/episodes/ep48-predictable-randomness-part-2)) to show how randomness could be made controllable. We hope that by now we have proven to you that the `Gen` type is a powerful compananion to Swift's randomness API's, and so that is why we are exicted today to announce that we are official open sourcing the `Gen` type!
+We are excited to announce the 0.1.0 release of [Gen](https://github.com/pointfreeco-swift-gen), a new API for expressing randomness in Swift. Its focus is on composability (combining multiple forms of randomness into new forms of randomness), transformability (applying functions to randomness), and controllability (deterministic pseudo-randomness for times we need it). With these three features you can break down large, complex forms of randomness into smaller, simpler pieces, _and_ you can write tests for it!
 
 ## Motivation
 
@@ -35,9 +34,7 @@ Further, the API is not very composable, which would allow us to create complex 
 
 ## `Gen`
 
-`Gen` is a lightweight wrapper over Swift’s randomness APIs that makes it easy to build custom generators of any kind of value.
-
-Most often you will reach for one of the static variables inside `Gen` to get access to a `Gen` value:
+`Gen` is a lightweight wrapper over Swift’s randomness APIs that makes it easy to build custom generators of any kind of value. Most often you will reach for one of the static variables inside `Gen` to get access to a `Gen` value:
 """,
       timestamp: nil,
       type: .paragraph
@@ -144,7 +141,19 @@ Gen.int(in: 0...9).run(using: &lcrng) // "7"
       content: """
 This means you don't have to sacrifice testability when leveraging randomness in your application.
 
+## Learn more
+
+The `Gen` type has been explored on [Point-Free](https://www.pointfree.com) numerous times. We [began](https://www.pointfree.co/episodes/ep30-composable-randomness) by showing that randomness can be made composable by expressiong it as a function. This allowed us to define `map`, `flatMap` and `zip` operations on randomness, which helped us create very complex forms of randomness for just a few small, simple pieces.
+
+In order to show just how powerful composable randomness is, we wrote a [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) demonstrating how to create a [Zalgo text](http://www.eeemo.net) generator. This consisted of defining small generators that do a specific thing, such as generating special unicode characters, and the piecing them together to finally give us the generator that allows us to create bizarre strings such as: P̵̙̬̬̝̹̰̜ͧ̿o̎ĩͪͪ͗n͓̪̝̓t̊̏̾̊̆-̦̲̥͉F̠͖͈̮̾́ͨ͐͝r̸͋̆̅̅ͪ̚ë̝͑ͣ̒̏̈́̉e̟̺̪͕̹͆ͩͯ̑ͣ͂̉.
+
+Then we showed how randomness can be made controllable ([part 1](https://www.pointfree.co/episodes/ep47-predictable-randomness-part-1) and [part 2](https://www.pointfree.co/episodes/ep48-predictable-randomness-part-2)) by slightly tweaking `Gen` definition so that it took a `RandomNumberGenerator`, which is the Swift protocol that powers all of Swift's randomness API's. This allowed us to keep all of `Gen`'s nice compositional properties while also allowing us to plug in our own random number generators. In particular, we can use a deterministic, seedable, pseudo-random number generator in tests so that we can still test code that invokes randomness API's.
+
+
+
+<!--
 For more examples of using Gen to build complex randomness, see our [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) on creating a Zalgo generator and our two-part video series ([part 1](https://www.pointfree.co/episodes/ep49-generative-art-part-1) and [part 2](https://www.pointfree.co/episodes/ep50-generative-art-part-2)) on creating generative art.
+-->
 
 ## Try it out today!
 
