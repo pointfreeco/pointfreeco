@@ -37,4 +37,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0024_holidayDiscount,
   post0025_2018YearInReview,
   post0026_html020,
+  post0027_openSourcingGen,
 ]
