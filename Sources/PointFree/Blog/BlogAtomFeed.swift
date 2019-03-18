@@ -5,6 +5,7 @@ import Models
 import Prelude
 import Syndication
 import View
+import Views
 
 let blogAtomFeedResponse =
   writeStatus(.ok)
