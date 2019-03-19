@@ -16,8 +16,7 @@ import View
 import Views
 
 let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data>
-  = fetchEnterpriseAccount
-    <<< filterMap(pure, or: redirect(to: .home))
+  = filterMap(fetchEnterpriseAccount, or: redirect(to: .home))
     <| writeStatus(.ok)
     >=> respond(
       view: View(enterpriseView),
@@ -31,20 +30,17 @@ let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Enterpr
 )
 
 let enterpriseLinkResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseLink>, Data>
-  = hole()
+  = filterMap(
+    over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1),
+    or: redirect(to: .home)
+    )
+    <| hole()
 
-func fetchEnterpriseAccount(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount?, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data> {
-
-    return { conn in
-      Current.database.fetchEnterpriseAccount(conn.data)
-        .mapExcept(requireSome)
-        .run
-        .map(^\.right >>> const >>> conn.map)
-        .flatMap(middleware)
-    }
+func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
+  return Current.database.fetchEnterpriseAccount(domain)
+    .mapExcept(requireSome)
+    .run
+    .map(^\.right)
 }
 
 func enterpriseView(_ account: EnterpriseAccount) -> [Node] {
