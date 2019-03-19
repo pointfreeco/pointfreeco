@@ -816,6 +816,22 @@ import Stripe
 
       extension PartialIso where A == (
             EnterpriseAccount.Domain
+          , 
+            Encrypted<String>
+        ), B == Route.Enterprise {
+
+          public static let acceptInvite = parenthesize <| PartialIso(
+            apply: Route.Enterprise.acceptInvite,
+            unapply: {
+              guard case let .acceptInvite(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
         ), B == Route.Enterprise {
 
           public static let landing = parenthesize <| PartialIso(

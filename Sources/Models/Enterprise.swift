@@ -37,6 +37,10 @@ public struct EnterpriseRequest: Codable, Equatable {
   public enum CodingKeys: String, CodingKey {
     case email
   }
+
+  public init(email: EmailAddress) {
+    self.email = email
+  }
 }
 
 public struct EnterpriseEmail: Decodable, Equatable {

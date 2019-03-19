@@ -115,7 +115,8 @@ extension ChangeTests {
 }
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
-    ("testCreate", testCreate),
+    ("testUpsertUser_FetchUserById", testUpsertUser_FetchUserById),
+    ("testFetchEnterpriseAccount", testFetchEnterpriseAccount),
   ]
 }
 extension DiscountsTests {
@@ -136,6 +137,11 @@ extension EmailInviteTests {
   static var allTests: [(String, (EmailInviteTests) -> () throws -> Void)] = [
     ("testEmailInvite", testEmailInvite),
     ("testInviteAcceptance", testInviteAcceptance),
+  ]
+}
+extension EnterpriseTests {
+  static var allTests: [(String, (EnterpriseTests) -> () throws -> Void)] = [
+    ("testEpisodePage", testEpisodePage),
   ]
 }
 extension EnvVarTests {
@@ -395,6 +401,7 @@ XCTMain([
   testCase(DiscountsTests.allTests),
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
+  testCase(EnterpriseTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
   testCase(EpisodePageTests.allTests),
