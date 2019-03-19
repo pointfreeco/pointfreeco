@@ -15,6 +15,7 @@ import Views
 
 let enterpriseResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data>
   = fetchEnterpriseAccount
+    <<< filterMap(pure, or: redirect(to: .home))
     <| hole()
 
 func fetchEnterpriseAccount(
