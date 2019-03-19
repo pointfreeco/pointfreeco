@@ -45,8 +45,7 @@ final class DatabaseTests: XCTestCase {
 
   func testFetchEnterpriseAccount() {
     let user = self.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
-    _ = self.database.createSubscription(.mock, user.id).run.perform()
-    let subscription = self.database.fetchSubscriptionByOwnerId(user.id).run.perform().right!!
+    let subscription = self.database.createSubscription(.mock, user.id).run.perform().right!!
 
     let createdAccount = self.database.createEnterpriseAccount(
       "Blob, Inc.",

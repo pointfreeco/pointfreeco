@@ -11,7 +11,7 @@ extension Client {
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
     createEnterpriseAccount: { _, _, _ in pure(.mock) },
     createFeedRequestEvent: { _, _, _ in pure(unit) },
-    createSubscription: { _, _ in pure(unit) },
+    createSubscription: { _, _ in pure(.mock) },
     deleteTeamInvite: const(pure(unit)),
     execute: { _, _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),

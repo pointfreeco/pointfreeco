@@ -12,7 +12,7 @@ public struct Client {
   public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
@@ -43,7 +43,7 @@ public struct Client {
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
@@ -227,33 +227,33 @@ private struct _Client {
   func createSubscription(
     with stripeSubscription: Stripe.Subscription, for userId: Models.User.Id
     )
-    -> EitherIO<Error, Prelude.Unit> {
-      return self.execute(
+    -> EitherIO<Error, Models.Subscription?> {
+
+      let subscription: EitherIO<Error, Models.Subscription?> = self.firstRow(
         """
-      INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
-      VALUES ($1, $2, $3)
-      RETURNING "id"
-      """,
-        [
-          stripeSubscription.id.rawValue,
-          stripeSubscription.status.rawValue,
-          userId.rawValue.uuidString,
-          ]
-        )
-        .flatMap { node in
-          self.execute(
-            """
+        INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
+        VALUES ($1, $2, $3)
+        RETURNING "id"
+        """,[
+        stripeSubscription.id,
+        stripeSubscription.status.rawValue,
+        userId
+        ])
+
+      return subscription.flatMap { subscription in
+        self.execute(
+          """
           UPDATE "users"
           SET "subscription_id" = $1
           WHERE "users"."id" = $2
           """,
-            [
-              node[0, "id"]?.string,
-              userId.rawValue.uuidString
-            ]
-          )
-        }
-        .map(const(unit))
+          [
+            subscription?.id,
+            subscription?.userId
+          ]
+        )
+        .map(const(subscription))
+      }
   }
 
   func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Models.Subscription?> {
