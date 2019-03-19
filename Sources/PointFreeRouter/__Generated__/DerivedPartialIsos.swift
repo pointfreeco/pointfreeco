@@ -549,6 +549,20 @@ import Stripe
 
 
       extension PartialIso where A == (
+            EnterpriseAccount.Domain
+        ), B == Route {
+
+          public static let enterprise = parenthesize <| PartialIso(
+            apply: Route.enterprise,
+            unapply: {
+              guard case let .enterprise(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Either<String, Episode.Id>
         ), B == Route {
 

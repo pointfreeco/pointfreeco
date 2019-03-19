@@ -16,6 +16,7 @@ public struct Client {
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
+  public var fetchEnterpriseAccount: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
@@ -45,6 +46,7 @@ public struct Client {
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
+    fetchEnterpriseAccount: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -73,6 +75,7 @@ public struct Client {
     self.execute = execute
     self.fetchAdmins = fetchAdmins
     self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
+    self.fetchEnterpriseAccount = fetchEnterpriseAccount
     self.fetchEpisodeCredits = fetchEpisodeCredits
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchSubscriptionById = fetchSubscriptionById
@@ -125,6 +128,7 @@ extension Client {
       execute: client.execute,
       fetchAdmins: { client.fetchAdmins() },
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
+      fetchEnterpriseAccount: client.fetchEnterpriseAccount(for:),
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
       fetchFreeEpisodeUsers: { client.fetchFreeEpisodeUsers() },
       fetchSubscriptionById: client.fetchSubscription(id:),
@@ -408,6 +412,18 @@ private struct _Client {
       ]
       )
       .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
+  }
+
+  func fetchEnterpriseAccount(for domain: EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?> {
+    return self.firstRow(
+      """
+      SELECT "company_name", "domain", "id", "subscription_id"
+      FROM "enterprise_accounts"
+      WHERE "domain" = $1
+      LIMIT 1
+      """,
+      [domain.rawValue]
+    )
   }
 
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
@@ -850,6 +866,24 @@ private struct _Client {
         END LOOP;
       END;
       $$ LANGUAGE PLPGSQL;
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE TABLE IF NOT EXISTS "enterprise_accounts" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "company_name" character varying NOT NULL,
+        "domain" character varying NOT NULL,
+        "subscription_id" uuid REFERENCES "subscriptions" ("id"),
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
+      ON "enterprise_accounts" ("domain")
       """
       )))
       .map(const(unit))

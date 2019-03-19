@@ -16,6 +16,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id)
+  case enterprise(EnterpriseAccount.Domain)
   case episode(Either<String, Episode.Id>)
   case episodes
   case expressUnsubscribe(payload: Encrypted<String>)
@@ -112,6 +113,9 @@ let routers: [Router<Route>] = [
 
   .feed <<< .episodes
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
+
+  .enterprise
+    <¢> get %> "enterprise" %> pathParam(.tagged(.string)),
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")

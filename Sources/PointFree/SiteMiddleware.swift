@@ -90,6 +90,10 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn
         |> redirect(to: path(to: .home))
 
+    case let .enterprise(domain):
+      return conn.map(const(domain))
+        |> enterpriseResponse
+
     case let .expressUnsubscribe(payload):
       return conn.map(const(payload))
         |> expressUnsubscribeMiddleware
