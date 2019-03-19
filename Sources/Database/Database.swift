@@ -910,6 +910,24 @@ private struct _Client {
       ON "enterprise_accounts" ("domain")
       """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE TABLE IF NOT EXISTS "enterprise_emails" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "email" character varying NOT NULL,
+        "subscription_id" uuid REFERENCES "subscriptions" ("id"),
+        "user_id" uuid REFERENCES "users" ("id"),
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email_subscription_id_user_id"
+      ON "enterprise_accounts" ("email", "subscription_id", "user_id")
+      """
+      )))
       .map(const(unit))
   }
 

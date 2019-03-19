@@ -29,7 +29,7 @@ let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Enterpr
     }
 )
 
-let enterpriseLinkResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseLink>, Data>
+let enterpriseLinkResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseRequest>, Data>
   = filterMap(over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1), or: redirect(to: .home))
     <| hole()
 
