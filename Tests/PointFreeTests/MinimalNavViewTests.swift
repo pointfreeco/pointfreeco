@@ -47,12 +47,12 @@ private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberSt
   ("dark_logged-out_no-route", (.dark, nil, .nonSubscriber, nil)),
   ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricing(nil, expand: nil))),
   ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
-  ("dark_logged-in_inactive-subscriber", (.dark, .mock, .teammate(status: .canceled), nil)),
-  ("dark_logged-in_active-subscriber", (.dark, .mock, .teammate(status: .active), nil)),
+  ("dark_logged-in_inactive-subscriber", (.dark, .mock, .teammate(status: .canceled, enterpriseAccount: nil), nil)),
+  ("dark_logged-in_active-subscriber", (.dark, .mock, .teammate(status: .active, enterpriseAccount: nil), nil)),
 
   ("light_logged-out", (.light, nil, .nonSubscriber, nil)),
   ("light_logged-in_non-subscriber", (.light, .mock, .nonSubscriber, nil)),
-  ("light_logged-in_active-subscriber", (.light, .mock, .teammate(status: .active), nil)),
+  ("light_logged-in_active-subscriber", (.light, .mock, .teammate(status: .active, enterpriseAccount: nil), nil)),
 ]
 
 private let testDocView = View<(NavStyle.MinimalStyle, Models.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
