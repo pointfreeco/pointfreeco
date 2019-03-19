@@ -1,4 +1,5 @@
 import Foundation
+import PointFreePrelude
 import Tagged
 
 public struct EnterpriseAccount: Decodable, Equatable {
@@ -27,5 +28,13 @@ public struct EnterpriseAccount: Decodable, Equatable {
     case domain
     case id
     case subscriptionId = "subscription_id"
+  }
+}
+
+public struct EnterpriseLink: Codable, Equatable{
+  public var localPart: EmailLocalPart
+
+  public enum CodingKeys: String, CodingKey {
+    case localPart = "local_part"
   }
 }

@@ -16,7 +16,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id)
-  case enterprise(EnterpriseAccount.Domain)
+  case enterprise(Enterprise)
   case episode(Either<String, Episode.Id>)
   case episodes
   case expressUnsubscribe(payload: Encrypted<String>)
@@ -46,6 +46,11 @@ public enum Route: DerivePartialIsos, Equatable {
     public static func show(id: BlogPost.Id) -> Blog {
       return .show(.right(id))
     }
+  }
+
+  public enum Enterprise: DerivePartialIsos, Equatable {
+    case landing(EnterpriseAccount.Domain)
+    case link(EnterpriseAccount.Domain, EnterpriseLink)
   }
 
   public enum Feed: DerivePartialIsos, Equatable {
@@ -114,8 +119,12 @@ let routers: [Router<Route>] = [
   .feed <<< .episodes
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
 
-  .enterprise
-    <¢> get %> "enterprise" %> pathParam(.tagged(.string)),
+  .enterprise <<< .landing
+    <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <% end,
+
+  .enterprise <<< .link
+    <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "link"
+    %> formBody(EnterpriseLink.self, decoder: formDecoder) <% end,
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")

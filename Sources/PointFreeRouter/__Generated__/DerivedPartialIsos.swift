@@ -549,7 +549,7 @@ import Stripe
 
 
       extension PartialIso where A == (
-            EnterpriseAccount.Domain
+            Route.Enterprise
         ), B == Route {
 
           public static let enterprise = parenthesize <| PartialIso(
@@ -808,6 +808,36 @@ import Stripe
             apply: Route.Blog.show,
             unapply: {
               guard case let .show(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
+        ), B == Route.Enterprise {
+
+          public static let landing = parenthesize <| PartialIso(
+            apply: Route.Enterprise.landing,
+            unapply: {
+              guard case let .landing(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
+          , 
+            EnterpriseLink
+        ), B == Route.Enterprise {
+
+          public static let link = parenthesize <| PartialIso(
+            apply: Route.Enterprise.link,
+            unapply: {
+              guard case let .link(result) = $0 else { return nil }
               return .some(result)
           })
       }

@@ -10,11 +10,12 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
+import Tuple
 import UrlFormEncoding
 import View
 import Views
 
-let enterpriseResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data>
+let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data>
   = fetchEnterpriseAccount
     <<< filterMap(pure, or: redirect(to: .home))
     <| writeStatus(.ok)
@@ -28,6 +29,9 @@ let enterpriseResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAcco
         )
     }
 )
+
+let enterpriseLinkResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseLink>, Data>
+  = hole()
 
 func fetchEnterpriseAccount(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount?, Data>
