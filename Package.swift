@@ -70,7 +70,7 @@ let package = Package(
         "DatabaseTestSupport",
         "GitHubTestSupport",
         "Logger",
-        "ModelsTestSupport","
+        "ModelsTestSupport",
         "SnapshotTesting",
         ]
     ),
