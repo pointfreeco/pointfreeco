@@ -15,6 +15,7 @@ extension Client {
     execute: { _, _ in throwE(unit) },
     fetchAdmins: unzurry(pure([])),
     fetchEmailSettingsForUserId: const(pure([.mock])),
+    fetchEnterpriseAccount: const(pure(.some(.mock))),
     fetchEpisodeCredits: const(pure([])),
     fetchFreeEpisodeUsers: { pure([.mock]) },
     fetchSubscriptionById: const(pure(.some(.mock))),
