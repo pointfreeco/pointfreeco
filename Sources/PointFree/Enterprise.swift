@@ -30,10 +30,7 @@ let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Enterpr
 )
 
 let enterpriseLinkResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseLink>, Data>
-  = filterMap(
-    over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1),
-    or: redirect(to: .home)
-    )
+  = filterMap(over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1), or: redirect(to: .home))
     <| hole()
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {

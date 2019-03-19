@@ -31,10 +31,10 @@ public struct EnterpriseAccount: Decodable, Equatable {
   }
 }
 
-public struct EnterpriseLink: Codable, Equatable{
-  public var localPart: EmailLocalPart
+public struct EnterpriseRequest: Codable, Equatable{
+  public var email: EmailAddress
 
   public enum CodingKeys: String, CodingKey {
-    case localPart = "local_part"
+    case email
   }
 }

@@ -831,13 +831,13 @@ import Stripe
       extension PartialIso where A == (
             EnterpriseAccount.Domain
           , 
-            EnterpriseLink
+            EnterpriseRequest
         ), B == Route.Enterprise {
 
-          public static let link = parenthesize <| PartialIso(
-            apply: Route.Enterprise.link,
+          public static let requestInvite = parenthesize <| PartialIso(
+            apply: Route.Enterprise.requestInvite,
             unapply: {
-              guard case let .link(result) = $0 else { return nil }
+              guard case let .requestInvite(result) = $0 else { return nil }
               return .some(result)
           })
       }

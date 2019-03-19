@@ -50,7 +50,7 @@ public enum Route: DerivePartialIsos, Equatable {
 
   public enum Enterprise: DerivePartialIsos, Equatable {
     case landing(EnterpriseAccount.Domain)
-    case link(EnterpriseAccount.Domain, EnterpriseLink)
+    case requestInvite(EnterpriseAccount.Domain, EnterpriseRequest)
   }
 
   public enum Feed: DerivePartialIsos, Equatable {
@@ -122,9 +122,9 @@ let routers: [Router<Route>] = [
   .enterprise <<< .landing
     <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <% end,
 
-  .enterprise <<< .link
-    <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "link"
-    %> formBody(EnterpriseLink.self, decoder: formDecoder) <% end,
+  .enterprise <<< .requestInvite
+    <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "request"
+    %> formBody(EnterpriseRequest.self, decoder: formDecoder) <% end,
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
