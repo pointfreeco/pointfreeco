@@ -95,7 +95,7 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
         |> enterpriseLandingResponse
 
     case let .enterprise(.requestInvite(domain, request)):
-      return conn.map(const(domain .*. link .*. unit))
+      return conn.map(const(domain .*. request .*. unit))
         |> enterpriseRequestMiddleware
 
     case let .expressUnsubscribe(payload):
