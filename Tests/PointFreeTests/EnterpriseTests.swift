@@ -21,7 +21,7 @@ class EnterpriseTests: TestCase {
   func testEpisodePage() {
     update(&Current, \.database .~ .mock)
 
-    let req = request(to: .enterprise(EnterpriseAccount.mock.domain))
+    let req = request(to: .enterprise(.landing(EnterpriseAccount.mock.domain)))
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

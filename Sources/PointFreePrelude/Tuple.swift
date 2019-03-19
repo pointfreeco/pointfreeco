@@ -17,6 +17,10 @@ public func tuple8<A, B, C, D, E, F, G, H>(_ a: A) -> (B) -> (C) -> (D) -> (E) -
   return { b in { c in { d in { e in { f in { g in { h in (a, b, c, d, e, f, g, h) } } } } } } }
 }
 
+public func tuple9<A, B, C, D, E, F, G, H, I>(_ a: A) -> (B) -> (C) -> (D) -> (E) -> (F) -> (G) -> (H) -> (I) -> (A, B, C, D, E, F, G, H, I) {
+  return { b in { c in { d in { e in { f in { g in { h in { i in (a, b, c, d, e, f, g, h, i) } } } } } } } }
+}
+
 public typealias T8<A, B, C, D, E, F, G, Z> = Tuple<A, T7<B, C, D, E, F, G, Z>>
 
 public typealias Tuple7<A, B, C, D, E, F, G> = T8<A, B, C, D, E, F, G, Prelude.Unit>

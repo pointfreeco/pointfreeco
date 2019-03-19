@@ -34,7 +34,7 @@ let enterpriseRequestMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple
     <| hole()
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
-  return Current.database.fetchEnterpriseAccount(domain)
+  return Current.database.fetchEnterpriseAccountForDomain(domain)
     .mapExcept(requireSome)
     .run
     .map(^\.right)

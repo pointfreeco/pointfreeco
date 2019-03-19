@@ -17,7 +17,8 @@ public struct Client {
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
-  public var fetchEnterpriseAccount: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
+  public var fetchEnterpriseAccountForDomain: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
+  public var fetchEnterpriseAccountForSubscription: (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
@@ -48,7 +49,8 @@ public struct Client {
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
-    fetchEnterpriseAccount: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
+    fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
+    fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -78,7 +80,8 @@ public struct Client {
     self.execute = execute
     self.fetchAdmins = fetchAdmins
     self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
-    self.fetchEnterpriseAccount = fetchEnterpriseAccount
+    self.fetchEnterpriseAccountForDomain = fetchEnterpriseAccountForDomain
+    self.fetchEnterpriseAccountForSubscription = fetchEnterpriseAccountForSubscription
     self.fetchEpisodeCredits = fetchEpisodeCredits
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchSubscriptionById = fetchSubscriptionById
@@ -132,7 +135,8 @@ extension Client {
       execute: client.execute,
       fetchAdmins: { client.fetchAdmins() },
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
-      fetchEnterpriseAccount: client.fetchEnterpriseAccount(for:),
+      fetchEnterpriseAccountForDomain: client.fetchEnterpriseAccount(forDomain:),
+      fetchEnterpriseAccountForSubscription: client.fetchEnterpriseAccount(forSubscriptionId:),
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
       fetchFreeEpisodeUsers: { client.fetchFreeEpisodeUsers() },
       fetchSubscriptionById: client.fetchSubscription(id:),
@@ -438,7 +442,7 @@ private struct _Client {
       .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
   }
 
-  func fetchEnterpriseAccount(for domain: EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?> {
+  func fetchEnterpriseAccount(forDomain domain: EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?> {
     return self.firstRow(
       """
       SELECT "company_name", "domain", "id", "subscription_id"
@@ -447,6 +451,18 @@ private struct _Client {
       LIMIT 1
       """,
       [domain.rawValue]
+    )
+  }
+
+  func fetchEnterpriseAccount(forSubscriptionId subscriptionId: Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?> {
+    return self.firstRow(
+      """
+      SELECT "company_name", "domain", "id", "subscription_id"
+      FROM "enterprise_accounts"
+      WHERE "subscription_id" = $1
+      LIMIT 1
+      """,
+      [subscriptionId.rawValue]
     )
   }
 
@@ -908,6 +924,12 @@ private struct _Client {
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
       ON "enterprise_accounts" ("domain")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
+      ON "enterprise_accounts" ("subscription_id")
       """
       )))
       .flatMap(const(execute(
