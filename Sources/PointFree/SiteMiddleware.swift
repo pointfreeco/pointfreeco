@@ -19,11 +19,14 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
-    let subscriberState = SubscriberState(user: user, subscription: subscription)
+    let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+    let subscriberState = SubscriberState(
+      user: user, subscriptionAndEnterpriseAccount: subscriptionAndEnterpriseAccount
+    )
+    let subscription = subscriptionAndEnterpriseAccount.map { subscription, _ in subscription }
 
     switch route {
     case .about:

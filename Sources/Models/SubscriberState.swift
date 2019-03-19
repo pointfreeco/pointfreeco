@@ -5,9 +5,9 @@ public enum SubscriberState {
   case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
   case teammate(status: Stripe.Subscription.Status)
 
-  public init(user: User?, subscription: Models.Subscription?) {
-    switch (user, subscription) {
-    case let (.some(user), .some(subscription)):
+  public init(user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?) {
+    switch (user, subscriptionAndEnterpriseAccount) {
+    case let (.some(user), .some((subscription, enterpriseAccount))):
       if subscription.userId == user.id {
         self = .owner(
           hasSeat: user.subscriptionId != nil,

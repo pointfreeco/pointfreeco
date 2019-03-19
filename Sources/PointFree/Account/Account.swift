@@ -60,20 +60,13 @@ private func fetchAccountData<I>(
     .map(^\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
-  let enterpriseAccount = subscription
-    .map(^\.id)
-    .flatMap(Current.database.fetchEnterpriseAccountForSubscription)
-    .mapExcept(requireSome)
-
   let upcomingInvoice = stripeSubscription
     .map(^\.customer >>> either(id, ^\.id))
     .flatMap(Current.stripe.fetchUpcomingInvoice)
 
-  let everything = zip9(
+  let everything = zip8(
     Current.database.fetchEmailSettingsForUserId(user.id).run.parallel
       .map { $0.right ?? [] },
-
-    enterpriseAccount.run.map(^\.right).parallel,
 
     Current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
@@ -100,15 +93,14 @@ private func fetchAccountData<I>(
           AccountData(
             currentUser: user,
             emailSettings: $0,
-            enterpriseAccount: $1,
-            episodeCredits: $2,
-            stripeSubscription: $3,
+            episodeCredits: $1,
+            stripeSubscription: $2,
             subscriberState: subscriberState,
-            subscription: $4,
-            subscriptionOwner: $5,
-            teamInvites: $6,
-            teammates: $7,
-            upcomingInvoice: $8
+            subscription: $3,
+            subscriptionOwner: $4,
+            teamInvites: $5,
+            teammates: $6,
+            upcomingInvoice: $7
           )
         )
       )
@@ -860,7 +852,6 @@ let blockSelectClass =
 private struct AccountData {
   let currentUser: User
   let emailSettings: [EmailSetting]
-  let enterpriseAccount: EnterpriseAccount?
   let episodeCredits: [EpisodeCredit]
   let stripeSubscription: Stripe.Subscription?
   let subscriberState: SubscriberState
