@@ -18,7 +18,7 @@ class EnterpriseTests: TestCase {
 //    record = true
   }
 
-  func testEpisodePage() {
+  func testLanding() {
     update(&Current, \.database .~ .mock)
 
     let req = request(to: .enterprise(.landing(EnterpriseAccount.mock.domain)))
