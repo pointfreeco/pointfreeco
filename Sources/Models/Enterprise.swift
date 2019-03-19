@@ -31,10 +31,26 @@ public struct EnterpriseAccount: Decodable, Equatable {
   }
 }
 
-public struct EnterpriseRequest: Codable, Equatable{
+public struct EnterpriseRequest: Codable, Equatable {
   public var email: EmailAddress
 
   public enum CodingKeys: String, CodingKey {
     case email
+  }
+}
+
+public struct EnterpriseEmail: Decodable, Equatable {
+  public var id: Id
+  public var email: EmailAddress
+  public var subscriptionId: Subscription.Id
+  public var userId: User.Id
+
+  public typealias Id = Tagged<EnterpriseEmail, UUID>
+
+  private enum CodingKeys: String, CodingKey {
+    case id
+    case email
+    case subscriptionId = "subscription_id"
+    case userId = "user_id"
   }
 }
