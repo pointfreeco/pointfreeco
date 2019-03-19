@@ -10,6 +10,7 @@ import Stripe
 
 public struct Client {
   public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
@@ -40,6 +41,7 @@ public struct Client {
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
@@ -69,6 +71,7 @@ public struct Client {
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
+    self.createEnterpriseAccount = createEnterpriseAccount
     self.createFeedRequestEvent = createFeedRequestEvent
     self.createSubscription = createSubscription
     self.deleteTeamInvite = deleteTeamInvite
@@ -122,6 +125,7 @@ extension Client {
 
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
+      createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
@@ -174,6 +178,26 @@ private struct _Client {
         ]
       )
       .map(const(unit))
+  }
+
+  func createEnterpriseAccount(
+    companyName: String,
+    domain: EnterpriseAccount.Domain,
+    subscriptionId: Models.Subscription.Id
+    ) -> EitherIO<Error, EnterpriseAccount?> {
+
+    return self.firstRow(
+      """
+      INSERT INTO "enterprise_accounts"
+      ("company_name", "domain", "subscription_id")
+      VALUES
+      ($1, $2, $3)
+      RETURNING *
+      """, [
+        companyName,
+        domain,
+        subscriptionId
+      ])
   }
 
   func createFeedRequestEvent(
@@ -931,4 +955,10 @@ private struct _Client {
 
 public enum DatabaseError: Error {
   case invalidUrl
+}
+
+extension Tagged: NodeRepresentable where RawValue: NodeRepresentable {
+  public func makeNode(in context: Context?) throws -> Node {
+    return try self.rawValue.makeNode(in: context)
+  }
 }

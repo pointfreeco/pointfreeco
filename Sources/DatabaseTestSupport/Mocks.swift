@@ -9,6 +9,7 @@ import Prelude
 extension Client {
   public static let mock = Client(
     addUserIdToSubscriptionId: { _, _ in pure(unit) },
+    createEnterpriseAccount: { _, _, _ in pure(.mock) },
     createFeedRequestEvent: { _, _, _ in pure(unit) },
     createSubscription: { _, _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),

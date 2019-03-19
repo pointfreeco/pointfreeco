@@ -68,6 +68,9 @@ let package = Package(
       dependencies: [
         "Database",
         "DatabaseTestSupport",
+        "GitHubTestSupport",
+        "Logger",
+        "ModelsTestSupport","
         "SnapshotTesting",
         ]
     ),
