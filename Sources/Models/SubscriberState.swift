@@ -2,8 +2,8 @@ import Stripe
 
 public enum SubscriberState {
   case nonSubscriber
-  case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
-  case teammate(status: Stripe.Subscription.Status)
+  case owner(hasSeat: Bool, status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?)
+  case teammate(status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?)
 
   public init(user: User?, subscriptionAndEnterpriseAccount: (Models.Subscription, EnterpriseAccount?)?) {
     switch (user, subscriptionAndEnterpriseAccount) {
@@ -11,10 +11,11 @@ public enum SubscriberState {
       if subscription.userId == user.id {
         self = .owner(
           hasSeat: user.subscriptionId != nil,
-          status: subscription.stripeSubscriptionStatus
+          status: subscription.stripeSubscriptionStatus,
+          enterpriseAccount: enterpriseAccount
         )
       } else {
-        self = .teammate(status: subscription.stripeSubscriptionStatus)
+        self = .teammate(status: subscription.stripeSubscriptionStatus, enterpriseAccount: enterpriseAccount)
       }
 
     case (.none, _), (.some, _):
@@ -26,9 +27,9 @@ public enum SubscriberState {
     switch self {
     case .nonSubscriber:
       return nil
-    case let .owner(_, status):
+    case let .owner(_, status, _):
       return status
-    case let .teammate(status):
+    case let .teammate(status, _):
       return status
     }
   }
@@ -57,8 +58,8 @@ public enum SubscriberState {
   }
 
   public var isActiveSubscriber: Bool {
-    if case .teammate(status: .active) = self { return true }
-    if case .owner(hasSeat: true, status: .active) = self { return true }
+    if case .teammate(status: .active, _) = self { return true }
+    if case .owner(hasSeat: true, status: .active, _) = self { return true }
     return false
   }
 }
