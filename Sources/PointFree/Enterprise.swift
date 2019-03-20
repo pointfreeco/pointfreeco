@@ -42,6 +42,7 @@ let enterpriseAcceptInviteMiddleware: Middleware<
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(validateSignature >>> pure, or: redirect(to: .home))
     <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
+    // verify requester id == current user id
     <| redirect(to: .account(.index))
 
 private func verifyDomain<A, Z>(
