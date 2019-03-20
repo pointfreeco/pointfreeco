@@ -57,6 +57,7 @@ let package = Package(
         "Either",
         "Models",
         "ModelsTestSupport",
+        "Optics",
         "PointFreePrelude",
         "PostgreSQL",
         "Prelude",

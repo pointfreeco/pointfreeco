@@ -2,6 +2,7 @@ import Database
 import Either
 import Models
 import ModelsTestSupport
+import Optics
 import PointFreePrelude
 import PostgreSQL
 import Prelude
@@ -20,13 +21,13 @@ extension Client {
     fetchEnterpriseAccountForSubscription: const(pure(.some(.mock))),
     fetchEpisodeCredits: const(pure([])),
     fetchFreeEpisodeUsers: { pure([.mock]) },
-    fetchSubscriptionById: const(pure(.some(.mock))),
-    fetchSubscriptionByOwnerId: const(pure(.some(.mock))),
+    fetchSubscriptionById: { pure(.some(.mock |> \.id .~ $0)) },
+    fetchSubscriptionByOwnerId: { pure(.some(.mock |> \.userId .~ $0)) },
     fetchSubscriptionTeammatesByOwnerId: const(pure([.mock])),
     fetchTeamInvite: const(pure(.mock)),
     fetchTeamInvites: const(pure([])),
     fetchUserByGitHub: const(pure(.mock)),
-    fetchUserById: const(pure(.mock)),
+    fetchUserById: { pure(.mock |> \.id .~ $0) },
     fetchUsersSubscribedToNewsletter: { _, _ in pure([.mock]) },
     fetchUsersToWelcome: const(pure([.mock])),
     incrementEpisodeCredits: const(pure([])),
