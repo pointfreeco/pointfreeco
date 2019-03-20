@@ -62,4 +62,13 @@ public enum SubscriberState {
     if case .owner(hasSeat: true, status: .active, _) = self { return true }
     return false
   }
+
+  public var isEnterpriseSubscriber: Bool {
+    switch self {
+    case .owner(_, _, .some), .teammate(_, .some):
+      return true
+    default:
+      return false
+    }
+  }
 }
