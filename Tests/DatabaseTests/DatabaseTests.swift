@@ -56,7 +56,7 @@ final class DatabaseTests: XCTestCase {
       .perform()
       .right!!
 
-    let fetchedAccount = self.database.fetchEnterpriseAccount(createdAccount.domain)
+    let fetchedAccount = self.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
       .run
       .perform()
       .right!!
