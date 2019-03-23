@@ -193,3 +193,39 @@ private let enterpriseRowClass =
   Class.pf.colors.bg.purple150
     | Class.grid.center(.mobile)
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
+
+let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
+  .contramap { account, signature in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You’re invited to join the \(account.companyName) team on Point-Free",
+      preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
+      template: .default,
+      data: (account, signature)
+    )
+}
+
+private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<String>)> { account, signature in
+  emailTable([style(contentTableStyles)], [
+    tr([
+      td([valign(.top)], [
+        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            "You’re invited to join the ", .text(account.companyName), " team on Point-Free a video series ",
+            "about functional programming and the Swift programming language. To accept, simply click the ",
+            "link below!"
+            ]),
+          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+            a([
+              href(url(to: .enterprise(.acceptInvite(account.domain, signature)))),
+              `class`([Class.pf.components.button(color: .purple)])
+              ],
+              ["Click here to accept!"])
+            ])
+          ])
+        ])
+      ])
+    ])
+}
