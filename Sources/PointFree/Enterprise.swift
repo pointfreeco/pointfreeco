@@ -46,7 +46,7 @@ let enterpriseRequestMiddleware: Middleware<
   = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
     <<< validateMembership
     <<< filterMap(require1 >>> pure, or: loginAndRedirect)
-//    <<< { middleware in { conn in conn |> middleware } }
+    <<< sendEnterpriseInvitation
     <| map(get2 >>> ^\.domain)
     >>> { conn in conn |> redirect(to: .enterprise(.landing(conn.data))) }
 
@@ -89,6 +89,17 @@ private func verifyDomain<A, Z>(
   return request.email.rawValue.lowercased().hasSuffix(domain.rawValue.lowercased())
     ? data
     : nil
+}
+
+private func sendEnterpriseInvitation<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User, EnterpriseAccount, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<User, EnterpriseAccount, Z>, Data> {
+
+  return { conn in
+    let (user, account) = (get1(conn.data), get2(conn.data))
+    Encrypted(user.email.rawValue, with: Current.envVars.appSecret)
+    return conn |> middleware
+  }
 }
 
 private func validateSignature<A, Z>(
