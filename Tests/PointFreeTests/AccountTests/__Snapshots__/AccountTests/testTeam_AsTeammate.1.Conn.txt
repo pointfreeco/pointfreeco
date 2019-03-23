@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 61453
+Content-Length: 50193
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1812,29 +1812,6 @@ html {
                          name="email"
                          type="email"
                          value="hello@pointfree.co">
-                  <label class="h5
-                                bold
-                                block
-                                m-mb1">
-                    Extra Invoice Info
-                  </label>
-                  <textarea placeholder="Company name, billing address, VAT number, ..."
-                            class="font-family-inherit
-                                   fg-black
-                                   border-box
-                                   rounded
-                                   border
-                                   border-gray-800
-                                   h-3r
-                                   m-pl1
-                                   m-pr1
-                                   m-pt1
-                                   m-pb1
-                                   m-mb2
-                                   w-100p
-                                   block"
-                            name="extraInvoiceInfo">
-                  </textarea>
                   <p>
                     Receive email for:
                   </p>
@@ -1914,8 +1891,8 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                 </p>
                 <p>
                   <a class="underline-link"
-                     href="http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b47847c7d6d216c635dd0cff1d0429f0567/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
-                    http://localhost:8080/account/rss/f9c46e...
+                     href="http://localhost:8080/account/rss/921cf3a5878a7821ab5cc43176ac0abb5527d913d0ca3c13ee3ff85f56f33c8d239b39127d25d33610092e6da9469c0f/6f19da772a4f375a88d7fa153b38da002839db602c2dab23f1a9524dcfb37f8498e27e463f4da28c1cf14a06cbd6d07a">
+                    http://localhost:8080/account/rss/921cf3...
                   </a>
                 </p>
               </div>
@@ -1933,272 +1910,34 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                            lh-2">
                   Subscription overview
                 </h2>
-                <div class="col-m
-                            col-m-12">
-                  <div class="m-pb3
-                              m-pt1">
-                    <div class="row">
-                      <div class="col-m
-                                  col-m-3">
-                        <p>
-                          <div>
-                            Plan
-                          </div>
-                        </p>
-                      </div>
-                      <div class="col-m
-                                  col-m-9">
-                        <div class="row">
-                          <div class="col-m
-                                      col-d-6
-                                      col-m-12">
-                            <div class="m-pl1
-                                        m-pr1">
-                              <p>
-                                Team Yearly (×4)
-                              </p>
-                            </div>
-                          </div>
-                          <div class="col-m
-                                      col-d-6
-                                      col-m-12">
-                            <div class="m-pl1
-                                        m-pr1
-                                        end-d">
-                              <p>
-                                <a class="medium
-                                          cursor-pointer
-                                          nowrap
-                                          btn-normal
-                                          rounded
-                                          border-none
-                                          text-decoration-none
-                                          pf-link-white
-                                          fg-white
-                                          bg-purple
-                                          h6
-                                          m-pl1
-                                          m-pr1
-                                          m-pt1
-                                          m-pb1"
-                                   href="/account/subscription/change">
-                                  Modify subscription
-                                </a>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-m
-                                  col-m-3">
-                        <p>
-                          <div>
-                            Status
-                          </div>
-                        </p>
-                      </div>
-                      <div class="col-m
-                                  col-m-9">
-                        <div class="row">
-                          <div class="col-m
-                                      col-d-6
-                                      col-m-12">
-                            <div class="m-pl1
-                                        m-pr1">
-                              <p>
-                                Active
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-m
-                                  col-m-3">
-                        <p>
-                          <div>
-                            Next billing
-                          </div>
-                        </p>
-                      </div>
-                      <div class="col-m
-                                  col-m-9">
-                        <div class="m-pl1
-                                    m-pr1">
-                          <p>
-                            $640.00 on 3/2/18
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="border-top
-                              border-gray-800
-                              m-pb3
-                              m-pt2
-                              row">
-                    <div class="col-m
-                                col-m-3">
-                      <div>
-                        <p>
-                          Invites
-                        </p>
-                      </div>
-                    </div>
-                    <div class="col-m
-                                col-m-9">
-                      <div class="m-pl1
-                                  m-pr1">
-                        <p>
-                          These teammates have been invited, but have not yet accepted.
-                        </p>
-                        <div class="row">
-                          <div class="col-m
-                                      col-d-6
-                                      col-m-12">
-                            <p>
-                              blob@pointfree.co
-                            </p>
-                          </div>
-                          <div class="end-d
-                                      col-m
-                                      col-d-6
-                                      col-m-12">
-                            <form action="/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/resend"
-                                  method="post"
-                                  class="inline-block">
-                              <p>
-                                <input type="submit"
-                                       class="medium
-                                              cursor-pointer
-                                              nowrap
-                                              btn-normal
-                                              rounded
-                                              border-none
-                                              text-decoration-none
-                                              pf-link-white
-                                              fg-white
-                                              bg-purple
-                                              h6
-                                              m-pl1
-                                              m-pr1
-                                              m-pt1
-                                              m-pb1"
-                                       value="Resend">
-                              </p>
-                            </form>
-                            <form action="/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/revoke"
-                                  method="post"
-                                  class="inline-block
-                                         d-pl2
-                                         m-pl1">
-                              <p>
-                                <input type="submit"
-                                       class="medium
-                                              cursor-pointer
-                                              nowrap
-                                              btn-outline
-                                              border-none
-                                              underline
-                                              pf-link-red
-                                              fg-red
-                                              bg-inherit
-                                              h6
-                                              m-pl1
-                                              m-pr1
-                                              m-pt1
-                                              m-pb1"
-                                       value="Revoke">
-                              </p>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="border-top
-                              border-gray-800
-                              m-pb3
-                              m-pt2
-                              row">
-                    <div class="col-m
-                                col-m-3">
-                      <div>
-                        <p>
-                          Payment
-                        </p>
-                      </div>
-                    </div>
-                    <div class="col-m
-                                col-d-9">
-                      <div class="row">
-                        <div class="col-m
-                                    col-d-6
-                                    col-m-12">
-                          <div class="m-pl1
-                                      m-pr1">
-                            <p>
-                              Visa ending in 4242
-                            </p>
-                            <p>
-                              Expires 1/2020
-                            </p>
-                          </div>
-                        </div>
-                        <div class="col-m
-                                    col-d-6
-                                    col-m-12">
-                          <div class="m-pl1
-                                      m-pr1
-                                      end-d">
-                            <p>
-                              <a class="medium
-                                        cursor-pointer
-                                        nowrap
-                                        btn-normal
-                                        rounded
-                                        border-none
-                                        text-decoration-none
-                                        pf-link-white
-                                        fg-white
-                                        bg-purple
-                                        h6
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1"
-                                 href="/account/payment-info">
-                                Update payment method
-                              </a>
-                            </p>
-                            <p>
-                              <a class="medium
-                                        cursor-pointer
-                                        nowrap
-                                        btn-outline
-                                        border-none
-                                        underline
-                                        pf-link-black
-                                        fg-black
-                                        bg-inherit
-                                        h6
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1"
-                                 href="/account/invoices">
-                                Payment history
-                              </a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <p>
+                  You are currently on a team subscription. Contact 
+                  <a href="mailto:"
+                     class="pf-link-purple">
+                    the owner
+                  </a>
+                   for more information.
+                </p>
+                <form action="/account/team/leave"
+                      method="post">
+                  <input class="medium
+                                cursor-pointer
+                                nowrap
+                                btn-normal
+                                rounded
+                                border-none
+                                text-decoration-none
+                                pf-link-white
+                                fg-white
+                                bg-red
+                                h6
+                                m-pl1
+                                m-pr1
+                                m-pt1
+                                m-pb1"
+                         type="submit"
+                         value="Leave this team">
+                </form>
               </div>
             </div>
           </div>
