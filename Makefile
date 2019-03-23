@@ -267,6 +267,7 @@ routes:
 
 SOURCERY_TESTS_IMPORTS = \
 	@testable import FunctionalCssTests; \
+	@testable import DatabaseTests; \
 	@testable import GitHubTests; \
 	@testable import ModelsTests; \
 	@testable import PointFreeRouterTests; \

@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import FunctionalCssTests; @testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+@testable import FunctionalCssTests; @testable import DatabaseTests; @testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
@@ -14,6 +14,7 @@ extension AccountTests {
     ("testAccount", testAccount),
     ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
+    ("testTeam_AsTeammate", testTeam_AsTeammate),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
@@ -141,7 +142,7 @@ extension EmailInviteTests {
 }
 extension EnterpriseTests {
   static var allTests: [(String, (EnterpriseTests) -> () throws -> Void)] = [
-    ("testEpisodePage", testEpisodePage),
+    ("testLanding", testLanding),
   ]
 }
 extension EnvVarTests {
