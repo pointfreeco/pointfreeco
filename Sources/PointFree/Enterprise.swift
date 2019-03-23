@@ -15,7 +15,12 @@ import UrlFormEncoding
 import View
 import Views
 
-let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, EnterpriseAccount.Domain>, Data>
+let enterpriseLandingResponse: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, EnterpriseAccount.Domain>,
+  Data
+  >
   = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
     <<< validateMembership
     <| writeStatus(.ok)
@@ -32,9 +37,18 @@ let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<
     }
 )
 
-let enterpriseRequestMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<EnterpriseAccount.Domain, EnterpriseRequest>, Data>
-  = filterMap(over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1), or: redirect(to: .home))
-    <| hole()
+let enterpriseRequestMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequest>,
+  Data
+  >
+  = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
+    <<< validateMembership
+    <<< filterMap(require1 >>> pure, or: loginAndRedirect)
+//    <<< { middleware in { conn in conn |> middleware } }
+    <| map(get2 >>> ^\.domain)
+    >>> { conn in conn |> redirect(to: .enterprise(.landing(conn.data))) }
 
 let enterpriseAcceptInviteMiddleware: Middleware<
   StatusLineOpen,
