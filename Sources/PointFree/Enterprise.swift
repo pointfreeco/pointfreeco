@@ -17,6 +17,7 @@ import Views
 
 let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, EnterpriseAccount.Domain>, Data>
   = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
+    <<< validateMembership
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -46,6 +47,24 @@ let enterpriseAcceptInviteMiddleware: Middleware<
     <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
     // verify requester id == current user id
     <| redirect(to: .account(.index))
+
+private func validateMembership<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data> {
+
+  return { conn in
+    let (user, account) = (get1(conn.data), get2(conn.data))
+
+    if user?.subscriptionId == account.subscriptionId {
+      return conn |> redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.notice, "You're already enrolled in \(account.companyName)'s subscription! 🙌")
+      )
+    } else {
+      return middleware(conn)
+    }
+  }
+}
 
 private func verifyDomain<A, Z>(
   _ data: T4<A, EnterpriseAccount.Domain, EnterpriseRequest, Z>
