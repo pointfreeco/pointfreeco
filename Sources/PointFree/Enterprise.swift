@@ -86,7 +86,7 @@ private func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) 
   let loggedOutView = [
     p(
       [`class`([Class.pf.colors.fg.green])],
-      ["Please log in to gain access to every episode of ", pointFreeRaw, "."]
+      ["Log in to gain access to every episode of ", pointFreeRaw, "."]
     ),
     gitHubLink(
       text: "Sign in with GitHub",
@@ -98,12 +98,36 @@ private func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) 
   let loggedInView = [
     p(
       [`class`([Class.pf.colors.fg.green])],
-      ["Please enter your company email address to gain access every episode of ", pointFreeRaw, "."]
+      ["Enter your company email address to gain access to every episode of ", pointFreeRaw, "."]
     ),
-    form(
-      []
-    ),
-  ]
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 2]])])], [
+      gridColumn(sizes: [.mobile: 12], [], [
+        form(
+          [
+            action(path(to: .enterprise(.requestInvite(account.domain, .init(email: ""))))),
+            method(.post),
+            ],
+          [
+            gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]]), Class.flex.flex, Class.flex.items.baseline])], [
+              gridColumn(sizes: [.mobile: 8], [], [
+                input(
+                  [
+                    `class`([blockInputClass]),
+                    name(EnterpriseRequest.CodingKeys.email.rawValue),
+                    placeholder("blob@\(account.domain)"),
+                    type(.email),
+                    ]),
+                ]),
+              gridColumn(sizes: [.mobile: 4], [], [
+                button(
+                  [`class`([Class.pf.components.button(color: .white), Class.margin([.mobile: [.left: 1]])])],
+                  ["Request Access"])
+                ]),
+              ]),
+            ]),
+        ]),
+      ]),
+    ]
 
   return [
     gridRow([`class`([enterpriseRowClass])], [
