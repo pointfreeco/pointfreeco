@@ -1,3 +1,4 @@
+import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -19,9 +20,13 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding() {
-    update(&Current, \.database .~ .mock)
+    Current.database = .mock
 
-    let req = request(to: .enterprise(.landing(EnterpriseAccount.mock.domain)))
+    let account = EnterpriseAccount.mock
+
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+
+    let req = request(to: .enterprise(.landing(account.domain)))
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
