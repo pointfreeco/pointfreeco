@@ -1,10 +1,12 @@
 import Css
+import Either
 import FunctionalCss
 import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -47,8 +49,12 @@ let enterpriseRequestMiddleware: Middleware<
     <<< validateMembership
     <<< filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< sendEnterpriseInvitation
-    <| map(get2 >>> ^\.domain)
-    >>> { conn in conn |> redirect(to: .enterprise(.landing(conn.data))) }
+    <| { conn in
+      conn |> redirect(
+        to: .enterprise(.landing(get2(conn.data).domain)),
+        headersMiddleware: flash(.notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
+      )
+}
 
 let enterpriseAcceptInviteMiddleware: Middleware<
   StatusLineOpen,
@@ -97,7 +103,18 @@ private func sendEnterpriseInvitation<Z>(
 
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
-    Encrypted(user.email.rawValue, with: Current.envVars.appSecret)
+
+    if let signature = Encrypted(user.email.rawValue, with: Current.envVars.appSecret) {
+      sendEmail(
+        to: [user.email],
+        subject: "You’re invited to join the \(account.companyName) team on Point-Free",
+        content: inj2(enterpriseInviteEmailView.view((account, signature)))
+        )
+        .run
+        .parallel
+        .run({ _ in })
+    }
+
     return conn |> middleware
   }
 }
