@@ -283,7 +283,7 @@ private func requireTeamInvite<A>(
 
 private func sendInviteEmail(
   invite: TeamInvite, inviter: User
-  ) ->  EitherIO<Error, SendEmailResponse> {
+  ) -> EitherIO<Error, SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],
