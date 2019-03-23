@@ -15,15 +15,17 @@ import UrlFormEncoding
 import View
 import Views
 
-let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, EnterpriseAccount.Domain, Data>
-  = filterMap(fetchEnterpriseAccount, or: redirect(to: .home))
+let enterpriseLandingResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, EnterpriseAccount.Domain>, Data>
+  = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
     <| writeStatus(.ok)
-    >=> respond(
+    >=> map(lower)
+    >>> respond(
       view: View(enterpriseView),
-      layoutData: { enterpriseAccount in
+      layoutData: { user, enterpriseAccount in
         SimplePageLayoutData(
-          currentUser: nil,
-          data: enterpriseAccount,
+          currentUser: user,
+          data: (user, enterpriseAccount),
+          style: .base(.minimal(.dark)),
           title: "Point-Free 🤝 \(enterpriseAccount.companyName)"
         )
     }
@@ -65,12 +67,11 @@ private func validateSignature<A, Z>(
   }
 
   return sequence3(
-    data
-      |> over3({
-        $0.decrypt(with: Current.envVars.appSecret)
-          .map(EmailAddress.init(rawValue:))
-          .map(EnterpriseRequest.init(email:))
-      })
+    data |> over3 {
+      $0.decrypt(with: Current.envVars.appSecret)
+        .map(EmailAddress.init(rawValue:))
+        .map(EnterpriseRequest.init(email:))
+    }
   )
 }
 
@@ -81,6 +82,46 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
     .map(^\.right)
 }
 
-func enterpriseView(_ account: EnterpriseAccount) -> [Node] {
-  return []
+private func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> [Node] {
+  let loggedOutView = [
+    p(
+      [`class`([Class.pf.colors.fg.green])],
+      ["Please log in to gain access to every episode of ", pointFreeRaw, "."]
+    ),
+    gitHubLink(
+      text: "Sign in with GitHub",
+      type: .white,
+      href: path(to: .login(redirect: url(to: .enterprise(.landing(account.domain)))))
+    ),
+  ]
+
+  let loggedInView = [
+    p(
+      [`class`([Class.pf.colors.fg.green])],
+      ["Please enter your company email address to gain access every episode of ", pointFreeRaw, "."]
+    ),
+    form(
+      []
+    ),
+  ]
+
+  return [
+    gridRow([`class`([enterpriseRowClass])], [
+      gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
+        div([
+          h2(
+            [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
+            [pointFreeRaw, " 🤝 ", .text(account.companyName)]
+          ),
+          ] + (currentUser == nil ? loggedOutView : loggedInView))
+        ]),
+      ]),
+  ]
 }
+
+private let pointFreeRaw = Node.raw("Point&#8209;Free")
+
+private let enterpriseRowClass =
+  Class.pf.colors.bg.purple150
+    | Class.grid.center(.mobile)
+    | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
