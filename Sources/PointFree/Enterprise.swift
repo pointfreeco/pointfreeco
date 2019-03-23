@@ -92,7 +92,7 @@ private func verifyDomain<A, Z>(
 
   let (domain, request) = (get2(data), get3(data))
 
-  return request.email.rawValue.lowercased().hasSuffix(domain.rawValue.lowercased())
+  return request.email.hasDomain(domain)
     ? data
     : nil
 }
@@ -104,7 +104,9 @@ private func sendEnterpriseInvitation<Z>(
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
 
-    if let signature = Encrypted(user.email.rawValue, with: Current.envVars.appSecret) {
+    if !user.email.hasDomain(account.domain) {
+      fatalError("TODO")
+    } else if let signature = Encrypted(user.email.rawValue, with: Current.envVars.appSecret) {
       sendEmail(
         to: [user.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
@@ -113,6 +115,8 @@ private func sendEnterpriseInvitation<Z>(
         .run
         .parallel
         .run({ _ in })
+    } else {
+
     }
 
     return conn |> middleware
@@ -245,4 +249,10 @@ private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<S
         ])
       ])
     ])
+}
+
+fileprivate extension Tagged where Tagged == EmailAddress {
+  func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
+    return self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
+  }
 }
