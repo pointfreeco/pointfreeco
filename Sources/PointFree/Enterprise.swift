@@ -41,8 +41,12 @@ let enterpriseAcceptInviteMiddleware: Middleware<
   >
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(validateSignature >>> pure, or: redirect(to: .home))
-    <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
+    // insert into enterprise emails
+//    <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
     // verify requester id == current user id
+    // fetch enterprise account
+    // link user to enterprise account
+
     <| redirect(to: .account(.index))
 
 private func verifyDomain<A, Z>(
@@ -63,6 +67,9 @@ private func validateSignature<A, Z>(
   func sequence3<A, B, C, Z>(_ tuple: T4<A, B, C?, Z>) -> T4<A, B, C, Z>? {
     return get3(tuple).map { get1(tuple) .*. get2(tuple) .*. $0 .*. rest(tuple) }
   }
+
+  // TODO: encrypt domain, user id and email
+  // save email in a table somewhere
 
   return sequence3(
     data

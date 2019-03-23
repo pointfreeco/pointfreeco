@@ -947,7 +947,7 @@ private struct _Client {
       .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email_subscription_id_user_id"
-      ON "enterprise_emails" ("email", "subscription_id", "user_id")
+      ON "enterprise_emails" (lower("email"), "subscription_id", "user_id")
       """
       )))
       .map(const(unit))
