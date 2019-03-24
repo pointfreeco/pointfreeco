@@ -7,35 +7,7 @@ import Logger
 import SnapshotTesting
 import XCTest
 
-final class DatabaseTests: XCTestCase {
-  var database: Database.Client!
-
-  override func setUp() {
-    super.setUp()
-
-    self.database = .init(databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test", logger: Logger())
-
-    _ = try! self.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
-      .flatMap(const(self.database.execute("CREATE SCHEMA public", [])))
-      .flatMap(const(self.database.execute("GRANT ALL ON SCHEMA public TO pointfreeco", [])))
-      .flatMap(const(self.database.execute("GRANT ALL ON SCHEMA public TO public", [])))
-      .flatMap(const(self.database.migrate()))
-      .flatMap(const(self.database.execute("CREATE SEQUENCE test_uuids", [])))
-      .flatMap(const(self.database.execute(
-        """
-        CREATE OR REPLACE FUNCTION uuid_generate_v1mc() RETURNS uuid AS $$
-        BEGIN
-          RETURN ('00000000-0000-0000-0000-'||LPAD(nextval('test_uuids')::text, 12, '0'))::uuid;
-        END; $$
-        LANGUAGE PLPGSQL;
-        """,
-        []
-      )))
-      .run
-      .perform()
-      .unwrap()
-  }
-
+final class DatabaseTests: DatabaseTestCase {
   func testUpsertUser_FetchUserById() throws {
     let userA = try self.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
     let userB = try self.database.fetchUserById(userA!.id).run.perform().unwrap()

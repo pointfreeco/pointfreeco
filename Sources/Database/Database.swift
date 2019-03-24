@@ -237,7 +237,7 @@ private struct _Client {
         """
         INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
         VALUES ($1, $2, $3)
-        RETURNING "id"
+        RETURNING *
         """,[
         stripeSubscription.id,
         stripeSubscription.status.rawValue,
