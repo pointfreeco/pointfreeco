@@ -1,4 +1,4 @@
-GET http://localhost:8080/enterprise/pointfree.co/accept/baddata/f9c46e50cb32c3f12369e92c8bb9d9db3ce6580ce9ea1796a0f3a97710b6de10d78dedaa3dfdb71ecaeb53aad311b5df
+GET http://localhost:8080/enterprise/pointfree.co/accept?email=baddata&user_id=f9c46e50cb32c3f12369e92c8bb9d9db3ce6580ce9ea1796a0f3a97710b6de10d78dedaa3dfdb71ecaeb53aad311b5df
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-123456789012"}
 
 302 Found

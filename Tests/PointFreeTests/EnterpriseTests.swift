@@ -85,14 +85,15 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_BadEmail() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+
+    Current.database = .mock
+      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: "baddata", userId: encryptedUserId)),
@@ -103,14 +104,15 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_BadUserId() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let loggedInUser = User.mock
       |> \.id .~ userId
+
+    Current.database = .mock
+      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: "baddata")),
@@ -121,8 +123,6 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_EmailDoesntMatchEnterpriseDomain() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.biz", with: Current.envVars.appSecret)!
@@ -130,6 +130,9 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+
+    Current.database = .mock
+      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -140,8 +143,6 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
@@ -149,6 +150,9 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
+
+    Current.database = .mock
+      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -160,7 +164,7 @@ class EnterpriseTests: TestCase {
 
   func testAccceptInvitation_EnterpriseAccountDoesntExist() {
     Current.database = .mock
-    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+      |> \.fetchEnterpriseAccountForDomain .~ const(throwE(unit))
 
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
@@ -179,8 +183,6 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_HappyPath() {
-    Current.database = .mock
-
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
     let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
@@ -188,6 +190,9 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+
+    Current.database = .mock
+      |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),

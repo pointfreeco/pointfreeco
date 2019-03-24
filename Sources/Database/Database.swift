@@ -11,6 +11,7 @@ import Stripe
 public struct Client {
   public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
+  public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
@@ -43,6 +44,7 @@ public struct Client {
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
+    createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
@@ -74,6 +76,7 @@ public struct Client {
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
     self.createEnterpriseAccount = createEnterpriseAccount
+    self.createEnterpriseEmail = createEnterpriseEmail
     self.createFeedRequestEvent = createFeedRequestEvent
     self.createSubscription = createSubscription
     self.deleteTeamInvite = deleteTeamInvite
@@ -129,6 +132,7 @@ extension Client {
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
       createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
+      createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
@@ -201,6 +205,20 @@ private struct _Client {
         companyName,
         domain,
         subscriptionId
+      ])
+  }
+
+  func createEnterpriseEmail(email: EmailAddress, userId: User.Id) -> EitherIO<Error, EnterpriseEmail?> {
+    return self.firstRow(
+      """
+      INSERT INTO "enterprise_emails"
+      ("email", "user_id")
+      VALUES
+      ($1, $2)
+      RETURNING *
+      """, [
+        email,
+        userId
       ])
   }
 
@@ -937,7 +955,6 @@ private struct _Client {
       CREATE TABLE IF NOT EXISTS "enterprise_emails" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "email" character varying NOT NULL,
-        "subscription_id" uuid REFERENCES "subscriptions" ("id"),
         "user_id" uuid REFERENCES "users" ("id"),
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
         "updated_at" timestamp without time zone
@@ -947,7 +964,7 @@ private struct _Client {
       .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email_subscription_id_user_id"
-      ON "enterprise_emails" (lower("email"), "subscription_id", "user_id")
+      ON "enterprise_emails" (lower("email"), "user_id")
       """
       )))
       .map(const(unit))

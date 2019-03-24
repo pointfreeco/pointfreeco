@@ -65,33 +65,48 @@ let enterpriseRequestMiddleware: Middleware<
 let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(
-      validateInvitation >>> pure,
-      or: invalidInvitationLinkMiddleware
-    )
-    <<< filterMap(
       over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
       or: redirect(
         to: .home,
         headersMiddleware: flash(.warning, "That enterprise account does not exist.")
       )
     )
-    // insert into enterprise emails
-    // link user to enterprise account
-    <| redirect(to: .account(.index))
+    <<< filterMap(
+      validateInvitation >>> pure,
+      or: invalidInvitationLinkMiddleware
+    )
+    // TODO: check if they have an active subscription
+    <<< filterMap(
+      createEnterpriseEmail,
+      or: invalidInvitationLinkMiddleware
+    )
+    // TODO: link user to enterprise account
+    //       Current.data.addUserIdToSubscriptionId
+    <| redirect(to: .account(.index)) // TODO: flash message
+
+private func createEnterpriseEmail(
+  _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
+  ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>?> {
+
+  return Current.database.createEnterpriseEmail(get3(data), get4(data))
+    .map(const(data))
+    .run
+    .map(^\.right)
+}
 
 private func invalidInvitationLinkMiddleware<A, Z>(
-  _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount.Domain, Z>>
+  _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
   return conn
     |> redirect(
-      to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data)))),
+      to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
       headersMiddleware: flash(.notice, "Something is wrong with your invitation link. Please try again.")
   )
 }
 
 private func validateMembership<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data> {
+  _ middleware: @escaping AppMiddleware<T3<User?, EnterpriseAccount, Z>>
+  ) -> AppMiddleware<T3<User?, EnterpriseAccount, Z>> {
 
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
@@ -108,10 +123,10 @@ private func validateMembership<Z>(
 }
 
 private func validateInvitation(
-  _ data: Tuple4<User, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>
-  ) -> Tuple4<User, EnterpriseAccount.Domain, EmailAddress, User.Id>? {
+  _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
+  ) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>? {
 
-  let (user, domain, encryptedEmail, encryptedUserId) = lower(data)
+  let (user, account, encryptedEmail, encryptedUserId) = lower(data)
 
   // Make sure email decrypts correctly
   guard let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
@@ -119,7 +134,7 @@ private func validateInvitation(
     else { return nil }
 
   // Make sure email address is on the same domain as the enterprise account
-  guard email.hasDomain(domain)
+  guard email.hasDomain(account.domain)
     else { return nil }
 
   // Make sure user id decrypts correctly.
@@ -132,7 +147,11 @@ private func validateInvitation(
   guard userId == user.id
     else { return nil }
 
-  return .some(user .*. domain .*. email .*. userId .*. unit)
+  return .some(
+    data
+      |> over3(const(email))
+      |> over4(const(userId))
+  )
 }
 
 private func sendEnterpriseInvitation<Z>(

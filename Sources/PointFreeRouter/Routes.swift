@@ -121,9 +121,9 @@ let routers: [Router<Route>] = [
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
 
   .enterprise <<< PartialIso.acceptInvite
-    <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <%> "accept"
-    %> pathParam(.tagged(.string))
-    <%> pathParam(.tagged(.string))
+    <¢> get %> "enterprise" %> pathParam(.tagged) <%> "accept"
+    %> queryParam("email", .tagged)
+    <%> queryParam("user_id", .tagged)
     <% end,
 
   .enterprise <<< .landing
