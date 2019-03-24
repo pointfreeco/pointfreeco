@@ -19,7 +19,7 @@ class EnterpriseTests: TestCase {
 //    record = true
   }
 
-  func testLanding() {
+  func testLanding_LoggedOut() {
     Current.database = .mock
 
     let account = EnterpriseAccount.mock
@@ -41,5 +41,32 @@ class EnterpriseTests: TestCase {
       )
     }
     #endif
+  }
+
+  func testLanding_NonExistentEnterpriseAccount() {
+    Current.database = .mock
+
+    let account = EnterpriseAccount.mock
+
+    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+
+    let req = request(to: .enterprise(.landing(account.domain)))
+    let conn = connection(from: req)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLanding_AlreadySubscribedToEnterprise() {
+    let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+    let account = EnterpriseAccount.mock
+      |> \.subscriptionId .~ subscriptionId
+    let user = User.mock
+      |> \.subscriptionId .~ subscriptionId
+
+    Current.database = .mock
+    Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
+
+    let req = request(to: .enterprise(.landing(account.domain)), session: .loggedIn(as: user))
+    let conn = connection(from: req)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

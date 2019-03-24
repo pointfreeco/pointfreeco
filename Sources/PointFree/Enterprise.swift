@@ -23,7 +23,13 @@ let enterpriseLandingResponse: Middleware<
   Tuple2<User?, EnterpriseAccount.Domain>,
   Data
   >
-  = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
+  = filterMap(
+    over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
+    or: redirect(
+      to: .home,
+      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+    )
+    )
     <<< validateMembership
     <| writeStatus(.ok)
     >=> map(lower)
