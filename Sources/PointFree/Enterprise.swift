@@ -69,7 +69,6 @@ let enterpriseAcceptInviteMiddleware: Middleware<
     // verify requester id == current user id
     // fetch enterprise account
     // link user to enterprise account
-
     <| redirect(to: .account(.index))
 
 private func validateMembership<Z>(
@@ -102,28 +101,38 @@ private func verifyDomain<A, Z>(
 }
 
 private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User, EnterpriseAccount, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<User, EnterpriseAccount, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequest, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequest, Z>, Data> {
 
   return { conn in
-    let (user, account) = (get1(conn.data), get2(conn.data))
+    let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-    if !user.email.hasDomain(account.domain) {
-      fatalError("TODO")
+    if user.email.hasDomain(account.domain) {
+      fatalError("TODO: User's email is already from that domain, so we can just switch them to enterprise immediately.")
+    } else if !request.email.hasDomain(account.domain) {
+      return conn
+        |> redirect(
+          to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
+          headersMiddleware: flash(.error, "The email you entered does not come from the @\(account.domain) domain.")
+      )
     } else if let signature = Encrypted(user.email.rawValue, with: Current.envVars.appSecret) {
       sendEmail(
-        to: [user.email],
+        to: [request.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
         content: inj2(enterpriseInviteEmailView.view((account, signature)))
         )
         .run
         .parallel
         .run({ _ in })
+      return conn
+        |> middleware
     } else {
-
+      return conn
+        |> redirect(
+          to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
+          headersMiddleware: flash(.warning, "Something went wrong. Please try again or contact <support@pointfree.co>.")
+      )
     }
-
-    return conn |> middleware
   }
 }
 
@@ -154,74 +163,6 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
     .map(^\.right)
 }
 
-private func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> [Node] {
-  let loggedOutView = [
-    p(
-      [`class`([Class.pf.colors.fg.green])],
-      ["Log in to gain access to every episode of ", pointFreeRaw, "."]
-    ),
-    gitHubLink(
-      text: "Sign in with GitHub",
-      type: .white,
-      href: path(to: .login(redirect: url(to: .enterprise(.landing(account.domain)))))
-    ),
-  ]
-
-  let loggedInView = [
-    p(
-      [`class`([Class.pf.colors.fg.green])],
-      ["Enter your company email address to gain access to every episode of ", pointFreeRaw, "."]
-    ),
-    gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 2]])])], [
-      gridColumn(sizes: [.mobile: 12], [], [
-        form(
-          [
-            action(path(to: .enterprise(.requestInvite(account.domain, .init(email: ""))))),
-            method(.post),
-            ],
-          [
-            gridRow([`class`([Class.padding([.mobile: [.bottom: 3]]), Class.margin([.mobile: [.top: 4]]), Class.flex.flex, Class.flex.items.baseline])], [
-              gridColumn(sizes: [.mobile: 8], [], [
-                input(
-                  [
-                    `class`([blockInputClass]),
-                    name(EnterpriseRequest.CodingKeys.email.rawValue),
-                    placeholder("blob@\(account.domain)"),
-                    type(.email),
-                    ]),
-                ]),
-              gridColumn(sizes: [.mobile: 4], [], [
-                button(
-                  [`class`([Class.pf.components.button(color: .white), Class.margin([.mobile: [.left: 1]])])],
-                  ["Request Access"])
-                ]),
-              ]),
-            ]),
-        ]),
-      ]),
-    ]
-
-  return [
-    gridRow([`class`([enterpriseRowClass])], [
-      gridColumn(sizes: [.mobile: 12, .desktop: 7], [], [
-        div([
-          h2(
-            [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle2])],
-            [pointFreeRaw, " 🤝 ", .text(account.companyName)]
-          ),
-          ] + (currentUser == nil ? loggedOutView : loggedInView))
-        ]),
-      ]),
-  ]
-}
-
-private let pointFreeRaw = Node.raw("Point&#8209;Free")
-
-private let enterpriseRowClass =
-  Class.pf.colors.bg.purple150
-    | Class.grid.center(.mobile)
-    | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
-
 let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
   .contramap { account, signature in
     SimpleEmailLayoutData(
@@ -241,7 +182,7 @@ private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<S
         div([`class`([Class.padding([.mobile: [.all: 2]])])], [
           h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            "You’re invited to join the ", .text(account.companyName), " team on Point-Free a video series ",
+            "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
             "about functional programming and the Swift programming language. To accept, simply click the ",
             "link below!"
             ]),
