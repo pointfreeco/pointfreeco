@@ -1,0 +1,11 @@
+GET http://localhost:8080/enterprise/pointfree.co/accept/aa9375e8a7675f3b87f2f97e43e43207120abaf35796b978ba2c08610fe7d4d7/f9c46e50cb32c3f12369e92c8bb9d9db3ce6580ce9ea1796a0f3a97710b6de10d78dedaa3dfdb71ecaeb53aad311b5df
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-123456789012"}
+
+302 Found
+Location: /account
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

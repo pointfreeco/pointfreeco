@@ -93,8 +93,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn
         |> redirect(to: path(to: .home))
 
-    case let .enterprise(.acceptInvite(domain, payload)):
-      return conn.map(const(user .*. domain .*. payload .*. unit))
+    case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
+      return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
         |> enterpriseAcceptInviteMiddleware
 
     case let .enterprise(.landing(domain)):

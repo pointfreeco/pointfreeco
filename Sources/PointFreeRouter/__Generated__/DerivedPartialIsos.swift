@@ -818,6 +818,8 @@ import Stripe
             EnterpriseAccount.Domain
           , 
             Encrypted<String>
+          , 
+            Encrypted<String>
         ), B == Route.Enterprise {
 
           public static let acceptInvite = parenthesize <| PartialIso(

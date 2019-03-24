@@ -62,21 +62,26 @@ let enterpriseRequestMiddleware: Middleware<
       )
 }
 
-let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAccount.Domain, Encrypted<String>>>
+let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< validateInvitation
-    // insert into enterprise emails
+    <<< filterMap(
+      validateInvitation >>> pure,
+      or: invalidInvitationLinkMiddleware
+    )
     // fetch enterprise account
+    // insert into enterprise emails
     // link user to enterprise account
     <| redirect(to: .account(.index))
 
-private let validateInvitation: AppTransformer<
-  Tuple3<User, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
-  Tuple3<User, EnterpriseAccount.Domain, Encrypted<String>>
-  > =
-  filterMap(validateSignature >>> pure, or: redirect(to: .home))
-    <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
-    <<< filterMap(validateInvitationRequest >>> pure, or: redirect(to: .home))
+private func invalidInvitationLinkMiddleware<A, Z>(
+  _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount.Domain, Z>>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+  return conn
+    |> redirect(
+      to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data)))),
+      headersMiddleware: flash(.notice, "Something is wrong with your invitation link. Please try again.")
+  )
+}
 
 private func validateMembership<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data>
@@ -96,27 +101,32 @@ private func validateMembership<Z>(
   }
 }
 
-private func validateInvitationRequest<Z>(
-  _ data: T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>
-  ) -> T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
+private func validateInvitation(
+  _ data: Tuple4<User, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>
+  ) -> Tuple4<User, EnterpriseAccount.Domain, EmailAddress, User.Id>? {
 
-  // verify requester id == current user id
-  let (user, domain, request) = (get1(data), get2(data), get3(data))
+  let (user, domain, encryptedEmail, encryptedUserId) = lower(data)
 
-//  return user.id ==
+  // Make sure email decrypts correctly
+  guard let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
+    .map(EmailAddress.init(rawValue:))
+    else { return nil }
 
-  fatalError()
-}
+  // Make sure email address is on the same domain as the enterprise account
+  guard email.hasDomain(domain)
+    else { return nil }
 
-private func verifyDomain<A, Z>(
-  _ data: T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>
-  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
+  // Make sure user id decrypts correctly.
+  guard let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
+    .flatMap(UUID.init(uuidString:))
+    .map(User.Id.init(rawValue:))
+    else { return nil }
 
-  let (domain, request) = (get2(data), get3(data))
+  // Validates that the userId encrypted into the invite link is the same as the email accepting the invitation.
+  guard userId == user.id
+    else { return nil }
 
-  return request.email.hasDomain(domain)
-    ? data
-    : nil
+  return .some(user .*. domain .*. email .*. userId .*. unit)
 }
 
 private func sendEnterpriseInvitation<Z>(
@@ -134,11 +144,14 @@ private func sendEnterpriseInvitation<Z>(
           to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
           headersMiddleware: flash(.error, "The email you entered does not come from the @\(account.domain) domain.")
       )
-    } else if let signature = Encrypted(user.email.rawValue, with: Current.envVars.appSecret) {
+    } else if
+      let encryptedEmail = Encrypted(request.email.rawValue, with: Current.envVars.appSecret),
+      let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret) {
+
       sendEmail(
         to: [request.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
-        content: inj2(enterpriseInviteEmailView.view((account, signature)))
+        content: inj2(enterpriseInviteEmailView.view((account, encryptedEmail, encryptedUserId)))
         )
         .run
         .parallel
@@ -155,26 +168,6 @@ private func sendEnterpriseInvitation<Z>(
   }
 }
 
-private func validateSignature<A, Z>(
-  data: T4<A, EnterpriseAccount.Domain, Encrypted<String>, Z>
-  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
-
-  func sequence3<A, B, C, Z>(_ tuple: T4<A, B, C?, Z>) -> T4<A, B, C, Z>? {
-    return get3(tuple).map { get1(tuple) .*. get2(tuple) .*. $0 .*. rest(tuple) }
-  }
-
-  // TODO: encrypt domain, user id and email
-  // save email in a table somewhere
-
-  return sequence3(
-    data |> over3 {
-      $0.decrypt(with: Current.envVars.appSecret)
-        .map(EmailAddress.init(rawValue:))
-        .map(EnterpriseRequestFormData.init(email:))
-    }
-  )
-}
-
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
   return Current.database.fetchEnterpriseAccountForDomain(domain)
     .mapExcept(requireSome)
@@ -183,18 +176,18 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
 }
 
 let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
-  .contramap { account, signature in
+  .contramap { account, encryptedEmail, encryptedUserId in
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
       title: "You’re invited to join the \(account.companyName) team on Point-Free",
       preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
       template: .default,
-      data: (account, signature)
+      data: (account, encryptedEmail, encryptedUserId)
     )
 }
 
-private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<String>)> { account, signature in
+private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<String>, Encrypted<String>)> { account, encryptedEmail, encryptedUserId in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -207,7 +200,7 @@ private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<S
             ]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
-              href(url(to: .enterprise(.acceptInvite(account.domain, signature)))),
+              href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
               `class`([Class.pf.components.button(color: .purple)])
               ],
               ["Click here to accept!"])

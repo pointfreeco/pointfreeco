@@ -49,7 +49,7 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 
   public enum Enterprise: DerivePartialIsos, Equatable {
-    case acceptInvite(EnterpriseAccount.Domain, Encrypted<String>)
+    case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
     case landing(EnterpriseAccount.Domain)
     case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
   }
@@ -120,9 +120,10 @@ let routers: [Router<Route>] = [
   .feed <<< .episodes
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
 
-  .enterprise <<< .acceptInvite
-    <¢> get %> "enterprise" %> pathParam(.tagged(.string))
-    <%> queryParam("payload", .tagged)
+  .enterprise <<< PartialIso.acceptInvite
+    <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <%> "accept"
+    %> pathParam(.tagged(.string))
+    <%> pathParam(.tagged(.string))
     <% end,
 
   .enterprise <<< .landing
