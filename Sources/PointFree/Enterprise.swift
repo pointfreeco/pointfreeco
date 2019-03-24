@@ -56,20 +56,21 @@ let enterpriseRequestMiddleware: Middleware<
       )
 }
 
-let enterpriseAcceptInviteMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple3<User?, EnterpriseAccount.Domain, Encrypted<String>>,
-  Data
-  >
+let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAccount.Domain, Encrypted<String>>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(validateSignature >>> pure, or: redirect(to: .home))
+    <<< validateInvitation
     // insert into enterprise emails
-//    <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
-    // verify requester id == current user id
     // fetch enterprise account
     // link user to enterprise account
     <| redirect(to: .account(.index))
+
+private let validateInvitation: AppTransformer<
+  Tuple3<User, EnterpriseAccount.Domain, EnterpriseRequest>,
+  Tuple3<User, EnterpriseAccount.Domain, Encrypted<String>>
+  > =
+  filterMap(validateSignature >>> pure, or: redirect(to: .home))
+    <<< filterMap(verifyDomain >>> pure, or: redirect(to: .home))
+    <<< filterMap(validateInvitationRequest >>> pure, or: redirect(to: .home))
 
 private func validateMembership<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User?, EnterpriseAccount, Z>, Data>
@@ -87,6 +88,18 @@ private func validateMembership<Z>(
       return middleware(conn)
     }
   }
+}
+
+private func validateInvitationRequest<Z>(
+  _ data: T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequest, Z>
+  ) -> T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequest, Z>? {
+
+  // verify requester id == current user id
+  let (user, domain, request) = (get1(data), get2(data), get3(data))
+
+//  return user.id ==
+
+  fatalError()
 }
 
 private func verifyDomain<A, Z>(

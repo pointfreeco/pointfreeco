@@ -29,6 +29,9 @@ extension Tagged where Tag == EncryptedTag, RawValue == String {
   }
 }
 
+public typealias AppMiddleware<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
+public typealias AppTransformer<A, B> = (@escaping AppMiddleware<A>) -> AppMiddleware<B>
+
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
 public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
