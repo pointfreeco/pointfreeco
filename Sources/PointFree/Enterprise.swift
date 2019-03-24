@@ -68,7 +68,13 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAcco
       validateInvitation >>> pure,
       or: invalidInvitationLinkMiddleware
     )
-    // fetch enterprise account
+    <<< filterMap(
+      over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
+      or: redirect(
+        to: .home,
+        headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+      )
+    )
     // insert into enterprise emails
     // link user to enterprise account
     <| redirect(to: .account(.index))

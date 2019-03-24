@@ -142,7 +142,16 @@ extension EmailInviteTests {
 }
 extension EnterpriseTests {
   static var allTests: [(String, (EnterpriseTests) -> () throws -> Void)] = [
-    ("testLanding", testLanding),
+    ("testLanding_LoggedOut", testLanding_LoggedOut),
+    ("testLanding_NonExistentEnterpriseAccount", testLanding_NonExistentEnterpriseAccount),
+    ("testLanding_AlreadySubscribedToEnterprise", testLanding_AlreadySubscribedToEnterprise),
+    ("testAccceptInvitation_LoggedOut", testAccceptInvitation_LoggedOut),
+    ("testAccceptInvitation_BadEmail", testAccceptInvitation_BadEmail),
+    ("testAccceptInvitation_BadUserId", testAccceptInvitation_BadUserId),
+    ("testAccceptInvitation_EmailDoesntMatchEnterpriseDomain", testAccceptInvitation_EmailDoesntMatchEnterpriseDomain),
+    ("testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId", testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId),
+    ("testAccceptInvitation_EnterpriseAccountDoesntExist", testAccceptInvitation_EnterpriseAccountDoesntExist),
+    ("testAccceptInvitation_HappyPath", testAccceptInvitation_HappyPath),
   ]
 }
 extension EnvVarTests {

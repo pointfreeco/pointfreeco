@@ -158,6 +158,26 @@ class EnterpriseTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
+  func testAccceptInvitation_EnterpriseAccountDoesntExist() {
+    Current.database = .mock
+    Current.database.fetchEnterpriseAccountForDomain = const(throwE(unit))
+
+    let account = EnterpriseAccount.mock
+      |> \.domain .~ "pointfree.co"
+    let encryptedEmail = Encrypted("blob@pointfree.co", with: Current.envVars.appSecret)!
+    let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
+    let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let loggedInUser = User.mock
+      |> \.id .~ User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
+
+    let req = request(
+      to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
+      session: .loggedIn(as: loggedInUser)
+    )
+    let conn = connection(from: req)
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
   func testAccceptInvitation_HappyPath() {
     Current.database = .mock
 
