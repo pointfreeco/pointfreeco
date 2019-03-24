@@ -37,7 +37,7 @@ public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -
                 input(
                   [
                     `class`([blockInputClass]),
-                    name(EnterpriseRequest.CodingKeys.email.rawValue),
+                    name(EnterpriseRequestFormData.CodingKeys.email.rawValue),
                     placeholder("blob@\(account.domain)"),
                     type(.email),
                     ]),

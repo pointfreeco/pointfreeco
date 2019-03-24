@@ -31,7 +31,7 @@ public struct EnterpriseAccount: Decodable, Equatable {
   }
 }
 
-public struct EnterpriseRequest: Codable, Equatable {
+public struct EnterpriseRequestFormData: Codable, Equatable {
   public var email: EmailAddress
 
   public enum CodingKeys: String, CodingKey {

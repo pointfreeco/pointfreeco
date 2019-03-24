@@ -42,7 +42,7 @@ let enterpriseLandingResponse: Middleware<
 let enterpriseRequestMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequest>,
+  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
   Data
   >
   = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
@@ -65,7 +65,7 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAcco
     <| redirect(to: .account(.index))
 
 private let validateInvitation: AppTransformer<
-  Tuple3<User, EnterpriseAccount.Domain, EnterpriseRequest>,
+  Tuple3<User, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
   Tuple3<User, EnterpriseAccount.Domain, Encrypted<String>>
   > =
   filterMap(validateSignature >>> pure, or: redirect(to: .home))
@@ -91,8 +91,8 @@ private func validateMembership<Z>(
 }
 
 private func validateInvitationRequest<Z>(
-  _ data: T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequest, Z>
-  ) -> T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequest, Z>? {
+  _ data: T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>
+  ) -> T4<Models.User, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
 
   // verify requester id == current user id
   let (user, domain, request) = (get1(data), get2(data), get3(data))
@@ -103,8 +103,8 @@ private func validateInvitationRequest<Z>(
 }
 
 private func verifyDomain<A, Z>(
-  _ data: T4<A, EnterpriseAccount.Domain, EnterpriseRequest, Z>
-  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequest, Z>? {
+  _ data: T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>
+  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
 
   let (domain, request) = (get2(data), get3(data))
 
@@ -114,8 +114,8 @@ private func verifyDomain<A, Z>(
 }
 
 private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequest, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequest, Z>, Data> {
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>, Data> {
 
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -151,7 +151,7 @@ private func sendEnterpriseInvitation<Z>(
 
 private func validateSignature<A, Z>(
   data: T4<A, EnterpriseAccount.Domain, Encrypted<String>, Z>
-  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequest, Z>? {
+  ) -> T4<A, EnterpriseAccount.Domain, EnterpriseRequestFormData, Z>? {
 
   func sequence3<A, B, C, Z>(_ tuple: T4<A, B, C?, Z>) -> T4<A, B, C, Z>? {
     return get3(tuple).map { get1(tuple) .*. get2(tuple) .*. $0 .*. rest(tuple) }
@@ -164,7 +164,7 @@ private func validateSignature<A, Z>(
     data |> over3 {
       $0.decrypt(with: Current.envVars.appSecret)
         .map(EmailAddress.init(rawValue:))
-        .map(EnterpriseRequest.init(email:))
+        .map(EnterpriseRequestFormData.init(email:))
     }
   )
 }

@@ -847,7 +847,7 @@ import Stripe
       extension PartialIso where A == (
             EnterpriseAccount.Domain
           , 
-            EnterpriseRequest
+            EnterpriseRequestFormData
         ), B == Route.Enterprise {
 
           public static let requestInvite = parenthesize <| PartialIso(
