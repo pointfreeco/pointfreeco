@@ -56,7 +56,7 @@ class EnterpriseTests: TestCase {
   }
 
   func testLanding_AlreadySubscribedToEnterprise() {
-    let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+    let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
     let account = EnterpriseAccount.mock
       |> \.subscriptionId .~ subscriptionId
     let user = User.mock
