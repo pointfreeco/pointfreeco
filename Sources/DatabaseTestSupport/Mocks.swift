@@ -37,6 +37,7 @@ extension Client {
     redeemEpisodeCredit: { _, _ in pure(unit) },
     registerUser: { _, _ in pure(.some(.mock)) },
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
+    sawUser: const(pure(unit)),
     updateStripeSubscription: const(pure(.mock)),
     updateUser: { _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) }

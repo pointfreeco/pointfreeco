@@ -34,10 +34,10 @@ public struct Client {
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
