@@ -45,6 +45,13 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>> {
 
+    if let userId = conn.request.session.userId {
+      Current.database.sawUser(userId)
+        .run
+        .parallel
+        .run { _ in }
+    }
+
     let user = conn.request.session.userId
       .flatMap {
         Current.database.fetchUserById($0)
