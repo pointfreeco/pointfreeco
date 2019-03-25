@@ -34,6 +34,7 @@ public struct Client {
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
+  public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
@@ -70,6 +71,7 @@ public struct Client {
     redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -102,6 +104,7 @@ public struct Client {
     self.redeemEpisodeCredit = redeemEpisodeCredit
     self.registerUser = registerUser
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
+    self.sawUser = sawUser
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
     self.upsertUser = upsertUser
@@ -158,6 +161,7 @@ extension Client {
       redeemEpisodeCredit: client.redeemEpisodeCredit(episodeSequence:userId:),
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
+      sawUser: client.sawUser(id:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
@@ -357,6 +361,21 @@ private struct _Client {
     """,
       [ownerId.rawValue.uuidString]
     )
+  }
+
+  func sawUser(
+    id userId: Models.User.Id
+    ) -> EitherIO<Error, Prelude.Unit> {
+
+    return self.execute(
+      """
+    UPDATE "users"
+    SET "updated_at" = NOW()
+    WHERE "id" = $1
+    """,
+      [userId.rawValue.uuidString]
+      )
+      .map(const(unit))
   }
 
   func updateUser(
