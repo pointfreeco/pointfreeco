@@ -17,12 +17,7 @@ import UrlFormEncoding
 import View
 import Views
 
-let enterpriseLandingResponse: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<User?, EnterpriseAccount.Domain>,
-  Data
-  >
+let enterpriseLandingResponse: AppMiddleware<Tuple2<User?, EnterpriseAccount.Domain>>
   = filterMap(
     over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
     or: redirect(
@@ -45,12 +40,7 @@ let enterpriseLandingResponse: Middleware<
     }
 )
 
-let enterpriseRequestMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
-  Data
-  >
+let enterpriseRequestMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>>
   = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
     <<< validateMembership
     <<< filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -68,7 +58,9 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAcco
     <<< requireEnterpriseAccount
     <<< filterMap(
       validateInvitation >>> pure,
-      or: invalidInvitationLinkMiddleware(reason: "Something is wrong with your invitation link. Please try again.")
+      or: invalidInvitationLinkMiddleware(
+        reason: "Something is wrong with your invitation link. Please try again."
+      )
     )
     <<< filterMap(
       createEnterpriseEmail,
@@ -76,7 +68,9 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAcco
     )
     <<< filterMap(
       linkToEnterpriseSubscription,
-      or: invalidInvitationLinkMiddleware(reason: "Something is wrong with your invitation link. Please try again.")
+      or: invalidInvitationLinkMiddleware(
+        reason: "Something is wrong with your invitation link. Please try again."
+      )
     )
     <| successfullyAcceptedInviteMiddleware
 
@@ -149,7 +143,10 @@ private func validateMembership<Z>(
     if user?.subscriptionId == account.subscriptionId {
       return conn |> redirect(
         to: .account(.index),
-        headersMiddleware: flash(.notice, "You're already enrolled in \(account.companyName)'s subscription! 🙌")
+        headersMiddleware: flash(
+          .notice,
+          "You're already enrolled in \(account.companyName)'s subscription! 🙌"
+        )
       )
     } else {
       return middleware(conn)
@@ -178,7 +175,8 @@ private func validateInvitation(
     .map(User.Id.init(rawValue:))
     else { return nil }
 
-  // Validates that the userId encrypted into the invite link is the same as the email accepting the invitation.
+  // Validates that the userId encrypted into the invite link is the same as the email accepting the
+  // invitation.
   guard userId == user.id
     else { return nil }
 
@@ -190,8 +188,8 @@ private func validateInvitation(
 }
 
 private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>, Data> {
+  _ middleware: @escaping AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
+  ) -> AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
 
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -202,7 +200,10 @@ private func sendEnterpriseInvitation<Z>(
       return conn
         |> redirect(
           to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
-          headersMiddleware: flash(.error, "The email you entered does not come from the @\(account.domain) domain.")
+          headersMiddleware: flash(
+            .error,
+            "The email you entered does not come from the @\(account.domain) domain."
+          )
       )
     } else if
       let encryptedEmail = Encrypted(request.email.rawValue, with: Current.envVars.appSecret),
@@ -222,7 +223,10 @@ private func sendEnterpriseInvitation<Z>(
       return conn
         |> redirect(
           to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
-          headersMiddleware: flash(.warning, "Something went wrong. Please try again or contact <support@pointfree.co>.")
+          headersMiddleware: flash(
+            .warning,
+            "Something went wrong. Please try again or contact <support@pointfree.co>."
+          )
       )
     }
   }

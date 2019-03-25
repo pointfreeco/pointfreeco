@@ -1,3 +1,4 @@
+import Database
 import Either
 import HttpPipeline
 import Models
@@ -91,9 +92,11 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+      |> \.subscriptionId .~ nil
 
     Current.database = .mock
       |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: "baddata", userId: encryptedUserId)),
@@ -110,9 +113,11 @@ class EnterpriseTests: TestCase {
     let userId = User.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-123456789012")!)
     let loggedInUser = User.mock
       |> \.id .~ userId
+      |> \.subscriptionId .~ nil
 
     Current.database = .mock
       |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: "baddata")),
@@ -130,9 +135,11 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+      |> \.subscriptionId .~ nil
 
     Current.database = .mock
       |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -153,6 +160,7 @@ class EnterpriseTests: TestCase {
 
     Current.database = .mock
       |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -163,8 +171,9 @@ class EnterpriseTests: TestCase {
   }
 
   func testAccceptInvitation_EnterpriseAccountDoesntExist() {
-    Current.database = .mock
+    Current.database = Database.Client.mock
       |> \.fetchEnterpriseAccountForDomain .~ const(throwE(unit))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let account = EnterpriseAccount.mock
       |> \.domain .~ "pointfree.co"
@@ -190,9 +199,11 @@ class EnterpriseTests: TestCase {
     let encryptedUserId = Encrypted(userId.rawValue.uuidString, with: Current.envVars.appSecret)!
     let loggedInUser = User.mock
       |> \.id .~ userId
+      |> \.subscriptionId .~ nil
 
     Current.database = .mock
       |> \.fetchEnterpriseAccountForDomain .~ const(pure(.some(account)))
+      |> \.fetchSubscriptionById .~ const(pure(nil))
 
     let req = request(
       to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)),
@@ -200,5 +211,10 @@ class EnterpriseTests: TestCase {
     )
     let conn = connection(from: req)
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    // todo: more verifications that subscription was linked
   }
+
+  // todo: flow for when user already has sub
+  // todo: flow for when user has canceled sub
 }

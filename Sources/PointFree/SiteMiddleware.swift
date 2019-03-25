@@ -24,7 +24,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 
     let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(
-      user: user, subscriptionAndEnterpriseAccount: subscriptionAndEnterpriseAccount
+      user: user,
+      subscriptionAndEnterpriseAccount: subscriptionAndEnterpriseAccount
     )
     let subscription = subscriptionAndEnterpriseAccount.map { subscription, _ in subscription }
 
