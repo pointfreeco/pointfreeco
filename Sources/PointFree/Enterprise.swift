@@ -64,25 +64,35 @@ let enterpriseRequestMiddleware: Middleware<
 
 let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< redirectCurrentSubscribers
+    <<< requireEnterpriseAccount
     <<< filterMap(
+      validateInvitation >>> pure,
+      or: invalidInvitationLinkMiddleware(reason: "Something is wrong with your invitation link. Please try again.")
+    )
+    <<< filterMap(
+      createEnterpriseEmail,
+      or: invalidInvitationLinkMiddleware(reason: "This invitation has already been used.")
+    )
+    <<< filterMap(
+      linkToEnterpriseSubscription,
+      or: invalidInvitationLinkMiddleware(reason: "Something is wrong with your invitation link. Please try again.")
+    )
+    <| successfullyAcceptedInviteMiddleware
+
+private func requireEnterpriseAccount<A, Z>(
+  _ middleware: @escaping AppMiddleware<T3<A, EnterpriseAccount, Z>>
+  ) -> AppMiddleware<T3<A, EnterpriseAccount.Domain, Z>> {
+
+  return middleware
+    |> filterMap(
       over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
       or: redirect(
         to: .home,
         headersMiddleware: flash(.warning, "That enterprise account does not exist.")
       )
-    )
-    <<< filterMap(
-      validateInvitation >>> pure,
-      or: invalidInvitationLinkMiddleware
-    )
-    // TODO: check if they have an active subscription
-    <<< filterMap(
-      createEnterpriseEmail,
-      or: invalidInvitationLinkMiddleware
-    )
-    // TODO: link user to enterprise account
-    //       Current.data.addUserIdToSubscriptionId
-    <| redirect(to: .account(.index)) // TODO: flash message
+  )
+}
 
 private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
@@ -94,14 +104,39 @@ private func createEnterpriseEmail(
     .map(^\.right)
 }
 
-private func invalidInvitationLinkMiddleware<A, Z>(
+private func linkToEnterpriseSubscription<Z>(
+  _ data: T3<User, EnterpriseAccount, Z>
+  ) -> IO<T3<User, EnterpriseAccount, Z>?> {
+
+  return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
+    .map(const(data))
+    .run
+    .map(^\.right)
+}
+
+private func successfullyAcceptedInviteMiddleware<A, Z>(
   _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
+
+  let account = get2(conn.data)
+
   return conn
     |> redirect(
-      to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
-      headersMiddleware: flash(.notice, "Something is wrong with your invitation link. Please try again.")
+      to: pointFreeRouter.path(to: .account(.index)),
+      headersMiddleware: flash(.notice, "You have joined \(account.companyName)'s subscription!")
   )
+}
+
+private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
+  -> (Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>)
+  -> IO<Conn<ResponseEnded, Data>> {
+    return { conn in
+      conn
+        |> redirect(
+          to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
+          headersMiddleware: flash(.notice, reason)
+      )
+    }
 }
 
 private func validateMembership<Z>(
@@ -239,5 +274,39 @@ private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<S
 fileprivate extension Tagged where Tagged == EmailAddress {
   func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
     return self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
+  }
+}
+
+private func redirectCurrentSubscribers<Z>(
+  _ middleware: @escaping AppMiddleware<T2<User, Z>>
+  ) -> AppMiddleware<T2<User, Z>> {
+
+  return { conn in
+    let user = get1(conn.data)
+    guard let subscriptionId = user.subscriptionId
+      else { return middleware(conn) }
+
+    let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
+      .mapExcept(requireSome)
+      .bimap(const(unit), id)
+      .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
+      .run
+      .map { $0.right?.isRenewing ?? false }
+
+    return hasActiveSubscription.flatMap {
+      $0
+        ? conn
+          |> redirect(
+            to: .account(.index),
+            headersMiddleware: flash(
+              .warning,
+              """
+              You already have an active subscription. If you want to accept this team invite you need to
+              cancel your current subscription.
+              """
+            )
+          )
+        : middleware(conn)
+    }
   }
 }
