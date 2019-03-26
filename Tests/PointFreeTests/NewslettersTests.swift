@@ -26,8 +26,12 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
+    let payload = expressUnsubscribeIso
+      .unapply((user.id, .announcements))
+      .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
+
     let unsubscribe = request(
-      to: .expressUnsubscribe(userId: user.id, newsletter: .announcements),
+      to: .expressUnsubscribe(payload: payload!),
       session: .loggedIn
     )
 
@@ -62,7 +66,7 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+    let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
 
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
@@ -111,7 +115,7 @@ class NewslettersTests: TestCase {
       .perform()
       .right!!
 
-    let unsubEmail = unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
+    let unsubEmail = Current.mailgun.unsubscribeEmail(fromUserId: user.id, andNewsletter: .announcements)!
 
     let unsubscribe = request(
       to: .expressUnsubscribeReply(
@@ -160,7 +164,7 @@ class NewslettersTests: TestCase {
 
     let payload = encrypted(
       text: "\(user.id.rawValue.uuidString)--unknown",
-      secret: Current.envVars.appSecret
+      secret: Current.envVars.appSecret.rawValue
       )!
     let unsubEmail = EmailAddress(rawValue: "unsub-\(payload)@pointfree.co")
 

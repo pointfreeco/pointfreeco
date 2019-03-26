@@ -10,9 +10,11 @@ let package = Package(
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "Logger", targets: ["Logger"]),
+    .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
@@ -22,6 +24,7 @@ let package = Package(
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
+    .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
@@ -70,6 +73,23 @@ let package = Package(
     ),
 
     .target(
+      name: "FunctionalCss",
+      dependencies: [
+        "Css",
+        "Prelude"
+      ]
+    ),
+
+    .testTarget(
+      name: "FunctionalCssTests",
+      dependencies: [
+        "CssTestSupport",
+        "FunctionalCss",
+        "SnapshotTesting",
+        ]
+    ),
+
+    .target(
       name: "GitHub",
       dependencies: [
         "Either",
@@ -106,9 +126,22 @@ let package = Package(
     ),
 
     .target(
+      name: "Mailgun",
+      dependencies: [
+        "Either",
+        "HttpPipeline",
+        "Logger",
+        "Models",
+        "PointFreePrelude",
+        "UrlFormEncoding",
+        ]
+    ),
+
+    .target(
       name: "Models",
       dependencies: [
         "GitHub",
+        "HttpPipeline",
         "PointFreePrelude",
         "Stripe",
         "Tagged",
@@ -152,6 +185,7 @@ let package = Package(
         "HtmlPlainTextPrint",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
+        "Mailgun",
         "Models",
         "Optics",
         "PointFreeRouter",
@@ -164,6 +198,7 @@ let package = Package(
         "Tuple",
         "UrlFormEncoding",
         "View",
+        "Views",
         ]
     ),
 
@@ -279,14 +314,18 @@ let package = Package(
       name: "Styleguide",
       dependencies: [
         "Css",
+        "FunctionalCss",
         "Html",
+        "HtmlCssSupport",
+        "Prelude",
         ]),
 
     .testTarget(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "PointFreeTestSupport",
+        "HtmlSnapshotTesting",
+        "SnapshotTesting",
         "Styleguide",
         ]),
 
@@ -301,6 +340,24 @@ let package = Package(
       name: "SyndicationTests",
       dependencies: [
         "Syndication",
+        ]),
+
+    .target(
+      name: "Views",
+      dependencies: [
+        "Css",
+        "FunctionalCss",
+        "Html",
+        "PointFreeRouter",
+        "Prelude",
+        "Styleguide",
+        "View",
+        ]),
+
+    .testTarget(
+      name: "ViewsTests",
+      dependencies: [
+        "Views",
         ]),
     ]
 )

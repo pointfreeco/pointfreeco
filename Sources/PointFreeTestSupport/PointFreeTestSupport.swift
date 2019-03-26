@@ -12,6 +12,7 @@ import Html
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
+import Mailgun
 import Models
 import ModelsTestSupport
 import Optics
@@ -80,8 +81,9 @@ extension EnvVars {
   }
 }
 
-extension Mailgun {
-  public static let mock = Mailgun(
+extension Mailgun.Client {
+  public static let mock = Mailgun.Client(
+    appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
     sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
   )
 }
@@ -160,7 +162,7 @@ public func request(
 
 public func request(to route: Route, session: Session = .loggedOut, basicAuth: Bool = false) -> URLRequest {
   return request(
-    with: router.request(for: route, base: URL(string: "http://localhost:8080"))!,
+    with: pointFreeRouter.request(for: route)!,
     session: session,
     basicAuth: basicAuth
   )

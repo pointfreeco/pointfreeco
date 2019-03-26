@@ -104,13 +104,13 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.Id, A>>)
       .map { conn.map(const($0.right.flatMap(id) .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Models.User> {
+private func fetchOrRegisterUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
   return Current.database.fetchUserByGitHub(env.gitHubUser.id)
     .flatMap { user in user.map(pure) ?? registerUser(env: env) }
 }
 
-private func registerUser(env: GitHub.UserEnvelope) -> EitherIO<Error, Models.User> {
+private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.User> {
 
   return Current.gitHub.fetchEmails(env.accessToken)
     .map { emails in emails.first(where: { $0.primary }) }
@@ -147,7 +147,7 @@ private func gitHubAuthTokenMiddleware(
     let (token, redirect) = lower(conn.data)
 
     return Current.gitHub.fetchUser(token)
-      .map { user in GitHub.UserEnvelope(accessToken: token, gitHubUser: user) }
+      .map { user in GitHubUserEnvelope(accessToken: token, gitHubUser: user) }
       .flatMap(fetchOrRegisterUser(env:))
       .flatMap { user in
         refreshStripeSubscription(for: user)

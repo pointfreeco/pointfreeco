@@ -1,4 +1,6 @@
+import HttpPipeline
 import PointFreePrelude
+import Tagged
 
 public struct MailgunForwardPayload: Codable, Equatable {
   public let recipient: EmailAddress

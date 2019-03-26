@@ -36,7 +36,7 @@ public struct OAuthError: Codable {
   }
 }
 
-public struct User: Codable {
+public struct GitHubUser: Codable {
   public var id: Id
   public var name: String?
 
@@ -55,14 +55,14 @@ public struct User: Codable {
     }
   }
 
-  public typealias Id = Tagged<User, Int>
+  public typealias Id = Tagged<GitHubUser, Int>
 }
 
-public struct UserEnvelope: Codable {
+public struct GitHubUserEnvelope: Codable {
   public var accessToken: AccessToken
-  public var gitHubUser: User
+  public var gitHubUser: GitHubUser
 
-  public init(accessToken: AccessToken, gitHubUser: User) {
+  public init(accessToken: AccessToken, gitHubUser: GitHubUser) {
     self.accessToken = accessToken
     self.gitHubUser = gitHubUser
   }

@@ -1,10 +1,12 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import PointFreePrelude
 import Prelude
@@ -70,7 +72,7 @@ private func validateStripeSignature<A>(
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {
   return { signature in
     let secret = Current.envVars.stripe.endpointSecret
-    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret) else { return false }
+    guard let digest = hexDigest(value: "\(Int(timestamp)).\(payload)", asciiSecret: secret.rawValue) else { return false }
 
     let constantTimeSignature =
       signature.count == digest.count
@@ -125,7 +127,7 @@ private func handleFailedPayment(
 }
 
 private func sendPastDueEmail(to owner: User)
-  -> EitherIO<Error, Mailgun.SendEmailResponse> {
+  -> EitherIO<Error, SendEmailResponse> {
 
     return sendEmail(
       to: [owner.email],

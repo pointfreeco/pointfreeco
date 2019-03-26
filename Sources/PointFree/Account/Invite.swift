@@ -1,10 +1,12 @@
 import Css
+import FunctionalCss
 import Either
 import Foundation
 import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Mailgun
 import Models
 import Optics
 import PointFreeRouter
@@ -181,7 +183,11 @@ private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter
           ]),
 
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(text: "Login with GitHub", type: .black, redirectRoute: .invite(.show(invite.id)))
+          gitHubLink(
+            text: "Login with GitHub",
+            type: .black,
+            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
+          )
           ])
         ])
       ])
@@ -277,7 +283,7 @@ private func requireTeamInvite<A>(
 
 private func sendInviteEmail(
   invite: TeamInvite, inviter: User
-  ) ->  EitherIO<Error, Mailgun.SendEmailResponse> {
+  ) ->  EitherIO<Error, SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],

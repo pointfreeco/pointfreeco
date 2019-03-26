@@ -13,7 +13,7 @@ import XCTest
 class AuthTests: TestCase {
 
   func testRegister() {
-    let gitHubUserEnvelope = GitHub.UserEnvelope.mock
+    let gitHubUserEnvelope = GitHubUserEnvelope.mock
       |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
       |> \.gitHubUser.id .~ 1234567890
       |> \.gitHubUser.name .~ "Blobby McBlob"

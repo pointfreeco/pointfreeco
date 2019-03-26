@@ -1,4 +1,5 @@
 import Css
+import FunctionalCss
 import Foundation
 import Html
 import HtmlCssSupport
@@ -11,6 +12,7 @@ import Prelude
 import Styleguide
 import Tuple
 import View
+import Views
 
 enum NavStyle {
   case minimal(MinimalStyle)

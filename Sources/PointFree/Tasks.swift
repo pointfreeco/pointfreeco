@@ -1,12 +1,15 @@
+import FunctionalCss
 import Either
 import Html
 import HtmlCssSupport
+import Mailgun
 import Models
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
 import View
+import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let zippedEmails = zip3(
@@ -31,7 +34,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
 
   return emails
     .flatMap(map { email in delayedSend(email).map(const(email)) } >>> sequence)
-    .flatMap { (emails: [Email]) -> EitherIO<Error, Mailgun.SendEmailResponse> in
+    .flatMap { (emails: [Email]) -> EitherIO<Error, SendEmailResponse> in
       let stats = emails
         .reduce(into: [String: [EmailAddress]]()) { dict, email in
           dict[email.subject, default: []].append(contentsOf: email.to)

@@ -8,14 +8,14 @@ import Prelude
 import Stripe
 import Tuple
 
-func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?, SubscriberState, PointFreeRouter.Account>>)
+func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?, SubscriberState, Account>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     let (_, user, subscriberState, account) = lower(conn.data)
 
     switch account {
-    case let .confirmEmailChange(userId, emailAddress):
-      return conn.map(const(userId .*. emailAddress .*. unit))
+    case let .confirmEmailChange(payload):
+      return conn.map(const(payload))
         |> confirmEmailChangeMiddleware
 
     case .index:
@@ -38,8 +38,8 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?
       return conn.map(const(user .*. token .*. unit))
         |> updatePaymentInfoMiddleware
 
-    case let .rss(userId, rssSalt):
-      return conn.map(const(userId .*. rssSalt .*. unit))
+    case let .rss(encryptedUserId, encryptedRssSalt):
+      return conn.map(const(encryptedUserId .*. encryptedRssSalt .*. unit))
         |> accountRssMiddleware
 
     case .subscription(.cancel):

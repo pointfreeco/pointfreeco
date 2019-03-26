@@ -7,12 +7,27 @@ import Foundation
 import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
+import Models
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 import UrlFormEncoding
 import View
+
+extension Tagged where Tag == EncryptedTag, RawValue == String {
+  public init?(_ text: String, with secret: AppSecret) {
+    guard
+      let string = encrypted(text: text, secret: secret.rawValue)
+      else { return nil }
+    self.init(rawValue: string)
+  }
+
+  public func decrypt(with secret: AppSecret) -> String? {
+    return decrypted(text: self.rawValue, secret: secret.rawValue)
+  }
+}
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
@@ -45,19 +60,6 @@ public func requireSome<A>(
         )
       }
     }
-}
-
-extension PartialIso where A == String, B == String {
-  public static func decrypted(withSecret secret: String) -> PartialIso<String, String> {
-    return PartialIso(
-      apply: { HttpPipeline.decrypted(text: $0, secret: secret) },
-      unapply: { encrypted(text: $0, secret: secret) }
-    )
-  }
-
-  public static var appDecrypted: PartialIso<String, String> {
-    return .decrypted(withSecret: Current.envVars.appSecret)
-  }
 }
 
 /// Combines two partial iso's into one by concatenating their results into a single string.

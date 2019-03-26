@@ -63,7 +63,11 @@ public struct Client {
 }
 
 extension Client {
-  public init(logger: Logger?, secretKey: String) {
+  public typealias EndpointSecret = Tagged<(Client, endpointSecret: ()), String>
+  public typealias PublishableKey = Tagged<(Client, publishableKey: ()), String>
+  public typealias SecretKey = Tagged<(Client, secretKey: ()), String>
+
+  public init(logger: Logger?, secretKey: SecretKey) {
     self.init(
       cancelSubscription: Stripe.cancelSubscription >>> runStripe(secretKey, logger),
       createCustomer: { Stripe.createCustomer(token: $0, description: $1, email: $2, vatNumber: $3) |> runStripe(secretKey, logger) },
@@ -232,10 +236,10 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
   )
 }
 
-private func runStripe<A>(_ secretKey: String, _ logger: Logger?) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
+private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
   return { stripeRequest in
     guard
-      let stripeRequest = stripeRequest?.map(attachBasicAuth(username: secretKey))
+      let stripeRequest = stripeRequest?.map(attachBasicAuth(username: secretKey.rawValue))
       else { return throwE(unit) }
 
     let task: EitherIO<Error, A> = pure(stripeRequest.rawValue)

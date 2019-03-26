@@ -1,3 +1,4 @@
+import FunctionalCss
 import GitHub
 import Html
 import HtmlCssSupport
@@ -18,7 +19,7 @@ let registrationEmailView = simpleEmailLayout(registrationEmailBody)
     )
 }
 
-private let registrationEmailBody = View<GitHub.User> { user in
+private let registrationEmailBody = View<GitHubUser> { user in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [

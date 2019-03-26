@@ -102,7 +102,7 @@ class NewBlogPostEmailTests: TestCase {
     )
     req.httpMethod = "POST"
     req.httpBody = Data("nonsubscriber_announcement=Hello!".utf8)
-    XCTAssertNil(router.match(request: req))
+    XCTAssertNil(pointFreeRouter.match(request: req))
 
     let formData = urlFormEncode(
       value: [
@@ -122,7 +122,7 @@ class NewBlogPostEmailTests: TestCase {
 
     XCTAssertEqual(
       .admin(.newBlogPostEmail(.send(blogPost.id, formData: formDataData, isTest: true))),
-      router.match(request: req)
+      pointFreeRouter.match(request: req)
     )
   }
 

@@ -16,22 +16,22 @@ extension AccessToken {
   )
 }
 
-extension User {
-  public static let mock = User(
+extension GitHubUser {
+  public static let mock = GitHubUser(
     id: 1,
     name: "Blob"
   )
 }
 
-extension UserEnvelope {
-  public static let mock = UserEnvelope(
+extension GitHubUserEnvelope {
+  public static let mock = GitHubUserEnvelope(
     accessToken: .mock,
     gitHubUser: .mock
   )
 }
 
-extension User.Email {
-  public static let mock = User.Email(
+extension GitHubUser.Email {
+  public static let mock = GitHubUser.Email(
     email: "hello@pointfree.co",
     primary: true
   )

@@ -14,7 +14,7 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
-    <<< route(router: router, notFound: routeNotFoundMiddleware)
+    <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)
     <| currentUserMiddleware
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
@@ -90,8 +90,8 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn
         |> redirect(to: path(to: .home))
 
-    case let .expressUnsubscribe(userId, newsletter):
-      return conn.map(const(userId .*. newsletter .*. unit))
+    case let .expressUnsubscribe(payload):
+      return conn.map(const(payload))
         |> expressUnsubscribeMiddleware
 
     case let .expressUnsubscribeReply(payload):
@@ -176,11 +176,17 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
       return conn.map(const(Either.right(episodeId) .*. user .*. subscriberState .*. route .*. unit))
         |> useCreditResponse
 
-    case let .webhooks(.stripe(.event(event))):
+    case let .webhooks(.stripe(.knownEvent(event))):
       return conn.map(const(event))
         |> stripeWebhookMiddleware
 
-    case .webhooks(.stripe(.fallthrough)):
+    case let .webhooks(.stripe(.unknownEvent(event))):
+      Current.logger.error("Received invalid webhook \(event.type)")
+      return conn
+        |> writeStatus(.internalServerError)
+        >=> respond(text: "We don't support this event.")
+
+    case .webhooks(.stripe(.fatal)):
       return conn
         |> writeStatus(.internalServerError)
         >=> respond(text: "We don't support this event.")
@@ -216,65 +222,3 @@ private let allowedInsecureHosts: [String] = [
   "localhost"
 ]
 
-enum SubscriberState {
-  case nonSubscriber
-  case owner(hasSeat: Bool, status: Stripe.Subscription.Status)
-  case teammate(status: Stripe.Subscription.Status)
-
-  init(user: User?, subscription: Models.Subscription?) {
-    switch (user, subscription) {
-    case let (.some(user), .some(subscription)):
-      if subscription.userId == user.id {
-        self = .owner(
-          hasSeat: user.subscriptionId != nil,
-          status: subscription.stripeSubscriptionStatus
-        )
-      } else {
-        self = .teammate(status: subscription.stripeSubscriptionStatus)
-      }
-
-    case (.none, _), (.some, _):
-      self = .nonSubscriber
-    }
-  }
-
-  var status: Stripe.Subscription.Status? {
-    switch self {
-    case .nonSubscriber:
-      return nil
-    case let .owner(_, status):
-      return status
-    case let .teammate(status):
-      return status
-    }
-  }
-
-  var isActive: Bool {
-    return self.status == .some(.active)
-  }
-
-  var isPastDue: Bool {
-    return self.status == .some(.pastDue)
-  }
-
-  var isOwner: Bool {
-    if case .owner = self { return true }
-    return false
-  }
-
-  var isTeammate: Bool {
-    if case .teammate = self { return true }
-    return false
-  }
-
-  var isNonSubscriber: Bool {
-    if case .nonSubscriber = self { return true }
-    return false
-  }
-
-  var isActiveSubscriber: Bool {
-    if case .teammate(status: .active) = self { return true }
-    if case .owner(hasSeat: true, status: .active) = self { return true }
-    return false
-  }
-}

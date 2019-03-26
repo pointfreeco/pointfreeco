@@ -1,9 +1,11 @@
 import Either
 import Foundation
 import GitHub
+import Mailgun
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
@@ -64,10 +66,17 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     clientSecret: Current.envVars.gitHub.clientSecret,
     logger: Current.logger
   )
+  Current.mailgun = .init(
+    apiKey: Current.envVars.mailgun.apiKey,
+    appSecret: Current.envVars.appSecret,
+    domain: Current.envVars.mailgun.domain,
+    logger: Current.logger
+  )
   Current.stripe = .init(
     logger: Current.logger,
     secretKey: Current.envVars.stripe.secretKey
   )
+  pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
 
   return pure(unit)
 }
