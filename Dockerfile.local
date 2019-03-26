@@ -1,4 +1,4 @@
-FROM norionomura/swift:421
+FROM norionomura/swift:swift-5.0-branch
 
 # postgres
 RUN apt-get update
