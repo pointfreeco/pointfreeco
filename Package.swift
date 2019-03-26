@@ -25,9 +25,9 @@ let package = Package(
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.2.0"),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", from: "0.2.1"),
-    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .branch("swift-5")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.4.0"),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("swift-5")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
