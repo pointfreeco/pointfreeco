@@ -40,7 +40,7 @@ private func fetchAccountData<I>(
 
   let (user, subscriberState) = lower(conn.data)
 
-  let userSubscription = user.subscriptionId
+  let userSubscription: EitherIO<Error, Models.Subscription> = user.subscriptionId
     .map(
       Current.database.fetchSubscriptionById
         >>> mapExcept(requireSome)
