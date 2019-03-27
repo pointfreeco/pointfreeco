@@ -40,6 +40,8 @@ public let attachFormData =
     >>> Data.init(_:)
     >>> set(\URLRequest.httpBody)
 
+private let timeoutInterval: TimeInterval = 25
+
 public func dataTask(
   with request: URLRequest,
   logger: Logger?
