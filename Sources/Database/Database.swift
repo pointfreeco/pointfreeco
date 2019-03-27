@@ -14,12 +14,14 @@ public struct Client {
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
+  public var deleteEnterpriseEmail: (EnterpriseEmail) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
   public var fetchEnterpriseAccountForDomain: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
   public var fetchEnterpriseAccountForSubscription: (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
+  public var fetchEnterpriseEmails: () -> EitherIO<Error, [EnterpriseEmail]>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
@@ -48,12 +50,14 @@ public struct Client {
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
+    deleteEnterpriseEmail: @escaping (EnterpriseEmail) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
     fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
     fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
+    fetchEnterpriseEmails: @escaping () -> EitherIO<Error, [EnterpriseEmail]>,
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -81,12 +85,14 @@ public struct Client {
     self.createEnterpriseEmail = createEnterpriseEmail
     self.createFeedRequestEvent = createFeedRequestEvent
     self.createSubscription = createSubscription
+    self.deleteEnterpriseEmail = deleteEnterpriseEmail
     self.deleteTeamInvite = deleteTeamInvite
     self.execute = execute
     self.fetchAdmins = fetchAdmins
     self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
     self.fetchEnterpriseAccountForDomain = fetchEnterpriseAccountForDomain
     self.fetchEnterpriseAccountForSubscription = fetchEnterpriseAccountForSubscription
+    self.fetchEnterpriseEmails = fetchEnterpriseEmails
     self.fetchEpisodeCredits = fetchEpisodeCredits
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchSubscriptionById = fetchSubscriptionById
@@ -138,14 +144,16 @@ extension Client {
       createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
+      deleteEnterpriseEmail: client.delete(enterpriseEmail:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
-      fetchAdmins: { client.fetchAdmins() },
+      fetchAdmins: client.fetchAdmins,
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
       fetchEnterpriseAccountForDomain: client.fetchEnterpriseAccount(forDomain:),
       fetchEnterpriseAccountForSubscription: client.fetchEnterpriseAccount(forSubscriptionId:),
+      fetchEnterpriseEmails: client.fetchEnterpriseEmails,
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
-      fetchFreeEpisodeUsers: { client.fetchFreeEpisodeUsers() },
+      fetchFreeEpisodeUsers: client.fetchFreeEpisodeUsers,
       fetchSubscriptionById: client.fetchSubscription(id:),
       fetchSubscriptionByOwnerId: client.fetchSubscription(ownerId:),
       fetchSubscriptionTeammatesByOwnerId: client.fetchSubscriptionTeammates(ownerId:),
@@ -157,7 +165,7 @@ extension Client {
       fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
       incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
       insertTeamInvite: client.insertTeamInvite(email:inviterUserId:),
-      migrate: { client.migrate() },
+      migrate: client.migrate,
       redeemEpisodeCredit: client.redeemEpisodeCredit(episodeSequence:userId:),
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
@@ -301,7 +309,6 @@ private struct _Client {
     teammateUserId: Models.User.Id,
     fromSubscriptionId subscriptionId: Models.Subscription.Id
     ) -> EitherIO<Error, Prelude.Unit> {
-
     return self.execute(
       """
     UPDATE "users"
@@ -311,8 +318,8 @@ private struct _Client {
     """,
       [
         teammateUserId.rawValue.uuidString,
-        subscriptionId.rawValue.uuidString,
-        ]
+        subscriptionId.rawValue.uuidString
+      ]
       )
       .map(const(unit))
   }
@@ -503,6 +510,13 @@ private struct _Client {
     )
   }
 
+  func fetchEnterpriseEmails() -> EitherIO<Error, [EnterpriseEmail]> {
+    return self.rows("""
+      SELECT *
+      FROM "enterprise_emails"
+      """)
+  }
+
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
     return self.firstRow(
       """
@@ -623,6 +637,16 @@ private struct _Client {
     """,
       [id.rawValue.uuidString]
     )
+  }
+
+  func delete(enterpriseEmail: EnterpriseEmail) -> EitherIO<Error, Prelude.Unit> {
+    return self.execute("""
+      DELETE FROM "enterprise_emails"
+      WHERE "id" = $1
+      """, [
+        enterpriseEmail.id
+      ])
+      .map(const(unit))
   }
 
   func deleteTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
@@ -961,6 +985,12 @@ private struct _Client {
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
       ON "enterprise_accounts" ("domain")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
+      ON "enterprise_accounts" ("subscription_id")
       """
       )))
       .flatMap(const(execute(

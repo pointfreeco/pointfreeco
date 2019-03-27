@@ -10,6 +10,11 @@ _ = try! PointFree
   .perform()
   .unwrap()
 
-_ = sendWelcomeEmails()
+// TODO
+//_ = sendWelcomeEmails()
+//  .run
+//  .perform()
+
+_ = validateEnterpriseEmails()
   .run
   .perform()
