@@ -191,7 +191,7 @@ private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableReques
     params["h:\(key)"] = value
   }
 
-  return mailgunRequest("v3/messages/\(domain.rawValue)", Method.post(params))
+  return mailgunRequest("v3/\(domain.rawValue)/messages", Method.post(params))
 }
 
 private func mailgunValidate(email: EmailAddress) -> DecodableRequest<Client.Validation> {

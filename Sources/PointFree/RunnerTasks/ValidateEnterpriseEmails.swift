@@ -28,7 +28,7 @@ private func validate(enterpriseEmail: EnterpriseEmail) -> Parallel<ValidationRe
       validateSubscription(validation: validation, enterpriseEmail: enterpriseEmail)
         .map(const(validation))
     }
-    .map { $0.mailboxVerification ? ValidationResult.validated : .invalidAndRemoved }
+    .map { $0.mailboxVerification ? ValidationResult.valid : .invalidAndRemoved }
     .catch(const(pure(.unknown)))
     .run
     .map { $0.right ?? .unknown }
@@ -87,6 +87,6 @@ private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO
 
 private enum ValidationResult {
   case invalidAndRemoved
-  case validated
+  case valid
   case unknown
 }

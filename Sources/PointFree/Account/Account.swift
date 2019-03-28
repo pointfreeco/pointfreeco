@@ -443,6 +443,8 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
 
 private func subscriptionOwnerOverview(_ data: AccountData) -> [Node] {
   guard let subscription = data.stripeSubscription else { return [] }
+  guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
+  // TODO: enterprise specific UI
 
   var content: [Node] = subscriptionPlanRows(subscription, data.upcomingInvoice)
   content.append(contentsOf: subscriptionTeamRow(data))

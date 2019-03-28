@@ -128,7 +128,7 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
       conn
         |> redirect(
           to: pointFreeRouter.path(to: .enterprise(.landing(get2(conn.data).domain))),
-          headersMiddleware: flash(.notice, reason)
+          headersMiddleware: flash(.error, reason)
       )
     }
 }
