@@ -6,6 +6,8 @@ import Prelude
 
 public func validateEnterpriseEmails() -> EitherIO<Error, Prelude.Unit> {
 
+  // TODO: calendar check for first of the month
+
   return Current.database.fetchEnterpriseEmails()
     .flatMap(validate(enterpriseEmails:))
     .flatMap(sendValidationSummaryEmail(results:))
@@ -82,7 +84,9 @@ private func notifyUserSubscriptionWasRemoved(
 }
 
 private func sendValidationSummaryEmail(results: [ValidationResult]) -> EitherIO<Error, Prelude.Unit> {
-  fatalError()
+
+  // TODO: send admin email
+  return pure(unit)
 }
 
 private enum ValidationResult {

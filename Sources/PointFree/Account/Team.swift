@@ -31,6 +31,9 @@ private func leaveTeam<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
 
+  // TODO: delete any associated `enterprise_emails`
+  // TODO: show it be a trigger?
+
   return { conn in
     let user = get1(conn.data)
 

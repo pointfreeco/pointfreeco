@@ -995,12 +995,6 @@ private struct _Client {
       )))
       .flatMap(const(execute(
         """
-      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
-      ON "enterprise_accounts" ("subscription_id")
-      """
-      )))
-      .flatMap(const(execute(
-        """
       CREATE TABLE IF NOT EXISTS "enterprise_emails" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
         "email" character varying NOT NULL,
