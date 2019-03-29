@@ -31,14 +31,14 @@ private func leaveTeam<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
 
+  // TODO: delete any associated `enterprise_emails`
+  // TODO: show it be a trigger?
+
   return { conn in
     let user = get1(conn.data)
 
     let removed = user.subscriptionId
-      .map {
-        Current.database
-          .removeTeammateUserIdFromSubscriptionId(user.id, $0)
-      }
+      .map { Current.database.removeTeammateUserIdFromSubscriptionId(user.id, $0) }
       ?? pure(unit)
 
     return removed
@@ -116,7 +116,7 @@ private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parall
     parallel(sendEmail(
       to: [teammate.email],
       subject: "You have been removed from \(owner.displayName)’s Point-Free team",
-      content: inj2(youHaveBeenRemovedEmailView.view((owner, teammate)))
+      content: inj2(youHaveBeenRemovedEmailView.view(.teamOwner(owner)))
       )
       .run),
     parallel(sendEmail(

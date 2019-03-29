@@ -7,19 +7,33 @@ import Prelude
 import Styleguide
 import View
 
+enum RemovalType {
+  case teamOwner(User)
+  case enterpriseAccount(EnterpriseAccount)
+
+  var displayName: String {
+    switch self {
+    case let .teamOwner(owner):
+      return owner.displayName
+    case let .enterpriseAccount(account):
+      return account.companyName
+    }
+  }
+}
+
 let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody)
-  .contramap { teamOwner, teammate in
+  .contramap { removalType in
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "You have been removed from \(teamOwner.displayName)’s Point-Free team",
+      title: "You have been removed from \(removalType.displayName)’s Point-Free team",
       preheader: "",
       template: .default,
-      data: (teamOwner, teammate)
+      data: removalType
     )
 }
 
-private let youHaveBeenRemovedEmailBody = View<(User, User)> { teamOwner, teammate in
+private let youHaveBeenRemovedEmailBody = View<RemovalType> { removalType in
   emailTable([style(contentTableStyles)], [
     tr([
       td([valign(.top)], [
@@ -27,7 +41,7 @@ private let youHaveBeenRemovedEmailBody = View<(User, User)> { teamOwner, teamma
           h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             .text("""
-              You have been removed from \(teamOwner.displayName)’s Point-Free team, which means you no longer
+              You have been removed from \(removalType.displayName)’s Point-Free team, which means you no longer
               have access to full episodes and transcripts. If you wish to subscribe to an individual plan,
               click the link below!
               """)

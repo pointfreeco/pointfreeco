@@ -16,22 +16,42 @@ public struct Client {
   private let appSecret: AppSecret
 
   public var sendEmail: (Email) -> EitherIO<Error, SendEmailResponse>
+  public var validate: (EmailAddress) -> EitherIO<Error, Validation>
+
+  public struct Validation: Codable {
+    public var mailboxVerification: Bool
+
+    public enum CodingKeys: String, CodingKey {
+      case mailboxVerification = "mailbox_verification"
+    }
+
+    public init(from decoder: Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      self.mailboxVerification = Bool(try container.decode(String.self, forKey: .mailboxVerification)) ?? false
+    }
+  }
 
   public init(
     appSecret: AppSecret,
-    sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>) {
+    sendEmail: @escaping (Email) -> EitherIO<Error, SendEmailResponse>,
+    validate: @escaping (EmailAddress) -> EitherIO<Error, Validation>) {
     self.appSecret = appSecret
     self.sendEmail = sendEmail
+    self.validate = validate
   }
 
   public init(
     apiKey: ApiKey,
     appSecret: AppSecret,
-    domain: Domain,
+    domain: Client.Domain,
     logger: Logger) {
     self.appSecret = appSecret
 
-    self.sendEmail = mailgunSend >>> runMailgun(apiKey: apiKey, domain: domain, logger: logger)
+    self.sendEmail = { email in
+      mailgunSend(email: email, domain: domain)
+        |> runMailgun(apiKey: apiKey, logger: logger)
+    }
+    self.validate = mailgunValidate >>> runMailgun(apiKey: apiKey, logger: logger)
   }
 
   /// Constructs the email address that users can email in order to unsubscribe from a particular newsletter.
@@ -86,19 +106,18 @@ public struct Client {
 private func setBaseUrl(_ baseUrl: URL) -> (URLRequest) -> URLRequest {
   return { request in
     var request = request
-    request.url = baseUrl.appendingPathComponent(request.url?.relativePath ?? "")
+    request.url = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.url(relativeTo: baseUrl)
     return request
   }
 }
 
 private func runMailgun<A>(
   apiKey: Client.ApiKey,
-  domain: Client.Domain,
   logger: Logger
   ) -> (DecodableRequest<A>?) -> EitherIO<Error, A> {
 
   return { mailgunRequest in
-    guard let baseUrl = URL(string: "https://api.mailgun.net/v3/\(domain)")
+    guard let baseUrl = URL(string: "https://api.mailgun.net")
       else { return throwE(unit) }
     guard var mailgunRequest = mailgunRequest
       else { return throwE(unit) }
@@ -123,7 +142,7 @@ private func runMailgun<A>(
 }
 
 private enum Method {
-  case get
+  case get([String: Any])
   case post([String: Any])
   case delete([String: String])
 }
@@ -141,14 +160,22 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
   }
 }
 
-private func mailgunRequest<A>(_ path: String, _ method: Method = .get) -> DecodableRequest<A> {
+private func mailgunRequest<A>(_ path: String, _ method: Method = .get([:])) -> DecodableRequest<A> {
+
+  var components = URLComponents(url: URL(string: path)!, resolvingAgainstBaseURL: false)!
+  if case let .get(params) = method {
+    components.queryItems = params.map { key, value in
+      URLQueryItem(name: key, value: "\(value)")
+    }
+  }
+
   return DecodableRequest(
-    rawValue: URLRequest(url: URL(string: "/" + path)!)
+    rawValue: URLRequest(url: components.url!)
       |> attachMethod(method)
   )
 }
 
-private func mailgunSend(email: Email) -> DecodableRequest<SendEmailResponse> {
+private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableRequest<SendEmailResponse> {
   var params: [String: String] = [:]
   params["from"] = email.from.rawValue
   params["to"] = email.to.map { $0.rawValue }.joined(separator: ",")
@@ -164,7 +191,17 @@ private func mailgunSend(email: Email) -> DecodableRequest<SendEmailResponse> {
     params["h:\(key)"] = value
   }
 
-  return mailgunRequest("messages", Method.post(params))
+  return mailgunRequest("v3/\(domain.rawValue)/messages", Method.post(params))
+}
+
+private func mailgunValidate(email: EmailAddress) -> DecodableRequest<Client.Validation> {
+  return mailgunRequest(
+    "v3/address/private/validate",
+    .get([
+      "address": email.rawValue,
+      "mailbox_verification": true
+      ])
+  )
 }
 
 public struct MailgunError: Codable, Swift.Error {
