@@ -60,6 +60,16 @@ The Swift evolution review of the proposal to add a `Result` type to the standar
     title: "SE-0235 - Add Result to the Standard Library"
   )
 
+  public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
+    author: nil,
+    blurb: """
+The Swift evolution review of the proposal to automatically promote key paths to functional getters.
+""",
+    link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
+    publishedAt: Date(timeIntervalSince1970: 1553004000),
+    title: "SE-0249 - Key Path Expressions as Functions"
+  )
+
   public static let haskellUnderstandingMonadsState = Episode.Reference(
       author: "Wikibooks contributors",
       blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
