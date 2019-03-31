@@ -41,9 +41,6 @@ public let attachFormData =
     >>> set(\URLRequest.httpBody)
 
 private let timeoutInterval: TimeInterval = 25
-private let sessionConfig = URLSessionConfiguration.default
-  |> \.timeoutIntervalForRequest .~ timeoutInterval
-  |> \.timeoutIntervalForResource .~ timeoutInterval
 
 public func dataTask(
   with request: URLRequest,
@@ -57,12 +54,10 @@ public func dataTask(
       let uuid = UUID().uuidString
       logger?.debug("[Data Task] \(uuid) \(request.url?.absoluteString ?? "nil") \(request.httpMethod ?? "UNKNOWN")")
 
-      let session = URLSession(configuration: sessionConfig)
+      let session = URLSession.shared
       let request = request |> \.timeoutInterval .~ timeoutInterval
       session
         .dataTask(with: request) { data, response, error in
-          defer { session.finishTasksAndInvalidate() }
-
           let endTime = Date().timeIntervalSince1970
           let delta = Int((endTime - startTime) * 1000)
 

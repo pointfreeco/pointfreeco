@@ -28,7 +28,7 @@ let package = Package(
     ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.4.0"),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("swift-5")),
