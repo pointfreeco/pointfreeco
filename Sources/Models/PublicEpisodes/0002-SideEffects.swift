@@ -608,7 +608,7 @@ computeAndPrint >=> computeAndPrint >=> computeAndPrint // (Int) -> (Int, [Strin
   ),
   Episode.TranscriptBlock(
     content: """
-We can pipe values through and user multiple lines to create pipelines that read nicely from top to bottom.
+We can pipe values through and use multiple lines to create pipelines that read nicely from top to bottom.
 """,
     timestamp: nil,
     type: .paragraph
