@@ -27,33 +27,130 @@ operation to other structures and derive new, useful code!
 )
 
 private let exercises: [Episode.Exercise] = [
-  Episode.Exercise(problem:
-"""
+  Episode.Exercise(
+    problem: """
 Define `filtered` as a function from `[A?]` to `[A]`.
-"""),
-  Episode.Exercise(problem:
-    """
+""",
+    solution: """
+```
+func filtered<A>() -> ([A?]) -> [A] {
+  return {
+    $0.filterMap { $0 }
+  }
+}
+```
+"""
+  ),
+  Episode.Exercise(
+    problem: """
 Define `partitioned` as a function from `[Either<A, B>]` to `(left: [A], right: [B])`. What does this function have in common with `filtered`?
-"""),
-  Episode.Exercise(problem:
-    """
+""",
+    solution: """
+```
+func paritioned<A, B>() -> ([Either<A, B>]) -> (lefts: [A], rights: [B]) {
+  return {
+    $0.partitionMap { $0 }
+  }
+}
+```
+
+Both are defined using their respective mapping functions with an identity function.
+"""
+  ),
+  Episode.Exercise(
+    problem: """
 Define `partitionMap` on `Optional`.
-"""),
-  Episode.Exercise(problem:
-    """
+""",
+    solution: """
+```
+extension Optional {
+  func partitionMap<A, B>(_ transform: (Wrapped) -> Either<A, B>) -> (left: A?, right: B?) {
+    switch self {
+    case nil:
+      return (left: nil, right: nil)
+    case .some(let wrapped):
+      switch transform(wrapped) {
+      case .left(let a):
+        return (left: a, right: nil)
+      case .right(let b):
+        return (left: nil, right: b)
+      }
+    }
+  }
+}
+```
+"""
+  ),
+  Episode.Exercise(
+    problem: """
 Dictionary has `mapValues`, which takes a transform function from `(Value) -> B` to produce a new dictionary of type `[Key: B]`. Define `filterMapValues` on `Dictionary`.
-"""),
-  Episode.Exercise(problem:
-    """
+""",
+    solution: """
+```
+extension Dictionary {
+  func filterMapValues<B>(_ transform: (Value) -> B?) -> [Key: B] {
+    return self.reduce(into: [Key: B](), {
+      $0[$1.key] = transform($1.value)
+    })
+  }
+}
+```
+"""
+  ),
+  Episode.Exercise(
+    problem: """
 Define `partitionMapValues` on `Dictionary`.
-"""),
-  Episode.Exercise(problem:
-    """
+""",
+    solution: """
+```
+extension Dictionary {
+  func partitionMapValues<A, B>(_ partition: (Value) -> Either<A, B>) -> (left: [Key: A], right: [Key: B]) {
+    return reduce(into: (left: [Key: A](), right: [Key: B]()), { result, kv in
+      switch partition(kv.value) {
+      case .left(let a):
+        result.left[kv.key] = a
+      case .right(let b):
+        result.right[kv.key] = b
+      }
+    })
+  }
+}
+```
+"""
+  ),
+  Episode.Exercise(
+    problem: """
 Rewrite `filterMap` and `filter` in terms of `partitionMap`.
+""",
+    solution: """
+```
+func filterMap<A, B>(_ f: @escaping (A) -> B?) -> ([A]) -> [B] {
+  return { elems in
+    return elems.partitionMap { a -> Either<B, B?> in
+      if let transformed = f(a) {
+        return Either.left(transformed)
+      } else {
+        return Either.right(nil)
+      }
+    }.lefts
+  }
+}
+
+func filter<A>(_ f: @escaping (A) -> Bool) -> ([A]) -> [A] {
+  return { elems in
+    return elems.partitionMap { a -> Either<A, A> in
+      return f(a) ? Either.left(a) : Either.right(a)
+    }.lefts
+  }
+}
+```
 """),
-  Episode.Exercise(problem:
-    """
+  Episode.Exercise(
+    problem: """
 Is it possible to define `partitionMap` on `Either`?
+""",
+    solution: """
+  // Uhhhhh
 """),
 ]
 
