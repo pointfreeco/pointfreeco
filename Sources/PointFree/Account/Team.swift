@@ -31,14 +31,12 @@ private func leaveTeam<Z>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
 
-  // TODO: delete any associated `enterprise_emails`
-  // TODO: show it be a trigger?
-
   return { conn in
     let user = get1(conn.data)
 
     let removed = user.subscriptionId
       .map { Current.database.removeTeammateUserIdFromSubscriptionId(user.id, $0) }
+      .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
       ?? pure(unit)
 
     return removed
@@ -49,7 +47,7 @@ private func leaveTeam<Z>(
             conn
               |> redirect(
                 to: .account(.index),
-                headersMiddleware: flash(.error, "Something went wrong.")
+                headersMiddleware: flash(.error, "Something went wrong. Please try again or contact <support@pointfree.co>.")
             )
           ),
           const(middleware(conn))

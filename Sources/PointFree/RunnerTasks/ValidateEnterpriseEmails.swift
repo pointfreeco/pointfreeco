@@ -54,7 +54,7 @@ private func unlinkSubscription(
   user: Models.User
   ) -> EitherIO<Error, Prelude.Unit> {
 
-  return Current.database.deleteEnterpriseEmail(enterpriseEmail)
+  return Current.database.deleteEnterpriseEmail(enterpriseEmail.userId)
     .flatMap { _ -> EitherIO<Error, Prelude.Unit> in
       guard let subscriptionId = user.subscriptionId else { return pure(unit) }
 

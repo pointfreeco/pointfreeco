@@ -14,7 +14,7 @@ public struct Client {
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
-  public var deleteEnterpriseEmail: (EnterpriseEmail) -> EitherIO<Error, Prelude.Unit>
+  public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
@@ -50,7 +50,7 @@ public struct Client {
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
-    deleteEnterpriseEmail: @escaping (EnterpriseEmail) -> EitherIO<Error, Prelude.Unit>,
+    deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
@@ -144,7 +144,7 @@ extension Client {
       createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
-      deleteEnterpriseEmail: client.delete(enterpriseEmail:),
+      deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
       fetchAdmins: client.fetchAdmins,
@@ -639,12 +639,12 @@ private struct _Client {
     )
   }
 
-  func delete(enterpriseEmail: EnterpriseEmail) -> EitherIO<Error, Prelude.Unit> {
+  func deleteEnterpriseEmail(for userId: User.Id) -> EitherIO<Error, Prelude.Unit> {
     return self.execute("""
       DELETE FROM "enterprise_emails"
-      WHERE "id" = $1
+      WHERE "user_id" = $1
       """, [
-        enterpriseEmail.id
+        userId
       ])
       .map(const(unit))
   }
