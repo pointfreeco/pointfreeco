@@ -251,7 +251,9 @@ private func profileRowView(_ data: AccountData) -> [Node] {
       ])
   ]
 
-  let extraInvoiceInfoFields = !data.isSubscriptionOwner ? [] : [
+  let showExtraInvoiceInfo = data.isSubscriptionOwner
+    && !data.subscriberState.isEnterpriseSubscriber
+  let extraInvoiceInfoFields = !showExtraInvoiceInfo ? [] : [
     label([`class`([labelClass])], ["Extra Invoice Info"]),
     textarea(
       [
@@ -443,14 +445,17 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
 
 private func subscriptionOwnerOverview(_ data: AccountData) -> [Node] {
   guard let subscription = data.stripeSubscription else { return [] }
-  guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
-  // TODO: enterprise specific UI
 
-  var content: [Node] = subscriptionPlanRows(subscription, data.upcomingInvoice)
-  content.append(contentsOf: subscriptionTeamRow(data))
-  content.append(contentsOf: subscriptionInvitesRowView(data.teamInvites))
-  content.append(contentsOf: subscriptionInviteMoreRowView(data))
-  content.append(contentsOf: subscriptionPaymentInfoView(subscription))
+  var content: [Node] = []
+  if data.subscriberState.isEnterpriseSubscriber {
+    content.append(contentsOf: enterpriseSubscriptionOverview(data))
+  } else {
+    content.append(contentsOf: subscriptionPlanRows(subscription, data.upcomingInvoice))
+    content.append(contentsOf: subscriptionTeamRow(data))
+    content.append(contentsOf: subscriptionInvitesRowView(data.teamInvites))
+    content.append(contentsOf: subscriptionInviteMoreRowView(data))
+    content.append(contentsOf: subscriptionPaymentInfoView(subscription))
+  }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -464,8 +469,93 @@ private func subscriptionOwnerOverview(_ data: AccountData) -> [Node] {
   ]
 }
 
+private func enterpriseSubscriptionOverview(_ data: AccountData) -> [Node] {
+  guard let subscription = data.stripeSubscription else { return [] }
+  guard
+    case let .owner(_, _, .some(enterpriseAccount)) = data.subscriberState
+    else { return [] }
+
+  let planRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Plan"])])
+      ]),
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([.text(planName(for: subscription))])
+            ])
+          ])
+        ])
+      ])
+    ])
+
+  let statusRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Status"])])
+      ]),
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([.text(status(for: subscription))])
+            ])
+          ])
+        ])
+      ])
+    ])
+
+  let shareUrl = url(to: .enterprise(.landing(enterpriseAccount.domain)))
+  let shareRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Invite Link"])])
+      ]),
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([a([href(shareUrl)], [.text(shareUrl)])])
+            ])
+          ])
+        ])
+      ])
+    ])
+
+  let contactUsRow = gridRow([
+    gridColumn(sizes: [.mobile: 3], [
+      p([div(["Contact Support"])])
+      ]),
+    gridColumn(sizes: [.mobile: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([a([mailto("support@pointfree.co")], ["support@pointfree.co"])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+
+  return [
+    div(
+      [`class`([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
+      [planRow, statusRow, shareRow, contactUsRow].compactMap(id)
+    )
+  ]
+}
+
 private func subscriptionTeammateOverview(_ data: AccountData) -> [Node] {
   guard data.stripeSubscription != nil else { return [] }
+
+  var enterpriseShareLink: Node?
+  if case let .teammate(_, .some(enterpriseAccount)) = data.subscriberState {
+    let shareUrl = url(to: .enterprise(.landing(enterpriseAccount.domain)))
+    enterpriseShareLink = p([
+      "Share Point-Free with your co-workers by sending them this link: ",
+      a([href(shareUrl)], [.text(shareUrl)])
+      ])
+  }
 
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
@@ -487,6 +577,8 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> [Node] {
             " for more information.",
             ]),
 
+          enterpriseShareLink,
+
           form([action(path(to: .team(.leave))), method(.post)], [
             input(
               [
@@ -496,7 +588,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> [Node] {
               ]
             )
             ]),
-          ])
+          ].compactMap { $0 })
         ])
       ])
   ]

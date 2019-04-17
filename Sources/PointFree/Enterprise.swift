@@ -25,7 +25,6 @@ let enterpriseLandingResponse: AppMiddleware<Tuple2<User?, EnterpriseAccount.Dom
       headersMiddleware: flash(.warning, "That enterprise account does not exist.")
     )
     )
-    <<< validateMembership
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -145,7 +144,7 @@ private func validateMembership<Z>(
         to: .account(.index),
         headersMiddleware: flash(
           .notice,
-          "You're already enrolled in \(account.companyName)'s subscription! 🙌"
+          "🙌 You're already enrolled in \(account.companyName)'s subscription!"
         )
       )
     } else {
@@ -194,9 +193,9 @@ private func sendEnterpriseInvitation<Z>(
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-    if user.email.hasDomain(account.domain) {
-      fatalError("TODO: User's email is already from that domain, so we can just switch them to enterprise immediately.")
-    } else if !request.email.hasDomain(account.domain) {
+//    if user.email.hasDomain(account.domain) {
+//      fatalError("TODO: User's email is already from that domain, so we can just switch them to enterprise immediately.")
+    if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
           to: pointFreeRouter.path(to: .enterprise(.landing(account.domain))),
