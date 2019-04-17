@@ -547,7 +547,7 @@ Unfortunately we get another error:
 Adjacent operators are in unordered precedence groups 'ForwardApplication' and 'DefaultPrecedence'
 ```
 
-We're mixing two operators and Swift doesn't know which to use first. Our functions need to compose before we can we apply a value to them. We can't apply a value to one function and compose the result with another.
+We're mixing two operators and Swift doesn't know which to use first. Our functions need to compose before we can apply a value to them. We can't apply a value to one function and compose the result with another.
 
 We can use precedence groups to solve this problem without parentheses. Let's define a new precedence group for function composition:
 """,
