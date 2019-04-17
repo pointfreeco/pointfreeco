@@ -25,6 +25,10 @@ public struct Client {
       case mailboxVerification = "mailbox_verification"
     }
 
+    public init(mailboxVerification: Bool) {
+      self.mailboxVerification = mailboxVerification
+    }
+
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.mailboxVerification = Bool(try container.decode(String.self, forKey: .mailboxVerification)) ?? false
