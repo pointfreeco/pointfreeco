@@ -193,8 +193,6 @@ private func sendEnterpriseInvitation<Z>(
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
 
-//    if user.email.hasDomain(account.domain) {
-//      fatalError("TODO: User's email is already from that domain, so we can just switch them to enterprise immediately.")
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
