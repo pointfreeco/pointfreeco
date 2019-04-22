@@ -549,6 +549,20 @@ import Stripe
 
 
       extension PartialIso where A == (
+            Route.Enterprise
+        ), B == Route {
+
+          public static let enterprise = parenthesize <| PartialIso(
+            apply: Route.enterprise,
+            unapply: {
+              guard case let .enterprise(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Either<String, Episode.Id>
         ), B == Route {
 
@@ -794,6 +808,54 @@ import Stripe
             apply: Route.Blog.show,
             unapply: {
               guard case let .show(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
+          , 
+            Encrypted<String>
+          , 
+            Encrypted<String>
+        ), B == Route.Enterprise {
+
+          public static let acceptInvite = parenthesize <| PartialIso(
+            apply: Route.Enterprise.acceptInvite,
+            unapply: {
+              guard case let .acceptInvite(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
+        ), B == Route.Enterprise {
+
+          public static let landing = parenthesize <| PartialIso(
+            apply: Route.Enterprise.landing,
+            unapply: {
+              guard case let .landing(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EnterpriseAccount.Domain
+          , 
+            EnterpriseRequestFormData
+        ), B == Route.Enterprise {
+
+          public static let requestInvite = parenthesize <| PartialIso(
+            apply: Route.Enterprise.requestInvite,
+            unapply: {
+              guard case let .requestInvite(result) = $0 else { return nil }
               return .some(result)
           })
       }

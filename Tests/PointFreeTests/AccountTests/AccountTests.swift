@@ -95,6 +95,26 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  func testTeam_AsTeammate() {
+    Current = .teamYearlyTeammate
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testAccount_WithExtraInvoiceInfo() {
     Current = .teamYearly
       |> \.stripe.fetchSubscription .~ const(

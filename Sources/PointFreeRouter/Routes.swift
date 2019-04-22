@@ -16,6 +16,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id)
+  case enterprise(Enterprise)
   case episode(Either<String, Episode.Id>)
   case episodes
   case expressUnsubscribe(payload: Encrypted<String>)
@@ -45,6 +46,12 @@ public enum Route: DerivePartialIsos, Equatable {
     public static func show(id: BlogPost.Id) -> Blog {
       return .show(.right(id))
     }
+  }
+
+  public enum Enterprise: DerivePartialIsos, Equatable {
+    case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
+    case landing(EnterpriseAccount.Domain)
+    case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
   }
 
   public enum Feed: DerivePartialIsos, Equatable {
@@ -112,6 +119,19 @@ let routers: [Router<Route>] = [
 
   .feed <<< .episodes
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
+
+  .enterprise <<< PartialIso.acceptInvite
+    <¢> get %> "enterprise" %> pathParam(.tagged) <%> "accept"
+    %> queryParam("email", .tagged)
+    <%> queryParam("user_id", .tagged)
+    <% end,
+
+  .enterprise <<< .landing
+    <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <% end,
+
+  .enterprise <<< .requestInvite
+    <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "request"
+    %> formBody(EnterpriseRequestFormData.self, decoder: formDecoder) <% end,
 
   .expressUnsubscribe
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")

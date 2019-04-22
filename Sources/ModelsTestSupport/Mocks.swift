@@ -13,6 +13,23 @@ extension EmailSetting {
   )
 }
 
+extension EnterpriseAccount {
+  public static let mock = EnterpriseAccount(
+    companyName: "Blob Inc.",
+    domain: "blob.biz",
+    id: .init(rawValue: UUID(uuidString: "b10b17c1-b10b-17c1-b10b-17c1b10b17c1")!),
+    subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
+  )
+}
+
+extension EnterpriseEmail {
+  public static let mock = EnterpriseEmail(
+    id: .init(rawValue: UUID(uuidString: "48a7cdde-9cfd-4703-816b-dcf4d9c1ef9c")!),
+    email: "blob@pointfree.co",
+    userId: .init(rawValue: UUID(uuidString: "b10b17c1-b10b-17c1-b10b-17c1b10b17c1")!)
+  )
+}
+
 extension EpisodeCredit {
   public static let mock = EpisodeCredit(
     episodeSequence: 1,
