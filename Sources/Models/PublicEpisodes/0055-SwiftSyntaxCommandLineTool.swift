@@ -85,57 +85,57 @@ Here's what we have so far:
   ),
   Episode.TranscriptBlock(
     content: """
-    import Foundation
-    import SwiftSyntax
+import Foundation
+import SwiftSyntax
 
-    let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
-    let tree = try SyntaxTreeParser.parse(url)
+let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
+let tree = try SyntaxTreeParser.parse(url)
 
-    class Visitor: SyntaxVisitor {
-      override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
-        print("extension \\(node.identifier.withoutTrivia()) {")
-        return .visitChildren
-      }
+class Visitor: SyntaxVisitor {
+  override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
+    print("extension \\(node.identifier.withoutTrivia()) {")
+    return .visitChildren
+  }
 
-      override func visit(_ node: EnumCaseElementSyntax) -> SyntaxVisitorContinueKind {
-        let propertyType: String
-        let pattern: String
-        let returnValue: String
-        if let associatedValue = node.associatedValue {
-          propertyType = associatedValue.parameterList.count == 1
-            ? "\\(associatedValue.parameterList[0].type!)"
-            : "\\(associatedValue)"
-          pattern = "let .\\(node.identifier)(value)"
-          returnValue = "value"
-        } else {
-          propertyType = "Void"
-          pattern = ".\\(node.identifier)"
-          returnValue = "()"
-        }
-        print("  var \\(node.identifier): \\(propertyType)? {")
-        print("    guard case \\(pattern) = self else { return nil }")
-        print("    return \\(returnValue)")
-        print("  }")
-        let identifier = "\\(node.identifier)"
-        let capitalizedIdentifier = "\\(identifier.first!.uppercased())\\(identifier.dropFirst())"
-        print("  var is\\(capitalizedIdentifier): Bool {")
-        print("    return self.\\(node.identifier) != nil")
-        print("  }")
-        return .skipChildren
-      }
-
-      override func visitPost(_ node: Syntax) {
-        if node is EnumDeclSyntax {
-          print("}")
-        }
-      }
+  override func visit(_ node: EnumCaseElementSyntax) -> SyntaxVisitorContinueKind {
+    let propertyType: String
+    let pattern: String
+    let returnValue: String
+    if let associatedValue = node.associatedValue {
+      propertyType = associatedValue.parameterList.count == 1
+        ? "\\(associatedValue.parameterList[0].type!)"
+        : "\\(associatedValue)"
+      pattern = "let .\\(node.identifier)(value)"
+      returnValue = "value"
+    } else {
+      propertyType = "Void"
+      pattern = ".\\(node.identifier)"
+      returnValue = "()"
     }
+    print("  var \\(node.identifier): \\(propertyType)? {")
+    print("    guard case \\(pattern) = self else { return nil }")
+    print("    return \\(returnValue)")
+    print("  }")
+    let identifier = "\\(node.identifier)"
+    let capitalizedIdentifier = "\\(identifier.first!.uppercased())\\(identifier.dropFirst())"
+    print("  var is\\(capitalizedIdentifier): Bool {")
+    print("    return self.\\(node.identifier) != nil")
+    print("  }")
+    return .skipChildren
+  }
 
-    let visitor = Visitor()
-    tree.walk(visitor)
+  override func visitPost(_ node: Syntax) {
+    if node is EnumDeclSyntax {
+      print("}")
+    }
+  }
+}
+
+let visitor = Visitor()
+tree.walk(visitor)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -174,12 +174,12 @@ Swift packages are organized by directory. All of a package's libraries and exec
   ),
   Episode.TranscriptBlock(
     content: """
-    struct EnumProperties {
-        var text = "Hello, World!"
-    }
+struct EnumProperties {
+    var text = "Hello, World!"
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -190,50 +190,50 @@ Let's replace the contents of this file with the core part of the work we've don
   ),
   Episode.TranscriptBlock(
     content: """
-    import SwiftSyntax
+import SwiftSyntax
 
-    public class Visitor: SyntaxVisitor {
-      override public func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
-        print("extension \\(node.identifier.withoutTrivia()) {")
-        return .visitChildren
-      }
+public class Visitor: SyntaxVisitor {
+  override public func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
+    print("extension \\(node.identifier.withoutTrivia()) {")
+    return .visitChildren
+  }
 
-      override public func visit(_ node: EnumCaseElementSyntax) -> SyntaxVisitorContinueKind {
-        let propertyType: String
-        let pattern: String
-        let returnValue: String
-        if let associatedValue = node.associatedValue {
-          propertyType = associatedValue.parameterList.count == 1
-            ? "\\(associatedValue.parameterList[0].type!)"
-            : "\\(associatedValue)"
-          pattern = "let .\\(node.identifier)(value)"
-          returnValue = "value"
-        } else {
-          propertyType = "Void"
-          pattern = ".\\(node.identifier)"
-          returnValue = "()"
-        }
-        print("  var \\(node.identifier): \\(propertyType)? {")
-        print("    guard case \\(pattern) = self else { return nil }")
-        print("    return \\(returnValue)")
-        print("  }")
-        let identifier = "\\(node.identifier)"
-        let capitalizedIdentifier = "\\(identifier.first!.uppercased())\\(identifier.dropFirst())"
-        print("  var is\\(capitalizedIdentifier): Bool {")
-        print("    return self.\\(node.identifier) != nil")
-        print("  }")
-        return .skipChildren
-      }
-
-      override public func visitPost(_ node: Syntax) {
-        if node is EnumDeclSyntax {
-          print("}")
-        }
-      }
+  override public func visit(_ node: EnumCaseElementSyntax) -> SyntaxVisitorContinueKind {
+    let propertyType: String
+    let pattern: String
+    let returnValue: String
+    if let associatedValue = node.associatedValue {
+      propertyType = associatedValue.parameterList.count == 1
+        ? "\\(associatedValue.parameterList[0].type!)"
+        : "\\(associatedValue)"
+      pattern = "let .\\(node.identifier)(value)"
+      returnValue = "value"
+    } else {
+      propertyType = "Void"
+      pattern = ".\\(node.identifier)"
+      returnValue = "()"
     }
+    print("  var \\(node.identifier): \\(propertyType)? {")
+    print("    guard case \\(pattern) = self else { return nil }")
+    print("    return \\(returnValue)")
+    print("  }")
+    let identifier = "\\(node.identifier)"
+    let capitalizedIdentifier = "\\(identifier.first!.uppercased())\\(identifier.dropFirst())"
+    print("  var is\\(capitalizedIdentifier): Bool {")
+    print("    return self.\\(node.identifier) != nil")
+    print("  }")
+    return .skipChildren
+  }
+
+  override public func visitPost(_ node: Syntax) {
+    if node is EnumDeclSyntax {
+      print("}")
+    }
+  }
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -244,17 +244,17 @@ Everything builds just fine, and we can clean up our playground to use the updat
   ),
   Episode.TranscriptBlock(
     content: """
-    import EnumProperties
-    import Foundation
-    import SwiftSyntax
+import EnumProperties
+import Foundation
+import SwiftSyntax
 
-    let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
-    let tree = try SyntaxTreeParser.parse(url)
-    let visitor = Visitor()
-    tree.walk(visitor)
+let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
+let tree = try SyntaxTreeParser.parse(url)
+let visitor = Visitor()
+tree.walk(visitor)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -272,24 +272,24 @@ Here we have the contents of `EnumPropertiesTests.swift`:
   ),
   Episode.TranscriptBlock(
     content: """
-    import XCTest
-    @testable import EnumProperties
+import XCTest
+@testable import EnumProperties
 
-    final class EnumPropertiesTests: XCTestCase {
-        func testExample() {
-            // This is an example of a functional test case.
-            // Use XCTAssert and related functions to verify your tests produce the correct
-            // results.
-            XCTAssertEqual(EnumProperties().text, "Hello, World!")
-        }
-
-        static var allTests = [
-            ("testExample", testExample),
-        ]
+final class EnumPropertiesTests: XCTestCase {
+    func testExample() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
+        XCTAssertEqual(EnumProperties().text, "Hello, World!")
     }
+
+    static var allTests = [
+        ("testExample", testExample),
+    ]
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -307,18 +307,18 @@ Let's reindent the file and replace `testExample` with some code that exercises 
   ),
   Episode.TranscriptBlock(
     content: """
-    import SwiftSyntax
+import SwiftSyntax
 
-    final class EnumPropertiesTests: XCTestCase {
-      func testExample() {
-        let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
-        let tree = try SyntaxTreeParser.parse(url)
-        let visitor = Visitor()
-        tree.walk(visitor)
-      }
+final class EnumPropertiesTests: XCTestCase {
+  func testExample() {
+    let url = Bundle.main.url(forResource: "Enums", withExtension: "swift")!
+    let tree = try SyntaxTreeParser.parse(url)
+    let visitor = Visitor()
+    tree.walk(visitor)
+  }
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -343,14 +343,14 @@ Now we're ready to load this fixture in our test. The location of this fixture i
   ),
   Episode.TranscriptBlock(
     content: """
-      func testExample() {
-        let url = URL(fileURLWithPath: String(#file))
-          .deletingLastPathComponent()
-          .appendingPathComponent("Fixtures")
-          .appendingPathComponent("Enums.swift")
+func testExample() {
+  let url = URL(fileURLWithPath: String(#file))
+    .deletingLastPathComponent()
+    .appendingPathComponent("Fixtures")
+    .appendingPathComponent("Enums.swift")
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -361,10 +361,10 @@ Our next line has a problem:
   ),
   Episode.TranscriptBlock(
     content: """
-        let tree = try SyntaxTreeParser.parse(url)
+let tree = try SyntaxTreeParser.parse(url)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -382,10 +382,10 @@ And in order for XCTest to handle this error, we can update our test to be throw
   ),
   Episode.TranscriptBlock(
     content: """
-      func testExample() throws {
+func testExample() throws {
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -429,11 +429,11 @@ Let's start by adding an `output` property to our visitor that starts as an empt
   ),
   Episode.TranscriptBlock(
     content: """
-    public class Visitor: SyntaxVisitor {
-      public private(set) var output = ""
+public class Visitor: SyntaxVisitor {
+  public private(set) var output = ""
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -444,10 +444,10 @@ We don't have to change much more to get things working! Swift provides an overl
   ),
   Episode.TranscriptBlock(
     content: """
-    public func print<Target>(_ items: Any..., separator: String = " ", terminator: String = "\n", to output: inout Target) where Target : TextOutputStream
+public func print<Target>(_ items: Any..., separator: String = " ", terminator: String = "\n", to output: inout Target) where Target : TextOutputStream
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -458,12 +458,12 @@ We don't have to change much more to get things working! Swift provides an overl
   ),
   Episode.TranscriptBlock(
     content: """
-    public protocol TextOutputStream {
-        mutating func write(_ string: String)
-    }
+public protocol TextOutputStream {
+    mutating func write(_ string: String)
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -474,14 +474,14 @@ Swift's `String` type conforms to `TextOutputStream` already, so we can capture 
   ),
   Episode.TranscriptBlock(
     content: """
-      override public func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
-        print(
-          "extension \\(node.identifier.withoutTrivia()) {",
-          to: &self.output
-        )
+override public func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
+  print(
+    "extension \\(node.identifier.withoutTrivia()) {",
+    to: &self.output
+  )
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -506,19 +506,19 @@ Since we've exposed the `output` property, we can write an honest test that asse
   ),
   Episode.TranscriptBlock(
     content: """
-      func testExample() throws {
-        let url = URL(fileURLWithPath: String(#file))
-          .deletingLastPathComponent()
-          .appendingPathComponent("Fixtures")
-          .appendingPathComponent("Enums.swift")
-        let tree = try SyntaxTreeParser.parse(url)
-        let visitor = Visitor()
-        tree.walk(visitor)
-        XCTAssertEqual("", visitor.output)
-      }
+func testExample() throws {
+  let url = URL(fileURLWithPath: String(#file))
+    .deletingLastPathComponent()
+    .appendingPathComponent("Fixtures")
+    .appendingPathComponent("Enums.swift")
+  let tree = try SyntaxTreeParser.parse(url)
+  let visitor = Visitor()
+  tree.walk(visitor)
+  XCTAssertEqual("", visitor.output)
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -536,28 +536,28 @@ It failed, as we expected. In order to get it passing, we can now copy and paste
   ),
   Episode.TranscriptBlock(
     content: """
-        XCTAssertEqual(\"""
-    extension Validated {
-      var valid: Valid? {
-        guard case let .valid(value) = self else { return nil }
-        return value
-      }
-      var isValid: Bool {
-        return self.valid != nil
-      }
-    …
-      var cancelled: Void? {
-        guard case .cancelled = self else { return nil }
-        return ()
-      }
-      var isCancelled: Bool {
-        return self.cancelled != nil
-      }
-    }
-    \""", visitor.output)
+    XCTAssertEqual(\"""
+extension Validated {
+  var valid: Valid? {
+    guard case let .valid(value) = self else { return nil }
+    return value
+  }
+  var isValid: Bool {
+    return self.valid != nil
+  }
+…
+  var cancelled: Void? {
+    guard case .cancelled = self else { return nil }
+    return ()
+  }
+  var isCancelled: Bool {
+    return self.cancelled != nil
+  }
+}
+\""", visitor.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -572,12 +572,12 @@ Hm, it's still failing, and with a huge, unreadable assertion message. The conte
   ),
   Episode.TranscriptBlock(
     content: """
-     }
-    +
-     \""", visitor.output)
+ }
++
+ \""", visitor.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .diff)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -595,10 +595,10 @@ For example, we might change how one of our lines prints. Maybe we accidentally 
   ),
   Episode.TranscriptBlock(
     content: """
-        pattern = "guard  case let .\\(node.identifier)(value)"
+pattern = "guard  case let .\\(node.identifier)(value)"
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -634,10 +634,10 @@ In order to gain access to SnapshotTesting we need to add it as a root-level dep
   ),
   Episode.TranscriptBlock(
     content: """
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
+.package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -648,12 +648,12 @@ And we need to add the `SnapshotTesting` module as a dependency of the `EnumProp
   ),
   Episode.TranscriptBlock(
     content: """
-        .testTarget(
-          name: "EnumPropertiesTests",
-          dependencies: ["EnumProperties", "SnapshotTesting"]),
+.testTarget(
+  name: "EnumPropertiesTests",
+  dependencies: ["EnumProperties", "SnapshotTesting"]),
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -664,16 +664,16 @@ Finally, we need to re-run `swift package generate-xcodeproj` in order to fetch 
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift package generate-xcodeproj
-    Updating https://github.com/apple/swift-syntax.git
-    Fetching https://github.com/pointfreeco/swift-snapshot-testing.git
-    Completed resolution in 9.66s
-    Cloning https://github.com/pointfreeco/swift-snapshot-testing.git
-    Resolving https://github.com/pointfreeco/swift-snapshot-testing.git at 1.5.0
-    generated: ./EnumProperties.xcodeproj
+$ swift package generate-xcodeproj
+Updating https://github.com/apple/swift-syntax.git
+Fetching https://github.com/pointfreeco/swift-snapshot-testing.git
+Completed resolution in 9.66s
+Cloning https://github.com/pointfreeco/swift-snapshot-testing.git
+Resolving https://github.com/pointfreeco/swift-snapshot-testing.git at 1.5.0
+generated: ./EnumProperties.xcodeproj
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -691,10 +691,10 @@ And we can import it in our tests!
   ),
   Episode.TranscriptBlock(
     content: """
-    import SnapshotTesting
+import SnapshotTesting
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -705,10 +705,10 @@ Let's comment out our enormous, difficult-to-debug assertion and replace it with
   ),
   Episode.TranscriptBlock(
     content: """
-        assertSnapshot(matching: <#Value#>, as: <#Snapshotting<Value, Format>#>)
+assertSnapshot(matching: <#Value#>, as: <#Snapshotting<Value, Format>#>)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -719,15 +719,14 @@ The `assertSnapshot` helper takes an input value, a snapshot strategy that descr
   ),
   Episode.TranscriptBlock(
     content: """
-        assertSnapshot(matching: visitor.output, as: .lines)
+assertSnapshot(matching: visitor.output, as: .lines)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
 When we run the tests we get a failure.
-
 
 > 🛑 failed - No reference was found on disk. Automatically recorded snapshot: …
 >
@@ -761,10 +760,10 @@ For example, to make sure it's working let's introduce some pesky trailing white
   ),
   Episode.TranscriptBlock(
     content: """
-        print("    \\(pattern) = self else { return nil } ", to: &self.output)
+print("    \\(pattern) = self else { return nil } ", to: &self.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -777,22 +776,22 @@ We get a failure, which, once expanded:
   ),
   Episode.TranscriptBlock(
     content: """
-    @−
-    "…/EnumProperties/Tests/EnumPropertiesTests/__Snapshots__/EnumPropertiesTests/testExample.1.txt"
-    @+
-    "/var/folders/…/T/EnumPropertiesTests/testExample.1.txt"
+@−
+"…/EnumProperties/Tests/EnumPropertiesTests/__Snapshots__/EnumPropertiesTests/testExample.1.txt"
+@+
+"/var/folders/…/T/EnumPropertiesTests/testExample.1.txt"
 
-    @@ −1,64 +1,64 @@
-     extension Validated {
-     extension Validated {
-       var valid: Valid? {
-    -    guard case let .valid(value) = self else { return nil }
-    +    guard case let .valid(value) = self else { return nil } ¬
-         return value
-       }
+@@ −1,64 +1,64 @@
+ extension Validated {
+ extension Validated {
+   var valid: Valid? {
+-    guard case let .valid(value) = self else { return nil }
++    guard case let .valid(value) = self else { return nil } ¬
+     return value
+   }
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .diff)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -836,10 +835,10 @@ Snapshot strategies are values of `Snapshotting`, and they're best defined on th
   ),
   Episode.TranscriptBlock(
     content: """
-        assertSnapshot(matching: visitor.output, as: .lines)
+assertSnapshot(matching: visitor.output, as: .lines)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -850,12 +849,12 @@ We can start by reopening the `Snapshotting` type to define our static strategy.
   ),
   Episode.TranscriptBlock(
     content: """
-    extension Snapshotting {
+extension Snapshotting {
 
-    }
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -866,10 +865,10 @@ We can start by reopening the `Snapshotting` type to define our static strategy.
   ),
   Episode.TranscriptBlock(
     content: """
-    public struct Snapshotting<Value, Format> {
+public struct Snapshotting<Value, Format> {
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -887,10 +886,10 @@ We know we want to constrain our `Format` to `String` since we're working with s
   ),
   Episode.TranscriptBlock(
     content: """
-    extension Snapshotting where Format == String {
+extension Snapshotting where Format == String {
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -901,10 +900,10 @@ And the input that gets our enum properties generating are the file URLs that po
   ),
   Episode.TranscriptBlock(
     content: """
-    extension Snapshotting where Value == URL, Format == String {
+extension Snapshotting where Value == URL, Format == String {
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -931,10 +930,10 @@ Creating this value from scratch with an initializer takes a bit of work, so ins
   ),
   Episode.TranscriptBlock(
     content: """
-      static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback(<#transform: (NewValue) -> String#>
+static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback(<#transform: (NewValue) -> String#>
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -945,13 +944,13 @@ Our new strategy works with URLs, so the transform function should go from `(URL
   ),
   Episode.TranscriptBlock(
     content: """
-    extension Snapshotting where Value == URL, Format == String {
-      static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback { url in
-      }
-    }
+extension Snapshotting where Value == URL, Format == String {
+  static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback { url in
+  }
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -962,17 +961,17 @@ We've already done this work a bunch of times before, including in our test. We 
   ),
   Episode.TranscriptBlock(
     content: """
-    extension Snapshotting where Value == URL, Format == String {
-      static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback { url in
-        let tree = try SyntaxTreeParser.parse(url)
-        let visitor = Visitor()
-        tree.walk(visitor)
-        return visitor.output
-      }
-    }
+extension Snapshotting where Value == URL, Format == String {
+  static var enumProperties: Snapshotting = Snapshotting<String, String>.lines.pullback { url in
+    let tree = try SyntaxTreeParser.parse(url)
+    let visitor = Visitor()
+    tree.walk(visitor)
+    return visitor.output
+  }
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -985,10 +984,10 @@ Oh, this error message is a bit difficult to parse, but it just means that `pull
   ),
   Episode.TranscriptBlock(
     content: """
-        let tree = try! SyntaxTreeParser.parse(url)
+let tree = try! SyntaxTreeParser.parse(url)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1006,14 +1005,14 @@ Assuming all is working, we should be able to simplify our existing test by dele
   ),
   Episode.TranscriptBlock(
     content: """
-      func testExample() throws {
-        let url = URL(fileURLWithPath: String(#file))
-          .deletingLastPathComponent()
-          .appendingPathComponent("Enums.swift")
-        assertSnapshot(matching: url, as: .enumProperties)
+func testExample() throws {
+  let url = URL(fileURLWithPath: String(#file))
+    .deletingLastPathComponent()
+    .appendingPathComponent("Enums.swift")
+  assertSnapshot(matching: url, as: .enumProperties)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1050,19 +1049,19 @@ What we can do is modify our strategy and change its path extension to `swift` s
   ),
   Episode.TranscriptBlock(
     content: """
-      static let enumProperties: Snapshotting = {
-        var snapshotting: Snapshotting = Snapshotting<String, String>.lines.pullback { url -> String in
-          let tree = try! SyntaxTreeParser.parse(url)
-          let visitor = Visitor()
-          tree.walk(visitor)
-          return visitor.output
-        }
-        snapshotting.pathExtension = "swift"
-        return snapshotting
-      }()
+static let enumProperties: Snapshotting = {
+  var snapshotting: Snapshotting = Snapshotting<String, String>.lines.pullback { url -> String in
+    let tree = try! SyntaxTreeParser.parse(url)
+    let visitor = Visitor()
+    tree.walk(visitor)
+    return visitor.output
+  }
+  snapshotting.pathExtension = "swift"
+  return snapshotting
+}()
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1100,11 +1099,11 @@ Let's hop back over to the terminal and regenerate our Xcode project.
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift package generate-xcodeproj
-    generated: ./EnumProperties.xcodeproj
+$ swift package generate-xcodeproj
+generated: ./EnumProperties.xcodeproj
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1129,10 +1128,10 @@ To show just how powerful this is, let's break our generator by forgetting to cl
   ),
   Episode.TranscriptBlock(
     content: """
-    //      print("}", to: &self.output)
+//      print("}", to: &self.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1147,11 +1146,11 @@ But maybe we're not paying attention and we record over this snapshot with inval
   ),
   Episode.TranscriptBlock(
     content: """
-        record=true
-        assertSnapshot(matching: url, as: .enumProperties)
+record=true
+assertSnapshot(matching: url, as: .enumProperties)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1194,10 +1193,10 @@ And re-comment in the code that generates those closing braces.
   ),
   Episode.TranscriptBlock(
     content: """
-          print("}", to: &self.output)
+print("}", to: &self.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1208,11 +1207,11 @@ And finally re-record the snapshot.
   ),
   Episode.TranscriptBlock(
     content: """
-        record=true
-        assertSnapshot(matching: url, as: .enumProperties)
+record=true
+assertSnapshot(matching: url, as: .enumProperties)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1232,10 +1231,10 @@ And once we leave `record` mode…
   ),
   Episode.TranscriptBlock(
     content: """
-    //    record=true
+//    record=true
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1272,12 +1271,12 @@ We can hop on over to `Package.swift` and add another product to our array of pr
   ),
   Episode.TranscriptBlock(
     content: """
-        .executable(
-          name: "generate-enum-properties",
-          targets: ["generate-enum-properties"]),
+.executable(
+  name: "generate-enum-properties",
+  targets: ["generate-enum-properties"]),
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1295,12 +1294,12 @@ We also need to add a new target of the same name to our array of targets. Our e
   ),
   Episode.TranscriptBlock(
     content: """
-        .target(
-          name: "generate-enum-properties",
-          dependencies: ["EnumProperties", "SwiftSyntax"]),
+.target(
+  name: "generate-enum-properties",
+  dependencies: ["EnumProperties", "SwiftSyntax"]),
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1311,11 +1310,11 @@ If we try to build our package right now it's going to fail because there's no c
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift package generate-xcodeproj
-    error: could not find source files for target(s): generate-enum-properties; use the 'path' property in the Swift 4 manifest to set a custom target path
+$ swift package generate-xcodeproj
+error: could not find source files for target(s): generate-enum-properties; use the 'path' property in the Swift 4 manifest to set a custom target path
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1326,10 +1325,10 @@ We can start to fix this by hopping over to a terminal and make the expected dir
   ),
   Episode.TranscriptBlock(
     content: """
-    $ mkdir Sources/generate-enum-properties
+$ mkdir Sources/generate-enum-properties
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1340,12 +1339,12 @@ But we're not quite there yet.
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift package generate-xcodeproj
-    warning: target 'generate-enum-properties' in package 'EnumProperties' contains no valid source files
-    error: target 'generate-enum-properties' referenced in product 'generate-enum-properties' could not be found
+$ swift package generate-xcodeproj
+warning: target 'generate-enum-properties' in package 'EnumProperties' contains no valid source files
+error: target 'generate-enum-properties' referenced in product 'generate-enum-properties' could not be found
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1356,10 +1355,10 @@ We need a single source file, so let's stub out an empty `main.swift` file, whic
   ),
   Episode.TranscriptBlock(
     content: """
-    $ touch Sources/generate-enum-properties/main.swift
+$ touch Sources/generate-enum-properties/main.swift
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1370,11 +1369,11 @@ Running `swift package generate-xcodeproj` will update our project to include th
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift package generate-xcodeproj
-    generated: ./EnumProperties.xcodeproj
+$ swift package generate-xcodeproj
+generated: ./EnumProperties.xcodeproj
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1406,10 +1405,10 @@ To get our feet wet, let's look at how we can get access to the command line arg
   ),
   Episode.TranscriptBlock(
     content: """
-    print(CommandLine.arguments)
+print(CommandLine.arguments)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1420,12 +1419,12 @@ And to invoke our tool we can call `swift run generate-enum-properties`.
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift run generate-enum-properties
-    [4/4] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
-    [".build/x86_64-apple-macosx/debug/generate-enum-properties"]
+$ swift run generate-enum-properties
+[4/4] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
+[".build/x86_64-apple-macosx/debug/generate-enum-properties"]
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1443,12 +1442,12 @@ We can pass along more arguments and see how it affects the output.
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift run generate-enum-properties ./Tests/EnumPropertiesTests/Fixtures/Enums.swift
-    [4/4] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
-    [".build/x86_64-apple-macosx/debug/generate-enum-properties", "./Tests/EnumPropertiesTests/Fixtures/Enums.swift"]
+$ swift run generate-enum-properties ./Tests/EnumPropertiesTests/Fixtures/Enums.swift
+[4/4] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
+[".build/x86_64-apple-macosx/debug/generate-enum-properties", "./Tests/EnumPropertiesTests/Fixtures/Enums.swift"]
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1466,10 +1465,10 @@ Now we can drop the first element of this input and we're left with all of the U
   ),
   Episode.TranscriptBlock(
     content: """
-    let urls = CommandLine.arguments.dropFirst()
+let urls = CommandLine.arguments.dropFirst()
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1480,13 +1479,13 @@ Now we are working with an array of URL strings, but we need to transform them i
   ),
   Episode.TranscriptBlock(
     content: """
-    import Foundation
+import Foundation
 
-    let urls = CommandLine.arguments.dropFirst()
-      .map { URL(fileURLWithPath: $0) }
+let urls = CommandLine.arguments.dropFirst()
+  .map { URL(fileURLWithPath: $0) }
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1497,24 +1496,24 @@ All that's left is the work that we've done a bunch before: parsing and visiting
   ),
   Episode.TranscriptBlock(
     content: """
-    import Foundation
-    import EnumProperties
-    import SwiftSyntax
+import Foundation
+import EnumProperties
+import SwiftSyntax
 
-    let urls = CommandLine.arguments.dropFirst()
-      .map { URL(fileURLWithPath: $0) }
+let urls = CommandLine.arguments.dropFirst()
+  .map { URL(fileURLWithPath: $0) }
 
-    let visitor = Visitor()
+let visitor = Visitor()
 
-    try urls.forEach { url in
-      let tree = try SyntaxTreeParser.parse(url)
-      tree.walk(visitor)
-    }
+try urls.forEach { url in
+  let tree = try SyntaxTreeParser.parse(url)
+  tree.walk(visitor)
+}
 
-    print(visitor.output)
+print(visitor.output)
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1525,66 +1524,66 @@ And now when we `swift run` our executable.
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift run generate-enum-properties Tests/EnumPropertiesTests/Enums.swift
-    [2/2] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
-    extension Validated {
-      var valid: Valid? {
-        guard case let .valid(value) = self else { return nil }
-        return value
-      }
-      var isValid: Bool {
-        return self.valid != nil
-      }
-      var invalid: [Invalid]? {
-        guard case let .invalid(value) = self else { return nil }
-        return value
-      }
-      var isInvalid: Bool {
-        return self.invalid != nil
-      }
-    }
-    extension Node {
-      var element: (tag: String, attributes: [String: String], children: [Node])? {
-        guard case let .element(value) = self else { return nil }
-        return value
-      }
-      var isElement: Bool {
-        return self.element != nil
-      }
-      var text: String? {
-        guard case let .text(value) = self else { return nil }
-        return value
-      }
-      var isText: Bool {
-        return self.text != nil
-      }
-    }
-    extension Loading {
-      var loading: Void? {
-        guard case .loading = self else { return nil }
-        return ()
-      }
-      var isLoading: Bool {
-        return self.loading != nil
-      }
-      var loaded: A? {
-        guard case let .loaded(value) = self else { return nil }
-        return value
-      }
-      var isLoaded: Bool {
-        return self.loaded != nil
-      }
-      var cancelled: Void? {
-        guard case .cancelled = self else { return nil }
-        return ()
-      }
-      var isCancelled: Bool {
-        return self.cancelled != nil
-      }
-    }
+$ swift run generate-enum-properties Tests/EnumPropertiesTests/Enums.swift
+[2/2] Linking ./.build/x86_64-apple-macosx/debug/generate-enum-properties
+extension Validated {
+  var valid: Valid? {
+    guard case let .valid(value) = self else { return nil }
+    return value
+  }
+  var isValid: Bool {
+    return self.valid != nil
+  }
+  var invalid: [Invalid]? {
+    guard case let .invalid(value) = self else { return nil }
+    return value
+  }
+  var isInvalid: Bool {
+    return self.invalid != nil
+  }
+}
+extension Node {
+  var element: (tag: String, attributes: [String: String], children: [Node])? {
+    guard case let .element(value) = self else { return nil }
+    return value
+  }
+  var isElement: Bool {
+    return self.element != nil
+  }
+  var text: String? {
+    guard case let .text(value) = self else { return nil }
+    return value
+  }
+  var isText: Bool {
+    return self.text != nil
+  }
+}
+extension Loading {
+  var loading: Void? {
+    guard case .loading = self else { return nil }
+    return ()
+  }
+  var isLoading: Bool {
+    return self.loading != nil
+  }
+  var loaded: A? {
+    guard case let .loaded(value) = self else { return nil }
+    return value
+  }
+  var isLoaded: Bool {
+    return self.loaded != nil
+  }
+  var cancelled: Void? {
+    guard case .cancelled = self else { return nil }
+    return ()
+  }
+  var isCancelled: Bool {
+    return self.cancelled != nil
+  }
+}
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .swift)
   ),
   Episode.TranscriptBlock(
     content: """
@@ -1602,10 +1601,10 @@ We now have a tool that we can run against valid Swift source code and end up wi
   ),
   Episode.TranscriptBlock(
     content: """
-    $ swift run generate-enum-properties Tests/EnumPropertiesTests/Enums.swift > output.swift
+$ swift run generate-enum-properties Tests/EnumPropertiesTests/Enums.swift > output.swift
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .code(lang: .shell)
   ),
   Episode.TranscriptBlock(
     content: """
