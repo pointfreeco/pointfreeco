@@ -65,9 +65,9 @@ public enum SubscriberState {
 
   public var isEnterpriseSubscriber: Bool {
     switch self {
-    case .owner(_, _, .some), .teammate(_, .some):
+    case .owner(_, _, enterpriseAccount: .some), .teammate(_, enterpriseAccount: .some):
       return true
-    default:
+    case .nonSubscriber, .owner, .teammate:
       return false
     }
   }

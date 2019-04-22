@@ -514,7 +514,12 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> [Node] {
       gridRow([
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
           div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-            p([a([href(shareUrl)], [.text(shareUrl)])])
+            p([
+              a(
+                [`class`([Class.pf.colors.link.purple]), href(shareUrl)],
+                [.text(shareUrl)]
+              )
+              ])
             ])
           ])
         ])
@@ -529,7 +534,11 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> [Node] {
       gridRow([
         gridColumn(sizes: [.mobile: 12, .desktop: 6], [
           div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-            p([a([mailto("support@pointfree.co")], ["support@pointfree.co"])
+            p([
+              a(
+                [`class`([Class.pf.colors.link.purple]), mailto("support@pointfree.co")],
+                ["support@pointfree.co"]
+              )
             ])
           ])
         ])
