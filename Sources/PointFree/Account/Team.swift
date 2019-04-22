@@ -35,10 +35,8 @@ private func leaveTeam<Z>(
     let user = get1(conn.data)
 
     let removed = user.subscriptionId
-      .map {
-        Current.database
-          .removeTeammateUserIdFromSubscriptionId(user.id, $0)
-      }
+      .map { Current.database.removeTeammateUserIdFromSubscriptionId(user.id, $0) }
+      .flatMap { _ in Current.database.deleteEnterpriseEmail(user.id) }
       ?? pure(unit)
 
     return removed
@@ -49,7 +47,7 @@ private func leaveTeam<Z>(
             conn
               |> redirect(
                 to: .account(.index),
-                headersMiddleware: flash(.error, "Something went wrong.")
+                headersMiddleware: flash(.error, "Something went wrong. Please try again or contact <support@pointfree.co>.")
             )
           ),
           const(middleware(conn))
@@ -116,7 +114,7 @@ private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parall
     parallel(sendEmail(
       to: [teammate.email],
       subject: "You have been removed from \(owner.displayName)’s Point-Free team",
-      content: inj2(youHaveBeenRemovedEmailView.view((owner, teammate)))
+      content: inj2(youHaveBeenRemovedEmailView.view(.teamOwner(owner)))
       )
       .run),
     parallel(sendEmail(

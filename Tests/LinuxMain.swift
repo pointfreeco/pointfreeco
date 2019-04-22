@@ -3,7 +3,7 @@
 
 import XCTest
 
-@testable import FunctionalCssTests; @testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
+@testable import FunctionalCssTests; @testable import DatabaseTests; @testable import GitHubTests; @testable import ModelsTests; @testable import PointFreeRouterTests; @testable import PointFreeTests; @testable import StripeTests; @testable import StyleguideTests; @testable import SyndicationTests;
 extension AboutTests {
   static var allTests: [(String, (AboutTests) -> () throws -> Void)] = [
     ("testAbout", testAbout),
@@ -14,6 +14,7 @@ extension AccountTests {
     ("testAccount", testAccount),
     ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
+    ("testTeam_AsTeammate", testTeam_AsTeammate),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
     ("testAccountWithFlashWarning", testAccountWithFlashWarning),
@@ -115,7 +116,8 @@ extension ChangeTests {
 }
 extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
-    ("testCreate", testCreate),
+    ("testUpsertUser_FetchUserById", testUpsertUser_FetchUserById),
+    ("testFetchEnterpriseAccount", testFetchEnterpriseAccount),
   ]
 }
 extension DiscountsTests {
@@ -136,6 +138,20 @@ extension EmailInviteTests {
   static var allTests: [(String, (EmailInviteTests) -> () throws -> Void)] = [
     ("testEmailInvite", testEmailInvite),
     ("testInviteAcceptance", testInviteAcceptance),
+  ]
+}
+extension EnterpriseTests {
+  static var allTests: [(String, (EnterpriseTests) -> () throws -> Void)] = [
+    ("testLanding_LoggedOut", testLanding_LoggedOut),
+    ("testLanding_NonExistentEnterpriseAccount", testLanding_NonExistentEnterpriseAccount),
+    ("testLanding_AlreadySubscribedToEnterprise", testLanding_AlreadySubscribedToEnterprise),
+    ("testAccceptInvitation_LoggedOut", testAccceptInvitation_LoggedOut),
+    ("testAccceptInvitation_BadEmail", testAccceptInvitation_BadEmail),
+    ("testAccceptInvitation_BadUserId", testAccceptInvitation_BadUserId),
+    ("testAccceptInvitation_EmailDoesntMatchEnterpriseDomain", testAccceptInvitation_EmailDoesntMatchEnterpriseDomain),
+    ("testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId", testAccceptInvitation_RequesterUserDoesntMatchAccepterUserId),
+    ("testAccceptInvitation_EnterpriseAccountDoesntExist", testAccceptInvitation_EnterpriseAccountDoesntExist),
+    ("testAccceptInvitation_HappyPath", testAccceptInvitation_HappyPath),
   ]
 }
 extension EnvVarTests {
@@ -395,6 +411,7 @@ XCTMain([
   testCase(DiscountsTests.allTests),
   testCase(EitherIOTests.allTests),
   testCase(EmailInviteTests.allTests),
+  testCase(EnterpriseTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
   testCase(EpisodePageTests.allTests),

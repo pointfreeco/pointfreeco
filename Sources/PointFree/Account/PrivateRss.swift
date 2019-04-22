@@ -63,7 +63,7 @@ private func validateActiveSubscriber<Z>(
     guard let subscription = get1(data) else { return nil }
     let user = get2(data)
 
-    return SubscriberState(user: user, subscription: subscription).isActive
+    return SubscriberState(user: user, subscriptionAndEnterpriseAccount: (subscription, nil)).isActive
       ? user .*. rest(data)
       : nil
   }

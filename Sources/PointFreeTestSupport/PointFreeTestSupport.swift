@@ -51,6 +51,9 @@ extension Environment {
     |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
     |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(.upcoming |> \.amountDue .~ 640_00))
 
+  public static let teamYearlyTeammate = teamYearly
+    |> (\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil))
+
   public static let individualMonthly = mock
     |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
     |> \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
@@ -84,7 +87,8 @@ extension EnvVars {
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
+    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
+    validate: const(pure(.init(mailboxVerification: true)))
   )
 }
 
@@ -95,8 +99,12 @@ extension Date {
 extension Session {
   public static let loggedOut = empty
 
-  public static let loggedIn = loggedOut
-    |> \.userId .~ Models.User.mock.id
+  public static func loggedIn(as user: User) -> Session {
+    return loggedOut
+      |> \.userId .~ user.id
+  }
+
+  public static let loggedIn = Session.loggedIn(as: .mock)
 }
 
 extension UUID {
