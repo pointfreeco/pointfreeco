@@ -9,7 +9,7 @@ import UrlFormEncoding
 public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> [Node] {
   let loggedOutView = [
     p(
-      [`class`([Class.pf.colors.fg.green])],
+      [`class`([Class.pf.colors.fg.green, Class.padding([.mobile: [.bottom: 3]])])],
       ["Log in to gain access to every episode of ", pointFreeRaw, "."]
     ),
     gitHubLink(

@@ -2,7 +2,7 @@ GET http://localhost:8080/enterprise/blob.biz
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 44469
+Content-Length: 44286
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1711,13 +1711,6 @@ html {
             <a href="/blog"
                class="pf-link-green">
               Blog
-            </a>
-          </li>
-          <li class="m-pl3
-                     inline">
-            <a href="/pricing"
-               class="pf-link-green">
-              Subscribe
             </a>
           </li>
           <li class="m-pl3

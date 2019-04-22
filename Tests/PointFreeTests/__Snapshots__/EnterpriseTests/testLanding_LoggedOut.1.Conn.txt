@@ -2,7 +2,7 @@ GET http://localhost:8080/enterprise/blob.biz
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 47100
+Content-Length: 47126
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1775,7 +1775,8 @@ html {
              🤝 
             Blob Inc.
           </h2>
-          <p class="fg-green">
+          <p class="fg-green
+                    m-pb3">
             Log in to gain access to every episode of 
             Point&#8209;Free
             .
