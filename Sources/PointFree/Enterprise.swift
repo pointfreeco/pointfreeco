@@ -17,9 +17,9 @@ import UrlFormEncoding
 import View
 import Views
 
-let enterpriseLandingResponse: AppMiddleware<Tuple2<User?, EnterpriseAccount.Domain>>
+let enterpriseLandingResponse: AppMiddleware<Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>>
   = filterMap(
-    over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
+    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
     or: redirect(
       to: .home,
       headersMiddleware: flash(.warning, "That enterprise account does not exist.")
@@ -29,8 +29,9 @@ let enterpriseLandingResponse: AppMiddleware<Tuple2<User?, EnterpriseAccount.Dom
     >=> map(lower)
     >>> respond(
       view: View(enterpriseView),
-      layoutData: { user, enterpriseAccount in
+      layoutData: { user, subscriberState, enterpriseAccount in
         SimplePageLayoutData(
+          currentSubscriberState: subscriberState,
           currentUser: user,
           data: (user, enterpriseAccount),
           style: .base(.minimal(.dark)),
