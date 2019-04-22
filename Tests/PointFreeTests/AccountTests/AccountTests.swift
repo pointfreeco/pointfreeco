@@ -347,5 +347,4 @@ final class AccountTests: TestCase {
     }
     #endif
   }
-
 }

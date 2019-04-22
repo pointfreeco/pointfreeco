@@ -217,4 +217,5 @@ class EnterpriseTests: TestCase {
 
   // todo: flow for when user already has sub
   // todo: flow for when user has canceled sub
+  // todo: flow for enterprise account that is past due
 }
