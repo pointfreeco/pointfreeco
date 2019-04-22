@@ -28,6 +28,18 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
@@ -48,6 +60,18 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
   }
 
   func testShowInvite_LoggedIn_Subscriber() {

@@ -57,6 +57,7 @@ let package = Package(
         "Either",
         "Models",
         "ModelsTestSupport",
+        "Optics",
         "PointFreePrelude",
         "PostgreSQL",
         "Prelude",
@@ -68,6 +69,9 @@ let package = Package(
       dependencies: [
         "Database",
         "DatabaseTestSupport",
+        "GitHubTestSupport",
+        "Logger",
+        "ModelsTestSupport",
         "SnapshotTesting",
         ]
     ),
