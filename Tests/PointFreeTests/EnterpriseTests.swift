@@ -18,7 +18,7 @@ import XCTest
 class EnterpriseTests: TestCase {
   override func setUp() {
     super.setUp()
-    record = true
+//    record = true
   }
 
   func testLanding_LoggedOut() {
