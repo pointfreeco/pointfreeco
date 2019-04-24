@@ -1,8 +1,11 @@
+import Backtrace
 import HttpPipeline
 import PointFree
 import Prelude
 
 // Bootstrap
+
+Backtrace.install()
 
 _ = try! PointFree
   .bootstrap()

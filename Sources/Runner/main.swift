@@ -1,8 +1,11 @@
+import Backtrace
 import Either
 import Foundation
 import PointFree
 
 // Bootstrap
+
+Backtrace.install()
 
 _ = try! PointFree
   .bootstrap()
