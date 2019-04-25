@@ -8,7 +8,7 @@ Today we finally extract our enum property code generator to a Swift Package Man
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 1_233_744_102,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0055-enum-properties-cli/full/0054-0055-enum-properties-cli-91edc208-full.mp4",
+    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0055-enum-properties-cli/full/0055-enum-properties-cli-91edc208-full.mp4",
     streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0055-enum-properties-cli/full/0055-enum-properties-cli.m3u8"
   ),
   id: 55,
