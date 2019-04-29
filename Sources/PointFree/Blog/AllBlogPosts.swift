@@ -38,4 +38,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0025_2018YearInReview,
   post0026_html020,
   post0027_openSourcingGen,
+  post0028_openSourcingEnumProperties,
 ]
