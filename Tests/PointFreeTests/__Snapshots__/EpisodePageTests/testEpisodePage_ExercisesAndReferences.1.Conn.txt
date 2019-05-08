@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68638
+Content-Length: 68761
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2177,7 +2177,7 @@ that timestamp jumps the video to that spot.</p>
                            ts-m-r1
                            lh-1
                            m-mb0">
-                  <a href="https://www.pointfree.co"
+                  <a href="https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url"
                      target="_blank"
                      rel="noopener noreferrer">
                     Functional Programming is Fun!
@@ -2197,7 +2197,7 @@ that timestamp jumps the video to that spot.</p>
                 </div>
                 <div>
                   <a style="word-break: break-all"
-                     href="https://www.pointfree.co"
+                     href="https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url"
                      class="pf-link-purple"
                      target="_blank"
                      rel="noopener noreferrer">
@@ -2208,7 +2208,7 @@ that timestamp jumps the video to that spot.</p>
                          width="14"
                          height="14"
                          style="margin-top:-2px">
-                    https://www.pointfree.co
+                    https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url
                   </a>
                 </div>
               </li>
