@@ -11,7 +11,7 @@ extension Episode.Reference {
   public static let mock = Episode.Reference(
     author: "Blob",
     blurb: "Blob uses functional programming to impress all of their friends.",
-    link: "https://www.pointfree.co",
+    link: "https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url",
     publishedAt: Date(timeIntervalSince1970: 1234567890),
     title: "Functional Programming is Fun!"
   )
