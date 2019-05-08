@@ -686,6 +686,7 @@ private let referencesView = View<[Episode.Reference]> { references -> [Node] in
                   [
                     a(
                       [
+                        style("word-break: break-all;"),
                         href(reference.link),
                         `class`([Class.pf.colors.link.purple]),
                         target(.blank),
