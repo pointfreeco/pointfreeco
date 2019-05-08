@@ -114,6 +114,16 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
+  public static let ledgeMacAppParsingTechniques = Episode.Reference(
+    author: "Chris Eidhof & Florian Kugler",
+    blurb: """
+  In this free episode of Swift talk, Chris and Florian discuss various techniques for parsing strings as a means to process a ledger file. It contains a good overview of various parsing techniques, including parser grammars.
+  """,
+    link: "https://talk.objc.io/episodes/S01E13-parsing-techniques",
+    publishedAt: referenceDateFormatter.date(from: "2016-08-26"),
+    title: "Ledger Mac App: Parsing Techniques"
+  )
+  
   public static let nioRenameThenToFlatMap = Episode.Reference(
     author: "Apple",
     blurb: """
@@ -122,6 +132,16 @@ Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as
     link: "https://github.com/apple/swift-nio/pull/760",
     publishedAt: referenceDateFormatter.date(from: "2019-01-21"),
     title: "rename ELF.then to ELF.flatMap"
+  )
+
+  public static let nsscannerNsHipster = Episode.Reference(
+    author: "Nate Cook",
+    blurb: """
+  A nice, concise article covering the `Scanner` type, including a tip of how to extend the `Scanner` so that it is a bit more "Swifty". Take note that this article was written before `NSScanner` was renamed to just `Scanner` in Swift 3.
+  """,
+    link: "https://nshipster.com/nsscanner/",
+    publishedAt: referenceDateFormatter.date(from: "2015-03-02"),
+    title: "NSScanner"
   )
 
   public static let openSourcingSwiftHtml = Episode.Reference(
@@ -234,6 +254,16 @@ very simple, small pieces and then compose them together to create a really comp
     link: "https://www.pointfree.co/blog/posts/19-random-zalgo-generator",
     publishedAt: Date(timeIntervalSince1970: 1542690000),
     title: "Random Zalgo Generator"
+  )
+
+  public static let scannerAppleDocs = Episode.Reference(
+    author: "Apple",
+    blurb: """
+  Official documentation for the `Scanner` type by Apple. Although the type hasn't (yet) been updated to take advantage of Swift's modern features, it is still a very powerful API that is capable of parsing complex text formats.
+  """,
+    link: "https://developer.apple.com/documentation/foundation/scanner",
+    publishedAt: nil,
+    title: "Scanner"
   )
 
   public static let scrapYourTypeClasses = Episode.Reference(
