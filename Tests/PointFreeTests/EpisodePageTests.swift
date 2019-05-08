@@ -435,5 +435,7 @@ class EpisodePageTests: TestCase {
       assertSnapshot(matching: webView, as: .image, named: "mobile")
     }
     #endif
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }
