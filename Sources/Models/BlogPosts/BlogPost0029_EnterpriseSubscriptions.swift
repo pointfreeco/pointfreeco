@@ -9,7 +9,7 @@ We now support enterprise subscriptions on Point-Free!
   contentBlocks: [
     .init(
       content: """
-Today we are excited to announce support for enterprise subscriptions on Point-Free. This makes it super easy for a large organization to obtain a subscription to our video series and share it with everyone in the company.
+Today we are excited to announce support for enterprise subscriptions on [Point-Free](https://www.pointfree.co). This makes it super easy for a large organization to obtain a subscription to our video series and share it with everyone in the company.
 """,
       timestamp: nil,
       type: .paragraph
