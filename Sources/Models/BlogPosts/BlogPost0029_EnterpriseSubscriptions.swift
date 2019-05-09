@@ -4,7 +4,7 @@ import Foundation
 public let post0029_enterpriseSubscriptions = BlogPost(
   author: .pointfree,
   blurb: """
-We now support enterprise subscriptions on Point-Free!
+Point-Free now supports enterprise subscriptions, making it easier than ever to manage a team subscription for larger organizations! For a fixed yearly rate, everyone with an email from your company's domain will get instant access to everything Point-Free has to offer. Contact us for more info!
 """,
   contentBlocks: [
     .init(
