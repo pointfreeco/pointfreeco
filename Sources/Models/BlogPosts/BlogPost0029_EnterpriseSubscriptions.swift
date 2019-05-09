@@ -1,9 +1,10 @@
 import Foundation
 
+// todo: cloudfront
 public let post0029_enterpriseSubscriptions = BlogPost(
-  author: .pointfree, // todo
+  author: .pointfree,
   blurb: """
-TODO
+We now support enterprise subscriptions on Point-Free!
 """,
   contentBlocks: [
     .init(
@@ -61,7 +62,7 @@ If any of this sounds interesting to you then please get [in touch](mailto:suppo
       type: .paragraph
     ),
   ],
-  coverImage: "TODO",
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0029-enterprise-subscriptions/poster.png",
   id: 29,
   publishedAt: .init(timeIntervalSince1970: 1557381600),
   title: "Enterprise Subscriptions"
