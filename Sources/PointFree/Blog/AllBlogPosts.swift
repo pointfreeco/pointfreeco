@@ -39,4 +39,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0026_html020,
   post0027_openSourcingGen,
   post0028_openSourcingEnumProperties,
+  post0029_enterpriseSubscriptions,
 ]
