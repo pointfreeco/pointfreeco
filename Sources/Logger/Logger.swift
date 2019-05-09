@@ -45,12 +45,12 @@ public final class Logger {
     let file = String(String(describing: file).split(separator: "/").last!)
 
     if level.rawValue >= self.level.rawValue {
-      switch self.level {
+      switch level {
       case .debug, .info, .warn:
-        print("[\(self.level)] \(file):\(line): \(message())", to: &self.output)
+        print("[\(level)] \(file):\(line): \(message())", to: &self.output)
         self.output.handle.synchronizeFile()
       case .error, .fatal:
-        print("[\(self.level)] \(file):\(line): \(message())", to: &self.error)
+        print("[\(level)] \(file):\(line): \(message())", to: &self.error)
         self.error.handle.synchronizeFile()
       }
     }
