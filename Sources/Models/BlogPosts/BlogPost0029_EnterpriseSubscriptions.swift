@@ -8,14 +8,7 @@ We now support enterprise subscriptions on Point-Free!
 """,
   contentBlocks: [
     .init(
-      content: "",
-      timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0029-enterprise-subscriptions/poster.png")
-    ),
-    .init(
       content: """
----
-
 Today we are excited to announce support for enterprise subscriptions on Point-Free. This makes it super easy for a large organization to obtain a subscription to our video series and share it with everyone in the company.
 """,
       timestamp: nil,
@@ -62,7 +55,7 @@ If any of this sounds interesting to you then please get [in touch](mailto:suppo
       type: .paragraph
     ),
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0029-enterprise-subscriptions/poster.png",
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0029-enterprise-subscriptions/poster.jpg",
   id: 29,
   publishedAt: .init(timeIntervalSince1970: 1557381600),
   title: "Enterprise Subscriptions"
