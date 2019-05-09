@@ -10,7 +10,7 @@ We wanted to make Swift enum data access as ergonomic as struct data access, so 
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0028-enum-properties/cover.png")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0028-enum-properties/cover.png")
     ),
 
     .init(
@@ -239,7 +239,7 @@ To generate enum properties for your Swift source code projects, today, visit [t
     ),
 
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0028-enum-properties/cover.png",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0028-enum-properties/cover.png",
   id: 28,
   publishedAt: .init(timeIntervalSince1970: 1556517600),
   title: "Open Sourcing Enum Properties"

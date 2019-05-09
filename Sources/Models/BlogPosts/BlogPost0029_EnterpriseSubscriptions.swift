@@ -55,7 +55,7 @@ If any of this sounds interesting to you then please get [in touch](mailto:suppo
       type: .paragraph
     ),
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0029-enterprise-subscriptions/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0029-enterprise-subscriptions/poster.jpg",
   id: 29,
   publishedAt: .init(timeIntervalSince1970: 1557381600),
   title: "Enterprise Subscriptions"
