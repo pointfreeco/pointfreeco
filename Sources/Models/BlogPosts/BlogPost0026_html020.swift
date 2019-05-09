@@ -71,7 +71,7 @@ You can snapshot test swift-html's `Node` type using the `html` strategy.
       content: """
 import Html
 import HtmlSnapshotTesting
-import SnpashotTesting
+import SnapshotTesting
 import XCTest
 
 class MyWebPageTests: XCTestCase {
