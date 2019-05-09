@@ -8,7 +8,15 @@ Point-Free now supports enterprise subscriptions, making it easier than ever to 
 """,
   contentBlocks: [
     .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0029-enterprise-subscriptions/poster.jpg")
+    ),
+
+    .init(
       content: """
+---
+
 Today we are excited to announce support for enterprise subscriptions on [Point-Free](https://www.pointfree.co). This makes it super easy for a large organization to obtain a subscription to our video series and share it with everyone in the company.
 """,
       timestamp: nil,
