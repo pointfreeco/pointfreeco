@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 110224
+Content-Length: 110223
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -3239,7 +3239,7 @@ of some of the things we’re excited to talk about
             Do you offer enterprise subscriptions?
           </h4>
           <p class="fg-white">
-            We do! If your orginization is large enough that it is prohibitive to manually manage seats for a
+            We do! If your organization is large enough that it is prohibitive to manually manage seats for a
 team subscription, we can negotiate a flat yearly price that will give your entire company access to
 everything Point-Free has to offer.
              
@@ -3248,7 +3248,7 @@ everything Point-Free has to offer.
                       text-decoration:underline">
               Contact us
             </a>
-             with information about your origanization size, and we'll get back to you with a quote.
+             with information about your organization size, and we'll get back to you with a quote.
           </p>
           <h4 class="fg-white
                      fg-black
