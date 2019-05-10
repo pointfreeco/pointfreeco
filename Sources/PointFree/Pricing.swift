@@ -209,6 +209,31 @@ private let suggestATopic = View<Prelude.Unit> { _ in
   ]
 }
 
+private let enterpriseSubscription = View<Prelude.Unit> { _ in
+  [
+    h4(
+      [`class`([Class.pf.colors.fg.white, Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 2]])])],
+      [.text("Do you offer enterprise subscriptions?")]
+    ),
+
+    p(
+      [`class`([Class.pf.colors.fg.white])],
+      [
+        """
+We do! If your orginization is large enough that it is prohibitive to manually manage seats for a
+team subscription, we can negotiate a flat yearly price that will give your entire company access to
+everything Point-Free has to offer.
+""",
+        " ",
+        a([mailto("support@pointfree.co?subject=Enterprise%20Subscription"), style(faqLinkStyles)], ["Contact us"]),
+        """
+ with information about your origanization size, and we'll get back to you with a quote.
+"""
+      ]
+    )
+  ]
+}
+
 private let studentDiscounts = View<Prelude.Unit> { _ in
   [
     h4(
@@ -268,6 +293,7 @@ private let faqView = View<Prelude.Unit> { _ in
       div([`class`([whatToExpectBoxClass])],
           whatToExpect.view(unit)
             <> topicsView.view(unit)
+            <> enterpriseSubscription.view(unit)
             <> studentDiscounts.view(unit)
             <> suggestATopic.view(unit)
             <> whoAreYou.view(unit)
