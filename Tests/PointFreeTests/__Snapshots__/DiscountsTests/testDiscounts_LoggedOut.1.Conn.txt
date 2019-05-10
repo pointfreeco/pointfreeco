@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 66610
+Content-Length: 67501
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2261,6 +2261,27 @@ of some of the things we’re excited to talk about
               Turning programming problems into algebraic problems
             </li>
           </ul>
+          <h4 class="fg-white
+                     fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2
+                     m-pt2">
+            Do you offer enterprise subscriptions?
+          </h4>
+          <p class="fg-white">
+            We do! If your organization is large enough that it is prohibitive to manually manage seats for a
+team subscription, we can negotiate a flat yearly price that will give your entire company access to
+everything Point-Free has to offer.
+             
+            <a href="mailto:support@pointfree.co?subject=Enterprise%20Subscription"
+               style="color:#4cccff;
+                      text-decoration:underline">
+              Contact us
+            </a>
+             with information about your organization size, and we'll get back to you with a quote.
+          </p>
           <h4 class="fg-white
                      fg-black
                      bold

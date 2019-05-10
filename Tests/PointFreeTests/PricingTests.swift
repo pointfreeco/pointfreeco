@@ -26,7 +26,7 @@ class PricingTests: TestCase {
 
     #if !os(Linux)
     if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 1900))
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2300))
       let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
       assertSnapshot(matching: webView, as: .image, named: "desktop")
@@ -69,8 +69,8 @@ class PricingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2200))
         ]
       )
     }
@@ -112,8 +112,8 @@ class PricingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2200))
         ]
       )
     }
@@ -135,8 +135,8 @@ class PricingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1900)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1900))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2200))
         ]
       )
     }
