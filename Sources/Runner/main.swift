@@ -14,6 +14,6 @@ _ = sendWelcomeEmails()
   .run
   .perform()
 
-_ = validateEnterpriseEmails()
-  .run
-  .perform()
+//_ = validateEnterpriseEmails()
+//  .run
+//  .perform()
