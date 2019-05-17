@@ -50,6 +50,16 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
+  public static let difficultiesWithEfficientLargeFileParsing = Episode.Reference(
+    author: "Ezekiel Elin et al.",
+    blurb: """
+This question on the Swift forums brings up an interesting discussion on how to best handle large files (hundreds of megabytes and millions of lines) in Swift. The thread contains lots of interesting tips on how to improve performance, and contains some hope of future standard library changes that may help too.
+""",
+    link: "https://forums.swift.org/t/difficulties-with-efficient-large-file-parsing/23660",
+    publishedAt: referenceDateFormatter.date(from: "2019-04-25"),
+    title: "Difficulties With Efficient Large File Parsing"
+  )
+
   public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
     author: nil,
     blurb: """
@@ -61,9 +71,9 @@ The Swift evolution review of the proposal to add a `Result` type to the standar
   )
 
   public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
-    author: nil,
+    author: "Stephen Celis & Greg Titus",
     blurb: """
-The Swift evolution review of the proposal to automatically promote key paths to functional getters.
+A proposal has been accepted in the Swift evolution process that would allow key paths to be automatically promoted to getter functions. This would allow using key paths in much the same way you would use functions, but perhaps more succinctly: `users.map(\\.name)`.
 """,
     link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
     publishedAt: Date(timeIntervalSince1970: 1553004000),
@@ -372,6 +382,25 @@ bring operators into your codebase.
     title: "Swift Overture"
   )
 
+  public static let swiftPitchStringConsumption = Episode.Reference(
+    author: "Michael Ilseman et al.",
+    blurb: """
+Swift contributor [Michael Ilseman](https://twitter.com/ilseman) lays out some potential future directions for Swift's string consumption API. This could be seen as a "Swiftier" way of doing what the `Scanner` type does today, but possibly even more powerful.
+""",
+    link: "https://forums.swift.org/t/string-consumption/21907",
+    publishedAt: referenceDateFormatter.date(from: "2019-03-03"),
+    title: "Swift Pitch: String Consumption"
+  )
+
+  public static let swiftPitchStringParsing = Episode.Reference(
+    author: "Chris Eidhof et al.",
+    blurb: """
+Chris Eidhof strikes up a conversation on the Swift forums about how string parser helpers could be defined on `Substring` in the standard library. A lot of interesting ideas are shared on which is the correct type to define these helpers, and what is the correct API to expose to the user.
+""",
+    link: "https://forums.swift.org/t/string-parsing/10219",
+    publishedAt: referenceDateFormatter.date(from: "2018-02-22"),
+    title: "Swift Pitch: String Parsing"
+  )
   public static let swiftSnapshotTesting = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -384,6 +413,17 @@ allows you to define your own custom, domain-specific snapshot strategies for yo
     title: "pointfreeco/swift-snapshot-testing"
   )
 
+  public static let swiftStringsAndSubstrings = Episode.Reference(
+    author: "Chris Eidhof & Florian Kugler",
+    blurb: """
+In this free episode of Swift talk, Chris and Florian discuss how to efficiently use Swift strings, and in particular how to use the `Substring` type to prevent unnecessary copies of large strings.
+
+> We write a simple CSV parser as an example demonstrating how to work with Swift's String and Substring types.
+""",
+    link: "https://talk.objc.io/episodes/S01E78-swift-strings-and-substrings",
+    publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
+    title: "Swift Strings and Substrings"
+  )
   public static let swiftTagged = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
