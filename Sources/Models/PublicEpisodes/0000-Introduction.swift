@@ -17,6 +17,7 @@ Take a moment to hear from the hosts about what to expect from this new series.
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg",
   length: 179,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 0,
   title: "We launched!",

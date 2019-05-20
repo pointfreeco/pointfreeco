@@ -487,8 +487,34 @@ private let episodeInfoView = View<(EpisodePermission, Episode)> { permission, e
   div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView.view(ep)
-    + sectionsMenu(episode: ep, permission: permission)
+      + previousEpisodes(of: ep)
+      + sectionsMenu(episode: ep, permission: permission)
   )
+}
+
+private func previousEpisodes(of ep: Episode) -> [Node] {
+  let previousEps = ep.previousEpisodes
+  guard !previousEps.isEmpty else { return [] }
+
+  return [
+    div(
+      [`class`([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]]), Class.pf.colors.bg.white])],
+      [
+        div([
+          "This episode builds on concepts introduced previously:"]),
+        ul(
+          previousEps.map {
+            li([
+              "#", .text(String($0.sequence)), ": ",
+              a([
+                `class`([Class.pf.colors.link.purple]),
+                href(url(to: .episode(.left($0.slug))))],
+                [.text($0.title)])])
+          }
+        )
+      ]
+    )
+  ]
 }
 
 private func topLevelEpisodeMetadata(_ ep: Episode) -> String {

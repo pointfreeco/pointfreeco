@@ -16,6 +16,7 @@ Our snapshot testing library is now officially open source! In order to show jus
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-itunes-poster.jpg",
   length: 29*60+16,
   permission: .free,
+  previousEpisodeInCollection: 40,
   publishedAt: .init(timeIntervalSince1970: 1545116400),
   references: [
     .swiftSnapshotTesting,

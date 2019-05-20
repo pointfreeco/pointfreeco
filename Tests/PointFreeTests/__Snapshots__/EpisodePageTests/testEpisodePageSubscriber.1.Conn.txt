@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 75936
+Content-Length: 77108
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1940,6 +1940,24 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
               </div>
             </div>
             <div class="d-pt3
+                        m-pt2
+                        bg-white">
+              <div>
+                This episode builds on concepts introduced previously:
+              </div>
+              <ul>
+                <li>
+                  #
+                  1
+                  : 
+                  <a class="pf-link-purple"
+                     href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                    Type-Safe HTML in Swift
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="d-pt3
                         m-pt2">
               <a class="pf-link-purple
                         m-mr2"
@@ -1997,6 +2015,24 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 text, no markdown allowed. Here is some more text just to have some filler.</p>
 
                 </div>
+              </div>
+              <div class="d-pt3
+                          m-pt2
+                          bg-white">
+                <div>
+                  This episode builds on concepts introduced previously:
+                </div>
+                <ul>
+                  <li>
+                    #
+                    1
+                    : 
+                    <a class="pf-link-purple"
+                       href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                      Type-Safe HTML in Swift
+                    </a>
+                  </li>
+                </ul>
               </div>
               <div class="d-pt3
                           m-pt2">
