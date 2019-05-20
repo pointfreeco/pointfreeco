@@ -16,6 +16,7 @@ Today we finally extract our enum property code generator to a Swift Package Man
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0055-enum-properties-cli/itunes-poster.jpg",
   length: 35*60 + 16,
   permission: .free,
+  previousEpisodeInCollection: 54,
   publishedAt: .init(timeIntervalSince1970: 1555912800),
   references: [],
   sequence: 55,
