@@ -16,6 +16,7 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/itunes-poster.jpg",
   length: 2676,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_517_811_069),
   sequence: 2,
   title: "Side Effects",

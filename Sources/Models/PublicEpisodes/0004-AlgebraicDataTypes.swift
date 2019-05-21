@@ -17,6 +17,7 @@ and see how it can help us create type-safe data structures that can catch runti
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/itunes-poster.jpg",
   length: 2_172,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
   sequence: 4,
   title: "Algebraic Data Types",

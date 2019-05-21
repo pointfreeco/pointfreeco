@@ -16,6 +16,7 @@ Let's put some finishing touches to our random artwork generator, incorporate it
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/itunes-poster.jpg",
   length: 27*60 + 22,
   permission: .free,
+  previousEpisodeInCollection: 49,
   publishedAt: .init(timeIntervalSince1970: 1552284000),
   references: [
     .randomUnification,
