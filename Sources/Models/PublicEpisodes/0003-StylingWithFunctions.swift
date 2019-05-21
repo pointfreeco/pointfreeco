@@ -16,6 +16,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/itunes-poster.jpg",
   length: 1_634,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
   sequence: 3,
   title: "UIKit Styling with Functions",
