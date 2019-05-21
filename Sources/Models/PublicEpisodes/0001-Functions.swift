@@ -16,6 +16,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg",
   length: 1219,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 1,
   title: "Functions",
