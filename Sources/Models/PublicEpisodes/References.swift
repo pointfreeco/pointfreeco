@@ -124,6 +124,16 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
+  public static let learningParserCombinatorsWithRust = Episode.Reference(
+    author: "Bodil Stokke",
+    blurb: """
+A wonderful article that explains parser combinators from start to finish. The article assumes you are already familiar with Rust, but it is possible to look past the syntax and see that there are many shapes in the code that are similar to what we have covered in our episodes on parsers.
+""",
+    link: "https://bodil.lol/parser-combinators/",
+    publishedAt: referenceDateFormatter.date(from: "2019-04-18"),
+    title: "Learning Parser Combinators With Rust"
+  )
+
   public static let ledgeMacAppParsingTechniques = Episode.Reference(
     author: "Chris Eidhof & Florian Kugler",
     blurb: """
@@ -132,6 +142,16 @@ was a cause of confusion for those new to functional terms.
     link: "https://talk.objc.io/episodes/S01E13-parsing-techniques",
     publishedAt: referenceDateFormatter.date(from: "2016-08-26"),
     title: "Ledger Mac App: Parsing Techniques"
+  )
+
+  public static let makingIllegalStatesUnrepresentable = Episode.Reference(
+    author: "Ole Begemann",
+    blurb: """
+Ole discusses the concept of "illegal states" in data types, and how to leverage the type-system to make those states completely impossible to construct. His article was inspired by a mistake we made in our episode on algebraic data types, which shows just how subtle this problem can be!
+""",
+    link: "https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/",
+    publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
+    title: "Making illegal states unrepresentable"
   )
   
   public static let nioRenameThenToFlatMap = Episode.Reference(
@@ -327,6 +347,18 @@ Stephen gave an overview of snapshot testing, its benefits, and how one may snap
     title: "Snapshot Testing in Swift"
   )
 
+  public static let sparse = Episode.Reference(
+    author: "John Patrick Morgan",
+    blurb: """
+A parser library built in Swift that uses many of the concepts we cover in our series of episodes on parsers.
+
+> Sparse is a simple parser-combinator library written in Swift.
+""",
+    link: "https://github.com/johnpatrickmorgan/Sparse",
+    publishedAt: referenceDateFormatter.date(from: "2017-01-12"),
+    title: "Sparse"
+  )
+
   public static let stateMonadTutorialForTheConfused = Episode.Reference(
     author: "Brandon Simmons",
     blurb: "The `Gen` type has a more general shape in the functional programming world as the `State` monad. In this post Brandon Simmons introduces the type and how it works compared to other flat-mappable types.",
@@ -445,6 +477,28 @@ their errors.
     link: "https://github.com/pointfreeco/swift-validated",
     publishedAt: Date(timeIntervalSince1970: 1534478400),
     title: "Validated"
+  )
+
+  public static let parsec = Episode.Reference(
+    author: "Daan Leijen, Paolo Martini, Antoine Latter",
+    blurb: """
+Parsec is one of the first and most widely used parsing libraries, built in Haskell. It's built on many of the same ideas we have covered in our series of episodes on parsers, but using some of Haskell's most powerful type-level features.
+""",
+    link: "http://hackage.haskell.org/package/parsec",
+    publishedAt: nil,
+    title: "parsec"
+  )
+  
+  public static let parserCombinatorsInSwift = Episode.Reference(
+    author: "Yasuhiro Inami",
+    blurb: """
+In the first ever [try! Swift](http://tryswift.co) conference, Yasuhiro Inami gives a broad overview of parsers and parser combinators, and shows how they can accomplish very complex parsing.
+
+> Parser combinators are one of the most awesome functional techniques for parsing strings into trees, like constructing JSON. In this talk from try! Swift, Yasuhiro Inami describes how they work by combining small parsers together to form more complex and practical ones.
+""",
+    link: "https://academy.realm.io/posts/tryswift-yasuhiro-inami-parser-combinator/",
+    publishedAt: referenceDateFormatter.date(from: "2016-05-02"),
+    title: "Parser Combinators in Swift"
   )
 
   public static let taggedSecondsAndMilliseconds = Episode.Reference(
