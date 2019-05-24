@@ -19,6 +19,9 @@ and see how it can help us create type-safe data structures that can catch runti
   permission: .free,
   previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_519_045_951),
+  references: [
+    .makingIllegalStatesUnrepresentable
+  ],
   sequence: 4,
   title: "Algebraic Data Types",
   trailerVideo: nil,
