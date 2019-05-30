@@ -60,6 +60,16 @@ This question on the Swift forums brings up an interesting discussion on how to 
     title: "Difficulties With Efficient Large File Parsing"
   )
 
+  public static let everythingsAFunction = Episode.Reference(
+    author: "Eitan Chatav",
+    blurb: """
+This short article explains how everything can be seen to be a function, even values and function application. Eitan coins the term `zurry` to describe the act of currying a zero-argument function.
+""",
+    link: "https://tangledw3b.wordpress.com/2013/01/18/cartesian-closed-categories/",
+    publishedAt: referenceDateFormatter.date(from: "2013-01-18"),
+    title: "Everything’s a Function."
+  )
+
   public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
     author: nil,
     blurb: """
