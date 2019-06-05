@@ -27,11 +27,11 @@ let package = Package(
     .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("8cbc934")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("6e426b0")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .exact("1.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
-    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("73620f3")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("a968110")),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .exact("0.4.0")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2c3d440")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
@@ -47,6 +47,7 @@ let package = Package(
         "PostgreSQL",
         "Prelude",
         "Stripe",
+        "Tagged",
         ]
     ),
 
@@ -101,6 +102,7 @@ let package = Package(
         "Optics",
         "PointFreePrelude",
         "Prelude",
+        "Tagged",
         ]
     ),
 
@@ -244,6 +246,7 @@ let package = Package(
         "Logger",
         "Optics",
         "Prelude",
+        "Tagged",
         "Tuple",
         "UrlFormEncoding",
         ]
@@ -289,6 +292,7 @@ let package = Package(
         "Logger",
         "PointFreePrelude",
         "Prelude",
+        "Tagged",
         "TaggedMoney"
         ]
     ),

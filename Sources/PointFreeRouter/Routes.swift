@@ -5,6 +5,7 @@ import Models
 import PointFreePrelude
 import Prelude
 import Stripe
+import Tagged
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
