@@ -5,6 +5,25 @@ import Prelude
 import Tagged
 import UrlFormEncoding
 
+public protocol TaggedType {
+  associatedtype Tag
+  associatedtype RawValue
+
+  var rawValue: RawValue { get }
+  init(rawValue: RawValue)
+}
+
+extension Tagged: TaggedType {}
+
+extension PartialIso where B: TaggedType, A == B.RawValue {
+  public static var tagged: PartialIso<B.RawValue, B> {
+    return PartialIso(
+      apply: B.init(rawValue:),
+      unapply: ^\.rawValue
+    )
+  }
+}
+
 public func payload<A, B>(
   _ iso1: PartialIso<String, A>,
   _ iso2: PartialIso<String, B>,

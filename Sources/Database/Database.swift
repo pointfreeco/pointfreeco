@@ -7,6 +7,7 @@ import PointFreePrelude
 import Prelude
 import PostgreSQL
 import Stripe
+import Tagged
 
 public struct Client {
   public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>

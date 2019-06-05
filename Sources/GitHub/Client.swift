@@ -4,6 +4,7 @@ import Logger
 import Optics
 import PointFreePrelude
 import Prelude
+import Tagged
 
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.

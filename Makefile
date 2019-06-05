@@ -117,7 +117,7 @@ CCMARK_PATH = $(FRAMEWORKS_PATH)/Ccmark.framework
 CCMARK_MODULE_MAP_PATH = $(CCMARK_PATH)/module.map
 define CCMARK_MODULE_MAP
 module Ccmark [system] {
-  header "/usr/local/Cellar/cmark/0.28.3/include/cmark.h"
+  header "/usr/local/Cellar/cmark/0.29.0/include/cmark.h"
   export *
 }
 endef
