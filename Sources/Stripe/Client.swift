@@ -231,7 +231,12 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
 
 func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableRequest<A> {
   return DecodableRequest(
-    rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
+    rawValue: URLRequest(
+      url: URL(
+        string: "https://api.stripe.com/v1/"
+          + (path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
+        )!
+      )
       |> attachMethod(method)
   )
 }
