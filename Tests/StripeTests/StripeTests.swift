@@ -311,6 +311,11 @@ final class StripeTests: SnapshotTestCase {
       named: "fetch-coupon"
     )
     assertSnapshot(
+      matching: Stripe.fetchCoupon(id: "give me free subscription").rawValue,
+      as: .raw,
+      named: "fetch-coupon-bad-data"
+    )
+    assertSnapshot(
       matching: Stripe.fetchCustomer(id: "cus_test").rawValue,
       as: .raw,
       named: "fetch-customer"
