@@ -129,7 +129,9 @@ func createSubscription(
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
-  return stripeRequest("coupons/" + id.rawValue)
+  return stripeRequest(
+    "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
+  )
 }
 
 func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
@@ -231,12 +233,7 @@ private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
 
 func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableRequest<A> {
   return DecodableRequest(
-    rawValue: URLRequest(
-      url: URL(
-        string: "https://api.stripe.com/v1/"
-          + (path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
-        )!
-      )
+    rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
   )
 }
