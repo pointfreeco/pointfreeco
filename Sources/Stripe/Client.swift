@@ -129,7 +129,9 @@ func createSubscription(
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
-  return stripeRequest("coupons/" + id.rawValue)
+  return stripeRequest(
+    "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
+  )
 }
 
 func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
