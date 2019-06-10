@@ -15,7 +15,6 @@ import View
 
 let accountRssMiddleware
   : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
-//  = hole()
   = filterMap(decryptUserIdAndRssSalt, or: invalidatedFeedMiddleware(errorMessage: "Malformed URL"))
     <<< { fetchUser >=> $0 }
     <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
