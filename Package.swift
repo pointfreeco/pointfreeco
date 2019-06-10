@@ -31,7 +31,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .exact("1.2.0")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2c3d440")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("xcode-11")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
@@ -90,6 +90,7 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
+        "Html",
         "SnapshotTesting",
         ]
     ),

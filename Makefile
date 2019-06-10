@@ -13,63 +13,17 @@ bootstrap:
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
 	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
-	@$(MAKE) xcodeproj-oss
-	@$(MAKE) install-mm
+	@$(MAKE) check-dependencies
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@sleep 1 && xed .
-
-bootstrap-oss-lite:
-	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
-	@$(MAKE) xcodeproj-oss
-	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@sleep 1 && xed .
+	@xed .
 
 bootstrap-private:
 	@echo "  👀 Bootstrapping Point-Free (private)..."
-	@$(MAKE) xcodeproj
-	@$(MAKE) install-mm
+	@$(MAKE) check-dependencies
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@sleep 1 && xed .
 
-uninstall: uninstall-mm db-drop
-
-install-mm:
-	@if test -d Sources/Models/Transcripts/.git; \
-		then \
-			echo "  ⚠️  Installing module maps into SDK path..."; \
-		else \
-			echo "$$MODULE_MAP_WARNING"; \
-		fi
-	@$(MAKE) install-mm-commoncrypto || (echo "$$MODULE_MAP_ERROR" && exit 1)
-	@$(MAKE) install-mm-cmark
-	@$(MAKE) install-mm-postgres
-	@$(MAKE) install-mm-xcodeproj
-	@echo "  ✅ Module maps installed!"
-
-install-mm-cmark: $(CCMARK_MODULE_MAP_PATH)
-	@$(SUDO) mkdir -p "$(CCMARK_PATH)"
-	@echo "$$CCMARK_MODULE_MAP" | sudo tee "$(CCMARK_MODULE_MAP_PATH)" > /dev/null
-
-install-mm-commoncrypto: $(COMMON_CRYPTO_MODULE_MAP_PATH)
-	@$(SUDO) mkdir -p "$(COMMON_CRYPTO_PATH)"
-	@echo "$$COMMON_CRYPTO_MODULE_MAP" | sudo tee "$(COMMON_CRYPTO_MODULE_MAP_PATH)" > /dev/null
-
-install-mm-postgres: $(POSTGRES_MODULE_MAP_PATH)
-	@$(SUDO) mkdir -p "$(POSTGRES_PATH)"
-	@echo "$$POSTGRES_MODULE_MAP" | $(SUDO) tee "$(POSTGRES_PATH)/module.map" > /dev/null
-	@echo "$$POSTGRES_SHIM_H" | $(SUDO) tee "$(POSTGRES_PATH)/shim.h" > /dev/null
-
-install-mm-xcodeproj: PointFree.xcodeproj
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
-
-uninstall-mm:
-	@echo "  ⚠️  Uninstalling module maps from SDK path..."
-	@$(SUDO) rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
-	@$(SUDO) rm -r "$(CCMARK_PATH)"
-	@$(SUDO) rm -r "$(POSTGRES_PATH)"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
-	@echo "  ✅ Module maps uninstalled!"
+uninstall: db-drop
 
 check-dependencies: check-cmark check-postgres
 
@@ -97,90 +51,11 @@ db-drop:
 	dropdb --username pointfreeco pointfreeco_test || true
 	dropuser pointfreeco || true
 
-
-xcodeproj-oss: check-dependencies
-	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
-		&& echo "  ✅ Generated!" \
-		|| (echo "  🛑 Failed!" && exit 1)
-
 .env: .env.example
 	@echo "  ⚠️  Preparing local configuration..."
 	@test -f .env && echo "$$DOTENV_ERROR" && exit 1 || true
 	@cp .env.example .env
 	@echo "  ✅ \033[1m.env\033[0m file copied!"
-
-SDK_PATH = $(shell xcrun --show-sdk-path 2>/dev/null)
-FRAMEWORKS_PATH = $(SDK_PATH)/System/Library/Frameworks
-
-CCMARK_PATH = $(FRAMEWORKS_PATH)/Ccmark.framework
-CCMARK_MODULE_MAP_PATH = $(CCMARK_PATH)/module.map
-define CCMARK_MODULE_MAP
-module Ccmark [system] {
-  header "/usr/local/Cellar/cmark/0.29.0/include/cmark.h"
-  export *
-}
-endef
-export CCMARK_MODULE_MAP
-
-COMMON_CRYPTO_PATH = $(FRAMEWORKS_PATH)/CommonCrypto.framework
-COMMON_CRYPTO_MODULE_MAP_PATH = $(COMMON_CRYPTO_PATH)/module.map
-define COMMON_CRYPTO_MODULE_MAP
-module CommonCrypto [system] {
-  header "$(SDK_PATH)/usr/include/CommonCrypto/CommonCrypto.h"
-  header "$(SDK_PATH)/usr/include/CommonCrypto/CommonRandom.h"
-  export *
-}
-endef
-export COMMON_CRYPTO_MODULE_MAP
-
-POSTGRES_PATH = $(FRAMEWORKS_PATH)/CPostgreSQL.framework
-define POSTGRES_MODULE_MAP
-module CPostgreSQL [system] {
-  header "shim.h"
-  link "pq"
-  export *
-}
-endef
-export POSTGRES_MODULE_MAP
-
-define POSTGRES_SHIM_H
-#ifndef __CPOSTGRESQL_SHIM_H__
-#define __CPOSTGRESQL_SHIM_H__
-
-#include <libpq-fe.h>
-#include <postgres_ext.h>
-
-#endif
-endef
-export POSTGRES_SHIM_H
-
-define MODULE_MAP_WARNING
-  ⚠️  Point-Free installs module maps into your Xcode SDK path to enable
-     playground support. If you don't want to run playgrounds, bootstrap with:
-
-       $$ \033[1mmake\033[0m \033[38;5;66mbootstrap-oss-lite\033[0m
-
-     You can undo this at any time by running the following:
-
-       $$ \033[1mmake\033[0m \033[38;5;66muninstall-mm\033[0m
-
-endef
-export MODULE_MAP_WARNING
-
-define MODULE_MAP_ERROR
-  🛑 Couldn't install module maps! Point-Free requires \033[1msudo\033[0m access to install
-     module maps for playground support.
-
-endef
-export MODULE_MAP_ERROR
-
-define MODULE_MAP_ERROR_UNINSTALL
-  🛑 Couldn't uninstall module maps! Point-Free requires \033[1msudo\033[0m access to
-     uninstall its module maps.
-
-endef
-export MODULE_MAP_ERROR_UNINSTALL
 
 define CMARK_ERROR
   🛑 cmark not found! Point-Free uses cmark to render Markdown for transcripts
@@ -289,12 +164,6 @@ sourcery-tests: check-sourcery
 
 # private
 
-xcodeproj: check-dependencies
-	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
-	@xed .
-	@echo "  ✅ Generated!"
-
 submodules:
 	@echo "  ⚠️  Fetching transcripts..."
 	@git submodule sync --recursive >/dev/null
@@ -334,15 +203,8 @@ SUDO = sudo --prompt=$(SUDO_PROMPT)
 SUDO_PROMPT = "  🔒 Please enter your password: "
 
 .PHONY: bootstrap-oss \
-	bootstrap-oss-lite \
 	bootstrap \
-	install-mm \
-	install-mm-cmark \
-	install-mm-commoncrypto \
-	install-mm-postgres \
-	install-mm-xcodeproj \
 	uninstall \
-	uninstall-mm \
 	uninstall-colortheme \
 	check-dependencies \
 	check-cmark \
@@ -350,8 +212,6 @@ SUDO_PROMPT = "  🔒 Please enter your password: "
 	check-sourcery \
 	db \
 	db-drop \
-	xcodeproj-oss \
-	xcodeproj \
 	submodule \
 	env-local \
 	deploy-local \
