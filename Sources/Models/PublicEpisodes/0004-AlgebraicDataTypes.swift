@@ -165,6 +165,7 @@ func + <A, B> (lhs: A.Type, rhs: B.Type) -> Either<A, B>.Type {
   return Either<A, B>.self
 }
 ```
+
 To explore the precedence rules of both operators, let’s check the the type of the following expression:
 
 ```
