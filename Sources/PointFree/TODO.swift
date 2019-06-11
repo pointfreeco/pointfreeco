@@ -12,6 +12,7 @@ import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
+import Tagged
 import Tuple
 import UrlFormEncoding
 import View
@@ -28,6 +29,9 @@ extension Tagged where Tag == EncryptedTag, RawValue == String {
     return decrypted(text: self.rawValue, secret: secret.rawValue)
   }
 }
+
+public typealias AppMiddleware<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
+public typealias AppTransformer<A, B> = (@escaping AppMiddleware<A>) -> AppMiddleware<B>
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?

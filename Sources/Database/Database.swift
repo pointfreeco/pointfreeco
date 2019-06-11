@@ -7,15 +7,22 @@ import PointFreePrelude
 import Prelude
 import PostgreSQL
 import Stripe
+import Tagged
 
 public struct Client {
   public var addUserIdToSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
+  public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
+  public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
+  public var fetchEnterpriseAccountForDomain: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
+  public var fetchEnterpriseAccountForSubscription: (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
+  public var fetchEnterpriseEmails: () -> EitherIO<Error, [EnterpriseEmail]>
   public var fetchEpisodeCredits: (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>
   public var fetchFreeEpisodeUsers: () -> EitherIO<Error, [Models.User]>
   public var fetchSubscriptionById: (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>
@@ -33,18 +40,25 @@ public struct Client {
   public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
+  public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
 
   public init(
     addUserIdToSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
+    createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
+    deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
+    fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
+    fetchEnterpriseAccountForSubscription: @escaping (Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
+    fetchEnterpriseEmails: @escaping () -> EitherIO<Error, [EnterpriseEmail]>,
     fetchEpisodeCredits: @escaping (Models.User.Id) -> EitherIO<Error, [EpisodeCredit]>,
     fetchFreeEpisodeUsers: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchSubscriptionById: @escaping (Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?>,
@@ -62,17 +76,24 @@ public struct Client {
     redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
+    sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
+    self.createEnterpriseAccount = createEnterpriseAccount
+    self.createEnterpriseEmail = createEnterpriseEmail
     self.createFeedRequestEvent = createFeedRequestEvent
     self.createSubscription = createSubscription
+    self.deleteEnterpriseEmail = deleteEnterpriseEmail
     self.deleteTeamInvite = deleteTeamInvite
     self.execute = execute
     self.fetchAdmins = fetchAdmins
     self.fetchEmailSettingsForUserId = fetchEmailSettingsForUserId
+    self.fetchEnterpriseAccountForDomain = fetchEnterpriseAccountForDomain
+    self.fetchEnterpriseAccountForSubscription = fetchEnterpriseAccountForSubscription
+    self.fetchEnterpriseEmails = fetchEnterpriseEmails
     self.fetchEpisodeCredits = fetchEpisodeCredits
     self.fetchFreeEpisodeUsers = fetchFreeEpisodeUsers
     self.fetchSubscriptionById = fetchSubscriptionById
@@ -90,6 +111,7 @@ public struct Client {
     self.redeemEpisodeCredit = redeemEpisodeCredit
     self.registerUser = registerUser
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
+    self.sawUser = sawUser
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
     self.upsertUser = upsertUser
@@ -119,14 +141,20 @@ extension Client {
 
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
+      createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
+      createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
       createSubscription: client.createSubscription(with:for:),
+      deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
-      fetchAdmins: { client.fetchAdmins() },
+      fetchAdmins: client.fetchAdmins,
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
+      fetchEnterpriseAccountForDomain: client.fetchEnterpriseAccount(forDomain:),
+      fetchEnterpriseAccountForSubscription: client.fetchEnterpriseAccount(forSubscriptionId:),
+      fetchEnterpriseEmails: client.fetchEnterpriseEmails,
       fetchEpisodeCredits: client.fetchEpisodeCredits(for:),
-      fetchFreeEpisodeUsers: { client.fetchFreeEpisodeUsers() },
+      fetchFreeEpisodeUsers: client.fetchFreeEpisodeUsers,
       fetchSubscriptionById: client.fetchSubscription(id:),
       fetchSubscriptionByOwnerId: client.fetchSubscription(ownerId:),
       fetchSubscriptionTeammatesByOwnerId: client.fetchSubscriptionTeammates(ownerId:),
@@ -138,10 +166,11 @@ extension Client {
       fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
       incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
       insertTeamInvite: client.insertTeamInvite(email:inviterUserId:),
-      migrate: { client.migrate() },
+      migrate: client.migrate,
       redeemEpisodeCredit: client.redeemEpisodeCredit(episodeSequence:userId:),
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
+      sawUser: client.sawUser(id:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
@@ -172,6 +201,40 @@ private struct _Client {
       .map(const(unit))
   }
 
+  func createEnterpriseAccount(
+    companyName: String,
+    domain: EnterpriseAccount.Domain,
+    subscriptionId: Models.Subscription.Id
+    ) -> EitherIO<Error, EnterpriseAccount?> {
+
+    return self.firstRow(
+      """
+      INSERT INTO "enterprise_accounts"
+      ("company_name", "domain", "subscription_id")
+      VALUES
+      ($1, $2, $3)
+      RETURNING *
+      """, [
+        companyName,
+        domain,
+        subscriptionId
+      ])
+  }
+
+  func createEnterpriseEmail(email: EmailAddress, userId: User.Id) -> EitherIO<Error, EnterpriseEmail?> {
+    return self.firstRow(
+      """
+      INSERT INTO "enterprise_emails"
+      ("email", "user_id")
+      VALUES
+      ($1, $2)
+      RETURNING *
+      """, [
+        email,
+        userId
+      ])
+  }
+
   func createFeedRequestEvent(
     type: FeedRequestEvent.FeedType,
     userAgent: String,
@@ -199,33 +262,33 @@ private struct _Client {
   func createSubscription(
     with stripeSubscription: Stripe.Subscription, for userId: Models.User.Id
     )
-    -> EitherIO<Error, Prelude.Unit> {
-      return self.execute(
+    -> EitherIO<Error, Models.Subscription?> {
+
+      let subscription: EitherIO<Error, Models.Subscription?> = self.firstRow(
         """
-      INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
-      VALUES ($1, $2, $3)
-      RETURNING "id"
-      """,
-        [
-          stripeSubscription.id.rawValue,
-          stripeSubscription.status.rawValue,
-          userId.rawValue.uuidString,
-          ]
-        )
-        .flatMap { node in
-          self.execute(
-            """
+        INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
+        VALUES ($1, $2, $3)
+        RETURNING *
+        """,[
+        stripeSubscription.id,
+        stripeSubscription.status.rawValue,
+        userId
+        ])
+
+      return subscription.flatMap { subscription in
+        self.execute(
+          """
           UPDATE "users"
           SET "subscription_id" = $1
           WHERE "users"."id" = $2
           """,
-            [
-              node[0, "id"]?.string,
-              userId.rawValue.uuidString
-            ]
-          )
-        }
-        .map(const(unit))
+          [
+            subscription?.id,
+            subscription?.userId
+          ]
+        )
+        .map(const(subscription))
+      }
   }
 
   func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Models.Subscription?> {
@@ -247,7 +310,6 @@ private struct _Client {
     teammateUserId: Models.User.Id,
     fromSubscriptionId subscriptionId: Models.Subscription.Id
     ) -> EitherIO<Error, Prelude.Unit> {
-
     return self.execute(
       """
     UPDATE "users"
@@ -257,8 +319,8 @@ private struct _Client {
     """,
       [
         teammateUserId.rawValue.uuidString,
-        subscriptionId.rawValue.uuidString,
-        ]
+        subscriptionId.rawValue.uuidString
+      ]
       )
       .map(const(unit))
   }
@@ -307,6 +369,21 @@ private struct _Client {
     """,
       [ownerId.rawValue.uuidString]
     )
+  }
+
+  func sawUser(
+    id userId: Models.User.Id
+    ) -> EitherIO<Error, Prelude.Unit> {
+
+    return self.execute(
+      """
+    UPDATE "users"
+    SET "updated_at" = NOW()
+    WHERE "id" = $1
+    """,
+      [userId.rawValue.uuidString]
+      )
+      .map(const(unit))
   }
 
   func updateUser(
@@ -408,6 +485,37 @@ private struct _Client {
       ]
       )
       .flatMap { _ in self.fetchUser(byGitHubUserId: envelope.gitHubUser.id) }
+  }
+
+  func fetchEnterpriseAccount(forDomain domain: EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?> {
+    return self.firstRow(
+      """
+      SELECT "company_name", "domain", "id", "subscription_id"
+      FROM "enterprise_accounts"
+      WHERE "domain" = $1
+      LIMIT 1
+      """,
+      [domain.rawValue]
+    )
+  }
+
+  func fetchEnterpriseAccount(forSubscriptionId subscriptionId: Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?> {
+    return self.firstRow(
+      """
+      SELECT "company_name", "domain", "id", "subscription_id"
+      FROM "enterprise_accounts"
+      WHERE "subscription_id" = $1
+      LIMIT 1
+      """,
+      [subscriptionId.rawValue]
+    )
+  }
+
+  func fetchEnterpriseEmails() -> EitherIO<Error, [EnterpriseEmail]> {
+    return self.rows("""
+      SELECT *
+      FROM "enterprise_emails"
+      """)
   }
 
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
@@ -530,6 +638,16 @@ private struct _Client {
     """,
       [id.rawValue.uuidString]
     )
+  }
+
+  func deleteEnterpriseEmail(for userId: User.Id) -> EitherIO<Error, Prelude.Unit> {
+    return self.execute("""
+      DELETE FROM "enterprise_emails"
+      WHERE "user_id" = $1
+      """, [
+        userId
+      ])
+      .map(const(unit))
   }
 
   func deleteTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
@@ -852,6 +970,53 @@ private struct _Client {
       $$ LANGUAGE PLPGSQL;
       """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE TABLE IF NOT EXISTS "enterprise_accounts" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "company_name" character varying NOT NULL,
+        "domain" character varying NOT NULL,
+        "subscription_id" uuid REFERENCES "subscriptions" ("id") NOT NULL,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
+      ON "enterprise_accounts" ("domain")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
+      ON "enterprise_accounts" ("subscription_id")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE TABLE IF NOT EXISTS "enterprise_emails" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "email" character varying NOT NULL,
+        "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email"
+      ON "enterprise_emails" (lower("email"))
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_user_id"
+      ON "enterprise_emails" ("user_id")
+      """
+      )))
       .map(const(unit))
   }
 
@@ -897,4 +1062,10 @@ private struct _Client {
 
 public enum DatabaseError: Error {
   case invalidUrl
+}
+
+extension Tagged: NodeRepresentable where RawValue: NodeRepresentable {
+  public func makeNode(in context: Context?) throws -> Node {
+    return try self.rawValue.makeNode(in: context)
+  }
 }

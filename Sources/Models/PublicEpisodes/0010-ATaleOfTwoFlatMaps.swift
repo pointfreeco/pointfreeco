@@ -18,6 +18,7 @@ operation to other structures and derive new, useful code!
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg",
   length: 25*60+4,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_522_144_623),
   references: [.introduceSequenceCompactMap],
   sequence: 10,

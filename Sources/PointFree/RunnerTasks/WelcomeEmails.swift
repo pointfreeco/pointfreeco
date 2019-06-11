@@ -53,10 +53,10 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
       )
     }
     .map(const(unit))
-    .catch(notifyError(subject: "Welcome emails failed"))
+    .catch(notifyAdmins(subject: "Welcome emails failed"))
 }
 
-private func notifyError<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
+func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
   return { error in
     var errorDump = ""
     dump(error, to: &errorDump)

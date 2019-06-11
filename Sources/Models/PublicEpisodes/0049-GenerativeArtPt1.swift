@@ -17,6 +17,7 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/itunes-poster.jpg",
   length: 32*60 + 06,
   permission: .free,
+  previousEpisodeInCollection: 48,
   publishedAt: .init(timeIntervalSince1970: 1551682800),
   references: [
     .randomUnification,

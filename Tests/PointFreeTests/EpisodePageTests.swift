@@ -38,8 +38,8 @@ class EpisodePageTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2100))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
         ]
       )
     }
@@ -59,8 +59,8 @@ class EpisodePageTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2600))
         ]
       )
     }
@@ -401,7 +401,7 @@ class EpisodePageTests: TestCase {
     XCTAssertTrue(episode.subscriberOnly)
   }
 
-  func testEpisodePage_ExercisesAndReferences() { 
+  func testEpisodePage_ExercisesAndReferences() {
     let episode = Current.episodes()[0]
       |> \.exercises .~ [.mock, .mock]
       |> \.references .~ [.mock]
@@ -424,16 +424,17 @@ class EpisodePageTests: TestCase {
       webView.loadHTMLString(html, baseURL: nil)
       assertSnapshot(matching: webView, as: .image, named: "desktop")
 
-      webView.evaluateJavaScript(
-        """
-          document.getElementsByTagName('details')[0].open = true
-          """, completionHandler: nil)
-      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-
       webView.frame.size.width = 500
-      webView.frame.size.width = 1900
+      webView.frame.size.height = 1700
       assertSnapshot(matching: webView, as: .image, named: "mobile")
+
+      webView.evaluateJavaScript("""
+        document.getElementsByTagName('details')[0].open = true
+        """)
+      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
     }
     #endif
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

@@ -19,11 +19,15 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >=> currentSubscriptionMiddleware
     >=> render(conn:)
 
-private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, Route>>)
+private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (subscription, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
-    let subscriberState = SubscriberState(user: user, subscription: subscription)
+    let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
+    let subscriberState = SubscriberState(
+      user: user,
+      subscriptionAndEnterpriseAccount: subscriptionAndEnterpriseAccount
+    )
+    let subscription = subscriptionAndEnterpriseAccount.map { subscription, _ in subscription }
 
     switch route {
     case .about:
@@ -89,6 +93,18 @@ private func render(conn: Conn<StatusLineOpen, T3<Models.Subscription?, User?, R
     case .episodes:
       return conn
         |> redirect(to: path(to: .home))
+
+    case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
+      return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
+        |> enterpriseAcceptInviteMiddleware
+
+    case let .enterprise(.landing(domain)):
+      return conn.map(const(user .*. subscriberState .*. domain .*. unit))
+        |> enterpriseLandingResponse
+
+    case let .enterprise(.requestInvite(domain, request)):
+      return conn.map(const(user .*. domain .*. request .*. unit))
+        |> enterpriseRequestMiddleware
 
     case let .expressUnsubscribe(payload):
       return conn.map(const(payload))

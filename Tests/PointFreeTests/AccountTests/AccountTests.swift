@@ -95,6 +95,26 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  func testTeam_AsTeammate() {
+    Current = .teamYearlyTeammate
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testAccount_WithExtraInvoiceInfo() {
     Current = .teamYearly
       |> \.stripe.fetchSubscription .~ const(
@@ -127,7 +147,8 @@ final class AccountTests: TestCase {
   func testAccountWithFlashNotice() {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(
+      from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -147,7 +168,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashWarning() {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -167,7 +188,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashError() {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -327,5 +348,4 @@ final class AccountTests: TestCase {
     }
     #endif
   }
-
 }

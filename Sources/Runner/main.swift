@@ -13,3 +13,7 @@ _ = try! PointFree
 _ = sendWelcomeEmails()
   .run
   .perform()
+
+//_ = validateEnterpriseEmails()
+//  .run
+//  .perform()

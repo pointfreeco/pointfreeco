@@ -27,12 +27,12 @@ let package = Package(
     .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
+    .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
-    .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.4.0"),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("swift-5")),
-    .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
@@ -47,6 +47,7 @@ let package = Package(
         "PostgreSQL",
         "Prelude",
         "Stripe",
+        "Tagged",
         ]
     ),
 
@@ -57,6 +58,7 @@ let package = Package(
         "Either",
         "Models",
         "ModelsTestSupport",
+        "Optics",
         "PointFreePrelude",
         "PostgreSQL",
         "Prelude",
@@ -68,6 +70,9 @@ let package = Package(
       dependencies: [
         "Database",
         "DatabaseTestSupport",
+        "GitHubTestSupport",
+        "Logger",
+        "ModelsTestSupport",
         "SnapshotTesting",
         ]
     ),
@@ -85,6 +90,7 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
+        "Html",
         "SnapshotTesting",
         ]
     ),
@@ -97,6 +103,7 @@ let package = Package(
         "Optics",
         "PointFreePrelude",
         "Prelude",
+        "Tagged",
         ]
     ),
 
@@ -240,6 +247,7 @@ let package = Package(
         "Logger",
         "Optics",
         "Prelude",
+        "Tagged",
         "Tuple",
         "UrlFormEncoding",
         ]
@@ -285,6 +293,7 @@ let package = Package(
         "Logger",
         "PointFreePrelude",
         "Prelude",
+        "Tagged",
         "TaggedMoney"
         ]
     ),

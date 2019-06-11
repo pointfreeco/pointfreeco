@@ -11,7 +11,7 @@ extension Episode.Reference {
   public static let mock = Episode.Reference(
     author: "Blob",
     blurb: "Blob uses functional programming to impress all of their friends.",
-    link: "https://www.pointfree.co",
+    link: "https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url",
     publishedAt: Date(timeIntervalSince1970: 1234567890),
     title: "Functional Programming is Fun!"
   )
@@ -41,6 +41,7 @@ private let subscriberOnlyEpisode = Episode(
   itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .subscriberOnly,
+  previousEpisodeInCollection: 1,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 2,
   title: "Proof in Functions",
@@ -172,6 +173,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 1,
   title: "Type-Safe HTML in Swift",

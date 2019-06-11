@@ -50,6 +50,26 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
+  public static let difficultiesWithEfficientLargeFileParsing = Episode.Reference(
+    author: "Ezekiel Elin et al.",
+    blurb: """
+This question on the Swift forums brings up an interesting discussion on how to best handle large files (hundreds of megabytes and millions of lines) in Swift. The thread contains lots of interesting tips on how to improve performance, and contains some hope of future standard library changes that may help too.
+""",
+    link: "https://forums.swift.org/t/difficulties-with-efficient-large-file-parsing/23660",
+    publishedAt: referenceDateFormatter.date(from: "2019-04-25"),
+    title: "Difficulties With Efficient Large File Parsing"
+  )
+
+  public static let everythingsAFunction = Episode.Reference(
+    author: "Eitan Chatav",
+    blurb: """
+This short article explains how everything can be seen to be a function, even values and function application. Eitan coins the term `zurry` to describe the act of currying a zero-argument function.
+""",
+    link: "https://tangledw3b.wordpress.com/2013/01/18/cartesian-closed-categories/",
+    publishedAt: referenceDateFormatter.date(from: "2013-01-18"),
+    title: "Everything’s a Function."
+  )
+
   public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
     author: nil,
     blurb: """
@@ -61,9 +81,9 @@ The Swift evolution review of the proposal to add a `Result` type to the standar
   )
 
   public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
-    author: nil,
+    author: "Stephen Celis & Greg Titus",
     blurb: """
-The Swift evolution review of the proposal to automatically promote key paths to functional getters.
+A proposal has been accepted in the Swift evolution process that would allow key paths to be automatically promoted to getter functions. This would allow using key paths in much the same way you would use functions, but perhaps more succinctly: `users.map(\\.name)`.
 """,
     link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
     publishedAt: Date(timeIntervalSince1970: 1553004000),
@@ -114,6 +134,36 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
+  public static let learningParserCombinatorsWithRust = Episode.Reference(
+    author: "Bodil Stokke",
+    blurb: """
+A wonderful article that explains parser combinators from start to finish. The article assumes you are already familiar with Rust, but it is possible to look past the syntax and see that there are many shapes in the code that are similar to what we have covered in our episodes on parsers.
+""",
+    link: "https://bodil.lol/parser-combinators/",
+    publishedAt: referenceDateFormatter.date(from: "2019-04-18"),
+    title: "Learning Parser Combinators With Rust"
+  )
+
+  public static let ledgeMacAppParsingTechniques = Episode.Reference(
+    author: "Chris Eidhof & Florian Kugler",
+    blurb: """
+  In this free episode of Swift talk, Chris and Florian discuss various techniques for parsing strings as a means to process a ledger file. It contains a good overview of various parsing techniques, including parser grammars.
+  """,
+    link: "https://talk.objc.io/episodes/S01E13-parsing-techniques",
+    publishedAt: referenceDateFormatter.date(from: "2016-08-26"),
+    title: "Ledger Mac App: Parsing Techniques"
+  )
+
+  public static let makingIllegalStatesUnrepresentable = Episode.Reference(
+    author: "Ole Begemann",
+    blurb: """
+Ole discusses the concept of "illegal states" in data types, and how to leverage the type-system to make those states completely impossible to construct. His article was inspired by a mistake we made in our episode on algebraic data types, which shows just how subtle this problem can be!
+""",
+    link: "https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/",
+    publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
+    title: "Making illegal states unrepresentable"
+  )
+  
   public static let nioRenameThenToFlatMap = Episode.Reference(
     author: "Apple",
     blurb: """
@@ -122,6 +172,16 @@ Apple's Swift NIO project has a type `EventLoopFuture` that can be thought of as
     link: "https://github.com/apple/swift-nio/pull/760",
     publishedAt: referenceDateFormatter.date(from: "2019-01-21"),
     title: "rename ELF.then to ELF.flatMap"
+  )
+
+  public static let nsscannerNsHipster = Episode.Reference(
+    author: "Nate Cook",
+    blurb: """
+  A nice, concise article covering the `Scanner` type, including a tip of how to extend the `Scanner` so that it is a bit more "Swifty". Take note that this article was written before `NSScanner` was renamed to just `Scanner` in Swift 3.
+  """,
+    link: "https://nshipster.com/nsscanner/",
+    publishedAt: referenceDateFormatter.date(from: "2015-03-02"),
+    title: "NSScanner"
   )
 
   public static let openSourcingSwiftHtml = Episode.Reference(
@@ -236,6 +296,16 @@ very simple, small pieces and then compose them together to create a really comp
     title: "Random Zalgo Generator"
   )
 
+  public static let scannerAppleDocs = Episode.Reference(
+    author: "Apple",
+    blurb: """
+  Official documentation for the `Scanner` type by Apple. Although the type hasn't (yet) been updated to take advantage of Swift's modern features, it is still a very powerful API that is capable of parsing complex text formats.
+  """,
+    link: "https://developer.apple.com/documentation/foundation/scanner",
+    publishedAt: nil,
+    title: "Scanner"
+  )
+
   public static let scrapYourTypeClasses = Episode.Reference(
     author: "Gabriel Gonzalez",
     blurb: """
@@ -285,6 +355,18 @@ Stephen gave an overview of snapshot testing, its benefits, and how one may snap
     link: "https://www.stephencelis.com/2017/09/snapshot-testing-in-swift",
     publishedAt: Date(timeIntervalSince1970: 1504238400),
     title: "Snapshot Testing in Swift"
+  )
+
+  public static let sparse = Episode.Reference(
+    author: "John Patrick Morgan",
+    blurb: """
+A parser library built in Swift that uses many of the concepts we cover in our series of episodes on parsers.
+
+> Sparse is a simple parser-combinator library written in Swift.
+""",
+    link: "https://github.com/johnpatrickmorgan/Sparse",
+    publishedAt: referenceDateFormatter.date(from: "2017-01-12"),
+    title: "Sparse"
   )
 
   public static let stateMonadTutorialForTheConfused = Episode.Reference(
@@ -342,6 +424,25 @@ bring operators into your codebase.
     title: "Swift Overture"
   )
 
+  public static let swiftPitchStringConsumption = Episode.Reference(
+    author: "Michael Ilseman et al.",
+    blurb: """
+Swift contributor [Michael Ilseman](https://twitter.com/ilseman) lays out some potential future directions for Swift's string consumption API. This could be seen as a "Swiftier" way of doing what the `Scanner` type does today, but possibly even more powerful.
+""",
+    link: "https://forums.swift.org/t/string-consumption/21907",
+    publishedAt: referenceDateFormatter.date(from: "2019-03-03"),
+    title: "Swift Pitch: String Consumption"
+  )
+
+  public static let swiftPitchStringParsing = Episode.Reference(
+    author: "Chris Eidhof et al.",
+    blurb: """
+Chris Eidhof strikes up a conversation on the Swift forums about how string parser helpers could be defined on `Substring` in the standard library. A lot of interesting ideas are shared on which is the correct type to define these helpers, and what is the correct API to expose to the user.
+""",
+    link: "https://forums.swift.org/t/string-parsing/10219",
+    publishedAt: referenceDateFormatter.date(from: "2018-02-22"),
+    title: "Swift Pitch: String Parsing"
+  )
   public static let swiftSnapshotTesting = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -354,6 +455,17 @@ allows you to define your own custom, domain-specific snapshot strategies for yo
     title: "pointfreeco/swift-snapshot-testing"
   )
 
+  public static let swiftStringsAndSubstrings = Episode.Reference(
+    author: "Chris Eidhof & Florian Kugler",
+    blurb: """
+In this free episode of Swift talk, Chris and Florian discuss how to efficiently use Swift strings, and in particular how to use the `Substring` type to prevent unnecessary copies of large strings.
+
+> We write a simple CSV parser as an example demonstrating how to work with Swift's String and Substring types.
+""",
+    link: "https://talk.objc.io/episodes/S01E78-swift-strings-and-substrings",
+    publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
+    title: "Swift Strings and Substrings"
+  )
   public static let swiftTagged = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -375,6 +487,28 @@ their errors.
     link: "https://github.com/pointfreeco/swift-validated",
     publishedAt: Date(timeIntervalSince1970: 1534478400),
     title: "Validated"
+  )
+
+  public static let parsec = Episode.Reference(
+    author: "Daan Leijen, Paolo Martini, Antoine Latter",
+    blurb: """
+Parsec is one of the first and most widely used parsing libraries, built in Haskell. It's built on many of the same ideas we have covered in our series of episodes on parsers, but using some of Haskell's most powerful type-level features.
+""",
+    link: "http://hackage.haskell.org/package/parsec",
+    publishedAt: nil,
+    title: "parsec"
+  )
+  
+  public static let parserCombinatorsInSwift = Episode.Reference(
+    author: "Yasuhiro Inami",
+    blurb: """
+In the first ever [try! Swift](http://tryswift.co) conference, Yasuhiro Inami gives a broad overview of parsers and parser combinators, and shows how they can accomplish very complex parsing.
+
+> Parser combinators are one of the most awesome functional techniques for parsing strings into trees, like constructing JSON. In this talk from try! Swift, Yasuhiro Inami describes how they work by combining small parsers together to form more complex and practical ones.
+""",
+    link: "https://academy.realm.io/posts/tryswift-yasuhiro-inami-parser-combinator/",
+    publishedAt: referenceDateFormatter.date(from: "2016-05-02"),
+    title: "Parser Combinators in Swift"
   )
 
   public static let taggedSecondsAndMilliseconds = Episode.Reference(

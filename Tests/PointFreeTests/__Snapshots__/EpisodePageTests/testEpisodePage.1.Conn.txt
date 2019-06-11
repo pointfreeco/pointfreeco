@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 77440
+Content-Length: 79002
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2010,6 +2010,29 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
             </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                  Type-Safe HTML in Swift
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -2056,6 +2079,29 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
                 </div>
               </div>
+              <p class="d-pt1
+                        m-pt1
+                        bg-white
+                        body-leading
+                        fg-black
+                        normal
+                        lh-4">
+                This episode builds on concepts introduced previously:
+              </p>
+              <ul class="list-style-none">
+                <li class="body-leading
+                           fg-black
+                           normal
+                           lh-4">
+                  #
+                  1
+                  : 
+                  <a class="pf-link-purple"
+                     href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                    Type-Safe HTML in Swift
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
           <hr class="pf-divider

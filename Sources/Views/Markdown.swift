@@ -56,9 +56,9 @@ private let blockquoteMarkdownStyles: Stylesheet =
 
 private let aMarkdownStyles = Stylesheet.concat(
   a % key("text-decoration", "underline"),
-  (a & .pseudo(.link)) % color(Colors.purple150),
-  (a & .pseudo(.visited)) % color(Colors.purple150),
-  (a & .pseudo(.hover)) % color(Colors.black)
+  (a & CssSelector.pseudo(.link)) % color(Colors.purple150),
+  (a & CssSelector.pseudo(.visited)) % color(Colors.purple150),
+  (a & CssSelector.pseudo(.hover)) % color(Colors.black)
 )
 
 private let hrMarkdownStyles: Stylesheet =

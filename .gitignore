@@ -40,7 +40,7 @@ Packages/*
 # Package.pins
 Package.resolved
 .build/
-*.xcodeproj/*
+.swiftpm/
 
 # Miscellaneous
 .DS_Store

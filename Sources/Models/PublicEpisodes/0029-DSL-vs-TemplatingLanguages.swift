@@ -19,6 +19,7 @@ previously hidden.
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/itunes-poster.jpg",
   length: 33*60 + 17,
   permission: .free,
+  previousEpisodeInCollection: 28,
   publishedAt: Date(timeIntervalSince1970: 1536559023),
   references: [.openSourcingSwiftHtml],
   sequence: 29,

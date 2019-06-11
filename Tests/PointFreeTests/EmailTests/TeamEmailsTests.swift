@@ -12,7 +12,7 @@ import WebKit
 
 class TeamEmailsTests: TestCase {
   func testYouHaveBeenRemovedEmailView() {
-    let emailNodes = youHaveBeenRemovedEmailView.view((.mock, .mock))
+    let emailNodes = youHaveBeenRemovedEmailView.view(.teamOwner(.mock))
 
     assertSnapshot(matching: emailNodes, as: .html)
 

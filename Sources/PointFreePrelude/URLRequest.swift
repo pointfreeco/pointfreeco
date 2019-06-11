@@ -3,6 +3,7 @@ import Foundation
 import Prelude
 import Logger
 import Optics
+import Tagged
 import UrlFormEncoding
 
 extension URLRequest {

@@ -45,6 +45,13 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>> {
 
+    if let userId = conn.request.session.userId {
+      Current.database.sawUser(userId)
+        .run
+        .parallel
+        .run { _ in }
+    }
+
     let user = conn.request.session.userId
       .flatMap {
         Current.database.fetchUserById($0)
@@ -72,7 +79,7 @@ public func requireLoggedOutUser<A>(
 
 public func currentSubscriptionMiddleware<A, I>(
   _ conn: Conn<I, T2<Models.User?, A>>
-  ) -> IO<Conn<I, T3<Models.Subscription?, Models.User?, A>>> {
+  ) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
 
   let user = conn.data.first
 
@@ -93,6 +100,17 @@ public func currentSubscriptionMiddleware<A, I>(
   return (userSubscription <|> ownerSubscription)
     .run
     .map(^\.right)
+    .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
+      subscription
+        .map { subscription in
+          Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
+            .mapExcept(requireSome)
+            .run
+            .map(^\.right)
+            .map { enterpriseAccount in (subscription, enterpriseAccount) }
+        }
+        ?? pure(nil)
+    }
     .map { conn.map(const($0 .*. conn.data)) }
 }
 

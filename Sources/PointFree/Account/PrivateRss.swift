@@ -13,8 +13,9 @@ import Syndication
 import Tuple
 import View
 
-let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data> =
-  filterMap(decryptUserIdAndRssSalt, or: invalidatedFeedMiddleware(errorMessage: "Malformed URL"))
+let accountRssMiddleware
+  : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
+  = filterMap(decryptUserIdAndRssSalt, or: invalidatedFeedMiddleware(errorMessage: "Malformed URL"))
     <<< { fetchUser >=> $0 }
     <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
     <<< validateUserAndSalt
@@ -22,7 +23,11 @@ let accountRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encry
     <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
     <<< fetchStripeSubscriptionForUser
     <| map(lower)
-    >>> writeStatus(.ok)
+    >>> accountRssResponse
+
+private let accountRssResponse
+  : Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription?, User), Data>
+  = writeStatus(.ok)
     >=> trackFeedRequest
     >=> respond(privateEpisodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
@@ -63,7 +68,7 @@ private func validateActiveSubscriber<Z>(
     guard let subscription = get1(data) else { return nil }
     let user = get2(data)
 
-    return SubscriberState(user: user, subscription: subscription).isActive
+    return SubscriberState(user: user, subscriptionAndEnterpriseAccount: (subscription, nil)).isActive
       ? user .*. rest(data)
       : nil
   }
