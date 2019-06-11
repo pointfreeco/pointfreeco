@@ -36,7 +36,7 @@ all the values of some small cases like `(Bool) -> Bool`, `(Unit) -> Bool`, `(Bo
 `(Three) -> Bool` to get some intuition.
 """,
     solution: """
-For every input a function must assign a _single_ output. Viewed this way, we can enumerate implementations for the cited functions:
+For every input, a function must assign a _single_ output. Viewed this way, we can enumerate implementations for the cited functions:
 
 `(Bool) -> Bool`
 
