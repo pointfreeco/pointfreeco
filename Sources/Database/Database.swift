@@ -6,6 +6,7 @@ import Models
 import PointFreePrelude
 import Prelude
 import PostgreSQL
+import PostgresNIO
 import Stripe
 import Tagged
 
@@ -137,7 +138,22 @@ extension Client {
 
     let conn = postgres
       .flatMap { db in .wrap(db.makeConnection) }
-    let client = _Client(conn: conn, logger: logger)
+
+    // MARK: - New Postgres Client
+
+    let components = URLComponents(string: databaseUrl)!
+    let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+    let conn2 = try! PostgresConnection
+      .connect(
+        to: .makeAddressResolvingHost(components.host!, port: components.port!),
+        on: eventLoop.next()
+      )
+      .flatMap { conn in
+        conn.authenticate(username: components.user!, database: String(components.path.dropFirst()))
+          .map { conn }
+    }
+
+    let client = _Client(conn: conn, conn2: conn2, logger: logger)
 
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
@@ -180,7 +196,10 @@ extension Client {
 
 private struct _Client {
   let conn: EitherIO<Error, Connection>
+  let conn2: EventLoopFuture<PostgresConnection>
   let logger: Logger
+
+  let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
   func add(
     userId: Models.User.Id,
@@ -1056,6 +1075,18 @@ private struct _Client {
         self.logger.debug("[DB] \(uuid) \(delta)ms")
         return result
       }
+    }
+  }
+
+  func execute2(
+    _ query: String,
+    _ binds: [PostgresData] = []
+    ) -> EitherIO<Swift.Error, [PostgresRow]> {
+
+    return EitherIO<Swift.Error, [PostgresRow]>.wrap {
+      try self.conn2
+        .flatMap { $0.query(query, binds) }
+        .wait()
     }
   }
 }

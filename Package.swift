@@ -33,6 +33,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("swift-5")),
+    .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.0.0-alpha"),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
@@ -45,6 +46,7 @@ let package = Package(
         "Logger",
         "Models",
         "PostgreSQL",
+        "PostgresNIO",
         "Prelude",
         "Stripe",
         "Tagged",
