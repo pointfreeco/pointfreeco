@@ -9,7 +9,7 @@ import WebKit
 #endif
 import XCTest
 
-class StyleguideTests: SnapshotTestCase {
+class StyleguideTests: XCTestCase {
   override func setUp() {
     super.setUp()
     diffTool = "ksdiff"

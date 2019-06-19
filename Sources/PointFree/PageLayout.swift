@@ -29,15 +29,15 @@ enum NavStyle {
 
     var heroTagline: String {
       switch self {
-      case .blog:   return "A blog exploring functional programming and Swift."
-      case .main:   return "A new Swift video series exploring functional programming and more."
+      case .blog: return "A blog exploring functional programming and Swift."
+      case .main: return "A new Swift video series exploring functional programming and more."
       }
     }
 
     var heroLogoSvgBase64: String {
       switch self {
-      case .blog:   return pointFreePointersLogoSvgBase64
-      case .main:   return pointFreeHeroSvgBase64
+      case .blog: return pointFreePointersLogoSvgBase64
+      case .main: return pointFreeHeroSvgBase64
       }
     }
   }
@@ -54,20 +54,20 @@ struct SimplePageLayoutData<A> {
     }
   }
 
-  private(set) var currentRoute: Route?
-  private(set) var currentSubscriberState: SubscriberState
-  private(set) var currentUser: User?
-  private(set) var data: A
-  private(set) var description: String?
-  private(set) var extraHead: [ChildOf<Tag.Head>]
-  private(set) var extraStyles: Stylesheet
-  private(set) var flash: Flash?
-  private(set) var image: String?
-  private(set) var openGraphType: OpenGraphType
-  private(set) var style: Style
-  private(set) var title: String
-  private(set) var twitterCard: TwitterCard
-  private(set) var usePrismJs: Bool
+  var currentRoute: Route?
+  var currentSubscriberState: SubscriberState
+  var currentUser: User?
+  var data: A
+  var description: String?
+  var extraHead: [ChildOf<Tag.Head>]
+  var extraStyles: Stylesheet
+  var flash: Flash?
+  var image: String?
+  var openGraphType: OpenGraphType
+  var style: Style
+  var title: String
+  var twitterCard: TwitterCard
+  var usePrismJs: Bool
 
   init(
     currentRoute: Route? = nil,
@@ -109,7 +109,8 @@ func respond<A, B>(
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
     return { conn in
-      let newLayoutData = layoutData(conn.data) |> \.flash .~ conn.request.session.flash
+      var newLayoutData = layoutData(conn.data)
+      newLayoutData.flash = conn.request.session.flash
       let pageLayout = metaLayout(simplePageLayout(view))
         .map(addGoogleAnalytics)
         .contramap(

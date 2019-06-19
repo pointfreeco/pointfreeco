@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -32,7 +32,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("fa544ae")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("swift-5")),
     .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.0.0-alpha"),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],

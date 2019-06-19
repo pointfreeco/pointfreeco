@@ -7,7 +7,7 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-open class TestCase: SnapshotTestCase {
+open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
