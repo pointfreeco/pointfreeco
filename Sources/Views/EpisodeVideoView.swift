@@ -48,8 +48,13 @@ private let videoJsClasses: CssSelector =
 public struct VideoJsOptions: Encodable {
   let control: Bool
   let playbackRates: [Double]
+  let playsinline: Bool
 
-  static let `default` = VideoJsOptions(control: true, playbackRates: [1, 1.25, 1.5, 1.75, 2])
+  static let `default` = VideoJsOptions(
+    control: true,
+    playbackRates: [1, 1.25, 1.5, 1.75, 2],
+    playsinline: true
+  )
 
   var jsonString: String {
     if #available(OSX 10.13, *) {
