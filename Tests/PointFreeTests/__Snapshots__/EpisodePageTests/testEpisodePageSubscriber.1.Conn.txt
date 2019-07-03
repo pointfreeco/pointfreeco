@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 77498
+Content-Length: 77517
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2369,7 +2369,7 @@ working how we expect:</p>
                    playslinline
                    autoplay
                    poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">
+                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2],"playsinline":true}">
               <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
