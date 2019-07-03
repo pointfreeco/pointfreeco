@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 85791
+Content-Length: 85810
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2539,7 +2539,7 @@ video.play();event.preventDefault();"
                    playslinline
                    autoplay
                    poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">
+                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2],"playsinline":true}">
               <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
