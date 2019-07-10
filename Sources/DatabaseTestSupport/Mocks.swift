@@ -4,7 +4,7 @@ import Models
 import ModelsTestSupport
 import Optics
 import PointFreePrelude
-import PostgreSQL
+import PostgresNIO
 import Prelude
 
 extension Client {

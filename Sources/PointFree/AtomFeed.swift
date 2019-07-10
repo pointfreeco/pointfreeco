@@ -193,7 +193,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 }
 
 // TODO: swift-web
-public extension Application {
+extension Application {
   public static var atom = Application(rawValue: "atom+xml")
 }
 

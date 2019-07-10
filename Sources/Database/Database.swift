@@ -5,7 +5,6 @@ import Logger
 import Models
 import PointFreePrelude
 import Prelude
-import PostgreSQL
 import PostgresNIO
 import Stripe
 import Tagged
@@ -18,7 +17,7 @@ public struct Client {
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
+  public var execute: (String, [PostgresDataConvertible]) -> EitherIO<Swift.Error, [PostgresRow]>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
   public var fetchEnterpriseAccountForDomain: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
@@ -54,7 +53,7 @@ public struct Client {
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
-    execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
+    execute: @escaping (String, [PostgresDataConvertible]) -> EitherIO<Swift.Error, [PostgresRow]>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
     fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
@@ -121,26 +120,6 @@ public struct Client {
 
 extension Client {
   public init(databaseUrl: String, logger: Logger) {
-    let connInfo = URLComponents(string: databaseUrl)
-      .flatMap { url -> PostgreSQL.ConnInfo? in
-        curry(PostgreSQL.ConnInfo.basic)
-          <¢> url.host
-          <*> url.port
-          <*> String(url.path.dropFirst())
-          <*> url.user
-          <*> url.password
-      }
-      .map(Either.right)
-      ?? .left(DatabaseError.invalidUrl as Error)
-
-    let postgres = lift(connInfo)
-      .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
-
-    let conn = postgres
-      .flatMap { db in .wrap(db.makeConnection) }
-
-    // MARK: - New Postgres Client
-
     guard
       let components = URLComponents(string: databaseUrl),
       let host = components.host,
@@ -152,6 +131,8 @@ extension Client {
     let conn2 = try! PostgresConnection
       .connect(
         to: .makeAddressResolvingHost(host, port: port),
+        tlsConfiguration: .forClient(certificateVerification: .none),
+        serverHostname: host,
         on: eventLoop.next()
       )
       .flatMap { conn in
@@ -164,7 +145,7 @@ extension Client {
           .map { conn }
     }
 
-    let client = _Client(conn: conn, conn2: conn2, logger: logger)
+    let client = _Client(conn2: conn2, logger: logger)
 
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
@@ -174,7 +155,7 @@ extension Client {
       createSubscription: client.createSubscription(with:for:),
       deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
-      execute: client.execute,
+      execute: client.execute2,
       fetchAdmins: client.fetchAdmins,
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
       fetchEnterpriseAccountForDomain: client.fetchEnterpriseAccount(forDomain:),
@@ -206,7 +187,6 @@ extension Client {
 }
 
 private struct _Client {
-  let conn: EitherIO<Error, Connection>
   let conn2: EventLoopFuture<PostgresConnection>
   let logger: Logger
 
@@ -1048,17 +1028,6 @@ private struct _Client {
       .map(const(unit))
   }
 
-  func rows<T: Decodable>(
-    _ query: String,
-    _ representable: [PostgreSQL.NodeRepresentable] = []
-    ) -> EitherIO<Swift.Error, [T]> {
-
-    return self.execute(query, representable)
-      .flatMap { node in
-        .wrap { try DatabaseDecoder().decode([T].self, from: node) }
-    }
-  }
-
   func rows2<T: Decodable>(
     _ query: String,
     _ binds: [PostgresDataConvertible] = []
@@ -1070,15 +1039,6 @@ private struct _Client {
     }
   }
 
-  func firstRow<T: Decodable>(
-    _ query: String,
-    _ representable: [PostgreSQL.NodeRepresentable] = []
-    ) -> EitherIO<Swift.Error, T?> {
-
-    return self.rows(query, representable)
-      .map(^\.first)
-  }
-
   func firstRow2<T: Decodable>(
     _ query: String,
     _ binds: [PostgresDataConvertible] = []
@@ -1086,25 +1046,6 @@ private struct _Client {
 
     return self.rows2(query, binds)
       .map(^\.first)
-  }
-
-  func execute(
-    _ query: String,
-    _ representable: [PostgreSQL.NodeRepresentable] = []
-    ) -> EitherIO<Swift.Error, PostgreSQL.Node> {
-
-    return self.conn.flatMap { conn in
-      return EitherIO<Swift.Error, PostgreSQL.Node>.wrap { () -> Node in
-        let uuid = UUID().uuidString
-        let startTime = Date().timeIntervalSince1970
-        self.logger.debug("[DB] \(uuid) \(query)")
-        let result = try conn.execute(query, representable)
-        let endTime = Date().timeIntervalSince1970
-        let delta = Int((endTime - startTime) * 1000)
-        self.logger.debug("[DB] \(uuid) \(delta)ms")
-        return result
-      }
-    }
   }
 
   func execute2(
@@ -1120,38 +1061,6 @@ private struct _Client {
   }
 }
 
-extension Models.User {
-  init?(row: PostgresRow) {
-    guard
-      let email = (row.column("email")?.string).map(EmailAddress.init(rawValue:)),
-      let episodeCreditCount = row.column("episode_credit_count")?.int,
-      let gitHubUserId = (row.column("git_hub_user_id")?.int).map(GitHubUser.Id.init(rawValue:)),
-      let gitHubAccessToken = row.column("git_hub_access_token")?.string,
-      let id = (row.column("id")?.uuid).map(Models.User.Id.init(rawValue:)),
-      let isAdmin = row.column("is_admin")?.bool,
-      let rssSalt = (row.column("rss_salt")?.uuid).map(Models.User.RssSalt.init(rawValue:))
-      else { return nil }
-
-    self.init(
-      email: email,
-      episodeCreditCount: episodeCreditCount,
-      gitHubUserId: gitHubUserId,
-      gitHubAccessToken: gitHubAccessToken,
-      id: id,
-      isAdmin: isAdmin,
-      name: row.column("name")?.string,
-      rssSalt: rssSalt,
-      subscriptionId: (row.column("subscription_id")?.uuid).map(Models.Subscription.Id.init(rawValue:))
-    )
-  }
-}
-
 public enum DatabaseError: Error {
   case invalidUrl
-}
-
-extension Tagged: NodeRepresentable where RawValue: NodeRepresentable {
-  public func makeNode(in context: Context?) throws -> Node {
-    return try self.rawValue.makeNode(in: context)
-  }
 }

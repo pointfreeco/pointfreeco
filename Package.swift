@@ -34,7 +34,6 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("swift-5")),
     .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.0.0-alpha"),
-    .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
 
@@ -45,7 +44,6 @@ let package = Package(
         "GitHub",
         "Logger",
         "Models",
-        "PostgreSQL",
         "PostgresNIO",
         "Prelude",
         "Stripe",
@@ -62,7 +60,7 @@ let package = Package(
         "ModelsTestSupport",
         "Optics",
         "PointFreePrelude",
-        "PostgreSQL",
+        "PostgresNIO",
         "Prelude",
         ]
     ),
@@ -199,7 +197,7 @@ let package = Package(
         "Optics",
         "PointFreeRouter",
         "PointFreePrelude",
-        "PostgreSQL",
+        "PostgresNIO",
         "Stripe",
         "Styleguide",
         "Syndication",
