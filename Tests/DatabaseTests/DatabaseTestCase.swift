@@ -1,9 +1,10 @@
 import Database
 import GitHub
-import Prelude
-import ModelsTestSupport
 import GitHubTestSupport
 import Logger
+import ModelsTestSupport
+import NIO
+import Prelude
 import SnapshotTesting
 import XCTest
 
@@ -13,7 +14,11 @@ class DatabaseTestCase: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    self.database = .init(databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test", logger: Logger())
+    self.database = .init(
+      databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test",
+      eventLoopGroup: EmbeddedEventLoop(),
+      logger: Logger()
+    )
 
     _ = try! self.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
       .flatMap(const(self.database.execute("CREATE SCHEMA public", [])))

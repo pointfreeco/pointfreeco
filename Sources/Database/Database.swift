@@ -119,7 +119,7 @@ public struct Client {
 }
 
 extension Client {
-  public init(databaseUrl: String, logger: Logger) {
+  public init(databaseUrl: String, eventLoopGroup: EventLoopGroup, logger: Logger) {
     guard
       let components = URLComponents(string: databaseUrl),
       let host = components.host,
@@ -127,13 +127,12 @@ extension Client {
       let user = components.user
       else { fatalError("Invalid database URL: \(databaseUrl)") }
 
-    let eventLoop = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-    let conn2 = try! PostgresConnection
+    let conn = try! PostgresConnection
       .connect(
         to: .makeAddressResolvingHost(host, port: port),
         tlsConfiguration: .forClient(certificateVerification: .none),
         serverHostname: host,
-        on: eventLoop.next()
+        on: eventLoopGroup.next()
       )
       .flatMap { conn in
         conn
@@ -145,7 +144,7 @@ extension Client {
           .map { conn }
     }
 
-    let client = _Client(conn2: conn2, logger: logger)
+    let client = _Client(conn: conn, logger: logger)
 
     self.init(
       addUserIdToSubscriptionId: client.add(userId:toSubscriptionId:),
@@ -155,7 +154,7 @@ extension Client {
       createSubscription: client.createSubscription(with:for:),
       deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
-      execute: client.execute2,
+      execute: client.execute,
       fetchAdmins: client.fetchAdmins,
       fetchEmailSettingsForUserId: client.fetchEmailSettings(forUserId:),
       fetchEnterpriseAccountForDomain: client.fetchEnterpriseAccount(forDomain:),
@@ -187,17 +186,15 @@ extension Client {
 }
 
 private struct _Client {
-  let conn2: EventLoopFuture<PostgresConnection>
+  let conn: EventLoopFuture<PostgresConnection>
   let logger: Logger
-
-  let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
   func add(
     userId: Models.User.Id,
     toSubscriptionId subscriptionId: Models.Subscription.Id
     ) -> EitherIO<Error, Prelude.Unit> {
 
-    return self.execute2(
+    return self.execute(
       """
       UPDATE "users"
       SET "subscription_id" = $1
@@ -217,7 +214,7 @@ private struct _Client {
     subscriptionId: Models.Subscription.Id
     ) -> EitherIO<Error, EnterpriseAccount?> {
 
-    return self.firstRow2(
+    return self.firstRow(
       """
       INSERT INTO "enterprise_accounts"
       ("company_name", "domain", "subscription_id")
@@ -232,7 +229,7 @@ private struct _Client {
   }
 
   func createEnterpriseEmail(email: EmailAddress, userId: User.Id) -> EitherIO<Error, EnterpriseEmail?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
       INSERT INTO "enterprise_emails"
       ("email", "user_id")
@@ -251,7 +248,7 @@ private struct _Client {
     userId: Models.User.Id
     ) -> EitherIO<Error, Prelude.Unit> {
 
-    return self.execute2(
+    return self.execute(
       """
       INSERT INTO "feed_request_events"
       ("type", "user_agent", "user_id")
@@ -274,7 +271,7 @@ private struct _Client {
     )
     -> EitherIO<Error, Models.Subscription?> {
 
-      let subscription: EitherIO<Error, Models.Subscription?> = self.firstRow2(
+      let subscription: EitherIO<Error, Models.Subscription?> = self.firstRow(
         """
         INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
         VALUES ($1, $2, $3)
@@ -286,7 +283,7 @@ private struct _Client {
         ])
 
       return subscription.flatMap { subscription in
-        self.execute2(
+        self.execute(
           """
           UPDATE "users"
           SET "subscription_id" = $1
@@ -302,7 +299,7 @@ private struct _Client {
   }
 
   func update(stripeSubscription: Stripe.Subscription) -> EitherIO<Error, Models.Subscription?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
@@ -320,7 +317,7 @@ private struct _Client {
     teammateUserId: Models.User.Id,
     fromSubscriptionId subscriptionId: Models.Subscription.Id
     ) -> EitherIO<Error, Prelude.Unit> {
-    return self.execute2(
+    return self.execute(
       """
     UPDATE "users"
     SET "subscription_id" = NULL
@@ -336,7 +333,7 @@ private struct _Client {
   }
 
   func fetchSubscription(id: Models.Subscription.Id) -> EitherIO<Error, Models.Subscription?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
@@ -349,7 +346,7 @@ private struct _Client {
   }
 
   func fetchSubscription(ownerId: Models.User.Id) -> EitherIO<Error, Models.Subscription?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     SELECT "id", "user_id", "stripe_subscription_id", "stripe_subscription_status"
     FROM "subscriptions"
@@ -362,7 +359,7 @@ private struct _Client {
   }
 
   func fetchSubscriptionTeammates(ownerId: Models.User.Id) -> EitherIO<Error, [Models.User]> {
-    return self.rows2(
+    return self.rows(
       """
     SELECT "users"."email",
            "users"."episode_credit_count",
@@ -385,7 +382,7 @@ private struct _Client {
     id userId: Models.User.Id
     ) -> EitherIO<Error, Prelude.Unit> {
 
-    return self.execute2(
+    return self.execute(
       """
     UPDATE "users"
     SET "updated_at" = NOW()
@@ -404,7 +401,7 @@ private struct _Client {
     episodeCreditCount: Int?
     ) -> EitherIO<Error, Prelude.Unit> {
 
-    return self.execute2(
+    return self.execute(
       """
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
@@ -445,7 +442,7 @@ private struct _Client {
 
       guard let settings = settings else { return pure(unit) }
 
-      let deleteEmailSettings = self.execute2(
+      let deleteEmailSettings = self.execute(
         """
       DELETE FROM "email_settings"
       WHERE "user_id" = $1
@@ -456,7 +453,7 @@ private struct _Client {
 
       let updateEmailSettings = sequence(
         settings.map { type in
-          self.execute2(
+          self.execute(
             """
           INSERT INTO "email_settings" ("newsletter", "user_id")
           VALUES ($1, $2)
@@ -480,7 +477,7 @@ private struct _Client {
     email: EmailAddress
     ) -> EitherIO<Error, Models.User?> {
 
-    return self.execute2(
+    return self.execute(
       """
     INSERT INTO "users" ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
     VALUES ($1, $2, $3, $4, 1)
@@ -498,7 +495,7 @@ private struct _Client {
   }
 
   func fetchEnterpriseAccount(forDomain domain: EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
       SELECT "company_name", "domain", "id", "subscription_id"
       FROM "enterprise_accounts"
@@ -510,7 +507,7 @@ private struct _Client {
   }
 
   func fetchEnterpriseAccount(forSubscriptionId subscriptionId: Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
       SELECT "company_name", "domain", "id", "subscription_id"
       FROM "enterprise_accounts"
@@ -522,14 +519,14 @@ private struct _Client {
   }
 
   func fetchEnterpriseEmails() -> EitherIO<Error, [EnterpriseEmail]> {
-    return self.rows2("""
+    return self.rows("""
       SELECT *
       FROM "enterprise_emails"
       """)
   }
 
   func fetchUser(byUserId id: Models.User.Id) -> EitherIO<Error, Models.User?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     SELECT "email",
            "episode_credit_count",
@@ -558,7 +555,7 @@ private struct _Client {
     case .some(.right):
       condition = " AND \"users\".\"subscription_id\" IS NOT NULL"
     }
-    return self.rows2(
+    return self.rows(
       """
       SELECT "users"."email",
       "users"."episode_credit_count",
@@ -578,7 +575,7 @@ private struct _Client {
 
   func fetchUsersToWelcome(fromWeeksAgo weeksAgo: Int) -> EitherIO<Error, [Models.User]> {
     let daysAgo = weeksAgo * 7
-    return self.rows2(
+    return self.rows(
       """
       SELECT
       "users"."email",
@@ -607,7 +604,7 @@ private struct _Client {
 
   func incrementEpisodeCredits(for userIds: [Models.User.Id]) -> EitherIO<Error, [Models.User]> {
     guard !userIds.isEmpty else { return pure([]) }
-    return self.rows2(
+    return self.rows(
       """
       UPDATE "users"
       SET "episode_credit_count" = "episode_credit_count" + 1
@@ -618,7 +615,7 @@ private struct _Client {
   }
 
   func fetchUser(byGitHubUserId userId: GitHubUser.Id) -> EitherIO<Error, Models.User?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     SELECT "email",
            "episode_credit_count",
@@ -638,7 +635,7 @@ private struct _Client {
   }
 
   func fetchTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, TeamInvite?> {
-    return self.firstRow2(
+    return self.firstRow(
       """
     SELECT "created_at", "email", "id", "inviter_user_id"
     FROM "team_invites"
@@ -650,7 +647,7 @@ private struct _Client {
   }
 
   func deleteEnterpriseEmail(for userId: User.Id) -> EitherIO<Error, Prelude.Unit> {
-    return self.execute2("""
+    return self.execute("""
       DELETE FROM "enterprise_emails"
       WHERE "user_id" = $1
       """, [
@@ -660,7 +657,7 @@ private struct _Client {
   }
 
   func deleteTeamInvite(id: TeamInvite.Id) -> EitherIO<Error, Prelude.Unit> {
-    return self.execute2(
+    return self.execute(
       """
     DELETE FROM "team_invites"
     WHERE "id" = $1
@@ -671,7 +668,7 @@ private struct _Client {
   }
 
   func fetchTeamInvites(inviterId: Models.User.Id) -> EitherIO<Error, [Models.TeamInvite]> {
-    return self.rows2(
+    return self.rows(
       """
     SELECT "created_at", "email", "id", "inviter_user_id"
     FROM "team_invites"
@@ -682,7 +679,7 @@ private struct _Client {
   }
 
   func fetchAdmins() -> EitherIO<Error, [Models.User]> {
-    return self.rows2(
+    return self.rows(
       """
     SELECT "users"."email",
            "users"."episode_credit_count",
@@ -705,7 +702,7 @@ private struct _Client {
     inviterUserId: Models.User.Id
     ) -> EitherIO<Error, TeamInvite> {
 
-    return self.execute2(
+    return self.execute(
       """
     INSERT INTO "team_invites" ("email", "inviter_user_id")
     VALUES ($1, $2)
@@ -729,7 +726,7 @@ private struct _Client {
 
   func fetchEmailSettings(forUserId userId: Models.User.Id) -> EitherIO<Error, [EmailSetting]> {
 
-    return self.rows2(
+    return self.rows(
       """
     SELECT "newsletter", "user_id"
     FROM "email_settings"
@@ -740,7 +737,7 @@ private struct _Client {
   }
 
   func fetchEpisodeCredits(for userId: Models.User.Id) -> EitherIO<Error, [EpisodeCredit]> {
-    return self.rows2(
+    return self.rows(
       """
     SELECT "episode_sequence", "user_id"
     FROM "episode_credits"
@@ -751,7 +748,7 @@ private struct _Client {
   }
 
   func fetchFreeEpisodeUsers() -> EitherIO<Error, [Models.User]> {
-    return self.rows2(
+    return self.rows(
       """
     SELECT "users"."email",
            "users"."episode_credit_count",
@@ -780,7 +777,7 @@ private struct _Client {
 
   func redeemEpisodeCredit(episodeSequence: Int, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
-    return self.execute2(
+    return self.execute(
       """
     INSERT INTO "episode_credits" ("episode_sequence", "user_id")
     VALUES ($1, $2)
@@ -794,22 +791,22 @@ private struct _Client {
   }
 
   func migrate() -> EitherIO<Error, Prelude.Unit> {
-    return self.execute2(
+    return self.execute(
       """
     CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "public"
     """
       )
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public"
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "public"
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "users" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -823,7 +820,7 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "subscriptions" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -834,7 +831,7 @@ private struct _Client {
       );
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "team_invites" (
         "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
@@ -844,7 +841,7 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "email_settings" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -853,27 +850,27 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "subscriptions"
       ADD COLUMN IF NOT EXISTS
       "stripe_subscription_status" character varying NOT NULL DEFAULT 'active'
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "is_admin" boolean NOT NULL DEFAULT FALSE
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_subscriptions_on_stripe_subscription_id"
       ON "subscriptions" ("stripe_subscription_id")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "episode_credits" (
         "episode_sequence" integer,
@@ -881,34 +878,34 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_credits_on_episode_sequence_and_user_id"
       ON "episode_credits" ("episode_sequence", "user_id")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "episode_credit_count" integer NOT NULL DEFAULT 0
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "episode_credits"
       ADD COLUMN IF NOT EXISTS
       "created_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
       "rss_salt" uuid DEFAULT uuid_generate_v1mc() NOT NULL
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "feed_request_events" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -920,26 +917,26 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_feed_request_events_on_type_user_agent_user_id"
       ON "feed_request_events" ("type", "user_agent", "user_id")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       ALTER TABLE "feed_request_events"
       ADD COLUMN IF NOT EXISTS
       "updated_at" timestamp without time zone DEFAULT NOW() NOT NULL
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_email_settings_on_newsletter_user_id"
       ON "email_settings" ("newsletter", "user_id")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE OR REPLACE FUNCTION update_updated_at()
       RETURNS TRIGGER AS $$
@@ -950,7 +947,7 @@ private struct _Client {
       $$ LANGUAGE PLPGSQL;
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       DO $$
       DECLARE
@@ -978,7 +975,7 @@ private struct _Client {
       $$ LANGUAGE PLPGSQL;
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "enterprise_accounts" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -990,19 +987,19 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_domain"
       ON "enterprise_accounts" ("domain")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_subscription_id"
       ON "enterprise_accounts" ("subscription_id")
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE TABLE IF NOT EXISTS "enterprise_emails" (
         "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
@@ -1013,13 +1010,13 @@ private struct _Client {
       )
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_email"
       ON "enterprise_emails" (lower("email"))
       """
       )))
-      .flatMap(const(execute2(
+      .flatMap(const(execute(
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_user_id"
       ON "enterprise_emails" ("user_id")
@@ -1028,33 +1025,33 @@ private struct _Client {
       .map(const(unit))
   }
 
-  func rows2<T: Decodable>(
+  func rows<T: Decodable>(
     _ query: String,
     _ binds: [PostgresDataConvertible] = []
     ) -> EitherIO<Swift.Error, [T]> {
 
-    return self.execute2(query, binds)
+    return self.execute(query, binds)
       .flatMap { rows in
         .wrap { try rows.map { try T(from: RowDecoder(row: $0)) } }
     }
   }
 
-  func firstRow2<T: Decodable>(
+  func firstRow<T: Decodable>(
     _ query: String,
     _ binds: [PostgresDataConvertible] = []
     ) -> EitherIO<Swift.Error, T?> {
 
-    return self.rows2(query, binds)
+    return self.rows(query, binds)
       .map(^\.first)
   }
 
-  func execute2(
+  func execute(
     _ query: String,
     _ binds: [PostgresDataConvertible] = []
     ) -> EitherIO<Swift.Error, [PostgresRow]> {
 
     return EitherIO<Swift.Error, [PostgresRow]>.wrap {
-      try self.conn2
+      try self.conn
         .flatMap { $0.query(query, binds.map(^\.postgresData!)) }
         .wait()
     }

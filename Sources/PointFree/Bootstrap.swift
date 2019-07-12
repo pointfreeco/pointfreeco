@@ -59,6 +59,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
   Current.envVars = envVars
   Current.database = .init(
     databaseUrl: Current.envVars.postgres.databaseUrl,
+    eventLoopGroup: Current.eventLoopGroup,
     logger: Current.logger
   )
   Current.gitHub = .init(
