@@ -1051,9 +1051,20 @@ private struct _Client {
     ) -> EitherIO<Swift.Error, [PostgresRow]> {
 
     return EitherIO<Swift.Error, [PostgresRow]>.wrap {
-      try self.conn
-        .flatMap { $0.query(query, binds.map(^\.postgresData!)) }
-        .wait()
+      let sema = DispatchSemaphore(value: 0)
+      var rows: [PostgresRow]?
+      DispatchQueue.global().async {
+        rows = try? self.conn
+          .flatMap { $0.query(query, binds.map(^\.postgresData!)) }
+          .wait()
+        sema.signal()
+      }
+      switch sema.wait(timeout: .now() + 25) {
+      case .success:
+        return rows ?? []
+      case .timedOut:
+        return []
+      }
     }
   }
 }

@@ -16,7 +16,7 @@ public struct ColumnDecoder: Decoder {
   }
 
   public func singleValueContainer() throws -> SingleValueDecodingContainer {
-    return SingleValueContainer(column: column)
+    return SingleValueContainer(column: self.column)
   }
 
   struct SingleValueContainer: SingleValueDecodingContainer {
@@ -25,7 +25,7 @@ public struct ColumnDecoder: Decoder {
 
     func decodeNil() -> Bool { column.type == .null }
     func decode(_ type: Bool.Type) throws -> Bool { column.bool! }
-    func decode(_ type: String.Type) throws -> String { column.string! }
+    func decode(_ type: String.Type) throws -> String { String(decoding: column.bytes!, as: UTF8.self) } // { column.string! }
     func decode(_ type: Double.Type) throws -> Double { column.double! }
     func decode(_ type: Float.Type) throws -> Float { column.float! }
     func decode(_ type: Int.Type) throws -> Int { column.int! }
@@ -39,7 +39,7 @@ public struct ColumnDecoder: Decoder {
     func decode(_ type: UInt32.Type) throws -> UInt32 { column.uint32! }
     func decode(_ type: UInt64.Type) throws -> UInt64 { column.uint64! }
     func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
-      fatalError()
+      try T(from: ColumnDecoder(column: self.column))
     }
   }
 }
