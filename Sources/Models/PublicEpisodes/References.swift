@@ -1,6 +1,7 @@
 import Foundation
 
 extension Episode.Reference {
+
   public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
@@ -475,6 +476,14 @@ types at compile time.
     link: "https://github.com/pointfreeco/swift-tagged",
     publishedAt: Date(timeIntervalSince1970: 1523851200),
     title: "Tagged"
+  )
+
+  public static let swiftUiTutorials = Episode.Reference(
+    author: "Apple",
+    blurb: "With the introduction of SwiftUI and Combine, Apple has released a set of high-quality, interactive tutorials to explore some of the new concepts.",
+    link: "https://developer.apple.com/tutorials/swiftui/tutorials",
+    publishedAt: nil,
+    title: "SwiftUI Tutorials"
   )
 
   public static let swiftValidated = Episode.Reference(
