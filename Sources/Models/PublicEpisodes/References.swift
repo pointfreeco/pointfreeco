@@ -123,6 +123,16 @@ it will fail the test. Since then Facebook has stopped maintaining it and transf
     title: "uber/ios-snapshot-test-case"
   )
 
+  public static let insideSwiftUIAboutState = Episode.Reference(
+    author: "kateinoigaku",
+    blurb: """
+Not a lot is currently known how `@State` really works under the hood. Sometimes it almost seems like magic! This article explores how `@State` might be implemented internally, and it seems that most likely SwiftUI is using the rich set of metadata available to the runtime (which the author of this article has also explored deeply [here](https://kateinoigakukun.hatenablog.com/entry/2019/03/22/184356)).
+""",
+    link: "https://kateinoigakukun.hatenablog.com/entry/2019/06/09/081831",
+    publishedAt: referenceDateFormatter.date(from: "2019-06-09"),
+    title: "Inside SwiftUI (About @State)"
+  )
+
   public static let introduceSequenceCompactMap = Episode.Reference(
     author: "Max Moiseev",
     blurb: """
