@@ -37,11 +37,11 @@ private let exercises: [Episode.Exercise] = [
   .init(problem: """
 Let's make the state even _more_ persistent by saving the state whenever a change is made and loading the state when the app launches. This can be done in a few steps:
 
-* Make `AppState` conform to `Codable`. This unfortunately requires implement manual encoding and decoding due to the `PassthroughSubject`.
+* Make `AppState` conform to `Codable`. Because of the `PassthroughSubject` `didChange` property, you unfortunately must manually specify the other `CodingKeys` or manually implement encoding and decoding.
 * Tap into each `didSet` on the model and save the JSON representation of the state to `UserDefaults`.
 * When the root `ContentView` is created for the playground live view load the `AppState` from `UserDefaults`.
 
-Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change which is probably too inefficient, and we have to repeat that work for each `didSet` entry point. We will explore better ways of dealing with this soon 😄.
+Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change, which is probably too inefficient, and we have to repeat that work for each `didSet` entry point. We will explore better ways of dealing with this soon 😄.
 """),
   .init(problem: """
 Search for an algorithm online that checks if an integer is prime, and port it to Swift.
