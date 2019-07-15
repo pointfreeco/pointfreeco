@@ -1,6 +1,7 @@
 import Foundation
 
 extension Episode.Reference {
+
   public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
@@ -120,6 +121,16 @@ it will fail the test. Since then Facebook has stopped maintaining it and transf
     link: "https://github.com/uber/ios-snapshot-test-case",
     publishedAt: nil,
     title: "uber/ios-snapshot-test-case"
+  )
+
+  public static let insideSwiftUIAboutState = Episode.Reference(
+    author: "kateinoigaku",
+    blurb: """
+Not a lot is currently known how `@State` really works under the hood. Sometimes it almost seems like magic! This article explores how `@State` might be implemented internally, and it seems that most likely SwiftUI is using the rich set of metadata available to the runtime (which the author of this article has also explored deeply [here](https://kateinoigakukun.hatenablog.com/entry/2019/03/22/184356)).
+""",
+    link: "https://kateinoigakukun.hatenablog.com/entry/2019/06/09/081831",
+    publishedAt: referenceDateFormatter.date(from: "2019-06-09"),
+    title: "Inside SwiftUI (About @State)"
   )
 
   public static let introduceSequenceCompactMap = Episode.Reference(
@@ -475,6 +486,14 @@ types at compile time.
     link: "https://github.com/pointfreeco/swift-tagged",
     publishedAt: Date(timeIntervalSince1970: 1523851200),
     title: "Tagged"
+  )
+
+  public static let swiftUiTutorials = Episode.Reference(
+    author: "Apple",
+    blurb: "With the introduction of SwiftUI and Combine, Apple has released a set of high-quality, interactive tutorials to explore some of the new concepts.",
+    link: "https://developer.apple.com/tutorials/swiftui/tutorials",
+    publishedAt: nil,
+    title: "SwiftUI Tutorials"
   )
 
   public static let swiftValidated = Episode.Reference(
