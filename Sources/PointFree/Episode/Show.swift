@@ -186,27 +186,7 @@ private let episodeView = View<(EpisodePermission, User?, SubscriberState, Episo
           )
         ]
       )
-      ]),
-
-    script(
-      """
-      var hasPlayed = false;
-      var video = document.getElementsByTagName('video')[0];
-      video.addEventListener('play', function () {
-        hasPlayed = true;
-      });
-      document.addEventListener('keypress', function (event) {
-        if (hasPlayed && event.key === ' ') {
-          if (video.paused) {
-            video.play();
-          } else {
-            video.pause();
-          }
-          event.preventDefault();
-        }
-      });
-      """
-    )
+    ])
   ]
 }
 
@@ -253,7 +233,7 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
       [
         div([`class`([Class.hide(.mobile)])], [
           a(
-            timestampLinkAttributes(timestamp: timestamp, useAnchors: true) +
+            timestampLinkAttributes(timestamp: timestamp) +
               [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
             [.text(title)]
           )
@@ -261,7 +241,7 @@ private let tocChapterLinkView = View<(title: String, timestamp: Int, active: Bo
 
         div([`class`([Class.hide(.desktop)])], [
           a(
-            timestampLinkAttributes(timestamp: timestamp, useAnchors: false) +
+            timestampLinkAttributes(timestamp: timestamp) +
               [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
             [.text(title)]
           )
