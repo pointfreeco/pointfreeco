@@ -872,7 +872,7 @@ Ok, so we had to do a bit of plumbing to properly get our global app state insid
   ),
   Episode.TranscriptBlock(
     content: """
-Now that know how to express state in a view, make the view react to changes in that state, and even how to persist the state across the entire application, let's build out another screen in our app. Let's do the prime number checker modal. This appears when you tap the "Is this prime?" button, and it shows you a label that let's you know if the current counter is prime or not, and it gives you a button for saving or removing the number from your list of favorites.
+Now that we know how to express state in a view, make the view react to changes in that state, and even how to persist the state across the entire application, let's build out another screen in our app. Let's do the prime number checker modal. This appears when you tap the "Is this prime?" button, and it shows you a label that let's you know if the current counter is prime or not, and it gives you a button for saving or removing the number from your list of favorites.
 """,
     timestamp: (26*60 + 21),
     type: .paragraph
