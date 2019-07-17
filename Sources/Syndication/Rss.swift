@@ -350,7 +350,7 @@ private func node(rssItem: RssItem) -> Node {
       element(
         "enclosure",
         [
-          .init("url", enclosure.url) as Attribute<Void>,
+          .init("url", enclosure.url.replacingOccurrences(of: "&", with: "&amp;")) as Attribute<Void>,
           .init("length", "\(enclosure.length)"),
           .init("type", enclosure.type),
           ],
@@ -365,7 +365,7 @@ private func node(rssItem: RssItem) -> Node {
       element(
         "media:content",
         [
-          .init("url", media.content.url) as Attribute<Void>,
+          .init("url", media.content.url.replacingOccurrences(of: "&", with: "&amp;")) as Attribute<Void>,
           .init("length", "\(media.content.length)"),
           .init("type", media.content.type),
           .init("medium", media.content.medium)
