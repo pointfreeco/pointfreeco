@@ -352,7 +352,7 @@ SUDO_PROMPT = "  🔒 Please enter your password: "
 	db-drop \
 	xcodeproj-oss \
 	xcodeproj \
-	submodule \
+	submodules \
 	env-local \
 	deploy-local \
 	deploy-production \
