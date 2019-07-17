@@ -104,7 +104,7 @@ private let timestampLinkView = View<Int?> { timestamp -> [Node] in
   return [
     div([id("t\(timestamp)"), `class`([Class.display.block])], [
       a(
-        timestampLinkAttributes(timestamp: timestamp, useAnchors: false) + [
+        timestampLinkAttributes(timestamp: timestamp) + [
           `class`([Class.pf.components.videoTimeLink])
         ],
         [.text(timestampLabel(for: timestamp))])
@@ -120,25 +120,10 @@ public func timestampLabel(for timestamp: Int) -> String {
   return "\(minuteString):\(secondString)"
 }
 
-public func timestampLinkAttributes(timestamp: Int, useAnchors: Bool) -> [Attribute<Tag.A>] {
+public func timestampLinkAttributes(timestamp: Int) -> [Attribute<Tag.A>] {
 
   return [
-    useAnchors
-      ? href("#t\(timestamp)")
-      : href("#"),
-
-    onclick(unsafe: """
-      var video = document.getElementsByTagName("video")[0];
-      video.currentTime = event.target.dataset.t;
-      video.play();
-      """
-      + (useAnchors
-        ? ""
-        : "event.preventDefault();"
-      )
-    ),
-
-    data("t", "\(timestamp)")
+    href("#t\(timestamp)")
   ]
 }
 
