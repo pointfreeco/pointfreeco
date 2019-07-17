@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 85810
+Content-Length: 82156
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2092,11 +2092,7 @@ future episodes, become a subscriber today!
             <div>
               <div id="t1"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="1"
+                <a href="#t1"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2120,11 +2116,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t2"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="2"
+                <a href="#t2"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2152,11 +2144,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t4"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="4"
+                <a href="#t4"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2184,11 +2172,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t6"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="6"
+                <a href="#t6"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2216,11 +2200,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t8"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="8"
+                <a href="#t8"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2264,11 +2244,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t11"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="11"
+                <a href="#t11"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2284,11 +2260,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t12"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="12"
+                <a href="#t12"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2304,11 +2276,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t13"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="13"
+                <a href="#t13"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2324,11 +2292,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t14"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="14"
+                <a href="#t14"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2352,11 +2316,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t15"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="15"
+                <a href="#t15"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2397,11 +2357,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t3"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="3"
+                <a href="#t3"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2425,11 +2381,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t4"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="4"
+                <a href="#t4"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2445,11 +2397,7 @@ video.play();event.preventDefault();"
             <div>
               <div id="t6"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="6"
+                <a href="#t6"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2543,6 +2491,33 @@ video.play();event.preventDefault();"
               <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
+            <script>
+              var hasPlayed = false;
+var video = document.getElementsByTagName("video")[0];
+video.addEventListener("play", function () {
+  hasPlayed = true;
+});
+document.addEventListener("keypress", function (event) {
+  if (hasPlayed && event.key === " ") {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+    event.preventDefault();
+  }
+});
+document.addEventListener("click", function (event) {
+  var target = event.target;
+  if (target.tagName != "A") { return; }
+  var hash = new URL(target.href).hash;
+  var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+  if (time <= 0) { return; }
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = time;
+  video.play();
+});
+            </script>
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2565,10 +2540,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t0"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2579,11 +2550,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="0"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2610,10 +2577,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t3"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="3"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2624,11 +2587,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="3"
+                    <a href="#t3"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2655,10 +2614,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t7"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="7"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2669,11 +2624,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="7"
+                    <a href="#t7"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2700,10 +2651,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t9"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="9"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2714,11 +2661,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="9"
+                    <a href="#t9"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2769,23 +2712,6 @@ video.play();event.preventDefault();"
         </div>
       </div>
     </div>
-    <script>
-      var hasPlayed = false;
-var video = document.getElementsByTagName('video')[0];
-video.addEventListener('play', function () {
-  hasPlayed = true;
-});
-document.addEventListener('keypress', function (event) {
-  if (hasPlayed && event.key === ' ') {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
-  }
-});
-    </script>
     <footer class="row
                    d-pl4
                    d-pr4
