@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 79021
+Content-Length: 79207
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2232,11 +2232,7 @@ subscriber-only episode of your choosing!
             <div>
               <div id="t0"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="0"
+                <a href="#t0"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2362,6 +2358,33 @@ that timestamp jumps the video to that spot.</p>
               <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
+            <script>
+              var hasPlayed = false;
+var video = document.getElementsByTagName("video")[0];
+video.addEventListener("play", function () {
+  hasPlayed = true;
+});
+document.addEventListener("keypress", function (event) {
+  if (hasPlayed && event.key === " ") {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+    event.preventDefault();
+  }
+});
+document.addEventListener("click", function (event) {
+  var target = event.target;
+  if (target.tagName != "A") { return; }
+  var hash = new URL(target.href).hash;
+  var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+  if (time <= 0) { return; }
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = time;
+  video.play();
+});
+            </script>
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2496,23 +2519,6 @@ that timestamp jumps the video to that spot.</p>
         </div>
       </div>
     </div>
-    <script>
-      var hasPlayed = false;
-var video = document.getElementsByTagName('video')[0];
-video.addEventListener('play', function () {
-  hasPlayed = true;
-});
-document.addEventListener('keypress', function (event) {
-  if (hasPlayed && event.key === ' ') {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
-  }
-});
-    </script>
     <footer class="row
                    d-pl4
                    d-pr4
