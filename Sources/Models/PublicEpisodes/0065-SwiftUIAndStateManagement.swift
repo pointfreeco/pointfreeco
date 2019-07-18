@@ -737,7 +737,7 @@ This episode was recorded with Xcode 11 beta 3, and a change has been made to th
     content: """
 Now publishers are a concept from the Combine framework that is shipping alongside SwiftUI, and we'll have a bunch to say about it in future episodes, but for now we can think of it as a mechanism that allows us to notify interested subscribers when something changes. For our purposes we can use what is known as a `PassthroughSubject`, which has two generics: one for the values it can emit and one for the errors it can complete with. Again to simplify we will use `Void` and `Never` to represent a subject that emits nothing of interest when something changes and can never fail:
 """,
-    timestamp: nil,
+    timestamp: (21*60 + 54),
     type: .paragraph
   ),
   Episode.TranscriptBlock(
