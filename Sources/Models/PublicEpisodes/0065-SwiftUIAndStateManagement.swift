@@ -728,9 +728,16 @@ var didChange: AppState.PublisherType
   ),
   Episode.TranscriptBlock(
     content: """
+This episode was recorded with Xcode 11 beta 3, and a change has been made to the `BindableObject` protocol in beta 4 and later versions of Xcode. The protocol now requires a `willChange` publisher, and you are supposed to ping this publisher _before_ you make any mutations to your model.
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
+    content: """
 Now publishers are a concept from the Combine framework that is shipping alongside SwiftUI, and we'll have a bunch to say about it in future episodes, but for now we can think of it as a mechanism that allows us to notify interested subscribers when something changes. For our purposes we can use what is known as a `PassthroughSubject`, which has two generics: one for the values it can emit and one for the errors it can complete with. Again to simplify we will use `Void` and `Never` to represent a subject that emits nothing of interest when something changes and can never fail:
 """,
-    timestamp: (21*60 + 54),
+    timestamp: nil,
     type: .paragraph
   ),
   Episode.TranscriptBlock(
@@ -764,6 +771,13 @@ var count = 0 {
 """,
     timestamp: nil,
     type: .code(lang: .swift)
+  ),
+  Episode.TranscriptBlock(
+    content: """
+With Xcode 11 beta 4 and later, you should tap into the `willSet` observer instead of `didSet` so that you can notify the publisher of changes _before_ you make mutations to your state.
+""",
+    timestamp: nil,
+    type: .paragraph
   ),
   Episode.TranscriptBlock(
     content: """
