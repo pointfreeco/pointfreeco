@@ -37,11 +37,11 @@ private let exercises: [Episode.Exercise] = [
   .init(problem: """
 Let's make the state even _more_ persistent by saving the state whenever a change is made and loading the state when the app launches. This can be done in a few steps:
 
-* Make `AppState` conform to `Codable`. Because of the `PassthroughSubject` `didChange` property, you unfortunately must manually specify the other `CodingKeys` or manually implement encoding and decoding.
-* Tap into each `didSet` on the model and save the JSON representation of the state to `UserDefaults`.
+* Make `AppState` conform to `Codable`. Because of the `PassthroughSubject` `willChange` property, you unfortunately must manually specify the other `CodingKeys` or manually implement encoding and decoding.
+* Tap into each `willSet` on the model and save the JSON representation of the state to `UserDefaults`.
 * When the root `ContentView` is created for the playground live view load the `AppState` from `UserDefaults`.
 
-Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change, which is probably too inefficient, and we have to repeat that work for each `didSet` entry point. We will explore better ways of dealing with this soon 😄.
+Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change, which is probably too inefficient, and we have to repeat that work for each `willSet` entry point. We will explore better ways of dealing with this soon 😄.
 """),
   .init(problem: """
 Search for an algorithm online that checks if an integer is prime, and port it to Swift.
@@ -60,7 +60,7 @@ Add a `var favoritePrimes: [Int]` field to our `AppState`, and make sure to ping
 Use this new `favoritePrimes` state to render a "Add to favorite primes" / "Remove from favorite primes" button in the modal. Also hook up the action on this button to remove or add the current counter value to the list of favorite primes.
 """),
   .init(problem: """
-Right now it's cumbersome to add new state to our `AppState` class. We have to always remember to ping `didChange` whenever any of our fields is mutated and even more work is needed if we wanted to bundle up a bunch of fields into its own state class.
+Right now it's cumbersome to add new state to our `AppState` class. We have to always remember to ping `willChange` whenever any of our fields is mutated and even more work is needed if we wanted to bundle up a bunch of fields into its own state class.
 
 These problems can be fixed by creating a generic class `Store<A>` that wraps access to a single value type `A`. Implement this class and replace all instances of `AppState` in our application with `Store<AppState>`.
 """)
