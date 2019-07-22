@@ -611,10 +611,10 @@ Alerts are done pretty similarly to modals in that you use the `.presentation` m
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:alert:)` and `alert(item:)`.
+This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
