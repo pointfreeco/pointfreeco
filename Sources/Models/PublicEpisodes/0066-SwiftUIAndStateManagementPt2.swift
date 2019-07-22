@@ -84,7 +84,7 @@ Modals are presented in SwiftUI by setting presentation information on your view
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The modal presentation API is captured in view modifiers methods called `sheet` that present and dismiss a view given the state of a `Binding`.
+This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The modal presentation API is captured in a few view modifier methods called `sheet` that present and dismiss a view given the state of a `Binding`.
 """,
     timestamp: nil,
     type: .correction
@@ -384,7 +384,7 @@ var favoritePrimes: [Int] = [] {
 This episode was recorded with Xcode 11 beta 3, and a change has been made to the `BindableObject` protocol in beta 4 and later versions of Xcode. The protocol now requires a `willChange` publisher, and you are supposed to ping this publisher _before_ you make any mutations to your model.
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
