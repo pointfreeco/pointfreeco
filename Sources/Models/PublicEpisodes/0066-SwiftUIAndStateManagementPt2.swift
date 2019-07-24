@@ -646,7 +646,7 @@ Then based on this value we can show an alert:
   ),
   Episode.TranscriptBlock(
     content: """
-.presentation(self.$alertNthPrime) { n
+.presentation(self.$alertNthPrime) { n in
   Alert(
     title: Text("The \\(ordinal(self.state.count)) prime is \\(n)"),
     dismissButton: Alert.Button.default(Text("Ok"))
