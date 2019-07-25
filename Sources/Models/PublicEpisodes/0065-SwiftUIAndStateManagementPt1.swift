@@ -4,16 +4,15 @@ public let ep65 = Episode(
   blurb: """
 Let's begin exploring application architecture by understanding what are the common problems we encounter when trying to build large, complex applications. We will build an app in SwiftUI to see how Apple's new framework approaches solving these problems.
 """,
-  codeSampleDirectory: "0065-swiftui-and-state-management-pt1", // TODO
+  codeSampleDirectory: "0065-swiftui-and-state-management-pt1",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 935_800_000,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/full/0065-swiftui-and-state-management-pt1-c3a3fb39-full.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/full/0065-swiftui-and-state-management-pt1.m3u8"
+    bytesLength: 241590052,
+    downloadUrl: "https://player.vimeo.com/external/349951720.hd.mp4?s=2e2fde11175184a755a146b9df7377c47d2b85d7&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349951720"
   ),
   id: 65,
-  // todo: cloudfront
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/poster.jpg",
+  image: "https://i.vimeocdn.com/video/801297149.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/itunes-poster.jpg",
   length: 26 * 60 + 45,
   permission: .free,
@@ -26,9 +25,9 @@ Let's begin exploring application architecture by understanding what are the com
   sequence: 65,
   title: "SwiftUI and State Management: Part 1",
   trailerVideo: .init(
-    bytesLength: 81_600_000,
-    downloadUrl: "https://pointfreeco-episodes-processed.s3.amazonaws.com/0065-swiftui-and-state-management-pt1/trailer/0065-trailer-trailer.mp4",
-    streamingSource: "https://pointfreeco-episodes-processed.s3.amazonaws.com/0065-swiftui-and-state-management-pt1/trailer/0065-trailer.m3u8"
+    bytesLength: 46867087,
+    downloadUrl: "https://player.vimeo.com/external/349951716.hd.mp4?s=12b2cd19e65c55b2beb83491f89e0ca4ffa0d7e2&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349951716"
   ),
   transcriptBlocks: transcriptBlocks
 )

@@ -7,12 +7,12 @@ Our snapshot testing library is now officially open source! In order to show jus
   codeSampleDirectory: "",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 2013890736,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing-full-.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/full/0041-tour-of-snapshot-testing.m3u8"
+    bytesLength: 450728966,
+    downloadUrl: "https://player.vimeo.com/external/349952472.hd.mp4?s=22357478e55b228d9ea0a50c1719e71fae7cb29e&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349952472"
   ),
   id: 41,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-poster.jpg",
+  image: "https://i.vimeocdn.com/video/801301043.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/0041-itunes-poster.jpg",
   length: 29*60+16,
   permission: .free,
@@ -28,9 +28,9 @@ Our snapshot testing library is now officially open source! In order to show jus
   sequence: 41,
   title: "A Tour of Snapshot Testing",
   trailerVideo: .init(
-    bytesLength: 178376389,
-  downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/trailer/0041-trailer-trailer-.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0041-tour-of-snapshot-testing/trailer/0041-trailer.m3u8"
+    bytesLength: 103111511,
+  downloadUrl: "https://player.vimeo.com/external/349952474.hd.mp4?s=7e0f0940da37c67093fcc57c336957d8640b4ee3&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349952474"
   ),
   transcriptBlocks: transcriptBlocks
 )

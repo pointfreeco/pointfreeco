@@ -8,12 +8,12 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   codeSampleDirectory: "0049-generative-art-pt1", // TODO
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 1_000_000_000,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1-d6ad970a-full.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/full/0049-generative-art-pt1.m3u8"
+    bytesLength: 334663601,
+    downloadUrl: "https://player.vimeo.com/external/349952492.hd.mp4?s=e693d19bbb328377d8d845a7074769763cf16d9f&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349952492"
   ),
   id: 49,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/poster.jpg",
+  image: "https://i.vimeocdn.com/video/801299534.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/itunes-poster.jpg",
   length: 32*60 + 06,
   permission: .free,
@@ -43,9 +43,9 @@ We used "bump functions" in this episode to construct functions that are zero ev
   sequence: 49,
   title: "Generative Art: Part 1",
   trailerVideo: .init(
-    bytesLength: 67_900_000,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0049-trailer-trailer.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/trailer/0049-trailer.m3u8"
+    bytesLength: 56799598,
+    downloadUrl: "https://player.vimeo.com/external/349952489.hd.mp4?s=698f147ce21fc61179c8476f5c29e1de15e76f47&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349952489"
   ),
   transcriptBlocks: transcriptBlocks
 )
