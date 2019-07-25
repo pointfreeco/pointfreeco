@@ -7,7 +7,7 @@ This week we finish up our moderately complex SwiftUI application by adding more
   codeSampleDirectory: "0066-swiftui-and-state-management-pt2",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 199_193_552,
+    bytesLength: 199193552,
     downloadUrl: "https://player.vimeo.com/external/348431195.hd.mp4?s=d5927c00bec77533335c9f8525c5f24900a9715b&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/348431195"
   ),
@@ -25,7 +25,7 @@ This week we finish up our moderately complex SwiftUI application by adding more
   sequence: 66,
   title: "SwiftUI and State Management: Part 2",
   trailerVideo: .init(
-    bytesLength: 19_831_912,
+    bytesLength: 19831912,
     downloadUrl: "https://player.vimeo.com/external/348469619.hd.mp4?s=27cdcef7c5042120a302ee9e80aa2d547ae8aa60&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/348469619"
   ),
