@@ -14,7 +14,7 @@ Let's begin exploring application architecture by understanding what are the com
   id: 65,
   image: "https://i.vimeocdn.com/video/801297149.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/itunes-poster.jpg",
-  length: 26 * 60 + 45,
+  length: 26*60 + 45,
   permission: .free,
   previousEpisodeInCollection: nil,
   publishedAt: .init(timeIntervalSince1970: 1563170400),
