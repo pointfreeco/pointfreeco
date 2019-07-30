@@ -50,7 +50,7 @@ However, as of Xcode 11 beta 5 this protocol has been renamed to `ObservableObje
 import Combine
 
 class AppState: ObservableObject {
-  let objectWillChange = PassthroughSubject<Void, Never>()
+  let objectWillChange = ObservableObjectPublisher()
 
   var count = 0 {
     willSet { self.objectWillChange.send() }
@@ -98,7 +98,7 @@ There is also a change in Xcode 11 beta 5 that greatly simplifies how one create
 import Combine
 
 class AppState: ObservableObject {
-  let objectWillChange = PassthroughSubject<Void, Never>()
+  let objectWillChange = ObservableObjectPublisher()
 
   var count = 0 {
     willSet { self.objectWillChange.send() }
@@ -122,7 +122,7 @@ class AppState: ObservableObject {
     ),
     .init(
       content: """
-This was one of the problems that we discussed in [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3#t314) of our series, and luckily Xcode 11 beta 5 provides a solution. It is now possible for SwiftUI to automatically synthesize the `objectWillChange` for you, and by using the `@Published` property wrapper you can automatically have that published pinged when any of your fields change:
+This was one of the problems that we discussed in [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3#t314) of our series, and luckily Xcode 11 beta 5 provides a solution. It is now possible for SwiftUI to automatically synthesize the `objectWillChange` for you, and by using the `@Published` property wrapper you can automatically have the publisher pinged when any of your fields change:
 """,
       timestamp: nil,
       type: .paragraph
