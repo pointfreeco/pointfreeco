@@ -147,7 +147,7 @@ Much nicer!
 
 ## Derived bindings
 
-Another problem we discussed in [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3#t1177) of our series is the idea that SwiftUI state didn’t appear to be “composable”. After much testing and playground around with SwiftUI we weren’t able to figure out how to easily derive bindings of sub-state from our main `AppState`.
+Another problem we discussed in [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3#t1177) of our series is the idea that SwiftUI state didn’t appear to be “composable”. After much testing and playing around with SwiftUI we weren’t able to figure out how to easily derive bindings of sub-state from our main `AppState`.
 
 For example, say we had an `ActivityView` screen that only needs access to the `activityFeed` field of `AppState`. We would love if there was a way to project out that single field into a binding, and hand it over to the activity view. We approached this by creating a view that had a binding to the activity feed:
 """,
