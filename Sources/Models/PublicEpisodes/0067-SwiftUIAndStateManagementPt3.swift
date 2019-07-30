@@ -828,7 +828,7 @@ class FavoritePrimesState: BindableObject {
   ),
   Episode.TranscriptBlock(
     content: """
-Unfortunately, it came with a _lot_ of boilerplate, but let's make sure it actually works. First, we can replace the object binding in our favorite primes view.
+Unfortunately, it came with a _lot_ of boilerplate.
 """,
     timestamp: (22*60 + 47),
     type: .paragraph
@@ -850,7 +850,7 @@ struct FavoritePrimesView: View {
   ),
   Episode.TranscriptBlock(
     content: """
-Let's make sure it works. First, we can replace the object binding in our favorite primes view.
+Now let's make sure it works. First, we can replace the object binding in our favorite primes view.
 """,
     timestamp: nil,
     type: .paragraph
