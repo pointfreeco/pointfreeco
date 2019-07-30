@@ -38,6 +38,13 @@ private let exercises: [Episode.Exercise] = [
 
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
     content: "What’s the point?",
     timestamp: (0*60 + 5),
     type: .title
@@ -193,7 +200,19 @@ var loggedInUser: User? = nil {
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3, and a change has been made to the `BindableObject` protocol in beta 4 and later versions of Xcode. The protocol now requires a `willChange` publisher, and you are supposed to ping this publisher _before_ you make any mutations to your model.
+This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
+
+```
+var loggedInUser: User? {
+  willSet { self.objectWillChange.send() }
+}
+```
+
+Even better, we can remove this boilerplate entirely by using a `@Published` property wrapper:
+
+```
+@Published var loggedInUser: User?
+```
 """,
     timestamp: nil,
     type: .correction
@@ -291,6 +310,27 @@ It's actually possible to create a universal solution to this problem by wrappin
 """,
     timestamp: (8*60 + 16),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3. Later betas introduced changes to dramatically reduce this boilerplate:
+
+- The observable object publisher is now synthesized automatically.
+- Properties wrapped with `@Published` will automatically be subscribed to by SwiftUI and do not need to do the `willSet` dance.
+
+```
+class AppState: ObservableObject {
+  @Published var count = 0
+  @Published var favoritePrimes: [Int] = []
+  @Published var activityFeed: [Activity] = []
+  @Published var loggedInUser: User?
+
+  ...
+}
+```
+""",
+    timestamp: nil,
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: "Scattered state mutation",
@@ -788,9 +828,31 @@ class FavoritePrimesState: BindableObject {
   ),
   Episode.TranscriptBlock(
     content: """
-Unfortunately, it came with a _lot_ of boilerplate, but let's make sure it actually works. First, we can replace the object binding in our favorite primes view.
+Unfortunately, it came with a _lot_ of boilerplate.
 """,
     timestamp: (22*60 + 47),
+    type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+
+Rather than define `FavoritePrimesState`, we can instead pass two bindings to `FavoritesPrimeView`:
+
+```
+struct FavoritePrimesView: View {
+  @Binding var favoritePrimes: [Int]
+  @Binding var activityFeed: [AppState.Activity]
+```
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
+    content: """
+Now let's make sure it works. First, we can replace the object binding in our favorite primes view.
+""",
+    timestamp: nil,
     type: .paragraph
   ),
   Episode.TranscriptBlock(
