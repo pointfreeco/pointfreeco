@@ -835,10 +835,15 @@ Unfortunately, it came with a _lot_ of boilerplate, but let's make sure it actua
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state, a bug prevented it from propagating mutations over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+
+Rather than define `FavoritePrimesState`, we can instead pass two bindings to `FavoritesPrimeView`:
 
 ```
-var state: Binding<(favoritePrimes: [Int], activityFeed: [AppState.Activity])>
+struct FavoritePrimesView: View {
+  @Binding var favoritePrimes: [Int]
+  @Binding var activityFeed: [AppState.Activity]
+```
 """,
     timestamp: nil,
     type: .correction
