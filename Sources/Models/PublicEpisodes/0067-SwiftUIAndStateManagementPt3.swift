@@ -39,7 +39,7 @@ private let exercises: [Episode.Exercise] = [
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. Xcode 11 beta 5 introduced a lot of changes. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
 """,
     timestamp: nil,
     type: .correction
@@ -200,7 +200,7 @@ var loggedInUser: User? = nil {
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
+This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
 
 ```
 var loggedInUser: User? {
@@ -313,7 +313,7 @@ It's actually possible to create a universal solution to this problem by wrappin
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. Xcode 11 beta 5 introduced changes to dramatically reduce this boilerplate:
+This episode was recorded with Xcode 11 beta 3. Later betas introduced changes to dramatically reduce this boilerplate:
 
 - The observable object publisher is now synthesized automatically.
 - Properties wrapped with `@Published` will automatically be subscribed to by SwiftUI and do not need to do the `willSet` dance.
