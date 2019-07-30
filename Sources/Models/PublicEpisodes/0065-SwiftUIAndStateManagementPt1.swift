@@ -67,6 +67,13 @@ These problems can be fixed by creating a generic class `Store<A>` that wraps ac
 
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3. Xcode 11 beta 5 introduced a lot of changes. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),
     type: .title
@@ -727,7 +734,13 @@ var didChange: AppState.PublisherType
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3, and a change has been made to the `BindableObject` protocol in beta 4 and later versions of Xcode. The protocol now requires a `willChange` publisher, and you are supposed to ping this publisher _before_ you make any mutations to your model.
+This episode was recorded with Xcode 11 beta 3. In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
+
+```
+let objectDidChange = ObservableObjectPublisher()
+```
+
+This boilerplate is also not necessary, as the `BindableObject` protocol will synthesize a default publisher for you automatically.
 """,
     timestamp: nil,
     type: .correction
@@ -773,10 +786,24 @@ var count = 0 {
   ),
   Episode.TranscriptBlock(
     content: """
-With Xcode 11 beta 4 and later, you should tap into the `willSet` observer instead of `didSet` so that you can notify the publisher of changes _before_ you make mutations to your state.
+With Xcode 11 beta 5 and later, `willSet` should be used instead of `didSet`:
+
+```
+var count = 0 {
+  willSet {
+    self.objectWillChange.send()
+  }
+}
+```
+
+Or you can remove this boilerplate entirely by using a `@Published` property wrapper:
+
+```
+@Published var count = 0
+```
 """,
     timestamp: nil,
-    type: .paragraph
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
@@ -791,6 +818,13 @@ And that is all we need to do to get persistent state in place for our applicati
 """,
     timestamp: nil,
     type: .code(lang: .swift)
+  ),
+  Episode.TranscriptBlock(
+    content: """
+With Xcode 11 beta 5 and later, SwiftUI's `@ObjectBinding` property wrapper was deprecated in favor of the `@ObservedObject` wrapper introduced to the Combine framework.
+""",
+    timestamp: nil,
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
