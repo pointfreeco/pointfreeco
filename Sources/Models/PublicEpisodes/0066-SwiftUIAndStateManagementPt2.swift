@@ -44,6 +44,13 @@ Update the playground to use `@EnvironmentObject` instead of `@ObjectBinding`. W
 
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),
     type: .title
@@ -387,7 +394,19 @@ var favoritePrimes: [Int] = [] {
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3, and a change has been made to the `BindableObject` protocol in beta 4 and later versions of Xcode. The protocol now requires a `willChange` publisher, and you are supposed to ping this publisher _before_ you make any mutations to your model.
+This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
+
+```
+var favoritePrimes: [Int] = [] {
+  willSet { self.objectWillChange.send() }
+}
+```
+
+Even better, we can remove this boilerplate entirely by using a `@Published` property wrapper:
+
+```
+@Published var favoritePrimes: [Int] = []
+```
 """,
     timestamp: nil,
     type: .correction
