@@ -68,7 +68,7 @@ These problems can be fixed by creating a generic class `Store<A>` that wraps ac
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. Xcode 11 beta 5 introduced a lot of changes. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
 """,
     timestamp: nil,
     type: .correction
