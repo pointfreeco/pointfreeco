@@ -734,13 +734,13 @@ var didChange: AppState.PublisherType
   ),
   Episode.TranscriptBlock(
     content: """
-This episode was recorded with Xcode 11 beta 3. In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
+In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
 
 ```
 let objectDidChange = ObservableObjectPublisher()
 ```
 
-This boilerplate is also not necessary, as the `BindableObject` protocol will synthesize a default publisher for you automatically.
+This boilerplate is also not necessary, as the `ObservableObject` protocol will synthesize a default publisher for you automatically.
 """,
     timestamp: nil,
     type: .correction
