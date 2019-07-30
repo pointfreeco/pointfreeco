@@ -33,7 +33,13 @@ This week we finish up our moderately complex SwiftUI application by adding more
 )
 
 private let exercises: [Episode.Exercise] = [
-  // todo
+  Episode.Exercise(
+    problem: """
+SwiftUI provides another state management solution in the form of an [`@EnvironmentObject`](https://developer.apple.com/documentation/swiftui/environmentobject) property wrapper that, like `@ObjectBinding`, wraps a `BindableObject`, but rather than having to pass state via the view's initializer, you must instead inject the object using the `environmentObject` method on the root view (and on views that are presented modally or via presentation).
+
+Update the playground to use `@EnvironmentObject` instead of `@ObjectBinding`. What are some of the trade-offs between each strategy?
+"""
+  ),
 ]
 
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
