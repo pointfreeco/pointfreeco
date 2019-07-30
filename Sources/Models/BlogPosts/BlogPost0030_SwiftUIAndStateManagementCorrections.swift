@@ -283,7 +283,7 @@ Until next time!
     ),
 
     ],
-  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0029-enterprise-subscriptions/poster.jpg",
+  coverImage: "https://d3rccdn33rt8ze.cloudfront.net/email-assets/pf-email-header.png",
   id: 30,
   publishedAt: .init(timeIntervalSince1970: 1564466400),
   title: "SwiftUI and State Management Corrections"
