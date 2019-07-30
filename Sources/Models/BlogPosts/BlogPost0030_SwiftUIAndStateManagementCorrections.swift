@@ -1,6 +1,6 @@
 import Foundation
 
-public let post30_SwiftUIAndStateManagementCorrections = BlogPost(
+public let post0030_SwiftUIAndStateManagementCorrections = BlogPost(
   author: .brandon,
   blurb: """
 Xcode 11 beta 5 has brought lots of changes to SwiftUI, and we'd like to take a moment to provide corrections to our episodes based on these changes.
@@ -8,7 +8,7 @@ Xcode 11 beta 5 has brought lots of changes to SwiftUI, and we'd like to take a 
   contentBlocks: [
     .init(
       content: """
-This week we completed our 3-part introduction ([part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1), [part 2](https://www.pointfree.co/episodes/ep66-swiftui-and-state-management-part-2), [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3) to SwiftUI and the problems of state management and application architecture. All 3 episodes are completely free for everyone to watch and they aim to show what tools SwiftUI gives us for managing state in a moderately complex application.
+This week we completed our 3-part introduction ([part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1), [part 2](https://www.pointfree.co/episodes/ep66-swiftui-and-state-management-part-2), [part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3)) to SwiftUI and the problems of state management and application architecture. All 3 episodes are completely free for everyone to watch and they aim to show what tools SwiftUI gives us for managing state in a moderately complex application.
 
 Unfortunately, SwiftUI is still very much in beta and it seems that every 2 weeks there are substantial changes. These changes range from APIs being renamed to foundational changes to how SwiftUI behaves. Due to some of these changes our last 3 episodes now contain some misinformation, so we’d like to take an opportunity to correct these!
 
@@ -157,7 +157,7 @@ For example, say we had an `ActivityView` screen that only needs access to the `
     .init(
       content: """
 struct ActivityView: View {
-  @Binding var activityFeed: [ActivityFeed]
+  @Binding var activityFeed: [Activity]
 
   var body: some View { ... }
 }
@@ -209,7 +209,7 @@ ActivityView(activityFeed: self.$state.activityFeed)
     ),
     .init(
       content: """
-This first accesses the state as the underlying `Binding<AppState>` that comes from the property wrapper, and this is done via `self.$state`. Then we derive a `Binding<ActivityFeed>` from the `Binding<AppState>` by using dot-syntax, which is possible thanks to the [Key Path Member Lookup](https://github.com/apple/swift-evolution/blob/master/proposals/0252-keypath-dynamic-member-lookup.md) feature of Swift 5.1
+This first accesses the state as the underlying `Binding<AppState>` that comes from the property wrapper, and this is done via `self.$state`. Then we derive a `Binding<[Activity]>` from the `Binding<AppState>` by using dot-syntax, which is possible thanks to the [Key Path Member Lookup](https://github.com/apple/swift-evolution/blob/master/proposals/0252-keypath-dynamic-member-lookup.md) feature of Swift 5.1
 
 This is how we hoped derived bindings would work in SwiftUI, but unfortunately up until Xcode 11 beta 5 this did not work. There was a bug that prevented the `ActivityView` from re-rendering when the app state changed. This has now been fixed, and it’s a great way for creating views that operate on only a small subset of data instead of passing around the full `AppState` to all views!
 
