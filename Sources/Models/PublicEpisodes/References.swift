@@ -256,14 +256,6 @@ by browsing it on GitHub, or join us for a tour of the codebase in a
     title: "PointFree.co Open Source"
   )
 
-  public static let pointFreePullbackAndContravariance = reference(
-    forEpisode: ep14,
-    additionalBlurb: """
-We first explored the concept of the `pullback` in our episode on "contravariance", although back then we used a different name for the operation. The `pullback` is an instrumental form of composition that arises in certain situations, and can often be counter-intuitive at first sight.
-""",
-    episodeUrl: "https://www.pointfree.co/episodes/ep14-contravariance"
-  )
-
   public static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
     author: "Chris Eidhof",
     blurb: """
