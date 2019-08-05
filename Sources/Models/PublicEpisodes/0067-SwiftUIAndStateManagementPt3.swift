@@ -7,8 +7,8 @@ With our moderately complex SwiftUI application complete we can finally ask ours
   codeSampleDirectory: "0067-swiftui-and-state-management-pt3",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 24833339,
-    downloadUrl: "https://player.vimeo.com/external/349951622.hd.mp4?s=0db48a857039fc8d9da71cac13c8c1d48be96345&profile_id=175&download=1",
+    bytesLength: 353885387,
+    downloadUrl: "https://player.vimeo.com/external/349951707.hd.mp4?s=2dc0ab7f48e343ec1ef1540d1cb2607f857c37e6&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/349951722"
   ),
   id: 67,
@@ -25,8 +25,8 @@ With our moderately complex SwiftUI application complete we can finally ask ours
   sequence: 67,
   title: "SwiftUI and State Management: Part 3",
   trailerVideo: .init(
-    bytesLength: 353885387,
-    downloadUrl: "https://player.vimeo.com/external/349951707.hd.mp4?s=2dc0ab7f48e343ec1ef1540d1cb2607f857c37e6&profile_id=175&download=1",
+    bytesLength: 24833339,
+    downloadUrl: "https://player.vimeo.com/external/349951622.hd.mp4?s=0db48a857039fc8d9da71cac13c8c1d48be96345&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/349951622"
   ),
   transcriptBlocks: transcriptBlocks
