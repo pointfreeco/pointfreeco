@@ -482,7 +482,10 @@ private func previousEpisodes(of ep: Episode) -> [Node] {
       ["This episode builds on concepts introduced previously:"]
     ),
     ul(
-      [`class`([Class.type.list.styleNone])],
+      [`class`([
+        Class.type.list.styleNone,
+        Class.padding([.mobile: [.left: 2]])
+        ])],
       previousEps.map {
         li(
           [`class`([Class.pf.type.body.leading])],

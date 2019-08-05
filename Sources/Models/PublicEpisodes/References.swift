@@ -61,6 +61,16 @@ This question on the Swift forums brings up an interesting discussion on how to 
     title: "Difficulties With Efficient Large File Parsing"
   )
 
+  public static let elmHomepage = Episode.Reference(
+    author: nil,
+    blurb: """
+Elm is both a pure functional language and framework for creating web applications in a declarative fashion. It was instrumental in pushing functional programming ideas into the mainstream, and demonstrating how an application could be represented by a simple pure function from state and actions to state.
+""",
+    link: "https://elm-lang.org",
+    publishedAt: nil,
+    title: "Elm: A delightful language for reliable webapps"
+  )
+
   public static let everythingsAFunction = Episode.Reference(
     author: "Eitan Chatav",
     blurb: """
@@ -305,6 +315,26 @@ very simple, small pieces and then compose them together to create a really comp
     link: "https://www.pointfree.co/blog/posts/19-random-zalgo-generator",
     publishedAt: Date(timeIntervalSince1970: 1542690000),
     title: "Random Zalgo Generator"
+  )
+
+  public static let reduceWithInout = Episode.Reference(
+    author: "Chris Eidhof",
+    blurb: """
+The Swift standard library comes with two versions of `reduce`: one that takes accumulation functions of the form `(Result, Value) -> Result`, and another that accumulates with functions of the form `(inout Result, Value) -> Void`. Both versions are equivalent, but the latter can be more efficient when reducing into large data structures.
+""",
+    link: "https://forums.swift.org/t/reduce-with-inout/4897",
+    publishedAt: referenceDateFormatter.date(from: "2017-01-16"),
+    title: "Reduce with inout"
+  )
+
+  public static let reduxHomepage = Episode.Reference(
+    author: nil,
+    blurb: """
+The idea of modeling an application's architecture on simple reducer functions was popularized by Redux, a state management library for React, which in turn took a lot of inspiration from [Elm](https://elm-lang.org).
+""",
+    link: "https://redux.js.org",
+    publishedAt: nil,
+    title: "Redux: A predictable state container for JavaScript apps."
   )
 
   public static let scannerAppleDocs = Episode.Reference(
@@ -607,6 +637,17 @@ The Wikipedia entry for monads.
     publishedAt: nil,
     title: "Monad (functional programming)"
   )
+
+  public static let composableReducers = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
+""",
+    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
+    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
+    title: "Composable Reducers"
+  )
+
 }
 
 let referenceDateFormatter = { () -> DateFormatter in
