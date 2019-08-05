@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 79207
+Content-Length: 79267
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2019,7 +2019,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                       lh-4">
               This episode builds on concepts introduced previously:
             </p>
-            <ul class="list-style-none">
+            <ul class="list-style-none
+                       m-pl2">
               <li class="body-leading
                          fg-black
                          normal
@@ -2088,7 +2089,8 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
                         lh-4">
                 This episode builds on concepts introduced previously:
               </p>
-              <ul class="list-style-none">
+              <ul class="list-style-none
+                         m-pl2">
                 <li class="body-leading
                            fg-black
                            normal
