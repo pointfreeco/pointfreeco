@@ -34,7 +34,6 @@ let episodeResponse =
           currentUser: currentUser,
           data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
-          extraHead: videoJsHead,
           extraStyles: markdownBlockStyles <> pricingExtraStyles,
           image: episode.image,
           style: .base(navStyle),
