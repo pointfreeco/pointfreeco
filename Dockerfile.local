@@ -8,10 +8,10 @@ ENV OSS 1
 WORKDIR /app
 
 COPY .build/dependencies-state.json ./.build/dependencies-state.json
-COPY .env ./
+COPY .pf-env ./
 COPY Makefile ./
 COPY Package.swift ./
-COPY Packages ./Packages
+#COPY Packages ./Packages
 COPY Sources ./Sources
 COPY Tests ./Tests
 
@@ -22,5 +22,5 @@ RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
 RUN swift package update
-RUN swift build --product Server --configuration release
+RUN swift build --product Server --configuration release -Xswiftc -g
 CMD ./.build/release/Server

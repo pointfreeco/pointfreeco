@@ -22,6 +22,8 @@ public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
 private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, EnterpriseAccount?)?, User?, Route>>)
   -> IO<Conn<ResponseEnded, Data>> {
 
+    fatalError("Hello!")
+
     let (subscriptionAndEnterpriseAccount, user, route) = (conn.data.first, conn.data.second.first, conn.data.second.second)
     let subscriberState = SubscriberState(
       user: user,

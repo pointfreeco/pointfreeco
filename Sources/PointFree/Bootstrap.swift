@@ -1,3 +1,4 @@
+import Backtrace
 import Either
 import Foundation
 import GitHub
@@ -10,10 +11,19 @@ import Prelude
 
 public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
   return print(message: "⚠️ Bootstrapping PointFree...")
+    .flatMap(const(installBacktrace))
     .flatMap(const(loadEnvironment))
     .flatMap(const(connectToPostgres))
     .flatMap(const(print(message: "✅ PointFree Bootstrapped!")))
 }
+
+private let installBacktrace =
+  print(message: "  ⚠️ Installing Backtrace...")
+    .flatMap({ _ in EitherIO<Error, Prelude.Unit>(run: IO {
+      Backtrace.install()
+      return .right(unit)
+    })})
+    .flatMap(const(print(message: "  ✅ Backtrace installed!")))
 
 private func print(message: @autoclosure @escaping () -> String) -> EitherIO<Error, Prelude.Unit> {
   return EitherIO<Error, Prelude.Unit>(run: IO {
@@ -35,7 +45,7 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .deletingLastPathComponent()
     .deletingLastPathComponent()
     .deletingLastPathComponent()
-    .appendingPathComponent(".env")
+    .appendingPathComponent(".pf-env")
 
   let decoder = JSONDecoder()
   let encoder = JSONEncoder()
