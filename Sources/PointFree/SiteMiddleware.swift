@@ -183,21 +183,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> subscribeMiddleware
 
     case .subscribeLanding:
-      return conn.map(const(unit))
-        |> writeStatus(.ok)
-        >=> respond(
-          view: subscribeLanding,
-          layoutData: { _ in
-            SimplePageLayoutData(
-              currentRoute: nil,
-              currentUser: nil,
-              data: unit,
-              description: "",
-              style: .base(.minimal(.dark)),
-              title: "Subscribe to Point-Free"
-            )
-        }
-      )
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> subscribeLanding
 
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))

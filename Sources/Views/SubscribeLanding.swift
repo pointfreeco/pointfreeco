@@ -8,7 +8,7 @@ import Styleguide
 import View
 import HtmlCssSupport
 
-public let subscribeLanding = View<Prelude.Unit> { _ in
+public let subscribeLanding = View<User?> { _ in
   hero
     + plansAndPricing
     + whatToExpect
