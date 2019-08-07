@@ -41,7 +41,7 @@ private let hero = [
             [
               `class`([
                 Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-                Class.border.right
+                pricingHeroTitleColumnClass
                 ]),
 //              style(key("border-right", "1px solid #242424"))
             ],
