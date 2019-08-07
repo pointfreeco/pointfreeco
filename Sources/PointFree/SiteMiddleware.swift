@@ -9,8 +9,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
-import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
