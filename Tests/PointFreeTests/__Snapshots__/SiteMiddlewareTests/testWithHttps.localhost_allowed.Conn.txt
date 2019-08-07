@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 200 OK
-Content-Length: 74758
+Content-Length: 74797
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1618,6 +1618,9 @@ html {
     </style>
     <style>
       
+.md-ctn {
+  word-break : break-word;
+}
 
 .md-ctn hr {
   margin-top       : 2rem;
