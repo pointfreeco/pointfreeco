@@ -21,18 +21,65 @@ public let subscribeLanding = View<User?> { _ in
 private let hero = [
   div(
     [
-      `class`([
-        Class.pf.type.responsiveTitle1,
-        Class.pf.colors.bg.black,
-        Class.pf.colors.fg.white
-        ]),
+      `class`([Class.pf.colors.bg.black]),
       style(
         padding(all: .rem(7))
           <> lineHeight(1.15)
+          <> key("border-top", "1px solid #333")
       )
     ],
     [
-      "Explore the wonderful world of functional programming in Swift."
+      gridRow(
+        [
+          `class`([Class.grid.middle(.desktop)])
+        ],
+        [
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 8],
+            [
+              style(key("border-right", "1px solid #333"))
+            ],
+            [
+              h1(
+                [
+                  `class`([
+                    Class.pf.type.responsiveTitle1,
+                    Class.pf.colors.fg.white
+                    ])
+                ],
+                [.raw("Explore the wonderful world of&nbsp;functional programming in Swift.")]
+              )
+            ]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 4],
+            [
+              `class`([Class.grid.center(.desktop)])
+            ],
+            [
+              div(
+                [],
+                [
+                  p(
+                    [
+                      `class`([
+                        Class.pf.colors.fg.white,
+                        Class.padding([.mobile: [.bottom: 2 ]])
+                        ])
+                    ],
+                    ["Start with a free episode"]
+                  ),
+                  gitHubLink(
+                    text: "Create your account",
+                    type: .white,
+                    href: path(to: .login(redirect: url(to: .subscribeLanding)))
+                  )
+                ]
+              )
+            ]
+          )
+        ]
+      )
     ]
   )
 ]
