@@ -24,6 +24,9 @@ var videoJsHead: [ChildOf<Tag.Head>] {
 window.HELP_IMPROVE_VIDEOJS = false
 
 function videoJsLoaded() {
+  var video = document.getElementsByTagName('video')[0]
+  if (video == undefined) { return }
+
   video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
     if (event.availability != "available") { return }
 
@@ -32,7 +35,6 @@ function videoJsLoaded() {
       if (existingAirplayControl.length != 0) { return }
 
       var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
-      var video = document.getElementsByTagName('video')[0]
 
       var template = document.createElement('div')
       template.innerHTML = '\(render(airplayButton))'
