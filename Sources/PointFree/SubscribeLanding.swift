@@ -25,6 +25,7 @@ public let subscribeLanding: Middleware<
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: currentUser,
+          style: .base(.some(.minimal(.dark))),
           title: "Subscribe to Point-Free"
         )
     }
