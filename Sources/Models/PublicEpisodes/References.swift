@@ -28,6 +28,18 @@ BonMot is an open source library for providing a nicer API to creating attribute
     title: "BonMot"
   )
 
+  public static let combinatorsDanielSteinberg = Episode.Reference(
+    author: "Daniel Steinberg",
+    blurb: """
+Daniel gives a wonderful overview of how the idea of "combinators" infiltrates many common programming tasks.
+
+> Just as with OO, one of the keys to a functional style of programming is to write very small bits of functionality that can be combined to create powerful results. The glue that combines the small bits are called Combinators. In this talk we’ll motivate the topic with a look at Swift Sets before moving on to infinite sets, random number generators, parser combinators, and Peter Henderson’s Picture Language. Combinators allow you to provide APIs that are friendly to non-functional programmers.
+""",
+    link: "https://vimeo.com/290272240",
+    publishedAt: referenceDateFormatter.date(from: "2018-09-14"),
+    title: "Combinators"
+  )
+
   public static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
