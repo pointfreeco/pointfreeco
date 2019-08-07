@@ -7,12 +7,12 @@ Let's put some finishing touches to our random artwork generator, incorporate it
   codeSampleDirectory: "0050-generative-art-pt2",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 957_664_460,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/full/0050-generative-art-pt2-6730eb10-full.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/full/0050-generative-art-pt2.m3u8"
+    bytesLength: 290467801,
+    downloadUrl: "https://player.vimeo.com/external/348480337.hd.mp4?s=8ccbc79a092f485b89ab5bee225ca2d6f324742f&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/348480337"
   ),
   id: 50,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/poster.jpg",
+  image: "https://i.vimeocdn.com/video/801299326.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/itunes-poster.jpg",
   length: 27*60 + 22,
   permission: .free,
@@ -33,9 +33,9 @@ The artwork used as inspiration in this episode comes from the album cover from 
   sequence: 50,
   title: "Generative Art: Part 2",
   trailerVideo: .init(
-    bytesLength: 38063308,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/trailer/0050-trailer-trailer.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0050-generative-art-pt2/trailer/0050-trailer.m3u8"
+    bytesLength: 29107528,
+    downloadUrl: "https://player.vimeo.com/external/348480265.hd.mp4?s=29454a8e7f80c9b26a1cb191662b9d5f8dc16483&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/348480265"
   ),
   transcriptBlocks: transcriptBlocks
 )

@@ -10,6 +10,6 @@ TODO
   ],
   coverImage: "TODO",
   id: 0, // TODO
-  publishedAt: .init(timeIntervalSince1970: 0), // TODO
+  publishedAt: .distantFuture, // TODO
   title: "TODO"
 )

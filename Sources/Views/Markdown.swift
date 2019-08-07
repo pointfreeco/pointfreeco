@@ -33,6 +33,7 @@ public let markdownBlockStyles: Stylesheet =
       <> blockquoteMarkdownStyles
       <> pMarkdownStyles
       <> codeMarkdownStyles
+      <> key("word-break", "break-word")
 )
 
 private let ulMarkdownStyles: Stylesheet =

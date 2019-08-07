@@ -11,6 +11,10 @@ import SnapshotTesting
 import XCTest
 
 class AuthTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
 
   func testRegister() {
     let gitHubUserEnvelope = GitHubUserEnvelope.mock

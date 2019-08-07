@@ -1,6 +1,7 @@
 import Foundation
 
 extension Episode.Reference {
+
   public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
@@ -58,6 +59,16 @@ This question on the Swift forums brings up an interesting discussion on how to 
     link: "https://forums.swift.org/t/difficulties-with-efficient-large-file-parsing/23660",
     publishedAt: referenceDateFormatter.date(from: "2019-04-25"),
     title: "Difficulties With Efficient Large File Parsing"
+  )
+
+  public static let elmHomepage = Episode.Reference(
+    author: nil,
+    blurb: """
+Elm is both a pure functional language and framework for creating web applications in a declarative fashion. It was instrumental in pushing functional programming ideas into the mainstream, and demonstrating how an application could be represented by a simple pure function from state and actions to state.
+""",
+    link: "https://elm-lang.org",
+    publishedAt: nil,
+    title: "Elm: A delightful language for reliable webapps"
   )
 
   public static let everythingsAFunction = Episode.Reference(
@@ -120,6 +131,16 @@ it will fail the test. Since then Facebook has stopped maintaining it and transf
     link: "https://github.com/uber/ios-snapshot-test-case",
     publishedAt: nil,
     title: "uber/ios-snapshot-test-case"
+  )
+
+  public static let insideSwiftUIAboutState = Episode.Reference(
+    author: "kateinoigaku",
+    blurb: """
+Not a lot is currently known how `@State` really works under the hood. Sometimes it almost seems like magic! This article explores how `@State` might be implemented internally, and it seems that most likely SwiftUI is using the rich set of metadata available to the runtime (which the author of this article has also explored deeply [here](https://kateinoigakukun.hatenablog.com/entry/2019/03/22/184356)).
+""",
+    link: "https://kateinoigakukun.hatenablog.com/entry/2019/06/09/081831",
+    publishedAt: referenceDateFormatter.date(from: "2019-06-09"),
+    title: "Inside SwiftUI (About @State)"
   )
 
   public static let introduceSequenceCompactMap = Episode.Reference(
@@ -294,6 +315,26 @@ very simple, small pieces and then compose them together to create a really comp
     link: "https://www.pointfree.co/blog/posts/19-random-zalgo-generator",
     publishedAt: Date(timeIntervalSince1970: 1542690000),
     title: "Random Zalgo Generator"
+  )
+
+  public static let reduceWithInout = Episode.Reference(
+    author: "Chris Eidhof",
+    blurb: """
+The Swift standard library comes with two versions of `reduce`: one that takes accumulation functions of the form `(Result, Value) -> Result`, and another that accumulates with functions of the form `(inout Result, Value) -> Void`. Both versions are equivalent, but the latter can be more efficient when reducing into large data structures.
+""",
+    link: "https://forums.swift.org/t/reduce-with-inout/4897",
+    publishedAt: referenceDateFormatter.date(from: "2017-01-16"),
+    title: "Reduce with inout"
+  )
+
+  public static let reduxHomepage = Episode.Reference(
+    author: nil,
+    blurb: """
+The idea of modeling an application's architecture on simple reducer functions was popularized by Redux, a state management library for React, which in turn took a lot of inspiration from [Elm](https://elm-lang.org).
+""",
+    link: "https://redux.js.org",
+    publishedAt: nil,
+    title: "Redux: A predictable state container for JavaScript apps."
   )
 
   public static let scannerAppleDocs = Episode.Reference(
@@ -477,6 +518,14 @@ types at compile time.
     title: "Tagged"
   )
 
+  public static let swiftUiTutorials = Episode.Reference(
+    author: "Apple",
+    blurb: "With the introduction of SwiftUI and Combine, Apple has released a set of high-quality, interactive tutorials to explore some of the new concepts.",
+    link: "https://developer.apple.com/tutorials/swiftui/tutorials",
+    publishedAt: nil,
+    title: "SwiftUI Tutorials"
+  )
+
   public static let swiftValidated = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -588,6 +637,17 @@ The Wikipedia entry for monads.
     publishedAt: nil,
     title: "Monad (functional programming)"
   )
+
+  public static let composableReducers = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
+""",
+    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
+    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
+    title: "Composable Reducers"
+  )
+
 }
 
 let referenceDateFormatter = { () -> DateFormatter in

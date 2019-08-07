@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68490
+Content-Length: 68768
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1619,6 +1619,9 @@ html {
     </style>
     <style>
       
+.md-ctn {
+  word-break : break-word;
+}
 
 .md-ctn hr {
   margin-top       : 2rem;
@@ -1791,6 +1794,9 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
       window.HELP_IMPROVE_VIDEOJS = false
 
 function videoJsLoaded() {
+  var video = document.getElementsByTagName('video')[0]
+  if (video == undefined) { return }
+
   video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
     if (event.availability != "available") { return }
 
@@ -1799,7 +1805,6 @@ function videoJsLoaded() {
       if (existingAirplayControl.length != 0) { return }
 
       var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
-      var video = document.getElementsByTagName('video')[0]
 
       var template = document.createElement('div')
       template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="AirPlay"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxM3B4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iTWVkaWEtQ29udHJvbC1TeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iX0Fzc2V0cy9JbmxpbmUvQWlycGxheSIgZmlsbD0iI2ZmZmZmZiI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik03LjU5MDI1MzMzLDcuMTQ2NTg2ODkgQzcuNzkxODA0NDksNi45NTMxMDU3NyA4LjExNDQ5MzQ0LDYuOTQ5MTc5NSA4LjMyMDEzNDY0LDcuMTQ2NTg2ODkgTDEzLjY4NTI2NDYsMTIuMjk2ODk4OCBDMTQuMDc5NzUxMSwxMi42NzU1OTAyIDEzLjk1NTg4NzIsMTIuOTgyNTgwMiAxMy4zOTg5MTU0LDEyLjk4MjU4MDIgTDIuNTExNDcyNTQsMTIuOTgyNTgwMiBDMS45NTg4Mzk3OSwxMi45ODI1ODAyIDEuODM5Mjc4NDksMTIuNjY3Mjk0NiAyLjIyNTEyMzM2LDEyLjI5Njg5ODggTDcuNTkwMjUzMzMsNy4xNDY1ODY4OSBaIiBpZD0iaU9TL0Z1bGxzY3JlZW4vQWlycGxheSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMsMTAgTDE0Ljk5OTEyODMsMTAgQzE1LjU1NTM2OTEsMTAgMTYsOS41NTQzNDUzMyAxNiw5LjAwNDYwMjQzIEwxNiwwLjk5NTM5NzU2OCBDMTYsMC40NTU2NjQzOTYgMTUuNTUxODk0NSwwIDE0Ljk5OTEyODMsMCBMMS4wMDA4NzE2NiwwIEMwLjQ0NDYzMDg2MSwwIDAsMC40NDU2NTQ2NzEgMCwwLjk5NTM5NzU2OCBMMCw5LjAwNDYwMjQzIEMwLDkuNTQ0MzM1NiAwLjQ0ODEwNTUwNSwxMCAxLjAwMDg3MTY2LDEwIEwzLDEwIEw0LDkgTDEuNDk4MjY3NDEsOSBDMS4yMjMwODE5Miw5IDEsOC43NjkyMDMxOSAxLDguNDk5NTY0MTcgTDEsMS41MDA0MzU4MyBDMSwxLjIyNDA1Mjc1IDEuMjE5OTA2NTcsMSAxLjQ5ODI2NzQxLDEgTDE0LjUwMTczMjYsMSBDMTQuNzc2OTE4MSwxIDE1LDEuMjMwNzk2ODEgMTUsMS41MDA0MzU4MyBMMTUsOC40OTk1NjQxNyBDMTUsOC43NzU5NDcyNSAxNC43ODAwOTM0LDkgMTQuNTAxNzMyNiw5IEwxMiw5IEwxMywxMCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="AirPlay" style="vertical-align:middle"></button>'
@@ -2108,11 +2113,7 @@ want to use it to view this episode for free right now?
             <div>
               <div id="t0"
                    class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="0"
+                <a href="#t0"
                    class="vid-time-link
                           text-decoration-none
                           pf-link-gray650
@@ -2234,10 +2235,37 @@ that timestamp jumps the video to that spot.</p>
                    playslinline
                    autoplay
                    poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">
+                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2],"playsinline":true}">
               <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
                       type="application/vnd.apple.mpegurl">
             </video>
+            <script>
+              var hasPlayed = false;
+var video = document.getElementsByTagName("video")[0];
+video.addEventListener("play", function () {
+  hasPlayed = true;
+});
+document.addEventListener("keypress", function (event) {
+  if (hasPlayed && event.key === " ") {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+    event.preventDefault();
+  }
+});
+document.addEventListener("click", function (event) {
+  var target = event.target;
+  if (target.tagName != "A") { return; }
+  var hash = new URL(target.href).hash;
+  var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+  if (time <= 0) { return; }
+  var video = document.getElementsByTagName("video")[0];
+  video.currentTime = time;
+  video.play();
+});
+            </script>
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2372,23 +2400,6 @@ that timestamp jumps the video to that spot.</p>
         </div>
       </div>
     </div>
-    <script>
-      var hasPlayed = false;
-var video = document.getElementsByTagName('video')[0];
-video.addEventListener('play', function () {
-  hasPlayed = true;
-});
-document.addEventListener('keypress', function (event) {
-  if (hasPlayed && event.key === ' ') {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
-  }
-});
-    </script>
     <footer class="row
                    d-pl4
                    d-pr4
