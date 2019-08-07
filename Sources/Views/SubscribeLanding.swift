@@ -21,11 +21,13 @@ public let subscribeLanding = View<User?> { _ in
 private let hero = [
   div(
     [
-      `class`([Class.pf.colors.bg.black]),
+      `class`([
+        Class.pf.colors.bg.black,
+        Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
+        ]),
       style(
-        padding(all: .rem(7))
-          <> lineHeight(1.15)
-          <> key("border-top", "1px solid #333")
+        // TODO: move to nav?
+        key("border-top", "1px solid #333")
       )
     ],
     [
@@ -37,7 +39,11 @@ private let hero = [
           gridColumn(
             sizes: [.mobile: 12, .desktop: 8],
             [
-              style(key("border-right", "1px solid #333"))
+              `class`([
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.border.right
+                ]),
+//              style(key("border-right", "1px solid #242424"))
             ],
             [
               h1(
@@ -45,7 +51,8 @@ private let hero = [
                   `class`([
                     Class.pf.type.responsiveTitle1,
                     Class.pf.colors.fg.white
-                    ])
+                    ]),
+                  style(lineHeight(1.2))
                 ],
                 [.raw("Explore the wonderful world of&nbsp;functional programming in Swift.")]
               )
