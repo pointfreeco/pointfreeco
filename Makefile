@@ -202,18 +202,20 @@ clean-snapshots:
 SUDO = sudo --prompt=$(SUDO_PROMPT)
 SUDO_PROMPT = "  🔒 Please enter your password: "
 
-.PHONY: bootstrap-oss \
+.PHONY: \
 	bootstrap \
-	uninstall \
-	uninstall-colortheme \
-	check-dependencies \
+	bootstrap-oss \
 	check-cmark \
+	check-dependencies \
 	check-postgres \
 	check-sourcery \
 	db \
 	db-drop \
-	submodule \
-	env-local \
 	deploy-local \
 	deploy-production \
-	test-oss
+	env-local \
+	submodules \
+	test-oss \
+	uninstall \
+	uninstall-colortheme \
+

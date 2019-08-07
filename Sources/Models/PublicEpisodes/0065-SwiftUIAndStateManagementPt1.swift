@@ -4,18 +4,17 @@ public let ep65 = Episode(
   blurb: """
 Let's begin exploring application architecture by understanding what are the common problems we encounter when trying to build large, complex applications. We will build an app in SwiftUI to see how Apple's new framework approaches solving these problems.
 """,
-  codeSampleDirectory: "0065-swiftui-and-state-management-pt1", // TODO
+  codeSampleDirectory: "0065-swiftui-and-state-management-pt1",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 935_800_000,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/full/0065-swiftui-and-state-management-pt1-c3a3fb39-full.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/full/0065-swiftui-and-state-management-pt1.m3u8"
+    bytesLength: 241590052,
+    downloadUrl: "https://player.vimeo.com/external/349951720.hd.mp4?s=2e2fde11175184a755a146b9df7377c47d2b85d7&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349951720"
   ),
   id: 65,
-  // todo: cloudfront
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/poster.jpg",
+  image: "https://i.vimeocdn.com/video/801297149.jpg",
   itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0065-swiftui-and-state-management-pt1/itunes-poster.jpg",
-  length: 26 * 60 + 45,
+  length: 26*60 + 45,
   permission: .free,
   previousEpisodeInCollection: nil,
   publishedAt: .init(timeIntervalSince1970: 1563170400),
@@ -26,9 +25,9 @@ Let's begin exploring application architecture by understanding what are the com
   sequence: 65,
   title: "SwiftUI and State Management: Part 1",
   trailerVideo: .init(
-    bytesLength: 81_600_000,
-    downloadUrl: "https://pointfreeco-episodes-processed.s3.amazonaws.com/0065-swiftui-and-state-management-pt1/trailer/0065-trailer-trailer.mp4",
-    streamingSource: "https://pointfreeco-episodes-processed.s3.amazonaws.com/0065-swiftui-and-state-management-pt1/trailer/0065-trailer.m3u8"
+    bytesLength: 46867087,
+    downloadUrl: "https://player.vimeo.com/external/349951716.hd.mp4?s=12b2cd19e65c55b2beb83491f89e0ca4ffa0d7e2&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/349951716"
   ),
   transcriptBlocks: transcriptBlocks
 )
@@ -37,11 +36,11 @@ private let exercises: [Episode.Exercise] = [
   .init(problem: """
 Let's make the state even _more_ persistent by saving the state whenever a change is made and loading the state when the app launches. This can be done in a few steps:
 
-* Make `AppState` conform to `Codable`. This unfortunately requires implement manual encoding and decoding due to the `PassthroughSubject`.
-* Tap into each `didSet` on the model and save the JSON representation of the state to `UserDefaults`.
+* Make `AppState` conform to `Codable`. Because of the `PassthroughSubject` `willChange` property, you unfortunately must manually specify the other `CodingKeys` or manually implement encoding and decoding.
+* Tap into each `willSet` on the model and save the JSON representation of the state to `UserDefaults`.
 * When the root `ContentView` is created for the playground live view load the `AppState` from `UserDefaults`.
 
-Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change which is probably too inefficient, and we have to repeat that work for each `didSet` entry point. We will explore better ways of dealing with this soon 😄.
+Once you have accomplished this your data will persist across multiple runs of the playground! However, there are quite a few problems with it. Implementing `Codable` is annoying due to the `PassthroughSubject`, we are saving the state to `UserDefaults` on every state change, which is probably too inefficient, and we have to repeat that work for each `willSet` entry point. We will explore better ways of dealing with this soon 😄.
 """),
   .init(problem: """
 Search for an algorithm online that checks if an integer is prime, and port it to Swift.
@@ -60,13 +59,20 @@ Add a `var favoritePrimes: [Int]` field to our `AppState`, and make sure to ping
 Use this new `favoritePrimes` state to render a "Add to favorite primes" / "Remove from favorite primes" button in the modal. Also hook up the action on this button to remove or add the current counter value to the list of favorite primes.
 """),
   .init(problem: """
-Right now it's cumbersome to add new state to our `AppState` class. We have to always remember to ping `didChange` whenever any of our fields is mutated and even more work is needed if we wanted to bundle up a bunch of fields into its own state class.
+Right now it's cumbersome to add new state to our `AppState` class. We have to always remember to ping `willChange` whenever any of our fields is mutated and even more work is needed if we wanted to bundle up a bunch of fields into its own state class.
 
 These problems can be fixed by creating a generic class `Store<A>` that wraps access to a single value type `A`. Implement this class and replace all instances of `AppState` in our application with `Store<AppState>`.
 """)
 ]
 
 private let transcriptBlocks: [Episode.TranscriptBlock] = [
+  Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
+""",
+    timestamp: nil,
+    type: .correction
+  ),
   Episode.TranscriptBlock(
     content: "Introduction",
     timestamp: (0*60 + 05),
@@ -728,6 +734,19 @@ var didChange: AppState.PublisherType
   ),
   Episode.TranscriptBlock(
     content: """
+In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
+
+```
+let objectDidChange = ObservableObjectPublisher()
+```
+
+This boilerplate is also not necessary, as the `ObservableObject` protocol will synthesize a default publisher for you automatically.
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
+    content: """
 Now publishers are a concept from the Combine framework that is shipping alongside SwiftUI, and we'll have a bunch to say about it in future episodes, but for now we can think of it as a mechanism that allows us to notify interested subscribers when something changes. For our purposes we can use what is known as a `PassthroughSubject`, which has two generics: one for the values it can emit and one for the errors it can complete with. Again to simplify we will use `Void` and `Never` to represent a subject that emits nothing of interest when something changes and can never fail:
 """,
     timestamp: (21*60 + 54),
@@ -767,6 +786,27 @@ var count = 0 {
   ),
   Episode.TranscriptBlock(
     content: """
+With Xcode 11 beta 5 and later, `willSet` should be used instead of `didSet`:
+
+```
+var count = 0 {
+  willSet {
+    self.objectWillChange.send()
+  }
+}
+```
+
+Or you can remove this boilerplate entirely by using a `@Published` property wrapper:
+
+```
+@Published var count = 0
+```
+""",
+    timestamp: nil,
+    type: .correction
+  ),
+  Episode.TranscriptBlock(
+    content: """
 And that is all we need to do to get persistent state in place for our application. To hook it up to our view we will update our state variable:
 """,
     timestamp: (24*60 + 03),
@@ -778,6 +818,13 @@ And that is all we need to do to get persistent state in place for our applicati
 """,
     timestamp: nil,
     type: .code(lang: .swift)
+  ),
+  Episode.TranscriptBlock(
+    content: """
+With Xcode 11 beta 5 and later, SwiftUI's `@ObjectBinding` property wrapper was deprecated in favor of the `@ObservedObject` wrapper introduced to the Combine framework.
+""",
+    timestamp: nil,
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
@@ -872,7 +919,7 @@ Ok, so we had to do a bit of plumbing to properly get our global app state insid
   ),
   Episode.TranscriptBlock(
     content: """
-Now that know how to express state in a view, make the view react to changes in that state, and even how to persist the state across the entire application, let's build out another screen in our app. Let's do the prime number checker modal. This appears when you tap the "Is this prime?" button, and it shows you a label that let's you know if the current counter is prime or not, and it gives you a button for saving or removing the number from your list of favorites.
+Now that we know how to express state in a view, make the view react to changes in that state, and even how to persist the state across the entire application, let's build out another screen in our app. Let's do the prime number checker modal. This appears when you tap the "Is this prime?" button, and it shows you a label that let's you know if the current counter is prime or not, and it gives you a button for saving or removing the number from your list of favorites.
 """,
     timestamp: (26*60 + 21),
     type: .paragraph
