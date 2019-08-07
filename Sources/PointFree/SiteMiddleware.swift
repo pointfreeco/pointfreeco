@@ -9,6 +9,8 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
+import View
+import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
@@ -179,6 +181,23 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
+
+    case .subscribeLanding:
+      return conn.map(const(unit))
+        |> writeStatus(.ok)
+        >=> respond(
+          view: subscribeLanding,
+          layoutData: { _ in
+            SimplePageLayoutData(
+              currentRoute: nil,
+              currentUser: nil,
+              data: unit,
+              description: "",
+              style: .base(.minimal(.dark)),
+              title: "Subscribe to Point-Free"
+            )
+        }
+      )
 
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))
