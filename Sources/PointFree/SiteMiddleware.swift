@@ -180,6 +180,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
+    case .subscribeLanding:
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> subscribeLanding
+
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))
         |> leaveTeamMiddleware
