@@ -179,9 +179,7 @@ private let faqItems = Faq.allFaqs.flatMap { faq in
       [.text(faq.question)]
     ),
     p(
-      [
-        `class`([Class.pf.colors.fg.gray400])
-      ],
+      [`class`([Class.pf.colors.fg.gray400])],
       [.text(faq.answer)]
     )
   ]
