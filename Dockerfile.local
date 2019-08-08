@@ -11,7 +11,7 @@ COPY .build/dependencies-state.json ./.build/dependencies-state.json
 COPY .pf-env ./
 COPY Makefile ./
 COPY Package.swift ./
-#COPY Packages ./Packages
+COPY Packages ./Packages
 COPY Sources ./Sources
 COPY Tests ./Tests
 
