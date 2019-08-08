@@ -11,6 +11,7 @@ import PointFreeRouter
 import Styleguide
 import Prelude
 import View
+import Views
 
 let mountainNavView = View<(NavStyle.MountainsStyle, User?, SubscriberState, Route?)> { mountainsStyle, currentUser, subscriberState, currentRoute in
 
