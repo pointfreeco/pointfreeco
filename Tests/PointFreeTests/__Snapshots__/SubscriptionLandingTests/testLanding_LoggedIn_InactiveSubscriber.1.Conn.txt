@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 93584
+Content-Length: 97802
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1689,8 +1689,16 @@ html {
       
 @media only screen and (min-width: 832px) {
 
-.border-right {
+.dark-right-border-d {
   border-right : 1px solid #333;
+}
+
+.light-right-border-d {
+  border-right : 1px solid #e8e8e8;
+}
+
+.light-bottom-border-d {
+  border-bottom : 1px solid #e8e8e8;
 }
 
 }
@@ -1824,7 +1832,7 @@ html {
         <div class="d-pb0
                     d-pr2
                     m-pb2
-                    border-right
+                    dark-right-border-d
                     col-m
                     col-d-8
                     col-m-12">
@@ -1885,14 +1893,147 @@ html {
         Plans and pricing
       </h3>
     </div>
-    <div>
-      <h3 class="fg-black
-                 bold
-                 ts-d-r2
-                 ts-m-r1_5
-                 lh-2">
-        What to expect
-      </h3>
+    <div class="d-pl4
+                d-pr4
+                d-pt4
+                d-pb4
+                m-pl3
+                m-pr3
+                m-pt3
+                m-pb3
+                row"
+         style="background-color:#fafafa">
+      <div class="center-d
+                  d-pb3
+                  col-m
+                  col-m-12">
+        <h3 class="fg-black
+                   bold
+                   ts-d-r2
+                   ts-m-r1_5
+                   lh-2">
+          What to expect
+        </h3>
+      </div>
+      <div class="center-d
+                  d-pb0
+                  m-pb3
+                  d-mb0
+                  m-mb1
+                  light-bottom-border-d
+                  light-right-border-d
+                  col-m
+                  col-d-6
+                  col-m-12">
+        <div class="d-pl3
+                    d-pr3
+                    d-pt3
+                    d-pb3">
+          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/regular-updates.jpg"
+               alt
+               class="fit
+                      m-mb2
+                      bg-white">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_25
+                     ts-m-r1
+                     lh-1">
+            New content every week
+          </h4>
+          <p class="fg-gray400">
+            Every week, we’ll dissect some of the most important topics in functional programming, and deliver them
+straight to your inbox.
+          </p>
+        </div>
+      </div>
+      <div class="center-d
+                  d-pb0
+                  m-pb3
+                  d-mb0
+                  m-mb1
+                  light-bottom-border-d
+                  col-m
+                  col-d-6
+                  col-m-12">
+        <div class="d-pl3
+                    d-pr3
+                    d-pt3
+                    d-pb3">
+          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/episode-topics.jpg"
+               alt
+               class="fit
+                      m-mb2
+                      bg-white">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_25
+                     ts-m-r1
+                     lh-1">
+            Wide variety of topics
+          </h4>
+          <p class="fg-gray400">
+            We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+          </p>
+        </div>
+      </div>
+      <div class="center-d
+                  d-pb0
+                  m-pb3
+                  d-mb0
+                  m-mb1
+                  light-right-border-d
+                  col-m
+                  col-d-6
+                  col-m-12">
+        <div class="d-pl3
+                    d-pr3
+                    d-pt3
+                    d-pb3">
+          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/download-playgrounds.jpg"
+               alt
+               class="fit
+                      m-mb2
+                      bg-white">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_25
+                     ts-m-r1
+                     lh-1">
+            Playground downloads
+          </h4>
+          <p class="fg-gray400">
+            Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
+discussed.
+          </p>
+        </div>
+      </div>
+      <div class="center-d
+                  col-m
+                  col-d-6
+                  col-m-12">
+        <div class="d-pl3
+                    d-pr3
+                    d-pt3
+                    d-pb3">
+          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/video-transcription.jpg"
+               alt
+               class="fit
+                      m-mb2
+                      bg-white">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_25
+                     ts-m-r1
+                     lh-1">
+            Video transcripts
+          </h4>
+          <p class="fg-gray400">
+            We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
+directly to the video.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="d-pl4
                 d-pr4
