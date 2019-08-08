@@ -38,8 +38,8 @@ class SubscriptionLandingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1100)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1100))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1600)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
         ]
       )
     }
@@ -63,8 +63,8 @@ class SubscriptionLandingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1100)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1100))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1600)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
         ]
       )
     }
