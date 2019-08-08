@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 110403
+Content-Length: 110450
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -64,6 +64,10 @@ body {
 
 .bg-dark {
   background-color : #121212;
+}
+
+.bg-gray150 {
+  background-color : #242424;
 }
 
 .bg-gray650 {
