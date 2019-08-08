@@ -5,7 +5,7 @@ private func base64EncodedString(_ string: String) -> String {
   return Data(string.utf8).base64EncodedString()
 }
 
-func newWindowSvgBase64(fill: String) -> String {
+public func newWindowSvgBase64(fill: String) -> String {
   return base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -18,7 +18,7 @@ func newWindowSvgBase64(fill: String) -> String {
 """
 }
 
-let airplaySvgBase64 = base64EncodedString <| """
+public let airplaySvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Media-Control-Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -30,7 +30,7 @@ let airplaySvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-func pointFreeTextLogoSvgBase64(color: String) -> String {
+public func pointFreeTextLogoSvgBase64(color: String) -> String {
   return base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="238px" height="28px" viewBox="0 0 238 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -43,7 +43,7 @@ func pointFreeTextLogoSvgBase64(color: String) -> String {
 """
 }
 
-func pointFreeDiamondLogoSvgBase64(fill: String) -> String {
+public func pointFreeDiamondLogoSvgBase64(fill: String) -> String {
   return base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -56,7 +56,7 @@ func pointFreeDiamondLogoSvgBase64(fill: String) -> String {
 """
 }
 
-let thingiesSvgBase64 = base64EncodedString <| """
+public let thingiesSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="124px" height="112px" viewBox="0 0 124 112" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -65,7 +65,7 @@ let thingiesSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let heroMountainSvgBase64 = base64EncodedString <| """
+public let heroMountainSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="615px" height="231px" viewBox="0 0 615 231" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -96,7 +96,7 @@ let heroMountainSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let pointFreeHeroSvgBase64 = base64EncodedString <| """
+public let pointFreeHeroSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="424px" height="112px" viewBox="0 0 424 112" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -111,13 +111,7 @@ let pointFreeHeroSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-func gitHubSvgBase64(fill: String) -> String {
-  return base64EncodedString <| """
-  <svg fill="\(fill)" aria-labelledby="simpleicons-github-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title id="simpleicons-github-icon">GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-  """
-}
-
-func rightArrowSvgBase64(fill: String) -> String {
+public func rightArrowSvgBase64(fill: String) -> String {
   return base64EncodedString <| """
   <?xml version="1.0" encoding="UTF-8"?>
   <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -128,7 +122,7 @@ func rightArrowSvgBase64(fill: String) -> String {
   """
 }
 
-let logoSvgBase64 = base64EncodedString <| """
+public let logoSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="371px" height="269px" viewBox="0 0 371 269" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -163,7 +157,7 @@ let logoSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let checkmarkSvgBase64 = base64EncodedString <| """
+public let checkmarkSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Episodes" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -178,7 +172,7 @@ let checkmarkSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let facebookIconSvgBase64 = base64EncodedString <| """
+public let facebookIconSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="17px" height="16px" viewBox="0 0 17 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Episodes" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -193,7 +187,7 @@ let facebookIconSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let twitterIconSvgBase64 = base64EncodedString <| """
+public let twitterIconSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="17px" height="14px" viewBox="0 0 17 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Episodes" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -208,7 +202,7 @@ let twitterIconSvgBase64 = base64EncodedString <| """
 </svg>
 """
 
-let pointFreePointersLogoSvgBase64 = base64EncodedString <| """
+public let pointFreePointersLogoSvgBase64 = base64EncodedString <| """
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="448px" height="138px" viewBox="0 0 448 138" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
