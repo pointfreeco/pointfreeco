@@ -35,20 +35,20 @@ public func videoView(forEpisode episode: Episode, isEpisodeViewable: Bool) -> N
 window.addEventListener("load", function (event) {
   var player = new Vimeo.Player(document.querySelector("iframe"));
 
-  jump(window.location.hash);
+  jump(window.location.hash, false);
 
   document.addEventListener("click", function (event) {
     var target = event.target;
     if (target.tagName != "A") { return; }
     var hash = new URL(target.href).hash;
-    jump(hash);
-    player.play();
+    jump(hash, true);
   });
 
-  function jump(hash) {
+  function jump(hash, play) {
     var time = +((/^#t(\\d+)$/.exec(hash) || [])[1] || "");
     if (time <= 0) { return; }
     player.setCurrentTime(time);
+    if (play) { player.play(); }
   }
 });
 """
