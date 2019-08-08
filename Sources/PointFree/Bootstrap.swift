@@ -19,10 +19,10 @@ public func bootstrap() -> EitherIO<Error, Prelude.Unit> {
 
 private let installBacktrace =
   print(message: "  ⚠️ Installing Backtrace...")
-    .flatMap({ _ in EitherIO<Error, Prelude.Unit>(run: IO {
+    .flatMap(const(EitherIO<Error, Prelude.Unit>(run: IO {
       Backtrace.install()
       return .right(unit)
-    })})
+    })))
     .flatMap(const(print(message: "  ✅ Backtrace installed!")))
 
 private func print(message: @autoclosure @escaping () -> String) -> EitherIO<Error, Prelude.Unit> {
