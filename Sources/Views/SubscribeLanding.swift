@@ -66,7 +66,7 @@ private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -
       [
         `class`([
           Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 0, .right: 2]]),
-          isTwoColumnHero ? rightBorderClass: .star
+          isTwoColumnHero ? darkRightBorder: .star
           ]),
       ],
       [
@@ -124,16 +124,100 @@ private let plansAndPricing = [
 ]
 
 private let whatToExpect = [
-  div(
-    [],
+  gridRow(
     [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle3])],
-        ["What to expect"]
+      `class`([
+        Class.padding([.mobile: [.leftRight: 3, .topBottom: 3], .desktop: [.all: 4]])
+        ]),
+      style(backgroundColor(.other("#fafafa")))
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.desktop: [.bottom: 3]])
+            ])
+        ],
+        [
+          h3(
+            [`class`([Class.pf.type.responsiveTitle3])],
+            ["What to expect"]
+          )
+        ]
+      ),
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+            lightBottomBorder,
+            lightRightBorder
+            ]),
+        ],
+        [whatToExpectColumn(item: .newContent)]
+      ),
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+            lightBottomBorder
+            ])
+        ],
+        [whatToExpectColumn(item: .topics)]
+      ),
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+            lightRightBorder
+            ])
+        ],
+        [whatToExpectColumn(item: .playgrounds)]
+      ),
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 6],
+        [`class`([Class.grid.center(.desktop)])],
+        [whatToExpectColumn(item: .transcripts)]
       )
     ]
   )
 ]
+
+private func whatToExpectColumn(item: WhatToExpectItem) -> Node {
+  return div(
+    [`class`([Class.padding([.desktop: [.all: 3]])])],
+    [
+      img(
+        src: item.imageSrc,
+        alt: "",
+        [
+          `class`([
+            Class.layout.fit, Class.margin([.mobile: [.bottom: 2]]),
+            Class.pf.colors.bg.white
+            ])
+        ]
+      ),
+      h4(
+        [`class`([Class.pf.type.responsiveTitle5])],
+        [.text(item.title)]
+      ),
+      p(
+        [`class`([Class.pf.colors.fg.gray400])],
+        [.text(item.description)]
+      )
+    ]
+  )
+}
 
 private let faq = [
   gridRow(
@@ -289,13 +373,16 @@ private func footer(currentUser: User?) -> [Node] {
   ]
 }
 
-public let extraSubscriptionLandingStyles = rightBorderStyles
-
-private let rightBorderClass = CssSelector.class("border-right")
-private let rightBorderStyles =
+public let extraSubscriptionLandingStyles =
   Breakpoint.desktop.query(only: screen) {
-    rightBorderClass % key("border-right", "1px solid #333")
+    darkRightBorder % key("border-right", "1px solid #333")
+      <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
+      <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
 }
+
+private let darkRightBorder = CssSelector.class("dark-right-border-d")
+private let lightRightBorder = CssSelector.class("light-right-border-d")
+private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
 
 private struct Faq {
   let question: String
@@ -323,4 +410,45 @@ All plans can be canceled any time. Your plan features remain available through 
 """
     ),
   ]
+}
+
+private struct WhatToExpectItem {
+  let imageSrc: String
+  let title: String
+  let description: String
+
+  static let newContent = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
+    title: "New content every week",
+    description: """
+Every week, we’ll dissect some of the most important topics in functional programming, and deliver them
+straight to your inbox.
+"""
+  )
+
+  static let topics = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg",
+    title: "Wide variety of topics",
+    description: """
+We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+"""
+  )
+
+  static let playgrounds = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
+    title: "Playground downloads",
+    description: """
+Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
+discussed.
+"""
+  )
+
+  static let transcripts = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg",
+    title: "Video transcripts",
+    description: """
+We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
+directly to the video.
+"""
+  )
 }
