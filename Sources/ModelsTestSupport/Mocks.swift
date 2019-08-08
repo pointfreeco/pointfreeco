@@ -85,6 +85,10 @@ extension Models.User {
 
   public static let nonSubscriber = mock
     |> \.subscriptionId .~ nil
+
+  public static let admin = mock
+    |> \.isAdmin .~ true
+    |> \.id .~ .init(rawValue: UUID(uuidString: "12121212-1212-1212-1212-121212121212")!)
 }
 
 fileprivate extension Date {

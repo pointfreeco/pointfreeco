@@ -11,6 +11,7 @@ import PointFreeRouter
 import Styleguide
 import Prelude
 import View
+import Views
 
 let minimalNavView = View<(NavStyle.MinimalStyle, User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
   gridRow([`class`([newNavBarClass(for: style)])], [
@@ -101,6 +102,8 @@ private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, curre
 
 private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {
   switch style {
+  case .black:
+    return .white
   case .dark:
     return .white
   case .light:
@@ -110,6 +113,8 @@ private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType 
 
 private func navLinkClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   switch style {
+  case .black:
+    return Class.pf.colors.link.gray650
   case .dark:
     return Class.pf.colors.link.green
   case .light:
@@ -128,6 +133,8 @@ private let navListClass =
 private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   let colorClass: CssSelector
   switch style {
+  case .black:
+    colorClass = Class.pf.colors.bg.black
   case .dark:
     colorClass = Class.pf.colors.bg.purple150
   case .light:
@@ -142,6 +149,8 @@ private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
 
 private func fillColor(for minimalStyle: NavStyle.MinimalStyle) -> String {
   switch minimalStyle {
+  case .black:
+    return "#ffffff"
   case .dark:
     return "#ffffff"
   case .light:
