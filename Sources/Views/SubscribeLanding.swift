@@ -15,7 +15,7 @@ public func subscribeLanding(currentUser: User?, subscriberState: SubscriberStat
     + faq
     + whatPeopleAreSaying
     + featuredTeams
-    + footer
+    + footer(currentUser: currentUser)
 }
 
 func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
@@ -247,17 +247,47 @@ private let featuredTeams = [
   )
 ]
 
-private let footer = [
-  div(
-    [],
-    [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle3])],
-        ["Get started with our free plan"]
-      )
-    ]
-  )
-]
+private func footer(currentUser: User?) -> [Node] {
+  guard currentUser == nil else { return [] }
+
+  return [
+    div(
+      [
+        `class`([
+          Class.pf.colors.bg.gray150,
+          Class.padding([.mobile: [.leftRight: 2, .topBottom: 4], .desktop: [.all: 5]]),
+          Class.type.align.center
+          ]),
+      ],
+      [
+        h3(
+          [
+            `class`([
+              Class.pf.type.responsiveTitle3,
+              Class.pf.colors.fg.white
+              ])
+          ],
+          ["Get started with our free plan"]
+        ),
+        p(
+          [
+            `class`([
+              Class.pf.colors.fg.white,
+              Class.padding([.mobile: [.bottom: 3]])
+              ])
+          ],
+          [.raw("Includes a free episode of your choice, plus weekly<br>updates from our newsletter.")]
+        ),
+        gitHubLink(
+          text: "Create your account",
+          type: .white,
+          // TODO: redirect back to home?
+          href: path(to: .login(redirect: url(to: .subscribeLanding)))
+        )
+      ]
+    )
+  ]
+}
 
 public let extraSubscriptionLandingStyles = rightBorderStyles
 
