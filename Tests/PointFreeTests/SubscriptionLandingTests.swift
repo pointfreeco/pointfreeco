@@ -14,7 +14,6 @@ import WebKit
 import XCTest
 
 class SubscriptionLandingTests: TestCase {
-
   override func setUp() {
     super.setUp()
 //    record = true
@@ -38,8 +37,8 @@ class SubscriptionLandingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1600)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2800))
         ]
       )
     }
@@ -63,8 +62,8 @@ class SubscriptionLandingTests: TestCase {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1600)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1600))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2800))
         ]
       )
     }
