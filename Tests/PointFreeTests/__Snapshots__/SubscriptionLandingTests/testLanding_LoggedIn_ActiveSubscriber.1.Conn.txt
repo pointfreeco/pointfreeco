@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 44090
+Content-Length: 45483
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1846,14 +1846,56 @@ html {
         What to expect
       </h3>
     </div>
-    <div>
-      <h3 class="fg-black
-                 bold
-                 ts-d-r2
-                 ts-m-r1_5
-                 lh-2">
-        FAQ
-      </h3>
+    <div class="d-pl4
+                d-pr4
+                d-pt4
+                d-pb4
+                m-pl2
+                m-pr2
+                m-pt2
+                m-pb2
+                around-m
+                row">
+      <div class="col-m
+                  col-d-8
+                  col-m-12">
+        <div>
+          <h3 class="fg-black
+                     bold
+                     ts-d-r2
+                     ts-m-r1_5
+                     lh-2
+                     center">
+            FAQ
+          </h3>
+          <p class="m-pt3
+                    bold
+                    fg-black">
+            Do you offer student discounts?
+          </p>
+          <p class="fg-gray400">
+            We do! If you email us proof of your student status (e.g. scan of ID card) we will give you a 50% discount
+off of the individual plan.
+          </p>
+          <p class="m-pt3
+                    bold
+                    fg-black">
+            Can I change my plan?
+          </p>
+          <p class="fg-gray400">
+            Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
+“Billing” section. You’ll be able to change plans there.
+          </p>
+          <p class="m-pt3
+                    bold
+                    fg-black">
+            What happens when I cancel?
+          </p>
+          <p class="fg-gray400">
+            All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
+          </p>
+        </div>
+      </div>
     </div>
     <div>
       <h3 class="fg-black
