@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 50753
+Content-Length: 50800
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -64,6 +64,10 @@ body {
 
 .bg-dark {
   background-color : #121212;
+}
+
+.bg-gray150 {
+  background-color : #242424;
 }
 
 .bg-gray650 {
