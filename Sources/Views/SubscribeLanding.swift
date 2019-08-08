@@ -136,16 +136,54 @@ private let whatToExpect = [
 ]
 
 private let faq = [
-  div(
-    [],
+  gridRow(
     [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle3])],
-        ["FAQ"]
+      `class`([
+        Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]]),
+        Class.grid.around(.mobile)
+        ])
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 8],
+        [
+          div([
+            h3(
+              [
+                `class`([
+                  Class.pf.type.responsiveTitle3,
+                  Class.type.align.center
+                  ]),
+              ],
+              ["FAQ"]
+            )
+            ]
+            + faqItems
+          )
+        ]
       )
     ]
   )
 ]
+
+private let faqItems = Faq.allFaqs.flatMap { faq in
+  [
+    p(
+      [
+        `class`([
+          Class.padding([.mobile: [.top: 3]]),
+          Class.type.bold,
+          Class.pf.colors.fg.black
+          ])
+      ],
+      [.text(faq.question)]
+    ),
+    p(
+      [`class`([Class.pf.colors.fg.gray400])],
+      [.text(faq.answer)]
+    )
+  ]
+}
 
 private let whatPeopleAreSaying = [
   div(
@@ -189,4 +227,32 @@ private let rightBorderClass = CssSelector.class("border-right")
 private let rightBorderStyles =
   Breakpoint.desktop.query(only: screen) {
     rightBorderClass % key("border-right", "1px solid #333")
+}
+
+private struct Faq {
+  let question: String
+  let answer: String
+
+  static let allFaqs = [
+    Faq(
+      question: "Do you offer student discounts?",
+      answer: """
+We do! If you email us proof of your student status (e.g. scan of ID card) we will give you a 50% discount
+off of the individual plan.
+"""
+    ),
+    Faq(
+      question: "Can I change my plan?",
+      answer: """
+Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
+“Billing” section. You’ll be able to change plans there.
+"""
+    ),
+    Faq(
+      question: "What happens when I cancel?",
+      answer: """
+All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
+"""
+    ),
+  ]
 }
