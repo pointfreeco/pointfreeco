@@ -198,13 +198,51 @@ private let whatPeopleAreSaying = [
 ]
 
 private let featuredTeams = [
-  div(
-    [],
+  gridRow(
     [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle7])],
-        ["Featured teams"]
-      )
+      `class`([
+        Class.pf.colors.bg.gray900,
+        Class.padding([.mobile: [.all: 3], .desktop: [.all: 3]]),
+        Class.grid.middle(.mobile),
+        Class.grid.center(.mobile)
+        ])
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 12],
+        [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+        [
+          h6(
+            [
+              `class`([
+                Class.pf.colors.fg.gray400,
+                Class.pf.type.responsiveTitle7,
+                Class.type.align.center
+                ]),
+            ],
+            ["Featured Teams"]
+          )
+        ]
+      ),
+
+      gridColumn(
+        sizes: [.mobile: 6, .desktop: 2],
+        [`class`([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+        [img(base64: nytLogoSvg, type: .image(.svg), alt: "New York Times", [])]
+      ),
+      gridColumn(
+        sizes: [.mobile: 6, .desktop: 2],
+        [`class`([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+        [img(base64: spotifyLogoSvg, type: .image(.svg), alt: "Spotify", [])]
+      ),
+      gridColumn(
+        sizes: [.mobile: 6, .desktop: 2],
+        [img(base64: venmoLogoSvg, type: .image(.svg), alt: "Venmo", [])]
+      ),
+      gridColumn(
+        sizes: [.mobile: 6, .desktop: 2],
+        [img(base64: atlassianLogoSvg, type: .image(.svg), alt: "Atlassian", [])]
+      ),
     ]
   )
 ]
