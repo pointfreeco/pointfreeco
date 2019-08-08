@@ -4,6 +4,7 @@ import Html
 import HtmlCssSupport
 import Optics
 import Prelude
+import Views
 
 var videoJsHead: [ChildOf<Tag.Head>] {
   let videoJsAssets: [ChildOf<Tag.Head>] = [
