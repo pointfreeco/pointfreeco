@@ -328,7 +328,6 @@ public let pointFreeBaseStyles =
     <> blueGradientStyles
     <> reflectStyles
     <> prismJsTheme
-    <> pricingHeroTitleColumnStyle
 
 private let bodyStyles =
   html % (
@@ -443,12 +442,6 @@ private let typeStyles =
 
 private let hrReset =
   hr % (borderColor(all: .transparent) <> borderStyle(all: .none) <> borderWidth(all: 0))
-
-public let pricingHeroTitleColumnClass = CssSelector.class("pricing-hero-title-column")
-public let pricingHeroTitleColumnStyle =
-  Breakpoint.desktop.query(only: screen) {
-    pricingHeroTitleColumnClass % key("border-right", "1px solid #242424")
-}
 
 private let dividerClass = CssSelector.class("pf-divider")
 private let dividerStyles =

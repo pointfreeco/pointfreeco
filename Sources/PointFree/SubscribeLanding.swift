@@ -18,13 +18,14 @@ public let subscribeLanding: Middleware<
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: Views.subscribeLanding,
+      view: View(Views.subscribeLanding),
       layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: currentUser,
+          data: (currentUser, subscriberState),
+          extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
           title: "Subscribe to Point-Free"
         )
