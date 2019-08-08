@@ -20,13 +20,15 @@ public func subscribeLanding(currentUser: User?, subscriberState: SubscriberStat
 
 func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
   guard !subscriberState.isActive else { return [] }
-  guard currentUser == nil else { return [] }
 
   return [
     gridColumn(
       sizes: [.mobile: 12, .desktop: 4],
       [
-        `class`([Class.grid.center(.desktop)])
+        `class`([
+          Class.grid.center(.desktop),
+          Class.padding([.desktop: [.left: 2]])
+          ])
       ],
       [
         div(
@@ -36,7 +38,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
               [
                 `class`([
                   Class.pf.colors.fg.white,
-                  Class.padding([.mobile: [.bottom: 2 ]])
+                  Class.padding([.mobile: [.bottom: 2]])
                   ])
               ],
               ["Start with a free episode"]
@@ -55,7 +57,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 }
 
 private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  let isTwoColumnHero = !subscriberState.isActive && currentUser == nil
+  let isTwoColumnHero = !subscriberState.isActive
   let titleColumnCount = isTwoColumnHero ? 8 : 12
 
   return [
@@ -63,7 +65,7 @@ private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -
       sizes: [.mobile: 12, .desktop: titleColumnCount],
       [
         `class`([
-          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 0, .right: 2]]),
           isTwoColumnHero ? rightBorderClass: .star
           ]),
       ],
@@ -71,7 +73,7 @@ private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -
         h1(
           [
             `class`([
-              Class.pf.type.responsiveTitle1,
+              Class.pf.type.responsiveTitle2,
               Class.pf.colors.fg.white
               ]),
             style(lineHeight(1.2))
@@ -114,7 +116,7 @@ private let plansAndPricing = [
     [],
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle2])],
+        [`class`([Class.pf.type.responsiveTitle3])],
         ["Plans and pricing"]
       )
     ]
@@ -126,7 +128,7 @@ private let whatToExpect = [
     [],
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle2])],
+        [`class`([Class.pf.type.responsiveTitle3])],
         ["What to expect"]
       )
     ]
@@ -138,7 +140,7 @@ private let faq = [
     [],
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle2])],
+        [`class`([Class.pf.type.responsiveTitle3])],
         ["FAQ"]
       )
     ]
@@ -150,7 +152,7 @@ private let whatPeopleAreSaying = [
     [],
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle2])],
+        [`class`([Class.pf.type.responsiveTitle3])],
         ["What people are saying"]
       )
     ]
@@ -174,7 +176,7 @@ private let footer = [
     [],
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle2])],
+        [`class`([Class.pf.type.responsiveTitle3])],
         ["Get started with our free plan"]
       )
     ]
