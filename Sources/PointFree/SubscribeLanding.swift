@@ -14,8 +14,9 @@ public let subscribeLanding: Middleware<
   Tuple3<User?, SubscriberState, Route>,
   Data
   > =
-  requireAdmin
-    <| writeStatus(.ok)
+//  requireAdmin
+//    <|
+    writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: View(Views.subscribeLanding),

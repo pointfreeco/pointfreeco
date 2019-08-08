@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 97802
+Content-Length: 97762
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1929,7 +1929,7 @@ html {
                     d-pr3
                     d-pt3
                     d-pb3">
-          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/regular-updates.jpg"
+          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
                alt
                class="fit
                       m-mb2
@@ -1960,7 +1960,7 @@ straight to your inbox.
                     d-pr3
                     d-pt3
                     d-pb3">
-          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/episode-topics.jpg"
+          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
                alt
                class="fit
                       m-mb2
@@ -1990,7 +1990,7 @@ straight to your inbox.
                     d-pr3
                     d-pt3
                     d-pb3">
-          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/download-playgrounds.jpg"
+          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
                alt
                class="fit
                       m-mb2
@@ -2016,7 +2016,7 @@ discussed.
                     d-pr3
                     d-pt3
                     d-pb3">
-          <img src="https://s3.amazonaws.com/pointfreeco-production/pricing/video-transcription.jpg"
+          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
                alt
                class="fit
                       m-mb2

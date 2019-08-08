@@ -418,7 +418,7 @@ private struct WhatToExpectItem {
   let description: String
 
   static let newContent = WhatToExpectItem(
-    imageSrc: "https://s3.amazonaws.com/pointfreeco-production/pricing/regular-updates.jpg",
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
     title: "New content every week",
     description: """
 Every week, we’ll dissect some of the most important topics in functional programming, and deliver them
@@ -427,7 +427,7 @@ straight to your inbox.
   )
 
   static let topics = WhatToExpectItem(
-    imageSrc: "https://s3.amazonaws.com/pointfreeco-production/pricing/episode-topics.jpg",
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg",
     title: "Wide variety of topics",
     description: """
 We cover both abstract ideas and practical concepts you can start using in your code base immediately.
@@ -435,7 +435,7 @@ We cover both abstract ideas and practical concepts you can start using in your 
   )
 
   static let playgrounds = WhatToExpectItem(
-    imageSrc: "https://s3.amazonaws.com/pointfreeco-production/pricing/download-playgrounds.jpg",
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
     title: "Playground downloads",
     description: """
 Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
@@ -444,7 +444,7 @@ discussed.
   )
 
   static let transcripts = WhatToExpectItem(
-    imageSrc: "https://s3.amazonaws.com/pointfreeco-production/pricing/video-transcription.jpg",
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg",
     title: "Video transcripts",
     description: """
 We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
