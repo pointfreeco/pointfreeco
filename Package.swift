@@ -34,6 +34,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2c3d440")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
+    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0"))
     ],
   targets: [
 
@@ -181,6 +182,7 @@ let package = Package(
       dependencies: [
         "ApplicativeRouter",
         "ApplicativeRouterHttpPipelineSupport",
+        "Backtrace",
         "Css",
         "CssReset",
         "Database",

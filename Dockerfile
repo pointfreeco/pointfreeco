@@ -19,6 +19,6 @@ RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
 RUN swift package update
-RUN swift build --product Server --configuration release && \
-    swift build --product Runner --configuration release
+RUN swift build --product Server --configuration release -Xswiftc -g && \
+    swift build --product Runner --configuration release -Xswiftc -g
 CMD .build/release/Server
