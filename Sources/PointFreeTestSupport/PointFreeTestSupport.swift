@@ -15,7 +15,6 @@ import Logger
 import Mailgun
 import Models
 import ModelsTestSupport
-import NIO
 import Optics
 @testable import PointFree
 import PointFreeRouter
@@ -37,7 +36,6 @@ extension Environment {
     date: unzurry(.mock),
     envVars: .mock,
     episodes: unzurry(.mock),
-    eventLoopGroup: EmbeddedEventLoop(),
     features: .allFeatures,
     gitHub: .some(.mock),
     logger: .mock,
