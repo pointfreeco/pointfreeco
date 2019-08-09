@@ -111,17 +111,250 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node
   ]
 }
 
+private let choosePlanButtonClasses =
+  Class.display.block
+    | Class.size.width100pct
+    | Class.pf.colors.bg.black
+    | Class.pf.colors.fg.white
+    | Class.padding([.mobile: [.topBottom: 1]])
+    | Class.pf.type.responsiveTitle6
+    | Class.type.align.center
+
+private let contactusButtonClasses =
+  Class.display.block
+    | Class.size.width100pct
+    | Class.pf.colors.bg.white
+    | Class.pf.colors.fg.black
+    | Class.padding([.mobile: [.topBottom: 1]])
+    | Class.pf.type.responsiveTitle6
+    | Class.type.align.center
+    | Class.border.all
+    | Class.pf.colors.border.gray800
+
 private let plansAndPricing = [
-  div(
-    [],
+  gridRow(
+    [
+      `class`([
+        Class.padding([.mobile: [.leftRight: 3, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
+        Class.grid.between(.desktop)
+        ]),
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.bottom: 2]])
+            ])
+        ],
+        [
+          h3(
+            [`class`([Class.pf.type.responsiveTitle3])],
+            ["Plans and pricing"]
+          )
+        ]
+      ),
+      gridColumn(
+        sizes: [.desktop: 3],
+        [`class`([Class.padding([.desktop: [.right: 1]])])],
+        [pricingPlan(.free)]
+      ),
+      gridColumn(
+        sizes: [.desktop: 3],
+        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.leftRight: 1]])])],
+        [pricingPlan(.individual)]
+      ),
+      gridColumn(
+        sizes: [.desktop: 3],
+        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.leftRight: 1]])])],
+        [pricingPlan(.team)]
+      ),
+      gridColumn(
+        sizes: [.desktop: 3],
+        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.left: 1]])])],
+        [pricingPlan(.enterprise)]
+      )
+    ]
+  ),
+//  gridRow(
+//    [
+//      `class`([
+//        Class.padding([.mobile: [.leftRight: 3, .bottom: 3], .desktop: [.leftRight: 4, .bottom: 4]]),
+//        Class.grid.between(.desktop)
+//        ]),
+//    ],
+//    [
+//      gridColumn(
+//        sizes: [:],
+//        [
+//          `class`([
+//            Class.pf.colors.bg.gray900,
+//            Class.margin([.desktop: [.right: 1]]),
+//            Class.padding([.mobile: [.all: 2]])
+//            ])
+//        ],
+//        [
+//          a(
+//            [`class`([choosePlanButtonClasses])],
+//            ["Choose plan"]
+//          )
+//        ]
+//      ),
+//      gridColumn(
+//        sizes: [:],
+//        [
+//          `class`([
+//            Class.pf.colors.bg.gray900,
+//            Class.margin([.desktop: [.leftRight: 1]]),
+//            Class.padding([.mobile: [.all: 2]])
+//            ])
+//        ],
+//        [
+//          a(
+//            [`class`([choosePlanButtonClasses])],
+//            ["Choose plan"]
+//          )
+//        ]
+//      ),
+//      gridColumn(
+//        sizes: [:],
+//        [
+//          `class`([
+//            Class.pf.colors.bg.gray900,
+//            Class.margin([.desktop: [.leftRight: 1]]),
+//            Class.padding([.mobile: [.all: 2]])
+//            ])
+//        ],
+//        [
+//          a(
+//            [`class`([choosePlanButtonClasses])],
+//            ["Choose plan"]
+//          )
+//        ]
+//      ),
+//      gridColumn(
+//        sizes: [:],
+//        [
+//          `class`([
+//            Class.pf.colors.bg.gray900,
+//            Class.margin([.desktop: [.left: 1]]),
+//            Class.padding([.mobile: [.all: 2]])
+//            ])
+//        ],
+//        [
+//          a(
+//            [`class`([contactusButtonClasses])],
+//            ["Contact us"]
+//          )
+//        ]
+//      )
+//    ]
+//  )
+]
+
+private func pricingPlan(_ plan: PricingPlan) -> Node {
+
+  let cost = plan.cost.map { cost in
     [
       h3(
-        [`class`([Class.pf.type.responsiveTitle3])],
-        ["Plans and pricing"]
+        [`class`([Class.pf.type.responsiveTitle3, Class.type.light])],
+        [.text(cost.value)]
+      )
+    ]
+    }
+    ?? []
+
+  return div(
+    [
+      `class`([
+        Class.pf.colors.bg.gray900,
+        Class.padding([.mobile: [.all: 2]])
+        ]),
+    ],
+    [
+      h4(
+        [`class`([Class.pf.type.responsiveTitle4])],
+        [.text(plan.title)]
+      )
+      ]
+      + cost
+      + [
+
+      ul(
+        [
+          `class`([
+            Class.type.list.styleNone,
+            Class.padding([.mobile: [.all: 0]]),
+            Class.pf.colors.fg.gray400,
+            Class.pf.type.body.small
+            ])
+        ],
+        plan.features.map { feature in
+          li(
+            [`class`([Class.padding([.mobile: [.top: 1]])])],
+            [.text(feature)]
+          )
+        }
       )
     ]
   )
-]
+}
+
+private struct PricingPlan {
+  let cost: Cost?
+  let features: [String]
+  let title: String
+
+  struct Cost {
+    let title: String?
+    let value: String
+  }
+
+  static let free = PricingPlan(
+    cost: Cost(title: nil, value: "$0"),
+    features: [
+      "Weekly newsletter access",
+      "9 episodes with transcripts",
+      "1 subscriber-only episode of your choice",
+      "Download all Swift playgrounds"
+    ],
+    title: "Free"
+  )
+
+  static let individual = PricingPlan(
+    cost: Cost(title: "per month", value: "$17"),
+    features: [
+      "All episodes with transcripts",
+      "Download all Swift playgrounds",
+      "RSS feed for viewing in podcast apps",
+      "Billing changes automatically pro-rated"
+    ],
+    title: "Personal"
+  )
+
+  static let team = PricingPlan(
+    cost: Cost(title: "per member, per month", value: "$16"),
+    features: [
+      "Two or more members",
+      "All personal plan features",
+      "(*) Free account for team administrators",
+      "Add, remove, or reassign members"
+    ],
+    title: "Team"
+  )
+
+  static let enterprise = PricingPlan(
+    cost: nil,
+    features: [
+      "Unlimited members",
+      "All team plan features",
+      "Multiple team administrators",
+      "Invoiced billing"
+    ],
+    title: "Enterprise"
+  )
+}
 
 private let whatToExpect = [
   gridRow(
