@@ -5,7 +5,7 @@ import Logger
 import Models
 import PointFreePrelude
 import Prelude
-import PostgresNIO
+import PostgreSQL
 import Stripe
 import Tagged
 
@@ -17,7 +17,7 @@ public struct Client {
   public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
-  public var execute: (String, [PostgresDataConvertible]) -> EitherIO<Swift.Error, [PostgresRow]>
+  public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
   public var fetchAdmins: () -> EitherIO<Error, [Models.User]>
   public var fetchEmailSettingsForUserId: (Models.User.Id) -> EitherIO<Error, [EmailSetting]>
   public var fetchEnterpriseAccountForDomain: (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>
@@ -53,7 +53,7 @@ public struct Client {
     createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
-    execute: @escaping (String, [PostgresDataConvertible]) -> EitherIO<Swift.Error, [PostgresRow]>,
+    execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
     fetchAdmins: @escaping () -> EitherIO<Error, [Models.User]>,
     fetchEmailSettingsForUserId: @escaping (Models.User.Id) -> EitherIO<Error, [EmailSetting]>,
     fetchEnterpriseAccountForDomain: @escaping (EnterpriseAccount.Domain) -> EitherIO<Error, EnterpriseAccount?>,
@@ -119,31 +119,24 @@ public struct Client {
 }
 
 extension Client {
-  public init(databaseUrl: String, eventLoopGroup: EventLoopGroup, logger: Logger) {
-    guard
-      let components = URLComponents(string: databaseUrl),
-      let host = components.host,
-      let port = components.port,
-      let user = components.user
-      else { fatalError("Invalid database URL: \(databaseUrl)") }
+  public init(databaseUrl: String, logger: Logger) {
+    let connInfo = URLComponents(string: databaseUrl)
+      .flatMap { url -> PostgreSQL.ConnInfo? in
+        curry(PostgreSQL.ConnInfo.basic)
+          <¢> url.host
+          <*> url.port
+          <*> String(url.path.dropFirst())
+          <*> url.user
+          <*> url.password
+      }
+      .map(Either.right)
+      ?? .left(DatabaseError.invalidUrl as Error)
 
-    let conn = try! PostgresConnection
-      .connect(
-        to: .makeAddressResolvingHost(host, port: port),
-        tlsConfiguration: .forClient(certificateVerification: .none),
-        serverHostname: host,
-        on: eventLoopGroup.next()
-      )
-      .flatMap { conn in
-        conn
-          .authenticate(
-            username: user,
-            database: String(components.path.dropFirst()),
-            password: components.password
-          )
-          .map { conn }
-    }
+    let postgres = lift(connInfo)
+      .flatMap(EitherIO.init <<< IO.wrap(Either.wrap(PostgreSQL.Database.init)))
 
+    let conn = postgres
+      .flatMap { db in .wrap(db.makeConnection) }
     let client = _Client(conn: conn, logger: logger)
 
     self.init(
@@ -186,7 +179,7 @@ extension Client {
 }
 
 private struct _Client {
-  let conn: EventLoopFuture<PostgresConnection>
+  let conn: EitherIO<Error, Connection>
   let logger: Logger
 
   func add(
@@ -223,8 +216,8 @@ private struct _Client {
       RETURNING *
       """, [
         companyName,
-        domain.rawValue,
-        subscriptionId.rawValue
+        domain,
+        subscriptionId
       ])
   }
 
@@ -237,8 +230,8 @@ private struct _Client {
       ($1, $2)
       RETURNING *
       """, [
-        email.rawValue,
-        userId.rawValue
+        email,
+        userId
       ])
   }
 
@@ -277,9 +270,9 @@ private struct _Client {
         VALUES ($1, $2, $3)
         RETURNING *
         """,[
-        stripeSubscription.id.rawValue,
+        stripeSubscription.id,
         stripeSubscription.status.rawValue,
-        userId.rawValue
+        userId
         ])
 
       return subscription.flatMap { subscription in
@@ -290,8 +283,8 @@ private struct _Client {
           WHERE "users"."id" = $2
           """,
           [
-            subscription?.id.rawValue,
-            subscription?.userId.rawValue
+            subscription?.id,
+            subscription?.userId
           ]
         )
         .map(const(subscription))
@@ -325,8 +318,8 @@ private struct _Client {
     AND "users"."subscription_id" = $2
     """,
       [
-        teammateUserId.rawValue,
-        subscriptionId.rawValue
+        teammateUserId.rawValue.uuidString,
+        subscriptionId.rawValue.uuidString
       ]
       )
       .map(const(unit))
@@ -341,7 +334,7 @@ private struct _Client {
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-      [id.rawValue]
+      [id.rawValue.uuidString]
     )
   }
 
@@ -354,7 +347,7 @@ private struct _Client {
     ORDER BY "created_at" DESC
     LIMIT 1
     """,
-      [ownerId.rawValue]
+      [ownerId.rawValue.uuidString]
     )
   }
 
@@ -374,7 +367,7 @@ private struct _Client {
     INNER JOIN "subscriptions" ON "users"."subscription_id" = "subscriptions"."id"
     WHERE "subscriptions"."user_id" = $1
     """,
-      [ownerId.rawValue]
+      [ownerId.rawValue.uuidString]
     )
   }
 
@@ -388,7 +381,7 @@ private struct _Client {
     SET "updated_at" = NOW()
     WHERE "id" = $1
     """,
-      [userId.rawValue]
+      [userId.rawValue.uuidString]
       )
       .map(const(unit))
   }
@@ -413,7 +406,7 @@ private struct _Client {
         name,
         email?.rawValue,
         episodeCreditCount,
-        userId.rawValue
+        userId.rawValue.uuidString
       ]
       )
       .flatMap(const(updateEmailSettings(settings: emailSettings, forUserId: userId)))
@@ -541,7 +534,7 @@ private struct _Client {
     WHERE "id" = $1
     LIMIT 1
     """,
-      [id.rawValue]
+      [id.rawValue.uuidString]
     )
   }
 
@@ -610,7 +603,8 @@ private struct _Client {
       SET "episode_credit_count" = "episode_credit_count" + 1
       WHERE "id" IN (\(userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ",")))
       RETURNING *
-      """
+      """,
+      []
     )
   }
 
@@ -642,7 +636,7 @@ private struct _Client {
     WHERE "id" = $1
     LIMIT 1
     """,
-      [id.rawValue]
+      [id.rawValue.uuidString]
     )
   }
 
@@ -651,7 +645,7 @@ private struct _Client {
       DELETE FROM "enterprise_emails"
       WHERE "user_id" = $1
       """, [
-        userId.rawValue
+        userId
       ])
       .map(const(unit))
   }
@@ -662,7 +656,7 @@ private struct _Client {
     DELETE FROM "team_invites"
     WHERE "id" = $1
     """,
-      [id.rawValue]
+      [id.rawValue.uuidString]
       )
       .map(const(unit))
   }
@@ -674,7 +668,7 @@ private struct _Client {
     FROM "team_invites"
     WHERE "inviter_user_id" = $1
     """,
-      [inviterId.rawValue]
+      [inviterId.rawValue.uuidString]
     )
   }
 
@@ -713,8 +707,9 @@ private struct _Client {
         inviterUserId.rawValue.uuidString
       ]
       )
-      .flatMap { rows -> EitherIO<Error, TeamInvite> in
-        (rows.first?.column("id")?.uuid)
+      .flatMap { node -> EitherIO<Error, TeamInvite> in
+        node[0, "id"]?.string
+          .flatMap(UUID.init(uuidString:))
           .map(
             TeamInvite.Id.init
               >>> self.fetchTeamInvite
@@ -732,7 +727,7 @@ private struct _Client {
     FROM "email_settings"
     WHERE "user_id" = $1
     """,
-      [userId.rawValue]
+      [userId.rawValue.uuidString]
     )
   }
 
@@ -743,7 +738,7 @@ private struct _Client {
     FROM "episode_credits"
     WHERE "user_id" = $1
     """,
-      [userId.rawValue]
+      [userId.rawValue.uuidString]
     )
   }
 
@@ -1027,43 +1022,39 @@ private struct _Client {
 
   func rows<T: Decodable>(
     _ query: String,
-    _ binds: [PostgresDataConvertible] = []
+    _ representable: [PostgreSQL.NodeRepresentable] = []
     ) -> EitherIO<Swift.Error, [T]> {
 
-    return self.execute(query, binds)
-      .flatMap { rows in
-        .wrap { try rows.map { try T(from: RowDecoder(row: $0)) } }
+    return self.execute(query, representable)
+      .flatMap { node in
+        .wrap { try DatabaseDecoder().decode([T].self, from: node) }
     }
   }
 
   func firstRow<T: Decodable>(
     _ query: String,
-    _ binds: [PostgresDataConvertible] = []
+    _ representable: [PostgreSQL.NodeRepresentable] = []
     ) -> EitherIO<Swift.Error, T?> {
 
-    return self.rows(query, binds)
+    return self.rows(query, representable)
       .map(^\.first)
   }
 
   func execute(
     _ query: String,
-    _ binds: [PostgresDataConvertible] = []
-    ) -> EitherIO<Swift.Error, [PostgresRow]> {
+    _ representable: [PostgreSQL.NodeRepresentable] = []
+    ) -> EitherIO<Swift.Error, PostgreSQL.Node> {
 
-    return EitherIO<Swift.Error, [PostgresRow]>.wrap {
-      let sema = DispatchSemaphore(value: 0)
-      var rows: [PostgresRow]?
-      DispatchQueue.global().async {
-        rows = try? self.conn
-          .flatMap { $0.query(query, binds.map(^\.postgresData!)) }
-          .wait()
-        sema.signal()
-      }
-      switch sema.wait(timeout: .now() + 25) {
-      case .success:
-        return rows ?? []
-      case .timedOut:
-        return []
+    return self.conn.flatMap { conn in
+      return EitherIO<Swift.Error, PostgreSQL.Node>.wrap { () -> Node in
+        let uuid = UUID().uuidString
+        let startTime = Date().timeIntervalSince1970
+        self.logger.debug("[DB] \(uuid) \(query)")
+        let result = try conn.execute(query, representable)
+        let endTime = Date().timeIntervalSince1970
+        let delta = Int((endTime - startTime) * 1000)
+        self.logger.debug("[DB] \(uuid) \(delta)ms")
+        return result
       }
     }
   }
@@ -1071,4 +1062,10 @@ private struct _Client {
 
 public enum DatabaseError: Error {
   case invalidUrl
+}
+
+extension Tagged: NodeRepresentable where RawValue: NodeRepresentable {
+  public func makeNode(in context: Context?) throws -> Node {
+    return try self.rawValue.makeNode(in: context)
+  }
 }
