@@ -3,7 +3,6 @@ import GitHub
 import GitHubTestSupport
 import Logger
 import ModelsTestSupport
-import NIO
 import Prelude
 import SnapshotTesting
 import XCTest
