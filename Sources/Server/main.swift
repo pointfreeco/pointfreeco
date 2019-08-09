@@ -15,7 +15,6 @@ _ = try! PointFree
 run(
   siteMiddleware,
   on: Current.envVars.port,
-  eventLoopGroup: Current.eventLoopGroup,
   gzip: true,
   baseUrl: Current.envVars.baseUrl
 )
