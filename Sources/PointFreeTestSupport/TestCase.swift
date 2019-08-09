@@ -17,7 +17,6 @@ open class TestCase: XCTestCase {
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
     Current.database = .init(
       databaseUrl: Current.envVars.postgres.databaseUrl,
-      eventLoopGroup: Current.eventLoopGroup,
       logger: Current.logger
     )
     pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)

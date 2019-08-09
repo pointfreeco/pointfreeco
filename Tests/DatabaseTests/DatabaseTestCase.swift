@@ -16,7 +16,6 @@ class DatabaseTestCase: XCTestCase {
 
     self.database = .init(
       databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test",
-      eventLoopGroup: EmbeddedEventLoop(),
       logger: Logger()
     )
 
