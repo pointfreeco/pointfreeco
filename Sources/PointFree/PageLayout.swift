@@ -19,6 +19,7 @@ enum NavStyle {
   case mountains(MountainsStyle)
 
   enum MinimalStyle {
+    case black
     case dark
     case light
   }

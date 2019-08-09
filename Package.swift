@@ -27,13 +27,14 @@ let package = Package(
     .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
+    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("swift-5")),
-    .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.0.0-alpha"),
+    .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
 
@@ -44,7 +45,7 @@ let package = Package(
         "GitHub",
         "Logger",
         "Models",
-        "PostgresNIO",
+        "PostgreSQL",
         "Prelude",
         "Stripe",
         "Tagged",
@@ -60,7 +61,7 @@ let package = Package(
         "ModelsTestSupport",
         "Optics",
         "PointFreePrelude",
-        "PostgresNIO",
+        "PostgreSQL",
         "Prelude",
         ]
     ),
@@ -182,6 +183,7 @@ let package = Package(
       dependencies: [
         "ApplicativeRouter",
         "ApplicativeRouterHttpPipelineSupport",
+        "Backtrace",
         "Css",
         "CssReset",
         "Database",
@@ -197,7 +199,7 @@ let package = Package(
         "Optics",
         "PointFreeRouter",
         "PointFreePrelude",
-        "PostgresNIO",
+        "PostgreSQL",
         "Stripe",
         "Styleguide",
         "Syndication",

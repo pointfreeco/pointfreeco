@@ -43,7 +43,7 @@ Package.resolved
 
 # Miscellaneous
 .DS_Store
-.env
+.pf-env
 .ssl/*
-bin/*
 Sources/Models/Transcripts
+bin/*

@@ -31,6 +31,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case privacy
   case home
   case subscribe(SubscribeData?)
+  case subscribeLanding
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -181,6 +182,9 @@ let routers: [Router<Route>] = [
       .map(PartialIso.pricing >>> Optional.iso.some)
     <%> queryParam("expand", opt(.bool))
     <% end,
+
+  .subscribeLanding
+    <¢> get %> lit("subscribe") <% end,
 
   .privacy
     <¢> get %> lit("privacy") <% end,

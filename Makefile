@@ -12,7 +12,7 @@ bootstrap:
 
 bootstrap-oss:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free..."
-	@set -e; set -o pipefail; $(MAKE) .env | sed "s/make\[1\]: \`\.env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
+	@set -e; set -o pipefail; $(MAKE) .pf-env | sed "s/make\[1\]: \`\.pf-env'/\  ✅ $$(tput bold).env$$(tput sgr0)/"
 	@$(MAKE) check-dependencies
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@xed .
@@ -51,11 +51,11 @@ db-drop:
 	dropdb --username pointfreeco pointfreeco_test || true
 	dropuser pointfreeco || true
 
-.env: .env.example
+.pf-env: .pf-env.example
 	@echo "  ⚠️  Preparing local configuration..."
-	@test -f .env && echo "$$DOTENV_ERROR" && exit 1 || true
-	@cp .env.example .env
-	@echo "  ✅ \033[1m.env\033[0m file copied!"
+	@test -f .pf-env && echo "$$DOTENV_ERROR" && exit 1 || true
+	@cp .pf-env.example .pf-env
+	@echo "  ✅ \033[1m.pf-env\033[0m file copied!"
 
 define CMARK_ERROR
   🛑 cmark not found! Point-Free uses cmark to render Markdown for transcripts
@@ -69,11 +69,11 @@ endef
 export CMARK_ERROR
 
 define DOTENV_ERROR
-  🛑 Local configuration already exists at \033[1m.env\033[0m!
+  🛑 Local configuration already exists at \033[1m.pf-env\033[0m!
 
      Please reset the file:
 
-       $$ \033[1mrm\033[0m \033[38;5;66m.env\033[0m
+       $$ \033[1mrm\033[0m \033[38;5;66m.pf-env\033[0m
 
      Or manually edit it:
 
@@ -174,7 +174,7 @@ linux-start:
 	docker-compose up --build
 
 env-local:
-	heroku config --json -a pointfreeco-local > .env
+	heroku config --json -a pointfreeco-local > .pf-env
 
 deploy-local:
 	@heroku container:push web -a pointfreeco-local

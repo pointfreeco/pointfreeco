@@ -2,6 +2,7 @@ import Foundation
 import Html
 import HttpPipeline
 import Models
+import PointFreeRouter
 import Prelude
 import Syndication
 import View

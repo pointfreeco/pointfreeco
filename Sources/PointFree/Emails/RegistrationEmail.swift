@@ -3,6 +3,7 @@ import GitHub
 import Html
 import HtmlCssSupport
 import Optics
+import PointFreeRouter
 import Prelude
 import Styleguide
 import View
