@@ -4,7 +4,6 @@ import GitHub
 import Html
 import Mailgun
 import Models
-import NIO
 import Logger
 import Prelude
 import Stripe
@@ -19,7 +18,6 @@ public struct Environment {
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
-  public var eventLoopGroup: EventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
   public var features = [Feature].allFeatures
   public var gitHub: GitHub.Client!
   public var logger = Logger()
