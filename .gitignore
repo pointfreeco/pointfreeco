@@ -42,6 +42,7 @@ Package.resolved
 .swiftpm/
 
 # Miscellaneous
+*.xcodeproj/*
 .DS_Store
 .pf-env
 .ssl/*
