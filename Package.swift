@@ -30,10 +30,10 @@ let package = Package(
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .branch("swift-5")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b26e98e")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("swift-5")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("f2a0d12")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
