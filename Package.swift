@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -27,14 +27,14 @@ let package = Package(
     .library(name: "Views", targets: ["Views"]),
     ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("6e426b0")),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .exact("1.2.0")),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
-    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("2c3d440")),
+    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
+    .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b26e98e")),
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("f2a0d12")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
-    .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0"))
     ],
   targets: [
 
@@ -91,6 +91,7 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
+        "Html",
         "SnapshotTesting",
         ]
     ),

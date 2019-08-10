@@ -61,7 +61,7 @@ public final class Logger {
     file: StaticString = #file,
     line: UInt = #line) {
 
-    self.log(.debug, message, file: file, line: line)
+    self.log(.debug, message(), file: file, line: line)
   }
 
   public func info<A>(
@@ -69,7 +69,7 @@ public final class Logger {
     file: StaticString = #file,
     line: UInt = #line) {
 
-    self.log(.info, message, file: file, line: line)
+    self.log(.info, message(), file: file, line: line)
   }
 
   public func warn<A>(
@@ -77,7 +77,7 @@ public final class Logger {
     file: StaticString = #file,
     line: UInt = #line) {
 
-    self.log(.warn, message, file: file, line: line)
+    self.log(.warn, message(), file: file, line: line)
   }
 
   public func error<A>(
@@ -85,7 +85,7 @@ public final class Logger {
     file: StaticString = #file,
     line: UInt = #line) {
 
-    self.log(.error, message, file: file, line: line)
+    self.log(.error, message(), file: file, line: line)
   }
 
   public func fatal<A>(
@@ -93,7 +93,7 @@ public final class Logger {
     file: StaticString = #file,
     line: UInt = #line) {
 
-    self.log(.fatal, message, file: file, line: line)
+    self.log(.fatal, message(), file: file, line: line)
   }
 
   public enum Level: Int {

@@ -308,6 +308,7 @@ env-local:
 	heroku config --json -a pointfreeco-local > .pf-env
 
 deploy-local:
+	@heroku container:login
 	@heroku container:push web -a pointfreeco-local
 	@heroku container:release web -a pointfreeco-local
 

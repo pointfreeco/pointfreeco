@@ -1,6 +1,6 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
-[![Swift 4.2](https://img.shields.io/badge/swift-4.2-ED523F.svg?style=flat)](https://swift.org/download/)
+[![Swift 5](https://img.shields.io/badge/swift-5-ED523F.svg?style=flat)](https://swift.org/download/)
 [![iOS/macOS CI](https://img.shields.io/circleci/project/github/pointfreeco/pointfreeco/master.svg?label=macos)](https://circleci.com/gh/pointfreeco/pointfreeco)
 [![Linux CI](https://img.shields.io/travis/pointfreeco/pointfreeco/master.svg?label=linux)](https://travis-ci.org/pointfreeco/pointfreeco)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)

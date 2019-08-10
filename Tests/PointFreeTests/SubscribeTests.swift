@@ -39,7 +39,7 @@ final class SubscribeTests: TestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.userId .~ user.id
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
 
     let conn = connection(
       from: request(to: .subscribe(.some(subscribeData)), session: session)
@@ -69,7 +69,7 @@ final class SubscribeTests: TestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.userId .~ user.id
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
 
     let conn = connection(
       from: request(to: .subscribe(.some(subscribeData)), session: session)
@@ -165,7 +165,7 @@ final class SubscribeTests: TestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.userId .~ user.id
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: session)

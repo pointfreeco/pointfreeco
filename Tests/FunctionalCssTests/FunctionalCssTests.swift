@@ -4,7 +4,7 @@ import FunctionalCss
 import SnapshotTesting
 import XCTest
 
-class FunctionalCssTests: SnapshotTestCase {
+class FunctionalCssTests: XCTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
