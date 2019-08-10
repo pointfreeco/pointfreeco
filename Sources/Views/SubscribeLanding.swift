@@ -209,15 +209,58 @@ Prices shown with annual billing. When billed month to month, the Personal plan 
   ),
 ]
 
-private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
+private func planCost(_ cost: PricingPlan.Cost) -> Node {
+  return gridRow(
+    [
+      `class`([
+        Class.grid.start(.mobile),
+        Class.grid.middle(.mobile)
+        ]),
+    ],
+    [
+      gridColumn(
+        sizes: [:],
+        [
+          `class`([
+            Class.padding([.mobile: [.right: 2]])
+            ]),
+          style(flex(grow: 0, shrink: nil, basis: nil))
+        ],
+        [
+          h3(
+            [
+              `class`([
+                Class.pf.colors.fg.black,
+                Class.typeScale([.mobile: .r2, .desktop: .r2]),
+                Class.type.light
+                ])
+            ],
+            [.text(cost.value)]
+          )
+        ]
+      ),
+      gridColumn(
+        sizes: [:],
+        [],
+        [
+          p(
+            [
+              `class`([
+                Class.pf.type.body.small,
+                Class.typeScale([.mobile: .r0_875, .desktop: .r0_75]),
+                Class.type.lineHeight(1)
+                ])
+            ],
+            [.raw(cost.title ?? "")]
+          )
+        ]
+      ),
+    ]
+  )
+}
 
-  let cost = plan.cost.map { cost in
-    h3(
-      [`class`([Class.pf.type.responsiveTitle3, Class.type.light])],
-      [.text(cost.value)]
-    )
-    }
-    ?? div([])
+private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
+  let cost = plan.cost.map(planCost) ?? div([])
 
   let ctaButton = a(
     [
@@ -264,7 +307,7 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
                 Class.type.list.styleNone,
                 Class.padding([.mobile: [.all: 0]]),
                 Class.pf.colors.fg.gray400,
-                Class.pf.type.body.small
+                Class.pf.type.body.small,
                 ]),
               style(flex(grow: 1, shrink: 0, basis: .auto))
             ],
@@ -315,7 +358,7 @@ private struct PricingPlan {
   )
 
   static let team = PricingPlan(
-    cost: Cost(title: "per member, per month", value: "$16"),
+    cost: Cost(title: "per member, per&nbsp;month", value: "$16"),
     features: [
       "Two or more members",
       "All personal plan features",

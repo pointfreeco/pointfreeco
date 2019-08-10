@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 107906
+Content-Length: 109433
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1957,14 +1957,30 @@ html {
                      lh-2">
             Free
           </h4>
-          <h3 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2
-                     light">
-            $0
-          </h3>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $0
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+              </p>
+            </div>
+          </div>
           <ul class="list-style-none
                      m-pl0
                      m-pr0
@@ -2040,14 +2056,31 @@ html {
                      lh-2">
             Personal
           </h4>
-          <h3 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2
-                     light">
-            $17
-          </h3>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $17
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+                per month
+              </p>
+            </div>
+          </div>
           <ul class="list-style-none
                      m-pl0
                      m-pr0
@@ -2123,14 +2156,31 @@ html {
                      lh-2">
             Team
           </h4>
-          <h3 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2
-                     light">
-            $16
-          </h3>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $16
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+                per member, per&nbsp;month
+              </p>
+            </div>
+          </div>
           <ul class="list-style-none
                      m-pl0
                      m-pr0
