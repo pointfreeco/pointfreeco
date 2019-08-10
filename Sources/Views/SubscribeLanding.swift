@@ -527,12 +527,91 @@ private let faqItems = Faq.allFaqs.flatMap { faq in
 }
 
 private let whatPeopleAreSaying = [
-  div(
-    [],
+  gridRow(
     [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle3])],
-        ["What people are saying"]
+      `class`([
+        Class.padding([.mobile: [.leftRight: 2, .top: 2], .desktop: [.leftRight: 4, .top: 4]]),
+        Class.grid.between(.desktop)
+        ]),
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12],
+        [
+          `class`([Class.grid.center(.desktop)])
+        ],
+        [
+          div(
+            [],
+            [
+              h3(
+                [`class`([Class.pf.type.responsiveTitle3])],
+                ["What people are saying"]
+              )
+            ]
+          )
+        ]
+      ),
+      div(
+        [style("""
+display: flex;
+flex-wrap: nowrap;
+overflow-x: auto;
+height: 320px;
+  margin-bottom: 20px;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+""")],
+        [Testimonial.romain, .romain, .romain, .romain, .romain, .romain, .romain, .romain].map { testimonial in
+          a(
+            [
+              href("#"),
+              `class`([
+                Class.flex.column,
+                Class.flex.flex,
+                Class.pf.colors.bg.gray900,
+                Class.padding([.mobile: [.all: 3]])
+                ]),
+              style("""
+flex: 0 0 auto;
+margin-right: 3px;
+  width: 300px;
+  height: 300px;
+""")],
+            [
+              p(
+                [
+                  `class`([
+                    Class.pf.colors.fg.black,
+                    Class.pf.type.body.leading
+                    ]),
+                  style(flex(grow: 1, shrink: 0, basis: .auto))
+                ],
+                [.text("“\(testimonial.quote)”")]
+              ),
+              a(
+                [
+                  href("https://www.twitter.com/\(testimonial.twitterHandle)"),
+                  `class`([
+                    Class.pf.colors.fg.black,
+                    Class.pf.type.body.leading,
+
+                    ]),
+                ],
+                [
+                  twitterIconImg(fill: "1DA1F3"),
+                  span(
+                    [
+                      `class`([Class.type.medium]),
+                      style(margin(left: .px(3)))
+                    ],
+                    [.text(testimonial.subscriber ?? "@\(testimonial.twitterHandle)")]
+                  )
+                ]
+              )
+            ]
+          )
+        }
       )
     ]
   )
@@ -715,5 +794,21 @@ discussed.
 We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
 directly to the video.
 """
+  )
+}
+
+private struct Testimonial {
+  let quote: String
+  let subscriber: String?
+  let tweetUrl: String
+  let twitterHandle: String
+
+  static let romain = Testimonial(
+    quote: """
+There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!
+""",
+    subscriber: "Romain Pouclet",
+    tweetUrl: "https://twitter.com/Palleas/status/1023976413429260288",
+    twitterHandle: "Palleas"
   )
 }
