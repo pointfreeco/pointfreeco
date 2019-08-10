@@ -112,23 +112,24 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node
   ]
 }
 
-private let choosePlanButtonClasses =
+private let baseCtaButtonClass =
   Class.display.block
     | Class.size.width100pct
-    | Class.pf.colors.bg.black
-    | Class.pf.colors.fg.white
+    | Class.pf.type.responsiveTitle6
     | Class.padding([.mobile: [.topBottom: 1]])
-    | Class.pf.type.body.small
     | Class.type.align.center
 
+private let choosePlanButtonClasses =
+  baseCtaButtonClass
+    | Class.pf.colors.bg.black
+    | Class.pf.colors.fg.white
+    | Class.pf.colors.link.white
+
 private let contactusButtonClasses =
-  Class.display.block
-    | Class.size.width100pct
+  baseCtaButtonClass
     | Class.pf.colors.bg.white
     | Class.pf.colors.fg.black
-    | Class.padding([.mobile: [.topBottom: 1]])
-    | Class.pf.type.responsiveTitle6
-    | Class.type.align.center
+    | Class.pf.colors.link.black
     | Class.border.all
     | Class.pf.colors.border.gray800
 
@@ -136,7 +137,7 @@ private let plansAndPricing = [
   gridRow(
     [
       `class`([
-        Class.padding([.mobile: [.leftRight: 3, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
+        Class.padding([.mobile: [.leftRight: 2, .top: 2], .desktop: [.leftRight: 4, .top: 4]]),
         Class.grid.between(.desktop)
         ]),
     ],
@@ -146,7 +147,7 @@ private let plansAndPricing = [
         [
           `class`([
             Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 2]])
+            Class.padding([.desktop: [.bottom: 2]])
             ])
         ],
         [
@@ -162,7 +163,7 @@ private let plansAndPricing = [
     [
       `class`([
         Class.margin([.mobile: [.all: 0]]),
-        Class.padding([.mobile: [.leftRight: 1, .topBottom: 0]]),
+        Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
         Class.type.list.styleNone,
         Class.flex.wrap,
         Class.flex.flex
@@ -187,7 +188,7 @@ private let plansAndPricing = [
         [
           `class`([
             Class.grid.center(.desktop),
-            Class.padding([.mobile: [.top: 2, .bottom: 4], .desktop: [.leftRight: 5]])
+            Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.leftRight: 5, .bottom: 4]])
             ])
         ],
         [
@@ -211,23 +212,34 @@ Prices shown with annual billing. When billed month to month, the Personal plan 
 private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
 
   let cost = plan.cost.map { cost in
-    [
-      h3(
-        [`class`([Class.pf.type.responsiveTitle3, Class.type.light])],
-        [.text(cost.value)]
-      )
-    ]
+    h3(
+      [`class`([Class.pf.type.responsiveTitle3, Class.type.light])],
+      [.text(cost.value)]
+    )
     }
-    ?? []
+    ?? div([])
+
+  let ctaButton = a(
+    [
+      href("#"),
+      `class`([
+        Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+        plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
+        ])
+    ],
+    [
+      plan.cost == nil ? "Contact Us" : "Choose plan"
+    ]
+  )
 
   return li(
     [
       `class`([
-        Class.padding([.mobile: [.all: 1]]),
+        Class.padding([.mobile: [.all: 2], .desktop: [.all: 1]]),
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
-        ]),
-      HtmlCssSupport.style(width(.pct(25))),
+        planItem,
+        ])
     ],
     [
       div(
@@ -245,7 +257,7 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
             [`class`([Class.pf.type.responsiveTitle4])],
             [.text(plan.title)]
           ),
-          ] + cost + [
+          cost,
           ul(
             [
               `class`([
@@ -263,16 +275,7 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
               )
             }
           ),
-          a(
-            [
-              href("#"),
-              `class`([
-                Class.margin([.mobile: [.top: 3]]),
-                choosePlanButtonClasses
-                ])
-            ],
-            ["Choose plan"]
-          )
+          ctaButton
         ]
       )
     ]
@@ -586,14 +589,22 @@ private func footer(currentUser: User?) -> [Node] {
 
 public let extraSubscriptionLandingStyles =
   Breakpoint.desktop.query(only: screen) {
-    darkRightBorder % key("border-right", "1px solid #333")
-      <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
-      <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
+    extraSubscriptionLandingDesktopStyles
+    }
+    <> Breakpoint.mobile.querySelfAndBigger(only: screen) {
+      planItem % width(.pct(100))
 }
+
+private let extraSubscriptionLandingDesktopStyles =
+  darkRightBorder % key("border-right", "1px solid #333")
+    <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
+    <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
+    <> planItem % width(.pct(25))
 
 private let darkRightBorder = CssSelector.class("dark-right-border-d")
 private let lightRightBorder = CssSelector.class("light-right-border-d")
 private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
+private let planItem = CssSelector.class("plan-item")
 
 private struct Faq {
   let question: String
