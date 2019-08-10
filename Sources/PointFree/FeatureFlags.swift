@@ -1,9 +1,9 @@
 import Models
 
 public struct Feature: Equatable {
-  public private(set) var isAdminEnabled: Bool
-  public private(set) var isEnabled: Bool
-  public private(set) var name: String
+  public var isAdminEnabled: Bool
+  public var isEnabled: Bool
+  public var name: String
 
   static let podcastRss = Feature(isAdminEnabled: true, isEnabled: true, name: "podcast-rss")
 }
