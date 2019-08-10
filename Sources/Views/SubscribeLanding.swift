@@ -1,6 +1,7 @@
 import Css
 import FunctionalCss
 import Html
+import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Prelude
@@ -117,7 +118,7 @@ private let choosePlanButtonClasses =
     | Class.pf.colors.bg.black
     | Class.pf.colors.fg.white
     | Class.padding([.mobile: [.topBottom: 1]])
-    | Class.pf.type.responsiveTitle6
+    | Class.pf.type.body.small
     | Class.type.align.center
 
 private let contactusButtonClasses =
@@ -154,106 +155,60 @@ private let plansAndPricing = [
             ["Plans and pricing"]
           )
         ]
-      ),
-      gridColumn(
-        sizes: [.desktop: 3],
-        [`class`([Class.padding([.desktop: [.right: 1]])])],
-        [pricingPlan(.free)]
-      ),
-      gridColumn(
-        sizes: [.desktop: 3],
-        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.leftRight: 1]])])],
-        [pricingPlan(.individual)]
-      ),
-      gridColumn(
-        sizes: [.desktop: 3],
-        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.leftRight: 1]])])],
-        [pricingPlan(.team)]
-      ),
-      gridColumn(
-        sizes: [.desktop: 3],
-        [`class`([Class.pf.colors.bg.gray900, Class.padding([.desktop: [.left: 1]])])],
-        [pricingPlan(.enterprise)]
       )
     ]
   ),
-//  gridRow(
-//    [
-//      `class`([
-//        Class.padding([.mobile: [.leftRight: 3, .bottom: 3], .desktop: [.leftRight: 4, .bottom: 4]]),
-//        Class.grid.between(.desktop)
-//        ]),
-//    ],
-//    [
-//      gridColumn(
-//        sizes: [:],
-//        [
-//          `class`([
-//            Class.pf.colors.bg.gray900,
-//            Class.margin([.desktop: [.right: 1]]),
-//            Class.padding([.mobile: [.all: 2]])
-//            ])
-//        ],
-//        [
-//          a(
-//            [`class`([choosePlanButtonClasses])],
-//            ["Choose plan"]
-//          )
-//        ]
-//      ),
-//      gridColumn(
-//        sizes: [:],
-//        [
-//          `class`([
-//            Class.pf.colors.bg.gray900,
-//            Class.margin([.desktop: [.leftRight: 1]]),
-//            Class.padding([.mobile: [.all: 2]])
-//            ])
-//        ],
-//        [
-//          a(
-//            [`class`([choosePlanButtonClasses])],
-//            ["Choose plan"]
-//          )
-//        ]
-//      ),
-//      gridColumn(
-//        sizes: [:],
-//        [
-//          `class`([
-//            Class.pf.colors.bg.gray900,
-//            Class.margin([.desktop: [.leftRight: 1]]),
-//            Class.padding([.mobile: [.all: 2]])
-//            ])
-//        ],
-//        [
-//          a(
-//            [`class`([choosePlanButtonClasses])],
-//            ["Choose plan"]
-//          )
-//        ]
-//      ),
-//      gridColumn(
-//        sizes: [:],
-//        [
-//          `class`([
-//            Class.pf.colors.bg.gray900,
-//            Class.margin([.desktop: [.left: 1]]),
-//            Class.padding([.mobile: [.all: 2]])
-//            ])
-//        ],
-//        [
-//          a(
-//            [`class`([contactusButtonClasses])],
-//            ["Contact us"]
-//          )
-//        ]
-//      )
-//    ]
-//  )
+  ul(
+    [
+      `class`([
+        Class.margin([.mobile: [.all: 0]]),
+        Class.padding([.mobile: [.leftRight: 1, .topBottom: 0]]),
+        Class.type.list.styleNone,
+        Class.flex.wrap,
+        Class.flex.flex
+        ]),
+    ],
+    [
+      pricingPlan(.free),
+      pricingPlan(.individual),
+      pricingPlan(.team),
+      pricingPlan(.enterprise),
+    ]
+  ),
+  gridRow(
+    [
+      `class`([
+        Class.padding([.mobile: [.leftRight: 2], .desktop: [.leftRight: 5]]),
+        ]),
+    ],
+    [
+      gridColumn(
+        sizes: [.mobile: 12],
+        [
+          `class`([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.top: 2, .bottom: 4], .desktop: [.leftRight: 5]])
+            ])
+        ],
+        [
+          p(
+            [
+              `class`([
+                Class.pf.type.body.small,
+                Class.pf.colors.fg.gray400
+                ])
+            ],
+            [.raw("""
+Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is $16 per member per month.
+""")]
+          )
+        ]
+      )
+    ]
+  ),
 ]
 
-private func pricingPlan(_ plan: PricingPlan) -> Node {
+private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
 
   let cost = plan.cost.map { cost in
     [
@@ -265,37 +220,60 @@ private func pricingPlan(_ plan: PricingPlan) -> Node {
     }
     ?? []
 
-  return div(
+  return li(
     [
       `class`([
-        Class.pf.colors.bg.gray900,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 1]]),
+        Class.margin([.mobile: [.all: 0]]),
+        Class.flex.flex,
         ]),
+      HtmlCssSupport.style(width(.pct(25))),
     ],
     [
-      h4(
-        [`class`([Class.pf.type.responsiveTitle4])],
-        [.text(plan.title)]
-      )
-      ]
-      + cost
-      + [
-
-      ul(
+      div(
         [
           `class`([
-            Class.type.list.styleNone,
-            Class.padding([.mobile: [.all: 0]]),
-            Class.pf.colors.fg.gray400,
-            Class.pf.type.body.small
-            ])
+            Class.pf.colors.bg.gray900,
+            Class.flex.column,
+            Class.padding([.mobile: [.all: 2]]),
+            Class.size.width100pct,
+            Class.flex.flex,
+            ]),
         ],
-        plan.features.map { feature in
-          li(
-            [`class`([Class.padding([.mobile: [.top: 1]])])],
-            [.text(feature)]
+        [
+          h4(
+            [`class`([Class.pf.type.responsiveTitle4])],
+            [.text(plan.title)]
+          ),
+          ] + cost + [
+          ul(
+            [
+              `class`([
+                Class.type.list.styleNone,
+                Class.padding([.mobile: [.all: 0]]),
+                Class.pf.colors.fg.gray400,
+                Class.pf.type.body.small
+                ]),
+              style(flex(grow: 1, shrink: 0, basis: .auto))
+            ],
+            plan.features.map { feature in
+              li(
+                [`class`([Class.padding([.mobile: [.top: 1]])])],
+                [.text(feature)]
+              )
+            }
+          ),
+          a(
+            [
+              href("#"),
+              `class`([
+                Class.margin([.mobile: [.top: 3]]),
+                choosePlanButtonClasses
+                ])
+            ],
+            ["Choose plan"]
           )
-        }
+        ]
       )
     ]
   )
@@ -349,7 +327,7 @@ private struct PricingPlan {
     features: [
       "Unlimited members",
       "All team plan features",
-      "Multiple team administrators",
+      "(*) Multiple team administrators",
       "Invoiced billing"
     ],
     title: "Enterprise"
