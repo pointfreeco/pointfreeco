@@ -1,8 +1,7 @@
-FROM norionomura/swift:421
+FROM swift:5.0.2
 
-# postgres
 RUN apt-get update
-RUN apt-get install -y postgresql libpq-dev
+RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl postgresql
 
 ENV OSS 1
 WORKDIR /app
@@ -11,12 +10,10 @@ COPY .build/dependencies-state.json ./.build/dependencies-state.json
 COPY .pf-env ./
 COPY Makefile ./
 COPY Package.swift ./
-COPY Packages ./Packages
 COPY Sources ./Sources
 COPY Tests ./Tests
 
 # cmark
-RUN apt-get -y install cmake
 RUN git clone https://github.com/commonmark/cmark
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install

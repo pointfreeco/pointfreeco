@@ -274,7 +274,7 @@ private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<S
     ])
 }
 
-fileprivate extension Tagged where Tagged == EmailAddress {
+fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {
   func hasDomain(_ domain: EnterpriseAccount.Domain) -> Bool {
     return self.rawValue.lowercased().hasSuffix("@\(domain.rawValue.lowercased())")
   }

@@ -62,7 +62,7 @@ class EnterpriseTests: TestCase {
     let account = EnterpriseAccount.mock
       |> \.subscriptionId .~ subscriptionId
     let user = User.mock
-      |> \.subscriptionId .~ subscriptionId
+      |> (\User.subscriptionId) .~ subscriptionId
 
     Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))

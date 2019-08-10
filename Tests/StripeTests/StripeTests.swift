@@ -6,11 +6,7 @@ import SnapshotTesting
 import StripeTestSupport
 import XCTest
 
-#if !os(Linux)
-typealias SnapshotTestCase = XCTestCase
-#endif
-
-final class StripeTests: SnapshotTestCase {
+final class StripeTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
