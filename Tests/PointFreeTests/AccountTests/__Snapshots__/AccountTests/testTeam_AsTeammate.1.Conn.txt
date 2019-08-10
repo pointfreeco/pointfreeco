@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"11111111-1111-1111-1111-111111111111"}
 
 200 OK
-Content-Length: 50800
+Content-Length: 50801
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -415,7 +415,7 @@ a:link.btn-normal {
 }
 
 .h6 {
-  font-size : 0.75rem;
+  font-size : 0.875rem;
 }
 
 .ts-m-r4 {

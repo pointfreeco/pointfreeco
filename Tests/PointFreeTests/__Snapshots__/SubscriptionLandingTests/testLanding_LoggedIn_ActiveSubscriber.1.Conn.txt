@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 95218
+Content-Length: 106889
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -415,7 +415,7 @@ a:link.btn-normal {
 }
 
 .h6 {
-  font-size : 0.75rem;
+  font-size : 0.875rem;
 }
 
 .ts-m-r4 {
@@ -1687,6 +1687,10 @@ html {
     </style>
     <style>
       
+.plan-item {
+  width : 100%;
+}
+
 @media only screen and (min-width: 832px) {
 
 .dark-right-border-d {
@@ -1699,6 +1703,10 @@ html {
 
 .light-bottom-border-d {
   border-bottom : 1px solid #e8e8e8;
+}
+
+.plan-item {
+  width : 25%;
 }
 
 }
@@ -1840,14 +1848,444 @@ html {
         </div>
       </div>
     </div>
-    <div>
-      <h3 class="fg-black
-                 bold
-                 ts-d-r2
-                 ts-m-r1_5
-                 lh-2">
-        Plans and pricing
-      </h3>
+    <div class="d-pt4
+                d-pl4
+                d-pr4
+                m-pt2
+                m-pl2
+                m-pr2
+                between-d
+                row">
+      <div class="center-d
+                  d-pb2
+                  col-m
+                  col-m-12">
+        <h3 class="fg-black
+                   bold
+                   ts-d-r2
+                   ts-m-r1_5
+                   lh-2">
+          Plans and pricing
+        </h3>
+      </div>
+    </div>
+    <ul class="m-ml0
+               m-mr0
+               m-mt0
+               m-mb0
+               d-pl2
+               d-pr2
+               d-pt0
+               d-pb0
+               m-pl0
+               m-pr0
+               m-pt0
+               m-pb0
+               list-style-none
+               flex-wrap
+               flex">
+      <li class="d-pl1
+                 d-pr1
+                 d-pt1
+                 d-pb1
+                 m-pl2
+                 m-pr2
+                 m-pt2
+                 m-pb2
+                 m-ml0
+                 m-mr0
+                 m-mt0
+                 m-mb0
+                 flex
+                 plan-item">
+        <div class="bg-gray900
+                    flex-column
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    w-100p
+                    flex">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Free
+          </h4>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $0
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+              </p>
+            </div>
+          </div>
+          <ul class="list-style-none
+                     m-pl0
+                     m-pr0
+                     m-pt0
+                     m-pb0
+                     fg-gray400
+                     fg-black
+                     normal
+                     h6
+                     lh-4"
+              style="flex-grow:1;
+                     flex-shrink:0;
+                     flex-basis:auto">
+            <li class="m-pt1">
+              Weekly newsletter access
+            </li>
+            <li class="m-pt1">
+              9 episodes with transcripts
+            </li>
+            <li class="m-pt1">
+              1 subscriber-only episode of your choice
+            </li>
+            <li class="m-pt1">
+              Download all Swift playgrounds
+            </li>
+          </ul>
+          <a href="#"
+             class="d-mt3
+                    m-mt2
+                    block
+                    w-100p
+                    fg-black
+                    bold
+                    ts-d-r1
+                    ts-m-r0_875
+                    lh-1
+                    m-pt1
+                    m-pb1
+                    center
+                    bg-black
+                    fg-white
+                    pf-link-white">
+            Choose plan
+          </a>
+        </div>
+      </li>
+      <li class="d-pl1
+                 d-pr1
+                 d-pt1
+                 d-pb1
+                 m-pl2
+                 m-pr2
+                 m-pt2
+                 m-pb2
+                 m-ml0
+                 m-mr0
+                 m-mt0
+                 m-mb0
+                 flex
+                 plan-item">
+        <div class="bg-gray900
+                    flex-column
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    w-100p
+                    flex">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Personal
+          </h4>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $17
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+                per month
+              </p>
+            </div>
+          </div>
+          <ul class="list-style-none
+                     m-pl0
+                     m-pr0
+                     m-pt0
+                     m-pb0
+                     fg-gray400
+                     fg-black
+                     normal
+                     h6
+                     lh-4"
+              style="flex-grow:1;
+                     flex-shrink:0;
+                     flex-basis:auto">
+            <li class="m-pt1">
+              All episodes with transcripts
+            </li>
+            <li class="m-pt1">
+              Download all Swift playgrounds
+            </li>
+            <li class="m-pt1">
+              RSS feed for viewing in podcast apps
+            </li>
+            <li class="m-pt1">
+              Billing changes automatically pro-rated
+            </li>
+          </ul>
+          <a href="#"
+             class="d-mt3
+                    m-mt2
+                    block
+                    w-100p
+                    fg-black
+                    bold
+                    ts-d-r1
+                    ts-m-r0_875
+                    lh-1
+                    m-pt1
+                    m-pb1
+                    center
+                    bg-black
+                    fg-white
+                    pf-link-white">
+            Choose plan
+          </a>
+        </div>
+      </li>
+      <li class="d-pl1
+                 d-pr1
+                 d-pt1
+                 d-pb1
+                 m-pl2
+                 m-pr2
+                 m-pt2
+                 m-pb2
+                 m-ml0
+                 m-mr0
+                 m-mt0
+                 m-mb0
+                 flex
+                 plan-item">
+        <div class="bg-gray900
+                    flex-column
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    w-100p
+                    flex">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Team
+          </h4>
+          <div class="start-m
+                      middle-m
+                      row">
+            <div class="m-pr2
+                        col-m"
+                 style="flex-grow:0">
+              <h3 class="fg-black
+                         ts-d-r2
+                         ts-m-r2
+                         light">
+                $16
+              </h3>
+            </div>
+            <div class="col-m">
+              <p class="fg-black
+                        normal
+                        h6
+                        lh-4
+                        ts-d-r0_75
+                        ts-m-r0_875
+                        lh-1">
+                per member, per&nbsp;month
+              </p>
+            </div>
+          </div>
+          <ul class="list-style-none
+                     m-pl0
+                     m-pr0
+                     m-pt0
+                     m-pb0
+                     fg-gray400
+                     fg-black
+                     normal
+                     h6
+                     lh-4"
+              style="flex-grow:1;
+                     flex-shrink:0;
+                     flex-basis:auto">
+            <li class="m-pt1">
+              Two or more members
+            </li>
+            <li class="m-pt1">
+              All personal plan features
+            </li>
+            <li class="m-pt1">
+              (*) Free account for team administrators
+            </li>
+            <li class="m-pt1">
+              Add, remove, or reassign members
+            </li>
+          </ul>
+          <a href="#"
+             class="d-mt3
+                    m-mt2
+                    block
+                    w-100p
+                    fg-black
+                    bold
+                    ts-d-r1
+                    ts-m-r0_875
+                    lh-1
+                    m-pt1
+                    m-pb1
+                    center
+                    bg-black
+                    fg-white
+                    pf-link-white">
+            Choose plan
+          </a>
+        </div>
+      </li>
+      <li class="d-pl1
+                 d-pr1
+                 d-pt1
+                 d-pb1
+                 m-pl2
+                 m-pr2
+                 m-pt2
+                 m-pb2
+                 m-ml0
+                 m-mr0
+                 m-mt0
+                 m-mb0
+                 flex
+                 plan-item">
+        <div class="bg-gray900
+                    flex-column
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    w-100p
+                    flex">
+          <h4 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Enterprise
+          </h4>
+          <div>
+          </div>
+          <ul class="list-style-none
+                     m-pl0
+                     m-pr0
+                     m-pt0
+                     m-pb0
+                     fg-gray400
+                     fg-black
+                     normal
+                     h6
+                     lh-4"
+              style="flex-grow:1;
+                     flex-shrink:0;
+                     flex-basis:auto">
+            <li class="m-pt1">
+              Unlimited members
+            </li>
+            <li class="m-pt1">
+              All team plan features
+            </li>
+            <li class="m-pt1">
+              (*) Multiple team administrators
+            </li>
+            <li class="m-pt1">
+              Invoiced billing
+            </li>
+          </ul>
+          <a href="#"
+             class="d-mt3
+                    m-mt2
+                    block
+                    w-100p
+                    fg-black
+                    bold
+                    ts-d-r1
+                    ts-m-r0_875
+                    lh-1
+                    m-pt1
+                    m-pb1
+                    center
+                    bg-white
+                    fg-black
+                    pf-link-black
+                    border
+                    border-gray-800">
+            Contact Us
+          </a>
+        </div>
+      </li>
+    </ul>
+    <div class="d-pl5
+                d-pr5
+                m-pl2
+                m-pr2
+                row">
+      <div class="center-d
+                  d-pb4
+                  d-pl5
+                  d-pr5
+                  m-pb3
+                  m-pt2
+                  m-pl2
+                  m-pr2
+                  col-m
+                  col-m-12">
+        <p class="fg-black
+                  normal
+                  h6
+                  lh-4
+                  fg-gray400">
+          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is $16 per member per month.
+        </p>
+      </div>
     </div>
     <div class="d-pl4
                 d-pr4
