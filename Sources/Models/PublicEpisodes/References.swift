@@ -28,6 +28,16 @@ BonMot is an open source library for providing a nicer API to creating attribute
     title: "BonMot"
   )
 
+  public static let categoryTheory = Episode.Reference(
+    author: nil,
+    blurb: """
+The topic of category theory in mathematics formalizes the idea we were grasping at in this episode where we claim that pulling back along key paths is a perfectly legimate thing to do, and not at all an abuse of the concept of pullbacks. In category theory one fully generalizes the concept of a function that maps values to values to the concept of a "morphism", which is an abstract process that satisfies some properties with respect to identities an composition. Key paths are a perfectly nice example of morphisms, and so category theory is what gives us the courage to extend our usage of pullbacks to key paths.
+""",
+    link: "https://en.wikipedia.org/wiki/Category_theory",
+    publishedAt: nil,
+    title: "Category Theory"
+  )
+
   public static let combinatorsDanielSteinberg = Episode.Reference(
     author: "Daniel Steinberg",
     blurb: """
