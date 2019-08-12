@@ -115,7 +115,8 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node
 private let baseCtaButtonClass =
   Class.display.block
     | Class.size.width100pct
-    | Class.pf.type.responsiveTitle6
+    | Class.type.bold
+    | Class.typeScale([.mobile: .r1_25, .desktop: .r1])
     | Class.padding([.mobile: [.topBottom: 1]])
     | Class.type.align.center
 
@@ -137,7 +138,7 @@ private let plansAndPricing = [
   gridRow(
     [
       `class`([
-        Class.padding([.mobile: [.leftRight: 2, .top: 2], .desktop: [.leftRight: 4, .top: 4]]),
+        Class.padding([.mobile: [.leftRight: 2, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
         Class.grid.between(.desktop)
         ]),
     ],
@@ -152,7 +153,7 @@ private let plansAndPricing = [
         ],
         [
           h3(
-            [`class`([Class.pf.type.responsiveTitle3])],
+            [`class`([Class.pf.type.responsiveTitle2])],
             ["Plans and pricing"]
           )
         ]
@@ -307,7 +308,9 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
                 Class.type.list.styleNone,
                 Class.padding([.mobile: [.all: 0]]),
                 Class.pf.colors.fg.gray400,
-                Class.pf.type.body.small,
+                Class.pf.type.body.regular,
+                Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
+                Class.pf.colors.fg.gray400
                 ]),
               style(flex(grow: 1, shrink: 0, basis: .auto))
             ],
@@ -384,7 +387,7 @@ private let whatToExpect = [
   gridRow(
     [
       `class`([
-        Class.padding([.mobile: [.leftRight: 3, .topBottom: 3], .desktop: [.all: 4]])
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
         ]),
       style(backgroundColor(.other("#fafafa")))
     ],
@@ -394,12 +397,12 @@ private let whatToExpect = [
         [
           `class`([
             Class.grid.center(.desktop),
-            Class.padding([.desktop: [.bottom: 3]])
+            Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
             ])
         ],
         [
           h3(
-            [`class`([Class.pf.type.responsiveTitle3])],
+            [`class`([Class.pf.type.responsiveTitle2])],
             ["What to expect"]
           )
         ]
@@ -480,20 +483,23 @@ private let faq = [
   gridRow(
     [
       `class`([
-        Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]]),
-        Class.grid.around(.mobile)
+        Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
         ])
     ],
     [
       gridColumn(
         sizes: [.mobile: 12, .desktop: 8],
         [
+          style(margin(leftRight: .auto))
+        ],
+        [
           div([
             h3(
               [
                 `class`([
-                  Class.pf.type.responsiveTitle3,
-                  Class.type.align.center
+                  Class.pf.type.responsiveTitle2,
+                  Class.grid.center(.desktop),
+                  Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
                   ]),
               ],
               ["FAQ"]
@@ -512,7 +518,6 @@ private let faqItems = Faq.allFaqs.flatMap { faq in
     p(
       [
         `class`([
-          Class.padding([.mobile: [.top: 3]]),
           Class.type.bold,
           Class.pf.colors.fg.black
           ])
@@ -520,7 +525,12 @@ private let faqItems = Faq.allFaqs.flatMap { faq in
       [.text(faq.question)]
     ),
     p(
-      [`class`([Class.pf.colors.fg.gray400])],
+      [
+        `class`([
+          Class.pf.colors.fg.gray400,
+          Class.padding([.mobile: [.bottom: 2]]),
+          ])
+      ],
       [.text(faq.answer)]
     )
   ]
@@ -550,7 +560,7 @@ private let whatPeopleAreSaying = [
             ],
             [
               h3(
-                [`class`([Class.pf.type.responsiveTitle3])],
+                [`class`([Class.pf.type.responsiveTitle2])],
                 ["What people are saying"]
               )
             ]
@@ -627,7 +637,7 @@ private let featuredTeams = [
     [
       `class`([
         Class.pf.colors.bg.gray900,
-        Class.padding([.mobile: [.all: 3], .desktop: [.all: 3]]),
+        Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
         Class.grid.middle(.mobile),
         Class.grid.center(.mobile)
         ])
@@ -635,7 +645,7 @@ private let featuredTeams = [
     [
       gridColumn(
         sizes: [.mobile: 12, .desktop: 12],
-        [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+        [`class`([Class.padding([.mobile: [.bottom: 3]])])],
         [
           h6(
             [
@@ -720,7 +730,7 @@ public let extraSubscriptionLandingStyles =
     }
     <> planItem % width(.pct(100))
     <> testimonialContainer % (
-      height(.px(360))
+      height(.px(380))
         <> key("-webkit-overflow-scrolling", "touch")
     )
     <> testimonialItem % (

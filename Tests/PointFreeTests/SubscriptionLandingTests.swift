@@ -38,7 +38,7 @@ class SubscriptionLandingTests: TestCase {
         matching: conn |> siteMiddleware,
         as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 4000)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 4400))
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 4600))
         ]
       )
     }
@@ -63,7 +63,7 @@ class SubscriptionLandingTests: TestCase {
         matching: conn |> siteMiddleware,
         as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 4600))
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 4700))
         ]
       )
     }
