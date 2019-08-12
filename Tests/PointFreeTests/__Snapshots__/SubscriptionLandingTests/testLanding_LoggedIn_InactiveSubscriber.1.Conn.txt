@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 173778
+Content-Length: 174054
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1692,7 +1692,7 @@ html {
 }
 
 .testimonial-container {
-  height                     : 360px;
+  height                     : 380px;
   -webkit-overflow-scrolling : touch;
 }
 
@@ -1920,7 +1920,7 @@ html {
     <div class="d-pt4
                 d-pl4
                 d-pr4
-                m-pt2
+                m-pt3
                 m-pl2
                 m-pr2
                 between-d
@@ -1931,8 +1931,8 @@ html {
                   col-m-12">
         <h3 class="fg-black
                    bold
-                   ts-d-r2
-                   ts-m-r1_5
+                   ts-d-r3
+                   ts-m-r2
                    lh-2">
           Plans and pricing
         </h3>
@@ -2014,8 +2014,11 @@ html {
                      fg-gray400
                      fg-black
                      normal
-                     h6
-                     lh-4"
+                     h5
+                     lh-4
+                     ts-d-r0_875
+                     ts-m-r1
+                     fg-gray400"
               style="flex-grow:1;
                      flex-shrink:0;
                      flex-basis:auto">
@@ -2037,11 +2040,9 @@ html {
                     m-mt2
                     block
                     w-100p
-                    fg-black
                     bold
                     ts-d-r1
-                    ts-m-r0_875
-                    lh-1
+                    ts-m-r1_25
                     m-pt1
                     m-pb1
                     center
@@ -2114,8 +2115,11 @@ html {
                      fg-gray400
                      fg-black
                      normal
-                     h6
-                     lh-4"
+                     h5
+                     lh-4
+                     ts-d-r0_875
+                     ts-m-r1
+                     fg-gray400"
               style="flex-grow:1;
                      flex-shrink:0;
                      flex-basis:auto">
@@ -2137,11 +2141,9 @@ html {
                     m-mt2
                     block
                     w-100p
-                    fg-black
                     bold
                     ts-d-r1
-                    ts-m-r0_875
-                    lh-1
+                    ts-m-r1_25
                     m-pt1
                     m-pb1
                     center
@@ -2214,8 +2216,11 @@ html {
                      fg-gray400
                      fg-black
                      normal
-                     h6
-                     lh-4"
+                     h5
+                     lh-4
+                     ts-d-r0_875
+                     ts-m-r1
+                     fg-gray400"
               style="flex-grow:1;
                      flex-shrink:0;
                      flex-basis:auto">
@@ -2237,11 +2242,9 @@ html {
                     m-mt2
                     block
                     w-100p
-                    fg-black
                     bold
                     ts-d-r1
-                    ts-m-r0_875
-                    lh-1
+                    ts-m-r1_25
                     m-pt1
                     m-pb1
                     center
@@ -2291,8 +2294,11 @@ html {
                      fg-gray400
                      fg-black
                      normal
-                     h6
-                     lh-4"
+                     h5
+                     lh-4
+                     ts-d-r0_875
+                     ts-m-r1
+                     fg-gray400"
               style="flex-grow:1;
                      flex-shrink:0;
                      flex-basis:auto">
@@ -2314,11 +2320,9 @@ html {
                     m-mt2
                     block
                     w-100p
-                    fg-black
                     bold
                     ts-d-r1
-                    ts-m-r0_875
-                    lh-1
+                    ts-m-r1_25
                     m-pt1
                     m-pb1
                     center
@@ -2360,20 +2364,21 @@ html {
                 d-pr4
                 d-pt4
                 d-pb4
-                m-pl3
-                m-pr3
+                m-pl2
+                m-pr2
                 m-pt3
                 m-pb3
                 row"
          style="background-color:#fafafa">
       <div class="center-d
                   d-pb3
+                  m-pb2
                   col-m
                   col-m-12">
         <h3 class="fg-black
                    bold
-                   ts-d-r2
-                   ts-m-r1_5
+                   ts-d-r3
+                   ts-m-r2
                    lh-2">
           What to expect
         </h3>
@@ -2506,44 +2511,47 @@ directly to the video.
                 m-pr2
                 m-pt2
                 m-pb2
-                around-m
                 row">
-      <div class="col-m
+      <div style="margin-right:auto;
+                  margin-left:auto"
+           class="col-m
                   col-d-8
                   col-m-12">
         <div>
           <h3 class="fg-black
                      bold
-                     ts-d-r2
-                     ts-m-r1_5
+                     ts-d-r3
+                     ts-m-r2
                      lh-2
-                     center">
+                     center-d
+                     d-pb3
+                     m-pb2">
             FAQ
           </h3>
-          <p class="m-pt3
-                    bold
+          <p class="bold
                     fg-black">
             Do you offer student discounts?
           </p>
-          <p class="fg-gray400">
+          <p class="fg-gray400
+                    m-pb2">
             We do! If you email us proof of your student status (e.g. scan of ID card) we will give you a 50% discount
 off of the individual plan.
           </p>
-          <p class="m-pt3
-                    bold
+          <p class="bold
                     fg-black">
             Can I change my plan?
           </p>
-          <p class="fg-gray400">
+          <p class="fg-gray400
+                    m-pb2">
             Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
 “Billing” section. You’ll be able to change plans there.
           </p>
-          <p class="m-pt3
-                    bold
+          <p class="bold
                     fg-black">
             What happens when I cancel?
           </p>
-          <p class="fg-gray400">
+          <p class="fg-gray400
+                    m-pb2">
             All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
           </p>
         </div>
@@ -2568,8 +2576,8 @@ off of the individual plan.
              style="border-top-color:#d8d8d8">
           <h3 class="fg-black
                      bold
-                     ts-d-r2
-                     ts-m-r1_5
+                     ts-d-r3
+                     ts-m-r2
                      lh-2">
             What people are saying
           </h3>
@@ -3616,10 +3624,10 @@ off of the individual plan.
       </div>
     </div>
     <div class="bg-gray900
-                d-pl3
-                d-pr3
-                d-pt3
-                d-pb3
+                d-pl4
+                d-pr4
+                d-pt4
+                d-pb4
                 m-pl3
                 m-pr3
                 m-pt3
@@ -3627,7 +3635,7 @@ off of the individual plan.
                 middle-m
                 center-m
                 row">
-      <div class="m-pb2
+      <div class="m-pb3
                   col-m
                   col-d-12
                   col-m-12">
