@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 109433
+Content-Length: 173778
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1691,6 +1691,19 @@ html {
   width : 100%;
 }
 
+.testimonial-container {
+  height                     : 360px;
+  -webkit-overflow-scrolling : touch;
+}
+
+.testimonial-item {
+  flex-grow   : 0;
+  flex-shrink : 0;
+  flex-basis  : auto;
+  width       : 260px;
+  height      : 380px;
+}
+
 @media only screen and (min-width: 832px) {
 
 .dark-right-border-d {
@@ -1707,6 +1720,18 @@ html {
 
 .plan-item {
   width : 25%;
+}
+
+.testimonial-container {
+  height : 400px;
+}
+
+.testimonial-item {
+  width : 340px;
+}
+
+.testimonial-item {
+  height : 380px;
 }
 
 }
@@ -2524,14 +2549,1071 @@ off of the individual plan.
         </div>
       </div>
     </div>
-    <div>
-      <h3 class="fg-black
-                 bold
-                 ts-d-r2
-                 ts-m-r1_5
-                 lh-2">
-        What people are saying
-      </h3>
+    <div class="between-d
+                row">
+      <div class="d-pb3
+                  d-pt0
+                  d-pl4
+                  d-pr4
+                  m-pb3
+                  m-pt0
+                  m-pl2
+                  m-pr2
+                  center-d
+                  col-m
+                  col-m-12">
+        <div class="border-top
+                    d-pt4
+                    m-pt3"
+             style="border-top-color:#d8d8d8">
+          <h3 class="fg-black
+                     bold
+                     ts-d-r2
+                     ts-m-r1_5
+                     lh-2">
+            What people are saying
+          </h3>
+        </div>
+      </div>
+      <div class="flex
+                  flex-none
+                  w-100p
+                  m-mb4
+                  overflow-auto-x
+                  testimonial-container">
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/Palleas/status/1023976413429260288"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!”
+          </a>
+          <a href="https://www.twitter.com/Palleas"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Romain Pouclet
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/rehsals/status/1144282266367070209"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “After diving into @pointfreeco series reading Real World Haskell doesn’t seem all that intimidating after all. Major takeaway: the lesser is word “monad” is mentioned the better😅”
+          </a>
+          <a href="https://www.twitter.com/rehsals"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Ilya
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/iojcar/status/1136719341376790528"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “So many concepts presented at #WWDC19  reminded me of @pointfreeco video series. 👏👏 So happy I watched it before coming to San Jose.”
+          </a>
+          <a href="https://www.twitter.com/iOjCaR"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Oscar Alvarez
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/samrayner/status/1136634106618568704"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “@pointfreeco Talk about being ahead of the curve guys… DSLs, Playground Driven Dev, FRP. Great job. I’m sure you inspired many Apple devs. We know who to look to for where to focus next!”
+          </a>
+          <a href="https://www.twitter.com/samrayner"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Sam Rayner
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/lucaceppelli/status/1136290297242165249"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “In February this year I bought the annual subscription pointfree.co and after I watched all videos and played with the sample code and libraries github.com/pointfreeco. I can say it was the best money I spent in the last 12 months.”
+          </a>
+          <a href="https://www.twitter.com/lucaceppelli"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Luca Ceppelli
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/ferranpujolca/status/1130908056169136130"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I've just subscribed to @pointfreeco for a year. I feel their content pushes the boundary of my knowledge, and it's fun to watch!”
+          </a>
+          <a href="https://www.twitter.com/ferranpujolca"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Ferran Pujol Camins
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/mabidakun/status/1129050657783263232"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Every episode has been amazing on Pointfree, yet somehow, you've managed to make these Parser combinator episodes even better!!! ⭐️⭐️⭐️⭐️⭐️”
+          </a>
+          <a href="https://www.twitter.com/mabidakun"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Mike Abidakun
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/anayini/status/1129104381566001152"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “We have this thing called WWTV at #PlanGrid where we mostly just listen to @mbrandonw and @stephencelis talk about functions.”
+          </a>
+          <a href="https://www.twitter.com/anayini"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Arjun Nayini
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/dearprakash/status/1063165370159259648"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Thanks @mbrandonw @stephencelis for the very pedagogical series with @pointfreeco Excited and looking forward to learn from the series”
+          </a>
+          <a href="https://www.twitter.com/dearprakash"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Prakash Rajendran
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/NSHumanBeing/status/1043141855884587008"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Just became a subscriber! I'm binge watching episodes now! Great content! I'm learning so much from you guys. The repo for the site is the best go - to reference for a well done project and swift-web is something I am definitely going to use in my projects. Thanks for everything!”
+          </a>
+          <a href="https://www.twitter.com/NSHumanBeing"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              William Savary
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/peres/status/1020263301039689733"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Due to the amount of discussions that reference @pointfreeco, we added their logo as an emoji in our slack.”
+          </a>
+          <a href="https://www.twitter.com/peres"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Rui Peres
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/Palleas/status/978997094408212480"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Every single episode of @pointfreeco has been mind blowing. I feel like I've grown a lot as a developer since I started learning Swift and this kind of tutorials definitely help. Functional High Five to @mbrandonw and @stephencelis 🙌🏼”
+          </a>
+          <a href="https://www.twitter.com/Palleas"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Romain Pouclet
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/fespinozacast/status/978997512500666368"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super cool”
+          </a>
+          <a href="https://www.twitter.com/fespinozacast"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Felipe Espinoza
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/meghafon/status/978624999866105859"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
+          </a>
+          <a href="https://www.twitter.com/meghafon"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Meghan Kane
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “@pointfreeco ❤️: Thank you! 🧠: … The brain can’t say anything. It is blown away (🤯)!”
+          </a>
+          <a href="https://www.twitter.com/rajivjhoomuck"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Rajiv Jhoomuck
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/tomburns/status/972535717300666368"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “the @pointfreeco videos are fantastic, and such a gentle introduction to important ideas — seriously worth a look regardless of functional experience level”
+          </a>
+          <a href="https://www.twitter.com/tomburns"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              tom burns
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/_joshburgess/status/971169503890624513"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I haven't really done much Swift, but watched this out of curiosity, & it's really well done. Perfectly walks through the mindset of a dev w/ an OO background & addresses their concerns one by one with solid info explaining the benefits of taking the FP approach. (The how & why.)”
+          </a>
+          <a href="https://www.twitter.com/_joshburgess"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Josh Burgess
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
+          </a>
+          <a href="https://www.twitter.com/RunChristinaRun"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Christina Lee
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/meghafon/status/966766186221461504"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Really love this episode - thanks @mbrandonw + @stephencelis! Understanding Swift types in terms of algebraic data types is such an elegant way of seeing the # of possible values your Swift types will represent 🤯 #Simplifyallthethings #GoodbyeComplexity”
+          </a>
+          <a href="https://www.twitter.com/meghafon"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Meghan Kane
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/_IronHam/status/967496514506543104"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Point-Free is really challenging my perspective and approach to Swift. Props to @mbrandonw and @stephencelis for creating an interesting and engaging video series!”
+          </a>
+          <a href="https://www.twitter.com/_IronHam"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Hesham Salman
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/alexito4/status/1158982960466550784"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I really love the dynamics of @pointfreeco. The dance of “this is super nice because…” “yes, BUT….”. they clearly show what’s good, what’s not so good and keep continuously improving.”
+          </a>
+          <a href="https://www.twitter.com/alexito4"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Alejandro Martinez
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/HeyDaveTheDev/status/1142664959509368832"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “Just finished the mini-series on enum properties by @pointfreeco! They pointed out what’s missing from enums in Swift and used SwiftSyntax to generate code to add the missing parts. Thanks for your work @stephencelis and @mbrandonw! #pointfree”
+          </a>
+          <a href="https://www.twitter.com/HeyDaveTheDev"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              David Piper
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/iOjCaR/status/1136719341376790528"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “So many concepts presented at #WWDC19  reminded me of @pointfreeco video series. 👏👏 So happy I watched it before coming to San Jose.”
+          </a>
+          <a href="https://www.twitter.com/iOjCaR"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Oscar Alvarez
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/esttorhe/status/1063420584044965888"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I just watched the episode of @pointfreeco where Brandon and Stephen explain how curry is derived and it ALMOST literally blew my mind. Decomposed things are so simple to grasp ❤ I love how this series decompose and explains things very granular and simple”
+          </a>
+          <a href="https://www.twitter.com/esttorhe"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Esteban Torres
+            </span>
+          </a>
+        </div>
+      </div>
     </div>
     <div class="bg-gray900
                 d-pl3
