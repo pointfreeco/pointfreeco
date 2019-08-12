@@ -192,7 +192,7 @@ extension Subscription {
     |> \.cancelAtPeriodEnd .~ true
 
   public static let canceled = canceling
-    |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.canceledAt .~ .some(Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled

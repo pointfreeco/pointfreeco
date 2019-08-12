@@ -147,7 +147,8 @@ final class AccountTests: TestCase {
   func testAccountWithFlashNotice() {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(
+      from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -167,7 +168,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashWarning() {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -187,7 +188,7 @@ final class AccountTests: TestCase {
   func testAccountWithFlashError() {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

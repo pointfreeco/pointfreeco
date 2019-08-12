@@ -12,4 +12,9 @@ _ = try! PointFree
 
 // Server
 
-run(siteMiddleware, on: Current.envVars.port, gzip: true, baseUrl: Current.envVars.baseUrl)
+run(
+  siteMiddleware,
+  on: Current.envVars.port,
+  gzip: true,
+  baseUrl: Current.envVars.baseUrl
+)
