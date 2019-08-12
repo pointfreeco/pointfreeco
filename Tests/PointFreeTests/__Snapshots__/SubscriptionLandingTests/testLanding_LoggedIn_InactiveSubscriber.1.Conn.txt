@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 172146
+Content-Length: 173778
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2592,6 +2592,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/Palleas/status/1023976413429260288"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2633,6 +2635,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/rehsals/status/1144282266367070209"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2674,6 +2678,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/iojcar/status/1136719341376790528"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2715,6 +2721,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/samrayner/status/1136634106618568704"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2756,6 +2764,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/lucaceppelli/status/1136290297242165249"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2797,6 +2807,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/ferranpujolca/status/1130908056169136130"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2838,6 +2850,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/mabidakun/status/1129050657783263232"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2879,6 +2893,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/anayini/status/1129104381566001152"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2920,6 +2936,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/dearprakash/status/1063165370159259648"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -2961,6 +2979,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/NSHumanBeing/status/1043141855884587008"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3002,6 +3022,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/peres/status/1020263301039689733"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3043,6 +3065,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/Palleas/status/978997094408212480"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3084,6 +3108,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/fespinozacast/status/978997512500666368"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3125,6 +3151,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/meghafon/status/978624999866105859"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3166,6 +3194,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3207,6 +3237,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/tomburns/status/972535717300666368"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3248,6 +3280,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/_joshburgess/status/971169503890624513"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3289,6 +3323,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3330,6 +3366,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/meghafon/status/966766186221461504"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3371,6 +3409,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/_IronHam/status/967496514506543104"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3412,6 +3452,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/alexito4/status/1158982960466550784"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3453,6 +3495,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/HeyDaveTheDev/status/1142664959509368832"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3494,6 +3538,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/iOjCaR/status/1136719341376790528"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black
@@ -3535,6 +3581,8 @@ off of the individual plan.
                     m-mr2
                     testimonial-item">
           <a href="https://twitter.com/esttorhe/status/1063420584044965888"
+             target="_blank"
+             rel="noopener noreferrer"
              class="fg-black
                     body-leading
                     fg-black

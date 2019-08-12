@@ -584,6 +584,8 @@ private let whatPeopleAreSaying = [
               a(
                 [
                   href(testimonial.tweetUrl),
+                  target(.blank),
+                  rel(.init(rawValue: "noopener noreferrer")),
                   `class`([
                     Class.pf.colors.fg.black,
                     Class.pf.type.body.leading
