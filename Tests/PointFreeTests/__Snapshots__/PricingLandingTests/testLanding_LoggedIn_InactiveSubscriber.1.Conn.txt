@@ -2,7 +2,7 @@ GET http://localhost:8080/_pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174051
+Content-Length: 174433
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2026,13 +2026,13 @@ html {
               Weekly newsletter access
             </li>
             <li class="m-pt1">
-              9 episodes with transcripts
+              1 free episodes with transcripts
             </li>
             <li class="m-pt1">
-              1 subscriber-only episode of your choice
+              1 free credit to redeem any subscriber-only episode
             </li>
             <li class="m-pt1">
-              Download all Swift playgrounds
+              Download all episode playgrounds
             </li>
           </ul>
           <a href="#"
@@ -2092,7 +2092,7 @@ html {
                          ts-d-r2
                          ts-m-r2
                          light">
-                $17
+                $14
               </h3>
             </div>
             <div class="col-m">
@@ -2103,7 +2103,7 @@ html {
                         ts-d-r0_75
                         ts-m-r0_875
                         lh-1">
-                per month
+                per&nbsp;month, billed&nbsp;annually
               </p>
             </div>
           </div>
@@ -2124,16 +2124,16 @@ html {
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              All episodes with transcripts
+              All 2 episodes with transcripts
             </li>
             <li class="m-pt1">
-              Download all Swift playgrounds
+              Over 0 hours of video
             </li>
             <li class="m-pt1">
-              RSS feed for viewing in podcast apps
+              Private RSS feed for viewing in podcast apps
             </li>
             <li class="m-pt1">
-              Billing changes automatically pro-rated
+              Download all episode playgrounds
             </li>
           </ul>
           <a href="#"
@@ -2193,7 +2193,7 @@ html {
                          ts-d-r2
                          ts-m-r2
                          light">
-                $16
+                $12
               </h3>
             </div>
             <div class="col-m">
@@ -2204,7 +2204,7 @@ html {
                         ts-d-r0_75
                         ts-m-r0_875
                         lh-1">
-                per member, per&nbsp;month
+                per&nbsp;member, per&nbsp;month, billed&nbsp;annually
               </p>
             </div>
           </div>
@@ -2225,16 +2225,16 @@ html {
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              Two or more members
-            </li>
-            <li class="m-pt1">
               All personal plan features
             </li>
             <li class="m-pt1">
-              (*) Free account for team administrators
+              For teams of 2 or more
             </li>
             <li class="m-pt1">
-              Add, remove, or reassign members
+              Add teammates at any time with pro-rated billing
+            </li>
+            <li class="m-pt1">
+              Remove and reassign teammates at any time
             </li>
           </ul>
           <a href="#"
@@ -2303,13 +2303,16 @@ html {
                      flex-shrink:0;
                      flex-basis:auto">
             <li class="m-pt1">
-              Unlimited members
+              For large teams
             </li>
             <li class="m-pt1">
-              All team plan features
+              Unlimited, company-wide access to all content
             </li>
             <li class="m-pt1">
-              (*) Multiple team administrators
+              Hassle-free team management
+            </li>
+            <li class="m-pt1">
+              Custom sign up landing page for your company
             </li>
             <li class="m-pt1">
               Invoiced billing
@@ -2356,7 +2359,8 @@ html {
                   h6
                   lh-4
                   fg-gray400">
-          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is $16 per member per month.
+          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
+$16 per member per month.
         </p>
       </div>
     </div>
@@ -2407,11 +2411,11 @@ html {
                      ts-d-r1_25
                      ts-m-r1
                      lh-1">
-            New content every week
+            New content regularly
           </h4>
           <p class="fg-gray400">
-            Every week, we’ll dissect some of the most important topics in functional programming, and deliver them
-straight to your inbox.
+            We dissect some of the most important topics in functional programming frequently, and deliver them straight
+to your inbox.
           </p>
         </div>
       </div>
@@ -2498,7 +2502,7 @@ discussed.
           </h4>
           <p class="fg-gray400">
             We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
-directly to the video.
+directly to that point in the video.
           </p>
         </div>
       </div>
@@ -2534,25 +2538,26 @@ directly to the video.
           </p>
           <p class="fg-gray400
                     m-pb2">
-            We do! If you email us proof of your student status (e.g. scan of ID card) we will give you a 50% discount
-off of the individual plan.
+            We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
+student status (e.g. scan of ID card) we will give you a 50% discount off of the Personal plan.
           </p>
           <p class="bold
                     fg-black">
-            Can I change my plan?
+            Can I upgrade my subscription from monthly to yearly?
           </p>
           <p class="fg-gray400
                     m-pb2">
-            Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
-“Billing” section. You’ll be able to change plans there.
+            Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+time you have left in your current billing period.
           </p>
           <p class="bold
                     fg-black">
-            What happens when I cancel?
+            How do team subscriptions work?
           </p>
           <p class="fg-gray400
                     m-pb2">
-            All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
+            A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
+and reassigned at any time. Colleagues are invited to your team over email.
           </p>
         </div>
       </div>

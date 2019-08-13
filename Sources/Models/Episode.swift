@@ -93,7 +93,7 @@ public struct Episode {
     }
   }
 
-  public enum Permission {
+  public enum Permission: Equatable {
     case free
     case freeDuring(Range<Date>)
     case subscriberOnly
