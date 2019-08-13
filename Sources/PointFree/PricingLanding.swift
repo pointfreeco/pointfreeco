@@ -11,7 +11,7 @@ import Views
 public let pricingLanding: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple3<User?, SubscriberState, Route>,
+  Tuple6<User?, AllEpisodeCount, EpisodeHourCount, FreeEpisodeCount, Route, SubscriberState>,
   Data
   > =
   requireAdmin
@@ -19,12 +19,12 @@ public let pricingLanding: Middleware<
     >=> map(lower)
     >>> respond(
       view: View(Views.pricingLanding),
-      layoutData: { currentUser, subscriberState, currentRoute in
+      layoutData: { currentUser, allEpisodeCount, episodeHourCount, freeEpisodeCount, currentRoute, subscriberState in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, subscriberState),
+          data: (allEpisodeCount, currentUser, episodeHourCount, freeEpisodeCount, subscriberState),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
           title: "Subscribe to Point-Free"
