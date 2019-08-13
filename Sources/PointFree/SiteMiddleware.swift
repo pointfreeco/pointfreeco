@@ -185,9 +185,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> subscribeMiddleware
 
     case .subscribeConfirmation:
-      return conn
-        |> writeStatus(.ok)
-        >=> respond(text: "Subscribe!")
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> subscribeConfirmation
 
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))
