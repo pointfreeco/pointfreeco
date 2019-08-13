@@ -24,14 +24,15 @@ public enum Route: DerivePartialIsos, Equatable {
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
   case gitHubCallback(code: String?, redirect: String?)
+  case home
   case invite(Invite)
   case login(redirect: String?)
   case logout
   case pricing(Pricing?, expand: Bool?)
+  case pricingLanding
   case privacy
-  case home
   case subscribe(SubscribeData?)
-  case subscribeLanding
+  case subscribeConfirmation
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -183,14 +184,17 @@ let routers: [Router<Route>] = [
     <%> queryParam("expand", opt(.bool))
     <% end,
 
-  .subscribeLanding
-    <¢> get %> lit("subscribe") <% end,
+  .pricingLanding
+    <¢> get %> lit("_pricing") <% end,
 
   .privacy
     <¢> get %> lit("privacy") <% end,
 
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+
+  .subscribeConfirmation
+    <¢> get %> lit("subscribe") <% end,
 
   .team <<< .leave
     <¢> post %> lit("account") %> lit("team") %> lit("leave")

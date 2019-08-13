@@ -27,7 +27,7 @@ class SubscriptionLandingTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
     )
 
-    let conn = connection(from: request(to: .subscribeLanding, session: .loggedIn))
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -52,7 +52,7 @@ class SubscriptionLandingTests: TestCase {
       \.database.fetchUserById .~ const(pure(user))
     )
 
-    let conn = connection(from: request(to: .subscribeLanding, session: .loggedIn))
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)

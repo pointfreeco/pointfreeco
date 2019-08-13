@@ -8,7 +8,7 @@ import Tuple
 import View
 import Views
 
-public let subscribeLanding: Middleware<
+public let pricingLanding: Middleware<
   StatusLineOpen,
   ResponseEnded,
   Tuple3<User?, SubscriberState, Route>,
@@ -18,7 +18,7 @@ public let subscribeLanding: Middleware<
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(Views.subscribeLanding),
+      view: View(Views.pricingLanding),
       layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,
