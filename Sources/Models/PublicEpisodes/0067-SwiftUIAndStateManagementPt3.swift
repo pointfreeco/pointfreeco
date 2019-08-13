@@ -8,7 +8,7 @@ With our moderately complex SwiftUI application complete we can finally ask ours
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 353885387,
-    downloadUrl: "https://player.vimeo.com/external/349951707.hd.mp4?s=2dc0ab7f48e343ec1ef1540d1cb2607f857c37e6&profile_id=175&download=1",
+    downloadUrl: "https://player.vimeo.com/external/349951722.hd.mp4?s=31d3216df94cb67613bf2e34b4d229ed90bc5875&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/349951722"
   ),
   id: 67,
