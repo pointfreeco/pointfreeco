@@ -9,7 +9,7 @@ import Styleguide
 import View
 import HtmlCssSupport
 
-public func subscribeLanding(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
+public func pricingLanding(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
   return hero(currentUser: currentUser, subscriberState: subscriberState)
     + plansAndPricing
     + whatToExpect
@@ -48,7 +48,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
               text: "Create your account",
               type: .white,
               // TODO: redirect back to home?
-              href: path(to: .login(redirect: url(to: .subscribeLanding)))
+              href: path(to: .login(redirect: url(to: .pricingLanding)))
             )
           ]
         )
@@ -717,7 +717,7 @@ private func footer(currentUser: User?) -> [Node] {
           text: "Create your account",
           type: .white,
           // TODO: redirect back to home?
-          href: path(to: .login(redirect: url(to: .subscribeLanding)))
+          href: path(to: .login(redirect: url(to: .pricingLanding)))
         )
       ]
     )
