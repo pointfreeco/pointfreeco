@@ -779,20 +779,6 @@ time you have left in your current billing period.
 A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
 and reassigned at any time. Colleagues are invited to your team over email.
 """),
-
-//    Faq(
-//      question: "Can I change my plan?",
-//      answer: """
-//Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
-//“Billing” section. You’ll be able to change plans there.
-//"""
-//    ),
-//    Faq(
-//      question: "What happens when I cancel?",
-//      answer: """
-//All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
-//"""
-//    ),
   ]
 }
 
