@@ -126,6 +126,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. code .*. redirect .*. unit))
         |> gitHubCallbackResponse
 
+    case .home:
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> homeMiddleware
+
     case let .invite(.accept(inviteId)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> acceptInviteMiddleware
@@ -168,21 +172,21 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         )
         |> pricingResponse
 
+    case .pricingLanding:
+      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+        |> pricingLanding
+
     case .privacy:
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
         |> privacyResponse
-
-    case .home:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
-        |> homeMiddleware
 
     case let .subscribe(data):
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case .subscribeLanding:
+    case .subscribeConfirmation:
       return conn.map(const(user .*. subscriberState .*. route .*. unit))
-        |> subscribeLanding
+        |> subscribeConfirmation
 
     case .team(.leave):
       return conn.map(const(user .*. subscriberState .*. unit))

@@ -645,6 +645,17 @@ import Stripe
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let home = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.home)),
+          unapply: {
+            guard case .home = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == (
             Route.Invite
         ), B == Route {
@@ -701,10 +712,10 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let privacy = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.privacy)),
+        public static let pricingLanding = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.pricingLanding)),
           unapply: {
-            guard case .privacy = $0 else { return nil }
+            guard case .pricingLanding = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
@@ -712,10 +723,10 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let home = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.home)),
+        public static let privacy = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.privacy)),
           unapply: {
-            guard case .home = $0 else { return nil }
+            guard case .privacy = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
@@ -737,10 +748,10 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let subscribeLanding = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.subscribeLanding)),
+        public static let subscribeConfirmation = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.subscribeConfirmation)),
           unapply: {
-            guard case .subscribeLanding = $0 else { return nil }
+            guard case .subscribeConfirmation = $0 else { return nil }
             return .some(Prelude.unit)
         })
       }
