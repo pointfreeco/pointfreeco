@@ -42,6 +42,7 @@ extension Class {
       public enum border {
         public static let gray650 = CssSelector.class("border-gray-650")
         public static let gray800 = CssSelector.class("border-gray-800")
+        public static let gray850 = CssSelector.class("border-gray-850")
         public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
@@ -363,6 +364,7 @@ private let colorStyles: Stylesheet =
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
     <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)
+    <> Class.pf.colors.border.gray850 % borderColor(all: Colors.gray850)
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)

@@ -7,8 +7,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tagged
-import View
-import HtmlCssSupport
 
 public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
 public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>

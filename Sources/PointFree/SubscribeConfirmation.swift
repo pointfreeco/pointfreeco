@@ -11,8 +11,23 @@ import Views
 public let subscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple3<User?, SubscriberState, Route>,
+  Tuple3<User?, Route, SubscriberState>,
   Data
   > =
-  writeStatus(.ok)
-    >=> respond(text: "Subscribe!")
+  requireAdmin
+    <| writeStatus(.ok)
+    >=> map(lower)
+    >>> respond(
+      view: View(Views.subscriptionConfirmation),
+      layoutData: { currentUser, currentRoute, subscriberState in
+        SimplePageLayoutData(
+          currentRoute: currentRoute,
+          currentSubscriberState: subscriberState,
+          currentUser: currentUser,
+          data: unit,
+          extraStyles: extraSubscriptionLandingStyles,
+          style: .base(.some(.minimal(.black))),
+          title: "Subscribe to Point-Free"
+        )
+    }
+)
