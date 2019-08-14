@@ -6,12 +6,28 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
+import Tagged
 import View
 import HtmlCssSupport
 
-public func pricingLanding(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
+public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
+public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
+public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
+
+public func pricingLanding(
+  allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
+  episodeHourCount: EpisodeHourCount,
+  freeEpisodeCount: FreeEpisodeCount,
+  subscriberState: SubscriberState
+  ) -> [Node] {
+
   return hero(currentUser: currentUser, subscriberState: subscriberState)
-    + plansAndPricing
+    + plansAndPricing(
+      allEpisodeCount: allEpisodeCount,
+      episodeHourCount: episodeHourCount,
+      freeEpisodeCount: freeEpisodeCount
+    )
     + whatToExpect
     + faq
     + whatPeopleAreSaying
@@ -134,81 +150,88 @@ private let contactusButtonClasses =
     | Class.border.all
     | Class.pf.colors.border.gray800
 
-private let plansAndPricing = [
-  gridRow(
-    [
-      `class`([
-        Class.padding([.mobile: [.leftRight: 2, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
-        Class.grid.between(.desktop)
-        ]),
-    ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.desktop: [.bottom: 2]])
-            ])
-        ],
-        [
-          h3(
-            [`class`([Class.pf.type.responsiveTitle2])],
-            ["Plans and pricing"]
-          )
-        ]
-      )
-    ]
-  ),
-  ul(
-    [
-      `class`([
-        Class.margin([.mobile: [.all: 0]]),
-        Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
-        Class.type.list.styleNone,
-        Class.flex.wrap,
-        Class.flex.flex
-        ]),
-    ],
-    [
-      pricingPlan(.free),
-      pricingPlan(.individual),
-      pricingPlan(.team),
-      pricingPlan(.enterprise),
-    ]
-  ),
-  gridRow(
-    [
-      `class`([
-        Class.padding([.mobile: [.leftRight: 2], .desktop: [.leftRight: 5]]),
-        ]),
-    ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.leftRight: 5, .bottom: 4]])
-            ])
-        ],
-        [
-          p(
-            [
-              `class`([
-                Class.pf.type.body.small,
-                Class.pf.colors.fg.gray400
-                ])
-            ],
-            [.raw("""
-Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is $16 per member per month.
+private func plansAndPricing(
+  allEpisodeCount: AllEpisodeCount,
+  episodeHourCount: EpisodeHourCount,
+  freeEpisodeCount: FreeEpisodeCount
+  ) -> [Node] {
+  return [
+    gridRow(
+      [
+        `class`([
+          Class.padding([.mobile: [.leftRight: 2, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
+          Class.grid.between(.desktop)
+          ]),
+      ],
+      [
+        gridColumn(
+          sizes: [.mobile: 12],
+          [
+            `class`([
+              Class.grid.center(.desktop),
+              Class.padding([.desktop: [.bottom: 2]])
+              ])
+          ],
+          [
+            h3(
+              [`class`([Class.pf.type.responsiveTitle2])],
+              ["Plans and pricing"]
+            )
+          ]
+        )
+      ]
+    ),
+    ul(
+      [
+        `class`([
+          Class.margin([.mobile: [.all: 0]]),
+          Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
+          Class.type.list.styleNone,
+          Class.flex.wrap,
+          Class.flex.flex
+          ]),
+      ],
+      [
+        pricingPlan(.free(freeEpisodeCount: freeEpisodeCount)),
+        pricingPlan(.personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)),
+        pricingPlan(.team),
+        pricingPlan(.enterprise),
+      ]
+    ),
+    gridRow(
+      [
+        `class`([
+          Class.padding([.mobile: [.leftRight: 2], .desktop: [.leftRight: 5]]),
+          ]),
+      ],
+      [
+        gridColumn(
+          sizes: [.mobile: 12],
+          [
+            `class`([
+              Class.grid.center(.desktop),
+              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.leftRight: 5, .bottom: 4]])
+              ])
+          ],
+          [
+            p(
+              [
+                `class`([
+                  Class.pf.type.body.small,
+                  Class.pf.colors.fg.gray400
+                  ])
+              ],
+              [.raw("""
+Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
+$16 per member per month.
 """)]
-          )
-        ]
-      )
-    ]
-  ),
-]
+            )
+          ]
+        )
+      ]
+    ),
+  ]
+}
 
 private func planCost(_ cost: PricingPlan.Cost) -> Node {
   return gridRow(
@@ -325,61 +348,6 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
         ]
       )
     ]
-  )
-}
-
-private struct PricingPlan {
-  let cost: Cost?
-  let features: [String]
-  let title: String
-
-  struct Cost {
-    let title: String?
-    let value: String
-  }
-
-  static let free = PricingPlan(
-    cost: Cost(title: nil, value: "$0"),
-    features: [
-      "Weekly newsletter access",
-      "9 episodes with transcripts",
-      "1 subscriber-only episode of your choice",
-      "Download all Swift playgrounds"
-    ],
-    title: "Free"
-  )
-
-  static let individual = PricingPlan(
-    cost: Cost(title: "per month", value: "$17"),
-    features: [
-      "All episodes with transcripts",
-      "Download all Swift playgrounds",
-      "RSS feed for viewing in podcast apps",
-      "Billing changes automatically pro-rated"
-    ],
-    title: "Personal"
-  )
-
-  static let team = PricingPlan(
-    cost: Cost(title: "per member, per&nbsp;month", value: "$16"),
-    features: [
-      "Two or more members",
-      "All personal plan features",
-      "(*) Free account for team administrators",
-      "Add, remove, or reassign members"
-    ],
-    title: "Team"
-  )
-
-  static let enterprise = PricingPlan(
-    cost: nil,
-    features: [
-      "Unlimited members",
-      "All team plan features",
-      "(*) Multiple team administrators",
-      "Invoiced billing"
-    ],
-    title: "Enterprise"
   )
 }
 
@@ -531,7 +499,7 @@ private let faqItems = Faq.allFaqs.flatMap { faq in
           Class.padding([.mobile: [.bottom: 2]]),
           ])
       ],
-      [.text(faq.answer)]
+      [.raw(faq.answer)]
     )
   ]
 }
@@ -724,39 +692,68 @@ private func footer(currentUser: User?) -> [Node] {
   ]
 }
 
-public let extraSubscriptionLandingStyles =
-  Breakpoint.desktop.query(only: screen) {
-    extraSubscriptionLandingDesktopStyles
-    }
-    <> planItem % width(.pct(100))
-    <> testimonialContainer % (
-      height(.px(380))
-        <> key("-webkit-overflow-scrolling", "touch")
+private struct PricingPlan {
+  let cost: Cost?
+  let features: [String]
+  let title: String
+
+  struct Cost {
+    let title: String?
+    let value: String
+  }
+
+  static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
+    return PricingPlan(
+      cost: Cost(title: nil, value: "$0"),
+      features: [
+        "Weekly newsletter access",
+        "\(freeEpisodeCount.rawValue) free episodes with transcripts",
+        "1 free credit to redeem any subscriber-only episode",
+        "Download all episode playgrounds"
+      ],
+      title: "Free"
     )
-    <> testimonialItem % (
-      flex(grow: 0, shrink: 0, basis: .auto)
-        <> width(.px(260))
-        <> height(.px(380))
-)
+  }
 
-private let desktopBorderStyles =
-  darkRightBorder % key("border-right", "1px solid #333")
-    <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
-    <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
+  static func personal(
+    allEpisodeCount: AllEpisodeCount,
+    episodeHourCount: EpisodeHourCount
+    ) -> PricingPlan {
+    return PricingPlan(
+      cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
+      features: [
+        "All \(allEpisodeCount.rawValue) episodes with transcripts",
+        "Over \(episodeHourCount.rawValue) hours of video",
+        "Private RSS feed for viewing in podcast apps",
+        "Download all episode playgrounds",
+      ],
+      title: "Personal"
+    )
+  }
 
-private let extraSubscriptionLandingDesktopStyles: Stylesheet =
-  desktopBorderStyles
-    <> planItem % width(.pct(25))
-    <> testimonialContainer % height(.px(400))
-    <> testimonialItem % width(.px(340))
-    <> testimonialItem % height(.px(380))
+  static let team = PricingPlan(
+    cost: Cost(title: "per&nbsp;member, per&nbsp;month, billed&nbsp;annually", value: "$12"),
+    features: [
+      "All personal plan features",
+      "For teams of 2 or more",
+      "Add teammates at any time with pro-rated billing",
+      "Remove and reassign teammates at any time"
+    ],
+    title: "Team"
+  )
 
-private let darkRightBorder = CssSelector.class("dark-right-border-d")
-private let lightRightBorder = CssSelector.class("light-right-border-d")
-private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
-private let planItem = CssSelector.class("plan-item")
-private let testimonialContainer = CssSelector.class("testimonial-container")
-private let testimonialItem = CssSelector.class("testimonial-item")
+  static let enterprise = PricingPlan(
+    cost: nil,
+    features: [
+      "For large teams",
+      "Unlimited, company-wide access to all content",
+      "Hassle-free team management",
+      "Custom sign up landing page for your company",
+      "Invoiced billing"
+    ],
+    title: "Enterprise"
+  )
+}
 
 private struct Faq {
   let question: String
@@ -766,23 +763,22 @@ private struct Faq {
     Faq(
       question: "Do you offer student discounts?",
       answer: """
-We do! If you email us proof of your student status (e.g. scan of ID card) we will give you a 50% discount
-off of the individual plan.
+We do! If you <a href="mailto:support@pointfree.co?subject=Student%20Discount">email us</a> proof of your
+student status (e.g. scan of ID card) we will give you a 50% discount off of the Personal plan.
 """
     ),
     Faq(
-      question: "Can I change my plan?",
+      question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
-Yes, absolutely. Simply click on the “Organization Settings” link in the web app and navigate to the
-“Billing” section. You’ll be able to change plans there.
-"""
-    ),
+Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+time you have left in your current billing period.
+"""),
     Faq(
-      question: "What happens when I cancel?",
+      question: "How do team subscriptions work?",
       answer: """
-All plans can be canceled any time. Your plan features remain available through the end of your billing cycle.
-"""
-    ),
+A team subscription consists of a number of seats that you pay for, and those seats can be added, removed
+and reassigned at any time. Colleagues are invited to your team over email.
+"""),
   ]
 }
 
@@ -793,10 +789,10 @@ private struct WhatToExpectItem {
 
   static let newContent = WhatToExpectItem(
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
-    title: "New content every week",
+    title: "New content regularly",
     description: """
-Every week, we’ll dissect some of the most important topics in functional programming, and deliver them
-straight to your inbox.
+We dissect some of the most important topics in functional programming frequently, and deliver them straight
+to your inbox.
 """
   )
 
@@ -822,7 +818,7 @@ discussed.
     title: "Video transcripts",
     description: """
 We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
-directly to the video.
+directly to that point in the video.
 """
   )
 }
@@ -1051,3 +1047,37 @@ I just watched the episode of @pointfreeco where Brandon and Stephen explain how
     )
   ]
 }
+
+public let extraSubscriptionLandingStyles =
+  Breakpoint.desktop.query(only: screen) {
+    extraSubscriptionLandingDesktopStyles
+    }
+    <> planItem % width(.pct(100))
+    <> testimonialContainer % (
+      height(.px(380))
+        <> key("-webkit-overflow-scrolling", "touch")
+    )
+    <> testimonialItem % (
+      flex(grow: 0, shrink: 0, basis: .auto)
+        <> width(.px(260))
+        <> height(.px(380))
+)
+
+private let desktopBorderStyles =
+  darkRightBorder % key("border-right", "1px solid #333")
+    <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
+    <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
+
+private let extraSubscriptionLandingDesktopStyles: Stylesheet =
+  desktopBorderStyles
+    <> planItem % width(.pct(25))
+    <> testimonialContainer % height(.px(400))
+    <> testimonialItem % width(.px(340))
+    <> testimonialItem % height(.px(380))
+
+private let darkRightBorder = CssSelector.class("dark-right-border-d")
+private let lightRightBorder = CssSelector.class("light-right-border-d")
+private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
+private let planItem = CssSelector.class("plan-item")
+private let testimonialContainer = CssSelector.class("testimonial-container")
+private let testimonialItem = CssSelector.class("testimonial-item")
