@@ -9,6 +9,7 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
+import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
@@ -173,7 +174,18 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> pricingResponse
 
     case .pricingLanding:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+      let allEpisodeCount = AllEpisodeCount(rawValue: Current.episodes().count)
+      let episodeHourCount = EpisodeHourCount(rawValue: Current.episodes().reduce(0) { $0 + $1.length } / 3600)
+      let freeEpisodeCount = FreeEpisodeCount(rawValue: Current.episodes().lazy.filter { $0.permission == .free }.count)
+
+      return conn.map(const(
+        user
+          .*. allEpisodeCount
+          .*. episodeHourCount
+          .*. freeEpisodeCount
+          .*. route
+          .*. subscriberState
+          .*. unit))
         |> pricingLanding
 
     case .privacy:
