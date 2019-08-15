@@ -86,11 +86,25 @@ public enum Route: DerivePartialIsos, Equatable {
   }
 }
 
+extension PartialIso {
+  public init(case: @escaping (A) -> B) {
+    self.init(apply: `case`) { root in
+      guard
+        let (label, anyValue) = Mirror(reflecting: root).children.first,
+        let value = anyValue as? A
+          ?? Mirror(reflecting: anyValue).children.first?.value as? A,
+        Mirror(reflecting: `case`(value)).children.first?.label == label
+        else { return nil }
+      return value
+    }
+  }
+}
+
 let routers: [Router<Route>] = [
-  .about
+  PartialIso(case: const(Route.about))
     <¢> get %> lit("about") <% end,
 
-  .account
+  PartialIso(case: Route.account)
     <¢> lit("account") %> accountRouter,
 
   .admin
