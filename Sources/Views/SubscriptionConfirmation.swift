@@ -47,7 +47,10 @@ private let header: [Node] = [
         ],
         [
           a(
-            [href(url(to: .pricingLanding))],
+            [
+              `class`([Class.pf.colors.link.gray650]),
+              href(url(to: .pricingLanding))
+            ],
             ["Change plan"]
           )
         ]
