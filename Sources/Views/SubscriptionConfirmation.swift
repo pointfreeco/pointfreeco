@@ -8,9 +8,9 @@ import Prelude
 import Styleguide
 import Tagged
 
-public func subscriptionConfirmation(unit: Prelude.Unit) -> [Node] {
+public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
   return header
-    + teamMembers()
+    + teamMembers(currentUser)
 }
 
 private let header: [Node] = [
@@ -56,7 +56,7 @@ private let header: [Node] = [
   )
 ]
 
-private func teamMembers() -> [Node] {
+private func teamMembers(_ currentUser: User) -> [Node] {
   return [
     gridRow(
       [
@@ -73,7 +73,7 @@ private func teamMembers() -> [Node] {
           [`class`([Class.padding([.mobile: [.bottom: 2]])])],
           [h1([`class`([Class.pf.type.responsiveTitle3])], ["Team members"])]
         ),
-        teamOwner(),
+        teamOwner(currentUser),
         teamMemberTemplate(),
         teamMemberTemplate(),
         gridColumn(
@@ -123,7 +123,7 @@ private func teamMembers() -> [Node] {
   ]
 }
 
-private func teamOwner() -> Node {
+private func teamOwner(_ currentUser: User) -> Node {
   return gridColumn(
     sizes: [.mobile: 12],
     [
@@ -144,8 +144,8 @@ private func teamOwner() -> Node {
         ],
         [
           img(
-            src: "",
-            alt: "",
+            src: currentUser.gitHubAvatarUrl.absoluteString,
+            alt: "Avatar for \(currentUser.displayName)",
             [
               `class`([
                 Class.pf.colors.bg.green,
@@ -155,7 +155,7 @@ private func teamOwner() -> Node {
               style(width(.px(24)) <> height(.px(24)))
             ]
           ),
-          span(["Andrew Cornett"])
+          span([.text(currentUser.displayName)])
         ]
       )
     ]
