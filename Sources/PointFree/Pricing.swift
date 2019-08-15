@@ -582,9 +582,9 @@ private func individualTeamPricing(for type: Pricing.Billing, coupon: Stripe.Cou
 
   switch type {
   case .monthly:
-    return 17 * rate
+    return 18 * rate
   case .yearly:
-    return 170 * rate
+    return 168 * rate
   }
 }
 
@@ -603,7 +603,7 @@ private func defaultTeamPricing(for type: Pricing.Billing) -> Int {
   case .monthly:
     return 16
   case .yearly:
-    return 160
+    return 144
   }
 }
 

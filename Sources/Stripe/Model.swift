@@ -600,6 +600,14 @@ extension Coupon: Codable {
 }
 
 extension Tagged where Tag == Plan, RawValue == String {
+  public static var monthly: Plan.Id {
+    return "monthly-2019"
+  }
+
+  public static var yearly: Plan.Id {
+    return "yearly-2019"
+  }
+
   public static var individualMonthly: Plan.Id {
     return "individual-monthly"
   }
