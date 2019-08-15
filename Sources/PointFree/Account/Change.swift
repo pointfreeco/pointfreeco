@@ -62,7 +62,7 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
     let (currentSubscription, _, _, newPricing) = conn.data
 
     let newPrice = (defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100) * newPricing.quantity
-    let currentPrice = currentSubscription.plan.amount.rawValue * currentSubscription.quantity
+    let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity).rawValue
 
     let shouldProrate = newPrice > currentPrice
     let shouldInvoice = newPricing.plan == currentSubscription.plan.id
