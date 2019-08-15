@@ -870,7 +870,7 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> [Node] {
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
-  guard let card = subscription.customer.right?.sources.data.first else { return [] }
+  guard let card = subscription.customer.right?.sources.data.first?.left else { return [] }
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [

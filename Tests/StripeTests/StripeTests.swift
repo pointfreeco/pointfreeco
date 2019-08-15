@@ -58,7 +58,7 @@ final class StripeTests: XCTestCase {
     XCTAssertEqual(nil, customer.defaultSource)
     XCTAssertEqual("cus_D5ERuFUxGA3Rsy", customer.id)
     XCTAssertEqual([:], customer.metadata)
-    XCTAssertEqual(ListEnvelope<Card>(data: [], hasMore: false), customer.sources)
+    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
 
   func testDecodingCustomer_Metadata() throws {
@@ -108,7 +108,7 @@ final class StripeTests: XCTestCase {
     XCTAssertEqual("cus_D5ERuFUxGA3Rsy", customer.id)
     XCTAssertEqual(["extraInvoiceInfo": "VAT: 123456789"], customer.metadata)
     XCTAssertEqual("VAT: 123456789", customer.extraInvoiceInfo)
-    XCTAssertEqual(ListEnvelope<Card>(data: [], hasMore: false), customer.sources)
+    XCTAssertEqual(.init(data: [], hasMore: false), customer.sources)
   }
 
   func testDecodingSubscriptionWithDiscount() throws {

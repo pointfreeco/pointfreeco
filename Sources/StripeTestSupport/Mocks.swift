@@ -40,7 +40,7 @@ extension Charge {
   public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
-    source: .mock
+    source: .left(.mock)
   )
 }
 
@@ -50,7 +50,7 @@ extension Customer {
     defaultSource: "card_test",
     id: "cus_test",
     metadata: [:],
-    sources: .mock([.mock])
+    sources: .mock([.left(.mock)])
   )
 }
 

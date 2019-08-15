@@ -63,9 +63,9 @@ public struct Card: Codable, Equatable {
 public struct Charge: Codable, Equatable {
   public var amount: Cents<Int>
   public var id: Id
-  public var source: Card
+  public var source: Either<Card, Source>
 
-  public init(amount: Cents<Int>, id: Id, source: Card) {
+  public init(amount: Cents<Int>, id: Id, source: Either<Card, Source>) {
     self.amount = amount
     self.id = id
     self.source = source
@@ -123,19 +123,25 @@ public struct Coupon: Equatable {
   }
 }
 
+public struct Source: Codable, Equatable {
+  public var id: Id
+
+  public typealias Id = Tagged<Source, String>
+}
+
 public struct Customer: Codable, Equatable {
   public var businessVatId: Vat?
   public var defaultSource: Card.Id?
   public var id: Id
   public var metadata: [String: String]
-  public var sources: ListEnvelope<Card>
+  public var sources: ListEnvelope<Either<Card, Source>>
 
   public init(
     businessVatId: Vat?,
     defaultSource: Card.Id?,
     id: Id,
     metadata: [String: String],
-    sources: ListEnvelope<Card>
+    sources: ListEnvelope<Either<Card, Source>>
     ) {
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource

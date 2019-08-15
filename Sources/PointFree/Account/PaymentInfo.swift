@@ -69,7 +69,7 @@ let paymentInfoView = View<(Stripe.Subscription, PricingFormStyle)> { subscripti
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           titleRowView.view(unit)
-            <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
+            <> (subscription.customer.right?.sources.data.first?.left.map(currentPaymentInfoRowView.view) ?? [])
             <> updatePaymentInfoRowView.view(formFields)
       )
       ])
