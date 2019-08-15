@@ -11,6 +11,9 @@ import Tagged
 public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
   return header
     + teamMembers(currentUser)
+    + billingPeriod()
+    + payment()
+    + total()
 }
 
 private let header: [Node] = [
@@ -235,6 +238,258 @@ teamMemberRow.parentNode.removeChild(teamMemberRow)
   )
 }
 
-private func billingPeriod() -> Node {
-  return div([])
+private func billingPeriod() -> [Node] {
+  return [
+    gridRow(
+      [
+        `class`([
+          Class.margin([.desktop: [.leftRight: 4]]),
+          Class.padding([.desktop: [.top: 3, .bottom: 3]]),
+          Class.border.bottom,
+          Class.pf.colors.border.gray850
+          ])
+      ],
+      [
+        gridColumn(
+          sizes: [.mobile: 12],
+          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+          [h1([`class`([Class.pf.type.responsiveTitle3])], ["Billing interval"])]
+        ),
+        gridColumn(
+          sizes: [.mobile: 12],
+          [
+            `class`([
+              Class.border.all,
+              Class.pf.colors.border.gray850,
+              Class.padding([.mobile: [.all: 2]])
+              ]),
+            HtmlCssSupport.style(lineHeight(0))
+          ],
+          [
+            div(
+              [
+                `class`([
+                  Class.flex.flex,
+                  Class.flex.items.baseline
+                  ])
+              ],
+              [
+                div(
+                  [
+                    input([
+                      id("foo-bar-yearly"),
+                      type(.radio),
+                      name("billing-interval")
+                      ])
+                  ]
+                ),
+                label(
+                  [
+                    `class`([Class.margin([.mobile: [.left: 2]])]),
+                    `for`("foo-bar-yearly")
+                  ],
+                  [
+                    h5(
+                      [
+                        `class`([
+                          Class.pf.type.responsiveTitle6,
+                          Class.margin([.mobile: [.all: 0]])
+                          ])
+                      ],
+                      ["Yearly — 25% off!"]
+                    ),
+                    p(
+                      [
+                        `class`([
+                          Class.padding([.mobile: [.top: 1]]),
+                          Class.pf.type.body.small,
+                          Class.pf.colors.fg.gray650
+                          ])
+                      ],
+                      ["$144 per member per year"]
+                    )
+                  ]
+                )
+              ]
+            )
+          ]
+        ),
+        gridColumn(
+          sizes: [.mobile: 12],
+          [
+            `class`([
+              Class.border.left,
+              Class.border.right,
+              Class.border.bottom,
+              Class.pf.colors.border.gray850,
+              Class.padding([.mobile: [.all: 2]])
+              ]),
+            HtmlCssSupport.style(lineHeight(0))
+          ],
+          [
+            div(
+              [
+                `class`([
+                  Class.flex.flex,
+                  Class.flex.items.baseline
+                  ])
+              ],
+              [
+                div(
+                  [
+                    input([
+                      id("foo-bar-monthly"),
+                      type(.radio),
+                      name("billing-interval")
+                      ])
+                  ]
+                ),
+                label(
+                  [
+                    `class`([Class.margin([.mobile: [.left: 2]])]),
+                    `for`("foo-bar-monthly")
+                  ],
+                  [
+                    h5(
+                      [
+                        `class`([
+                          Class.pf.type.responsiveTitle6,
+                          Class.margin([.mobile: [.all: 0]])
+                          ])
+                      ],
+                      ["Monthly"]
+                    ),
+                    p(
+                      [
+                        `class`([
+                          Class.padding([.mobile: [.top: 1]]),
+                          Class.pf.type.body.small,
+                          Class.pf.colors.fg.gray650
+                          ])
+                      ],
+                      ["$16 per member, per month"]
+                    )
+                  ]
+                )
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ]
+}
+
+private func payment() -> [Node] {
+  return [
+    gridRow(
+      [
+        `class`([
+          Class.margin([.desktop: [.leftRight: 4]]),
+          Class.padding([.desktop: [.top: 3, .bottom: 3]]),
+          Class.border.bottom,
+          Class.pf.colors.border.gray850
+          ])
+      ],
+      [
+        gridColumn(
+          sizes: [.mobile: 12],
+          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+          [h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment info"])]
+        ),
+
+        gridColumn(
+          sizes: [.mobile: 12],
+          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+          [
+            p(
+              [
+                `class`([
+                  Class.pf.type.body.small,
+                  Class.pf.colors.fg.gray400
+                  ])
+              ],
+              [.raw("""
+You will be charged <strong>$14 per member per month</strong>, times <strong>12 months</strong>.
+""")]
+            )
+          ]
+        )
+      ]
+    )
+  ]
+}
+
+private func total() -> [Node] {
+  return [
+    gridRow(
+      [
+        `class`([
+          Class.margin([.desktop: [.leftRight: 4, .topBottom: 3]]),
+          Class.grid.middle(.mobile)
+          ])
+      ],
+      [
+        gridColumn(
+          sizes: [:],
+          [`class`([Class.grid.start(.mobile)])],
+          [
+            div(
+              [
+                `class`([
+                  Class.flex.flex,
+                  Class.grid.middle(.mobile)
+                  ])
+              ],
+              [
+                h3(
+                  [
+                    `class`([
+                      Class.pf.type.responsiveTitle3,
+                      Class.type.normal
+                      ])
+                  ],
+                  ["$336"]
+                ),
+                span(
+                  [
+                    `class`([
+                      Class.pf.type.body.small,
+                      Class.pf.colors.fg.gray400,
+                      Class.margin([.mobile: [.left: 1]]),
+                      Class.padding([.mobile: [.bottom: 1]])
+                      ])
+                  ],
+                  ["Total"]
+                )
+              ]
+            )
+          ]
+        ),
+        gridColumn(
+          sizes: [:],
+          [`class`([Class.grid.end(.mobile)])],
+          [
+            button(
+              [
+                `class`([
+                  Class.border.none,
+                  Class.type.textDecorationNone,
+                  Class.cursor.pointer,
+                  Class.type.bold,
+                  Class.typeScale([.mobile: .r1_25, .desktop: .r1]),
+                  Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+                  Class.type.align.center,
+                  Class.pf.colors.bg.black,
+                  Class.pf.colors.fg.white,
+                  Class.pf.colors.link.white,
+                  ])
+              ],
+              [.raw("Subscribe")]
+            )
+          ]
+        )
+      ]
+    )
+  ]
 }
