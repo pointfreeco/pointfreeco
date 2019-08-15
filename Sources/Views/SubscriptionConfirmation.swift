@@ -37,7 +37,7 @@ private let header: [Node] = [
           `class`([Class.grid.start(.mobile)])
         ],
         [
-          "You selected the", strong(["Team"]), "plan"
+          "You selected the ", strong(["Team"]), " plan"
         ]
       ),
       gridColumn(
