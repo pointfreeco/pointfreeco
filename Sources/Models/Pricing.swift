@@ -53,15 +53,11 @@ public struct Pricing: Equatable {
   }
 
   public var plan: Stripe.Plan.Id {
-    switch (self.billing, self.quantity) {
-    case (.monthly, 1):
-      return .individualMonthly
-    case (.yearly, 1):
-      return .individualYearly
-    case (.monthly, _):
-      return .teamMonthly
-    case (.yearly, _):
-      return .teamYearly
+    switch self.billing {
+    case .monthly:
+      return .monthly
+    case .yearly:
+      return .yearly
     }
   }
 }
