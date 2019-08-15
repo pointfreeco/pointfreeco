@@ -55,4 +55,8 @@ public struct User: Decodable, Equatable {
   public var displayName: String {
     return name ?? email.rawValue
   }
+
+  public var gitHubAvatarUrl: URL {
+    return URL(string: "https://avatars0.githubusercontent.com/u/\(self.gitHubUserId.rawValue)?v=4")!
+  }
 }
