@@ -225,6 +225,7 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
           ] + (withRemoveButton
             ? [
               a([
+                `class`([Class.cursor.pointer]),
                 onclick("""
 var teamMemberRow = this.parentNode.parentNode
 teamMemberRow.parentNode.removeChild(teamMemberRow)
@@ -266,27 +267,25 @@ private func billingPeriod() -> [Node] {
             HtmlCssSupport.style(lineHeight(0))
           ],
           [
-            div(
+            label(
               [
                 `class`([
+                  Class.cursor.pointer,
                   Class.flex.flex,
                   Class.flex.items.baseline
-                  ])
+                ])
               ],
               [
+                div([
+                  input([
+                    id("foo-bar-yearly"),
+                    type(.radio),
+                    name("billing-interval")
+                  ])
+                ]),
                 div(
                   [
-                    input([
-                      id("foo-bar-yearly"),
-                      type(.radio),
-                      name("billing-interval")
-                      ])
-                  ]
-                ),
-                label(
-                  [
                     `class`([Class.margin([.mobile: [.left: 2]])]),
-                    `for`("foo-bar-yearly")
                   ],
                   [
                     h5(
@@ -327,9 +326,10 @@ private func billingPeriod() -> [Node] {
             HtmlCssSupport.style(lineHeight(0))
           ],
           [
-            div(
+            label(
               [
                 `class`([
+                  Class.cursor.pointer,
                   Class.flex.flex,
                   Class.flex.items.baseline
                   ])
@@ -344,10 +344,9 @@ private func billingPeriod() -> [Node] {
                       ])
                   ]
                 ),
-                label(
+                div(
                   [
                     `class`([Class.margin([.mobile: [.left: 2]])]),
-                    `for`("foo-bar-monthly")
                   ],
                   [
                     h5(
