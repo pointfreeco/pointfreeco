@@ -37,7 +37,7 @@ private let header: [Node] = [
           `class`([Class.grid.start(.mobile)])
         ],
         [
-          .raw("You selected the <strong>Team</strong> plan")
+          "You selected the", strong(["Team"]), "plan"
         ]
       ),
       gridColumn(
@@ -47,7 +47,7 @@ private let header: [Node] = [
         ],
         [
           a(
-            [],
+            [href(url(to: .pricingLanding))],
             ["Change plan"]
           )
         ]
@@ -74,8 +74,11 @@ private func teamMembers(_ currentUser: User) -> [Node] {
           [h1([`class`([Class.pf.type.responsiveTitle3])], ["Team members"])]
         ),
         teamOwner(currentUser),
-        teamMemberTemplate(),
-        teamMemberTemplate(),
+        gridColumn(
+          sizes: [.mobile: 12],
+          [id("team-members")],
+          [teamMemberTemplate(withRemoveButton: false)]
+        ),
         gridColumn(
           sizes: [.mobile: 12],
           [
@@ -85,6 +88,11 @@ private func teamMembers(_ currentUser: User) -> [Node] {
             div(
               [],
               [
+                .element(
+                  "template",
+                  [("id", "team-member-template")],
+                  [teamMemberTemplate(withRemoveButton: true)]
+                ),
                 a(
                   [
                     `class`([
@@ -99,6 +107,10 @@ private func teamMembers(_ currentUser: User) -> [Node] {
                       Class.border.all,
                       Class.pf.colors.border.gray850,
                       ]),
+                    onclick("""
+var teamMember = document.getElementById("team-member-template").content.cloneNode(true)
+document.getElementById("team-members").appendChild(teamMember)
+""")
                   ],
                   ["Add team member"]
                 )
@@ -145,7 +157,7 @@ private func teamOwner(_ currentUser: User) -> Node {
         [
           img(
             src: currentUser.gitHubAvatarUrl.absoluteString,
-            alt: "Avatar for \(currentUser.displayName)",
+            alt: "",
             [
               `class`([
                 Class.pf.colors.bg.green,
@@ -162,7 +174,7 @@ private func teamOwner(_ currentUser: User) -> Node {
   )
 }
 
-private func teamMemberTemplate() -> Node {
+private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
   return gridColumn(
     sizes: [.mobile: 12],
     [
@@ -196,15 +208,25 @@ private func teamMemberTemplate() -> Node {
           ),
           input([
             type(.text),
-            placeholder("Email address"),
+            placeholder("blob@pointfree.co"),
             `class`([Class.size.width100pct]),
             name("teammate[]"),
             style(
               borderWidth(all: 0)
                 <> key("outline", "none")
             )
-            ])
-        ]
+          ]),
+          ] + (withRemoveButton
+            ? [
+              a([
+                onclick("""
+var teamMemberRow = this.parentNode.parentNode
+teamMemberRow.parentNode.removeChild(teamMemberRow)
+""")
+              ], ["Remove"])
+              ]
+            : []
+        )
       )
     ]
   )
