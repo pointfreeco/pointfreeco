@@ -5,17 +5,28 @@ import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Prelude
+import Stripe
 import Styleguide
 import Tagged
 
-public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
+public func subscriptionConfirmation(
+  _ currentUser: User,
+  _ stripeJs: String,
+  _ stripePublishableKey: String
+) -> [Node] {
   return [
-    div(
-      [style(maxWidth(.px(900)) <> margin(leftRight: .auto))],
+    form(
+      [
+        action(path(to: .subscribe(nil))),
+        id("subscribe-form"),
+        method(.post),
+        onsubmit("event.preventDefault()"),
+        style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
+      ],
       header
         + teamMembers(currentUser)
         + billingPeriod()
-        + payment()
+        + payment(stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
         + total()
     )
   ]
@@ -56,6 +67,11 @@ private let header: [Node] = [
 
 private func teamMembers(_ currentUser: User) -> [Node] {
   return [
+    input([
+      name("pricing[lane]"),
+      type(.hidden),
+      value("team"),
+    ]),
     gridRow(
       [`class`([moduleRowClass])],
       [
@@ -101,6 +117,7 @@ private func teamMembers(_ currentUser: User) -> [Node] {
                     onclick("""
 var teamMember = document.getElementById("team-member-template").content.cloneNode(true)
 document.getElementById("team-members").appendChild(teamMember)
+updateSeats()
 """)
                   ],
                   ["Add team member"]
@@ -201,7 +218,7 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
             type(.email),
             placeholder("blob@pointfree.co"),
             `class`([Class.size.width100pct]),
-            name("teammate[]"),
+            name("teammates[]"),
             style(
               borderWidth(all: 0)
                 <> key("outline", "none")
@@ -214,6 +231,7 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
                 onclick("""
 var teamMemberRow = this.parentNode.parentNode
 teamMemberRow.parentNode.removeChild(teamMemberRow)
+updateSeats()
 """)
               ], ["Remove"])
               ]
@@ -256,9 +274,11 @@ private func billingPeriod() -> [Node] {
               [
                 div([
                   input([
-                    id("foo-bar-yearly"),
+                    checked(true),
+                    id("yearly"),
                     type(.radio),
-                    name("billing-interval")
+                    name("pricing[billing]"),
+                    value("yearly"),
                   ])
                 ]),
                 div(
@@ -316,9 +336,10 @@ private func billingPeriod() -> [Node] {
                 div(
                   [
                     input([
-                      id("foo-bar-monthly"),
+                      id("monthly"),
                       type(.radio),
-                      name("billing-interval")
+                      name("pricing[billing]"),
+                      value("monthly"),
                       ])
                   ]
                 ),
@@ -357,7 +378,7 @@ private func billingPeriod() -> [Node] {
   ]
 }
 
-private func payment() -> [Node] {
+private func payment(stripeJs: String, stripePublishableKey: String) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -368,9 +389,123 @@ private func payment() -> [Node] {
           [h1([`class`([moduleTitleClass])], ["Payment info"])]
         ),
 
+        label(
+          [
+            `for`("card"),
+            `class`([
+              Class.type.nowrap,
+              Class.pf.colors.fg.black,
+              Class.pf.colors.bg.white,
+              Class.pf.type.responsiveTitle6,
+            ]),
+          ],
+          ["Card number"]
+        ),
+
         gridColumn(
           sizes: [.mobile: 12],
-          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
+          [
+            `class`([
+              Class.border.all,
+              Class.pf.colors.border.gray850,
+              Class.padding([.mobile: [.all: 2]]),
+              Class.margin([.mobile: [.top: 1]])
+            ]),
+            HtmlCssSupport.style(lineHeight(0))
+          ],
+          [
+            div(
+              [
+                `class`([
+                  Class.flex.flex,
+                  Class.grid.middle(.mobile)
+                ])
+              ],
+              [
+                div([
+                  `class`([Class.size.width100pct]),
+                  data("stripe-key", stripePublishableKey),
+                  id("card-element"),
+                ], []),
+              ]
+            )
+          ]
+        ),
+
+        gridColumn(
+          sizes: [.mobile: 12],
+          [],
+          [
+            div([
+              `class`([
+                Class.pf.colors.fg.red,
+                Class.pf.type.body.small,
+              ]),
+              id("card-errors"),
+            ], []),
+            input([
+              name("token"),
+              `type`(.hidden)
+            ]),
+            script([src(stripeJs)]),
+            script("""
+window.addEventListener("load", function() {
+    var apiKey = document.getElementById("card-element").dataset.stripeKey
+  var stripe = Stripe(apiKey)
+  var elements = stripe.elements()
+  var style = {
+    base: {
+      fontSize: "16px",
+    }
+  }
+  var card = elements.create("card", { style: style })
+  card.mount("#card-element")
+  var displayError = document.getElementById("card-errors")
+  card.addEventListener("change", function(event) {
+    if (event.error) {
+      displayError.textContent = event.error.message
+    } else {
+      displayError.textContent = ""
+    }
+  });
+  var form = document.getElementById("subscribe-form")
+  function setFormEnabled(isEnabled, elementsMatching) {
+    for (var idx = 0; idx < form.length; idx++) {
+      var formElement = form[idx]
+      if (elementsMatching(formElement)) {
+        formElement.disabled = !isEnabled
+        if (formElement.tagName == "BUTTON") {
+            formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+        }
+      }
+    }
+  }
+  form.addEventListener("submit", function(event) {
+    event.preventDefault()
+    setFormEnabled(false, function() { return true })
+    stripe.createToken(
+      card, { /*TODO: name: form.stripe_name.value*/ }
+    ).then(function(result) {
+      if (result.error) {
+        displayError.textContent = result.error.message
+        setFormEnabled(true, function(el) { return true })
+      } else {
+          setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        form.token.value = result.token.id
+        form.submit()
+      }
+    }).catch(function() {
+      setFormEnabled(true, function(el) { return true })
+    })
+  })
+})
+"""),
+          ]
+        ),
+
+        gridColumn(
+          sizes: [.mobile: 12],
+          [`class`([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
           [
             p(
               [
@@ -379,9 +514,13 @@ private func payment() -> [Node] {
                   Class.pf.colors.fg.gray400
                   ])
               ],
-              [.raw("""
-You will be charged <strong>$14 per member per month</strong>, times <strong>12 months</strong>.
-""")]
+              [
+                "You will be charged ",
+                strong(["$14 per member, per month"]),
+                " times ",
+                strong(["12 months"]),
+                "."
+              ]
             )
           ]
         )
@@ -409,7 +548,8 @@ private func total() -> [Node] {
               [
                 `class`([
                   Class.flex.flex,
-                  Class.grid.middle(.mobile)
+                  Class.flex.align.center,
+                  Class.grid.middle(.mobile),
                   ])
               ],
               [
@@ -418,10 +558,33 @@ private func total() -> [Node] {
                     `class`([
                       Class.pf.type.responsiveTitle2,
                       Class.type.normal
-                      ])
+                    ]),
+                    id("total"),
                   ],
-                  ["$336"]
+                  [""]
                 ),
+                input([
+                  name("pricing[quantity]"),
+                  `type`(.hidden),
+                ]),
+                script("""
+function updateSeats() {
+  var teamMembers = document.getElementById("team-members")
+  var seats = teamMembers.childNodes.length + 1
+  var form = document.getElementById("subscribe-form")
+  form["pricing[quantity]"].value = seats
+  document.getElementById("total").textContent = "$" + (
+    form["pricing[billing]"].value == "monthly"
+      ? seats * 16
+      : seats * 12 * 12
+  )
+}
+window.addEventListener("load", function() {
+  updateSeats()
+  var form = document.getElementById("subscribe-form")
+  form.addEventListener("change", updateSeats)
+})
+"""),
                 span(
                   [
                     `class`([
