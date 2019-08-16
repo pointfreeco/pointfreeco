@@ -2,7 +2,7 @@ GET http://localhost:8080/_pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 172108
+Content-Length: 172274
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1918,7 +1918,8 @@ html {
                   d-pb2
                   col-m
                   col-m-12">
-        <h3 class="fg-black
+        <h3 id="plans-and-pricing"
+            class="fg-black
                    bold
                    ts-d-r3
                    ts-m-r2
@@ -2326,7 +2327,8 @@ html {
                     m-pb2
                     col-m
                     col-m-12">
-          <h3 class="fg-black
+          <h3 id="what-to-expect"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2473,7 +2475,8 @@ directly to that point in the video.
                   col-d-8
                   col-m-12">
         <div>
-          <h3 class="fg-black
+          <h3 id="faq"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2530,7 +2533,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     d-pt4
                     m-pt3"
              style="border-top-color:#d8d8d8">
-          <h3 class="fg-black
+          <h3 id="what-people-are-saying"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -3595,7 +3599,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                   col-m
                   col-d-12
                   col-m-12">
-        <h6 class="fg-gray400
+        <h6 id="featured-teams"
+            class="fg-gray400
                    fg-black
                    bold
                    ts-d-r0_875

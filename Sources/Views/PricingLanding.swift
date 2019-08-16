@@ -192,7 +192,10 @@ private func plansAndPricing(
           ],
           [
             h3(
-              [`class`([Class.pf.type.responsiveTitle2])],
+              [
+                id("plans-and-pricing"),
+                `class`([Class.pf.type.responsiveTitle2])
+              ],
               ["Plans and pricing"]
             )
           ]
@@ -409,7 +412,10 @@ private let whatToExpect = [
             ],
             [
               h3(
-                [`class`([Class.pf.type.responsiveTitle2])],
+                [
+                  id("what-to-expect"),
+                  `class`([Class.pf.type.responsiveTitle2])
+                ],
                 ["What to expect"]
               )
             ]
@@ -506,6 +512,7 @@ private let faq = [
           div([
             h3(
               [
+                id("faq"),
                 `class`([
                   Class.pf.type.responsiveTitle2,
                   Class.grid.center(.desktop),
@@ -570,7 +577,10 @@ private let whatPeopleAreSaying = [
             ],
             [
               h3(
-                [`class`([Class.pf.type.responsiveTitle2])],
+                [
+                  id("what-people-are-saying"),
+                  `class`([Class.pf.type.responsiveTitle2])
+                ],
                 ["What people are saying"]
               )
             ]
@@ -659,6 +669,7 @@ private let featuredTeams = [
         [
           h6(
             [
+              id("featured-teams"),
               `class`([
                 Class.pf.colors.fg.gray400,
                 Class.pf.type.responsiveTitle7,
