@@ -198,7 +198,7 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
             ]
           ),
           input([
-            type(.text),
+            type(.email),
             placeholder("blob@pointfree.co"),
             `class`([Class.size.width100pct]),
             name("teammate[]"),
