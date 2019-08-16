@@ -2,7 +2,7 @@ GET http://localhost:8080/_pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 171890
+Content-Length: 172640
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1844,17 +1844,21 @@ html {
       </div>
     </div>
     <div class="bg-black
-                d-pl5
-                d-pr5
-                d-pt5
-                d-pb5
-                m-pl3
-                m-pr3
-                m-pt4
-                m-pb4"
-         style="border-top:1px solid #333">
+                border-top"
+         style="border-top-color:#333">
       <div class="middle-d
-                  row">
+                  d-pl5
+                  d-pr5
+                  d-pt5
+                  d-pb5
+                  m-pl3
+                  m-pr3
+                  m-pt4
+                  m-pb4
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
         <div class="d-pb0
                     d-pr2
                     m-pb2
@@ -1908,7 +1912,10 @@ html {
                m-pb0
                list-style-none
                flex-wrap
-               flex">
+               flex"
+        style="max-width:1080px;
+               margin-right:auto;
+               margin-left:auto">
       <li class="d-pl1
                  d-pr1
                  d-pt1
@@ -2320,146 +2327,150 @@ $16 per member per month.
         </p>
       </div>
     </div>
-    <div class="d-pl4
-                d-pr4
-                d-pt4
-                d-pb4
-                m-pl2
-                m-pr2
-                m-pt3
-                m-pb3
-                row"
-         style="background-color:#fafafa">
-      <div class="center-d
-                  d-pb3
-                  m-pb2
-                  col-m
-                  col-m-12">
-        <h3 class="fg-black
-                   bold
-                   ts-d-r3
-                   ts-m-r2
-                   lh-2">
-          What to expect
-        </h3>
-      </div>
-      <div class="center-d
-                  d-pb0
+    <div style="background-color:#fafafa">
+      <div class="d-pl4
+                  d-pr4
+                  d-pt4
+                  d-pb4
+                  m-pl2
+                  m-pr2
+                  m-pt3
                   m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="center-d
+                    d-pb3
+                    m-pb2
+                    col-m
+                    col-m-12">
+          <h3 class="fg-black
                      bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            New content regularly
-          </h4>
-          <p class="fg-gray400">
-            We dissect some of the most important topics in functional programming frequently, and deliver them straight
+                     ts-d-r3
+                     ts-m-r2
+                     lh-2">
+            What to expect
+          </h3>
+        </div>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              New content regularly
+            </h4>
+            <p class="fg-gray400">
+              We dissect some of the most important topics in functional programming frequently, and deliver them straight
 to your inbox.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Wide variety of topics
-          </h4>
-          <p class="fg-gray400">
-            We cover both abstract ideas and practical concepts you can start using in your code base immediately.
-          </p>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Wide variety of topics
+            </h4>
+            <p class="fg-gray400">
+              We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Playground downloads
-          </h4>
-          <p class="fg-gray400">
-            Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Playground downloads
+            </h4>
+            <p class="fg-gray400">
+              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
 discussed.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Video transcripts
-          </h4>
-          <p class="fg-gray400">
-            We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
+        <div class="center-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Video transcripts
+            </h4>
+            <p class="fg-gray400">
+              We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
 directly to that point in the video.
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -2471,7 +2482,10 @@ directly to that point in the video.
                 m-pr2
                 m-pt2
                 m-pb2
-                row">
+                row"
+         style="max-width:1080px;
+                margin-right:auto;
+                margin-left:auto">
       <div style="margin-right:auto;
                   margin-left:auto"
            class="col-m
