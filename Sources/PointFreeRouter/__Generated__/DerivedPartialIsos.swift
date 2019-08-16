@@ -748,6 +748,20 @@ import Stripe
 
 
       extension PartialIso where A == (
+            Pricing.Lane
+        ), B == Route {
+
+          public static let subscribeConfirmation = parenthesize <| PartialIso(
+            apply: Route.subscribeConfirmation,
+            unapply: {
+              guard case let .subscribeConfirmation(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             Route.Team
         ), B == Route {
 

@@ -372,6 +372,12 @@ extension SubscribeTests {
     ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure),
   ]
 }
+extension SubscriptionLandingTests {
+  static var allTests: [(String, (SubscriptionLandingTests) -> () throws -> Void)] = [
+    ("testLanding_LoggedIn_ActiveSubscriber", testLanding_LoggedIn_ActiveSubscriber),
+    ("testLanding_LoggedIn_InactiveSubscriber", testLanding_LoggedIn_InactiveSubscriber),
+  ]
+}
 extension TeamEmailsTests {
   static var allTests: [(String, (TeamEmailsTests) -> () throws -> Void)] = [
     ("testYouHaveBeenRemovedEmailView", testYouHaveBeenRemovedEmailView),
@@ -440,6 +446,7 @@ XCTMain([
   testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
+  testCase(SubscriptionLandingTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(WelcomeEmailTests.allTests),
