@@ -13,9 +13,8 @@ public let pricingLanding: Middleware<
   ResponseEnded,
   Tuple6<User?, AllEpisodeCount, EpisodeHourCount, FreeEpisodeCount, Route, SubscriberState>,
   Data
-  > =
-  requireAdmin
-    <| writeStatus(.ok)
+  >
+  = writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: View(Views.pricingLanding),

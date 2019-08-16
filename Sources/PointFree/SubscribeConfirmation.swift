@@ -14,8 +14,8 @@ public let subscribeConfirmation: Middleware<
   ResponseEnded,
   Tuple5<User?, Route, SubscriberState, Pricing.Lane, Stripe.Coupon?>,
   Data
-  > =
-  requireAdmin
+  >
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(

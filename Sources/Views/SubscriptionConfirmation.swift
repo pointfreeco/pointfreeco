@@ -236,7 +236,12 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
           ] + (withRemoveButton
             ? [
               a([
-                `class`([Class.cursor.pointer]),
+                `class`([
+                  Class.cursor.pointer,
+                  Class.pf.colors.fg.red,
+                  Class.pf.colors.link.red,
+                  Class.type.light,
+                ]),
                 onclick("""
 var teamMemberRow = this.parentNode.parentNode
 teamMemberRow.parentNode.removeChild(teamMemberRow)
