@@ -24,7 +24,11 @@ public let subscribeConfirmation: Middleware<
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: currentUser,
+          data: (
+            currentUser,
+            Current.stripe.js,
+            Current.envVars.stripe.publishableKey.rawValue
+          ),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
           title: "Subscribe to Point-Free"

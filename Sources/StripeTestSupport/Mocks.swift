@@ -132,7 +132,8 @@ extension Plan {
     interval: .month,
     metadata: [:],
     name: "Individual Monthly",
-    statementDescriptor: nil
+    statementDescriptor: nil,
+    tiers: []
   )
 
   public static let individualMonthly = mock

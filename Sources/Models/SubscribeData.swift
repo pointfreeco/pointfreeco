@@ -1,19 +1,21 @@
+import PointFreePrelude
 import Stripe
 
 public struct SubscribeData: Codable, Equatable {
   public var coupon: Stripe.Coupon.Id?
   public var pricing: Pricing
+  public var teammates: [EmailAddress]
   public var token: Stripe.Token.Id
-  public var vatNumber: Stripe.Customer.Vat?
-  
+
   public init(
     coupon: Stripe.Coupon.Id?,
     pricing: Pricing,
-    token: Stripe.Token.Id,
-    vatNumber: Stripe.Customer.Vat?) {
+    teammates: [EmailAddress],
+    token: Stripe.Token.Id
+  ) {
     self.coupon = coupon
     self.pricing = pricing
+    self.teammates = teammates
     self.token = token
-    self.vatNumber = vatNumber
   }
 }

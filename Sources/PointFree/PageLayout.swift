@@ -31,7 +31,7 @@ enum NavStyle {
     var heroTagline: String {
       switch self {
       case .blog: return "A blog exploring functional programming and Swift."
-      case .main: return "A new Swift video series exploring functional programming and more."
+      case .main: return "A video series exploring functional programming and Swift."
       }
     }
 

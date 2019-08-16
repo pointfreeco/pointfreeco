@@ -44,18 +44,29 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
       .withExcept(const(unit))
       .flatMap { subscribeData in
         Current.stripe
-          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, subscribeData.vatNumber)
+          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, nil)
           .map { ($0, subscribeData) }
-      }
-      .flatMap {
-        Current.stripe
-          .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
-      }
-      .flatMap { stripeSubscription in
-        Current.database
-          .createSubscription(stripeSubscription, user.id)
-      }
-      .run
+          .flatMap {
+            Current.stripe
+              .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
+        }
+        .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
+          sequence(
+            subscribeData.teammates
+              .filter { email in email != user.email }
+              .map { email in
+                Current.database.insertTeamInvite(email, user.id)
+                  .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
+                  .run
+                  .parallel
+            }
+          ).run(const(()))
+
+          return Current.database
+            .createSubscription(stripeSubscription, user.id)
+        }
+    }
+    .run
 
     return subscriptionOrError.flatMap(
       either(
