@@ -11,7 +11,7 @@ import Tagged
 public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
   return [
     div(
-      [style(maxWidth(.px(1080)) <> margin(leftRight: .auto))],
+      [style(maxWidth(.px(900)) <> margin(leftRight: .auto))],
       header
         + teamMembers(currentUser)
         + billingPeriod()
@@ -23,36 +23,20 @@ public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
 
 private let header: [Node] = [
   gridRow(
-    [
-      `class`([
-        Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
-        Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
-        Class.border.bottom,
-        Class.pf.colors.border.gray850
-        ])
-    ],
+    [`class`([moduleRowClass])],
     [
       gridColumn(
         sizes: [.mobile: 12],
-        [],
-        [
-          h1([`class`([Class.pf.type.responsiveTitle2])], ["Subscribe"])
-        ]
+        [h1([`class`([Class.pf.type.responsiveTitle2])], ["Subscribe"])]
       ),
       gridColumn(
         sizes: [:],
-        [
-          `class`([Class.grid.start(.mobile)])
-        ],
-        [
-          "You selected the ", strong(["Team"]), " plan"
-        ]
+        [`class`([Class.grid.start(.mobile)])],
+        ["You selected the ", strong(["Team"]), " plan"]
       ),
       gridColumn(
         sizes: [:],
-        [
-          `class`([Class.grid.end(.mobile)])
-        ],
+        [`class`([Class.grid.end(.mobile)])],
         [
           a(
             [
@@ -73,19 +57,12 @@ private let header: [Node] = [
 private func teamMembers(_ currentUser: User) -> [Node] {
   return [
     gridRow(
-      [
-        `class`([
-          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
-          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
-          Class.border.bottom,
-          Class.pf.colors.border.gray850
-          ])
-      ],
+      [`class`([moduleRowClass])],
       [
         gridColumn(
           sizes: [.mobile: 12],
-          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
-          [h1([`class`([Class.pf.type.responsiveTitle3])], ["Team members"])]
+          [`class`([moduleTitleColumnClass])],
+          [h1([`class`([moduleTitleClass])], ["Team members"])]
         ),
         teamOwner(currentUser),
         gridColumn(
@@ -250,19 +227,12 @@ teamMemberRow.parentNode.removeChild(teamMemberRow)
 private func billingPeriod() -> [Node] {
   return [
     gridRow(
-      [
-        `class`([
-          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
-          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
-          Class.border.bottom,
-          Class.pf.colors.border.gray850
-          ])
-      ],
+      [`class`([moduleRowClass])],
       [
         gridColumn(
           sizes: [.mobile: 12],
-          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
-          [h1([`class`([Class.pf.type.responsiveTitle3])], ["Billing interval"])]
+          [`class`([moduleTitleColumnClass])],
+          [h1([`class`([moduleTitleClass])], ["Billing interval"])]
         ),
         gridColumn(
           sizes: [.mobile: 12],
@@ -390,19 +360,12 @@ private func billingPeriod() -> [Node] {
 private func payment() -> [Node] {
   return [
     gridRow(
-      [
-        `class`([
-          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
-          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
-          Class.border.bottom,
-          Class.pf.colors.border.gray850
-          ])
-      ],
+      [`class`([moduleRowClass])],
       [
         gridColumn(
           sizes: [.mobile: 12],
-          [`class`([Class.padding([.mobile: [.bottom: 2]])])],
-          [h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment info"])]
+          [`class`([moduleTitleColumnClass])],
+          [h1([`class`([moduleTitleClass])], ["Payment info"])]
         ),
 
         gridColumn(
@@ -453,7 +416,7 @@ private func total() -> [Node] {
                 h3(
                   [
                     `class`([
-                      Class.pf.type.responsiveTitle3,
+                      Class.pf.type.responsiveTitle2,
                       Class.type.normal
                       ])
                   ],
@@ -485,7 +448,7 @@ private func total() -> [Node] {
                   Class.type.textDecorationNone,
                   Class.cursor.pointer,
                   Class.type.bold,
-                  Class.typeScale([.mobile: .r1_25, .desktop: .r1]),
+                  Class.typeScale([.mobile: .r1, .desktop: .r1]),
                   Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
                   Class.type.align.center,
                   Class.pf.colors.bg.black,
@@ -493,7 +456,7 @@ private func total() -> [Node] {
                   Class.pf.colors.link.white,
                   ])
               ],
-              [.raw("Subscribe")]
+              ["Subscribe"]
             )
           ]
         )
@@ -501,3 +464,16 @@ private func total() -> [Node] {
     )
   ]
 }
+
+private let moduleTitleClass =
+  Class.pf.type.responsiveTitle3
+    | Class.margin([.mobile: [.top: 0]])
+
+private let moduleTitleColumnClass =
+  Class.padding([.mobile: [.bottom: 1], .desktop: [.bottom: 2]])
+
+private let moduleRowClass =
+  Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]])
+    | Class.padding([.mobile: [.topBottom: 3]])
+    | Class.border.bottom
+    | Class.pf.colors.border.gray850
