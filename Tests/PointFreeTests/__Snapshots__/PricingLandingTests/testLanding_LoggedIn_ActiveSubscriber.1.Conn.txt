@@ -2,7 +2,7 @@ GET http://localhost:8080/_pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 172640
+Content-Length: 172108
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1862,8 +1862,9 @@ html {
         <div class="d-pb0
                     d-pr2
                     m-pb2
+                    dark-right-border-d
                     col-m
-                    col-d-12
+                    col-d-8
                     col-m-12">
           <h1 class="fg-black
                      bold
@@ -1874,6 +1875,34 @@ html {
               style="line-height:1.2">
             Explore the wonderful world of&nbsp;functional programming in Swift.
           </h1>
+        </div>
+        <div class="center-d
+                    d-pl2
+                    col-m
+                    col-d-4
+                    col-m-12">
+          <div>
+            <p class="fg-white
+                      m-pb2">
+              You‘re already a subscriber!
+            </p>
+            <a href="/account"
+               class="medium
+                      cursor-pointer
+                      nowrap
+                      btn-normal
+                      rounded
+                      border-none
+                      text-decoration-none
+                      pf-link-black
+                      fg-black
+                      bg-white
+                      h5
+                      m-pl2
+                      m-pr2">
+              Manage your account
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1998,22 +2027,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2099,22 +2114,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2200,22 +2201,8 @@ html {
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2281,24 +2268,8 @@ html {
               Invoiced billing
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-white
-                    fg-black
-                    pf-link-black
-                    border
-                    border-gray-800">
-            Contact Us
-          </a>
+          <div>
+          </div>
         </div>
       </li>
     </ul>
@@ -2309,8 +2280,6 @@ html {
                 row">
       <div class="center-d
                   d-pb4
-                  d-pl5
-                  d-pr5
                   m-pb3
                   m-pt2
                   m-pl2
@@ -2319,11 +2288,23 @@ html {
                   col-m-12">
         <p class="fg-black
                   normal
-                  h6
+                  h5
                   lh-4
-                  fg-gray400">
-          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
+                  ts-d-r0_875
+                  ts-m-r1
+                  fg-gray400"
+           style="max-width:480px;
+                  margin-right:auto;
+                  margin-left:auto">
+          Prices shown with annual billing. When billed month to month, the 
+          <strong>
+            Personal
+          </strong>
+           plan is $18, and the 
+          <strong>
+            Team
+          </strong>
+           plan is $16 per member per month.
         </p>
       </div>
     </div>

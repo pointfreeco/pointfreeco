@@ -26,17 +26,37 @@ public func pricingLanding(
     + plansAndPricing(
       allEpisodeCount: allEpisodeCount,
       episodeHourCount: episodeHourCount,
-      freeEpisodeCount: freeEpisodeCount
+      freeEpisodeCount: freeEpisodeCount,
+      subscriberState: subscriberState
     )
     + whatToExpect
     + faq
     + whatPeopleAreSaying
     + featuredTeams
-    + footer(currentUser: currentUser)
+    + footer(allEpisodeCount: allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
 }
 
 func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  guard !subscriberState.isActive else { return [] }
+  guard currentUser == nil || subscriberState.isActive else { return [] }
+
+  let title = subscriberState.isActive
+    ? "You‘re already a subscriber!"
+    : "Start with a free episode"
+
+  let ctaButton = subscriberState.isActive
+    ? a(
+      [
+        href(path(to: .account(.index))),
+        `class`([Class.pf.components.button(color: .white)])
+      ],
+      ["Manage your account"]
+    )
+    : gitHubLink(
+      text: "Create your account",
+      type: .white,
+      // TODO: redirect back to home?
+      href: path(to: .login(redirect: url(to: .pricingLanding)))
+  )
 
   return [
     gridColumn(
@@ -58,14 +78,9 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
                   Class.padding([.mobile: [.bottom: 2]])
                   ])
               ],
-              ["Start with a free episode"]
+              [.text(title)]
             ),
-            gitHubLink(
-              text: "Create your account",
-              type: .white,
-              // TODO: redirect back to home?
-              href: path(to: .login(redirect: url(to: .pricingLanding)))
-            )
+            ctaButton
           ]
         )
       ]
@@ -74,7 +89,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 }
 
 private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  let isTwoColumnHero = !subscriberState.isActive
+  let isTwoColumnHero = currentUser == nil || subscriberState.isActive
   let titleColumnCount = isTwoColumnHero ? 8 : 12
 
   return [
@@ -155,7 +170,8 @@ private let contactusButtonClasses =
 private func plansAndPricing(
   allEpisodeCount: AllEpisodeCount,
   episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount
+  freeEpisodeCount: FreeEpisodeCount,
+  subscriberState: SubscriberState
   ) -> [Node] {
   return [
     gridRow(
@@ -195,10 +211,22 @@ private func plansAndPricing(
         style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
       ],
       [
-        pricingPlan(.free(freeEpisodeCount: freeEpisodeCount)),
-        pricingPlan(.personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)),
-        pricingPlan(.team),
-        pricingPlan(.enterprise),
+        pricingPlan(
+          subscriberState: subscriberState,
+          plan: .free(freeEpisodeCount: freeEpisodeCount)
+        ),
+        pricingPlan(
+          subscriberState: subscriberState,
+          plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
+        ),
+        pricingPlan(
+          subscriberState: subscriberState,
+          plan: .team
+        ),
+        pricingPlan(
+          subscriberState: subscriberState,
+          plan: .enterprise
+        ),
       ]
     ),
     gridRow(
@@ -213,21 +241,26 @@ private func plansAndPricing(
           [
             `class`([
               Class.grid.center(.desktop),
-              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.leftRight: 5, .bottom: 4]])
+              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.bottom: 4]])
               ])
           ],
           [
             p(
               [
                 `class`([
-                  Class.pf.type.body.small,
+                  Class.pf.type.body.regular,
+                  Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
                   Class.pf.colors.fg.gray400
-                  ])
+                  ]),
+                style(maxWidth(.px(480)) <> margin(leftRight: .auto))
               ],
-              [.raw("""
-Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
-""")]
+              [
+                "Prices shown with annual billing. When billed month to month, the ",
+                strong(["Personal"]),
+                " plan is $18, and the ",
+                strong(["Team"]),
+                " plan is $16 per member per month."
+              ]
             )
           ]
         )
@@ -286,20 +319,20 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
   )
 }
 
-private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
+private func pricingPlan(subscriberState: SubscriberState, plan: PricingPlan) -> ChildOf<Tag.Ul> {
   let cost = plan.cost.map(planCost) ?? div([])
 
-  let ctaButton = a(
-    [
-      href("#"),
-      `class`([
-        Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
-        plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
-        ])
-    ],
-    [
-      plan.cost == nil ? "Contact Us" : "Choose plan"
-    ]
+  let ctaButton = subscriberState.isActive
+    ? div([])
+    : a(
+      [
+        href("#"),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
+          ])
+      ],
+      [plan.cost == nil ? "Contact Us" : "Choose plan"]
   )
 
   return li(
@@ -659,8 +692,36 @@ private let featuredTeams = [
   )
 ]
 
-private func footer(currentUser: User?) -> [Node] {
-  guard currentUser == nil else { return [] }
+private func footer(
+  allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
+  subscriberState: SubscriberState
+  ) -> [Node] {
+
+  guard !subscriberState.isActive else { return [] }
+
+  let title = currentUser == nil
+    ? "Get started with our Free plan"
+    : "Get started with our Personal plan"
+
+  let subtitle = currentUser == nil
+    ? "Includes a free episode of your choice, plus weekly<br>updates from our newsletter."
+    : "Access all \(allEpisodeCount.rawValue) episodes on Point-Free today!"
+
+  let ctaButton = currentUser == nil
+    ? gitHubLink(
+      text: "Create your account",
+      type: .white,
+      // TODO: redirect back to home?
+      href: path(to: .login(redirect: url(to: .pricingLanding)))
+      )
+    : a(
+      [
+        href(path(to: .subscribeConfirmation)),
+        `class`([Class.pf.components.button(color: .white)])
+      ],
+      ["Subscribe"]
+  )
 
   return [
     div(
@@ -679,7 +740,7 @@ private func footer(currentUser: User?) -> [Node] {
               Class.pf.colors.fg.white
               ])
           ],
-          ["Get started with our free plan"]
+          [.text(title)]
         ),
         p(
           [
@@ -688,14 +749,9 @@ private func footer(currentUser: User?) -> [Node] {
               Class.padding([.mobile: [.bottom: 3]])
               ])
           ],
-          [.raw("Includes a free episode of your choice, plus weekly<br>updates from our newsletter.")]
+          [.raw(subtitle)]
         ),
-        gitHubLink(
-          text: "Create your account",
-          type: .white,
-          // TODO: redirect back to home?
-          href: path(to: .login(redirect: url(to: .pricingLanding)))
-        )
+        ctaButton
       ]
     )
   ]
