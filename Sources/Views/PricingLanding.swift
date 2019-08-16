@@ -108,17 +108,19 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node
       [
         `class`([
           Class.pf.colors.bg.black,
-          Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
+          Class.border.top,
           ]),
-        style(
-          // TODO: move to nav?
-          key("border-top", "1px solid #333")
-        )
+        // TODO: move to nav?
+        style(key("border-top-color", "#333"))
       ],
       [
         gridRow(
           [
-            `class`([Class.grid.middle(.desktop)])
+            `class`([
+              Class.grid.middle(.desktop),
+              Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
+              ]),
+            style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
           ],
           titleColumn(currentUser: currentUser, subscriberState: subscriberState)
             + ctaColumn(currentUser: currentUser, subscriberState: subscriberState)
@@ -190,6 +192,7 @@ private func plansAndPricing(
           Class.flex.wrap,
           Class.flex.flex
           ]),
+        style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
       ],
       [
         pricingPlan(.free(freeEpisodeCount: freeEpisodeCount)),
@@ -352,70 +355,75 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
 }
 
 private let whatToExpect = [
-  gridRow(
+  div(
+    [style(backgroundColor(.other("#fafafa")))],
     [
-      `class`([
-        Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
-        ]),
-      style(backgroundColor(.other("#fafafa")))
-    ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
+      gridRow(
         [
           `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
-            ])
+            Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
+            ]),
+          style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
         ],
         [
-          h3(
-            [`class`([Class.pf.type.responsiveTitle2])],
-            ["What to expect"]
+          gridColumn(
+            sizes: [.mobile: 12],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
+                ])
+            ],
+            [
+              h3(
+                [`class`([Class.pf.type.responsiveTitle2])],
+                ["What to expect"]
+              )
+            ]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightBottomBorder,
+                lightRightBorder
+                ]),
+            ],
+            [whatToExpectColumn(item: .newContent)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightBottomBorder
+                ])
+            ],
+            [whatToExpectColumn(item: .topics)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightRightBorder
+                ])
+            ],
+            [whatToExpectColumn(item: .playgrounds)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [`class`([Class.grid.center(.desktop)])],
+            [whatToExpectColumn(item: .transcripts)]
           )
         ]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightBottomBorder,
-            lightRightBorder
-            ]),
-        ],
-        [whatToExpectColumn(item: .newContent)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightBottomBorder
-            ])
-        ],
-        [whatToExpectColumn(item: .topics)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightRightBorder
-            ])
-        ],
-        [whatToExpectColumn(item: .playgrounds)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [`class`([Class.grid.center(.desktop)])],
-        [whatToExpectColumn(item: .transcripts)]
       )
     ]
   )
@@ -452,7 +460,8 @@ private let faq = [
     [
       `class`([
         Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
-        ])
+        ]),
+      style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
     ],
     [
       gridColumn(
