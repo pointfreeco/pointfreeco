@@ -432,7 +432,7 @@ private func total() -> [Node] {
     gridRow(
       [
         `class`([
-          Class.margin([.desktop: [.leftRight: 4, .topBottom: 3]]),
+          Class.margin([.desktop: [.leftRight: 4, .top: 3, .bottom: 4]]),
           Class.grid.middle(.mobile)
           ])
       ],
