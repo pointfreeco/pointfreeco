@@ -53,7 +53,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
         .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
           sequence(
             subscribeData.teammates
-              .filter { email in email != user.email }
+              .filter { email in email.rawValue.contains("@") && email != user.email }
               .map { email in
                 Current.database.insertTeamInvite(email, user.id)
                   .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
