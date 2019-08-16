@@ -25,8 +25,8 @@ private let header: [Node] = [
   gridRow(
     [
       `class`([
-        Class.margin([.desktop: [.leftRight: 4]]),
-        Class.padding([.desktop: [.top: 4, .bottom: 3]]),
+        Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+        Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
         Class.border.bottom,
         Class.pf.colors.border.gray850
         ])
@@ -75,8 +75,8 @@ private func teamMembers(_ currentUser: User) -> [Node] {
     gridRow(
       [
         `class`([
-          Class.margin([.desktop: [.leftRight: 4]]),
-          Class.padding([.desktop: [.top: 3, .bottom: 3]]),
+          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
           Class.border.bottom,
           Class.pf.colors.border.gray850
           ])
@@ -252,8 +252,8 @@ private func billingPeriod() -> [Node] {
     gridRow(
       [
         `class`([
-          Class.margin([.desktop: [.leftRight: 4]]),
-          Class.padding([.desktop: [.top: 3, .bottom: 3]]),
+          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
           Class.border.bottom,
           Class.pf.colors.border.gray850
           ])
@@ -392,8 +392,8 @@ private func payment() -> [Node] {
     gridRow(
       [
         `class`([
-          Class.margin([.desktop: [.leftRight: 4]]),
-          Class.padding([.desktop: [.top: 3, .bottom: 3]]),
+          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+          Class.padding([.mobile: [.top: 2, .bottom: 3], .desktop: [.top: 4, .bottom: 3]]),
           Class.border.bottom,
           Class.pf.colors.border.gray850
           ])
@@ -432,7 +432,8 @@ private func total() -> [Node] {
     gridRow(
       [
         `class`([
-          Class.margin([.desktop: [.leftRight: 4, .top: 3, .bottom: 4]]),
+          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+          Class.padding([.mobile: [.top: 3, .bottom: 4], .desktop: [.top: 3, .bottom: 4]]),
           Class.grid.middle(.mobile)
           ])
       ],
