@@ -101,10 +101,10 @@ extension PartialIso {
 }
 
 let routers: [Router<Route>] = [
-  PartialIso(case: const(Route.about))
+  .about
     <¢> get %> lit("about") <% end,
 
-  PartialIso(case: Route.account)
+  .account
     <¢> lit("account") %> accountRouter,
 
   .admin
@@ -207,7 +207,7 @@ let routers: [Router<Route>] = [
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
-  PartialIso(case: Route.subscribeConfirmation)
+  .subscribeConfirmation
     <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable) <% end,
 
   .team <<< .leave
