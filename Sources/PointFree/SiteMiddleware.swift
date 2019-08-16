@@ -196,8 +196,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case .subscribeConfirmation:
-      return conn.map(const(user .*. route .*. subscriberState .*. unit))
+    case let .subscribeConfirmation(lane):
+      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. unit))
         |> subscribeConfirmation
 
     case .team(.leave):

@@ -309,7 +309,7 @@ private let faqLinkStyles =
 private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
-      checked(pricing.isIndividual),
+      checked(pricing.isPersonal),
       `class`([Class.display.none]),
       id(selectors.input.0),
       name("pricing[lane]"),

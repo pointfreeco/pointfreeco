@@ -291,7 +291,13 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
 
   let ctaButton = a(
     [
-      href("#"),
+      plan.lane
+        .map { href(url(to: .subscribeConfirmation($0))) }
+        ?? (
+          plan.cost == nil
+            ? mailto("support@pointfree.co")
+            : href("#")
+      ),
       `class`([
         Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
         plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
@@ -703,6 +709,7 @@ private func footer(currentUser: User?) -> [Node] {
 
 private struct PricingPlan {
   let cost: Cost?
+  let lane: Pricing.Lane?
   let features: [String]
   let title: String
 
@@ -714,6 +721,7 @@ private struct PricingPlan {
   static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: nil, value: "$0"),
+      lane: nil,
       features: [
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
@@ -730,6 +738,7 @@ private struct PricingPlan {
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
+      lane: .personal,
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
@@ -742,6 +751,7 @@ private struct PricingPlan {
 
   static let team = PricingPlan(
     cost: Cost(title: "per&nbsp;member, per&nbsp;month, billed&nbsp;annually", value: "$12"),
+    lane: .team,
     features: [
       "All personal plan features",
       "For teams of 2 or more",
@@ -753,6 +763,7 @@ private struct PricingPlan {
 
   static let enterprise = PricingPlan(
     cost: nil,
+    lane: nil,
     features: [
       "For large teams",
       "Unlimited, company-wide access to all content",
