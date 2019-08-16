@@ -9,11 +9,16 @@ import Styleguide
 import Tagged
 
 public func subscriptionConfirmation(_ currentUser: User) -> [Node] {
-  return header
-    + teamMembers(currentUser)
-    + billingPeriod()
-    + payment()
-    + total()
+  return [
+    div(
+      [style(maxWidth(.px(1080)) <> margin(leftRight: .auto))],
+      header
+        + teamMembers(currentUser)
+        + billingPeriod()
+        + payment()
+        + total()
+    )
+  ]
 }
 
 private let header: [Node] = [
