@@ -230,10 +230,10 @@ private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seats
 private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
 
   let pricing = PointFree.pricing(for: subscription)
-  let subtitle = pricing.isIndividual
+  let subtitle = pricing.isPersonal
     ? "Change to a team subscription?"
     : "Add or remove seats?"
-  let description: [Node] = pricing.isIndividual
+  let description: [Node] = pricing.isPersonal
     ? ["Specify the total number of seats you’d like."]
     : [
       "You are currently using ", strong([.text(String(seatsTaken)), " of ",
@@ -351,7 +351,7 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { bil
             span(
               [
                 `class`([priceClass]),
-                data("price-individual", String(defaultPricing(for: .individual, billing: billing))),
+                data("price-individual", String(defaultPricing(for: .personal, billing: billing))),
                 data("price-team", String(defaultPricing(for: .team, billing: billing)))
               ],
               [.text(String(defaultPricing(for: pricing.lane, billing: billing) * pricing.quantity))]
@@ -372,14 +372,14 @@ private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { bil
 
 private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) -> Int {
   switch (lane, billing) {
-  case (.individual, .monthly):
-    return 17
-  case (.individual, .yearly):
-    return 170
+  case (.personal, .monthly):
+    return 18
+  case (.personal, .yearly):
+    return 168
   case (.team, .monthly):
     return 16
   case (.team, .yearly):
-    return 160
+    return 144
   }
 }
 

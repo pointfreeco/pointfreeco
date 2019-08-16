@@ -11,7 +11,7 @@ import Views
 public let subscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple3<User?, Route, SubscriberState>,
+  Tuple4<User?, Route, SubscriberState, Pricing.Lane>,
   Data
   > =
   requireAdmin
@@ -19,12 +19,13 @@ public let subscribeConfirmation: Middleware<
     >=> map(lower)
     >>> respond(
       view: View(Views.subscriptionConfirmation),
-      layoutData: { currentUser, currentRoute, subscriberState in
+      layoutData: { currentUser, currentRoute, subscriberState, lane in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (
+            lane,
             currentUser,
             Current.stripe.js,
             Current.envVars.stripe.publishableKey.rawValue

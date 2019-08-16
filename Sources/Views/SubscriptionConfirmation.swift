@@ -10,6 +10,7 @@ import Styleguide
 import Tagged
 
 public func subscriptionConfirmation(
+  _ lane: Pricing.Lane,
   _ currentUser: User,
   _ stripeJs: String,
   _ stripePublishableKey: String
@@ -23,55 +24,61 @@ public func subscriptionConfirmation(
         onsubmit("event.preventDefault()"),
         style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
       ],
-      header
-        + teamMembers(currentUser)
-        + billingPeriod()
-        + payment(stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
-        + total()
+      header(lane)
+        + (lane == .team ? teamMembers(currentUser) : [])
+        + billingPeriod(lane)
+        + payment(lane: lane, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
+        + total(lane: lane)
     )
   ]
 }
 
-private let header: [Node] = [
-  gridRow(
-    [`class`([moduleRowClass])],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
-        [h1([`class`([Class.pf.type.responsiveTitle2])], ["Subscribe"])]
-      ),
-      gridColumn(
-        sizes: [:],
-        [`class`([Class.grid.start(.mobile)])],
-        ["You selected the ", strong(["Team"]), " plan"]
-      ),
-      gridColumn(
-        sizes: [:],
-        [`class`([Class.grid.end(.mobile)])],
-        [
-          a(
-            [
-              `class`([
-                Class.pf.colors.link.gray650,
-                Class.pf.type.underlineLink
-                ]),
-              href(url(to: .pricingLanding))
-            ],
-            ["Change plan"]
-          )
-        ]
-      )
-    ]
-  )
-]
-
-private func teamMembers(_ currentUser: User) -> [Node] {
+private func header(_ lane: Pricing.Lane) -> [Node] {
   return [
     input([
       name("pricing[lane]"),
       type(.hidden),
-      value("team"),
+      value(lane.rawValue),
     ]),
+    gridRow(
+      [`class`([moduleRowClass])],
+      [
+        gridColumn(
+          sizes: [.mobile: 12],
+          [h1([`class`([Class.pf.type.responsiveTitle2])], ["Subscribe"])]
+        ),
+        gridColumn(
+          sizes: [:],
+          [`class`([Class.grid.start(.mobile)])],
+          [
+            "You selected the ",
+            strong([lane == .personal ? "Personal" : "Team"]),
+            " plan"
+          ]
+        ),
+        gridColumn(
+          sizes: [:],
+          [`class`([Class.grid.end(.mobile)])],
+          [
+            a(
+              [
+                `class`([
+                  Class.pf.colors.link.gray650,
+                  Class.pf.type.underlineLink
+                ]),
+                href(url(to: .pricingLanding))
+              ],
+              ["Change plan"]
+            )
+          ]
+        )
+      ]
+    )
+  ]
+}
+
+private func teamMembers(_ currentUser: User) -> [Node] {
+  return [
     gridRow(
       [`class`([moduleRowClass])],
       [
@@ -242,7 +249,7 @@ updateSeats()
   )
 }
 
-private func billingPeriod() -> [Node] {
+private func billingPeriod(_ lane: Pricing.Lane) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -293,7 +300,11 @@ private func billingPeriod() -> [Node] {
                           Class.margin([.mobile: [.all: 0]])
                           ])
                       ],
-                      ["Yearly — 25% off!"]
+                      [
+                        lane == .team
+                          ? "Yearly — 25% off!"
+                          : "Yearly — 22% off!"
+                      ]
                     ),
                     p(
                       [
@@ -303,7 +314,11 @@ private func billingPeriod() -> [Node] {
                           Class.pf.colors.fg.gray650
                           ])
                       ],
-                      ["$144 per member per year"]
+                      [
+                        lane == .team
+                          ? "$144 per member per year"
+                          : "$168 per year"
+                      ]
                     )
                   ]
                 )
@@ -365,7 +380,11 @@ private func billingPeriod() -> [Node] {
                           Class.pf.colors.fg.gray650
                           ])
                       ],
-                      ["$16 per member, per month"]
+                      [
+                        lane == .team
+                          ? "$16 per member, per month"
+                          : "$18 per month"
+                      ]
                     )
                   ]
                 )
@@ -378,7 +397,7 @@ private func billingPeriod() -> [Node] {
   ]
 }
 
-private func payment(stripeJs: String, stripePublishableKey: String) -> [Node] {
+private func payment(lane: Pricing.Lane, stripeJs: String, stripePublishableKey: String) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -512,15 +531,10 @@ window.addEventListener("load", function() {
                 `class`([
                   Class.pf.type.body.small,
                   Class.pf.colors.fg.gray400
-                  ])
+                ]),
+                id("pricing-preview"),
               ],
-              [
-                "You will be charged ",
-                strong(["$14 per member, per month"]),
-                " times ",
-                strong(["12 months"]),
-                "."
-              ]
+              []
             )
           ]
         )
@@ -529,7 +543,7 @@ window.addEventListener("load", function() {
   ]
 }
 
-private func total() -> [Node] {
+private func total(lane: Pricing.Lane) -> [Node] {
   return [
     gridRow(
       [
@@ -567,16 +581,34 @@ private func total() -> [Node] {
                   name("pricing[quantity]"),
                   `type`(.hidden),
                 ]),
-                script("""
+                .element(
+                  "script",
+                  [],
+                  [.raw("""
 function updateSeats() {
   var teamMembers = document.getElementById("team-members")
-  var seats = teamMembers.childNodes.length + 1
+  var seats = teamMembers
+    ? teamMembers.childNodes.length + 1
+    : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
+  var monthly = form["pricing[billing]"].value == "monthly"
+  var monthlyPrice = (
+    monthly
+      ? seats * \(lane == .team ? 16 : 18)
+      : seats * \(lane == .team ? 12 : 14)
+  )
   document.getElementById("total").textContent = "$" + (
-    form["pricing[billing]"].value == "monthly"
-      ? seats * 16
-      : seats * 12 * 12
+    monthly
+      ? monthlyPrice
+      : monthlyPrice * 12
+  )
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>$"
+      + monthlyPrice
+      + " per month</strong>"
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
   )
 }
 window.addEventListener("load", function() {
@@ -584,7 +616,7 @@ window.addEventListener("load", function() {
   var form = document.getElementById("subscribe-form")
   form.addEventListener("change", updateSeats)
 })
-"""),
+""")]),
                 span(
                   [
                     `class`([

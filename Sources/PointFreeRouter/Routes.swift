@@ -32,7 +32,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
-  case subscribeConfirmation
+  case subscribeConfirmation(Pricing.Lane)
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -207,8 +207,8 @@ let routers: [Router<Route>] = [
   .subscribe
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
-  .subscribeConfirmation
-    <¢> get %> lit("subscribe") <% end,
+  PartialIso(case: Route.subscribeConfirmation)
+    <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable) <% end,
 
   .team <<< .leave
     <¢> post %> lit("account") %> lit("team") %> lit("leave")

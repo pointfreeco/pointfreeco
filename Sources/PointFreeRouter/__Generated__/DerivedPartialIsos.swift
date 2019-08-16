@@ -747,17 +747,6 @@ import Stripe
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let subscribeConfirmation = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.subscribeConfirmation)),
-          unapply: {
-            guard case .subscribeConfirmation = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
       extension PartialIso where A == (
             Route.Team
         ), B == Route {
