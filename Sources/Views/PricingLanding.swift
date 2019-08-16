@@ -296,7 +296,7 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
         ?? (
           plan.cost == nil
             ? mailto("support@pointfree.co")
-            : href("#")
+            : href(url(to: .account(.index)))
       ),
       `class`([
         Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
