@@ -8,9 +8,11 @@ import Prelude
 import Stripe
 import Styleguide
 import Tagged
+import TaggedMoney
 
 public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
+  _ coupon: Stripe.Coupon?,
   _ currentUser: User,
   _ stripeJs: String,
   _ stripePublishableKey: String
@@ -27,8 +29,8 @@ public func subscriptionConfirmation(
       header(lane)
         + (lane == .team ? teamMembers(currentUser) : [])
         + billingPeriod(lane)
-        + payment(lane: lane, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
-        + total(lane: lane)
+        + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
+        + total(lane: lane, coupon: coupon)
     )
   ]
 }
@@ -397,7 +399,12 @@ private func billingPeriod(_ lane: Pricing.Lane) -> [Node] {
   ]
 }
 
-private func payment(lane: Pricing.Lane, stripeJs: String, stripePublishableKey: String) -> [Node] {
+private func payment(
+  lane: Pricing.Lane,
+  coupon: Stripe.Coupon?,
+  stripeJs: String,
+  stripePublishableKey: String
+) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -418,7 +425,7 @@ private func payment(lane: Pricing.Lane, stripeJs: String, stripePublishableKey:
               Class.pf.type.responsiveTitle6,
             ]),
           ],
-          ["Card number"]
+          ["Credit or debit card"]
         ),
 
         gridColumn(
@@ -521,29 +528,44 @@ window.addEventListener("load", function() {
 """),
           ]
         ),
-
-        gridColumn(
-          sizes: [.mobile: 12],
-          [`class`([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
-          [
-            p(
-              [
-                `class`([
-                  Class.pf.type.body.small,
-                  Class.pf.colors.fg.gray400
-                ]),
-                id("pricing-preview"),
-              ],
-              []
-            )
-          ]
-        )
+      ]
+        + (coupon.map(discount) ?? [])
+        + [
+          gridColumn(
+            sizes: [.mobile: 12],
+            [`class`([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
+            [
+              p(
+                [
+                  `class`([
+                    Class.pf.type.body.small,
+                    Class.pf.colors.fg.gray400
+                  ]),
+                  id("pricing-preview"),
+                ],
+                []
+              )
+            ]
+          )
       ]
     )
   ]
 }
 
-private func total(lane: Pricing.Lane) -> [Node] {
+private func discount(coupon: Stripe.Coupon) -> [Node] {
+  return []
+}
+
+private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> [Node] {
+  let discount: (Cents<Int>) -> Cents<Int>
+  switch coupon?.rate {
+  case let .some(.amountOff(cents)):
+    discount = { $0 - cents }
+  case let .some(.percentOff(percent)):
+    discount = { $0.map { Int(Double($0) * (1 - (Double(percent) / 100))) } }
+  case .none:
+    discount = { $0 }
+  }
   return [
     gridRow(
       [
@@ -584,7 +606,10 @@ private func total(lane: Pricing.Lane) -> [Node] {
                 .element(
                   "script",
                   [],
-                  [.raw("""
+                  [.raw(#"""
+function format(money) {
+  return "$" + money.toFixed(2).replace(/\.00$/, "")
+}
 function updateSeats() {
   var teamMembers = document.getElementById("team-members")
   var seats = teamMembers
@@ -595,17 +620,17 @@ function updateSeats() {
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPrice = (
     monthly
-      ? seats * \(lane == .team ? 16 : 18)
-      : seats * \(lane == .team ? 12 : 14)
+      ? seats * \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01
+      : seats * \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01
   )
-  document.getElementById("total").textContent = "$" + (
+  document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
       : monthlyPrice * 12
   )
   document.getElementById("pricing-preview").innerHTML = (
-    "You will be charged <strong>$"
-      + monthlyPrice
+    "You will be charged <strong>"
+      + format(monthlyPrice)
       + " per month</strong>"
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
@@ -616,7 +641,7 @@ window.addEventListener("load", function() {
   var form = document.getElementById("subscribe-form")
   form.addEventListener("change", updateSeats)
 })
-""")]),
+"""#)]),
                 span(
                   [
                     `class`([

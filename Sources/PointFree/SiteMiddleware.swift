@@ -84,8 +84,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> blogMiddleware
 
     case let .discounts(couponId):
-      return conn.map(const(user .*. .default .*. .minimal .*. couponId .*. route .*. unit))
-        |> discountResponse
+      return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. couponId .*. unit))
+        |> discountSubscribeConfirmation
 
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
@@ -197,7 +197,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> subscribeMiddleware
 
     case let .subscribeConfirmation(lane):
-      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. unit))
+      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. nil .*. unit))
         |> subscribeConfirmation
 
     case .team(.leave):
