@@ -191,15 +191,8 @@ let routers: [Router<Route>] = [
   .logout
     <¢> get %> lit("logout") <% end,
 
-  .pricing
-    <¢> get %> lit("pricing")
-    %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
-      .map(PartialIso.pricing >>> Optional.iso.some)
-    <%> queryParam("expand", opt(.bool))
-    <% end,
-
   .pricingLanding
-    <¢> get %> lit("_pricing") <% end,
+    <¢> get %> lit("pricing") <% end,
 
   .privacy
     <¢> get %> lit("privacy") <% end,

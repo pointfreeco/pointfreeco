@@ -64,3 +64,9 @@ public func sequence4<A, B, C, D, Z>(_ t: T5<A, B, C, IO<D>, Z>) -> IO<T5<A, B, 
     return t |> over4(perform)
   }
 }
+
+public func sequence5<A, B, C, D, E, Z>(_ t: T6<A, B, C, D, IO<E>, Z>) -> IO<T6<A, B, C, D, E, Z>> {
+  return IO {
+    return t |> over5(perform)
+  }
+}
