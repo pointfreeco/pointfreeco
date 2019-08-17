@@ -737,13 +737,28 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       ["Resubscribe"]
     )
   } else {
-    return a(
-      [
-        `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: .account(.subscription(.change(.show)))))
-      ],
-      ["Modify subscription"]
-    )
+    switch subscription.plan.interval {
+    case .month:
+      return form(
+        [action(path(to: .account(.subscription(.change(.update(.init(billing: .yearly, quantity: subscription.quantity))))))), method(.post)],
+        [
+          button(
+            [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+            ["Upgrade to yearly billing"]
+          )
+        ]
+      )
+    case .year:
+      return form(
+        [action(path(to: .account(.subscription(.change(.update(.init(billing: .monthly, quantity: subscription.quantity))))))), method(.post)],
+        [
+          button(
+            [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+            ["Switch to monthly billing"]
+          )
+        ]
+      )
+    }
   }
 }
 
