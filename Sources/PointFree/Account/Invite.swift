@@ -126,43 +126,69 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
 //    -> IO<Conn<ResponseEnded, Data>> {
 
 
-let addTeammateViaInviteMiddleware =
-  filterMap(require3 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+let addTeammateViaInviteMiddleware:
+  Middleware<StatusLineOpen, ResponseEnded, Tuple3<EmailAddress?, Models.Subscription?, User?>, Data> =
+  filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
     <<< filterMap(
       require2 >>> pure,
       or: redirect(
-        to: .account(.subscription(.change(.show))),
+        to: .account(.index),
         headersMiddleware: flash(
           .error,
           "Invalid subscription data. Please try again or contact <support@pointfree.co>."
         )
       )
     )
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <| { (conn: Conn<StatusLineOpen, Tuple3<EmailAddress, Models.Subscription, User>>) in
 
       let (email, subscription, inviter) = lower(conn.data)
 
-//      Pricing.init
+      let tmp = Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
 
-      return Current.database.insertTeamInvite(email, inviter.id)
-        .run
-        .flatMap { errorOrTeamInvite in
-          switch errorOrTeamInvite {
-          case .left:
-            return conn |> redirect(to: .account(.index))
+      let tmp1 = tmp.run.perform()
 
-          case let .right(invite):
-            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-              .run({ _ in })
+      let stripeSub = tmp1.right!
 
-            return conn
-              |> redirect(
-                to: .account(.index),
-                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
-            )
-          }
-      }
+      let newPricing = Pricing(
+        billing: stripeSub.plan.interval == .month ? .monthly : .yearly,
+        quantity: stripeSub.quantity + 1
+      )
+
+      let newConn = conn.map(const((stripeSub, newPricing)))
+
+      return newConn |> changeSubscription(
+        errorMiddleware: redirect(
+          to: .account(.index),
+          headersMiddleware: flash(
+            .error,
+            """
+          We couldn’t modify your subscription at this time. Please try again or contact
+          <support@pointfree.co>.
+          """
+          )
+        ),
+        successMiddleware: map({ _ in email .*. inviter .*. unit }) >>> sendInviteMiddleware
+      )
+
+//      return Current.database.insertTeamInvite(email, inviter.id)
+//        .run
+//        .flatMap { errorOrTeamInvite in
+//          switch errorOrTeamInvite {
+//          case .left:
+//            return conn |> redirect(to: .account(.index))
+//
+//          case let .right(invite):
+//            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+//              .run({ _ in })
+//
+//            return conn
+//              |> redirect(
+//                to: .account(.index),
+//                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+//            )
+//          }
+//      }
 }
 
 let sendInviteMiddleware =

@@ -931,7 +931,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
           form([
-            action(path(to: .invite(.send(nil)))), method(.post),
+            action(path(to: .invite(.add(nil)))), method(.post),
             `class`([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
             ], [
               input([

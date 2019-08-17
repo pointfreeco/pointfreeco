@@ -33,13 +33,28 @@ let subscriptionChangeMiddleware =
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireValidSeating
-    <| map(lower)
-    >>> subscriptionChange
+    <| changeSubscription(
+      errorMiddleware: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(
+          .error,
+          """
+          We couldn’t modify your subscription at this time. Please try again or contact
+          <support@pointfree.co>.
+          """
+        )
+      ),
+      successMiddleware: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.notice, "We’ve modified your subscription.")
+      )
+)
 
-private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
-  -> IO<Conn<ResponseEnded, Data>> {
-
-    let (currentSubscription, _, _, newPricing) = conn.data
+func change(
+  currentSubscription: Stripe.Subscription,
+  to newPricing: Pricing
+  )
+  -> IO<Either<Error, Stripe.Subscription>> {
 
     let newPrice = (defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100) * newPricing.quantity
     let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity).rawValue
@@ -50,7 +65,7 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
       || shouldProrate
       && newPricing.interval == currentSubscription.plan.interval
 
-    let tmp: IO<Either<Error, Stripe.Subscription>> = Current.stripe
+    return Current.stripe
       .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if shouldInvoice {
@@ -65,31 +80,25 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
         return pure(sub)
       }
       .run
+}
 
-    return tmp
-      .flatMap(
-        either(
-          const(
-            conn |> redirect(
-              to: .account(.index),
-              headersMiddleware: flash(
-                .error,
-                """
-                We couldn’t modify your subscription at this time. Please try again or contact
-                <support@pointfree.co>.
-                """
-              )
-            )
-          )
-        ) { _ in
-          // TODO: Send email?
+func changeSubscription(
+  errorMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
+  successMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
+  ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
+  -> IO<Conn<ResponseEnded, Data>> {
 
-          return conn |> redirect(
-            to: .account(.index),
-            headersMiddleware: flash(.notice, "We’ve modified your subscription.")
+    return { conn in
+      let (currentSubscription, newPricing) = conn.data
+
+      return change(currentSubscription: currentSubscription, to: newPricing)
+        .flatMap(
+          either(
+            const(errorMiddleware(conn.map(const(unit)))),
+            const(successMiddleware(conn.map(const(unit))))
           )
-        }
-    )
+      )
+    }
 }
 
 func requireActiveSubscription<A>(
@@ -111,7 +120,7 @@ func requireActiveSubscription<A>(
 }
 
 private func requireValidSeating(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription, Pricing), Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data> {
 
@@ -125,7 +134,9 @@ private func requireValidSeating(
         )
       )
       )
-      <| middleware
+      <| map(lower)
+      >>> map({ subscription, _, _, pricing in (subscription, pricing) })
+      >>> middleware
 }
 
 private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Pricing>) -> Bool {
