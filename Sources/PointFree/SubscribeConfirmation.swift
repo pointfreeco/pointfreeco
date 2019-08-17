@@ -16,6 +16,7 @@ public let subscribeConfirmation: Middleware<
   Data
   >
   = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -38,10 +39,6 @@ public let subscribeConfirmation: Middleware<
         )
     }
 )
-
-//(Conn<StatusLineOpen, Tuple<Optional<User>, Tuple<Route, Tuple<SubscriberState, Tuple<Pricing.Lane, Tuple<Tagged<Coupon, String>, Unit>>>>>>) -> IO<Conn<ResponseEnded, Data>>
-
-//(Conn<StatusLineOpen, Tuple<Optional<User>, Tuple<Route, Tuple<SubscriberState, Tuple<Pricing.Lane, Tuple<Optional<Tagged<Coupon, String>>, Unit>>>>>>) -> IO<Conn<ResponseEnded, Data>>
 
 public let discountSubscribeConfirmation: Middleware<
   StatusLineOpen,
