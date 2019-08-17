@@ -734,7 +734,7 @@ private func footer(
       )
     : a(
       [
-        href(path(to: .subscribeConfirmation)),
+        href(path(to: .subscribeConfirmation(.personal))),
         `class`([Class.pf.components.button(color: .white)])
       ],
       ["Subscribe"]
