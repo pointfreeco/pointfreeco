@@ -16,7 +16,6 @@ import WebKit
 import XCTest
 
 class NewBlogPostEmailTests: TestCase {
-
   override func setUp() {
     super.setUp()
 //    record=true
@@ -132,7 +131,6 @@ class NewBlogPostEmailTests: TestCase {
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
   }
-
 }
 
 private let post = post0001_welcome

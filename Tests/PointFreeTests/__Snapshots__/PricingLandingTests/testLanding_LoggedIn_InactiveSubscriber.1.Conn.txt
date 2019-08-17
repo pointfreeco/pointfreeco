@@ -1,8 +1,8 @@
-GET http://localhost:8080/_pricing
+GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174182
+Content-Length: 174283
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1785,9 +1792,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <meta name="twitter:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -2006,22 +2013,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2107,7 +2100,7 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/personal"
              class="d-mt3
                     m-mt2
                     block
@@ -2208,7 +2201,7 @@ html {
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/team"
              class="d-mt3
                     m-mt2
                     block
@@ -2289,7 +2282,7 @@ html {
               Invoiced billing
             </li>
           </ul>
-          <a href="#"
+          <a href="mailto:support@pointfree.co"
              class="d-mt3
                     m-mt2
                     block
@@ -3698,7 +3691,7 @@ and reassigned at any time. Colleagues are invited to your team over email.
                 m-pb3">
         Access all 2 episodes on Point-Free today!
       </p>
-      <a href="/subscribe"
+      <a href="/subscribe/personal"
          class="medium
                 cursor-pointer
                 nowrap
@@ -3776,6 +3769,16 @@ and reassigned at any time. Colleagues are invited to your team over email.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

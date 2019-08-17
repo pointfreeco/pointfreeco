@@ -345,7 +345,7 @@ public struct Plan: Codable, Equatable {
   public var metadata: [String: String]
   public var name: String
   public var statementDescriptor: String?
-  public var tiers: [Tier] // TODO: NonEmpty
+  public var tiers: [Tier]?
 
   public init(
     amount: Cents<Int>,
@@ -356,7 +356,7 @@ public struct Plan: Codable, Equatable {
     metadata: [String: String],
     name: String,
     statementDescriptor: String?,
-    tiers: [Tier]
+    tiers: [Tier]?
     ) {
     self.amount = amount
     self.created = created
@@ -371,7 +371,7 @@ public struct Plan: Codable, Equatable {
 
   public func amount(for quantity: Int) -> Cents<Int> {
     let amount = self.amount
-      ?? self.tiers.first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
     return amount.map { $0 * quantity }
   }
 

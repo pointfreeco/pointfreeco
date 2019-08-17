@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 75405
+Content-Length: 74850
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -117,6 +117,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1972,7 +1979,7 @@ input::-webkit-outer-spin-button {
                     lh-4"
              style="margin-right:-6rem;
                     margin-left:-6rem">
-          A new Swift video series exploring functional programming and more.
+          A video series exploring functional programming and Swift.
         </div>
       </div>
       <div class="d-pt0
@@ -2398,7 +2405,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                                      light
                                      fg-gray650">
                             <span class="content0">
-                              $17/mo
+                              $18/mo
                             </span>
                             <span class="content1">
                               $
@@ -2452,13 +2459,13 @@ for (var idx = 0; idx < elements.length; idx++) {
                                      light
                                      fg-gray650">
                             <span class="content0">
-                              $170/yr
+                              $168/yr
                             </span>
                             <span class="content1">
                               $
                               <span class="team-price"
-                                    data-price="160">
-                                320
+                                    data-price="144">
+                                288
                               </span>
                               /
                               yr
@@ -2504,7 +2511,7 @@ for (var idx = 0; idx < elements.length; idx++) {
                               col-m-12">
                     <div class="m-pb3
                                 m-pt2">
-                      <a href="/login?redirect=http://localhost:8080/pricing?expand%3Dfalse"
+                      <a href="/login?redirect=http://localhost:8080/pricing"
                          class="medium
                                 cursor-pointer
                                 nowrap
@@ -2604,6 +2611,16 @@ for (var idx = 0; idx < elements.length; idx++) {
                         normal
                         h5
                         lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
                  href="/">
                 Videos
               </a>
@@ -2626,43 +2643,6 @@ for (var idx = 0; idx < elements.length; idx++) {
                         lh-4"
                  href="/about">
                 About Us
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-2
-                  col-m-4">
-        <div>
-          <h5 class="fg-black
-                     bold
-                     ts-d-r0_875
-                     ts-m-r0_75
-                     lh-1
-                     caps
-                     fg-white">
-            Account
-          </h5>
-          <ol class="list-reset">
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Subscribe
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Pricing
               </a>
             </li>
           </ol>
