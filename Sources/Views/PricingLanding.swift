@@ -25,6 +25,7 @@ public func pricingLanding(
   return hero(currentUser: currentUser, subscriberState: subscriberState)
     + plansAndPricing(
       allEpisodeCount: allEpisodeCount,
+      currentUser: currentUser,
       episodeHourCount: episodeHourCount,
       freeEpisodeCount: freeEpisodeCount,
       subscriberState: subscriberState
@@ -169,6 +170,7 @@ private let contactusButtonClasses =
 
 private func plansAndPricing(
   allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
   episodeHourCount: EpisodeHourCount,
   freeEpisodeCount: FreeEpisodeCount,
   subscriberState: SubscriberState
@@ -215,18 +217,22 @@ private func plansAndPricing(
       ],
       [
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .free(freeEpisodeCount: freeEpisodeCount)
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .team
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .enterprise
         ),
@@ -322,27 +328,13 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
   )
 }
 
-private func pricingPlan(subscriberState: SubscriberState, plan: PricingPlan) -> ChildOf<Tag.Ul> {
-  let cost = plan.cost.map(planCost) ?? div([])
+private func pricingPlan(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> ChildOf<Tag.Ul> {
 
-  let ctaButton = subscriberState.isActive
-    ? div([])
-    : a(
-    [
-      plan.lane
-        .map { href(url(to: .subscribeConfirmation($0))) }
-        ?? (
-          plan.cost == nil
-            ? mailto("support@pointfree.co")
-            : href(url(to: .account(.index)))
-      ),
-      `class`([
-        Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
-        plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
-        ])
-    ],
-      [plan.cost == nil ? "Contact Us" : "Choose plan"]
-  )
+  let cost = plan.cost.map(planCost) ?? div([])
 
   return li(
     [
@@ -389,11 +381,59 @@ private func pricingPlan(subscriberState: SubscriberState, plan: PricingPlan) ->
               )
             }
           ),
-          ctaButton
+          pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
         ]
       )
     ]
   )
+}
+
+private func pricingPlanCta(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> Node {
+
+  if plan.cost == nil {
+    return a(
+      [
+        mailto("support@pointfree.co"),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          contactusButtonClasses
+          ])
+      ],
+      ["Contact Us"]
+    )
+  } else if plan.isFree && currentUser == nil  {
+    return a(
+      [
+        href(path(to: .login(redirect: url(to: .account(.index))))),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      ["Choose plan"]
+    )
+  } else if !plan.isFree {
+    return a(
+      [
+        href(
+          subscriberState.isActive
+            ? path(to: .account(.index))
+            : path(to: plan.lane.map(Route.subscribeConfirmation) ?? .home)
+        ),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      [subscriberState.isActive ? "Manage subscription" : "Choose plan"]
+    )
+  } else {
+    return div([])
+  }
 }
 
 private let whatToExpect = [
@@ -783,6 +823,10 @@ private struct PricingPlan {
   struct Cost {
     let title: String?
     let value: String
+  }
+
+  var isFree: Bool {
+    return self.cost?.value == "$0" && self.lane == nil
   }
 
   static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
