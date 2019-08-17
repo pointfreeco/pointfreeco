@@ -89,6 +89,15 @@ public struct Coupon: Equatable {
     self.valid = valid
   }
 
+  public func discount(for cents: Cents<Int>) -> Cents<Int> {
+    switch self.rate {
+    case let .amountOff(amountOff):
+      return cents - amountOff
+    case let .percentOff(percentOff):
+      return cents.map { Int(Double($0) * (1 - (Double(percentOff) / 100))) }
+    }
+  }
+
   public var formattedDescription: String {
     switch duration {
     case .forever:
@@ -450,6 +459,10 @@ public struct Subscription: Codable, Equatable {
 
   public var isCanceling: Bool {
     return self.status == .active && self.cancelAtPeriodEnd
+  }
+
+  public var isCancellable: Bool {
+    return self.status == .active && !self.cancelAtPeriodEnd
   }
 
   public var isRenewing: Bool {

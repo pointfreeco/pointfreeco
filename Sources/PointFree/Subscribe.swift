@@ -51,16 +51,19 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
               .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
         }
         .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
-          sequence(
-            subscribeData.teammates
-              .filter { email in email.rawValue.contains("@") && email != user.email }
-              .map { email in
-                Current.database.insertTeamInvite(email, user.id)
-                  .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
-                  .run
-                  .parallel
-            }
-          ).run(const(()))
+          if let teammates = subscribeData.teammates {
+            sequence(
+              teammates
+                .filter { email in email.rawValue.contains("@") && email != user.email }
+                .prefix(subscribeData.pricing.quantity - 1)
+                .map { email in
+                  Current.database.insertTeamInvite(email, user.id)
+                    .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
+                    .run
+                    .parallel
+              }
+            ).run(const(()))
+          }
 
           return Current.database
             .createSubscription(stripeSubscription, user.id)

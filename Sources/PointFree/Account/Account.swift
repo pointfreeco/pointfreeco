@@ -431,12 +431,7 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> [Node] {
           "Because you are on a monthly subscription plan, you get access to the last ",
           .text("\(nonYearlyMaxRssItems)"),
           " episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).",
-          " To access all episodes from the RSS feed, please consider ",
-          a(
-            [`class`([Class.pf.type.underlineLink]), href(path(to: .account(.subscription(.change(.show)))))],
-            ["upgrading"]
-          ),
-          " to a yearly subscription."
+          " To access all episodes from the RSS feed, please consider upgrading to a yearly subscription."
         ]
       )
       ]
@@ -675,6 +670,15 @@ private func subscriptionPlanRows(_ subscription: Stripe.Subscription, _ upcomin
           div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
             p([.text(status(for: subscription))])
             ])
+          ]),
+        gridColumn(sizes: [.mobile: 12, .desktop: 6], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+            p(
+              subscription.isCancellable
+                ? [cancelAction(for: subscription)]
+                : []
+            )
+            ])
           ])
         ])
       ])
@@ -718,6 +722,26 @@ private func discountDescription(for discount: Stripe.Discount) -> String {
   return "\(discount.coupon.name ?? discount.coupon.id.rawValue): \(discount.coupon.formattedDescription)"
 }
 
+private func cancelAction(for subscription: Stripe.Subscription) -> Node {
+  return form(
+    [
+      action(path(to: .account(.subscription(.cancel)))),
+      method(.post),
+      onsubmit(unsafe: """
+if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
+  return false
+}
+"""),
+    ],
+    [
+      button(
+        [`class`([Class.pf.components.button(color: .black, size: .small, style: .underline)])],
+        ["Cancel"]
+      )
+    ]
+  )
+}
+
 private func mainAction(for subscription: Stripe.Subscription) -> Node {
   if subscription.isCanceling {
     return form(
@@ -738,13 +762,72 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
       ["Resubscribe"]
     )
   } else {
-    return a(
-      [
-        `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: .account(.subscription(.change(.show)))))
-      ],
-      ["Modify subscription"]
-    )
+    switch subscription.plan.interval {
+    case .month:
+      let discount = subscription.discount?.coupon.discount ?? { $0 }
+      let amount = discount(subscription.quantity == 1 ? 168_00 : 144_00)
+        .map { $0 * subscription.quantity }
+      let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
+      return form(
+        [
+          action(path(to: .account(.subscription(.change(.update(nil)))))),
+          method(.post),
+          onsubmit(unsafe: """
+if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a pro-rated refund for the time remaining in your billing period.")) {
+  return false
+}
+"""),
+        ],
+        [
+          input([
+            name("billing"),
+            type(.hidden),
+            value("yearly"),
+          ]),
+          input([
+            name("quantity"),
+            type(.hidden),
+            value(subscription.quantity),
+          ]),
+          button(
+            [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+            ["Upgrade to yearly billing"]
+          )
+        ]
+      )
+    case .year:
+      let discount = subscription.discount?.coupon.discount ?? { $0 }
+      let amount = discount(subscription.quantity == 1 ? 18_00 : 16_00)
+        .map { $0 * subscription.quantity }
+      let formattedAmount = currencyFormatter.string(from: NSNumber(value: Double(amount.rawValue) / 100))
+      return form(
+        [
+          action(path(to: .account(.subscription(.change(.update(nil)))))),
+          method(.post),
+          onsubmit(unsafe: """
+if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
+  return false
+}
+"""),
+        ],
+        [
+          input([
+            name("billing"),
+            type(.hidden),
+            value("monthly"),
+          ]),
+          input([
+            name("quantity"),
+            type(.hidden),
+            value(subscription.quantity),
+          ]),
+          button(
+            [`class`([Class.pf.components.button(color: .purple, size: .small)])],
+            ["Switch to monthly billing"]
+          )
+        ]
+      )
+    }
   }
 }
 
