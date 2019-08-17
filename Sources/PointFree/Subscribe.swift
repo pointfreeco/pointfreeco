@@ -12,21 +12,21 @@ let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
     or: redirect(
-      to: .pricing(nil, expand: nil),
+      to: .pricingLanding,
       headersMiddleware: flash(.error, "Error creating subscription!")
     )
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
       or: redirect(
-        to: .pricing(nil, expand: nil),
+        to: .pricingLanding,
         headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
       )
     )
     <<< filter(
       get1 >>> validateCoupon(forSubscribeData:),
       or: redirect(
-        to: .pricing(nil, expand: nil),
+        to: .pricingLanding,
         headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
       )
     )
@@ -75,7 +75,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
             ?? "Error creating subscription!"
           return conn
             |> redirect(
-              to: .pricing(subscribeData.pricing, expand: nil),
+              to: .pricingLanding,
               headersMiddleware: flash(.error, errorMessage)
           )
       },
@@ -100,7 +100,7 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
   return conn
-    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing, expand: nil))))
+    |> redirect(to: .login(redirect: url(to: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {

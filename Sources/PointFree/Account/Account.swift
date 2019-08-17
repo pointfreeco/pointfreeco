@@ -161,7 +161,7 @@ private func subscribeCallout(_ subscriberState: SubscriberState) -> [Node] {
   return [
     p([
       "To get all past and future episodes, ",
-      a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricing(nil, expand: nil)))], ["become"]),
+      a([`class`([Class.pf.colors.link.purple]), href(path(to: .pricingLanding))], ["become"]),
       " a subscriber today!"
       ])
   ]
@@ -732,7 +732,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
     return a(
       [
         `class`([Class.pf.components.button(color: .purple, size: .small)]),
-        href(path(to: .pricing(nil, expand: nil)))
+        href(path(to: .pricingLanding))
       ],
       ["Resubscribe"]
     )

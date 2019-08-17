@@ -151,7 +151,7 @@ private func requireSubscriptionAndOwner<A>(
       <<< filterMap(
         require1 >>> pure,
         or: redirect(
-          to: .pricing(nil, expand: nil),
+          to: .pricingLanding,
           headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
         )
       )

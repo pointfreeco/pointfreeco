@@ -695,22 +695,6 @@ import Stripe
 
 
 
-      extension PartialIso where A == (
-            Pricing?
-          , 
-            Bool?
-        ), B == Route {
-
-          public static let pricing = parenthesize <| PartialIso(
-            apply: Route.pricing,
-            unapply: {
-              guard case let .pricing(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
       extension PartialIso where A == Prelude.Unit, B == Route {
         public static let pricingLanding = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.pricingLanding)),

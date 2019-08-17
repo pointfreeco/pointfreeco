@@ -436,7 +436,7 @@ private let subscribeView = View<(EpisodePermission, User?, Episode)> { permissi
         ),
 
         a(
-          [href(path(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+          [href(path(to: .pricingLanding)), `class`([Class.pf.components.button(color: .purple)])],
           ["See subscription options"]
         )
         ]
@@ -625,7 +625,7 @@ private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
                   "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
                   a(
                     [
-                      href(path(to: .pricing(nil, expand: nil))),
+                      href(path(to: .pricingLanding)),
                       `class`([Class.pf.type.underlineLink])
                     ],
                     ["subscribe"]
