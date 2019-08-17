@@ -241,6 +241,8 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
                   Class.pf.colors.fg.red,
                   Class.pf.colors.link.red,
                   Class.type.light,
+                  Class.pf.type.body.small,
+                  Class.pf.type.underlineLink
                 ]),
                 onclick("""
 var teamMemberRow = this.parentNode.parentNode
