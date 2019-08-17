@@ -96,6 +96,13 @@ body {
   border-left-color   : #ccc;
 }
 
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
+}
+
 .border-gray-900 {
   border-top-color    : #f6f6f6;
   border-right-color  : #f6f6f6;

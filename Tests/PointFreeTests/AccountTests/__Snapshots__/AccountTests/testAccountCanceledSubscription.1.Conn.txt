@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 58172
+Content-Length: 58849
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1995,12 +2002,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                   Because you are on a monthly subscription plan, you get access to the last 
                   4
                    episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).
-                   To access all episodes from the RSS feed, please consider 
-                  <a class="underline-link"
-                     href="/account/subscription/change">
-                    upgrading
-                  </a>
-                   to a yearly subscription.
+                   To access all episodes from the RSS feed, please consider upgrading to a yearly subscription.
                 </p>
               </div>
             </div>
@@ -2093,6 +2095,16 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                         m-pr1">
                               <p>
                                 Canceled
+                              </p>
+                            </div>
+                          </div>
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1
+                                        end-d">
+                              <p>
                               </p>
                             </div>
                           </div>
@@ -2268,6 +2280,16 @@ to consume our videos: an RSS feed that can be used with podcast apps!
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

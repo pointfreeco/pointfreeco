@@ -12,6 +12,11 @@ import WebKit
 import XCTest
 
 class FreeEpisodeEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testFreeEpisodeEmail() {
     let doc = freeEpisodeEmail.view((Current.episodes().first!, .mock))
 

@@ -16,6 +16,11 @@ import WebKit
 import XCTest
 
 class MinimalNavViewTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNav_Html() {
     states.forEach { key, state in
       let doc = testDocView.view(state)
