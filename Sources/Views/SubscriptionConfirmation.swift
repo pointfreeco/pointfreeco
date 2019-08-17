@@ -564,15 +564,7 @@ private func discount(coupon: Stripe.Coupon) -> [Node] {
 }
 
 private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> [Node] {
-  let discount: (Cents<Int>) -> Cents<Int>
-  switch coupon?.rate {
-  case let .some(.amountOff(cents)):
-    discount = { $0 - cents }
-  case let .some(.percentOff(percent)):
-    discount = { $0.map { Int(Double($0) * (1 - (Double(percent) / 100))) } }
-  case .none:
-    discount = { $0 }
-  }
+  let discount = coupon?.discount ?? { $0 }
   return [
     gridRow(
       [
