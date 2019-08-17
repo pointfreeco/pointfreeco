@@ -454,6 +454,7 @@ private func subscriptionOwnerOverview(_ data: AccountData) -> [Node] {
     content.append(contentsOf: subscriptionTeamRow(data))
     content.append(contentsOf: subscriptionInvitesRowView(data.teamInvites))
     content.append(contentsOf: subscriptionInviteMoreRowView(data))
+    content.append(contentsOf: addTeammateToSubscriptionRow(data))
     content.append(contentsOf: subscriptionPaymentInfoView(subscription))
   }
 
@@ -823,6 +824,68 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
     ])
 }
 
+private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
+
+  guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
+  guard let subscription = data.stripeSubscription else { return [] }
+  let invites = data.teamInvites
+  let teammates = data.teammates
+  let invitesRemaining = subscription.quantity - invites.count - teammates.count
+  guard invitesRemaining == 0 else { return [] }
+  guard let amount = subscription.plan.tiers.min(by: { $0.amount < $1.amount })?.amount else { return [] }
+
+  let amountPerPeriod = subscription.plan.interval == .some(.year)
+    ? "$\(amount.rawValue / 100) per year"
+    : "$\(amount.rawValue / 100) per month"
+
+  return [
+    gridRow([`class`([subscriptionInfoRowClass])], [
+      gridColumn(sizes: [.mobile: 3], [
+        div([
+          p(["Add teammate"])
+          ])
+        ]),
+      gridColumn(sizes: [.mobile: 9], [
+        div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+          form([
+            action(path(to: .invite(.send(nil)))), method(.post),
+            `class`([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
+            ], [
+              input([
+                `class`([smallInputClass, Class.align.middle, Class.size.width100pct]),
+                name("email"),
+                placeholder("blob@example.com"),
+                type(.email),
+                ]),
+              input([
+                type(.submit),
+                `class`([
+                  Class.pf.components.button(color: .purple, size: .small),
+                  Class.align.middle,
+                  Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]])
+                  ]),
+                value("Add")])
+            ]),
+
+          p(
+            [
+              `class`([
+                Class.pf.type.body.small,
+                Class.pf.colors.fg.gray400,
+                Class.padding([.mobile: [.top: 1]])
+                ])
+            ],
+            [.text("""
+Add a teammate to your subscription for just \(amountPerPeriod). Your first invoice will be pro-rated
+based on your current billing cycle.
+""")]
+          ),
+          ])
+        ])
+      ])
+  ]
+}
+
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> [Node] {
 
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
@@ -842,7 +905,7 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> [Node] {
         ]),
       gridColumn(sizes: [.mobile: 9], [
         div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
-          p([.text("You have \(invitesRemaining) open spots on your team. Invite a team member below:")]),
+          p([inviteTeammatesDescription(invitesRemaining: invitesRemaining)]),
 
           form([
             action(path(to: .invite(.send(nil)))), method(.post),
@@ -867,6 +930,11 @@ private func subscriptionInviteMoreRowView(_ data: AccountData) -> [Node] {
         ])
       ])
   ]
+}
+
+private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
+  let seats = invitesRemaining == 1 ? "1 open seat": "\(invitesRemaining) open seats"
+  return .text("You have \(seats) on your team. Invite a team member below:")
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
