@@ -20,7 +20,7 @@ class PricingTests: TestCase {
   }
 
   func testPricing() {
-    let conn = connection(from: request(to: .pricing(nil, expand: nil)))
+    let conn = connection(from: request(to: .pricingLanding))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -120,31 +120,31 @@ class PricingTests: TestCase {
     #endif
   }
 
-  func testPricingLoggedIn_NonSubscriber_Expanded() {
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
-    let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2200))
-        ]
-      )
-    }
-    #endif
-  }
+//  func testPricingLoggedIn_NonSubscriber_Expanded() {
+//    update(
+//      &Current,
+//      \.database.fetchSubscriptionById .~ const(pure(nil)),
+//      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+//    )
+//    let conn = connection(from: request(to: .pricing(nil, expand: true), session: .loggedIn))
+//
+//    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+//
+//    #if !os(Linux)
+//    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+//      assertSnapshots(
+//        matching: conn |> siteMiddleware,
+//        as: [
+//          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2300)),
+//          "mobile": .ioConnWebView(size: .init(width: 400, height: 2200))
+//        ]
+//      )
+//    }
+//    #endif
+//  }
 
   func testPricingLoggedIn_Subscriber() {
-    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -157,7 +157,7 @@ class PricingTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.canceled))
     )
 
-    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
@@ -169,7 +169,7 @@ class PricingTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.pastDue))
     )
 
-    let conn = connection(from: request(to: .pricing(nil, expand: nil), session: .loggedIn))
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }

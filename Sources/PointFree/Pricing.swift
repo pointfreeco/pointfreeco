@@ -22,11 +22,11 @@ let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Pr
   redirectActiveSubscribers(user: get1)
     <<< filterMap(
       over4(fetchCoupon) >>> sequence4 >>> map(require4),
-      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(to: .pricingLanding, headersMiddleware: flash(.error, couponError))
     )
     <<< filter(
       get4 >>> ^\.valid,
-      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(to: .pricingLanding, headersMiddleware: flash(.error, couponError))
     )
     <| map(over4(Optional.some)) >>> pure
     >=> basePricingResponse
@@ -524,7 +524,7 @@ private let pricingFooterView = View<(User?, PricingFormStyle, Stripe.Coupon.Id?
                 gitHubLink(
                   text: "Sign in with GitHub",
                   type: .black,
-                  href: path(to: .login(redirect: url(to: route ?? .pricing(nil, expand: false))))
+                  href: path(to: .login(redirect: url(to: route ?? .pricingLanding)))
                 )
             ])
       )

@@ -89,7 +89,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
                   "👋 Hey there! See anything you like? You may be interested in ",
                   a(
                     [
-                      href(path(to: .pricing(nil, expand: nil))),
+                      href(path(to: .pricingLanding)),
                       `class`([Class.pf.type.underlineLink])
                     ],
                     ["subscribing"]

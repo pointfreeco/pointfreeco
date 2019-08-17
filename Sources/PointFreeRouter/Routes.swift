@@ -28,7 +28,6 @@ public enum Route: DerivePartialIsos, Equatable {
   case invite(Invite)
   case login(redirect: String?)
   case logout
-  case pricing(Pricing?, expand: Bool?)
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)

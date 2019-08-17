@@ -124,7 +124,7 @@ let welcomeEmail1Content = View<User> { user -> [Node] in
       It's been a week since you signed up for [Point-Free](\(url(to: .home))). We hope you've learned
       something new about functional programming, and maybe even introduced it into your codebase!
 
-      We'd love to [have you as a subscriber](\(url(to: .pricing(nil, expand: nil)))), so please let us know if
+      We'd love to [have you as a subscriber](\(url(to: .pricingLanding))), so please let us know if
       you have any questions. Just reply to this email!
       """
     ),
@@ -148,7 +148,7 @@ let welcomeEmail1Content = View<User> { user -> [Node] in
     markdownBlock(
       """
       When you're ready to subscribe for yourself _or_ your team, visit
-      [our subscribe page](\(url(to: .pricing(nil, expand: nil))))!
+      [our subscribe page](\(url(to: .pricingLanding)))!
       """
     ),
     subscribeButton,
@@ -203,7 +203,7 @@ let welcomeEmail2Content = View<User> { user -> [Node] in
       If you have any questions, don't hesitate to reply to this email!
 
       When you're ready to subscribe for yourself _or_ your team, visit
-      [our subscribe page](\(url(to: .pricing(nil, expand: nil))))!
+      [our subscribe page](\(url(to: .pricingLanding)))!
       """
     ),
     subscribeButton,
@@ -267,7 +267,7 @@ let welcomeEmail3Content = View<User> { user -> [Node] in
         the first of a multi-part series that goes _deep!_
 
       We hope you'll find it interesting enough to consider
-      [getting a subscription](\(url(to: .pricing(nil, expand: nil)))) for yourself or your team!
+      [getting a subscription](\(url(to: .pricingLanding))) for yourself or your team!
       """
     ),
     subscribeButton,
@@ -279,7 +279,7 @@ let welcomeEmail3Content = View<User> { user -> [Node] in
 private let subscribeButton = p(
   [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
   [
-    a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
+    a([href(url(to: .pricingLanding)), `class`([Class.pf.components.button(color: .purple)])],
       ["Subscribe to Point-Free!"]
     ),
   ]

@@ -159,20 +159,6 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> logoutResponse
 
-    case let .pricing(pricing, expand):
-      return conn
-        .map(
-          const(
-            user
-              .*. (pricing ?? .default)
-              .*. (expand == .some(true) ? .full : .minimal)
-              .*. nil
-              .*. route
-              .*. unit
-          )
-        )
-        |> pricingResponse
-
     case .pricingLanding:
       let allEpisodeCount = AllEpisodeCount(rawValue: Current.episodes().count)
       let episodeHourCount = EpisodeHourCount(rawValue: Current.episodes().reduce(0) { $0 + $1.length } / 3600)
