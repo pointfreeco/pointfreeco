@@ -70,7 +70,7 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
       || shouldProrate
       && newPricing.interval == currentSubscription.plan.interval
 
-    return Current.stripe
+    let tmp: IO<Either<Error, Stripe.Subscription>> = Current.stripe
       .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
       .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
         if shouldInvoice {
@@ -85,6 +85,8 @@ private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscriptio
         return pure(sub)
       }
       .run
+
+    return tmp
       .flatMap(
         either(
           const(

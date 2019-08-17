@@ -908,6 +908,20 @@ import Stripe
 
 
       extension PartialIso where A == (
+            EmailAddress?
+        ), B == Route.Invite {
+
+          public static let add = parenthesize <| PartialIso(
+            apply: Route.Invite.add,
+            unapply: {
+              guard case let .add(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
             TeamInvite.Id
         ), B == Route.Invite {
 

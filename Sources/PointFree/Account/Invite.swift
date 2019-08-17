@@ -122,6 +122,49 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
+// private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
+//    -> IO<Conn<ResponseEnded, Data>> {
+
+
+let addTeammateViaInviteMiddleware =
+  filterMap(require3 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
+    <<< filterMap(
+      require2 >>> pure,
+      or: redirect(
+        to: .account(.subscription(.change(.show))),
+        headersMiddleware: flash(
+          .error,
+          "Invalid subscription data. Please try again or contact <support@pointfree.co>."
+        )
+      )
+    )
+    <| { (conn: Conn<StatusLineOpen, Tuple3<EmailAddress, Models.Subscription, User>>) in
+
+      let (email, subscription, inviter) = lower(conn.data)
+
+//      Pricing.init
+
+      return Current.database.insertTeamInvite(email, inviter.id)
+        .run
+        .flatMap { errorOrTeamInvite in
+          switch errorOrTeamInvite {
+          case .left:
+            return conn |> redirect(to: .account(.index))
+
+          case let .right(invite):
+            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
+              .run({ _ in })
+
+            return conn
+              |> redirect(
+                to: .account(.index),
+                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
+            )
+          }
+      }
+}
+
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
