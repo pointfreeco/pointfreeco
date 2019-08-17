@@ -278,6 +278,16 @@ by browsing it on GitHub, or join us for a tour of the codebase in a
     title: "PointFree.co Open Source"
   )
 
+  public static let pointfreecoEnumProperties = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+Our open source tool for generating enum properties for any enum in your code base.
+""",
+    link: "https://github.com/pointfreeco/swift-enum-properties",
+    publishedAt: referenceDateFormatter.date(from: "2019-04-29"),
+    title: "pointfreeco/swift-enum-properties"
+  )
+
   public static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
     author: "Chris Eidhof",
     blurb: """
