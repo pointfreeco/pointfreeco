@@ -739,8 +739,8 @@ if (!confirm("Cancel your subscription? You will lose access to Point-Free at th
     ],
     [
       button(
-        [`class`([Class.pf.components.button(color: .red, size: .small)])],
-        ["Cancel my subscription"]
+        [`class`([Class.pf.components.button(color: .black, size: .small, style: .underline)])],
+        ["Cancel"]
       )
     ]
   )
