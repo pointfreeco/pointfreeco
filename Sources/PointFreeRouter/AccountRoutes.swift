@@ -29,7 +29,6 @@ public enum Account: DerivePartialIsos, Equatable {
     case reactivate
 
     public enum Change: DerivePartialIsos, Equatable {
-      case show
       case update(Pricing?)
     }
   }
@@ -71,9 +70,6 @@ private let accountRouters: [Router<Account>] = [
 
   .subscription <<< .cancel
     <¢> post %> lit("subscription") %> lit("cancel") <% end,
-
-  .subscription <<< .change <<< .show
-    <¢> get %> lit("subscription") %> lit("change") <% end,
 
   .subscription <<< .change <<< .update
     <¢> post %> lit("subscription") %> lit("change")
