@@ -2,7 +2,7 @@ GET http://localhost:8080/_pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 175183
+Content-Length: 174182
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1869,9 +1869,8 @@ html {
         <div class="d-pb0
                     d-pr2
                     m-pb2
-                    dark-right-border-d
                     col-m
-                    col-d-8
+                    col-d-12
                     col-m-12">
           <h1 class="fg-black
                      bold
@@ -1882,42 +1881,6 @@ html {
               style="line-height:1.2">
             Explore the wonderful world of&nbsp;functional programming in Swift.
           </h1>
-        </div>
-        <div class="center-d
-                    d-pl2
-                    col-m
-                    col-d-4
-                    col-m-12">
-          <div>
-            <p class="fg-white
-                      m-pb2">
-              Start with a free episode
-            </p>
-            <a href="/login?redirect=http://localhost:8080/_pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-black
-                      fg-black
-                      bg-white
-                      h5
-                      m-pl2
-                      m-pr2">
-              <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
-                   alt
-                   class="m-mr1"
-                   style="margin-bottom:-4px"
-                   width="20"
-                   height="20">
-              <span>
-                Create your account
-              </span>
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -1933,7 +1896,8 @@ html {
                   d-pb2
                   col-m
                   col-m-12">
-        <h3 class="fg-black
+        <h3 id="plans-and-pricing"
+            class="fg-black
                    bold
                    ts-d-r3
                    ts-m-r2
@@ -2353,8 +2317,6 @@ html {
                 row">
       <div class="center-d
                   d-pb4
-                  d-pl5
-                  d-pr5
                   m-pb3
                   m-pt2
                   m-pl2
@@ -2363,11 +2325,23 @@ html {
                   col-m-12">
         <p class="fg-black
                   normal
-                  h6
+                  h5
                   lh-4
-                  fg-gray400">
-          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
+                  ts-d-r0_875
+                  ts-m-r1
+                  fg-gray400"
+           style="max-width:480px;
+                  margin-right:auto;
+                  margin-left:auto">
+          Prices shown with annual billing. When billed month to month, the 
+          <strong>
+            Personal
+          </strong>
+           plan is $18, and the 
+          <strong>
+            Team
+          </strong>
+           plan is $16 per member per month.
         </p>
       </div>
     </div>
@@ -2389,7 +2363,8 @@ $16 per member per month.
                     m-pb2
                     col-m
                     col-m-12">
-          <h3 class="fg-black
+          <h3 id="what-to-expect"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2536,7 +2511,8 @@ directly to that point in the video.
                   col-d-8
                   col-m-12">
         <div>
-          <h3 class="fg-black
+          <h3 id="faq"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2593,7 +2569,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     d-pt4
                     m-pt3"
              style="border-top-color:#d8d8d8">
-          <h3 class="fg-black
+          <h3 id="what-people-are-saying"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -3658,7 +3635,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                   col-m
                   col-d-12
                   col-m-12">
-        <h6 class="fg-gray400
+        <h6 id="featured-teams"
+            class="fg-gray400
                    fg-black
                    bold
                    ts-d-r0_875
@@ -3697,6 +3675,45 @@ and reassigned at any time. Colleagues are invited to your team over email.
         <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTEycHgiIGhlaWdodD0iMTRweCIgdmlld0JveD0iMCAwIDExMiAxNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDxnIGlkPSJEZXNrdG9wIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iUHJpY2luZy0vLUxhcmdlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzA4LjAwMDAwMCwgLTMyODEuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cC01IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2ODQuMDAwMDAwLCAzMjU4LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgZmlsbC1vcGFjaXR5PSIwIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjYwIj48L3JlY3Q+CiAgICAgICAgICAgICAgICA8ZyBpZD0iQXRsYXNzaWFuLWhvcml6b250YWwtbmV1dHJhbC1vbmVjb2xvci1yZ2IiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0LjAwMDAwMCwgMjMuMDAwMDAwKSIgZmlsbD0iIzdEN0Q3RCIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNC4wNzM0ODE0OCw2LjQ5NzY0NzA2IEMzLjk5MDU5NjEzLDYuMzg5ODYzNTUgMy44NTY5MzM3Miw2LjMzMjk5NDI2IDMuNzIxMTQxODksNi4zNDc3MzcyOCBDMy41ODUzNTAwNSw2LjM2MjQ4MDMxIDMuNDY3MjMxOTcsNi40NDY2ODU2IDMuNDA5Nzc3NzgsNi41Njk3MDU4OCBMMC4wNDM1NTU1NTU2LDEzLjI1MDU4ODIgQy0wLjAxOTEyNzQ4MzksMTMuMzc0NjAwNiAtMC4wMTI0ODUzNzI2LDEzLjUyMjAxOTEgMC4wNjExMDAxMjQyLDEzLjYzOTk4MTYgQzAuMTM0Njg1NjIxLDEzLjc1Nzk0NDIgMC4yNjQ2NzA2NDYsMTMuODI5NTQ4MyAwLjQwNDQ0NDQ0NCwxMy44MjkxMTc2IEw1LjA5MTg1MTg1LDEzLjgyOTExNzYgQzUuMjQ1NDk0MDMsMTMuODMzMTUyNCA1LjM4NzA0MjIzLDEzLjc0Njc0ODQgNS40NTI3NDA3NCwxMy42MDg4MjM1IEM2LjQ2MDc0MDc0LDExLjUyOTQxMTggNS44NDg4ODg4OSw4LjM3OTQxMTc2IDQuMDczNDgxNDgsNi40OTc2NDcwNiBaIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02LjU0MzcwMzcsMC40MTE3NjQ3MDYgQzQuODMwODM0MDUsMy4wMTg0MjU0NyA0LjYyOTgwOTQ2LDYuMzI4NTQ5MzEgNi4wMTQ4MTQ4MSw5LjEyMDU4ODI0IEw4LjI4NTkyNTkzLDEzLjYwODgyMzUgQzguMzU0Mzg0MTQsMTMuNzQ0MjY1MSA4LjQ5NDE1OTk2LDEzLjgyOTU4NzIgOC42NDY4MTQ4MSwxMy44MjkxMTc2IEwxMy4zMzQyMjIyLDEzLjgyOTExNzYgQzEzLjQ3Mjg4NzUsMTMuODI3NDIxMSAxMy42MDA5MDAyLDEzLjc1NDk2NDQgMTMuNjcyOTkwOSwxMy42MzczNzA2IEMxMy43NDUwODE2LDEzLjUxOTc3NjkgMTMuNzUxMDg5MSwxMy4zNzM2MjA5IDEzLjY4ODg4ODksMTMuMjUwNTg4MiBMNy4yMjgxNDgxNSwwLjQxMTc2NDcwNiBDNy4xNjUwMDA2NywwLjI4MTA4NDc3IDcuMDMxOTM1NDUsMC4xOTc5NDY0ODUgNi44ODU5MjU5MywwLjE5Nzk0NjQ4NSBDNi43Mzk5MTY0LDAuMTk3OTQ2NDg1IDYuNjA2ODUxMTgsMC4yODEwODQ3NyA2LjU0MzcwMzcsMC40MTE3NjQ3MDYgWiIgaWQ9IlBhdGgiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNjEuNTI1MzMzMyw1Ljc3NzA1ODgyIEM2MS41MjUzMzMzLDcuNDI0MTE3NjUgNjIuMjk4OTYzLDguNzQ1ODgyMzUgNjUuMzIyOTYzLDkuMzI0NDExNzYgQzY3LjEyNzQwNzQsOS42OTkxMTc2NSA2Ny41MDQ4ODg5LDkuOTg5NDExNzYgNjcuNTA0ODg4OSwxMC41ODY0NzA2IEM2Ny41MDQ4ODg5LDExLjE4MzUyOTQgNjcuMTI3NDA3NCwxMS41NDE3NjQ3IDY1Ljg0NTYyOTYsMTEuNTQxNzY0NyBDNjQuMzA5MjczMSwxMS41MTQyMTYyIDYyLjgwMzY2OTIsMTEuMTA5NjM4MyA2MS40NjMxMTExLDEwLjM2NDExNzYgTDYxLjQ2MzExMTEsMTMuMDYxMTc2NSBDNjIuMzczNjI5NiwxMy41MDM4MjM1IDYzLjU3NjU5MjYsMTQgNjUuODE4NjY2NywxNCBDNjguOTgxNjI5NiwxNCA3MC4yMzY0NDQ0LDEyLjYwMjA1ODggNzAuMjM2NDQ0NCwxMC41MjA1ODgyIE03MC4yMzY0NDQ0LDEwLjUyMDU4ODIgQzcwLjIzNjQ0NDQsOC41NTg1Mjk0MSA2OS4xODkwMzcsNy42MzgyMzUyOSA2Ni4yMzE0MDc0LDcuMDA2MTc2NDcgQzY0LjU5OTExMTEsNi42NDc5NDExOCA2NC4yMDI5NjMsNi4yODk3MDU4OCA2NC4yMDI5NjMsNS43NzA4ODIzNSBDNjQuMjAyOTYzLDUuMTIyMzUyOTQgNjQuNzg3ODUxOSw0Ljg1MDU4ODI0IDY1Ljg2MjIyMjIsNC44NTA1ODgyNCBDNjcuMTY4ODg4OSw0Ljg1MDU4ODI0IDY4LjQ1Njg4ODksNS4yNDM4MjM1MyA2OS42Nzg1MTg1LDUuNzg5NDExNzYgTDY5LjY3ODUxODUsMy4yMTc5NDExOCBDNjguNTA3Mzc2LDIuNjg4Njg2NzcgNjcuMjMxNzYyLDIuNDI2Mjk0ODMgNjUuOTQ1MTg1MiwyLjQ1IEM2My4wMjI4MTQ4LDIuNDUgNjEuNTEwODE0OCwzLjcxMjA1ODgyIDYxLjUxMDgxNDgsNS43NzcwNTg4MiIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iMTAyLjE1MjI5NiAyLjYyMDg4MjM1IDEwMi4xNTIyOTYgMTMuODI5MTE3NiAxMDQuNTU4MjIyIDEzLjgyOTExNzYgMTA0LjU1ODIyMiA1LjI4Mjk0MTE4IDEwNS41NzI0NDQgNy41NTE3NjQ3MSAxMDguOTc2IDEzLjgyOTExNzYgMTEyIDEzLjgyOTExNzYgMTEyIDIuNjIwODgyMzUgMTA5LjU5NDA3NCAyLjYyMDg4MjM1IDEwOS41OTQwNzQgOS44NTU1ODgyNCAxMDguNjgzNTU2IDcuNzU1NTg4MjQgMTA1Ljk0OTkyNiAyLjYyMDg4MjM1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgeD0iODQuMjE5ODUxOSIgeT0iMi42MjA4ODIzNSIgd2lkdGg9IjIuNjI5OTI1OTMiIGhlaWdodD0iMTEuMjA4MjM1MyI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04MS4xODU0ODE1LDEwLjUyMDU4ODIgQzgxLjE4NTQ4MTUsOC41NTg1Mjk0MSA4MC4xMzgwNzQxLDcuNjM4MjM1MjkgNzcuMTgwNDQ0NCw3LjAwNjE3NjQ3IEM3NS41NDgxNDgxLDYuNjQ3OTQxMTggNzUuMTUyLDYuMjg5NzA1ODggNzUuMTUyLDUuNzcwODgyMzUgQzc1LjE1Miw1LjEyMjM1Mjk0IDc1LjczNjg4ODksNC44NTA1ODgyNCA3Ni44MTEyNTkzLDQuODUwNTg4MjQgQzc4LjExNzkyNTksNC44NTA1ODgyNCA3OS40MDU5MjU5LDUuMjQzODIzNTMgODAuNjI3NTU1Niw1Ljc4OTQxMTc2IEw4MC42Mjc1NTU2LDMuMjE3OTQxMTggQzc5LjQ1NjQxMzEsMi42ODg2ODY3NyA3OC4xODA3OTksMi40MjYyOTQ4MyA3Ni44OTQyMjIyLDIuNDUgQzczLjk3MTg1MTksMi40NSA3Mi40NTk4NTE5LDMuNzEyMDU4ODIgNzIuNDU5ODUxOSw1Ljc3NzA1ODgyIEM3Mi40NTk4NTE5LDcuNDI0MTE3NjUgNzMuMjMzNDgxNSw4Ljc0NTg4MjM1IDc2LjI1NzQ4MTUsOS4zMjQ0MTE3NiBDNzguMDYxOTI1OSw5LjY5OTExNzY1IDc4LjQzOTQwNzQsOS45ODk0MTE3NiA3OC40Mzk0MDc0LDEwLjU4NjQ3MDYgQzc4LjQzOTQwNzQsMTEuMTgzNTI5NCA3OC4wNjE5MjU5LDExLjU0MTc2NDcgNzYuNzgwMTQ4MSwxMS41NDE3NjQ3IEM3NS4yNDM3OTE2LDExLjUxNDIxNjIgNzMuNzM4MTg3NywxMS4xMDk2MzgzIDcyLjM5NzYyOTYsMTAuMzY0MTE3NiBMNzIuMzk3NjI5NiwxMy4wNjExNzY1IEM3My4zMDgxNDgxLDEzLjUwMzgyMzUgNzQuNTExMTExMSwxNCA3Ni43NTMxODUyLDE0IEM3OS45MTYxNDgxLDE0IDgxLjE3MDk2MywxMi42MDIwNTg4IDgxLjE3MDk2MywxMC41MjA1ODgyIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJQYXRoIiBwb2ludHM9IjQxLjA5OTg1MTkgMi42MjA4ODIzNSA0MS4wOTk4NTE5IDEzLjgyOTExNzYgNDYuNTA0ODg4OSAxMy44MjkxMTc2IDQ3LjM1NTI1OTMgMTEuNDA3OTQxMiA0My43NDYzNzA0IDExLjQwNzk0MTIgNDMuNzQ2MzcwNCAyLjYyMDg4MjM1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iMzAuNDIwNDQ0NCAyLjYyMDg4MjM1IDMwLjQyMDQ0NDQgNS4wNDQxMTc2NSAzMy4zNDI4MTQ4IDUuMDQ0MTE3NjUgMzMuMzQyODE0OCAxMy44MjkxMTc2IDM1Ljk4OTMzMzMgMTMuODI5MTE3NiAzNS45ODkzMzMzIDUuMDQ0MTE3NjUgMzkuMTE3MDM3IDUuMDQ0MTE3NjUgMzkuMTE3MDM3IDIuNjIwODgyMzUiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjYuNTgzNDA3NCwyLjYyMDg4MjM1IEwyMy4xMTU1NTU2LDIuNjIwODgyMzUgTDE5LjE3NDgxNDgsMTMuODI5MTE3NiBMMjIuMTkyNTkyNiwxMy44MjkxMTc2IEwyMi43NDQyOTYzLDExLjk0MTE3NjUgQzI0LjEyMTI4MzUsMTIuMzQzNzExNCAyNS41ODU5NzU4LDEyLjM0MzcxMTQgMjYuOTYyOTYzLDExLjk0MTE3NjUgTDI3LjUyMDg4ODksMTMuODI5MTE3NiBMMzAuNTI4Mjk2MywxMy44MjkxMTc2IEwyNi41ODM0MDc0LDIuNjIwODgyMzUgWiBNMjQuODQ5NDgxNSw5LjkyMTQ3MDU5IEMyNC4zNTgxMDAzLDkuOTIyMTQ2MDggMjMuODY5MTY1LDkuODUyODExNzYgMjMuMzk3NjI5Niw5LjcxNTU4ODI0IEwyNC44NDk0ODE1LDQuODIxNzY0NzEgTDI2LjMwMTMzMzMsOS43MTU1ODgyNCBDMjUuODI5Nzk4LDkuODUyODExNzYgMjUuMzQwODYyNiw5LjkyMjE0NjA4IDI0Ljg0OTQ4MTUsOS45MjE0NzA1OSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTUuODIxNjI5NiwyLjYyMDg4MjM1IEw1Mi4zNTM3Nzc4LDIuNjIwODgyMzUgTDQ4LjQxMzAzNywxMy44MjkxMTc2IEw1MS40MjA0NDQ0LDEzLjgyOTExNzYgTDUxLjk4MjUxODUsMTEuOTQxMTc2NSBDNTMuMzU2OTE3MywxMi4zNDIwOTYzIDU0LjgxODQ5MDEsMTIuMzQyMDk2MyA1Ni4xOTI4ODg5LDExLjk0MTE3NjUgTDU2Ljc1MDgxNDgsMTMuODI5MTE3NiBMNTkuNzU4MjIyMiwxMy44MjkxMTc2IEw1NS44MjE2Mjk2LDIuNjIwODgyMzUgWiBNNTQuMDg3NzAzNyw5LjkyMTQ3MDU5IEM1My41OTYzMjI2LDkuOTIyMTQ2MDggNTMuMTA3Mzg3Miw5Ljg1MjgxMTc2IDUyLjYzNTg1MTksOS43MTU1ODgyNCBMNTQuMDg3NzAzNyw0LjgyMTc2NDcxIEw1NS41Mzk1NTU2LDkuNzE1NTg4MjQgQzU1LjA2ODAyMDIsOS44NTI4MTE3NiA1NC41NzkwODQ4LDkuOTIyMTQ2MDggNTQuMDg3NzAzNyw5LjkyMTQ3MDU5IFoiIGlkPSJTaGFwZSI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik05Ni4zMjQxNDgxLDIuNjIwODgyMzUgTDkyLjg1NjI5NjMsMi42MjA4ODIzNSBMODguOTE1NTU1NiwxMy44MjkxMTc2IEw5MS45MjI5NjMsMTMuODI5MTE3NiBMOTIuNDg1MDM3LDExLjk0MTE3NjUgQzkzLjg1OTQzNTgsMTIuMzQyMDk2MyA5NS4zMjEwMDg3LDEyLjM0MjA5NjMgOTYuNjk1NDA3NCwxMS45NDExNzY1IEw5Ny4yNTMzMzMzLDEzLjgyOTExNzYgTDEwMC4yNjA3NDEsMTMuODI5MTE3NiBMOTYuMzI0MTQ4MSwyLjYyMDg4MjM1IFogTTk0LjU5MDIyMjIsOS45MjE0NzA1OSBDOTQuMDk4ODQxMSw5LjkyMjE0NjA4IDkzLjYwOTkwNTcsOS44NTI4MTE3NiA5My4xMzgzNzA0LDkuNzE1NTg4MjQgTDk0LjU5MDIyMjIsNC44MjE3NjQ3MSBMOTYuMDQyMDc0MSw5LjcxNTU4ODI0IEM5NS41NzA1Mzg3LDkuODUyODExNzYgOTUuMDgxNjAzNCw5LjkyMjE0NjA4IDk0LjU5MDIyMjIsOS45MjE0NzA1OSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
              alt="Atlassian">
       </div>
+    </div>
+    <div class="bg-gray150
+                d-pl5
+                d-pr5
+                d-pt5
+                d-pb5
+                m-pl2
+                m-pr2
+                m-pt4
+                m-pb4
+                center">
+      <h3 class="fg-black
+                 bold
+                 ts-d-r2
+                 ts-m-r1_5
+                 lh-2
+                 fg-white">
+        Get started with our Personal plan
+      </h3>
+      <p class="fg-white
+                m-pb3">
+        Access all 2 episodes on Point-Free today!
+      </p>
+      <a href="/subscribe"
+         class="medium
+                cursor-pointer
+                nowrap
+                btn-normal
+                rounded
+                border-none
+                text-decoration-none
+                pf-link-black
+                fg-black
+                bg-white
+                h5
+                m-pl2
+                m-pr2">
+        Subscribe
+      </a>
     </div>
     <footer class="row
                    d-pl4
