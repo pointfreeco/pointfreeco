@@ -63,8 +63,7 @@ public enum Route: DerivePartialIsos, Equatable {
 
   public enum Invite: DerivePartialIsos, Equatable {
     case accept(TeamInvite.Id)
-    // TODO: rename to addTeammate?
-    case add(EmailAddress?)
+    case addTeammate(EmailAddress?)
     case resend(TeamInvite.Id)
     case revoke(TeamInvite.Id)
     case send(EmailAddress?)
@@ -172,7 +171,7 @@ let routers: [Router<Route>] = [
   .invite <<< .accept
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
 
-  .invite <<< .add
+  .invite <<< .addTeammate
     <¢> post %> lit("invites") %> lit("add") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
   .invite <<< .resend

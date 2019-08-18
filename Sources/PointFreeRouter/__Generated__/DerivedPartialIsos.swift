@@ -900,10 +900,10 @@ import Stripe
             EmailAddress?
         ), B == Route.Invite {
 
-          public static let add = parenthesize <| PartialIso(
-            apply: Route.Invite.add,
+          public static let addTeammate = parenthesize <| PartialIso(
+            apply: Route.Invite.addTeammate,
             unapply: {
-              guard case let .add(result) = $0 else { return nil }
+              guard case let .addTeammate(result) = $0 else { return nil }
               return .some(result)
           })
       }
