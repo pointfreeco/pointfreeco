@@ -136,7 +136,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> acceptInviteMiddleware
 
     case let .invite(.add(email)):
-      return conn.map(const(email .*. subscription .*. user .*. unit))
+      return conn.map(const(user .*. email .*. unit))
         |> addTeammateViaInviteMiddleware
 
     case let .invite(.resend(inviteId)):

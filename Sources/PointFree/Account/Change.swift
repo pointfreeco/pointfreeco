@@ -12,90 +12,69 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
+import TaggedMoney
 import Tuple
 import View
 
 // MARK: Middleware
 
-let subscriptionChangeMiddleware =
+let subscriptionChangeMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, Pricing?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(
-      require2 >>> pure,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(
-          .error,
-          "Invalid subscription data. Please try again or contact <support@pointfree.co>."
-        )
-      )
-    )
+    <<< filterMap(require2 >>> pure, or: defaultInvalidSubscriptionErrorMiddleware)
     <<< fetchSeatsTaken
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireValidSeating
     <| changeSubscription(
-      errorMiddleware: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(
-          .error,
-          """
-          We couldn’t modify your subscription at this time. Please try again or contact
-          <support@pointfree.co>.
-          """
-        )
-      ),
-      successMiddleware: redirect(
+      error: defaultSubscriptionModificationErrorMiddleware,
+      success: redirect(
         to: .account(.index),
         headersMiddleware: flash(.notice, "We’ve modified your subscription.")
       )
 )
 
-func change(
-  currentSubscription: Stripe.Subscription,
-  to newPricing: Pricing
-  )
-  -> IO<Either<Error, Stripe.Subscription>> {
-
-    let newPrice = (defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100) * newPricing.quantity
-    let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity).rawValue
-
-    let shouldProrate = newPrice > currentPrice
-    let shouldInvoice = newPricing.plan == currentSubscription.plan.id
-      && newPricing.quantity > currentSubscription.quantity
-      || shouldProrate
-      && newPricing.interval == currentSubscription.plan.interval
-
-    return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
-      .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
-        if shouldInvoice {
-          parallel(
-            Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
-              .withExcept(notifyError(subject: "Invoice Failed"))
-              .run
-            )
-            .run(const(()))
-        }
-
-        return pure(sub)
-      }
-      .run
-}
-
 func changeSubscription(
-  errorMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
-  successMiddleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
+  error: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
+  success: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
   ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     return { conn in
       let (currentSubscription, newPricing) = conn.data
 
-      return change(currentSubscription: currentSubscription, to: newPricing)
+      let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
+      let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity)
+
+      let shouldProrate = newPrice > currentPrice
+      let shouldInvoice = newPricing.plan == currentSubscription.plan.id
+        && newPricing.quantity > currentSubscription.quantity
+        || shouldProrate
+        && newPricing.interval == currentSubscription.plan.interval
+
+      return Current.stripe
+        .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
+        .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
+          if shouldInvoice {
+            parallel(
+              Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
+                .withExcept(notifyError(subject: "Invoice Failed"))
+                .run
+              )
+              .run(const(()))
+          }
+
+          return pure(sub)
+        }
+        .run
         .flatMap(
           either(
-            const(errorMiddleware(conn.map(const(unit)))),
-            const(successMiddleware(conn.map(const(unit))))
+            const(error(conn.map(const(unit)))),
+            const(success(conn.map(const(unit))))
           )
       )
     }
@@ -117,6 +96,22 @@ func requireActiveSubscription<A>(
       )
       )
       <| middleware
+}
+
+func defaultSubscriptionModificationErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn |> redirect(
+    to: .account(.index),
+    headersMiddleware: flash(
+      .error,
+      """
+      We couldn’t modify your subscription at this time. Please try again or contact
+      <support@pointfree.co>.
+      """
+    )
+  )
 }
 
 private func requireValidSeating(
@@ -173,15 +168,15 @@ private func fetchSeatsTaken<A>(
     }
 }
 
-private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) -> Int {
-  switch (lane, billing) {
+private func defaultPricing(for pricing: Pricing) -> Cents<Int> {
+  switch (pricing.lane, pricing.billing) {
   case (.personal, .monthly):
-    return 18
+    return 18_00
   case (.personal, .yearly):
-    return 168
+    return 168_00
   case (.team, .monthly):
-    return 16
+    return 16_00
   case (.team, .yearly):
-    return 144
+    return 144_00
   }
 }

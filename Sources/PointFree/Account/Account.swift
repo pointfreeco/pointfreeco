@@ -773,7 +773,7 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
           action(path(to: .account(.subscription(.change(.update(nil)))))),
           method(.post),
           onsubmit(unsafe: """
-if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a pro-rated refund for the time remaining in your billing period.")) {
+if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }
 """),
@@ -908,18 +908,14 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 }
 
 private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
-
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
-  let invites = data.teamInvites
-  let teammates = data.teammates
-  let invitesRemaining = subscription.quantity - invites.count - teammates.count
+  let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
   guard let amount = subscription.plan.tiers.min(by: { $0.amount < $1.amount })?.amount else { return [] }
 
-  let amountPerPeriod = subscription.plan.interval == .some(.year)
-    ? "$\(amount.rawValue / 100) per year"
-    : "$\(amount.rawValue / 100) per month"
+  let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
+  let amountPerPeriod = "$\(amount.rawValue / 100) per \(interval)"
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
@@ -959,7 +955,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
                 ])
             ],
             [.text("""
-Add a teammate to your subscription for just \(amountPerPeriod). Your first invoice will be pro-rated
+Add a teammate to your subscription for just \(amountPerPeriod). Your first invoice will be prorated
 based on your current billing cycle.
 """)]
           ),

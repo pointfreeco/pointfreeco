@@ -866,7 +866,7 @@ private struct PricingPlan {
     features: [
       "All personal plan features",
       "For teams of 2 or more",
-      "Add teammates at any time with pro-rated billing",
+      "Add teammates at any time with prorated billing",
       "Remove and reassign teammates at any time"
     ],
     title: "Team"
@@ -901,7 +901,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
     Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
-Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
 """),
     Faq(

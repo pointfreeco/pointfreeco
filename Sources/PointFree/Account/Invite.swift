@@ -122,73 +122,30 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
-// private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
-//    -> IO<Conn<ResponseEnded, Data>> {
+let addTeammateViaInviteMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, EmailAddress?>,
+  Data
+  > =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: defaultInvalidSubscriptionErrorMiddleware)
+    <<< requireStripeSubscription
+    <<< requireActiveSubscription
+    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
 
-
-let addTeammateViaInviteMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple3<EmailAddress?, Models.Subscription?, User?>, Data> =
-  filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
-    <<< filterMap(
-      require2 >>> pure,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(
-          .error,
-          "Invalid subscription data. Please try again or contact <support@pointfree.co>."
-        )
-      )
-    )
-    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
-    <| { (conn: Conn<StatusLineOpen, Tuple3<EmailAddress, Models.Subscription, User>>) in
-
-      let (email, subscription, inviter) = lower(conn.data)
-
-      let tmp = Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
-
-      let tmp1 = tmp.run.perform()
-
-      let stripeSub = tmp1.right!
-
+      let (stripeSubscription, inviter, email) = lower(conn.data)
       let newPricing = Pricing(
-        billing: stripeSub.plan.interval == .month ? .monthly : .yearly,
-        quantity: stripeSub.quantity + 1
+        billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
+        quantity: stripeSubscription.quantity + 1
       )
 
-      let newConn = conn.map(const((stripeSub, newPricing)))
-
-      return newConn |> changeSubscription(
-        errorMiddleware: redirect(
-          to: .account(.index),
-          headersMiddleware: flash(
-            .error,
-            """
-          We couldn’t modify your subscription at this time. Please try again or contact
-          <support@pointfree.co>.
-          """
-          )
-        ),
-        successMiddleware: map({ _ in email .*. inviter .*. unit }) >>> sendInviteMiddleware
+      return conn
+        .map(const((stripeSubscription, newPricing)))
+        |> changeSubscription(
+          error: defaultSubscriptionModificationErrorMiddleware,
+          success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
       )
-
-//      return Current.database.insertTeamInvite(email, inviter.id)
-//        .run
-//        .flatMap { errorOrTeamInvite in
-//          switch errorOrTeamInvite {
-//          case .left:
-//            return conn |> redirect(to: .account(.index))
-//
-//          case let .right(invite):
-//            parallel(sendInviteEmail(invite: invite, inviter: inviter).run)
-//              .run({ _ in })
-//
-//            return conn
-//              |> redirect(
-//                to: .account(.index),
-//                headersMiddleware: flash(.notice, "Invite sent to \(invite.email).")
-//            )
-//          }
-//      }
 }
 
 let sendInviteMiddleware =
@@ -229,6 +186,20 @@ let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, curr
       )
       ])
     ])
+}
+
+func defaultInvalidSubscriptionErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn
+    |> redirect(
+      to: .account(.index),
+      headersMiddleware: flash(
+        .error,
+        "Invalid subscription data. Please try again or contact <support@pointfree.co>."
+      )
+  )
 }
 
 private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
