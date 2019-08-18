@@ -640,20 +640,4 @@ extension Tagged where Tag == Plan, RawValue == String {
   public static var yearly: Plan.Id {
     return "yearly-2019"
   }
-
-  public static var individualMonthly: Plan.Id {
-    return "individual-monthly"
-  }
-
-  public static var individualYearly: Plan.Id {
-    return "individual-yearly"
-  }
-
-  public static var teamMonthly: Plan.Id {
-    return "team-monthly"
-  }
-
-  public static var teamYearly: Plan.Id {
-    return "team-yearly"
-  }
 }
