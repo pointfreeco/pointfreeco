@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 173986
+Content-Length: 173984
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2217,7 +2217,7 @@ html {
               For teams of 2 or more
             </li>
             <li class="m-pt1">
-              Add teammates at any time with pro-rated billing
+              Add teammates at any time with prorated billing
             </li>
             <li class="m-pt1">
               Remove and reassign teammates at any time
@@ -2552,7 +2552,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
           </p>
           <p class="fg-gray400
                     m-pb2">
-            Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+            Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
           </p>
           <p class="bold
