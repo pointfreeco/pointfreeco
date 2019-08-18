@@ -1,8 +1,8 @@
 POST http://localhost:8080/webhooks/stripe
 Cookie: pf_session={}
-Stripe-Signature: t=1517356800,v1=b8b983f5624301fb683f8527d955ab8be16af9b164e1301ccff904050686fe58
+Stripe-Signature: t=1517356800,v1=62895f0e00b57d402ea0248e858202b318f38bc669de5c809e7621fbd7222aba
 
-{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"closed":true,"lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"individual-monthly","created":1517356800,"tiers":[],"currency":"usd","metadata":{},"interval":"month"}}]},"customer":"cus_test","charge":"ch_test","total":1700,"period_start":1517356800,"amount_remaining":0,"subtotal":1700,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
+{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"closed":true,"lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"monthly-2019","created":1517356800,"tiers":[],"currency":"usd","metadata":{},"interval":"month"}}]},"customer":"cus_test","charge":"ch_test","total":1700,"period_start":1517356800,"amount_remaining":0,"subtotal":1700,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
 200 OK
 Referrer-Policy: strict-origin-when-cross-origin

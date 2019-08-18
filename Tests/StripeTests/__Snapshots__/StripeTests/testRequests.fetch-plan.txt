@@ -1,1 +1,1 @@
-GET https://api.stripe.com/v1/plans/individual-monthly
+GET https://api.stripe.com/v1/plans/monthly-2019
