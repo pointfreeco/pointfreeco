@@ -130,8 +130,7 @@ private func accountView(_ data: AccountData) -> [Node] {
 }
 
 private func creditsView(_ data: AccountData) -> [Node] {
-
-  guard !data.subscriberState.isActiveSubscriber else { return [] }
+  guard !data.subscriberState.isActive else { return [] }
   guard data.currentUser.episodeCreditCount > 0 || data.episodeCredits.count > 0 else { return [] }
 
   return [
@@ -912,7 +911,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
   guard let subscription = data.stripeSubscription else { return [] }
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
-  guard let amount = subscription.plan.tiers.min(by: { $0.amount < $1.amount })?.amount else { return [] }
+  guard let amount = subscription.plan.tiers?.min(by: { $0.amount < $1.amount })?.amount else { return [] }
 
   let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
   let amountPerPeriod = "$\(amount.rawValue / 100) per \(interval)"
@@ -1130,7 +1129,6 @@ private struct AccountData {
   }
 
   var isTeamSubscription: Bool {
-    guard let id = self.stripeSubscription?.plan.id else { return false }
-    return id == .teamMonthly || id == .teamYearly
+    return (self.stripeSubscription?.quantity ?? 0) > 1
   }
 }
