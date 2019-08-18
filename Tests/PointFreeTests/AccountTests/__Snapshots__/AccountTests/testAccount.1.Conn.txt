@@ -2312,7 +2312,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                       <div class="m-pl1
                                   m-pr1">
                         <p>
-                          You have 2 open spots on your team. Invite a team member below:
+                          You have 2 open seats on your team. Invite a team member below:
                         </p>
                         <form action="/invites"
                               method="post"

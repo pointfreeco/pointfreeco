@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65650
+Content-Length: 65649
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2055,7 +2055,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                               <p>
                                 <form action="/account/subscription/change"
                                       method="post"
-                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $168.00 immediately with a pro-rated refund for the time remaining in your billing period.")) {
+                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $168.00 immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                                   <input name="billing"

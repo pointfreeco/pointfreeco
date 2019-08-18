@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 61994
+Content-Length: 61993
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2069,7 +2069,7 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                               <p>
                                 <form action="/account/subscription/change"
                                       method="post"
-                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $168.00 immediately with a pro-rated refund for the time remaining in your billing period.")) {
+                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $168.00 immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                                   <input name="billing"

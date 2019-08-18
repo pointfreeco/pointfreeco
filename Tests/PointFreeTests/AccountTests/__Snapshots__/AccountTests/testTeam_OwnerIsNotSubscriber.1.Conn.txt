@@ -2213,7 +2213,7 @@ html {
                       <div class="m-pl1
                                   m-pr1">
                         <p>
-                          You have 3 open spots on your team. Invite a team member below:
+                          You have 3 open seats on your team. Invite a team member below:
                         </p>
                         <form action="/invites"
                               method="post"
