@@ -25,13 +25,13 @@ let subscriptionChangeMiddleware: Middleware<
   Data
   > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: defaultInvalidSubscriptionErrorMiddleware)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
     <<< fetchSeatsTaken
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireValidSeating
     <| changeSubscription(
-      error: defaultSubscriptionModificationErrorMiddleware,
+      error: subscriptionModificationErrorMiddleware,
       success: redirect(
         to: .account(.index),
         headersMiddleware: flash(.notice, "We’ve modified your subscription.")
@@ -98,7 +98,7 @@ func requireActiveSubscription<A>(
       <| middleware
 }
 
-func defaultSubscriptionModificationErrorMiddleware<A>(
+func subscriptionModificationErrorMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
   ) -> IO<Conn<ResponseEnded, Data>> {
 

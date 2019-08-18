@@ -129,7 +129,7 @@ let addTeammateViaInviteMiddleware: Middleware<
   Data
   > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: defaultInvalidSubscriptionErrorMiddleware)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
@@ -143,7 +143,7 @@ let addTeammateViaInviteMiddleware: Middleware<
       return conn
         .map(const((stripeSubscription, newPricing)))
         |> changeSubscription(
-          error: defaultSubscriptionModificationErrorMiddleware,
+          error: subscriptionModificationErrorMiddleware,
           success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
       )
 }
@@ -188,7 +188,7 @@ let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, curr
     ])
 }
 
-func defaultInvalidSubscriptionErrorMiddleware<A>(
+func invalidSubscriptionErrorMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
   ) -> IO<Conn<ResponseEnded, Data>> {
 
