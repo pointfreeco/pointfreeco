@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67322
+Content-Length: 70275
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -2034,24 +2041,35 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                         m-pr1
                                         end-d">
                               <p>
-                                <a class="medium
-                                          cursor-pointer
-                                          nowrap
-                                          btn-normal
-                                          rounded
-                                          border-none
-                                          text-decoration-none
-                                          pf-link-white
-                                          fg-white
-                                          bg-purple
-                                          h6
-                                          m-pl1
-                                          m-pr1
-                                          m-pt1
-                                          m-pb1"
-                                   href="/account/subscription/change">
-                                  Modify subscription
-                                </a>
+                                <form action="/account/subscription/change"
+                                      method="post"
+                                      onsubmit="if (!confirm("Switch to monthly billing? You will be charged $64.00 on a monthly basis at the end of your current billing period.")) {
+  return false
+}">
+                                  <input name="billing"
+                                         type="hidden"
+                                         value="monthly">
+                                  <input name="quantity"
+                                         type="hidden"
+                                         value="4">
+                                  <button class="medium
+                                                 cursor-pointer
+                                                 nowrap
+                                                 btn-normal
+                                                 rounded
+                                                 border-none
+                                                 text-decoration-none
+                                                 pf-link-white
+                                                 fg-white
+                                                 bg-purple
+                                                 h6
+                                                 m-pl1
+                                                 m-pr1
+                                                 m-pt1
+                                                 m-pb1">
+                                    Switch to monthly billing
+                                  </button>
+                                </form>
                               </p>
                             </div>
                           </div>
@@ -2077,6 +2095,38 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                                         m-pr1">
                               <p>
                                 Active
+                              </p>
+                            </div>
+                          </div>
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1
+                                        end-d">
+                              <p>
+                                <form action="/account/subscription/cancel"
+                                      method="post"
+                                      onsubmit="if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
+  return false
+}">
+                                  <button class="medium
+                                                 cursor-pointer
+                                                 nowrap
+                                                 btn-outline
+                                                 border-none
+                                                 underline
+                                                 pf-link-black
+                                                 fg-black
+                                                 bg-inherit
+                                                 h6
+                                                 m-pl1
+                                                 m-pr1
+                                                 m-pt1
+                                                 m-pb1">
+                                    Cancel
+                                  </button>
+                                </form>
                               </p>
                             </div>
                           </div>
@@ -2475,6 +2525,16 @@ to consume our videos: an RSS feed that can be used with podcast apps!
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

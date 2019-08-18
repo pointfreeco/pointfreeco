@@ -10,6 +10,11 @@ import WebKit
 #endif
 
 class PrivacyTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testPrivacy() {
     let conn = connection(from: request(to: .privacy))
 

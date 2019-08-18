@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 110831
+Content-Length: 54227
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -119,6 +119,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1688,66 +1695,54 @@ html {
     </style>
     <style>
       
-.block input:checked ~ * > * {
-  color : #974dff;
+.plan-item {
+  width : 100%;
 }
 
-input {
-  color : #a8a8a8;
+.testimonial-container {
+  height                     : 380px;
+  -webkit-overflow-scrolling : touch;
 }
 
-input {
-  margin-right : auto;
-  margin-left  : auto;
+.testimonial-item {
+  flex-grow   : 0;
+  flex-shrink : 0;
+  flex-basis  : auto;
+  width       : 260px;
+  height      : 380px;
 }
 
-.content0 {
-  display : none;
+@media only screen and (min-width: 832px) {
+
+.dark-right-border-d {
+  border-right : 1px solid #333;
 }
 
-.content1 {
-  display : none;
+.light-right-border-d {
+  border-right : 1px solid #e8e8e8;
 }
 
-#tab0:checked ~ * .content0 {
-  display : inherit;
+.light-bottom-border-d {
+  border-bottom : 1px solid #e8e8e8;
 }
 
-#tab1:checked ~ * .content1 {
-  display : inherit;
+.plan-item {
+  width : 25%;
 }
 
-#tab0:checked + * {
-  color            : #974dff;
-  background-color : #fff;
+.testimonial-container {
+  height : 400px;
 }
 
-#tab1:checked + * {
-  color            : #974dff;
-  background-color : #fff;
+.testimonial-item {
+  width : 340px;
 }
 
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
+.testimonial-item {
+  height : 380px;
 }
 
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
 }
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
-}
-
-.what-to-expect {
-  background-color : rgba(0,0,0,0.2);
-}
-
 
     </style>
     <meta name="viewport"
@@ -1776,11 +1771,11 @@ input::-webkit-outer-spin-button {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta property="og:description"
-          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta name="twitter:description"
-          content="Limited time Point-Free discount: Get 50% off every billing period. Subscribe today!">
+          content="Point-Free is a video series exploring functional programming and Swift.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -1806,7 +1801,7 @@ input::-webkit-outer-spin-button {
     </script>
   </head>
   <body>
-    <div class="bg-purple150
+    <div class="bg-black
                 d-pt4
                 d-pb4
                 m-pl2
@@ -1842,1564 +1837,404 @@ input::-webkit-outer-spin-button {
           <li class="m-pl3
                      inline">
             <a href="/blog"
-               class="pf-link-green">
+               class="pf-link-gray650">
               Blog
             </a>
           </li>
           <li class="m-pl3
                      inline">
             <a href="/pricing"
-               class="pf-link-green">
+               class="pf-link-gray650">
               Subscribe
             </a>
           </li>
           <li class="m-pl3
                      inline">
             <a href="/account"
-               class="pf-link-green">
+               class="pf-link-gray650">
               Account
             </a>
           </li>
         </ul>
       </div>
     </div>
-    <div class="bg-purple150
-                center-m
-                d-pl0
-                d-pr0
-                d-pt4
-                d-pb4
-                m-pl2
-                m-pr2
-                m-pt3
-                m-pb3
-                row">
-      <div class="col-m
-                  col-d-7
-                  col-m-12">
-        <div>
-          <h2 class="fg-white
-                     fg-black
+    <form action="/subscribe"
+          id="subscribe-form"
+          method="post"
+          onsubmit="event.preventDefault()"
+          style="max-width:900px;
+                 margin-right:auto;
+                 margin-left:auto">
+      <input name="pricing[lane]"
+             type="hidden"
+             value="personal">
+      <div class="d-ml4
+                  d-mr4
+                  m-ml2
+                  m-mr2
+                  m-pt3
+                  m-pb3
+                  border-bottom
+                  border-gray-850
+                  row">
+        <div class="col-m
+                    col-m-12">
+          <h1 class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
                      lh-2">
-            Subscribe to Point&#8209;Free
-          </h2>
-          <p class="fg-green">
-            Become a subscriber to unlock every full episode and explore new functional programming concepts
-as episodes are released.
-          </p>
-          <div class="m-pb3
-                      m-mt4
-                      row">
-            <div class="col-m
-                        col-m-12">
-              <form action="/subscribe"
-                    id="card-form"
-                    method="post"
-                    onsubmit="event.preventDefault()">
-                <input checked
-                       class="none"
-                       id="tab0"
-                       name="pricing[lane]"
-                       type="radio"
-                       value="individual"
-                       role="button">
-                <label for="tab0"
-                       class="fit
-                              fg-black
-                              bold
-                              ts-d-r1_25
-                              ts-m-r1
-                              lh-1
-                              medium
-                              m-pl2
-                              m-pr2
-                              m-pt2
-                              m-pb2
-                              border-none
-                              inline-block
-                              rounded
-                              cursor-pointer
-                              bg-purple
-                              fg-white"
-                       style="-webkit-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -moz-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -ms-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -o-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              width:35%">
-                  For you
-                </label>
-                <span class="m-pl2
-                             m-pr2
-                             fg-gray850">
-                  or
-                </span>
-                <input class="none"
-                       id="tab1"
-                       name="pricing[lane]"
-                       type="radio"
-                       value="team"
-                       role="button">
-                <label for="tab1"
-                       class="fit
-                              fg-black
-                              bold
-                              ts-d-r1_25
-                              ts-m-r1
-                              lh-1
-                              medium
-                              m-pl2
-                              m-pr2
-                              m-pt2
-                              m-pb2
-                              border-none
-                              inline-block
-                              rounded
-                              cursor-pointer
-                              bg-purple
-                              fg-white"
-                       style="-webkit-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -moz-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -ms-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              -o-box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              box-shadow:0px 0px 5px 5px rgba(0,0,0,0.1);
-                              width:35%">
-                  For your team
-                </label>
-                <div class="m-mb3">
-                </div>
-                <div class="flex">
-                  <div class="content1
-                              bg-white
-                              w-100p
-                              row">
-                    <div class="col-m
-                                col-m-12">
-                      <div class="m-pl3
-                                  m-pr3
-                                  m-pt3">
-                        <p class="fg-black
-                                  fg-black
-                                  normal
-                                  h5
-                                  lh-4">
-                          How many in your team?
-                        </p>
-                        <input class="num-spinner
-                                      center
-                                      fg-black
-                                      bold
-                                      ts-d-r4
-                                      ts-m-r3
-                                      lh-2
-                                      fg-black"
-                               max="100"
-                               min="2"
-                               name="pricing[quantity]"
-                               onblur="javascript:
-this.value = Math.min(Math.max(+this.value, +this.min), +this.max);
-var multiplier = +this.value;
-var elements = document.getElementsByClassName('team-price');
-for (var idx = 0; idx < elements.length; idx++) {
-  var element = elements[idx];
-  element.textContent = (multiplier * element.dataset.price)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}"
-                               oninput="javascript:
-var value = +this.value;
-var multiplier = Math.min(Math.max(value, 0), +this.max);
-var elements = document.getElementsByClassName('team-price');
-if (this.value != "" && value != multiplier) {
-  this.value = multiplier;
-}
-for (var idx = 0; idx < elements.length; idx++) {
-  var element = elements[idx];
-  element.textContent = (multiplier * element.dataset.price)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}"
-                               step="1"
-                               type="number"
-                               value="2">
-                        <hr class="pf-divider
-                                   border-top
-                                   m-ml0
-                                   m-mr0
-                                   m-mt0
-                                   m-mb0
-                                   bg-white
-                                   m-mt3">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="bg-white
-                            row">
-                  <div class="bg-white
-                              col-m
-                              col-m-6">
-                    <label for="monthly"
-                           class="block
-                                  m-ml3
-                                  m-mr3
-                                  m-mt3
-                                  m-mb3">
-                      <div style="flex-direction:column-reverse"
-                           class="row">
-                        <input checked
-                               id="monthly"
-                               name="pricing[billing]"
-                               type="radio"
-                               value="monthly">
-                        <div class="col-m
-                                    col-m-12">
-                          <h2 class="fg-black
-                                     bold
-                                     ts-d-r3
-                                     ts-m-r2
-                                     lh-2
-                                     light
-                                     fg-gray650">
-                            <span class="content0">
-                              $8.50/mo
-                            </span>
-                            <span class="content1">
-                              $
-                              <span class="team-price"
-                                    data-price="16">
-                                32
-                              </span>
-                              /
-                              mo
-                            </span>
-                          </h2>
-                        </div>
-                        <div class="col-m
-                                    col-m-12">
-                          <h6 class="fg-black
-                                     bold
-                                     ts-d-r0_875
-                                     ts-m-r0_75
-                                     lh-1
-                                     caps
-                                     fg-gray650
-                                     inline">
-                            Monthly Plan
-                          </h6>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                  <div class="bg-white
-                              col-m
-                              col-m-6">
-                    <label for="yearly"
-                           class="block
-                                  m-ml3
-                                  m-mr3
-                                  m-mt3
-                                  m-mb3">
-                      <div style="flex-direction:column-reverse"
-                           class="row">
-                        <input id="yearly"
-                               name="pricing[billing]"
-                               type="radio"
-                               value="yearly">
-                        <div class="col-m
-                                    col-m-12">
-                          <h2 class="fg-black
-                                     bold
-                                     ts-d-r3
-                                     ts-m-r2
-                                     lh-2
-                                     light
-                                     fg-gray650">
-                            <span class="content0">
-                              $85/yr
-                            </span>
-                            <span class="content1">
-                              $
-                              <span class="team-price"
-                                    data-price="160">
-                                320
-                              </span>
-                              /
-                              yr
-                            </span>
-                          </h2>
-                        </div>
-                        <div class="col-m
-                                    col-m-12">
-                          <h6 class="fg-black
-                                     bold
-                                     ts-d-r0_875
-                                     ts-m-r0_75
-                                     lh-1
-                                     caps
-                                     fg-gray650
-                                     inline">
-                            Yearly Plan
-                          </h6>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                  <div class="bg-white
-                              col-m
-                              col-m-12">
-                    <p class="content0
-                              m-pb1
-                              fg-gray400
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              w-100p
-                              center
-                              normal">
-                      You get 50% off every billing period for using the Student Discount coupon.
-                    </p>
-                    <p class="content1
-                              m-pb1
-                              fg-gray400
-                              fg-black
-                              normal
-                              h6
-                              lh-4
-                              w-100p
-                              center
-                              normal">
-                      20% off the Individual Monthly plan
-                    </p>
-                  </div>
-                </div>
-                <div class="bg-white
-                            row">
-                  <div class="col-m
-                              col-m-12">
-                    <div class="m-pb3
-                                m-pt2">
-                      <div class="m-pl3
-                                  m-pr3">
-                        <input name="token"
-                               type="hidden">
-                        <div class="none">
-                          <input class="font-family-inherit
-                                        fg-black
-                                        border-box
-                                        rounded
-                                        border
-                                        border-gray-800
-                                        h-3r
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        m-mb2
-                                        w-100p
-                                        block"
-                                 name="stripe_name"
-                                 placeholder="Billing Name"
-                                 type="text">
-                          <input class="font-family-inherit
-                                        fg-black
-                                        border-box
-                                        rounded
-                                        border
-                                        border-gray-800
-                                        h-3r
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        m-mb2
-                                        w-100p
-                                        block"
-                                 name="stripe_address_line1"
-                                 placeholder="Address"
-                                 type="text">
-                          <div class="row">
-                            <div class="col-m
-                                        col-d-4
-                                        col-m-12">
-                              <div class="d-pr1">
-                                <input class="font-family-inherit
-                                              fg-black
-                                              border-box
-                                              rounded
-                                              border
-                                              border-gray-800
-                                              h-3r
-                                              m-pl1
-                                              m-pr1
-                                              m-pt1
-                                              m-pb1
-                                              m-mb2
-                                              w-100p
-                                              block"
-                                       name="stripe_address_city"
-                                       placeholder="City"
-                                       type="text">
-                              </div>
-                            </div>
-                            <div class="col-m
-                                        col-d-3
-                                        col-m-12">
-                              <div class="d-pl1
-                                          d-pr1">
-                                <input class="font-family-inherit
-                                              fg-black
-                                              border-box
-                                              rounded
-                                              border
-                                              border-gray-800
-                                              h-3r
-                                              m-pl1
-                                              m-pr1
-                                              m-pt1
-                                              m-pb1
-                                              m-mb2
-                                              w-100p
-                                              block"
-                                       name="stripe_address_state"
-                                       placeholder="State"
-                                       type="text">
-                              </div>
-                            </div>
-                            <div class="col-m
-                                        col-d-2
-                                        col-m-12">
-                              <div class="d-pl1
-                                          d-pr1">
-                                <input class="font-family-inherit
-                                              fg-black
-                                              border-box
-                                              rounded
-                                              border
-                                              border-gray-800
-                                              h-3r
-                                              m-pl1
-                                              m-pr1
-                                              m-pt1
-                                              m-pb1
-                                              m-mb2
-                                              w-100p
-                                              block"
-                                       name="stripe_address_zip"
-                                       placeholder="Zip"
-                                       type="text">
-                              </div>
-                            </div>
-                            <div class="col-m
-                                        col-d-3
-                                        col-m-12">
-                              <div class="d-pl1">
-                                <select class="block
-                                               m-mb2
-                                               h-3r
-                                               w-100p
-                                               border-gray-800
-                                               font-family-inherit"
-                                        name="stripe_address_country">
-                                  <option disabled
-                                          selected
-                                          value>
-                                    Country
-                                  </option>
-                                  <option value="AF">
-                                    Afghanistan
-                                  </option>
-                                  <option value="AX">
-                                    Åland Islands
-                                  </option>
-                                  <option value="AL">
-                                    Albania
-                                  </option>
-                                  <option value="DZ">
-                                    Algeria
-                                  </option>
-                                  <option value="AS">
-                                    American Samoa
-                                  </option>
-                                  <option value="AD">
-                                    Andorra
-                                  </option>
-                                  <option value="AO">
-                                    Angola
-                                  </option>
-                                  <option value="AI">
-                                    Anguilla
-                                  </option>
-                                  <option value="AQ">
-                                    Antarctica
-                                  </option>
-                                  <option value="AG">
-                                    Antigua and Barbuda
-                                  </option>
-                                  <option value="AR">
-                                    Argentina
-                                  </option>
-                                  <option value="AM">
-                                    Armenia
-                                  </option>
-                                  <option value="AW">
-                                    Aruba
-                                  </option>
-                                  <option value="AU">
-                                    Australia
-                                  </option>
-                                  <option value="AT">
-                                    Austria
-                                  </option>
-                                  <option value="AZ">
-                                    Azerbaijan
-                                  </option>
-                                  <option value="BS">
-                                    Bahamas
-                                  </option>
-                                  <option value="BH">
-                                    Bahrain
-                                  </option>
-                                  <option value="BD">
-                                    Bangladesh
-                                  </option>
-                                  <option value="BB">
-                                    Barbados
-                                  </option>
-                                  <option value="BY">
-                                    Belarus
-                                  </option>
-                                  <option value="BE">
-                                    Belgium
-                                  </option>
-                                  <option value="BZ">
-                                    Belize
-                                  </option>
-                                  <option value="BJ">
-                                    Benin
-                                  </option>
-                                  <option value="BM">
-                                    Bermuda
-                                  </option>
-                                  <option value="BT">
-                                    Bhutan
-                                  </option>
-                                  <option value="BO">
-                                    Bolivia, Plurinational State of
-                                  </option>
-                                  <option value="BQ">
-                                    Bonaire, Sint Eustatius and Saba
-                                  </option>
-                                  <option value="BA">
-                                    Bosnia and Herzegovina
-                                  </option>
-                                  <option value="BW">
-                                    Botswana
-                                  </option>
-                                  <option value="BV">
-                                    Bouvet Island
-                                  </option>
-                                  <option value="BR">
-                                    Brazil
-                                  </option>
-                                  <option value="IO">
-                                    British Indian Ocean Territory
-                                  </option>
-                                  <option value="BN">
-                                    Brunei Darussalam
-                                  </option>
-                                  <option value="BG">
-                                    Bulgaria
-                                  </option>
-                                  <option value="BF">
-                                    Burkina Faso
-                                  </option>
-                                  <option value="BI">
-                                    Burundi
-                                  </option>
-                                  <option value="KH">
-                                    Cambodia
-                                  </option>
-                                  <option value="CM">
-                                    Cameroon
-                                  </option>
-                                  <option value="CA">
-                                    Canada
-                                  </option>
-                                  <option value="CV">
-                                    Cape Verde
-                                  </option>
-                                  <option value="KY">
-                                    Cayman Islands
-                                  </option>
-                                  <option value="CF">
-                                    Central African Republic
-                                  </option>
-                                  <option value="TD">
-                                    Chad
-                                  </option>
-                                  <option value="CL">
-                                    Chile
-                                  </option>
-                                  <option value="CN">
-                                    China
-                                  </option>
-                                  <option value="CX">
-                                    Christmas Island
-                                  </option>
-                                  <option value="CC">
-                                    Cocos (Keeling) Islands
-                                  </option>
-                                  <option value="CO">
-                                    Colombia
-                                  </option>
-                                  <option value="KM">
-                                    Comoros
-                                  </option>
-                                  <option value="CG">
-                                    Congo
-                                  </option>
-                                  <option value="CD">
-                                    Congo, the Democratic Republic of the
-                                  </option>
-                                  <option value="CK">
-                                    Cook Islands
-                                  </option>
-                                  <option value="CR">
-                                    Costa Rica
-                                  </option>
-                                  <option value="CI">
-                                    Côte d'Ivoire
-                                  </option>
-                                  <option value="HR">
-                                    Croatia
-                                  </option>
-                                  <option value="CU">
-                                    Cuba
-                                  </option>
-                                  <option value="CW">
-                                    Curaçao
-                                  </option>
-                                  <option value="CY">
-                                    Cyprus
-                                  </option>
-                                  <option value="CZ">
-                                    Czech Republic
-                                  </option>
-                                  <option value="DK">
-                                    Denmark
-                                  </option>
-                                  <option value="DJ">
-                                    Djibouti
-                                  </option>
-                                  <option value="DM">
-                                    Dominica
-                                  </option>
-                                  <option value="DO">
-                                    Dominican Republic
-                                  </option>
-                                  <option value="EC">
-                                    Ecuador
-                                  </option>
-                                  <option value="EG">
-                                    Egypt
-                                  </option>
-                                  <option value="SV">
-                                    El Salvador
-                                  </option>
-                                  <option value="GQ">
-                                    Equatorial Guinea
-                                  </option>
-                                  <option value="ER">
-                                    Eritrea
-                                  </option>
-                                  <option value="EE">
-                                    Estonia
-                                  </option>
-                                  <option value="ET">
-                                    Ethiopia
-                                  </option>
-                                  <option value="FK">
-                                    Falkland Islands (Malvinas)
-                                  </option>
-                                  <option value="FO">
-                                    Faroe Islands
-                                  </option>
-                                  <option value="FJ">
-                                    Fiji
-                                  </option>
-                                  <option value="FI">
-                                    Finland
-                                  </option>
-                                  <option value="FR">
-                                    France
-                                  </option>
-                                  <option value="GF">
-                                    French Guiana
-                                  </option>
-                                  <option value="PF">
-                                    French Polynesia
-                                  </option>
-                                  <option value="TF">
-                                    French Southern Territories
-                                  </option>
-                                  <option value="GA">
-                                    Gabon
-                                  </option>
-                                  <option value="GM">
-                                    Gambia
-                                  </option>
-                                  <option value="GE">
-                                    Georgia
-                                  </option>
-                                  <option value="DE">
-                                    Germany
-                                  </option>
-                                  <option value="GH">
-                                    Ghana
-                                  </option>
-                                  <option value="GI">
-                                    Gibraltar
-                                  </option>
-                                  <option value="GR">
-                                    Greece
-                                  </option>
-                                  <option value="GL">
-                                    Greenland
-                                  </option>
-                                  <option value="GD">
-                                    Grenada
-                                  </option>
-                                  <option value="GP">
-                                    Guadeloupe
-                                  </option>
-                                  <option value="GU">
-                                    Guam
-                                  </option>
-                                  <option value="GT">
-                                    Guatemala
-                                  </option>
-                                  <option value="GG">
-                                    Guernsey
-                                  </option>
-                                  <option value="GN">
-                                    Guinea
-                                  </option>
-                                  <option value="GW">
-                                    Guinea-Bissau
-                                  </option>
-                                  <option value="GY">
-                                    Guyana
-                                  </option>
-                                  <option value="HT">
-                                    Haiti
-                                  </option>
-                                  <option value="HM">
-                                    Heard Island and McDonald Islands
-                                  </option>
-                                  <option value="VA">
-                                    Holy See (Vatican City State)
-                                  </option>
-                                  <option value="HN">
-                                    Honduras
-                                  </option>
-                                  <option value="HK">
-                                    Hong Kong
-                                  </option>
-                                  <option value="HU">
-                                    Hungary
-                                  </option>
-                                  <option value="IS">
-                                    Iceland
-                                  </option>
-                                  <option value="IN">
-                                    India
-                                  </option>
-                                  <option value="ID">
-                                    Indonesia
-                                  </option>
-                                  <option value="IR">
-                                    Iran, Islamic Republic of
-                                  </option>
-                                  <option value="IQ">
-                                    Iraq
-                                  </option>
-                                  <option value="IE">
-                                    Ireland
-                                  </option>
-                                  <option value="IM">
-                                    Isle of Man
-                                  </option>
-                                  <option value="IL">
-                                    Israel
-                                  </option>
-                                  <option value="IT">
-                                    Italy
-                                  </option>
-                                  <option value="JM">
-                                    Jamaica
-                                  </option>
-                                  <option value="JP">
-                                    Japan
-                                  </option>
-                                  <option value="JE">
-                                    Jersey
-                                  </option>
-                                  <option value="JO">
-                                    Jordan
-                                  </option>
-                                  <option value="KZ">
-                                    Kazakhstan
-                                  </option>
-                                  <option value="KE">
-                                    Kenya
-                                  </option>
-                                  <option value="KI">
-                                    Kiribati
-                                  </option>
-                                  <option value="KP">
-                                    Korea, Democratic People's Republic of
-                                  </option>
-                                  <option value="KR">
-                                    Korea, Republic of
-                                  </option>
-                                  <option value="KW">
-                                    Kuwait
-                                  </option>
-                                  <option value="KG">
-                                    Kyrgyzstan
-                                  </option>
-                                  <option value="LA">
-                                    Lao People's Democratic Republic
-                                  </option>
-                                  <option value="LV">
-                                    Latvia
-                                  </option>
-                                  <option value="LB">
-                                    Lebanon
-                                  </option>
-                                  <option value="LS">
-                                    Lesotho
-                                  </option>
-                                  <option value="LR">
-                                    Liberia
-                                  </option>
-                                  <option value="LY">
-                                    Libya
-                                  </option>
-                                  <option value="LI">
-                                    Liechtenstein
-                                  </option>
-                                  <option value="LT">
-                                    Lithuania
-                                  </option>
-                                  <option value="LU">
-                                    Luxembourg
-                                  </option>
-                                  <option value="MO">
-                                    Macao
-                                  </option>
-                                  <option value="MK">
-                                    Macedonia, the former Yugoslav Republic of
-                                  </option>
-                                  <option value="MG">
-                                    Madagascar
-                                  </option>
-                                  <option value="MW">
-                                    Malawi
-                                  </option>
-                                  <option value="MY">
-                                    Malaysia
-                                  </option>
-                                  <option value="MV">
-                                    Maldives
-                                  </option>
-                                  <option value="ML">
-                                    Mali
-                                  </option>
-                                  <option value="MT">
-                                    Malta
-                                  </option>
-                                  <option value="MH">
-                                    Marshall Islands
-                                  </option>
-                                  <option value="MQ">
-                                    Martinique
-                                  </option>
-                                  <option value="MR">
-                                    Mauritania
-                                  </option>
-                                  <option value="MU">
-                                    Mauritius
-                                  </option>
-                                  <option value="YT">
-                                    Mayotte
-                                  </option>
-                                  <option value="MX">
-                                    Mexico
-                                  </option>
-                                  <option value="FM">
-                                    Micronesia, Federated States of
-                                  </option>
-                                  <option value="MD">
-                                    Moldova, Republic of
-                                  </option>
-                                  <option value="MC">
-                                    Monaco
-                                  </option>
-                                  <option value="MN">
-                                    Mongolia
-                                  </option>
-                                  <option value="ME">
-                                    Montenegro
-                                  </option>
-                                  <option value="MS">
-                                    Montserrat
-                                  </option>
-                                  <option value="MA">
-                                    Morocco
-                                  </option>
-                                  <option value="MZ">
-                                    Mozambique
-                                  </option>
-                                  <option value="MM">
-                                    Myanmar
-                                  </option>
-                                  <option value="NA">
-                                    Namibia
-                                  </option>
-                                  <option value="NR">
-                                    Nauru
-                                  </option>
-                                  <option value="NP">
-                                    Nepal
-                                  </option>
-                                  <option value="NL">
-                                    Netherlands
-                                  </option>
-                                  <option value="NC">
-                                    New Caledonia
-                                  </option>
-                                  <option value="NZ">
-                                    New Zealand
-                                  </option>
-                                  <option value="NI">
-                                    Nicaragua
-                                  </option>
-                                  <option value="NE">
-                                    Niger
-                                  </option>
-                                  <option value="NG">
-                                    Nigeria
-                                  </option>
-                                  <option value="NU">
-                                    Niue
-                                  </option>
-                                  <option value="NF">
-                                    Norfolk Island
-                                  </option>
-                                  <option value="MP">
-                                    Northern Mariana Islands
-                                  </option>
-                                  <option value="NO">
-                                    Norway
-                                  </option>
-                                  <option value="OM">
-                                    Oman
-                                  </option>
-                                  <option value="PK">
-                                    Pakistan
-                                  </option>
-                                  <option value="PW">
-                                    Palau
-                                  </option>
-                                  <option value="PS">
-                                    Palestinian Territory, Occupied
-                                  </option>
-                                  <option value="PA">
-                                    Panama
-                                  </option>
-                                  <option value="PG">
-                                    Papua New Guinea
-                                  </option>
-                                  <option value="PY">
-                                    Paraguay
-                                  </option>
-                                  <option value="PE">
-                                    Peru
-                                  </option>
-                                  <option value="PH">
-                                    Philippines
-                                  </option>
-                                  <option value="PN">
-                                    Pitcairn
-                                  </option>
-                                  <option value="PL">
-                                    Poland
-                                  </option>
-                                  <option value="PT">
-                                    Portugal
-                                  </option>
-                                  <option value="PR">
-                                    Puerto Rico
-                                  </option>
-                                  <option value="QA">
-                                    Qatar
-                                  </option>
-                                  <option value="RE">
-                                    Réunion
-                                  </option>
-                                  <option value="RO">
-                                    Romania
-                                  </option>
-                                  <option value="RU">
-                                    Russian Federation
-                                  </option>
-                                  <option value="RW">
-                                    Rwanda
-                                  </option>
-                                  <option value="BL">
-                                    Saint Barthélemy
-                                  </option>
-                                  <option value="SH">
-                                    Saint Helena, Ascension and Tristan da Cunha
-                                  </option>
-                                  <option value="KN">
-                                    Saint Kitts and Nevis
-                                  </option>
-                                  <option value="LC">
-                                    Saint Lucia
-                                  </option>
-                                  <option value="MF">
-                                    Saint Martin (French part)
-                                  </option>
-                                  <option value="PM">
-                                    Saint Pierre and Miquelon
-                                  </option>
-                                  <option value="VC">
-                                    Saint Vincent and the Grenadines
-                                  </option>
-                                  <option value="WS">
-                                    Samoa
-                                  </option>
-                                  <option value="SM">
-                                    San Marino
-                                  </option>
-                                  <option value="ST">
-                                    Sao Tome and Principe
-                                  </option>
-                                  <option value="SA">
-                                    Saudi Arabia
-                                  </option>
-                                  <option value="SN">
-                                    Senegal
-                                  </option>
-                                  <option value="RS">
-                                    Serbia
-                                  </option>
-                                  <option value="SC">
-                                    Seychelles
-                                  </option>
-                                  <option value="SL">
-                                    Sierra Leone
-                                  </option>
-                                  <option value="SG">
-                                    Singapore
-                                  </option>
-                                  <option value="SX">
-                                    Sint Maarten (Dutch part)
-                                  </option>
-                                  <option value="SK">
-                                    Slovakia
-                                  </option>
-                                  <option value="SI">
-                                    Slovenia
-                                  </option>
-                                  <option value="SB">
-                                    Solomon Islands
-                                  </option>
-                                  <option value="SO">
-                                    Somalia
-                                  </option>
-                                  <option value="ZA">
-                                    South Africa
-                                  </option>
-                                  <option value="GS">
-                                    South Georgia and the South Sandwich Islands
-                                  </option>
-                                  <option value="SS">
-                                    South Sudan
-                                  </option>
-                                  <option value="ES">
-                                    Spain
-                                  </option>
-                                  <option value="LK">
-                                    Sri Lanka
-                                  </option>
-                                  <option value="SD">
-                                    Sudan
-                                  </option>
-                                  <option value="SR">
-                                    Suriname
-                                  </option>
-                                  <option value="SJ">
-                                    Svalbard and Jan Mayen
-                                  </option>
-                                  <option value="SZ">
-                                    Swaziland
-                                  </option>
-                                  <option value="SE">
-                                    Sweden
-                                  </option>
-                                  <option value="CH">
-                                    Switzerland
-                                  </option>
-                                  <option value="SY">
-                                    Syrian Arab Republic
-                                  </option>
-                                  <option value="TW">
-                                    Taiwan, Province of China
-                                  </option>
-                                  <option value="TJ">
-                                    Tajikistan
-                                  </option>
-                                  <option value="TZ">
-                                    Tanzania, United Republic of
-                                  </option>
-                                  <option value="TH">
-                                    Thailand
-                                  </option>
-                                  <option value="TL">
-                                    Timor-Leste
-                                  </option>
-                                  <option value="TG">
-                                    Togo
-                                  </option>
-                                  <option value="TK">
-                                    Tokelau
-                                  </option>
-                                  <option value="TO">
-                                    Tonga
-                                  </option>
-                                  <option value="TT">
-                                    Trinidad and Tobago
-                                  </option>
-                                  <option value="TN">
-                                    Tunisia
-                                  </option>
-                                  <option value="TR">
-                                    Turkey
-                                  </option>
-                                  <option value="TM">
-                                    Turkmenistan
-                                  </option>
-                                  <option value="TC">
-                                    Turks and Caicos Islands
-                                  </option>
-                                  <option value="TV">
-                                    Tuvalu
-                                  </option>
-                                  <option value="UG">
-                                    Uganda
-                                  </option>
-                                  <option value="UA">
-                                    Ukraine
-                                  </option>
-                                  <option value="AE">
-                                    United Arab Emirates
-                                  </option>
-                                  <option value="GB">
-                                    United Kingdom
-                                  </option>
-                                  <option value="US">
-                                    United States
-                                  </option>
-                                  <option value="UM">
-                                    United States Minor Outlying Islands
-                                  </option>
-                                  <option value="UY">
-                                    Uruguay
-                                  </option>
-                                  <option value="UZ">
-                                    Uzbekistan
-                                  </option>
-                                  <option value="VU">
-                                    Vanuatu
-                                  </option>
-                                  <option value="VE">
-                                    Venezuela, Bolivarian Republic of
-                                  </option>
-                                  <option value="VN">
-                                    Viet Nam
-                                  </option>
-                                  <option value="VG">
-                                    Virgin Islands, British
-                                  </option>
-                                  <option value="VI">
-                                    Virgin Islands, U.S.
-                                  </option>
-                                  <option value="WF">
-                                    Wallis and Futuna
-                                  </option>
-                                  <option value="EH">
-                                    Western Sahara
-                                  </option>
-                                  <option value="YE">
-                                    Yemen
-                                  </option>
-                                  <option value="ZM">
-                                    Zambia
-                                  </option>
-                                  <option value="ZW">
-                                    Zimbabwe
-                                  </option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <input class="font-family-inherit
-                                        fg-black
-                                        border-box
-                                        rounded
-                                        border
-                                        border-gray-800
-                                        h-3r
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        m-mb2
-                                        w-100p
-                                        block"
-                                 name="vatNumber"
-                                 placeholder="VAT Number (EU Customers Only)"
-                                 type="text">
-                        </div>
-                        <div class>
-                          <input class="font-family-inherit
-                                        fg-black
-                                        border-box
-                                        rounded
-                                        border
-                                        border-gray-800
-                                        h-3r
-                                        m-pl1
-                                        m-pr1
-                                        m-pt1
-                                        m-pb1
-                                        m-mb2
-                                        w-100p
-                                        block"
-                                 name="coupon"
-                                 placeholder="Coupon Code"
-                                 type="text"
-                                 value="coupon-deadbeef">
-                        </div>
-                        <div class="font-family-inherit
-                                    fg-black
-                                    border-box
-                                    rounded
-                                    border
-                                    border-gray-800
-                                    h-3r
-                                    m-pl1
-                                    m-pr1
-                                    m-pt1
-                                    m-pb1
-                                    m-mb2
-                                    flex-column
-                                    flex
-                                    justify-center
-                                    w-100p"
-                             data-stripe-key="pk_test"
-                             id="card-element">
-                        </div>
-                        <div class="fg-red"
-                             id="card-errors"
-                             role="alert">
-                        </div>
-                        <script src>
-                        </script>
-                        <script>
-                          function setFormEnabled(form, isEnabled, elementsMatching) {
-  for (var idx = 0; idx < form.length; idx++) {
-    var formElement = form[idx];
-    if (elementsMatching(formElement)) {
-      formElement.disabled = !isEnabled;
-      if (formElement.tagName == 'BUTTON') {
-        formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
-      }
-    }
-  }
-}
-
-var apiKey = document.getElementById('card-element').dataset.stripeKey;
-var stripe = Stripe(apiKey);
-var elements = stripe.elements();
-
-var style = {
-  base: {
-    color: '#32325d',
-    fontSize: '16px',
-  }
-};
-
-var card = elements.create('card', {style: style});
-card.mount('#card-element');
-
-card.addEventListener('change', function(event) {
-  var displayError = document.getElementById('card-errors');
-  if (event.error) {
-    displayError.textContent = event.error.message;
-  } else {
-    displayError.textContent = '';
-  }
-});
-
-var form = document.getElementById('card-form');
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  setFormEnabled(form, false, function() {
-    return true;
-  });
-
-  stripe.createToken(
-    card,
-    {
-      name: form.stripe_name.value,
-      address_line1: form.stripe_address_line1.value,
-      address_city: form.stripe_address_city.value,
-      address_state: form.stripe_address_state.value,
-      address_zip: form.stripe_address_zip.value,
-      address_country: form.stripe_address_country.value
-    }
-  ).then(function(result) {
-    if (result.error) {
-      var errorElement = document.getElementById('card-errors');
-      errorElement.textContent = result.error.message;
-
-      setFormEnabled(form, true, function(el) {
-        return true;
-      });
-    } else {
-      setFormEnabled(form, true, function(el) {
-        return el.tagName != 'BUTTON';
-      });
-
-      form.token.value = result.token.id;
-      form.submit();
-    }
-  }).catch(function() {
-    setFormEnabled(form, true, function(el) {
-      return true;
-    });
-  });
-});
-                        </script>
-                        <button class="medium
-                                       cursor-pointer
-                                       nowrap
-                                       btn-normal
-                                       rounded
-                                       border-none
-                                       text-decoration-none
-                                       pf-link-white
-                                       fg-white
-                                       bg-purple
-                                       h5
-                                       m-pl2
-                                       m-pr2
-                                       m-mt3">
-                          Subscribe to Point
-                          &#8209;
-                          Free
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+            Subscribe
+          </h1>
+        </div>
+        <div class="start-m
+                    col-m">
+          You selected the 
+          <strong>
+            Personal
+          </strong>
+           plan
+        </div>
+        <div class="end-m
+                    col-m">
+          <a class="pf-link-gray650
+                    underline-link"
+             href="http://localhost:8080/pricing">
+            Change plan
+          </a>
         </div>
       </div>
-    </div>
-    <div class="bg-purple150
-                center-m
-                d-pl0
-                d-pr0
-                d-pt4
-                d-pb4
-                m-pl2
-                m-pr2
-                m-pt3
-                m-pb3
-                row">
-      <div class="col-m
-                  col-d-7
-                  col-m-12">
-        <div class="what-to-expect
-                    start-align
-                    d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3
+      <div class="d-ml4
+                  d-mr4
+                  m-ml2
+                  m-mr2
+                  m-pt3
+                  m-pb3
+                  border-bottom
+                  border-gray-850
+                  row">
+        <div class="d-pb2
+                    m-pb1
+                    col-m
+                    col-m-12">
+          <h1 class="fg-black
+                     bold
+                     ts-d-r2
+                     ts-m-r1_5
+                     lh-2
+                     m-mt0">
+            Billing interval
+          </h1>
+        </div>
+        <div class="border
+                    border-gray-850
                     m-pl2
                     m-pr2
                     m-pt2
                     m-pb2
-                    border
-                    rounded">
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2">
-            What to expect?
-          </h4>
-          <p class="fg-white">
-            Quality video content dissecting some of the most important topics in functional programming. Each
-episode is transcribed for easy searching and reference, and comes with a fully-functioning Swift
-playground so that you can experiment with the concepts discussed.
-          </p>
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt2">
-            What kind of topics will you cover?
-          </h4>
-          <p class="fg-white">
-            We will of course cover all of the classic topics such as functors, monads and applicatives (oh
-my!), but more broadly we will be focusing on some very general themes. Here’s just a small sample
-of some of the things we’re excited to talk about
-          </p>
-          <ul class="fg-green
-                     start-align">
-            <li>
-              Pure functions and side effects
-            </li>
-            <li>
-              Code reuse through function composition
-            </li>
-            <li>
-              Maximizing use of the type-system
-            </li>
-            <li>
-              Turning programming problems into algebraic problems
-            </li>
-          </ul>
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt2">
-            Do you offer enterprise subscriptions?
-          </h4>
-          <p class="fg-white">
-            We do! If your organization is large enough that it is prohibitive to manually manage seats for a
-team subscription, we can negotiate a flat yearly price that will give your entire company access to
-everything Point-Free has to offer.
-             
-            <a href="mailto:support@pointfree.co?subject=Enterprise%20Subscription"
-               style="color:#4cccff;
-                      text-decoration:underline">
-              Contact us
-            </a>
-             with information about your organization size, and we'll get back to you with a quote.
-          </p>
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt2">
-            Do you offer student discounts?
-          </h4>
-          <p class="fg-white">
-            We do! If you 
-            <a href="mailto:support@pointfree.co?subject=Student%20Discount"
-               style="color:#4cccff;
-                      text-decoration:underline">
-              email us
-            </a>
-             proof of your student status (e.g. scan of ID card) we will give you a 50% discount off of the
-             individual plan.
-          </p>
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt2">
-            Can I suggest a topic?
-          </h4>
-          <p class="fg-white">
-            Sure thing! Send us an 
-            <a href="mailto:support@pointfree.co"
-               style="color:#4cccff;
-                      text-decoration:underline">
-              email
-            </a>
-            .
-          </p>
-          <h4 class="fg-white
-                     fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt2">
-            Who are you?
-          </h4>
-          <p class="fg-white">
-            We’re 
-            <a href="http://www.fewbutripe.com"
-               style="color:#4cccff;
-                      text-decoration:underline">
-              Brandon Williams
-            </a>
-             and 
-            <a href="https://www.stephencelis.com"
-               style="color:#4cccff;
-                      text-decoration:underline">
-              Stephen Celis
-            </a>
-            . We’ve been in the iOS and Swift communities for a long time, and have collectively given lots of 
-            talks on various topics. Check out some of our talks here:
-          </p>
-          <ul class="fg-blue
-                     start-align">
-            <li>
-              <a href="http://www.fewbutripe.com/talks/"
-                 style="color:#4cccff;
-                        text-decoration:underline">
-                Brandon’s talks
-              </a>
-            </li>
-            <li>
-              <a href="https://www.stephencelis.com"
-                 style="color:#4cccff;
-                        text-decoration:underline">
-                Stephen’s talks
-              </a>
-            </li>
-          </ul>
+                    col-m
+                    col-m-12"
+             style="line-height:0">
+          <label class="cursor-pointer
+                        flex
+                        items-baseline">
+            <div>
+              <input checked
+                     id="yearly"
+                     type="radio"
+                     name="pricing[billing]"
+                     value="yearly">
+            </div>
+            <div class="m-ml2">
+              <h5 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1
+                         m-ml0
+                         m-mr0
+                         m-mt0
+                         m-mb0">
+                Yearly — 22% off!
+              </h5>
+              <p class="m-pt1
+                        fg-black
+                        normal
+                        h6
+                        lh-4
+                        fg-gray650">
+                $168 per year
+              </p>
+            </div>
+          </label>
+        </div>
+        <div class="border-left
+                    border-right
+                    border-bottom
+                    border-gray-850
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    col-m
+                    col-m-12"
+             style="line-height:0">
+          <label class="cursor-pointer
+                        flex
+                        items-baseline">
+            <div>
+              <input id="monthly"
+                     type="radio"
+                     name="pricing[billing]"
+                     value="monthly">
+            </div>
+            <div class="m-ml2">
+              <h5 class="fg-black
+                         bold
+                         ts-d-r1
+                         ts-m-r0_875
+                         lh-1
+                         m-ml0
+                         m-mr0
+                         m-mt0
+                         m-mb0">
+                Monthly
+              </h5>
+              <p class="m-pt1
+                        fg-black
+                        normal
+                        h6
+                        lh-4
+                        fg-gray650">
+                $18 per month
+              </p>
+            </div>
+          </label>
         </div>
       </div>
-    </div>
+      <div class="d-ml4
+                  d-mr4
+                  m-ml2
+                  m-mr2
+                  m-pt3
+                  m-pb3
+                  border-bottom
+                  border-gray-850
+                  row">
+        <div class="d-pb2
+                    m-pb1
+                    col-m
+                    col-m-12">
+          <h1 class="fg-black
+                     bold
+                     ts-d-r2
+                     ts-m-r1_5
+                     lh-2
+                     m-mt0">
+            Payment info
+          </h1>
+        </div>
+        <label for="card"
+               class="nowrap
+                      fg-black
+                      bg-white
+                      fg-black
+                      bold
+                      ts-d-r1
+                      ts-m-r0_875
+                      lh-1">
+          Credit or debit card
+        </label>
+        <div class="border
+                    border-gray-850
+                    m-pl2
+                    m-pr2
+                    m-pt2
+                    m-pb2
+                    m-mt1
+                    col-m
+                    col-m-12"
+             style="line-height:0">
+          <div class="flex
+                      middle-m">
+            <div class="w-100p"
+                 data-stripe-key="pk_test"
+                 id="card-element">
+            </div>
+          </div>
+        </div>
+        <div class="col-m
+                    col-m-12">
+          <div class="fg-red
+                      fg-black
+                      normal
+                      h6
+                      lh-4"
+               id="card-errors">
+          </div>
+          <input name="token"
+                 type="hidden">
+          <script src>
+          </script>
+          <script>
+            window.addEventListener("load", function() {
+    var apiKey = document.getElementById("card-element").dataset.stripeKey
+  var stripe = Stripe(apiKey)
+  var elements = stripe.elements()
+  var style = {
+    base: {
+      fontSize: "16px",
+    }
+  }
+  var card = elements.create("card", { style: style })
+  card.mount("#card-element")
+  var displayError = document.getElementById("card-errors")
+  card.addEventListener("change", function(event) {
+    if (event.error) {
+      displayError.textContent = event.error.message
+    } else {
+      displayError.textContent = ""
+    }
+  });
+  var form = document.getElementById("subscribe-form")
+  function setFormEnabled(isEnabled, elementsMatching) {
+    for (var idx = 0; idx < form.length; idx++) {
+      var formElement = form[idx]
+      if (elementsMatching(formElement)) {
+        formElement.disabled = !isEnabled
+        if (formElement.tagName == "BUTTON") {
+            formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+        }
+      }
+    }
+  }
+  form.addEventListener("submit", function(event) {
+    event.preventDefault()
+    setFormEnabled(false, function() { return true })
+    stripe.createToken(
+      card, { /*TODO: name: form.stripe_name.value*/ }
+    ).then(function(result) {
+      if (result.error) {
+        displayError.textContent = result.error.message
+        setFormEnabled(true, function(el) { return true })
+      } else {
+          setFormEnabled(true, function(el) { return el.tagName != "BUTTON" })
+        form.token.value = result.token.id
+        form.submit()
+      }
+    }).catch(function() {
+      setFormEnabled(true, function(el) { return true })
+    })
+  })
+})
+          </script>
+        </div>
+        <div class="m-pb2
+                    m-pt3
+                    col-m
+                    col-m-12">
+          <p class="fg-black
+                    normal
+                    h6
+                    lh-4
+                    fg-gray400"
+             id="pricing-preview">
+          </p>
+        </div>
+      </div>
+      <div class="d-ml4
+                  d-mr4
+                  m-ml2
+                  m-mr2
+                  d-pb4
+                  d-pt3
+                  m-pb4
+                  m-pt3
+                  middle-m
+                  row">
+        <div class="start-m
+                    col-m">
+          <div class="flex
+                      align-center
+                      middle-m">
+            <h3 class="fg-black
+                       bold
+                       ts-d-r3
+                       ts-m-r2
+                       lh-2
+                       normal"
+                id="total">
+            </h3>
+            <input name="pricing[quantity]"
+                   type="hidden">
+            <script>
+              function format(money) {
+  return "$" + money.toFixed(2).replace(/\.00$/, "")
+}
+function updateSeats() {
+  var teamMembers = document.getElementById("team-members")
+  var seats = teamMembers
+    ? teamMembers.childNodes.length + 1
+    : 1
+  var form = document.getElementById("subscribe-form")
+  form["pricing[quantity]"].value = seats
+  var monthly = form["pricing[billing]"].value == "monthly"
+  var monthlyPrice = (
+    monthly
+      ? seats * 900 * 0.01
+      : seats * 700 * 0.01
+  )
+  document.getElementById("total").textContent = format(
+    monthly
+      ? monthlyPrice
+      : monthlyPrice * 12
+  )
+  document.getElementById("pricing-preview").innerHTML = (
+    "You will be charged <strong>"
+      + format(monthlyPrice)
+      + " per month</strong>"
+      + (monthly ? "" : " times <strong>12 months</strong>")
+      + "."
+  )
+}
+window.addEventListener("load", function() {
+  updateSeats()
+  var form = document.getElementById("subscribe-form")
+  form.addEventListener("change", updateSeats)
+})
+            </script>
+            <span class="fg-black
+                         normal
+                         h6
+                         lh-4
+                         fg-gray400
+                         m-ml1
+                         m-pb1">
+              Total
+            </span>
+          </div>
+        </div>
+        <div class="end-m
+                    col-m">
+          <button class="border-none
+                         text-decoration-none
+                         cursor-pointer
+                         bold
+                         ts-d-r1
+                         ts-m-r1
+                         m-pl2
+                         m-pr2
+                         m-pt2
+                         m-pb2
+                         center
+                         bg-black
+                         fg-white
+                         pf-link-white">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </form>
     <footer class="row
                    d-pl4
                    d-pr4
@@ -3461,6 +2296,16 @@ everything Point-Free has to offer.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black
