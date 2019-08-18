@@ -289,14 +289,14 @@ final class StripeTests: XCTestCase {
     )
     assertSnapshot(
       matching: Stripe
-        .createSubscription(customer: "cus_test", plan: .teamYearly, quantity: 2, coupon: nil)
+        .createSubscription(customer: "cus_test", plan: .yearly, quantity: 2, coupon: nil)
         .rawValue,
       as: .raw,
       named: "create-subscription"
     )
     assertSnapshot(
       matching: Stripe
-        .createSubscription(customer: "cus_test", plan: .individualMonthly, quantity: 1, coupon: "freebie")
+        .createSubscription(customer: "cus_test", plan: .monthly, quantity: 1, coupon: "freebie")
         .rawValue,
       as: .raw,
       named: "create-subscription-coupon"
@@ -332,7 +332,7 @@ final class StripeTests: XCTestCase {
       named: "fetch-plans"
     )
     assertSnapshot(
-      matching: Stripe.fetchPlan(id: .individualMonthly).rawValue,
+      matching: Stripe.fetchPlan(id: .monthly).rawValue,
       as: .raw,
       named: "fetch-plan"
     )
@@ -357,7 +357,7 @@ final class StripeTests: XCTestCase {
       named: "update-customer"
     )
     assertSnapshot(
-      matching: Stripe.updateSubscription(.mock, .individualYearly, 1, nil)!.rawValue,
+      matching: Stripe.updateSubscription(.mock, .yearly, 1, nil)!.rawValue,
       as: .raw,
       named: "update-subscription"
     )
