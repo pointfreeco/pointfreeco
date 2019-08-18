@@ -46,7 +46,18 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
     <| { conn in
       Current.database.deleteTeamInvite(get1(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
+        .flatMap(
+          const(
+            conn
+              |> redirect(
+                to: path(to: .account(.index)),
+                headersMiddleware: flash(
+                  .notice,
+                  "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+                )
+            )
+          )
+      )
 }
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
