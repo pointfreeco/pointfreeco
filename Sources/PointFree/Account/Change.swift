@@ -12,82 +12,72 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
+import TaggedMoney
 import Tuple
 import View
 
 // MARK: Middleware
 
-let subscriptionChangeMiddleware =
+let subscriptionChangeMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, Pricing?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(
-      require2 >>> pure,
-      or: redirect(
-        to: .account(.index),
-        headersMiddleware: flash(
-          .error,
-          "Invalid subscription data. Please try again or contact <support@pointfree.co>."
-        )
-      )
-    )
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
     <<< fetchSeatsTaken
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireValidSeating
-    <| map(lower)
-    >>> subscriptionChange
+    <| changeSubscription(
+      error: subscriptionModificationErrorMiddleware,
+      success: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.notice, "We’ve modified your subscription.")
+      )
+)
 
-private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
+func changeSubscription(
+  error: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
+  success: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
+  ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (currentSubscription, _, _, newPricing) = conn.data
+    return { conn in
+      let (currentSubscription, newPricing) = conn.data
 
-    let newPrice = (defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100) * newPricing.quantity
-    let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity).rawValue
+      let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
+      let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity)
 
-    let shouldProrate = newPrice > currentPrice
-    let shouldInvoice = newPricing.plan == currentSubscription.plan.id
-      && newPricing.quantity > currentSubscription.quantity
-      || shouldProrate
-      && newPricing.interval == currentSubscription.plan.interval
+      let shouldProrate = newPrice > currentPrice
+      let shouldInvoice = newPricing.plan == currentSubscription.plan.id
+        && newPricing.quantity > currentSubscription.quantity
+        || shouldProrate
+        && newPricing.interval == currentSubscription.plan.interval
 
-    return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
-      .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
-        if shouldInvoice {
-          parallel(
-            Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
-              .withExcept(notifyError(subject: "Invoice Failed"))
-              .run
-            )
-            .run(const(()))
-        }
-
-        return pure(sub)
-      }
-      .run
-      .flatMap(
-        either(
-          const(
-            conn |> redirect(
-              to: .account(.index),
-              headersMiddleware: flash(
-                .error,
-                """
-                We couldn’t modify your subscription at this time. Please try again or contact
-                <support@pointfree.co>.
-                """
+      return Current.stripe
+        .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
+        .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
+          if shouldInvoice {
+            parallel(
+              Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
+                .withExcept(notifyError(subject: "Invoice Failed"))
+                .run
               )
-            )
-          )
-        ) { _ in
-          // TODO: Send email?
+              .run(const(()))
+          }
 
-          return conn |> redirect(
-            to: .account(.index),
-            headersMiddleware: flash(.notice, "We’ve modified your subscription.")
-          )
+          return pure(sub)
         }
-    )
+        .run
+        .flatMap(
+          either(
+            const(error(conn.map(const(unit)))),
+            const(success(conn.map(const(unit))))
+          )
+      )
+    }
 }
 
 func requireActiveSubscription<A>(
@@ -108,8 +98,24 @@ func requireActiveSubscription<A>(
       <| middleware
 }
 
+func subscriptionModificationErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn |> redirect(
+    to: .account(.index),
+    headersMiddleware: flash(
+      .error,
+      """
+      We couldn’t modify your subscription at this time. Please try again or contact
+      <support@pointfree.co>.
+      """
+    )
+  )
+}
+
 private func requireValidSeating(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription, Pricing), Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data> {
 
@@ -123,7 +129,9 @@ private func requireValidSeating(
         )
       )
       )
-      <| middleware
+      <| map(lower)
+      >>> map({ subscription, _, _, pricing in (subscription, pricing) })
+      >>> middleware
 }
 
 private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Pricing>) -> Bool {
@@ -160,15 +168,15 @@ private func fetchSeatsTaken<A>(
     }
 }
 
-private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) -> Int {
-  switch (lane, billing) {
+private func defaultPricing(for pricing: Pricing) -> Cents<Int> {
+  switch (pricing.lane, pricing.billing) {
   case (.personal, .monthly):
-    return 18
+    return 18_00
   case (.personal, .yearly):
-    return 168
+    return 168_00
   case (.team, .monthly):
-    return 16
+    return 16_00
   case (.team, .yearly):
-    return 144
+    return 144_00
   }
 }
