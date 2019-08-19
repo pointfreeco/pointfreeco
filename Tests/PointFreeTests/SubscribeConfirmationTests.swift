@@ -64,7 +64,7 @@ class SubscriptionConfirmationTests: TestCase {
 
       assertSnapshot(
         matching: webView,
-        as: .image(afterRunningJavascript: "document.getElementById('monthly').click()"),
+        as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
         named: "desktop"
       )
     }
@@ -116,7 +116,7 @@ class SubscriptionConfirmationTests: TestCase {
 
       assertSnapshot(
         matching: webView,
-        as: .image(afterRunningJavascript: "document.getElementById('monthly').click()"),
+        as: .image(afterEvaluatingJavascript: "document.getElementById('monthly').click()"),
         named: "desktop"
       )
     }
@@ -142,7 +142,7 @@ class SubscriptionConfirmationTests: TestCase {
 
       assertSnapshot(
         matching: webView,
-        as: .image(afterRunningJavascript: "document.getElementById('add-team-member-button').click()"),
+        as: .image(afterEvaluatingJavascript: "document.getElementById('add-team-member-button').click()"),
         named: "desktop"
       )
     }
@@ -180,13 +180,13 @@ class SubscriptionConfirmationTests: TestCase {
 
 #if os(iOS) || os(macOS)
 extension Snapshotting where Value == WKWebView, Format == NSImage {
-  static func image(afterRunningJavascript: String) -> Snapshotting {
+  static func image(afterEvaluatingJavascript: String) -> Snapshotting {
     return Snapshotting<NSView, NSImage>.image.asyncPullback { (webView: WKWebView) -> Async<NSView> in
       return Async<NSView> { callback in
         let delegate = NavigationDelegate()
         if webView.isLoading {
           delegate.didFinish = {
-            webView.evaluateJavaScript(afterRunningJavascript) { _, _ in
+            webView.evaluateJavaScript(afterEvaluatingJavascript) { _, _ in
               _ = delegate
               callback(webView)
             }
