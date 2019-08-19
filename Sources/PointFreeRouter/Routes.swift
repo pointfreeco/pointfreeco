@@ -109,6 +109,27 @@ extension PartialIso where A == String {
   }
 }
 
+import Models
+import UrlFormEncoding
+let subscriberDataIso = PartialIso<String, SubscribeData?>(
+  apply: { str in
+    let keyValues = parse(query: str)
+    let coupon = (keyValues.first(where: { key, value in key == "coupon" })?.1).flatMap(Coupon.Id.init(rawValue:))
+    let billing = (keyValues.first(where: { key, value in key == "pricing[billing]" })?.1).flatMap(Pricing.Billing.init(rawValue:))
+    let quantity = (keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1).flatMap(Int.init)
+    fatalError()
+},
+  unapply: { data in
+    guard let data = data else { return nil }
+    return """
+coupon=\(data.coupon?.rawValue ?? "")&\
+pricing[billing]=\(data.pricing.billing.rawValue)&\
+pricing[quantity]=\(data.pricing.quantity)&\
+\(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))
+"""
+}
+)
+
 let routers: [Router<Route>] = [
   .about
     <¢> get %> lit("about") <% end,
@@ -210,7 +231,7 @@ let routers: [Router<Route>] = [
     <¢> get %> lit("privacy") <% end,
 
   .subscribe
-    <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+    <¢> post %> lit("subscribe") %> stringBody.map(subscriberDataIso) <% end,
 
   PartialIso.subscribeConfirmation
     <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable)
