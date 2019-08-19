@@ -13,8 +13,8 @@ import TaggedMoney
 
 public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
-  _ coupon: Stripe.Coupon?,
   _ subscribeData: SubscribeData?,
+  _ coupon: Stripe.Coupon?,
   _ currentUser: User,
   _ stripeJs: String,
   _ stripePublishableKey: String
