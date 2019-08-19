@@ -186,8 +186,9 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case let .subscribeConfirmation(lane, subscribeData):
-      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
+    case let .subscribeConfirmation(lane, billing, teammates):
+      // TODO: SubscribeData.init
+      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. nil .*. nil .*. unit))
         |> subscribeConfirmation
 
     case .team(.leave):
@@ -216,6 +217,20 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn
         |> writeStatus(.internalServerError)
         >=> respond(text: "We don't support this event.")
+    }
+}
+
+public func redirect<A>(
+  with route: @escaping (A) -> Route,
+  headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
+  )
+  ->
+  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+    return { conn in
+      conn |> redirect(
+        to: path(to: route(conn.data)),
+        headersMiddleware: headersMiddleware
+      )
     }
 }
 
