@@ -390,6 +390,11 @@ public struct Plan: Codable, Equatable {
     public var amount: Cents<Int>
     public var upTo: Int?
 
+    public init(amount: Cents<Int>, upTo: Int?) {
+      self.amount = amount
+      self.upTo = upTo
+    }
+
     private enum CodingKeys: String, CodingKey {
       case amount
       case upTo = "up_to"

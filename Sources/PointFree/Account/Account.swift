@@ -914,7 +914,6 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
   guard let amount = subscription.plan.tiers?.min(by: { $0.amount < $1.amount })?.amount else { return [] }
 
   let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
-  let amountPerPeriod = "$\(amount.rawValue / 100) per \(interval)"
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
