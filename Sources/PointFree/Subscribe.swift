@@ -13,6 +13,7 @@ let subscribeMiddleware =
     require1 >>> pure,
     or: redirect(
       to: .pricingLanding,
+//      with: subscribeConfirmationWithSubscribeData,
       headersMiddleware: flash(.error, "Error creating subscription!")
     )
     )
@@ -20,6 +21,7 @@ let subscribeMiddleware =
       get1 >>> ^\.pricing >>> validateQuantity,
       or: redirect(
         to: .pricingLanding,
+//        with: subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
       )
     )
@@ -27,6 +29,7 @@ let subscribeMiddleware =
       get1 >>> validateCoupon(forSubscribeData:),
       or: redirect(
         to: .pricingLanding,
+//        with: subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
       )
     )
@@ -78,10 +81,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
             ?? "Error creating subscription!"
           return conn
             |> redirect(
-              to: .subscribeConfirmation(
-                subscribeData.pricing.isPersonal ? .personal : .team,
-                subscribeData
-              ),
+              to: subscribeConfirmationWithSubscribeData(subscribeData),
               headersMiddleware: flash(.error, errorMessage)
           )
       },
@@ -111,4 +111,12 @@ private func loginAndRedirectToPricing<A>(
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
   return subscribeData.coupon == nil || subscribeData.pricing.quantity == 1
+}
+
+private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
+  return .subscribeConfirmation(
+    subscribeData?.pricing.isPersonal == .some(true) ? .personal : .team,
+    subscribeData?.pricing.billing,
+    subscribeData?.teammates
+  )
 }

@@ -28,8 +28,8 @@ public let subscribeConfirmation: Middleware<
           currentUser: currentUser,
           data: (
             lane,
-            coupon,
             subscribeData,
+            coupon,
             currentUser,
             Current.stripe.js,
             Current.envVars.stripe.publishableKey.rawValue
@@ -44,16 +44,16 @@ public let subscribeConfirmation: Middleware<
 public let discountSubscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeData?, Stripe.Coupon.Id?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane,  SubscribeData?, Stripe.Coupon.Id?>,
   Data
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
-    or: redirect(to: .subscribeConfirmation(.personal, nil), headersMiddleware: flash(.error, couponError))
+    or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
     )
     <<< filter(
       get6 >>> ^\.valid,
-      or: redirect(to: .subscribeConfirmation(.personal, nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
     )
     <| map(over6(Optional.some))
     >>> pure
