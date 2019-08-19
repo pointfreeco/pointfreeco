@@ -972,6 +972,24 @@ There clearly was a before and an after @pointfreeco for me. I've always been an
 
     Testimonial(
       quote: """
+I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
+""",
+      subscriber: "Christina Lee",
+      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
+      twitterHandle: "RunChristinaRun"
+    ),
+
+    Testimonial(
+      quote: """
+tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
+""",
+      subscriber: "Meghan Kane",
+      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
+      twitterHandle: "meghafon"
+    ),
+
+    Testimonial(
+      quote: """
 After diving into @pointfreeco series reading Real World Haskell doesn’t seem all that intimidating after all. Major takeaway: the lesser is word “monad” is mentioned the better😅
 """,
       subscriber: "Ilya",
@@ -1080,15 +1098,6 @@ Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super c
 
     Testimonial(
       quote: """
-tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
-""",
-      subscriber: "Meghan Kane",
-      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
-      twitterHandle: "meghafon"
-    ),
-
-    Testimonial(
-      quote: """
 @pointfreeco ❤️: Thank you! 🧠: … The brain can’t say anything. It is blown away (🤯)!
 """,
       subscriber: "Rajiv Jhoomuck",
@@ -1112,15 +1121,6 @@ I haven't really done much Swift, but watched this out of curiosity, & it's real
       subscriber: "Josh Burgess",
       tweetUrl: "https://twitter.com/_joshburgess/status/971169503890624513",
       twitterHandle: "_joshburgess"
-    ),
-
-    Testimonial(
-      quote: """
-I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
-""",
-      subscriber: "Christina Lee",
-      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
-      twitterHandle: "RunChristinaRun"
     ),
 
     Testimonial(
