@@ -3,6 +3,7 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -13,6 +14,7 @@ import TaggedMoney
 public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
   _ coupon: Stripe.Coupon?,
+  _ subscribeData: SubscribeData?,
   _ currentUser: User,
   _ stripeJs: String,
   _ stripePublishableKey: String
@@ -27,8 +29,8 @@ public func subscriptionConfirmation(
         style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
       ],
       header(lane)
-        + (lane == .team ? teamMembers(currentUser) : [])
-        + billingPeriod(lane)
+        + (lane == .team ? teamMembers(currentUser, subscribeData) : [])
+        + billingPeriod(lane, subscribeData)
         + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
         + total(lane: lane, coupon: coupon)
     )
@@ -79,7 +81,7 @@ private func header(_ lane: Pricing.Lane) -> [Node] {
   ]
 }
 
-private func teamMembers(_ currentUser: User) -> [Node] {
+private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeData?) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -93,7 +95,8 @@ private func teamMembers(_ currentUser: User) -> [Node] {
         gridColumn(
           sizes: [.mobile: 12],
           [id("team-members")],
-          [teamMemberTemplate(withRemoveButton: false)]
+          (subscribeData?.teammates ?? [""])
+            .map { teamMemberTemplate($0, withRemoveButton: false) }
         ),
         gridColumn(
           sizes: [.mobile: 12],
@@ -107,7 +110,7 @@ private func teamMembers(_ currentUser: User) -> [Node] {
                 .element(
                   "template",
                   [("id", "team-member-template")],
-                  [teamMemberTemplate(withRemoveButton: true)]
+                  [teamMemberTemplate("", withRemoveButton: true)]
                 ),
                 a(
                   [
@@ -191,7 +194,7 @@ private func teamOwner(_ currentUser: User) -> Node {
   )
 }
 
-private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
+private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -> Node {
   return gridColumn(
     sizes: [.mobile: 12],
     [
@@ -231,7 +234,8 @@ private func teamMemberTemplate(withRemoveButton: Bool) -> Node {
             style(
               borderWidth(all: 0)
                 <> key("outline", "none")
-            )
+            ),
+            value(email.rawValue),
           ]),
           ] + (withRemoveButton
             ? [
@@ -258,7 +262,7 @@ updateSeats()
   )
 }
 
-private func billingPeriod(_ lane: Pricing.Lane) -> [Node] {
+private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -290,7 +294,7 @@ private func billingPeriod(_ lane: Pricing.Lane) -> [Node] {
               [
                 div([
                   input([
-                    checked(true),
+                    checked((subscribeData?.pricing.billing == .yearly) ?? true),
                     id("yearly"),
                     type(.radio),
                     name("pricing[billing]"),
@@ -360,6 +364,7 @@ private func billingPeriod(_ lane: Pricing.Lane) -> [Node] {
                 div(
                   [
                     input([
+                      checked((subscribeData?.pricing.billing == .monthly) ?? false),
                       id("monthly"),
                       type(.radio),
                       name("pricing[billing]"),

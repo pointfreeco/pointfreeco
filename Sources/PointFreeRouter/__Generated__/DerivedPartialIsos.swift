@@ -722,6 +722,10 @@ import Stripe
 
       extension PartialIso where A == (
             Pricing.Lane
+          , 
+            Pricing.Billing?
+          , 
+            [EmailAddress]?
         ), B == Route {
 
           public static let subscribeConfirmation = parenthesize <| PartialIso(

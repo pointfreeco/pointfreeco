@@ -31,7 +31,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
-  case subscribeConfirmation(Pricing.Lane)
+  case subscribeConfirmation(Pricing.Lane, Pricing.Billing?, [EmailAddress]?)
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -97,6 +97,15 @@ extension PartialIso {
         else { return nil }
       return value
     }
+  }
+}
+
+extension PartialIso where B == String {
+  public static func array<C>(of iso: PartialIso<C, B>) -> PartialIso where A == Array<C> {
+    return PartialIso(
+      apply: { $0.compactMap(iso.apply).joined(separator: ",") },
+      unapply: { $0.split(separator: ",").compactMap { iso.unapply(String($0)) } }
+    )
   }
 }
 
@@ -204,7 +213,10 @@ let routers: [Router<Route>] = [
     <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
 
   .subscribeConfirmation
-    <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable) <% end,
+    <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable)
+    <%> queryParam("billing", opt(.rawRepresentable))
+    <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
+    <% end,
 
   .team <<< .leave
     <¢> post %> lit("account") %> lit("team") %> lit("leave")

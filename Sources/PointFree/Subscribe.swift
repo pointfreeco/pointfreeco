@@ -78,7 +78,10 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
             ?? "Error creating subscription!"
           return conn
             |> redirect(
-              to: .pricingLanding,
+              to: .subscribeConfirmation(
+                subscribeData.pricing.isPersonal ? .personal : .team,
+                subscribeData
+              ),
               headersMiddleware: flash(.error, errorMessage)
           )
       },
