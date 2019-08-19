@@ -1,0 +1,14 @@
+POST http://localhost:8080/subscribe
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+pricing[billing]=yearly&pricing[lane]=team&pricing[quantity]=5&teammates[0]=blob1%40pointfree.co&teammates[1]=blob2%40pointfree.co&teammates[2]=blob3%40pointfree.co&teammates[3]=blob4%40pointfree.co&teammates[4]=blob5%40pointfree.co&token=stripe-deadbeef
+
+302 Found
+Location: /account
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"You are now subscribed to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
