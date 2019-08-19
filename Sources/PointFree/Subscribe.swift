@@ -12,24 +12,21 @@ let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
     or: redirect(
-      to: .pricingLanding,
-//      with: subscribeConfirmationWithSubscribeData,
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
       headersMiddleware: flash(.error, "Error creating subscription!")
     )
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
       or: redirect(
-        to: .pricingLanding,
-//        with: subscribeConfirmationWithSubscribeData,
+        with: get1 >>> subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
       )
     )
     <<< filter(
       get1 >>> validateCoupon(forSubscribeData:),
       or: redirect(
-        to: .pricingLanding,
-//        with: subscribeConfirmationWithSubscribeData,
+        with: get1 >>> subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
       )
     )
