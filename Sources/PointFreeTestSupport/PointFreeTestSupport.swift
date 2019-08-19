@@ -175,3 +175,10 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
     basicAuth: basicAuth
   )
 }
+
+extension Database.Client {
+  public static let liveTest = Database.Client(
+    databaseUrl: Current.envVars.postgres.databaseUrl,
+    logger: Current.logger
+  )
+}
