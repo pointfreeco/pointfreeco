@@ -45,6 +45,66 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
+  func testPersonal_LoggedIn_SwitchToMonthly() {
+    record = true
+    update(
+      &Current,
+      \.database.fetchUserById .~ const(pure(.mock)),
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(from: request(to: .subscribeConfirmation(.personal), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let html = String(decoding: result.perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
+      assertSnapshot(matching: webView, as: .image, named: "desktop-before")
+
+      let expectation = self.expectation(description: "JS")
+
+      webView.evaluateJavaScript(#"""
+      document.getElementById("monthly").checked = true
+      """#)
+      
+      assertSnapshot(matching: webView, as: .image, named: "desktop-after")
+
+
+
+//      assertSnapshots(
+//        matching: conn |> siteMiddleware,
+//        as: [
+//          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+//          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+//        ]
+//      )
+    }
+    #endif
+  }
+//    #if !os(Linux)
+//    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+//      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+//      let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
+//      webView.loadHTMLString(html, baseURL: nil)
+//      assertSnapshot(matching: webView, as: .image, named: "desktop")
+//
+//      webView.frame.size.width = 500
+//      webView.frame.size.height = 1700
+//      assertSnapshot(matching: webView, as: .image, named: "mobile")
+//
+//      webView.evaluateJavaScript("""
+//        document.getElementsByTagName('details')[0].open = true
+//        """)
+//      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+//    }
+//    #endif
+//
+//    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+//  }
+
   func testTeam_LoggedIn() {
     update(
       &Current,
