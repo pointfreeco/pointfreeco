@@ -41,6 +41,10 @@ public func require5<A, B, C, D, E, Z>(_ x: T6<A, B, C, D, E?, Z>) -> T6<A, B, C
   return get5(x).map { over5(const($0)) <| x }
 }
 
+public func require6<A, B, C, D, E, F, Z>(_ x: T7<A, B, C, D, E, F?, Z>) -> T7<A, B, C, D, E, F, Z>? {
+  return get6(x).map { over6(const($0)) <| x }
+}
+
 public func sequence1<A, Z>(_ t: T2<IO<A>, Z>) -> IO<T2<A, Z>> {
   return IO {
     return t |> over1(perform)
@@ -68,5 +72,11 @@ public func sequence4<A, B, C, D, Z>(_ t: T5<A, B, C, IO<D>, Z>) -> IO<T5<A, B, 
 public func sequence5<A, B, C, D, E, Z>(_ t: T6<A, B, C, D, IO<E>, Z>) -> IO<T6<A, B, C, D, E, Z>> {
   return IO {
     return t |> over5(perform)
+  }
+}
+
+public func sequence6<A, B, C, D, E, F, Z>(_ t: T7<A, B, C, D, E, IO<F>, Z>) -> IO<T7<A, B, C, D, E, F, Z>> {
+  return IO {
+    return t |> over6(perform)
   }
 }
