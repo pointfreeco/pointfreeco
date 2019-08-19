@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60546
+Content-Length: 60647
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1976,7 +1976,8 @@ html {
                             border-right-width:0;
                             border-bottom-width:0;
                             border-left-width:0;
-                            outline:none">
+                            outline:none"
+                     value>
             </div>
           </div>
         </div>
@@ -2010,7 +2011,8 @@ html {
                                 border-right-width:0;
                                 border-bottom-width:0;
                                 border-left-width:0;
-                                outline:none">
+                                outline:none"
+                         value>
                   <a class="cursor-pointer
                             fg-red
                             pf-link-red
@@ -2028,7 +2030,8 @@ updateSeats()">
                 </div>
               </div>
             </template>
-            <a class="medium
+            <a id="add-team-member-button"
+               class="medium
                       cursor-pointer
                       nowrap
                       pf-link-black

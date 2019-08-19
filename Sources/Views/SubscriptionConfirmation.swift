@@ -114,6 +114,7 @@ private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeData?) -
                 ),
                 a(
                   [
+                    id("add-team-member-button"),
                     `class`([
                       Class.type.medium,
                       Class.cursor.pointer,
