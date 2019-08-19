@@ -294,7 +294,7 @@ private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?
               [
                 div([
                   input([
-                    checked((subscribeData?.pricing.billing == .yearly) ?? true),
+                    checked((subscribeData?.pricing.billing ?? .yearly) == .yearly),
                     id("yearly"),
                     type(.radio),
                     name("pricing[billing]"),
@@ -364,7 +364,7 @@ private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?
                 div(
                   [
                     input([
-                      checked((subscribeData?.pricing.billing == .monthly) ?? false),
+                      checked(subscribeData?.pricing.billing == .monthly),
                       id("monthly"),
                       type(.radio),
                       name("pricing[billing]"),
