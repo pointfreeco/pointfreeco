@@ -592,7 +592,8 @@ private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> [Node] {
                   [
                     `class`([
                       Class.pf.type.responsiveTitle2,
-                      Class.type.normal
+                      Class.type.normal,
+                      Class.margin([.mobile: [.topBottom: 0]])
                     ]),
                     id("total"),
                   ],

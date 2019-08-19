@@ -68,6 +68,7 @@ final class AccountTests: TestCase {
 
   func testTeam_OwnerIsNotSubscriber() {
     let currentUser = User.nonSubscriber
+      |> \.episodeCreditCount .~ 2
     let subscription = Subscription.mock
       |> \.userId .~ currentUser.id
 

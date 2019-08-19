@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54229
+Content-Length: 54287
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2161,7 +2161,9 @@ html {
                        ts-d-r3
                        ts-m-r2
                        lh-2
-                       normal"
+                       normal
+                       m-mt0
+                       m-mb0"
                 id="total">
             </h3>
             <input name="pricing[quantity]"

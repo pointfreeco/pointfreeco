@@ -954,8 +954,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
                 ])
             ],
             [.text("""
-Add a teammate to your subscription for just \(amountPerPeriod). Your first invoice will be prorated
-based on your current billing cycle.
+Add a teammate to your subscription for a discounted rate of $\(amount.rawValue / 100)
+per \(interval). Your first invoice will be prorated based on your current billing cycle.
 """)]
           ),
           ])
