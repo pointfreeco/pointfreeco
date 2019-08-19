@@ -12,7 +12,7 @@ import Views
 public let subscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple5<User?, Route, SubscriberState, Pricing.Lane, Stripe.Coupon?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeData?, Stripe.Coupon?>,
   Data
   >
   = filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -21,7 +21,7 @@ public let subscribeConfirmation: Middleware<
     >=> map(lower)
     >>> respond(
       view: View(Views.subscriptionConfirmation),
-      layoutData: { currentUser, currentRoute, subscriberState, lane, coupon in
+      layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
@@ -29,6 +29,7 @@ public let subscribeConfirmation: Middleware<
           data: (
             lane,
             coupon,
+            subscribeData,
             currentUser,
             Current.stripe.js,
             Current.envVars.stripe.publishableKey.rawValue
@@ -43,18 +44,18 @@ public let subscribeConfirmation: Middleware<
 public let discountSubscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple5<User?, Route, SubscriberState, Pricing.Lane, Stripe.Coupon.Id?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeData?, Stripe.Coupon.Id?>,
   Data
   >
   = filterMap(
-    over5(fetchCoupon) >>> sequence5 >>> map(require5),
-    or: redirect(to: .subscribeConfirmation(.personal), headersMiddleware: flash(.error, couponError))
+    over6(fetchCoupon) >>> sequence6 >>> map(require6),
+    or: redirect(to: .subscribeConfirmation(.personal, nil), headersMiddleware: flash(.error, couponError))
     )
     <<< filter(
-      get5 >>> ^\.valid,
-      or: redirect(to: .subscribeConfirmation(.personal), headersMiddleware: flash(.error, couponError))
+      get6 >>> ^\.valid,
+      or: redirect(to: .subscribeConfirmation(.personal, nil), headersMiddleware: flash(.error, couponError))
     )
-    <| map(over5(Optional.some))
+    <| map(over6(Optional.some))
     >>> pure
     >=> subscribeConfirmation
 
