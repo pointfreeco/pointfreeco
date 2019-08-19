@@ -57,7 +57,7 @@ let negate = PartialIso<Bool, Bool>(apply: (!), unapply: (!))
 
 let formDecoder: UrlFormDecoder = {
   let decoder = UrlFormDecoder()
-  decoder.parsingStrategy = .brackets
+  decoder.parsingStrategy = .bracketsWithIndices
   return decoder
 }()
 
