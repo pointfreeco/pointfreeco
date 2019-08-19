@@ -14,6 +14,7 @@ extension AccountTests {
     ("testAccount", testAccount),
     ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
+    ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
     ("testTeam_AsTeammate", testTeam_AsTeammate),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
@@ -285,6 +286,13 @@ extension PointFreeRouterTests {
     ("testUpdateProfile", testUpdateProfile),
   ]
 }
+extension PricingLandingTests {
+  static var allTests: [(String, (PricingLandingTests) -> () throws -> Void)] = [
+    ("testLanding_LoggedIn_ActiveSubscriber", testLanding_LoggedIn_ActiveSubscriber),
+    ("testLanding_LoggedIn_InactiveSubscriber", testLanding_LoggedIn_InactiveSubscriber),
+    ("testLanding_LoggedOut", testLanding_LoggedOut),
+  ]
+}
 extension PrivacyTests {
   static var allTests: [(String, (PrivacyTests) -> () throws -> Void)] = [
     ("testPrivacy", testPrivacy),
@@ -349,6 +357,7 @@ extension SubscribeTests {
     ("testCurrentSubscribers", testCurrentSubscribers),
     ("testInvalidQuantity", testInvalidQuantity),
     ("testHappyPath", testHappyPath),
+    ("testHappyPath_Team", testHappyPath_Team),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
     ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure),
@@ -360,13 +369,6 @@ extension SubscriptionConfirmationTests {
     ("testTeam_LoggedIn", testTeam_LoggedIn),
     ("testPersonal_LoggedIn_ActiveSubscriber", testPersonal_LoggedIn_ActiveSubscriber),
     ("testPersonal_LoggedOut", testPersonal_LoggedOut),
-  ]
-}
-extension SubscriptionLandingTests {
-  static var allTests: [(String, (SubscriptionLandingTests) -> () throws -> Void)] = [
-    ("testLanding_LoggedIn_ActiveSubscriber", testLanding_LoggedIn_ActiveSubscriber),
-    ("testLanding_LoggedIn_InactiveSubscriber", testLanding_LoggedIn_InactiveSubscriber),
-    ("testLanding_LoggedOut", testLanding_LoggedOut),
   ]
 }
 extension TeamEmailsTests {
@@ -428,6 +430,7 @@ XCTMain([
   testCase(NotFoundMiddlewareTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PointFreeRouterTests.allTests),
+  testCase(PricingLandingTests.allTests),
   testCase(PrivacyTests.allTests),
   testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
@@ -437,7 +440,6 @@ XCTMain([
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
   testCase(SubscriptionConfirmationTests.allTests),
-  testCase(SubscriptionLandingTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(WelcomeEmailTests.allTests),
