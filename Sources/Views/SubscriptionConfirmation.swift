@@ -611,6 +611,10 @@ function format(money) {
 }
 function updateSeats() {
   var teamMembers = document.getElementById("team-members")
+  var teamMemberInputs = Array.from(teamMembers.getElementsByTagName("INPUT"))
+  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+  }
   var seats = teamMembers
     ? teamMembers.childNodes.length + 1
     : 1
