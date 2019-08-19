@@ -1,0 +1,33 @@
+▿ 4 elements
+  ▿ TeamInvite
+    - createdAt: 2019-08-18T21:25:19Z
+    ▿ email: blob3@pointfree.co
+      - rawValue: "blob3@pointfree.co"
+    ▿ id: 00000000-0000-0000-0000-000000000003
+      - rawValue: 00000000-0000-0000-0000-000000000003
+    ▿ inviterUserId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
+  ▿ TeamInvite
+    - createdAt: 2019-08-18T21:25:19Z
+    ▿ email: blob4@pointfree.co
+      - rawValue: "blob4@pointfree.co"
+    ▿ id: 00000000-0000-0000-0000-000000000004
+      - rawValue: 00000000-0000-0000-0000-000000000004
+    ▿ inviterUserId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
+  ▿ TeamInvite
+    - createdAt: 2019-08-18T21:25:19Z
+    ▿ email: blob1@pointfree.co
+      - rawValue: "blob1@pointfree.co"
+    ▿ id: 00000000-0000-0000-0000-000000000005
+      - rawValue: 00000000-0000-0000-0000-000000000005
+    ▿ inviterUserId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001
+  ▿ TeamInvite
+    - createdAt: 2019-08-18T21:25:19Z
+    ▿ email: blob2@pointfree.co
+      - rawValue: "blob2@pointfree.co"
+    ▿ id: 00000000-0000-0000-0000-000000000006
+      - rawValue: 00000000-0000-0000-0000-000000000006
+    ▿ inviterUserId: 00000000-0000-0000-0000-000000000001
+      - rawValue: 00000000-0000-0000-0000-000000000001

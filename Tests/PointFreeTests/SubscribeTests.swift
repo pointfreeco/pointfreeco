@@ -187,6 +187,51 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  func testHappyPath_Team() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
+
+    let req = request(
+      to: .subscribe(
+        .some(
+          .teamYearly(quantity: 5)
+            |> \.teammates .~ [
+              "blob1@pointfree.co",
+              "blob2@pointfree.co",
+              "blob3@pointfree.co",
+              "blob4@pointfree.co",
+              "blob5@pointfree.co",
+          ]
+        )
+      ),
+      session: session
+    )
+    let conn = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+
+    let invites = Current.database.fetchTeamInvites(user.id)
+      .run
+      .perform()
+      .right!
+    assertSnapshot(matching: invites, as: .dump)
+  }
+
   func testCreateCustomerFailure() {
     update(
       &Current,
