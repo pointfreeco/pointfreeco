@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54287
+Content-Length: 54515
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2174,6 +2174,10 @@ html {
 }
 function updateSeats() {
   var teamMembers = document.getElementById("team-members")
+  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
+  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+  }
   var seats = teamMembers
     ? teamMembers.childNodes.length + 1
     : 1
