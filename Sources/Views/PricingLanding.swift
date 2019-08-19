@@ -408,7 +408,7 @@ private func pricingPlanCta(
   } else if plan.isFree && currentUser == nil  {
     return a(
       [
-        href(path(to: .login(redirect: url(to: .account(.index))))),
+        href(path(to: .login(redirect: url(to: .pricingLanding)))),
         `class`([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses
