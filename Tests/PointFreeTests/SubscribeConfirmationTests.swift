@@ -27,7 +27,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal), session: .loggedIn))
+    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -54,7 +54,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal), session: .loggedIn))
+    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
@@ -113,7 +113,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.team), session: .loggedIn))
+    let conn = connection(from: request(to: .subscribeConfirmation(.team, nil, nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -139,7 +139,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal), session: .loggedIn))
+    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -153,7 +153,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal), session: .loggedOut))
+    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedOut))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
