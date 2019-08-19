@@ -133,7 +133,10 @@ extension Plan {
     metadata: [:],
     name: "Individual Monthly",
     statementDescriptor: nil,
-    tiers: []
+    tiers: [
+      Tier(amount: 16_00, upTo: nil),
+      Tier(amount: 18_00, upTo: nil)
+    ]
   )
 
   public static let individualMonthly = mock
