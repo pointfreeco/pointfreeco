@@ -30,7 +30,7 @@ public func subscriptionConfirmation(
       ],
       header(lane)
         + (lane == .team ? teamMembers(currentUser, subscribeData) : [])
-        + billingPeriod(lane, subscribeData)
+        + billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData)
         + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
         + total(lane: lane, coupon: coupon)
     )
@@ -263,7 +263,11 @@ updateSeats()
   )
 }
 
-private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?) -> [Node] {
+private func billingPeriod(
+  coupon: Coupon?,
+  lane: Pricing.Lane,
+  subscribeData: SubscribeData?
+  ) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -331,7 +335,7 @@ private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?
                       [
                         lane == .team
                           ? "$144 per member per year"
-                          : "$168 per year"
+                          : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
                       ]
                     )
                   ]
@@ -398,7 +402,7 @@ private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?
                       [
                         lane == .team
                           ? "$16 per member, per month"
-                          : "$18 per month"
+                          : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
                       ]
                     )
                   ]
@@ -410,6 +414,17 @@ private func billingPeriod(_ lane: Pricing.Lane, _ subscribeData: SubscribeData?
       ]
     )
   ]
+}
+
+private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: Coupon?) -> Node {
+  switch interval {
+  case .month:
+    let dollars = (coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
+    return .text("$\(dollars) per month")// (\(coupon?.formattedDescription ?? ""))")
+  case .year:
+    let dollars = (coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
+    return .text("$\(dollars) per year")// (\(coupon?.formattedDescription ?? ""))")
+  }
 }
 
 private func payment(
@@ -548,21 +563,39 @@ window.addEventListener("load", function() {
             sizes: [.mobile: 12],
             [`class`([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
             [
-              p(
+              span(
                 [
                   `class`([
                     Class.pf.type.body.small,
                     Class.pf.colors.fg.gray400
-                  ]),
+                    ]),
                   id("pricing-preview"),
                 ],
                 []
-              )
+              ),
+              discountedTotalDisclaimer(coupon: coupon)
             ]
           )
       ]
     )
   ]
+}
+
+private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
+  guard let coupon = coupon else { return span([]) }
+
+  return span(
+    [
+      `class`([
+        Class.pf.type.body.small,
+        Class.pf.colors.fg.gray400
+        ]),
+    ],
+    [
+      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") } ?? " You are using a coupon",
+      ", which gives you 50% off every billing period."
+    ]
+  )
 }
 
 private func discount(coupon: Stripe.Coupon) -> [Node] {
