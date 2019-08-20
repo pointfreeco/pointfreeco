@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 48649
+Content-Length: 48118
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1956,6 +1963,16 @@ the videos, transcripts, and code samples on this site.
                         normal
                         h5
                         lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
                  href="/">
                 Videos
               </a>
@@ -1978,43 +1995,6 @@ the videos, transcripts, and code samples on this site.
                         lh-4"
                  href="/about">
                 About Us
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-2
-                  col-m-4">
-        <div>
-          <h5 class="fg-black
-                     bold
-                     ts-d-r0_875
-                     ts-m-r0_75
-                     lh-1
-                     caps
-                     fg-white">
-            Account
-          </h5>
-          <ol class="list-reset">
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Subscribe
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Pricing
               </a>
             </li>
           </ol>

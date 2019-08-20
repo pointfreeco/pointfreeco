@@ -47,8 +47,8 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?
         |> cancelMiddleware
 
     case .subscription(.change(.show)):
-      return conn.map(const(user .*. subscriberState .*. unit))
-        |> subscriptionChangeShowResponse
+      return conn
+        |> redirect(to: .account(.index))
 
     case let .subscription(.change(.update(pricing))):
       return conn.map(const(user .*. pricing .*. unit))

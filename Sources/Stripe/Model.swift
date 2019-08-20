@@ -89,6 +89,15 @@ public struct Coupon: Equatable {
     self.valid = valid
   }
 
+  public func discount(for cents: Cents<Int>) -> Cents<Int> {
+    switch self.rate {
+    case let .amountOff(amountOff):
+      return cents - amountOff
+    case let .percentOff(percentOff):
+      return cents.map { Int(Double($0) * (1 - (Double(percentOff) / 100))) }
+    }
+  }
+
   public var formattedDescription: String {
     switch duration {
     case .forever:
@@ -328,7 +337,7 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-  public var amount: Cents<Int>
+  public var amount: Cents<Int>?
   public var created: Date
   public var currency: Currency
   public var id: Id
@@ -336,6 +345,7 @@ public struct Plan: Codable, Equatable {
   public var metadata: [String: String]
   public var name: String
   public var statementDescriptor: String?
+  public var tiers: [Tier]?
 
   public init(
     amount: Cents<Int>,
@@ -345,7 +355,8 @@ public struct Plan: Codable, Equatable {
     interval: Interval,
     metadata: [String: String],
     name: String,
-    statementDescriptor: String?
+    statementDescriptor: String?,
+    tiers: [Tier]?
     ) {
     self.amount = amount
     self.created = created
@@ -355,6 +366,13 @@ public struct Plan: Codable, Equatable {
     self.metadata = metadata
     self.name = name
     self.statementDescriptor = statementDescriptor
+    self.tiers = tiers
+  }
+
+  public func amount(for quantity: Int) -> Cents<Int> {
+    let amount = self.amount
+      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+    return amount.map { $0 * quantity }
   }
 
   public typealias Id = Tagged<Plan, String>
@@ -368,6 +386,21 @@ public struct Plan: Codable, Equatable {
     case year
   }
 
+  public struct Tier: Codable, Equatable {
+    public var amount: Cents<Int>
+    public var upTo: Int?
+
+    public init(amount: Cents<Int>, upTo: Int?) {
+      self.amount = amount
+      self.upTo = upTo
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case amount
+      case upTo = "up_to"
+    }
+  }
+
   private enum CodingKeys: String, CodingKey {
     case amount
     case created
@@ -377,6 +410,7 @@ public struct Plan: Codable, Equatable {
     case metadata
     case name
     case statementDescriptor = "statement_descriptor"
+    case tiers
   }
 }
 
@@ -430,6 +464,10 @@ public struct Subscription: Codable, Equatable {
 
   public var isCanceling: Bool {
     return self.status == .active && self.cancelAtPeriodEnd
+  }
+
+  public var isCancellable: Bool {
+    return self.status == .active && !self.cancelAtPeriodEnd
   }
 
   public var isRenewing: Bool {
@@ -600,19 +638,11 @@ extension Coupon: Codable {
 }
 
 extension Tagged where Tag == Plan, RawValue == String {
-  public static var individualMonthly: Plan.Id {
-    return "individual-monthly"
+  public static var monthly: Plan.Id {
+    return "monthly-2019"
   }
 
-  public static var individualYearly: Plan.Id {
-    return "individual-yearly"
-  }
-
-  public static var teamMonthly: Plan.Id {
-    return "team-monthly"
-  }
-
-  public static var teamYearly: Plan.Id {
-    return "team-yearly"
+  public static var yearly: Plan.Id {
+    return "yearly-2019"
   }
 }

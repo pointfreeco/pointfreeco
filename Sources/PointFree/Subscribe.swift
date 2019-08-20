@@ -12,21 +12,21 @@ let subscribeMiddleware =
   filterMap(
     require1 >>> pure,
     or: redirect(
-      to: .pricing(nil, expand: nil),
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
       headersMiddleware: flash(.error, "Error creating subscription!")
     )
     )
     <<< filter(
       get1 >>> ^\.pricing >>> validateQuantity,
       or: redirect(
-        to: .pricing(nil, expand: nil),
+        with: get1 >>> subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
       )
     )
     <<< filter(
       get1 >>> validateCoupon(forSubscribeData:),
       or: redirect(
-        to: .pricing(nil, expand: nil),
+        with: get1 >>> subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
       )
     )
@@ -44,18 +44,32 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
       .withExcept(const(unit))
       .flatMap { subscribeData in
         Current.stripe
-          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, subscribeData.vatNumber)
+          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, nil)
           .map { ($0, subscribeData) }
-      }
-      .flatMap {
-        Current.stripe
-          .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
-      }
-      .flatMap { stripeSubscription in
-        Current.database
-          .createSubscription(stripeSubscription, user.id)
-      }
-      .run
+          .flatMap {
+            Current.stripe
+              .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
+        }
+        .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
+          let parallel = sequence(
+            subscribeData.teammates
+              .filter { email in email.rawValue.contains("@") && email != user.email }
+              .prefix(subscribeData.pricing.quantity - 1)
+              .map { email in
+                Current.database.insertTeamInvite(email, user.id)
+                  .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
+                  .run
+                  .parallel
+            }
+          ).map(const(unit))
+
+          return lift(parallel.sequential).flatMap { _ in
+            Current.database
+              .createSubscription(stripeSubscription, user.id)
+          }
+        }
+    }
+    .run
 
     return subscriptionOrError.flatMap(
       either(
@@ -64,7 +78,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
             ?? "Error creating subscription!"
           return conn
             |> redirect(
-              to: .pricing(subscribeData.pricing, expand: nil),
+              to: subscribeConfirmationWithSubscribeData(subscribeData),
               headersMiddleware: flash(.error, errorMessage)
           )
       },
@@ -89,9 +103,17 @@ private func loginAndRedirectToPricing<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
   return conn
-    |> redirect(to: .login(redirect: url(to: .pricing(get1(conn.data).pricing, expand: nil))))
+    |> redirect(to: .login(redirect: url(to: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {
   return subscribeData.coupon == nil || subscribeData.pricing.quantity == 1
+}
+
+private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
+  return .subscribeConfirmation(
+    subscribeData?.pricing.isPersonal == .some(true) ? .personal : .team,
+    subscribeData?.pricing.billing,
+    subscribeData?.teammates
+  )
 }

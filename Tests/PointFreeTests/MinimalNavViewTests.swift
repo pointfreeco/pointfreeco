@@ -16,6 +16,11 @@ import WebKit
 import XCTest
 
 class MinimalNavViewTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNav_Html() {
     states.forEach { key, state in
       let doc = testDocView.view(state)
@@ -45,7 +50,7 @@ class MinimalNavViewTests: TestCase {
 
 private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberState, Route?))] = [
   ("dark_logged-out_no-route", (.dark, nil, .nonSubscriber, nil)),
-  ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricing(nil, expand: nil))),
+  ("dark_logged-out_route", (.dark, nil, .nonSubscriber, .pricingLanding)),
   ("dark_logged-in_non-subscriber", (.dark, .mock, .nonSubscriber, nil)),
   ("dark_logged-in_inactive-subscriber", (.dark, .mock, .teammate(status: .canceled, enterpriseAccount: nil), nil)),
   ("dark_logged-in_active-subscriber", (.dark, .mock, .teammate(status: .active, enterpriseAccount: nil), nil)),
