@@ -97,6 +97,41 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
+  func testTeam_LoggedIn_WithDefaults() {
+    update(
+      &Current,
+      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          .team,
+          .some(.monthly),
+          .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1400))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testTeam_LoggedIn_SwitchToMonthly() {
     update(
       &Current,
@@ -184,16 +219,19 @@ extension Snapshotting where Value == WKWebView, Format == NSImage {
     return Snapshotting<NSView, NSImage>.image.asyncPullback { (webView: WKWebView) -> Async<NSView> in
       return Async<NSView> { callback in
         let delegate = NavigationDelegate()
-        if webView.isLoading {
-          delegate.didFinish = {
-            webView.evaluateJavaScript(afterEvaluatingJavascript) { _, _ in
-              _ = delegate
-              callback(webView)
-            }
+
+        let work = {
+          webView.evaluateJavaScript(afterEvaluatingJavascript) { _, _ in
+            _ = delegate
+            callback(webView)
           }
+        }
+
+        if webView.isLoading {
+          delegate.didFinish = work
           webView.navigationDelegate = delegate
         } else {
-          callback(webView)
+          work()
         }
       }
     }

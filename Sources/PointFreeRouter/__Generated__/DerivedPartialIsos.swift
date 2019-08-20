@@ -198,6 +198,17 @@ import Stripe
 
 
 
+      extension PartialIso where A == Prelude.Unit, B == Account.Subscription.Change {
+        public static let show = parenthesize <| PartialIso<Prelude.Unit, Account.Subscription.Change>(
+          apply: const(.some(.show)),
+          unapply: {
+            guard case .show = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
       extension PartialIso where A == (
             Pricing?
         ), B == Account.Subscription.Change {

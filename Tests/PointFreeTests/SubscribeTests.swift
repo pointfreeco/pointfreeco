@@ -272,6 +272,60 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      pricing: .init(billing: .monthly, quantity: 3),
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
+      token: "stripe-deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      pricing: .init(billing: .monthly, quantity: 3),
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
+      token: "stripe-deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
   func testCreateDatabaseSubscriptionFailure() {
     update(
       &Current,

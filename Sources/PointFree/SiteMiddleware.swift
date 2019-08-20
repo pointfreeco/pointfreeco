@@ -187,8 +187,14 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> subscribeMiddleware
 
     case let .subscribeConfirmation(lane, billing, teammates):
-      // TODO: SubscribeData.init
-      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. nil .*. nil .*. unit))
+      let teammates = lane == .team ? (teammates ?? [""]) : []
+      let subscribeData = SubscribeData(
+        coupon: nil,
+        pricing: Pricing(billing: billing ?? .yearly, quantity: teammates.count + 1),
+        teammates: teammates,
+        token: ""
+      )
+      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
 
     case .team(.leave):

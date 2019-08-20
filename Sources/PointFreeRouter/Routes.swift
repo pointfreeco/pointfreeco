@@ -6,6 +6,7 @@ import PointFreePrelude
 import Prelude
 import Stripe
 import Tagged
+import UrlFormEncoding
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
@@ -108,44 +109,6 @@ extension PartialIso where A == String {
     )
   }
 }
-
-import Models
-import UrlFormEncoding
-let subscriberDataIso = PartialIso<String, SubscribeData?>(
-  apply: { str in
-    let keyValues = parse(query: str)
-
-    guard
-      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
-      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
-      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
-      else {
-        return nil
-    }
-
-    let coupon = keyValues.first(where: { key, value in key == "coupon" })?.1.flatMap(Coupon.Id.init(rawValue:))
-    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
-      .compactMap { _, value in value }
-      .map(EmailAddress.init(rawValue:))
-
-    return SubscribeData(
-      coupon: coupon,
-      pricing: Pricing(billing: billing, quantity: quantity),
-      teammates: teammates,
-      token: token
-    )
-},
-  unapply: { data in
-    guard let data = data else { return nil }
-    return """
-coupon=\(data.coupon?.rawValue ?? "")&\
-pricing[billing]=\(data.pricing.billing.rawValue)&\
-pricing[quantity]=\(data.pricing.quantity)&\
-\(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))&\
-token=\(data.token.rawValue)
-"""
-}
-)
 
 let routers: [Router<Route>] = [
   .about
@@ -313,3 +276,39 @@ extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
 extension PartialIso where A == String, B == Either<String, Episode.Id> {
   static var episodeIdOrString = either(.string, .tagged(.int))
 }
+
+private let subscriberDataIso = PartialIso<String, SubscribeData?>(
+  apply: { str in
+    let keyValues = parse(query: str)
+
+    guard
+      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
+      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
+      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
+      else {
+        return nil
+    }
+
+    let coupon = keyValues.first(where: { key, value in key == "coupon" })?.1.flatMap(Coupon.Id.init(rawValue:))
+    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
+      .compactMap { _, value in value }
+      .map(EmailAddress.init(rawValue:))
+
+    return SubscribeData(
+      coupon: coupon,
+      pricing: Pricing(billing: billing, quantity: quantity),
+      teammates: teammates,
+      token: token
+    )
+},
+  unapply: { data in
+    guard let data = data else { return nil }
+    return """
+    coupon=\(data.coupon?.rawValue ?? "")&\
+    pricing[billing]=\(data.pricing.billing.rawValue)&\
+    pricing[quantity]=\(data.pricing.quantity)&\
+    \(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))&\
+    token=\(data.token.rawValue)
+    """
+}
+)
