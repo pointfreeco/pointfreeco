@@ -420,10 +420,10 @@ private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: 
   switch interval {
   case .month:
     let dollars = (coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
-    return .text("$\(dollars) per month")// (\(coupon?.formattedDescription ?? ""))")
+    return .text("$\(dollars) per month")
   case .year:
     let dollars = (coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
-    return .text("$\(dollars) per year")// (\(coupon?.formattedDescription ?? ""))")
+    return .text("$\(dollars) per year")
   }
 }
 
