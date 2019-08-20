@@ -73,7 +73,7 @@ private let accountRouters: [Router<Account>] = [
     <¢> post %> lit("subscription") %> lit("cancel") <% end,
 
   .subscription <<< .change <<< .show
-    <¢> lit("subscription") %> lit("change") <% end,
+    <¢> get %> lit("subscription") %> lit("change") <% end,
 
   .subscription <<< .change <<< .update
     <¢> post %> lit("subscription") %> lit("change")
