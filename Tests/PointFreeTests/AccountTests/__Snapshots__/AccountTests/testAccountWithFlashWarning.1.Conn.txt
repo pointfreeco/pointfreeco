@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 61993
+Content-Length: 65135
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2176,6 +2176,76 @@ to consume our videos: an RSS feed that can be used with podcast apps!
                             $17.00 on 3/2/18
                           </p>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Add teammate
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="m-pl1
+                                  m-pr1">
+                        <form action="/invites/add"
+                              method="post"
+                              class="flex
+                                     m-pt1">
+                          <input class="font-family-inherit
+                                        fg-black
+                                        border-box
+                                        rounded
+                                        border
+                                        border-gray-800
+                                        h-2r
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1
+                                        align-middle
+                                        w-100p"
+                                 name="email"
+                                 placeholder="blob@example.com"
+                                 type="email">
+                          <input type="submit"
+                                 class="medium
+                                        cursor-pointer
+                                        nowrap
+                                        btn-normal
+                                        rounded
+                                        border-none
+                                        text-decoration-none
+                                        pf-link-white
+                                        fg-white
+                                        bg-purple
+                                        h6
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1
+                                        align-middle
+                                        d-ml2
+                                        m-ml1"
+                                 value="Add">
+                        </form>
+                        <p class="fg-black
+                                  normal
+                                  h6
+                                  lh-4
+                                  fg-gray400
+                                  m-pt1">
+                          Add a teammate to your subscription for a discounted rate of $16
+per month. Your first invoice will be prorated based on your current billing cycle.
+                        </p>
                       </div>
                     </div>
                   </div>

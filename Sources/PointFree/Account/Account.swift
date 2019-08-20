@@ -909,6 +909,7 @@ private func inviteRowView(_ invite: TeamInvite) -> Node {
 private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
+  guard subscription.isRenewing else { return [] }
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
   guard let amount = subscription.plan.tiers?.min(by: { $0.amount < $1.amount })?.amount else { return [] }
