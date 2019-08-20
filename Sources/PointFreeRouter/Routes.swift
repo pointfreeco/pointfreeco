@@ -289,7 +289,8 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
         return nil
     }
 
-    let coupon = keyValues.first(where: { key, value in key == "coupon" })?.1.flatMap(Coupon.Id.init(rawValue:))
+    let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
+    let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
     let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
       .compactMap { _, value in value }
       .map(EmailAddress.init(rawValue:))
@@ -303,12 +304,14 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
 },
   unapply: { data in
     guard let data = data else { return nil }
-    return """
-    coupon=\(data.coupon?.rawValue ?? "")&\
-    pricing[billing]=\(data.pricing.billing.rawValue)&\
-    pricing[quantity]=\(data.pricing.quantity)&\
-    \(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))&\
-    token=\(data.token.rawValue)
-    """
+    var parts: [String] = []
+    if let coupon = data.coupon {
+      parts.append("coupon=\(coupon.rawValue)")
+    }
+    parts.append("pricing[billing]=\(data.pricing.billing.rawValue)")
+    parts.append("pricing[quantity]=\(data.pricing.quantity)")
+    parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))
+    parts.append("token=\(data.token.rawValue)")
+    return parts.joined(separator: "&")
 }
 )

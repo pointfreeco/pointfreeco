@@ -194,17 +194,18 @@ final class SubscribeTests: TestCase {
       .right!!
     let session = Session.loggedIn |> (\Session.userId) .~ user.id
 
+    let emails: [EmailAddress] = [
+      "blob1@pointfree.co",
+      "blob2@pointfree.co",
+      "blob3@pointfree.co",
+      "blob4@pointfree.co",
+    ]
+
     let req = request(
       to: .subscribe(
         .some(
           .teamYearly(quantity: 5)
-            |> \.teammates .~ [
-              "blob1@pointfree.co",
-              "blob2@pointfree.co",
-              "blob3@pointfree.co",
-              "blob4@pointfree.co",
-              "blob5@pointfree.co",
-          ]
+            |> \.teammates .~ emails
         )
       ),
       session: session
@@ -229,7 +230,7 @@ final class SubscribeTests: TestCase {
       .run
       .perform()
       .right!
-    assertSnapshot(matching: invites, as: .dump)
+    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
   }
 
   func testCreateCustomerFailure() {
