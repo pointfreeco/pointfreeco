@@ -48,7 +48,7 @@ let freeEpisodeEmailContent = View<Episode> { ep in
             [
               .text(freeEpisodeBlurb),
               " Please consider ",
-              a([href(url(to: .pricing(nil, expand: nil)))], ["supporting us"]),
+              a([href(url(to: .pricingLanding))], ["supporting us"]),
               " so that we can keep new episodes coming!"
             ]
           ),

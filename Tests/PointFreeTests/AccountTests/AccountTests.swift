@@ -68,6 +68,7 @@ final class AccountTests: TestCase {
 
   func testTeam_OwnerIsNotSubscriber() {
     let currentUser = User.nonSubscriber
+      |> \.episodeCreditCount .~ 2
     let subscription = Subscription.mock
       |> \.userId .~ currentUser.id
 
@@ -75,6 +76,39 @@ final class AccountTests: TestCase {
       |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
       |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([]))
       |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
+
+    let session = Session.loggedIn
+      |> (\Session.userId) .~ currentUser.id
+    let conn = connection(from: request(to: .account(.index), session: session))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testTeam_NoRemainingSeats() {
+    let currentUser = User.nonSubscriber
+    let subscription = Subscription.mock
+      |> \.userId .~ currentUser.id
+    let stripeSubscription = Stripe.Subscription.mock
+      |> (\Stripe.Subscription.quantity) .~ 2
+
+    Current = .teamYearly
+      |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
+      |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock, .mock]))
+      |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
+      |> (\Environment.database.fetchTeamInvites) .~ const(pure([]))
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(stripeSubscription))
 
     let session = Session.loggedIn
       |> (\Session.userId) .~ currentUser.id

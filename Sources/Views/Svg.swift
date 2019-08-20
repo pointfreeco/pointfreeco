@@ -308,3 +308,7 @@ public let atlassianLogoSvg = base64EncodedString <| """
     </g>
 </svg>
 """
+
+public let mailIconSvg = base64EncodedString <| """
+<svg height="16" viewBox="0 0 20 16" width="20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" transform="translate(-2 -4)"><path d="m0 0h24v24h-24z"/><path d="m20 4h-16c-1.1 0-1.99.9-1.99 2l-.01 12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2zm0 14h-16v-10l8 5 8-5zm-8-7-8-5h16z" fill="#121212" fill-rule="nonzero"/></g></svg>
+"""

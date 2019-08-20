@@ -187,6 +187,52 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  func testHappyPath_Team() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
+
+    let emails: [EmailAddress] = [
+      "blob1@pointfree.co",
+      "blob2@pointfree.co",
+      "blob3@pointfree.co",
+      "blob4@pointfree.co",
+    ]
+
+    let req = request(
+      to: .subscribe(
+        .some(
+          .teamYearly(quantity: 5)
+            |> \.teammates .~ emails
+        )
+      ),
+      session: session
+    )
+    let conn = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+
+    let invites = Current.database.fetchTeamInvites(user.id)
+      .run
+      .perform()
+      .right!
+    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
+  }
+
   func testCreateCustomerFailure() {
     update(
       &Current,
@@ -218,6 +264,60 @@ final class SubscribeTests: TestCase {
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      pricing: .init(billing: .monthly, quantity: 3),
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
+      token: "stripe-deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      pricing: .init(billing: .monthly, quantity: 3),
+      teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
+      token: "stripe-deadbeef"
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(subscribeData), session: .loggedIn)
       )
       |> siteMiddleware
       |> Prelude.perform

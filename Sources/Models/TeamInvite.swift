@@ -2,7 +2,7 @@ import Foundation
 import PointFreePrelude
 import Tagged
 
-public struct TeamInvite: Decodable {
+public struct TeamInvite: Decodable, Equatable {
   public var createdAt: Date
   public var email: EmailAddress
   public var id: Id

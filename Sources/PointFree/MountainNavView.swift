@@ -84,7 +84,7 @@ private let headerLinks = View<(NavStyle.MountainsStyle, User?, SubscriberState,
     ),
 
     subscriberState.isNonSubscriber
-      ? a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClasses])], ["Subscribe"])
+      ? a([href(path(to: .pricingLanding)), `class`([navLinkClasses])], ["Subscribe"])
       : nil,
 
     currentUser == nil

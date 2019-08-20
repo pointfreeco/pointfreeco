@@ -108,7 +108,7 @@ private func item(episode: Episode) -> RssItem {
       return """
 Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
 this episode, and if you find this interesting you may want to consider a subscription \
-\(url(to: .pricing(nil, expand: nil))).
+\(url(to: .pricingLanding)).
 
 ---
 
@@ -118,7 +118,7 @@ this episode, and if you find this interesting you may want to consider a subscr
       return """
 Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
 that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-subscription \(url(to: .pricing(nil, expand: nil))).
+subscription \(url(to: .pricingLanding)).
 
 ---
 

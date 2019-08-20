@@ -369,4 +369,46 @@ class InviteTests: TestCase {
       "Current user now has a subscription"
     )
   }
+
+  func testAddTeammate() {
+    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+
+    let currentUser = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let stripeSubscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.quantity) .~ 2
+    let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
+
+    _ = Current.database.createSubscription(stripeSubscription, currentUser.id)
+      .run
+      .perform()
+      .right!!
+
+    let session = Session.loggedIn
+      |> (\Session.userId) .~ currentUser.id
+    let conn = connection(
+      from: request(
+        to: .invite(.addTeammate(teammateEmailAddress)),
+        session: session
+      )
+    )
+
+    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+
+    let teamInvites = Current.database.fetchTeamInvites(currentUser.id)
+      .run
+      .perform()
+      .right!
+    XCTAssertEqual(
+      [teammateEmailAddress],
+      teamInvites.map { $0.email }
+    )
+    XCTAssertEqual(
+      [currentUser.id],
+      teamInvites.map { $0.inviterUserId }
+    )
+  }
 }

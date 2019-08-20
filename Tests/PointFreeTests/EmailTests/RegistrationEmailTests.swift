@@ -13,6 +13,11 @@ import WebKit
 import XCTest
 
 class RegistrationEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testRegistrationEmail() {
     let doc = registrationEmailView.view(.mock)
 

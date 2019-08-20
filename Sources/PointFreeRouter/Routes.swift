@@ -6,6 +6,7 @@ import PointFreePrelude
 import Prelude
 import Stripe
 import Tagged
+import UrlFormEncoding
 
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
@@ -28,11 +29,10 @@ public enum Route: DerivePartialIsos, Equatable {
   case invite(Invite)
   case login(redirect: String?)
   case logout
-  case pricing(Pricing?, expand: Bool?)
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
-  case subscribeConfirmation
+  case subscribeConfirmation(Pricing.Lane, Pricing.Billing?, [EmailAddress]?)
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -64,6 +64,7 @@ public enum Route: DerivePartialIsos, Equatable {
 
   public enum Invite: DerivePartialIsos, Equatable {
     case accept(TeamInvite.Id)
+    case addTeammate(EmailAddress?)
     case resend(TeamInvite.Id)
     case revoke(TeamInvite.Id)
     case send(EmailAddress?)
@@ -83,6 +84,29 @@ public enum Route: DerivePartialIsos, Equatable {
       case unknownEvent(Event<Prelude.Unit>)
       case fatal
     }
+  }
+}
+
+extension PartialIso {
+  public init(case: @escaping (A) -> B) {
+    self.init(apply: `case`) { root in
+      guard
+        let (label, anyValue) = Mirror(reflecting: root).children.first,
+        let value = anyValue as? A
+          ?? Mirror(reflecting: anyValue).children.first?.value as? A,
+        Mirror(reflecting: `case`(value)).children.first?.label == label
+        else { return nil }
+      return value
+    }
+  }
+}
+
+extension PartialIso where A == String {
+  public static func array<C>(of iso: PartialIso<A, C>) -> PartialIso where B == Array<C> {
+    return PartialIso(
+      apply: { $0.split(separator: ",", omittingEmptySubsequences: false).compactMap { iso.apply(String($0)) } },
+      unapply: { $0.compactMap(iso.unapply).joined(separator: ",") }
+    )
   }
 }
 
@@ -157,6 +181,9 @@ let routers: [Router<Route>] = [
   .invite <<< .accept
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
 
+  .invite <<< .addTeammate
+    <¢> post %> lit("invites") %> lit("add") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
+
   .invite <<< .resend
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("resend") <% end,
 
@@ -177,24 +204,21 @@ let routers: [Router<Route>] = [
   .logout
     <¢> get %> lit("logout") <% end,
 
-  .pricing
-    <¢> get %> lit("pricing")
-    %> (queryParam("plan", opt(.string)) <%> queryParam("quantity", opt(.int)))
-      .map(PartialIso.pricing >>> Optional.iso.some)
-    <%> queryParam("expand", opt(.bool))
-    <% end,
-
   .pricingLanding
-    <¢> get %> lit("_pricing") <% end,
+    <¢> get %> lit("pricing") <% end,
 
   .privacy
     <¢> get %> lit("privacy") <% end,
 
   .subscribe
-    <¢> post %> lit("subscribe") %> formBody(SubscribeData?.self, decoder: formDecoder) <% end,
+    <¢> post %> lit("subscribe") %> stringBody.map(subscriberDataIso) <% end,
 
-  .subscribeConfirmation
-    <¢> get %> lit("subscribe") <% end,
+  PartialIso.subscribeConfirmation
+    <¢> get %> lit("subscribe")
+    %> pathParam(.rawRepresentable)
+    <%> queryParam("billing", opt(.rawRepresentable))
+    <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
+    <% end,
 
   .team <<< .leave
     <¢> post %> lit("account") %> lit("team") %> lit("leave")
@@ -252,3 +276,42 @@ extension PartialIso where A == String, B == Either<String, BlogPost.Id> {
 extension PartialIso where A == String, B == Either<String, Episode.Id> {
   static var episodeIdOrString = either(.string, .tagged(.int))
 }
+
+private let subscriberDataIso = PartialIso<String, SubscribeData?>(
+  apply: { str in
+    let keyValues = parse(query: str)
+
+    guard
+      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
+      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
+      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
+      else {
+        return nil
+    }
+
+    let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
+    let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
+    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
+      .compactMap { _, value in value }
+      .map(EmailAddress.init(rawValue:))
+
+    return SubscribeData(
+      coupon: coupon,
+      pricing: Pricing(billing: billing, quantity: quantity),
+      teammates: teammates,
+      token: token
+    )
+},
+  unapply: { data in
+    guard let data = data else { return nil }
+    var parts: [String] = []
+    if let coupon = data.coupon {
+      parts.append("coupon=\(coupon.rawValue)")
+    }
+    parts.append("pricing[billing]=\(data.pricing.billing.rawValue)")
+    parts.append("pricing[quantity]=\(data.pricing.quantity)")
+    parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))
+    parts.append("token=\(data.token.rawValue)")
+    return parts.joined(separator: "&")
+}
+)
