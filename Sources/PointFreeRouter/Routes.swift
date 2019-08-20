@@ -104,7 +104,7 @@ extension PartialIso {
 extension PartialIso where A == String {
   public static func array<C>(of iso: PartialIso<A, C>) -> PartialIso where B == Array<C> {
     return PartialIso(
-      apply: { $0.split(separator: ",").compactMap { iso.apply(String($0)) } },
+      apply: { $0.split(separator: ",", omittingEmptySubsequences: false).compactMap { iso.apply(String($0)) } },
       unapply: { $0.compactMap(iso.unapply).joined(separator: ",") }
     )
   }
