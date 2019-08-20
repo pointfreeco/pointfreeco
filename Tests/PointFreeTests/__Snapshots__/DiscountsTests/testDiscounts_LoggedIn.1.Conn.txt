@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54227
+Content-Length: 54513
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2162,7 +2162,9 @@ html {
                        ts-d-r3
                        ts-m-r2
                        lh-2
-                       normal"
+                       normal
+                       m-mt0
+                       m-mb0"
                 id="total">
             </h3>
             <input name="pricing[quantity]"
@@ -2173,6 +2175,10 @@ html {
 }
 function updateSeats() {
   var teamMembers = document.getElementById("team-members")
+  var teamMemberInputs = teamMembers == null ? [] : Array.from(teamMembers.getElementsByTagName("INPUT"))
+  for (var idx = 0; idx < teamMemberInputs.length; idx++) {
+    teamMemberInputs[idx].name = "teammates[" + idx + "]"
+  }
   var seats = teamMembers
     ? teamMembers.childNodes.length + 1
     : 1
