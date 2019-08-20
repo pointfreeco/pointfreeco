@@ -114,10 +114,26 @@ import UrlFormEncoding
 let subscriberDataIso = PartialIso<String, SubscribeData?>(
   apply: { str in
     let keyValues = parse(query: str)
-    let coupon = (keyValues.first(where: { key, value in key == "coupon" })?.1).flatMap(Coupon.Id.init(rawValue:))
-    let billing = (keyValues.first(where: { key, value in key == "pricing[billing]" })?.1).flatMap(Pricing.Billing.init(rawValue:))
-    let quantity = (keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1).flatMap(Int.init)
-    fatalError()
+
+    guard
+      let billing = keyValues.first(where: { key, value in key == "pricing[billing]" })?.1.flatMap(Pricing.Billing.init(rawValue:)),
+      let quantity = keyValues.first(where: { key, value in key == "pricing[quantity]" })?.1.flatMap(Int.init),
+      let token = keyValues.first(where: { key, value in key == "token" })?.1.flatMap(Token.Id.init(rawValue:))
+      else {
+        return nil
+    }
+
+    let coupon = keyValues.first(where: { key, value in key == "coupon" })?.1.flatMap(Coupon.Id.init(rawValue:))
+    let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
+      .compactMap { _, value in value }
+      .map(EmailAddress.init(rawValue:))
+
+    return SubscribeData(
+      coupon: coupon,
+      pricing: Pricing(billing: billing, quantity: quantity),
+      teammates: teammates,
+      token: token
+    )
 },
   unapply: { data in
     guard let data = data else { return nil }
@@ -125,7 +141,8 @@ let subscriberDataIso = PartialIso<String, SubscribeData?>(
 coupon=\(data.coupon?.rawValue ?? "")&\
 pricing[billing]=\(data.pricing.billing.rawValue)&\
 pricing[quantity]=\(data.pricing.quantity)&\
-\(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))
+\(zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }.joined(separator: "&"))&\
+token=\(data.token.rawValue)
 """
 }
 )
@@ -234,7 +251,8 @@ let routers: [Router<Route>] = [
     <¢> post %> lit("subscribe") %> stringBody.map(subscriberDataIso) <% end,
 
   PartialIso.subscribeConfirmation
-    <¢> get %> lit("subscribe") %> pathParam(.rawRepresentable)
+    <¢> get %> lit("subscribe")
+    %> pathParam(.rawRepresentable)
     <%> queryParam("billing", opt(.rawRepresentable))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <% end,
