@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 54513
+Content-Length: 54704
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2129,6 +2129,12 @@ html {
 })
           </script>
         </div>
+        <input class="none"
+               disabled
+               name="coupon"
+               placeholder="Coupon Code"
+               type="hidden"
+               value="coupon-deadbeef">
         <div class="m-pb2
                     m-pt3
                     col-m

@@ -566,7 +566,16 @@ window.addEventListener("load", function() {
 }
 
 private func discount(coupon: Stripe.Coupon) -> [Node] {
-  return []
+  return [
+    input([
+      `class`([Class.display.none]),
+      disabled(true),
+      name("coupon"),
+      placeholder("Coupon Code"),
+      type(.hidden),
+      value(coupon.id.rawValue)
+      ]),
+  ]
 }
 
 private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> [Node] {
