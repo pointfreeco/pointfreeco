@@ -1,8 +1,8 @@
-GET http://localhost:8080/_pricing
+GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174182
+Content-Length: 174464
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1763,11 +1770,14 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -1785,9 +1795,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <meta name="twitter:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -2006,22 +2016,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2107,7 +2103,7 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/personal"
              class="d-mt3
                     m-mt2
                     block
@@ -2202,13 +2198,13 @@ html {
               For teams of 2 or more
             </li>
             <li class="m-pt1">
-              Add teammates at any time with pro-rated billing
+              Add teammates at any time with prorated billing
             </li>
             <li class="m-pt1">
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/team"
              class="d-mt3
                     m-mt2
                     block
@@ -2289,7 +2285,7 @@ html {
               Invoiced billing
             </li>
           </ul>
-          <a href="#"
+          <a href="mailto:support@pointfree.co"
              class="d-mt3
                     m-mt2
                     block
@@ -2537,7 +2533,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
           </p>
           <p class="fg-gray400
                     m-pb2">
-            Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+            Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
           </p>
           <p class="bold
@@ -2625,6 +2621,92 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Romain Pouclet
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
+          </a>
+          <a href="https://www.twitter.com/RunChristinaRun"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Christina Lee
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/meghafon/status/978624999866105859"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
+          </a>
+          <a href="https://www.twitter.com/meghafon"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Meghan Kane
             </span>
           </a>
         </div>
@@ -3154,49 +3236,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/meghafon/status/978624999866105859"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
-          </a>
-          <a href="https://www.twitter.com/meghafon"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Meghan Kane
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
              target="_blank"
              rel="noopener noreferrer"
@@ -3313,49 +3352,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Josh Burgess
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
-          </a>
-          <a href="https://www.twitter.com/RunChristinaRun"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Christina Lee
             </span>
           </a>
         </div>
@@ -3698,7 +3694,7 @@ and reassigned at any time. Colleagues are invited to your team over email.
                 m-pb3">
         Access all 2 episodes on Point-Free today!
       </p>
-      <a href="/subscribe"
+      <a href="/subscribe/personal"
          class="medium
                 cursor-pointer
                 nowrap
@@ -3776,6 +3772,16 @@ and reassigned at any time. Colleagues are invited to your team over email.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

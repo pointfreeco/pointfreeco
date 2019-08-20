@@ -50,7 +50,7 @@ private let youHaveBeenRemovedEmailBody = View<RemovalType> { removalType in
 
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             a([
-              href(url(to: .pricing(nil, expand: nil))),
+              href(url(to: .pricingLanding)),
               `class`([Class.pf.components.button(color: .purple)])
               ],
               ["See subscription plans"])

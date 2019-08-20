@@ -1,8 +1,8 @@
-GET http://localhost:8080/account/subscription/change
+GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54372
+Content-Length: 66545
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -16,7 +16,7 @@ X-XSS-Protection: 1; mode=block
   <head>
     <meta charset="utf-8">
     <title>
-      Modify subscription
+      Account
     </title>
     <style>
       /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1687,28 +1694,6 @@ html {
     </style>
     <style>
       
-input:checked ~ * > * {
-  color       : #121212;
-  font-weight : bold;
-}
-
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
-}
-
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
-}
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
-}
-
 
     </style>
     <meta name="viewport"
@@ -1747,11 +1732,11 @@ input::-webkit-outer-spin-button {
     <meta property="og:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="title"
-          content="Modify subscription">
+          content="Account">
     <meta property="og:title"
-          content="Modify subscription">
+          content="Account">
     <meta name="twitter:title"
-          content="Modify subscription">
+          content="Account">
     <meta property="og:type"
           content="website">
     <meta name="twitter:card"
@@ -1837,305 +1822,558 @@ input::-webkit-outer-spin-button {
                            ts-d-r3
                            ts-m-r2
                            lh-2">
-                  Modify subscription
+                  Account
                 </h1>
-                <p>
-                  You are currently enrolled in the 
-                  <strong>
-                    Individual Yearly
-                  </strong>
-                   plan. 
-                  Your subscription will 
-                  renew
-                   on 
-                  <strong>
-                    3/2/18
-                  </strong>
-                  .
-                </p>
               </div>
             </div>
           </div>
-          <form action="/account/subscription/change"
-                method="post"
-                class="m-mb3">
-            <div class="m-pb2
-                        row">
-              <div class="col-m
-                          col-m-12">
-                <h3 class="fg-black
-                           bold
-                           ts-d-r1_5
-                           ts-m-r1_25
-                           lh-2">
-                  Change to a team subscription?
-                </h3>
-                <p>
-                  Specify the total number of seats you’d like.
-                   
-                  Additional costs will be billed immediately, prorated against the remaining time of
-the current billing period.
-                </p>
-                <input type="number"
-                       min="1"
-                       max="100"
-                       name="quantity"
-                       oninput="var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
-
-var elements = document.getElementsByClassName('price');
-for (var idx = 0; idx < elements.length; idx++) {
-  var element = elements[idx];
-  var price = multiplier == 1
-    ? element.dataset.priceIndividual
-    : element.dataset.priceTeam;
-  element.textContent = (multiplier * price)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}"
-                       onblur="var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
-
-var elements = document.getElementsByClassName('price');
-for (var idx = 0; idx < elements.length; idx++) {
-  var element = elements[idx];
-  var price = multiplier == 1
-    ? element.dataset.priceIndividual
-    : element.dataset.priceTeam;
-  element.textContent = (multiplier * price)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}"
-                       step="1"
-                       value="1"
-                       class="num-spinner
-                              center
-                              fg-black
-                              bold
-                              ts-d-r4
-                              ts-m-r3
-                              lh-2
-                              fg-black">
-              </div>
-            </div>
-            <div class="m-pb4
-                        row">
-              <div class="col-m
-                          col-m-12">
-                <h3 class="fg-black
-                           bold
-                           ts-d-r1_5
-                           ts-m-r1_25
-                           lh-2">
-                  Change to monthly billing?
-                </h3>
-                <p>
-                  Your regular billing rate will be reflected below. Upgrades are prorated against the remaining time of
-the current billing period. Downgrades will take place at the end of the current billing period.
-                </p>
-                <div class="row">
-                  <div class="bg-white
-                              col-m
-                              col-m-16">
-                    <label for="monthly"
-                           class="block
-                                  m-mt3
-                                  m-mb3">
-                      <div style="flex-direction:column-reverse"
-                           class="row">
-                        <input class="h3"
-                               id="monthly"
-                               name="billing"
-                               type="radio"
-                               value="monthly">
-                        <div class="col-m
-                                    col-m-12">
-                          <h2 class="fg-black
-                                     bold
-                                     ts-d-r3
-                                     ts-m-r2
-                                     lh-2
-                                     light
-                                     fg-gray650">
-                            $
-                            <span class="price"
-                                  data-price-individual="17"
-                                  data-price-team="16">
-                              17
-                            </span>
-                            /
-                            mo
-                          </h2>
-                        </div>
-                        <div class="col-m
-                                    col-m-12">
-                          <h6 class="fg-black
-                                     bold
-                                     ts-d-r0_875
-                                     ts-m-r0_75
-                                     lh-1
-                                     caps
-                                     fg-gray650
-                                     inline">
-                            Monthly Plan
-                          </h6>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                  <div class="bg-white
-                              col-m
-                              col-m-16">
-                    <label for="yearly"
-                           class="block
-                                  m-mt3
-                                  m-mb3">
-                      <div style="flex-direction:column-reverse"
-                           class="row">
-                        <input class="h3"
-                               checked
-                               id="yearly"
-                               name="billing"
-                               type="radio"
-                               value="yearly">
-                        <div class="col-m
-                                    col-m-12">
-                          <h2 class="fg-black
-                                     bold
-                                     ts-d-r3
-                                     ts-m-r2
-                                     lh-2
-                                     light
-                                     fg-gray650">
-                            $
-                            <span class="price"
-                                  data-price-individual="170"
-                                  data-price-team="160">
-                              170
-                            </span>
-                            /
-                            yr
-                          </h2>
-                        </div>
-                        <div class="col-m
-                                    col-m-12">
-                          <h6 class="fg-black
-                                     bold
-                                     ts-d-r0_875
-                                     ts-m-r0_75
-                                     lh-1
-                                     caps
-                                     fg-gray650
-                                     inline">
-                            Yearly Plan
-                          </h6>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div class="m-pl1
-                            m-pr1
-                            m-pt1
-                            m-pb1
-                            bg-yellow
-                            center">
-                  <strong>
-                    ⚠️ Changes to your subscription will remove your current discount.
-                  </strong>
-                </div>
-                <button class="medium
-                               cursor-pointer
-                               nowrap
-                               btn-normal
-                               rounded
-                               border-none
-                               text-decoration-none
-                               pf-link-white
-                               fg-white
-                               bg-purple
-                               h5
-                               m-pl2
-                               m-pr2
-                               m-mt3">
-                  Update my subscription
-                </button>
-                <a href="/account"
-                   class="medium
-                          cursor-pointer
-                          nowrap
-                          btn-outline
-                          border-none
-                          underline
-                          pf-link-black
-                          fg-black
-                          bg-inherit
-                          h5
-                          m-pl2
-                          m-pr2">
-                  Never mind
-                </a>
-              </div>
-            </div>
-            <hr class="pf-divider
-                       border-top
-                       m-ml0
-                       m-mr0
-                       m-mt0
-                       m-mb0
-                       bg-white">
-          </form>
           <div class="m-pb4
                       row">
             <div class="col-m
                         col-m-12">
-              <h3 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2">
-                Cancel your subscription?
-              </h3>
-              <p>
-                If you cancel your subscription, you’ll lose access to Point-Free on 
-                <strong>
-                  3/2/18
-                </strong>
-                 and you won’t be billed again. If you change your mind, you may reactivate your
-subscription at any time before this period ends.
-              </p>
-              <form action="/account/subscription/cancel"
-                    method="post">
-                <button class="medium
-                               cursor-pointer
-                               nowrap
-                               btn-normal
-                               rounded
-                               border-none
-                               text-decoration-none
-                               pf-link-white
-                               fg-white
-                               bg-red
-                               h5
-                               m-pl2
-                               m-pr2
-                               m-mt3">
-                  Yes, cancel my subscription
-                </button>
-                <a href="/account"
-                   class="medium
-                          cursor-pointer
-                          nowrap
-                          btn-outline
-                          border-none
-                          underline
-                          pf-link-black
-                          fg-black
-                          bg-inherit
-                          h5
-                          m-pl2
-                          m-pr2">
-                  Never mind
-                </a>
-              </form>
+              <div>
+                <h2 class="fg-black
+                           bold
+                           ts-d-r1_5
+                           ts-m-r1_25
+                           lh-2">
+                  Profile
+                </h2>
+                <form action="/account"
+                      method="post">
+                  <label class="h5
+                                bold
+                                block
+                                m-mb1">
+                    Name
+                  </label>
+                  <input class="font-family-inherit
+                                fg-black
+                                border-box
+                                rounded
+                                border
+                                border-gray-800
+                                h-3r
+                                m-pl1
+                                m-pr1
+                                m-pt1
+                                m-pb1
+                                m-mb2
+                                w-100p
+                                block"
+                         name="name"
+                         type="text"
+                         value="Blob">
+                  <label class="h5
+                                bold
+                                block
+                                m-mb1">
+                    Email
+                  </label>
+                  <input class="font-family-inherit
+                                fg-black
+                                border-box
+                                rounded
+                                border
+                                border-gray-800
+                                h-3r
+                                m-pl1
+                                m-pr1
+                                m-pt1
+                                m-pb1
+                                m-mb2
+                                w-100p
+                                block"
+                         name="email"
+                         type="email"
+                         value="hello@pointfree.co">
+                  <label class="h5
+                                bold
+                                block
+                                m-mb1">
+                    Extra Invoice Info
+                  </label>
+                  <textarea placeholder="Company name, billing address, VAT number, ..."
+                            class="font-family-inherit
+                                   fg-black
+                                   border-box
+                                   rounded
+                                   border
+                                   border-gray-800
+                                   h-3r
+                                   m-pl1
+                                   m-pr1
+                                   m-pt1
+                                   m-pb1
+                                   m-mb2
+                                   w-100p
+                                   block"
+                            name="extraInvoiceInfo">
+                  </textarea>
+                  <p>
+                    Receive email for:
+                  </p>
+                  <p class="m-pl1">
+                    <label class="block">
+                      <input type="checkbox"
+                             name="emailSettings[announcements]"
+                             class="m-mr1">
+                      New announcements (very infrequently)
+                    </label>
+                    <label class="block">
+                      <input type="checkbox"
+                             name="emailSettings[newBlogPost]"
+                             class="m-mr1">
+                      New blog posts on Point-Free Pointers (about every two weeks)
+                    </label>
+                    <label class="block">
+                      <input type="checkbox"
+                             name="emailSettings[newEpisode]"
+                             checked
+                             class="m-mr1">
+                      New episode is available (about once a week)
+                    </label>
+                  </p>
+                  <input type="submit"
+                         class="medium
+                                cursor-pointer
+                                nowrap
+                                btn-normal
+                                rounded
+                                border-none
+                                text-decoration-none
+                                pf-link-white
+                                fg-white
+                                bg-purple
+                                h5
+                                m-pl2
+                                m-pr2
+                                m-mt3"
+                         value="Update profile">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="m-pb4
+                      row">
+            <div class="col-m
+                        col-m-12">
+              <div>
+                <h2 class="fg-black
+                           bold
+                           ts-d-r1_5
+                           ts-m-r1_25
+                           lh-2">
+                  Subscription overview
+                </h2>
+                <div class="col-m
+                            col-m-12">
+                  <div class="m-pb3
+                              m-pt1">
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Plan
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="row">
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1">
+                              <p>
+                                Individual Monthly (×2)
+                              </p>
+                            </div>
+                          </div>
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1
+                                        end-d">
+                              <p>
+                                <form action="/account/subscription/change"
+                                      method="post"
+                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $288.00 immediately with a prorated refund for the time remaining in your billing period.")) {
+  return false
+}">
+                                  <input name="billing"
+                                         type="hidden"
+                                         value="yearly">
+                                  <input name="quantity"
+                                         type="hidden"
+                                         value="2">
+                                  <button class="medium
+                                                 cursor-pointer
+                                                 nowrap
+                                                 btn-normal
+                                                 rounded
+                                                 border-none
+                                                 text-decoration-none
+                                                 pf-link-white
+                                                 fg-white
+                                                 bg-purple
+                                                 h6
+                                                 m-pl1
+                                                 m-pr1
+                                                 m-pt1
+                                                 m-pb1">
+                                    Upgrade to yearly billing
+                                  </button>
+                                </form>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Status
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="row">
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1">
+                              <p>
+                                Active
+                              </p>
+                            </div>
+                          </div>
+                          <div class="col-m
+                                      col-d-6
+                                      col-m-12">
+                            <div class="m-pl1
+                                        m-pr1
+                                        end-d">
+                              <p>
+                                <form action="/account/subscription/cancel"
+                                      method="post"
+                                      onsubmit="if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
+  return false
+}">
+                                  <button class="medium
+                                                 cursor-pointer
+                                                 nowrap
+                                                 btn-outline
+                                                 border-none
+                                                 underline
+                                                 pf-link-black
+                                                 fg-black
+                                                 bg-inherit
+                                                 h6
+                                                 m-pl1
+                                                 m-pr1
+                                                 m-pt1
+                                                 m-pb1">
+                                    Cancel
+                                  </button>
+                                </form>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Next billing
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="m-pl1
+                                    m-pr1">
+                          <p>
+                            $640.00 on 3/2/18
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Team
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="m-pl1
+                                  m-pr1">
+                        <p>
+                          Your current team:
+                        </p>
+                        <div class="row">
+                          <div class="col-m
+                                      col-m-8">
+                            <p>
+                              Blob (you)
+                            </p>
+                          </div>
+                          <div class="end-d
+                                      col-m
+                                      col-m-4">
+                            <form action="/account/team/members/00000000-0000-0000-0000-000000000000/remove"
+                                  method="post">
+                              <p>
+                                <input type="submit"
+                                       class="medium
+                                              cursor-pointer
+                                              nowrap
+                                              btn-normal
+                                              rounded
+                                              border-none
+                                              text-decoration-none
+                                              pf-link-white
+                                              fg-white
+                                              bg-purple
+                                              h6
+                                              m-pl1
+                                              m-pr1
+                                              m-pt1
+                                              m-pb1"
+                                       value="Remove">
+                              </p>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-m
+                                      col-m-8">
+                            <p>
+                              Blob (you)
+                            </p>
+                          </div>
+                          <div class="end-d
+                                      col-m
+                                      col-m-4">
+                            <form action="/account/team/members/00000000-0000-0000-0000-000000000000/remove"
+                                  method="post">
+                              <p>
+                                <input type="submit"
+                                       class="medium
+                                              cursor-pointer
+                                              nowrap
+                                              btn-normal
+                                              rounded
+                                              border-none
+                                              text-decoration-none
+                                              pf-link-white
+                                              fg-white
+                                              bg-purple
+                                              h6
+                                              m-pl1
+                                              m-pr1
+                                              m-pt1
+                                              m-pb1"
+                                       value="Remove">
+                              </p>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Add teammate
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-m-9">
+                      <div class="m-pl1
+                                  m-pr1">
+                        <form action="/invites/add"
+                              method="post"
+                              class="flex
+                                     m-pt1">
+                          <input class="font-family-inherit
+                                        fg-black
+                                        border-box
+                                        rounded
+                                        border
+                                        border-gray-800
+                                        h-2r
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1
+                                        align-middle
+                                        w-100p"
+                                 name="email"
+                                 placeholder="blob@example.com"
+                                 type="email">
+                          <input type="submit"
+                                 class="medium
+                                        cursor-pointer
+                                        nowrap
+                                        btn-normal
+                                        rounded
+                                        border-none
+                                        text-decoration-none
+                                        pf-link-white
+                                        fg-white
+                                        bg-purple
+                                        h6
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1
+                                        align-middle
+                                        d-ml2
+                                        m-ml1"
+                                 value="Add">
+                        </form>
+                        <p class="fg-black
+                                  normal
+                                  h6
+                                  lh-4
+                                  fg-gray400
+                                  m-pt1">
+                          Add a teammate to your subscription for a discounted rate of $16
+per month. Your first invoice will be prorated based on your current billing cycle.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-top
+                              border-gray-800
+                              m-pb3
+                              m-pt2
+                              row">
+                    <div class="col-m
+                                col-m-3">
+                      <div>
+                        <p>
+                          Payment
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-m
+                                col-d-9">
+                      <div class="row">
+                        <div class="col-m
+                                    col-d-6
+                                    col-m-12">
+                          <div class="m-pl1
+                                      m-pr1">
+                            <p>
+                              Visa ending in 4242
+                            </p>
+                            <p>
+                              Expires 1/2020
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-m
+                                    col-d-6
+                                    col-m-12">
+                          <div class="m-pl1
+                                      m-pr1
+                                      end-d">
+                            <p>
+                              <a class="medium
+                                        cursor-pointer
+                                        nowrap
+                                        btn-normal
+                                        rounded
+                                        border-none
+                                        text-decoration-none
+                                        pf-link-white
+                                        fg-white
+                                        bg-purple
+                                        h6
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1"
+                                 href="/account/payment-info">
+                                Update payment method
+                              </a>
+                            </p>
+                            <p>
+                              <a class="medium
+                                        cursor-pointer
+                                        nowrap
+                                        btn-outline
+                                        border-none
+                                        underline
+                                        pf-link-black
+                                        fg-black
+                                        bg-inherit
+                                        h6
+                                        m-pl1
+                                        m-pr1
+                                        m-pt1
+                                        m-pb1"
+                                 href="/account/invoices">
+                                Payment history
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-m
+                        col-m-12">
+              <a class="medium
+                        cursor-pointer
+                        nowrap
+                        btn-normal
+                        rounded
+                        border-none
+                        text-decoration-none
+                        pf-link-white
+                        fg-white
+                        bg-black
+                        h5
+                        m-pl2
+                        m-pr2"
+                 href="/logout">
+                Logout
+              </a>
             </div>
           </div>
         </div>
@@ -2202,6 +2440,16 @@ subscription at any time before this period ends.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

@@ -1,0 +1,14 @@
+POST http://localhost:8080/subscribe
+Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
+
+pricing[billing]=monthly&pricing[quantity]=3&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.co&token=stripe-deadbeef
+
+302 Found
+Location: /subscribe/team?billing=monthly&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"Your card has insufficient funds.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

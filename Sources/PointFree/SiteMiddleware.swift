@@ -84,8 +84,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> blogMiddleware
 
     case let .discounts(couponId):
-      return conn.map(const(user .*. .default .*. .minimal .*. couponId .*. route .*. unit))
-        |> discountResponse
+      return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. nil .*. couponId .*. unit))
+        |> discountSubscribeConfirmation
 
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
@@ -135,6 +135,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(inviteId .*. user .*. unit))
         |> acceptInviteMiddleware
 
+    case let .invite(.addTeammate(email)):
+      return conn.map(const(user .*. email .*. unit))
+        |> addTeammateViaInviteMiddleware
+
     case let .invite(.resend(inviteId)):
       return conn.map(const(inviteId .*. user .*. unit))
         |> resendInviteMiddleware
@@ -159,20 +163,6 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> logoutResponse
 
-    case let .pricing(pricing, expand):
-      return conn
-        .map(
-          const(
-            user
-              .*. (pricing ?? .default)
-              .*. (expand == .some(true) ? .full : .minimal)
-              .*. nil
-              .*. route
-              .*. unit
-          )
-        )
-        |> pricingResponse
-
     case .pricingLanding:
       let allEpisodeCount = AllEpisodeCount(rawValue: Current.episodes().count)
       let episodeHourCount = EpisodeHourCount(rawValue: Current.episodes().reduce(0) { $0 + $1.length } / 3600)
@@ -196,8 +186,15 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case .subscribeConfirmation:
-      return conn.map(const(user .*. subscriberState .*. route .*. unit))
+    case let .subscribeConfirmation(lane, billing, teammates):
+      let teammates = lane == .team ? (teammates ?? [""]) : []
+      let subscribeData = SubscribeData(
+        coupon: nil,
+        pricing: Pricing(billing: billing ?? .yearly, quantity: teammates.count + 1),
+        teammates: teammates,
+        token: ""
+      )
+      return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
 
     case .team(.leave):
@@ -226,6 +223,20 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn
         |> writeStatus(.internalServerError)
         >=> respond(text: "We don't support this event.")
+    }
+}
+
+public func redirect<A>(
+  with route: @escaping (A) -> Route,
+  headersMiddleware: @escaping Middleware<HeadersOpen, HeadersOpen, A, A> = (id >>> pure)
+  )
+  ->
+  Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+    return { conn in
+      conn |> redirect(
+        to: path(to: route(conn.data)),
+        headersMiddleware: headersMiddleware
+      )
     }
 }
 

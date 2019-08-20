@@ -15,10 +15,7 @@ open class TestCase: XCTestCase {
 //    record = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-    Current.database = .init(
-      databaseUrl: Current.envVars.postgres.databaseUrl,
-      logger: Current.logger
-    )
+    Current.database = .liveTest
     pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
 
     _ = try! Current.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])

@@ -19,7 +19,7 @@ public struct Pricing: Equatable {
   }
 
   public enum Lane: String, Codable {
-    case individual
+    case personal
     case team
   }
 
@@ -38,8 +38,8 @@ public struct Pricing: Equatable {
     }
   }
 
-  public var isIndividual: Bool {
-    return self.lane == .individual
+  public var isPersonal: Bool {
+    return self.lane == .personal
   }
 
   public var isTeam: Bool {
@@ -48,20 +48,16 @@ public struct Pricing: Equatable {
 
   public var lane: Lane {
     return self.quantity == 1
-      ? .individual
+      ? .personal
       : .team
   }
 
   public var plan: Stripe.Plan.Id {
-    switch (self.billing, self.quantity) {
-    case (.monthly, 1):
-      return .individualMonthly
-    case (.yearly, 1):
-      return .individualYearly
-    case (.monthly, _):
-      return .teamMonthly
-    case (.yearly, _):
-      return .teamYearly
+    switch self.billing {
+    case .monthly:
+      return .monthly
+    case .yearly:
+      return .yearly
     }
   }
 }
@@ -71,7 +67,7 @@ extension Pricing: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
     let billing = try container.decode(Billing.self, forKey: .billing)
-    if lane == .some(.individual) {
+    if lane == .some(.personal) {
       self.init(billing: billing, quantity: 1)
     } else {
       let quantity = try container.decode(Int.self, forKey: .quantity)

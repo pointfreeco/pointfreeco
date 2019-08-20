@@ -14,6 +14,7 @@ extension AccountTests {
     ("testAccount", testAccount),
     ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
+    ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
     ("testTeam_AsTeammate", testTeam_AsTeammate),
     ("testAccount_WithExtraInvoiceInfo", testAccount_WithExtraInvoiceInfo),
     ("testAccountWithFlashNotice", testAccountWithFlashNotice),
@@ -97,12 +98,6 @@ extension ChangeEmailConfirmationTests {
 }
 extension ChangeTests {
   static var allTests: [(String, (ChangeTests) -> () throws -> Void)] = [
-    ("testChangeShow", testChangeShow),
-    ("testChangeShowLoggedOut", testChangeShowLoggedOut),
-    ("testChangeShowNoSubscription", testChangeShowNoSubscription),
-    ("testChangeShowCancelingSubscription", testChangeShowCancelingSubscription),
-    ("testChangeShowCanceledSubscription", testChangeShowCanceledSubscription),
-    ("testChangeShowDiscountSubscription", testChangeShowDiscountSubscription),
     ("testChangeUpdateUpgradeIndividualPlan", testChangeUpdateUpgradeIndividualPlan),
     ("testChangeUpdateDowngradeIndividualPlan", testChangeUpdateDowngradeIndividualPlan),
     ("testChangeUpdateUpgradeTeamPlan", testChangeUpdateUpgradeTeamPlan),
@@ -291,16 +286,11 @@ extension PointFreeRouterTests {
     ("testUpdateProfile", testUpdateProfile),
   ]
 }
-extension PricingTests {
-  static var allTests: [(String, (PricingTests) -> () throws -> Void)] = [
-    ("testPricing", testPricing),
-    ("testDiscount", testDiscount),
-    ("testInvalidDiscount", testInvalidDiscount),
-    ("testPricingLoggedIn_NonSubscriber", testPricingLoggedIn_NonSubscriber),
-    ("testPricingLoggedIn_NonSubscriber_Expanded", testPricingLoggedIn_NonSubscriber_Expanded),
-    ("testPricingLoggedIn_Subscriber", testPricingLoggedIn_Subscriber),
-    ("testPricingLoggedIn_CanceledSubscriber", testPricingLoggedIn_CanceledSubscriber),
-    ("testPricingLoggedIn_PastDueSubscriber", testPricingLoggedIn_PastDueSubscriber),
+extension PricingLandingTests {
+  static var allTests: [(String, (PricingLandingTests) -> () throws -> Void)] = [
+    ("testLanding_LoggedIn_ActiveSubscriber", testLanding_LoggedIn_ActiveSubscriber),
+    ("testLanding_LoggedIn_InactiveSubscriber", testLanding_LoggedIn_InactiveSubscriber),
+    ("testLanding_LoggedOut", testLanding_LoggedOut),
   ]
 }
 extension PrivacyTests {
@@ -367,9 +357,18 @@ extension SubscribeTests {
     ("testCurrentSubscribers", testCurrentSubscribers),
     ("testInvalidQuantity", testInvalidQuantity),
     ("testHappyPath", testHappyPath),
+    ("testHappyPath_Team", testHappyPath_Team),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
     ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure),
+  ]
+}
+extension SubscriptionConfirmationTests {
+  static var allTests: [(String, (SubscriptionConfirmationTests) -> () throws -> Void)] = [
+    ("testPersonal_LoggedIn", testPersonal_LoggedIn),
+    ("testTeam_LoggedIn", testTeam_LoggedIn),
+    ("testPersonal_LoggedIn_ActiveSubscriber", testPersonal_LoggedIn_ActiveSubscriber),
+    ("testPersonal_LoggedOut", testPersonal_LoggedOut),
   ]
 }
 extension TeamEmailsTests {
@@ -431,7 +430,7 @@ XCTMain([
   testCase(NotFoundMiddlewareTests.allTests),
   testCase(PaymentInfoTests.allTests),
   testCase(PointFreeRouterTests.allTests),
-  testCase(PricingTests.allTests),
+  testCase(PricingLandingTests.allTests),
   testCase(PrivacyTests.allTests),
   testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
@@ -440,6 +439,7 @@ XCTMain([
   testCase(StripeWebhooksTests.allTests),
   testCase(StyleguideTests.allTests),
   testCase(SubscribeTests.allTests),
+  testCase(SubscriptionConfirmationTests.allTests),
   testCase(TeamEmailsTests.allTests),
   testCase(UpdateProfileTests.allTests),
   testCase(WelcomeEmailTests.allTests),

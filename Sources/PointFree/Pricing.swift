@@ -22,11 +22,11 @@ let discountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Pr
   redirectActiveSubscribers(user: get1)
     <<< filterMap(
       over4(fetchCoupon) >>> sequence4 >>> map(require4),
-      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(to: .pricingLanding, headersMiddleware: flash(.error, couponError))
     )
     <<< filter(
       get4 >>> ^\.valid,
-      or: redirect(to: .pricing(nil, expand: nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(to: .pricingLanding, headersMiddleware: flash(.error, couponError))
     )
     <| map(over4(Optional.some)) >>> pure
     >=> basePricingResponse
@@ -309,7 +309,7 @@ private let faqLinkStyles =
 private let pricingTabsView = View<Pricing> { pricing in
   [
     input([
-      checked(pricing.isIndividual),
+      checked(pricing.isPersonal),
       `class`([Class.display.none]),
       id(selectors.input.0),
       name("pricing[lane]"),
@@ -524,7 +524,7 @@ private let pricingFooterView = View<(User?, PricingFormStyle, Stripe.Coupon.Id?
                 gitHubLink(
                   text: "Sign in with GitHub",
                   type: .black,
-                  href: path(to: .login(redirect: url(to: route ?? .pricing(nil, expand: false))))
+                  href: path(to: .login(redirect: url(to: route ?? .pricingLanding)))
                 )
             ])
       )
@@ -582,9 +582,9 @@ private func individualTeamPricing(for type: Pricing.Billing, coupon: Stripe.Cou
 
   switch type {
   case .monthly:
-    return 17 * rate
+    return 18 * rate
   case .yearly:
-    return 170 * rate
+    return 168 * rate
   }
 }
 
@@ -603,7 +603,7 @@ private func defaultTeamPricing(for type: Pricing.Billing) -> Int {
   case .monthly:
     return 16
   case .yearly:
-    return 160
+    return 144
   }
 }
 

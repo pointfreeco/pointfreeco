@@ -695,22 +695,6 @@ import Stripe
 
 
 
-      extension PartialIso where A == (
-            Pricing?
-          , 
-            Bool?
-        ), B == Route {
-
-          public static let pricing = parenthesize <| PartialIso(
-            apply: Route.pricing,
-            unapply: {
-              guard case let .pricing(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
       extension PartialIso where A == Prelude.Unit, B == Route {
         public static let pricingLanding = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.pricingLanding)),
@@ -747,13 +731,20 @@ import Stripe
 
 
 
-      extension PartialIso where A == Prelude.Unit, B == Route {
-        public static let subscribeConfirmation = parenthesize <| PartialIso<Prelude.Unit, Route>(
-          apply: const(.some(.subscribeConfirmation)),
-          unapply: {
-            guard case .subscribeConfirmation = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
+      extension PartialIso where A == (
+            Pricing.Lane
+          , 
+            Pricing.Billing?
+          , 
+            [EmailAddress]?
+        ), B == Route {
+
+          public static let subscribeConfirmation = parenthesize <| PartialIso(
+            apply: Route.subscribeConfirmation,
+            unapply: {
+              guard case let .subscribeConfirmation(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 
@@ -914,6 +905,20 @@ import Stripe
             apply: Route.Invite.accept,
             unapply: {
               guard case let .accept(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == (
+            EmailAddress?
+        ), B == Route.Invite {
+
+          public static let addTeammate = parenthesize <| PartialIso(
+            apply: Route.Invite.addTeammate,
+            unapply: {
+              guard case let .addTeammate(result) = $0 else { return nil }
               return .some(result)
           })
       }

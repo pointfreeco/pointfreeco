@@ -25,6 +25,7 @@ public func pricingLanding(
   return hero(currentUser: currentUser, subscriberState: subscriberState)
     + plansAndPricing(
       allEpisodeCount: allEpisodeCount,
+      currentUser: currentUser,
       episodeHourCount: episodeHourCount,
       freeEpisodeCount: freeEpisodeCount,
       subscriberState: subscriberState
@@ -169,6 +170,7 @@ private let contactusButtonClasses =
 
 private func plansAndPricing(
   allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
   episodeHourCount: EpisodeHourCount,
   freeEpisodeCount: FreeEpisodeCount,
   subscriberState: SubscriberState
@@ -215,18 +217,22 @@ private func plansAndPricing(
       ],
       [
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .free(freeEpisodeCount: freeEpisodeCount)
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .team
         ),
         pricingPlan(
+          currentUser: currentUser,
           subscriberState: subscriberState,
           plan: .enterprise
         ),
@@ -322,21 +328,13 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
   )
 }
 
-private func pricingPlan(subscriberState: SubscriberState, plan: PricingPlan) -> ChildOf<Tag.Ul> {
-  let cost = plan.cost.map(planCost) ?? div([])
+private func pricingPlan(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> ChildOf<Tag.Ul> {
 
-  let ctaButton = subscriberState.isActive
-    ? div([])
-    : a(
-      [
-        href("#"),
-        `class`([
-          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
-          plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
-          ])
-      ],
-      [plan.cost == nil ? "Contact Us" : "Choose plan"]
-  )
+  let cost = plan.cost.map(planCost) ?? div([])
 
   return li(
     [
@@ -383,11 +381,59 @@ private func pricingPlan(subscriberState: SubscriberState, plan: PricingPlan) ->
               )
             }
           ),
-          ctaButton
+          pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
         ]
       )
     ]
   )
+}
+
+private func pricingPlanCta(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> Node {
+
+  if plan.cost == nil {
+    return a(
+      [
+        mailto("support@pointfree.co"),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          contactusButtonClasses
+          ])
+      ],
+      ["Contact Us"]
+    )
+  } else if plan.isFree && currentUser == nil  {
+    return a(
+      [
+        href(path(to: .login(redirect: url(to: .pricingLanding)))),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      ["Choose plan"]
+    )
+  } else if !plan.isFree {
+    return a(
+      [
+        href(
+          subscriberState.isActive
+            ? path(to: .account(.index))
+            : path(to: plan.lane.map { Route.subscribeConfirmation($0, nil, nil) } ?? .home)
+        ),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      [subscriberState.isActive ? "Manage subscription" : "Choose plan"]
+    )
+  } else {
+    return div([])
+  }
 }
 
 private let whatToExpect = [
@@ -714,8 +760,8 @@ private func footer(
   let title = currentUser == nil
     ? "Get started with our Free plan"
     : "Get started with our Personal plan"
-
   let subtitle = currentUser == nil
+
     ? "Includes a free episode of your choice, plus weekly<br>updates from our newsletter."
     : "Access all \(allEpisodeCount.rawValue) episodes on Point-Free today!"
 
@@ -728,7 +774,7 @@ private func footer(
       )
     : a(
       [
-        href(path(to: .subscribeConfirmation)),
+        href(path(to: .subscribeConfirmation(.personal, nil, nil))),
         `class`([Class.pf.components.button(color: .white)])
       ],
       ["Subscribe"]
@@ -770,6 +816,7 @@ private func footer(
 
 private struct PricingPlan {
   let cost: Cost?
+  let lane: Pricing.Lane?
   let features: [String]
   let title: String
 
@@ -778,9 +825,14 @@ private struct PricingPlan {
     let value: String
   }
 
+  var isFree: Bool {
+    return self.cost?.value == "$0" && self.lane == nil
+  }
+
   static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: nil, value: "$0"),
+      lane: nil,
       features: [
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
@@ -797,6 +849,7 @@ private struct PricingPlan {
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
+      lane: .personal,
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
@@ -809,10 +862,11 @@ private struct PricingPlan {
 
   static let team = PricingPlan(
     cost: Cost(title: "per&nbsp;member, per&nbsp;month, billed&nbsp;annually", value: "$12"),
+    lane: .team,
     features: [
       "All personal plan features",
       "For teams of 2 or more",
-      "Add teammates at any time with pro-rated billing",
+      "Add teammates at any time with prorated billing",
       "Remove and reassign teammates at any time"
     ],
     title: "Team"
@@ -820,6 +874,7 @@ private struct PricingPlan {
 
   static let enterprise = PricingPlan(
     cost: nil,
+    lane: nil,
     features: [
       "For large teams",
       "Unlimited, company-wide access to all content",
@@ -846,7 +901,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
     Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
-Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
 """),
     Faq(
@@ -913,6 +968,24 @@ There clearly was a before and an after @pointfreeco for me. I've always been an
       subscriber: "Romain Pouclet",
       tweetUrl: "https://twitter.com/Palleas/status/1023976413429260288",
       twitterHandle: "Palleas"
+    ),
+
+    Testimonial(
+      quote: """
+I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
+""",
+      subscriber: "Christina Lee",
+      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
+      twitterHandle: "RunChristinaRun"
+    ),
+
+    Testimonial(
+      quote: """
+tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
+""",
+      subscriber: "Meghan Kane",
+      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
+      twitterHandle: "meghafon"
     ),
 
     Testimonial(
@@ -1025,15 +1098,6 @@ Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super c
 
     Testimonial(
       quote: """
-tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
-""",
-      subscriber: "Meghan Kane",
-      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
-      twitterHandle: "meghafon"
-    ),
-
-    Testimonial(
-      quote: """
 @pointfreeco ❤️: Thank you! 🧠: … The brain can’t say anything. It is blown away (🤯)!
 """,
       subscriber: "Rajiv Jhoomuck",
@@ -1057,15 +1121,6 @@ I haven't really done much Swift, but watched this out of curiosity, & it's real
       subscriber: "Josh Burgess",
       tweetUrl: "https://twitter.com/_joshburgess/status/971169503890624513",
       twitterHandle: "_joshburgess"
-    ),
-
-    Testimonial(
-      quote: """
-I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
-""",
-      subscriber: "Christina Lee",
-      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
-      twitterHandle: "RunChristinaRun"
     ),
 
     Testimonial(
