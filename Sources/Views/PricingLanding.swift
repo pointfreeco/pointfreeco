@@ -853,7 +853,7 @@ private struct PricingPlan {
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
-        "Private RSS feed for viewing in podcast apps",
+        "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
       ],
       title: "Personal"

@@ -13,7 +13,7 @@ With our moderately complex SwiftUI application complete we can finally ask ours
   ),
   id: 67,
   image: "https://i.vimeocdn.com/video/801296903.jpg",
-  itunesImage: "https://i.vimeocdn.com/video/801296903.jpg",
+  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0067-swiftui-and-state-management-pt3/itunes-poster.jpg",
   length: 27 * 60 + 2,
   permission: .free,
   previousEpisodeInCollection: 66,
