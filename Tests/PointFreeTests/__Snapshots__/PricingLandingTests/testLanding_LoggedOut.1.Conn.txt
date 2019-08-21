@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 180646
+Content-Length: 180654
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2168,7 +2168,7 @@ personal, team and enterprise subscriptions.">
               Over 0 hours of video
             </li>
             <li class="m-pt1">
-              Private RSS feed for viewing in podcast apps
+              Private RSS feed for offline viewing in podcast apps
             </li>
             <li class="m-pt1">
               Download all episode playgrounds
