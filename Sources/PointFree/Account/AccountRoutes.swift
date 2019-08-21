@@ -30,8 +30,8 @@ func renderAccount(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, User?
       return conn.map(const(user .*. invoiceId .*. unit))
         |> invoiceResponse
 
-    case let .paymentInfo(.show(expand)):
-      return conn.map(const(user .*. (expand == .some(true) ? .full : .minimal) .*. subscriberState .*. unit))
+    case .paymentInfo(.show):
+      return conn.map(const(user .*. subscriberState .*. unit))
         |> paymentInfoResponse
 
     case let .paymentInfo(.update(token)):

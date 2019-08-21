@@ -1038,7 +1038,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               p([
                 a([
                   `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                  href(path(to: .account(.paymentInfo(.show(expand: nil))))),
+                  href(path(to: .account(.paymentInfo(.show)))),
                   ],
                   ["Update payment method"])
                 ]),
