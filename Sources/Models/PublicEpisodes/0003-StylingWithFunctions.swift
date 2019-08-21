@@ -7,7 +7,7 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   codeSampleDirectory: "0003-styling-with-functions",
   exercises: [],
   fullVideo: .init(
-    bytesLength: 556_949_587,
+    bytesLength: 324873341,
     downloadUrl: "https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/348652413"
   ),

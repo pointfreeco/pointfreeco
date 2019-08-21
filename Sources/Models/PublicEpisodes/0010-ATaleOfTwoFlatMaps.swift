@@ -9,7 +9,7 @@ operation to other structures and derive new, useful code!
   codeSampleDirectory: "0010-a-tale-of-two-flat-maps",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 537_822_190,
+    bytesLength: 164582242,
     downloadUrl: "https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/354238926"
   ),

@@ -7,7 +7,7 @@ Our first episode is all about functions! We talk a bit about what makes functio
   codeSampleDirectory: "0001-functions",
   exercises: [],
   fullVideo: .init(
-    bytesLength: 411_951_213,
+    bytesLength: 197667168,
     downloadUrl: "https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/348650932"
   ),

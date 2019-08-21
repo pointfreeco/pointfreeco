@@ -10,7 +10,7 @@ previously hidden.
   codeSampleDirectory: "0029-dsls-vs-templating-languages",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 665_928_011,
+    bytesLength: 476109800,
     downloadUrl: "https://player.vimeo.com/external/351397245.hd.mp4?s=70b609ec1d7733bcf560508e0b02606a2f3948d2&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/351397245"
   ),

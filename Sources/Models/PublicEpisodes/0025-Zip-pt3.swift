@@ -7,7 +7,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
   codeSampleDirectory: "0025-zip-pt3",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 483_556_172,
+    bytesLength: 501551082,
     downloadUrl: "https://player.vimeo.com/external/351397230.hd.mp4?s=1d1d877d1bb0e623b2f4d9efe362d96bc5aded7d&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/351397230"
   ),
@@ -22,7 +22,7 @@ The third, and final, part of our introductory series to `zip` finally answers t
   sequence: 25,
   title: "The Many Faces of Zip: Part 3",
   trailerVideo: .init(
-    bytesLength: 41_732_099,
+    bytesLength: 79605908,
     downloadUrl: "https://player.vimeo.com/external/351175721.hd.mp4?s=0eb3a8708cb5810b33420c87d5f5ebc224aeefb6&profile_id=175&download=1",
     streamingSource: "https://player.vimeo.com/video/351175721"
   ),
