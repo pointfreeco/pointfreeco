@@ -12,7 +12,7 @@ import Views
 public let subscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData?, Stripe.Coupon?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
   Data
   >
   = filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -44,7 +44,7 @@ public let subscribeConfirmation: Middleware<
 public let discountSubscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData?, Stripe.Coupon.Id?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
   Data
   >
   = filterMap(
