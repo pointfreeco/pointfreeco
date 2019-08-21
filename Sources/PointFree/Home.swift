@@ -26,7 +26,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (currentUser, subscriberState),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles,
           openGraphType: .website,
           style: .base(.mountains(.main)),
           title: "Point-Free: A video series on functional programming and the Swift programming language.",
