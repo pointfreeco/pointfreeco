@@ -10,13 +10,13 @@ previously hidden.
   codeSampleDirectory: "0029-dsls-vs-templating-languages",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 665_928_011,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full-720p-DD72BEE3-57A5-46B1-95B7-E1BA62FE2CE8.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/full/0029-dsl-vs-templating-languages.m3u8"
+    bytesLength: 476109800,
+    downloadUrl: "https://player.vimeo.com/external/351397245.hd.mp4?s=70b609ec1d7733bcf560508e0b02606a2f3948d2&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/351397245"
   ),
   id: 29,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0029-dsl-vs-templating-languages/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/803400556.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/803400556.jpg",
   length: 33*60 + 17,
   permission: .free,
   previousEpisodeInCollection: 28,

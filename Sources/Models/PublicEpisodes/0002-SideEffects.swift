@@ -12,8 +12,8 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
     streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full/0002-side-effects.m3u8"
   ),
   id: 2,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/0002-poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807678088.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807678088.jpg",
   length: 2676,
   permission: .free,
   previousEpisodeInCollection: nil,
