@@ -211,6 +211,32 @@ class SubscriptionConfirmationTests: TestCase {
 
     assertSnapshot(matching: result, as: .ioConn)
   }
+
+  func testPersonal_LoggedIn_WithDiscount() {
+    update(
+      &Current,
+      \.database.fetchUserById .~ const(pure(.mock)),
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(from: request(to: .discounts(code: "dead-beef"), session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
+  }
 }
 
 #if os(iOS) || os(macOS)

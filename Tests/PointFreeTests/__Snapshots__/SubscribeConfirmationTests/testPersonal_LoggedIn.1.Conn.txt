@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54515
+Content-Length: 54571
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2132,13 +2132,15 @@ html {
                     m-pt3
                     col-m
                     col-m-12">
-          <p class="fg-black
-                    normal
-                    h6
-                    lh-4
-                    fg-gray400"
-             id="pricing-preview">
-          </p>
+          <span class="fg-black
+                       normal
+                       h6
+                       lh-4
+                       fg-gray400"
+                id="pricing-preview">
+          </span>
+          <span>
+          </span>
         </div>
       </div>
       <div class="d-ml4
