@@ -220,7 +220,7 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .discounts(code: "dead-beef"), session: .loggedIn))
+    let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
