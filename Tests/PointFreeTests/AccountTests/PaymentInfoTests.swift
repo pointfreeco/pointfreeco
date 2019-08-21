@@ -20,7 +20,7 @@ class PaymentInfoTests: TestCase {
   }
 
   func testRender() {
-    let conn = connection(from: request(to: .account(.paymentInfo(.show(expand: nil))), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
