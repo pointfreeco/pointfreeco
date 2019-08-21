@@ -140,13 +140,6 @@ private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Prici
   return pricing.quantity >= seatsTaken
 }
 
-private let extraStyles =
-  ((input & .pseudo(.checked) ~ .star) > .star) % (
-    color(Colors.black)
-      <> fontWeight(.bold)
-    )
-    <> extraSpinnerStyles
-
 private func fetchSeatsTaken<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User, Int, A>, Data>
   )
