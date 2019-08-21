@@ -111,9 +111,15 @@ private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bo
 }
 
 private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
-  return .subscribeConfirmation(
-    subscribeData?.pricing.isPersonal == .some(true) ? .personal : .team,
-    subscribeData?.pricing.billing,
-    subscribeData?.teammates
-  )
+  guard let subscribeData = subscribeData else {
+    return .subscribeConfirmation(.team, .yearly, [""])
+  }
+  guard let coupon = subscribeData.coupon else {
+    return .subscribeConfirmation(
+      subscribeData.pricing.isPersonal ? .personal : .team,
+      subscribeData.pricing.billing,
+      subscribeData.teammates
+    )
+  }
+  return .discounts(code: coupon, subscribeData.pricing.billing)
 }

@@ -536,6 +536,8 @@ import Stripe
 
       extension PartialIso where A == (
             Stripe.Coupon.Id
+          , 
+            Pricing.Billing?
         ), B == Route {
 
           public static let discounts = parenthesize <| PartialIso(

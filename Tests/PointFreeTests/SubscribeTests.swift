@@ -61,6 +61,35 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
+  func testCouponFailure_Individual() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData.individualMonthly
+      |> \.coupon .~ "deadbeef"
+
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> (\Session.userId) .~ user.id
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
   func testCoupon_Team() {
     let subscribeData = SubscribeData.teamYearly(quantity: 4)
       |> \.coupon .~ "deadbeef"
