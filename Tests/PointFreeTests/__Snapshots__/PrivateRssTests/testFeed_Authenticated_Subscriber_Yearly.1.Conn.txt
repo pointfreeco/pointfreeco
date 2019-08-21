@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 15837
+Content-Length: 15886
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -202,7 +202,7 @@ with anyone else.
         00:25:04
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678771.jpg
+        https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -216,11 +216,11 @@ with anyone else.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&amp;profile_id=175&amp;download=1"
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4"
                  length="537822190"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&amp;profile_id=175&amp;download=1"
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4"
                      length="537822190"
                      type="video/mp4"
                      medium="video">
@@ -267,7 +267,7 @@ with anyone else.
         00:27:14
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678140.jpg
+        https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/itunes-poster.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -281,11 +281,11 @@ with anyone else.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&amp;profile_id=175&amp;download=1"
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4"
                  length="556949587"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&amp;profile_id=175&amp;download=1"
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4"
                      length="556949587"
                      type="video/mp4"
                      medium="video">
@@ -332,7 +332,7 @@ with anyone else.
         00:44:36
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/807678088.jpg
+        https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/itunes-poster.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -397,7 +397,7 @@ with anyone else.
         00:20:19
       </itunes:duration>
       <itunes:image>
-        https://i.vimeocdn.com/video/803401029.jpg
+        https://d1hf1soyumxcgv.cloudfront.net/0001-functions/itunes-poster.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -411,11 +411,11 @@ with anyone else.
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&amp;profile_id=175&amp;download=1"
+      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
                  length="411951213"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://player.vimeo.com/external/348650932.hd.mp4?s=b448ad4d2af97f1bf3223363bd4ad34aecbb188f&amp;profile_id=175&amp;download=1"
+      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0001-functions/full-720p-2B04A681-6E91-4768-B7C3-422E2A0819D0.mp4"
                      length="411951213"
                      type="video/mp4"
                      medium="video">
