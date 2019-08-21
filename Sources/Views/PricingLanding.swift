@@ -25,18 +25,39 @@ public func pricingLanding(
   return hero(currentUser: currentUser, subscriberState: subscriberState)
     + plansAndPricing(
       allEpisodeCount: allEpisodeCount,
+      currentUser: currentUser,
       episodeHourCount: episodeHourCount,
-      freeEpisodeCount: freeEpisodeCount
+      freeEpisodeCount: freeEpisodeCount,
+      subscriberState: subscriberState
     )
     + whatToExpect
     + faq
     + whatPeopleAreSaying
     + featuredTeams
-    + footer(currentUser: currentUser)
+    + footer(allEpisodeCount: allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
 }
 
 func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  guard !subscriberState.isActive else { return [] }
+  guard currentUser == nil || subscriberState.isActive else { return [] }
+
+  let title = subscriberState.isActive
+    ? "You‘re already a subscriber!"
+    : "Start with a free episode"
+
+  let ctaButton = subscriberState.isActive
+    ? a(
+      [
+        href(path(to: .account(.index))),
+        `class`([Class.pf.components.button(color: .white)])
+      ],
+      ["Manage your account"]
+    )
+    : gitHubLink(
+      text: "Create your account",
+      type: .white,
+      // TODO: redirect back to home?
+      href: path(to: .login(redirect: url(to: .pricingLanding)))
+  )
 
   return [
     gridColumn(
@@ -58,14 +79,9 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
                   Class.padding([.mobile: [.bottom: 2]])
                   ])
               ],
-              ["Start with a free episode"]
+              [.text(title)]
             ),
-            gitHubLink(
-              text: "Create your account",
-              type: .white,
-              // TODO: redirect back to home?
-              href: path(to: .login(redirect: url(to: .pricingLanding)))
-            )
+            ctaButton
           ]
         )
       ]
@@ -74,7 +90,7 @@ func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 }
 
 private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  let isTwoColumnHero = !subscriberState.isActive
+  let isTwoColumnHero = currentUser == nil || subscriberState.isActive
   let titleColumnCount = isTwoColumnHero ? 8 : 12
 
   return [
@@ -108,17 +124,19 @@ private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node
       [
         `class`([
           Class.pf.colors.bg.black,
-          Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
+          Class.border.top,
           ]),
-        style(
-          // TODO: move to nav?
-          key("border-top", "1px solid #333")
-        )
+        // TODO: move to nav?
+        style(key("border-top-color", "#333"))
       ],
       [
         gridRow(
           [
-            `class`([Class.grid.middle(.desktop)])
+            `class`([
+              Class.grid.middle(.desktop),
+              Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
+              ]),
+            style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
           ],
           titleColumn(currentUser: currentUser, subscriberState: subscriberState)
             + ctaColumn(currentUser: currentUser, subscriberState: subscriberState)
@@ -152,8 +170,10 @@ private let contactusButtonClasses =
 
 private func plansAndPricing(
   allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
   episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount
+  freeEpisodeCount: FreeEpisodeCount,
+  subscriberState: SubscriberState
   ) -> [Node] {
   return [
     gridRow(
@@ -174,7 +194,10 @@ private func plansAndPricing(
           ],
           [
             h3(
-              [`class`([Class.pf.type.responsiveTitle2])],
+              [
+                id("plans-and-pricing"),
+                `class`([Class.pf.type.responsiveTitle2])
+              ],
               ["Plans and pricing"]
             )
           ]
@@ -190,12 +213,29 @@ private func plansAndPricing(
           Class.flex.wrap,
           Class.flex.flex
           ]),
+        style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
       ],
       [
-        pricingPlan(.free(freeEpisodeCount: freeEpisodeCount)),
-        pricingPlan(.personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)),
-        pricingPlan(.team),
-        pricingPlan(.enterprise),
+        pricingPlan(
+          currentUser: currentUser,
+          subscriberState: subscriberState,
+          plan: .free(freeEpisodeCount: freeEpisodeCount)
+        ),
+        pricingPlan(
+          currentUser: currentUser,
+          subscriberState: subscriberState,
+          plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
+        ),
+        pricingPlan(
+          currentUser: currentUser,
+          subscriberState: subscriberState,
+          plan: .team
+        ),
+        pricingPlan(
+          currentUser: currentUser,
+          subscriberState: subscriberState,
+          plan: .enterprise
+        ),
       ]
     ),
     gridRow(
@@ -210,21 +250,26 @@ private func plansAndPricing(
           [
             `class`([
               Class.grid.center(.desktop),
-              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.leftRight: 5, .bottom: 4]])
+              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.bottom: 4]])
               ])
           ],
           [
             p(
               [
                 `class`([
-                  Class.pf.type.body.small,
+                  Class.pf.type.body.regular,
+                  Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
                   Class.pf.colors.fg.gray400
-                  ])
+                  ]),
+                style(maxWidth(.px(480)) <> margin(leftRight: .auto))
               ],
-              [.raw("""
-Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
-""")]
+              [
+                "Prices shown with annual billing. When billed month to month, the ",
+                strong(["Personal"]),
+                " plan is $18, and the ",
+                strong(["Team"]),
+                " plan is $16 per member per month."
+              ]
             )
           ]
         )
@@ -283,21 +328,13 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
   )
 }
 
-private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
-  let cost = plan.cost.map(planCost) ?? div([])
+private func pricingPlan(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> ChildOf<Tag.Ul> {
 
-  let ctaButton = a(
-    [
-      href("#"),
-      `class`([
-        Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
-        plan.cost == nil ? contactusButtonClasses : choosePlanButtonClasses
-        ])
-    ],
-    [
-      plan.cost == nil ? "Contact Us" : "Choose plan"
-    ]
-  )
+  let cost = plan.cost.map(planCost) ?? div([])
 
   return li(
     [
@@ -344,78 +381,134 @@ private func pricingPlan(_ plan: PricingPlan) -> ChildOf<Tag.Ul> {
               )
             }
           ),
-          ctaButton
+          pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
         ]
       )
     ]
   )
 }
 
+private func pricingPlanCta(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  plan: PricingPlan
+  ) -> Node {
+
+  if plan.cost == nil {
+    return a(
+      [
+        mailto("support@pointfree.co"),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          contactusButtonClasses
+          ])
+      ],
+      ["Contact Us"]
+    )
+  } else if plan.isFree && currentUser == nil  {
+    return a(
+      [
+        href(path(to: .login(redirect: url(to: .pricingLanding)))),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      ["Choose plan"]
+    )
+  } else if !plan.isFree {
+    return a(
+      [
+        href(
+          subscriberState.isActive
+            ? path(to: .account(.index))
+            : path(to: plan.lane.map { Route.subscribeConfirmation($0, nil, nil) } ?? .home)
+        ),
+        `class`([
+          Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+          choosePlanButtonClasses
+          ])
+      ],
+      [subscriberState.isActive ? "Manage subscription" : "Choose plan"]
+    )
+  } else {
+    return div([])
+  }
+}
+
 private let whatToExpect = [
-  gridRow(
+  div(
+    [style(backgroundColor(.other("#fafafa")))],
     [
-      `class`([
-        Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
-        ]),
-      style(backgroundColor(.other("#fafafa")))
-    ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
+      gridRow(
         [
           `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
-            ])
+            Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
+            ]),
+          style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
         ],
         [
-          h3(
-            [`class`([Class.pf.type.responsiveTitle2])],
-            ["What to expect"]
+          gridColumn(
+            sizes: [.mobile: 12],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
+                ])
+            ],
+            [
+              h3(
+                [
+                  id("what-to-expect"),
+                  `class`([Class.pf.type.responsiveTitle2])
+                ],
+                ["What to expect"]
+              )
+            ]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightBottomBorder,
+                lightRightBorder
+                ]),
+            ],
+            [whatToExpectColumn(item: .newContent)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightBottomBorder
+                ])
+            ],
+            [whatToExpectColumn(item: .topics)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [
+              `class`([
+                Class.grid.center(.desktop),
+                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+                lightRightBorder
+                ])
+            ],
+            [whatToExpectColumn(item: .playgrounds)]
+          ),
+          gridColumn(
+            sizes: [.mobile: 12, .desktop: 6],
+            [`class`([Class.grid.center(.desktop)])],
+            [whatToExpectColumn(item: .transcripts)]
           )
         ]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightBottomBorder,
-            lightRightBorder
-            ]),
-        ],
-        [whatToExpectColumn(item: .newContent)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightBottomBorder
-            ])
-        ],
-        [whatToExpectColumn(item: .topics)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [
-          `class`([
-            Class.grid.center(.desktop),
-            Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-            Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-            lightRightBorder
-            ])
-        ],
-        [whatToExpectColumn(item: .playgrounds)]
-      ),
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 6],
-        [`class`([Class.grid.center(.desktop)])],
-        [whatToExpectColumn(item: .transcripts)]
       )
     ]
   )
@@ -452,7 +545,8 @@ private let faq = [
     [
       `class`([
         Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
-        ])
+        ]),
+      style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
     ],
     [
       gridColumn(
@@ -464,6 +558,7 @@ private let faq = [
           div([
             h3(
               [
+                id("faq"),
                 `class`([
                   Class.pf.type.responsiveTitle2,
                   Class.grid.center(.desktop),
@@ -528,7 +623,10 @@ private let whatPeopleAreSaying = [
             ],
             [
               h3(
-                [`class`([Class.pf.type.responsiveTitle2])],
+                [
+                  id("what-people-are-saying"),
+                  `class`([Class.pf.type.responsiveTitle2])
+                ],
                 ["What people are saying"]
               )
             ]
@@ -617,6 +715,7 @@ private let featuredTeams = [
         [
           h6(
             [
+              id("featured-teams"),
               `class`([
                 Class.pf.colors.fg.gray400,
                 Class.pf.type.responsiveTitle7,
@@ -650,8 +749,36 @@ private let featuredTeams = [
   )
 ]
 
-private func footer(currentUser: User?) -> [Node] {
-  guard currentUser == nil else { return [] }
+private func footer(
+  allEpisodeCount: AllEpisodeCount,
+  currentUser: User?,
+  subscriberState: SubscriberState
+  ) -> [Node] {
+
+  guard !subscriberState.isActive else { return [] }
+
+  let title = currentUser == nil
+    ? "Get started with our Free plan"
+    : "Get started with our Personal plan"
+  let subtitle = currentUser == nil
+
+    ? "Includes a free episode of your choice, plus weekly<br>updates from our newsletter."
+    : "Access all \(allEpisodeCount.rawValue) episodes on Point-Free today!"
+
+  let ctaButton = currentUser == nil
+    ? gitHubLink(
+      text: "Create your account",
+      type: .white,
+      // TODO: redirect back to home?
+      href: path(to: .login(redirect: url(to: .pricingLanding)))
+      )
+    : a(
+      [
+        href(path(to: .subscribeConfirmation(.personal, nil, nil))),
+        `class`([Class.pf.components.button(color: .white)])
+      ],
+      ["Subscribe"]
+  )
 
   return [
     div(
@@ -670,7 +797,7 @@ private func footer(currentUser: User?) -> [Node] {
               Class.pf.colors.fg.white
               ])
           ],
-          ["Get started with our free plan"]
+          [.text(title)]
         ),
         p(
           [
@@ -679,14 +806,9 @@ private func footer(currentUser: User?) -> [Node] {
               Class.padding([.mobile: [.bottom: 3]])
               ])
           ],
-          [.raw("Includes a free episode of your choice, plus weekly<br>updates from our newsletter.")]
+          [.raw(subtitle)]
         ),
-        gitHubLink(
-          text: "Create your account",
-          type: .white,
-          // TODO: redirect back to home?
-          href: path(to: .login(redirect: url(to: .pricingLanding)))
-        )
+        ctaButton
       ]
     )
   ]
@@ -694,6 +816,7 @@ private func footer(currentUser: User?) -> [Node] {
 
 private struct PricingPlan {
   let cost: Cost?
+  let lane: Pricing.Lane?
   let features: [String]
   let title: String
 
@@ -702,9 +825,14 @@ private struct PricingPlan {
     let value: String
   }
 
+  var isFree: Bool {
+    return self.cost?.value == "$0" && self.lane == nil
+  }
+
   static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: nil, value: "$0"),
+      lane: nil,
       features: [
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
@@ -721,10 +849,11 @@ private struct PricingPlan {
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
+      lane: .personal,
       features: [
         "All \(allEpisodeCount.rawValue) episodes with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
-        "Private RSS feed for viewing in podcast apps",
+        "Private RSS feed for offline viewing in podcast apps",
         "Download all episode playgrounds",
       ],
       title: "Personal"
@@ -733,10 +862,11 @@ private struct PricingPlan {
 
   static let team = PricingPlan(
     cost: Cost(title: "per&nbsp;member, per&nbsp;month, billed&nbsp;annually", value: "$12"),
+    lane: .team,
     features: [
       "All personal plan features",
       "For teams of 2 or more",
-      "Add teammates at any time with pro-rated billing",
+      "Add teammates at any time with prorated billing",
       "Remove and reassign teammates at any time"
     ],
     title: "Team"
@@ -744,6 +874,7 @@ private struct PricingPlan {
 
   static let enterprise = PricingPlan(
     cost: nil,
+    lane: nil,
     features: [
       "For large teams",
       "Unlimited, company-wide access to all content",
@@ -770,7 +901,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
     Faq(
       question: "Can I upgrade my subscription from monthly to yearly?",
       answer: """
-Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
 """),
     Faq(
@@ -837,6 +968,24 @@ There clearly was a before and an after @pointfreeco for me. I've always been an
       subscriber: "Romain Pouclet",
       tweetUrl: "https://twitter.com/Palleas/status/1023976413429260288",
       twitterHandle: "Palleas"
+    ),
+
+    Testimonial(
+      quote: """
+I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
+""",
+      subscriber: "Christina Lee",
+      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
+      twitterHandle: "RunChristinaRun"
+    ),
+
+    Testimonial(
+      quote: """
+tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
+""",
+      subscriber: "Meghan Kane",
+      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
+      twitterHandle: "meghafon"
     ),
 
     Testimonial(
@@ -949,15 +1098,6 @@ Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super c
 
     Testimonial(
       quote: """
-tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
-""",
-      subscriber: "Meghan Kane",
-      tweetUrl: "https://twitter.com/meghafon/status/978624999866105859",
-      twitterHandle: "meghafon"
-    ),
-
-    Testimonial(
-      quote: """
 @pointfreeco ❤️: Thank you! 🧠: … The brain can’t say anything. It is blown away (🤯)!
 """,
       subscriber: "Rajiv Jhoomuck",
@@ -981,15 +1121,6 @@ I haven't really done much Swift, but watched this out of curiosity, & it's real
       subscriber: "Josh Burgess",
       tweetUrl: "https://twitter.com/_joshburgess/status/971169503890624513",
       twitterHandle: "_joshburgess"
-    ),
-
-    Testimonial(
-      quote: """
-I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!
-""",
-      subscriber: "Christina Lee",
-      tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
-      twitterHandle: "RunChristinaRun"
     ),
 
     Testimonial(

@@ -12,6 +12,11 @@ import WebKit
 #endif
 
 class EmailInviteTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testEmailInvite() {
     let doc = teamInviteEmailView.view((.mock, .mock))
 

@@ -46,7 +46,18 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
     <| { conn in
       Current.database.deleteTeamInvite(get1(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
+        .flatMap(
+          const(
+            conn
+              |> redirect(
+                to: path(to: .account(.index)),
+                headersMiddleware: flash(
+                  .notice,
+                  "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+                )
+            )
+          )
+      )
 }
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
@@ -122,6 +133,32 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
+let addTeammateViaInviteMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, EmailAddress?>,
+  Data
+  > =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+    <<< requireStripeSubscription
+    <<< requireActiveSubscription
+    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
+
+      let (stripeSubscription, inviter, email) = lower(conn.data)
+      let newPricing = Pricing(
+        billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
+        quantity: stripeSubscription.quantity + 1
+      )
+
+      return conn
+        .map(const((stripeSubscription, newPricing)))
+        |> changeSubscription(
+          error: subscriptionModificationErrorMiddleware,
+          success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
+      )
+}
+
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
@@ -160,6 +197,20 @@ let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, curr
       )
       ])
     ])
+}
+
+func invalidSubscriptionErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn
+    |> redirect(
+      to: .account(.index),
+      headersMiddleware: flash(
+        .error,
+        "Invalid subscription data. Please try again or contact <support@pointfree.co>."
+      )
+  )
 }
 
 private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
@@ -239,7 +290,7 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
         p([`class`([Class.padding([.mobile: [.top: 3]])])], [
           a(
             [
-              href(path(to: .pricing(nil, expand: nil))),
+              href(path(to: .pricingLanding)),
               `class`([Class.pf.components.button(color: .purple)])
             ],
             ["Subscribe"])
@@ -281,7 +332,7 @@ private func requireTeamInvite<A>(
   }
 }
 
-private func sendInviteEmail(
+func sendInviteEmail(
   invite: TeamInvite, inviter: User
   ) -> EitherIO<Error, SendEmailResponse> {
 

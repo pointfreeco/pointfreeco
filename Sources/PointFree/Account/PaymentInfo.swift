@@ -63,6 +63,11 @@ let updatePaymentInfoMiddleware:
       }
 }
 
+public enum PricingFormStyle {
+  case minimal
+  case full
+}
+
 let paymentInfoView = View<(Stripe.Subscription, PricingFormStyle)> { subscription, formFields in
 
   gridRow([

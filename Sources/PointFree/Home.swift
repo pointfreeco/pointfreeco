@@ -26,7 +26,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
           data: (currentUser, subscriberState),
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles,
           openGraphType: .website,
           style: .base(.mountains(.main)),
           title: "Point-Free: A video series on functional programming and the Swift programming language.",
@@ -46,11 +46,6 @@ let homeView = View<(User?, SubscriberState)> { currentUser, subscriberState -> 
   return episodesListView.view(firstBatch)
     <> subscriberCalloutView.view(subscriberState)
     <> episodesListView.view(secondBatch)
-    <> (
-      subscriberState.isNonSubscriber
-        ? pricingOptionsView.view((currentUser, .default, .minimal, nil, nil))
-        : []
-  )
 }
 
 private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
@@ -89,7 +84,7 @@ private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [
                   "👋 Hey there! See anything you like? You may be interested in ",
                   a(
                     [
-                      href(path(to: .pricing(nil, expand: nil))),
+                      href(path(to: .pricingLanding)),
                       `class`([Class.pf.type.underlineLink])
                     ],
                     ["subscribing"]

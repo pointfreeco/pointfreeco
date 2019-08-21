@@ -14,7 +14,7 @@ Now that we have made randomness both composable _and_ testable, let's have a li
   ),
   id: 49,
   image: "https://i.vimeocdn.com/video/801299534.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0049-generative-art-pt1/itunes-poster.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/801299534.jpg",
   length: 32*60 + 06,
   permission: .free,
   previousEpisodeInCollection: 48,

@@ -85,7 +85,7 @@ private let blogLinkView = View<NavStyle.MinimalStyle> { style in
 }
 
 private let subscribeLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .pricing(nil, expand: nil))), `class`([navLinkClass(for: style)])], ["Subscribe"])
+  a([href(path(to: .pricingLanding)), `class`([navLinkClass(for: style)])], ["Subscribe"])
 }
 
 private let accountLinkView = View<NavStyle.MinimalStyle> { style in

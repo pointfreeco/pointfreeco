@@ -128,29 +128,33 @@ extension Plan {
     amount: 17_00,
     created: .mock,
     currency: .usd,
-    id: .individualMonthly,
+    id: .monthly,
     interval: .month,
     metadata: [:],
     name: "Individual Monthly",
-    statementDescriptor: nil
+    statementDescriptor: nil,
+    tiers: [
+      Tier(amount: 16_00, upTo: nil),
+      Tier(amount: 18_00, upTo: nil)
+    ]
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
     |> \.amount .~ 170_00
-    |> \.id .~ .individualYearly
+    |> \.id .~ .yearly
     |> \.interval .~ .year
     |> \.name .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
-    |> \.id .~ .teamMonthly
+    |> \.id .~ .monthly
     |> \.name .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
-    |> \.id .~ .teamYearly
+    |> \.id .~ .yearly
     |> \.name .~ "Team Yearly"
 }
 

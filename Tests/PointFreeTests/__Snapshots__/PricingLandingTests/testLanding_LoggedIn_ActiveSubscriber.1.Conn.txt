@@ -1,8 +1,8 @@
-GET http://localhost:8080/_pricing
+GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 171890
+Content-Length: 174175
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1763,11 +1770,14 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -1785,9 +1795,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <meta name="twitter:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1844,22 +1854,27 @@ html {
       </div>
     </div>
     <div class="bg-black
-                d-pl5
-                d-pr5
-                d-pt5
-                d-pb5
-                m-pl3
-                m-pr3
-                m-pt4
-                m-pb4"
-         style="border-top:1px solid #333">
+                border-top"
+         style="border-top-color:#333">
       <div class="middle-d
-                  row">
+                  d-pl5
+                  d-pr5
+                  d-pt5
+                  d-pb5
+                  m-pl3
+                  m-pr3
+                  m-pt4
+                  m-pb4
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
         <div class="d-pb0
                     d-pr2
                     m-pb2
+                    dark-right-border-d
                     col-m
-                    col-d-12
+                    col-d-8
                     col-m-12">
           <h1 class="fg-black
                      bold
@@ -1870,6 +1885,34 @@ html {
               style="line-height:1.2">
             Explore the wonderful world of&nbsp;functional programming in Swift.
           </h1>
+        </div>
+        <div class="center-d
+                    d-pl2
+                    col-m
+                    col-d-4
+                    col-m-12">
+          <div>
+            <p class="fg-white
+                      m-pb2">
+              You‘re already a subscriber!
+            </p>
+            <a href="/account"
+               class="medium
+                      cursor-pointer
+                      nowrap
+                      btn-normal
+                      rounded
+                      border-none
+                      text-decoration-none
+                      pf-link-black
+                      fg-black
+                      bg-white
+                      h5
+                      m-pl2
+                      m-pr2">
+              Manage your account
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1885,7 +1928,8 @@ html {
                   d-pb2
                   col-m
                   col-m-12">
-        <h3 class="fg-black
+        <h3 id="plans-and-pricing"
+            class="fg-black
                    bold
                    ts-d-r3
                    ts-m-r2
@@ -1908,7 +1952,10 @@ html {
                m-pb0
                list-style-none
                flex-wrap
-               flex">
+               flex"
+        style="max-width:1080px;
+               margin-right:auto;
+               margin-left:auto">
       <li class="d-pl1
                  d-pr1
                  d-pt1
@@ -1991,22 +2038,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2086,13 +2119,13 @@ html {
               Over 0 hours of video
             </li>
             <li class="m-pt1">
-              Private RSS feed for viewing in podcast apps
+              Private RSS feed for offline viewing in podcast apps
             </li>
             <li class="m-pt1">
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
+          <a href="/account"
              class="d-mt3
                     m-mt2
                     block
@@ -2106,7 +2139,7 @@ html {
                     bg-black
                     fg-white
                     pf-link-white">
-            Choose plan
+            Manage subscription
           </a>
         </div>
       </li>
@@ -2187,13 +2220,13 @@ html {
               For teams of 2 or more
             </li>
             <li class="m-pt1">
-              Add teammates at any time with pro-rated billing
+              Add teammates at any time with prorated billing
             </li>
             <li class="m-pt1">
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="#"
+          <a href="/account"
              class="d-mt3
                     m-mt2
                     block
@@ -2207,7 +2240,7 @@ html {
                     bg-black
                     fg-white
                     pf-link-white">
-            Choose plan
+            Manage subscription
           </a>
         </div>
       </li>
@@ -2274,7 +2307,7 @@ html {
               Invoiced billing
             </li>
           </ul>
-          <a href="#"
+          <a href="mailto:support@pointfree.co"
              class="d-mt3
                     m-mt2
                     block
@@ -2302,8 +2335,6 @@ html {
                 row">
       <div class="center-d
                   d-pb4
-                  d-pl5
-                  d-pr5
                   m-pb3
                   m-pt2
                   m-pl2
@@ -2312,154 +2343,171 @@ html {
                   col-m-12">
         <p class="fg-black
                   normal
-                  h6
+                  h5
                   lh-4
-                  fg-gray400">
-          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
+                  ts-d-r0_875
+                  ts-m-r1
+                  fg-gray400"
+           style="max-width:480px;
+                  margin-right:auto;
+                  margin-left:auto">
+          Prices shown with annual billing. When billed month to month, the 
+          <strong>
+            Personal
+          </strong>
+           plan is $18, and the 
+          <strong>
+            Team
+          </strong>
+           plan is $16 per member per month.
         </p>
       </div>
     </div>
-    <div class="d-pl4
-                d-pr4
-                d-pt4
-                d-pb4
-                m-pl2
-                m-pr2
-                m-pt3
-                m-pb3
-                row"
-         style="background-color:#fafafa">
-      <div class="center-d
-                  d-pb3
-                  m-pb2
-                  col-m
-                  col-m-12">
-        <h3 class="fg-black
-                   bold
-                   ts-d-r3
-                   ts-m-r2
-                   lh-2">
-          What to expect
-        </h3>
-      </div>
-      <div class="center-d
-                  d-pb0
+    <div style="background-color:#fafafa">
+      <div class="d-pl4
+                  d-pr4
+                  d-pt4
+                  d-pb4
+                  m-pl2
+                  m-pr2
+                  m-pt3
                   m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="center-d
+                    d-pb3
+                    m-pb2
+                    col-m
+                    col-m-12">
+          <h3 id="what-to-expect"
+              class="fg-black
                      bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            New content regularly
-          </h4>
-          <p class="fg-gray400">
-            We dissect some of the most important topics in functional programming frequently, and deliver them straight
+                     ts-d-r3
+                     ts-m-r2
+                     lh-2">
+            What to expect
+          </h3>
+        </div>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              New content regularly
+            </h4>
+            <p class="fg-gray400">
+              We dissect some of the most important topics in functional programming frequently, and deliver them straight
 to your inbox.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Wide variety of topics
-          </h4>
-          <p class="fg-gray400">
-            We cover both abstract ideas and practical concepts you can start using in your code base immediately.
-          </p>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Wide variety of topics
+            </h4>
+            <p class="fg-gray400">
+              We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Playground downloads
-          </h4>
-          <p class="fg-gray400">
-            Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Playground downloads
+            </h4>
+            <p class="fg-gray400">
+              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
 discussed.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Video transcripts
-          </h4>
-          <p class="fg-gray400">
-            We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
+        <div class="center-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Video transcripts
+            </h4>
+            <p class="fg-gray400">
+              We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
 directly to that point in the video.
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -2471,14 +2519,18 @@ directly to that point in the video.
                 m-pr2
                 m-pt2
                 m-pb2
-                row">
+                row"
+         style="max-width:1080px;
+                margin-right:auto;
+                margin-left:auto">
       <div style="margin-right:auto;
                   margin-left:auto"
            class="col-m
                   col-d-8
                   col-m-12">
         <div>
-          <h3 class="fg-black
+          <h3 id="faq"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2503,7 +2555,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
           </p>
           <p class="fg-gray400
                     m-pb2">
-            Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+            Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
           </p>
           <p class="bold
@@ -2535,7 +2587,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     d-pt4
                     m-pt3"
              style="border-top-color:#d8d8d8">
-          <h3 class="fg-black
+          <h3 id="what-people-are-saying"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2590,6 +2643,92 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Romain Pouclet
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
+          </a>
+          <a href="https://www.twitter.com/RunChristinaRun"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Christina Lee
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/meghafon/status/978624999866105859"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
+          </a>
+          <a href="https://www.twitter.com/meghafon"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Meghan Kane
             </span>
           </a>
         </div>
@@ -3119,49 +3258,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/meghafon/status/978624999866105859"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
-          </a>
-          <a href="https://www.twitter.com/meghafon"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Meghan Kane
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
              target="_blank"
              rel="noopener noreferrer"
@@ -3278,49 +3374,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Josh Burgess
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
-          </a>
-          <a href="https://www.twitter.com/RunChristinaRun"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Christina Lee
             </span>
           </a>
         </div>
@@ -3600,7 +3653,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                   col-m
                   col-d-12
                   col-m-12">
-        <h6 class="fg-gray400
+        <h6 id="featured-teams"
+            class="fg-gray400
                    fg-black
                    bold
                    ts-d-r0_875
@@ -3701,6 +3755,16 @@ and reassigned at any time. Colleagues are invited to your team over email.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

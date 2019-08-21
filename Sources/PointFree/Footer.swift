@@ -28,7 +28,6 @@ private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
 private let linksColumnsView = View<User?> { currentUser in
   contentColumnView.map(linksColumn).view(currentUser)
-    <> (currentUser == nil ? accountColumnView.map(linksColumn).view(unit) : [])
     <> moreColumnView.map(linksColumn).view(unit)
 }
 
@@ -75,6 +74,9 @@ private let contentColumnView = View<User?> { currentUser -> Node in
       [`class`([Class.type.list.reset])],
       [
         li([
+          a([`class`([footerLinkClass]), href(path(to: .pricingLanding))], ["Pricing"])
+          ]),
+        li([
           a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
           ]),
         li([
@@ -85,20 +87,6 @@ private let contentColumnView = View<User?> { currentUser -> Node in
           ])
       ]
     )
-    ])
-}
-
-private let accountColumnView = View<Prelude.Unit> { _ in
-  div([
-    h5([`class`([columnTitleClass])], ["Account"]),
-    ol([`class`([Class.type.list.reset])], [
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Subscribe"])
-        ]),
-      li([
-        a([`class`([footerLinkClass]), href(path(to: .pricing(nil, expand: nil)))], ["Pricing"])
-        ]),
-      ])
     ])
 }
 

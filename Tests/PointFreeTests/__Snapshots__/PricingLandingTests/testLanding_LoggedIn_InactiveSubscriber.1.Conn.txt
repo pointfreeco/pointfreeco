@@ -1,8 +1,8 @@
-GET http://localhost:8080/_pricing
+GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174433
+Content-Length: 174472
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1763,11 +1770,14 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring functional programming and Swift.">
+          content="Get full access to all 2 videos on Point-Free. Choose from a variety of plans, including
+personal, team and enterprise subscriptions.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -1785,9 +1795,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <meta name="twitter:url"
-          content="http://localhost:8080/_pricing">
+          content="http://localhost:8080/pricing">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1851,23 +1861,26 @@ html {
       </div>
     </div>
     <div class="bg-black
-                d-pl5
-                d-pr5
-                d-pt5
-                d-pb5
-                m-pl3
-                m-pr3
-                m-pt4
-                m-pb4"
-         style="border-top:1px solid #333">
+                border-top"
+         style="border-top-color:#333">
       <div class="middle-d
-                  row">
+                  d-pl5
+                  d-pr5
+                  d-pt5
+                  d-pb5
+                  m-pl3
+                  m-pr3
+                  m-pt4
+                  m-pb4
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
         <div class="d-pb0
                     d-pr2
                     m-pb2
-                    dark-right-border-d
                     col-m
-                    col-d-8
+                    col-d-12
                     col-m-12">
           <h1 class="fg-black
                      bold
@@ -1878,42 +1891,6 @@ html {
               style="line-height:1.2">
             Explore the wonderful world of&nbsp;functional programming in Swift.
           </h1>
-        </div>
-        <div class="center-d
-                    d-pl2
-                    col-m
-                    col-d-4
-                    col-m-12">
-          <div>
-            <p class="fg-white
-                      m-pb2">
-              Start with a free episode
-            </p>
-            <a href="/login?redirect=http://localhost:8080/_pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-black
-                      fg-black
-                      bg-white
-                      h5
-                      m-pl2
-                      m-pr2">
-              <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
-                   alt
-                   class="m-mr1"
-                   style="margin-bottom:-4px"
-                   width="20"
-                   height="20">
-              <span>
-                Create your account
-              </span>
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -1929,7 +1906,8 @@ html {
                   d-pb2
                   col-m
                   col-m-12">
-        <h3 class="fg-black
+        <h3 id="plans-and-pricing"
+            class="fg-black
                    bold
                    ts-d-r3
                    ts-m-r2
@@ -1952,7 +1930,10 @@ html {
                m-pb0
                list-style-none
                flex-wrap
-               flex">
+               flex"
+        style="max-width:1080px;
+               margin-right:auto;
+               margin-left:auto">
       <li class="d-pl1
                  d-pr1
                  d-pt1
@@ -2035,22 +2016,8 @@ html {
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
-             class="d-mt3
-                    m-mt2
-                    block
-                    w-100p
-                    bold
-                    ts-d-r1
-                    ts-m-r1_25
-                    m-pt1
-                    m-pb1
-                    center
-                    bg-black
-                    fg-white
-                    pf-link-white">
-            Choose plan
-          </a>
+          <div>
+          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2130,13 +2097,13 @@ html {
               Over 0 hours of video
             </li>
             <li class="m-pt1">
-              Private RSS feed for viewing in podcast apps
+              Private RSS feed for offline viewing in podcast apps
             </li>
             <li class="m-pt1">
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/personal"
              class="d-mt3
                     m-mt2
                     block
@@ -2231,13 +2198,13 @@ html {
               For teams of 2 or more
             </li>
             <li class="m-pt1">
-              Add teammates at any time with pro-rated billing
+              Add teammates at any time with prorated billing
             </li>
             <li class="m-pt1">
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="#"
+          <a href="/subscribe/team"
              class="d-mt3
                     m-mt2
                     block
@@ -2318,7 +2285,7 @@ html {
               Invoiced billing
             </li>
           </ul>
-          <a href="#"
+          <a href="mailto:support@pointfree.co"
              class="d-mt3
                     m-mt2
                     block
@@ -2346,8 +2313,6 @@ html {
                 row">
       <div class="center-d
                   d-pb4
-                  d-pl5
-                  d-pr5
                   m-pb3
                   m-pt2
                   m-pl2
@@ -2356,154 +2321,171 @@ html {
                   col-m-12">
         <p class="fg-black
                   normal
-                  h6
+                  h5
                   lh-4
-                  fg-gray400">
-          Prices shown with annual billing. When billed month to month, the Personal plan is $18, and the Team plan is
-$16 per member per month.
+                  ts-d-r0_875
+                  ts-m-r1
+                  fg-gray400"
+           style="max-width:480px;
+                  margin-right:auto;
+                  margin-left:auto">
+          Prices shown with annual billing. When billed month to month, the 
+          <strong>
+            Personal
+          </strong>
+           plan is $18, and the 
+          <strong>
+            Team
+          </strong>
+           plan is $16 per member per month.
         </p>
       </div>
     </div>
-    <div class="d-pl4
-                d-pr4
-                d-pt4
-                d-pb4
-                m-pl2
-                m-pr2
-                m-pt3
-                m-pb3
-                row"
-         style="background-color:#fafafa">
-      <div class="center-d
-                  d-pb3
-                  m-pb2
-                  col-m
-                  col-m-12">
-        <h3 class="fg-black
-                   bold
-                   ts-d-r3
-                   ts-m-r2
-                   lh-2">
-          What to expect
-        </h3>
-      </div>
-      <div class="center-d
-                  d-pb0
+    <div style="background-color:#fafafa">
+      <div class="d-pl4
+                  d-pr4
+                  d-pt4
+                  d-pb4
+                  m-pl2
+                  m-pr2
+                  m-pt3
                   m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="center-d
+                    d-pb3
+                    m-pb2
+                    col-m
+                    col-m-12">
+          <h3 id="what-to-expect"
+              class="fg-black
                      bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            New content regularly
-          </h4>
-          <p class="fg-gray400">
-            We dissect some of the most important topics in functional programming frequently, and deliver them straight
+                     ts-d-r3
+                     ts-m-r2
+                     lh-2">
+            What to expect
+          </h3>
+        </div>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              New content regularly
+            </h4>
+            <p class="fg-gray400">
+              We dissect some of the most important topics in functional programming frequently, and deliver them straight
 to your inbox.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-bottom-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Wide variety of topics
-          </h4>
-          <p class="fg-gray400">
-            We cover both abstract ideas and practical concepts you can start using in your code base immediately.
-          </p>
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-bottom-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Wide variety of topics
+            </h4>
+            <p class="fg-gray400">
+              We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  d-pb0
-                  m-pb3
-                  d-mb0
-                  m-mb1
-                  light-right-border-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Playground downloads
-          </h4>
-          <p class="fg-gray400">
-            Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
+        <div class="center-d
+                    d-pb0
+                    m-pb3
+                    d-mb0
+                    m-mb1
+                    light-right-border-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Playground downloads
+            </h4>
+            <p class="fg-gray400">
+              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
 discussed.
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="center-d
-                  col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pl3
-                    d-pr3
-                    d-pt3
-                    d-pb3">
-          <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
-               alt
-               class="fit
-                      m-mb2
-                      bg-white">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_25
-                     ts-m-r1
-                     lh-1">
-            Video transcripts
-          </h4>
-          <p class="fg-gray400">
-            We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
+        <div class="center-d
+                    col-m
+                    col-d-6
+                    col-m-12">
+          <div class="d-pl3
+                      d-pr3
+                      d-pt3
+                      d-pb3">
+            <img src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg"
+                 alt
+                 class="fit
+                        m-mb2
+                        bg-white">
+            <h4 class="fg-black
+                       bold
+                       ts-d-r1_25
+                       ts-m-r1
+                       lh-1">
+              Video transcripts
+            </h4>
+            <p class="fg-gray400">
+              We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
 directly to that point in the video.
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -2515,14 +2497,18 @@ directly to that point in the video.
                 m-pr2
                 m-pt2
                 m-pb2
-                row">
+                row"
+         style="max-width:1080px;
+                margin-right:auto;
+                margin-left:auto">
       <div style="margin-right:auto;
                   margin-left:auto"
            class="col-m
                   col-d-8
                   col-m-12">
         <div>
-          <h3 class="fg-black
+          <h3 id="faq"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2547,7 +2533,7 @@ student status (e.g. scan of ID card) we will give you a 50% discount off of the
           </p>
           <p class="fg-gray400
                     m-pb2">
-            Yes, you can upgrade at any time. You will be charged immediately with a pro-rated amount based on how much
+            Yes, you can upgrade at any time. You will be charged immediately with a prorated amount based on how much
 time you have left in your current billing period.
           </p>
           <p class="bold
@@ -2579,7 +2565,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     d-pt4
                     m-pt3"
              style="border-top-color:#d8d8d8">
-          <h3 class="fg-black
+          <h3 id="what-people-are-saying"
+              class="fg-black
                      bold
                      ts-d-r3
                      ts-m-r2
@@ -2634,6 +2621,92 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Romain Pouclet
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
+          </a>
+          <a href="https://www.twitter.com/RunChristinaRun"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Christina Lee
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/meghafon/status/978624999866105859"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
+          </a>
+          <a href="https://www.twitter.com/meghafon"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Meghan Kane
             </span>
           </a>
         </div>
@@ -3163,49 +3236,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/meghafon/status/978624999866105859"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype”
-          </a>
-          <a href="https://www.twitter.com/meghafon"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Meghan Kane
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
              target="_blank"
              rel="noopener noreferrer"
@@ -3322,49 +3352,6 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Josh Burgess
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “I listened to the first two episodes of @pointfreeco this weekend and it was the best presentation of FP fundamentals I've seen. Very thoughtful layout and progression of the material and motivations behind each introduced concept. Looking forward to watching the rest!”
-          </a>
-          <a href="https://www.twitter.com/RunChristinaRun"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Christina Lee
             </span>
           </a>
         </div>
@@ -3644,7 +3631,8 @@ and reassigned at any time. Colleagues are invited to your team over email.
                   col-m
                   col-d-12
                   col-m-12">
-        <h6 class="fg-gray400
+        <h6 id="featured-teams"
+            class="fg-gray400
                    fg-black
                    bold
                    ts-d-r0_875
@@ -3683,6 +3671,45 @@ and reassigned at any time. Colleagues are invited to your team over email.
         <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTEycHgiIGhlaWdodD0iMTRweCIgdmlld0JveD0iMCAwIDExMiAxNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDxnIGlkPSJEZXNrdG9wIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iUHJpY2luZy0vLUxhcmdlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzA4LjAwMDAwMCwgLTMyODEuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cC01IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2ODQuMDAwMDAwLCAzMjU4LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgZmlsbC1vcGFjaXR5PSIwIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjYwIj48L3JlY3Q+CiAgICAgICAgICAgICAgICA8ZyBpZD0iQXRsYXNzaWFuLWhvcml6b250YWwtbmV1dHJhbC1vbmVjb2xvci1yZ2IiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0LjAwMDAwMCwgMjMuMDAwMDAwKSIgZmlsbD0iIzdEN0Q3RCIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNC4wNzM0ODE0OCw2LjQ5NzY0NzA2IEMzLjk5MDU5NjEzLDYuMzg5ODYzNTUgMy44NTY5MzM3Miw2LjMzMjk5NDI2IDMuNzIxMTQxODksNi4zNDc3MzcyOCBDMy41ODUzNTAwNSw2LjM2MjQ4MDMxIDMuNDY3MjMxOTcsNi40NDY2ODU2IDMuNDA5Nzc3NzgsNi41Njk3MDU4OCBMMC4wNDM1NTU1NTU2LDEzLjI1MDU4ODIgQy0wLjAxOTEyNzQ4MzksMTMuMzc0NjAwNiAtMC4wMTI0ODUzNzI2LDEzLjUyMjAxOTEgMC4wNjExMDAxMjQyLDEzLjYzOTk4MTYgQzAuMTM0Njg1NjIxLDEzLjc1Nzk0NDIgMC4yNjQ2NzA2NDYsMTMuODI5NTQ4MyAwLjQwNDQ0NDQ0NCwxMy44MjkxMTc2IEw1LjA5MTg1MTg1LDEzLjgyOTExNzYgQzUuMjQ1NDk0MDMsMTMuODMzMTUyNCA1LjM4NzA0MjIzLDEzLjc0Njc0ODQgNS40NTI3NDA3NCwxMy42MDg4MjM1IEM2LjQ2MDc0MDc0LDExLjUyOTQxMTggNS44NDg4ODg4OSw4LjM3OTQxMTc2IDQuMDczNDgxNDgsNi40OTc2NDcwNiBaIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02LjU0MzcwMzcsMC40MTE3NjQ3MDYgQzQuODMwODM0MDUsMy4wMTg0MjU0NyA0LjYyOTgwOTQ2LDYuMzI4NTQ5MzEgNi4wMTQ4MTQ4MSw5LjEyMDU4ODI0IEw4LjI4NTkyNTkzLDEzLjYwODgyMzUgQzguMzU0Mzg0MTQsMTMuNzQ0MjY1MSA4LjQ5NDE1OTk2LDEzLjgyOTU4NzIgOC42NDY4MTQ4MSwxMy44MjkxMTc2IEwxMy4zMzQyMjIyLDEzLjgyOTExNzYgQzEzLjQ3Mjg4NzUsMTMuODI3NDIxMSAxMy42MDA5MDAyLDEzLjc1NDk2NDQgMTMuNjcyOTkwOSwxMy42MzczNzA2IEMxMy43NDUwODE2LDEzLjUxOTc3NjkgMTMuNzUxMDg5MSwxMy4zNzM2MjA5IDEzLjY4ODg4ODksMTMuMjUwNTg4MiBMNy4yMjgxNDgxNSwwLjQxMTc2NDcwNiBDNy4xNjUwMDA2NywwLjI4MTA4NDc3IDcuMDMxOTM1NDUsMC4xOTc5NDY0ODUgNi44ODU5MjU5MywwLjE5Nzk0NjQ4NSBDNi43Mzk5MTY0LDAuMTk3OTQ2NDg1IDYuNjA2ODUxMTgsMC4yODEwODQ3NyA2LjU0MzcwMzcsMC40MTE3NjQ3MDYgWiIgaWQ9IlBhdGgiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNjEuNTI1MzMzMyw1Ljc3NzA1ODgyIEM2MS41MjUzMzMzLDcuNDI0MTE3NjUgNjIuMjk4OTYzLDguNzQ1ODgyMzUgNjUuMzIyOTYzLDkuMzI0NDExNzYgQzY3LjEyNzQwNzQsOS42OTkxMTc2NSA2Ny41MDQ4ODg5LDkuOTg5NDExNzYgNjcuNTA0ODg4OSwxMC41ODY0NzA2IEM2Ny41MDQ4ODg5LDExLjE4MzUyOTQgNjcuMTI3NDA3NCwxMS41NDE3NjQ3IDY1Ljg0NTYyOTYsMTEuNTQxNzY0NyBDNjQuMzA5MjczMSwxMS41MTQyMTYyIDYyLjgwMzY2OTIsMTEuMTA5NjM4MyA2MS40NjMxMTExLDEwLjM2NDExNzYgTDYxLjQ2MzExMTEsMTMuMDYxMTc2NSBDNjIuMzczNjI5NiwxMy41MDM4MjM1IDYzLjU3NjU5MjYsMTQgNjUuODE4NjY2NywxNCBDNjguOTgxNjI5NiwxNCA3MC4yMzY0NDQ0LDEyLjYwMjA1ODggNzAuMjM2NDQ0NCwxMC41MjA1ODgyIE03MC4yMzY0NDQ0LDEwLjUyMDU4ODIgQzcwLjIzNjQ0NDQsOC41NTg1Mjk0MSA2OS4xODkwMzcsNy42MzgyMzUyOSA2Ni4yMzE0MDc0LDcuMDA2MTc2NDcgQzY0LjU5OTExMTEsNi42NDc5NDExOCA2NC4yMDI5NjMsNi4yODk3MDU4OCA2NC4yMDI5NjMsNS43NzA4ODIzNSBDNjQuMjAyOTYzLDUuMTIyMzUyOTQgNjQuNzg3ODUxOSw0Ljg1MDU4ODI0IDY1Ljg2MjIyMjIsNC44NTA1ODgyNCBDNjcuMTY4ODg4OSw0Ljg1MDU4ODI0IDY4LjQ1Njg4ODksNS4yNDM4MjM1MyA2OS42Nzg1MTg1LDUuNzg5NDExNzYgTDY5LjY3ODUxODUsMy4yMTc5NDExOCBDNjguNTA3Mzc2LDIuNjg4Njg2NzcgNjcuMjMxNzYyLDIuNDI2Mjk0ODMgNjUuOTQ1MTg1MiwyLjQ1IEM2My4wMjI4MTQ4LDIuNDUgNjEuNTEwODE0OCwzLjcxMjA1ODgyIDYxLjUxMDgxNDgsNS43NzcwNTg4MiIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iMTAyLjE1MjI5NiAyLjYyMDg4MjM1IDEwMi4xNTIyOTYgMTMuODI5MTE3NiAxMDQuNTU4MjIyIDEzLjgyOTExNzYgMTA0LjU1ODIyMiA1LjI4Mjk0MTE4IDEwNS41NzI0NDQgNy41NTE3NjQ3MSAxMDguOTc2IDEzLjgyOTExNzYgMTEyIDEzLjgyOTExNzYgMTEyIDIuNjIwODgyMzUgMTA5LjU5NDA3NCAyLjYyMDg4MjM1IDEwOS41OTQwNzQgOS44NTU1ODgyNCAxMDguNjgzNTU2IDcuNzU1NTg4MjQgMTA1Ljk0OTkyNiAyLjYyMDg4MjM1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgeD0iODQuMjE5ODUxOSIgeT0iMi42MjA4ODIzNSIgd2lkdGg9IjIuNjI5OTI1OTMiIGhlaWdodD0iMTEuMjA4MjM1MyI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik04MS4xODU0ODE1LDEwLjUyMDU4ODIgQzgxLjE4NTQ4MTUsOC41NTg1Mjk0MSA4MC4xMzgwNzQxLDcuNjM4MjM1MjkgNzcuMTgwNDQ0NCw3LjAwNjE3NjQ3IEM3NS41NDgxNDgxLDYuNjQ3OTQxMTggNzUuMTUyLDYuMjg5NzA1ODggNzUuMTUyLDUuNzcwODgyMzUgQzc1LjE1Miw1LjEyMjM1Mjk0IDc1LjczNjg4ODksNC44NTA1ODgyNCA3Ni44MTEyNTkzLDQuODUwNTg4MjQgQzc4LjExNzkyNTksNC44NTA1ODgyNCA3OS40MDU5MjU5LDUuMjQzODIzNTMgODAuNjI3NTU1Niw1Ljc4OTQxMTc2IEw4MC42Mjc1NTU2LDMuMjE3OTQxMTggQzc5LjQ1NjQxMzEsMi42ODg2ODY3NyA3OC4xODA3OTksMi40MjYyOTQ4MyA3Ni44OTQyMjIyLDIuNDUgQzczLjk3MTg1MTksMi40NSA3Mi40NTk4NTE5LDMuNzEyMDU4ODIgNzIuNDU5ODUxOSw1Ljc3NzA1ODgyIEM3Mi40NTk4NTE5LDcuNDI0MTE3NjUgNzMuMjMzNDgxNSw4Ljc0NTg4MjM1IDc2LjI1NzQ4MTUsOS4zMjQ0MTE3NiBDNzguMDYxOTI1OSw5LjY5OTExNzY1IDc4LjQzOTQwNzQsOS45ODk0MTE3NiA3OC40Mzk0MDc0LDEwLjU4NjQ3MDYgQzc4LjQzOTQwNzQsMTEuMTgzNTI5NCA3OC4wNjE5MjU5LDExLjU0MTc2NDcgNzYuNzgwMTQ4MSwxMS41NDE3NjQ3IEM3NS4yNDM3OTE2LDExLjUxNDIxNjIgNzMuNzM4MTg3NywxMS4xMDk2MzgzIDcyLjM5NzYyOTYsMTAuMzY0MTE3NiBMNzIuMzk3NjI5NiwxMy4wNjExNzY1IEM3My4zMDgxNDgxLDEzLjUwMzgyMzUgNzQuNTExMTExMSwxNCA3Ni43NTMxODUyLDE0IEM3OS45MTYxNDgxLDE0IDgxLjE3MDk2MywxMi42MDIwNTg4IDgxLjE3MDk2MywxMC41MjA1ODgyIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJQYXRoIiBwb2ludHM9IjQxLjA5OTg1MTkgMi42MjA4ODIzNSA0MS4wOTk4NTE5IDEzLjgyOTExNzYgNDYuNTA0ODg4OSAxMy44MjkxMTc2IDQ3LjM1NTI1OTMgMTEuNDA3OTQxMiA0My43NDYzNzA0IDExLjQwNzk0MTIgNDMuNzQ2MzcwNCAyLjYyMDg4MjM1Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgiIHBvaW50cz0iMzAuNDIwNDQ0NCAyLjYyMDg4MjM1IDMwLjQyMDQ0NDQgNS4wNDQxMTc2NSAzMy4zNDI4MTQ4IDUuMDQ0MTE3NjUgMzMuMzQyODE0OCAxMy44MjkxMTc2IDM1Ljk4OTMzMzMgMTMuODI5MTE3NiAzNS45ODkzMzMzIDUuMDQ0MTE3NjUgMzkuMTE3MDM3IDUuMDQ0MTE3NjUgMzkuMTE3MDM3IDIuNjIwODgyMzUiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjYuNTgzNDA3NCwyLjYyMDg4MjM1IEwyMy4xMTU1NTU2LDIuNjIwODgyMzUgTDE5LjE3NDgxNDgsMTMuODI5MTE3NiBMMjIuMTkyNTkyNiwxMy44MjkxMTc2IEwyMi43NDQyOTYzLDExLjk0MTE3NjUgQzI0LjEyMTI4MzUsMTIuMzQzNzExNCAyNS41ODU5NzU4LDEyLjM0MzcxMTQgMjYuOTYyOTYzLDExLjk0MTE3NjUgTDI3LjUyMDg4ODksMTMuODI5MTE3NiBMMzAuNTI4Mjk2MywxMy44MjkxMTc2IEwyNi41ODM0MDc0LDIuNjIwODgyMzUgWiBNMjQuODQ5NDgxNSw5LjkyMTQ3MDU5IEMyNC4zNTgxMDAzLDkuOTIyMTQ2MDggMjMuODY5MTY1LDkuODUyODExNzYgMjMuMzk3NjI5Niw5LjcxNTU4ODI0IEwyNC44NDk0ODE1LDQuODIxNzY0NzEgTDI2LjMwMTMzMzMsOS43MTU1ODgyNCBDMjUuODI5Nzk4LDkuODUyODExNzYgMjUuMzQwODYyNiw5LjkyMjE0NjA4IDI0Ljg0OTQ4MTUsOS45MjE0NzA1OSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTUuODIxNjI5NiwyLjYyMDg4MjM1IEw1Mi4zNTM3Nzc4LDIuNjIwODgyMzUgTDQ4LjQxMzAzNywxMy44MjkxMTc2IEw1MS40MjA0NDQ0LDEzLjgyOTExNzYgTDUxLjk4MjUxODUsMTEuOTQxMTc2NSBDNTMuMzU2OTE3MywxMi4zNDIwOTYzIDU0LjgxODQ5MDEsMTIuMzQyMDk2MyA1Ni4xOTI4ODg5LDExLjk0MTE3NjUgTDU2Ljc1MDgxNDgsMTMuODI5MTE3NiBMNTkuNzU4MjIyMiwxMy44MjkxMTc2IEw1NS44MjE2Mjk2LDIuNjIwODgyMzUgWiBNNTQuMDg3NzAzNyw5LjkyMTQ3MDU5IEM1My41OTYzMjI2LDkuOTIyMTQ2MDggNTMuMTA3Mzg3Miw5Ljg1MjgxMTc2IDUyLjYzNTg1MTksOS43MTU1ODgyNCBMNTQuMDg3NzAzNyw0LjgyMTc2NDcxIEw1NS41Mzk1NTU2LDkuNzE1NTg4MjQgQzU1LjA2ODAyMDIsOS44NTI4MTE3NiA1NC41NzkwODQ4LDkuOTIyMTQ2MDggNTQuMDg3NzAzNyw5LjkyMTQ3MDU5IFoiIGlkPSJTaGFwZSI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik05Ni4zMjQxNDgxLDIuNjIwODgyMzUgTDkyLjg1NjI5NjMsMi42MjA4ODIzNSBMODguOTE1NTU1NiwxMy44MjkxMTc2IEw5MS45MjI5NjMsMTMuODI5MTE3NiBMOTIuNDg1MDM3LDExLjk0MTE3NjUgQzkzLjg1OTQzNTgsMTIuMzQyMDk2MyA5NS4zMjEwMDg3LDEyLjM0MjA5NjMgOTYuNjk1NDA3NCwxMS45NDExNzY1IEw5Ny4yNTMzMzMzLDEzLjgyOTExNzYgTDEwMC4yNjA3NDEsMTMuODI5MTE3NiBMOTYuMzI0MTQ4MSwyLjYyMDg4MjM1IFogTTk0LjU5MDIyMjIsOS45MjE0NzA1OSBDOTQuMDk4ODQxMSw5LjkyMjE0NjA4IDkzLjYwOTkwNTcsOS44NTI4MTE3NiA5My4xMzgzNzA0LDkuNzE1NTg4MjQgTDk0LjU5MDIyMjIsNC44MjE3NjQ3MSBMOTYuMDQyMDc0MSw5LjcxNTU4ODI0IEM5NS41NzA1Mzg3LDkuODUyODExNzYgOTUuMDgxNjAzNCw5LjkyMjE0NjA4IDk0LjU5MDIyMjIsOS45MjE0NzA1OSBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"
              alt="Atlassian">
       </div>
+    </div>
+    <div class="bg-gray150
+                d-pl5
+                d-pr5
+                d-pt5
+                d-pb5
+                m-pl2
+                m-pr2
+                m-pt4
+                m-pb4
+                center">
+      <h3 class="fg-black
+                 bold
+                 ts-d-r2
+                 ts-m-r1_5
+                 lh-2
+                 fg-white">
+        Get started with our Personal plan
+      </h3>
+      <p class="fg-white
+                m-pb3">
+        Access all 2 episodes on Point-Free today!
+      </p>
+      <a href="/subscribe/personal"
+         class="medium
+                cursor-pointer
+                nowrap
+                btn-normal
+                rounded
+                border-none
+                text-decoration-none
+                pf-link-black
+                fg-black
+                bg-white
+                h5
+                m-pl2
+                m-pr2">
+        Subscribe
+      </a>
     </div>
     <footer class="row
                    d-pl4
@@ -3745,6 +3772,16 @@ and reassigned at any time. Colleagues are invited to your team over email.
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

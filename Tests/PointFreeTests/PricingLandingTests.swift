@@ -13,7 +13,7 @@ import WebKit
 #endif
 import XCTest
 
-class SubscriptionLandingTests: TestCase {
+class PricingLandingTests: TestCase {
   override func setUp() {
     super.setUp()
 //    record = true
@@ -53,6 +53,25 @@ class SubscriptionLandingTests: TestCase {
     )
 
     let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 4200)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 4700))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testLanding_LoggedOut() {
+    let conn = connection(from: request(to: .pricingLanding, session: .loggedOut))
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)

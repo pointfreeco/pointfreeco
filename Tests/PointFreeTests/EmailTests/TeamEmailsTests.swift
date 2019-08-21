@@ -11,6 +11,11 @@ import WebKit
 #endif
 
 class TeamEmailsTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testYouHaveBeenRemovedEmailView() {
     let emailNodes = youHaveBeenRemovedEmailView.view(.teamOwner(.mock))
 

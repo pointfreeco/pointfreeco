@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 74324
+Content-Length: 73967
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -1752,62 +1759,6 @@ html {
   background-color           : #f7f7f7;
 }
 
-.block input:checked ~ * > * {
-  color : #974dff;
-}
-
-input {
-  color : #a8a8a8;
-}
-
-input {
-  margin-right : auto;
-  margin-left  : auto;
-}
-
-.content0 {
-  display : none;
-}
-
-.content1 {
-  display : none;
-}
-
-#tab0:checked ~ * .content0 {
-  display : inherit;
-}
-
-#tab1:checked ~ * .content1 {
-  display : inherit;
-}
-
-#tab0:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-#tab1:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
-}
-
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
-}
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
-}
-
 
     </style>
     <meta name="viewport"
@@ -2658,6 +2609,16 @@ document.addEventListener("click", function (event) {
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

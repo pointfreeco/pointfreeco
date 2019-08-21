@@ -12,102 +12,72 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
+import TaggedMoney
 import Tuple
 import View
 
 // MARK: Middleware
 
-let subscriptionChangeShowResponse =
+let subscriptionChangeMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, Pricing?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< fetchSeatsTaken
-    <<< requireStripeSubscription
-    <<< requireActiveSubscription
-    <| writeStatus(.ok)
-    >=> map(lower)
-    >>> respond(
-      view: subscriptionChangeShowView,
-      layoutData: { subscription, currentUser, seatsTaken, subscriberState in
-        SimplePageLayoutData(
-          currentSubscriberState: subscriberState,
-          currentUser: currentUser,
-          data: (subscription, currentUser, seatsTaken),
-          extraStyles: extraStyles,
-          title: "Modify subscription"
-        )
-    }
-)
-
-let subscriptionChangeMiddleware =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(
-      require2 >>> pure,
-      or: redirect(
-        to: .account(.subscription(.change(.show))),
-        headersMiddleware: flash(
-          .error,
-          "Invalid subscription data. Please try again or contact <support@pointfree.co>."
-        )
-      )
-    )
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
     <<< fetchSeatsTaken
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <<< requireValidSeating
-    <| map(lower)
-    >>> subscriptionChange
+    <| changeSubscription(
+      error: subscriptionModificationErrorMiddleware,
+      success: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(.notice, "We’ve modified your subscription.")
+      )
+)
 
-private func subscriptionChange(_ conn: Conn<StatusLineOpen, (Stripe.Subscription, User, Int, Pricing)>)
+func changeSubscription(
+  error: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
+  success: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
+  ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
-    let (currentSubscription, _, _, newPricing) = conn.data
+    return { conn in
+      let (currentSubscription, newPricing) = conn.data
 
-    let newPrice = (defaultPricing(for: newPricing.lane, billing: newPricing.billing) * 100) * newPricing.quantity
-    let currentPrice = currentSubscription.plan.amount.rawValue * currentSubscription.quantity
+      let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
+      let currentPrice = currentSubscription.plan.amount(for:  currentSubscription.quantity)
 
-    let shouldProrate = newPrice > currentPrice
-    let shouldInvoice = newPricing.plan == currentSubscription.plan.id
-      && newPricing.quantity > currentSubscription.quantity
-      || shouldProrate
-      && newPricing.interval == currentSubscription.plan.interval
+      let shouldProrate = newPrice > currentPrice
+      let shouldInvoice = newPricing.plan == currentSubscription.plan.id
+        && newPricing.quantity > currentSubscription.quantity
+        || shouldProrate
+        && newPricing.interval == currentSubscription.plan.interval
 
-    return Current.stripe
-      .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
-      .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
-        if shouldInvoice {
-          parallel(
-            Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
-              .withExcept(notifyError(subject: "Invoice Failed"))
-              .run
-            )
-            .run(const(()))
-        }
-
-        return pure(sub)
-      }
-      .run
-      .flatMap(
-        either(
-          const(
-            conn |> redirect(
-              to: .account(.subscription(.change(.show))),
-              headersMiddleware: flash(
-                .error,
-                """
-                We couldn’t modify your subscription at this time. Please try again or contact
-                <support@pointfree.co>.
-                """
+      return Current.stripe
+        .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
+        .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
+          if shouldInvoice {
+            parallel(
+              Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
+                .withExcept(notifyError(subject: "Invoice Failed"))
+                .run
               )
-            )
-          )
-        ) { _ in
-          // TODO: Send email?
+              .run(const(()))
+          }
 
-          return conn |> redirect(
-            to: .account(.index),
-            headersMiddleware: flash(.notice, "We’ve modified your subscription.")
-          )
+          return pure(sub)
         }
-    )
+        .run
+        .flatMap(
+          either(
+            const(error(conn.map(const(unit)))),
+            const(success(conn.map(const(unit))))
+          )
+      )
+    }
 }
 
 func requireActiveSubscription<A>(
@@ -118,7 +88,7 @@ func requireActiveSubscription<A>(
     return filter(
       get1 >>> (^\.status == .active),
       or: redirect(
-        to: .pricing(nil, expand: nil),
+        to: .pricingLanding,
         headersMiddleware: flash(
           .error,
           "You don’t have an active subscription. Would you like to subscribe?"
@@ -128,8 +98,24 @@ func requireActiveSubscription<A>(
       <| middleware
 }
 
+func subscriptionModificationErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+
+  return conn |> redirect(
+    to: .account(.index),
+    headersMiddleware: flash(
+      .error,
+      """
+      We couldn’t modify your subscription at this time. Please try again or contact
+      <support@pointfree.co>.
+      """
+    )
+  )
+}
+
 private func requireValidSeating(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data>
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription, Pricing), Data>
   )
   -> Middleware<StatusLineOpen, ResponseEnded, Tuple4<Stripe.Subscription, User, Int, Pricing>, Data> {
 
@@ -143,7 +129,9 @@ private func requireValidSeating(
         )
       )
       )
-      <| middleware
+      <| map(lower)
+      >>> map({ subscription, _, _, pricing in (subscription, pricing) })
+      >>> middleware
 }
 
 private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Pricing>) -> Bool {
@@ -151,13 +139,6 @@ private func seatsAvailable(_ data: Tuple4<Stripe.Subscription, User, Int, Prici
 
   return pricing.quantity >= seatsTaken
 }
-
-private let extraStyles =
-  ((input & .pseudo(.checked) ~ .star) > .star) % (
-    color(Colors.black)
-      <> fontWeight(.bold)
-    )
-    <> extraSpinnerStyles
 
 private func fetchSeatsTaken<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<User, Int, A>, Data>
@@ -180,252 +161,15 @@ private func fetchSeatsTaken<A>(
     }
 }
 
-let subscriptionChangeShowView = View<(Stripe.Subscription, User, Int)> { subscription, currentUser, seatsTaken -> Node in
-
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div(
-        [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-        titleRowView.view(subscription)
-          <> formRowView.view((subscription, seatsTaken))
-          <> cancelRowView.view(subscription)
-      )
-      ])
-    ])
-}
-
-private let titleRowView = View<Stripe.Subscription> { subscription in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([`class`([Class.pf.type.responsiveTitle2])], ["Modify subscription"]),
-        p([
-          "You are currently enrolled in the ", strong([.text(subscription.plan.name)]), " plan. ",
-          "Your subscription will ",
-          subscription.isRenewing ? "renew" : "end",
-          " on ",
-          strong([.text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
-          ".",
-          subscription.isRenewing
-            ? ""
-            : " Reactivate your subscription by submitting the form below."
-          ]),
-        ])
-      ])
-    ])
-}
-
-private let formRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
-
-  return form(
-    [action(path(to: .account(.subscription(.change(.update(nil)))))), method(.post), `class`([Class.margin([.mobile: [.bottom: 3]])])],
-    changeSeatsRowView.view((subscription, seatsTaken))
-      <> changeBillingIntervalRowView.view(subscription)
-      <> [
-        hr([`class`([Class.pf.components.divider])])
-    ]
-  )
-}
-
-private let changeSeatsRowView = View<(Stripe.Subscription, Int)> { subscription, seatsTaken -> Node in
-
-  let pricing = PointFree.pricing(for: subscription)
-  let subtitle = pricing.isIndividual
-    ? "Change to a team subscription?"
-    : "Add or remove seats?"
-  let description: [Node] = pricing.isIndividual
-    ? ["Specify the total number of seats you’d like."]
-    : [
-      "You are currently using ", strong([.text(String(seatsTaken)), " of ",
-      strong([.text(String(subscription.quantity))]), " seats"]), " available."
-  ]
-
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      h3([`class`([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
-      p(description + [" ",
-        """
-        Additional costs will be billed immediately, prorated against the remaining time of
-        the current billing period.
-        """
-        ]),
-      input([
-        type(.number),
-        min(max(1, seatsTaken)),
-        max(Pricing.validTeamQuantities.upperBound),
-        name("quantity"),
-        oninput(unsafe: recalculatePriceScript),
-        onblur(unsafe: recalculatePriceScript),
-        step(1),
-        value(clamp(1..<Pricing.validTeamQuantities.upperBound) <| subscription.quantity),
-        `class`([numberSpinner, Class.pf.colors.fg.black])
-        ])
-      ])
-    ])
-}
-
-private let recalculatePriceScript = """
-var multiplier = isNaN(this.valueAsNumber) ? 0 : this.valueAsNumber;
-
-var elements = document.getElementsByClassName('price');
-for (var idx = 0; idx < elements.length; idx++) {
-  var element = elements[idx];
-  var price = multiplier == 1
-    ? element.dataset.priceIndividual
-    : element.dataset.priceTeam;
-  element.textContent = (multiplier * price)
-    .toString()
-    .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
-}
-"""
-
-let priceClass = CssSelector.class("price")
-
-private let changeBillingIntervalRowView = View<Stripe.Subscription> { subscription -> Node in
-
-  let pricing = PointFree.pricing(for: subscription)
-  let subtitle = pricing.billing == .monthly
-    ? "Change to yearly billing?"
-    : "Change to monthly billing?"
-
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      h3([`class`([Class.pf.type.responsiveTitle4])], [.text(subtitle)]),
-      p([
-        """
-        Your regular billing rate will be reflected below. Upgrades are prorated against the remaining time of
-        the current billing period. Downgrades will take place at the end of the current billing period.
-        """]),
-      gridRow(
-        [],
-        individualPricingColumnView.view((.monthly, pricing))
-          <> individualPricingColumnView.view((.yearly, pricing))
-      )]
-      + (
-        subscription.discount?.coupon.valid == .some(true)
-          ? [
-            div([`class`([
-              Class.padding([.mobile: [.all: 1]]),
-              Class.pf.colors.bg.yellow,
-              Class.type.align.center,
-              ])], [
-                strong([
-                  text("⚠️ Changes to your subscription will remove your current discount.")
-                  ])
-              ])
-            ]
-          : []
-      )
-      + [
-      button(
-        [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-        [subscription.isRenewing ? "Update my subscription" : "Reactivate my subscription"]
-      ),
-      a(
-        [
-          href(path(to: .account(.index))),
-          `class`([Class.pf.components.button(color: .black, style: .underline)])
-        ],
-        ["Never mind"]
-      )
-      ]
-    )
-    ])
-}
-
-private let individualPricingColumnView = View<(Pricing.Billing, Pricing)> { billing, pricing -> Node in
-  return gridColumn(sizes: [.mobile: 16], [`class`([Class.pf.colors.bg.white])], [
-    label([`for`(billing.rawValue), `class`([Class.display.block, Class.margin([.mobile: [.topBottom: 3]])])], [
-      gridRow([style(flex(direction: .columnReverse))], [
-        input([
-          `class`([Class.h3]),
-          checked(isChecked(billing, pricing)),
-          id(billing.rawValue),
-          name("billing"),
-          type(.radio),
-          value(billing.rawValue),
-          ]),
-        gridColumn(sizes: [.mobile: 12], [], [
-          h2([`class`([Class.pf.type.responsiveTitle2, Class.type.light, Class.pf.colors.fg.gray650])], [
-            "$",
-            span(
-              [
-                `class`([priceClass]),
-                data("price-individual", String(defaultPricing(for: .individual, billing: billing))),
-                data("price-team", String(defaultPricing(for: .team, billing: billing)))
-              ],
-              [.text(String(defaultPricing(for: pricing.lane, billing: billing) * pricing.quantity))]
-            ),
-            "/",
-            .text(pricingInterval(for: billing)),
-            ]),
-          ]),
-        gridColumn(sizes: [.mobile: 12], [], [
-          h6([`class`([Class.pf.type.responsiveTitle7, Class.pf.colors.fg.gray650, Class.display.inline])], [
-            .text(title(for: billing))
-            ])
-          ])
-        ])
-      ])
-    ])
-}
-
-private func defaultPricing(for lane: Pricing.Lane, billing: Pricing.Billing) -> Int {
-  switch (lane, billing) {
-  case (.individual, .monthly):
-    return 17
-  case (.individual, .yearly):
-    return 170
+private func defaultPricing(for pricing: Pricing) -> Cents<Int> {
+  switch (pricing.lane, pricing.billing) {
+  case (.personal, .monthly):
+    return 18_00
+  case (.personal, .yearly):
+    return 168_00
   case (.team, .monthly):
-    return 16
+    return 16_00
   case (.team, .yearly):
-    return 160
-  }
-}
-
-private let cancelRowView = View<Stripe.Subscription> { subscription -> [Node] in
-
-  guard subscription.isRenewing else { return [] }
-
-  return [
-    gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-      gridColumn(sizes: [.mobile: 12], [
-        h3([`class`([Class.pf.type.responsiveTitle4])], ["Cancel your subscription?"]),
-        p([
-          "If you cancel your subscription, you’ll lose access to Point-Free on ",
-          strong([.text(dateFormatter.string(from: subscription.currentPeriodEnd))]),
-          """
-           and you won’t be billed again. If you change your mind, you may reactivate your
-          subscription at any time before this period ends.
-          """
-          ]),
-        form([action(path(to: .account(.subscription(.cancel)))), method(.post)], [
-          button(
-            [`class`([Class.pf.components.button(color: .red), Class.margin([.mobile: [.top: 3]])])],
-            ["Yes, cancel my subscription"]
-          ),
-          a(
-            [
-              href(path(to: .account(.index))),
-              `class`([Class.pf.components.button(color: .black, style: .underline)])
-            ],
-            ["Never mind"]
-          )
-          ])
-        ])
-      ])
-  ]
-}
-
-private func pricing(for subscription: Stripe.Subscription) -> Pricing {
-  return Pricing(billing: billing(for: subscription.plan), quantity: subscription.quantity)
-}
-
-private func billing(for plan: Stripe.Plan) -> Pricing.Billing {
-  switch plan.interval {
-  case .month:
-    return .monthly
-  case .year:
-    return .yearly
+    return 144_00
   }
 }

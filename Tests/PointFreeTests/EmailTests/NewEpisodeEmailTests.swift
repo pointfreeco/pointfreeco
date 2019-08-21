@@ -12,6 +12,11 @@ import WebKit
 import XCTest
 
 class NewEpisodeEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNewEpisodeEmail_Subscriber() {
     let doc = newEpisodeEmail.view((Current.episodes().first!, "", "", .mock))
 
