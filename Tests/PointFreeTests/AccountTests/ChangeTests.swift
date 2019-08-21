@@ -20,6 +20,19 @@ final class ChangeTests: TestCase {
 //    record = true
   }
 
+  func testChangeRedirect() {
+    #if !os(Linux)
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+    )
+
+    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    #endif
+  }
+
   func testChangeUpdateUpgradeIndividualPlan() {
     #if !os(Linux)
     update(
@@ -89,7 +102,7 @@ final class ChangeTests: TestCase {
   }
 
   func testChangeUpdateAddSeatsIndividualPlan() {
-    //    record = true
+//    record = true
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
     update(
