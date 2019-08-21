@@ -10,12 +10,12 @@ operation to other structures and derive new, useful code!
   exercises: exercises,
   fullVideo: .init(
     bytesLength: 537_822_190,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full-720p-8232E8C5-31FB-446E-8C80-0D65377289DC.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/full/0010-tale-of-two-flatmaps.m3u8"
+    downloadUrl: "https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/354238926"
   ),
   id: 10,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/0010-poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0010-a-tale-of-two-flatmaps/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807678771.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807678771.jpg",
   length: 25*60+4,
   permission: .free,
   previousEpisodeInCollection: nil,
