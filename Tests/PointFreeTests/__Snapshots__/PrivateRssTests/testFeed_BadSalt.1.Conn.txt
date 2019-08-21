@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4888
+Content-Length: 4886
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -136,11 +136,11 @@ X-XSS-Protection: 1; mode=block
         full
       </itunes:episodeType>
       <enclosure url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=175&amp;download=1"
-                 length="411951213"
+                 length="90533615"
                  type="video/mp4">
       </enclosure>
       <media:content url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=175&amp;download=1"
-                     length="411951213"
+                     length="90533615"
                      type="video/mp4"
                      medium="video">
         <media:title>

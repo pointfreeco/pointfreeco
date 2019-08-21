@@ -217,11 +217,11 @@ with anyone else.
         full
       </itunes:episodeType>
       <enclosure url="https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&amp;profile_id=175&amp;download=1"
-                 length="537822190"
+                 length="164582242"
                  type="video/mp4">
       </enclosure>
       <media:content url="https://player.vimeo.com/external/354238926.hd.mp4?s=06ad254d78324f55f328a55deacaece07bc09de1&amp;profile_id=175&amp;download=1"
-                     length="537822190"
+                     length="164582242"
                      type="video/mp4"
                      medium="video">
         <media:title>
@@ -282,11 +282,11 @@ with anyone else.
         full
       </itunes:episodeType>
       <enclosure url="https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&amp;profile_id=175&amp;download=1"
-                 length="556949587"
+                 length="324873341"
                  type="video/mp4">
       </enclosure>
       <media:content url="https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&amp;profile_id=175&amp;download=1"
-                     length="556949587"
+                     length="324873341"
                      type="video/mp4"
                      medium="video">
         <media:title>
