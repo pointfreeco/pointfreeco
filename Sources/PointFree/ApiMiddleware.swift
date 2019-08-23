@@ -62,8 +62,8 @@ extension Api {
       self.title = episode.title
       self.transcriptBlocks = episode.transcriptBlocks
       self.video = subscriberOnly
-        ? episode.fullVideo
-        : episode.trailerVideo! // TODO: refactor fullVideo/trailerVideo to be an Either
+        ? episode.trailerVideo!
+        : episode.fullVideo // TODO: refactor fullVideo/trailerVideo to be an Either, and use subscription data to determine if this is shown
     }
   }
 }
