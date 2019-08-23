@@ -178,7 +178,7 @@ public struct Episode {
       }
 
       public init(from decoder: Decoder) throws {
-        fatalError()
+        fatalError() // TODO
       }
 
       public static func image(src: String) -> BlockType {
