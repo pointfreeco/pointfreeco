@@ -75,6 +75,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. unit))
         |> showNewEpisodeEmailMiddleware
 
+    case let .api(apiRoute):
+      return conn.map(const(user .*. apiRoute .*. unit))
+        |> apiMiddleware
+
     case .appleDeveloperMerchantIdDomainAssociation:
       return conn.map(const(unit))
         |> appleDeveloperMerchantIdDomainAssociationMiddleware

@@ -509,6 +509,20 @@ import Stripe
 
 
 
+      extension PartialIso where A == (
+            Route.Api
+        ), B == Route {
+
+          public static let api = parenthesize <| PartialIso(
+            apply: Route.api,
+            unapply: {
+              guard case let .api(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Route {
         public static let appleDeveloperMerchantIdDomainAssociation = parenthesize <| PartialIso<Prelude.Unit, Route>(
           apply: const(.some(.appleDeveloperMerchantIdDomainAssociation)),
@@ -787,6 +801,31 @@ import Stripe
             apply: Route.webhooks,
             unapply: {
               guard case let .webhooks(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route.Api {
+        public static let episodes = parenthesize <| PartialIso<Prelude.Unit, Route.Api>(
+          apply: const(.some(.episodes)),
+          unapply: {
+            guard case .episodes = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == (
+            Episode.Id
+        ), B == Route.Api {
+
+          public static let episode = parenthesize <| PartialIso(
+            apply: Route.Api.episode,
+            unapply: {
+              guard case let .episode(result) = $0 else { return nil }
               return .some(result)
           })
       }

@@ -11,21 +11,25 @@ import Styleguide
 import Tuple
 import View
 
-let routeNotFoundMiddleware =
-  currentUserMiddleware
-    >=> currentSubscriptionMiddleware
-    >=> writeStatus(.notFound)
-    >=> map(lower)
-    >>> respond(
-      view: routeNotFoundView,
-      layoutData: { subscription, currentUser in
-        SimplePageLayoutData(
-          currentUser: currentUser,
-          data: unit,
-          title: "Page not found"
-        )
-    }
-)
+func routeNotFoundMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
+  return
+    conn.map { $0 .*. unit }
+      |> currentUserMiddleware
+      >=> writeStatus(.notFound)
+      >=> map(lower)
+      >>> respond(
+        view: routeNotFoundView,
+        layoutData: { currentUser, _ in
+          SimplePageLayoutData(
+            currentUser: currentUser,
+            data: unit,
+            title: "Page not found"
+          )
+      }
+  )
+}
 
 private let routeNotFoundView = View<Prelude.Unit> { _ in
   gridRow([`class`([Class.grid.center(.mobile)])], [

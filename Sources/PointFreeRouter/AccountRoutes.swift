@@ -35,7 +35,7 @@ public enum Account: DerivePartialIsos, Equatable {
   }
 }
 
-public let accountRouter
+let accountRouter
   = accountRouters.reduce(.empty, <|>)
 
 private let accountRouters: [Router<Account>] = [

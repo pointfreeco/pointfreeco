@@ -15,6 +15,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case about
   case account(Account)
   case admin(Admin)
+  case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
@@ -119,6 +120,9 @@ let routers: [Router<Route>] = [
 
   .admin
     <¢> lit("admin") %> adminRouter,
+
+  .api
+    <¢> "api" %> apiRouter,
 
   .appleDeveloperMerchantIdDomainAssociation
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
