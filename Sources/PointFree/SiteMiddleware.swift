@@ -88,12 +88,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> blogMiddleware
 
     case let .discounts(couponId, billing):
-      let subscribeData = SubscribeData(
-        coupon: couponId,
-        pricing: Pricing(billing: billing ?? .yearly, quantity: 1),
-        teammates: [],
-        token: ""
-      )
+      let subscribeData = SubscribeConfirmationData(billing: billing ?? .yearly, teammates: [])
       return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. subscribeData .*. couponId .*. unit))
         |> discountSubscribeConfirmation
 
@@ -174,9 +169,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> logoutResponse
 
     case .pricingLanding:
-      let allEpisodeCount = AllEpisodeCount(rawValue: Current.episodes().count)
-      let episodeHourCount = EpisodeHourCount(rawValue: Current.episodes().reduce(0) { $0 + $1.length } / 3600)
-      let freeEpisodeCount = FreeEpisodeCount(rawValue: Current.episodes().lazy.filter { $0.permission == .free }.count)
+      let episodes = Current.episodes()
+      let allEpisodeCount = AllEpisodeCount(rawValue: episodes.count)
+      let episodeHourCount = EpisodeHourCount(rawValue: episodes.reduce(0) { $0 + $1.length } / 3600)
+      let freeEpisodeCount = FreeEpisodeCount(rawValue: episodes.lazy.filter { $0.permission == .free }.count)
 
       return conn.map(const(
         user
@@ -198,12 +194,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 
     case let .subscribeConfirmation(lane, billing, teammates):
       let teammates = lane == .team ? (teammates ?? [""]) : []
-      let subscribeData = SubscribeData(
-        coupon: nil,
-        pricing: Pricing(billing: billing ?? .yearly, quantity: teammates.count + 1),
-        teammates: teammates,
-        token: ""
-      )
+      let subscribeData = SubscribeConfirmationData(billing: billing ?? .yearly, teammates: teammates)
       return conn.map(const(user .*. route .*. subscriberState .*. lane .*. subscribeData .*. nil .*. unit))
         |> subscribeConfirmation
 

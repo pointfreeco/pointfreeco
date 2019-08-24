@@ -35,7 +35,7 @@ let episodeResponse =
           data: (permission, currentUser, subscriberState, episode),
           description: episode.blurb,
           extraHead: videoJsHead,
-          extraStyles: markdownBlockStyles <> pricingExtraStyles,
+          extraStyles: markdownBlockStyles,
           image: episode.image,
           style: .base(navStyle),
           title: "Episode #\(episode.sequence): \(episode.title)",

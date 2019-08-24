@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 66899
+Content-Length: 66116
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1757,62 +1757,6 @@ html {
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
   background-color           : #f7f7f7;
-}
-
-.block input:checked ~ * > * {
-  color : #974dff;
-}
-
-input {
-  color : #a8a8a8;
-}
-
-input {
-  margin-right : auto;
-  margin-left  : auto;
-}
-
-.content0 {
-  display : none;
-}
-
-.content1 {
-  display : none;
-}
-
-#tab0:checked ~ * .content0 {
-  display : inherit;
-}
-
-#tab1:checked ~ * .content1 {
-  display : inherit;
-}
-
-#tab0:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-#tab1:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
-}
-
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
-}
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
 }
 
 

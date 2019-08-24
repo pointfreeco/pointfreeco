@@ -1,3 +1,4 @@
+import Either
 import HttpPipeline
 import Foundation
 import Models
@@ -12,7 +13,7 @@ import Views
 public let subscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeData?, Stripe.Coupon?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
   Data
   >
   = filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -44,7 +45,7 @@ public let subscribeConfirmation: Middleware<
 public let discountSubscribeConfirmation: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane,  SubscribeData?, Stripe.Coupon.Id?>,
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
   Data
   >
   = filterMap(
@@ -66,4 +67,55 @@ private func fetchCoupon(_ couponId: Stripe.Coupon.Id?) -> IO<Stripe.Coupon?> {
   return Current.stripe.fetchCoupon(couponId)
     .run
     .map(^\.right)
+}
+
+func redirectActiveSubscribers<A>(
+  user: @escaping (A) -> User?
+  )
+  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
+  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+
+    return { middleware in
+      return { conn in
+        let user = user(conn.data)
+
+        let userSubscription = (user?.subscriptionId)
+          .map(
+            Current.database.fetchSubscriptionById
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+
+        let ownerSubscription = (user?.id)
+          .map(
+            Current.database.fetchSubscriptionByOwnerId
+              >>> mapExcept(requireSome)
+          )
+          ?? throwE(unit)
+
+        let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
+
+        return EitherIO(run: race)
+          .flatMap {
+            $0.stripeSubscriptionStatus == .canceled
+              ? throwE(unit as Error)
+              : pure($0)
+          }
+          .run
+          .flatMap(
+            either(
+              const(
+                middleware(conn)
+              ),
+              const(
+                conn
+                  |> redirect(
+                    to: .account(.index),
+                    headersMiddleware: flash(.warning, "You already have an active subscription.")
+                )
+              )
+            )
+        )
+      }
+    }
 }

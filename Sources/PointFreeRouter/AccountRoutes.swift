@@ -19,7 +19,7 @@ public enum Account: DerivePartialIsos, Equatable {
   }
 
   public enum PaymentInfo: DerivePartialIsos, Equatable {
-    case show(expand: Bool?)
+    case show
     case update(Stripe.Token.Id?)
   }
 
@@ -53,10 +53,7 @@ private let accountRouters: [Router<Account>] = [
   .invoices <<< .show
     <¢> get %> lit("invoices") %> pathParam(.tagged(.string)) <% end,
 
-  .paymentInfo <<< .show
-    <¢> get %> lit("payment-info")
-    %> queryParam("expand", opt(.bool))
-    <% end,
+  .paymentInfo <<< .show <¢> get %> lit("payment-info") <% end,
 
   .paymentInfo <<< .update
     <¢> post %> lit("payment-info")

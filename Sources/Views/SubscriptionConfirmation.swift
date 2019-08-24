@@ -13,7 +13,7 @@ import TaggedMoney
 
 public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
-  _ subscribeData: SubscribeData?,
+  _ subscribeData: SubscribeConfirmationData,
   _ coupon: Stripe.Coupon?,
   _ currentUser: User,
   _ stripeJs: String,
@@ -81,7 +81,7 @@ private func header(_ lane: Pricing.Lane) -> [Node] {
   ]
 }
 
-private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeData?) -> [Node] {
+private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirmationData) -> [Node] {
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -95,8 +95,7 @@ private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeData?) -
         gridColumn(
           sizes: [.mobile: 12],
           [id("team-members")],
-          (subscribeData?.teammates ?? [""])
-            .map { teamMemberTemplate($0, withRemoveButton: false) }
+          subscribeData.teammates.map { teamMemberTemplate($0, withRemoveButton: false) }
         ),
         gridColumn(
           sizes: [.mobile: 12],
@@ -266,7 +265,7 @@ updateSeats()
 private func billingPeriod(
   coupon: Coupon?,
   lane: Pricing.Lane,
-  subscribeData: SubscribeData?
+  subscribeData: SubscribeConfirmationData
   ) -> [Node] {
   return [
     gridRow(
@@ -299,7 +298,7 @@ private func billingPeriod(
               [
                 div([
                   input([
-                    checked((subscribeData?.pricing.billing ?? .yearly) == .yearly),
+                    checked(subscribeData.billing == .yearly),
                     id("yearly"),
                     type(.radio),
                     name("pricing[billing]"),
@@ -369,7 +368,7 @@ private func billingPeriod(
                 div(
                   [
                     input([
-                      checked(subscribeData?.pricing.billing == .monthly),
+                      checked(subscribeData.billing == .monthly),
                       id("monthly"),
                       type(.radio),
                       name("pricing[billing]"),
