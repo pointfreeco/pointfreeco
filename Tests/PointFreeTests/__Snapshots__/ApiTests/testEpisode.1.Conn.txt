@@ -2,7 +2,7 @@ GET http://localhost:8080/api/episodes/1
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 8253
+Content-Length: 8251
 Content-Type: application/json
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -209,8 +209,8 @@ X-XSS-Protection: 1; mode=block
     }
   ],
   "video" : {
-    "bytesLength" : 5000000,
-    "downloadUrl" : "https:\/\/s3.amazonaws.com\/pointfreeco\/trailer.mp4",
-    "streamingSource" : "https:\/\/s3.amazonaws.com\/pointfreeco\/trailer.m3u8"
+    "bytesLength" : 500000000,
+    "downloadUrl" : "https:\/\/s3.amazonaws.com\/pointfreeco\/video.mp4",
+    "streamingSource" : "https:\/\/s3.amazonaws.com\/pointfreeco\/video.m3u8"
   }
 }
