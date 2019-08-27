@@ -88,7 +88,7 @@ X-XSS-Protection: 1; mode=block
         Invalid Feed URL
       </title>
       <pubDate>
-        Mon, 29 Jan 2018 06:11:09 +0000
+        Mon, 01 Jan 4001 00:00:00 +0000
       </pubDate>
       <link>
         http://localhost:8080
