@@ -15,15 +15,51 @@ import View
 
 let accountRssMiddleware
   : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
-  = filterMap(decryptUserIdAndRssSalt, or: invalidatedFeedMiddleware(errorMessage: "Malformed URL"))
+  = validateUrl
     <<< { fetchUser >=> $0 }
-    <<< filterMap(require1 >>> pure, or: invalidatedFeedMiddleware(errorMessage: "Couldn't find user"))
+    <<< requireUser
     <<< validateUserAndSalt
     <<< fetchUserSubscription
-    <<< filterMap(validateActiveSubscriber, or: invalidatedFeedMiddleware(errorMessage: "Couldn't validate active subscription"))
+    <<< requireActiveSubscription
     <<< fetchStripeSubscriptionForUser
     <| map(lower)
     >>> accountRssResponse
+
+private let validateUrl: (
+  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data> =
+  filterMap(
+    decryptUserIdAndRssSalt,
+    or: invalidatedFeedMiddleware(errorMessage: """
+      ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+      retrieve your most up-to-date private podcast URL by visiting your account page at \
+      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+      """)
+)
+
+private let requireUser: (
+  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, User.RssSalt>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, User.RssSalt>, Data> =
+  filterMap(
+    require1 >>> pure,
+    or: invalidatedFeedMiddleware(errorMessage: """
+      ‼️ The user for this RSS feed could not be found, so we have disabled this feed. You can retrieve \
+      your most up-to-date private podcast URL by visiting your account page at \
+      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+      """)
+)
+
+private let requireActiveSubscription: (
+  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.Subscription?, User>, Data> =
+  filterMap(
+    validateActiveSubscriber,
+    or: invalidatedFeedMiddleware(errorMessage: """
+      ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no longer \
+      active. If you would like reactive this feed you can resubscribe to Point-Free on your account page at \
+      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+      """)
+)
 
 private let accountRssResponse
   : Middleware<StatusLineOpen, ResponseEnded, (Stripe.Subscription?, User), Data>
@@ -34,7 +70,7 @@ private let accountRssResponse
 
 private func invalidatedFeedMiddleware<A>(errorMessage: String) -> (Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
   return { conn in
-    conn.map(const(unit))
+    conn.map(const(errorMessage))
       |> writeStatus(.ok)
       >=> respond(invalidatedFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
       >=> clearHeadBody
@@ -81,7 +117,11 @@ private func validateUserAndSalt<Z>(
     return { conn in
       guard get1(conn.data).rssSalt == get2(conn.data) else {
         return conn
-          |> invalidatedFeedMiddleware(errorMessage: "Couldn't validate rss salt")
+          |> invalidatedFeedMiddleware(errorMessage: """
+            ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+            retrieve your most up-to-date private podcast URL by visiting your account page at \
+            \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+            """)
       }
       return conn.map(const(get1(conn.data) .*. rest(conn.data)))
         |> middleware
@@ -228,17 +268,17 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
   )
 }
 
-private let invalidatedFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
+private let invalidatedFeedView = itunesRssFeedLayout <| View<String> { errorMessage in
   node(
-    rssChannel: invalidatedChannel,
-    items: [invalidatedItem]
+    rssChannel: invalidatedChannel(errorMessage: errorMessage),
+    items: [invalidatedItem(errorMessage: errorMessage)]
   )
 }
 
-private var invalidatedChannel: RssChannel {
+private func invalidatedChannel(errorMessage: String) -> RssChannel {
   return .init (
     copyright: "Copyright Point-Free, Inc. \(Calendar.current.component(.year, from: Current.date()))",
-    description: invalidatedDescription,
+    description: errorMessage,
     image: .init(
       link: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg",
       title: "Point-Free",
@@ -267,7 +307,7 @@ private var invalidatedChannel: RssChannel {
       image: .init(href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
       owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
       subtitle: "Functional programming concepts explained simply.",
-      summary: invalidatedDescription,
+      summary: errorMessage,
       type: .episodic
     ),
     language: "en-US",
@@ -276,9 +316,9 @@ private var invalidatedChannel: RssChannel {
   )
 }
 
-private var invalidatedItem: RssItem {
+private func invalidatedItem(errorMessage: String) -> RssItem {
   return RssItem(
-    description: invalidatedDescription,
+    description: errorMessage,
     dublinCore: .init(creators: ["Brandon Williams", "Stephen Celis"]),
     enclosure: .init(
       length: introduction.fullVideo.bytesLength,
@@ -293,8 +333,8 @@ private var invalidatedItem: RssItem {
       episodeType: .full,
       explicit: false,
       image: introduction.itunesImage ?? "",
-      subtitle: invalidatedDescription,
-      summary: invalidatedDescription,
+      subtitle: errorMessage,
+      summary: errorMessage,
       season: 1,
       title: "Invalid Feed URL"
     ),
@@ -311,14 +351,6 @@ private var invalidatedItem: RssItem {
     pubDate: Date.distantFuture,
     title: "Invalid Feed URL"
   )
-}
-
-private var invalidatedDescription: String {
-  return """
-‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private \
-podcast URL by visiting your account page at \(url(to: .account(.index))). If you think this is an error, \
-please contact support@pointfree.co.
-"""
 }
 
 func clearHeadBody<I>(_ conn: Conn<I, Data>) -> IO<Conn<I, Data>> {
