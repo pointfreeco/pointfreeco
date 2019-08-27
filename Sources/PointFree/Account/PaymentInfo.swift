@@ -88,15 +88,15 @@ private let titleRowView =
 
 private func currentPaymentInfoRowView(_ card: Stripe.Card) -> [Node] {
   return [
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
-        p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
-        p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
+    gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
+          p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
+          p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
+          ])
         ])
       ])
-    ])
   ]
 }
 

@@ -14,6 +14,7 @@ public struct Card: Codable, Equatable {
   public var expYear: Int
   public var id: Id
   public var last4: String
+  public var object: Object
 
   public init(
     brand: Brand,
@@ -21,7 +22,8 @@ public struct Card: Codable, Equatable {
     expMonth: Int,
     expYear: Int,
     id: Id,
-    last4: String
+    last4: String,
+    object: Object
     ) {
     self.brand = brand
     self.customer = customer
@@ -29,9 +31,12 @@ public struct Card: Codable, Equatable {
     self.expYear = expYear
     self.id = id
     self.last4 = last4
+    self.object = object
   }
 
   public typealias Id = Tagged<Card, String>
+
+  public enum Object: String, Codable { case card }
 
   public enum Brand: String, Codable, Equatable {
     case visa = "Visa"
@@ -57,6 +62,7 @@ public struct Card: Codable, Equatable {
     case expYear = "exp_year"
     case id
     case last4
+    case object
   }
 }
 
@@ -134,8 +140,11 @@ public struct Coupon: Equatable {
 
 public struct Source: Codable, Equatable {
   public var id: Id
+  public var object: Object
 
   public typealias Id = Tagged<Source, String>
+
+  public enum Object: String, Codable { case source }
 }
 
 public struct Customer: Codable, Equatable {

@@ -1016,6 +1016,7 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
+  // TODO: also handle Source sources
   guard let card = subscription.customer.right?.sources.data.first?.left else { return [] }
 
   return [
