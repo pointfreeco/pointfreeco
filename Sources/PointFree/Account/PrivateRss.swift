@@ -15,7 +15,7 @@ import View
 
 let accountRssMiddleware
   : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
-  = validateUrl
+  = decryptUrl
     <<< { fetchUser >=> $0 }
     <<< requireUser
     <<< validateUserAndSalt
@@ -25,7 +25,7 @@ let accountRssMiddleware
     <| map(lower)
     >>> accountRssResponse
 
-private let validateUrl: (
+private let decryptUrl: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>
   ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data> =
   filterMap(
