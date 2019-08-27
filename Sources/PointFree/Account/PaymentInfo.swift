@@ -63,11 +63,6 @@ let updatePaymentInfoMiddleware:
       }
 }
 
-public enum PricingFormStyle {
-  case minimal
-  case full
-}
-
 func paymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
   return [
     gridRow([
