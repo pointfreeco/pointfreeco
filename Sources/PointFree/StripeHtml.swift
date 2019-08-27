@@ -7,71 +7,9 @@ import Styleguide
 public enum StripeHtml {
   public static let formId = "card-form"
 
-  public static func cardInput(couponId: Stripe.Coupon.Id?, formStyle: PricingFormStyle) -> [Node] {
-    let expand = formStyle == .full
-
+  public static func cardInput(couponId: Stripe.Coupon.Id?) -> [Node] {
     return [
       input([name("token"), type(.hidden)]),
-      div([`class`(expand ? [] : [Class.display.none])], [
-        input([
-          `class`([blockInputClass]),
-          name("stripe_name"),
-          placeholder("Billing Name"),
-          type(.text),
-          ]),
-        input([
-          `class`([blockInputClass]),
-          name("stripe_address_line1"),
-          placeholder("Address"),
-          type(.text),
-          ]),
-        gridRow([
-          gridColumn(sizes: [.mobile: 12, .desktop: 4], [
-            div([`class`([Class.padding([.desktop: [.right: 1]])])], [
-              input([
-                `class`([blockInputClass]),
-                name("stripe_address_city"),
-                placeholder("City"),
-                type(.text),
-                ])
-              ])
-            ]),
-          gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-            div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
-              input([
-                `class`([blockInputClass]),
-                name("stripe_address_state"),
-                placeholder("State"),
-                type(.text),
-                ])
-              ])
-            ]),
-          gridColumn(sizes: [.mobile: 12, .desktop: 2], [
-            div([`class`([Class.padding([.desktop: [.leftRight: 1]])])], [
-              input([
-                `class`([blockInputClass]),
-                name("stripe_address_zip"),
-                placeholder("Zip"),
-                type(.text),
-                ]),
-              ])
-            ]),
-          gridColumn(sizes: [.mobile: 12, .desktop: 3], [
-            div([`class`([Class.padding([.desktop: [.left: 1]])])], [
-              select([`class`([blockSelectClass]), name("stripe_address_country")], [option([disabled(true), selected(true), value("")], "Country")] + countries.map { pair in
-                let (country, code) = pair
-                return option([value(code)], country)
-              })
-              ]),
-            ]),
-          ]),
-        input([
-          `class`([blockInputClass]),
-          name("vatNumber"),
-          placeholder("VAT Number (EU Customers Only)"),
-          type(.text),
-          ]),
-        ]),
       div([`class`(couponId != nil ? [] : [Class.display.none])], [
         input([
           `class`([blockInputClass]),
