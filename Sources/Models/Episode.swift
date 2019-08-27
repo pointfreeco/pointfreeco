@@ -99,7 +99,7 @@ public struct Episode {
     case subscriberOnly
   }
 
-  public struct Reference {
+  public struct Reference: Codable {
     public var author: String?
     public var blurb: String?
     public var link: String
@@ -121,7 +121,7 @@ public struct Episode {
     }
   }
 
-  public struct TranscriptBlock: Equatable {
+  public struct TranscriptBlock: Codable, Equatable {
     public var content: String
     public var timestamp: Int?
     public var type: BlockType
@@ -132,7 +132,7 @@ public struct Episode {
       self.type = type
     }
 
-    public enum BlockType: Equatable {
+    public enum BlockType: Codable, Equatable {
       case code(lang: CodeLang)
       case correction
       case image(src: String, sizing: ImageSizing)
@@ -140,16 +140,57 @@ public struct Episode {
       case title
       case video(poster: String, sources: [String])
 
+      private enum CodingKeys: CodingKey {
+        case lang
+        case poster
+        case sizing
+        case sources
+        case src
+        case type
+      }
+
+      public func encode(to encoder: Encoder) throws {
+        switch self {
+        case let .code(lang):
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("code", forKey: .type)
+          try container.encode(lang, forKey: .lang)
+        case .correction:
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("correction", forKey: .type)
+        case let .image(src, sizing):
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("image", forKey: .type)
+          try container.encode(sizing, forKey: .sizing)
+          try container.encode(src, forKey: .src)
+        case .paragraph:
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("paragraph", forKey: .type)
+        case .title:
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("title", forKey: .type)
+        case let .video(poster, sources):
+          var container = encoder.container(keyedBy: CodingKeys.self)
+          try container.encode("video", forKey: .type)
+          try container.encode(poster, forKey: .poster)
+          try container.encode(sources, forKey: .sources)
+        }
+      }
+
+      public init(from decoder: Decoder) throws {
+        fatalError() // TODO
+      }
+
       public static func image(src: String) -> BlockType {
         return .image(src: src, sizing: .fullWidth)
       }
 
-      public enum ImageSizing {
+      public enum ImageSizing: String, Codable {
         case fullWidth
         case inset
       }
 
-      public struct CodeLang: Equatable {
+      public struct CodeLang: Codable, Equatable {
         public let identifier: String
 
         public static let diff = CodeLang(identifier: "diff")
@@ -164,7 +205,7 @@ public struct Episode {
     }
   }
   
-  public struct Video {
+  public struct Video: Codable{
     // TODO: Tagged<Bytes, Int>?
     public var bytesLength: Int
     public var downloadUrl: String
