@@ -60,21 +60,25 @@ let updatePaymentInfoMiddleware:
               ? flash(.error, genericPaymentInfoError)
               : flash(.notice, "Your payment information has been updated.")
           )
-func paymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
       }
 }
 
-  return [
+public enum PricingFormStyle {
+  case minimal
+  case full
+}
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+func paymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
+  return [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
             [titleRowView]
               <> (subscription.customer.right?.sources.data.first?.left.map(currentPaymentInfoRowView) ?? [])
               <> [updatePaymentInfoRowView]
-      )
+        )
+        ])
       ])
-    ])
   ]
 }
 
