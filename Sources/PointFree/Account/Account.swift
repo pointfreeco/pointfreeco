@@ -1016,8 +1016,8 @@ private func inviteTeammatesDescription(invitesRemaining: Int) -> Node {
 }
 
 private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
-  // TODO: also handle Source sources
-  guard let card = subscription.customer.right?.sources.data.first?.left else { return [] }
+  guard let card = subscription.customer.right?.sources.data.first?.left
+    else { return subscriptionInvoiceBillingInfoView }
 
   return [
     gridRow([`class`([subscriptionInfoRowClass])], [
@@ -1057,6 +1057,46 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
       ])
   ]
 }
+
+private let subscriptionInvoiceBillingInfoView: [Node] = [
+  gridRow([`class`([subscriptionInfoRowClass])], [
+    gridColumn(sizes: [.mobile: 3], [
+      div([
+        p(["Payment"])
+        ])
+      ]),
+    gridColumn(sizes: [.desktop: 9], [
+      gridRow([
+        gridColumn(sizes: [.mobile: 12, .desktop: 7], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]])])], [
+            p([
+              "You are enrolled in invoice billing. If you have any questions, please ",
+              a(
+                [
+                  `class`([Class.pf.type.underlineLink]),
+                  href("mailto:support@pointfree.co")
+                ],
+                ["contact us"]
+              ),
+              "."
+              ])
+            ])
+          ]),
+        gridColumn(sizes: [.mobile: 12, .desktop: 5], [
+          div([`class`([Class.padding([.mobile: [.leftRight: 1]]), Class.grid.end(.desktop)])], [
+            p([
+              a([
+                `class`([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
+                href(path(to: .account(.invoices(.index)))),
+                ],
+                ["Payment history"])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+]
 
 public func format(cents: Cents<Int>) -> String {
   let dollars = NSNumber(value: Double(cents.rawValue) / 100)

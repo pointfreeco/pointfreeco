@@ -32,7 +32,15 @@ extension Card {
     expMonth: 1,
     expYear: 2020,
     id: "card_test",
-    last4: "4242"
+    last4: "4242",
+    object: Object.card
+  )
+}
+
+extension Source {
+  public static let mock = Source(
+    id: "src_DEADBEEF",
+    object: .source
   )
 }
 

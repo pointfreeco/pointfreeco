@@ -45,6 +45,32 @@ final class AccountTests: TestCase {
     #endif
   }
 
+  func testAccount_InvoiceBilling() {
+    let customer = Stripe.Customer.mock
+      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
+    let subscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.customer) .~ .right(customer)
+    Current = .teamYearly
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
+
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testAccount_WithRssFeatureFlag() {
     Current = .teamYearly
       |> \.features .~ [.podcastRss |> \.isEnabled .~ true]

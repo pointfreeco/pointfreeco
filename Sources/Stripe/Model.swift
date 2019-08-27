@@ -145,6 +145,11 @@ public struct Source: Codable, Equatable {
   public typealias Id = Tagged<Source, String>
 
   public enum Object: String, Codable { case source }
+
+  public init(id: Id, object: Object) {
+    self.id = id
+    self.object = object
+  }
 }
 
 public struct Customer: Codable, Equatable {
