@@ -56,6 +56,31 @@ final class InvoicesTests: TestCase {
     #endif
   }
 
+  func testInvoice_InvoiceBilling() {
+    let charge = Charge.mock
+      |> (\Charge.source) .~ .right(.mock)
+    let invoice = Invoice.mock(charge: .right(charge))
+
+    Current = .teamYearly
+      |> (\Environment.stripe.fetchInvoice) .~ const(pure(invoice))
+
+    let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testInvoiceWithDiscount() {
     let invoice = Stripe.Invoice.mock(charge: .right(.mock))
       |> \.discount .~ .mock

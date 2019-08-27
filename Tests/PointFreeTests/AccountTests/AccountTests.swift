@@ -53,7 +53,6 @@ final class AccountTests: TestCase {
     Current = .teamYearly
       |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
 
-
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
