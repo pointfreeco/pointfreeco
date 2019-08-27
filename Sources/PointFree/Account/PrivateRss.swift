@@ -308,7 +308,7 @@ private var invalidatedItem: RssItem {
       ),
       title: "Invalid Feed URL"
     ),
-    pubDate: introduction.publishedAt,
+    pubDate: Date.distantFuture,
     title: "Invalid Feed URL"
   )
 }
