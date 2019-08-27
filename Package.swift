@@ -7,7 +7,6 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
-    .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
@@ -19,6 +18,7 @@ let package = Package(
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
+    .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
     .library(name: "PointFreeTestSupport", targets: ["PointFreeTestSupport"]),
     .library(name: "Stripe", targets: ["Stripe"]),
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
