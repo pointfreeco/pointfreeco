@@ -1,0 +1,35 @@
+GET http://localhost:8080/api/episodes
+Cookie: pf_session={}
+
+200 OK
+Content-Length: 785
+Content-Type: application/json
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block
+
+[
+  {
+    "blurb" : "This is a short blurb to give a high-level overview of what the episode is about. It can only be plain\ntext, no markdown allowed. Here is some more text just to have some filler.",
+    "id" : 2,
+    "image" : "",
+    "length" : 1380,
+    "publishedAt" : 503884800,
+    "sequence" : 2,
+    "subscriberOnly" : true,
+    "title" : "Proof in Functions"
+  },
+  {
+    "blurb" : "As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.",
+    "id" : 1,
+    "image" : "",
+    "length" : 1380,
+    "publishedAt" : 519652800,
+    "sequence" : 1,
+    "subscriberOnly" : false,
+    "title" : "Type-Safe HTML in Swift"
+  }
+]
