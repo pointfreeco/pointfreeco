@@ -536,9 +536,7 @@ window.addEventListener("load", function() {
   form.addEventListener("submit", function(event) {
     event.preventDefault()
     setFormEnabled(false, function() { return true })
-    stripe.createToken(
-      card, { /*TODO: name: form.stripe_name.value*/ }
-    ).then(function(result) {
+    stripe.createToken(card).then(function(result) {
       if (result.error) {
         displayError.textContent = result.error.message
         setFormEnabled(true, function(el) { return true })
