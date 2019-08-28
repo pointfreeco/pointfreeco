@@ -53,8 +53,13 @@ public enum SubscriberState {
   }
 
   public var isNonSubscriber: Bool {
-    if case .nonSubscriber = self { return true }
-    return false
+    switch self {
+    case .teammate(status: .active, _),
+         .owner(hasSeat: _, status: .active, _):
+      return false
+    default:
+      return true
+    }
   }
 
   public var isActiveSubscriber: Bool {
