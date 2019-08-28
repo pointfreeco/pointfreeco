@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&teammates=blob.jr@point
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62383
+Content-Length: 62327
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2296,9 +2296,7 @@ updateSeats()">
   form.addEventListener("submit", function(event) {
     event.preventDefault()
     setFormEnabled(false, function() { return true })
-    stripe.createToken(
-      card, { /*TODO: name: form.stripe_name.value*/ }
-    ).then(function(result) {
+    stripe.createToken(card).then(function(result) {
       if (result.error) {
         displayError.textContent = result.error.message
         setFormEnabled(true, function(el) { return true })

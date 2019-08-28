@@ -245,7 +245,6 @@ public struct Invoice: Codable, Equatable {
   public var amountDue: Cents<Int>
   public var amountPaid: Cents<Int>
   public var charge: Either<Charge.Id, Charge>?
-  public var closed: Bool
   public var customer: Customer.Id
   public var date: Date
   public var discount: Discount?
@@ -262,7 +261,6 @@ public struct Invoice: Codable, Equatable {
     amountDue: Cents<Int>,
     amountPaid: Cents<Int>,
     charge: Either<Charge.Id, Charge>?,
-    closed: Bool,
     customer: Customer.Id,
     date: Date,
     discount: Discount?,
@@ -278,7 +276,6 @@ public struct Invoice: Codable, Equatable {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
     self.charge = charge
-    self.closed = closed
     self.customer = customer
     self.date = date
     self.discount = discount
@@ -299,7 +296,6 @@ public struct Invoice: Codable, Equatable {
     case amountDue = "amount_remaining"
     case amountPaid = "amount_paid"
     case charge
-    case closed
     case customer
     case date
     case discount
@@ -363,9 +359,15 @@ public struct Plan: Codable, Equatable {
   public var id: Id
   public var interval: Interval
   public var metadata: [String: String]
-  public var name: String
+  private var name: String? // FIXME: remove
+  private var _nickname: String? // FIXME: remove
   public var statementDescriptor: String?
   public var tiers: [Tier]?
+
+  public var nickname: String {
+    get { return self._nickname ?? self.name ?? "" }
+    set { self._nickname = newValue; self.name = newValue }
+  }
 
   public init(
     amount: Cents<Int>,
@@ -374,7 +376,7 @@ public struct Plan: Codable, Equatable {
     id: Id,
     interval: Interval,
     metadata: [String: String],
-    name: String,
+    nickname: String,
     statementDescriptor: String?,
     tiers: [Tier]?
     ) {
@@ -384,7 +386,7 @@ public struct Plan: Codable, Equatable {
     self.id = id
     self.interval = interval
     self.metadata = metadata
-    self.name = name
+    self.nickname = nickname
     self.statementDescriptor = statementDescriptor
     self.tiers = tiers
   }
@@ -429,6 +431,7 @@ public struct Plan: Codable, Equatable {
     case interval
     case metadata
     case name
+    case _nickname = "nickname" // FIXME: remove
     case statementDescriptor = "statement_descriptor"
     case tiers
   }
