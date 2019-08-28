@@ -7,9 +7,9 @@ Side effects: can’t live with ’em; can’t write a program without ’em. Le
   codeSampleDirectory: "0002-side-effects",
   exercises: [],
   fullVideo: .init(
-    bytesLength: 890_410_175,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full-720p-BB35D372-8907-4CA2-AAEB-82B5BB5F1311.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0002-side-effects/full/0002-side-effects.m3u8"
+    bytesLength: 238_376_744,
+    downloadUrl: "https://player.vimeo.com/external/355115445.hd.mp4?s=fa740bb2d49fa51b3cd6c44de1837a093f763f22&profile_id=174&download=1",
+    streamingSource: "https://player.vimeo.com/video/355115445"
   ),
   id: 2,
   image: "https://i.vimeocdn.com/video/807678088.jpg",
