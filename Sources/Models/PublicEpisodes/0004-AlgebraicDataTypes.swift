@@ -8,13 +8,13 @@ and see how it can help us create type-safe data structures that can catch runti
   codeSampleDirectory: "0004-algebraic-data-types",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 723_938_138,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full-720p-A84B9044-ADFD-488C-AF6E-EEDA4259B534.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/full/0004-adt.m3u8"
+    bytesLength: 194_777_227,
+    downloadUrl: "https://player.vimeo.com/external/355115428.hd.mp4?s=03abd49a24efede55881a7cb120e5c6b498a5ad6&profile_id=174&download=1",
+    streamingSource: "https://player.vimeo.com/video/355115428"
   ),
   id: 4,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/0004-poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0004-adt/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807849108.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807849108.jpg",
   length: 2_172,
   permission: .free,
   previousEpisodeInCollection: nil,
