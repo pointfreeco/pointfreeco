@@ -141,6 +141,11 @@ let welcomeEmail1Content = View<User> { user -> [Node] in
         * [Algebraic Data Type: Part 1](https://www.pointfree.co/episodes/ep4-algebraic-data-types)
         * [Tagged](https://www.pointfree.co/episodes/ep12-tagged)
         * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
+        * [Protocol Witnesses: Part 1](https://www.pointfree.co/episodes/ep33-protocol-witnesses-part-1)
+        * [Witness-Oriented Library Design](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design)
+        * [What Is a Parser?: Part 1](https://www.pointfree.co/episodes/ep56-what-is-a-parser-part-1)
+        * [SwiftUI and State Management: Part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1)
+        * [Composable State Management: Reducers](https://www.pointfree.co/episodes/ep68-composable-state-management-reducers)
         """
         )
       : nil
