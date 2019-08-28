@@ -2,7 +2,7 @@ GET http://localhost:8080/account/payment-info
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 49483
+Content-Length: 49159
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1954,17 +1954,7 @@ form.addEventListener('submit', function(event) {
     return true;
   });
 
-  stripe.createToken(
-    card,
-    {
-      name: form.stripe_name.value,
-      address_line1: form.stripe_address_line1.value,
-      address_city: form.stripe_address_city.value,
-      address_state: form.stripe_address_state.value,
-      address_zip: form.stripe_address_zip.value,
-      address_country: form.stripe_address_country.value
-    }
-  ).then(function(result) {
+  stripe.createToken(card).then(function(result) {
     if (result.error) {
       var errorElement = document.getElementById('card-errors');
       errorElement.textContent = result.error.message;
