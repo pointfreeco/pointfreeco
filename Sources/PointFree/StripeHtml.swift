@@ -90,17 +90,7 @@ public enum StripeHtml {
             return true;
           });
 
-          stripe.createToken(
-            card,
-            {
-              name: form.stripe_name.value,
-              address_line1: form.stripe_address_line1.value,
-              address_city: form.stripe_address_city.value,
-              address_state: form.stripe_address_state.value,
-              address_zip: form.stripe_address_zip.value,
-              address_country: form.stripe_address_country.value
-            }
-          ).then(function(result) {
+          stripe.createToken(card).then(function(result) {
             if (result.error) {
               var errorElement = document.getElementById('card-errors');
               errorElement.textContent = result.error.message;
