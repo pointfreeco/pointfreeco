@@ -130,7 +130,7 @@ extension Plan {
     id: .monthly,
     interval: .month,
     metadata: [:],
-    nickname: "Individual Monthly", 
+    nickname: "Individual Monthly",
     statementDescriptor: nil,
     tiers: [
       Tier(amount: 16_00, upTo: nil),
