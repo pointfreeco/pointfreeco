@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62804
+Content-Length: 63282
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1806,6 +1806,13 @@ Point-Free!</p>
           </li>
           <li class="m-pl3
                      inline">
+            <a href="/pricing"
+               class="pf-link-black">
+              Subscribe
+            </a>
+          </li>
+          <li class="m-pl3
+                     inline">
             <a href="/account"
                class="pf-link-black">
               Account
@@ -1948,6 +1955,12 @@ Point-Free!</p>
                              checked
                              class="m-mr1">
                       New episode is available (about once a week)
+                    </label>
+                    <label class="block">
+                      <input type="checkbox"
+                             name="emailSettings[welcomeEmails]"
+                             class="m-mr1">
+                      A short series of emails introducing Point-Free
                     </label>
                   </p>
                   <input type="submit"
