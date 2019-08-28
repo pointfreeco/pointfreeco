@@ -5,7 +5,7 @@ Stripe-Signature: t=1517356800,v1=deadbeef
 {"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"customer":"cus_test","lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"monthly-2019","nickname":"Individual Monthly","created":1517356800,"tiers":[{"amount":1600},{"amount":1800}],"currency":"usd","metadata":{},"interval":"month"}}]},"charge":"ch_test","total":1700,"period_start":1517356800,"subtotal":1700,"amount_remaining":0,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
 400 Bad Request
-Content-Length: 1045
+Content-Length: 26
 Content-Type: text/plain
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -15,21 +15,3 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
 Couldn't verify signature.
-
-Current timestamp: 1517356800.0
-
-POST http://localhost:8080/webhooks/stripe
-
-Headers:
-▿ Optional(["Stripe-Signature": "t=1517356800,v1=deadbeef", "Cookie": "pf_session={}"])
-  ▿ some: 2 key/value pairs
-    ▿ (2 elements)
-      - key: "Stripe-Signature"
-      - value: "t=1517356800,v1=deadbeef"
-    ▿ (2 elements)
-      - key: "Cookie"
-      - value: "pf_session={}"
-
-Body:
-{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"customer":"cus_test","lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"monthly-2019","nickname":"Individual Monthly","created":1517356800,"tiers":[{"amount":1600},{"amount":1800}],"currency":"usd","metadata":{},"interval":"month"}}]},"charge":"ch_test","total":1700,"period_start":1517356800,"subtotal":1700,"amount_remaining":0,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
-

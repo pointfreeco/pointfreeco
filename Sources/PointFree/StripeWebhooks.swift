@@ -173,7 +173,7 @@ private func stripeHookFailure<A>(
   -> IO<Conn<ResponseEnded, Data>> {
 
     return { conn in
-      return IO<String> {
+      return IO<Void> {
         var requestDump = body + "\n\n"
         print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
         print(
@@ -192,13 +192,11 @@ private func stripeHookFailure<A>(
             content: inj1(requestDump)
             ).run
           ).run { _ in }
-
-        return requestDump
         }
-        .flatMap { errorMessage in
+        .flatMap {
           conn
             |> writeStatus(.badRequest)
-            >=> respond(text: errorMessage)
+            >=> respond(text: body)
       }
     }
 }
