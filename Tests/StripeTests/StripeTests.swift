@@ -111,6 +111,71 @@ final class StripeTests: XCTestCase {
     XCTAssertEqual(ListEnvelope<Card>(data: [], hasMore: false), customer.sources)
   }
 
+  func testDecodingPlan_WithoutNickname() throws {
+    let jsonString = """
+{
+  "id": "individual-monthly",
+  "object": "plan",
+  "active": true,
+  "aggregate_usage": null,
+  "amount": 1700,
+  "billing_scheme": "per_unit",
+  "created": 1513818719,
+  "currency": "usd",
+  "interval": "month",
+  "interval_count": 1,
+  "livemode": false,
+  "metadata": {
+  },
+  "name": "Individual Monthly",
+  "nickname": null,
+  "product": "prod_BzH9x8QMPSEtMQ",
+  "statement_descriptor": null,
+  "tiers": null,
+  "tiers_mode": null,
+  "transform_usage": null,
+  "trial_period_days": null,
+  "usage_type": "licensed"
+}
+"""
+
+    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
+
+    XCTAssertEqual("Individual Monthly", plan.nickname)
+  }
+
+  func testDecodingPlan_WithNickname() throws {
+    let jsonString = """
+{
+  "id": "individual-monthly",
+  "object": "plan",
+  "active": true,
+  "aggregate_usage": null,
+  "amount": 1700,
+  "billing_scheme": "per_unit",
+  "created": 1513818719,
+  "currency": "usd",
+  "interval": "month",
+  "interval_count": 1,
+  "livemode": false,
+  "metadata": {
+  },
+  "nickname": "Individual Monthly",
+  "product": "prod_BzH9x8QMPSEtMQ",
+  "statement_descriptor": null,
+  "tiers": null,
+  "tiers_mode": null,
+  "transform_usage": null,
+  "trial_period_days": null,
+  "usage_type": "licensed"
+}
+"""
+
+    let plan = try JSONDecoder().decode(Plan.self, from: Data(jsonString.utf8))
+
+    XCTAssertEqual("Individual Monthly", plan.nickname)
+  }
+
   func testDecodingSubscriptionWithDiscount() throws {
     let jsonString = """
 {
