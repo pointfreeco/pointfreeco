@@ -218,7 +218,7 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
       newsletter: nil,
       title: "Your subscription has been canceled",
       preheader: """
-      Your \(subscription.plan.name) subscription has been canceled and will remain active through
+      Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
       \(dateFormatter.string(from: subscription.currentPeriodEnd)).
       """,
       template: .default,
@@ -234,7 +234,7 @@ private let cancelEmailBodyView = View<(User, Stripe.Subscription)> { user, subs
           h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Your ",
-            strong([.text(subscription.plan.name)]),
+            strong([.text(subscription.plan.nickname)]),
             " subscription has been canceled and will remain active through ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
@@ -263,7 +263,7 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
       user: nil,
       newsletter: nil,
       title: "Your subscription has been reactivated",
-      preheader: "Your \(subscription.plan.name) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+      preheader: "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
       template: .default,
       data: (owner, subscription)
     )
@@ -277,7 +277,7 @@ private let reactivateEmailBodyView = View<(User, Stripe.Subscription)> { user, 
           h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
           p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
             "Thanks for sticking with us! Your ",
-            strong([.text(subscription.plan.name)]),
+            strong([.text(subscription.plan.nickname)]),
             " subscription has been reactivated and will renew on ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             "."

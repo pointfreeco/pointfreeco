@@ -82,7 +82,6 @@ extension Invoice {
       amountDue: 0_00,
       amountPaid: 17_00,
       charge: charge,
-      closed: true,
       customer: "cus_test",
       date: .mock,
       discount: nil,
@@ -131,7 +130,7 @@ extension Plan {
     id: .monthly,
     interval: .month,
     metadata: [:],
-    name: "Individual Monthly",
+    nickname: "Individual Monthly",
     statementDescriptor: nil,
     tiers: [
       Tier(amount: 16_00, upTo: nil),
@@ -145,17 +144,17 @@ extension Plan {
     |> \.amount .~ 170_00
     |> \.id .~ .yearly
     |> \.interval .~ .year
-    |> \.name .~ "Individual Yearly"
+    |> \.nickname .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
     |> \.amount .~ 16_00
     |> \.id .~ .monthly
-    |> \.name .~ "Team Monthly"
+    |> \.nickname .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
     |> \.amount .~ 160_00
     |> \.id .~ .yearly
-    |> \.name .~ "Team Yearly"
+    |> \.nickname .~ "Team Yearly"
 }
 
 extension Subscription {
