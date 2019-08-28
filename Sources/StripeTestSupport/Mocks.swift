@@ -32,7 +32,15 @@ extension Card {
     expMonth: 1,
     expYear: 2020,
     id: "card_test",
-    last4: "4242"
+    last4: "4242",
+    object: Object.card
+  )
+}
+
+extension Source {
+  public static let mock = Source(
+    id: "src_DEADBEEF",
+    object: .source
   )
 }
 
@@ -40,7 +48,7 @@ extension Charge {
   public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
-    source: .mock
+    source: .left(.mock)
   )
 }
 
@@ -50,7 +58,7 @@ extension Customer {
     defaultSource: "card_test",
     id: "cus_test",
     metadata: [:],
-    sources: .mock([.mock])
+    sources: .mock([.left(.mock)])
   )
 }
 
