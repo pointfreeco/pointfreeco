@@ -130,9 +130,7 @@ extension Plan {
     id: .monthly,
     interval: .month,
     metadata: [:],
-    name: nil, // FIXME: remove
-    nickname: "Individual Monthly", // FIXME: remove
-//    nickname: "Individual Monthly", // FIXME: comment in
+    nickname: "Individual Monthly", 
     statementDescriptor: nil,
     tiers: [
       Tier(amount: 16_00, upTo: nil),

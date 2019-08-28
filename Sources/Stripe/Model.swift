@@ -356,8 +356,7 @@ public struct Plan: Codable, Equatable {
     id: Id,
     interval: Interval,
     metadata: [String: String],
-    name: String?,
-    nickname: String?,
+    nickname: String,
     statementDescriptor: String?,
     tiers: [Tier]?
     ) {
@@ -367,7 +366,7 @@ public struct Plan: Codable, Equatable {
     self.id = id
     self.interval = interval
     self.metadata = metadata
-    self.nickname = nickname ?? name ?? ""
+    self.nickname = nickname
     self.statementDescriptor = statementDescriptor
     self.tiers = tiers
   }
