@@ -18,15 +18,25 @@ import View
 let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
+    <<< filterMap(
+      over1(^\.customer.right?.sources.data.first?.left) >>> require1 >>> pure,
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(
+          .error,
+          "You have invoice billing. Contact us <support@pointfree.co> to make changes to your payment info."
+        )
+      )
+    )
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
       view: View(paymentInfoView),
-      layoutData: { subscription, currentUser, subscriberState in
+      layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: subscription,
+          data: card,
           title: "Update Payment Info"
         )
     }
@@ -63,14 +73,13 @@ let updatePaymentInfoMiddleware:
       }
 }
 
-func paymentInfoView(_ subscription: Stripe.Subscription) -> [Node] {
-
+func paymentInfoView(card: Stripe.Card) -> [Node] {
   return [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
         div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
             [titleRowView]
-              <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView) ?? [])
+              <> currentPaymentInfoRowView(card: card)
               <> [updatePaymentInfoRowView]
         )
         ])
@@ -87,7 +96,7 @@ private let titleRowView =
       ])
     ])
 
-private func currentPaymentInfoRowView(_ card: Stripe.Card) -> [Node] {
+private func currentPaymentInfoRowView(card: Stripe.Card) -> [Node] {
   return [
     gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
       gridColumn(sizes: [.mobile: 12], [

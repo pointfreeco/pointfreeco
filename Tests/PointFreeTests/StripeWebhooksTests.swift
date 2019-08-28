@@ -166,6 +166,28 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  func testNoSubscriptionId() {
+    #if !os(Linux)
+    let invoice = Invoice.mock(charge: .left("ch_test"))
+      |> \.subscription .~ nil
+    let event = Event<Either<Invoice, Subscription>>(
+      data: .init(object: .left(invoice)),
+      id: "evt_test",
+      type: .invoicePaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=bda3ac3f25b3665eac23aa47f7d521d7cb4578a70cbebf3aeab108e8c1a4a461",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    #endif
+  }
+
   func testPastDueEmail() {
     let doc = pastDueEmailView.view(unit)
 

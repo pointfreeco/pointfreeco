@@ -222,14 +222,14 @@ let invoiceView = View<(Stripe.Subscription, User, Stripe.Invoice)> { subscripti
                 ]),
               ]
               <> (
-                invoice.charge?.right.map {
+                invoice.charge?.right?.source.left.map {
                   [
                     gridRow([
                       gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
                         div(["Payment method"]),
                         ]),
                       gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                        div([.text($0.source.brand.rawValue + " ⋯ \($0.source.last4)")]),
+                        div([.text($0.brand.rawValue + " ⋯ \($0.last4)")]),
                         ]),
                       ])
                   ]

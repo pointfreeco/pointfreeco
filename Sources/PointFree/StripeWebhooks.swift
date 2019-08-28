@@ -21,7 +21,10 @@ let stripeWebhookMiddleware =
       ^\Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.data.object
         >>> either(^\.subscription, ^\.id)
         >>> pure,
-      or: writeStatus(.badRequest) >=> end // FIXME: admin email?
+      or: stripeHookFailure(
+        subject: "[PointFree Error] Stripe Hook Failed!",
+        body: "Couldn't extract subscription id from event payload."
+      )
     )
     <| handleFailedPayment
 
@@ -44,26 +47,11 @@ private func validateStripeSignature<A>(
         let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
         signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
         else {
-          var requestDump = ""
-          print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
-          print(
-            "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
-            to: &requestDump
-          )
-          print("\nHeaders:", to: &requestDump)
-          dump(conn.request.allHTTPHeaderFields, to: &requestDump)
-          print("\nBody:", to: &requestDump)
-          print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
-
-          parallel(
-            sendEmail(
-              to: adminEmails,
+          return conn
+            |> stripeHookFailure(
               subject: "[PointFree Error] Stripe Hook Failed!",
-              content: inj1(requestDump)
-              ).run
-            ).run { _ in }
-
-          return conn |> writeStatus(.badRequest) >=> end
+              body: "Couldn't verify signature."
+          )
       }
 
       return conn |> middleware
@@ -175,4 +163,40 @@ private let pastDueEmailBodyView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
+}
+
+private func stripeHookFailure<A>(
+  subject: String = "[PointFree Error] Stripe Hook Failed!",
+  body: String
+  )
+  -> (Conn<StatusLineOpen, A>)
+  -> IO<Conn<ResponseEnded, Data>> {
+
+    return { conn in
+      return IO<Void> {
+        var requestDump = body + "\n\n"
+        print("Current timestamp: \(Current.date().timeIntervalSince1970)", to: &requestDump)
+        print(
+          "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
+          to: &requestDump
+        )
+        print("\nHeaders:", to: &requestDump)
+        dump(conn.request.allHTTPHeaderFields, to: &requestDump)
+        print("\nBody:", to: &requestDump)
+        print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
+
+        parallel(
+          sendEmail(
+            to: adminEmails,
+            subject: subject,
+            content: inj1(requestDump)
+            ).run
+          ).run { _ in }
+        }
+        .flatMap {
+          conn
+            |> writeStatus(.badRequest)
+            >=> respond(text: body)
+      }
+    }
 }
