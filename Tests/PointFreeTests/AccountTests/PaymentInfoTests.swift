@@ -1,12 +1,14 @@
 import Either
 import Html
 import HttpPipeline
+import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import Stripe
 #if !os(Linux)
 import WebKit
 #endif
@@ -35,5 +37,18 @@ class PaymentInfoTests: TestCase {
       )
     }
     #endif
+  }
+
+  func testInvoiceBilling() {
+    let customer = Stripe.Customer.mock
+      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
+    let subscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.customer) .~ .right(customer)
+    Current = .teamYearly
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
+
+    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

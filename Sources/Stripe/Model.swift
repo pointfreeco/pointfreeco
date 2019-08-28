@@ -14,6 +14,7 @@ public struct Card: Codable, Equatable {
   public var expYear: Int
   public var id: Id
   public var last4: String
+  public var object: Object
 
   public init(
     brand: Brand,
@@ -21,7 +22,8 @@ public struct Card: Codable, Equatable {
     expMonth: Int,
     expYear: Int,
     id: Id,
-    last4: String
+    last4: String,
+    object: Object
     ) {
     self.brand = brand
     self.customer = customer
@@ -29,9 +31,12 @@ public struct Card: Codable, Equatable {
     self.expYear = expYear
     self.id = id
     self.last4 = last4
+    self.object = object
   }
 
   public typealias Id = Tagged<Card, String>
+
+  public enum Object: String, Codable { case card }
 
   public enum Brand: String, Codable, Equatable {
     case visa = "Visa"
@@ -57,15 +62,16 @@ public struct Card: Codable, Equatable {
     case expYear = "exp_year"
     case id
     case last4
+    case object
   }
 }
 
 public struct Charge: Codable, Equatable {
   public var amount: Cents<Int>
   public var id: Id
-  public var source: Card
+  public var source: Either<Card, Source>
 
-  public init(amount: Cents<Int>, id: Id, source: Card) {
+  public init(amount: Cents<Int>, id: Id, source: Either<Card, Source>) {
     self.amount = amount
     self.id = id
     self.source = source
@@ -132,19 +138,33 @@ public struct Coupon: Equatable {
   }
 }
 
+public struct Source: Codable, Equatable {
+  public var id: Id
+  public var object: Object
+
+  public typealias Id = Tagged<Source, String>
+
+  public enum Object: String, Codable { case source }
+
+  public init(id: Id, object: Object) {
+    self.id = id
+    self.object = object
+  }
+}
+
 public struct Customer: Codable, Equatable {
   public var businessVatId: Vat?
   public var defaultSource: Card.Id?
   public var id: Id
   public var metadata: [String: String]
-  public var sources: ListEnvelope<Card>
+  public var sources: ListEnvelope<Either<Card, Source>>
 
   public init(
     businessVatId: Vat?,
     defaultSource: Card.Id?,
     id: Id,
     metadata: [String: String],
-    sources: ListEnvelope<Card>
+    sources: ListEnvelope<Either<Card, Source>>
     ) {
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource

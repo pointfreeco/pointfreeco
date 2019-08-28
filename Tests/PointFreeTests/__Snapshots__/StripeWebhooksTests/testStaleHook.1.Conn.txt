@@ -5,9 +5,13 @@ Stripe-Signature: t=1517356200,v1=ebe8381a46dd79cc8dc187d8699fd8be934a372ca9a84d
 {"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"customer":"cus_test","lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"subscription":"sub_test","plan":{"amount":1700,"name":"Individual Monthly","id":"monthly-2019","nickname":"Individual Monthly","created":1517356800,"tiers":[{"amount":1600},{"amount":1800}],"currency":"usd","metadata":{},"interval":"month"}}]},"charge":"ch_test","total":1700,"period_start":1517356800,"subtotal":1700,"amount_remaining":0,"date":1517356800,"period_end":1519948800,"number":"0000000-0000","subscription":"sub_test"}},"type":"invoice.payment_failed"}
 
 400 Bad Request
+Content-Length: 26
+Content-Type: text/plain
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
+
+Couldn't verify signature.
