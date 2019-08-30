@@ -37,43 +37,11 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
 
     case let .account(account):
       return conn.map(const(subscription .*. user .*. subscriberState .*. account .*. unit))
-        |> renderAccount
+        |> accountMiddleware
 
-    case let .admin(.episodeCredits(.add(userId: userId, episodeSequence: episodeSequence))):
-      return conn.map(const(user .*. userId .*. episodeSequence .*. unit))
-        |> redeemEpisodeCreditMiddleware
-
-    case .admin(.episodeCredits(.show)):
-      return conn.map(const(user .*. unit))
-        |> showEpisodeCreditsMiddleware
-
-    case .admin(.index):
-      return conn.map(const(user .*. unit))
-        |> adminIndex
-
-    case .admin(.freeEpisodeEmail(.index)):
-      return conn.map(const(user .*. unit))
-        |> indexFreeEpisodeEmailMiddleware
-
-    case let .admin(.freeEpisodeEmail(.send(episodeId))):
-      return conn.map(const(user .*. episodeId .*. unit))
-        |> sendFreeEpisodeEmailMiddleware
-
-    case let .admin(.newBlogPostEmail(.send(blogPostId, formData, isTest))):
-      return conn.map(const(user .*. blogPostId .*. formData .*. isTest .*. unit))
-        |> sendNewBlogPostEmailMiddleware
-
-    case .admin(.newBlogPostEmail(.index)):
-      return conn.map(const(user .*. unit))
-        |> showNewBlogPostEmailMiddleware
-
-    case let .admin(.newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest))):
-      return conn.map(const(user .*. episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
-        |> sendNewEpisodeEmailMiddleware
-
-    case .admin(.newEpisodeEmail(.show)):
-      return conn.map(const(user .*. unit))
-        |> showNewEpisodeEmailMiddleware
+    case let .admin(route):
+      return conn.map(const(user .*. route .*. unit))
+        |> adminMiddleware
 
     case let .api(apiRoute):
       return conn.map(const(user .*. apiRoute .*. unit))

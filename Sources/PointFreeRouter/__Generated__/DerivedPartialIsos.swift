@@ -248,6 +248,20 @@ import Stripe
 
 
 
+      extension PartialIso where A == (
+            Admin.Ghost
+        ), B == Admin {
+
+          public static let ghost = parenthesize <| PartialIso(
+            apply: Admin.ghost,
+            unapply: {
+              guard case let .ghost(result) = $0 else { return nil }
+              return .some(result)
+          })
+      }
+
+
+
       extension PartialIso where A == Prelude.Unit, B == Admin {
         public static let index = parenthesize <| PartialIso<Prelude.Unit, Admin>(
           apply: const(.some(.index)),
@@ -335,6 +349,42 @@ import Stripe
             guard case .index = $0 else { return nil }
             return .some(Prelude.unit)
         })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Admin.Ghost {
+        public static let end = parenthesize <| PartialIso<Prelude.Unit, Admin.Ghost>(
+          apply: const(.some(.end)),
+          unapply: {
+            guard case .end = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Admin.Ghost {
+        public static let index = parenthesize <| PartialIso<Prelude.Unit, Admin.Ghost>(
+          apply: const(.some(.index)),
+          unapply: {
+            guard case .index = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == (
+            User.Id?
+        ), B == Admin.Ghost {
+
+          public static let start = parenthesize <| PartialIso(
+            apply: Admin.Ghost.start,
+            unapply: {
+              guard case let .start(result) = $0 else { return nil }
+              return .some(result)
+          })
       }
 
 

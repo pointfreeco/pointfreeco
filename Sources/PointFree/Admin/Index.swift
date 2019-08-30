@@ -30,8 +30,7 @@ func requireAdmin<A>(
 }
 
 let adminIndex =
-  requireAdmin
-    <| writeStatus(.ok)
+  writeStatus(.ok)
     >=> respond(adminIndexView.contramap(lower))
 
 private let adminIndexView = View<User> { currentUser in
@@ -50,6 +49,10 @@ private let adminIndexView = View<User> { currentUser in
 
     li([
       a([href(path(to: .admin(.newBlogPostEmail(.index))))], ["Send new blog post email"]),
+      ]),
+
+    li([
+      a([href(path(to: .admin(.ghost(.index))))], ["Ghost a user"]),
       ]),
     ])
 }

@@ -16,13 +16,11 @@ import View
 import Views
 
 let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
-  requireAdmin
-    <| writeStatus(.ok)
+  writeStatus(.ok)
     >=> respond(showEpisodeCreditsView.contramap(const(unit)))
 
-let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, User.Id?, Int?>, Data> =
-  requireAdmin
-    <<< filterMap(
+let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User, User.Id?, Int?>, Data> =
+  filterMap(
       over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
       or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
     )
