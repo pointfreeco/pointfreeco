@@ -52,17 +52,6 @@ private func endGhosting<A>(
   conn: Conn<HeadersOpen, A>
   ) -> IO<Conn<HeadersOpen, A>> {
 
-  guard let resetUserCookieHeader = setCookie(
-    key: pointFreeUserSessionCookieName,
-    value: conn.request.ghosterSession,
-    options: [
-      .expires(.distantFuture),
-      .path("/")
-    ]
-    ) else {
-      return pure(conn)
-  }
-
   guard let clearGhostCookieHeader = setCookie(
     key: ghostCookieName,
     value: Session(flash: nil, userId: nil),
@@ -79,9 +68,7 @@ private func endGhosting<A>(
       ((\Session.userId) .~ conn.request.ghosterSession.userId)
       <> ((\Session.flash) .~ Flash(priority: .notice, message: "You are no longer ghosting."))
     )
-    //writeHeader(resetUserCookieHeader)
     >=> writeHeader(clearGhostCookieHeader)
-//    >=> flash(.notice, "You are no longer ghosting.")
 }
 
 private func ghost(
@@ -94,6 +81,7 @@ private func ghost(
     key: ghostCookieName,
     value: Session(flash: nil, userId: adminUser.id),
     options: [
+      // TODO: Should ghost sessions only last for a short amount of time?
       .expires(.distantFuture),
       .path("/")
     ]
