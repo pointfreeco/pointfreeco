@@ -29,7 +29,12 @@ private func fetchStripeSubscription<A>(
     }
 }
 
-let updateProfileMiddleware =
+let updateProfileMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, ProfileData?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
