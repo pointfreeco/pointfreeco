@@ -354,17 +354,6 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Admin.Ghost {
-        public static let end = parenthesize <| PartialIso<Prelude.Unit, Admin.Ghost>(
-          apply: const(.some(.end)),
-          unapply: {
-            guard case .end = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Admin.Ghost {
         public static let index = parenthesize <| PartialIso<Prelude.Unit, Admin.Ghost>(
           apply: const(.some(.index)),
           unapply: {
@@ -607,6 +596,17 @@ import Stripe
               guard case let .discounts(result) = $0 else { return nil }
               return .some(result)
           })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Route {
+        public static let endGhosting = parenthesize <| PartialIso<Prelude.Unit, Route>(
+          apply: const(.some(.endGhosting)),
+          unapply: {
+            guard case .endGhosting = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 

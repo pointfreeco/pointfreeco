@@ -18,7 +18,7 @@ public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Ses
       let value = update(conn.request.session)
       guard value != conn.request.session else { return pure(conn) }
       return setCookie(
-          key: pointFreeUserSession,
+          key: pointFreeUserSessionCookieName,
           value: value,
           options: [
             .expires(Current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
@@ -36,7 +36,7 @@ public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middlewar
 
 extension URLRequest {
   var session: Session {
-    return self.cookies[pointFreeUserSession]
+    return self.cookies[pointFreeUserSessionCookieName]
       .flatMap { value in
         switch Current.cookieTransform {
         case .plaintext:
@@ -68,9 +68,9 @@ public struct Flash: Codable, Equatable {
   public let message: String
 }
 
-private let pointFreeUserSession = "pf_session"
+let pointFreeUserSessionCookieName = "pf_session"
 
-private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
+func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
   switch Current.cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))

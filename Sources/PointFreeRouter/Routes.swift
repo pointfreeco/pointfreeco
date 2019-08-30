@@ -19,6 +19,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case appleDeveloperMerchantIdDomainAssociation
   case blog(Blog)
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
+  case endGhosting
   case enterprise(Enterprise)
   case episode(Either<String, Episode.Id>)
   case episodes
@@ -135,6 +136,9 @@ let routers: [Router<Route>] = [
     %> pathParam(.tagged(.string))
     <%> queryParam("billing", opt(.rawRepresentable))
     <% end,
+
+  .endGhosting
+    <¢> post %> "ghosting" %> "end" <% end,
 
   .blog <<< .index
     <¢> get %> lit("blog") <% end,

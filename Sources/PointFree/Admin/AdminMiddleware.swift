@@ -40,9 +40,6 @@ private func _adminMiddleware(
       return conn.map(const(user .*. episodeId .*. unit))
         |> sendFreeEpisodeEmailMiddleware
 
-    case .ghost(.end):
-      fatalError()
-
     case .ghost(.index):
       return conn.map(const(unit))
         |> ghostIndexMiddleware

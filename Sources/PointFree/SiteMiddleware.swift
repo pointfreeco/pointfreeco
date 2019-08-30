@@ -60,6 +60,10 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(user .*. route .*. subscriberState .*. .personal .*. subscribeData .*. couponId .*. unit))
         |> discountSubscribeConfirmation
 
+    case .endGhosting:
+      return conn.map(const(unit))
+        |> endGhostingMiddleware
+
     case let .episode(param):
       return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
         |> episodeResponse

@@ -21,7 +21,6 @@ public enum Admin: DerivePartialIsos, Equatable {
   }
 
   public enum Ghost: DerivePartialIsos, Equatable {
-    case end
     case index
     case start(User.Id?)
   }
@@ -57,9 +56,6 @@ private let adminRouters: [Router<Admin>] = [
 
   .freeEpisodeEmail <<< .index
     <¢> get %> lit("free-episode-email") <% end,
-
-  .ghost <<< .end
-    <¢> post %> "ghost" %> "end" <% end,
 
   .ghost <<< .index
     <¢> get %> "ghost" <% end,
