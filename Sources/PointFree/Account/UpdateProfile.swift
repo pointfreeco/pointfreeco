@@ -63,6 +63,7 @@ let updateProfileMiddleware: Middleware<
           )
           .run({ _ in })
       } else {
+        // TODO: why is unicode ‘ not encoded correctly?
         updateFlash = flash(.notice, "We've updated your profile!")
       }
 

@@ -115,7 +115,7 @@ func respond<A, B>(
     return { conn in
       var newLayoutData = layoutData(conn.data)
       newLayoutData.flash = conn.request.session.flash
-      newLayoutData.isGhosting = conn.request.ghosterSession.userId != nil
+      newLayoutData.isGhosting = conn.request.session.ghosteeId != nil
 
       let pageLayout = metaLayout(simplePageLayout(view))
         .map(addGoogleAnalytics)
@@ -195,11 +195,40 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   guard data.isGhosting else { return [] }
 
   return [
-    "You are ghosting",
-    form(
-      [method(.post), action(pointFreeRouter.path(to: .endGhosting))],
+    gridRow(
       [
-        input([type(.submit), value("Stop ghosting")])
+        style("background: linear-gradient(to bottom, #FFF080, #79F2B0);"),
+        `class`([
+          Class.padding([.mobile: [.all: 4]])
+          ])
+      ],
+      [
+        gridColumn(
+          sizes: [:],
+          [
+            div(
+              [
+                h3(
+                  [`class`([Class.pf.type.responsiveTitle3])],
+                  ["You are ghosting 👻"]
+                ),
+                form(
+                  [
+                    method(.post),
+                    action(pointFreeRouter.path(to: .endGhosting))
+                  ],
+                  [
+                    input([
+                      type(.submit),
+                      value("Stop ghosting"),
+                      `class`([Class.pf.components.button(color: .white, size: .small)])
+                      ])
+                  ]
+                )
+              ]
+            )
+          ]
+        )
       ]
     )
   ]

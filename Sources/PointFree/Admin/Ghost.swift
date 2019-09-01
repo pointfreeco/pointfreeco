@@ -8,8 +8,6 @@ import PointFreeRouter
 import Prelude
 import Tuple
 
-private let ghostCookieName = "pf_ghoster"
-
 let ghostIndexMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
@@ -52,47 +50,20 @@ private func endGhosting<A>(
   conn: Conn<HeadersOpen, A>
   ) -> IO<Conn<HeadersOpen, A>> {
 
-  guard let clearGhostCookieHeader = setCookie(
-    key: ghostCookieName,
-    value: Session(flash: nil, userId: nil),
-    options: [
-      .expires(.distantPast),
-      .path("/")
-    ]
-    ) else {
-      return pure(conn)
-  }
-
   return conn
     |> writeSessionCookieMiddleware(
-      ((\Session.userId) .~ conn.request.ghosterSession.userId)
-      <> ((\Session.flash) .~ Flash(priority: .notice, message: "You are no longer ghosting."))
-    )
-    >=> writeHeader(clearGhostCookieHeader)
+      \.user .~ conn.request.session.ghosterId.map(Session.User.standard)
+  )
 }
 
-// TODO: put ghost session id directly in Session
 private func ghost(
   conn: Conn<HeadersOpen, Tuple2<User, User>>
   ) -> IO<Conn<HeadersOpen, Tuple2<User, User>>> {
 
   let (adminUser, ghostee) = lower(conn.data)
 
-  guard let ghostCookieHeader = setCookie(
-    key: ghostCookieName,
-    value: Session(flash: nil, userId: adminUser.id),
-    options: [
-      // TODO: Should ghost sessions only last for a short amount of time?
-      .expires(.distantFuture),
-      .path("/")
-    ]
-    ) else {
-      return pure(conn)
-  }
-
   return conn
-    |> writeSessionCookieMiddleware(\.userId .~ ghostee.id)
-    >=> writeHeader(ghostCookieHeader)
+    |> writeSessionCookieMiddleware(\.user .~ .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id))
 }
 
 private func fetchGhostee(userId: User.Id?) -> IO<User?> {
@@ -115,19 +86,3 @@ private let indexView: [Node] =   [
     ]
   )
 ]
-
-extension URLRequest {
-  var ghosterSession: Session {
-    return self.cookies[ghostCookieName]
-      .flatMap { value in
-        switch Current.cookieTransform {
-        case .plaintext:
-          return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
-        case .encrypted:
-          return Response.Header
-            .verifiedValue(signedCookieValue: value, secret: Current.envVars.appSecret.rawValue)
-        }
-      }
-      ?? .empty
-  }
-}

@@ -99,7 +99,7 @@ extension Date {
 extension Session {
   public static let loggedOut = empty
 
-  public static func loggedIn(as user: User) -> Session {
+  public static func loggedIn(as user: Models.User) -> Session {
     return loggedOut
       |> (\Session.userId) .~ user.id
   }
