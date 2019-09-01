@@ -52,7 +52,7 @@ let updateProfileMiddleware: Middleware<
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
-        updateFlash = flash(.warning, "We’ve sent an email to \(user.email) to confirm this change.")
+        updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],
@@ -63,7 +63,7 @@ let updateProfileMiddleware: Middleware<
           )
           .run({ _ in })
       } else {
-        updateFlash = flash(.notice, "We’ve updated your profile!")
+        updateFlash = flash(.notice, "We've updated your profile!")
       }
 
       let updateCustomerExtraInvoiceInfo = zip(

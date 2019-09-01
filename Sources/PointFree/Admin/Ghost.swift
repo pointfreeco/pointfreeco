@@ -71,6 +71,7 @@ private func endGhosting<A>(
     >=> writeHeader(clearGhostCookieHeader)
 }
 
+// TODO: put ghost session id directly in Session
 private func ghost(
   conn: Conn<HeadersOpen, Tuple2<User, User>>
   ) -> IO<Conn<HeadersOpen, Tuple2<User, User>>> {
