@@ -34,8 +34,7 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.User?
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .home),
-    // TODO: clear ghost session too
-    headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
+    headersMiddleware: writeSessionCookieMiddleware(\.user .~ nil)
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {

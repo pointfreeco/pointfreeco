@@ -16,16 +16,10 @@ public struct PointFreeRouter {
   }
 
   public func path(to route: Route) -> String {
-    if case .login = route {
-      print("!!")
-    }
     return self.router.absoluteString(for: route) ?? "/"
   }
 
   public func url(to route: Route) -> String {
-    if case .login = route {
-      print("!!")
-    }
     return self.router.url(for: route, base: self.baseUrl)?.absoluteString ?? ""
   }
 

@@ -149,7 +149,7 @@ public struct Flash: Codable, Equatable {
 
 let pointFreeUserSessionCookieName = "pf_session"
 
-func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
+private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
   switch Current.cookieTransform {
   case .plaintext:
     return (try? cookieJsonEncoder.encode(value))
