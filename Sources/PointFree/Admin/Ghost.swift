@@ -60,7 +60,9 @@ private func startGhosting(
   let (adminUser, ghostee) = lower(conn.data)
 
   return conn
-    |> writeSessionCookieMiddleware(\.user .~ .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id))
+    |> writeSessionCookieMiddleware(
+      \.user .~ .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
+  )
 }
 
 private func fetchGhostee(userId: User.Id?) -> IO<User?> {

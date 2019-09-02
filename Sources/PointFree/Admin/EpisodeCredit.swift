@@ -15,7 +15,7 @@ import Tuple
 import View
 import Views
 
-let showEpisodeCreditsMiddleware: Middleware<
+let showEpisodeCreditsMiddlewa  re: Middleware<
   StatusLineOpen,
   ResponseEnded,
   Tuple1<User>,
