@@ -55,17 +55,15 @@ public struct Session: Equatable {
   public var user: User?
 
   public static let empty = Session(flash: nil, user: nil)
-
+  
   public var userId: Models.User.Id? {
-    get {
-      switch self.user {
-      case let .some(.ghosting(ghosteeId, _)):
-        return ghosteeId
-      case let .some(.standard(userId)):
-        return userId
-      case .none:
-        return nil
-      }
+    switch self.user {
+    case let .some(.ghosting(ghosteeId, _)):
+      return ghosteeId
+    case let .some(.standard(userId)):
+      return userId
+    case .none:
+      return nil
     }
   }
 
