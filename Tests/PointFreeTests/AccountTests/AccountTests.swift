@@ -288,7 +288,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.canceled)),
+      \.database.fetchSubscriptionById .~ const(pure(.canceled))
+    )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
