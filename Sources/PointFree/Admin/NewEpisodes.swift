@@ -42,8 +42,12 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
     ])
 }
 
-let sendNewEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple5<User, Episode.Id, String?, String?, Bool?>, Data> =
+let sendNewEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple5<User, Episode.Id, String?, String?, Bool?>,
+  Data
+  > =
   filterMap(
       over2(fetchEpisode) >>> require2 >>> pure,
       or: redirect(to: .admin(.newEpisodeEmail(.show)))
