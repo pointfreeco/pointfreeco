@@ -14,12 +14,21 @@ import Tuple
 import View
 import Views
 
-let indexFreeEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
+let indexFreeEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple1<User>,
+  Data
+  > =
   writeStatus(.ok)
     >=> respond(freeEpisodeView(episodes: Current.episodes(), today: Current.date()))
 
-let sendFreeEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Episode.Id>, Data> =
+let sendFreeEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User, Episode.Id>,
+  Data
+  > =
   filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
     <| sendFreeEpisodeEmails
     >=> redirect(to: .admin(.index))

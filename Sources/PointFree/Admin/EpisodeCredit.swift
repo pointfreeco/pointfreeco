@@ -18,7 +18,7 @@ import Views
 let showEpisodeCreditsMiddleware: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple1<User?>,
+  Tuple1<User>,
   Data
   > =
   writeStatus(.ok)
