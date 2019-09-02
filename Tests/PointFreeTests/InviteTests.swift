@@ -388,7 +388,7 @@ class InviteTests: TestCase {
       .right!!
 
     let session = Session.loggedIn
-      |> (\Session.userId) .~ currentUser.id
+      |> \.user .~ .standard(currentUser.id)
     let conn = connection(
       from: request(
         to: .invite(.addTeammate(teammateEmailAddress)),
