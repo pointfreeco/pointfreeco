@@ -146,16 +146,9 @@ extension Session: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
-    do {
-      self.user = .standard(try container.decode(Models.User.Id.self, forKey: .userId))
-    } catch {
-      do {
-        self.user = try container.decode(Session.User.self, forKey: .user)
-      } catch {
-        self.flash = nil
-        self.user = nil
-      }
-    }
+    self.user = (try? container.decode(Models.User.Id.self, forKey: .userId)).map(User.standard)
+        ?? (try? container.decode(Session.User.self, forKey: .user))
+        ?? .empty
   }
 }
 
