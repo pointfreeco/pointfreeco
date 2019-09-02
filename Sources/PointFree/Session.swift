@@ -50,9 +50,15 @@ extension URLRequest {
   }
 }
 
-public struct Session: Codable, Equatable {
+public struct Session: Equatable {
   public var flash: Flash?
   public var user: User?
+
+  private enum CodingKeys: CodingKey {
+    case flash
+    case user
+    case userId
+  }
 
   public var userId: Models.User.Id? {
     get {
@@ -127,6 +133,32 @@ public struct Session: Codable, Equatable {
   }
 
   public static let empty = Session(flash: nil, user: nil)
+}
+
+extension Session: Codable {
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(self.flash, forKey: .flash)
+    switch self.user {
+    case let .some(.standard(userId)):
+      try container.encode(userId, forKey: .userId)
+    case .some(.ghosting):
+      try container.encodeIfPresent(self.user, forKey: .user)
+    case .none:
+      break
+    }
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
+    do {
+      self.user = .standard(try container.decode(Models.User.Id.self, forKey: .userId))
+    } catch {
+      self.user = try container.decode(Session.User.self, forKey: .user)
+    }
+  }
 }
 
 extension Session {
