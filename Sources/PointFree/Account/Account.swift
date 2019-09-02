@@ -912,8 +912,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> [Node] {
   guard subscription.isRenewing else { return [] }
   let invitesRemaining = subscription.quantity - data.teamInvites.count - data.teammates.count
   guard invitesRemaining == 0 else { return [] }
-  guard let amount = subscription.plan.tiers?.min(by: { $0.amount < $1.amount })?.amount else { return [] }
-
+  
+  let amount = subscription.plan.interval == .some(.year) ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
   let interval = subscription.plan.interval == .some(.year) ? "year" : "month"
 
   return [
