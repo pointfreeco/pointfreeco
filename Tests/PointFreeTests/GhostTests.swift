@@ -104,9 +104,9 @@ X-XSS-Protection: 1; mode=block
   }
 
   func testStartGhosting_NonAdmin() {
-    let adminUser = User.mock
-    let adminSession = Session.loggedIn
-      |> \.user .~ .standard(adminUser.id)
+    let user = User.mock
+    let session = Session.loggedIn
+      |> \.user .~ .standard(user.id)
 
     let ghostee = User.mock
       |> \.id .~ User.Id(rawValue: UUID(uuidString: "10101010-dead-beef-dead-beefdeadbeef")!)
@@ -116,7 +116,7 @@ X-XSS-Protection: 1; mode=block
       (\Environment.database) .~ .mock,
       (\Environment.database.fetchUserById) .~ { userId -> EitherIO<Error, User?> in
         pure(
-          userId == adminUser.id ? adminUser
+          userId == user.id ? user
             : userId == ghostee.id ? ghostee
             : nil
         )
@@ -124,7 +124,7 @@ X-XSS-Protection: 1; mode=block
     )
 
     let conn = connection(
-      from: request(to: .admin(.ghost(.start(ghostee.id))), session: adminSession)
+      from: request(to: .admin(.ghost(.start(ghostee.id))), session: session)
       )
       |> siteMiddleware
       |> Prelude.perform
