@@ -30,10 +30,7 @@ let ghostStartMiddleware: Middleware<
       headersMiddleware: flash(.error, "Couldn't find user with that id")
     )
     )
-    <| redirect(
-      to: .home,
-      headersMiddleware: ghost
-)
+    <| redirect(to: .home, headersMiddleware: startGhosting)
 
 let endGhostingMiddleware: Middleware<
   StatusLineOpen,
@@ -56,7 +53,7 @@ private func endGhosting<A>(
   )
 }
 
-private func ghost(
+private func startGhosting(
   conn: Conn<HeadersOpen, Tuple2<User, User>>
   ) -> IO<Conn<HeadersOpen, Tuple2<User, User>>> {
 

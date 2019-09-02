@@ -3,9 +3,7 @@ import Foundation
 import HttpPipeline
 import Models
 import PointFreeRouter
-import PointFreePrelude
 import Prelude
-import Stripe
 import Tuple
 
 let adminMiddleware =

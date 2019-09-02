@@ -54,11 +54,7 @@ public struct Session: Equatable {
   public var flash: Flash?
   public var user: User?
 
-  private enum CodingKeys: CodingKey {
-    case flash
-    case user
-    case userId
-  }
+  public static let empty = Session(flash: nil, user: nil)
 
   public var userId: Models.User.Id? {
     get {
@@ -131,11 +127,15 @@ public struct Session: Equatable {
       }
     }
   }
-
-  public static let empty = Session(flash: nil, user: nil)
 }
 
 extension Session: Codable {
+  private enum CodingKeys: CodingKey {
+    case flash
+    case user
+    case userId
+  }
+
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encodeIfPresent(self.flash, forKey: .flash)
@@ -156,7 +156,12 @@ extension Session: Codable {
     do {
       self.user = .standard(try container.decode(Models.User.Id.self, forKey: .userId))
     } catch {
-      self.user = try container.decode(Session.User.self, forKey: .user)
+      do {
+        self.user = try container.decode(Session.User.self, forKey: .user)
+      } catch {
+        self.flash = nil
+        self.user = nil
+      }
     }
   }
 }
@@ -179,7 +184,7 @@ public struct Flash: Codable, Equatable {
   public let message: String
 }
 
-let pointFreeUserSessionCookieName = "pf_session"
+private let pointFreeUserSessionCookieName = "pf_session"
 
 private func setCookie<A: Encodable>(key: String, value: A, options: Set<Response.Header.CookieOption> = []) -> Response.Header? {
   switch Current.cookieTransform {

@@ -101,7 +101,7 @@ extension Session {
 
   public static func loggedIn(as user: Models.User) -> Session {
     return loggedOut
-      |> (\Session.userId) .~ user.id
+      |> \.user .~ .standard(user.id)
   }
 
   public static let loggedIn = Session.loggedIn(as: .mock)

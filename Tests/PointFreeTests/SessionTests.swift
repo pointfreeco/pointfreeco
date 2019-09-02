@@ -24,7 +24,7 @@ final class SessionTests: TestCase {
       user: .standard(User.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
     )
     _assertInlineSnapshot(matching: session, as: .json(JSONEncoder()), with: """
-{"user":{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}}
+{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
 """)
 
     session = Session(
@@ -53,6 +53,17 @@ final class SessionTests: TestCase {
       try JSONDecoder().decode(
         Session.self,
         from: Data(#"{"user":{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}}"#.utf8)
+      )
+    )
+
+    XCTAssertEqual(
+      Session(
+        flash: nil,
+        user: .standard(User.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
+      ),
+      try JSONDecoder().decode(
+        Session.self,
+        from: Data(#"{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}"#.utf8)
       )
     )
 
