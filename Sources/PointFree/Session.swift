@@ -193,10 +193,6 @@ private func setCookie<A: Encodable>(key: String, value: A, options: Set<Respons
 
 public let cookieJsonEncoder: JSONEncoder = { () in
   let encoder = JSONEncoder()
-
-  if #available(OSX 10.13, *) {
-    encoder.outputFormatting = [.sortedKeys]
-  }
-
+  encoder.outputFormatting = [.sortedKeys]
   return encoder
 }()
