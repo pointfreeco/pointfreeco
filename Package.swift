@@ -4,6 +4,9 @@ import PackageDescription
 
 let package = Package(
   name: "PointFree",
+  platforms: [
+    .macOS(.v10_13),
+  ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),

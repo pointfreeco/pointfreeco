@@ -12,6 +12,8 @@ final class SessionTests: TestCase {
 
   func testEncodable() {
     var session: Session
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
     _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(JSONEncoder()), with: """
 {}
