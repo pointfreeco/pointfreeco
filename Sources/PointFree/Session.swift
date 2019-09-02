@@ -67,16 +67,11 @@ public struct Session: Equatable {
         return nil
       }
     }
-    @available(*, deprecated, message: "")
-    set {
-      // TODO: remove infavor of explicit
-      self.user = newValue.map(User.standard)
-    }
   }
 
   public var ghosterId: Models.User.Id? {
     switch self.user {
-    case let .some(.ghosting(_, ghosterId)):
+    case let .some(.ghosting(ghosteeId: _, ghosterId: ghosterId)):
       return ghosterId
     case .some(.standard), .none:
       return nil
@@ -85,7 +80,7 @@ public struct Session: Equatable {
 
   public var ghosteeId: Models.User.Id? {
     switch self.user {
-    case let .some(.ghosting(ghosteeId, _)):
+    case let .some(.ghosting(ghosteeId: ghosteeId, ghosterId: _)):
       return ghosteeId
     case .some(.standard), .none:
       return nil

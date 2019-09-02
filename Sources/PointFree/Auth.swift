@@ -187,7 +187,7 @@ private func gitHubAuthTokenMiddleware(
         ) { user in
           conn |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
-            headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
+            headersMiddleware: writeSessionCookieMiddleware(\.user .~ .standard(user.id))
           )
         }
     )
