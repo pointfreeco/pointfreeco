@@ -103,7 +103,7 @@ final class AccountTests: TestCase {
       |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
 
     let session = Session.loggedIn
-      |> (\Session.userId) .~ currentUser.id
+      |> \.user .~ .standard(currentUser.id)
     let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -136,7 +136,7 @@ final class AccountTests: TestCase {
       |> (\Environment.stripe.fetchSubscription) .~ const(pure(stripeSubscription))
 
     let session = Session.loggedIn
-      |> (\Session.userId) .~ currentUser.id
+      |> \.user .~ .standard(currentUser.id)
     let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

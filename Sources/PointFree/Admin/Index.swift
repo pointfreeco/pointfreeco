@@ -25,13 +25,18 @@ func requireAdmin<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, A>, Data> {
 
     return filterMap(require1 >>> pure, or: loginAndRedirect)
-      <<< filter(get1 >>> ^\.isAdmin, or: redirect(to: .home))
+      <<< filter(
+        get1 >>> ^\.isAdmin,
+        or: redirect(
+          to: .home,
+          headersMiddleware: flash(.error, "You don't have access to that.")
+          )
+      )
       <| middleware
 }
 
 let adminIndex =
-  requireAdmin
-    <| writeStatus(.ok)
+  writeStatus(.ok)
     >=> respond(adminIndexView.contramap(lower))
 
 private let adminIndexView = View<User> { currentUser in
@@ -50,6 +55,10 @@ private let adminIndexView = View<User> { currentUser in
 
     li([
       a([href(path(to: .admin(.newBlogPostEmail(.index))))], ["Send new blog post email"]),
+      ]),
+
+    li([
+      a([href(path(to: .admin(.ghost(.index))))], ["Ghost a user"]),
       ]),
     ])
 }

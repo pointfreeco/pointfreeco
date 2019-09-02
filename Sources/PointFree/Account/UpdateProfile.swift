@@ -29,7 +29,12 @@ private func fetchStripeSubscription<A>(
     }
 }
 
-let updateProfileMiddleware =
+let updateProfileMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, ProfileData?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
@@ -47,7 +52,7 @@ let updateProfileMiddleware =
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
-        updateFlash = flash(.warning, "We’ve sent an email to \(user.email) to confirm this change.")
+        updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],
@@ -58,7 +63,8 @@ let updateProfileMiddleware =
           )
           .run({ _ in })
       } else {
-        updateFlash = flash(.notice, "We’ve updated your profile!")
+        // TODO: why is unicode ‘ not encoded correctly?
+        updateFlash = flash(.notice, "We've updated your profile!")
       }
 
       let updateCustomerExtraInvoiceInfo = zip(

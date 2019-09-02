@@ -64,6 +64,7 @@ struct SimplePageLayoutData<A> {
   var extraStyles: Stylesheet
   var flash: Flash?
   var image: String?
+  var isGhosting: Bool
   var openGraphType: OpenGraphType
   var style: Style
   var title: String
@@ -79,6 +80,7 @@ struct SimplePageLayoutData<A> {
     extraHead: [ChildOf<Tag.Head>] = [],
     extraStyles: Stylesheet = .empty,
     image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+    isGhosting: Bool = false,
     openGraphType: OpenGraphType = .website,
     style: Style = .base(.some(.minimal(.light))),
     title: String,
@@ -95,6 +97,7 @@ struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
+    self.isGhosting = isGhosting
     self.openGraphType = openGraphType
     self.style = style
     self.title = title
@@ -112,6 +115,8 @@ func respond<A, B>(
     return { conn in
       var newLayoutData = layoutData(conn.data)
       newLayoutData.flash = conn.request.session.flash
+      newLayoutData.isGhosting = conn.request.session.ghosteeId != nil
+
       let pageLayout = metaLayout(simplePageLayout(view))
         .map(addGoogleAnalytics)
         .contramap(
@@ -174,7 +179,8 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
           <> layoutData.extraHead
         ),
         body(
-          pastDueBanner(layoutData)
+          ghosterBanner(layoutData)
+            <> pastDueBanner(layoutData)
             <> (layoutData.flash.map(flashView.view) ?? [])
             <> navView(layoutData)
             <> contentView.view(layoutData.data)
@@ -183,6 +189,49 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         ])
     ]
   }
+}
+
+private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+  guard data.isGhosting else { return [] }
+
+  return [
+    gridRow(
+      [
+        style("background: linear-gradient(to bottom, #FFF080, #79F2B0);"),
+        `class`([
+          Class.padding([.mobile: [.all: 4]])
+          ])
+      ],
+      [
+        gridColumn(
+          sizes: [:],
+          [
+            div(
+              [
+                h3(
+                  [`class`([Class.pf.type.responsiveTitle3])],
+                  ["You are ghosting 👻"]
+                ),
+                form(
+                  [
+                    method(.post),
+                    action(pointFreeRouter.path(to: .endGhosting))
+                  ],
+                  [
+                    input([
+                      type(.submit),
+                      value("Stop ghosting"),
+                      `class`([Class.pf.components.button(color: .white, size: .small)])
+                      ])
+                  ]
+                )
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ]
 }
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {

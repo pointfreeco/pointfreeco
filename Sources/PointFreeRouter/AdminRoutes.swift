@@ -5,6 +5,7 @@ import Prelude
 public enum Admin: DerivePartialIsos, Equatable {
   case episodeCredits(EpisodeCredit)
   case freeEpisodeEmail(FreeEpisodeEmail)
+  case ghost(Ghost)
   case index
   case newBlogPostEmail(NewBlogPostEmail)
   case newEpisodeEmail(NewEpisodeEmail)
@@ -17,6 +18,11 @@ public enum Admin: DerivePartialIsos, Equatable {
   public enum FreeEpisodeEmail: DerivePartialIsos, Equatable {
     case send(Episode.Id)
     case index
+  }
+
+  public enum Ghost: DerivePartialIsos, Equatable {
+    case index
+    case start(User.Id?)
   }
 
   public enum NewBlogPostEmail: DerivePartialIsos, Equatable {
@@ -50,6 +56,14 @@ private let adminRouters: [Router<Admin>] = [
 
   .freeEpisodeEmail <<< .index
     <¢> get %> lit("free-episode-email") <% end,
+
+  .ghost <<< .index
+    <¢> get %> "ghost" <% end,
+
+  .ghost <<< .start
+    <¢> post %> "ghost" %> "start"
+    %> formField("user_id", .tagged(.uuid)).map(Optional.iso.some)
+    <% end,
 
   .newBlogPostEmail <<< .index
     <¢> get %> lit("new-blog-post-email") <% end,
