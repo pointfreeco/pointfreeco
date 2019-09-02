@@ -15,6 +15,11 @@ import SnapshotTesting
 import XCTest
 
 class UpdateProfileTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testUpdateNameAndEmail() {
     let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run
