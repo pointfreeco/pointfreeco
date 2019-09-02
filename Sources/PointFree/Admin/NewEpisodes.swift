@@ -15,8 +15,7 @@ import Tuple
 import View
 
 let showNewEpisodeEmailMiddleware =
-  requireAdmin
-    <| writeStatus(.ok)
+  writeStatus(.ok)
     >=> respond(showNewEpisodeView.contramap(lower))
 
 private let showNewEpisodeView = View<User> { _ in
@@ -43,10 +42,13 @@ private let newEpisodeEmailRowView = View<Episode> { ep in
     ])
 }
 
-let sendNewEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple5<User?, Episode.Id, String?, String?, Bool?>, Data> =
-  requireAdmin
-    <<< filterMap(
+let sendNewEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple5<User, Episode.Id, String?, String?, Bool?>,
+  Data
+  > =
+  filterMap(
       over2(fetchEpisode) >>> require2 >>> pure,
       or: redirect(to: .admin(.newEpisodeEmail(.show)))
     )

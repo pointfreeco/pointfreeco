@@ -15,8 +15,7 @@ import Tuple
 import View
 
 let showNewBlogPostEmailMiddleware =
-  requireAdmin
-    <| writeStatus(.ok)
+  writeStatus(.ok)
     >=> respond(showNewBlogPostView.contramap(lower))
 
 private let showNewBlogPostView = View<User> { _ in
@@ -61,10 +60,12 @@ private let newBlogPostEmailRowView = View<BlogPost> { post in
     ])
 }
 
-let sendNewBlogPostEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple4<User?, BlogPost.Id, NewBlogPostFormData?, Bool?>, Data> =
-  requireAdmin
-    <<< filterMap(
+let sendNewBlogPostEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple4<User, BlogPost.Id, NewBlogPostFormData?, Bool?>, Data
+  > =
+  filterMap(
       over2(fetchBlogPost(forId:) >>> pure) >>> sequence2 >>> map(require2),
       or: redirect(to: .admin(.newBlogPostEmail(.index)))
     )
