@@ -70,27 +70,6 @@ final class AccountTests: TestCase {
     #endif
   }
 
-  func testAccount_WithRssFeatureFlag() {
-    Current = .teamYearly
-      |> \.features .~ [.podcastRss |> \.isEnabled .~ true]
-
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2500))
-        ]
-      )
-    }
-    #endif
-  }
-
   func testTeam_OwnerIsNotSubscriber() {
     let currentUser = User.nonSubscriber
       |> \.episodeCreditCount .~ 2
