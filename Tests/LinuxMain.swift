@@ -31,6 +31,7 @@ extension AccountTests {
 }
 extension ApiTests {
   static var allTests: [(String, (ApiTests) -> () throws -> Void)] = [
+    ("testEmptyArray", testEmptyArray),
     ("testEpisodes", testEpisodes),
     ("testEpisode", testEpisode),
     ("testEpisode_NotFound", testEpisode_NotFound),
