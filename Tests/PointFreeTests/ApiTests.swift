@@ -24,7 +24,9 @@ final class ApiTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
+    #if !os(Linux)
     assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
   func testEpisode_NotFound() {
