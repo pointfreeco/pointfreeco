@@ -11,6 +11,18 @@ final class ApiTests: TestCase {
 //    record=true
   }
 
+  func testEmptyArray() throws {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .prettyPrinted
+    let value: [Int] = []
+
+    XCTAssertEqual(String.init(decoding: try encoder.encode(value), as: UTF8.self) , """
+[
+
+]
+""")
+  }
+
   func testEpisodes() {
     let conn = connection(from: request(to: .api(.episodes)))
       |> siteMiddleware
