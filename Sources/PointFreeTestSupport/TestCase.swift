@@ -45,7 +45,7 @@ open class TestCase: XCTestCase {
   }
 
   public var isScreenshotTestingAvailable: Bool {
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
       return true
     } else {
       return false
