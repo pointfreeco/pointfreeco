@@ -25,7 +25,7 @@ final class ApiTests: TestCase {
       |> Prelude.perform
 
     #if !os(Linux)
-    // Necessary because of https://bugs.swift.org/browse/SR-11410
+    // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
     assertSnapshot(matching: conn, as: .conn)
     #endif
   }

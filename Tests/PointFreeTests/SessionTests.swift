@@ -15,11 +15,14 @@ final class SessionTests: TestCase {
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
+    #if !os(Linux)
+    // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
     _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(encoder), with: """
 {
 
 }
 """)
+    #endif
 
     session = Session(
       flash: nil,
