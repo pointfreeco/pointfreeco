@@ -16,7 +16,9 @@ final class SessionTests: TestCase {
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
     _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(encoder), with: """
-{}
+{
+
+}
 """)
 
     session = Session(
@@ -24,7 +26,9 @@ final class SessionTests: TestCase {
       user: .standard(User.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
     )
     _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
-{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
+{
+  "userId" : "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+}
 """)
 
     session = Session(
@@ -35,7 +39,12 @@ final class SessionTests: TestCase {
       )
     )
     _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
-{"user":{"ghosteeId":"00000000-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"99999999-DEAD-BEEF-DEAD-BEEFDEADBEEF"}}
+{
+  "user" : {
+    "ghosteeId" : "00000000-DEAD-BEEF-DEAD-BEEFDEADBEEF",
+    "ghosterId" : "99999999-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+  }
+}
 """)
   }
 
