@@ -91,11 +91,7 @@ private func runGitHub<A>(_ logger: Logger?) -> (DecodableRequest<A>) -> EitherI
 
 private let gitHubJsonEncoder: JSONEncoder = { () in
   let encoder = JSONEncoder()
-
-  if #available(OSX 10.13, *) {
-    encoder.outputFormatting = [.sortedKeys]
-  }
-
+  encoder.outputFormatting = [.sortedKeys]
   return encoder
 }()
 

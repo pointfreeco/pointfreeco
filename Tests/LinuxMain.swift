@@ -12,6 +12,7 @@ extension AboutTests {
 extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
+    ("testAccount_InvoiceBilling", testAccount_InvoiceBilling),
     ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
@@ -26,6 +27,13 @@ extension AccountTests {
     ("testEpisodeCredits_1Credit_NoneChosen", testEpisodeCredits_1Credit_NoneChosen),
     ("testEpisodeCredits_1Credit_1Chosen", testEpisodeCredits_1Credit_1Chosen),
     ("testAccountWithDiscount", testAccountWithDiscount),
+  ]
+}
+extension ApiTests {
+  static var allTests: [(String, (ApiTests) -> () throws -> Void)] = [
+    ("testEpisodes", testEpisodes),
+    ("testEpisode", testEpisode),
+    ("testEpisode_NotFound", testEpisode_NotFound),
   ]
 }
 extension AppleDeveloperMerchantIdDomainAssociationTests {
@@ -98,6 +106,7 @@ extension ChangeEmailConfirmationTests {
 }
 extension ChangeTests {
   static var allTests: [(String, (ChangeTests) -> () throws -> Void)] = [
+    ("testChangeRedirect", testChangeRedirect),
     ("testChangeUpdateUpgradeIndividualPlan", testChangeUpdateUpgradeIndividualPlan),
     ("testChangeUpdateDowngradeIndividualPlan", testChangeUpdateDowngradeIndividualPlan),
     ("testChangeUpdateUpgradeTeamPlan", testChangeUpdateUpgradeTeamPlan),
@@ -194,6 +203,14 @@ extension FunctionalCssTests {
     ("testFunctionalCss", testFunctionalCss),
   ]
 }
+extension GhostTests {
+  static var allTests: [(String, (GhostTests) -> () throws -> Void)] = [
+    ("testStartGhosting_HappyPath", testStartGhosting_HappyPath),
+    ("testStartGhosting_InvalidGhostee", testStartGhosting_InvalidGhostee),
+    ("testStartGhosting_NonAdmin", testStartGhosting_NonAdmin),
+    ("testEndGhosting_HappyPath", testEndGhosting_HappyPath),
+  ]
+}
 extension GitHubTests {
   static var allTests: [(String, (GitHubTests) -> () throws -> Void)] = [
     ("testRequests", testRequests),
@@ -224,12 +241,14 @@ extension InviteTests {
     ("testAcceptInvitation_InviterIsNotSubscriber", testAcceptInvitation_InviterIsNotSubscriber),
     ("testAcceptInvitation_InviterHasInactiveStripeSubscription", testAcceptInvitation_InviterHasInactiveStripeSubscription),
     ("testAcceptInvitation_InviterHasCancelingStripeSubscription", testAcceptInvitation_InviterHasCancelingStripeSubscription),
+    ("testAddTeammate", testAddTeammate),
   ]
 }
 extension InvoicesTests {
   static var allTests: [(String, (InvoicesTests) -> () throws -> Void)] = [
     ("testInvoices", testInvoices),
     ("testInvoice", testInvoice),
+    ("testInvoice_InvoiceBilling", testInvoice_InvoiceBilling),
     ("testInvoiceWithDiscount", testInvoiceWithDiscount),
   ]
 }
@@ -279,6 +298,7 @@ extension NotFoundMiddlewareTests {
 extension PaymentInfoTests {
   static var allTests: [(String, (PaymentInfoTests) -> () throws -> Void)] = [
     ("testRender", testRender),
+    ("testInvoiceBilling", testInvoiceBilling),
   ]
 }
 extension PointFreeRouterTests {
@@ -312,6 +332,12 @@ extension RegistrationEmailTests {
     ("testRegistrationEmail", testRegistrationEmail),
   ]
 }
+extension SessionTests {
+  static var allTests: [(String, (SessionTests) -> () throws -> Void)] = [
+    ("testEncodable", testEncodable),
+    ("testDecodable", testDecodable),
+  ]
+}
 extension SiteMiddlewareTests {
   static var allTests: [(String, (SiteMiddlewareTests) -> () throws -> Void)] = [
     ("testWithoutWWW", testWithoutWWW),
@@ -324,6 +350,8 @@ extension StripeTests {
   static var allTests: [(String, (StripeTests) -> () throws -> Void)] = [
     ("testDecodingCustomer", testDecodingCustomer),
     ("testDecodingCustomer_Metadata", testDecodingCustomer_Metadata),
+    ("testDecodingPlan_WithoutNickname", testDecodingPlan_WithoutNickname),
+    ("testDecodingPlan_WithNickname", testDecodingPlan_WithNickname),
     ("testDecodingSubscriptionWithDiscount", testDecodingSubscriptionWithDiscount),
     ("testDecodingDiscountJson", testDecodingDiscountJson),
     ("testRequests", testRequests),
@@ -335,6 +363,7 @@ extension StripeWebhooksTests {
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
+    ("testNoSubscriptionId", testNoSubscriptionId),
     ("testPastDueEmail", testPastDueEmail),
   ]
 }
@@ -351,6 +380,7 @@ extension SubscribeTests {
   static var allTests: [(String, (SubscribeTests) -> () throws -> Void)] = [
     ("testNotLoggedIn_IndividualMonthly", testNotLoggedIn_IndividualMonthly),
     ("testCoupon_Individual", testCoupon_Individual),
+    ("testCouponFailure_Individual", testCouponFailure_Individual),
     ("testCoupon_Team", testCoupon_Team),
     ("testNotLoggedIn_IndividualYearly", testNotLoggedIn_IndividualYearly),
     ("testNotLoggedIn_Team", testNotLoggedIn_Team),
@@ -360,15 +390,22 @@ extension SubscribeTests {
     ("testHappyPath_Team", testHappyPath_Team),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
+    ("testCreateStripeSubscriptionFailure_TeamAndMonthly", testCreateStripeSubscriptionFailure_TeamAndMonthly),
+    ("testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails", testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails),
     ("testCreateDatabaseSubscriptionFailure", testCreateDatabaseSubscriptionFailure),
   ]
 }
 extension SubscriptionConfirmationTests {
   static var allTests: [(String, (SubscriptionConfirmationTests) -> () throws -> Void)] = [
     ("testPersonal_LoggedIn", testPersonal_LoggedIn),
+    ("testPersonal_LoggedIn_SwitchToMonthly", testPersonal_LoggedIn_SwitchToMonthly),
     ("testTeam_LoggedIn", testTeam_LoggedIn),
+    ("testTeam_LoggedIn_WithDefaults", testTeam_LoggedIn_WithDefaults),
+    ("testTeam_LoggedIn_SwitchToMonthly", testTeam_LoggedIn_SwitchToMonthly),
+    ("testTeam_LoggedIn_AddTeamMember", testTeam_LoggedIn_AddTeamMember),
     ("testPersonal_LoggedIn_ActiveSubscriber", testPersonal_LoggedIn_ActiveSubscriber),
     ("testPersonal_LoggedOut", testPersonal_LoggedOut),
+    ("testPersonal_LoggedIn_WithDiscount", testPersonal_LoggedIn_WithDiscount),
   ]
 }
 extension TeamEmailsTests {
@@ -398,6 +435,7 @@ extension WelcomeEmailTests {
 XCTMain([
   testCase(AboutTests.allTests),
   testCase(AccountTests.allTests),
+  testCase(ApiTests.allTests),
   testCase(AppleDeveloperMerchantIdDomainAssociationTests.allTests),
   testCase(AtomFeedTests.allTests),
   testCase(AuthTests.allTests),
@@ -417,6 +455,7 @@ XCTMain([
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
   testCase(FunctionalCssTests.allTests),
+  testCase(GhostTests.allTests),
   testCase(GitHubTests.allTests),
   testCase(HomeTests.allTests),
   testCase(HtmlCssInlinerTests.allTests),
@@ -434,6 +473,7 @@ XCTMain([
   testCase(PrivacyTests.allTests),
   testCase(PrivateRssTests.allTests),
   testCase(RegistrationEmailTests.allTests),
+  testCase(SessionTests.allTests),
   testCase(SiteMiddlewareTests.allTests),
   testCase(StripeTests.allTests),
   testCase(StripeWebhooksTests.allTests),
