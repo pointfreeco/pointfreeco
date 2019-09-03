@@ -43,4 +43,12 @@ open class TestCase: XCTestCase {
     super.tearDown()
     record = false
   }
+
+  public var isScreenshotTestingAvailable: Bool {
+    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+      return true
+    } else {
+      return false
+    }
+  }
 }

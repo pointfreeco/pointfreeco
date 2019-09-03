@@ -34,7 +34,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -55,7 +55,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -84,7 +84,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -113,7 +113,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -135,7 +135,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshot(
         matching: conn |> siteMiddleware,
         as: .ioConnWebView(size: .init(width: 1100, height: 1000))
@@ -168,7 +168,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -204,7 +204,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -240,7 +240,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -418,7 +418,7 @@ class EpisodePageTests: TestCase {
     )
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
       let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
