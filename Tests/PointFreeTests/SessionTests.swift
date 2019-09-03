@@ -15,7 +15,7 @@ final class SessionTests: TestCase {
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
-    _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(JSONEncoder()), with: """
+    _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(encoder), with: """
 {}
 """)
 
@@ -23,7 +23,7 @@ final class SessionTests: TestCase {
       flash: nil,
       user: .standard(User.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
     )
-    _assertInlineSnapshot(matching: session, as: .json(JSONEncoder()), with: """
+    _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
 {"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
 """)
 
@@ -34,7 +34,7 @@ final class SessionTests: TestCase {
         ghosterId: User.Id(rawValue: UUID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!)
       )
     )
-    _assertInlineSnapshot(matching: session, as: .json(JSONEncoder()), with: """
+    _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
 {"user":{"ghosteeId":"00000000-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"99999999-DEAD-BEEF-DEAD-BEEFDEADBEEF"}}
 """)
   }
