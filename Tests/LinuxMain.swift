@@ -13,6 +13,7 @@ extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
     ("testAccount_InvoiceBilling", testAccount_InvoiceBilling),
+    ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
     ("testTeam_AsTeammate", testTeam_AsTeammate),

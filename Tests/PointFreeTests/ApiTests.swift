@@ -24,7 +24,10 @@ final class ApiTests: TestCase {
       |> siteMiddleware
       |> Prelude.perform
 
+    #if !os(Linux)
+    // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
     assertSnapshot(matching: conn, as: .conn)
+    #endif
   }
 
   func testEpisode_NotFound() {

@@ -107,7 +107,7 @@ public func respondJson<A: Encodable>(
   ) -> IO<Conn<ResponseEnded, Data>> {
 
   let encoder = JSONEncoder()
-  if #available(OSX 10.13, *), Current.envVars.appEnv == .testing {
+  if Current.envVars.appEnv == .testing {
     encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
   }
   let data = try! encoder.encode(conn.data) // TODO: 400 on badly formed data
