@@ -33,7 +33,7 @@ class SubscriptionConfirmationTests: TestCase {
     assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -57,7 +57,7 @@ class SubscriptionConfirmationTests: TestCase {
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
       let html = String(decoding: result.perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
@@ -85,7 +85,7 @@ class SubscriptionConfirmationTests: TestCase {
     assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -120,7 +120,7 @@ class SubscriptionConfirmationTests: TestCase {
     assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -144,7 +144,7 @@ class SubscriptionConfirmationTests: TestCase {
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
       let html = String(decoding: result.perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
@@ -170,7 +170,7 @@ class SubscriptionConfirmationTests: TestCase {
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
       let html = String(decoding: result.perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
@@ -226,7 +226,7 @@ class SubscriptionConfirmationTests: TestCase {
     assertSnapshot(matching: result, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [

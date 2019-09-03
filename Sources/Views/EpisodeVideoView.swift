@@ -126,17 +126,11 @@ public struct VideoJsOptions: Encodable {
   )
 
   var jsonString: String {
-    if #available(OSX 10.13, *) {
-      return ((try? String(data: jsonEncoder.encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-        ?? "{}"
-    } else {
-      return ((try? String(data: JSONEncoder().encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
-        ?? "{}"
-    }
+    return ((try? String(data: jsonEncoder.encode(VideoJsOptions.default), encoding: .utf8)) ?? nil)
+      ?? "{}"
   }
 }
 
-@available(OSX 10.13, *)
 private let jsonEncoder: JSONEncoder = {
   let encoder = JSONEncoder()
   encoder.outputFormatting = .sortedKeys

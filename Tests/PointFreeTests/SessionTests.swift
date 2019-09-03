@@ -12,17 +12,26 @@ final class SessionTests: TestCase {
 
   func testEncodable() {
     var session: Session
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 
-    _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(JSONEncoder()), with: """
-{}
+    #if !os(Linux)
+    // Can't run on Linux because of https://bugs.swift.org/browse/SR-11410
+    _assertInlineSnapshot(matching: Session(flash: nil, user: nil), as: .json(encoder), with: """
+{
+
+}
 """)
+    #endif
 
     session = Session(
       flash: nil,
       user: .standard(User.Id(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!))
     )
-    _assertInlineSnapshot(matching: session, as: .json(JSONEncoder()), with: """
-{"userId":"DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"}
+    _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
+{
+  "userId" : "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+}
 """)
 
     session = Session(
@@ -32,8 +41,13 @@ final class SessionTests: TestCase {
         ghosterId: User.Id(rawValue: UUID(uuidString: "99999999-dead-beef-dead-beefdeadbeef")!)
       )
     )
-    _assertInlineSnapshot(matching: session, as: .json(JSONEncoder()), with: """
-{"user":{"ghosteeId":"00000000-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"99999999-DEAD-BEEF-DEAD-BEEFDEADBEEF"}}
+    _assertInlineSnapshot(matching: session, as: .json(encoder), with: """
+{
+  "user" : {
+    "ghosteeId" : "00000000-DEAD-BEEF-DEAD-BEEFDEADBEEF",
+    "ghosterId" : "99999999-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+  }
+}
 """)
   }
 
