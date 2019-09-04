@@ -48,7 +48,7 @@ func changeSubscription(
       let (currentSubscription, newPricing) = conn.data
 
       let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
-      let currentPrice: Cents<Int> = 0 // TODO currentSubscription.plan.amount(for: currentSubscription.quantity)
+      let currentPrice = currentSubscription.plan.amount(for: currentSubscription.quantity)
 
       let shouldProrate = newPrice > currentPrice
       let shouldInvoice = newPricing.plan == currentSubscription.plan.id

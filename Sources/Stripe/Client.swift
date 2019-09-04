@@ -93,9 +93,6 @@ func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
   return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
     "cancel_at_period_end": "true"
   ]))
-//  return stripeRequest(
-//    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
-//  )
 }
 
 func createCustomer(

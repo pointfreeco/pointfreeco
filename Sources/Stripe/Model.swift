@@ -391,11 +391,11 @@ public struct Plan: Codable, Equatable {
     self.tiers = tiers
   }
 
-//  public func amount(for quantity: Int) -> Cents<Int> {
-//    let amount = self.amount
-//      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
-//    return amount.map { $0 * quantity }
-//  }
+  public func amount(for quantity: Int) -> Cents<Int> {
+    // TODO: what to do with force unwrap?
+    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+    return amount.map { $0 * quantity }
+  }
 
   public typealias Id = Tagged<Plan, String>
 
