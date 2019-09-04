@@ -1,6 +1,7 @@
 import Database
 import GitHub
 import Prelude
+import Models
 import ModelsTestSupport
 import GitHubTestSupport
 import Logger
@@ -37,5 +38,43 @@ final class DatabaseTests: DatabaseTestCase {
     XCTAssertEqual("Blob, Inc.", createdAccount.companyName)
     XCTAssertEqual("blob.biz", createdAccount.domain)
     XCTAssertEqual(subscription.id, createdAccount.subscriptionId)
+  }
+
+  func testCreateSubscription_OwnerIsNotTakingSeat() {
+    let user = self.database.registerUser(.mock, "blob@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    _ = self.database.createSubscription(.mock, user.id, false)
+      .run
+      .perform()
+      .right!!
+
+    let freshUser = self.database.fetchUserById(user.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(nil, freshUser.subscriptionId)
+  }
+
+  func testCreateSubscription_OwnerIsTakingSeat() {
+    let user = self.database.registerUser(.mock, "blob@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let subscription = self.database.createSubscription(.mock, user.id, true)
+      .run
+      .perform()
+      .right!!
+
+    let freshUser = self.database.fetchUserById(user.id)
+      .run
+      .perform()
+      .right!!
+
+    XCTAssertEqual(subscription.id, freshUser.subscriptionId)
   }
 }
