@@ -667,11 +667,12 @@ function updateSeats() {
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
   var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPrice = (
+  var monthlyPricePerSeat = (
     monthly
-      ? seats * \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01
-      : seats * \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01
+      ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01
+      : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01
   )
+  var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
@@ -679,8 +680,9 @@ function updateSeats() {
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
-      + format(monthlyPrice)
+      + format(monthlyPricePerSeat)
       + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
   )
