@@ -363,7 +363,8 @@ extension StripeWebhooksTests {
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
-    ("testNoSubscriptionId", testNoSubscriptionId),
+    ("testNoInvoiceSubscriptionId", testNoInvoiceSubscriptionId),
+    ("testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId", testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId),
     ("testPastDueEmail", testPastDueEmail),
   ]
 }
