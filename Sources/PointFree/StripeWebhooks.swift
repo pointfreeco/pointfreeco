@@ -94,11 +94,14 @@ private func handleFailedPayment(
   -> IO<Conn<ResponseEnded, Data>> {
 
     return Current.stripe.fetchSubscription(conn.data)
+      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
       .flatMap(Current.database.updateStripeSubscription)
       .mapExcept(requireSome)
+      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
       .flatMap { subscription in
         Current.database.fetchUserById(subscription.userId)
           .mapExcept(requireSome)
+          .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
           .map { ($0, subscription) }
       }
       .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
