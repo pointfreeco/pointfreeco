@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 60647
+Content-Length: 60767
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2341,11 +2341,12 @@ function updateSeats() {
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
   var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPrice = (
+  var monthlyPricePerSeat = (
     monthly
-      ? seats * 1600 * 0.01
-      : seats * 1200 * 0.01
+      ? 1600 * 0.01
+      : 1200 * 0.01
   )
+  var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
       ? monthlyPrice
@@ -2353,8 +2354,9 @@ function updateSeats() {
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
-      + format(monthlyPrice)
+      + format(monthlyPricePerSeat)
       + " per month</strong>"
+      + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
       + (monthly ? "" : " times <strong>12 months</strong>")
       + "."
   )
