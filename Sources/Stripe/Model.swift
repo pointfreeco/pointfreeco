@@ -353,7 +353,7 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-  public var amount: Cents<Int>?
+//  public var amount: Cents<Int>?
   public var created: Date
   public var currency: Currency
   public var id: Id
@@ -380,7 +380,7 @@ public struct Plan: Codable, Equatable {
     statementDescriptor: String?,
     tiers: [Tier]?
     ) {
-    self.amount = amount
+//    self.amount = amount
     self.created = created
     self.currency = currency
     self.id = id
@@ -391,11 +391,11 @@ public struct Plan: Codable, Equatable {
     self.tiers = tiers
   }
 
-  public func amount(for quantity: Int) -> Cents<Int> {
-    let amount = self.amount
-      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
-    return amount.map { $0 * quantity }
-  }
+//  public func amount(for quantity: Int) -> Cents<Int> {
+//    let amount = self.amount
+//      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+//    return amount.map { $0 * quantity }
+//  }
 
   public typealias Id = Tagged<Plan, String>
 
@@ -409,22 +409,28 @@ public struct Plan: Codable, Equatable {
   }
 
   public struct Tier: Codable, Equatable {
-    public var amount: Cents<Int>
+    // TODO: remove
+    public var amount: Cents<Int> {
+      return self.unitAmount
+    }
+    public var unitAmount: Cents<Int>
     public var upTo: Int?
 
+    // TODO: update init
     public init(amount: Cents<Int>, upTo: Int?) {
-      self.amount = amount
+      self.unitAmount = amount
       self.upTo = upTo
     }
 
     private enum CodingKeys: String, CodingKey {
-      case amount
+//      case amount
+      case unitAmount = "unit_amount"
       case upTo = "up_to"
     }
   }
 
   private enum CodingKeys: String, CodingKey {
-    case amount
+//    case amount
     case created
     case currency
     case id

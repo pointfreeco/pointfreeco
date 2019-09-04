@@ -90,9 +90,12 @@ extension Client {
 }
 
 func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  return stripeRequest(
-    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
-  )
+  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
+    "cancel_at_period_end": "true"
+  ]))
+//  return stripeRequest(
+//    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
+//  )
 }
 
 func createCustomer(
@@ -195,12 +198,14 @@ func updateSubscription(
 
     guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
-      "coupon": "",
-      "items[0][id]": item.id.rawValue,
-      "items[0][plan]": plan.rawValue,
-      "items[0][quantity]": String(quantity),
-      "prorate": prorate.map(String.init(describing:)),
+    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
+      filteredValues <| [
+        "cancel_at_period_end": "false",
+        "coupon": "",
+        "items[0][id]": item.id.rawValue,
+        "items[0][plan]": plan.rawValue,
+        "items[0][quantity]": String(quantity),
+        "prorate": prorate.map(String.init(describing:)),
       ]))
 }
 
@@ -235,6 +240,7 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
   return DecodableRequest(
     rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
+      <> setHeader("Stripe-Version", "2018-11-08")
   )
 }
 
@@ -253,6 +259,7 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
               do {
                 return try jsonDecoder.decode(A.self, from: data)
               } catch {
+                print(error)
                 throw (try? jsonDecoder.decode(StripeErrorEnvelope.self, from: data))
                   ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
               }
