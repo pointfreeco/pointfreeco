@@ -54,7 +54,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
           let parallel = sequence(
             subscribeData.teammates
               .filter { email in email.rawValue.contains("@") && email != user.email }
-              .prefix(subscribeData.pricing.quantity - 1)
+              .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
               .map { email in
                 Current.database.insertTeamInvite(email, user.id)
                   .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }

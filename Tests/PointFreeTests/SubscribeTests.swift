@@ -152,16 +152,6 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
-  // TODO: dont know how to get this route to recognize.
-  //  func testMissingSubscriberData() {
-  //    let req = request(to: .subscribe(nil), session: .loggedIn)
-  //    let conn = connection(from: req)
-  //      |> siteMiddleware
-  //      |> Prelude.perform
-  //
-  //    assertSnapshot(matching: conn, as: .conn)
-  //  }
-
   func testInvalidQuantity() {
     #if !os(Linux)
     update(
@@ -260,6 +250,61 @@ final class SubscribeTests: TestCase {
       .perform()
       .right!
     XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
+  }
+
+  func testHappyPath_Team_OwnerIsNotTakingSeat() {
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+
+    let emails: [EmailAddress] = [
+      "blob1@pointfree.co",
+      "blob2@pointfree.co",
+      "blob3@pointfree.co",
+      "blob4@pointfree.co",
+      "blob5@pointfree.co",
+    ]
+
+    let req = request(
+      to: .subscribe(
+        .some(
+          .teamYearly(quantity: 5)
+            |> \.teammates .~ emails
+            |> \.isOwnerTakingSeat .~ false
+        )
+      ),
+      session: session
+    )
+    let conn = connection(from: req)
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+    let subscription = Current.database.fetchSubscriptionByOwnerId(user.id)
+      .run
+      .perform()
+      .right!!
+
+    #if !os(Linux)
+    assertSnapshot(matching: subscription, as: .dump)
+    #endif
+
+    let invites = Current.database.fetchTeamInvites(user.id)
+      .run
+      .perform()
+      .right!
+    XCTAssertEqual(emails, invites.sorted { $0.email < $1.email }.map { $0.email })
+
+    let freshUser = Current.database.fetchUserById(user.id)
+      .run
+      .perform()
+      .right!!
+    // Confirm that owner of subscription is not taking up a seat on the sub.
+    XCTAssertEqual(nil, freshUser.subscriptionId)
   }
 
   func testCreateCustomerFailure() {

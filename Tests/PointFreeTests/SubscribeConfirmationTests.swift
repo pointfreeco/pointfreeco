@@ -163,6 +163,42 @@ class SubscriptionConfirmationTests: TestCase {
     #endif
   }
 
+  func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() {
+    update(
+      &Current,
+      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: .some(.monthly),
+          isOwnerTakingSeat: false,
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1400))
+        ]
+      )
+    }
+    #endif
+  }
+
   func testTeam_LoggedIn_SwitchToMonthly() {
     update(
       &Current,
@@ -246,7 +282,7 @@ class SubscriptionConfirmationTests: TestCase {
     let conn = connection(
       from: request(
         to: .subscribeConfirmation(
-          lane: .personal,
+          lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil
