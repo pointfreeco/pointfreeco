@@ -1,0 +1,3 @@
+POST http://localhost:8080/subscribe
+
+coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing[quantity]=4&teammates[0]=blob.jr@pointfree.co&teammates[1]=blob.sr@pointfree.com&token=deadbeef

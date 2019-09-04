@@ -313,6 +313,7 @@ final class SubscribeTests: TestCase {
 
     let subscribeData = SubscribeData(
       coupon: nil,
+      isOwnerTakingSeat: true,
       pricing: .init(billing: .monthly, quantity: 3),
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co"],
       token: "stripe-deadbeef"
@@ -340,6 +341,7 @@ final class SubscribeTests: TestCase {
 
     let subscribeData = SubscribeData(
       coupon: nil,
+      isOwnerTakingSeat: true,
       pricing: .init(billing: .monthly, quantity: 3),
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.co", "fake@pointfree.co"],
       token: "stripe-deadbeef"
@@ -360,7 +362,7 @@ final class SubscribeTests: TestCase {
     update(
       &Current,
       \.database .~ .mock,
-      \.database.createSubscription .~ { _, _ in throwE(unit as Error) },
+      \.database.createSubscription .~ { _, _, _ in throwE(unit as Error) },
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )

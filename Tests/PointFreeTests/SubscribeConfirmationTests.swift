@@ -16,7 +16,7 @@ import XCTest
 class SubscriptionConfirmationTests: TestCase {
   override func setUp() {
     super.setUp()
-//    record = true
+    record = true
   }
 
   func testPersonal_LoggedIn() {
@@ -27,7 +27,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -53,7 +63,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
@@ -79,7 +99,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.team, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -108,9 +138,10 @@ class SubscriptionConfirmationTests: TestCase {
     let conn = connection(
       from: request(
         to: .subscribeConfirmation(
-          .team,
-          .some(.monthly),
-          .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+          lane: .team,
+          billing: .some(.monthly),
+          isOwnerTakingSeat: true,
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
         ),
         session: .loggedIn
       )
@@ -140,7 +171,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.team, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
@@ -166,7 +207,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.team, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     #if !os(Linux)
@@ -192,7 +243,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedIn))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -206,7 +267,17 @@ class SubscriptionConfirmationTests: TestCase {
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
     )
 
-    let conn = connection(from: request(to: .subscribeConfirmation(.personal, nil, nil), session: .loggedOut))
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedOut
+      )
+    )
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
@@ -233,6 +304,42 @@ class SubscriptionConfirmationTests: TestCase {
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
         ]
+      )
+    }
+    #endif
+  }
+
+  func testTeam_LoggedIn_RemoveOwnerFromTeam() {
+    update(
+      &Current,
+      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(
+      from: request(
+        to: .subscribeConfirmation(
+          lane: .team,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        session: .loggedIn
+      )
+    )
+    let result = conn |> siteMiddleware
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+      let html = String(decoding: result.perform().data, as: UTF8.self)
+      webView.loadHTMLString(html, baseURL: nil)
+
+      assertSnapshot(
+        matching: webView,
+        as: .image(afterEvaluatingJavascript: "document.getElementById('remove-yourself-button').click()"),
+        named: "desktop"
       )
     }
     #endif

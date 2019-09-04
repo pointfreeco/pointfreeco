@@ -29,7 +29,7 @@ public func subscriptionConfirmation(
         style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
       ],
       header(lane)
-        + (lane == .team ? teamMembers(currentUser, subscribeData) : [])
+        + teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData)
         + billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData)
         + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
         + total(lane: lane, coupon: coupon)
@@ -81,7 +81,22 @@ private func header(_ lane: Pricing.Lane) -> [Node] {
   ]
 }
 
-private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirmationData) -> [Node] {
+private func teamMembers(
+  lane: Pricing.Lane,
+  currentUser: User,
+  subscribeData: SubscribeConfirmationData
+  ) -> [Node] {
+
+  guard lane == .team else {
+    return [
+      input([
+        name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+        `type`(.hidden),
+        value("true")
+        ])
+    ]
+  }
+
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -91,7 +106,7 @@ private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirma
           [`class`([moduleTitleColumnClass])],
           [h1([`class`([moduleTitleClass])], ["Team members"])]
         ),
-        teamOwner(currentUser),
+        teamOwner(currentUser: currentUser, subscribeData: subscribeData),
         gridColumn(
           sizes: [.mobile: 12],
           [id("team-members")],
@@ -163,7 +178,15 @@ from your account page.
   ]
 }
 
-private func teamOwner(_ currentUser: User) -> Node {
+private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationData) -> Node {
+  guard subscribeData.isOwnerTakingSeat else {
+    return input([
+      name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+      `type`(.hidden),
+      value("false")
+      ])
+  }
+
   return gridColumn(
     sizes: [.mobile: 12],
     [
@@ -184,7 +207,11 @@ private func teamOwner(_ currentUser: User) -> Node {
             ])
         ],
         [
-          input([name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue), `type`(.hidden)]),
+          input([
+            name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+            `type`(.hidden),
+            value("true")
+            ]),
           img(
             src: currentUser.gitHubAvatarUrl.absoluteString,
             alt: "",
@@ -202,6 +229,7 @@ private func teamOwner(_ currentUser: User) -> Node {
             [.text(currentUser.displayName)]
           ),
           a([
+            id("remove-yourself-button"),
             `class`([
               Class.cursor.pointer,
               Class.pf.colors.fg.red,

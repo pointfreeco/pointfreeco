@@ -50,11 +50,27 @@ public let discountSubscribeConfirmation: Middleware<
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
-    or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
+    or: redirect(
+      to: .subscribeConfirmation(
+        lane: .personal,
+        billing: nil,
+        isOwnerTakingSeat: nil,
+        teammates: nil
+      ),
+      headersMiddleware: flash(.error, couponError)
+    )
     )
     <<< filter(
       get6 >>> ^\.valid,
-      or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        headersMiddleware: flash(.error, couponError)
+      )
     )
     <| map(over6(Optional.some))
     >>> pure

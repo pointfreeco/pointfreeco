@@ -34,7 +34,12 @@ public enum Route: DerivePartialIsos, Equatable {
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
-  case subscribeConfirmation(Pricing.Lane, Pricing.Billing?, [EmailAddress]?)
+  case subscribeConfirmation(
+    lane: Pricing.Lane,
+    billing: Pricing.Billing?,
+    isOwnerTakingSeat: Bool?,
+    teammates: [EmailAddress]?
+  )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -228,6 +233,7 @@ let routers: [Router<Route>] = [
     <¢> get %> lit("subscribe")
     %> pathParam(.rawRepresentable)
     <%> queryParam("billing", opt(.rawRepresentable))
+    <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <% end,
 
