@@ -239,8 +239,8 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
               Class.pf.type.underlineLink
               ]),
             onclick("""
-var teamMemberRow = this.parentNode.parentNode
-teamMemberRow.parentNode.removeChild(teamMemberRow)
+var ownerRow = this.parentNode.parentNode
+ownerRow.parentNode.removeChild(ownerRow)
 
 var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
 var teamMembersContainer = document.getElementById("team-members")

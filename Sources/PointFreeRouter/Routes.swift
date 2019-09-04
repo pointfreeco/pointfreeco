@@ -319,7 +319,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
 
     return SubscribeData(
       coupon: coupon,
-      isOwnerTakingSeat: isOwnerTakingSeat, // TODO
+      isOwnerTakingSeat: isOwnerTakingSeat,
       pricing: Pricing(billing: billing, quantity: quantity),
       teammates: teammates,
       token: token

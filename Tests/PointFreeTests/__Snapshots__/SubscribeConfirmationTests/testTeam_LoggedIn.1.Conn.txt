@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 63554
+Content-Length: 63539
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1960,8 +1960,8 @@ html {
                       h6
                       lh-4
                       underline-link"
-               onclick="var teamMemberRow = this.parentNode.parentNode
-teamMemberRow.parentNode.removeChild(teamMemberRow)
+               onclick="var ownerRow = this.parentNode.parentNode
+ownerRow.parentNode.removeChild(ownerRow)
 
 var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
 var teamMembersContainer = document.getElementById("team-members")

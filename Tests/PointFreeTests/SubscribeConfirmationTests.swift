@@ -16,7 +16,7 @@ import XCTest
 class SubscriptionConfirmationTests: TestCase {
   override func setUp() {
     super.setUp()
-    record = true
+//    record = true
   }
 
   func testPersonal_LoggedIn() {
@@ -282,7 +282,7 @@ class SubscriptionConfirmationTests: TestCase {
     let conn = connection(
       from: request(
         to: .subscribeConfirmation(
-          lane: .team,
+          lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
           teammates: nil
