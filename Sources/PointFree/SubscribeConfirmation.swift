@@ -33,7 +33,7 @@ public let subscribeConfirmation: Middleware<
             coupon,
             currentUser,
             Current.stripe.js,
-            Current.envVars.stripe.publishableKey.rawValue
+            Current.envVars.stripe.publishableKey
           ),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),

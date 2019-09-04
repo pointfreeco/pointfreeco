@@ -300,6 +300,11 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
         return nil
     }
 
+    let isOwnerTakingSeat = keyValues
+      .first { key, value in key == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
+      .flatMap(Bool.init)
+      ?? false
+
     let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
     let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
@@ -308,6 +313,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
 
     return SubscribeData(
       coupon: coupon,
+      isOwnerTakingSeat: isOwnerTakingSeat, // TODO
       pricing: Pricing(billing: billing, quantity: quantity),
       teammates: teammates,
       token: token
@@ -319,6 +325,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     if let coupon = data.coupon {
       parts.append("coupon=\(coupon.rawValue)")
     }
+    parts.append("isOwnerTakingSeat=\(data.isOwnerTakingSeat)")
     parts.append("pricing[billing]=\(data.pricing.billing.rawValue)")
     parts.append("pricing[quantity]=\(data.pricing.quantity)")
     parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))

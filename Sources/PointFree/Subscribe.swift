@@ -65,7 +65,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
 
           return lift(parallel.sequential).flatMap { _ in
             Current.database
-              .createSubscription(stripeSubscription, user.id)
+              .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat)
           }
         }
     }
