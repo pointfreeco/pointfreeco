@@ -204,7 +204,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=bda3ac3f25b3665eac23aa47f7d521d7cb4578a70cbebf3aeab108e8c1a4a461",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=950becadb9b19c86003ad07e745cc0b99a50f76b362bb50d5fe159c1f84c606f",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
