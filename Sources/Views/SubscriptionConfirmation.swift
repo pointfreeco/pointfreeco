@@ -168,7 +168,7 @@ updateSeats()
           ],
           [
             """
-You must have at least two seats for your team subscription. You can add additional team members at anytime
+You must have at least two seats for your team subscription. You can add additional team members at any time
 from your account page.
 """
           ]
@@ -194,7 +194,8 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
       `class`([
         Class.border.all,
         Class.pf.colors.border.gray850,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
+        Class.margin([.mobile: [.top: 1]]),
         ]),
       HtmlCssSupport.style(lineHeight(0))
     ],
