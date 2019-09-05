@@ -13,7 +13,6 @@ extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
     ("testAccount_InvoiceBilling", testAccount_InvoiceBilling),
-    ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
     ("testTeam_AsTeammate", testTeam_AsTeammate),
@@ -363,7 +362,8 @@ extension StripeWebhooksTests {
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
-    ("testNoSubscriptionId", testNoSubscriptionId),
+    ("testNoInvoiceSubscriptionId", testNoInvoiceSubscriptionId),
+    ("testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId", testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId),
     ("testPastDueEmail", testPastDueEmail),
   ]
 }

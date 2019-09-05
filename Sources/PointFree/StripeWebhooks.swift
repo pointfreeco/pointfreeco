@@ -15,11 +15,15 @@ import Styleguide
 import Stripe
 import View
 
-let stripeWebhookMiddleware =
-  validateStripeSignature
+let stripeWebhookMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Event<Either<Invoice, Stripe.Subscription>>,
+  Data
+  >
+  = validateStripeSignature
     <<< filterMap(
-      ^\Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.data.object
-        >>> either(^\.subscription, ^\.id)
+      extraSubscriptionId(fromEvent:)
         >>> pure,
       or: stripeHookFailure(
         subject: "[PointFree Error] Stripe Hook Failed!",
@@ -94,11 +98,14 @@ private func handleFailedPayment(
   -> IO<Conn<ResponseEnded, Data>> {
 
     return Current.stripe.fetchSubscription(conn.data)
+      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find stripe subscription."))
       .flatMap(Current.database.updateStripeSubscription)
       .mapExcept(requireSome)
+      .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find updated subscription."))
       .flatMap { subscription in
         Current.database.fetchUserById(subscription.userId)
           .mapExcept(requireSome)
+          .withExcept(notifyError(subject: "Stripe Hook failed: Couldn't find user."))
           .map { ($0, subscription) }
       }
       .withExcept(notifyError(subject: "Stripe Hook failed for \(conn.data)"))
@@ -199,4 +206,17 @@ private func stripeHookFailure<A>(
             >=> respond(text: body)
       }
     }
+}
+
+private func extraSubscriptionId(
+  fromEvent event: Event<Either<Invoice, Stripe.Subscription>>
+  ) -> Stripe.Subscription.Id? {
+
+  switch event.data.object {
+  case let .left(invoice):
+    return invoice.subscription
+      ?? invoice.lines.data.compactMap(^\.subscription).first
+  case let .right(subscription):
+    return subscription.id
+  }
 }

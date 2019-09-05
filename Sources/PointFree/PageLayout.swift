@@ -143,8 +143,6 @@ func respond<A, B>(
 func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
   return View { layoutData -> [Node] in
-
-    let hasPodcastRssFeature = Current.features.hasAccess(to: .podcastRss, for: layoutData.currentUser)
     let blogAtomFeed = Html.link([
       href(url(to: .blog(.feed))),
       rel(.alternate),
@@ -153,9 +151,7 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
       ])
 
     let episodeAtomFeed = Html.link([
-      hasPodcastRssFeature
-        ? href(url(to: .feed(.episodes)))
-        : href(url(to: .feed(.atom))),
+      href(url(to: .feed(.episodes))),
       rel(.alternate),
       title("Point-Free Episodes"),
       type(.application(.atom)),

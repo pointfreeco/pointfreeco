@@ -301,7 +301,7 @@ private struct _Client {
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
     WHERE "subscriptions"."stripe_subscription_id" = $2
-    RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
+    RETURNING *
     """,
       [
         stripeSubscription.status.rawValue,
@@ -1019,6 +1019,12 @@ private struct _Client {
         """
       CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_emails_on_user_id"
       ON "enterprise_emails" ("user_id")
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
       """
       )))
       .map(const(unit))
