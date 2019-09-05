@@ -1017,6 +1017,12 @@ private struct _Client {
       ON "enterprise_emails" ("user_id")
       """
       )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
+      """
+      )))
       .map(const(unit))
   }
 
