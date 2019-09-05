@@ -168,7 +168,7 @@ updateSeats()
           ],
           [
             """
-You must have at least two seats for your team subscription. You can add additional team members at anytime
+You must have at least two seats for your team subscription. You can add additional team members at any time
 from your account page.
 """
           ]
