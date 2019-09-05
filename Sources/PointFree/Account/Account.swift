@@ -344,7 +344,6 @@ private func subscriptionOverview(_ data: AccountData) -> [Node] {
 }
 
 private func privateRssFeed(_ data: AccountData) -> [Node] {
-  guard Current.features.hasAccess(to: .podcastRss, for: data.currentUser) else { return [] }
   guard data.subscriberState.isActiveSubscriber else { return [] }
   let user = data.currentUser
   let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)
