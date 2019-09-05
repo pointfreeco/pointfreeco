@@ -15,11 +15,15 @@ import Styleguide
 import Stripe
 import View
 
-let stripeWebhookMiddleware =
-  validateStripeSignature
+let stripeWebhookMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Event<Either<Invoice, Stripe.Subscription>>,
+  Data
+  >
+  = validateStripeSignature
     <<< filterMap(
-      ^\Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.data.object
-        >>> either(^\.subscription, ^\.id)
+      extraSubscriptionId(fromEvent:)
         >>> pure,
       or: stripeHookFailure(
         subject: "[PointFree Error] Stripe Hook Failed!",
@@ -199,4 +203,17 @@ private func stripeHookFailure<A>(
             >=> respond(text: body)
       }
     }
+}
+
+private func extraSubscriptionId(
+  fromEvent event: Event<Either<Invoice, Stripe.Subscription>>
+  ) -> Stripe.Subscription.Id? {
+
+  switch event.data.object {
+  case let .left(invoice):
+    return invoice.subscription
+      ?? invoice.lines.data.compactMap(^\.subscription).first
+  case let .right(subscription):
+    return subscription.id
+  }
 }
