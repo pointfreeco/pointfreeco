@@ -297,7 +297,7 @@ private struct _Client {
     UPDATE "subscriptions"
     SET "stripe_subscription_status" = $1
     WHERE "subscriptions"."stripe_subscription_id" = $2
-    RETURNING "id", "stripe_subscription_id", "stripe_subscription_status", "user_id"
+    RETURNING *
     """,
       [
         stripeSubscription.status.rawValue,
