@@ -194,7 +194,8 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
       `class`([
         Class.border.all,
         Class.pf.colors.border.gray850,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
+        Class.margin([.mobile: [.top: 1]]),
         ]),
       HtmlCssSupport.style(lineHeight(0))
     ],
