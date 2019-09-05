@@ -92,11 +92,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(payload))
         |> expressUnsubscribeReplyMiddleware
 
-    case .feed(.atom):
-      return conn.map(const(Current.episodes()))
-        |> atomFeedResponse
-
-    case .feed(.episodes):
+    case .feed(.atom), .feed(.episodes):
       return conn.map(const(unit))
         |> episodesRssMiddleware
 

@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7473
+Content-Length: 7488
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -85,7 +85,7 @@ X-XSS-Protection: 1; mode=block
     </itunes:category>
     <item>
       <title>
-        Type-Safe HTML in Swift
+        🆓 Type-Safe HTML in Swift
       </title>
       <pubDate>
         Tue, 20 Jun 2017 12:00:00 +0000
@@ -134,7 +134,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         1
       </itunes:episode>
       <itunes:title>
-        Type-Safe HTML in Swift
+        🆓 Type-Safe HTML in Swift
       </itunes:title>
       <itunes:episodeType>
         full
@@ -148,7 +148,7 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
                      type="video/mp4"
                      medium="video">
         <media:title>
-          Type-Safe HTML in Swift
+          🆓 Type-Safe HTML in Swift
         </media:title>
       </media:content>
     </item>
