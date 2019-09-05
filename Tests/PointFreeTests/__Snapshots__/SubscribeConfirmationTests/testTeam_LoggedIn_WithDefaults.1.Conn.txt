@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65265
+Content-Length: 65292
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1932,6 +1932,7 @@ html {
                     m-pr2
                     m-pt2
                     m-pb2
+                    m-mt1
                     col-m
                     col-m-12"
              style="line-height:0">
@@ -2141,7 +2142,7 @@ updateSeats()">
                   lh-4
                   fg-gray400
                   m-pt3">
-          You must have at least two seats for your team subscription. You can add additional team members at anytime
+          You must have at least two seats for your team subscription. You can add additional team members at any time
 from your account page.
         </p>
       </div>
