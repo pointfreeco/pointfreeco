@@ -34,7 +34,12 @@ public enum Route: DerivePartialIsos, Equatable {
   case pricingLanding
   case privacy
   case subscribe(SubscribeData?)
-  case subscribeConfirmation(Pricing.Lane, Pricing.Billing?, [EmailAddress]?)
+  case subscribeConfirmation(
+    lane: Pricing.Lane,
+    billing: Pricing.Billing?,
+    isOwnerTakingSeat: Bool?,
+    teammates: [EmailAddress]?
+  )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
@@ -228,6 +233,7 @@ let routers: [Router<Route>] = [
     <¢> get %> lit("subscribe")
     %> pathParam(.rawRepresentable)
     <%> queryParam("billing", opt(.rawRepresentable))
+    <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <% end,
 
@@ -300,6 +306,11 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
         return nil
     }
 
+    let isOwnerTakingSeat = keyValues
+      .first { key, value in key == SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue }?.1
+      .flatMap(Bool.init)
+      ?? false
+
     let rawCouponValue = keyValues.first(where: { key, value in key == "coupon" })?.1
     let coupon = rawCouponValue == "" ? nil : rawCouponValue.flatMap(Coupon.Id.init(rawValue:))
     let teammates = keyValues.filter({ key, value in key.prefix(9) == "teammates" })
@@ -308,6 +319,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
 
     return SubscribeData(
       coupon: coupon,
+      isOwnerTakingSeat: isOwnerTakingSeat,
       pricing: Pricing(billing: billing, quantity: quantity),
       teammates: teammates,
       token: token
@@ -319,6 +331,7 @@ private let subscriberDataIso = PartialIso<String, SubscribeData?>(
     if let coupon = data.coupon {
       parts.append("coupon=\(coupon.rawValue)")
     }
+    parts.append("isOwnerTakingSeat=\(data.isOwnerTakingSeat)")
     parts.append("pricing[billing]=\(data.pricing.billing.rawValue)")
     parts.append("pricing[quantity]=\(data.pricing.quantity)")
     parts.append(contentsOf: (zip(0..., data.teammates).map { idx, email in "teammates[\(idx)]=\(email)" }))

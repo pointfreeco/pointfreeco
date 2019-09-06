@@ -17,7 +17,7 @@ public func subscriptionConfirmation(
   _ coupon: Stripe.Coupon?,
   _ currentUser: User,
   _ stripeJs: String,
-  _ stripePublishableKey: String
+  _ stripePublishableKey: Stripe.Client.PublishableKey
 ) -> [Node] {
   return [
     form(
@@ -29,7 +29,7 @@ public func subscriptionConfirmation(
         style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
       ],
       header(lane)
-        + (lane == .team ? teamMembers(currentUser, subscribeData) : [])
+        + teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData)
         + billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData)
         + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
         + total(lane: lane, coupon: coupon)
@@ -81,7 +81,22 @@ private func header(_ lane: Pricing.Lane) -> [Node] {
   ]
 }
 
-private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirmationData) -> [Node] {
+private func teamMembers(
+  lane: Pricing.Lane,
+  currentUser: User,
+  subscribeData: SubscribeConfirmationData
+  ) -> [Node] {
+
+  guard lane == .team else {
+    return [
+      input([
+        name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+        `type`(.hidden),
+        value("true")
+        ])
+    ]
+  }
+
   return [
     gridRow(
       [`class`([moduleRowClass])],
@@ -91,7 +106,7 @@ private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirma
           [`class`([moduleTitleColumnClass])],
           [h1([`class`([moduleTitleClass])], ["Team members"])]
         ),
-        teamOwner(currentUser),
+        teamOwner(currentUser: currentUser, subscribeData: subscribeData),
         gridColumn(
           sizes: [.mobile: 12],
           [id("team-members")],
@@ -110,6 +125,11 @@ private func teamMembers(_ currentUser: User, _ subscribeData: SubscribeConfirma
                   "template",
                   [("id", "team-member-template")],
                   [teamMemberTemplate("", withRemoveButton: true)]
+                ),
+                .element(
+                  "template",
+                  [("id", "team-member-template-without-remove")],
+                  [teamMemberTemplate("", withRemoveButton: false)]
                 ),
                 a(
                   [
@@ -147,7 +167,10 @@ updateSeats()
               ])
           ],
           [
-            "You can add additional team members at anytime from your account page."
+            """
+You must have at least two seats for your team subscription. You can add additional team members at any time
+from your account page.
+"""
           ]
         )
       ]
@@ -155,14 +178,24 @@ updateSeats()
   ]
 }
 
-private func teamOwner(_ currentUser: User) -> Node {
+private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationData) -> Node {
+  guard subscribeData.isOwnerTakingSeat else {
+    return input([
+      name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+      `type`(.hidden),
+      value("false")
+      ])
+  }
+
   return gridColumn(
     sizes: [.mobile: 12],
     [
+      id("team-owner"),
       `class`([
         Class.border.all,
         Class.pf.colors.border.gray850,
-        Class.padding([.mobile: [.all: 2]])
+        Class.padding([.mobile: [.all: 2]]),
+        Class.margin([.mobile: [.top: 1]]),
         ]),
       HtmlCssSupport.style(lineHeight(0))
     ],
@@ -175,6 +208,11 @@ private func teamOwner(_ currentUser: User) -> Node {
             ])
         ],
         [
+          input([
+            name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+            `type`(.hidden),
+            value("true")
+            ]),
           img(
             src: currentUser.gitHubAvatarUrl.absoluteString,
             alt: "",
@@ -187,7 +225,31 @@ private func teamOwner(_ currentUser: User) -> Node {
               style(width(.px(24)) <> height(.px(24)))
             ]
           ),
-          span([.text(currentUser.displayName)])
+          span(
+            [`class`([Class.size.width100pct])],
+            [.text(currentUser.displayName)]
+          ),
+          a([
+            id("remove-yourself-button"),
+            `class`([
+              Class.cursor.pointer,
+              Class.pf.colors.fg.red,
+              Class.pf.colors.link.red,
+              Class.type.light,
+              Class.pf.type.body.small,
+              Class.pf.type.underlineLink
+              ]),
+            onclick("""
+var ownerRow = this.parentNode.parentNode
+ownerRow.parentNode.removeChild(ownerRow)
+
+var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
+var teamMembersContainer = document.getElementById("team-members")
+teamMembersContainer.insertBefore(teamMember, teamMembersContainer.firstChild)
+
+updateSeats()
+""")
+            ], [.raw("Remove&nbsp;yourself")])
         ]
       )
     ]
@@ -430,7 +492,7 @@ private func payment(
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
   stripeJs: String,
-  stripePublishableKey: String
+  stripePublishableKey: Stripe.Client.PublishableKey
 ) -> [Node] {
   return [
     gridRow(
@@ -477,7 +539,7 @@ private func payment(
               [
                 div([
                   `class`([Class.size.width100pct]),
-                  data("stripe-key", stripePublishableKey),
+                  data("stripe-key", stripePublishableKey.rawValue),
                   id("card-element"),
                 ], []),
               ]
@@ -661,8 +723,9 @@ function updateSeats() {
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
     teamMemberInputs[idx].name = "teammates[" + idx + "]"
   }
+  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers
-    ? teamMembers.childNodes.length + 1
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
