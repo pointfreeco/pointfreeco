@@ -240,7 +240,9 @@ let package = Package(
     .testTarget(
       name: "PointFreeRouterTests",
       dependencies: [
+        "Models",
         "PointFreeRouter",
+        "SnapshotTesting",
         "UrlFormEncoding"
       ]
     ),

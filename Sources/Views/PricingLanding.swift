@@ -422,7 +422,16 @@ private func pricingPlanCta(
         href(
           subscriberState.isActive
             ? path(to: .account(.index))
-            : path(to: plan.lane.map { Route.subscribeConfirmation($0, nil, nil) } ?? .home)
+            : path(
+              to: plan.lane.map {
+                Route.subscribeConfirmation(
+                  lane: $0,
+                  billing: nil,
+                  isOwnerTakingSeat: nil,
+                  teammates: nil
+                )
+                } ?? .home
+          )
         ),
         `class`([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
@@ -774,7 +783,16 @@ private func footer(
       )
     : a(
       [
-        href(path(to: .subscribeConfirmation(.personal, nil, nil))),
+        href(
+          path(
+            to: .subscribeConfirmation(
+              lane: .personal,
+              billing: nil,
+              isOwnerTakingSeat: nil,
+              teammates: nil
+            )
+          )
+        ),
         `class`([Class.pf.components.button(color: .white)])
       ],
       ["Subscribe"]

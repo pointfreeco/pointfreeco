@@ -54,7 +54,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
           let parallel = sequence(
             subscribeData.teammates
               .filter { email in email.rawValue.contains("@") && email != user.email }
-              .prefix(subscribeData.pricing.quantity - 1)
+              .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
               .map { email in
                 Current.database.insertTeamInvite(email, user.id)
                   .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
@@ -65,7 +65,7 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
 
           return lift(parallel.sequential).flatMap { _ in
             Current.database
-              .createSubscription(stripeSubscription, user.id)
+              .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat)
           }
         }
     }
@@ -112,13 +112,19 @@ private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bo
 
 private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
   guard let subscribeData = subscribeData else {
-    return .subscribeConfirmation(.team, .yearly, [""])
+    return .subscribeConfirmation(
+      lane: .team,
+      billing: .yearly,
+      isOwnerTakingSeat: true,
+      teammates: [""]
+    )
   }
   guard let coupon = subscribeData.coupon else {
     return .subscribeConfirmation(
-      subscribeData.pricing.isPersonal ? .personal : .team,
-      subscribeData.pricing.billing,
-      subscribeData.teammates
+      lane: subscribeData.pricing.isPersonal ? .personal : .team,
+      billing: subscribeData.pricing.billing,
+      isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+      teammates: subscribeData.teammates
     )
   }
   return .discounts(code: coupon, subscribeData.pricing.billing)

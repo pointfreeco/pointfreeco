@@ -14,7 +14,7 @@ public struct Client {
   public var createEnterpriseAccount: (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>
   public var createEnterpriseEmail: (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>
   public var createFeedRequestEvent: (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var createSubscription: (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>
+  public var createSubscription: (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>
   public var deleteEnterpriseEmail: (User.Id) -> EitherIO<Error, Prelude.Unit>
   public var deleteTeamInvite: (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>
   public var execute: (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>
@@ -50,7 +50,7 @@ public struct Client {
     createEnterpriseAccount: @escaping (String, EnterpriseAccount.Domain, Models.Subscription.Id) -> EitherIO<Error, EnterpriseAccount?>,
     createEnterpriseEmail: @escaping (EmailAddress, User.Id) -> EitherIO<Error, EnterpriseEmail?>,
     createFeedRequestEvent: @escaping (FeedRequestEvent.FeedType, String, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    createSubscription: @escaping (Stripe.Subscription, Models.User.Id) -> EitherIO<Error, Models.Subscription?>,
+    createSubscription: @escaping (Stripe.Subscription, Models.User.Id, Bool) -> EitherIO<Error, Models.Subscription?>,
     deleteEnterpriseEmail: @escaping (User.Id) -> EitherIO<Error, Prelude.Unit>,
     deleteTeamInvite: @escaping (TeamInvite.Id) -> EitherIO<Error, Prelude.Unit>,
     execute: @escaping (String, [PostgreSQL.NodeRepresentable]) -> EitherIO<Swift.Error, PostgreSQL.Node>,
@@ -144,7 +144,7 @@ extension Client {
       createEnterpriseAccount: client.createEnterpriseAccount(companyName:domain:subscriptionId:),
       createEnterpriseEmail: client.createEnterpriseEmail(email:userId:),
       createFeedRequestEvent: client.createFeedRequestEvent(type:userAgent:userId:),
-      createSubscription: client.createSubscription(with:for:),
+      createSubscription: client.createSubscription(with:for:isOwnerTakingSeat:),
       deleteEnterpriseEmail: client.deleteEnterpriseEmail(for:),
       deleteTeamInvite: client.deleteTeamInvite(id:),
       execute: client.execute,
@@ -260,7 +260,9 @@ private struct _Client {
   }
 
   func createSubscription(
-    with stripeSubscription: Stripe.Subscription, for userId: Models.User.Id
+    with stripeSubscription: Stripe.Subscription,
+    for userId: Models.User.Id,
+    isOwnerTakingSeat: Bool
     )
     -> EitherIO<Error, Models.Subscription?> {
 
@@ -276,7 +278,9 @@ private struct _Client {
         ])
 
       return subscription.flatMap { subscription in
-        self.execute(
+        guard isOwnerTakingSeat else { return pure(subscription) }
+
+        return self.execute(
           """
           UPDATE "users"
           SET "subscription_id" = $1
