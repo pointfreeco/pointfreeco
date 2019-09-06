@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55089
+Content-Length: 55287
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1904,6 +1904,9 @@ html {
           </a>
         </div>
       </div>
+      <input name="isOwnerTakingSeat"
+             type="hidden"
+             value="true">
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -2191,8 +2194,9 @@ function updateSeats() {
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
     teamMemberInputs[idx].name = "teammates[" + idx + "]"
   }
+  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers
-    ? teamMembers.childNodes.length + 1
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats
