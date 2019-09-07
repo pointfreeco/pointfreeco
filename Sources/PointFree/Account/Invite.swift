@@ -15,7 +15,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
 
 let showInviteMiddleware =
   redirectCurrentSubscribers
@@ -191,10 +190,11 @@ func showInviteView(teamInvite: TeamInvite, inviter: User, currentUser: User?) -
   return [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-            currentUser
-              .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
-              ?? showInviteLoggedOutView.view((teamInvite, inviter))
+        div(
+          [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          currentUser
+            .map { showInviteLoggedInView(currentUser: $0, teamInvite: teamInvite, inviter: inviter) }
+            ?? showInviteLoggedOutView(invite: teamInvite, inviter: inviter)
         )
         ])
       ])
@@ -215,64 +215,68 @@ func invalidSubscriptionErrorMiddleware<A>(
   )
 }
 
-private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> [Node] {
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
+          p([
+            "Your colleague ",
+            a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
+            """
            has invited you to join their team on Point-Free, a video series exploring functional programming
           concepts using the Swift programming language. Accepting this invitation gives you access to all of
           the videos, transcripts, and code samples on this site.
           """
-          ]),
+            ]),
 
-        p([
-          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
-          ]),
+          p([
+            "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
+            ]),
 
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(
-            text: "Login with GitHub",
-            type: .black,
-            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
-          )
-          ])
-        ])
-      ])
-    ])
-}
-
-private let showInviteLoggedInView = View<(User, TeamInvite, User)> { currentUser, teamInvite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
-
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
-           has invited you to join their team account on Point-Free, a video series exploring functional
-          programming concepts using the Swift programming language. Accepting this invitation gives you
-          access to all of the videos, transcripts, and code samples on this site.
-          """
-          ]),
-
-        form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
-          input([
-              type(.submit),
-              value("Accept"),
-              `class`([Class.pf.components.button(color: .purple)])
+          p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+            gitHubLink(
+              text: "Login with GitHub",
+              type: .black,
+              href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
+            )
             ])
           ])
         ])
       ])
-    ])
+  ]
+}
+
+private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, inviter: User) -> [Node] {
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+
+          p([
+            "Your colleague ",
+            a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
+            """
+           has invited you to join their team account on Point-Free, a video series exploring functional
+          programming concepts using the Swift programming language. Accepting this invitation gives you
+          access to all of the videos, transcripts, and code samples on this site.
+          """
+            ]),
+
+          form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
+            input([
+              type(.submit),
+              value("Accept"),
+              `class`([Class.pf.components.button(color: .purple)])
+              ])
+            ])
+          ])
+        ])
+      ])
+  ]
 }
 
 private let inviteNotFoundView = [
