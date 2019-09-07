@@ -10,7 +10,6 @@ import Models
 import Optics
 import Prelude
 import Styleguide
-import View
 
 public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAttempted: Int)) -> [Node] {
   return { data in
