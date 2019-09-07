@@ -11,7 +11,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 enum NavStyle {
@@ -107,7 +106,7 @@ struct SimplePageLayoutData<A> {
 }
 
 func respond<A, B>(
-  view: View<B>,
+  view: @escaping (B) -> [Node],
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
   )
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
@@ -117,32 +116,31 @@ func respond<A, B>(
       newLayoutData.flash = conn.request.session.flash
       newLayoutData.isGhosting = conn.request.session.ghosteeId != nil
 
-      let pageLayout = metaLayout(simplePageLayout(view))
-        .map(addGoogleAnalytics)
-        .contramap(
-          Metadata.create(
-            description: newLayoutData.description,
-            image: newLayoutData.image,
-            title: newLayoutData.title,
-            twitterCard: newLayoutData.twitterCard,
-            twitterSite: "@pointfreeco",
-            type: newLayoutData.openGraphType,
-            url: newLayoutData.currentRoute.map(url(to:))
-          )
-      )
+      let pageLayout = Metadata
+        .create(
+          description: newLayoutData.description,
+          image: newLayoutData.image,
+          title: newLayoutData.title,
+          twitterCard: newLayoutData.twitterCard,
+          twitterSite: "@pointfreeco",
+          type: newLayoutData.openGraphType,
+          url: newLayoutData.currentRoute.map(url(to:))
+        )
+        >>> metaLayout(simplePageLayout(view))
+        >>> addGoogleAnalytics
 
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >=> respond(
-          body: Current.renderHtml(pageLayout.view(newLayoutData)),
+          body: Current.renderHtml(pageLayout(newLayoutData)),
           contentType: .html
       )
     }
 }
 
-func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>> {
+func simplePageLayout<A>(_ contentView: @escaping (A) -> [Node]) -> (SimplePageLayoutData<A>) -> [Node] {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
-  return View { layoutData -> [Node] in
+  return { layoutData -> [Node] in
     let blogAtomFeed = Html.link([
       href(url(to: .blog(.feed))),
       rel(.alternate),
@@ -177,10 +175,10 @@ func simplePageLayout<A>(_ contentView: View<A>) -> View<SimplePageLayoutData<A>
         body(
           ghosterBanner(layoutData)
             <> pastDueBanner(layoutData)
-            <> (layoutData.flash.map(flashView.view) ?? [])
+            <> (layoutData.flash.map(flashView) ?? [])
             <> navView(layoutData)
-            <> contentView.view(layoutData.data)
-            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
+            <> contentView(layoutData.data)
+            <> (layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser))
         )
         ])
     ]
@@ -235,7 +233,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   // TODO: custom messages for owner vs teammate
 
-  return flashView.view(
+  return flashView(
     .init(
       priority: .warning,
       message: """
@@ -251,20 +249,32 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   switch data.style {
   case let .base(.some(.mountains(style))):
-    return mountainNavView.view((style, data.currentUser, data.currentSubscriberState, data.currentRoute))
+    return mountainNavView(
+      mountainsStyle: style,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
+    )
 
   case let .base(.some(.minimal(minimalStyle))):
-    return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
+    return minimalNavView(
+      style: minimalStyle,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
+    )
 
   case .base(.none), .minimal:
     return []
   }
 }
 
-let flashView = View<Flash> { flash in
-  gridRow([`class`([flashClass(for: flash.priority)])], [
-    gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
-    ])
+func flashView(_ flash: Flash) -> [Node] {
+  return [
+    gridRow([`class`([flashClass(for: flash.priority)])], [
+      gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
+      ])
+  ]
 }
 
 private func flashClass(for priority: Flash.Priority) -> CssSelector {

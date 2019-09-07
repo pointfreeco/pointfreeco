@@ -7,11 +7,15 @@ import Models
 import PointFreeRouter
 import Styleguide
 import Prelude
-import View
 
-let footerView: View<User?> =
-  curry(footer)([`class`([footerClass])]) >>> pure
-    <¢> footerInfoColumnsView
+func footerView(user: User?) -> [Node] {
+  return [
+    footer(
+      [`class`([footerClass])],
+      footerInfoColumnsView(user: user)
+    )
+  ]
+}
 
 private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
   return gridColumn(sizes: sizes) >>> pure
@@ -19,19 +23,20 @@ private func column(sizes: [Breakpoint: Int]) -> ([Node]) -> [Node] {
 
 private let footerInfoColumn = column(sizes: [.mobile: 12, .desktop: 6])
 
-private let footerInfoColumnsView =
-  pointFreeView.map(footerInfoColumn).contramap(const(unit))
-    <> linksColumnsView
-    <> legalView.map(footerInfoColumn).contramap(const(unit))
+private func footerInfoColumnsView(user: User?) -> [Node] {
+  return footerInfoColumn(pointFreeView)
+    + linksColumnsView(currentUser: user)
+    + footerInfoColumn(legalView)
+}
 
 private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
-private let linksColumnsView = View<User?> { currentUser in
-  contentColumnView.map(linksColumn).view(currentUser)
-    <> moreColumnView.map(linksColumn).view(unit)
+private func linksColumnsView(currentUser: User?) -> [Node] {
+  return linksColumn(contentColumnView(currentUser: currentUser))
+    + linksColumn(moreColumnView)
 }
 
-private let legalView = View<Prelude.Unit> { _ in
+private let legalView: [Node] = [
   p([`class`([legalClass, Class.padding([.mobile: [.top: 2]])])], [
     .text("© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "),
     "All other content is licensed under ",
@@ -43,9 +48,9 @@ private let legalView = View<Prelude.Unit> { _ in
     " to run this site is licensed under the ",
     a([`class`([Class.pf.colors.link.gray650]), href(gitHubUrl(to: .license))], ["MIT license"])
     ])
-}
+]
 
-private let pointFreeView = View<Prelude.Unit> { _ -> Node in
+private let pointFreeView: [Node] = [
   div([`class`([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])], [
     h4([`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])], [
       a([href(path(to: .home)), `class`([Class.pf.colors.link.white])], ["Point-Free"])
@@ -64,33 +69,35 @@ private let pointFreeView = View<Prelude.Unit> { _ -> Node in
       "."
       ]),
     ])
+]
+
+private func contentColumnView(currentUser: User?) -> [Node] {
+
+  return [
+    div([
+      h5([`class`([columnTitleClass])], ["Content"]),
+      ol(
+        [`class`([Class.type.list.reset])],
+        [
+          li([
+            a([`class`([footerLinkClass]), href(path(to: .pricingLanding))], ["Pricing"])
+            ]),
+          li([
+            a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
+            ]),
+          li([
+            a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
+            ]),
+          li([
+            a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
+            ])
+        ]
+      )
+      ])
+  ]
 }
 
-private let contentColumnView = View<User?> { currentUser -> Node in
-
-  return div([
-    h5([`class`([columnTitleClass])], ["Content"]),
-    ol(
-      [`class`([Class.type.list.reset])],
-      [
-        li([
-          a([`class`([footerLinkClass]), href(path(to: .pricingLanding))], ["Pricing"])
-          ]),
-        li([
-          a([`class`([footerLinkClass]), href(path(to: .home))], ["Videos"])
-          ]),
-        li([
-          a([`class`([footerLinkClass]), href(path(to: .blog(.index)))], ["Blog"])
-          ]),
-        li([
-          a([`class`([footerLinkClass]), href(path(to: .about))], ["About Us"])
-          ])
-      ]
-    )
-    ])
-}
-
-private let moreColumnView = View<Prelude.Unit> { _ in
+private let moreColumnView = [
   div([
     h5([`class`([columnTitleClass])], ["More"]),
     ol([`class`([Class.type.list.reset])], [
@@ -108,7 +115,7 @@ private let moreColumnView = View<Prelude.Unit> { _ in
         ]),
       ])
     ])
-}
+]
 
 private let footerClass =
   Class.grid.row

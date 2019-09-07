@@ -9,7 +9,6 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Styleguide
-import View
 #if !os(Linux)
 import WebKit
 #endif
@@ -23,7 +22,7 @@ class MinimalNavViewTests: TestCase {
 
   func testNav_Html() {
     states.forEach { key, state in
-      let doc = testDocView.view(state)
+      let doc = testDocView(state)
 
       assertSnapshot(matching: doc, as: .html, named: key)
     }
@@ -31,7 +30,7 @@ class MinimalNavViewTests: TestCase {
 
   func testNav_Screenshots() {
     states.forEach { key, state in
-      let doc = testDocView.view(state)
+      let doc = testDocView(state)
 
       #if !os(Linux)
       if self.isScreenshotTestingAvailable {
@@ -60,8 +59,15 @@ private let states: [(String, (NavStyle.MinimalStyle, Models.User?, SubscriberSt
   ("light_logged-in_active-subscriber", (.light, .mock, .teammate(status: .active, enterpriseAccount: nil), nil)),
 ]
 
-private let testDocView = View<(NavStyle.MinimalStyle, Models.User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  [
+private func testDocView(
+  _ data: (
+  style: NavStyle.MinimalStyle,
+  currentUser: Models.User?,
+  subscriberState: SubscriberState,
+  currentRoute: Route?
+  )
+  ) -> [Node] {
+  return [
     doctype,
     html([
       head([
@@ -69,7 +75,14 @@ private let testDocView = View<(NavStyle.MinimalStyle, Models.User?, SubscriberS
         HtmlCssSupport.style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),
-      body(minimalNavView.view((style, currentUser, subscriberState, currentRoute)))
+      body(
+        minimalNavView(
+          style: data.style,
+          currentUser: data.currentUser,
+          subscriberState: data.subscriberState,
+          currentRoute: data.currentRoute
+        )
+      )
       ])
   ]
 }

@@ -22,7 +22,7 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail1() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 
@@ -39,7 +39,7 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail2() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 
@@ -56,7 +56,7 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail3() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 

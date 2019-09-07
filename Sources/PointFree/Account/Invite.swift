@@ -15,7 +15,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
 
 let showInviteMiddleware =
   redirectCurrentSubscribers
@@ -98,7 +97,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
               sendEmail(
                 to: [inviter.email],
                 subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: currentUser)))
+                content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
                 )
                 .run
                 .map(const(unit))
@@ -186,17 +185,20 @@ let sendInviteMiddleware =
       }
 }
 
-let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, currentUser in
+func showInviteView(teamInvite: TeamInvite, inviter: User, currentUser: User?) -> [Node] {
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+  return [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+        div(
+          [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           currentUser
-            .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
-            ?? showInviteLoggedOutView.view((teamInvite, inviter))
-      )
+            .map { showInviteLoggedInView(currentUser: $0, teamInvite: teamInvite, inviter: inviter) }
+            ?? showInviteLoggedOutView(invite: teamInvite, inviter: inviter)
+        )
+        ])
       ])
-    ])
+  ]
 }
 
 func invalidSubscriptionErrorMiddleware<A>(
@@ -213,68 +215,71 @@ func invalidSubscriptionErrorMiddleware<A>(
   )
 }
 
-private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
+private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> [Node] {
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
+          p([
+            "Your colleague ",
+            a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
+            """
            has invited you to join their team on Point-Free, a video series exploring functional programming
           concepts using the Swift programming language. Accepting this invitation gives you access to all of
           the videos, transcripts, and code samples on this site.
           """
-          ]),
+            ]),
 
-        p([
-          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
-          ]),
+          p([
+            "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
+            ]),
 
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(
-            text: "Login with GitHub",
-            type: .black,
-            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
-          )
-          ])
-        ])
-      ])
-    ])
-}
-
-private let showInviteLoggedInView = View<(User, TeamInvite, User)> { currentUser, teamInvite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
-
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
-           has invited you to join their team account on Point-Free, a video series exploring functional
-          programming concepts using the Swift programming language. Accepting this invitation gives you
-          access to all of the videos, transcripts, and code samples on this site.
-          """
-          ]),
-
-        form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
-          input([
-              type(.submit),
-              value("Accept"),
-              `class`([Class.pf.components.button(color: .purple)])
+          p([`class`([Class.padding([.mobile: [.top: 3]])])], [
+            gitHubLink(
+              text: "Login with GitHub",
+              type: .black,
+              href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
+            )
             ])
           ])
         ])
       ])
-    ])
+  ]
 }
 
-private let inviteNotFoundView = View<Prelude.Unit> { _ in
+private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, inviter: User) -> [Node] {
+  return [
+    gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
+      gridColumn(sizes: [.mobile: 12], [
+        div([
+          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
 
+          p([
+            "Your colleague ",
+            a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
+            """
+           has invited you to join their team account on Point-Free, a video series exploring functional
+          programming concepts using the Swift programming language. Accepting this invitation gives you
+          access to all of the videos, transcripts, and code samples on this site.
+          """
+            ]),
+
+          form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
+            input([
+              type(.submit),
+              value("Accept"),
+              `class`([Class.pf.components.button(color: .purple)])
+              ])
+            ])
+          ])
+        ])
+      ])
+  ]
+}
+
+private let inviteNotFoundView = [
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
@@ -298,7 +303,7 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
+]
 
 private func requireTeamInvite<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite, A>, Data>
@@ -314,7 +319,7 @@ private func requireTeamInvite<A>(
           return conn.map(const(unit))
             |> writeStatus(.notFound)
             >=> respond(
-              view: inviteNotFoundView,
+              view: { _ in inviteNotFoundView },
               layoutData: { data in
                 SimplePageLayoutData(
                   currentUser: nil,
@@ -339,7 +344,7 @@ func sendInviteEmail(
   return sendEmail(
     to: [invite.email],
     subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    content: inj2(teamInviteEmailView.view((inviter, invite)))
+    content: inj2(teamInviteEmailView((inviter, invite)))
   )
 }
 

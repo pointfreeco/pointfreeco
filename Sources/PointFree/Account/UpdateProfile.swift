@@ -57,7 +57,7 @@ let updateProfileMiddleware: Middleware<
           sendEmail(
             to: [user.email],
             subject: "Email change confirmation",
-            content: inj2(confirmEmailChangeEmailView.view((user, data.email, emailChangePayload)))
+            content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
             )
             .run
           )
@@ -134,7 +134,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
         sendEmail(
           to: [newEmailAddress],
           subject: "Email change confirmation",
-          content: inj2(emailChangedEmailView.view((user, newEmailAddress)))
+          content: inj2(emailChangedEmailView((user, newEmailAddress)))
         )
       }
       .run

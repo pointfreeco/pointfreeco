@@ -77,7 +77,7 @@ private func notifyUserSubscriptionWasRemoved(
       sendEmail(
         to: [user.email],
         subject: "You have been removed from \(enterpriseAccount.companyName)’s Point-Free team",
-        content: inj2(youHaveBeenRemovedEmailView.view(.enterpriseAccount(enterpriseAccount)))
+        content: inj2(youHaveBeenRemovedEmailView(.enterpriseAccount(enterpriseAccount)))
         )
         .map(const(unit))
   }

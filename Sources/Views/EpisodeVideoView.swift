@@ -4,7 +4,6 @@ import Html
 import HtmlCssSupport
 import Models
 import Styleguide
-import View
 
 public func videoView(forEpisode episode: Episode, isEpisodeViewable: Bool) -> Node {
   let episodeSource = isEpisodeViewable
