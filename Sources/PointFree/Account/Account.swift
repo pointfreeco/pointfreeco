@@ -16,7 +16,6 @@ import Styleguide
 import Tagged
 import TaggedMoney
 import Tuple
-import View
 
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
