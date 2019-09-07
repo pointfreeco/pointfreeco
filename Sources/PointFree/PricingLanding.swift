@@ -5,7 +5,6 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Tuple
-import View
 import Views
 
 public let pricingLanding: Middleware<
