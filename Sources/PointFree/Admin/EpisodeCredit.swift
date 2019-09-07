@@ -12,7 +12,6 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 let showEpisodeCreditsMiddleware: Middleware<
