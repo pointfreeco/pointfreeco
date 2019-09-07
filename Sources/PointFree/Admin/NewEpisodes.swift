@@ -12,34 +12,37 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 
 let showNewEpisodeEmailMiddleware =
   writeStatus(.ok)
-    >=> respond(showNewEpisodeView.contramap(lower))
+    >=> respond(lower >>> showNewEpisodeView)
 
-private let showNewEpisodeView = View<User> { _ in
-  ul(
-    Current.episodes()
-      .sorted(by: their(^\.sequence, >))
-      .prefix(upTo: 1)
-      .map(li <<< newEpisodeEmailRowView.view)
-  )
+private func showNewEpisodeView(_: User) -> [Node] {
+  return [
+    ul(
+      Current.episodes()
+        .sorted(by: their(^\.sequence, >))
+        .prefix(upTo: 1)
+        .map(li <<< newEpisodeEmailRowView)
+    )
+  ]
 }
 
-private let newEpisodeEmailRowView = View<Episode> { ep in
-  p([
-    .text("Episode #\(ep.sequence): \(ep.title)"),
+private func newEpisodeEmailRowView(ep: Episode) -> [Node] {
+  return [
+    p([
+      .text("Episode #\(ep.sequence): \(ep.title)"),
 
-    form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
+      form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
 
-      textarea([name("subscriber_announcement"), placeholder("Subscriber announcement")]),
-      textarea([name("nonsubscriber_announcement"), placeholder("Non-subscribers announcements")]),
+        textarea([name("subscriber_announcement"), placeholder("Subscriber announcement")]),
+        textarea([name("nonsubscriber_announcement"), placeholder("Non-subscribers announcements")]),
 
-      input([type(.submit), name("test"), value("Test email!")]),
-      input([type(.submit), name("live"), value("Send email!")])
+        input([type(.submit), name("test"), value("Test email!")]),
+        input([type(.submit), name("live"), value("Send email!")])
+        ])
       ])
-    ])
+  ]
 }
 
 let sendNewEpisodeEmailMiddleware: Middleware<
