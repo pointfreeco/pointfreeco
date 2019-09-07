@@ -249,7 +249,12 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   switch data.style {
   case let .base(.some(.mountains(style))):
-    return mountainNavView.view((style, data.currentUser, data.currentSubscriberState, data.currentRoute))
+    return mountainNavView(
+      mountainsStyle: style,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
+    )
 
   case let .base(.some(.minimal(minimalStyle))):
     return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
