@@ -6,7 +6,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
 let teamInviteEmailView = { inviter, invite in
   SimpleEmailLayoutData(
