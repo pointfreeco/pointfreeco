@@ -179,7 +179,7 @@ func simplePageLayout<A>(_ contentView: @escaping (A) -> [Node]) -> (SimplePageL
             <> (layoutData.flash.map(flashView.view) ?? [])
             <> navView(layoutData)
             <> contentView(layoutData.data)
-            <> (layoutData.style.isMinimal ? [] : footerView.view(layoutData.currentUser))
+            <> (layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser))
         )
         ])
     ]
