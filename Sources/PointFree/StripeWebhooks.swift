@@ -13,7 +13,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Stripe
-import View
 
 let stripeWebhookMiddleware: Middleware<
   StatusLineOpen,
