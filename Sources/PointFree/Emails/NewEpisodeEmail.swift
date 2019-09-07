@@ -11,7 +11,6 @@ import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 import Views
 
 public let newEpisodeEmail = { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
@@ -38,7 +37,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
         td([valign(.top)], [
           div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
 
-              announcementView.view(announcement) <> [
+              announcementView(announcement: announcement) + [
 
                 a([href(url(to: .episode(.left(ep.slug))))], [
                   h3([`class`([Class.pf.type.responsiveTitle3])], [.text("#\(ep.sequence): \(ep.title)")]),
@@ -50,8 +49,8 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
                     ])
                   ])
                 ]
-                <> nonSubscriberCtaView.view((ep, isSubscriber))
-                <> subscriberCtaView.view((ep, isSubscriber))
+                <> nonSubscriberCtaView(ep: ep, isSubscriber: isSubscriber)
+                <> subscriberCtaView(ep: ep, isSubscriber: isSubscriber)
                 <> hostSignOffView.view(unit))
           ])
         ])
@@ -59,7 +58,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
   ]
 }
 
-private let announcementView = View<String?> { announcement -> [Node] in
+private func announcementView(announcement: String?) -> [Node] {
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
 
   return [
@@ -82,7 +81,7 @@ private let announcementView = View<String?> { announcement -> [Node] in
   ]
 }
 
-private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber -> [Node] in
+private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
   guard !isSubscriber else { return [] }
 
   let blurb = ep.subscriberOnly
@@ -110,7 +109,7 @@ private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isS
   ]
 }
 
-private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSubscriber) -> [Node] in
+private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
   guard isSubscriber else { return [] }
 
   return [
