@@ -11,7 +11,6 @@ import Prelude
 import Stripe
 import Syndication
 import Tuple
-import View
 
 let accountRssMiddleware
   : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
