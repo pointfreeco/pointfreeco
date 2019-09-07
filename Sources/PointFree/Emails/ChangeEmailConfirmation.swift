@@ -7,7 +7,6 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
 let confirmEmailChangeEmailView = { user, newEmailAddress, payload in
   SimpleEmailLayoutData(
