@@ -33,7 +33,7 @@ private let linksColumn = column(sizes: [.mobile: 4, .desktop: 2])
 
 private func linksColumnsView(currentUser: User?) -> [Node] {
   return linksColumn(contentColumnView(currentUser: currentUser))
-    + moreColumnView
+    + linksColumn(moreColumnView)
 }
 
 private let legalView: [Node] = [
