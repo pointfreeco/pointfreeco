@@ -21,7 +21,7 @@ let showEpisodeCreditsMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(showEpisodeCreditsView.contramap(const(unit)))
+    >=> respond(showEpisodeCreditsView)
 
 let redeemEpisodeCreditMiddleware: Middleware<
   StatusLineOpen,
