@@ -11,7 +11,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 enum NavStyle {
@@ -176,7 +175,7 @@ func simplePageLayout<A>(_ contentView: @escaping (A) -> [Node]) -> (SimplePageL
         body(
           ghosterBanner(layoutData)
             <> pastDueBanner(layoutData)
-            <> (layoutData.flash.map(flashView.view) ?? [])
+            <> (layoutData.flash.map(flashView) ?? [])
             <> navView(layoutData)
             <> contentView(layoutData.data)
             <> (layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser))
@@ -234,7 +233,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
 
   // TODO: custom messages for owner vs teammate
 
-  return flashView.view(
+  return flashView(
     .init(
       priority: .warning,
       message: """
@@ -260,10 +259,12 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   }
 }
 
-let flashView = View<Flash> { flash in
-  gridRow([`class`([flashClass(for: flash.priority)])], [
-    gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
-    ])
+func flashView(_ flash: Flash) -> [Node] {
+  return [
+    gridRow([`class`([flashClass(for: flash.priority)])], [
+      gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
+      ])
+  ]
 }
 
 private func flashClass(for priority: Flash.Priority) -> CssSelector {
