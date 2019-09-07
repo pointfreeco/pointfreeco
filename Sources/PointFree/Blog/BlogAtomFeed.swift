@@ -5,7 +5,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Syndication
-import View
 import Views
 
 let blogAtomFeedResponse =
