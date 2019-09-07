@@ -670,6 +670,14 @@ The Wikipedia entry for monads.
     title: "Monad (functional programming)"
   )
 
+  public static let whyFunctionalProgrammingMatters = Episode.Reference(
+    author: "John Hughes",
+    blurb: "A classic paper exploring what makes functional programming special. It focuses on two positive aspects that set it apart from the rest: laziness and modularity.",
+    link: "https://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf",
+    publishedAt: Date(timeIntervalSince1970: 607410000),
+    title: "Why Functional Programming Matters"
+  )
+
   public static let composableReducers = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
