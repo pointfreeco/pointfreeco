@@ -8,7 +8,6 @@ import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
-import View
 import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
