@@ -6,7 +6,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
 public func blogIndexView(blogPosts: [BlogPost], currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 
@@ -21,16 +20,16 @@ public func blogIndexView(blogPosts: [BlogPost], currentUser: User?, subscriberS
         gridColumn(
           sizes: [.mobile: 12, .desktop: 9],
           [style(margin(leftRight: .auto))],
-          [div(newPosts.flatMap(newBlogPostView.view))]
-            <> oldBlogPostsView.view(oldPosts)
+          [div(newPosts.flatMap(newBlogPostView))]
+            <> oldBlogPostsView(oldPosts)
         )
       ]
     )
   ]
 }
 
-private let newBlogPostView = View<BlogPost> { post in
-  [
+private func newBlogPostView(_ post: BlogPost) -> [Node] {
+  return [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
       blogPostContentView(post)
@@ -39,7 +38,7 @@ private let newBlogPostView = View<BlogPost> { post in
   ]
 }
 
-private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts -> [Node] in
+private func oldBlogPostsView(_ posts: ArraySlice<BlogPost>) -> [Node] {
   guard !posts.isEmpty else { return [] }
 
   return [
@@ -50,13 +49,13 @@ private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts -> [Node] in
 
     div(
       [`class`([Class.padding([.mobile: [.bottom: 3]])])],
-      posts.flatMap(oldBlogPostView.view)
+      posts.flatMap(oldBlogPostView)
     )
   ]
 }
 
-private let oldBlogPostView = View<BlogPost> { post in
-  [
+private func oldBlogPostView(_ post: BlogPost) -> [Node] {
+  return [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
       [
