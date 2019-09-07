@@ -21,7 +21,7 @@ public let subscribeConfirmation: Middleware<
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(Views.subscriptionConfirmation),
+      view: Views.subscriptionConfirmation,
       layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
           currentRoute: currentRoute,

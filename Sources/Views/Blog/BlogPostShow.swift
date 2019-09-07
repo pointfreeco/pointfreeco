@@ -9,8 +9,8 @@ import Prelude
 import Styleguide
 import View
 
-public let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
-  [
+public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> [Node] {
+  return [
     gridRow(
       [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [

@@ -100,8 +100,8 @@ private func inserted<A>(meta: Metadata<A>, intoHeadOf nodes: [Node]) -> [Node] 
   }
 }
 
-public func metaLayout<A>(_ view: View<A>) -> View<Metadata<A>> {
-  return .init { meta in
-    inserted(meta: meta, intoHeadOf: view.view(meta.rest))
+public func metaLayout<A>(_ view: @escaping (A) -> [Node]) -> (Metadata<A>) -> [Node] {
+  return { meta in
+    inserted(meta: meta, intoHeadOf: view(meta.rest))
   }
 }

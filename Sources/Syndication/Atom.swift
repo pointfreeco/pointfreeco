@@ -42,7 +42,7 @@ public struct AtomFeed {
   }
 }
 
-public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
+public func atomLayout(atomFeed: AtomFeed) -> [Node] {
   let updatedFields = atomFeed.entries
     .max { $0.updated < $1.updated }
     .map { updated($0.updated) }

@@ -35,7 +35,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
     }
 )
 
-let homeView = View<(User?, SubscriberState)> { currentUser, subscriberState -> [Node] in
+func homeView(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 
   let episodes = Current.episodes().sorted(by: their(^\.sequence, >))
 

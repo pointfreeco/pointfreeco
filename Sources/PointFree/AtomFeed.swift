@@ -12,11 +12,13 @@ let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Uni
     >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
-private let episodesFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
-  node(
-    rssChannel: freeEpisodeRssChannel,
-    items: items()
-  )
+private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
+  [
+    node(
+      rssChannel: freeEpisodeRssChannel,
+      items: items()
+    )
+  ]
 }
 
 var freeEpisodeRssChannel: RssChannel {
@@ -185,11 +187,11 @@ extension Application {
   public static var atom = Application(rawValue: "atom+xml")
 }
 
-public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ view: @escaping (A) -> [Node], contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(view.view(conn.data)),
+        body: Current.renderHtml(view(conn.data)),
         contentType: contentType
     )
   }

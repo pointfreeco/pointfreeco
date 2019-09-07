@@ -31,7 +31,7 @@ let paymentInfoResponse =
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(paymentInfoView),
+      view: paymentInfoView,
       layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,

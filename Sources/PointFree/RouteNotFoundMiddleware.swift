@@ -20,7 +20,7 @@ func routeNotFoundMiddleware<A>(
       >=> writeStatus(.notFound)
       >=> map(lower)
       >>> respond(
-        view: routeNotFoundView,
+        view: { _ in routeNotFoundView },
         layoutData: { currentUser, _ in
           SimplePageLayoutData(
             currentUser: currentUser,
@@ -31,7 +31,7 @@ func routeNotFoundMiddleware<A>(
   )
 }
 
-private let routeNotFoundView = View<Prelude.Unit> { _ in
+private let routeNotFoundView = [
   gridRow([`class`([Class.grid.center(.mobile)])], [
     gridColumn(sizes: [.mobile: 6], [
       div([style(padding(topBottom: .rem(12)))], [
@@ -44,4 +44,4 @@ private let routeNotFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
+]

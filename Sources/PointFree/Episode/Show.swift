@@ -18,7 +18,7 @@ import Views
 let episodeResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
+    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
     )
     <| writeStatus(.ok)
     >=> userEpisodePermission
@@ -47,7 +47,7 @@ let episodeResponse =
 let useCreditResponse =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(episodeNotFoundView.contramap(lower))
+    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
     )
     <<< { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
@@ -158,10 +158,9 @@ private func userEpisodePermission<I, Z>(
       .map { conn.map(const($0 .*. conn.data)) }
 }
 
-private let episodeView = View<(EpisodePermission, User?, SubscriberState, Episode)> {
-  permission, user, subscriberState, episode in
+private func episodeView(permission: EpisodePermission, user: User?, subscriberState: SubscriberState, episode: Episode) -> [Node] {
 
-  [
+  return [
     gridRow([
       gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
         div(episodeInfoView.view((permission, episode)))
@@ -799,30 +798,31 @@ private func solution(to exercise: Episode.Exercise) -> [Node] {
   ]
 }
 
-private let episodeNotFoundView = simplePageLayout(_episodeNotFoundView)
-  .contramap { param, user, subscriberState, route in
-    SimplePageLayoutData(
-      currentSubscriberState: subscriberState,
-      currentUser: user,
-      data: (param, user, subscriberState, route),
-      title: "Episode not found :("
-    )
-}
+private let episodeNotFoundView = { param, user, subscriberState, route in
+  SimplePageLayoutData(
+    currentSubscriberState: subscriberState,
+    currentUser: user,
+    data: (param, user, subscriberState, route),
+    title: "Episode not found :("
+  )
+  } >>> simplePageLayout(_episodeNotFoundView)
 
-private let _episodeNotFoundView = View<(Either<String, Episode.Id>, User?, SubscriberState, Route?)> { _, _, _, _ in
+private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> [Node] {
 
-  gridRow([`class`([Class.grid.center(.mobile)])], [
-    gridColumn(sizes: [.mobile: 6], [
-      div([style(padding(topBottom: .rem(12)))], [
-        h5([`class`([Class.h5])], ["Episode not found :("]),
-        pre([
-          code([`class`([Class.pf.components.code(lang: "swift")])], [
-            "f: (Episode) -> Never"
+  return [
+    gridRow([`class`([Class.grid.center(.mobile)])], [
+      gridColumn(sizes: [.mobile: 6], [
+        div([style(padding(topBottom: .rem(12)))], [
+          h5([`class`([Class.h5])], ["Episode not found :("]),
+          pre([
+            code([`class`([Class.pf.components.code(lang: "swift")])], [
+              "f: (Episode) -> Never"
+              ])
             ])
           ])
         ])
       ])
-    ])
+  ]
 }
 
 private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {

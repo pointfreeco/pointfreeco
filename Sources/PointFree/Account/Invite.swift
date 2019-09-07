@@ -186,17 +186,19 @@ let sendInviteMiddleware =
       }
 }
 
-let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, currentUser in
+func showInviteView(teamInvite: TeamInvite, inviter: User, currentUser: User?) -> [Node] {
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          currentUser
-            .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
-            ?? showInviteLoggedOutView.view((teamInvite, inviter))
-      )
+  return [
+    gridRow([
+      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
+        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+            currentUser
+              .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
+              ?? showInviteLoggedOutView.view((teamInvite, inviter))
+        )
+        ])
       ])
-    ])
+  ]
 }
 
 func invalidSubscriptionErrorMiddleware<A>(
@@ -273,8 +275,7 @@ private let showInviteLoggedInView = View<(User, TeamInvite, User)> { currentUse
     ])
 }
 
-private let inviteNotFoundView = View<Prelude.Unit> { _ in
-
+private let inviteNotFoundView = [
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
@@ -298,7 +299,7 @@ private let inviteNotFoundView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
+]
 
 private func requireTeamInvite<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite, A>, Data>
@@ -314,7 +315,7 @@ private func requireTeamInvite<A>(
           return conn.map(const(unit))
             |> writeStatus(.notFound)
             >=> respond(
-              view: inviteNotFoundView,
+              view: { _ in inviteNotFoundView },
               layoutData: { data in
                 SimplePageLayoutData(
                   currentUser: nil,

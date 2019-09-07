@@ -23,7 +23,7 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Sub
     <| fetchAccountData
     >=> writeStatus(.ok)
     >=> respond(
-      view: View(accountView),
+      view: accountView,
       layoutData: { data in
         SimplePageLayoutData(
           currentSubscriberState: data.subscriberState,

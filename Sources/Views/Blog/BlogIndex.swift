@@ -8,23 +8,25 @@ import Prelude
 import Styleguide
 import View
 
-public let blogIndexView = View<([BlogPost], User?, SubscriberState)> { blogPosts, currentUser, subscriberState -> Node in
+public func blogIndexView(blogPosts: [BlogPost], currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 
   let allPosts = blogPosts.sorted(by: their(^\.id, >))
   let newPosts = allPosts.prefix(3)
   let oldPosts = allPosts.dropFirst(3)
 
-  return gridRow(
-    [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
-    [
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 9],
-        [style(margin(leftRight: .auto))],
-        [div(newPosts.flatMap(newBlogPostView.view))]
-          <> oldBlogPostsView.view(oldPosts)
-      )
-    ]
-  )
+  return [
+    gridRow(
+      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+      [
+        gridColumn(
+          sizes: [.mobile: 12, .desktop: 9],
+          [style(margin(leftRight: .auto))],
+          [div(newPosts.flatMap(newBlogPostView.view))]
+            <> oldBlogPostsView.view(oldPosts)
+        )
+      ]
+    )
+  ]
 }
 
 private let newBlogPostView = View<BlogPost> { post in

@@ -12,7 +12,7 @@ let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Sub
   writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(privacyView),
+      view: { _ in privacyView },
       layoutData: { currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(
           currentRoute: currentRoute,

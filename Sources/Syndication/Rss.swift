@@ -268,8 +268,8 @@ public func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
   )
 }
 
-public func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
-  return View { a in
+public func itunesRssFeedLayout<A>(_ view: @escaping (A) -> [Node]) -> (A) -> [Node] {
+  return { a in
     [
       .raw(
         """
@@ -286,7 +286,7 @@ public func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
           .init("xmlns:atom", "http://www.w3.org/2005/Atom"),
           .init("version", "2.0")
         ],
-        view.view(a)
+        view(a)
       )
     ]
   }
