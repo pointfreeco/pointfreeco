@@ -10,94 +10,103 @@ import Optics
 import PointFreeRouter
 import Styleguide
 import Prelude
-import View
 import Views
 
-let minimalNavView = View<(NavStyle.MinimalStyle, User?, SubscriberState, Route?)> { style, currentUser, subscriberState, currentRoute in
-  gridRow([`class`([newNavBarClass(for: style)])], [
-    gridColumn(sizes: [:], [
-      div([`class`([Class.hide(.desktop)])], [
-        a([href(path(to: .home))], [
-          img(
-            base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
-            type: .image(.svg),
-            alt: "",
-            [`class`([Class.hide(.desktop)])]
-          )
-          ])
-        ])
-      ]),
-
-    gridColumn(sizes: [:], [
-      div([`class`([Class.grid.center(.mobile)])], [
-        div([`class`([Class.hide(.mobile)])], [
+func minimalNavView(style: NavStyle.MinimalStyle, currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) -> [Node] {
+  return [
+    gridRow([`class`([newNavBarClass(for: style)])], [
+      gridColumn(sizes: [:], [
+        div([`class`([Class.hide(.desktop)])], [
           a([href(path(to: .home))], [
             img(
-              base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
+              base64: pointFreeDiamondLogoSvgBase64(fill: fillColor(for: style)),
               type: .image(.svg),
               alt: "",
-              [`class`([Class.hide(.mobile)])]
+              [`class`([Class.hide(.desktop)])]
             )
             ])
           ])
-        ])
-      ]),
+        ]),
 
-    gridColumn(
-      sizes: [:],
-      currentUser.map { loggedInNavItemsView.view((style, $0, subscriberState)) }
-        ?? loggedOutNavItemsView.view((style, currentRoute))
-    ),
-    ])
+      gridColumn(sizes: [:], [
+        div([`class`([Class.grid.center(.mobile)])], [
+          div([`class`([Class.hide(.mobile)])], [
+            a([href(path(to: .home))], [
+              img(
+                base64: pointFreeTextLogoSvgBase64(color: fillColor(for: style)),
+                type: .image(.svg),
+                alt: "",
+                [`class`([Class.hide(.mobile)])]
+              )
+              ])
+            ])
+          ])
+        ]),
+
+      gridColumn(
+        sizes: [:],
+        currentUser
+          .map { loggedInNavItemsView(style: style, currentUser: $0, subscriberState: subscriberState) }
+          ?? loggedOutNavItemsView(style: style, currentRoute: currentRoute)
+      ),
+      ])
+  ]
 }
 
-private let loggedInNavItemsView = View<(NavStyle.MinimalStyle, User, SubscriberState)> { style, currentUser, subscriberState in
-  navItems(
-    [
-      blogLinkView,
-      subscriberState.isNonSubscriber ? subscribeLinkView : nil,
-      accountLinkView
-      ]
-      .compactMap(id)
-    )
-    .view(style)
-}
-
-private let loggedOutNavItemsView = navItems([
-  blogLinkView.contramap(first),
-  subscribeLinkView.contramap(first),
-  logInLinkView
-  ])
-
-private func navItems<A>(_ views: [View<A>]) -> View<A> {
-  return View { a in
+private func loggedInNavItemsView(
+  style: NavStyle.MinimalStyle,
+  currentUser: User,
+  subscriberState: SubscriberState
+  ) -> [Node] {
+  return [
     ul([`class`([navListClass])],
-       views
-        .map { (curry(li)([`class`([navListItemClass])]) >>> pure) <¢> $0 }
-        .concat()
-        .view(a)
+       [li([`class`([navListItemClass])], blogLinkView(style: style))]
+        + (
+          subscriberState.isNonSubscriber
+            ? [li([`class`([navListItemClass])], subscribeLinkView(style: style))]
+            : []
+        )
+        + [li([`class`([navListItemClass])], accountLinkView(style: style))]
     )
-  }
+  ]
 }
 
-private let blogLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .blog(.index))), `class`([navLinkClass(for: style)])], ["Blog"])
+private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: Route?) -> [Node] {
+  return [
+    ul([`class`([navListClass])], [
+      li([`class`([navListItemClass])], blogLinkView(style: style)),
+      li([`class`([navListItemClass])], subscribeLinkView(style: style)),
+      li([`class`([navListItemClass])], logInLinkView(style: style, currentRoute: currentRoute)),
+      ])
+  ]
 }
 
-private let subscribeLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .pricingLanding)), `class`([navLinkClass(for: style)])], ["Subscribe"])
+private func blogLinkView(style: NavStyle.MinimalStyle) -> [Node] {
+  return [
+    a([href(path(to: .blog(.index))), `class`([navLinkClass(for: style)])], ["Blog"])
+  ]
 }
 
-private let accountLinkView = View<NavStyle.MinimalStyle> { style in
-  a([href(path(to: .account(.index))), `class`([navLinkClass(for: style)])], ["Account"])
+private func subscribeLinkView(style: NavStyle.MinimalStyle) -> [Node] {
+  return [
+    a([href(path(to: .pricingLanding)), `class`([navLinkClass(for: style)])], ["Subscribe"])
+  ]
 }
 
-private let logInLinkView = View<(NavStyle.MinimalStyle, Route?)> { style, currentRoute in
-  gitHubLink(
-    text: "Log in",
-    type: gitHubLinkType(for: style),
-    href: path(to: .login(redirect: currentRoute.map(url(to:))))
-  )
+private func accountLinkView(style: NavStyle.MinimalStyle) -> [Node] {
+  return [
+    a([href(path(to: .account(.index))), `class`([navLinkClass(for: style)])], ["Account"])
+  ]
+}
+
+private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: Route?) -> [Node] {
+  return [
+    gitHubLink(
+      text: "Log in",
+      type: gitHubLinkType(for: style),
+      href: path(to: .login(redirect: currentRoute.map(url(to:))))
+    )
+  ]
 }
 
 private func gitHubLinkType(for style: NavStyle.MinimalStyle) -> GitHubLinkType {

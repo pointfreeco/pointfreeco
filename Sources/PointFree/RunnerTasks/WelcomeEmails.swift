@@ -8,7 +8,6 @@ import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Styleguide
-import View
 import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
@@ -72,17 +71,16 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
 
 // TODO: team callouts
 
-private func prepareWelcomeEmail(to user: User, subject: String, content: View<User>)
-  -> Email {
-    return prepareEmail(
-      to: [user.email],
-      subject: subject,
-      content: inj2(content.view(user))
-    )
+private func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> [Node]) -> Email {
+  return prepareEmail(
+    to: [user.email],
+    subject: subject,
+    content: inj2(content(user))
+  )
 }
 
-func welcomeEmailView(_ subject: String, _ content: View<User>) -> View<User> {
-  return simpleEmailLayout(content.map(wrapper)).contramap { user in
+func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) -> (User) -> [Node] {
+  return simpleEmailLayout(content >>> wrapper) <<< { user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .welcomeEmails,
@@ -115,8 +113,8 @@ func welcomeEmail1(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail1Content = View<User> { user -> [Node] in
-  [
+func welcomeEmail1Content(user: User) -> [Node] {
+  return [
     markdownBlock(
       """
       👋 Howdy!
@@ -159,7 +157,7 @@ let welcomeEmail1Content = View<User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 func welcomeEmail2(_ user: User) -> Email {
@@ -171,7 +169,7 @@ func welcomeEmail2(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail2Content = View<User> { user -> [Node] in
+func welcomeEmail2Content(user: User) -> [Node] {
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -214,7 +212,7 @@ let welcomeEmail2Content = View<User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 func welcomeEmail3(_ user: User) -> Email {
@@ -226,8 +224,8 @@ func welcomeEmail3(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail3Content = View<User> { user -> [Node] in
-  [
+func welcomeEmail3Content(user: User) -> [Node] {
+  return [
     markdownBlock(
       """
       👋 Hiya!
@@ -278,7 +276,7 @@ let welcomeEmail3Content = View<User> { user -> [Node] in
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 private let subscribeButton = p(

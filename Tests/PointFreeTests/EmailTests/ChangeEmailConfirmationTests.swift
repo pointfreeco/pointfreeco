@@ -17,7 +17,7 @@ class ChangeEmailConfirmationTests: TestCase {
   }
 
   func testChangeEmailConfirmationEmail() {
-    let emailNodes = confirmEmailChangeEmailView.view((.mock, "blobby@blob.co", "f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b4738d82b4e060d069541557960935392ce3ec8d228338d7766255cb8905c5f06a3164194e9b63e064523f3493b8f957ab4"))
+    let emailNodes = confirmEmailChangeEmailView((.mock, "blobby@blob.co", "f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5a0307b4e8516ac36340b4738d82b4e060d069541557960935392ce3ec8d228338d7766255cb8905c5f06a3164194e9b63e064523f3493b8f957ab4"))
 
     assertSnapshot(matching: emailNodes, as: .html)
 
@@ -32,7 +32,7 @@ class ChangeEmailConfirmationTests: TestCase {
   }
 
   func testChangedEmail() {
-    let emailNodes = emailChangedEmailView.view((.mock, "blobby@blob.co"))
+    let emailNodes = emailChangedEmailView((.mock, "blobby@blob.co"))
 
     assertSnapshot(matching: emailNodes, as: .html)
 

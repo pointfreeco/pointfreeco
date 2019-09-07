@@ -13,7 +13,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
 
 let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -31,7 +30,7 @@ let paymentInfoResponse =
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(paymentInfoView),
+      view: paymentInfoView,
       layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,

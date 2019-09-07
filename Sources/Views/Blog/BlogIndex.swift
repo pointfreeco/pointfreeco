@@ -6,38 +6,39 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
-public let blogIndexView = View<([BlogPost], User?, SubscriberState)> { blogPosts, currentUser, subscriberState -> Node in
+public func blogIndexView(blogPosts: [BlogPost], currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 
   let allPosts = blogPosts.sorted(by: their(^\.id, >))
   let newPosts = allPosts.prefix(3)
   let oldPosts = allPosts.dropFirst(3)
 
-  return gridRow(
-    [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
-    [
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 9],
-        [style(margin(leftRight: .auto))],
-        [div(newPosts.flatMap(newBlogPostView.view))]
-          <> oldBlogPostsView.view(oldPosts)
-      )
-    ]
-  )
+  return [
+    gridRow(
+      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
+      [
+        gridColumn(
+          sizes: [.mobile: 12, .desktop: 9],
+          [style(margin(leftRight: .auto))],
+          [div(newPosts.flatMap(newBlogPostView))]
+            <> oldBlogPostsView(oldPosts)
+        )
+      ]
+    )
+  ]
 }
 
-private let newBlogPostView = View<BlogPost> { post in
-  [
+private func newBlogPostView(_ post: BlogPost) -> [Node] {
+  return [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
-      blogPostContentView.view(post)
+      blogPostContentView(post)
     ),
     hr([`class`([Class.pf.components.divider])])
   ]
 }
 
-private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts -> [Node] in
+private func oldBlogPostsView(_ posts: ArraySlice<BlogPost>) -> [Node] {
   guard !posts.isEmpty else { return [] }
 
   return [
@@ -48,13 +49,13 @@ private let oldBlogPostsView = View<ArraySlice<BlogPost>> { posts -> [Node] in
 
     div(
       [`class`([Class.padding([.mobile: [.bottom: 3]])])],
-      posts.flatMap(oldBlogPostView.view)
+      posts.flatMap(oldBlogPostView)
     )
   ]
 }
 
-private let oldBlogPostView = View<BlogPost> { post in
-  [
+private func oldBlogPostView(_ post: BlogPost) -> [Node] {
+  return [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
       [

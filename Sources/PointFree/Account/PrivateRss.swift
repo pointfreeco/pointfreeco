@@ -11,7 +11,6 @@ import Prelude
 import Stripe
 import Syndication
 import Tuple
-import View
 
 let accountRssMiddleware
   : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
@@ -159,11 +158,13 @@ private func fetchStripeSubscriptionForUser<A>(
     }
 }
 
-private let privateEpisodesFeedView = itunesRssFeedLayout <| View<(Stripe.Subscription?, User)> { subscription, user -> Node in
-  node(
-    rssChannel: privateRssChannel(user: user),
-    items: items(forUser: user, subscription: subscription)
-  )
+private let privateEpisodesFeedView = itunesRssFeedLayout { (data: (subscription: Stripe.Subscription?, user: User)) -> [Node] in
+  [
+    node(
+      rssChannel: privateRssChannel(user: data.user),
+      items: items(forUser: data.user, subscription: data.subscription)
+    )
+  ]
 }
 
 func privateRssChannel(user: User) -> RssChannel {
@@ -268,11 +269,13 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
   )
 }
 
-private let invalidatedFeedView = itunesRssFeedLayout <| View<String> { errorMessage in
-  node(
-    rssChannel: invalidatedChannel(errorMessage: errorMessage),
-    items: [invalidatedItem(errorMessage: errorMessage)]
-  )
+private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
+  [
+    node(
+      rssChannel: invalidatedChannel(errorMessage: errorMessage),
+      items: [invalidatedItem(errorMessage: errorMessage)]
+    )
+  ]
 }
 
 private func invalidatedChannel(errorMessage: String) -> RssChannel {
