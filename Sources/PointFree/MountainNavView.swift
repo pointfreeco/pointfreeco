@@ -10,7 +10,6 @@ import Optics
 import PointFreeRouter
 import Styleguide
 import Prelude
-import View
 import Views
 
 func mountainNavView(mountainsStyle: NavStyle.MountainsStyle, currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) -> [Node] {
