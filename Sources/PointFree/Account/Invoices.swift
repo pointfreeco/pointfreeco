@@ -14,7 +14,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
 
 // MARK: Middleware
 
@@ -116,15 +115,15 @@ func invoicesView(subscription: Stripe.Subscription, invoicesEnvelope: Stripe.Li
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
         div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-            titleRowView.view(unit)
-              <> invoicesRowView.view(invoicesEnvelope)
+            titleRowView
+              + invoicesRowView(invoicesEnvelope: invoicesEnvelope)
         )
         ])
       ])
   ]
 }
 
-private let titleRowView = View<Prelude.Unit> { _ in
+private let titleRowView = [
   gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
     gridColumn(sizes: [.mobile: 12], [
       div([
@@ -132,36 +131,38 @@ private let titleRowView = View<Prelude.Unit> { _ in
         ])
       ])
     ])
-}
+]
 
-private let invoicesRowView = View<Stripe.ListEnvelope<Stripe.Invoice>> { invoicesEnvelope in
-  div(
-    invoicesEnvelope.data.map { invoice in
-      gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-        gridColumn(sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])], [
-          div([.text("#" + invoice.number.rawValue)])
-          ]),
-        gridColumn(sizes: [.mobile: 4], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])], [
-          div([.text(dateFormatter.string(from: invoice.date))])
-          ]),
-        gridColumn(sizes: [.mobile: 2], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])], [
-          div([.text(format(cents: invoice.total))])
-          ]),
-        gridColumn(sizes: [.mobile: 2], [`class`([Class.grid.end(.mobile), Class.grid.end(.desktop)])], [
-          div([
-            a(
-              [
-                `class`([Class.pf.components.button(color: .purple, size: .small)]),
-                href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
-                target(.blank),
-              ],
-              ["Print"]
-            )
-            ])
-          ]),
-        ])
-    }
-  )
+private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoice>) -> [Node] {
+  return [
+    div(
+      invoicesEnvelope.data.map { invoice in
+        gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
+          gridColumn(sizes: [.mobile: 4], [`class`([Class.type.fontFamily.monospace])], [
+            div([.text("#" + invoice.number.rawValue)])
+            ]),
+          gridColumn(sizes: [.mobile: 4], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])], [
+            div([.text(dateFormatter.string(from: invoice.date))])
+            ]),
+          gridColumn(sizes: [.mobile: 2], [`class`([Class.type.align.end, Class.type.fontFamily.monospace])], [
+            div([.text(format(cents: invoice.total))])
+            ]),
+          gridColumn(sizes: [.mobile: 2], [`class`([Class.grid.end(.mobile), Class.grid.end(.desktop)])], [
+            div([
+              a(
+                [
+                  `class`([Class.pf.components.button(color: .purple, size: .small)]),
+                  href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
+                  target(.blank),
+                ],
+                ["Print"]
+              )
+              ])
+            ]),
+          ])
+      }
+    )
+  ]
 }
 
 private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.Invoice) -> String {
