@@ -587,7 +587,7 @@ private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bo
     .reduce(into: State()) { state, block in
       if case .title = block.type { state.titleCount += 1 }
       state.nodes += state.titleCount <= 1 || isEpisodeViewable
-        ? transcriptBlockView.view(block)
+        ? transcriptBlockView(block)
         : []
     }
     .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)

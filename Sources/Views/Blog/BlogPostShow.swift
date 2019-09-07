@@ -77,7 +77,7 @@ public let blogPostContentView = View<BlogPost> { post in
 
     div(
       [`class`([Class.pf.colors.bg.white])],
-      post.contentBlocks.flatMap(transcriptBlockView.view)
+      post.contentBlocks.flatMap(transcriptBlockView)
     )
   ]
 }
