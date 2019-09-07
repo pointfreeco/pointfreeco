@@ -211,7 +211,7 @@ private func sendEnterpriseInvitation<Z>(
       sendEmail(
         to: [request.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
-        content: inj2(enterpriseInviteEmailView.view((account, encryptedEmail, encryptedUserId)))
+        content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
         )
         .run
         .parallel
@@ -238,40 +238,45 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
     .map(^\.right)
 }
 
-let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
-  .contramap { account, encryptedEmail, encryptedUserId in
-    SimpleEmailLayoutData(
-      user: nil,
-      newsletter: nil,
-      title: "You’re invited to join the \(account.companyName) team on Point-Free",
-      preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
-      template: .default,
-      data: (account, encryptedEmail, encryptedUserId)
-    )
-}
+let enterpriseInviteEmailView = { account, encryptedEmail, encryptedUserId in
+  SimpleEmailLayoutData(
+    user: nil,
+    newsletter: nil,
+    title: "You’re invited to join the \(account.companyName) team on Point-Free",
+    preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
+    template: .default,
+    data: (account, encryptedEmail, encryptedUserId)
+  )
+  } >>> simpleEmailLayout(enterpriseInviteEmailBodyView)
 
-private let enterpriseInviteEmailBodyView = View<(EnterpriseAccount, Encrypted<String>, Encrypted<String>)> { account, encryptedEmail, encryptedUserId in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
-            "about functional programming and the Swift programming language. To accept, simply click the ",
-            "link below!"
-            ]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            a([
-              href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
-              `class`([Class.pf.components.button(color: .purple)])
-              ],
-              ["Click here to accept!"])
+private func enterpriseInviteEmailBodyView(
+  account: EnterpriseAccount,
+  encryptedEmail: Encrypted<String>,
+  encryptedUserId: Encrypted<String>
+  ) -> [Node] {
+  return [
+    emailTable([style(contentTableStyles)], [
+      tr([
+        td([valign(.top)], [
+          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+            h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
+            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+              "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
+              "about functional programming and the Swift programming language. To accept, simply click the ",
+              "link below!"
+              ]),
+            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+              a([
+                href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
+                `class`([Class.pf.components.button(color: .purple)])
+                ],
+                ["Click here to accept!"])
+              ])
             ])
           ])
         ])
       ])
-    ])
+  ]
 }
 
 fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {

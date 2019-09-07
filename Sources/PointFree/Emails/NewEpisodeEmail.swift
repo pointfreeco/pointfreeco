@@ -14,48 +14,49 @@ import Styleguide
 import View
 import Views
 
-public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
-  .contramap { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
-    SimpleEmailLayoutData(
-      user: user,
-      newsletter: .newEpisode,
-      title: "New Point-Free Episode: \(episode.title)",
-      preheader: episode.blurb,
-      template: .default,
-      data: (
-        episode,
-        user.subscriptionId != nil
-          ? subscriberAnnouncement
-          : nonSubscriberAnnouncement,
-        user.subscriptionId != nil
-      )
+public let newEpisodeEmail = { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
+  SimpleEmailLayoutData(
+    user: user,
+    newsletter: .newEpisode,
+    title: "New Point-Free Episode: \(episode.title)",
+    preheader: episode.blurb,
+    template: .default,
+    data: (
+      episode,
+      user.subscriptionId != nil
+        ? subscriberAnnouncement
+        : nonSubscriberAnnouncement,
+      user.subscriptionId != nil
     )
-}
+  )
+  } >>> simpleEmailLayout(newEpisodeEmailContent)
 
-let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, announcement, isSubscriber in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bool) -> [Node] {
+  return [
+    emailTable([style(contentTableStyles)], [
+      tr([
+        td([valign(.top)], [
+          div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
 
-            announcementView.view(announcement) <> [
+              announcementView.view(announcement) <> [
 
-              a([href(url(to: .episode(.left(ep.slug))))], [
-                h3([`class`([Class.pf.type.responsiveTitle3])], [.text("#\(ep.sequence): \(ep.title)")]),
-                ]),
-              p([.text(ep.blurb)]),
-              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
                 a([href(url(to: .episode(.left(ep.slug))))], [
-                  img([src(ep.image), alt(""), style(maxWidth(.pct(100)))])
+                  h3([`class`([Class.pf.type.responsiveTitle3])], [.text("#\(ep.sequence): \(ep.title)")]),
+                  ]),
+                p([.text(ep.blurb)]),
+                p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+                  a([href(url(to: .episode(.left(ep.slug))))], [
+                    img([src(ep.image), alt(""), style(maxWidth(.pct(100)))])
+                    ])
                   ])
-                ])
-              ]
-              <> nonSubscriberCtaView.view((ep, isSubscriber))
-              <> subscriberCtaView.view((ep, isSubscriber))
-              <> hostSignOffView.view(unit))
+                ]
+                <> nonSubscriberCtaView.view((ep, isSubscriber))
+                <> subscriberCtaView.view((ep, isSubscriber))
+                <> hostSignOffView.view(unit))
+          ])
         ])
       ])
-    ])
+  ]
 }
 
 private let announcementView = View<String?> { announcement -> [Node] in

@@ -145,7 +145,7 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
               sendEmail(
                 to: [email.email],
                 subject: "Point-Free Registration",
-                content: inj2(registrationEmailView.view(env.gitHubUser))
+                content: inj2(registrationEmailView(env.gitHubUser))
                 )
                 .run
               )

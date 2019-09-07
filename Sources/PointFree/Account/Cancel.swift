@@ -206,24 +206,23 @@ private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscripti
     return sendEmail(
       to: [owner.email],
       subject: "Your subscription has been canceled",
-      content: inj2(cancelEmailView.view((owner, subscription)))
+      content: inj2(cancelEmailView((owner, subscription)))
     )
 }
 
-let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
-  .contramap { owner, subscription in
-    SimpleEmailLayoutData(
-      user: nil,
-      newsletter: nil,
-      title: "Your subscription has been canceled",
-      preheader: """
-      Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
-      \(dateFormatter.string(from: subscription.currentPeriodEnd)).
-      """,
-      template: .default,
-      data: (owner, subscription)
-    )
-}
+let cancelEmailView = { owner, subscription in
+  SimpleEmailLayoutData(
+    user: nil,
+    newsletter: nil,
+    title: "Your subscription has been canceled",
+    preheader: """
+    Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
+    \(dateFormatter.string(from: subscription.currentPeriodEnd)).
+    """,
+    template: .default,
+    data: (owner, subscription)
+  )
+  } >>> simpleEmailLayout(cancelEmailBodyView)
 
 private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
   return [
@@ -254,21 +253,20 @@ private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscr
     return sendEmail(
       to: [owner.email],
       subject: "Your subscription has been reactivated",
-      content: inj2(reactivateEmailView.view((owner, subscription)))
+      content: inj2(reactivateEmailView((owner, subscription)))
     )
 }
 
-let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
-  .contramap { owner, subscription in
-    SimpleEmailLayoutData(
-      user: nil,
-      newsletter: nil,
-      title: "Your subscription has been reactivated",
-      preheader: "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
-      template: .default,
-      data: (owner, subscription)
-    )
-}
+let reactivateEmailView = { owner, subscription in
+  SimpleEmailLayoutData(
+    user: nil,
+    newsletter: nil,
+    title: "Your subscription has been reactivated",
+    preheader: "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+    template: .default,
+    data: (owner, subscription)
+  )
+  } >>> simpleEmailLayout(reactivateEmailBodyView)
 
 private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
   return [

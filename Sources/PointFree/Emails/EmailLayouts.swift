@@ -36,8 +36,8 @@ struct SimpleEmailLayoutData<A> {
 let emailStylesheet = styleguide
   <> a % key("border-bottom", "1px solid black")
 
-func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>> {
-  return View { layoutData -> [Node] in
+func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> [Node]) -> (SimpleEmailLayoutData<A>) -> [Node] {
+  return { layoutData -> [Node] in
     [
       doctype,
       html([.init("xmlns", "http://www.w3.org/1999/xhtml")], [
@@ -64,7 +64,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
 
             tr([
               td([align(.center), valign(.top)],
-                 bodyView.view(layoutData.data)
+                 bodyView(layoutData.data)
                   <> emailFooterView.view((layoutData.user, layoutData.newsletter)))
               ])
             ])
@@ -72,7 +72,7 @@ func simpleEmailLayout<A>(_ bodyView: View<A>) -> View<SimpleEmailLayoutData<A>>
         ])
       ]
     }
-    .map { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
+    >>> { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
 }
 
 let bodyTableStyles =

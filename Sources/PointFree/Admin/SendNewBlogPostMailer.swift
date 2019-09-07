@@ -138,7 +138,7 @@ private func sendEmail(
 
   // A personalized email to send to each user.
   let newBlogPostEmails = users.map { user in
-    lift(IO { newBlogPostEmail.view((post, subscriberAnnouncement, nonsubscriberAnnouncement, user)) })
+    lift(IO { newBlogPostEmail((post, subscriberAnnouncement, nonsubscriberAnnouncement, user)) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
@@ -158,7 +158,7 @@ private func sendEmail(
         to: adminEmails,
         subject: "New blog post email finished sending!",
         content: inj2(
-          newBlogPostEmailAdminReportEmail.view(
+          newBlogPostEmailAdminReportEmail(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

@@ -98,7 +98,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
               sendEmail(
                 to: [inviter.email],
                 subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: currentUser)))
+                content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
                 )
                 .run
                 .map(const(unit))
@@ -340,7 +340,7 @@ func sendInviteEmail(
   return sendEmail(
     to: [invite.email],
     subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    content: inj2(teamInviteEmailView.view((inviter, invite)))
+    content: inj2(teamInviteEmailView((inviter, invite)))
   )
 }
 

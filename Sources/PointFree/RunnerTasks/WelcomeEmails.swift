@@ -72,17 +72,16 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
 
 // TODO: team callouts
 
-private func prepareWelcomeEmail(to user: User, subject: String, content: View<User>)
-  -> Email {
-    return prepareEmail(
-      to: [user.email],
-      subject: subject,
-      content: inj2(content.view(user))
-    )
+private func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> [Node]) -> Email {
+  return prepareEmail(
+    to: [user.email],
+    subject: subject,
+    content: inj2(content(user))
+  )
 }
 
-func welcomeEmailView(_ subject: String, _ content: View<User>) -> View<User> {
-  return simpleEmailLayout(content.map(wrapper)).contramap { user in
+func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) -> (User) -> [Node] {
+  return { user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .welcomeEmails,
@@ -91,7 +90,7 @@ func welcomeEmailView(_ subject: String, _ content: View<User>) -> View<User> {
       template: .default,
       data: user
     )
-  }
+    } >>> simpleEmailLayout(content >>> wrapper)
 }
 
 private let wrapper = { view in
@@ -115,8 +114,8 @@ func welcomeEmail1(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail1Content = View<User> { user -> [Node] in
-  [
+func welcomeEmail1Content(user: User) -> [Node] {
+  return [
     markdownBlock(
       """
       👋 Howdy!
@@ -171,7 +170,7 @@ func welcomeEmail2(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail2Content = View<User> { user -> [Node] in
+func welcomeEmail2Content(user: User) -> [Node] {
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -226,8 +225,8 @@ func welcomeEmail3(_ user: User) -> Email {
   )
 }
 
-let welcomeEmail3Content = View<User> { user -> [Node] in
-  [
+func welcomeEmail3Content(user: User) -> [Node] {
+  return [
     markdownBlock(
       """
       👋 Hiya!
