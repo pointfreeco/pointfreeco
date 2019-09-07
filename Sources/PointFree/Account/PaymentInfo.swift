@@ -13,7 +13,6 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
-import View
 
 let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
