@@ -1,8 +1,9 @@
 import Html
+import HtmlUpgrade
 import Optics
 import Prelude
 
-public func addGoogleAnalytics(_ nodes: [Node]) -> [Node] {
+public func addGoogleAnalytics(_ nodes: [HtmlUpgrade.Node]) -> [HtmlUpgrade.Node] {
   return nodes.map { node in
     switch node {
     case .comment:

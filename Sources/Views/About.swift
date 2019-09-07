@@ -1,6 +1,7 @@
 import Css
 import FunctionalCss
 import Html
+import HtmlUpgrade
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -19,6 +20,8 @@ public struct Host {
     twitterRoute: TwitterRoute,
     website: String
     ) {
+
+
     self.bio = bio
     self.image = image
     self.name = name
@@ -29,7 +32,7 @@ public struct Host {
 
 public let aboutExtraStyles = hostImgStyles <> hostBioStyles
 
-public func aboutView(hosts: [Host]) -> [Node] {
+public func aboutView(hosts: [Host]) -> [Html.Node] {
   return [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], [
@@ -59,7 +62,7 @@ public func aboutView(hosts: [Host]) -> [Node] {
   ]
 }
 
-private func hostsView(hosts: [Host]) -> [Node] {
+private func hostsView(hosts: [Host]) -> [Html.Node] {
   return [
     h1(
       [
@@ -86,7 +89,7 @@ private func hostsView(hosts: [Host]) -> [Node] {
     + hosts.flatMap(hostView)
 }
 
-private func hostView(host: Host) -> [Node] {
+private func hostView(host: Host) -> [Html.Node] {
   return [
     div(
       [`class`([Class.padding([.mobile: [.bottom: 3]])])],
@@ -139,7 +142,7 @@ private func hostView(host: Host) -> [Node] {
   ]
 }
 
-private let aboutSectionView: [Node] = [
+private let aboutSectionView: [Html.Node] = [
   h1([`class`([Class.pf.type.responsiveTitle3])], ["About"]),
   markdownBlock("""
       Point-Free is a video series about functional programming and the Swift programming language. Each
@@ -203,7 +206,7 @@ private let aboutSectionView: [Node] = [
   p(["And so much more…"]),
 ]
 
-private let openSourceSection: [Node] = [
+private let openSourceSection: [Html.Node] = [
   h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], ["Open source"]),
   p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
     "When we ",
