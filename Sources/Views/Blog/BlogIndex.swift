@@ -33,7 +33,7 @@ private let newBlogPostView = View<BlogPost> { post in
   [
     div(
       [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
-      blogPostContentView.view(post)
+      blogPostContentView(post)
     ),
     hr([`class`([Class.pf.components.divider])])
   ]

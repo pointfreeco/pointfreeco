@@ -7,7 +7,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
 public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> [Node] {
   return [
@@ -20,8 +19,8 @@ public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -
           [
             div(
               [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
-              blogPostContentView.view(post)
-                <> subscriberCalloutView.view(subscriberState)
+              blogPostContentView(post)
+                <> subscriberCalloutView(subscriberState)
             )
           ]
         )
@@ -30,8 +29,8 @@ public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -
   ]
 }
 
-public let blogPostContentView = View<BlogPost> { post in
-  [
+public func blogPostContentView(_ post: BlogPost) -> [Node] {
+  return [
     h1(
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
@@ -82,7 +81,7 @@ public let blogPostContentView = View<BlogPost> { post in
   ]
 }
 
-private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+private func subscriberCalloutView(_ subscriberState: SubscriberState) -> [Node] {
   guard !subscriberState.isActive else { return [] }
 
   return [
