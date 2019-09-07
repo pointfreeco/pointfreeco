@@ -4,7 +4,6 @@ import HtmlCssSupport
 import Models
 import Prelude
 import Styleguide
-import View
 
 enum EmailLayoutTemplate {
   case blog
