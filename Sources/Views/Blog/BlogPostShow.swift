@@ -7,10 +7,9 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 
-public let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscriberState in
-  [
+public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> [Node] {
+  return [
     gridRow(
       [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
       [
@@ -20,8 +19,8 @@ public let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscrib
           [
             div(
               [`class`([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
-              blogPostContentView.view(post)
-                <> subscriberCalloutView.view(subscriberState)
+              blogPostContentView(post)
+                <> subscriberCalloutView(subscriberState)
             )
           ]
         )
@@ -30,8 +29,8 @@ public let blogPostShowView = View<(BlogPost, SubscriberState)> { post, subscrib
   ]
 }
 
-public let blogPostContentView = View<BlogPost> { post in
-  [
+public func blogPostContentView(_ post: BlogPost) -> [Node] {
+  return [
     h1(
       [`class`([Class.pf.type.responsiveTitle3]),],
       [
@@ -77,12 +76,12 @@ public let blogPostContentView = View<BlogPost> { post in
 
     div(
       [`class`([Class.pf.colors.bg.white])],
-      post.contentBlocks.flatMap(transcriptBlockView.view)
+      post.contentBlocks.flatMap(transcriptBlockView)
     )
   ]
 }
 
-private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
+private func subscriberCalloutView(_ subscriberState: SubscriberState) -> [Node] {
   guard !subscriberState.isActive else { return [] }
 
   return [

@@ -7,7 +7,6 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Tuple
-import View
 import Views
 
 public let subscribeConfirmation: Middleware<
@@ -21,7 +20,7 @@ public let subscribeConfirmation: Middleware<
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(Views.subscriptionConfirmation),
+      view: Views.subscriptionConfirmation,
       layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
           currentRoute: currentRoute,

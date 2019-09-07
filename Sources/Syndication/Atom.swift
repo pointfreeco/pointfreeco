@@ -1,6 +1,5 @@
 import Foundation
 import Html
-import View
 
 public struct AtomAuthor {
   public var email: String
@@ -42,7 +41,7 @@ public struct AtomFeed {
   }
 }
 
-public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
+public func atomLayout(atomFeed: AtomFeed) -> [Node] {
   let updatedFields = atomFeed.entries
     .max { $0.updated < $1.updated }
     .map { updated($0.updated) }
@@ -76,22 +75,24 @@ public let atomLayout = View<AtomFeed> { atomFeed -> [Node] in
             ]),
           ]
           + updatedFields
-          + atomFeed.entries.flatMap(atomEntry.view)
+          + atomFeed.entries.flatMap(atomEntry)
         )
         .compactMap { $0 }
     )
   ]
 }
 
-public let atomEntry = View<AtomEntry> { atomEntry in
-  return entry([
-    title(atomEntry.title),
-    // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-    element("link", [.init("href", atomEntry.siteUrl) as Attribute<Void>], [""]),
-    updated(atomEntry.updated),
-    id(atomEntry.siteUrl),
-    content([type("html")], atomEntry.content)
-    ])
+public func atomEntry(_ atomEntry: AtomEntry) -> [Node] {
+  return [
+    entry([
+      title(atomEntry.title),
+      // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+      element("link", [.init("href", atomEntry.siteUrl) as Attribute<Void>], [""]),
+      updated(atomEntry.updated),
+      id(atomEntry.siteUrl),
+      content([type("html")], atomEntry.content)
+      ])
+  ]
 }
 
 extension Tag {

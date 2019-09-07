@@ -4,9 +4,8 @@ import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide
-import View
 
-public let privacyView =
+public let privacyView = [
   gridRow([
     gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
       div(
@@ -22,6 +21,7 @@ public let privacyView =
       )
       ])
     ])
+]
 
 private let privacyPolicy =
   personalIdentificationInformation

@@ -12,7 +12,6 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 
 public let adminEmails: [EmailAddress] = [
   "mbw234@gmail.com",
@@ -37,28 +36,30 @@ func requireAdmin<A>(
 
 let adminIndex =
   writeStatus(.ok)
-    >=> respond(adminIndexView.contramap(lower))
+    >=> respond(lower >>> adminIndexView)
 
-private let adminIndexView = View<User> { currentUser in
-  ul([
-    li([
-      a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
-      ]),
+private func adminIndexView(currentUser: User) -> [Node] {
+  return [
+    ul([
+      li([
+        a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
+        ]),
 
-    li([
-      a([href(path(to: .admin(.episodeCredits(.show))))], ["Send episode credits"])
-      ]),
+      li([
+        a([href(path(to: .admin(.episodeCredits(.show))))], ["Send episode credits"])
+        ]),
 
-    li([
-      a([href(path(to: .admin(.freeEpisodeEmail(.index))))], ["Send free episode email"]),
-      ]),
+      li([
+        a([href(path(to: .admin(.freeEpisodeEmail(.index))))], ["Send free episode email"]),
+        ]),
 
-    li([
-      a([href(path(to: .admin(.newBlogPostEmail(.index))))], ["Send new blog post email"]),
-      ]),
+      li([
+        a([href(path(to: .admin(.newBlogPostEmail(.index))))], ["Send new blog post email"]),
+        ]),
 
-    li([
-      a([href(path(to: .admin(.ghost(.index))))], ["Ghost a user"]),
-      ]),
-    ])
+      li([
+        a([href(path(to: .admin(.ghost(.index))))], ["Ghost a user"]),
+        ]),
+      ])
+  ]
 }

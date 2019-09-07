@@ -215,7 +215,7 @@ final class StripeWebhooksTests: TestCase {
   }
 
   func testPastDueEmail() {
-    let doc = pastDueEmailView.view(unit)
+    let doc = pastDueEmailView(unit)
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

@@ -12,7 +12,6 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 let showEpisodeCreditsMiddleware: Middleware<
@@ -22,7 +21,7 @@ let showEpisodeCreditsMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(showEpisodeCreditsView.contramap(const(unit)))
+    >=> respond(showEpisodeCreditsView)
 
 let redeemEpisodeCreditMiddleware: Middleware<
   StatusLineOpen,
