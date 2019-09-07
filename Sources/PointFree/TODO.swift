@@ -15,7 +15,6 @@ import Styleguide
 import Tagged
 import Tuple
 import UrlFormEncoding
-import View
 
 extension Tagged where Tag == EncryptedTag, RawValue == String {
   public init?(_ text: String, with secret: AppSecret) {
@@ -47,7 +46,7 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
 /// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
 /// - Returns: New middleware that operates on optional values.
 public func requireSome<A>(
-  notFoundView: View<Prelude.Unit>
+  notFoundView: [Node]
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {

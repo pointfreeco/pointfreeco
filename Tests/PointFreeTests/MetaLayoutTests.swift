@@ -5,14 +5,13 @@ import Prelude
 import SnapshotTesting
 @testable import PointFree
 import PointFreeTestSupport
-import View
 import XCTest
 
 class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
 
-    let view = View<Prelude.Unit> { _ in
-      [
+    func view(_: Prelude.Unit) -> [Node] {
+      return [
         doctype,
         html([
           head([title("Point-Free")]),
@@ -24,7 +23,7 @@ class MetaLayoutTests: TestCase {
     let layoutView = metaLayout(view)
 
     assertSnapshot(
-      matching: layoutView.view(
+      matching: layoutView(
         .init(
           description: "A video series on functional programming.",
           image: "http://www.example.com/image.jpg",

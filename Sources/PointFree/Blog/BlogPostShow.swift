@@ -11,7 +11,6 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, Route?>, Data> =

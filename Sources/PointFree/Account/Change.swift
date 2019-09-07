@@ -14,7 +14,6 @@ import Stripe
 import Styleguide
 import TaggedMoney
 import Tuple
-import View
 
 // MARK: Middleware
 
