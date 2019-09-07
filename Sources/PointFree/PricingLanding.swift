@@ -5,7 +5,6 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Tuple
-import View
 import Views
 
 public let pricingLanding: Middleware<
@@ -17,7 +16,7 @@ public let pricingLanding: Middleware<
   = writeStatus(.ok)
     >=> map(lower)
     >>> respond(
-      view: View(Views.pricingLanding),
+      view: Views.pricingLanding,
       layoutData: { currentUser, allEpisodeCount, episodeHourCount, freeEpisodeCount, currentRoute, subscriberState in
         SimplePageLayoutData(
           currentRoute: currentRoute,

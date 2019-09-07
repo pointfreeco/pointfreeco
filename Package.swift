@@ -212,7 +212,6 @@ let package = Package(
         "TaggedMoney",
         "Tuple",
         "UrlFormEncoding",
-        "View",
         "Views",
         ]
     ),
@@ -355,7 +354,6 @@ let package = Package(
       dependencies: [
         "Html",
         "HtmlUpgrade",
-        "View",
         ]),
 
     .testTarget(
@@ -374,7 +372,6 @@ let package = Package(
         "PointFreeRouter",
         "Prelude",
         "Styleguide",
-        "View",
         ]),
 
     .testTarget(

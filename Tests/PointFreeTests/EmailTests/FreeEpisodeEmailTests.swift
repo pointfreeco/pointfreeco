@@ -18,7 +18,7 @@ class FreeEpisodeEmailTests: TestCase {
   }
 
   func testFreeEpisodeEmail() {
-    let doc = freeEpisodeEmail.view((Current.episodes().first!, .mock))
+    let doc = freeEpisodeEmail((Current.episodes().first!, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

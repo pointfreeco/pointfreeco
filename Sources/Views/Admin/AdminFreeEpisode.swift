@@ -4,7 +4,6 @@ import Models
 import Optics
 import PointFreeRouter
 import Prelude
-import View
 
 public func freeEpisodeView(episodes: [Episode], today: Date) -> [Node] {
   return [
