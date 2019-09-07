@@ -7,7 +7,6 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Tuple
-import View
 import Views
 
 public let subscribeConfirmation: Middleware<
