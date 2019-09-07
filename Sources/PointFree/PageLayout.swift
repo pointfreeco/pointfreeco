@@ -159,48 +159,52 @@ func simplePageLayout<A>(
   ) -> (SimplePageLayoutData<A>) -> HtmlUpgrade.Node {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
   return { layoutData -> HtmlUpgrade.Node in
-    let blogAtomFeed = HtmlUpgrade.Node.link([
-      href(url(to: .blog(.feed))),
-      rel(.alternate),
-      title("Point-Free Blog"),
-      type(.application(.atom)),
-      ])
-
-    let episodeAtomFeed = Html.link([
-      href(url(to: .feed(.episodes))),
-      rel(.alternate),
-      title("Point-Free Episodes"),
-      type(.application(.atom)),
-      ])
-
-    return .fragment([
-      .doctype,
-      .html([.lang(.en)], [
-        .head([
-          .meta([.charset(.utf8)]),
-          .title(layoutData.title),
-          .style(unsafe: renderedNormalizeCss),
-          .style(styleguide, config: cssConfig),
-          .style(layoutData.extraStyles, config: cssConfig),
-          .meta(viewport: .width(.deviceWidth), .initialScale(1)),
+    fatalError()
+//    let blogAtomFeed = HtmlUpgrade.Node.link([
+//      href(url(to: .blog(.feed))),
+//      rel(.alternate),
+//      title("Point-Free Blog"),
+//      type(.application(.atom)),
+//      ])
+//
+//    let episodeAtomFeed = Html.link([
+//      href(url(to: .feed(.episodes))),
+//      rel(.alternate),
+//      title("Point-Free Episodes"),
+//      type(.application(.atom)),
+//      ])
+//
+//    return .fragment([
+//      .doctype,
+//      .html(
+//        [.lang(.en)],
+//        [
+//        .head([
+//          .meta([.charset(.utf8)]),
+//          .title(layoutData.title),
+//          .style(unsafe: renderedNormalizeCss),
+//          .style(styleguide, config: cssConfig),
+//          .style(layoutData.extraStyles, config: cssConfig),
+//          .meta(viewport: .width(.deviceWidth), .initialScale(1)),
 //          episodeAtomFeed,
 //          blogAtomFeed,
-          ]
+//          ]
 //          <> (layoutData.usePrismJs ? prismJsHead : [])
 //          <> favicons
 //          <> layoutData.extraHead
-        ),
-        body(
+//        ),
+//        body(
+//          []
 //          ghosterBanner(layoutData)
 //            <> pastDueBanner(layoutData)
 //            <> (layoutData.flash.map(flashView) ?? [])
 //            <> navView(layoutData)
 //            <>
-              contentView(layoutData.data)
+//              contentView(layoutData.data)
 //            <> (layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser))
-        )
-        ])
-    ])
+//        )
+//        ])
+//    ])
   }
 }
 
