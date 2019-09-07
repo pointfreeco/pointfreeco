@@ -11,7 +11,6 @@ import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 import Views
 
 let newBlogPostEmail = { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
@@ -37,7 +36,7 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> [Node] {
         td([valign(.top)], [
           div(
             [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
-            announcementView.view(announcement)
+            announcementView(announcement: announcement)
           ),
 
           div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], [
@@ -82,7 +81,7 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> [Node] {
   ]
 }
 
-private let announcementView = View<String?> { announcement -> [Node] in
+private func announcementView(announcement: String?) -> [Node] {
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
 
   return [
