@@ -4,7 +4,6 @@ import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide
-import View
 
 public let privacyView = [
   gridRow([
