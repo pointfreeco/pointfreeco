@@ -5,7 +5,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Syndication
-import View
 
 let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
