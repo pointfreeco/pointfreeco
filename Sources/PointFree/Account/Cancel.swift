@@ -15,7 +15,6 @@ import Prelude
 import Styleguide
 import Stripe
 import Tuple
-import View
 
 // MARK: Middleware
 
@@ -226,25 +225,27 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
     )
 }
 
-private let cancelEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            "Your ",
-            strong([.text(subscription.plan.nickname)]),
-            " subscription has been canceled and will remain active through ",
-            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
-            ". If you change your mind before then, you can reactivate from ",
-            a([href(url(to: .account(.index)))], ["your account page"]),
-            "."
+private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
+  return [
+    emailTable([style(contentTableStyles)], [
+      tr([
+        td([valign(.top)], [
+          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+            h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
+            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+              "Your ",
+              strong([.text(subscription.plan.nickname)]),
+              " subscription has been canceled and will remain active through ",
+              .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+              ". If you change your mind before then, you can reactivate from ",
+              a([href(url(to: .account(.index)))], ["your account page"]),
+              "."
+              ])
             ])
           ])
         ])
       ])
-    ])
+  ]
 }
 
 private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
@@ -269,21 +270,23 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
     )
 }
 
-private let reactivateEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-            "Thanks for sticking with us! Your ",
-            strong([.text(subscription.plan.nickname)]),
-            " subscription has been reactivated and will renew on ",
-            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
-            "."
+private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
+  return [
+    emailTable([style(contentTableStyles)], [
+      tr([
+        td([valign(.top)], [
+          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+            h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
+            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+              "Thanks for sticking with us! Your ",
+              strong([.text(subscription.plan.nickname)]),
+              " subscription has been reactivated and will renew on ",
+              .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+              "."
+              ])
             ])
           ])
         ])
       ])
-    ])
+  ]
 }
