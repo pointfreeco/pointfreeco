@@ -51,7 +51,7 @@ func homeView(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
 private let subscriberCalloutView = View<SubscriberState> { subscriberState -> [Node] in
   guard subscriberState.isNonSubscriber else { return [] }
 
-  return dividerView.view(unit) <> [
+  return divider + [
     gridRow([
       gridColumn(
         sizes: [.desktop: 9, .mobile: 12],
@@ -106,7 +106,7 @@ private let episodesListView = View<ArraySlice<Episode>> { eps in
 
 private let episodeRowView = View<Episode> { ep in
 
-  dividerView.view(unit) + [
+  divider + [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView.view(ep)),
 
@@ -127,7 +127,7 @@ private let episodeRowView = View<Episode> { ep in
 private let episodeInfoColumnView = View<Episode> { ep in
   div(
     [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-    topLevelEpisodeInfoView.view(ep) + [
+    topLevelEpisodeInfoView(ep: ep) + [
       div([`class`([Class.margin([.mobile: [.top: 3]])])], [
         a(
           [href(path(to: .episode(.left(ep.slug)))), `class`([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])],
