@@ -5,7 +5,6 @@ import Models
 import PointFreeRouter
 import Prelude
 import Tuple
-import View
 import Views
 
 let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
