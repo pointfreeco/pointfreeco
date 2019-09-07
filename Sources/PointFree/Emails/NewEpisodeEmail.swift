@@ -51,7 +51,8 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
                 ]
                 <> nonSubscriberCtaView(ep: ep, isSubscriber: isSubscriber)
                 <> subscriberCtaView(ep: ep, isSubscriber: isSubscriber)
-                <> hostSignOffView.view(unit))
+                <> hostSignOffView
+          )
           ])
         ])
       ])

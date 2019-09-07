@@ -158,7 +158,7 @@ func welcomeEmail1Content(user: User) -> [Node] {
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 func welcomeEmail2(_ user: User) -> Email {
@@ -213,7 +213,7 @@ func welcomeEmail2Content(user: User) -> [Node] {
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 func welcomeEmail3(_ user: User) -> Email {
@@ -277,7 +277,7 @@ func welcomeEmail3Content(user: User) -> [Node] {
     subscribeButton,
     ]
     .compactMap(id)
-    <> hostSignOffView.view(unit)
+    + hostSignOffView
 }
 
 private let subscribeButton = p(

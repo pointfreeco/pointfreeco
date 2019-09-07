@@ -60,16 +60,16 @@ func simpleEmailLayout<A>(_ bodyView: @escaping (A) -> [Node]) -> (SimpleEmailLa
                 )
                 ])
               ]),
-
+            
             tr([
               td([align(.center), valign(.top)],
                  bodyView(layoutData.data)
-                  <> emailFooterView.view((layoutData.user, layoutData.newsletter)))
+                  + emailFooterView(user: layoutData.user, newsletter: layoutData.newsletter))
               ])
             ])
           ])
         ])
-      ]
+    ]
     }
     >>> { applyInlineStyles(nodes: $0, stylesheet: emailStylesheet) }
 }

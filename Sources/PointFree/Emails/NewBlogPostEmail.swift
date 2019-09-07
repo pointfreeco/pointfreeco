@@ -73,7 +73,7 @@ func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> [Node] {
 
           div(
             [`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
-            hostSignOffView.view(unit)
+            hostSignOffView
           )
           ])
         ])

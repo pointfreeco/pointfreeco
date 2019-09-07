@@ -77,7 +77,8 @@ func freeEpisodeEmailContent(ep: Episode) -> [Node] {
                 ["Watch now!"])
               ])
             ]
-            <> hostSignOffView.view(unit))
+            + hostSignOffView
+          )
           ])
         ])
       ])

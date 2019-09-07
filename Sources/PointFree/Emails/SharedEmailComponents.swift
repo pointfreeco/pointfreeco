@@ -6,45 +6,46 @@ import Models
 import PointFreeRouter
 import Styleguide
 import Prelude
-import View
 
-let hostSignOffView = View<Prelude.Unit> { _ in
-  [
-    p([`class`([Class.padding([.mobile: [.top: 2]])])], [
-      "Your hosts,"
-      ]),
-    p([
-      a([href(twitterUrl(to: .mbrandonw))], [.raw("Brandon&nbsp;Williams")]),
-      " & ",
-      a([href(twitterUrl(to: .stephencelis))], [.raw("Stephen&nbsp;Celis")]),
+let hostSignOffView = [
+  p([`class`([Class.padding([.mobile: [.top: 2]])])], [
+    "Your hosts,"
+    ]),
+  p([
+    a([href(twitterUrl(to: .mbrandonw))], [.raw("Brandon&nbsp;Williams")]),
+    " & ",
+    a([href(twitterUrl(to: .stephencelis))], [.raw("Stephen&nbsp;Celis")]),
+    ])
+]
+
+func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> [Node] {
+  return [
+    emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
+      tr([
+        td([valign(.top)], [
+          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
+            p([`class`([Class.pf.type.body.small])], [
+              "Contact us via email at ",
+              a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
+              ", or on Twitter ",
+              a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
+              "."
+              ]),
+
+            p([`class`([Class.pf.type.body.small])], [
+              "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
+              ]),
+
+            ]
+            + unsubscribeView(user: user, newsletter: newsletter)
+          )
+          ])
+        ])
       ])
   ]
 }
 
-let emailFooterView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          p([`class`([Class.pf.type.body.small])], [
-            "Contact us via email at ",
-            a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
-            ", or on Twitter ",
-            a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
-            "."
-            ]),
-
-          p([`class`([Class.pf.type.body.small])], [
-            "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
-            ]),
-
-          ] + unsubscribeView.view((user, newsletter)))
-        ])
-      ])
-    ])
-}
-
-private let unsubscribeView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
+private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) -> [Node] {
   guard
     let user = user,
     let newsletter = newsletter
