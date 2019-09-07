@@ -9,7 +9,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
-import View
 
 func routeNotFoundMiddleware<A>(
   _ conn: Conn<StatusLineOpen, A>
