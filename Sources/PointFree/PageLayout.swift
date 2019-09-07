@@ -257,7 +257,12 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
     )
 
   case let .base(.some(.minimal(minimalStyle))):
-    return minimalNavView.view((minimalStyle, data.currentUser, data.currentSubscriberState, data.currentRoute))
+    return minimalNavView(
+      style: minimalStyle,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
+    )
 
   case .base(.none), .minimal:
     return []
