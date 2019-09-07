@@ -131,7 +131,7 @@ private func sendPastDueEmail(to owner: User)
     )
 }
 
-let pastDueEmailView = { unit in
+let pastDueEmailView = simpleEmailLayout(pastDueEmailBodyView) <<< { unit in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -140,7 +140,7 @@ let pastDueEmailView = { unit in
     template: .default,
     data: unit
   )
-  } >>> simpleEmailLayout(pastDueEmailBodyView)
+}
 
 private func pastDueEmailBodyView(_: Prelude.Unit) -> [Node] {
   return [

@@ -13,21 +13,22 @@ import Prelude
 import Styleguide
 import Views
 
-let newBlogPostEmail = { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
-  SimpleEmailLayoutData(
-    user: user,
-    newsletter: .newBlogPost,
-    title: "Point-Free Pointer: \(post.title)",
-    preheader: post.blurb,
-    template: .blog,
-    data: (
-      post,
-      user.subscriptionId != nil
-        ? subscriberAnnouncement
-        : nonSubscriberAnnouncement
+let newBlogPostEmail = simpleEmailLayout(newBlogPostEmailContent)
+  <<< { post, subscriberAnnouncement, nonSubscriberAnnouncement, user in
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: .newBlogPost,
+      title: "Point-Free Pointer: \(post.title)",
+      preheader: post.blurb,
+      template: .blog,
+      data: (
+        post,
+        user.subscriptionId != nil
+          ? subscriberAnnouncement
+          : nonSubscriberAnnouncement
+      )
     )
-  )
-  } >>> simpleEmailLayout(newBlogPostEmailContent)
+}
 
 func newBlogPostEmailContent(post: BlogPost, announcement: String?) -> [Node] {
   return [
@@ -104,16 +105,17 @@ private func announcementView(announcement: String?) -> [Node] {
   ]
 }
 
-let newBlogPostEmailAdminReportEmail = { erroredUsers, totalAttempted in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "New blog post email finished sending!",
-    preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
-    template: .blog,
-    data: (erroredUsers, totalAttempted)
-  )
-  } >>> simpleEmailLayout(newBlogPostEmailAdminReportEmailContent)
+let newBlogPostEmailAdminReportEmail = simpleEmailLayout(newBlogPostEmailAdminReportEmailContent)
+  <<< { erroredUsers, totalAttempted in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "New blog post email finished sending!",
+      preheader: "\(totalAttempted) attempted emails, \(erroredUsers.count) errors",
+      template: .blog,
+      data: (erroredUsers, totalAttempted)
+    )
+}
 
 func newBlogPostEmailAdminReportEmailContent(erroredUsers: [User], totalAttempted: Int) -> [Node] {
   return [

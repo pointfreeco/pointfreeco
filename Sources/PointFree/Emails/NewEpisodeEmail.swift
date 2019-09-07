@@ -13,22 +13,23 @@ import Prelude
 import Styleguide
 import Views
 
-public let newEpisodeEmail = { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
-  SimpleEmailLayoutData(
-    user: user,
-    newsletter: .newEpisode,
-    title: "New Point-Free Episode: \(episode.title)",
-    preheader: episode.blurb,
-    template: .default,
-    data: (
-      episode,
-      user.subscriptionId != nil
-        ? subscriberAnnouncement
-        : nonSubscriberAnnouncement,
-      user.subscriptionId != nil
+public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
+  <<< { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
+    SimpleEmailLayoutData(
+      user: user,
+      newsletter: .newEpisode,
+      title: "New Point-Free Episode: \(episode.title)",
+      preheader: episode.blurb,
+      template: .default,
+      data: (
+        episode,
+        user.subscriptionId != nil
+          ? subscriberAnnouncement
+          : nonSubscriberAnnouncement,
+        user.subscriptionId != nil
+      )
     )
-  )
-  } >>> simpleEmailLayout(newEpisodeEmailContent)
+}
 
 func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bool) -> [Node] {
   return [
@@ -36,9 +37,9 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
       tr([
         td([valign(.top)], [
           div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
-
+              
               announcementView(announcement: announcement) + [
-
+                
                 a([href(url(to: .episode(.left(ep.slug))))], [
                   h3([`class`([Class.pf.type.responsiveTitle3])], [.text("#\(ep.sequence): \(ep.title)")]),
                   ]),
@@ -61,7 +62,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
 
 private func announcementView(announcement: String?) -> [Node] {
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
-
+  
   return [
     blockquote(
       [
@@ -84,15 +85,15 @@ private func announcementView(announcement: String?) -> [Node] {
 
 private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
   guard !isSubscriber else { return [] }
-
+  
   let blurb = ep.subscriberOnly
     ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
     : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
-
+  
   let watchText = ep.subscriberOnly
     ? "Watch preview"
     : "Watch"
-
+  
   return [
     p([.text(blurb)]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
@@ -102,7 +103,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
       a(
         [
           href(url(to: .episode(.left(ep.slug)))),
-            `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
+          `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
         ],
         [.text(watchText)]
       )
@@ -112,7 +113,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
 
 private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> [Node] {
   guard isSubscriber else { return [] }
-
+  
   return [
     p([.text("This episode is \(ep.length / 60) minutes long.")]),
     p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [

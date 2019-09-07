@@ -77,7 +77,7 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAcco
 private func requireEnterpriseAccount<A, Z>(
   _ middleware: @escaping AppMiddleware<T3<A, EnterpriseAccount, Z>>
   ) -> AppMiddleware<T3<A, EnterpriseAccount.Domain, Z>> {
-
+  
   return middleware
     |> filterMap(
       over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2),
@@ -91,7 +91,7 @@ private func requireEnterpriseAccount<A, Z>(
 private func createEnterpriseEmail(
   _ data: Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
   ) -> IO<Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>?> {
-
+  
   return Current.database.createEnterpriseEmail(get3(data), get4(data))
     .map(const(data))
     .run
@@ -101,7 +101,7 @@ private func createEnterpriseEmail(
 private func linkToEnterpriseSubscription<Z>(
   _ data: T3<User, EnterpriseAccount, Z>
   ) -> IO<T3<User, EnterpriseAccount, Z>?> {
-
+  
   return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
     .map(const(data))
     .run
@@ -111,9 +111,9 @@ private func linkToEnterpriseSubscription<Z>(
 private func successfullyAcceptedInviteMiddleware<A, Z>(
   _ conn: Conn<StatusLineOpen, T3<A, EnterpriseAccount, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
-
+  
   let account = get2(conn.data)
-
+  
   return conn
     |> redirect(
       to: pointFreeRouter.path(to: .account(.index)),
@@ -136,10 +136,10 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
 private func validateMembership<Z>(
   _ middleware: @escaping AppMiddleware<T3<User?, EnterpriseAccount, Z>>
   ) -> AppMiddleware<T3<User?, EnterpriseAccount, Z>> {
-
+  
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
-
+    
     if user?.subscriptionId == account.subscriptionId {
       return conn |> redirect(
         to: .account(.index),
@@ -157,29 +157,29 @@ private func validateMembership<Z>(
 private func validateInvitation(
   _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
   ) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>? {
-
+  
   let (user, account, encryptedEmail, encryptedUserId) = lower(data)
-
+  
   // Make sure email decrypts correctly
   guard let email = encryptedEmail.decrypt(with: Current.envVars.appSecret)
     .map(EmailAddress.init(rawValue:))
     else { return nil }
-
+  
   // Make sure email address is on the same domain as the enterprise account
   guard email.hasDomain(account.domain)
     else { return nil }
-
+  
   // Make sure user id decrypts correctly.
   guard let userId = encryptedUserId.decrypt(with: Current.envVars.appSecret)
     .flatMap(UUID.init(uuidString:))
     .map(User.Id.init(rawValue:))
     else { return nil }
-
+  
   // Validates that the userId encrypted into the invite link is the same as the email accepting the
   // invitation.
   guard userId == user.id
     else { return nil }
-
+  
   return .some(
     data
       |> over3(const(email))
@@ -190,10 +190,10 @@ private func validateInvitation(
 private func sendEnterpriseInvitation<Z>(
   _ middleware: @escaping AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
   ) -> AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
-
+  
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
-
+    
     if !request.email.hasDomain(account.domain) {
       return conn
         |> redirect(
@@ -206,7 +206,7 @@ private func sendEnterpriseInvitation<Z>(
     } else if
       let encryptedEmail = Encrypted(request.email.rawValue, with: Current.envVars.appSecret),
       let encryptedUserId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret) {
-
+      
       sendEmail(
         to: [request.email],
         subject: "You’re invited to join the \(account.companyName) team on Point-Free",
@@ -237,16 +237,17 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
     .map(^\.right)
 }
 
-let enterpriseInviteEmailView = { account, encryptedEmail, encryptedUserId in
-  SimpleEmailLayoutData(
-    user: nil,
-    newsletter: nil,
-    title: "You’re invited to join the \(account.companyName) team on Point-Free",
-    preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
-    template: .default,
-    data: (account, encryptedEmail, encryptedUserId)
-  )
-  } >>> simpleEmailLayout(enterpriseInviteEmailBodyView)
+let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)
+  <<< { account, encryptedEmail, encryptedUserId in
+    SimpleEmailLayoutData(
+      user: nil,
+      newsletter: nil,
+      title: "You’re invited to join the \(account.companyName) team on Point-Free",
+      preheader: "You’re invited to join the \(account.companyName) team on Point-Free.",
+      template: .default,
+      data: (account, encryptedEmail, encryptedUserId)
+    )
+}
 
 private func enterpriseInviteEmailBodyView(
   account: EnterpriseAccount,
@@ -287,19 +288,19 @@ fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAdd
 private func redirectCurrentSubscribers<Z>(
   _ middleware: @escaping AppMiddleware<T2<User, Z>>
   ) -> AppMiddleware<T2<User, Z>> {
-
+  
   return { conn in
     let user = get1(conn.data)
     guard let subscriptionId = user.subscriptionId
       else { return middleware(conn) }
-
+    
     let hasActiveSubscription = Current.database.fetchSubscriptionById(subscriptionId)
       .mapExcept(requireSome)
       .bimap(const(unit), id)
       .flatMap { Current.stripe.fetchSubscription($0.stripeSubscriptionId) }
       .run
       .map { $0.right?.isRenewing ?? false }
-
+    
     return hasActiveSubscription.flatMap {
       $0
         ? conn

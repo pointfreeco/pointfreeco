@@ -12,7 +12,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let freeEpisodeEmail = { ep, user in
+let freeEpisodeEmail = simpleEmailLayout(freeEpisodeEmailContent) <<< { ep, user in
   SimpleEmailLayoutData(
     user: user,
     newsletter: .newEpisode,
@@ -21,7 +21,7 @@ let freeEpisodeEmail = { ep, user in
     template: .default,
     data: ep
   )
-  } >>> simpleEmailLayout(freeEpisodeEmailContent)
+}
 
 let freeEpisodeBlurb = """
 Every once in awhile we release a past episode for free to all of our viewers, and today is that day!

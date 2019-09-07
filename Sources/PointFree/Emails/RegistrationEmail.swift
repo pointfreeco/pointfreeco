@@ -7,7 +7,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let registrationEmailView = { user in
+let registrationEmailView = simpleEmailLayout(registrationEmailBody) <<< { user in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -16,7 +16,7 @@ let registrationEmailView = { user in
     template: .default,
     data: user
   )
-  } >>> simpleEmailLayout(registrationEmailBody)
+}
 
 private func registrationEmailBody(user: GitHubUser) -> [Node] {
   return [

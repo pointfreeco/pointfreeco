@@ -80,7 +80,7 @@ private func prepareWelcomeEmail(to user: User, subject: String, content: (User)
 }
 
 func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) -> (User) -> [Node] {
-  return { user in
+  return simpleEmailLayout(content >>> wrapper) <<< { user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .welcomeEmails,
@@ -89,7 +89,7 @@ func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) 
       template: .default,
       data: user
     )
-    } >>> simpleEmailLayout(content >>> wrapper)
+  }
 }
 
 private let wrapper = { view in

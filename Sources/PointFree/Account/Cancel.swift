@@ -210,7 +210,7 @@ private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscripti
     )
 }
 
-let cancelEmailView = { owner, subscription in
+let cancelEmailView = simpleEmailLayout(cancelEmailBodyView) <<< { owner, subscription in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -222,7 +222,7 @@ let cancelEmailView = { owner, subscription in
     template: .default,
     data: (owner, subscription)
   )
-  } >>> simpleEmailLayout(cancelEmailBodyView)
+}
 
 private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
   return [
@@ -257,7 +257,7 @@ private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscr
     )
 }
 
-let reactivateEmailView = { owner, subscription in
+let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView) <<< { owner, subscription in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -266,7 +266,7 @@ let reactivateEmailView = { owner, subscription in
     template: .default,
     data: (owner, subscription)
   )
-  } >>> simpleEmailLayout(reactivateEmailBodyView)
+}
 
 private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
   return [

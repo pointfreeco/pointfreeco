@@ -21,7 +21,7 @@ public func adminEmailReport(_ type: String) -> ((erroredUsers: [User], totalAtt
       template: .default,
       data: (type, data.erroredUsers, data.totalAttempted)
     )
-    } >>> simpleEmailLayout(adminEmailReportContent)
+  } >>> simpleEmailLayout(adminEmailReportContent)
 }
 
 func adminEmailReportContent(data: (type: String, erroredUsers: [User], totalAttempted: Int)) -> [Node] {

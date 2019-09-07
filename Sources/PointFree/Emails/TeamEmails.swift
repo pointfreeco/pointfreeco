@@ -21,7 +21,7 @@ enum RemovalType {
   }
 }
 
-let youHaveBeenRemovedEmailView = { removalType in
+let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody) <<< { removalType in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -30,7 +30,7 @@ let youHaveBeenRemovedEmailView = { removalType in
     template: .default,
     data: removalType
   )
-  } >>> simpleEmailLayout(youHaveBeenRemovedEmailBody)
+}
 
 private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> [Node] {
   return [
@@ -61,7 +61,7 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> [Node] {
   ]
 }
 
-let teammateRemovedEmailView = { teamOwner, teammate in
+let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody) <<< { teamOwner, teammate in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -70,7 +70,7 @@ let teammateRemovedEmailView = { teamOwner, teammate in
     template: .default,
     data: (teamOwner, teammate)
   )
-  } >>> simpleEmailLayout(teammateRemovedEmailBody)
+}
 
 private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> [Node] {
   return [

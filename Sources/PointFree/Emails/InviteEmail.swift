@@ -7,7 +7,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let teamInviteEmailView = { inviter, invite in
+let teamInviteEmailView = simpleEmailLayout(teamInviteEmailBodyView) <<< { inviter, invite in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -16,7 +16,7 @@ let teamInviteEmailView = { inviter, invite in
     template: .default,
     data: (inviter, invite)
   )
-  } >>> simpleEmailLayout(teamInviteEmailBodyView)
+}
 
 private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> [Node] {
   return [
@@ -47,7 +47,7 @@ private func teamInviteEmailBodyView(inviter: User, invite: TeamInvite) -> [Node
   ]
 }
 
-let inviteeAcceptedEmailView = { inviter, invitee in
+let inviteeAcceptedEmailView = simpleEmailLayout(inviteeAcceptedEmailBodyView) <<< { inviter, invitee in
   SimpleEmailLayoutData(
     user: nil,
     newsletter: nil,
@@ -56,7 +56,7 @@ let inviteeAcceptedEmailView = { inviter, invitee in
     template: .default,
     data: (inviter, invitee)
   )
-  } >>> simpleEmailLayout(inviteeAcceptedEmailBodyView)
+}
 
 private func inviteeAcceptedEmailBodyView(inviter: User, invitee: User) -> [Node] {
   return [

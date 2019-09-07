@@ -8,7 +8,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-let confirmEmailChangeEmailView = { user, newEmailAddress, payload in
+let confirmEmailChangeEmailView = simpleEmailLayout(confirmEmailChangeEmailBody) <<< { user, newEmailAddress, payload in
   SimpleEmailLayoutData(
     user: user,
     newsletter: nil,
@@ -17,7 +17,7 @@ let confirmEmailChangeEmailView = { user, newEmailAddress, payload in
     template: .default,
     data: (user, newEmailAddress, payload)
   )
-  } >>> simpleEmailLayout(confirmEmailChangeEmailBody)
+}
 
 private func confirmEmailChangeEmailBody(user: User, newEmailAddress: EmailAddress, payload: Encrypted<String>) -> [Node] {
   return [
@@ -55,7 +55,7 @@ private func confirmEmailChangeEmailBody(user: User, newEmailAddress: EmailAddre
   ]
 }
 
-let emailChangedEmailView = { user, newEmailAddress in
+let emailChangedEmailView = simpleEmailLayout(emailChangedEmailBody) <<< { user, newEmailAddress in
   SimpleEmailLayoutData(
     user: user,
     newsletter: nil,
@@ -64,7 +64,7 @@ let emailChangedEmailView = { user, newEmailAddress in
     template: .default,
     data: newEmailAddress
   )
-  } >>> simpleEmailLayout(emailChangedEmailBody)
+}
 
 private func emailChangedEmailBody(newEmailAddress: EmailAddress) -> [Node] {
   return [
