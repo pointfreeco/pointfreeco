@@ -19,7 +19,7 @@ class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
-    record = true
+//    record = true
   }
 
   func testBlogIndex() {
