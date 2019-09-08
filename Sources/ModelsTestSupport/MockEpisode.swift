@@ -19,7 +19,13 @@ extension Episode.Reference {
 
 extension Episode.Exercise {
   public static let mock = Episode.Exercise(
-    problem: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.",
+    problem: """
+Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.
+
+```
+pi_1(X) = 0
+```
+""",
     solution: "Let g be a Riemannian metric on X, and consider the Ricci flow..."
   )
 }
