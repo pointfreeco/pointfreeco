@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 75730
+Content-Length: 75767
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2329,6 +2329,8 @@ working how we expect:</p>
                 <div>
                   <div class="md-ctn">
                     <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
 
                   </div>
                   <details>
