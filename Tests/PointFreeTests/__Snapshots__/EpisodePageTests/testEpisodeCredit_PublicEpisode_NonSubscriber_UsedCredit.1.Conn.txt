@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 82474
+Content-Length: 82646
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1694,9 +1694,6 @@ html {
     </style>
     <style>
       
-.md-ctn {
-  word-break : break-word;
-}
 
 .md-ctn hr {
   margin-top       : 2rem;
@@ -1740,6 +1737,16 @@ html {
 
 .md-ctn p:not(:last-child) {
   margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top    : 2rem;
+  padding-right  : 2rem;
+  padding-bottom : 2rem;
+  padding-left   : 2rem;
+  display        : block;
+  overflow-x     : auto;
 }
 
 .md-ctn code {
@@ -2462,6 +2469,8 @@ future episodes, become a subscriber today!
                 <div>
                   <div class="md-ctn">
                     <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
 
                   </div>
                   <details>
