@@ -86,6 +86,7 @@ let package = Package(
       name: "FunctionalCss",
       dependencies: [
         "Css",
+        "HtmlUpgrade",
         "Prelude"
       ]
     ),

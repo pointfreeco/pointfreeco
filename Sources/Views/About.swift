@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import Html
+import HtmlUpgrade
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -33,28 +33,30 @@ public func aboutView(hosts: [Host]) -> [Node] {
   return [
     gridRow([
       gridColumn(sizes: [.mobile: 12, .desktop: 7], [
-        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-            aboutSectionView
-              + openSourceSection
+        .div(
+          attributes: [_class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+          .fragment([]
+            /*aboutSectionView
+             + openSourceSection*/)
         )
         ]),
 
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 5],
-        [`class`([Class.pf.colors.bg.purple150])],
-        [
-          div(
-            [
-              `class`([
-                Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-                Class.pf.colors.bg.purple150,
-                Class.position.sticky(.desktop),
-                Class.position.top0
-                ])
-            ],
-            hostsView(hosts: hosts)
-          )
-        ])
+//      gridColumn(
+//        sizes: [.mobile: 12, .desktop: 5],
+//        [`class`([Class.pf.colors.bg.purple150])],
+//        [
+//          div(
+//            [
+//              `class`([
+//                Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+//                Class.pf.colors.bg.purple150,
+//                Class.position.sticky(.desktop),
+//                Class.position.top0
+//                ])
+//            ],
+//            hostsView(hosts: hosts)
+//          )
+//        ])
       ])
   ]
 }
@@ -140,55 +142,55 @@ private func hostView(host: Host) -> [Node] {
 }
 
 private let aboutSectionView: [Node] = [
-  h1([`class`([Class.pf.type.responsiveTitle3])], ["About"]),
-  markdownBlock("""
-      Point-Free is a video series about functional programming and the Swift programming language. Each
-      episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
-      At the end of each episode we’ll ask _“what’s the point?!”_, so that we can bring the concepts back
-      down to earth and show how these ideas can improve the quality of your code today.
+  Node.h1(attributes: [_class([Class.pf.type.responsiveTitle3])], "About"),
+//  markdownBlock(
+  """
+  Point-Free is a video series about functional programming and the Swift programming language. Each
+  episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
+  At the end of each episode we’ll ask _“what’s the point?!”_, so that we can bring the concepts back
+  down to earth and show how these ideas can improve the quality of your code today.
 
-      We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
-      """
-  ),
-
-  p([
-    ul([`class`([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])], [
-      li([
-        h5([`class`([bulletPointTitleClass])], ["Pure functions and side effects"]),
-        p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
-          """
-            Side effects are one of the greatest sources of complexity in an application, and every program
-            has this in common. After giving a proper definition of side effects and pure functions, we will
-            show how to push the effects to the boundary of your application, leaving behind an
-            understandable, testable and pure core.
-            """])
-        ]),
-
-      li([
-        h5([`class`([bulletPointTitleClass])], ["Code reuse through function composition"]),
-        p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
-          """
+  We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
+  """,
+//  ),
+  .p(
+    .ul(
+      attributes: [_class([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])],
+      .li(
+        .h5(attributes: [_class([bulletPointTitleClass])], "Pure functions and side effects"),
+        .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])],
+           """
+          Side effects are one of the greatest sources of complexity in an application, and every program
+          has this in common. After giving a proper definition of side effects and pure functions, we will
+          show how to push the effects to the boundary of your application, leaving behind an
+          understandable, testable and pure core.
+          """)
+        ),
+      .li(
+        .h5(attributes: [_class([bulletPointTitleClass])], "Code reuse through function composition"),
+        .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])],
+           """
             The most basic unit of code reusability comes in the form of simple function composition. We will
             show that by focusing on small atomic units that compose well, we can build large complex
             systems that are easy to understand.
-            """])
-        ]),
-
-      li([
-        h5([`class`([bulletPointTitleClass])], ["Maximizing the use of the type system"]),
-        p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+            """
+        )
+      ),
+      .li(
+        .h5(attributes: [_class([bulletPointTitleClass])], "Maximizing the use of the type system"),
+        .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])],
           """
             You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally
             add an integer to a string, or call a method on a “null” value, but it can do so much more. You
             can encode invariants of your application directly into the types so impossible application
             states are not representable and can never compile.
             """
-          ])
-        ]),
-
-      li([
-        h5([`class`([bulletPointTitleClass])], ["Turning programming problems into algebraic problems"]),
-        markdownBlock("""
+          )
+        ),
+      .li(
+        .h5(attributes: [_class([bulletPointTitleClass])], "Turning programming problems into algebraic problems"),
+//        markdownBlock(
+          """
             Algebraic problems are nice because they carry structure that can be manipulated in predictable
             and understandable ways. For example, if you have ever simplified a complicated boolean
             expression that looked like `a && b || a && c` to look like `a && (b || c)`, you were exploiting
@@ -197,10 +199,9 @@ private let aboutSectionView: [Node] = [
             the `a &&` from that expression.
             """
         )
-        ]),
-      ])
-    ]),
-  p(["And so much more…"]),
+      )
+  ),
+  .p("And so much more…"),
 ]
 
 private let openSourceSection: [Node] = [

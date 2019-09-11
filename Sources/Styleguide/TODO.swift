@@ -1,11 +1,20 @@
 import Css
 import FunctionalCss
 import Html
+import HtmlUpgrade
 import Foundation
 import Prelude
 
 // TODO: move to a support package in swift-web
-public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
+public func `class`<T>(_ selectors: [CssSelector]) -> Html.Attribute<T> {
+  return .init(
+    "class",
+    render(classes: selectors)
+  )
+}
+
+// TODO: move to a support package in swift-web
+public func _class<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
   return .init(
     "class",
     render(classes: selectors)
@@ -39,6 +48,6 @@ public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
 }
 
-public func bgcolor<T>(_ value: String) -> Attribute<T> {
+public func bgcolor<T>(_ value: String) -> Html.Attribute<T> {
   return .init("bgcolor", value)
 }
