@@ -33,7 +33,6 @@ public let markdownBlockStyles: Stylesheet =
       <> blockquoteMarkdownStyles
       <> pMarkdownStyles
       <> codeMarkdownStyles
-      <> key("word-break", "break-word")
 )
 
 private let ulMarkdownStyles: Stylesheet =
@@ -44,12 +43,19 @@ private let pMarkdownStyles: Stylesheet =
     <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
 
 private let codeMarkdownStyles: Stylesheet =
-  code % (
-    fontFamily(["monospace"])
-      <> padding(topBottom: .px(1), leftRight: .px(5))
-      <> borderWidth(all: .px(1))
-      <> borderRadius(all: .px(3))
-      <> backgroundColor(Color.other("#f7f7f7"))
+  pre % (
+    code % (
+      padding(top: .rem(2), right: .rem(2), bottom: .rem(2), left: .rem(2))
+        <> display(.block)
+        <> overflow(x: .auto)
+    )
+    )
+    <> code % (
+      fontFamily(["monospace"])
+        <> padding(topBottom: .px(1), leftRight: .px(5))
+        <> borderWidth(all: .px(1))
+        <> borderRadius(all: .px(3))
+        <> backgroundColor(Color.other("#f7f7f7"))
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =

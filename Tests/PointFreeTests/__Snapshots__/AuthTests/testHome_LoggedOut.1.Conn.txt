@@ -2,7 +2,7 @@ GET http://localhost:8080
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59436
+Content-Length: 59571
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1694,9 +1694,6 @@ html {
     </style>
     <style>
       
-.md-ctn {
-  word-break : break-word;
-}
 
 .md-ctn hr {
   margin-top       : 2rem;
@@ -1740,6 +1737,16 @@ html {
 
 .md-ctn p:not(:last-child) {
   margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top    : 2rem;
+  padding-right  : 2rem;
+  padding-bottom : 2rem;
+  padding-left   : 2rem;
+  display        : block;
+  overflow-x     : auto;
 }
 
 .md-ctn code {
