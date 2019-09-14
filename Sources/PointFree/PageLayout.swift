@@ -3,6 +3,7 @@ import FunctionalCss
 import Foundation
 import Html
 import HtmlCssSupport
+import HtmlUpgrade
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -59,7 +60,7 @@ struct SimplePageLayoutData<A> {
   var currentUser: User?
   var data: A
   var description: String?
-  var extraHead: [ChildOf<Tag.Head>]
+  var extraHead: [Html.ChildOf<Html.Tag.Head>]
   var extraStyles: Stylesheet
   var flash: Flash?
   var image: String?
@@ -76,7 +77,7 @@ struct SimplePageLayoutData<A> {
     currentUser: User?,
     data: A,
     description: String? = "Point-Free is a video series exploring functional programming and Swift.",
-    extraHead: [ChildOf<Tag.Head>] = [],
+    extraHead: [Html.ChildOf<Html.Tag.Head>] = [],
     extraStyles: Stylesheet = .empty,
     image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
     isGhosting: Bool = false,
@@ -105,8 +106,20 @@ struct SimplePageLayoutData<A> {
   }
 }
 
+func _respond<A, B>(
+  view: @escaping (B) -> [HtmlUpgrade.Node],
+  layoutData: @escaping (A) -> SimplePageLayoutData<B>
+  )
+  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+
+    return respond(
+      view: { b in view(b).flatMap(downgrade(node:)) },
+      layoutData: layoutData
+    )
+}
+
 func respond<A, B>(
-  view: @escaping (B) -> [Node],
+  view: @escaping (B) -> [Html.Node],
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
   )
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
@@ -138,9 +151,9 @@ func respond<A, B>(
     }
 }
 
-func simplePageLayout<A>(_ contentView: @escaping (A) -> [Node]) -> (SimplePageLayoutData<A>) -> [Node] {
+func simplePageLayout<A>(_ contentView: @escaping (A) -> [Html.Node]) -> (SimplePageLayoutData<A>) -> [Html.Node] {
   let cssConfig: Css.Config = Current.envVars.appEnv == .testing ? .pretty : .compact
-  return { layoutData -> [Node] in
+  return { layoutData -> [Html.Node] in
     let blogAtomFeed = Html.link([
       href(url(to: .blog(.feed))),
       rel(.alternate),
@@ -185,7 +198,7 @@ func simplePageLayout<A>(_ contentView: @escaping (A) -> [Node]) -> (SimplePageL
   }
 }
 
-private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
   guard data.isGhosting else { return [] }
 
   return [
@@ -228,7 +241,7 @@ private func ghosterBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   ]
 }
 
-func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
   guard data.currentSubscriberState.isPastDue else { return [] }
 
   // TODO: custom messages for owner vs teammate
@@ -245,7 +258,7 @@ func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   )
 }
 
-private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
+private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
 
   switch data.style {
   case let .base(.some(.mountains(style))):
@@ -269,7 +282,7 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Node] {
   }
 }
 
-func flashView(_ flash: Flash) -> [Node] {
+func flashView(_ flash: Flash) -> [Html.Node] {
   return [
     gridRow([`class`([flashClass(for: flash.priority)])], [
       gridColumn(sizes: [.mobile: 12], [markdownBlock(flash.message)])
@@ -297,7 +310,7 @@ private func flashClass(for priority: Flash.Priority) -> CssSelector {
   }
 }
 
-private let favicons: [ChildOf<Tag.Head>] = [
+private let favicons: [Html.ChildOf<Html.Tag.Head>] = [
   link([rel(.init(rawValue: "apple-touch-icon")), .init("sizes", "180x180"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")]),
   link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "32x32"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")]),
   link([rel(.init(rawValue: "icon")), type(.png), .init("sizes", "16x16"), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")]),
@@ -305,7 +318,7 @@ private let favicons: [ChildOf<Tag.Head>] = [
   link([rel(.init(rawValue: "mask-icon")), href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")]),
 ]
 
-private let prismJsHead: [ChildOf<Tag.Head>] = [
+private let prismJsHead: [Html.ChildOf<Html.Tag.Head>] = [
   style(unsafe: """
 .language-diff .token.inserted {
   background-color: #f0fff4;
@@ -328,3 +341,20 @@ private let prismJsHead: [ChildOf<Tag.Head>] = [
     """
   )
 ]
+
+private func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
+  switch node {
+  case let .comment(comment):
+    return [.comment(comment)]
+  case let .doctype(doctype):
+    return [.doctype(doctype)]
+  case let .element(tag, attrs, child):
+    return [.element(tag, attrs, downgrade(node: child))]
+  case let .fragment(children):
+    return children.flatMap(downgrade(node:))
+  case let .raw(value):
+    return [.raw(value)]
+  case let .text(value):
+    return [.text(value)]
+  }
+}
