@@ -50,6 +50,16 @@ Daniel gives a wonderful overview of how the idea of "combinators" infiltrates m
     title: "Combinators"
   )
 
+  public static let composableReducers = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
+""",
+    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
+    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
+    title: "Composable Reducers"
+  )
+
   public static let composableSetters = Episode.Reference(
     author: "Stephen Celis",
     blurb: """
@@ -369,6 +379,16 @@ The idea of modeling an application's architecture on simple reducer functions w
     title: "Redux: A predictable state container for JavaScript apps."
   )
 
+  public static let regexpParser = Episode.Reference(
+    author: "Alexander Grebenyuk",
+    blurb: """
+This library for parsing regular expression strings into a Swift data type uses many of the ideas developed in our series of episodes on parsers. It's a great example of how to break a very large, complex problem into many tiny parsers that glue back together.
+""",
+    link: "https://github.com/kean/Regex",
+    publishedAt: referenceDateFormatter.date(from: "2019-08-10"),
+    title: "Regex"
+  )
+
   public static let scannerAppleDocs = Episode.Reference(
     author: "Apple",
     blurb: """
@@ -677,17 +697,6 @@ The Wikipedia entry for monads.
     publishedAt: Date(timeIntervalSince1970: 607410000),
     title: "Why Functional Programming Matters"
   )
-
-  public static let composableReducers = Episode.Reference(
-    author: "Brandon Williams",
-    blurb: """
-A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
-""",
-    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
-    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
-    title: "Composable Reducers"
-  )
-
 }
 
 let referenceDateFormatter = { () -> DateFormatter in
