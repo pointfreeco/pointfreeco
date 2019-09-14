@@ -106,7 +106,7 @@ struct SimplePageLayoutData<A> {
   }
 }
 
-func respond<A, B>(
+func _respond<A, B>(
   view: @escaping (B) -> [HtmlUpgrade.Node],
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
   )
