@@ -18,18 +18,16 @@ public func markdownBlock(_ attribs: [Html.Attribute<Html.Tag.Div>] = [], _ mark
     ])
 }
 
-public func _markdownBlock(_ markdown: String) -> HtmlUpgrade.Node {
-  return _markdownBlock([], markdown)
-}
-
-public func _markdownBlock(
-  _ attribs: [HtmlUpgrade.Attribute<HtmlUpgrade.Tag.Div>] = [],
-  _ markdown: String
-  ) -> HtmlUpgrade.Node {
-  return .div(
-    attributes: _addClasses([markdownContainerClass], to: attribs),
-    .raw(unsafeMark(from: markdown))
-  )
+extension HtmlUpgrade.Node {
+  public static func markdownBlock(
+    attributes: [HtmlUpgrade.Attribute<HtmlUpgrade.Tag.Div>] = [],
+    _ markdown: String
+    ) -> HtmlUpgrade.Node {
+    return .div(
+      attributes: _addClasses([markdownContainerClass], to: attributes),
+      .raw(unsafeMark(from: markdown))
+    )
+  }
 }
 
 public func unsafeMark(from markdown: String) -> String {
