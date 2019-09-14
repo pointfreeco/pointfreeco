@@ -2,33 +2,35 @@ import Css
 import HtmlUpgrade
 
 // TODO: extract to grid helpers in design systems?
-public func _gridRow(_ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
-  return .div(attributes: _addClasses([Class.grid.row], to: attribs), .fragment(content))
-}
-
-// TODO: extract to grid helpers in design systems?
-public func _gridRow(_ content: [Node]) -> Node {
-  return _gridRow([], content)
-}
-
-// TODO: extract to grid helpers in design systems?
-public func _gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> Node {
-  return { content in
-    _gridColumn(sizes: sizes, [], content)
+extension Node {
+  public static func _gridRow(_ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
+    return .div(attributes: _addClasses([Class.grid.row], to: attribs), .fragment(content))
   }
-}
 
-public func _gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
-  return _gridColumn(sizes: sizes, [], content)
-}
+  // TODO: extract to grid helpers in design systems?
+  public static func _gridRow(_ content: [Node]) -> Node {
+    return ._gridRow([], content)
+  }
 
-public func _gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
-  let classes = [Class.grid.col(.mobile, nil)]
-    + sizes
-      .sorted(by: { $0.key.rawValue < $1.key.rawValue })
-      .map(Class.grid.col(_:_:))
+  // TODO: extract to grid helpers in design systems?
+  public static func _gridColumn(sizes: [Breakpoint: Int]) -> ([Node]) -> Node {
+    return { content in
+      ._gridColumn(sizes: sizes, [], content)
+    }
+  }
 
-  return .div(attributes: _addClasses(classes, to: attribs), .fragment(content))
+  public static func _gridColumn(sizes: [Breakpoint: Int], _ content: [Node]) -> Node {
+    return ._gridColumn(sizes: sizes, [], content)
+  }
+
+  public static func _gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
+    let classes = [Class.grid.col(.mobile, nil)]
+      + sizes
+        .sorted(by: { $0.key.rawValue < $1.key.rawValue })
+        .map(Class.grid.col(_:_:))
+
+    return .div(attributes: _addClasses(classes, to: attribs), .fragment(content))
+  }
 }
 
 // todo: where should this live?
