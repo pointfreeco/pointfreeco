@@ -31,15 +31,15 @@ public let aboutExtraStyles = hostImgStyles <> hostBioStyles
 
 public func aboutView(hosts: [Host]) -> [Node] {
   return [
-    gridRow([
-      gridColumn(sizes: [.mobile: 12, .desktop: 7], [
+    _gridRow([
+      _gridColumn(sizes: [.mobile: 12, .desktop: 7], [
         .div(
           attributes: [_class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
           .fragment(aboutSectionView + openSourceSection)
         )
         ]),
 
-      gridColumn(
+      _gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         [_class([Class.pf.colors.bg.purple150])],
         [
