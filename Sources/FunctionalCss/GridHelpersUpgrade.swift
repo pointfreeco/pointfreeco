@@ -7,13 +7,6 @@ extension Node {
     return .div(attributes: _addClasses([Class.grid.row], to: attributes), .fragment(content))
   }
 
-  // TODO: extract to grid helpers in design systems?
-  public static func gridColumn(sizes: [Breakpoint: Int]) -> (Node) -> Node {
-    return { content in
-      .gridColumn(sizes: sizes, attributes: [], content)
-    }
-  }
-
   public static func gridColumn(
     sizes: [Breakpoint: Int],
     attributes: [Attribute<Tag.Div>] = [],
