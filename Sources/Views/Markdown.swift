@@ -2,19 +2,34 @@ import Ccmark
 import Css
 import FunctionalCss
 import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import PointFreePrelude
 import Prelude
 import Styleguide
 
-public func markdownBlock(_ markdown: String) -> Node {
+public func markdownBlock(_ markdown: String) -> Html.Node {
   return markdownBlock([], markdown)
 }
 
-public func markdownBlock(_ attribs: [Attribute<Tag.Div>] = [], _ markdown: String) -> Node {
+public func markdownBlock(_ attribs: [Html.Attribute<Html.Tag.Div>] = [], _ markdown: String) -> Html.Node {
   return div(addClasses([markdownContainerClass], to: attribs), [
     .raw(unsafeMark(from: markdown))
     ])
+}
+
+public func _markdownBlock(_ markdown: String) -> HtmlUpgrade.Node {
+  return _markdownBlock([], markdown)
+}
+
+public func _markdownBlock(
+  _ attribs: [HtmlUpgrade.Attribute<HtmlUpgrade.Tag.Div>] = [],
+  _ markdown: String
+  ) -> HtmlUpgrade.Node {
+  return .div(
+    attributes: _addClasses([markdownContainerClass], to: attribs),
+    .raw(unsafeMark(from: markdown))
+  )
 }
 
 public func unsafeMark(from markdown: String) -> String {

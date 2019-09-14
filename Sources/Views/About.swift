@@ -35,75 +35,72 @@ public func aboutView(hosts: [Host]) -> [Node] {
       gridColumn(sizes: [.mobile: 12, .desktop: 7], [
         .div(
           attributes: [_class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          .fragment([]
-            /*aboutSectionView
-             + openSourceSection*/)
+          .fragment(aboutSectionView + openSourceSection)
         )
         ]),
 
-//      gridColumn(
-//        sizes: [.mobile: 12, .desktop: 5],
-//        [`class`([Class.pf.colors.bg.purple150])],
-//        [
-//          div(
-//            [
-//              `class`([
-//                Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-//                Class.pf.colors.bg.purple150,
-//                Class.position.sticky(.desktop),
-//                Class.position.top0
-//                ])
-//            ],
-//            hostsView(hosts: hosts)
-//          )
-//        ])
+      gridColumn(
+        sizes: [.mobile: 12, .desktop: 5],
+        [_class([Class.pf.colors.bg.purple150])],
+        [
+          .div(
+            attributes: [
+              _class([
+                Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+                Class.pf.colors.bg.purple150,
+                Class.position.sticky(.desktop),
+                Class.position.top0
+                ])
+            ],
+            hostsView(hosts: hosts)
+          )
+        ])
       ])
   ]
 }
 
-private func hostsView(hosts: [Host]) -> [Node] {
-  return [
-    h1(
-      [
-        `class`([
+private func hostsView(hosts: [Host]) -> Node {
+  return .fragment([
+    .h1(
+      attributes: [
+        _class([
           Class.pf.type.responsiveTitle3,
           Class.pf.colors.fg.white,
           Class.padding([.mobile: [.bottom: 2]])
           ])
       ],
-      [
-        "Your hosts"
-      ]
+      "Your hosts"
     ),
-    p([`class`([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
+    .p(attributes: [_class([Class.pf.type.body.regular, Class.pf.colors.fg.white, Class.padding([.mobile: [.bottom: 3]])])], [
       "Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped ",
       "build and ",
-      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
-        ["open source"]),
+      .a(attributes: [_class([Class.pf.colors.link.green, Class.type.underline]), .href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd")],
+        "open source"),
       " the ",
-      a([`class`([Class.pf.colors.link.green, Class.type.underline]), href("https://www.kickstarter.com")], ["Kickstarter"]),
+      .a(attributes: [_class([Class.pf.colors.link.green, Class.type.underline]), .href("https://www.kickstarter.com")], "Kickstarter"),
       " mobile apps."
       ])
     ]
     + hosts.flatMap(hostView)
+  )
 }
 
 private func hostView(host: Host) -> [Node] {
   return [
-    div(
-      [`class`([Class.padding([.mobile: [.bottom: 3]])])],
+    .div(
+      attributes: [_class([Class.padding([.mobile: [.bottom: 3]])])],
       [
-        img(
-          [src(host.image), alt("Photo of \(host.name)"), `class`([hostImgClass])]
+        .img(
+          attributes: [.src(host.image), .alt("Photo of \(host.name)"), _class([hostImgClass])]
         ),
 
-        div(
-          [`class`([hostBioClass])],
+        .div(
+          attributes: [_class([hostBioClass])],
           [
-            a(
-              [
-                href(host.website),
-                `class`([
+            .a(
+              attributes: [
+                .href(host.website),
+                _class([
                   Class.pf.colors.link.white,
                   Class.h5,
                   Class.type.bold
@@ -114,23 +111,23 @@ private func hostView(host: Host) -> [Node] {
               ]
             ),
 
-            p([`class`([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [.text(host.bio)]),
+            .p(attributes: [_class([Class.pf.colors.fg.white, Class.pf.type.body.regular])], [.text(host.bio)]),
 
-            a(
-              [
-                href(twitterUrl(to: host.twitterRoute)),
-                `class`([
+            .a(
+              attributes: [
+                .href(twitterUrl(to: host.twitterRoute)),
+                _class([
                   Class.pf.colors.link.white,
                   Class.padding([.mobile: [.top: 2]])
                   ])
               ],
               [
                 "Twitter",
-                img(
+                .img(
                   base64: rightArrowSvgBase64(fill: "#ffffff"),
                   type: .image(.svg),
                   alt: "",
-                  [`class`([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), width(16), height(16)]
+                  attributes: [_class([Class.align.middle, Class.margin([.mobile: [.left: 1]])]), .width(16), .height(16)]
                 )
               ]
             )
@@ -143,7 +140,7 @@ private func hostView(host: Host) -> [Node] {
 
 private let aboutSectionView: [Node] = [
   Node.h1(attributes: [_class([Class.pf.type.responsiveTitle3])], "About"),
-//  markdownBlock(
+  _markdownBlock(
   """
   Point-Free is a video series about functional programming and the Swift programming language. Each
   episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
@@ -151,8 +148,8 @@ private let aboutSectionView: [Node] = [
   down to earth and show how these ideas can improve the quality of your code today.
 
   We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
-  """,
-//  ),
+  """
+  ),
   .p(
     .ul(
       attributes: [_class([Class.type.list.styleNone, Class.padding([.mobile: [.left: 4, .topBottom: 2]])])],
@@ -189,7 +186,7 @@ private let aboutSectionView: [Node] = [
         ),
       .li(
         .h5(attributes: [_class([bulletPointTitleClass])], "Turning programming problems into algebraic problems"),
-//        markdownBlock(
+        _markdownBlock(
           """
             Algebraic problems are nice because they carry structure that can be manipulated in predictable
             and understandable ways. For example, if you have ever simplified a complicated boolean
@@ -198,6 +195,7 @@ private let aboutSectionView: [Node] = [
             algebraic structure that allows one to manipulate the problem in the same way you factored out
             the `a &&` from that expression.
             """
+          )
         )
       )
   ),
@@ -205,16 +203,17 @@ private let aboutSectionView: [Node] = [
 ]
 
 private let openSourceSection: [Node] = [
-  h1([`class`([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], ["Open source"]),
-  p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+  .h1(attributes: [_class([Class.pf.type.responsiveTitle4, Class.padding([.mobile: [.top: 3]])])], "Open source"),
+
+  .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
     "When we ",
-    a([href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"), `class`([Class.pf.colors.link.purple])], ["open-sourced"]),
+    .a(attributes: [.href("https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"), _class([Class.pf.colors.link.purple])], ["open-sourced"]),
     " the entire ",
-    a([href("http://github.com/kickstarter/ios-oss"), `class`([Class.pf.colors.link.purple])], ["iOS"]),
+    .a(attributes: [.href("http://github.com/kickstarter/ios-oss"), _class([Class.pf.colors.link.purple])], ["iOS"]),
     " and ",
-    a([href("http://github.com/kickstarter/android-oss"), `class`([Class.pf.colors.link.purple])], ["Android"]),
+    .a(attributes: [.href("http://github.com/kickstarter/android-oss"), _class([Class.pf.colors.link.purple])], ["Android"]),
     " codebases at ",
-    a([href("http://www.kickstarter.com"), `class`([Class.pf.colors.link.purple])], ["Kickstarter"]),
+    .a(attributes: [.href("http://www.kickstarter.com"), _class([Class.pf.colors.link.purple])], ["Kickstarter"]),
     """
       , we saw that it was one of the best resources to show people how to build a large application in
       the functional style. It transcended any talks about the theoretical benefits or proposed
@@ -223,23 +222,23 @@ private let openSourceSection: [Node] = [
       """
     ]),
 
-  p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+  .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])],
     """
       We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift,
       all in the functional style! This meant we had to build nearly everything from scratch, from server
       middleware and routing to HTML views and CSS.
-      """]),
+      """),
 
-  p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+  .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
     """
       We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an
       iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend
       language rivaling almost every other language out there.
       """]),
 
-  p([`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
+  .p(attributes: [_class([Class.pf.type.body.regular, Class.padding([.mobile: [.bottom: 2]])])], [
     "You can view the entire source code to this site on our GitHub organization, ",
-    a([href(gitHubUrl(to: .organization)), `class`([Class.pf.colors.link.purple])], [.text(gitHubUrl(to: .organization))]),
+    .a(attributes: [.href(gitHubUrl(to: .organization)), _class([Class.pf.colors.link.purple])], [.text(gitHubUrl(to: .organization))]),
     "."
     ])
 ]

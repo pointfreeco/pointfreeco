@@ -182,155 +182,157 @@ func invoiceView(subscription: Stripe.Subscription, currentUser: User, invoice: 
       ])
   }
 
-  return [
-    gridRow([
-      gridColumn(sizes: [.mobile: 12], [], [
-        div(
-          [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          [
-            gridRow([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              gridColumn(sizes: [.mobile: 12], [], [
-                div(["Point-Free, Inc."]),
-                div(["139 Skillman #5C"]),
-                div(["Brooklyn, NY 11211"]),
-                ]),
-              ]),
-            gridRow([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
-              gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
-                gridRow([
-                  gridColumn(sizes: [.mobile: 12, .desktop: 2], [`class`([Class.type.bold])], [
-                    div(["Bill to"]),
-                    ]),
-                  gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                    div([.text(currentUser.displayName)])
-                    ]),
-                  ]),
-                ]),
-              gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
-                gridRow([
-                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
-                    div(["Invoice number"]),
-                    ]),
-                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                    div([.text(invoice.number.rawValue)]),
-                    ]),
-                  ]),
-                gridRow([
-                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
-                    div(["Billed on"]),
-                    ]),
-                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                    div([.text(dateFormatter.string(from: invoice.date))]),
-                    ]),
-                  ]),
-                ]
-                <> (
-                  invoice.charge?.right?.source.left.map {
-                    [
-                      gridRow([
-                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
-                          div(["Payment method"]),
-                          ]),
-                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                          div([.text($0.brand.rawValue + " ⋯ \($0.last4)")]),
-                          ]),
-                        ])
-                    ]
-                    }
-                    ?? []
-                )
-                <> (
-                  subscription.customer.right?.businessVatId.map {
-                    [
-                      gridRow([
-                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
-                          div(["VAT"]),
-                          ]),
-                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                          div([.text($0.rawValue)]),
-                          ]),
-                        ])
-                    ]
-                    }
-                    ?? []
-                )
-                <> extraInvoiceInfo(subscription: subscription)
-              ),
-              ]),
-            gridRow([`class`([Class.padding([.mobile: [.bottom: 2]]), Class.type.bold])], [
-              gridColumn(sizes: [.mobile: 4, .desktop: 6], [], [
-                div(["Description"]),
-                ]),
-              gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                div(["Quantity"]),
-                ]),
-              gridColumn(sizes: [.mobile: 0, .desktop: 2], [`class`([Class.type.align.end, Class.hide(.mobile)])], [
-                div(["Unit price"]),
-                ]),
-              gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                div(["Amount"]),
-                ]),
-              ]),
-            ]
-            <> invoice.lines.data.map { item in
-              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                gridColumn(sizes: [.mobile: 6, .desktop: 6], [], [
-                  div([.text(item.description ?? subscription.plan.nickname)])
-                  ]),
-                gridColumn(sizes: [.mobile: 2, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text("\(item.quantity)")]),
-                  ]),
-                gridColumn(sizes: [.mobile: 0], [`class`([Class.type.align.end, Class.hide(.mobile)])], [
-                  div([.text(format(cents: item.amount))]),
-                  ]),
-                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text(format(cents: item.amount))]),
-                  ]),
-                ])
-            }
-            <> [
-              gridRow([`class`([Class.padding([.mobile: [.topBottom: 1]])])], [
-                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
-                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div(["Subtotal"]),
-                  ]),
-                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text(format(cents: invoice.subtotal))]),
-                  ]),
-                ])
-            ] + [discountRow].compactMap(id) + [
-              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
-                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div(["Total"]),
-                  ]),
-                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text(format(cents: invoice.total))]),
-                  ]),
-                ]),
-              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
-                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
-                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div(["Amount paid"]),
-                  ]),
-                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text(format(cents: -invoice.amountPaid))]),
-                  ]),
-                ]),
-              gridRow([`class`([Class.padding([.mobile: [.topBottom: 2]]), Class.type.bold])], [
-                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
-                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div(["Amount due"]),
-                  ]),
-                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
-                  div([.text(format(cents: invoice.amountDue))]),
-                  ]),
-                ]),
-          ]
-        )
-        ])
-      ])
-  ]
+  return []
+
+//  return [
+//    gridRow([
+//      gridColumn(sizes: [.mobile: 12], [], [
+//        div(
+//          [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
+//          [
+//            gridRow([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+//              gridColumn(sizes: [.mobile: 12], [], [
+//                div(["Point-Free, Inc."]),
+//                div(["139 Skillman #5C"]),
+//                div(["Brooklyn, NY 11211"]),
+//                ]),
+//              ]),
+//            gridRow([`class`([Class.padding([.mobile: [.topBottom: 3]])])], [
+//              gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
+//                gridRow([
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 2], [`class`([Class.type.bold])], [
+//                    div(["Bill to"]),
+//                    ]),
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 10], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                    div([.text(currentUser.displayName)])
+//                    ]),
+//                  ]),
+//                ]),
+//              gridColumn(sizes: [.mobile: 12, .desktop: 6], [], [
+//                gridRow([
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+//                    div(["Invoice number"]),
+//                    ]),
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                    div([.text(invoice.number.rawValue)]),
+//                    ]),
+//                  ]),
+//                gridRow([
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+//                    div(["Billed on"]),
+//                    ]),
+//                  gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                    div([.text(dateFormatter.string(from: invoice.date))]),
+//                    ]),
+//                  ]),
+//                ]
+//                <> (
+//                  invoice.charge?.right?.source.left.map {
+//                    [
+//                      gridRow([
+//                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+//                          div(["Payment method"]),
+//                          ]),
+//                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                          div([.text($0.brand.rawValue + " ⋯ \($0.last4)")]),
+//                          ]),
+//                        ])
+//                    ]
+//                    }
+//                    ?? []
+//                )
+//                <> (
+//                  subscription.customer.right?.businessVatId.map {
+//                    [
+//                      gridRow([
+//                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.type.bold])], [
+//                          div(["VAT"]),
+//                          ]),
+//                        gridColumn(sizes: [.mobile: 12, .desktop: 6], [`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                          div([.text($0.rawValue)]),
+//                          ]),
+//                        ])
+//                    ]
+//                    }
+//                    ?? []
+//                )
+//                <> extraInvoiceInfo(subscription: subscription)
+//              ),
+//              ]),
+//            gridRow([`class`([Class.padding([.mobile: [.bottom: 2]]), Class.type.bold])], [
+//              gridColumn(sizes: [.mobile: 4, .desktop: 6], [], [
+//                div(["Description"]),
+//                ]),
+//              gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                div(["Quantity"]),
+//                ]),
+//              gridColumn(sizes: [.mobile: 0, .desktop: 2], [`class`([Class.type.align.end, Class.hide(.mobile)])], [
+//                div(["Unit price"]),
+//                ]),
+//              gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                div(["Amount"]),
+//                ]),
+//              ]),
+//            ]
+//            <> invoice.lines.data.map { item in
+//              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                gridColumn(sizes: [.mobile: 6, .desktop: 6], [], [
+//                  div([.text(item.description ?? subscription.plan.nickname)])
+//                  ]),
+//                gridColumn(sizes: [.mobile: 2, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text("\(item.quantity)")]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 0], [`class`([Class.type.align.end, Class.hide(.mobile)])], [
+//                  div([.text(format(cents: item.amount))]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text(format(cents: item.amount))]),
+//                  ]),
+//                ])
+//            }
+//            <> [
+//              gridRow([`class`([Class.padding([.mobile: [.topBottom: 1]])])], [
+//                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
+//                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div(["Subtotal"]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text(format(cents: invoice.subtotal))]),
+//                  ]),
+//                ])
+//            ] + [discountRow].compactMap(id) + [
+//              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
+//                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div(["Total"]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text(format(cents: invoice.total))]),
+//                  ]),
+//                ]),
+//              gridRow([`class`([Class.padding([.mobile: [.bottom: 1]])])], [
+//                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
+//                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div(["Amount paid"]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text(format(cents: -invoice.amountPaid))]),
+//                  ]),
+//                ]),
+//              gridRow([`class`([Class.padding([.mobile: [.topBottom: 2]]), Class.type.bold])], [
+//                gridColumn(sizes: [.mobile: 2, .desktop: 8], [], []),
+//                gridColumn(sizes: [.mobile: 6, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div(["Amount due"]),
+//                  ]),
+//                gridColumn(sizes: [.mobile: 4, .desktop: 2], [`class`([Class.type.align.end])], [
+//                  div([.text(format(cents: invoice.amountDue))]),
+//                  ]),
+//                ]),
+//          ]
+//        )
+//        ])
+//      ])
+//  ]
 }
 
 private func extraInvoiceInfo(subscription: Stripe.Subscription) -> [Node] {

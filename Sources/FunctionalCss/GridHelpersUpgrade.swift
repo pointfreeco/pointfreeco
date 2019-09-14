@@ -3,7 +3,7 @@ import HtmlUpgrade
 
 // TODO: extract to grid helpers in design systems?
 public func gridRow(_ attribs: [Attribute<Tag.Div>], _ content: [Node]) -> Node {
-  return .div(attributes: addClasses([Class.grid.row], to: attribs), .fragment(content))
+  return .div(attributes: _addClasses([Class.grid.row], to: attribs), .fragment(content))
 }
 
 // TODO: extract to grid helpers in design systems?
@@ -28,12 +28,12 @@ public func gridColumn(sizes: [Breakpoint: Int], _ attribs: [Attribute<Tag.Div>]
       .sorted(by: { $0.key.rawValue < $1.key.rawValue })
       .map(Class.grid.col(_:_:))
 
-  return .div(attributes: addClasses(classes, to: attribs), .fragment(content))
+  return .div(attributes: _addClasses(classes, to: attribs), .fragment(content))
 }
 
 // todo: where should this live?
 // todo: render `CssSelector.union` better
-private func addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
+public func _addClasses<T>(_ classes: [CssSelector], to attributes: [Attribute<T>]) -> [Attribute<T>] {
   return guaranteeClassAttributeExists(attributes)
     .map { attribute in
       guard attribute.key == "class" else { return attribute }
