@@ -139,7 +139,7 @@ private func hostView(host: Host) -> [Node] {
 }
 
 private let aboutSectionView: [Node] = [
-  Node.h1(attributes: [_class([Class.pf.type.responsiveTitle3])], "About"),
+  .h1(attributes: [_class([Class.pf.type.responsiveTitle3])], "About"),
   _markdownBlock(
   """
   Point-Free is a video series about functional programming and the Swift programming language. Each
