@@ -13,12 +13,14 @@ public func `class`<T>(_ selectors: [CssSelector]) -> Html.Attribute<T> {
   )
 }
 
-// TODO: move to a support package in swift-web
-public func _class<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
-  return .init(
-    "class",
-    render(classes: selectors)
-  )
+extension HtmlUpgrade.Attribute {
+  // TODO: move to a support package in swift-web
+  public static func `class`<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
+    return .init(
+      "class",
+      render(classes: selectors)
+    )
+  }
 }
 
 // TODO: make Css.key function public
