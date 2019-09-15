@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54833
+Content-Length: 54798
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2139,8 +2139,6 @@ html {
                        lh-4
                        fg-gray400"
                 id="pricing-preview">
-          </span>
-          <span>
           </span>
         </div>
       </div>
