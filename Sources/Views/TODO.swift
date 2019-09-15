@@ -10,10 +10,6 @@ extension HtmlUpgrade.Attribute {
   public static func id<T>(_ idSelector: CssSelector) -> HtmlUpgrade.Attribute<T> {
     return .init("id", idSelector.idString ?? "")
   }
-
-  public static func style<T>(_ style: Stylesheet) -> HtmlUpgrade.Attribute<T> {
-    return .init("style", render(config: Config.inline, css: style))
-  }
 }
 
 extension HtmlUpgrade.Attribute where Element: HtmlUpgrade.HasFor {
