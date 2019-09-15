@@ -11,7 +11,7 @@ public func blogIndexView(
   blogPosts: [BlogPost],
   currentUser: User?,
   subscriberState: SubscriberState
-  ) -> [Node] {
+  ) -> Node {
 
   let allPosts = blogPosts.sorted(by: their(^\.id, >))
   let newPosts = allPosts.prefix(3)

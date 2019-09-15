@@ -8,7 +8,7 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> [Node] {
+public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> Node {
   return [
     .gridRow(
       attributes: [.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],

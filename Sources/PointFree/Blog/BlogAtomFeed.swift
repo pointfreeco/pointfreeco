@@ -4,6 +4,7 @@ import HttpPipeline
 import Models
 import PointFreeRouter
 import Prelude
+import Styleguide
 import Syndication
 import Views
 
