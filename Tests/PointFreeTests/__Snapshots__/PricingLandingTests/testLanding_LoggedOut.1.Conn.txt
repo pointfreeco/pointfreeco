@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 180654
+Content-Length: 180621
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2322,8 +2322,6 @@ personal, team and enterprise subscriptions.">
                      lh-2">
             Enterprise
           </h4>
-          <div>
-          </div>
           <ul class="list-style-none
                      m-pl0
                      m-pr0
