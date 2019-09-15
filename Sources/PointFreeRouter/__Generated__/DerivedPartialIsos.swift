@@ -27,6 +27,17 @@ import Stripe
 
 
       extension PartialIso where A == Prelude.Unit, B == Account {
+        public static let _index = parenthesize <| PartialIso<Prelude.Unit, Account>(
+          apply: const(.some(._index)),
+          unapply: {
+            guard case ._index = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
+      }
+
+
+
+      extension PartialIso where A == Prelude.Unit, B == Account {
         public static let index = parenthesize <| PartialIso<Prelude.Unit, Account>(
           apply: const(.some(.index)),
           unapply: {

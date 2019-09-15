@@ -6,6 +6,7 @@ import Stripe
 
 public enum Account: DerivePartialIsos, Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
+  case _index
   case index
   case invoices(Invoices)
   case paymentInfo(PaymentInfo)
@@ -43,6 +44,9 @@ private let accountRouters: [Router<Account>] = [
     <¢> get %> lit("confirm-email-change")
     %> queryParam("payload", .tagged)
     <% end,
+
+  ._index
+    <¢> get %> lit("_index") <% end,
 
   .index
     <¢> get <% end,

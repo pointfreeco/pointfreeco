@@ -342,7 +342,7 @@ private let prismJsHead: [Html.ChildOf<Html.Tag.Head>] = [
   )
 ]
 
-private func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
+func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
   switch node {
   case let .comment(comment):
     return [.comment(comment)]
