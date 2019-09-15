@@ -341,20 +341,3 @@ private let prismJsHead: [Html.ChildOf<Html.Tag.Head>] = [
     """
   )
 ]
-
-private func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
-  switch node {
-  case let .comment(comment):
-    return [.comment(comment)]
-  case let .doctype(doctype):
-    return [.doctype(doctype)]
-  case let .element(tag, attrs, child):
-    return [.element(tag, attrs, downgrade(node: child))]
-  case let .fragment(children):
-    return children.flatMap(downgrade(node:))
-  case let .raw(value):
-    return [.raw(value)]
-  case let .text(value):
-    return [.text(value)]
-  }
-}

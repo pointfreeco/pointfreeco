@@ -46,7 +46,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
       .div(
         attributes: [.class([Class.margin([.mobile: [.left: 1]])])],
         [
-          twitterShareLink(
+          .twitterShareLink(
             text: post.title,
             url: pointFreeRouter.url(to: .blog(.show(slug: post.slug))),
             via: "pointfreeco"
@@ -69,7 +69,7 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
 
     .div(
       attributes: [.class([Class.pf.colors.bg.white])],
-      .fragment(post.contentBlocks.flatMap(transcriptBlockView))
+      .fragment(post.contentBlocks.flatMap { transcriptBlockView($0).map(upgrade(node:)) })
     )
   ]
 }

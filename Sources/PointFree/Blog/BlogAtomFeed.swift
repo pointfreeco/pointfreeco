@@ -28,7 +28,7 @@ private func feedView(posts: [BlogPost]) -> [Node] {
 
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   return AtomEntry(
-    content: blogPostContentView(post),
+    content: downgrade(node: blogPostContentView(post)),
     siteUrl: url(to: .blog(.show(slug: post.slug))),
     title: post.title,
     updated: post.publishedAt
