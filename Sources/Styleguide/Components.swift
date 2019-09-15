@@ -125,9 +125,9 @@ extension HtmlUpgrade.Node {
         .href(tweetHref),
         .onclick(unsafe: """
           window.open(
-          "\(tweetHref)",
-          "newwindow",
-          "width=500,height=500"
+            "\(tweetHref)",
+            "newwindow",
+            "width=500,height=500"
           );
           """),
         .target(.blank),
