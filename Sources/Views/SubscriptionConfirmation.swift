@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import Models
 import PointFreePrelude
@@ -18,65 +18,59 @@ public func subscriptionConfirmation(
   _ currentUser: User,
   _ stripeJs: String,
   _ stripePublishableKey: Stripe.Client.PublishableKey
-) -> [Node] {
-  return [
-    form(
-      [
-        action(path(to: .subscribe(nil))),
-        id("subscribe-form"),
-        method(.post),
-        onsubmit("event.preventDefault()"),
-        style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
-      ],
-      header(lane)
-        + teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData)
-        + billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData)
-        + payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
-        + total(lane: lane, coupon: coupon)
-    )
-  ]
+) -> Node {
+  return .form(
+    attributes: [
+      .action(path(to: .subscribe(nil))),
+      .id("subscribe-form"),
+      .method(.post),
+      .onsubmit(unsafe: "event.preventDefault()"),
+      .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
+    ],
+    header(lane),
+    teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData),
+    billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
+    payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey),
+    total(lane: lane, coupon: coupon)
+  )
 }
 
-private func header(_ lane: Pricing.Lane) -> [Node] {
+private func header(_ lane: Pricing.Lane) -> Node {
   return [
-    input([
-      name("pricing[lane]"),
-      type(.hidden),
-      value(lane.rawValue),
-    ]),
-    gridRow(
-      [`class`([moduleRowClass])],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [h1([`class`([Class.pf.type.responsiveTitle2])], ["Subscribe"])]
-        ),
-        gridColumn(
-          sizes: [:],
-          [`class`([Class.grid.start(.mobile)])],
-          [
-            "You selected the ",
-            strong([lane == .personal ? "Personal" : "Team"]),
-            " plan"
-          ]
-        ),
-        gridColumn(
-          sizes: [:],
-          [`class`([Class.grid.end(.mobile)])],
-          [
-            a(
-              [
-                `class`([
-                  Class.pf.colors.link.gray650,
-                  Class.pf.type.underlineLink
-                ]),
-                href(url(to: .pricingLanding))
-              ],
-              ["Change plan"]
-            )
-          ]
-        )
+    .input(
+      attributes: [
+        .name("pricing[lane]"),
+        .type(.hidden),
+        .value(lane.rawValue),
       ]
+    ),
+    .gridRow(
+      attributes: [.class([moduleRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 12],
+        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
+      ),
+      .gridColumn(
+        sizes: [:],
+        attributes: [.class([Class.grid.start(.mobile)])],
+        "You selected the ",
+        .strong([lane == .personal ? "Personal" : "Team"]),
+        " plan"
+      ),
+      .gridColumn(
+        sizes: [:],
+        attributes: [.class([Class.grid.end(.mobile)])],
+        .a(
+          attributes: [
+            .class([
+              Class.pf.colors.link.gray650,
+              Class.pf.type.underlineLink
+              ]),
+            .href(url(to: .pricingLanding))
+          ],
+          "Change plan"
+        )
+      )
     )
   ]
 }
@@ -85,161 +79,148 @@ private func teamMembers(
   lane: Pricing.Lane,
   currentUser: User,
   subscribeData: SubscribeConfirmationData
-  ) -> [Node] {
+  ) -> Node {
 
   guard lane == .team else {
     return [
-      input([
-        name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
-        `type`(.hidden),
-        value("true")
+      .input(attributes: [
+        .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+        .type(.hidden),
+        .value("true")
         ])
     ]
   }
 
-  return [
-    gridRow(
-      [`class`([moduleRowClass])],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [`class`([moduleTitleColumnClass])],
-          [h1([`class`([moduleTitleClass])], ["Team members"])]
+  return .gridRow(
+    attributes: [.class([moduleRowClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([moduleTitleColumnClass])],
+      .h1(attributes: [.class([moduleTitleClass])], "Team members")
+    ),
+    teamOwner(currentUser: currentUser, subscribeData: subscribeData),
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.id("team-members")],
+      .fragment(subscribeData.teammates.map { teamMemberTemplate($0, withRemoveButton: false) })
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
+      .div(
+        .template(
+          attributes: [.id("team-member-template")],
+          teamMemberTemplate("", withRemoveButton: true)
         ),
-        teamOwner(currentUser: currentUser, subscribeData: subscribeData),
-        gridColumn(
-          sizes: [.mobile: 12],
-          [id("team-members")],
-          subscribeData.teammates.map { teamMemberTemplate($0, withRemoveButton: false) }
+        .template(
+          attributes: [.id("team-member-template-without-remove")],
+          teamMemberTemplate("", withRemoveButton: false)
         ),
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([Class.padding([.mobile: [.top: 3]])])
-          ],
-          [
-            div(
-              [],
-              [
-                .element(
-                  "template",
-                  [("id", "team-member-template")],
-                  [teamMemberTemplate("", withRemoveButton: true)]
-                ),
-                .element(
-                  "template",
-                  [("id", "team-member-template-without-remove")],
-                  [teamMemberTemplate("", withRemoveButton: false)]
-                ),
-                a(
-                  [
-                    id("add-team-member-button"),
-                    `class`([
-                      Class.type.medium,
-                      Class.cursor.pointer,
-                      Class.type.nowrap,
-                      Class.pf.colors.link.black,
-                      Class.pf.colors.fg.black,
-                      Class.pf.colors.bg.white,
-                      Class.h5,
-                      Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
-                      Class.border.all,
-                      Class.pf.colors.border.gray850,
-                      ]),
-                    onclick("""
+        .a(
+          attributes: [
+            .id("add-team-member-button"),
+            .class([
+              Class.type.medium,
+              Class.cursor.pointer,
+              Class.type.nowrap,
+              Class.pf.colors.link.black,
+              Class.pf.colors.fg.black,
+              Class.pf.colors.bg.white,
+              Class.h5,
+              Class.padding([.mobile: [.leftRight: 2, .topBottom: 2]]),
+              Class.border.all,
+              Class.pf.colors.border.gray850,
+              ]),
+            .onclick(safe: """
 var teamMember = document.getElementById("team-member-template").content.cloneNode(true)
 document.getElementById("team-members").appendChild(teamMember)
 updateSeats()
 """)
-                  ],
-                  ["Add team member"]
-                )
-              ]
-            )
-          ]
-        ),
-        p(
-          [
-            `class`([
-              Class.pf.type.body.small,
-              Class.pf.colors.fg.gray400,
-              Class.padding([.mobile: [.top: 3]])
-              ])
           ],
-          [
-            """
+          "Add team member"
+        )
+      )
+    ),
+    .p(
+      attributes: [
+        .class([
+          Class.pf.type.body.small,
+          Class.pf.colors.fg.gray400,
+          Class.padding([.mobile: [.top: 3]])
+          ])
+      ],
+      """
 You must have at least two seats for your team subscription. You can add additional team members at any time
 from your account page.
 """
-          ]
-        )
-      ]
     )
-  ]
+  )
 }
 
 private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationData) -> Node {
   guard subscribeData.isOwnerTakingSeat else {
-    return input([
-      name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
-      `type`(.hidden),
-      value("false")
+    return .input(attributes: [
+      .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+      .type(.hidden),
+      .value("false")
       ])
   }
 
-  return gridColumn(
+  return .gridColumn(
     sizes: [.mobile: 12],
-    [
-      id("team-owner"),
-      `class`([
+    attributes: [
+      .id("team-owner"),
+      .class([
         Class.border.all,
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.top: 1]]),
         ]),
-      HtmlCssSupport.style(lineHeight(0))
+      .style(lineHeight(0))
     ],
-    [
-      div(
-        [
-          `class`([
-            Class.flex.flex,
-            Class.grid.middle(.mobile)
-            ])
-        ],
-        [
-          input([
-            name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
-            `type`(.hidden),
-            value("true")
+    .div(
+      attributes: [
+        .class([
+          Class.flex.flex,
+          Class.grid.middle(.mobile)
+          ])
+      ],
+      .input(
+        attributes: [
+          .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+          .type(.hidden),
+          .value("true")
+        ]
+      ),
+      .img(
+        src: currentUser.gitHubAvatarUrl.absoluteString,
+        alt: "",
+        attributes: [
+          .class([
+            Class.pf.colors.bg.green,
+            Class.border.circle,
+            Class.margin([.mobile: [.right: 1]])
             ]),
-          img(
-            src: currentUser.gitHubAvatarUrl.absoluteString,
-            alt: "",
-            [
-              `class`([
-                Class.pf.colors.bg.green,
-                Class.border.circle,
-                Class.margin([.mobile: [.right: 1]])
-                ]),
-              style(width(.px(24)) <> height(.px(24)))
-            ]
-          ),
-          span(
-            [`class`([Class.size.width100pct])],
-            [.text(currentUser.displayName)]
-          ),
-          a([
-            id("remove-yourself-button"),
-            `class`([
-              Class.cursor.pointer,
-              Class.pf.colors.fg.red,
-              Class.pf.colors.link.red,
-              Class.type.light,
-              Class.pf.type.body.small,
-              Class.pf.type.underlineLink
-              ]),
-            onclick("""
+          .style(width(.px(24)) <> height(.px(24)))
+        ]
+      ),
+      .span(
+        attributes: [.class([Class.size.width100pct])],
+        .text(currentUser.displayName)
+      ),
+      .a(
+        attributes: [
+          .id("remove-yourself-button"),
+          .class([
+            Class.cursor.pointer,
+            Class.pf.colors.fg.red,
+            Class.pf.colors.link.red,
+            Class.type.light,
+            Class.pf.type.body.small,
+            Class.pf.type.underlineLink
+            ]),
+          .onclick(
+            safe: """
 var ownerRow = this.parentNode.parentNode
 ownerRow.parentNode.removeChild(ownerRow)
 
@@ -248,79 +229,74 @@ var teamMembersContainer = document.getElementById("team-members")
 teamMembersContainer.insertBefore(teamMember, teamMembersContainer.firstChild)
 
 updateSeats()
-""")
-            ], [.raw("Remove&nbsp;yourself")])
-        ]
+"""
+          )
+        ],
+        .raw("Remove&nbsp;yourself")
       )
-    ]
+    )
   )
 }
 
 private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -> Node {
-  return gridColumn(
+  return .gridColumn(
     sizes: [.mobile: 12],
-    [
-      `class`([
+    attributes: [
+      .class([
         Class.border.all,
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.top: 1]])
         ]),
-      HtmlCssSupport.style(lineHeight(0))
+      .style(lineHeight(0))
     ],
-    [
-      div(
-        [
-          `class`([
-            Class.flex.flex,
-            Class.grid.middle(.mobile)
-            ])
-        ],
-        [
-          img(
-            base64: mailIconSvg,
-            type: .image(.svg),
-            alt: "",
-            [
-              `class`([
-                Class.margin([.mobile: [.right: 1]])
-                ]),
-              style(width(.px(24)) <> height(.px(24)))
-            ]
-          ),
-          input([
-            type(.email),
-            placeholder("blob@pointfree.co"),
-            `class`([Class.size.width100pct]),
-            name("teammates[]"),
-            style(
-              borderWidth(all: 0)
-                <> key("outline", "none")
-            ),
-            value(email.rawValue),
-          ]),
-          ] + (withRemoveButton
-            ? [
-              a([
-                `class`([
-                  Class.cursor.pointer,
-                  Class.pf.colors.fg.red,
-                  Class.pf.colors.link.red,
-                  Class.type.light,
-                  Class.pf.type.body.small,
-                  Class.pf.type.underlineLink
-                ]),
-                onclick("""
+    .div(
+      attributes: [
+        .class([
+          Class.flex.flex,
+          Class.grid.middle(.mobile)
+          ])
+      ],
+      .img(
+        base64: mailIconSvg,
+        type: .image(.svg),
+        alt: "",
+        attributes: [
+          .class([
+            Class.margin([.mobile: [.right: 1]])
+            ]),
+          .style(width(.px(24)) <> height(.px(24)))
+        ]
+      ),
+      .input(attributes: [
+        .type(.email),
+        .placeholder("blob@pointfree.co"),
+        .class([Class.size.width100pct]),
+        .name("teammates[]"),
+        .style(
+          borderWidth(all: 0)
+            <> key("outline", "none")
+        ),
+        .value(email.rawValue),
+        ]),
+      withRemoveButton
+        ? .a(attributes: [
+          .class([
+            Class.cursor.pointer,
+            Class.pf.colors.fg.red,
+            Class.pf.colors.link.red,
+            Class.type.light,
+            Class.pf.type.body.small,
+            Class.pf.type.underlineLink
+            ]),
+          .onclick(safe: """
 var teamMemberRow = this.parentNode.parentNode
 teamMemberRow.parentNode.removeChild(teamMemberRow)
 updateSeats()
 """)
-              ], ["Remove"])
-              ]
-            : []
-        )
-      )
-    ]
+          ], "Remove")
+        : []
+    )
   )
 }
 
@@ -328,153 +304,129 @@ private func billingPeriod(
   coupon: Coupon?,
   lane: Pricing.Lane,
   subscribeData: SubscribeConfirmationData
-  ) -> [Node] {
-  return [
-    gridRow(
-      [`class`([moduleRowClass])],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [`class`([moduleTitleColumnClass])],
-          [h1([`class`([moduleTitleClass])], ["Billing interval"])]
+  ) -> Node {
+  return .gridRow(
+    attributes: [.class([moduleRowClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([moduleTitleColumnClass])],
+      .h1(attributes: [.class([moduleTitleClass])], "Billing interval")
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]])
+          ]),
+        .style(lineHeight(0))
+      ],
+      .label(
+        attributes: [
+          .class([
+            Class.cursor.pointer,
+            Class.flex.flex,
+            Class.flex.items.baseline
+            ])
+        ],
+        .div(
+          .input(
+            attributes: [
+              .checked(subscribeData.billing == .yearly),
+              .id("yearly"),
+              .type(.radio),
+              .name("pricing[billing]"),
+              .value("yearly"),
+            ]
+          )
         ),
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([
-              Class.border.all,
-              Class.pf.colors.border.gray850,
-              Class.padding([.mobile: [.all: 2]])
-              ]),
-            HtmlCssSupport.style(lineHeight(0))
-          ],
-          [
-            label(
-              [
-                `class`([
-                  Class.cursor.pointer,
-                  Class.flex.flex,
-                  Class.flex.items.baseline
+        .div(
+          attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
+          .h5(
+            attributes: [
+              .class([
+                Class.pf.type.responsiveTitle6,
+                Class.margin([.mobile: [.all: 0]])
                 ])
-              ],
-              [
-                div([
-                  input([
-                    checked(subscribeData.billing == .yearly),
-                    id("yearly"),
-                    type(.radio),
-                    name("pricing[billing]"),
-                    value("yearly"),
-                  ])
-                ]),
-                div(
-                  [
-                    `class`([Class.margin([.mobile: [.left: 2]])]),
-                  ],
-                  [
-                    h5(
-                      [
-                        `class`([
-                          Class.pf.type.responsiveTitle6,
-                          Class.margin([.mobile: [.all: 0]])
-                          ])
-                      ],
-                      [
-                        lane == .team
-                          ? "Yearly — 25% off!"
-                          : "Yearly — 22% off!"
-                      ]
-                    ),
-                    p(
-                      [
-                        `class`([
-                          Class.padding([.mobile: [.top: 1]]),
-                          Class.pf.type.body.small,
-                          Class.pf.colors.fg.gray650
-                          ])
-                      ],
-                      [
-                        lane == .team
-                          ? "$144 per member per year"
-                          : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
-                      ]
-                    )
-                  ]
-                )
-              ]
-            )
-          ]
-        ),
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([
-              Class.border.left,
-              Class.border.right,
-              Class.border.bottom,
-              Class.pf.colors.border.gray850,
-              Class.padding([.mobile: [.all: 2]])
-              ]),
-            HtmlCssSupport.style(lineHeight(0))
-          ],
-          [
-            label(
-              [
-                `class`([
-                  Class.cursor.pointer,
-                  Class.flex.flex,
-                  Class.flex.items.baseline
-                  ])
-              ],
-              [
-                div(
-                  [
-                    input([
-                      checked(subscribeData.billing == .monthly),
-                      id("monthly"),
-                      type(.radio),
-                      name("pricing[billing]"),
-                      value("monthly"),
-                      ])
-                  ]
-                ),
-                div(
-                  [
-                    `class`([Class.margin([.mobile: [.left: 2]])]),
-                  ],
-                  [
-                    h5(
-                      [
-                        `class`([
-                          Class.pf.type.responsiveTitle6,
-                          Class.margin([.mobile: [.all: 0]])
-                          ])
-                      ],
-                      ["Monthly"]
-                    ),
-                    p(
-                      [
-                        `class`([
-                          Class.padding([.mobile: [.top: 1]]),
-                          Class.pf.type.body.small,
-                          Class.pf.colors.fg.gray650
-                          ])
-                      ],
-                      [
-                        lane == .team
-                          ? "$16 per member, per month"
-                          : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
-                      ]
-                    )
-                  ]
-                )
-              ]
-            )
-          ]
+            ],
+            lane == .team
+              ? "Yearly — 25% off!"
+              : "Yearly — 22% off!"
+          ),
+          .p(
+            attributes: [
+              .class([
+                Class.padding([.mobile: [.top: 1]]),
+                Class.pf.type.body.small,
+                Class.pf.colors.fg.gray650
+                ])
+            ],
+            lane == .team
+              ? "$144 per member per year"
+              : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
+          )
         )
-      ]
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.border.left,
+          Class.border.right,
+          Class.border.bottom,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]])
+          ]),
+        .style(lineHeight(0))
+      ],
+      .label(
+        attributes: [
+          .class([
+            Class.cursor.pointer,
+            Class.flex.flex,
+            Class.flex.items.baseline
+            ])
+        ],
+        .div(
+          .input(
+            attributes: [
+              .checked(subscribeData.billing == .monthly),
+              .id("monthly"),
+              .type(.radio),
+              .name("pricing[billing]"),
+              .value("monthly"),
+            ]
+          )
+        ),
+        .div(
+          attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
+          .h5(
+            attributes: [
+              .class([
+                Class.pf.type.responsiveTitle6,
+                Class.margin([.mobile: [.all: 0]])
+                ])
+            ],
+            "Monthly"
+          ),
+          .p(
+            attributes: [
+              .class([
+                Class.padding([.mobile: [.top: 1]]),
+                Class.pf.type.body.small,
+                Class.pf.colors.fg.gray650
+                ])
+            ],
+            lane == .team
+              ? "$16 per member, per month"
+              : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
+          )
+        )
+      )
     )
-  ]
+  )
 }
 
 private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: Coupon?) -> Node {
@@ -493,77 +445,71 @@ private func payment(
   coupon: Stripe.Coupon?,
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
-) -> [Node] {
-  return [
-    gridRow(
-      [`class`([moduleRowClass])],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [`class`([moduleTitleColumnClass])],
-          [h1([`class`([moduleTitleClass])], ["Payment info"])]
-        ),
+) -> Node {
+  return .gridRow(
+    attributes: [.class([moduleRowClass])],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([moduleTitleColumnClass])],
+      .h1(attributes: [.class([moduleTitleClass])], "Payment info")
+    ),
 
-        label(
-          [
-            `for`("card"),
-            `class`([
-              Class.type.nowrap,
-              Class.pf.colors.fg.black,
-              Class.pf.colors.bg.white,
-              Class.pf.type.responsiveTitle6,
-            ]),
-          ],
-          ["Credit or debit card"]
-        ),
+    .label(
+      attributes: [
+        .for("card"),
+        .class([
+          Class.type.nowrap,
+          Class.pf.colors.fg.black,
+          Class.pf.colors.bg.white,
+          Class.pf.type.responsiveTitle6,
+        ]),
+      ],
+      "Credit or debit card"
+    ),
 
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([
-              Class.border.all,
-              Class.pf.colors.border.gray850,
-              Class.padding([.mobile: [.all: 2]]),
-              Class.margin([.mobile: [.top: 1]])
-            ]),
-            HtmlCssSupport.style(lineHeight(0))
-          ],
-          [
-            div(
-              [
-                `class`([
-                  Class.flex.flex,
-                  Class.grid.middle(.mobile)
-                ])
-              ],
-              [
-                div([
-                  `class`([Class.size.width100pct]),
-                  data("stripe-key", stripePublishableKey.rawValue),
-                  id("card-element"),
-                ], []),
-              ]
-            )
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.border.all,
+          Class.pf.colors.border.gray850,
+          Class.padding([.mobile: [.all: 2]]),
+          Class.margin([.mobile: [.top: 1]])
+        ]),
+        .style(lineHeight(0))
+      ],
+      .div(
+        attributes: [.class([Class.flex.flex, Class.grid.middle(.mobile)])],
+        .div(
+          attributes: [
+            .class([Class.size.width100pct]),
+            .data("stripe-key", stripePublishableKey.rawValue),
+            .id("card-element"),
           ]
-        ),
+        )
+      )
+    ),
 
-        gridColumn(
-          sizes: [.mobile: 12],
-          [],
-          [
-            div([
-              `class`([
-                Class.pf.colors.fg.red,
-                Class.pf.type.body.small,
-              ]),
-              id("card-errors"),
-            ], []),
-            input([
-              name("token"),
-              `type`(.hidden)
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [],
+      .div(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.red,
+            Class.pf.type.body.small,
             ]),
-            script([src(stripeJs)]),
-            script("""
+          .id("card-errors"),
+        ]
+      ),
+      .input(
+        attributes: [
+          .name("token"),
+          .type(.hidden)
+        ]
+      ),
+      .script(attributes: [.src(stripeJs)]),
+      .script(safe: """
 window.addEventListener("load", function() {
     var apiKey = document.getElementById("card-element").dataset.stripeKey
   var stripe = Stripe(apiKey)
@@ -612,108 +558,93 @@ window.addEventListener("load", function() {
     })
   })
 })
-"""),
-          ]
-        ),
-      ]
-        + (coupon.map(discount) ?? [])
-        + [
-          gridColumn(
-            sizes: [.mobile: 12],
-            [`class`([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
-            [
-              span(
-                [
-                  `class`([
-                    Class.pf.type.body.small,
-                    Class.pf.colors.fg.gray400
-                    ]),
-                  id("pricing-preview"),
-                ],
-                []
-              ),
-              discountedTotalDisclaimer(coupon: coupon)
-            ]
-          )
-      ]
+""")
+    ),
+    coupon.map(discount) ?? [],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
+      .span(
+        attributes: [
+          .class([
+            Class.pf.type.body.small,
+            Class.pf.colors.fg.gray400
+            ]),
+          .id("pricing-preview"),
+        ],
+        []
+      ),
+      discountedTotalDisclaimer(coupon: coupon)
     )
-  ]
+  )
 }
 
 private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
-  guard let coupon = coupon else { return span([]) }
+  guard let coupon = coupon else { return [] }
 
-  return span(
-    [
-      `class`([
+  return .span(
+    attributes: [
+      .class([
         Class.pf.type.body.small,
         Class.pf.colors.fg.gray400
         ]),
     ],
-    [
-      coupon.name.map { .raw(" You are using the coupon <strong>\($0)</strong>") } ?? " You are using a coupon",
-      ", which gives you 50% off every billing period."
+    coupon.name
+      .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+      ?? " You are using a coupon",
+    ", which gives you 50% off every billing period."
+  )
+}
+
+private func discount(coupon: Stripe.Coupon) -> Node {
+  return .input(
+    attributes: [
+      .class([Class.display.none]),
+      .disabled(true),
+      .name("coupon"),
+      .placeholder("Coupon Code"),
+      .type(.hidden),
+      .value(coupon.id.rawValue)
     ]
   )
 }
 
-private func discount(coupon: Stripe.Coupon) -> [Node] {
-  return [
-    input([
-      `class`([Class.display.none]),
-      disabled(true),
-      name("coupon"),
-      placeholder("Coupon Code"),
-      type(.hidden),
-      value(coupon.id.rawValue)
-      ]),
-  ]
-}
-
-private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> [Node] {
+private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
   let discount = coupon?.discount ?? { $0 }
-  return [
-    gridRow(
-      [
-        `class`([
-          Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
-          Class.padding([.mobile: [.top: 3, .bottom: 4], .desktop: [.top: 3, .bottom: 4]]),
-          Class.grid.middle(.mobile)
-          ])
-      ],
-      [
-        gridColumn(
-          sizes: [:],
-          [`class`([Class.grid.start(.mobile)])],
-          [
-            div(
-              [
-                `class`([
-                  Class.flex.flex,
-                  Class.flex.align.center,
-                  Class.grid.middle(.mobile),
-                  ])
-              ],
-              [
-                h3(
-                  [
-                    `class`([
-                      Class.pf.type.responsiveTitle2,
-                      Class.type.normal,
-                      Class.margin([.mobile: [.topBottom: 0]])
-                    ]),
-                    id("total"),
-                  ],
-                  [""]
-                ),
-                input([
-                  name("pricing[quantity]"),
-                  `type`(.hidden),
-                ]),
-                .element(
-                  "script",
-                  [],
-                  [.raw(#"""
+  return .gridRow(
+    attributes: [
+      .class([
+        Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
+        Class.padding([.mobile: [.top: 3, .bottom: 4], .desktop: [.top: 3, .bottom: 4]]),
+        Class.grid.middle(.mobile)
+        ])
+    ],
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.start(.mobile)])],
+      .div(
+        attributes: [
+          .class([
+            Class.flex.flex,
+            Class.flex.align.center,
+            Class.grid.middle(.mobile),
+            ])
+        ],
+        .h3(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle2,
+              Class.type.normal,
+              Class.margin([.mobile: [.topBottom: 0]])
+            ]),
+            .id("total"),
+          ]
+        ),
+        .input(attributes: [
+          .name("pricing[quantity]"),
+          .type(.hidden),
+          ]),
+        .script(unsafe: #"""
 function format(money) {
   return "$" + money.toFixed(2).replace(/\.00$/, "")
 }
@@ -755,48 +686,42 @@ window.addEventListener("load", function() {
   var form = document.getElementById("subscribe-form")
   form.addEventListener("change", updateSeats)
 })
-"""#)]),
-                span(
-                  [
-                    `class`([
-                      Class.pf.type.body.small,
-                      Class.pf.colors.fg.gray400,
-                      Class.margin([.mobile: [.left: 1]]),
-                      Class.padding([.mobile: [.bottom: 1]])
-                      ])
-                  ],
-                  ["Total"]
-                )
-              ]
-            )
-          ]
-        ),
-        gridColumn(
-          sizes: [:],
-          [`class`([Class.grid.end(.mobile)])],
-          [
-            button(
-              [
-                `class`([
-                  Class.border.none,
-                  Class.type.textDecorationNone,
-                  Class.cursor.pointer,
-                  Class.type.bold,
-                  Class.typeScale([.mobile: .r1, .desktop: .r1]),
-                  Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
-                  Class.type.align.center,
-                  Class.pf.colors.bg.black,
-                  Class.pf.colors.fg.white,
-                  Class.pf.colors.link.white,
-                  ])
-              ],
-              ["Subscribe"]
-            )
-          ]
+"""#),
+        .span(
+          attributes: [
+            .class([
+              Class.pf.type.body.small,
+              Class.pf.colors.fg.gray400,
+              Class.margin([.mobile: [.left: 1]]),
+              Class.padding([.mobile: [.bottom: 1]])
+              ])
+          ],
+          "Total"
         )
-      ]
+      )
+    ),
+    .gridColumn(
+      sizes: [:],
+      attributes: [.class([Class.grid.end(.mobile)])],
+      .button(
+        attributes: [
+          .class([
+            Class.border.none,
+            Class.type.textDecorationNone,
+            Class.cursor.pointer,
+            Class.type.bold,
+            Class.typeScale([.mobile: .r1, .desktop: .r1]),
+            Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+            Class.type.align.center,
+            Class.pf.colors.bg.black,
+            Class.pf.colors.fg.white,
+            Class.pf.colors.link.white,
+            ])
+        ],
+        "Subscribe"
+      )
     )
-  ]
+  )
 }
 
 private let moduleTitleClass =
@@ -806,7 +731,7 @@ private let moduleTitleClass =
 private let moduleTitleColumnClass =
   Class.padding([.mobile: [.bottom: 1], .desktop: [.bottom: 2]])
 
-private let moduleRowClass =
+let moduleRowClass =
   Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]])
     | Class.padding([.mobile: [.topBottom: 3]])
     | Class.border.bottom
