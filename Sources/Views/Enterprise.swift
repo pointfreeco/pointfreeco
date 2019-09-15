@@ -6,29 +6,6 @@ import PointFreeRouter
 import Styleguide
 import UrlFormEncoding
 
-extension Node {
-  public static func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> HtmlUpgrade.Node {
-    return .a(
-      attributes: [
-        .href(href ?? ""),
-        .class([type.buttonClass])
-      ],
-      .img(
-        base64: gitHubSvgBase64(fill: type.iconFillColor),
-        type: .image(.svg),
-        alt: "",
-        attributes: [
-          .class([Class.margin([.mobile: [.right: 1]])]),
-          .style(margin(bottom: .px(-4))),
-          .width(20),
-          .height(20)
-        ]
-      ),
-      .span(.text(text))
-    )
-  }
-}
-
 public func enterpriseView(_ currentUser: User?, _ account: EnterpriseAccount) -> Node {
   let loggedOutView: Node = [
     .p(
