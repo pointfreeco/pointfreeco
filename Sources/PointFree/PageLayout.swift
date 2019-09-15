@@ -107,13 +107,13 @@ struct SimplePageLayoutData<A> {
 }
 
 func _respond<A, B>(
-  view: @escaping (B) -> [HtmlUpgrade.Node],
+  view: @escaping (B) -> HtmlUpgrade.Node,
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
   )
   -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
 
     return respond(
-      view: { b in view(b).flatMap(downgrade(node:)) },
+      view: { b in downgrade(node: view(b)) },
       layoutData: layoutData
     )
 }
