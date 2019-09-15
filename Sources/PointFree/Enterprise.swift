@@ -27,7 +27,7 @@ let enterpriseLandingResponse: AppMiddleware<Tuple3<User?, SubscriberState, Ente
     )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
+    >>> _respond(
       view: enterpriseView,
       layoutData: { user, subscriberState, enterpriseAccount in
         SimplePageLayoutData(
