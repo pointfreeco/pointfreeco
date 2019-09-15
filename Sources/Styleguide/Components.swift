@@ -9,14 +9,14 @@ public enum GitHubLinkType {
   case black
   case white
 
-  fileprivate var iconFillColor: String {
+  public var iconFillColor: String {
     switch self {
     case .white:  return "#000"
     case .black:  return "#fff"
     }
   }
 
-  fileprivate var buttonClass: CssSelector {
+  public var buttonClass: CssSelector {
     switch self {
     case .black:  return Class.pf.components.button(color: .black)
     case .white:  return Class.pf.components.button(color: .white)
