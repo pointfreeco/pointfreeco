@@ -1,12 +1,11 @@
 import Css
 import FunctionalCss
-import Html
 import HtmlUpgrade
 import HtmlCssSupport
 import Prelude
 import Styleguide
 
-public let privacyView: HtmlUpgrade.Node = .gridRow(
+public let privacyView: Node = .gridRow(
   .gridColumn(
     sizes: [.mobile: 12, .desktop: 8],
     attributes: [.style(margin(leftRight: .auto))],
@@ -22,7 +21,7 @@ public let privacyView: HtmlUpgrade.Node = .gridRow(
   )
 )
 
-private let privacyPolicy: HtmlUpgrade.Node = [
+private let privacyPolicy: Node = [
   personalIdentificationInformation,
   nonPersonalIdentificationInformation,
   webBrowserCookies,
@@ -34,7 +33,7 @@ private let privacyPolicy: HtmlUpgrade.Node = [
   contactingUs
 ]
 
-private let personalIdentificationInformation: HtmlUpgrade.Node = [
+private let personalIdentificationInformation: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Personal identification information"
@@ -48,7 +47,7 @@ private let personalIdentificationInformation: HtmlUpgrade.Node = [
   )
 ]
 
-private let nonPersonalIdentificationInformation: HtmlUpgrade.Node = [
+private let nonPersonalIdentificationInformation: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Non-personal identification information"
@@ -62,7 +61,7 @@ private let nonPersonalIdentificationInformation: HtmlUpgrade.Node = [
   )
 ]
 
-private let webBrowserCookies: HtmlUpgrade.Node = [
+private let webBrowserCookies: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Web browser cookies"
@@ -76,7 +75,7 @@ private let webBrowserCookies: HtmlUpgrade.Node = [
   )
 ]
 
-private let howWeUseCollectedInformation: HtmlUpgrade.Node = [
+private let howWeUseCollectedInformation: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "How we use collected information"
@@ -110,7 +109,7 @@ private let howWeUseCollectedInformation: HtmlUpgrade.Node = [
   )
 ]
 
-private let howWeProtectYourInformation: HtmlUpgrade.Node = [
+private let howWeProtectYourInformation: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "How we protect your information"
@@ -130,7 +129,7 @@ private let howWeProtectYourInformation: HtmlUpgrade.Node = [
   ),
 ]
 
-private let sharingYourPersonalInformation: HtmlUpgrade.Node = [
+private let sharingYourPersonalInformation: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Sharing your personal information"
@@ -145,7 +144,7 @@ private let sharingYourPersonalInformation: HtmlUpgrade.Node = [
   )
 ]
 
-private let complianceWithChildrensOnlinePrivacyProtectionAct: HtmlUpgrade.Node = [
+private let complianceWithChildrensOnlinePrivacyProtectionAct: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Compliance with children's online privacy protection act"
@@ -159,7 +158,7 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct: HtmlUpgrade.Node 
   )
 ]
 
-private let changesToThisPrivacyPolicy: HtmlUpgrade.Node = [
+private let changesToThisPrivacyPolicy: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Changes to this privacy policy"
@@ -172,7 +171,7 @@ private let changesToThisPrivacyPolicy: HtmlUpgrade.Node = [
   )
 ]
 
-private let contactingUs: HtmlUpgrade.Node = [
+private let contactingUs: Node = [
   .h2(
     attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
     "Contacting us"
