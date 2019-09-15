@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65292
+Content-Length: 65257
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2379,8 +2379,6 @@ from your account page.
                        lh-4
                        fg-gray400"
                 id="pricing-preview">
-          </span>
-          <span>
           </span>
         </div>
       </div>
