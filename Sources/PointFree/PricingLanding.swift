@@ -15,7 +15,7 @@ public let pricingLanding: Middleware<
   >
   = writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
+    >>> _respond(
       view: Views.pricingLanding,
       layoutData: { currentUser, allEpisodeCount, episodeHourCount, freeEpisodeCount, currentRoute, subscriberState in
         SimplePageLayoutData(

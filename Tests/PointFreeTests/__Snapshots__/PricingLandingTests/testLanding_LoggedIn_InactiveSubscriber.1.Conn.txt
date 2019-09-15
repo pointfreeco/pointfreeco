@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174472
+Content-Length: 174406
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2016,8 +2016,6 @@ personal, team and enterprise subscriptions.">
               Download all episode playgrounds
             </li>
           </ul>
-          <div>
-          </div>
         </div>
       </li>
       <li class="d-pl1
@@ -2251,8 +2249,6 @@ personal, team and enterprise subscriptions.">
                      lh-2">
             Enterprise
           </h4>
-          <div>
-          </div>
           <ul class="list-style-none
                      m-pl0
                      m-pr0
