@@ -8,7 +8,7 @@ import Prelude
 import Stripe
 import Tuple
 
-let subscribeMiddleware =
+let subscribeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData?, User?>, Data> =
   filterMap(
     require1 >>> pure,
     or: redirect(

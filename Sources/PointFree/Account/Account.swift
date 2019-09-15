@@ -16,6 +16,7 @@ import Styleguide
 import Tagged
 import TaggedMoney
 import Tuple
+import Views
 
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -1150,24 +1151,3 @@ let blockSelectClass =
     | Class.size.width100pct
     | Class.pf.colors.border.gray800
     | Class.type.fontFamily.inherit
-
-private struct AccountData {
-  let currentUser: User
-  let emailSettings: [EmailSetting]
-  let episodeCredits: [EpisodeCredit]
-  let stripeSubscription: Stripe.Subscription?
-  let subscriberState: SubscriberState
-  let subscription: Models.Subscription?
-  let subscriptionOwner: User?
-  let teamInvites: [TeamInvite]
-  let teammates: [User]
-  let upcomingInvoice: Stripe.Invoice?
-
-  var isSubscriptionOwner: Bool {
-    return self.currentUser.id == self.subscriptionOwner?.id
-  }
-
-  var isTeamSubscription: Bool {
-    return (self.stripeSubscription?.quantity ?? 0) > 1
-  }
-}

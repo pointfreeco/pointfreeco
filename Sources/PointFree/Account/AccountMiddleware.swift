@@ -22,6 +22,10 @@ func accountMiddleware(conn: Conn<StatusLineOpen, Tuple4<Models.Subscription?, U
       return conn.map(const(user .*. subscriberState .*. unit))
         |> accountResponse
 
+    case ._index:
+      return conn.map(const(user .*. subscriberState .*. unit))
+        |> _accountResponse
+
     case .invoices(.index):
       return conn.map(const(user .*. subscriberState .*. unit))
         |> invoicesResponse
