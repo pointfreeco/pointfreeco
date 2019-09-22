@@ -571,8 +571,7 @@ window.addEventListener("load", function() {
             Class.pf.colors.fg.gray400
             ]),
           .id("pricing-preview"),
-        ],
-        []
+        ]
       ),
       discountedTotalDisclaimer(coupon: coupon)
     )
@@ -586,13 +585,14 @@ private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
     attributes: [
       .class([
         Class.pf.type.body.small,
+        Class.border.none,
         Class.pf.colors.fg.gray400
         ]),
     ],
     coupon.name
-      .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
+      .map { [" You are using the coupon ", .strong(.text($0))] }
       ?? " You are using a coupon",
-    ", which gives you 50% off every billing period."
+    ", which gives you \(coupon.formattedDescription) every billing period."
   )
 }
 
