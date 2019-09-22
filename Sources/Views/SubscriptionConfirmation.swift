@@ -724,11 +724,11 @@ window.addEventListener("load", function() {
   )
 }
 
-private let moduleTitleClass =
+let moduleTitleClass =
   Class.pf.type.responsiveTitle3
     | Class.margin([.mobile: [.top: 0]])
 
-private let moduleTitleColumnClass =
+let moduleTitleColumnClass =
   Class.padding([.mobile: [.bottom: 1], .desktop: [.bottom: 2]])
 
 let moduleRowClass =
