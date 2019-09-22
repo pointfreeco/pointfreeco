@@ -24,7 +24,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, subscriberState, Current.episodes()),
+          data: (currentUser, subscriberState, Current.episodes(), Current.date),
           extraStyles: markdownBlockStyles,
           openGraphType: .website,
           style: .base(.mountains(.main)),

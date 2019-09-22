@@ -1,4 +1,5 @@
 import Css
+import Foundation
 import FunctionalCss
 import HtmlUpgrade
 import HtmlCssSupport
@@ -7,7 +8,12 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func homeView(currentUser: User?, subscriberState: SubscriberState, episodes: [Episode]) -> Node {
+public func homeView(
+  currentUser: User?,
+  subscriberState: SubscriberState,
+  episodes: [Episode],
+  date: () -> Date
+  ) -> Node {
 
   let episodes = episodes.sorted(by: their(^\.sequence, >))
 
@@ -16,9 +22,9 @@ public func homeView(currentUser: User?, subscriberState: SubscriberState, episo
   let secondBatch = episodes[ctaInsertionIndex...]
 
   return [
-    episodesListView(firstBatch),
+    episodesListView(episodes: firstBatch, date: date),
     subscriberCalloutView(subscriberState),
-    episodesListView(secondBatch)
+    episodesListView(episodes: secondBatch, date: date)
   ]
 }
 
@@ -71,15 +77,15 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   ]
 }
 
-private func episodesListView(_ eps: ArraySlice<Episode>) -> Node {
-  return .fragment(eps.map(episodeRowView))
+private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date) -> Node {
+  return .fragment(episodes.map { episodeRowView(episode: $0, date: date) })
 }
 
-private func episodeRowView(_ ep: Episode) -> Node {
+private func episodeRowView(episode: Episode, date: () -> Date) -> Node {
   return [
     divider,
     .gridRow(
-      .gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView(ep)),
+      .gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView(episode: episode, date: date)),
       .gridColumn(
         sizes: [.mobile: 12, .desktop: 5],
         attributes: [.class([Class.grid.first(.mobile), Class.grid.last(.desktop)])],
@@ -89,10 +95,10 @@ private func episodeRowView(_ ep: Episode) -> Node {
             .style(lineHeight(0) <> gradient <> minHeight(.px(300)))
           ],
           .a(
-            attributes: [.href(path(to: .episode(.left(ep.slug))))],
+            attributes: [.href(path(to: .episode(.left(episode.slug))))],
             .img(
               attributes: [
-                .src(ep.image),
+                .src(episode.image),
                 .alt(""),
                 .class([Class.size.width100pct, Class.size.height100pct]),
                 .style(objectFit(.cover))
@@ -105,20 +111,20 @@ private func episodeRowView(_ ep: Episode) -> Node {
   ]
 }
 
-private func episodeInfoColumnView(_ ep: Episode) -> Node {
+private func episodeInfoColumnView(episode: Episode, date: () -> Date) -> Node {
   return .div(
     attributes: [
       .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
     ],
-    topLevelEpisodeInfoView(ep: ep),
+    topLevelEpisodeInfoView(episode: episode, date: date),
     .div(
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
         attributes: [
-          .href(path(to: .episode(.left(ep.slug)))),
+          .href(path(to: .episode(.left(episode.slug)))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular])
         ],
-        .text("Watch episode (\(ep.length / 60) min)"),
+        .text("Watch episode (\(episode.length / 60) min)"),
         .img(
           base64: rightArrowSvgBase64(fill: "#974DFF"),
           type: .image(.svg),
@@ -130,33 +136,33 @@ private func episodeInfoColumnView(_ ep: Episode) -> Node {
   )
 }
 
-public func topLevelEpisodeInfoView(ep: Episode) -> Node {
+public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date) -> Node {
   return [
     .strong(
       attributes: [.class([Class.pf.type.responsiveTitle8])],
-      .text(topLevelEpisodeMetadata(ep))
+      .text(topLevelEpisodeMetadata(episode: episode, date: date))
     ),
     .h1(
       attributes: [
         .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])
       ],
       .a(
-        attributes: [.href(path(to: .episode(.left(ep.slug))))],
-        .text(ep.title)
+        attributes: [.href(path(to: .episode(.left(episode.slug))))],
+        .text(episode.title)
       )
     ),
     .div(
       attributes: [.class([Class.pf.type.body.leading])],
-      .markdownBlock(ep.blurb)
+      .markdownBlock(episode.blurb)
     )
   ]
 }
 
-private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
+private func topLevelEpisodeMetadata(episode: Episode, date: () -> Date) -> String {
   let components: [String?] = [
-    "#\(ep.sequence)",
-    episodeDateFormatter.string(from: ep.publishedAt),
-    /* TODO: ep.subscriberOnly */ true ? "Subscriber-only" : "Free Episode"
+    "#\(episode.sequence)",
+    episodeDateFormatter.string(from: episode.publishedAt),
+    episode.isSubscriberOnly(currentDate: date()) ? "Subscriber-only" : "Free Episode"
   ]
 
   return components
