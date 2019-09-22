@@ -2,6 +2,14 @@ import Foundation
 
 extension Episode.Reference {
 
+  public static let accessControl = Episode.Reference(
+    author: "Apple",
+    blurb: "This chapter of the Swift Programming Language book explains access control in depth and how it affects module imports.",
+    link: "https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html",
+    publishedAt: nil,
+    title: "Access Control"
+  )
+
   public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
