@@ -468,7 +468,7 @@ private func episodeInfoView(permission: EpisodePermission, ep: Episode) -> [Nod
   return [
     div(
       [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      downgrade(node: topLevelEpisodeInfoView(ep: ep))
+      downgrade(node: topLevelEpisodeInfoView(episode: ep, date: Current.date))
         + previousEpisodes(of: ep)
         + sectionsMenu(episode: ep, permission: permission)
     )
