@@ -18,7 +18,7 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
   writeStatus(.ok)
     >=> map(lower)
     >>> _respond(
-      view: homeView(currentUser:subscriberState:episodes:),
+      view: homeView(currentUser:subscriberState:episodes:date:),
       layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
