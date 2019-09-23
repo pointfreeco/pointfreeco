@@ -468,7 +468,7 @@ private func episodeInfoView(permission: EpisodePermission, ep: Episode) -> [Nod
   return [
     div(
       [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      topLevelEpisodeInfoView(ep: ep)
+      downgrade(node: topLevelEpisodeInfoView(episode: ep, date: Current.date))
         + previousEpisodes(of: ep)
         + sectionsMenu(episode: ep, permission: permission)
     )
@@ -513,20 +513,6 @@ private func topLevelEpisodeMetadata(_ ep: Episode) -> String {
   return components
     .compactMap { $0 }
     .joined(separator: " • ")
-}
-
-func topLevelEpisodeInfoView(ep: Episode) -> [Node] {
-  return [
-    strong(
-      [`class`([Class.pf.type.responsiveTitle8])],
-      [.text(topLevelEpisodeMetadata(ep))]
-    ),
-    h1(
-      [`class`([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])],
-      [a([href(path(to: .episode(.left(ep.slug))))], [.text(ep.title)])]
-    ),
-    div([`class`([Class.pf.type.body.leading])], [markdownBlock(ep.blurb)])
-    ]
 }
 
 private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [Node] {
