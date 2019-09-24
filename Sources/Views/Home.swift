@@ -28,13 +28,11 @@ public func homeView(
   ]
 }
 
-private let _divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
-
 private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   guard subscriberState.isNonSubscriber else { return [] }
 
   return [
-    _divider,
+    divider,
     .gridRow(
       .gridColumn(
         sizes: [.desktop: 9, .mobile: 12],
@@ -83,7 +81,7 @@ private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date) -
 
 private func episodeRowView(episode: Episode, date: () -> Date) -> Node {
   return [
-    _divider,
+    divider,
     .gridRow(
       .gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView(episode: episode, date: date)),
       .gridColumn(
