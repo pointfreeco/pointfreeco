@@ -22,8 +22,8 @@ let episodeResponse =
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
-    >>> respond(
-      view: episodeView,
+    >>> _respond(
+      view: Views.episodeView(permission:user:subscriberState:episode:date:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
@@ -31,7 +31,7 @@ let episodeResponse =
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (permission, currentUser, subscriberState, episode),
+          data: (permission, currentUser, subscriberState, episode, Current.date),
           description: episode.blurb,
           extraHead: videoJsHead,
           extraStyles: markdownBlockStyles,
@@ -183,4 +183,11 @@ private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: Su
         ])
       ])
   ]
+}
+
+private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {
+  return Current.episodes()
+    .first(where: {
+      param.left == .some($0.slug) || param.right == .some($0.id)
+    })
 }

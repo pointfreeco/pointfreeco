@@ -219,7 +219,7 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   }
 }
 
-let useCreditCTA = "Use an episode credit"
+public let useCreditCTA = "Use an episode credit"
 
 private func creditBlurb(permission: EpisodePermission, episode: Episode) -> Node {
   guard
@@ -634,18 +634,7 @@ private func solution(to exercise: Episode.Exercise) -> Node {
   )
 }
 
-private func episode(
-  forParam param: Either<String, Episode.Id>,
-  episodes: [Episode]
-  ) -> Episode? {
-  return episodes
-    .first(where: {
-      param.left == .some($0.slug) || param.right == .some($0.id)
-    })
-}
-
-
-private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
+public func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
   switch permission {
   case .loggedIn(_, .isSubscriber):
     return true
