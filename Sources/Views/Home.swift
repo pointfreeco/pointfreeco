@@ -28,13 +28,13 @@ public func homeView(
   ]
 }
 
-private let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
+private let _divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
 
 private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   guard subscriberState.isNonSubscriber else { return [] }
 
   return [
-    divider,
+    _divider,
     .gridRow(
       .gridColumn(
         sizes: [.desktop: 9, .mobile: 12],
@@ -83,7 +83,7 @@ private func episodesListView(episodes: ArraySlice<Episode>, date: () -> Date) -
 
 private func episodeRowView(episode: Episode, date: () -> Date) -> Node {
   return [
-    divider,
+    _divider,
     .gridRow(
       .gridColumn(sizes: [.mobile: 12, .desktop: 7], episodeInfoColumnView(episode: episode, date: date)),
       .gridColumn(
@@ -158,7 +158,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date) -> Node 
   ]
 }
 
-private func topLevelEpisodeMetadata(episode: Episode, date: () -> Date) -> String {
+func topLevelEpisodeMetadata(episode: Episode, date: () -> Date) -> String {
   let components: [String?] = [
     "#\(episode.sequence)",
     episodeDateFormatter.string(from: episode.publishedAt),
