@@ -311,7 +311,7 @@ private func subscribeView(permission: EpisodePermission, user: User?, episode: 
       ),
       loginLink(user: user, ep: episode),
       creditBlurb(permission: permission, episode: episode),
-      signUpBlurb(permission: permission, episode: episode),
+      signUpBlurb(permission: permission, episode: episode)
     ),
     divider
   ]
@@ -411,7 +411,7 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> N
   )
 }
 
-let divider = [Node.hr(attributes: [.class([Class.pf.components.divider])])]
+let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
 
 private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
   return .div(
@@ -436,150 +436,133 @@ private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bo
       .reduce(into: State()) { state, block in
         if case .title = block.type { state.titleCount += 1 }
         state.nodes += state.titleCount <= 1 || isEpisodeViewable
-          ? transcriptBlockView(block)
+          ? [transcriptBlockView(block)]
           : []
       }
-      .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+      .nodes + [subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)]
   )
 }
 
-private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
+private func subscriberCalloutView(isEpisodeViewable: Bool) -> Node {
   guard !isEpisodeViewable else { return [] }
 
-  return [
-    gridRow([
-      gridColumn(
-        sizes: [.mobile: 12],
-        [style(margin(leftRight: .auto))],
-        [
-          div(
+  return .gridRow(
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.style(margin(leftRight: .auto))],
+      .div(
+        attributes: [
+          .class(
             [
-              `class`(
-                [
-                  Class.margin([.mobile: [.top: 4]]),
-                  Class.padding([.mobile: [.all: 3]]),
-                  Class.pf.colors.bg.gray900
-                ]
-              )
-            ],
-            [
-              h4(
-                [
-                  `class`(
-                    [
-                      Class.pf.type.responsiveTitle4,
-                      Class.padding([.mobile: [.bottom: 2]])
-                    ]
-                  )
-                ],
-                ["Subscribe to Point-Free"]
-              ),
-              p(
-                [
-                  "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
-                  a(
-                    [
-                      href(path(to: .pricingLanding)),
-                      `class`([Class.pf.type.underlineLink])
-                    ],
-                    ["subscribe"]
-                  ),
-                  " so that you get access to this episodes and more!",
-                ]
-              )
+              Class.margin([.mobile: [.top: 4]]),
+              Class.padding([.mobile: [.all: 3]]),
+              Class.pf.colors.bg.gray900
             ]
           )
-        ]
+        ],
+        .h4(
+          attributes: [
+            .class(
+              [
+                Class.pf.type.responsiveTitle4,
+                Class.padding([.mobile: [.bottom: 2]])
+              ]
+            )
+          ],
+          "Subscribe to Point-Free"
+        ),
+        .p(
+          "👋 Hey there! Does this episode sound interesting? Well, then you may want to ",
+          .a(
+            attributes: [
+              .href(path(to: .pricingLanding)),
+              .class([Class.pf.type.underlineLink])
+            ],
+            "subscribe"
+          ),
+          " so that you get access to this episodes and more!"
+        )
       )
-      ])
+    )
+  )
+}
+
+private func referencesView(references: [Episode.Reference]) -> Node {
+  guard !references.isEmpty else { return [] }
+
+  return [
+    divider,
+    .div(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+          Class.pf.colors.bg.white
+          ])
+      ],
+      .h2(
+        attributes: [
+          .id("references"),
+          .class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+        ],
+        "References"
+      ),
+      .ul(.fragment(zip(1..., references).map(referenceView(index:reference:))))
+    )
   ]
 }
 
-private func referencesView(references: [Episode.Reference]) -> [Node] {
-  guard !references.isEmpty else { return [] }
-
-  return divider + [
-    div(
-      [
-        `class`(
-          [
-            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-            Class.pf.colors.bg.white
-          ]
-        )
+private func referenceView(index: Int, reference: Episode.Reference) -> ChildOf<Tag.Ul> {
+  return [
+    .li(
+      attributes: [
+        .id("reference-\(index)"),
+        .class([Class.margin([.mobile: [.bottom: 3]])])
       ],
-      [
-        h2(
-          [
-            id("references"),
-            `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+      .h4(
+        attributes: [.class([
+          Class.pf.type.responsiveTitle5,
+          Class.margin([.mobile: [.bottom: 0]])
+          ])],
+        .a(
+          attributes: [
+            .href(reference.link),
+            .target(.blank),
+            .rel(.init(rawValue: "noopener noreferrer"))
           ],
-          ["References"]
-        ),
-        ul(
-          zip(1..., references).map { idx, reference in
-            li(
-              [
-                id("reference-\(idx)"),
-                `class`([Class.margin([.mobile: [.bottom: 3]])])
-              ],
-              [
-                h4(
-                  [`class`([
-                    Class.pf.type.responsiveTitle5,
-                    Class.margin([.mobile: [.bottom: 0]])
-                    ])],
-                  [
-                    a(
-                      [
-                        href(reference.link),
-                        target(.blank),
-                        rel(.init(rawValue: "noopener noreferrer"))
-                      ],
-                      [.text(reference.title)]
-                    )
-                  ]
-                ),
-                strong(
-                  [`class`([Class.pf.type.body.small])],
-                  [.text(topLevelReferenceMetadata(reference))]
-                ),
-                div([markdownBlock(reference.blurb ?? "")]),
-                div(
-                  [
-                    a(
-                      [
-                        style("word-break: break-all;"),
-                        href(reference.link),
-                        `class`([Class.pf.colors.link.purple]),
-                        target(.blank),
-                        rel(.init(rawValue: "noopener noreferrer"))
-                      ],
-                      [
-                        img(
-                          base64: newWindowSvgBase64(fill: "#974DFF"),
-                          type: .image(.svg),
-                          alt: "",
-                          [
-                            `class`([
-                              Class.align.middle,
-                              Class.margin([.mobile: [.right: 1]])
-                              ]),
-                            width(14),
-                            height(14),
-                            style(margin(top: .px(-2)))
-                          ]
-                        ),
-                        .text(reference.link)
-                      ]
-                    )
-                  ]
-                )
-              ]
-            )
-          }
+          .text(reference.title)
         )
-      ]
+      ),
+      .strong(
+        attributes: [.class([Class.pf.type.body.small])],
+        .text(topLevelReferenceMetadata(reference))
+      ),
+      .div(.markdownBlock(reference.blurb ?? "")),
+      .div(
+        .a(
+          attributes: [
+            .style(safe: "word-break: break-all;"),
+            .href(reference.link),
+            .class([Class.pf.colors.link.purple]),
+            .target(.blank),
+            .rel(.init(rawValue: "noopener noreferrer"))
+          ],
+          .img(
+            base64: newWindowSvgBase64(fill: "#974DFF"),
+            type: .image(.svg),
+            alt: "",
+            attributes: [
+              .class([
+                Class.align.middle,
+                Class.margin([.mobile: [.right: 1]])
+                ]),
+              .width(14),
+              .height(14),
+              .style(margin(top: .px(-2)))
+            ]
+          ),
+          .text(reference.link)
+        )
+      )
     )
   ]
 }
@@ -593,64 +576,62 @@ private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String
     .joined(separator: " • ")
 }
 
-private func exercisesView(exercises: [Episode.Exercise]) -> [Node] {
+private func exercisesView(exercises: [Episode.Exercise]) -> Node {
   guard !exercises.isEmpty else { return [] }
 
-  return divider + [
-    div(
-      [
-        `class`(
+  return [
+    divider,
+    .div(
+      attributes: [
+        .class(
           [
             Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
             Class.pf.colors.bg.white
           ]
         )
       ],
-      [
-        h2(
-          [
-            id("exercises"),
-            `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
+
+        .h2(
+          attributes: [
+            .id("exercises"),
+            .class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])])
           ],
-          ["Exercises"]
+          "Exercises"
         ),
-        ol(zip(1..., exercises).map(exercise(idx:exercise:)))
-      ]
+        .ol(.fragment(zip(1..., exercises).map(exercise(idx:exercise:))))
     )
   ]
 }
 
 private func exercise(idx: Int, exercise: Episode.Exercise) -> ChildOf<Tag.Ol> {
-  return li(
-    [Html.id("exercise-\(idx)")],
-    [
-      div(
-        [markdownBlock(exercise.problem)]
-          + solution(to: exercise)
-      )
-    ]
+  return .li(
+    attributes: [.id("exercise-\(idx)")],
+    .div(
+      [
+        .markdownBlock(exercise.problem),
+        solution(to: exercise)
+      ]
+    )
   )
 }
 
-private func solution(to exercise: Episode.Exercise) -> [Node] {
+private func solution(to exercise: Episode.Exercise) -> Node {
   guard let solution = exercise.solution else { return [] }
 
-  return [
-    details([
-      summary(["Solution"]).rawValue, // todo: update details to take children of details
-      div(
-        [
-          `class`([
-            Class.pf.colors.bg.gray900,
-            Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]]),
-            Class.margin([.mobile: [.bottom: 3]]),
-            Class.layout.overflowAuto(.x)
-            ])
-        ],
-        [markdownBlock(solution)]
-      )
-      ])
-  ]
+  return .details(
+    .summary("Solution"), // todo: update details to take children of details
+    .div(
+      attributes: [
+        .class([
+          Class.pf.colors.bg.gray900,
+          Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]]),
+          Class.margin([.mobile: [.bottom: 3]]),
+          Class.layout.overflowAuto(.x)
+          ])
+      ],
+      .markdownBlock(solution)
+    )
+  )
 }
 
 private func episode(
