@@ -156,7 +156,7 @@ public func topLevelEpisodeInfoView(episode: Episode, date: () -> Date) -> Node 
   ]
 }
 
-func topLevelEpisodeMetadata(episode: Episode, date: () -> Date) -> String {
+private func topLevelEpisodeMetadata(episode: Episode, date: () -> Date) -> String {
   let components: [String?] = [
     "#\(episode.sequence)",
     episodeDateFormatter.string(from: episode.publishedAt),
