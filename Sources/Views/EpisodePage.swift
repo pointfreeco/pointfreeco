@@ -2,33 +2,32 @@ import Css
 import FunctionalCss
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
-import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
 
-private func episodeView(
+public func episodeView(
   permission: EpisodePermission,
   user: User?,
   subscriberState: SubscriberState,
   episode: Episode,
   date: () -> Date
-  ) -> [Node] {
+  ) -> Node {
 
   return [
-    gridRow([
-      gridColumn(sizes: [.mobile: 12], [`class`([Class.hide(.desktop)])], [
-        div(episodeInfoView(permission: permission, ep: episode, date: date))
-        ])
-      ]),
+    .gridRow(
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [.class([Class.hide(.desktop)])],
+        .div(episodeInfoView(permission: permission, ep: episode, date: date))
+      )
+    ),
 
-    gridRow([
-      gridColumn(
+    .gridRow(
+      .gridColumn(
         sizes: [.mobile: 12, .desktop: 6],
         leftColumnView(
           permission: permission,
@@ -39,120 +38,122 @@ private func episodeView(
         )
       ),
 
-      gridColumn(
+      .gridColumn(
         sizes: [.mobile: 12, .desktop: 6],
-        [`class`([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
+        attributes: [.class([Class.pf.colors.bg.purple150, Class.grid.first(.mobile), Class.grid.last(.desktop)])],
         [
-          div(
-            [`class`([Class.position.sticky(.desktop), Class.position.top0])],
+          .div(
+            attributes: [.class([Class.position.sticky(.desktop), Class.position.top0])],
             rightColumnView(
               episode: episode, isEpisodeViewable: isEpisodeViewable(for: permission)
             )
           )
         ]
       )
-      ])
-  ]
-}
-
-private func rightColumnView(episode: Episode, isEpisodeViewable: Bool) -> [Node] {
-
-  return [videoView(forEpisode: episode, isEpisodeViewable: isEpisodeViewable)]
-    + episodeTocView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable)
-    + downloadsView(codeSampleDirectory: episode.codeSampleDirectory)
-}
-
-private func episodeTocView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> [Node] {
-  return [
-    div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])], [
-      h6(
-        [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-        ["Chapters"]
-      ),
-      ]
-      + blocks
-        .filter { $0.type == .title && $0.timestamp != nil }
-        .flatMap { block in
-          tocChapterView(title: block.content, timestamp: block.timestamp ?? 0, isEpisodeViewable: isEpisodeViewable)
-      }
     )
   ]
 }
 
-private func tocChapterView(title: String, timestamp: Int, isEpisodeViewable: Bool) -> [Node] {
+private func rightColumnView(episode: Episode, isEpisodeViewable: Bool) -> Node {
   return [
-    gridRow([
-      gridColumn(sizes: [.mobile: 10], [
-        div(tocChapterLinkView(title: title, timestamp: timestamp, active: isEpisodeViewable))
-        ]),
-
-      gridColumn(sizes: [.mobile: 2], [
-        div(
-          [`class`([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
-          [.text(timestampLabel(for: timestamp))]
-        )
-        ])
-      ])
+    upgrade(node: videoView(forEpisode: episode, isEpisodeViewable: isEpisodeViewable)),
+    episodeTocView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable),
+    downloadsView(codeSampleDirectory: episode.codeSampleDirectory)
   ]
 }
 
-private func tocChapterLinkView(title: String, timestamp: Int, active: Bool) -> [Node] {
-  if active {
-    return
-      [
-        div([`class`([Class.hide(.mobile)])], [
-          a(
-            timestampLinkAttributes(timestamp: timestamp) +
-              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
-            [.text(title)]
-          )
-          ]),
+private func episodeTocView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
+  return [
+    .div(
+      attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])],
+      .h6(
+        attributes: [.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+        "Chapters"
+      ),
+      .fragment(
+        blocks
+          .filter { $0.type == .title && $0.timestamp != nil }
+          .map { block in
+            tocChapterView(title: block.content, timestamp: block.timestamp ?? 0, isEpisodeViewable: isEpisodeViewable)
+        }
+      )
+    )
+  ]
+}
 
-        div([`class`([Class.hide(.desktop)])], [
-          a(
-            timestampLinkAttributes(timestamp: timestamp) +
-              [`class`([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])],
-            [.text(title)]
-          )
-          ]),
+private func tocChapterView(title: String, timestamp: Int, isEpisodeViewable: Bool) -> Node {
+  return .gridRow(
+    .gridColumn(
+      sizes: [.mobile: 10],
+      .div(tocChapterLinkView(title: title, timestamp: timestamp, active: isEpisodeViewable))
+    ),
+
+    .gridColumn(
+      sizes: [.mobile: 2],
+      .div(
+        attributes: [.class([Class.pf.colors.fg.purple, Class.type.align.end, Class.pf.opacity75])],
+        .text(timestampLabel(for: timestamp))
+      )
+    )
+  )
+}
+
+private func tocChapterLinkView(title: String, timestamp: Int, active: Bool) -> Node {
+  if active {
+    return [
+      .div(
+        attributes: [.class([Class.hide(.mobile)])],
+        .a(
+          attributes: [ // TODO: timestampLinkAttributes(timestamp: timestamp) +
+            .href("#t\(timestamp)"),
+            .class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])
+          ],
+          .text(title)
+        )
+      ),
+
+      .div(
+        attributes: [.class([Class.hide(.desktop)])],
+        .a(
+          attributes: [ // TODO: timestampLinkAttributes(timestamp: timestamp) +
+            .href("#t\(timestamp)"),
+            .class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])
+          ],
+          .text(title)
+        )
+      ),
     ]
   }
 
-  return [
-    div(
-      [`class`([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
-      [.text(title)]
-    )
-  ]
+  return .div(
+    attributes: [.class([Class.pf.colors.fg.green, Class.pf.type.body.regular])],
+    .text(title)
+  )
 }
 
-private func downloadsView(codeSampleDirectory: String) -> [Node] {
+private func downloadsView(codeSampleDirectory: String) -> Node {
   guard !codeSampleDirectory.isEmpty else { return [] }
 
-  return [
-    div(
-      [`class`([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 3]])])],
-      [
-        h6(
-          [`class`([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-          ["Downloads"]
-        ),
-        img(
-          base64: gitHubSvgBase64(fill: "#FFF080"),
-          type: .image(.svg),
-          alt: "",
-          [`class`([Class.align.middle]), width(20), height(20)]
-        ),
-        a(
-          [
-            href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
-            `class`([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
-          ],
-          [.text("\(codeSampleDirectory).playground")]
-        )
-      ]
+  return .div(
+    attributes: [.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]]), Class.padding([.mobile: [.bottom: 3]])])],
+    .h6(
+      attributes: [.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+      "Downloads"
+    ),
+    .img(
+      base64: gitHubSvgBase64(fill: "#FFF080"),
+      type: .image(.svg),
+      alt: "",
+      attributes: [.class([Class.align.middle]), .width(20), .height(20)]
+    ),
+    .a(
+      attributes: [
+        .href(gitHubUrl(to: GitHubRoute.episodeCodeSample(directory: codeSampleDirectory))),
+        .class([Class.pf.colors.link.yellow, Class.margin([.mobile: [.left: 1]]), Class.align.middle])
+      ],
+      .text("\(codeSampleDirectory).playground")
     )
-  ]
+  )
 }
 
 private func leftColumnView(
@@ -161,20 +162,24 @@ private func leftColumnView(
   subscriberState: SubscriberState,
   episode: Episode,
   date: () -> Date
-  ) -> [Node] {
+  ) -> Node {
 
   let subscribeNodes = isSubscribeBannerVisible(for: permission)
     ? subscribeView(permission: permission, user: user, episode: episode)
     : []
   let transcriptNodes = transcriptView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable(for: permission))
 
-  var nodes: [Node] = [div([`class`([Class.hide(.mobile)])], episodeInfoView(permission: permission, ep: episode, date: date))]
-  nodes.append(contentsOf: divider)
-  nodes.append(contentsOf: subscribeNodes)
-  nodes.append(contentsOf: transcriptNodes)
-  nodes.append(contentsOf: exercisesView(exercises: episode.exercises))
-  nodes.append(contentsOf: referencesView(references: episode.references))
-  return [div(nodes)]
+  return [
+    .div(
+      attributes: [.class([Class.hide(.mobile)])],
+      episodeInfoView(permission: permission, ep: episode, date: date)
+    ),
+    divider,
+    subscribeNodes,
+    transcriptNodes,
+    exercisesView(exercises: episode.exercises),
+    referencesView(references: episode.references)
+  ]
 }
 
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
@@ -216,41 +221,37 @@ private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
 
 let useCreditCTA = "Use an episode credit"
 
-private func creditBlurb(permission: EpisodePermission, episode: Episode) -> [Node] {
+private func creditBlurb(permission: EpisodePermission, episode: Episode) -> Node {
   guard
     case let .loggedIn(user, .isNotSubscriber(.hasNotUsedCredit(true))) = permission,
     user.episodeCreditCount > 0
     else { return [] }
 
   return [
-    p(
-      [
-        `class`(
+    .p(
+      attributes: [
+        .class(
           [
             Class.pf.type.body.regular,
             Class.padding([.mobile: [.top: 4, .bottom: 2]])
           ]
         )
       ],
-      [
-        .text("""
-          You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
-          want to use it to view this episode for free right now?
-          """)
-      ]
+      .text("""
+        You currently have \(pluralizedEpisodeCredits(count: user.episodeCreditCount)) available. Do you
+        want to use it to view this episode for free right now?
+        """)
     ),
 
-    form(
-      [action(path(to: .useEpisodeCredit(episode.id))), method(.post)],
-      [
-        input(
-          [
-            type(.submit),
-            `class`([Class.pf.components.button(color: .black, size: .small)]),
-            value(useCreditCTA)
-          ]
-        )
-      ]
+    .form(
+      attributes: [.action(path(to: .useEpisodeCredit(episode.id))), .method(.post)],
+      .input(
+        attributes: [
+          .type(.submit),
+          .class([Class.pf.components.button(color: .black, size: .small)]),
+          .value(useCreditCTA)
+        ]
+      )
     )
   ]
 }
@@ -261,35 +262,33 @@ private func pluralizedEpisodeCredits(count: Int) -> String {
     : "\(count) episode credits"
 }
 
-private func signUpBlurb(permission: EpisodePermission, episode: Episode) -> [Node] {
+private func signUpBlurb(permission: EpisodePermission, episode: Episode) -> Node {
   guard case .loggedOut = permission else { return [] }
 
   return [
-    p(
-      [`class`([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
-      [
-        """
+    .p(
+      attributes: [.class([Class.pf.type.body.regular, Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
+      """
         Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
         subscriber-only episode of your choosing!
         """
-      ]
     ),
 
-    a(
-      [
-        href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
-        `class`([Class.pf.components.button(color: .black)])
+    .a(
+      attributes: [
+        .href(path(to: .login(redirect: path(to: .episode(.left(episode.slug)))))),
+        .class([Class.pf.components.button(color: .black)])
       ],
-      ["Sign up for free episode"]
+      "Sign up for free episode"
     )
   ]
 }
 
-private func subscribeView(permission: EpisodePermission, user: User?, episode: Episode) -> [Node] {
+private func subscribeView(permission: EpisodePermission, user: User?, episode: Episode) -> Node {
   return [
-    div(
-      [
-        `class`(
+    .div(
+      attributes: [
+        .class(
           [
             Class.type.align.center,
             Class.margin([.mobile: [.all: 3], .desktop: [.all: 4]]),
@@ -298,41 +297,37 @@ private func subscribeView(permission: EpisodePermission, user: User?, episode: 
           ]
         )
       ],
-      [
-        h3(
-          [`class`([Class.pf.type.responsiveTitle4])],
-          [.raw("Subscribe to Point&#8209;Free")]
-        ),
-
-        p(
-          [`class`([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
-          [.text(String(describing: subscribeBlurb(for: permission)))]
-        ),
-
-        a(
-          [href(path(to: .pricingLanding)), `class`([Class.pf.components.button(color: .purple)])],
-          ["See subscription options"]
-        )
-        ]
-        + loginLink(user: user, ep: episode)
-        + creditBlurb(permission: permission, episode: episode)
-        + signUpBlurb(permission: permission, episode: episode)
-    )
-    ]
-    + divider
+      .h3(
+        attributes: [.class([Class.pf.type.responsiveTitle4])],
+        .raw("Subscribe to Point&#8209;Free")
+      ),
+      .p(
+        attributes: [.class([Class.pf.type.body.leading, Class.padding([.mobile: [.top: 2, .bottom: 3]])])],
+        .text(String(describing: subscribeBlurb(for: permission)))
+      ),
+      .a(
+        attributes: [.href(path(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+        "See subscription options"
+      ),
+      loginLink(user: user, ep: episode),
+      creditBlurb(permission: permission, episode: episode),
+      signUpBlurb(permission: permission, episode: episode),
+    ),
+    divider
+  ]
 }
 
-private func loginLink(user: User?, ep: Episode) -> [Node] {
+private func loginLink(user: User?, ep: Episode) -> Node {
   guard user == nil else { return [] }
 
   return [
-    span([`class`([Class.padding([.mobile: [.left: 2]])])], ["or"]),
-    a(
-      [
-        href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
-        `class`([Class.pf.components.button(color: .black, style: .underline)])
+    .span(attributes: [.class([Class.padding([.mobile: [.left: 2]])])], "or"),
+    .a(
+      attributes: [
+        .href(path(to: .login(redirect: url(to: .episode(.left(ep.slug)))))),
+        .class([Class.pf.components.button(color: .black, style: .underline)])
       ],
-      ["Log in"]
+      "Log in"
     )
   ]
 }
@@ -341,107 +336,111 @@ private func episodeInfoView(
   permission: EpisodePermission,
   ep: Episode,
   date: () -> Date
-  ) -> [Node] {
-  return [
-    div(
-      [`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
-      downgrade(node: topLevelEpisodeInfoView(episode: ep, date: date))
-        + previousEpisodes(of: ep)
-        + sectionsMenu(episode: ep, permission: permission)
-    )
-  ]
+  ) -> Node {
+  return .div(
+    attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
+    topLevelEpisodeInfoView(episode: ep, date: date),
+    previousEpisodes(of: ep),
+    sectionsMenu(episode: ep, permission: permission)
+  )
 }
 
-private func previousEpisodes(of ep: Episode) -> [Node] {
+private func previousEpisodes(of ep: Episode) -> Node {
   let previousEps: [Episode] = [] // TODO: = ep.previousEpisodes
   guard !previousEps.isEmpty else { return [] }
 
   return [
-    p(
-      [`class`([Class.padding([.mobile: [.top: 1], .desktop: [.top: 1]]), Class.pf.colors.bg.white, Class.pf.type.body.leading])],
-      ["This episode builds on concepts introduced previously:"]
+    .p(
+      attributes: [.class([Class.padding([.mobile: [.top: 1], .desktop: [.top: 1]]), Class.pf.colors.bg.white, Class.pf.type.body.leading])],
+      "This episode builds on concepts introduced previously:"
     ),
-    ul(
-      [`class`([
+    .ul(
+      attributes: [.class([
         Class.type.list.styleNone,
         Class.padding([.mobile: [.left: 2]])
         ])],
-      previousEps.map {
-        li(
-          [`class`([Class.pf.type.body.leading])],
-          [
-            "#", .text(String($0.sequence)), ": ",
-            a([
-              `class`([Class.pf.colors.link.purple]),
-              href(url(to: .episode(.left($0.slug))))],
-              [.text($0.title)])])
-      }
+      .fragment(
+        previousEps.map {
+          .li(
+            attributes: [.class([Class.pf.type.body.leading])],
+            "#",
+            .text(String($0.sequence)),
+            ": ",
+            .a(
+              attributes: [
+                .class([Class.pf.colors.link.purple]),
+                .href(url(to: .episode(.left($0.slug))))
+              ],
+              .text($0.title)
+            )
+          )
+        }
+      )
     )
   ]
 }
 
-private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> [Node] {
+private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> Node {
   guard let permission = permission, isEpisodeViewable(for: permission) else { return [] }
 
   let exercisesNode: Node? = episode.exercises.isEmpty
     ? nil
-    : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#exercises")],
-        ["Exercises"])
+    : .a(attributes: [.class([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), .href("#exercises")],
+        "Exercises")
 
   let referencesNode: Node? = episode.references.isEmpty
     ? nil
-    : a([`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#references")],
-        ["References"])
+    : .a(attributes: [.class([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), .href("#references")],
+        "References")
 
   // Don't show quick link menu if at least one of exercises or references are present.
   guard exercisesNode != nil || referencesNode != nil else { return [] }
 
-  return [
-    div(
-      [`class`([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
-      [
-        a(
-          [`class`([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), href("#transcript")],
-          ["Transcript"]
-        ),
-        exercisesNode,
-        referencesNode
+  return .div(
+    attributes: [.class([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
+    .fragment([
+      .a(
+        attributes: [.class([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), .href("#transcript")],
+        "Transcript"
+      ),
+      exercisesNode,
+      referencesNode
+      ]
+      .compactMap(id)
+    )
+  )
+}
+
+let divider = [Node.hr(attributes: [.class([Class.pf.components.divider])])]
+
+private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
+  return .div(
+    attributes: [
+      .id("transcript"),
+      .class(
+        [
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
+          Class.pf.colors.bg.white
         ]
-        .compactMap(id)
-    )
-  ]
+      )
+    ],
+    transcript(blocks: blocks, isEpisodeViewable: isEpisodeViewable)
+  )
 }
 
-let divider = [hr([`class`([Class.pf.components.divider])])]
-
-private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> [Node] {
-  return [
-    div(
-      [
-        id("transcript"),
-        `class`(
-          [
-            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-            Class.pf.colors.bg.white
-          ]
-        )
-      ],
-      transcript(blocks: blocks, isEpisodeViewable: isEpisodeViewable)
-    )
-  ]
-}
-
-private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> [Node] {
+private func transcript(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
   struct State { var nodes: [Node] = [], titleCount = 0 }
 
-  return blocks
-    .reduce(into: State()) { state, block in
-      if case .title = block.type { state.titleCount += 1 }
-      state.nodes += state.titleCount <= 1 || isEpisodeViewable
-        ? transcriptBlockView(block)
-        : []
-    }
-    .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+  return .fragment(
+    blocks
+      .reduce(into: State()) { state, block in
+        if case .title = block.type { state.titleCount += 1 }
+        state.nodes += state.titleCount <= 1 || isEpisodeViewable
+          ? transcriptBlockView(block)
+          : []
+      }
+      .nodes + subscriberCalloutView(isEpisodeViewable: isEpisodeViewable)
+  )
 }
 
 private func subscriberCalloutView(isEpisodeViewable: Bool) -> [Node] {
@@ -687,15 +686,15 @@ private func isSubscribeBannerVisible(for permission: EpisodePermission) -> Bool
   }
 }
 
-private enum EpisodePermission: Equatable {
+public enum EpisodePermission: Equatable {
   case loggedIn(user: User, subscriptionPermission: SubscriberPermission)
   case loggedOut(isEpisodeSubscriberOnly: Bool)
 
-  enum SubscriberPermission: Equatable {
+  public enum SubscriberPermission: Equatable {
     case isNotSubscriber(creditPermission: CreditPermission)
     case isSubscriber
 
-    enum CreditPermission: Equatable {
+    public enum CreditPermission: Equatable {
       case hasNotUsedCredit(isEpisodeSubscriberOnly: Bool)
       case hasUsedCredit
     }
