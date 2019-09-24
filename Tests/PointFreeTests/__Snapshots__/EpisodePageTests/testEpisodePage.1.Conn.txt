@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 78797
+Content-Length: 78212
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2073,296 +2073,294 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-6
                   col-m-12">
-        <div>
-          <div class="hide-m">
-            <div class="d-pl4
-                        d-pr4
-                        d-pt4
-                        d-pb4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        bg-white">
-              <strong class="fg-black
-                             bold
-                             ts-m-r0_75
-                             lh-1
-                             caps">
-                #2 • Tuesday Dec 20, 2016 • Subscriber-only
-              </strong>
-              <h1 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2
-                         m-mt2">
-                <a href="/episodes/ep2-proof-in-functions">
-                  Proof in Functions
-                </a>
-              </h1>
-              <div class="body-leading
-                          fg-black
-                          normal
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
-                </div>
-              </div>
-              <p class="d-pt1
-                        m-pt1
-                        bg-white
-                        body-leading
-                        fg-black
-                        normal
-                        lh-4">
-                This episode builds on concepts introduced previously:
-              </p>
-              <ul class="list-style-none
-                         m-pl2">
-                <li class="body-leading
-                           fg-black
-                           normal
-                           lh-4">
-                  #
-                  1
-                  : 
-                  <a class="pf-link-purple"
-                     href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
-                    Type-Safe HTML in Swift
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="center
-                      d-ml4
-                      d-mr4
-                      d-mt4
-                      d-mb4
-                      m-ml3
-                      m-mr3
-                      m-mt3
-                      m-mb3
-                      d-pt2
-                      d-pl2
-                      d-pr2
+        <div class="hide-m">
+          <div class="d-pl4
+                      d-pr4
+                      d-pt4
+                      d-pb4
+                      m-pl3
+                      m-pr3
+                      m-pt3
                       m-pb3
-                      m-pt1
-                      m-pl1
-                      m-pr1
-                      bg-gray900">
-            <h3 class="fg-black
+                      bg-white">
+            <strong class="fg-black
+                           bold
+                           ts-m-r0_75
+                           lh-1
+                           caps">
+              #2 • Tuesday Dec 20, 2016 • Subscriber-only
+            </strong>
+            <h1 class="fg-black
                        bold
                        ts-d-r1_5
                        ts-m-r1_25
-                       lh-2">
-              Subscribe to Point&#8209;Free
-            </h3>
-            <p class="body-leading
-                      fg-black
-                      normal
-                      lh-4
-                      m-pb3
-                      m-pt2">
-              This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
-today!
-            </p>
-            <a href="/pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-purple
-                      h5
-                      m-pl2
-                      m-pr2">
-              See subscription options
-            </a>
-            <span class="m-pl2">
-              or
-            </span>
-            <a href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-outline
-                      border-none
-                      underline
-                      pf-link-black
-                      fg-black
-                      bg-inherit
-                      h5
-                      m-pl2
-                      m-pr2">
-              Log in
-            </a>
-            <p class="fg-black
-                      normal
-                      h5
-                      lh-4
-                      m-pb2
-                      m-pt4">
-              Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
-subscriber-only episode of your choosing!
-            </p>
-            <a href="/login?redirect=/episodes/ep2-proof-in-functions"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-black
-                      h5
-                      m-pl2
-                      m-pr2">
-              Sign up for free episode
-            </a>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div id="transcript"
-               class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Introduction
+                       lh-2
+                       m-mt2">
+              <a href="/episodes/ep2-proof-in-functions">
+                Proof in Functions
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#t0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
+            </h1>
+            <div class="body-leading
+                        fg-black
+                        normal
+                        lh-4">
               <div class="md-ctn">
-                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+              </div>
+            </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                  Type-Safe HTML in Swift
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="center
+                    d-ml4
+                    d-mr4
+                    d-mt4
+                    d-mb4
+                    m-ml3
+                    m-mr3
+                    m-mt3
+                    m-mb3
+                    d-pt2
+                    d-pl2
+                    d-pr2
+                    m-pb3
+                    m-pt1
+                    m-pl1
+                    m-pr1
+                    bg-gray900">
+          <h3 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Subscribe to Point&#8209;Free
+          </h3>
+          <p class="body-leading
+                    fg-black
+                    normal
+                    lh-4
+                    m-pb3
+                    m-pt2">
+            This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+today!
+          </p>
+          <a href="/pricing"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    rounded
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-purple
+                    h5
+                    m-pl2
+                    m-pr2">
+            See subscription options
+          </a>
+          <span class="m-pl2">
+            or
+          </span>
+          <a href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-outline
+                    border-none
+                    underline
+                    pf-link-black
+                    fg-black
+                    bg-inherit
+                    h5
+                    m-pl2
+                    m-pr2">
+            Log in
+          </a>
+          <p class="fg-black
+                    normal
+                    h5
+                    lh-4
+                    m-pb2
+                    m-pt4">
+            Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
+subscriber-only episode of your choosing!
+          </p>
+          <a href="/login?redirect=/episodes/ep2-proof-in-functions"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    rounded
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-black
+                    h5
+                    m-pl2
+                    m-pr2">
+            Sign up for free episode
+          </a>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div id="transcript"
+             class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Introduction
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
 
-              </div>
             </div>
-            <div class="row">
-              <div style="margin-right:auto;
-                          margin-left:auto"
-                   class="col-m
-                          col-m-12">
-                <div class="m-mt4
-                            m-pl3
-                            m-pr3
-                            m-pt3
-                            m-pb3
-                            bg-gray900">
-                  <h4 class="fg-black
-                             bold
-                             ts-d-r1_5
-                             ts-m-r1_25
-                             lh-2
-                             m-pb2">
-                    Subscribe to Point-Free
-                  </h4>
-                  <p>
-                    👋 Hey there! Does this episode sound interesting? Well, then you may want to 
-                    <a href="/pricing"
-                       class="underline-link">
-                      subscribe
-                    </a>
-                     so that you get access to this episodes and more!
-                  </p>
-                </div>
+          </div>
+          <div class="row">
+            <div style="margin-right:auto;
+                        margin-left:auto"
+                 class="col-m
+                        col-m-12">
+              <div class="m-mt4
+                          m-pl3
+                          m-pr3
+                          m-pt3
+                          m-pb3
+                          bg-gray900">
+                <h4 class="fg-black
+                           bold
+                           ts-d-r1_5
+                           ts-m-r1_25
+                           lh-2
+                           m-pb2">
+                  Subscribe to Point-Free
+                </h4>
+                <p>
+                  👋 Hey there! Does this episode sound interesting? Well, then you may want to 
+                  <a href="/pricing"
+                     class="underline-link">
+                    subscribe
+                  </a>
+                   so that you get access to this episodes and more!
+                </p>
               </div>
             </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 id="exercises"
-                class="h4
-                       lh-3
-                       m-pt2">
-              Exercises
-            </h2>
-            <ol>
-              <li id="exercise-1">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
 <pre><code>pi_1(X) = 0
 </code></pre>
 
-                  </div>
-                  <details>
-                    <summary>
-                      Solution
-                    </summary>
-                    <div class="bg-gray900
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
-
-                      </div>
-                    </div>
-                  </details>
                 </div>
-              </li>
-            </ol>
-          </div>
+                <details>
+                  <summary>
+                    Solution
+                  </summary>
+                  <div class="bg-gray900
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150

@@ -14,6 +14,7 @@ public func episodeView(
   user: User?,
   subscriberState: SubscriberState,
   episode: Episode,
+  previousEpisodes: [Episode],
   date: () -> Date
   ) -> Node {
 
@@ -22,7 +23,7 @@ public func episodeView(
       .gridColumn(
         sizes: [.mobile: 12],
         attributes: [.class([Class.hide(.desktop)])],
-        .div(episodeInfoView(permission: permission, ep: episode, date: date))
+        .div(episodeInfoView(permission: permission, ep: episode, previousEpisodes: previousEpisodes, date: date))
       )
     ),
 
@@ -34,6 +35,7 @@ public func episodeView(
           user: user,
           subscriberState: subscriberState,
           episode: episode,
+          previousEpisodes: previousEpisodes,
           date: date
         )
       ),
@@ -104,8 +106,7 @@ private func tocChapterLinkView(title: String, timestamp: Int, active: Bool) -> 
       .div(
         attributes: [.class([Class.hide(.mobile)])],
         .a(
-          attributes: [ // TODO: timestampLinkAttributes(timestamp: timestamp) +
-            .href("#t\(timestamp)"),
+          attributes: timestampLinkAttributes(timestamp: timestamp) + [
             .class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])
           ],
           .text(title)
@@ -115,8 +116,7 @@ private func tocChapterLinkView(title: String, timestamp: Int, active: Bool) -> 
       .div(
         attributes: [.class([Class.hide(.desktop)])],
         .a(
-          attributes: [ // TODO: timestampLinkAttributes(timestamp: timestamp) +
-            .href("#t\(timestamp)"),
+          attributes: timestampLinkAttributes(timestamp: timestamp) + [
             .class([Class.pf.colors.link.green, Class.type.textDecorationNone, Class.pf.type.body.regular])
           ],
           .text(title)
@@ -161,6 +161,7 @@ private func leftColumnView(
   user: User?,
   subscriberState: SubscriberState,
   episode: Episode,
+  previousEpisodes: [Episode],
   date: () -> Date
   ) -> Node {
 
@@ -172,7 +173,7 @@ private func leftColumnView(
   return [
     .div(
       attributes: [.class([Class.hide(.mobile)])],
-      episodeInfoView(permission: permission, ep: episode, date: date)
+      episodeInfoView(permission: permission, ep: episode, previousEpisodes: previousEpisodes, date: date)
     ),
     divider,
     subscribeNodes,
@@ -335,19 +336,19 @@ private func loginLink(user: User?, ep: Episode) -> Node {
 private func episodeInfoView(
   permission: EpisodePermission,
   ep: Episode,
+  previousEpisodes: [Episode],
   date: () -> Date
   ) -> Node {
   return .div(
     attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
     topLevelEpisodeInfoView(episode: ep, date: date),
-    previousEpisodes(of: ep),
+    previousEpisodesView(of: ep, previousEpisodes: previousEpisodes),
     sectionsMenu(episode: ep, permission: permission)
   )
 }
 
-private func previousEpisodes(of ep: Episode) -> Node {
-  let previousEps: [Episode] = [] // TODO: = ep.previousEpisodes
-  guard !previousEps.isEmpty else { return [] }
+private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -> Node {
+  guard !previousEpisodes.isEmpty else { return [] }
 
   return [
     .p(
@@ -360,7 +361,7 @@ private func previousEpisodes(of ep: Episode) -> Node {
         Class.padding([.mobile: [.left: 2]])
         ])],
       .fragment(
-        previousEps.map {
+        previousEpisodes.map {
           .li(
             attributes: [.class([Class.pf.type.body.leading])],
             "#",
@@ -619,7 +620,7 @@ private func solution(to exercise: Episode.Exercise) -> Node {
   guard let solution = exercise.solution else { return [] }
 
   return .details(
-    .summary("Solution"), // todo: update details to take children of details
+    .summary("Solution"),
     .div(
       attributes: [
         .class([
