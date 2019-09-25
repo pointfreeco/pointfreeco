@@ -83,7 +83,7 @@ public func episodeView(episodePageData: EpisodePageData) -> Node {
 
 private func rightColumnView(episode: Episode, isEpisodeViewable: Bool) -> Node {
   return [
-    upgrade(node: videoView(forEpisode: episode, isEpisodeViewable: isEpisodeViewable)),
+    videoView(forEpisode: episode, isEpisodeViewable: isEpisodeViewable),
     episodeTocView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable),
     downloadsView(codeSampleDirectory: episode.codeSampleDirectory)
   ]
