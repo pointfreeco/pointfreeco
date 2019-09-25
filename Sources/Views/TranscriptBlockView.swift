@@ -1,43 +1,37 @@
 import Css
 import FunctionalCss
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> [Node] {
+public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> Node {
   switch block.type {
   case let .code(lang):
-    return [
-      pre([
-        code(
-          [`class`([Class.pf.components.code(lang: lang.identifier)])],
-          [.text(block.content)]
-        )
-        ])
-    ]
+    return .pre(
+      .code(
+        attributes: [.class([Class.pf.components.code(lang: lang.identifier)])],
+        .text(block.content)
+      )
+    )
 
   case .correction:
-    return [
-      div(
-        [
-          `class`([
+    return .div(
+        attributes: [
+          .class([
             Class.margin([.mobile: [.leftRight: 2, .topBottom: 3]]),
             Class.padding([.mobile: [.all: 2]]),
             ]),
-          style("background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
+          .style(safe: "background-color: #ffdbdd;border-left: 3px solid #eb1c26;")
         ],
-        [
-          h3([`class`([Class.pf.type.responsiveTitle6])], ["Correction"]),
-          div(
-            [`class`([Class.pf.type.body.regular])],
-            [markdownBlock(block.content)]
-          ),
-        ]
-      )
-    ]
+        .h3(attributes: [.class([Class.pf.type.responsiveTitle6])], "Correction"),
+        .div(
+          attributes: [.class([Class.pf.type.body.regular])],
+          .markdownBlock(block.content)
+        )
+    )
 
   case let .image(src, sizing):
     let imageClasses = sizing == .inset
@@ -47,80 +41,68 @@ public func transcriptBlockView(_ block: Episode.TranscriptBlock) -> [Node] {
          Class.pf.colors.bg.white]
       : [innerImageContainerClass]
 
-    return [
-      a(
-        [
-          `class`([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
-          href(src),
-          target(.blank),
-          rel(.init(rawValue: "noopener noreferrer")),
-        ],
-        [img(src: src, alt: "", [`class`(imageClasses)])]
-      )
-    ]
+    return .a(
+      attributes: [
+        .class([outerImageContainerClass, Class.margin([.mobile: [.topBottom: 3]])]),
+        .href(src),
+        .target(.blank),
+        .rel(.init(rawValue: "noopener noreferrer")),
+      ],
+      .img(src: src, alt: "", attributes: [.class(imageClasses)])
+    )
 
   case .paragraph:
-    return [
-      div(
-        timestampLinkView(block.timestamp)
-          + [markdownBlock(block.content)]
-      )
-    ]
+    return .div(
+      timestampLinkView(block.timestamp),
+      .markdownBlock(block.content)
+    )
 
   case .title:
-    return [
-      h2(
-        [
-          `class`([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
-          block.timestamp.map { id("t\($0)") }
-          ]
-          .compactMap(id),
-        [
-          a(block.timestamp.map { [href("#t\($0)")] } ?? [], [
-            .text(block.content)
-            ])
+    return .h2(
+      attributes: [
+        .class([Class.h4, Class.type.lineHeight(3), Class.padding([.mobile: [.top: 2]])]),
+        block.timestamp.map { .id("t\($0)") }
         ]
+        .compactMap(id),
+      .a(
+        attributes: block.timestamp.map { [.href("#t\($0)")] } ?? [],
+        .text(block.content)
       )
-    ]
+    )
 
   case let .video(poster, sources):
-    return [
-      div(
-        [
-          `class`([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
-          style(outerVideoContainerStyle)
+    return .div(
+        attributes: [
+          .class([outerVideoContainerClass, Class.margin([.mobile: [.topBottom: 2]])]),
+          .style(outerVideoContainerStyle)
         ],
-        [
-          video(
-            [
-              `class`([innerVideoContainerClass]),
-              controls(true),
-              playsinline(true),
-              autoplay(false),
-              Html.poster(poster),
-              style(objectFit(.cover))
+          .video(
+            attributes: [
+              .class([innerVideoContainerClass]),
+              .controls(true),
+              .playsinline(true),
+              .autoplay(false),
+              .poster(poster),
+              .style(objectFit(.cover))
             ],
-
-            sources.map { source(src: $0) }
+            .fragment(sources.map { .source(src: $0) })
           )
-        ]
       )
-    ]
   }
 }
 
-private func timestampLinkView(_ timestamp: Int?) -> [Node] {
+private func timestampLinkView(_ timestamp: Int?) -> Node {
   guard let timestamp = timestamp else { return [] }
 
-  return [
-    div([id("t\(timestamp)"), `class`([Class.display.block])], [
-      a(
-        timestampLinkAttributes(timestamp: timestamp) + [
-          `class`([Class.pf.components.videoTimeLink])
-        ],
-        [.text(timestampLabel(for: timestamp))])
-      ])
-  ]
+  return .div(
+    attributes: [.id("t\(timestamp)"), .class([Class.display.block])],
+    .a(
+      attributes: timestampLinkAttributes(timestamp: timestamp) + [
+        .class([Class.pf.components.videoTimeLink])
+      ],
+      .text(timestampLabel(for: timestamp))
+    )
+  )
 }
 
 public func timestampLabel(for timestamp: Int) -> String {
@@ -134,7 +116,7 @@ public func timestampLabel(for timestamp: Int) -> String {
 public func timestampLinkAttributes(timestamp: Int) -> [Attribute<Tag.A>] {
 
   return [
-    href("#t\(timestamp)")
+    .href("#t\(timestamp)")
   ]
 }
 
