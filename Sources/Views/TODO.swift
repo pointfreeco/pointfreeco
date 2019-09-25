@@ -12,6 +12,12 @@ extension HtmlUpgrade.Attribute {
   }
 }
 
+extension HtmlUpgrade.Attribute {
+  public static func playsinline<T>(_ value: Bool) -> HtmlUpgrade.Attribute<T> {
+    return .init("playslinline", value ? "" : nil)
+  }
+}
+
 extension HtmlUpgrade.Attribute where Element: HtmlUpgrade.HasFor {
   public static func `for`(_ idSelector: CssSelector) -> HtmlUpgrade.Attribute<Element> {
     return .init("for", idSelector.idString ?? "")

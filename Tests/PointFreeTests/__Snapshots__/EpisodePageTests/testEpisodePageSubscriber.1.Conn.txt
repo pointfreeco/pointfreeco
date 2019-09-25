@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 75767
+Content-Length: 75128
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2015,345 +2015,343 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-6
                   col-m-12">
-        <div>
-          <div class="hide-m">
-            <div class="d-pl4
-                        d-pr4
-                        d-pt4
-                        d-pb4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        bg-white">
-              <strong class="fg-black
-                             bold
-                             ts-m-r0_75
-                             lh-1
-                             caps">
-                #2 • Tuesday Dec 20, 2016 • Subscriber-only
-              </strong>
-              <h1 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2
-                         m-mt2">
-                <a href="/episodes/ep2-proof-in-functions">
-                  Proof in Functions
-                </a>
-              </h1>
-              <div class="body-leading
-                          fg-black
-                          normal
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
-                </div>
-              </div>
-              <p class="d-pt1
-                        m-pt1
-                        bg-white
-                        body-leading
-                        fg-black
-                        normal
-                        lh-4">
-                This episode builds on concepts introduced previously:
-              </p>
-              <ul class="list-style-none
-                         m-pl2">
-                <li class="body-leading
-                           fg-black
-                           normal
-                           lh-4">
-                  #
-                  1
-                  : 
-                  <a class="pf-link-purple"
-                     href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
-                    Type-Safe HTML in Swift
-                  </a>
-                </li>
-              </ul>
-              <div class="d-pt3
-                          m-pt2">
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#transcript">
-                  Transcript
-                </a>
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#exercises">
-                  Exercises
-                </a>
-              </div>
-            </div>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div id="transcript"
-               class="d-pb4
-                      d-pt2
-                      d-pl4
+        <div class="hide-m">
+          <div class="d-pl4
                       d-pr4
+                      d-pt4
+                      d-pb4
                       m-pl3
                       m-pr3
                       m-pt3
                       m-pb3
                       bg-white">
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Introduction
+            <strong class="fg-black
+                           bold
+                           ts-m-r0_75
+                           lh-1
+                           caps">
+              #2 • Tuesday Dec 20, 2016 • Subscriber-only
+            </strong>
+            <h1 class="fg-black
+                       bold
+                       ts-d-r1_5
+                       ts-m-r1_25
+                       lh-2
+                       m-mt2">
+              <a href="/episodes/ep2-proof-in-functions">
+                Proof in Functions
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#t0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
+            </h1>
+            <div class="body-leading
+                        fg-black
+                        normal
+                        lh-4">
               <div class="md-ctn">
-                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+              </div>
+            </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                  Type-Safe HTML in Swift
+                </a>
+              </li>
+            </ul>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
+            </div>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div id="transcript"
+             class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Introduction
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Title
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Title
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#t0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+            </div>
+            <div class="md-ctn">
+              <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
 However, you cannot associate a timestamp with this paragraph.</p>
 
-              </div>
             </div>
-            <div class="m-ml2
-                        m-mr2
-                        m-mt3
-                        m-mb3
-                        m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2"
-                 style="background-color: #ffdbdd;
-                        border-left: 3px solid #eb1c26">
-              <h3 class="fg-black
-                         bold
-                         ts-d-r1
-                         ts-m-r0_875
-                         lh-1">
-                Correction
-              </h3>
-              <div class="fg-black
-                          normal
-                          h5
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
+          </div>
+          <div class="m-ml2
+                      m-mr2
+                      m-mt3
+                      m-mb3
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2"
+               style="background-color: #ffdbdd;
+                      border-left: 3px solid #eb1c26">
+            <h3 class="fg-black
+                       bold
+                       ts-d-r1
+                       ts-m-r0_875
+                       lh-1">
+              Correction
+            </h3>
+            <div class="fg-black
+                        normal
+                        h5
+                        lh-4">
+              <div class="md-ctn">
+                <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
 including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
 
-                </div>
               </div>
             </div>
-            <div>
-              <div id="t30"
-                   class="block">
-                <a href="#t30"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
+          </div>
+          <div>
+            <div id="t30"
+                 class="block">
+              <a href="#t30"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:30
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
 
-              </div>
             </div>
-            <div>
-              <div class="md-ctn">
-                <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
+          </div>
+          <div>
+            <div class="md-ctn">
+              <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
 time at the beginning of the text. That’s what we have done here.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t60">
-              <a href="#t60">
-                Title Block
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t60">
+            <a href="#t60">
+              Title Block
+            </a>
+          </h2>
+          <div>
+            <div id="t60"
+                 class="block">
+              <a href="#t60"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                01:00
               </a>
-            </h2>
-            <div>
-              <div id="t60"
-                   class="block">
-                <a href="#t60"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
+            </div>
+            <div class="md-ctn">
+              <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
 chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
 episode video.</p>
 <p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
 highlighted snippet of code:</p>
 
-              </div>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-swift">
-                infix operator |>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-swift">
+              infix operator |>
 
 func |> <A, B>(x: A, f: (A) -> B) -> B {
   return f(x)
 }
-              </code>
-            </pre>
-            <div>
-              <div id="t90"
-                   class="block">
-                <a href="#t90"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can write as much code as you want in that block, and you can specify the language of the code
+            </code>
+          </pre>
+          <div>
+            <div id="t90"
+                 class="block">
+              <a href="#t90"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                01:30
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>You can write as much code as you want in that block, and you can specify the language of the code
 so that its syntax is highlighted nicely.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t120">
-              <a href="#t120">
-                Another Title
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t120">
+            <a href="#t120">
+              Another Title
+            </a>
+          </h2>
+          <div>
+            <div id="t120"
+                 class="block">
+              <a href="#t120"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                02:00
               </a>
-            </h2>
-            <div>
-              <div id="t120"
-                   class="block">
-                <a href="#t120"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  02:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That was another title. See how the title create the “table of contents” under the video?</p>
+            </div>
+            <div class="md-ctn">
+              <p>That was another title. See how the title create the “table of contents” under the video?</p>
 <p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
 working how we expect:</p>
 <blockquote>
 <p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
 </blockquote>
 
-              </div>
             </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 id="exercises"
-                class="h4
-                       lh-3
-                       m-pt2">
-              Exercises
-            </h2>
-            <ol>
-              <li id="exercise-1">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
 <pre><code>pi_1(X) = 0
 </code></pre>
 
-                  </div>
-                  <details>
-                    <summary>
-                      Solution
-                    </summary>
-                    <div class="bg-gray900
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
-
-                      </div>
-                    </div>
-                  </details>
                 </div>
-              </li>
-            </ol>
-          </div>
+                <details>
+                  <summary>
+                    Solution
+                  </summary>
+                  <div class="bg-gray900
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150

@@ -28,8 +28,6 @@ public func homeView(
   ]
 }
 
-private let divider = Node.hr(attributes: [.class([Class.pf.components.divider])])
-
 private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
   guard subscriberState.isNonSubscriber else { return [] }
 
