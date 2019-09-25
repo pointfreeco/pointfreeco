@@ -65,22 +65,20 @@ private func rightColumnView(episode: Episode, isEpisodeViewable: Bool) -> Node 
 }
 
 private func episodeTocView(blocks: [Episode.TranscriptBlock], isEpisodeViewable: Bool) -> Node {
-  return [
-    .div(
-      attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])],
-      .h6(
-        attributes: [.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
-        "Chapters"
-      ),
-      .fragment(
-        blocks
-          .filter { $0.type == .title && $0.timestamp != nil }
-          .map { block in
-            tocChapterView(title: block.content, timestamp: block.timestamp ?? 0, isEpisodeViewable: isEpisodeViewable)
-        }
-      )
+  return .div(
+    attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4]])])],
+    .h6(
+      attributes: [.class([Class.pf.type.responsiveTitle8, Class.pf.colors.fg.gray850, Class.padding([.mobile: [.bottom: 1]])])],
+      "Chapters"
+    ),
+    .fragment(
+      blocks
+        .filter { $0.type == .title && $0.timestamp != nil }
+        .map { block in
+          tocChapterView(title: block.content, timestamp: block.timestamp ?? 0, isEpisodeViewable: isEpisodeViewable)
+      }
     )
-  ]
+  )
 }
 
 private func tocChapterView(title: String, timestamp: Int, isEpisodeViewable: Bool) -> Node {
@@ -186,6 +184,7 @@ private func leftColumnView(
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   switch permission {
   case .loggedIn(_, .isSubscriber):
+    print("This should never be called.")
     fatalError("This should never be called.")
 
   case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
@@ -384,18 +383,18 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
 private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> Node {
   guard let permission = permission, isEpisodeViewable(for: permission) else { return [] }
 
-  let exercisesNode: Node? = episode.exercises.isEmpty
-    ? nil
+  let exercisesNode: Node = episode.exercises.isEmpty
+    ? []
     : .a(attributes: [.class([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), .href("#exercises")],
         "Exercises")
 
-  let referencesNode: Node? = episode.references.isEmpty
-    ? nil
+  let referencesNode: Node = episode.references.isEmpty
+    ? []
     : .a(attributes: [.class([Class.pf.colors.link.purple, Class.margin([.mobile: [.right: 2]])]), .href("#references")],
         "References")
 
   // Don't show quick link menu if at least one of exercises or references are present.
-  guard exercisesNode != nil || referencesNode != nil else { return [] }
+  guard exercisesNode != [] || referencesNode != [] else { return [] }
 
   return .div(
     attributes: [.class([Class.padding([.mobile: [.top: 2], .desktop: [.top: 3]])])],
@@ -407,7 +406,6 @@ private func sectionsMenu(episode: Episode, permission: EpisodePermission?) -> N
       exercisesNode,
       referencesNode
       ]
-      .compactMap(id)
     )
   )
 }
@@ -608,10 +606,8 @@ private func exercise(idx: Int, exercise: Episode.Exercise) -> ChildOf<Tag.Ol> {
   return .li(
     attributes: [.id("exercise-\(idx)")],
     .div(
-      [
-        .markdownBlock(exercise.problem),
-        solution(to: exercise)
-      ]
+      .markdownBlock(exercise.problem),
+      solution(to: exercise)
     )
   )
 }
