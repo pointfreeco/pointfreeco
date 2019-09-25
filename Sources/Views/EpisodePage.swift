@@ -9,18 +9,39 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func _episodeView(episode: Episode) -> Node {
-  return episodeView(permission: EpisodePermission.loggedOut(isEpisodeSubscriberOnly: true), user: nil, subscriberState: SubscriberState.init(user: nil, subscriptionAndEnterpriseAccount: nil), episode: episode, previousEpisodes: [], date: Date.init)
+public struct EpisodePageData {
+  var permission: EpisodePermission
+  var user: User?
+  var subscriberState: SubscriberState
+  var episode: Episode
+  var previousEpisodes: [Episode]
+  var date: () -> Date
+
+  public init(
+    permission: EpisodePermission,
+    user: User?,
+    subscriberState: SubscriberState,
+    episode: Episode,
+    previousEpisodes: [Episode],
+    date: @escaping () -> Date
+    ) {
+    self.permission = permission
+    self.user = user
+    self.subscriberState = subscriberState
+    self.episode = episode
+    self.previousEpisodes = previousEpisodes
+    self.date = date
+  }
 }
 
-public func episodeView(
-  permission: EpisodePermission,
-  user: User?,
-  subscriberState: SubscriberState,
-  episode: Episode,
-  previousEpisodes: [Episode],
-  date: () -> Date
-  ) -> Node {
+public func episodeView(episodePageData: EpisodePageData) -> Node {
+
+  let permission = episodePageData.permission
+  let user = episodePageData.user
+  let subscriberState = episodePageData.subscriberState
+  let episode = episodePageData.episode
+  let previousEpisodes = episodePageData.previousEpisodes
+  let date = episodePageData.date
 
   return [
     .gridRow(

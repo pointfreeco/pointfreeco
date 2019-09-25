@@ -23,7 +23,7 @@ let episodeResponse =
     >=> userEpisodePermission
     >=> map(lower)
     >>> _respond(
-      view: Views._episodeView, //episodeView(permission:user:subscriberState:episode:previousEpisodes:date:),
+      view: Views.episodeView(episodePageData:), // (permission:user:subscriberState:episode:previousEpisodes:date:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
 
@@ -31,7 +31,14 @@ let episodeResponse =
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: episode,
+          data: EpisodePageData(
+            permission: permission,
+            user: currentUser,
+            subscriberState: subscriberState,
+            episode: episode,
+            previousEpisodes: episode.previousEpisodes,
+            date: Current.date
+          ),
           description: episode.blurb,
           extraHead: videoJsHead,
           extraStyles: markdownBlockStyles,
