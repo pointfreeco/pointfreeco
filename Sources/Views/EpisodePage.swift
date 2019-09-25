@@ -9,6 +9,10 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 
+public func _episodeView(episode: Episode) -> Node {
+  return episodeView(permission: EpisodePermission.loggedOut(isEpisodeSubscriberOnly: true), user: nil, subscriberState: SubscriberState.init(user: nil, subscriptionAndEnterpriseAccount: nil), episode: episode, previousEpisodes: [], date: Date.init)
+}
+
 public func episodeView(
   permission: EpisodePermission,
   user: User?,
