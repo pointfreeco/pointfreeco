@@ -155,7 +155,6 @@ let package = Package(
       name: "Models",
       dependencies: [
         "GitHub",
-        "HttpPipeline",
         "PointFreePrelude",
         "Stripe",
         "Tagged",
@@ -260,7 +259,6 @@ let package = Package(
         "Prelude",
         "Tagged",
         "Tuple",
-        "UrlFormEncoding",
         ]
     ),
 
@@ -369,10 +367,15 @@ let package = Package(
         "Css",
         "FunctionalCss",
         "Html",
+        "HtmlCssSupport",
         "HtmlUpgrade",
+        "Models",
+        "Optics",
         "PointFreeRouter",
         "Prelude",
         "Styleguide",
+        "Tagged",
+        "TaggedMoney",
         ]),
 
     .testTarget(

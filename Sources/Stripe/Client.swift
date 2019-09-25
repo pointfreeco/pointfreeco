@@ -5,7 +5,6 @@ import Optics
 import Prelude
 import PointFreePrelude
 import Tagged
-import UrlFormEncoding
 
 public struct Client {
   public var cancelSubscription: (Subscription.Id) -> EitherIO<Error, Subscription>

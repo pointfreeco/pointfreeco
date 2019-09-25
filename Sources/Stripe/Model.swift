@@ -5,7 +5,6 @@ import Prelude
 import PointFreePrelude
 import Tagged
 import TaggedMoney
-import UrlFormEncoding
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
