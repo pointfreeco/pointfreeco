@@ -27,8 +27,6 @@ class EpisodePageTests: TestCase {
   func testEpisodePage() {
     update(&Current, \.database .~ .mock)
 
-    print(Current.episodes())
-
     let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
 
     let conn = connection(from: episode)

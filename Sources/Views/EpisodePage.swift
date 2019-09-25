@@ -184,7 +184,6 @@ private func leftColumnView(
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   switch permission {
   case .loggedIn(_, .isSubscriber):
-    print("This should never be called.")
     return ""
 
   case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):

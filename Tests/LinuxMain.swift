@@ -185,6 +185,7 @@ extension EpisodePageTests {
     ("testRedeemEpisodeCredit_AlreadyCredited", testRedeemEpisodeCredit_AlreadyCredited),
     ("test_permission", test_permission),
     ("testEpisodePage_ExercisesAndReferences", testEpisodePage_ExercisesAndReferences),
+    ("testEpisodePage", testEpisodePage),
   ]
 }
 extension EpisodeTests {
@@ -457,7 +458,7 @@ XCTMain([
   testCase(EnterpriseTests.allTests),
   testCase(EnvVarTests.allTests),
   testCase(EnvironmentTests.allTests),
-  testCase(EpisodePageTests.allTests),
+  //testCase(EpisodePageTests.allTests),
   testCase(EpisodeTests.allTests),
   testCase(FreeEpisodeEmailTests.allTests),
   testCase(FunctionalCssTests.allTests),
