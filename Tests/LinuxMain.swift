@@ -121,6 +121,8 @@ extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testUpsertUser_FetchUserById", testUpsertUser_FetchUserById),
     ("testFetchEnterpriseAccount", testFetchEnterpriseAccount),
+    ("testCreateSubscription_OwnerIsNotTakingSeat", testCreateSubscription_OwnerIsNotTakingSeat),
+    ("testCreateSubscription_OwnerIsTakingSeat", testCreateSubscription_OwnerIsTakingSeat),
   ]
 }
 extension DiscountsTests {
@@ -303,6 +305,7 @@ extension PaymentInfoTests {
 extension PointFreeRouterTests {
   static var allTests: [(String, (PointFreeRouterTests) -> () throws -> Void)] = [
     ("testUpdateProfile", testUpdateProfile),
+    ("testSubscribeRoute", testSubscribeRoute),
   ]
 }
 extension PricingLandingTests {
@@ -388,6 +391,7 @@ extension SubscribeTests {
     ("testInvalidQuantity", testInvalidQuantity),
     ("testHappyPath", testHappyPath),
     ("testHappyPath_Team", testHappyPath_Team),
+    ("testHappyPath_Team_OwnerIsNotTakingSeat", testHappyPath_Team_OwnerIsNotTakingSeat),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
     ("testCreateStripeSubscriptionFailure_TeamAndMonthly", testCreateStripeSubscriptionFailure_TeamAndMonthly),
@@ -401,11 +405,13 @@ extension SubscriptionConfirmationTests {
     ("testPersonal_LoggedIn_SwitchToMonthly", testPersonal_LoggedIn_SwitchToMonthly),
     ("testTeam_LoggedIn", testTeam_LoggedIn),
     ("testTeam_LoggedIn_WithDefaults", testTeam_LoggedIn_WithDefaults),
+    ("testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat", testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat),
     ("testTeam_LoggedIn_SwitchToMonthly", testTeam_LoggedIn_SwitchToMonthly),
     ("testTeam_LoggedIn_AddTeamMember", testTeam_LoggedIn_AddTeamMember),
     ("testPersonal_LoggedIn_ActiveSubscriber", testPersonal_LoggedIn_ActiveSubscriber),
     ("testPersonal_LoggedOut", testPersonal_LoggedOut),
     ("testPersonal_LoggedIn_WithDiscount", testPersonal_LoggedIn_WithDiscount),
+    ("testTeam_LoggedIn_RemoveOwnerFromTeam", testTeam_LoggedIn_RemoveOwnerFromTeam),
   ]
 }
 extension TeamEmailsTests {
