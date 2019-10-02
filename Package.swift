@@ -19,6 +19,7 @@ let package = Package(
     .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
+    .library(name: "PageLayout", targets: ["PageLayout"]),
     .library(name: "PointFree", targets: ["PointFree"]),
     .library(name: "PointFreePrelude", targets: ["PointFreePrelude"]),
     .library(name: "PointFreeRouter", targets: ["PointFreeRouter"]),
@@ -34,6 +35,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
     .package(url: "https://github.com/stephencelis/swift-html-1.git", .branch("pointfreeco-upgrade")),
+    .package(url: "https://github.com/pointfreeco/swift-overture", .exact("0.5.0")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b26e98e")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.5.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
@@ -179,9 +181,21 @@ let package = Package(
     .testTarget(
       name: "ModelsTests",
       dependencies: [
+        "HtmlUpgrade",
+        "HttpPipeline",
         "Models",
         "ModelsTestSupport",
         ]
+    ),
+
+    .target(
+      name: "PageLayout",
+      dependencies: [
+        "Css",
+        "Html",
+        "Models",
+        "PointFreeRouter",
+      ]
     ),
 
     .target(
