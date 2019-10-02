@@ -8,28 +8,14 @@ import Prelude
 import Stripe
 import Tuple
 
-let subscribeMiddleware =
-  filterMap(
-    require1 >>> pure,
-    or: redirect(
-      with: get1 >>> subscribeConfirmationWithSubscribeData,
-      headersMiddleware: flash(.error, "Error creating subscription!")
-    )
-    )
-    <<< filter(
-      get1 >>> ^\.pricing >>> validateQuantity,
-      or: redirect(
-        with: get1 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
-      )
-    )
-    <<< filter(
-      get1 >>> validateCoupon(forSubscribeData:),
-      or: redirect(
-        with: get1 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
-      )
-    )
+let subscribeMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<SubscribeData?, User?>,
+  Data
+  > = requireSubscribeData
+    <<< validateQuanitity
+    <<< validateCoupon
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
     <| subscribe
@@ -135,4 +121,40 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
     )
   }
   return .discounts(code: coupon, subscribeData.pricing.billing)
+}
+
+private func requireSubscribeData(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData?, User?>, Data> {
+  return middleware |> filterMap(
+    require1 >>> pure,
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "Error creating subscription!")
+    )
+  )
+}
+
+private func validateQuanitity(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
+  return middleware |> filter(
+    get1 >>> ^\.pricing >>> validateQuantity,
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
+    )
+  )
+}
+
+private func validateCoupon(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
+  return middleware |> filter(
+    get1 >>> validateCoupon(forSubscribeData:),
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
+    )
+  )
 }
