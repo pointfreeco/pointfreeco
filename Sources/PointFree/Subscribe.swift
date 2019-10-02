@@ -14,7 +14,7 @@ let subscribeMiddleware: Middleware<
   Tuple2<SubscribeData?, User?>,
   Data
   > = requireSubscribeData
-    <<< validateQuanitity
+    <<< validateQuantity
     <<< validateCoupon
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
@@ -135,7 +135,7 @@ private func requireSubscribeData(
   )
 }
 
-private func validateQuanitity(
+private func validateQuantity(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
   return middleware |> filter(
