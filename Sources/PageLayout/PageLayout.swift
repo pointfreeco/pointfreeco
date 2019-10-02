@@ -159,8 +159,8 @@ func _respond<A, B>(
     }
 }
 
-extension Application {
-  public static var atom = Application(rawValue: "atom+xml")
+extension Html.Application {
+  public static var atom = Html.Application(rawValue: "atom+xml")
 }
 
 func simplePageLayout<A>(
@@ -215,13 +215,28 @@ func simplePageLayout<A>(
   }
 }
 
-func footerView(user: User?) -> [Node] {
-  return [
-    footer(
-      [`class`([footerClass])],
-      footerInfoColumnsView(user: user)
+private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
+
+  switch data.style {
+  case let .base(.some(.mountains(style))):
+    return mountainNavView(
+      mountainsStyle: style,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
     )
-  ]
+
+  case let .base(.some(.minimal(minimalStyle))):
+    return minimalNavView(
+      style: minimalStyle,
+      currentUser: data.currentUser,
+      subscriberState: data.currentSubscriberState,
+      currentRoute: data.currentRoute
+    )
+
+  case .base(.none), .minimal:
+    return []
+  }
 }
 
 func pastDueBanner<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
