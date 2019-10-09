@@ -363,7 +363,7 @@ private func episodeInfoView(
   date: () -> Date
   ) -> Node {
   return .div(
-    attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])],
+    attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
     topLevelEpisodeInfoView(episode: ep, date: date),
     previousEpisodesView(of: ep, previousEpisodes: previousEpisodes),
     sectionsMenu(episode: ep, permission: permission)
@@ -375,7 +375,7 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
 
   return [
     .p(
-      attributes: [.class([Class.padding([.mobile: [.top: 1], .desktop: [.top: 1]]), Class.pf.colors.bg.white, Class.pf.type.body.leading])],
+      attributes: [.class([Class.padding([.mobile: [.top: 1], .desktop: [.top: 1]]), Class.pf.type.body.leading])],
       "This episode builds on concepts introduced previously:"
     ),
     .ul(
@@ -442,8 +442,7 @@ private func transcriptView(blocks: [Episode.TranscriptBlock], isEpisodeViewable
       .id("transcript"),
       .class(
         [
-          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-          Class.pf.colors.bg.white
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]])
         ]
       )
     ],
@@ -518,8 +517,7 @@ private func referencesView(references: [Episode.Reference]) -> Node {
     .div(
       attributes: [
         .class([
-          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-          Class.pf.colors.bg.white
+          Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]])
           ])
       ],
       .h2(
@@ -608,8 +606,7 @@ private func exercisesView(exercises: [Episode.Exercise]) -> Node {
       attributes: [
         .class(
           [
-            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]]),
-            Class.pf.colors.bg.white
+            Class.padding([.mobile: [.all: 3], .desktop: [.leftRight: 4, .bottom: 4, .top: 2]])
           ]
         )
       ],
