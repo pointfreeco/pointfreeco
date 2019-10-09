@@ -316,6 +316,7 @@ public let pointFreeBaseStyles =
     <> bodyStyles
     <> resets
     <> colorStyles
+    <> darkModeColorStyles
     <> codeStyles
     <> inlineCodeStyles
     <> opacities
@@ -346,6 +347,23 @@ private let bodyStyles =
 private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
+
+//@media (prefers-color-scheme: dark) {
+//let features: [Feature] = [
+//  self.minSize.map(minWidth),
+//  self.maxSize.map(maxWidth)
+//  ]
+//  |> catOptionals
+//
+//return queryOnly(mediaType, features, rs: rs)
+private let darkModeColorStyles: Stylesheet = query(
+  "(prefers-color-scheme: dark)",
+  [],
+  rs: Class.pf.colors.bg.black % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.white % backgroundColor(.other("#444"))
+    <> Class.pf.colors.fg.black % color(.other("#e4e4e4"))
+    <> Class.pf.colors.fg.white % color(.other("#444"))
+)
 
 private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)

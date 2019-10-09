@@ -175,6 +175,20 @@ func simplePageLayout<A>(_ contentView: @escaping (A) -> [Html.Node]) -> (Simple
           meta([charset(.utf8)]),
           title(layoutData.title),
           style(unsafe: renderedNormalizeCss),
+          style("""
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #444;
+    color: #e4e4e4 !important;
+  }
+  a {
+    color: #e39777;
+  }
+  img {
+    filter: grayscale(30%);
+  }
+}
+"""),
           style(styleguide, config: cssConfig),
           style(layoutData.extraStyles, config: cssConfig),
           meta(viewport: .width(.deviceWidth), .initialScale(1)),
@@ -319,7 +333,7 @@ private let favicons: [Html.ChildOf<Html.Tag.Head>] = [
 ]
 
 private let prismJsHead: [Html.ChildOf<Html.Tag.Head>] = [
-  style(unsafe: """
+  style("""
 .language-diff .token.inserted {
   background-color: #f0fff4;
   color: #22863a;

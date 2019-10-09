@@ -112,7 +112,7 @@ private func episodeRowView(episode: Episode, date: () -> Date) -> Node {
 private func episodeInfoColumnView(episode: Episode, date: () -> Date) -> Node {
   return .div(
     attributes: [
-      .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]), Class.pf.colors.bg.white])
+      .class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])
     ],
     topLevelEpisodeInfoView(episode: episode, date: date),
     .div(
