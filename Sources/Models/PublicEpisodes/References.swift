@@ -91,6 +91,16 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
+  public static let elmComandsAndSubscriptions = Episode.Reference(
+    author: nil,
+    blurb: #"""
+  Elm is a pure functional language wherein applications are described exclusively with unidirectional data flow. It also has a story for side effects that closely matches the approach we take in these episodes. This document describes how commands (like our effect functions) allow for communication with the outside world, and how the results can be mapped into an action (what Elm calls a "message") in order to be fed back to the reducer.
+  """#,
+    link: "https://guide.elm-lang.org/effects/",
+    publishedAt: nil,
+    title: "Elm: Commands and Subscriptions"
+  )
+
   public static let difficultiesWithEfficientLargeFileParsing = Episode.Reference(
     author: "Ezekiel Elin et al.",
     blurb: """
@@ -377,6 +387,16 @@ The Swift standard library comes with two versions of `reduce`: one that takes a
     title: "Reduce with inout"
   )
 
+  public static let reduxDataFlow = Episode.Reference(
+    author: nil,
+    blurb: #"""
+  The Redux documentation describes and motivates its "strict unidirectional data flow."
+  """#,
+    link: "https://redux.js.org/basics/data-flow",
+    publishedAt: nil,
+    title: "Redux: Data Flow"
+  )
+
   public static let reduxHomepage = Episode.Reference(
     author: nil,
     blurb: """
@@ -387,6 +407,26 @@ The idea of modeling an application's architecture on simple reducer functions w
     title: "Redux: A predictable state container for JavaScript apps."
   )
 
+  public static let reduxMiddleware = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Redux, at its core, is very simple and has no single, strong opinion on how to handle side effects. It does, however, provide a means of layering what it calls "middleware" over reducers, and this third-party extension point allows folks to adopt a variety of solutions to the side effect problem.
+"""#,
+    link: "https://redux.js.org/advanced/middleware",
+    publishedAt: nil,
+    title: "Redux Middleware"
+  )
+
+  public static let reduxThunk = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Redux Thunk is the recommended middleware for basic Redux side effects logic. Side effects are captured in "thunks" (closures) to be executed by the store. Thunks may optionally utilize a callback argument that can feed actions back to the store at a later time.
+"""#,
+    link: "https://github.com/reduxjs/redux-thunk",
+    publishedAt: nil,
+    title: "Redux Thunk"
+  )
+
   public static let regexpParser = Episode.Reference(
     author: "Alexander Grebenyuk",
     blurb: """
@@ -395,6 +435,16 @@ This library for parsing regular expression strings into a Swift data type uses 
     link: "https://github.com/kean/Regex",
     publishedAt: referenceDateFormatter.date(from: "2019-08-10"),
     title: "Regex"
+  )
+
+  public static let reSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+ReSwift is one of the earliest, most popular Redux-inspired libraries for Swift. Its design matches Redux, including its adoption of "middleware" as the primary means of introducing side effects into a reducer.
+"""#,
+    link: "https://github.com/ReSwift/ReSwift",
+    publishedAt: nil,
+    title: "ReSwift"
   )
 
   public static let scannerAppleDocs = Episode.Reference(
@@ -567,6 +617,17 @@ In this free episode of Swift talk, Chris and Florian discuss how to efficiently
     publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
     title: "Swift Strings and Substrings"
   )
+
+  public static let swiftUIFlux = Episode.Reference(
+    author: "Thomas Ricouard",
+    blurb: #"""
+An early example of Redux in SwiftUI. Like ReSwift, it uses "middleware" to handle side effects.
+"""#,
+    link: "https://github.com/Dimillian/SwiftUIFlux",
+    publishedAt: nil,
+    title: "SwiftUIFlux"
+  )
+
   public static let swiftTagged = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
