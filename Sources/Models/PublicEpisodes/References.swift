@@ -341,6 +341,18 @@ Apple's eponymous WWDC talk on protocol-oriented programming:
     title: "Protocol-Oriented Programming in Swift"
   )
 
+    public static let pullbackWikipedia = Episode.Reference(
+      author: nil,
+      blurb: #"""
+  We use the term _pullback_ for the strange, unintuitive backwards composition that seems to show up often in programming. The term comes from a very precise concept in mathematics. Here is the Wikipedia entry:
+
+  > In mathematics, a pullback is either of two different, but related processes: precomposition and fibre-product. Its "dual" is a pushforward.
+  """#,
+      link: "https://en.wikipedia.org/wiki/Pullback",
+      publishedAt: nil,
+      title: "Pullback"
+    )
+
   public static let railwayOrientedProgramming = Episode.Reference(
     author: "Scott Wlaschin",
     blurb: """
@@ -766,6 +778,7 @@ The Wikipedia entry for monads.
     publishedAt: Date(timeIntervalSince1970: 607410000),
     title: "Why Functional Programming Matters"
   )
+
 }
 
 let referenceDateFormatter = { () -> DateFormatter in
