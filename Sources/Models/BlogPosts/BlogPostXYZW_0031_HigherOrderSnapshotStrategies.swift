@@ -1,7 +1,7 @@
 import Foundation
 
 public let post0031_HigherOrderSnapshotStrategies = BlogPost(
-  author: .brandon, // todo
+  author: .brandon,
   blurb: """
 See how to enrich snapshot strategies with additional behavior using higher-order constructions.
 """,
@@ -15,7 +15,7 @@ We've considered higher-order constructions quite a bit on Point-Free:
 * A higher-order [function](https://www.pointfree.co/episodes/ep5-higher-order-functions) is a function that takes a function as input and returns a function as output.
 * A higher-order [random number generator](https://www.pointfree.co/episodes/ep30-composable-randomness) is a function that takes an RNG as input and returns an RNG as output. This, for example, allows you to construct randomly sized arrays of random elements given more basic generators.
 * A higher-order [parser](https://www.pointfree.co/episodes/ep62-parser-combinators-part-1) is a function that takes a parser as input and returns a parser as output. This, for example, allows you to parse any number of values from a string given a way to parse a single value.
-* A higher-order [reducer](https://www.pointfree.co/episodes/ep71-composable-state-management-higher-order-reducers) is a function that takes a reducer as input and returns a reducer as output. This, for example, allows you to adding logging abilities to any reducer.
+* A higher-order [reducer](https://www.pointfree.co/episodes/ep71-composable-state-management-higher-order-reducers) is a function that takes a reducer as input and returns a reducer as output. This, for example, allows you to add logging abilities to any reducer.
 
 We'd like to describe yet another application of higher-order ideas: enhancing [snapshot testing](https://www.github.com/pointfreeco/swift-snapshot-testing) strategies!
 
@@ -55,7 +55,7 @@ func testController() {
 
 It's not terrible, a little bit of boilerplate, but maybe we could hide that in a helper on `XCTestCase`. Perhaps better would be to bake it directly into the `assertSnapshot` helper so that we could allow anyone snapshotting to easily wait for some time:
 
-```diff
+```swift
 func testController() {
   let vc = // create your view controller
 
@@ -64,20 +64,111 @@ func testController() {
 }
 ```
 
-That's quite a bit nicer! However, the `assertSnapshot` helper is quite complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
+That's quite a bit nicer. However, the `assertSnapshot` helper is very complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
 
-Luckily for us, we can allow any snapshot strategy to be enriched with this functionality without
+Luckily for us, we can allow any snapshot strategy to be enriched with this functionality without needing special helpers on `XCTestCase` or ballooning the `assertSnapshot` API. And the tool we will use is none other than higher-order snapshot strategies!
 
-## Protocols and Witnesses
+We want to transform an existing strategy such that when we invoke its `snapshot` function we will automatically bake in the waiting logic. We can start by getting the signature of such a transformation in place:
+
+```swift
+extension Snapshotting {
+  static func waiting(
+    for duration: TimeInterval,
+    on strategy: Snapshotting
+  ) -> Snapshotting {
+    fatalError("Unimplemented")
+  }
+}
+```
+
+We chose to define this as a static function so that at the call site in a test it would look like this:
+
+```swift
+func testController() {
+  let vc = // create your view controller
+
+  // Assert the snapshot after waiting...
+  assertSnapshot(matching: vc, as: .waiting(for: 1, on: .image))
+}
+```
+
+The first thing we need to do in this unimplemented method is return a new `Snapshotting` instance, which consists of providing a `pathExtension`, a `diffing` strategy and an `asyncSnapshot` function. The first two arguments can just be passthroughs from the strategy we currently have:
+
+```swift
+extension Snapshotting {
+  static func waiting(
+    for duration: TimeInterval,
+    on strategy: Snapshotting
+  ) -> Snapshotting {
+    return Snapshotting(
+      pathExtension: strategy.pathExtension,
+      diffing: strategy.diffing,
+      asyncSnapshot: { value in
+        fatalError("Unimplemented")
+    })
+  }
+}
+```
+
+Now inside the `asyncSnapshot` method we need to return an `Async` value, which can be constructed by taking in a callback function that we invoke when we are ready to perform the snapshot:
+
+```swift
+extension Snapshotting {
+  static func waiting(
+    for duration: TimeInterval,
+    on strategy: Snapshotting
+  ) -> Snapshotting {
+    return Snapshotting(
+      pathExtension: strategy.pathExtension,
+      diffing: strategy.diffing,
+      asyncSnapshot: { value in
+        Async { callback in
+          fatalError("Unimplemented")
+        }
+    })
+  }
+}
+```
+
+Inside this `Async` initializer we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase` we need to use `XCTestExpectation` and `XCTWaiter` directly:
+
+```swift
+extension Snapshotting {
+  static func waiting(
+    for duration: TimeInterval,
+    on strategy: Snapshotting
+  ) -> Snapshotting {
+    return Snapshotting(
+      pathExtension: strategy.pathExtension,
+      diffing: strategy.diffing,
+      asyncSnapshot: { value in
+        Async { callback in
+          let expectation = XCTestExpectation(description: "Wait")
+          DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            expectation.fulfill()
+          }
+          _ = XCTWaiter.wait(for: [expectation], timeout: duration + 1)
+          strategy.snapshot(value).run(callback)
+        }
+    })
+  }
+}
+```
+
+And just like that we have the ability to transform any snapshot strategy into one that can wait for a bit of time before it performs its snapshot work!
 
 ## Conclusion
+
+We've now shown how powerful higher-order constructions can be, and how easy it is to write them. They allow you to enrich the functionality of a construction without needing to bake that functionality directly into the library.
+
+Also, checkout the PR that adds the wait functionality to our snapshot testing library [here](https://github.com/pointfreeco/swift-snapshot-testing/pull/268)!
 """,
       timestamp: nil,
       type: .paragraph
     ),
   ],
   coverImage: "TODO",
-  id: 31, // TODO
-  publishedAt: .distantFuture, // TODO
+  id: 31,
+  publishedAt: Date(timeIntervalSince1970: 1573020000),
   title: "Higher-Order Snapshot Testing"
 )
