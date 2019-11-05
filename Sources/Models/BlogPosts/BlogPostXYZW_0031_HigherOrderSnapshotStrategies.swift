@@ -3,7 +3,7 @@ import Foundation
 public let post0031_HigherOrderSnapshotStrategies = BlogPost(
   author: .brandon,
   blurb: """
-See how to enrich snapshot strategies with additional behavior using higher-order constructions.
+How to enrich snapshot testing strategies with additional behavior using higher-order constructions.
 """,
   contentBlocks: [
     .init(
@@ -17,15 +17,15 @@ We've considered higher-order constructions quite a bit on Point-Free:
 * A higher-order [parser](https://www.pointfree.co/episodes/ep62-parser-combinators-part-1) is a function that takes a parser as input and returns a parser as output. This, for example, allows you to parse any number of values from a string given a way to parse a single value.
 * A higher-order [reducer](https://www.pointfree.co/episodes/ep71-composable-state-management-higher-order-reducers) is a function that takes a reducer as input and returns a reducer as output. This, for example, allows you to add logging abilities to any reducer.
 
-We'd like to describe yet another application of higher-order ideas: enhancing [snapshot testing](https://www.github.com/pointfreeco/swift-snapshot-testing) strategies!
+We'd like to describe yet another application of higher-order ideas: enhancing [snapshot testing](https://github.com/pointfreeco/swift-snapshot-testing) strategies!
 
 ## Snapshot Testing
 
-Snapshot testing is a form of testing that saves a snapshot of a value you want to assert against, so that when you perform the assertion you compare the current value against a value saved to disk. The most popular form of snapshot testing is screenshot testing, in which you snapshot some kind of view into an image, that way a single pixel difference can be caught if needed.
+Snapshot testing is a form of testing that saves a snapshot of a value you want to assert against, so that when you perform the assertion you compare the current value against a value saved to disk. The most popular form of snapshot testing is screenshot testing, in which you snapshot some kind of view into an image so that a single pixel difference can be caught if needed.
 
 We first discussed snapshot testing in order to explore alternatives to protocol-oriented programming. We started by building the entire library in the protocol-oriented style ([part 1](https://www.pointfree.co/episodes/ep37-protocol-oriented-library-design-part-1), [part 2](https://www.pointfree.co/episodes/ep38-protocol-oriented-library-design-part-2)), and although it worked just fine, there were definitely some drawbacks. It wasn't capable of snapshotting types in multiple ways, and it was quite inert and rigid.
 
-So, we [scrapped](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design) the protocols and tried using simple, concrete data types to express the abstraction of snapshotting, and amazing things happened! Not only could we define multiple snapshot strategies for a single type, but snapshot strategies became a transformable thing. In particular, we defined a [`pullback`](https://www.pointfree.co/blog/posts/22-some-news-about-contramap) operation that allows one to _pullback_ snapshot strategies on "smaller" types to strategies on "larger" types. For example, we can pullback the image snapshotting strategy on `UIView` to one on `UIViewController` via the function `{ controller in controller.view }`.
+So, we [scrapped the protocols](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design) and tried using simple, concrete data types to express the abstraction of snapshotting, and amazing things happened! Not only could we define multiple snapshot strategies for a single type, but snapshot strategies became a transformable thing. In particular, we defined a [`pullback`](https://www.pointfree.co/blog/posts/22-some-news-about-contramap) operation that allows one to _pull_ snapshot strategies on "smaller" types _back_ to strategies on "larger" types. For example, we can _pull_ the image snapshotting strategy on `UIView` _back_ to one on `UIViewController` via the function `{ $0.view }`.
 
 These types of transformations were completely hidden from us when dealing with protocols. If you are interested in seeing how to use our library in a real world code base, you may be interested in our 🆓 [tour of snapshot testing](https://www.pointfree.co/episodes/ep41-a-tour-of-snapshot-testing).
 
@@ -35,7 +35,7 @@ But what we didn't discuss too much in our snapshot testing episodes is the conc
 
 A higher-order snapshot strategy allows you to enhance an existing strategy with behavior that it doesn't need to know anything about. As a concrete example, many times when snapshotting a value we need to wait a little to give it time to prepare itself. Views may be animating, controllers may be pushing/popping, and alerts may be appearing. Unfortunately we do not have easy hooks into those lifecycle events, and so we really have no choice but to wait for a little bit of time.
 
-The easiest way to allow for this behavior in `XCTestCase` is using expectations:
+The standard way to allow for this behavior in `XCTestCase` is using expectations:
 
 ```swift
 func testController() {
@@ -53,7 +53,7 @@ func testController() {
 }
 ```
 
-It's not terrible, a little bit of boilerplate, but maybe we could hide that in a helper on `XCTestCase`. Perhaps better would be to bake it directly into the `assertSnapshot` helper so that we could allow anyone snapshotting to easily wait for some time:
+It's not terrible, a little bit of boilerplate, and maybe we could even hide that in a helper on `XCTestCase`. Perhaps better would be to bake it directly into the `assertSnapshot` helper so that we could allow anyone snapshotting to easily wait for some time:
 
 ```swift
 func testController() {
@@ -92,7 +92,7 @@ func testController() {
 }
 ```
 
-The first thing we need to do in this unimplemented method is return a new `Snapshotting` instance, which consists of providing a `pathExtension`, a `diffing` strategy and an `asyncSnapshot` function. The first two arguments can just be passthroughs from the strategy we currently have:
+The first thing we need to do in this unimplemented method is return a new `Snapshotting` instance. We could call its initializer, which requires a `pathExtension`, a `diffing` strategy, and an `snapshot` function.
 
 ```swift
 extension Snapshotting {
@@ -103,14 +103,14 @@ extension Snapshotting {
     return Snapshotting(
       pathExtension: strategy.pathExtension,
       diffing: strategy.diffing,
-      asyncSnapshot: { value in
+      snapshot: { value in
         fatalError("Unimplemented")
     })
   }
 }
 ```
 
-Now inside the `asyncSnapshot` method we need to return an `Async` value, which can be constructed by taking in a callback function that we invoke when we are ready to perform the snapshot:
+But because these arguments are just passthroughs, and we are only focused on transforming how we snapshot the value, we can leverage `pullback` instead!
 
 ```swift
 extension Snapshotting {
@@ -118,19 +118,14 @@ extension Snapshotting {
     for duration: TimeInterval,
     on strategy: Snapshotting
   ) -> Snapshotting {
-    return Snapshotting(
-      pathExtension: strategy.pathExtension,
-      diffing: strategy.diffing,
-      asyncSnapshot: { value in
-        Async { callback in
-          fatalError("Unimplemented")
-        }
-    })
+    return self.pullback { value in
+      fatalError("Unimplemented")
+    }
   }
 }
 ```
 
-Inside this `Async` initializer we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase` we need to use `XCTestExpectation` and `XCTWaiter` directly:
+Inside the pullback we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase` we need to use `XCTestExpectation` and `XCTWaiter` directly:
 
 ```swift
 extension Snapshotting {
@@ -138,19 +133,14 @@ extension Snapshotting {
     for duration: TimeInterval,
     on strategy: Snapshotting
   ) -> Snapshotting {
-    return Snapshotting(
-      pathExtension: strategy.pathExtension,
-      diffing: strategy.diffing,
-      asyncSnapshot: { value in
-        Async { callback in
-          let expectation = XCTestExpectation(description: "Wait")
-          DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-            expectation.fulfill()
-          }
-          _ = XCTWaiter.wait(for: [expectation], timeout: duration + 1)
-          strategy.snapshot(value).run(callback)
-        }
-    })
+    return strategy.pullback { value in
+      let expectation = XCTestExpectation(description: "Wait")
+      DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+        expectation.fulfill()
+      }
+      _ = XCTWaiter.wait(for: [expectation], timeout: duration + 1)
+      return value
+    }
   }
 }
 ```
