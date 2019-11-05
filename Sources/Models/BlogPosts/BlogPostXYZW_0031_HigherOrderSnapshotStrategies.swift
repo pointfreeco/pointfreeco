@@ -110,7 +110,7 @@ extension Snapshotting {
 }
 ```
 
-But because these arguments are just passthroughs, and we are only focused on transforming how we snapshot the value, we can leverage `pullback` instead!
+But because these arguments are just passthroughs, and we are purely concerned with transforming how we snapshot the value, we can leverage `pullback` instead!
 
 ```swift
 extension Snapshotting {
