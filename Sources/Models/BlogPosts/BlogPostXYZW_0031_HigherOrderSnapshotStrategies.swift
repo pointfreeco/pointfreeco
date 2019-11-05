@@ -125,7 +125,7 @@ extension Snapshotting {
 }
 ```
 
-Inside the pullback we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase` we need to use `XCTestExpectation` and `XCTWaiter` directly:
+Inside the pullback we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase`, so we need to use `XCTestExpectation` and `XCTWaiter` directly:
 
 ```swift
 extension Snapshotting {
