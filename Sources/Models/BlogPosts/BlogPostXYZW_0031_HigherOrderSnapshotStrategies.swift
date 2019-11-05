@@ -64,7 +64,7 @@ func testController() {
 }
 ```
 
-That's quite a bit nicer. However, the `assertSnapshot` helper is very complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
+That's quite a bit nicer. However, the `assertSnapshot` function is already very complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
 
 Luckily for us, we can allow any snapshot strategy to be enriched with this functionality without needing special helpers on `XCTestCase` or ballooning the `assertSnapshot` API. And the tool we will use is none other than higher-order snapshot strategies!
 
