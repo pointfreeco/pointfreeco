@@ -9,7 +9,7 @@ How to enrich snapshot testing strategies with additional behavior using higher-
     .init(
       content: "",
       timestamp: nil,
-      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0031-higher-order-snapshot-testing/poster.jpg")
+      type: .image(src: "https://d1iqsrac68iyd8.cloudfront.net/posts/0031-higher-order-snapshot-testing/poster.jpg")
     ),
 
     .init(
@@ -165,7 +165,7 @@ Incidentally, we have also added this higher-order snapshot strategy to our open
       type: .paragraph
     ),
   ],
-  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0031-higher-order-snapshot-testing/poster.jpg",
+  coverImage: "https://d1iqsrac68iyd8.cloudfront.net/posts/0031-higher-order-snapshot-testing/poster.jpg",
   id: 31,
   publishedAt: Date(timeIntervalSince1970: 1573106400),
   title: "Higher-Order Snapshot Testing"
