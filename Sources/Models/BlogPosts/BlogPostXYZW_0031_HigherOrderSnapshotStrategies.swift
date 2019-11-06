@@ -167,6 +167,6 @@ Incidentally, we have also added this higher-order snapshot strategy to our open
   ],
   coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0031-higher-order-snapshot-testing/poster.jpg",
   id: 31,
-  publishedAt: Date(timeIntervalSince1970: 1573020000),
+  publishedAt: Date(timeIntervalSince1970: 1573106400),
   title: "Higher-Order Snapshot Testing"
 )
