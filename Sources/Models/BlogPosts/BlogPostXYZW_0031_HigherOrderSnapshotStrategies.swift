@@ -33,7 +33,7 @@ Snapshot testing is a form of testing that saves a snapshot of a value you want 
 
 We first discussed snapshot testing in order to explore alternatives to protocol-oriented programming. We started by building the entire library in the protocol-oriented style ([part 1](https://www.pointfree.co/episodes/ep37-protocol-oriented-library-design-part-1), [part 2](https://www.pointfree.co/episodes/ep38-protocol-oriented-library-design-part-2)), and although it worked just fine, there were definitely some drawbacks. It wasn't capable of snapshotting types in multiple ways, and it was quite inert and rigid.
 
-So, we [scrapped the protocols](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design) and tried using simple, concrete data types to express the abstraction of snapshotting, and amazing things happened! Not only could we define multiple snapshot strategies for a single type, but snapshot strategies became a transformable thing. In particular, we defined a [`pullback`](https://www.pointfree.co/blog/posts/22-some-news-about-contramap) operation that allows one to _pull_ snapshot strategies on "smaller" types _back_ to strategies on "larger" types. For example, we can _pull_ the image snapshotting strategy on `UIView` _back_ to one on `UIViewController` via the function `{ $0.view }`.
+So, we [scrapped the protocols](https://www.pointfree.co/episodes/ep39-witness-oriented-library-design) and tried using simple, concrete data types to express the abstraction of snapshotting, and amazing things happened! Not only could we define multiple snapshot strategies for a single type, but snapshot strategies became a transformable thing. In particular, we defined a [`pullback`](https://www.pointfree.co/blog/posts/22-some-news-about-contramap) operation that allows one to pullback snapshot strategies on "smaller" types to strategies on "larger" types. For example, we can _pullback_ the image snapshotting strategy on `UIView` _back_ to an image snapshotting strategy on `UIViewController` via the function `{ $0.view }`.
 
 These types of transformations were completely hidden from us when dealing with protocols. If you are interested in seeing how to use our library in a real world code base, you may be interested in our 🆓 [tour of snapshot testing](https://www.pointfree.co/episodes/ep41-a-tour-of-snapshot-testing).
 
@@ -72,7 +72,7 @@ func testController() {
 }
 ```
 
-That's quite a bit nicer. However, the `assertSnapshot` function is already very complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
+That's quite a bit nicer. However, the `assertSnapshot` function is quite complicated ([here's](https://github.com/pointfreeco/swift-snapshot-testing/blob/219085ad5fbf0725b685a95da84623b187c6ae55/Sources/SnapshotTesting/AssertSnapshot.swift#L155-L285) the helper that powers it). In fact, it's already a bit too long for comfort, and adding this additional waiting logic comes at a serious cost.
 
 Luckily for us, we can allow any snapshot strategy to be enriched with this functionality without needing special helpers on `XCTestCase` or ballooning the `assertSnapshot` API. And the tool we will use is none other than higher-order snapshot strategies!
 
@@ -118,7 +118,7 @@ extension Snapshotting {
 }
 ```
 
-But because these arguments are just passthroughs, and we are purely concerned with transforming how we snapshot the value, we can leverage `pullback` instead!
+But because these arguments are just passthroughs, and we are purely concerned with transforming how we snapshot the value, we can leverage `pullback` instead:
 
 ```swift
 extension Snapshotting {
@@ -157,9 +157,9 @@ And just like that we have the ability to transform any snapshot strategy into o
 
 ## Conclusion
 
-We've now shown how powerful higher-order constructions can be, and how easy it is to write them. They allow you to enrich the functionality of a construction without needing to bake that functionality directly into the library.
+We have now shown that higher-order snapshot strategies allow us to add the functionality of waiting before taking snapshots without making any changes to the core library. All of the code we wrote could live outside the library, and that is the power of having a transformable and composable API. It allows you to enrich the functionality of a construction without needing to bake that functionality directly into the library.
 
-Also, checkout the PR that adds the wait functionality to our snapshot testing library [here](https://github.com/pointfreeco/swift-snapshot-testing/pull/268)!
+Incidentally, we have also added this higher-order snapshot strategy to our open source library 😀. Check out the PR that adds the wait functionality [here](https://github.com/pointfreeco/swift-snapshot-testing/pull/268)!
 """,
       timestamp: nil,
       type: .paragraph
