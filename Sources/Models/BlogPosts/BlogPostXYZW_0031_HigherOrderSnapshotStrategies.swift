@@ -118,7 +118,7 @@ extension Snapshotting {
 }
 ```
 
-But because these arguments are just passthroughs, and we are only focused on transforming how we snapshot the value, we can leverage `pullback` instead!
+But because these arguments are just passthroughs, and we are purely concerned with transforming how we snapshot the value, we can leverage `pullback` instead!
 
 ```swift
 extension Snapshotting {
@@ -133,7 +133,7 @@ extension Snapshotting {
 }
 ```
 
-Inside the pullback we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase` we need to use `XCTestExpectation` and `XCTWaiter` directly:
+Inside the pullback we can finally do our expectation work. It will look almost exactly like the expectation work we did previously, except this time since we are operating outside an `XCTestCase`, so we need to use `XCTestExpectation` and `XCTWaiter` directly:
 
 ```swift
 extension Snapshotting {
