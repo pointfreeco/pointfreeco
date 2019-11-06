@@ -7,7 +7,15 @@ How to enrich snapshot testing strategies with additional behavior using higher-
 """,
   contentBlocks: [
     .init(
+      content: "",
+      timestamp: nil,
+      type: .image(src: "https://s3.amazonaws.com/pointfreeco-blog/posts/0031-higher-order-snapshot-testing/poster.jpg")
+    ),
+
+    .init(
       content: """
+ ---
+
 We love higher-order constructions here on Point-Free. For the uninitiated, if you have some construction in Swift, say a generic type `F<A>`, then a _higher-order_ version of it is simply a function `(F<A>) -> F<B>`. That is, a function that takes your construction as input and returns it as output. Considering such higher-order constructions instantly allows you to enrich your code with very little work.
 
 We've considered higher-order constructions quite a bit on Point-Free:
@@ -157,7 +165,7 @@ Also, checkout the PR that adds the wait functionality to our snapshot testing l
       type: .paragraph
     ),
   ],
-  coverImage: "TODO",
+  coverImage: "https://s3.amazonaws.com/pointfreeco-blog/posts/0031-higher-order-snapshot-testing/poster.jpg",
   id: 31,
   publishedAt: Date(timeIntervalSince1970: 1573020000),
   title: "Higher-Order Snapshot Testing"
