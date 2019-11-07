@@ -1027,6 +1027,23 @@ private struct _Client {
       ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
       """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE TABLE IF NOT EXISTS "search_episodes" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "title" character varying NOT NULL,
+        "content" character varying NOT NULL
+      )
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE INDEX idx_fts_post ON search_episodes
+      USING gin((setweight(to_tsvector(language::regconfig, title),'A') ||
+             setweight(to_tsvector(language::regconfig, content), 'B')));
+
+      """
+      )))
       .map(const(unit))
   }
 
