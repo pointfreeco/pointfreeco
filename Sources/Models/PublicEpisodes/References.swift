@@ -151,6 +151,16 @@ A proposal has been accepted in the Swift evolution process that would allow key
     title: "SE-0249 - Key Path Expressions as Functions"
   )
 
+  public static let gallagherProtocolsWithAssociatedTypes = Episode.Reference(
+    author: "Alexis Gallagher",
+    blurb: """
+This talk by Alexis Gallagher shows why protocols with associated types are so complicated, and tries to understand why Swift chose to go with that design instead of other alternatives.
+""",
+    link: "https://www.youtube.com/watch?v=XWoNjiSPqI8",
+    publishedAt: referenceDateFormatter.date(from: "2015-12-15"),
+    title: "Protocols with Associated Types"
+  )
+
   public static let haskellUnderstandingMonadsState = Episode.Reference(
       author: "Wikibooks contributors",
       blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
