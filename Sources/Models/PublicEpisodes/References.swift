@@ -151,6 +151,26 @@ A proposal has been accepted in the Swift evolution process that would allow key
     title: "SE-0249 - Key Path Expressions as Functions"
   )
 
+  public static let gallagherProtocolsWithAssociatedTypes = Episode.Reference(
+    author: "Alexis Gallagher",
+    blurb: """
+This talk by Alexis Gallagher shows why protocols with associated types are so complicated, and tries to understand why Swift chose to go with that design instead of other alternatives.
+""",
+    link: "https://www.youtube.com/watch?v=XWoNjiSPqI8",
+    publishedAt: referenceDateFormatter.date(from: "2015-12-15"),
+    title: "Protocols with Associated Types"
+  )
+
+  public static let haskellAntipatternExistentialTypeclass = Episode.Reference(
+    author: "Luke Palmer",
+    blurb: """
+A Haskell article that demonstrates a pattern in the Haskell community, and why it _might_ be an anti-pattern. In a nutshell, the pattern is for libraries to express their functionality with typeclasses (i.e. protocols) and provide `Any*` wrappers around the protocol for when you do not want to refer to a particular instance of that protocol. The alternative is to replace the typeclass with a simple concrete data type. Sound familiar?
+""",
+    link: "https://lukepalmer.wordpress.com/2010/01/24/haskell-antipattern-existential-typeclass/",
+    publishedAt: referenceDateFormatter.date(from: "2010-01-24"),
+    title: "Haskell Antipattern: Existential Typeclass"
+  )
+
   public static let haskellUnderstandingMonadsState = Episode.Reference(
       author: "Wikibooks contributors",
       blurb: "A concise description of the state monad from the perspective of Haskell. Uses an example of a random dice roll as motiviation for how state can evolve in a program.",
@@ -234,7 +254,19 @@ Ole discusses the concept of "illegal states" in data types, and how to leverage
     publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
     title: "Making illegal states unrepresentable"
   )
-  
+
+  public static let modernSwiftApiDesign = Episode.Reference(
+    author: "Apple",
+    blurb: """
+As of WWDC 2019, Apple no longer recommends that we "start with a protocol" when designing our APIs. A more balanced approach is discussed instead, including trying out concrete data types. Fast forward to 12:58 for the discussion.
+
+> Every programming language has a set of conventions that people come to expect. Learn about the patterns that are common to Swift API design, with examples from new APIs like SwiftUI, Combine, and RealityKit. Whether you're developing an app as part of a team, or you're publishing a library for others to use, find out how to use new features of Swift to ensure clarity and correct use of your APIs.
+""",
+    link: "https://developer.apple.com/videos/play/wwdc2019/415/?time=778",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    title: "Modern Swift API Design"
+  )
+
   public static let nioRenameThenToFlatMap = Episode.Reference(
     author: "Apple",
     blurb: """
