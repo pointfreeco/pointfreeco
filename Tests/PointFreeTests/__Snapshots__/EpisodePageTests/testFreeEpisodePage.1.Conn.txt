@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 80960
+Content-Length: 81069
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2424,10 +2424,12 @@ working how we expect:</p>
 
                 </div>
                 <details>
-                  <summary>
+                  <summary class="cursor-pointer">
                     Solution
                   </summary>
-                  <div class="bg-gray900
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
                               m-pl2
                               m-pr2
                               m-pt1
