@@ -640,7 +640,7 @@ private func solution(to exercise: Episode.Exercise) -> Node {
   guard let solution = exercise.solution else { return [] }
 
   return .details(
-    .summary("Solution"),
+    .summary(attributes: [.class([Class.cursor.pointer])], "Solution"),
     .div(
       attributes: [
         .class([
