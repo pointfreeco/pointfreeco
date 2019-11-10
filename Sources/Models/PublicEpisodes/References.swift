@@ -46,6 +46,16 @@ The topic of category theory in mathematics formalizes the idea we were grasping
     title: "Category Theory"
   )
 
+  public static let combineFramework = Episode.Reference(
+    author: nil,
+    blurb: """
+Combine is Apple's framework for reactive programming.
+""",
+    link: "https://developer.apple.com/documentation/combine",
+    publishedAt: nil,
+    title: "Combine"
+  )
+
   public static let combinatorsDanielSteinberg = Episode.Reference(
     author: "Daniel Steinberg",
     blurb: """
@@ -91,11 +101,21 @@ focus on just the core ideas.
     title: "Contravariance"
   )
 
-  public static let elmComandsAndSubscriptions = Episode.Reference(
+  public static let deferredPublishers = Episode.Reference(
+    author: "@_lksz_",
+    blurb: #"""
+Combine is quite a large framework to get a handle of! When noting that its `Future` publisher is eager on Twitter, we were tipped off to the `Deferred` publisher as an easy solution.
+"""#,
+    link: "https://twitter.com/_lksz_/status/1183773360494383104",
+    publishedAt: referenceDateFormatter.date(from: "2019-10-19"),
+    title: "Deferred Publishers: Tweet Tip"
+  )
+
+  public static let elmCommandsAndSubscriptions = Episode.Reference(
     author: nil,
     blurb: #"""
-  Elm is a pure functional language wherein applications are described exclusively with unidirectional data flow. It also has a story for side effects that closely matches the approach we take in these episodes. This document describes how commands (like our effect functions) allow for communication with the outside world, and how the results can be mapped into an action (what Elm calls a "message") in order to be fed back to the reducer.
-  """#,
+Elm is a pure functional language wherein applications are described exclusively with unidirectional data flow. It also has a story for side effects that closely matches the approach we take in these episodes. This document describes how commands (like our effect functions) allow for communication with the outside world, and how the results can be mapped into an action (what Elm calls a "message") in order to be fed back to the reducer.
+"""#,
     link: "https://guide.elm-lang.org/effects/",
     publishedAt: nil,
     title: "Elm: Commands and Subscriptions"
@@ -223,6 +243,16 @@ was a cause of confusion for those new to functional terms.
     link: "https://github.com/apple/swift-evolution/blob/master/proposals/0187-introduce-filtermap.md",
     publishedAt: Date(timeIntervalSince1970: 1509681600),
     title: "Introduce Sequence.compactMap(_:)"
+  )
+
+  public static let lazyEvaluation = Episode.Reference(
+    author: nil,
+    blurb: """
+Laziness is often touted as an important attribute of functional programming (for example, in John Hughes' seminal paper, _Why Functional Programming Matters_) and is a primary feature of the Haskell programming language.
+""",
+    link: "https://en.wikipedia.org/wiki/Lazy_evaluation",
+    publishedAt: nil,
+    title: "Lazy Evaluation"
   )
 
   public static let learningParserCombinatorsWithRust = Episode.Reference(
@@ -420,6 +450,25 @@ very simple, small pieces and then compose them together to create a really comp
     publishedAt: Date(timeIntervalSince1970: 1542690000),
     title: "Random Zalgo Generator"
   )
+  public static let reactiveStreams = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Reactive Streams is an initiative to provide a standard for asynchronous stream processing with non-blocking back pressure and is the basis for many of the design decisions behind the Combine framework.
+"""#,
+    link: "https://www.reactive-streams.org",
+    publishedAt: nil,
+    title: "Reactive Streams"
+  )
+
+  public static let reactiveSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+ReactiveSwift is a popular Swift library for reactive programming that succeeded its original Objective-C library called ReactiveCocoa.
+"""#,
+    link: "https://github.com/ReactiveCocoa/ReactiveSwift",
+    publishedAt: nil,
+    title: "ReactiveSwift"
+  )
 
   public static let reduceWithInout = Episode.Reference(
     author: "Chris Eidhof",
@@ -489,6 +538,16 @@ ReSwift is one of the earliest, most popular Redux-inspired libraries for Swift.
     link: "https://github.com/ReSwift/ReSwift",
     publishedAt: nil,
     title: "ReSwift"
+  )
+
+  public static let rxSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+RxSwift is a popular library for reactive programming based on "Reactive Extensions," which generally goes by Rx.
+"""#,
+    link: "https://github.com/ReactiveX/RxSwift",
+    publishedAt: nil,
+    title: "RxSwift"
   )
 
   public static let scannerAppleDocs = Episode.Reference(
