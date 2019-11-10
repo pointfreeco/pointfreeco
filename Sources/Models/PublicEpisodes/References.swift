@@ -378,6 +378,16 @@ Our open source tool for generating enum properties for any enum in your code ba
     title: "pointfreeco/swift-enum-properties"
   )
 
+  public static let promisesAreNotNeutralEnough = Episode.Reference(
+    author: "André Staltz",
+    blurb: """
+Promises are JavaScript's default abstraction for asynchronous work, but unlike the `Parallel` type we've defined on Point-Free, promises are eager, not lazy. In this blog post André does a great job explaining how the choice of eagerness is opinionated and some of the problems that come out of it.
+""",
+    link: "https://staltz.com/promises-are-not-neutral-enough.html",
+    publishedAt: referenceDateFormatter.date(from: "2018-02-14"),
+    title: "Promises Are Not Neutral Enough"
+  )
+
   public static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
     author: "Chris Eidhof",
     blurb: """
