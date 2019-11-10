@@ -644,7 +644,9 @@ private func solution(to exercise: Episode.Exercise) -> Node {
     .div(
       attributes: [
         .class([
-          Class.pf.colors.bg.gray900,
+          Class.border.left,
+          Class.pf.colors.border.gray850,
+          Class.pf.colors.bg.white,
           Class.padding([.mobile: [.topBottom: 1, .leftRight: 2]]),
           Class.margin([.mobile: [.bottom: 3]]),
           Class.layout.overflowAuto(.x)

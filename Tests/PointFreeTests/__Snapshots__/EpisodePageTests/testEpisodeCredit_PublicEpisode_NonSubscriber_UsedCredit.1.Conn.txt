@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 78310
+Content-Length: 78419
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2441,10 +2441,12 @@ future episodes, become a subscriber today!
 
                 </div>
                 <details>
-                  <summary>
+                  <summary class="cursor-pointer">
                     Solution
                   </summary>
-                  <div class="bg-gray900
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
                               m-pl2
                               m-pr2
                               m-pt1
