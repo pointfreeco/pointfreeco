@@ -15,4 +15,5 @@ public let allPublicEpisodes: [Episode] = [
   ep65,
   ep66,
   ep67,
+  ep80,
 ]
