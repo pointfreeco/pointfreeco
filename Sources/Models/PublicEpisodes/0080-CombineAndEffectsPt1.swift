@@ -67,9 +67,8 @@ class Effect<A> {
   func run(_ callback: @escaping (A) -> Void) {
     if let value = self.value {
       callback(value)
-    } else {
-      self.callbacks.append(callback)
     }
+    self.callbacks.append(callback)
   }
 }
 ```
@@ -77,9 +76,13 @@ class Effect<A> {
   ),
   Episode.Exercise(
     problem: #"""
-Continuing the previous exercise, improve the eager effect by introducing an `os_unfair_lock` to properly protect access to the mutable storage that manages the resulting value and requests for it.
+Continuing the previous exercise, improve the eager effect by making things thread-safe. To optimize for performance, you could use `os_unfair_lock` to protect access to the mutable storage that manages the resulting value and requests for it, but be wary of recursive calls to the lock by running the callbacks _outside_ of the lock.
+
+You could also use `NSRecursiveLock` to simplify this logic at the cost of some performance.
 """#,
     solution: #"""
+An example of `os_unfair_lock` is below. It synchronizes reads and writes to storage, and runs callbacks _outside_ of the lock in order to prevent recursive deadlocks.
+
 ```swift
 import Darwin
 
@@ -90,21 +93,28 @@ class Effect<A> {
 
   init(run: @escaping (@escaping (A) -> Void) -> Void) {
     run { value in
+      let callbacks: [(A) -> Void]
       os_unfair_lock_lock(&self.lock)
-      self.callbacks.forEach { callback in callback(value) }
       self.value = value
+      callbacks = self.callbacks
       os_unfair_lock_unlock(&self.lock)
+      callbacks.forEach { callback in callback(value) }
     }
   }
 
   func run(_ callback: @escaping (A) -> Void) {
+    let value: A?
     os_unfair_lock_lock(&self.lock)
-    if let value = self.value {
-      callback(value)
+    if let aValue = self.value {
+      value = aValue
     } else {
-      self.callbacks.append(callback)
+      value = nil
     }
+    self.callbacks.append(callback)
     os_unfair_lock_unlock(&self.lock)
+    if let value = value {
+      callback(value)
+    }
   }
 }
 ```
