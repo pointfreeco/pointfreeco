@@ -51,6 +51,8 @@ extension Effect {
   }
 }
 ```
+
+This function is easiest to implement if you assume the effect is only allowed to emit at most one value. If you want the effect to be able to emit multiple values it will take a lot more work and a deeper understanding of Combine's concepts.
 """#,
     solution: #"""
 ```swift
@@ -96,12 +98,22 @@ extension Publisher {
 ```
 """#
   ),
+  .init(problem: """
+Refactor the composable architecture and app to use a `Reducer` of the form:
 
+```swift
+typealias Reducer<Value, Action> = (inout Value, Action) -> Effect<Action>
+```
+
+Note that we are returning a single `Effect<Action>`, not an array.
+
+What Combine operator can you use for the times that you need to return multiple effects? What should you use for when you do not need to return any effects at all?
+"""),
   Episode.Exercise(
     problem: #"""
 In the episode we note that while we chose to refactor the architecture with the Combine framework, we could have just as easily refactored it to work with [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift) or [RxSwift](https://github.com/ReactiveX/RxSwift)
 
-Pick your framework of choice (or both!) and refactor the composable architecture accordingly.
+Pick your framework of choice (or both!) and refactor the composable architecture accordingly. If using ReactiveSwift you will need to decide between `Signal` and `SignalProducer` for your effect type.
 """#
   ),
 ]
