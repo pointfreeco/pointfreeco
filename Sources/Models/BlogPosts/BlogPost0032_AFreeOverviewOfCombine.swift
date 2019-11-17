@@ -16,15 +16,17 @@ The Combine framework is seriously powerful, and is responsible for handling a l
 
 The past couple weeks we have released two completely free videos dedicated to studying the Combine framework from first principles and showing how you can incorporate it into a library or application:
 
-- [The Combine Framework and Effects: Part 1](https://www.pointfree.co/episodes/ep80-the-combine-framework-and-effects-part-1): In this video, we explore Combine's core components, including the `Publisher` and `Subscriber` protocols. We also cover some of its convenience functions and operators, which are introduced on top of these more basic units.
+- [The Combine Framework and Effects: Part 1](https://www.pointfree.co/episodes/ep80-the-combine-framework-and-effects-part-1): In this video, we explore Combine's core components, including the `Publisher` and `Subscriber` protocols. We also cover some convenience functions and operators, which are layered over these more basic units.
 
-- [The Combine Framework and Effects: Part 2](https://www.pointfree.co/episodes/ep81-the-combine-framework-and-effects-part-2): In this video we show how the Combine framework can be used to describe side effects in a reducer-based architecture framework, like Redux. It builds on an architecture we've been experimenting with that seeks to solve five critical problems.
+- [The Combine Framework and Effects: Part 2](https://www.pointfree.co/episodes/ep81-the-combine-framework-and-effects-part-2): In this video we show how the Combine framework can be used to describe side effects in a reducer-based architecture, like Redux. We take an existing library we've been experimenting with and use Combine to help solve a critical problem
 
-If you're curious about what SwiftUI has to say about architecture, we have 3 free videos that explore just that:
+If you're curious about what SwiftUI has to say about architecture (and what it doesn't have to say), we have 3 free videos that explore just that:
 
 - [SwiftUI and State Management: Part 1](https://www.pointfree.co/episodes/ep65-swiftui-and-state-management-part-1)
 - [SwiftUI and State Management: Part 2](https://www.pointfree.co/episodes/ep66-swiftui-and-state-management-part-2)
 - [SwiftUI and State Management: Part 3](https://www.pointfree.co/episodes/ep67-swiftui-and-state-management-part-3)
+
+We're pretty excited about what Apple's introduced this year and can't wait to see what they enable folks to build and where they go!
 """#,
       timestamp: nil,
       type: .paragraph
