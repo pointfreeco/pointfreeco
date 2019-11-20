@@ -78,7 +78,7 @@ When translating our Wolfram Alpha effect to Combine, we took several steps to h
 
 ```swift
 extension Publisher {
-  func hush() -> Effect<Output> {
+  func hush() -> Effect<Output?> {
     fatalError("Unimplemented")
   }
 }
@@ -87,7 +87,7 @@ extension Publisher {
     solution: #"""
 ```swift
 extension Publisher {
-  func hush() -> Effect<Output> {
+  func hush() -> Effect<Output?> {
     return self
       .map(Optional.some)
       .replaceError(with: nil)
