@@ -16,20 +16,20 @@ bootstrap-oss:
 	@$(MAKE) xcodeproj-oss
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@sleep 1 && xed .
+	@open -g PointFree.xcworkspace
 
 bootstrap-oss-lite:
 	@echo "  ⚠️  Bootstrapping open-source Point-Free (lite)..."
 	@$(MAKE) xcodeproj-oss
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@sleep 1 && xed .
+	@open -g PointFree.xcworkspace
 
 bootstrap-private:
 	@echo "  👀 Bootstrapping Point-Free (private)..."
 	@$(MAKE) xcodeproj
 	@$(MAKE) install-mm
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
-	@sleep 1 && xed .
+	@open -g PointFree.xcworkspace
 
 uninstall: uninstall-mm db-drop
 
@@ -286,7 +286,6 @@ sourcery-tests: check-sourcery
 xcodeproj: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
 	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=Development.xcconfig >/dev/null
-	@xed .
 	@echo "  ✅ Generated!"
 
 submodules:
