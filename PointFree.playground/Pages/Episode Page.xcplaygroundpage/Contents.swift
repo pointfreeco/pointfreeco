@@ -1,6 +1,7 @@
 import HttpPipeline
 import PlaygroundSupport
 @testable import PointFree
+import PointFreeRouter
 @testable import PointFreeTestSupport
 import WebKit
 
