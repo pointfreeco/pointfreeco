@@ -1,7 +1,9 @@
 import HttpPipeline
+import Models
 import Optics
 import PlaygroundSupport
 @testable import PointFree
+import PointFreePrelude
 @testable import PointFreeTestSupport
 import Prelude
 import WebKit
