@@ -1,5 +1,6 @@
 import Either
 import Html
+import Models
 import PlaygroundSupport
 @testable import PointFree
 @testable import PointFreeTestSupport
@@ -8,7 +9,7 @@ import WebKit
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let htmlNodes = newBlogPostEmail.view(
+let htmlNodes = newBlogPostEmail(
   (
     post0005_stylingWithFunctions,
     "Announcement for subscribers",
@@ -16,7 +17,7 @@ let htmlNodes = newBlogPostEmail.view(
     .nonSubscriber
   )
 )
-let htmlString = render(htmlNodes, config: compact)
+let htmlString = render(htmlNodes)
 
 let webView = WKWebView(frame: .init(x: 0, y: 0, width: 400, height: 750))
 webView.loadHTMLString(htmlString, baseURL: nil)

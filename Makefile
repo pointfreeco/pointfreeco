@@ -43,7 +43,6 @@ install-mm:
 	@$(MAKE) install-mm-commoncrypto || (echo "$$MODULE_MAP_ERROR" && exit 1)
 	@$(MAKE) install-mm-cmark
 	@$(MAKE) install-mm-postgres
-	@$(MAKE) install-mm-xcodeproj
 	@echo "  ✅ Module maps installed!"
 
 install-mm-cmark: $(CCMARK_MODULE_MAP_PATH)
@@ -59,16 +58,11 @@ install-mm-postgres: $(POSTGRES_MODULE_MAP_PATH)
 	@echo "$$POSTGRES_MODULE_MAP" | $(SUDO) tee "$(POSTGRES_PATH)/module.map" > /dev/null
 	@echo "$$POSTGRES_SHIM_H" | $(SUDO) tee "$(POSTGRES_PATH)/shim.h" > /dev/null
 
-install-mm-xcodeproj: PointFree.xcodeproj
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) mkdir -p "$(FRAMEWORKS_PATH)/{}.framework"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) cp "./PointFree.xcodeproj/GeneratedModuleMap/{}/module.modulemap" "$(FRAMEWORKS_PATH)/{}.framework/module.map"
-
 uninstall-mm:
 	@echo "  ⚠️  Uninstalling module maps from SDK path..."
 	@$(SUDO) rm -r "$(COMMON_CRYPTO_PATH)" || (echo "$$MODULE_MAP_ERROR_UNINSTALL")
 	@$(SUDO) rm -r "$(CCMARK_PATH)"
 	@$(SUDO) rm -r "$(POSTGRES_PATH)"
-	@ls PointFree.xcodeproj/GeneratedModuleMap | xargs -n1 -I '{}' $(SUDO) rm "$(FRAMEWORKS_PATH)/{}.framework/module.map"
 	@echo "  ✅ Module maps uninstalled!"
 
 check-dependencies: check-cmark check-postgres
@@ -347,7 +341,6 @@ SUDO_PROMPT = "  🔒 Please enter your password: "
 	install-mm-cmark \
 	install-mm-commoncrypto \
 	install-mm-postgres \
-	install-mm-xcodeproj \
 	uninstall \
 	uninstall-mm \
 	uninstall-colortheme \
