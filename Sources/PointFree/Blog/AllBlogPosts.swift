@@ -43,4 +43,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0030_SwiftUIAndStateManagementCorrections,
   post0031_HigherOrderSnapshotStrategies,
   post0032_AnOverviewOfCombine,
+  post0033_CyberMondaySale,
 ]
