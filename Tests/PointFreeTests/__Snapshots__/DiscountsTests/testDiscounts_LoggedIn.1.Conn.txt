@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55287
+Content-Length: 55313
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2153,7 +2153,9 @@ html {
                        lh-4
                        fg-gray400">
              You are using the coupon <strong>Student Discount</strong>
-            , which gives you 50% off every billing period.
+            , which gives you 
+            50%
+             off every billing period.
           </span>
         </div>
       </div>
