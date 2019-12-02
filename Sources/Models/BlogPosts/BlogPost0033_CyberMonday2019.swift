@@ -18,6 +18,6 @@ Point-Free is getting into the Cyber Monday spirit by offering 30% off the first
   ],
   coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
   id: 33,
-  publishedAt: Date(timeIntervalSince1970: 1575266400),
+  publishedAt: Date(timeIntervalSince1970: 1575255600),
   title: "Cyber Monday Sale: 30% Off Point-Free"
 )
