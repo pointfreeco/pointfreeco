@@ -1,8 +1,10 @@
 import Css
+import Foundation
 import FunctionalCss
 import HtmlUpgrade
 import HtmlCssSupport
 import Models
+import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -432,11 +434,13 @@ private func billingPeriod(
 private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: Coupon?) -> Node {
   switch interval {
   case .month:
-    let dollars = (coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
-    return .text("$\(dollars) per month")
+    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100
+    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+    return .text("\(formattedAmount) per month")
   case .year:
-    let dollars = (coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
-    return .text("$\(dollars) per year")
+    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100
+    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)").replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
+    return .text("\(formattedAmount) per year")
   }
 }
 
@@ -592,7 +596,7 @@ private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
     coupon.name
       .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
       ?? " You are using a coupon",
-    ", which gives you 50% off every billing period."
+    ", which gives you \(coupon.rate.percentOff.map { "\($0)%" } ?? "a fixed discount") off every billing period."
   )
 }
 
@@ -736,3 +740,8 @@ let moduleRowClass =
     | Class.padding([.mobile: [.topBottom: 3]])
     | Class.border.bottom
     | Class.pf.colors.border.gray850
+
+public let currencyFormatter = NumberFormatter()
+  // Workaround for https://bugs.swift.org/browse/SR-7481
+  |> \.minimumIntegerDigits .~ 1
+  |> \.numberStyle .~ .currency
