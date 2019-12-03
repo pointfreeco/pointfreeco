@@ -15,9 +15,11 @@ public let subscribeConfirmation: Middleware<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
   Data
   >
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< redirectActiveSubscribers(user: get1)
-    <| writeStatus(.ok)
+  =
+//  filterMap(require1 >>> pure, or: loginAndRedirect)
+//    <<< redirectActiveSubscribers(user: get1)
+//    <|
+    writeStatus(.ok)
     >=> map(lower)
     >>> _respond(
       view: Views.subscriptionConfirmation,

@@ -17,7 +17,7 @@ public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
   _ subscribeData: SubscribeConfirmationData,
   _ coupon: Stripe.Coupon?,
-  _ currentUser: User,
+  _ currentUser: User?,
   _ stripeJs: String,
   _ stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
@@ -32,8 +32,8 @@ public func subscriptionConfirmation(
     header(lane),
     teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData),
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
-    payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey),
-    total(lane: lane, coupon: coupon)
+    payment(lane: lane, coupon: coupon, currentUser: currentUser, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey),
+    total(lane: lane, coupon: coupon, currentUser: currentUser)
   )
 }
 
@@ -79,7 +79,7 @@ private func header(_ lane: Pricing.Lane) -> Node {
 
 private func teamMembers(
   lane: Pricing.Lane,
-  currentUser: User,
+  currentUser: User?,
   subscribeData: SubscribeConfirmationData
   ) -> Node {
 
@@ -159,7 +159,7 @@ from your account page.
   )
 }
 
-private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationData) -> Node {
+private func teamOwner(currentUser: User?, subscribeData: SubscribeConfirmationData) -> Node {
   guard subscribeData.isOwnerTakingSeat else {
     return .input(attributes: [
       .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
@@ -195,7 +195,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         ]
       ),
       .img(
-        src: currentUser.gitHubAvatarUrl.absoluteString,
+        src: currentUser?.gitHubAvatarUrl.absoluteString ?? "",
         alt: "",
         attributes: [
           .class([
@@ -208,7 +208,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
       ),
       .span(
         attributes: [.class([Class.size.width100pct])],
-        .text(currentUser.displayName)
+        .text(currentUser?.displayName ?? "You")
       ),
       .a(
         attributes: [
@@ -447,9 +447,12 @@ private func discountedBillingIntervalSubtitle(interval: Plan.Interval, coupon: 
 private func payment(
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
+  currentUser: User?,
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
+  guard currentUser != nil else { return [] }
+
   return .gridRow(
     attributes: [.class([moduleRowClass])],
     .gridColumn(
@@ -613,7 +616,7 @@ private func discount(coupon: Stripe.Coupon) -> Node {
   )
 }
 
-private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
+private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?, currentUser: User?) -> Node {
   let discount = coupon?.discount ?? { $0 }
   return .gridRow(
     attributes: [
@@ -707,22 +710,29 @@ window.addEventListener("load", function() {
     .gridColumn(
       sizes: [:],
       attributes: [.class([Class.grid.end(.mobile)])],
-      .button(
-        attributes: [
-          .class([
-            Class.border.none,
-            Class.type.textDecorationNone,
-            Class.cursor.pointer,
-            Class.type.bold,
-            Class.typeScale([.mobile: .r1, .desktop: .r1]),
-            Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
-            Class.type.align.center,
-            Class.pf.colors.bg.black,
-            Class.pf.colors.fg.white,
-            Class.pf.colors.link.white,
+      currentUser == nil
+        ? .gitHubLink(
+          text: "Login to subscribe",
+          type: .black,
+          // TODO: redirect back to home?
+          href: path(to: .login(redirect: url(to: .pricingLanding)))
+          )
+        : .button(
+          attributes: [
+            .class([
+              Class.border.none,
+              Class.type.textDecorationNone,
+              Class.cursor.pointer,
+              Class.type.bold,
+              Class.typeScale([.mobile: .r1, .desktop: .r1]),
+              Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+              Class.type.align.center,
+              Class.pf.colors.bg.black,
+              Class.pf.colors.fg.white,
+              Class.pf.colors.link.white,
             ])
-        ],
-        "Subscribe"
+          ],
+          "Subscribe"
       )
     )
   )
