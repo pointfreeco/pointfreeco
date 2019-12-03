@@ -38,7 +38,8 @@ public enum Route: DerivePartialIsos, Equatable {
     lane: Pricing.Lane,
     billing: Pricing.Billing?,
     isOwnerTakingSeat: Bool?,
-    teammates: [EmailAddress]?
+    teammates: [EmailAddress]?,
+    couponCode: Stripe.Coupon.Id?
   )
   case team(Team)
   case useEpisodeCredit(Episode.Id)
@@ -235,6 +236,7 @@ let routers: [Router<Route>] = [
     <%> queryParam("billing", opt(.rawRepresentable))
     <%> queryParam("isOwnerTakingSeat", opt(.bool))
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
+    <%> queryParam("couponCode", opt(.tagged(.string)))
     <% end,
 
   .team <<< .leave

@@ -164,7 +164,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(data .*. user .*. unit))
         |> subscribeMiddleware
 
-    case let .subscribeConfirmation(lane, billing, isOwnerTakingSeat, teammates):
+    case let .subscribeConfirmation(lane, billing, couponId, isOwnerTakingSeat, teammates):
       let teammates = lane == .team ? (teammates ?? [""]) : []
       let subscribeData = SubscribeConfirmationData(
         billing: billing ?? .yearly,

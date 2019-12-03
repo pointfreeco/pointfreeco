@@ -802,6 +802,8 @@ import Stripe
             Bool?
           , 
             [EmailAddress]?
+          , 
+            Stripe.Coupon.Id?
         ), B == Route {
 
           public static let subscribeConfirmation = parenthesize <| PartialIso(
