@@ -75,7 +75,7 @@ private func applyCreditMiddleware<Z>(
 
   return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .flatMap { _ in
-      Current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
+      Current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1, nil)
     }
     .run
     .flatMap(
