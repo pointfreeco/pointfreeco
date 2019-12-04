@@ -540,6 +540,16 @@ This library for parsing regular expression strings into a Swift data type uses 
     title: "Regex"
   )
 
+  public static let regexesVsCombinatorialParsing = Episode.Reference(
+    author: "Soroush Khanlou",
+    blurb: """
+In this article, Soroush Khanlou applies parser combinators to a real world problem: parsing notation for a music app. He found that parser combinators improved on regular expressions not only in readability, but in performance!
+""",
+    link: "http://khanlou.com/2019/12/regex-vs-combinatorial-parsing/",
+    publishedAt: referenceDateFormatter.date(from: "2019-12-03"),
+    title: "Regexes vs Combinatorial Parsing"
+  )
+
   public static let reSwift = Episode.Reference(
     author: nil,
     blurb: #"""
