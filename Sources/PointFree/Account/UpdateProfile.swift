@@ -74,7 +74,7 @@ let updateProfileMiddleware: Middleware<
         .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
         ?? pure(unit)
 
-      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
+      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil, nil)
         .flatMap(const(updateCustomerExtraInvoiceInfo))
         .run
         .flatMap(
@@ -141,7 +141,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
     )
     .run({ _ in })
 
-  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil)
+  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil, nil)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }

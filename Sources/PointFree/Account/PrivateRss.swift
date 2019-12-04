@@ -17,12 +17,38 @@ let accountRssMiddleware
   = decryptUrl
     <<< { fetchUser >=> $0 }
     <<< requireUser
+    <<< validateUserAgent
     <<< validateUserAndSalt
     <<< fetchUserSubscription
     <<< requireActiveSubscription
     <<< fetchStripeSubscriptionForUser
     <| map(lower)
     >>> accountRssResponse
+
+private let validateUserAgent: (
+  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, User.RssSalt>, Data>
+  ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, User.RssSalt>, Data> =
+  { middleware in
+    return { conn in
+      let (user, _) = lower(conn.data)
+
+      guard
+        let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
+        userAgent.contains("slack") || userAgent.contains("twitter") || userAgent.contains("facebook")
+        else { return middleware(conn) }
+
+      return Current.database.updateUser(user.id, nil, nil, nil, nil, User.RssSalt(rawValue: Current.uuid()))
+        .run
+        .flatMap { _ in
+          conn
+            |> invalidatedFeedMiddleware(errorMessage: """
+              ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+              retrieve your most up-to-date private podcast URL by visiting your account page at \
+              \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+              """)
+      }
+    }
+}
 
 private let decryptUrl: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>

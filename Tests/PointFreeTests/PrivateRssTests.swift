@@ -134,4 +134,30 @@ class PrivateRssTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+
+  func testFeed_InvalidUserAgent() {
+    let user = Models.User.mock
+
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
+      \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+    )
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
+    var req = request(
+      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "SlackExpand"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
 }

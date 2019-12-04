@@ -42,7 +42,7 @@ public struct Client {
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
-  public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>
+  public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
 
   public init(
@@ -78,7 +78,7 @@ public struct Client {
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
-    updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?) -> EitherIO<Error, Prelude.Unit>,
+    updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
     ) {
     self.addUserIdToSubscriptionId = addUserIdToSubscriptionId
@@ -172,7 +172,7 @@ extension Client {
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
       sawUser: client.sawUser(id:),
       updateStripeSubscription: client.update(stripeSubscription:),
-      updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:),
+      updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:rssSalt:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
     )
   }
@@ -395,7 +395,8 @@ private struct _Client {
     name: String?,
     email: EmailAddress?,
     emailSettings: [EmailSetting.Newsletter]?,
-    episodeCreditCount: Int?
+    episodeCreditCount: Int?,
+    rssSalt: Models.User.RssSalt?
     ) -> EitherIO<Error, Prelude.Unit> {
 
     return self.execute(
@@ -403,13 +404,15 @@ private struct _Client {
     UPDATE "users"
     SET "name" = COALESCE($1, "name"),
         "email" = COALESCE($2, "email"),
-        "episode_credit_count" = COALESCE($3, "episode_credit_count")
-    WHERE "id" = $4
+        "episode_credit_count" = COALESCE($3, "episode_credit_count"),
+        "rss_salt" = COALESCE($4, "rss_salt")
+    WHERE "id" = $5
     """,
       [
         name,
         email?.rawValue,
         episodeCreditCount,
+        rssSalt?.rawValue.uuidString,
         userId.rawValue.uuidString
       ]
       )
