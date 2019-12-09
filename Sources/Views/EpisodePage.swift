@@ -384,7 +384,7 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
         Class.padding([.mobile: [.left: 2]])
         ])],
       .fragment(
-        previousEpisodes.map {
+        previousEpisodes.suffix(4).map {
           .li(
             attributes: [.class([Class.pf.type.body.leading])],
             "#",
