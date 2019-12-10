@@ -902,6 +902,15 @@ private struct Testimonial {
   static let all: [Testimonial] = [
     Testimonial(
       quote: """
+The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.
+""",
+      subscriber: "Max Smirnov",
+      tweetUrl: "https://twitter.com/atimca/status/1204399892531228672",
+      twitterHandle: "Atimca"
+    ),
+
+    Testimonial(
+      quote: """
 There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!
 """,
       subscriber: "Romain Pouclet",
@@ -925,7 +934,7 @@ My new favourite morning routine is feeding 👶🏻 while watching
 """,
       subscriber: "Frank Courville",
       tweetUrl: "https://twitter.com/Frankacy/status/1204154907185557507",
-      twitterHandle: "@Frankacy"
+      twitterHandle: "Frankacy"
     ),
 
     Testimonial(
