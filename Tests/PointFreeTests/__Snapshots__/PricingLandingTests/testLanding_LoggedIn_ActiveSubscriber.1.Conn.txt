@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 174109
+Content-Length: 179332
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2609,6 +2609,49 @@ and reassigned at any time. Colleagues are invited to your team over email.
                     m-ml2
                     m-mr2
                     testimonial-item">
+          <a href="https://twitter.com/atimca/status/1204399892531228672"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.”
+          </a>
+          <a href="https://www.twitter.com/Atimca"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Max Smirnov
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
           <a href="https://twitter.com/Palleas/status/1023976413429260288"
              target="_blank"
              rel="noopener noreferrer"
@@ -2682,6 +2725,50 @@ and reassigned at any time. Colleagues are invited to your team over email.
             <span class="medium"
                   style="margin-left:3px">
               Christina Lee
+            </span>
+          </a>
+        </div>
+        <div class="flex-column
+                    flex
+                    bg-gray900
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    m-ml2
+                    m-mr2
+                    testimonial-item">
+          <a href="https://twitter.com/Frankacy/status/1204154907185557507"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4"
+             style="flex-grow:1;
+                    flex-shrink:0;
+                    flex-basis:auto">
+            “My new favourite morning routine is feeding 👶🏻 while watching
+@pointfreeco”
+          </a>
+          <a href="https://www.twitter.com/Frankacy"
+             class="fg-black
+                    body-leading
+                    fg-black
+                    normal
+                    lh-4">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
+                 alt
+                 style="width:14px;
+                        height:14px;
+                        font-size:16px;
+                        top:1px"
+                 class="relative
+                        inline-block">
+            <span class="medium"
+                  style="margin-left:3px">
+              Frank Courville
             </span>
           </a>
         </div>
