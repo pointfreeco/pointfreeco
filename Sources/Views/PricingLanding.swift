@@ -920,6 +920,16 @@ I listened to the first two episodes of @pointfreeco this weekend and it was the
 
     Testimonial(
       quote: """
+My new favourite morning routine is feeding 👶🏻 while watching
+@pointfreeco
+""",
+      subscriber: "Frank Courville",
+      tweetUrl: "https://twitter.com/Frankacy/status/1204154907185557507",
+      twitterHandle: "@Frankacy"
+    ),
+
+    Testimonial(
+      quote: """
 tfw you are excited for a 4 hour train ride because you'll have time to watch the new @pointfreeco episode 🤓🏔🚂 #MathInTheAlps #typehype
 """,
       subscriber: "Meghan Kane",
