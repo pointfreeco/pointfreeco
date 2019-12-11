@@ -387,14 +387,17 @@ private func pricingPlanCta(
           subscriberState.isActive
             ? path(to: .account(.index))
             : path(
-              to: plan.lane.map {
-                Route.subscribeConfirmation(
-                  lane: $0,
-                  billing: nil,
-                  isOwnerTakingSeat: nil,
-                  teammates: nil
-                )
-                } ?? .home
+              to: plan.lane
+                .map {
+                  let route = Route.subscribeConfirmation(
+                    lane: $0,
+                    billing: nil,
+                    isOwnerTakingSeat: nil,
+                    teammates: nil
+                  )
+                  return currentUser == nil ? .login(redirect: url(to: route)) : route
+                }
+                ?? .home
           )
         ),
         .class([

@@ -17,7 +17,7 @@ public func subscriptionConfirmation(
   _ lane: Pricing.Lane,
   _ subscribeData: SubscribeConfirmationData,
   _ coupon: Stripe.Coupon?,
-  _ currentUser: User,
+  _ currentUser: User?,
   _ stripeJs: String,
   _ stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
@@ -30,10 +30,12 @@ public func subscriptionConfirmation(
       .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
     ],
     header(lane),
-    teamMembers(lane: lane, currentUser: currentUser, subscribeData: subscribeData),
+    currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
-    payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey),
-    total(lane: lane, coupon: coupon)
+    currentUser != nil
+      ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
+      : [],
+    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon)
   )
 }
 
@@ -353,8 +355,8 @@ private func billingPeriod(
                 ])
             ],
             lane == .team
-              ? "Yearly — 25% off!"
-              : "Yearly — 22% off!"
+              ? "Yearly — Save 25% off monthly billing!"
+              : "Yearly — Save 22% off monthly billing!"
           ),
           .p(
             attributes: [
@@ -564,22 +566,7 @@ window.addEventListener("load", function() {
 })
 """)
     ),
-    coupon.map(discount) ?? [],
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [.class([Class.padding([.mobile: [.top: 3, .bottom: 2]])])],
-      .span(
-        attributes: [
-          .class([
-            Class.pf.type.body.small,
-            Class.pf.colors.fg.gray400
-            ]),
-          .id("pricing-preview"),
-        ],
-        []
-      ),
-      discountedTotalDisclaimer(coupon: coupon)
-    )
+    coupon.map(discount) ?? []
   )
 }
 
@@ -613,7 +600,7 @@ private func discount(coupon: Stripe.Coupon) -> Node {
   )
 }
 
-private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
+private func total(isLoggedIn: Bool, lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
   let discount = coupon?.discount ?? { $0 }
   return .gridRow(
     attributes: [
@@ -623,6 +610,21 @@ private func total(lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
         Class.grid.middle(.mobile)
         ])
     ],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [.class([Class.padding([.mobile: [.bottom: 4]])])],
+      .span(
+        attributes: [
+          .class([
+            Class.pf.type.body.small,
+            Class.pf.colors.fg.gray400
+            ]),
+          .id("pricing-preview"),
+        ],
+        []
+      ),
+      discountedTotalDisclaimer(coupon: coupon)
+    ),
     .gridColumn(
       sizes: [:],
       attributes: [.class([Class.grid.start(.mobile)])],
@@ -707,23 +709,37 @@ window.addEventListener("load", function() {
     .gridColumn(
       sizes: [:],
       attributes: [.class([Class.grid.end(.mobile)])],
-      .button(
-        attributes: [
-          .class([
-            Class.border.none,
-            Class.type.textDecorationNone,
-            Class.cursor.pointer,
-            Class.type.bold,
-            Class.typeScale([.mobile: .r1, .desktop: .r1]),
-            Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
-            Class.type.align.center,
-            Class.pf.colors.bg.black,
-            Class.pf.colors.fg.white,
-            Class.pf.colors.link.white,
+      isLoggedIn
+        ? .button(
+          attributes: [
+            .class([
+              Class.border.none,
+              Class.type.textDecorationNone,
+              Class.cursor.pointer,
+              Class.type.bold,
+              Class.typeScale([.mobile: .r1, .desktop: .r1]),
+              Class.padding([.mobile: [.topBottom: 2, .leftRight: 2]]),
+              Class.type.align.center,
+              Class.pf.colors.bg.black,
+              Class.pf.colors.fg.white,
+              Class.pf.colors.link.white,
             ])
-        ],
-        "Subscribe"
-      )
+          ],
+          "Subscribe"
+          )
+        : upgrade(node: gitHubLink(
+          text: "Log in to Subscribe",
+          type: .black,
+          href: path(
+            to: .login(
+              redirect: url(
+                to: coupon
+                  .map { Route.discounts(code: $0.id, nil) }
+                  ?? .subscribeConfirmation(lane: lane, billing: nil, isOwnerTakingSeat: nil, teammates: nil)
+              )
+            )
+          )
+      ))
     )
   )
 }
