@@ -72,7 +72,6 @@ extension BlogTests {
   static var allTests: [(String, (BlogTests) -> () throws -> Void)] = [
     ("testBlogIndex", testBlogIndex),
     ("testBlogIndex_WithLotsOfPosts", testBlogIndex_WithLotsOfPosts),
-    ("testBlogIndex_Unauthed", testBlogIndex_Unauthed),
     ("testBlogShow", testBlogShow),
     ("testBlogShow_Unauthed", testBlogShow_Unauthed),
     ("testBlogAtomFeed", testBlogAtomFeed),
@@ -327,6 +326,8 @@ extension PrivateRssTests {
     ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
     ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
     ("testFeed_BadSalt", testFeed_BadSalt),
+    ("testFeed_InvalidUserAgent", testFeed_InvalidUserAgent),
+    ("testFeed_BadSalt_InvalidUserAgent", testFeed_BadSalt_InvalidUserAgent),
   ]
 }
 extension RegistrationEmailTests {
