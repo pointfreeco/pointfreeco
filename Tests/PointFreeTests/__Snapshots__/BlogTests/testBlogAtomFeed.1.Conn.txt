@@ -1,5 +1,4 @@
 GET http://localhost:8080/blog/feed/atom.xml
-Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
