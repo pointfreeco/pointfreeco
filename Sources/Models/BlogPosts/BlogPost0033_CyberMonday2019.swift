@@ -17,6 +17,7 @@ Point-Free is getting into the Cyber Monday spirit by offering 30% off the first
     )
   ],
   coverImage: nil,
+  hidden: true,
   id: 33,
   publishedAt: Date(timeIntervalSince1970: 1575255600),
   title: "Cyber Monday Sale: 30% Off Point-Free"
