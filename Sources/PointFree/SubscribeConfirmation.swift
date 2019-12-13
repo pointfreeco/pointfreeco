@@ -30,6 +30,8 @@ public let subscribeConfirmation: Middleware<
             subscribeData,
             coupon,
             currentUser,
+            subscriberState,
+            stats(forEpisodes: Current.episodes()),
             Current.stripe.js,
             Current.envVars.stripe.publishableKey
           ),

@@ -14,12 +14,14 @@ import Tagged
 import TaggedMoney
 
 public func subscriptionConfirmation(
-  _ lane: Pricing.Lane,
-  _ subscribeData: SubscribeConfirmationData,
-  _ coupon: Stripe.Coupon?,
-  _ currentUser: User?,
-  _ stripeJs: String,
-  _ stripePublishableKey: Stripe.Client.PublishableKey
+  lane: Pricing.Lane,
+  subscribeData: SubscribeConfirmationData,
+  coupon: Stripe.Coupon?,
+  currentUser: User?,
+  subscriberState: SubscriberState = .nonSubscriber,
+  episodeStats: EpisodeStats,
+  stripeJs: String,
+  stripePublishableKey: Stripe.Client.PublishableKey
 ) -> Node {
   return .form(
     attributes: [
@@ -29,7 +31,12 @@ public func subscriptionConfirmation(
       .onsubmit(unsafe: "event.preventDefault()"),
       .style(maxWidth(.px(900)) <> margin(leftRight: .auto)),
     ],
-    header(lane),
+    header(
+      currentUser: currentUser,
+      subscriberState: subscriberState,
+      episodeStats: episodeStats,
+      lane: lane
+    ),
     currentUser.map { teamMembers(lane: lane, currentUser: $0, subscribeData: subscribeData) } ?? [],
     billingPeriod(coupon: coupon, lane: lane, subscribeData: subscribeData),
     currentUser != nil
@@ -39,7 +46,12 @@ public func subscriptionConfirmation(
   )
 }
 
-private func header(_ lane: Pricing.Lane) -> Node {
+private func header(
+  currentUser: User? = nil,
+  subscriberState: SubscriberState = .nonSubscriber,
+  episodeStats: EpisodeStats,
+  lane: Pricing.Lane
+) -> Node {
   return [
     .input(
       attributes: [
@@ -74,9 +86,55 @@ private func header(_ lane: Pricing.Lane) -> Node {
           ],
           "Change plan"
         )
+      ),
+      planFeatures(
+        currentUser: currentUser,
+        episodeStats: episodeStats,
+        lane: lane
       )
     )
   ]
+}
+
+private func planFeatures(
+  currentUser: User?,
+  episodeStats: EpisodeStats,
+  lane: Pricing.Lane
+) -> Node {
+  guard
+    currentUser == nil,
+    lane == .personal
+    else { return [] }
+
+  return .gridColumn(
+    sizes: [.mobile: 12],
+    .ul(
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.all: 0]]),
+          Class.margin([.mobile: [.left: 3]]),
+          Class.pf.colors.fg.gray400,
+          Class.pf.type.body.regular,
+          Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
+          Class.pf.colors.fg.gray400
+          ]),
+        .style(flex(grow: 1, shrink: 0, basis: .auto))
+      ],
+      .fragment(
+        PricingPlan.personal(
+          allEpisodeCount: episodeStats.allEpisodeCount,
+          episodeHourCount: episodeStats.episodeHourCount
+        )
+          .features
+          .map { feature in
+          .li(
+            attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
+            [.text(feature)]
+          )
+        }
+      )
+    )
+  )
 }
 
 private func teamMembers(
