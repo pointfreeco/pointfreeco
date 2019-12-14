@@ -23,7 +23,7 @@ We hope you'll [join us](/discounts/point-free-2018) for all of the great materi
     )
     ],
   coverImage: nil,
-  hidden: true,
+  hidden: false,
   id: 24,
   publishedAt: .init(timeIntervalSince1970: 1545210000),
   title: "Save 30% on Point-Free"
