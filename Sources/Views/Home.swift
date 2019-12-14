@@ -23,8 +23,8 @@ public func homeView(
   let secondBatch = episodes[ctaInsertionIndex...]
 
   return [
-    episodesListView(episodes: firstBatch, date: date),
     holidaySpecialCalloutView(currentDate: currentDate, subscriberState: subscriberState),
+    episodesListView(episodes: firstBatch, date: date),
     subscriberCalloutView(currentDate: currentDate, subscriberState: subscriberState),
     episodesListView(episodes: secondBatch, date: date)
   ]
@@ -60,7 +60,7 @@ private func holidaySpecialCalloutView(
 
 let holidaySpecialContent: Node = .div(
   attributes: [
-    .style(backgroundColor(.other("#FFD1D3"))),
+    .style(backgroundColor(.other("#D6FFE1"))),
     .class([Class.padding([.mobile: [.all: 3]])])
   ],
   .h4(
@@ -72,10 +72,10 @@ let holidaySpecialContent: Node = .div(
         ]
       )
     ],
-    "🎄 Holiday Subscription Special 🎄"
+    "🎉 Holiday Subscription Special 🎉"
   ),
   .p(
-    "👋 Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
+    "Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
     "their subscription for the first year! ",
     .a(
       attributes: [
@@ -93,7 +93,6 @@ private func subscriberCalloutView(
   currentDate: Date,
   subscriberState: SubscriberState
 ) -> Node {
-  guard !holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970) else { return [] }
   guard subscriberState.isNonSubscriber else { return [] }
 
   return [
