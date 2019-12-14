@@ -66,7 +66,6 @@ private let loadEnvVars = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> i
     .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
     ?? Current.envVars
 
-  Current.date = { Date(timeIntervalSince1970: 1577080801) }
   Current.envVars = envVars
   Current.database = .init(
     databaseUrl: Current.envVars.postgres.databaseUrl,
