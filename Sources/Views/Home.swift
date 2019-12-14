@@ -30,7 +30,7 @@ public func homeView(
   ]
 }
 
-private let holidayDiscount2019Interval: ClosedRange<Double> = 1577080800...1577854800
+let holidayDiscount2019Interval: ClosedRange<Double> = 1577080800...1577854800
 
 private func holidaySpecialCalloutView(
   currentDate: Date,
@@ -47,43 +47,47 @@ private func holidaySpecialCalloutView(
         attributes: [.style(margin(leftRight: .auto))],
         .div(
           attributes: [
-            .style(backgroundColor(.other("#FFD1D3"))),
-            .class(
-              [
-                Class.margin([.mobile: [.all: 4]]),
-                Class.padding([.mobile: [.all: 3]])
-              ]
-            )
+            .class([
+              Class.margin([.mobile: [.all: 4]]),
+            ])
           ],
-          .h4(
-            attributes: [
-              .class(
-                [
-                  Class.pf.type.responsiveTitle4,
-                  Class.padding([.mobile: [.bottom: 2]])
-                ]
-              )
-            ],
-            "🎄 Holiday Subscription Special 🎄"
-          ),
-          .p(
-            "👋 Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
-            "their subscription for the first year! ",
-            .a(
-              attributes: [
-                .href(path(to: .discounts(code: "holiday-2019", nil))),
-                .class([Class.pf.type.underlineLink])
-              ],
-              "Act now"
-            ),
-            " to get access to all past and future episodes of Point-Free. This offer will only last until ",
-            "the end of the year!"
-          )
+          holidaySpecialContent
         )
       )
     )
   ]
 }
+
+let holidaySpecialContent: Node = .div(
+  attributes: [
+    .style(backgroundColor(.other("#FFD1D3"))),
+    .class([Class.padding([.mobile: [.all: 3]])])
+  ],
+  .h4(
+    attributes: [
+      .class(
+        [
+          Class.pf.type.responsiveTitle4,
+          Class.padding([.mobile: [.bottom: 2]])
+        ]
+      )
+    ],
+    "🎄 Holiday Subscription Special 🎄"
+  ),
+  .p(
+    "👋 Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
+    "their subscription for the first year! ",
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .class([Class.pf.type.underlineLink])
+      ],
+      "Act now"
+    ),
+    " to get access to all past and future episodes of Point-Free. This offer will only last until ",
+    "the end of the year!"
+  )
+)
 
 private func subscriberCalloutView(
   currentDate: Date,

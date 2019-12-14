@@ -188,8 +188,14 @@ private func leftColumnView(
   date: () -> Date
   ) -> Node {
 
-  let subscribeNodes = isSubscribeBannerVisible(for: permission)
+  let isHolidayDiscountActive = holidayDiscount2019Interval.contains(date().timeIntervalSince1970)
+    && subscriberState.isNonSubscriber
+
+  let subscribeNode = !isHolidayDiscountActive && isSubscribeBannerVisible(for: permission)
     ? subscribeView(permission: permission, user: user, episode: episode)
+    : []
+  let holidayNode: Node = isHolidayDiscountActive
+    ? [holidayCallout, divider]
     : []
   let transcriptNodes = transcriptView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable(for: permission))
 
@@ -199,12 +205,22 @@ private func leftColumnView(
       episodeInfoView(permission: permission, ep: episode, previousEpisodes: previousEpisodes, date: date)
     ),
     divider,
-    subscribeNodes,
+    subscribeNode,
+    holidayNode,
     transcriptNodes,
     exercisesView(exercises: episode.exercises),
     referencesView(references: episode.references)
   ]
 }
+
+private let holidayCallout: Node = .div(
+  attributes: [
+    .class([
+      Class.margin([.mobile: [.all: 4]]),
+    ])
+  ],
+  holidaySpecialContent
+)
 
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   switch permission {
