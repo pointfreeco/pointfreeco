@@ -18,13 +18,13 @@ let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, Subs
   writeStatus(.ok)
     >=> map(lower)
     >>> _respond(
-      view: homeView(currentUser:subscriberState:episodes:date:),
+      view: homeView(currentDate:currentUser:subscriberState:episodes:date:),
       layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, subscriberState, Current.episodes(), Current.date),
+          data: (Current.date(), currentUser, subscriberState, Current.episodes(), Current.date),
           extraStyles: markdownBlockStyles,
           openGraphType: .website,
           style: .base(.mountains(.main)),
