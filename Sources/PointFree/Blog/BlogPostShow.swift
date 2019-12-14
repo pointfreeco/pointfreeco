@@ -27,7 +27,7 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Eit
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (post, subscriberState),
+          data: (Current.date(), post, subscriberState),
           description: post.blurb,
           extraStyles: markdownBlockStyles,
           image: post.coverImage ?? Current.assets.emailHeaderImgSrc,
