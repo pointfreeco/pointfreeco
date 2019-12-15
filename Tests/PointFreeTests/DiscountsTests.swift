@@ -23,10 +23,31 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedOut() {
     assertSnapshot(
-      matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest")))
+      matching: connection(
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest")
+        )
+        )
         |> siteMiddleware,
       as: .ioConn
     )
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: connection(
+          from: request(
+            with: secureRequest("http://localhost:8080/discounts/blobfest")
+          )
+          )
+          |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
+        ]
+      )
+    }
+    #endif
   }
 
   func testDiscounts_LoggedIn() {
@@ -37,9 +58,32 @@ class DiscountsTests: TestCase {
     )
 
     assertSnapshot(
-      matching: connection(from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn))
+      matching: connection(
+        from: request(
+          with: secureRequest("http://localhost:8080/discounts/blobfest"),
+          session: .loggedIn
+        )
+        )
         |> siteMiddleware,
       as: .ioConn
     )
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: connection(
+          from: request(
+            with: secureRequest("http://localhost:8080/discounts/blobfest"),
+            session: .loggedIn
+          )
+          )
+          |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
+        ]
+      )
+    }
+    #endif
   }
 }
