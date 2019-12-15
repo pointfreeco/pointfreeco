@@ -20,7 +20,7 @@ public struct EpisodeStats {
 }
 
 public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
-  EpisodeStats(
+  return EpisodeStats(
     allEpisodeCount: .init(rawValue: episodes.count),
     episodeHourCount: .init(
       rawValue: episodes.reduce(0) { $0 + $1.length } / 3600
