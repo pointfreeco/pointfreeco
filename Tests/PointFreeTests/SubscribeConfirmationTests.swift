@@ -317,6 +317,18 @@ class SubscriptionConfirmationTests: TestCase {
     let result = conn |> siteMiddleware
 
     assertSnapshot(matching: result, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 1200))
+        ]
+      )
+    }
+    #endif
   }
 
   func testPersonal_LoggedIn_WithDiscount() {
