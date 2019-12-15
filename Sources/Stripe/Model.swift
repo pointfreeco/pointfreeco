@@ -130,7 +130,7 @@ public struct Coupon: Equatable {
     public var formattedDescription: String {
       switch self {
       case let .amountOff(amountOff):
-        return "$\(amountOff) off"
+        return "$\(Int(amountOff.map(Double.init).dollars.rawValue)) off"
       case let .percentOff(percentOff):
         return "\(percentOff)% off"
       }

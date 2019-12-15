@@ -638,10 +638,12 @@ private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
         Class.pf.colors.fg.gray400
         ]),
     ],
+    .br,
+    .br,
     coupon.name
       .map { .raw(" You are using the coupon <strong>\($0)</strong>") }
       ?? " You are using a coupon",
-    ", which gives you \(coupon.rate.percentOff.map { "\($0)%" } ?? "a fixed discount") off every billing period."
+    ", which gives you \(coupon.formattedDescription)."
   )
 }
 
