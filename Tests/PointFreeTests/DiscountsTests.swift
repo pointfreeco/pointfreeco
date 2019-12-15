@@ -6,6 +6,7 @@ import Optics
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
+import Optics
 import SnapshotTesting
 import Stripe
 import XCTest
@@ -47,7 +48,9 @@ class DiscountsTests: TestCase {
 
     assertSnapshot(
       matching: connection(
+        from: request(
         from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+          with: secureRequest("http://localhost:8080/discounts/blobfest")
         )
         |> siteMiddleware,
       as: .ioConn
@@ -80,9 +83,19 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedIn_PercentOff_Repeating() {
     let fiftyPercentOffForever = Coupon(
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
       duration: .repeating(months: 12),
+        matching: connection(
+          from: request(
       id: "deadbeef",
+            with: secureRequest("http://localhost:8080/discounts/blobfest")
+          )
+          )
+          |> siteMiddleware,
       name: "50% off 12 months",
+        as: [
       rate: .percentOff(50),
       valid: true
     )
@@ -91,6 +104,8 @@ class DiscountsTests: TestCase {
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
       \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
     )
 
     assertSnapshot(
@@ -99,10 +114,15 @@ class DiscountsTests: TestCase {
         )
         |> siteMiddleware,
       as: .ioConn
+        ]
+      )
+    }
     )
+    #endif
   }
 
   func testDiscounts_LoggedIn_5DollarsOff_Repeating() {
+  func testDiscounts_LoggedIn() {
     let fiftyPercentOffForever = Coupon(
       duration: .repeating(months: 12),
       id: "deadbeef",
@@ -114,12 +134,16 @@ class DiscountsTests: TestCase {
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
       \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
     )
 
     assertSnapshot(
       matching: connection(
+        from: request(
         from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+          with: secureRequest("http://localhost:8080/discounts/blobfest"),
+          session: .loggedIn
         )
         |> siteMiddleware,
       as: .ioConn
@@ -152,25 +176,42 @@ class DiscountsTests: TestCase {
 
   func testDiscounts_LoggedIn_5DollarsOff_Once() {
     let fiftyPercentOffForever = Coupon(
+    #if !os(Linux)
       duration: .once,
       id: "deadbeef",
       name: "$5 off once",
       rate: .amountOff(5_00),
       valid: true
     )
+    if self.isScreenshotTestingAvailable {
     update(
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      assertSnapshots(
       \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
     )
 
     assertSnapshot(
       matching: connection(
         from: request(with: secureRequest("http://localhost:8080/discounts/blobfest"), session: .loggedIn)
+        matching: connection(
+          from: request(
+            with: secureRequest("http://localhost:8080/discounts/blobfest"),
+            session: .loggedIn
+          )
         )
         |> siteMiddleware,
       as: .ioConn
+          )
+          |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2000))
+        ]
+      )
+    }
     )
+    #endif
   }
 }
