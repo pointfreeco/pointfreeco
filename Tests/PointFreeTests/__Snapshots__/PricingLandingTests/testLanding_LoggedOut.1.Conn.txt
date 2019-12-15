@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 185844
+Content-Length: 185918
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2174,7 +2174,7 @@ personal, team and enterprise subscriptions.">
               Download all episode playgrounds
             </li>
           </ul>
-          <a href="/subscribe/personal"
+          <a href="/login?redirect=http://localhost:8080/subscribe/personal"
              class="d-mt3
                     m-mt2
                     block
@@ -2275,7 +2275,7 @@ personal, team and enterprise subscriptions.">
               Remove and reassign teammates at any time
             </li>
           </ul>
-          <a href="/subscribe/team"
+          <a href="/login?redirect=http://localhost:8080/subscribe/team"
              class="d-mt3
                     m-mt2
                     block

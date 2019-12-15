@@ -141,16 +141,8 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> logoutResponse
 
     case .pricingLanding:
-      let episodes = Current.episodes()
-      let allEpisodeCount = AllEpisodeCount(rawValue: episodes.count)
-      let episodeHourCount = EpisodeHourCount(rawValue: episodes.reduce(0) { $0 + $1.length } / 3600)
-      let freeEpisodeCount = FreeEpisodeCount(rawValue: episodes.lazy.filter { $0.permission == .free }.count)
-
       return conn.map(const(
         user
-          .*. allEpisodeCount
-          .*. episodeHourCount
-          .*. freeEpisodeCount
           .*. route
           .*. subscriberState
           .*. unit))
