@@ -1,12 +1,13 @@
 import Either
 import Html
 import HttpPipeline
+import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
+import Stripe
 import XCTest
 
 private func secureRequest(_ urlString: String) -> URLRequest {
@@ -18,7 +19,7 @@ class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
     update(&Current, \.database .~ .mock)
-//    record=true
+    record=true
   }
 
   func testDiscounts_LoggedOut() {
@@ -29,11 +30,19 @@ class DiscountsTests: TestCase {
     )
   }
 
-  func testDiscounts_LoggedIn() {
+  func testDiscounts_LoggedIn_PercentOff_Forever() {
+    let fiftyPercentOffForever = Coupon(
+      duration: .forever,
+      id: "deadbeef",
+      name: "50% off forever",
+      rate: .percentOff(50),
+      valid: true
+    )
     update(
       &Current,
       \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
     )
 
     assertSnapshot(

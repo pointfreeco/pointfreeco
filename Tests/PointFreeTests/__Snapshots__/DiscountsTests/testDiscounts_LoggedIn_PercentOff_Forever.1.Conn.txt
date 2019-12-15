@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55313
+Content-Length: 55339
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2135,7 +2135,7 @@ html {
                name="coupon"
                placeholder="Coupon Code"
                type="hidden"
-               value="coupon-deadbeef">
+               value="deadbeef">
         <div class="m-pb2
                     m-pt3
                     col-m
@@ -2152,10 +2152,12 @@ html {
                        h6
                        lh-4
                        fg-gray400">
-             You are using the coupon <strong>Student Discount</strong>
+            <br>
+            <br>
+             You are using the coupon <strong>50% off forever</strong>
             , which gives you 
-            50%
-             off every billing period.
+            50% off every billing period
+            .
           </span>
         </div>
       </div>
