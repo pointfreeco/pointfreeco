@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65257
+Content-Length: 65252
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2196,7 +2196,7 @@ from your account page.
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — 25% off!
+                Yearly — Save 25% off monthly billing!
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2369,18 +2369,6 @@ from your account page.
 })
           </script>
         </div>
-        <div class="m-pb2
-                    m-pt3
-                    col-m
-                    col-m-12">
-          <span class="fg-black
-                       normal
-                       h6
-                       lh-4
-                       fg-gray400"
-                id="pricing-preview">
-          </span>
-        </div>
       </div>
       <div class="d-ml4
                   d-mr4
@@ -2392,6 +2380,17 @@ from your account page.
                   m-pt3
                   middle-m
                   row">
+        <div class="m-pb4
+                    col-m
+                    col-m-12">
+          <span class="fg-black
+                       normal
+                       h6
+                       lh-4
+                       fg-gray400"
+                id="pricing-preview">
+          </span>
+        </div>
         <div class="start-m
                     col-m">
           <div class="flex
