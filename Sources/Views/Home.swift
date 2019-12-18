@@ -72,7 +72,12 @@ let holidaySpecialContent: Node = .div(
         ]
       )
     ],
-    "🎉 Holiday Subscription Special 🎉"
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil)))
+      ],
+      "🎉 Holiday Subscription Special 🎉"
+    )
   ),
   .p(
     "Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
@@ -86,6 +91,18 @@ let holidaySpecialContent: Node = .div(
     ),
     " to get access to all past and future episodes of Point-Free. This offer will only last until ",
     "the end of the year!"
+  ),
+  .p(
+    attributes: [
+      .class([Class.margin([.mobile: [.top: 3]])])
+    ],
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .class([Class.pf.components.button(color: .black)])
+      ],
+      "Subscribe now"
+    )
   )
 )
 
