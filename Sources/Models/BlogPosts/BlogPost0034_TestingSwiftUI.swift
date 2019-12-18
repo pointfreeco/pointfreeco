@@ -12,9 +12,9 @@ This past WWDC, Apple introduced [SwiftUI](https://developer.apple.com/xcode/swi
 
 Even though it's early days, Apple has given us a ton of guidance on how to use this technology, including [an in-depth collection of tutorials](https://developer.apple.com/tutorials/SwiftUI), but one thing that's still missing is how to _test_ SwiftUI.
 
-This week we explore just that in [a free video](https://www.pointfree.co/episodes/ep85-testable-state-management-the-point)! We'll explore what it means to test SwiftUI logic and its various state management solutions, like `@Binding`, `@ObservedObject`, and `@State`! [Watch it today!](https://www.pointfree.co/episodes/ep85-testable-state-management-the-point)
+This week we explore just that in [a free video](https://www.pointfree.co/episodes/ep85-testable-state-management-the-point)! We explore what it means to test SwiftUI logic and its various state management solutions, including `@Binding`, `@ObservedObject`, and `@State`. [Click here](https://www.pointfree.co/episodes/ep85-testable-state-management-the-point) to watch it today!
 
-If you're interested in learning even more about SwiftUI and Combine, we've released [a few more free videos](https://www.pointfree.co/blog/posts/32-a-crash-course-in-combine) over the past few months.
+If you're interested in learning even more about SwiftUI and Combine, check out [our other free videos](https://www.pointfree.co/blog/posts/32-a-crash-course-in-combine).
 """#,
       timestamp: nil,
       type: .paragraph
