@@ -127,7 +127,12 @@ extension DatabaseTests {
 extension DiscountsTests {
   static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
     ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
-    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
+    ("testDiscounts_LoggedIn_PercentOff_Forever", testDiscounts_LoggedIn_PercentOff_Forever),
+    ("testDiscounts_LoggedIn_5DollarsOff_Forever", testDiscounts_LoggedIn_5DollarsOff_Forever),
+    ("testDiscounts_LoggedIn_PercentOff_Repeating", testDiscounts_LoggedIn_PercentOff_Repeating),
+    ("testDiscounts_LoggedIn_5DollarsOff_Repeating", testDiscounts_LoggedIn_5DollarsOff_Repeating),
+    ("testDiscounts_LoggedIn_PercentOff_Once", testDiscounts_LoggedIn_PercentOff_Once),
+    ("testDiscounts_LoggedIn_5DollarsOff_Once", testDiscounts_LoggedIn_5DollarsOff_Once),
   ]
 }
 extension EitherIOTests {
