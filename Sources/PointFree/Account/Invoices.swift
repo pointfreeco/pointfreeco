@@ -24,7 +24,7 @@ let invoicesResponse =
     <<< fetchInvoices
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
+    >>> _respond(
       view: Views.invoicesView(subscription:invoicesEnvelope:currentUser:),
       layoutData: { subscription, invoicesEnvelope, currentUser, subscriberState in
         SimplePageLayoutData(
@@ -49,8 +49,8 @@ let invoiceResponse =
     )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: invoiceView,
+    >>> _respond(
+      view: Views.invoiceView(subscription:currentUser:invoice:),
       layoutData: { subscription, currentUser, invoice in
         SimplePageLayoutData(
           currentUser: currentUser,

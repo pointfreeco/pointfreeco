@@ -1,19 +1,12 @@
 import Css
 import FunctionalCss
-import Either
 import Foundation
 import HtmlUpgrade
-import HtmlCssSupport
-import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import Optics
 import PointFreeRouter
-import PointFreePrelude
 import Prelude
 import Stripe
-import Styleguide
-import Tuple
 
 public func invoicesView(
   subscription: Stripe.Subscription,
@@ -91,7 +84,11 @@ private func discountDescription(for discount: Stripe.Discount, invoice: Stripe.
   return "\(format(cents: invoice.total - invoice.subtotal)) (\(discount.coupon.name ?? discount.coupon.id.rawValue))"
 }
 
-func invoiceView(subscription: Stripe.Subscription, currentUser: User, invoice: Stripe.Invoice) -> Node {
+public func invoiceView(
+  subscription: Stripe.Subscription,
+  currentUser: User,
+  invoice: Stripe.Invoice
+) -> Node {
   let discountRow: Node = invoice.discount.map { discount in
     .gridRow(
       attributes: [.class([Class.padding([.mobile: [.topBottom: 1]])])],
