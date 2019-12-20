@@ -16,19 +16,6 @@ import Tagged
 import Tuple
 import UrlFormEncoding
 
-extension Tagged where Tag == EncryptedTag, RawValue == String {
-  public init?(_ text: String, with secret: AppSecret) {
-    guard
-      let string = encrypted(text: text, secret: secret.rawValue)
-      else { return nil }
-    self.init(rawValue: string)
-  }
-
-  public func decrypt(with secret: AppSecret) -> String? {
-    return decrypted(text: self.rawValue, secret: secret.rawValue)
-  }
-}
-
 public typealias AppMiddleware<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
 public typealias AppTransformer<A, B> = (@escaping AppMiddleware<A>) -> AppMiddleware<B>
 
