@@ -191,7 +191,7 @@ func simplePageLayout<A>(_ contentView: @escaping (A) -> [Html.Node]) -> (Simple
             <> (layoutData.flash.map(flashView) ?? [])
             <> navView(layoutData)
             <> contentView(layoutData.data)
-            <> (layoutData.style.isMinimal ? [] : footerView(user: layoutData.currentUser))
+            <> (layoutData.style.isMinimal ? [] : downgrade(node: footerView(user: layoutData.currentUser, year: year)))
         )
         ])
     ]
@@ -341,3 +341,7 @@ private let prismJsHead: [Html.ChildOf<Html.Tag.Head>] = [
     """
   )
 ]
+
+private var year: Int {
+  return Calendar(identifier: .gregorian).component(.year, from: Current.date())
+}
