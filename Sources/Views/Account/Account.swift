@@ -731,10 +731,10 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
           .action(path(to: .account(.subscription(.change(.update(nil)))))),
           .method(.post),
           .onsubmit(unsafe: """
-            if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
-            return false
-            }
-            """),
+if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
+  return false
+}
+"""),
         ],
         .input(attributes: [
           .name("billing"),
@@ -761,10 +761,10 @@ private func mainAction(for subscription: Stripe.Subscription) -> Node {
           .action(path(to: .account(.subscription(.change(.update(nil)))))),
           .method(.post),
           .onsubmit(unsafe: """
-            if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
-            return false
-            }
-            """),
+if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
+  return false
+}
+"""),
         ],
         .input(attributes: [
           .name("billing"),
