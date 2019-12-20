@@ -14,36 +14,6 @@ import Styleguide
 import Tuple
 import Views
 
-enum NavStyle {
-  case minimal(MinimalStyle)
-  case mountains(MountainsStyle)
-
-  enum MinimalStyle {
-    case black
-    case dark
-    case light
-  }
-
-  enum MountainsStyle {
-    case blog
-    case main
-
-    var heroTagline: String {
-      switch self {
-      case .blog: return "A blog exploring functional programming and Swift."
-      case .main: return "A video series exploring functional programming and Swift."
-      }
-    }
-
-    var heroLogoSvgBase64: String {
-      switch self {
-      case .blog: return pointFreePointersLogoSvgBase64
-      case .main: return pointFreeHeroSvgBase64
-      }
-    }
-  }
-}
-
 struct SimplePageLayoutData<A> {
   enum Style {
     case minimal
@@ -262,19 +232,23 @@ private func navView<A>(_ data: SimplePageLayoutData<A>) -> [Html.Node] {
 
   switch data.style {
   case let .base(.some(.mountains(style))):
-    return mountainNavView(
-      mountainsStyle: style,
-      currentUser: data.currentUser,
-      subscriberState: data.currentSubscriberState,
-      currentRoute: data.currentRoute
+    return downgrade(
+      node: mountainNavView(
+        mountainsStyle: style,
+        currentUser: data.currentUser,
+        subscriberState: data.currentSubscriberState,
+        currentRoute: data.currentRoute
+      )
     )
 
   case let .base(.some(.minimal(minimalStyle))):
-    return minimalNavView(
-      style: minimalStyle,
-      currentUser: data.currentUser,
-      subscriberState: data.currentSubscriberState,
-      currentRoute: data.currentRoute
+    return downgrade(
+      node: minimalNavView(
+        style: minimalStyle,
+        currentUser: data.currentUser,
+        subscriberState: data.currentSubscriberState,
+        currentRoute: data.currentRoute
+      )
     )
 
   case .base(.none), .minimal:
