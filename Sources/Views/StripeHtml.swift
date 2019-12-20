@@ -1,52 +1,49 @@
 import Css
 import FunctionalCss
-import Html
+import HtmlUpgrade
 import Stripe
-import Styleguide
-import Views
 
 public enum StripeHtml {
   public static let formId = "card-form"
 
-  public static func cardInput(couponId: Stripe.Coupon.Id?) -> [Node] {
+  public static func cardInput(couponId: Stripe.Coupon.Id?, publishableKey: String) -> Node {
     return [
-      input([name("token"), type(.hidden)]),
-      div([`class`(couponId != nil ? [] : [Class.display.none])], [
-        input([
-          `class`([blockInputClass]),
-          name("coupon"),
-          placeholder("Coupon Code"),
-          type(.text),
-          value(couponId?.rawValue ?? "")
-          ]),
-        ]),
-      div(
-        [
-          `class`([stripeInputClass]),
+      .input(attributes: [.name("token"), .type(.hidden)]),
+      .div(
+        attributes: [.class(couponId != nil ? [] : [Class.display.none])],
+        .input(
+          attributes: [
+            .class([blockInputClass]),
+            .name("coupon"),
+            .placeholder("Coupon Code"),
+            .type(.text),
+            .value(couponId?.rawValue ?? "")
+          ]
+        )
+      ),
+      .div(
+        attributes: [
+          .class([stripeInputClass]),
           // TODO: StripeHtmlSupport?
-          data("stripe-key", Current.envVars.stripe.publishableKey.rawValue),
-          id("card-element"),
-        ],
-        []
+          .data("stripe-key", publishableKey),
+          .id("card-element")
+        ]
       )
     ]
   }
 
-  public static let errors = [
-    div(
-      [
-        `class`([Class.pf.colors.fg.red]),
-        id("card-errors"),
-        role(.alert),
-      ],
-      []
-    )
-  ]
+  public static let errors = Node.div(
+    attributes: [
+      .class([Class.pf.colors.fg.red]),
+      .id("card-errors"),
+      .role(.alert),
+    ]
+  )
 
-  public static var scripts: [Node] {
+  public static func scripts(src: String) -> Node {
     return [
-      script([src(Current.stripe.js)]),
-      script(
+      .script(attributes: [.src(src)]),
+      .script(safe:
         """
         function setFormEnabled(form, isEnabled, elementsMatching) {
           for (var idx = 0; idx < form.length; idx++) {

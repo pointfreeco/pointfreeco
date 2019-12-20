@@ -110,7 +110,7 @@ func respond<A, B>(
           url: newLayoutData.currentRoute.map(url(to:))
         )
         >>> metaLayout(simplePageLayout(view))
-        >>> addGoogleAnalytics
+        >>> { downgrade(node: addGoogleAnalytics(.fragment($0.map(upgrade(node:))))) }
 
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
