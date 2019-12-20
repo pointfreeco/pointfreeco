@@ -16,18 +16,19 @@ import Styleguide
 import Tagged
 import TaggedMoney
 import Tuple
+import Views
 
 let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >=> writeStatus(.ok)
-    >=> respond(
-      view: accountView,
-      layoutData: { data in
+    >=> _respond(
+      view: Views.accountView(accountData:allEpisodes:currentDate:appSecret:),
+      layoutData: { accountData in
         SimplePageLayoutData(
-          currentSubscriberState: data.subscriberState,
-          currentUser: data.currentUser,
-          data: data,
+          currentSubscriberState: accountData.subscriberState,
+          currentUser: accountData.currentUser,
+          data: (accountData, Current.episodes(), Current.date(), Current.envVars.appSecret),
           title: "Account"
         )
     }

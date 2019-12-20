@@ -14,6 +14,7 @@ import Prelude
 import Stripe
 import Styleguide
 import Tuple
+import Views
 
 // MARK: Middleware
 
