@@ -21,8 +21,8 @@ private func footerInfoColumnsView(user: User?, year: Int) -> Node {
 
 private func linksColumnsView(currentUser: User?) -> Node {
   return [
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], moreColumnView)
+    .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
+    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView)
   ]
 }
 
