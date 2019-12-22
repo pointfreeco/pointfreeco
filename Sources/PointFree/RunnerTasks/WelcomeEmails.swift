@@ -254,21 +254,21 @@ func welcomeEmail3Content(user: User) -> Node {
 
       * [The Many Faces of Map](https://www.pointfree.co/episodes/ep13-the-many-faces-of-map)
 
-      We take a tour of the `map` function and figure out just what makes it so special!
+        We take a tour of the `map` function and figure out just what makes it so special!
 
       * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
 
-      A fun, mind-bendy episode that explores what it means to the take that `map` function and flip it
+        A fun, mind-bendy episode that explores what it means to the take that `map` function and flip it
       around!
 
       * [Tagged](https://www.pointfree.co/episodes/ep12-tagged)
 
-      This one's a bit more down-to-earth! We talk about type-safety and how Swift's type system gives us
+        This one's a bit more down-to-earth! We talk about type-safety and how Swift's type system gives us
       yet another powerful tool to prevent bugs _at compile time!_
 
       * [Setters: Part 1](https://www.pointfree.co/episodes/ep6-functional-setters)
 
-      Setters are functions that make you rethink function composition in some pretty powerful ways! This is
+        Setters are functions that make you rethink function composition in some pretty powerful ways! This is
       the first of a multi-part series that goes _deep!_
 
       We hope you'll find it interesting enough to consider
