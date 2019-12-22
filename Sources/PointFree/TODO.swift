@@ -100,7 +100,7 @@ public func responseTimeout(_ interval: TimeInterval)
 }
 
 public func plainText(for node: Node) -> String {
-  return plainText(for: node)
+  return plainText(for: downgrade(node: node))
 }
 
 public func respond<A>(
