@@ -51,7 +51,7 @@ private func _adminMiddleware(
         |> sendNewBlogPostEmailMiddleware
 
     case .newBlogPostEmail(.index):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(unit))
         |> showNewBlogPostEmailMiddleware
 
     case let .newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest)):
@@ -59,8 +59,7 @@ private func _adminMiddleware(
         |> sendNewEpisodeEmailMiddleware
 
     case .newEpisodeEmail(.show):
-      return conn.map(const(user .*. unit))
+      return conn.map(const(unit))
         |> showNewEpisodeEmailMiddleware
-
     }
 }

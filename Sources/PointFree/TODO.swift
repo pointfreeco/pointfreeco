@@ -5,7 +5,9 @@ import Dispatch
 import Either
 import Foundation
 import Html
+import HtmlUpgrade
 import HttpPipeline
+import HtmlPlainTextPrint
 import HttpPipelineHtmlSupport
 import Models
 import Optics
@@ -33,7 +35,7 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
 /// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
 /// - Returns: New middleware that operates on optional values.
 public func requireSome<A>(
-  notFoundView: [Node]
+  notFoundView: [Html.Node]
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
@@ -98,10 +100,10 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-func text(_ string: String) -> Node {
-  return .text(string)
+func playsinline(_ value: Bool) -> Html.Attribute<Html.Tag.Video> {
+  return .init("playslinline", value ? "" : nil)
 }
 
-func playsinline(_ value: Bool) -> Attribute<Tag.Video> {
-  return .init("playslinline", value ? "" : nil)
+public func plainText(for node: HtmlUpgrade.Node) -> String {
+  return HtmlPlainTextPrint.plainText(for: downgrade(node: node))
 }

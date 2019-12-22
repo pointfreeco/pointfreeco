@@ -2,7 +2,7 @@ import Css
 import Either
 import FunctionalCss
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -253,30 +253,35 @@ private func enterpriseInviteEmailBodyView(
   account: EnterpriseAccount,
   encryptedEmail: Encrypted<String>,
   encryptedUserId: Encrypted<String>
-  ) -> [Node] {
-  return [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], ["You’re invited!"]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
-              "about functional programming and the Swift programming language. To accept, simply click the ",
-              "link below!"
-              ]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              a([
-                href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
-                `class`([Class.pf.components.button(color: .purple)])
-                ],
-                ["Click here to accept!"])
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
+          .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+             "You’re invited to join the ", .text(account.companyName), " team on Point-Free, a video series ",
+             "about functional programming and the Swift programming language. To accept, simply click the ",
+             "link below!"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            .a(
+              attributes: [
+                .href(url(to: .enterprise(.acceptInvite(account.domain, email: encryptedEmail, userId: encryptedUserId)))),
+                .class([Class.pf.components.button(color: .purple)])
+              ],
+              "Click here to accept!"
+            )
+          )
+        )
+      )
+    )
+  )
 }
 
 fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAddress.RawValue {
