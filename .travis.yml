@@ -14,6 +14,7 @@ install:
   - git clone https://github.com/commonmark/cmark
   - cd cmark
   - git checkout 1880e6535e335f143f9547494def01c13f2f331b
+  - cd ../
   - make -C cmark INSTALL_PREFIX=/usr
   - sudo make -C cmark install
 script:
