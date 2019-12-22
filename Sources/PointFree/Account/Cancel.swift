@@ -2,7 +2,7 @@ import Css
 import FunctionalCss
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -224,27 +224,32 @@ let cancelEmailView = simpleEmailLayout(cancelEmailBodyView) <<< { owner, subscr
   )
 }
 
-private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
-  return [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              "Your ",
-              strong([.text(subscription.plan.nickname)]),
-              " subscription has been canceled and will remain active through ",
-              .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
-              ". If you change your mind before then, you can reactivate from ",
-              a([href(url(to: .account(.index)))], ["your account page"]),
-              "."
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Subscription canceled"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            "Your ",
+            .strong(.text(subscription.plan.nickname)),
+            " subscription has been canceled and will remain active through ",
+            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            ". If you change your mind before then, you can reactivate from ",
+            .a(attributes: [.href(url(to: .account(.index)))], "your account page"),
+            "."
+          )
+        )
+      )
+    )
+  )
 }
 
 private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
@@ -268,23 +273,28 @@ let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView) <<< { owner
   )
 }
 
-private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> [Node] {
-  return [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              "Thanks for sticking with us! Your ",
-              strong([.text(subscription.plan.nickname)]),
-              " subscription has been reactivated and will renew on ",
-              .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
-              "."
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Subscription reactivated"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            "Thanks for sticking with us! Your ",
+            .strong(.text(subscription.plan.nickname)),
+            " subscription has been reactivated and will renew on ",
+            .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
+            "."
+          )
+        )
+      )
+    )
+  )
 }

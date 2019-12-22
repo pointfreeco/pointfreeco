@@ -1,6 +1,6 @@
 import Either
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
+import HtmlUpgradeSnapshotTesting
 import HttpPipeline
 import Optics
 @testable import PointFree
