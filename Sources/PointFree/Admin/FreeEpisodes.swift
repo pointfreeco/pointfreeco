@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -20,7 +18,7 @@ let indexFreeEpisodeEmailMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(freeEpisodeView(episodes: Current.episodes(), today: Current.date()))
+    >=> respond(downgrade(node: freeEpisodeView(episodes: Current.episodes(), today: Current.date())))
 
 let sendFreeEpisodeEmailMiddleware: Middleware<
   StatusLineOpen,

@@ -1,7 +1,7 @@
 import Css
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -13,54 +13,59 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showNewBlogPostEmailMiddleware =
+let showNewBlogPostEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(lower >>> showNewBlogPostView)
+    >=> respond(downgrade(node: showNewBlogPostView))
 
-private func showNewBlogPostView(_: User) -> [Node] {
-  return [
-    ul(
-      Current.blogPosts()
-        .sorted(by: their(^\.id, >))
-        .prefix(upTo: 3)
-        .map(li <<< newBlogPostEmailRowView)
+private let showNewBlogPostView = Node.ul(
+  .fragment(
+    Current.blogPosts()
+      .sorted(by: their(^\.id, >))
+      .prefix(upTo: 3)
+      .map { .li(newBlogPostEmailRowView(post: $0)) }
+  )
+)
+
+private func newBlogPostEmailRowView(post: BlogPost) -> Node {
+  return .p(
+    .text("Blog Post: \(post.title)"),
+    .form(
+      attributes: [
+        .action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))),
+        .method(.post)
+      ],
+      .input(
+        attributes: [
+          .checked(true),
+          .name(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue),
+          .type(.checkbox),
+          .value("true"),
+        ]
+      ),
+      .textarea(
+        attributes: [
+          .name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
+          .placeholder("Subscriber announcement")
+        ]
+      ),
+      .input(
+        attributes: [
+          .checked(true),
+          .name(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue),
+          .type(.checkbox),
+          .value("true"),
+        ]
+      ),
+      .textarea(
+        attributes: [
+          .name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
+          .placeholder("Non-subscriber announcement")
+        ]
+      ),
+      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
+      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
     )
-  ]
-}
-
-private func newBlogPostEmailRowView(post: BlogPost) -> [Node] {
-  return [
-    p([
-      .text("Blog Post: \(post.title)"),
-
-      form([action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))), method(.post)], [
-
-        input([
-          checked(true),
-          name(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue),
-          type(.checkbox),
-          value("true"),
-          ]),
-        textarea([
-          name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
-          placeholder("Subscriber announcement")
-          ]),
-        input([
-          checked(true),
-          name(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue),
-          type(.checkbox),
-          value("true"),
-          ]),
-        textarea([
-          name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
-          placeholder("Non-subscriber announcement")
-          ]),
-
-        input([type(.submit), name("test"), value("Test email!")]),
-        input([type(.submit), name("live"), value("Send email!")])
-        ])
-      ])
-  ]
+  )
 }
 
 let sendNewBlogPostEmailMiddleware: Middleware<
