@@ -16,7 +16,7 @@ Luckily there’s a very simple way to get broad test coverage on any SwiftUI vi
 
 In this week’s [free episode](/episodes/ep86-snapshot-testing-swiftui) we demonstrate how to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to the application we have been building over the past many weeks. We show off lots of really cool things:
 
-- It’s easy to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to our project via the Swift Package Manager.
+- It’s easy to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to our project via the Swift Package Manager and its Xcode integration.
 - We can immediately get snapshot test coverage on any SwiftUI view by using `UIHostingController`.
 - We can further get test coverage on alerts and modals if we properly host the controller in a test application with a `UIWindow`.
 - We can even further perform a kind of “integration test” by using the composable architecture to play a script of user actions and take screen shots of the UI every step of the way.
