@@ -8,7 +8,7 @@ Snapshot testing gives us broad test coverage on our SwiftUI views with very lit
   contentBlocks: [
     Episode.TranscriptBlock(
       content: #"""
-SwiftUI is an incredible technology for building UI that is going to drastically change the way we build iOS applications. It allows us to think of our views in a declarative manner so that we can simply describe the view hierarchy rather than think about all the messy details of how to coordinate various objects to get UI on the screen.
+SwiftUI is an incredible technology for building UI that is going to drastically change the way we build iOS applications. In UIKit we manage views by coordinating a bunch of mutable objects, but SwiftUI allows us to avoid all of those messy details by providing a declarative framework that lets us simply describe the view hierarchy.
 
 However, since we are still in the early days of this technology, it is not yet clear how we are supposed to test a SwiftUI application. Almost everything that happens in a SwiftUI `View` is hidden from us, and so it can be hard to make assertions on logic that is happening inside the view.
 
