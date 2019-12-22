@@ -50,31 +50,33 @@ public struct Metadata<A> {
         )
       }
   }
-
+  
   var metaNodes: Node {
-    return [
-      self.description.map { ChildOf.meta(name: "description", content: $0) },
-      self.description.map { .meta(property: "og:description", content: $0) },
-      self.description.map { .meta(name: "twitter:description", content: $0) },
-
-      self.image.map { .meta(name: "twitter:image", content: $0) },
-      self.image.map { .meta(property: "og:image", content: $0) },
-
-      self.title.map { .meta(name: "title", content: $0) },
-      self.title.map { .meta(property: "og:title", content: $0) },
-      self.title.map { .meta(name: "twitter:title", content: $0) },
-
-      self.type.map { .meta(property: "og:type", content: $0.rawValue) },
-
-      self.twitterCard.map { .meta(name: "twitter:card", content: $0.rawValue) },
-      self.twitterSite.map { .meta(name: "twitter:site", content: $0) },
-
-      self.url.map { .meta(property: "og:url", content: $0) },
-      self.url.map { .meta(name: "twitter:url", content: $0) },
-
-    ]
-      .compactMap { $0 }
-      .map(^\.rawValue)
+    return .fragment(
+      [
+        self.description.map { ChildOf.meta(name: "description", content: $0) },
+        self.description.map { .meta(property: "og:description", content: $0) },
+        self.description.map { .meta(name: "twitter:description", content: $0) },
+        
+        self.image.map { .meta(name: "twitter:image", content: $0) },
+        self.image.map { .meta(property: "og:image", content: $0) },
+        
+        self.title.map { .meta(name: "title", content: $0) },
+        self.title.map { .meta(property: "og:title", content: $0) },
+        self.title.map { .meta(name: "twitter:title", content: $0) },
+        
+        self.type.map { .meta(property: "og:type", content: $0.rawValue) },
+        
+        self.twitterCard.map { .meta(name: "twitter:card", content: $0.rawValue) },
+        self.twitterSite.map { .meta(name: "twitter:site", content: $0) },
+        
+        self.url.map { .meta(property: "og:url", content: $0) },
+        self.url.map { .meta(name: "twitter:url", content: $0) },
+        
+        ]
+        .compactMap { $0 }
+        .map(^\.rawValue)
+    )
   }
 }
 
