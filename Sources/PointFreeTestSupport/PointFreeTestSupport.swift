@@ -8,7 +8,6 @@ import Either
 import Foundation
 import GitHub
 import GitHubTestSupport
-import Html
 import HtmlUpgrade
 import HttpPipeline
 import HttpPipelineTestSupport

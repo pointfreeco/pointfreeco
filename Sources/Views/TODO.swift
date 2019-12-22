@@ -1,5 +1,4 @@
 import Css
-import Html
 import HtmlUpgrade
 import HttpPipeline
 import Models
@@ -19,35 +18,31 @@ extension Tagged where Tag == EncryptedTag, RawValue == String {
   }
 }
 
-public func playsinline(_ value: Bool) -> Html.Attribute<Html.Tag.Video> {
-  return .init("playslinline", value ? "" : nil)
-}
-
-extension HtmlUpgrade.Attribute {
-  public static func id<T>(_ idSelector: CssSelector) -> HtmlUpgrade.Attribute<T> {
+extension Attribute {
+  public static func id<T>(_ idSelector: CssSelector) -> Attribute<T> {
     return .init("id", idSelector.idString ?? "")
   }
 }
 
-extension HtmlUpgrade.Attribute {
-  public static func playsinline<T>(_ value: Bool) -> HtmlUpgrade.Attribute<T> {
+extension Attribute {
+  public static func playsinline<T>(_ value: Bool) -> Attribute<T> {
     return .init("playslinline", value ? "" : nil)
   }
 }
 
-extension HtmlUpgrade.Attribute where Element: HtmlUpgrade.HasFor {
-  public static func `for`(_ idSelector: CssSelector) -> HtmlUpgrade.Attribute<Element> {
+extension Attribute where Element: HasFor {
+  public static func `for`(_ idSelector: CssSelector) -> Attribute<Element> {
     return .init("for", idSelector.idString ?? "")
   }
 }
 
-extension HtmlUpgrade.ChildOf where Element == HtmlUpgrade.Tag.Head {
+extension ChildOf where Element == Tag.Head {
   public static func style(
-    attributes: [HtmlUpgrade.Attribute<HtmlUpgrade.Tag.Style>] = [],
+    attributes: [Attribute<Tag.Style>] = [],
     _ css: Stylesheet,
     config: Css.Config = .compact
     )
-    -> HtmlUpgrade.ChildOf<HtmlUpgrade.Tag.Head> {
+    -> ChildOf<Tag.Head> {
       return .style(unsafe: render(config: config, css: css))
   }
 }

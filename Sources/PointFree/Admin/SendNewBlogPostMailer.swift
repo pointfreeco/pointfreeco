@@ -15,7 +15,7 @@ import Tuple
 
 let showNewBlogPostEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(downgrade(node: showNewBlogPostView))
+    >=> respond({ _ in showNewBlogPostView })
 
 private let showNewBlogPostView = Node.ul(
   .fragment(

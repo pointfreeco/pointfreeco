@@ -74,7 +74,7 @@ private func announcementView(announcement: String?) -> Node {
       ])
     ],
     .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], "Announcements"),
-    upgrade(node: markdownBlock(announcement))
+    .markdownBlock(announcement)
   )
 }
 

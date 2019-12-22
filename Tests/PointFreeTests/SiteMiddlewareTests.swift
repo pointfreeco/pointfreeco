@@ -1,4 +1,3 @@
-import Html
 import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport

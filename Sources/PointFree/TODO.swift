@@ -4,7 +4,6 @@ import Css
 import Dispatch
 import Either
 import Foundation
-import Html
 import HtmlUpgrade
 import HttpPipeline
 import HtmlPlainTextPrint
@@ -35,7 +34,7 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
 /// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
 /// - Returns: New middleware that operates on optional values.
 public func requireSome<A>(
-  notFoundView: [Html.Node]
+  notFoundView: Node
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
@@ -48,7 +47,7 @@ public func requireSome<A>(
           ?? (
             conn.map(const(unit))
               |> writeStatus(.notFound)
-              >=> respond(notFoundView)
+              >=> respond({ _ in notFoundView })
         )
       }
     }
@@ -100,16 +99,12 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-func playsinline(_ value: Bool) -> Html.Attribute<Html.Tag.Video> {
-  return .init("playslinline", value ? "" : nil)
-}
-
-public func plainText(for node: HtmlUpgrade.Node) -> String {
-  return HtmlPlainTextPrint.plainText(for: downgrade(node: node))
+public func plainText(for node: Node) -> String {
+  return plainText(for: node)
 }
 
 public func respond<A>(
-  _ view: @escaping (A) -> HtmlUpgrade.Node
+  _ view: @escaping (A) -> Node
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn |> respond(body: render(view(conn.data)), contentType: .html)

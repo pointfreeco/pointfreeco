@@ -1,6 +1,5 @@
 import Either
 @testable import GitHub
-import Html
 import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport

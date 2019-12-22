@@ -5,14 +5,6 @@ import HtmlUpgrade
 import Foundation
 import Prelude
 
-// TODO: move to a support package in swift-web
-public func `class`<T>(_ selectors: [CssSelector]) -> Html.Attribute<T> {
-  return .init(
-    "class",
-    render(classes: selectors)
-  )
-}
-
 extension HtmlUpgrade.Attribute {
   // TODO: move to a support package in swift-web
   public static func `class`<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
@@ -56,21 +48,6 @@ public func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
   }
 }
 
-public func upgrade(node: Html.Node) -> HtmlUpgrade.Node {
-  switch node {
-  case let .comment(comment):
-    return [.comment(comment)]
-  case let .doctype(doctype):
-    return [.doctype(doctype)]
-  case let .element(tag, attrs, children):
-    return .element(tag, attrs, .fragment(children.map(upgrade(node:))))
-  case let .raw(value):
-    return [.raw(value)]
-  case let .text(value):
-    return [.text(value)]
-  }
-}
-
 // TODO: make Css.key function public
 // TODO: move to swift-web
 private let mainElement = CssSelector.Element.other("main")
@@ -96,8 +73,4 @@ public let textarea = CssSelector.elem(textareaElement)
 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
-}
-
-public func bgcolor<T>(_ value: String) -> Html.Attribute<T> {
-  return .init("bgcolor", value)
 }

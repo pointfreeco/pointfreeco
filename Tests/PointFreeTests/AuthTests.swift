@@ -1,6 +1,5 @@
 import Either
 @testable import GitHub
-import Html
 import HttpPipeline
 @testable import PointFree
 import PointFreePrelude
