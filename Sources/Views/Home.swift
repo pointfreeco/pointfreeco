@@ -9,6 +9,7 @@ import Prelude
 import Styleguide
 
 public func homeView(
+  currentDate: Date,
   currentUser: User?,
   subscriberState: SubscriberState,
   episodes: [Episode],
@@ -22,13 +23,93 @@ public func homeView(
   let secondBatch = episodes[ctaInsertionIndex...]
 
   return [
+    holidaySpecialCalloutView(currentDate: currentDate, subscriberState: subscriberState),
     episodesListView(episodes: firstBatch, date: date),
-    subscriberCalloutView(subscriberState),
+    subscriberCalloutView(currentDate: currentDate, subscriberState: subscriberState),
     episodesListView(episodes: secondBatch, date: date)
   ]
 }
 
-private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
+let holidayDiscount2019Interval: ClosedRange<Double> = 1577080800...1577854800
+
+private func holidaySpecialCalloutView(
+  currentDate: Date,
+  subscriberState: SubscriberState
+) -> Node {
+  guard holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970) else { return [] }
+  guard subscriberState.isNonSubscriber else { return [] }
+
+  return [
+    divider,
+    .gridRow(
+      .gridColumn(
+        sizes: [.desktop: 9, .mobile: 12],
+        attributes: [.style(margin(leftRight: .auto))],
+        .div(
+          attributes: [
+            .class([
+              Class.margin([.mobile: [.all: 4]]),
+            ])
+          ],
+          holidaySpecialContent
+        )
+      )
+    )
+  ]
+}
+
+let holidaySpecialContent: Node = .div(
+  attributes: [
+    .style(backgroundColor(.other("#D6FFE1"))),
+    .class([Class.padding([.mobile: [.all: 3]])])
+  ],
+  .h4(
+    attributes: [
+      .class(
+        [
+          Class.pf.type.responsiveTitle4,
+          Class.padding([.mobile: [.bottom: 2]])
+        ]
+      )
+    ],
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil)))
+      ],
+      "🎉 Holiday Subscription Special 🎉"
+    )
+  ),
+  .p(
+    "Hey there! To celebrate the end of 2019 we are offering first-time subscribers 30% off ",
+    "their subscription for the first year! ",
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .class([Class.pf.type.underlineLink])
+      ],
+      "Act now"
+    ),
+    " to get access to all past and future episodes of Point-Free. This offer will only last until ",
+    "the end of the year!"
+  ),
+  .p(
+    attributes: [
+      .class([Class.margin([.mobile: [.top: 3]])])
+    ],
+    .a(
+      attributes: [
+        .href(path(to: .discounts(code: "holiday-2019", nil))),
+        .class([Class.pf.components.button(color: .black)])
+      ],
+      "Subscribe now"
+    )
+  )
+)
+
+private func subscriberCalloutView(
+  currentDate: Date,
+  subscriberState: SubscriberState
+) -> Node {
   guard subscriberState.isNonSubscriber else { return [] }
 
   return [
