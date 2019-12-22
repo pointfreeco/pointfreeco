@@ -1,6 +1,6 @@
 import Foundation
 
-public let post0034_SnapshotTestingSwiftUI = BlogPost(
+public let post0035_SnapshotTestingSwiftUI = BlogPost(
   author: .pointfree,
   blurb: """
 Snapshot testing gives us broad test coverage on our SwiftUI views with very little up front work.
@@ -29,7 +29,7 @@ If you find any of this interesting, hop on over to our 100% [free episode](/epi
     )
   ],
   coverImage: nil,
-  id: 34,
+  id: 35,
   publishedAt: Date(timeIntervalSince1970: 1577080800),
   title: "Snapshot Testing SwiftUI"
 )
