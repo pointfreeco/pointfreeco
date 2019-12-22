@@ -1,10 +1,9 @@
 import SnapshotTesting
-import Html
+import HtmlUpgrade
 import Prelude
 import XCTest
 @testable import PointFree
 import PointFreeTestSupport
-import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 #if !os(Linux)

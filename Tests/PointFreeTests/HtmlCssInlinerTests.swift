@@ -1,5 +1,5 @@
 import Css
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import PointFree
 import PointFreeTestSupport
@@ -23,35 +23,35 @@ class HtmlCssInlinerTests: TestCase {
 
     let stylesheet = stylesheet1 <> stylesheet2
 
-    let doc = [
-      doctype,
-      html([
-        body([
-          div([id("hero")], [
-            h1(["Point-Free"])
-            ]),
-
-          p([Html.`class`("p1")], [
+    let doc: Node = [
+      .doctype,
+      .html(
+        .body(
+          .div(
+            attributes: [.id("hero")],
+            .h1("Point-Free")
+          ),
+          .p(
+            attributes: [.class("p1")],
             "This p tag gets styles from the tag element and classes."
-            ]),
-
-          p([id("some-id"), Html.`class`("bold leading"), style(lineHeight(1.25))], [
+          ),
+          .p(
+            attributes: [.id("some-id"), .class("bold leading"), .style(lineHeight(1.25))],
             "This p tag gets styles from the id, classes, inline styles, and element tag!"
-            ]),
-
-          div([id("footer")], [
+          ),
+          .div(
+            attributes: [.id("footer")],
             "I'm a div footer with an id"
-            ]),
-          div([Html.`class`("footer")], [
+          ),
+          .div(
+            attributes: [.class("footer")],
             "I'm a div footer with a class"
-            ]),
-          footer([
-            "I'm a footer element"
-            ])
-          ])
-        ])
+          ),
+          .footer("I'm a footer element")
+        )
+      )
     ]
 
-    assertSnapshot(matching: applyInlineStyles(nodes: doc, stylesheet: stylesheet), as: .html)
+    assertSnapshot(matching: applyInlineStyles(node: doc, stylesheet: stylesheet), as: .html)
   }
 }

@@ -1,5 +1,4 @@
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
 import HttpPipeline
 import Models
 import ModelsTestSupport

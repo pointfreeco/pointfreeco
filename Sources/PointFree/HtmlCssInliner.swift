@@ -1,67 +1,63 @@
 import Css
-import Html
+import HtmlUpgrade
 import Optics
 import Prelude
-
-/// Transforms `nodes` passed in by applying a reasonable number of styles from `stylesheet` to each
-/// element.
-public func applyInlineStyles(nodes: [Node], stylesheet: Stylesheet) -> [Node] {
-  return nodes.map { applyInlineStyles(node: $0, stylesheet: stylesheet) }
-}
 
 /// Transforms `node` by applying a reasonable number of the styles from `stylesheet` to each element.
 public func applyInlineStyles(node: Node, stylesheet: Stylesheet) -> Node {
   switch node {
-  case let .element(tag, attribs, children):
-    return applyInlineStyles(tag, attribs, children, stylesheet: stylesheet)
+  case let .element(tag, attribs, child):
+    return applyInlineStyles(tag: tag, attribs: attribs, child: child, stylesheet: stylesheet)
 
   case .comment, .doctype, .raw, .text:
     return node
+
+  case let .fragment(children):
+    return .fragment(children.map { applyInlineStyles(node: $0, stylesheet: stylesheet) })
   }
 }
 
 private func applyInlineStyles(
-  _ tag: String,
-  _ attribs: [(key: String, value: String?)],
-  _ children: [Node],
+  tag: String,
+  attribs: [(key: String, value: String?)],
+  child: Node,
   stylesheet: Stylesheet
+) -> Node {
+
+  let currentStyles = attribs.first(where: { $0.key == "style" })?.value ?? ""
+
+  // Computes all inline styles based on the classes on this element
+  let classStyles = (attribs.first(where: { $0.key == "class" })?.value ?? "")
+    .components(separatedBy: " ")
+    .map { inlineStyles(for: .class($0), stylesheet: stylesheet) }
+    .joined(separator: ";")
+
+  // Computes all inline styles based on the name of the element tag.
+  let elemStyles = inlineStyles(for: .elem(.other(tag)), stylesheet: stylesheet)
+
+  // Computes all inline styles based on the id of the element.
+  let idStyles = (attribs.first(where: { $0.key == "id" })?.value)
+    .map { inlineStyles(for: .id($0), stylesheet: stylesheet) }
+    ?? ""
+
+  let newStyles = [
+    elemStyles,
+    classStyles,
+    idStyles,
+    currentStyles,
+    ]
+    .filter { !$0.isEmpty }
+    .joined(separator: ";")
+
+  let newAttribs = attribs
+    .filter { $0.key != "style" }
+    + (newStyles.isEmpty ? [] : [("style", newStyles)])
+
+  return .element(
+    tag,
+    newAttribs,
+    applyInlineStyles(node: child, stylesheet: stylesheet)
   )
-  -> Node {
-
-    let currentStyles = attribs.first(where: { $0.key == "style" })?.value ?? ""
-
-    // Computes all inline styles based on the classes on this element
-    let classStyles = (attribs.first(where: { $0.key == "class" })?.value ?? "")
-      .components(separatedBy: " ")
-      .map { inlineStyles(for: .class($0), stylesheet: stylesheet) }
-      .joined(separator: ";")
-
-    // Computes all inline styles based on the name of the element tag.
-    let elemStyles = inlineStyles(for: .elem(.other(tag)), stylesheet: stylesheet)
-
-    // Computes all inline styles based on the id of the element.
-    let idStyles = (attribs.first(where: { $0.key == "id" })?.value)
-      .map { inlineStyles(for: .id($0), stylesheet: stylesheet) }
-      ?? ""
-
-    let newStyles = [
-      elemStyles,
-      classStyles,
-      idStyles,
-      currentStyles,
-      ]
-      .filter { !$0.isEmpty }
-      .joined(separator: ";")
-
-    let newAttribs = attribs
-      .filter { $0.key != "style" }
-      + (newStyles.isEmpty ? [] : [("style", newStyles)])
-
-    return .element(
-      tag,
-      newAttribs,
-      applyInlineStyles(nodes: children, stylesheet: stylesheet)
-    )
 }
 
 // Computes the inline styles for a selector given a stylesheet.

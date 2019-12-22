@@ -1,7 +1,7 @@
 import Css
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -13,36 +13,33 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showNewEpisodeEmailMiddleware =
+let showNewEpisodeEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(lower >>> showNewEpisodeView)
+    >=> respond(downgrade(node: showNewEpisodeView))
 
-private func showNewEpisodeView(_: User) -> [Node] {
-  return [
-    ul(
-      Current.episodes()
-        .sorted(by: their(^\.sequence, >))
-        .prefix(upTo: 1)
-        .map(li <<< newEpisodeEmailRowView)
+private let showNewEpisodeView = Node.ul(
+  .fragment(
+    Current.episodes()
+      .sorted(by: their(^\.sequence, >))
+      .prefix(upTo: 1)
+      .map { .li(newEpisodeEmailRowView(ep: $0)) }
+  )
+)
+
+private func newEpisodeEmailRowView(ep: Episode) -> Node {
+  return .p(
+    .text("Episode #\(ep.sequence): \(ep.title)"),
+    .form(
+      attributes: [
+        .action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))),
+        .method(.post)
+      ],
+      .textarea(attributes: [.name("subscriber_announcement"), .placeholder("Subscriber announcement")]),
+      .textarea(attributes: [.name("nonsubscriber_announcement"), .placeholder("Non-subscribers announcements")]),
+      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
+      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
     )
-  ]
-}
-
-private func newEpisodeEmailRowView(ep: Episode) -> [Node] {
-  return [
-    p([
-      .text("Episode #\(ep.sequence): \(ep.title)"),
-
-      form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
-
-        textarea([name("subscriber_announcement"), placeholder("Subscriber announcement")]),
-        textarea([name("nonsubscriber_announcement"), placeholder("Non-subscribers announcements")]),
-
-        input([type(.submit), name("test"), value("Test email!")]),
-        input([type(.submit), name("live"), value("Send email!")])
-        ])
-      ])
-  ]
+  )
 }
 
 let sendNewEpisodeEmailMiddleware: Middleware<

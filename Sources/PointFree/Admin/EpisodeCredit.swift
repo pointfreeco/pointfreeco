@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -21,7 +19,7 @@ let showEpisodeCreditsMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(showEpisodeCreditsView)
+    >=> respond(downgrade(node: showEpisodeCreditsView))
 
 let redeemEpisodeCreditMiddleware: Middleware<
   StatusLineOpen,
