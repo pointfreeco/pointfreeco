@@ -142,7 +142,7 @@ func simplePageLayout<A>(
               .href(url(to: .feed(.episodes))),
               .rel(.alternate),
               .title("Point-Free Episodes"),
-              .type(.application(.init(rawValue: "atom")))
+              .type(.application(.init(rawValue: "atom+xml")))
             ]
           ),
           .link(
@@ -151,7 +151,7 @@ func simplePageLayout<A>(
               .rel(.alternate),
               .title("Point-Free Blog"),
               // TODO: add .atom to Html
-              .type(.application(.init(rawValue: "atom")))
+              .type(.application(.init(rawValue: "atom+xml")))
             ]
           ),
           (layoutData.usePrismJs ? prismJsHead : []),
