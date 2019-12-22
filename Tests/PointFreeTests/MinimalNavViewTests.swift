@@ -72,7 +72,7 @@ private func testDocView(
     doctype,
     html([
       head([
-        Html.style(unsafe: renderedNormalizeCss),
+        Html.style(renderedNormalizeCss),
         HtmlCssSupport.style(styleguide),
         meta(viewport: .width(.deviceWidth), .initialScale(1)),
         ]),

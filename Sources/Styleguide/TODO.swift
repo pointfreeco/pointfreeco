@@ -29,6 +29,16 @@ extension HtmlUpgrade.Attribute {
   }
 }
 
+extension HtmlUpgrade.ChildOf where Element == HtmlUpgrade.Tag.Head {
+  public static func style(
+    _ css: Stylesheet,
+    config: Css.Config = .compact
+  ) -> HtmlUpgrade.ChildOf<HtmlUpgrade.Tag.Head> {
+    return .style(unsafe: render(config: config, css: css))
+  }
+}
+
+
 public func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
   switch node {
   case let .comment(comment):

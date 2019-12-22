@@ -107,3 +107,11 @@ func playsinline(_ value: Bool) -> Html.Attribute<Html.Tag.Video> {
 public func plainText(for node: HtmlUpgrade.Node) -> String {
   return HtmlPlainTextPrint.plainText(for: downgrade(node: node))
 }
+
+public func respond<A>(
+  _ view: @escaping (A) -> HtmlUpgrade.Node
+) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+  return { conn in
+    conn |> respond(body: render(view(conn.data)), contentType: .html)
+  }
+}

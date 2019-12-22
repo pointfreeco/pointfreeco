@@ -1,4 +1,4 @@
-import Html
+import HtmlUpgrade
 import Optics
 import Prelude
 
@@ -51,55 +51,58 @@ public struct Metadata<A> {
       }
   }
 
-  var metaNodes: [Node] {
-    return [
+  var metaNodes: Node {
 
-      self.description.map { meta(name: "description", content: $0) },
-      self.description.map { meta(property: "og:description", content: $0) },
-      self.description.map { meta(name: "twitter:description", content: $0) },
-
-      self.image.map { meta(name: "twitter:image", content: $0) },
-      self.image.map { meta(property: "og:image", content: $0) },
-
-      self.title.map { meta(name: "title", content: $0) },
-      self.title.map { meta(property: "og:title", content: $0) },
-      self.title.map { meta(name: "twitter:title", content: $0) },
-
-      self.type.map { meta(property: "og:type", content: $0.rawValue) },
-
-      self.twitterCard.map { meta(name: "twitter:card", content: $0.rawValue) },
-      self.twitterSite.map { meta(name: "twitter:site", content: $0) },
-
-      self.url.map { meta(property: "og:url", content: $0) },
-      self.url.map { meta(name: "twitter:url", content: $0) },
-
-      ]
-      |> catOptionals
-      |> map(^\.rawValue)
+    return []
+//    let tmp: [Node?] = [
+//      self.description.map { Node.meta(name: "description", content: $0) },
+//      self.description.map { .meta(property: "og:description", content: $0) },
+//      self.description.map { .meta(name: "twitter:description", content: $0) },
+//
+//      self.image.map { .meta(name: "twitter:image", content: $0) },
+//      self.image.map { .meta(property: "og:image", content: $0) },
+//
+//      self.title.map { .meta(name: "title", content: $0) },
+//      self.title.map { .meta(property: "og:title", content: $0) },
+//      self.title.map { .meta(name: "twitter:title", content: $0) },
+//
+//      self.type.map { .meta(property: "og:type", content: $0.rawValue) },
+//
+//      self.twitterCard.map { .meta(name: "twitter:card", content: $0.rawValue) },
+//      self.twitterSite.map { .meta(name: "twitter:site", content: $0) },
+//
+//      self.url.map { .meta(property: "og:url", content: $0) },
+//      self.url.map { .meta(name: "twitter:url", content: $0) },
+//
+//      ]
+//
+//      return tmp
+//      |> catOptionals
+//      |> map(^\.rawValue)
   }
 }
 
-private func inserted<A>(meta: Metadata<A>, intoHeadOf nodes: [Node]) -> [Node] {
+private func inserted<A>(meta: Metadata<A>, intoHeadOf node: Node) -> Node {
 
-  return nodes.map { node -> Node in
+  switch node {
+  case let .element(tag, attribs, child):
+    return .element(
+      tag,
+      attribs,
+      tag == "head"
+        ? .fragment([child, meta.metaNodes])
+        : inserted(meta: meta, intoHeadOf: child)
+    )
 
-    switch node {
-    case let .element(tag, attribs, children):
-      return .element(
-        tag,
-        attribs,
-        tag == "head"
-          ? children + meta.metaNodes
-          : inserted(meta: meta, intoHeadOf: children)
-      )
+  case .comment, .doctype, .raw, .text:
+    return node
 
-    case .comment, .doctype, .raw, .text:
-      return node
-    }
+  case let .fragment(children):
+    return .fragment(children.map { inserted(meta: meta, intoHeadOf: $0) })
   }
 }
 
-public func metaLayout<A>(_ view: @escaping (A) -> [Node]) -> (Metadata<A>) -> [Node] {
+public func metaLayout<A>(_ view: @escaping (A) -> Node) -> (Metadata<A>) -> Node {
   return { meta in
     inserted(meta: meta, intoHeadOf: view(meta.rest))
   }
