@@ -1,6 +1,6 @@
 import FunctionalCss
 import GitHub
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import Optics
 import PointFreeRouter
@@ -20,29 +20,29 @@ let registrationEmailView = simpleEmailLayout(registrationEmailBody) <<< { user 
 
 private func registrationEmailBody(user: GitHubUser) -> Node {
   return .emailTable(
-    attribute: [.style(contentTableStyles)],
+    attributes: [.style(contentTableStyles)],
     .tr(
       .td(
-        attribute: [.valign(.top)],
+        attributes: [.valign(.top)],
         .div(
-          attribute: [.class([Class.padding([.mobile: [.all: 2]])])],
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
           .h3(
-            attribute: [.class([Class.pf.type.responsiveTitle3])], "Thanks for signing up!"),
+            attributes: [.class([Class.pf.type.responsiveTitle3])], "Thanks for signing up!"),
           .p(
-            attribute: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "You’re one step closer to our video series!"
           ),
           .p(
-            attribute: [.class([Class.padding([.mobile: [.bottom: 2]])])],
+            attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
             """
             To get all that Point-Free has to offer, choose from one of our monthly or yearly plans by clicking
             the link below!
             """
           ),
           .p(
-            attribute: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
-              attribute: [
+              attributes: [
                 .href(url(to: .pricingLanding)),
                 .class([Class.pf.components.button(color: .purple)])
               ],
