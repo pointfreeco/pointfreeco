@@ -1,5 +1,5 @@
 @testable import GitHub
-import Html
+import HtmlUpgrade
 import HtmlSnapshotTesting
 import Models
 import ModelsTestSupport
@@ -108,7 +108,7 @@ class NewslettersTests: TestCase {
 
   func testExpressUnsubscribeReply_IncorrectSignature() {
     #if !os(Linux)
-    update(&Current, \.renderHtml .~ { debugRender($0) })
+    update(&Current, \.renderUpgradeHtml .~ { debugRender($0) })
 
     let user = Current.database.registerUser(.mock, "hello@pointfree.co")
       .run

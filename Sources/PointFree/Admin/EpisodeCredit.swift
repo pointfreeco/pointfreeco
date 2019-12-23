@@ -19,7 +19,7 @@ let showEpisodeCreditsMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(downgrade(node: showEpisodeCreditsView))
+    >=> respond({ _ in showEpisodeCreditsView })
 
 let redeemEpisodeCreditMiddleware: Middleware<
   StatusLineOpen,

@@ -2,7 +2,6 @@ import Css
 import FunctionalCss
 import HtmlCssSupport
 import Foundation
-import Html
 import HtmlUpgrade
 import Prelude
 
@@ -25,31 +24,8 @@ public enum GitHubLinkType {
   }
 }
 
-public func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Html.Node {
-  return a(
-    [
-      Html.href(href ?? ""),
-      `class`([type.buttonClass])
-    ],
-    [
-      img(
-        base64: gitHubSvgBase64(fill: type.iconFillColor),
-        type: .image(.svg),
-        alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)
-        ]
-      ),
-      span([.text(text)])
-    ]
-  )
-}
-
-extension HtmlUpgrade.Node {
-  public static func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> HtmlUpgrade.Node {
+extension Node {
+  public static func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Node {
     return .a(
       attributes: [
         .href(href ?? ""),
@@ -71,46 +47,8 @@ extension HtmlUpgrade.Node {
   }
 }
 
-public func twitterShareLink(text: String, url: String, via: String? = nil) -> Html.Node {
-  var components = URLComponents(string: "https://twitter.com/intent/tweet")!
-  components.queryItems = [
-    URLQueryItem(name: "text", value: text),
-    URLQueryItem(name: "url", value: url),
-    via.map { URLQueryItem(name: "via", value: $0) }
-    ]
-    .compactMap { $0 }
-  let tweetHref = components.url?.absoluteString ?? ""
-
-  return a(
-    [
-      href(tweetHref),
-      onclick(unsafe: """
-        window.open(
-          "\(tweetHref)",
-          "newwindow",
-          "width=500,height=500"
-        );
-        """),
-      target(.blank),
-      rel(.init(rawValue: "noopener noreferrer")),
-      `class`([twitterLinkButtonClass]),
-      style(twitterLinkButtonStyle)
-    ],
-    [
-      twitterIconImg(fill: "fff"),
-      span(
-        [
-          style(twitterButtonTextStyle),
-          `class`([twitterButtonTextClass])
-        ],
-        ["Tweet"]
-      )
-    ]
-  )
-}
-
-extension HtmlUpgrade.Node {
-  public static func twitterShareLink(text: String, url: String, via: String? = nil) -> HtmlUpgrade.Node {
+extension Node {
+  public static func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
     var components = URLComponents(string: "https://twitter.com/intent/tweet")!
     components.queryItems = [
       URLQueryItem(name: "text", value: text),
@@ -147,20 +85,8 @@ extension HtmlUpgrade.Node {
   }
 }
 
-public func twitterIconImg(fill: String) -> Html.Node {
-  return img(
-    base64: twitterLogoSvg(fill: fill),
-    type: .image(.svg),
-    alt: "",
-    [
-      style(twitterButtonIconStyle),
-      `class`([twitterButtonIconClass])
-    ]
-  )
-}
-
-extension HtmlUpgrade.Node {
-  public static func twitterIconImg(fill: String) -> HtmlUpgrade.Node {
+extension Node {
+  public static func twitterIconImg(fill: String) -> Node {
     return .img(
       base64: twitterLogoSvg(fill: fill),
       type: .image(.svg),
