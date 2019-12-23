@@ -18,7 +18,7 @@ let indexFreeEpisodeEmailMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(downgrade(node: freeEpisodeView(episodes: Current.episodes(), today: Current.date())))
+    >=> respond({ _ in freeEpisodeView(episodes: Current.episodes(), today: Current.date()) })
 
 let sendFreeEpisodeEmailMiddleware: Middleware<
   StatusLineOpen,

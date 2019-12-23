@@ -15,7 +15,7 @@ import Tuple
 
 let showNewEpisodeEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(downgrade(node: showNewEpisodeView))
+    >=> respond({ _ in showNewEpisodeView })
 
 private let showNewEpisodeView = Node.ul(
   .fragment(

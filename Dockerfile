@@ -11,7 +11,9 @@ COPY Sources ./Sources
 COPY Tests ./Tests
 
 # cmark
-RUN git clone https://github.com/commonmark/cmark
+RUN git clone https://github.com/commonmark/cmark && \
+	cd cmark && \
+	git checkout 1880e6535e335f143f9547494def01c13f2f331b
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
