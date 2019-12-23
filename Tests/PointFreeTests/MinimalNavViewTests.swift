@@ -1,4 +1,4 @@
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import Models
 import ModelsTestSupport
@@ -67,25 +67,23 @@ private func testDocView(
   subscriberState: SubscriberState,
   currentRoute: Route?
   )
-  ) -> [Node] {
+) -> Node {
   return [
-    doctype,
-    html([
-      head([
-        Html.style(unsafe: renderedNormalizeCss),
-        HtmlCssSupport.style(styleguide),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
-        downgrade(
-          node: minimalNavView(
-            style: data.style,
-            currentUser: data.currentUser,
-            subscriberState: data.subscriberState,
-            currentRoute: data.currentRoute
-          )
+    .doctype,
+    .html(
+      .head(
+        .style(safe: renderedNormalizeCss),
+        .style(styleguide),
+        .meta(viewport: .width(.deviceWidth), .initialScale(1))
+      ),
+      .body(
+        minimalNavView(
+          style: data.style,
+          currentUser: data.currentUser,
+          subscriberState: data.subscriberState,
+          currentRoute: data.currentRoute
         )
       )
-    ])
+    )
   ]
 }

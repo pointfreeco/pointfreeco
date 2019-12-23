@@ -787,7 +787,7 @@ window.addEventListener("load", function() {
           ],
           "Subscribe"
           )
-        : upgrade(node: gitHubLink(
+        : .gitHubLink(
           text: "Log in to Subscribe",
           type: .black,
           href: path(
@@ -799,7 +799,7 @@ window.addEventListener("load", function() {
               )
             )
           )
-      ))
+      )
     )
   )
 }

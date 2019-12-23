@@ -1,7 +1,7 @@
 import Css
 import CssTestSupport
-import Html
-import HtmlSnapshotTesting
+import HtmlUpgradeSnapshotTesting
+import HtmlUpgrade
 import SnapshotTesting
 import Styleguide
 #if !os(Linux)
@@ -27,20 +27,20 @@ class StyleguideTests: XCTestCase {
   }
 
   func testGitHubLink_Black() {
-    let doc: [Node] = [
-      .doctype("html"),
-      html([
-        head([
-          style(unsafe: render(config: .compact, css: styleguide))
-          ]),
-        body([
-          gitHubLink(
+    let doc: Node = [
+      .doctype,
+      .html(
+        .head(
+          .style(unsafe: render(config: .compact, css: styleguide))
+        ),
+        .body(
+          .gitHubLink(
             text: "Login with GitHub",
             type: .black,
             href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
           )
-          ])
-        ])
+        )
+      )
     ]
 
     assertSnapshot(matching: doc, as: .html)
@@ -55,21 +55,21 @@ class StyleguideTests: XCTestCase {
   }
 
   func testGitHubLink_White() {
-    let doc: [Node] = [
-      .doctype("html"),
-      html([
-        head([
-          style(unsafe: render(config: .compact, css: styleguide))
-          ]),
-        body(
-          [style("background: #000")],
-          [gitHubLink(
+    let doc: Node = [
+      .doctype,
+      .html(
+        .head(
+          .style(unsafe: render(config: .compact, css: styleguide))
+        ),
+        .body(
+          attributes: [.style(safe: "background: #000")],
+          .gitHubLink(
             text: "Login with GitHub",
             type: .white,
             href: "https://www.pointfree.co/login?redirect=https://www.pointfree.co"
-            )]
+          )
         )
-        ])
+      )
     ]
 
     assertSnapshot(matching: doc, as: .html)
@@ -84,16 +84,16 @@ class StyleguideTests: XCTestCase {
   }
 
   func testTwitterLink() {
-    let doc: [Node] = [
-      .doctype("html"),
-      html([
-        head([
-          style(unsafe: render(config: .compact, css: styleguide))
-          ]),
-        body(
-          [twitterShareLink(text: "Tweet", url: "https://www.pointfree.co", via: "pointfreeco")]
+    let doc: Node = [
+      .doctype,
+      .html(
+        .head(
+          .style(unsafe: render(config: .compact, css: styleguide))
+        ),
+        .body(
+          .twitterShareLink(text: "Tweet", url: "https://www.pointfree.co", via: "pointfreeco")
         )
-        ])
+      )
     ]
 
     assertSnapshot(matching: doc, as: .html)

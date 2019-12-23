@@ -1,5 +1,4 @@
 import Either
-import Html
 import HttpPipeline
 import Optics
 @testable import PointFree

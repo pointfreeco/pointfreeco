@@ -29,7 +29,7 @@ public func prepareEmail(
       either3(
         content,
         { plain in (plain, nil) },
-        { node in (plainText(for: downgrade(node: node)), render(node)) },
+        { node in (plainText(for: node), render(node)) },
         second { render($0) }
     )
 

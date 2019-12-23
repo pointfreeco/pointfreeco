@@ -171,7 +171,7 @@ private let episodeNotFoundView = { param, user, subscriberState, route in
     data: (param, user, subscriberState, route),
     title: "Episode not found :("
   )
-  } >>> simplePageLayout(_episodeNotFoundView >>> downgrade(node:))
+  } >>> simplePageLayout(_episodeNotFoundView)
 
 private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> Node {
   return .gridRow(

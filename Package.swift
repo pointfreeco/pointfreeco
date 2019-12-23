@@ -344,7 +344,7 @@ let package = Package(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "HtmlSnapshotTesting",
+        "HtmlUpgradeSnapshotTesting",
         "SnapshotTesting",
         "Styleguide",
         ]),
