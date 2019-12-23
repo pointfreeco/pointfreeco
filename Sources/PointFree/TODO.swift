@@ -107,6 +107,10 @@ public func respond<A>(
   _ view: @escaping (A) -> Node
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
-    conn |> respond(body: render(view(conn.data)), contentType: .html)
+    conn
+      |> respond(
+        body: Current.renderUpgradeHtml(view(conn.data)),
+        contentType: .html
+    )
   }
 }
