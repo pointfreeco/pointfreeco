@@ -1,5 +1,5 @@
 import Foundation
-import Html
+import HtmlUpgrade
 
 public struct AtomAuthor {
   public var email: String
@@ -57,17 +57,17 @@ public func atomLayout(atomFeed: AtomFeed) -> [Node] {
       (
         [
           title(atomFeed.title),
-          element(
+          .element(
             "link",
             [
-              .init("href", atomFeed.atomUrl) as Attribute<Void>,
-              .init("rel", "self")
+              ("href", atomFeed.atomUrl),
+              ("rel", "self")
             ],
             // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-            [""]
+            ""
           ),
           // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-          element("link", [.init("href", atomFeed.siteUrl) as Attribute<Void>], [""]),
+          .element("link", [("href", atomFeed.siteUrl)], ""),
           id(atomFeed.siteUrl),
           author([
             name(atomFeed.author.name),
@@ -101,28 +101,32 @@ extension Tag {
   public enum Feed {}
 }
 
-extension Rel {
-  public static let `self` = Rel(rawValue: "self")
+extension Attribute.Rel {
+  public static var `self`: Self { .init(rawValue: "self") }
 }
 
-public func feed(_ attribs: [Attribute<Tag.Feed>], _ content: [Node]) -> Node {
-  return element("feed", attribs, content)
+extension Node {
+  public static func feed(attributes: [Attribute<Tag.Feed>], _ content: Node...) -> Node {
+    return .element("feed", attributes: attributes, .fragment(content))
+  }
+
+  public static func title(_ title: String) -> Node {
+    return .element("title", [], .text(title))
+  }
+
+  public static func link(attributes: [Attribute<Tag.Link>]) -> Node {
+    return .element("link", attributes: attributes, .fragment([]))
+  }
+
+  public static func updated(_ date: Date) -> Node {
+    return element("updated", [.text(atomDateFormatter.string(from: date))])
+  }
 }
 
-public func xmlns(_ xmlns: String) -> Attribute<Tag.Feed> {
-  return .init("xmlns", xmlns)
-}
-
-public func title(_ title: String) -> Node {
-  return element("title", [.text(title)])
-}
-
-public func link(_ attribs: [Attribute<Html.Tag.Link>]) -> Node {
-  return element("link", attribs, [])
-}
-
-public func updated(_ date: Date) -> Node {
-  return element("updated", [.text(atomDateFormatter.string(from: date))])
+extension Attribute where Element == Tag.Feed {
+  public static func xmlns(_ xmlns: String) -> Self {
+    return .init("xmlns", xmlns)
+  }
 }
 
 public func id(_ id: String) -> Node {
