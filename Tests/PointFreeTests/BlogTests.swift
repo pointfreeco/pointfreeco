@@ -1,5 +1,4 @@
 import Either
-import Html
 import HttpPipeline
 @testable import Models
 import ModelsTestSupport

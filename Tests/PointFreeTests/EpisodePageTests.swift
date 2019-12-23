@@ -3,7 +3,6 @@ import DatabaseTestSupport
 import Either
 import GitHub
 import GitHubTestSupport
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport

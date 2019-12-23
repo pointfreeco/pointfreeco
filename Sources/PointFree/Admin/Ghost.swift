@@ -16,7 +16,7 @@ let ghostIndexMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(downgrade(node: indexView))
+    >=> respond({ _ in indexView })
 
 let ghostStartMiddleware: Middleware<
   StatusLineOpen,
