@@ -129,7 +129,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
 private let holidaySpecialCallout: Node = .div(
   attributes: [
     .class([
-      Class.margin([.mobile: [.top: 4, .leftRight: 4]]),
+      Class.margin([.mobile: [.top: 4], .desktop: [.leftRight: 4]]),
     ])
   ],
   holidaySpecialContent
