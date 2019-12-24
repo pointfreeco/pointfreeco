@@ -15,7 +15,7 @@ public func blogPostShowView(
 ) -> Node {
   let showHolidaySpecialCallout = holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
     && subscriberState.isNonSubscriber
-    && post.id != 35
+    && post.id != 36
 
   return [
     .gridRow(
