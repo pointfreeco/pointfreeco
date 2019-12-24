@@ -48,7 +48,7 @@ private func holidaySpecialCalloutView(
         .div(
           attributes: [
             .class([
-              Class.margin([.mobile: [.all: 4]]),
+              Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]]),
             ])
           ],
           holidaySpecialContent
