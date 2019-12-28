@@ -1,5 +1,6 @@
 import Foundation
 import Html
+import HtmlUpgrade
 import HttpPipeline
 import Models
 import PointFreeRouter
@@ -182,25 +183,25 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
 }
 
 // TODO: swift-web
-extension Application {
-  public static var atom = Application(rawValue: "atom+xml")
+extension Html.Application {
+  public static var atom = Html.Application(rawValue: "atom+xml")
 }
 
-public func respond<A>(_ view: @escaping (A) -> [Node], contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ view: @escaping (A) -> HtmlUpgrade.Node, contentType: Html.MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(view(conn.data)),
+        body: Current.renderUpgradeHtml(view(conn.data)),
         contentType: contentType
     )
   }
 }
 
-public func respond<A>(_ nodes: [Node], contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ node: HtmlUpgrade.Node, contentType: Html.MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(nodes),
+        body: Current.renderUpgradeHtml(node),
         contentType: contentType
     )
   }

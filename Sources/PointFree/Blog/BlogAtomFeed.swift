@@ -1,5 +1,5 @@
 import Foundation
-import Html
+import HtmlUpgrade
 import HttpPipeline
 import Models
 import PointFreeRouter
@@ -12,7 +12,7 @@ let blogAtomFeedResponse =
   writeStatus(.ok)
     >=> respond(feedView, contentType: .application(.atom))
 
-private func feedView(posts: [BlogPost]) -> [Node] {
+private func feedView(posts: [BlogPost]) -> Node {
   return atomLayout(
     atomFeed: AtomFeed(
       atomUrl: url(to: .feed(.atom)),
@@ -29,7 +29,7 @@ private func feedView(posts: [BlogPost]) -> [Node] {
 
 private func atomEntry(for post: BlogPost) -> AtomEntry {
   return AtomEntry(
-    content: downgrade(node: blogPostContentView(post)),
+    content: blogPostContentView(post),
     siteUrl: url(to: .blog(.show(slug: post.slug))),
     title: post.title,
     updated: post.publishedAt

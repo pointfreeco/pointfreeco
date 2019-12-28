@@ -12,12 +12,12 @@ public struct AtomAuthor {
 }
 
 public struct AtomEntry {
-  public var content: [Node]
+  public var content: Node
   public var siteUrl: String
   public var title: String
   public var updated: Date
 
-  public init (content: [Node], siteUrl: String, title: String, updated: Date) {
+  public init (content: Node, siteUrl: String, title: String, updated: Date) {
     self.title = title
     self.siteUrl = siteUrl
     self.updated = updated
@@ -41,58 +41,53 @@ public struct AtomFeed {
   }
 }
 
-public func atomLayout(atomFeed: AtomFeed) -> [Node] {
-  let updatedFields = atomFeed.entries
-    .max { $0.updated < $1.updated }
-    .map { updated($0.updated) }
-    .map { [$0] } ?? []
-
+public func atomLayout(atomFeed: AtomFeed) -> Node {
+  let updatedFields = Node.fragment(
+    atomFeed.entries
+      .max { $0.updated < $1.updated }
+      .map { Node.updated($0.updated) }
+      .map { [$0] } ?? []
+  )
+  
   return [
     .raw("""
       <?xml version="1.0" encoding="utf-8"?>
       """
     ),
-    feed(
-      [xmlns("http://www.w3.org/2005/Atom")],
-      (
+    .feed(
+      attributes: [.xmlns("http://www.w3.org/2005/Atom")],
+      .title(atomFeed.title),
+      .element(
+        "link",
         [
-          title(atomFeed.title),
-          .element(
-            "link",
-            [
-              ("href", atomFeed.atomUrl),
-              ("rel", "self")
-            ],
-            // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-            ""
-          ),
-          // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-          .element("link", [("href", atomFeed.siteUrl)], ""),
-          id(atomFeed.siteUrl),
-          author([
-            name(atomFeed.author.name),
-            email(atomFeed.author.email)
-            ]),
-          ]
-          + updatedFields
-          + atomFeed.entries.flatMap(atomEntry)
-        )
-        .compactMap { $0 }
+          ("href", atomFeed.atomUrl),
+          ("rel", "self")
+        ],
+        // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+        ""
+      ),
+      // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+      .element("link", [("href", atomFeed.siteUrl)], ""),
+      .id(atomFeed.siteUrl),
+      .author(
+        .name(atomFeed.author.name),
+        .email(atomFeed.author.email)
+      ),
+      updatedFields,
+      .fragment(atomFeed.entries.map(atomEntry))
     )
   ]
 }
 
-public func atomEntry(_ atomEntry: AtomEntry) -> [Node] {
-  return [
-    entry([
-      title(atomEntry.title),
-      // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
-      element("link", [.init("href", atomEntry.siteUrl) as Attribute<Void>], [""]),
-      updated(atomEntry.updated),
-      id(atomEntry.siteUrl),
-      content([type("html")], atomEntry.content)
-      ])
-  ]
+public func atomEntry(_ atomEntry: AtomEntry) -> Node {
+  return .entry(
+    .title(atomEntry.title),
+    // NB: we need this so that the `<link>` is rendered with a close tag, which is required for XML.
+    .element("link", [("href", atomEntry.siteUrl)], ""),
+    .updated(atomEntry.updated),
+    .id(atomEntry.siteUrl),
+    .content(attributes: [.type("html")], atomEntry.content)
+  )
 }
 
 extension Tag {
@@ -119,7 +114,23 @@ extension Node {
   }
 
   public static func updated(_ date: Date) -> Node {
-    return element("updated", [.text(atomDateFormatter.string(from: date))])
+    return .element("updated", [], .text(atomDateFormatter.string(from: date)))
+  }
+
+  public static func id(_ id: String) -> Node {
+    return .element("id", [], .text(id))
+  }
+
+  public static func author(_ content: ChildOf<Tag.Author>...) -> Node {
+    return .element("author", [], .fragment(content.map { $0.rawValue }))
+  }
+
+  public static func content(attributes: [Attribute<Tag.Content>], _ content: Node...) -> Node {
+    return .element("content", attributes: attributes, .raw("<![CDATA[" + render(content) + "]]>"))
+  }
+
+  public static func entry(_ content: Node...) -> Node {
+    return .element("entry", [], .fragment(content))
   }
 }
 
@@ -129,32 +140,20 @@ extension Attribute where Element == Tag.Feed {
   }
 }
 
-public func id(_ id: String) -> Node {
-  return element("id", [.text(id)])
+extension ChildOf where Element == Tag.Author {
+  public static func name(_ name: String) -> ChildOf {
+    return .init(.element("name", [], .text(name)))
+  }
+
+  public static func email(_ email: String) -> ChildOf {
+    return .init(.element("email", [], .text(email)))
+  }
 }
 
-public func author(_ content: [ChildOf<Tag.Author>]) -> Node {
-  return element("author", content.map { $0.rawValue })
-}
-
-public func name(_ name: String) -> ChildOf<Tag.Author> {
-  return .init(element("name", [.text(name)]))
-}
-
-public func email(_ email: String) -> ChildOf<Tag.Author> {
-  return .init(element("email", [.text(email)]))
-}
-
-public func entry(_ content: [Node]) -> Node {
-  return element("entry", content)
-}
-
-public func content(_ attribs: [Attribute<Tag.Content>], _ content: [Node]) -> Node {
-  return element("content", attribs, [.raw("<![CDATA[" + render(content) + "]]>")])
-}
-
-public func type(_ type: String) -> Attribute<Tag.Content> {
-  return .init("type", type)
+extension Attribute where Element == Tag.Content {
+  public static func type(_ type: String) -> Attribute {
+    return .init("type", type)
+  }
 }
 
 private let atomDateFormatter = { () -> DateFormatter in

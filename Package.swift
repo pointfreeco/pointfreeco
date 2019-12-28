@@ -352,7 +352,6 @@ let package = Package(
     .target(
       name: "Syndication",
       dependencies: [
-        "Html",
         "HtmlUpgrade",
         ]),
 
