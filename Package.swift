@@ -96,7 +96,6 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
-        "Html",
         "HtmlUpgrade",
         "SnapshotTesting",
         ]
@@ -334,7 +333,6 @@ let package = Package(
       dependencies: [
         "Css",
         "FunctionalCss",
-        "Html",
         "HtmlUpgrade",
         "HtmlCssSupport",
         "Prelude",
@@ -366,7 +364,6 @@ let package = Package(
       dependencies: [
         "Css",
         "FunctionalCss",
-        "Html",
         "HtmlUpgrade",
         "PointFreeRouter",
         "Prelude",
