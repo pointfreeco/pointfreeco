@@ -48,7 +48,7 @@ public func atomLayout(atomFeed: AtomFeed) -> Node {
       .map { Node.updated($0.updated) }
       .map { [$0] } ?? []
   )
-  
+
   return [
     .raw("""
       <?xml version="1.0" encoding="utf-8"?>
