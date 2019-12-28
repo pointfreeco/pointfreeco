@@ -15,7 +15,7 @@ public func blogPostShowView(
 ) -> Node {
   let showHolidaySpecialCallout = holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
     && subscriberState.isNonSubscriber
-    && post.id != 35
+    && post.id != 36
 
   return [
     .gridRow(
@@ -129,7 +129,7 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
 private let holidaySpecialCallout: Node = .div(
   attributes: [
     .class([
-      Class.margin([.mobile: [.top: 4, .leftRight: 4]]),
+      Class.margin([.mobile: [.top: 4], .desktop: [.leftRight: 4]]),
     ])
   ],
   holidaySpecialContent

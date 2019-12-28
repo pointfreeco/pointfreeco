@@ -216,7 +216,7 @@ private func leftColumnView(
 private let holidayCallout: Node = .div(
   attributes: [
     .class([
-      Class.margin([.mobile: [.all: 4]]),
+      Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]]),
     ])
   ],
   holidaySpecialContent
