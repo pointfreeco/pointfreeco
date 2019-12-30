@@ -14,7 +14,7 @@ However, since we are still in the early days of this technology, it is not yet 
 
 Luckily there’s a very simple way to get broad test coverage on any SwiftUI view today, and it’s done using the [snapshot testing](https://github.com/pointfreeco/swift-snapshot-testing) library we open sourced one year ago!
 
-In this week’s [free episode](/episodes/ep86-snapshot-testing-swiftui) we demonstrate how to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to the application we have been building over the past many weeks. We show off lots of really cool things:
+In this week’s [free episode](/episodes/ep86-swiftui-snapshot-testing) we demonstrate how to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to the application we have been building over the past many weeks. We show off lots of really cool things:
 
 - It’s easy to add [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to our project via the Swift Package Manager and its Xcode integration.
 - We can immediately get snapshot test coverage on any SwiftUI view by using `UIHostingController`.
@@ -22,7 +22,7 @@ In this week’s [free episode](/episodes/ep86-snapshot-testing-swiftui) we demo
 - We can even further perform a kind of “integration test” by using the composable architecture to play a script of user actions and take screen shots of the UI every step of the way.
 - And finally, we demonstrate how this form of testing compares with the XCUITest framework that Apple gives us.
 
-If you find any of this interesting, hop on over to our 100% [free episode](/episodes/ep86-snapshot-testing-swiftui) demonstrating how all of this (and more) is possible!
+If you find any of this interesting, hop on over to our 100% [free episode](/episodes/ep86-swiftui-snapshot-testing) demonstrating how all of this (and more) is possible!
 """#,
       timestamp: nil,
       type: .paragraph
