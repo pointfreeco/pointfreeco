@@ -871,7 +871,7 @@ func testAccount() {
   assertSnapshot(matching: result.perform())
 
   #if !os(Linux)
-  if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+  if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
     let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
     webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
     assertSnapshot(matching: webView, named: "desktop")
@@ -993,7 +993,7 @@ We call `assertSnapshot` a couple other times in this test.
   Episode.TranscriptBlock(
     content: """
 #if !os(Linux)
-if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
   let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1080, height: 2000))
   webView.loadHTMLString(String(decoding: result.perform().data, as: UTF8.self), baseURL: nil)
   assertSnapshot(matching: webView, named: "desktop")
