@@ -1,5 +1,5 @@
 import Foundation
-import HtmlUpgrade
+import Html
 
 public struct RssChannel {
   public var copyright: String

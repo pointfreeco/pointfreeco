@@ -1,6 +1,6 @@
 import FunctionalCss
 import Either
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Mailgun
 import Models

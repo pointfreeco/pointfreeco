@@ -4,7 +4,7 @@ import Css
 import Dispatch
 import Either
 import Foundation
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import HtmlPlainTextPrint
 import HttpPipelineHtmlSupport
@@ -97,10 +97,6 @@ public func responseTimeout(_ interval: TimeInterval)
         return timeout.sequential
       }
     }
-}
-
-public func plainText(for node: Node) -> String {
-  return plainText(for: downgrade(node: node))
 }
 
 public func respond<A>(

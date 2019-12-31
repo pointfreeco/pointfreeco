@@ -1,5 +1,5 @@
 @testable import GitHub
-import HtmlUpgrade
+import Html
 import HtmlSnapshotTesting
 import Models
 import ModelsTestSupport

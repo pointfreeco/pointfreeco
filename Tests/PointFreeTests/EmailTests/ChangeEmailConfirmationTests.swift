@@ -1,5 +1,5 @@
 import SnapshotTesting
-import HtmlUpgrade
+import Html
 import Prelude
 import XCTest
 @testable import PointFree

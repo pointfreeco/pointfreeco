@@ -32,12 +32,11 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .exact("0.2.1")),
-    .package(url: "https://github.com/stephencelis/swift-html-1.git", .branch("pointfreeco-upgrade")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .branch("void-element-fixes")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b26e98e")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("f2a0d12")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("upgrade-html")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [
@@ -86,7 +85,7 @@ let package = Package(
       name: "FunctionalCss",
       dependencies: [
         "Css",
-        "HtmlUpgrade",
+        "Html",
         "Prelude"
       ]
     ),
@@ -96,7 +95,7 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "FunctionalCss",
-        "HtmlUpgrade",
+        "Html",
         "SnapshotTesting",
         ]
     ),
@@ -196,7 +195,7 @@ let package = Package(
         "Html",
         "HtmlCssSupport",
         "HtmlPlainTextPrint",
-        "HtmlUpgrade",
+        "Html",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Mailgun",
@@ -220,7 +219,7 @@ let package = Package(
       dependencies: [
         "CssTestSupport",
         "HtmlSnapshotTesting",
-        "HtmlUpgradeSnapshotTesting",
+        "HtmlSnapshotTesting",
         "HttpPipelineTestSupport",
         "PointFree",
         "PointFreeTestSupport",
@@ -333,7 +332,7 @@ let package = Package(
       dependencies: [
         "Css",
         "FunctionalCss",
-        "HtmlUpgrade",
+        "Html",
         "HtmlCssSupport",
         "Prelude",
         ]),
@@ -342,7 +341,7 @@ let package = Package(
       name: "StyleguideTests",
       dependencies: [
         "CssTestSupport",
-        "HtmlUpgradeSnapshotTesting",
+        "HtmlSnapshotTesting",
         "SnapshotTesting",
         "Styleguide",
         ]),
@@ -350,7 +349,7 @@ let package = Package(
     .target(
       name: "Syndication",
       dependencies: [
-        "HtmlUpgrade",
+        "Html",
         ]),
 
     .testTarget(
@@ -364,7 +363,7 @@ let package = Package(
       dependencies: [
         "Css",
         "FunctionalCss",
-        "HtmlUpgrade",
+        "Html",
         "PointFreeRouter",
         "Prelude",
         "Styleguide",

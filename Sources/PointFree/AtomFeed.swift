@@ -1,6 +1,5 @@
 import Foundation
 import Html
-import HtmlUpgrade
 import HttpPipeline
 import Models
 import PointFreeRouter
@@ -187,7 +186,7 @@ extension Html.Application {
   public static var atom = Html.Application(rawValue: "atom+xml")
 }
 
-public func respond<A>(_ view: @escaping (A) -> HtmlUpgrade.Node, contentType: Html.MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
@@ -197,7 +196,7 @@ public func respond<A>(_ view: @escaping (A) -> HtmlUpgrade.Node, contentType: H
   }
 }
 
-public func respond<A>(_ node: HtmlUpgrade.Node, contentType: Html.MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(

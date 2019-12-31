@@ -8,7 +8,7 @@ import Either
 import Foundation
 import GitHub
 import GitHubTestSupport
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
@@ -40,7 +40,7 @@ extension Environment {
     gitHub: .some(.mock),
     logger: .mock,
     mailgun: .mock,
-    renderUpgradeHtml: HtmlUpgrade.render,
+    renderUpgradeHtml: Html.render,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
   )

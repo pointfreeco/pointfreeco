@@ -1,7 +1,7 @@
 import ApplicativeRouter
 import Foundation
 import Either
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import Models
 import Optics
