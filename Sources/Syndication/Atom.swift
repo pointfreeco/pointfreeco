@@ -97,7 +97,7 @@ extension Tag {
 }
 
 extension Attribute.Rel {
-  public static var `self`: Attribute.Rel { .init(rawValue: "self") }
+  public static var `self`: Attribute.Rel { return .init(rawValue: "self") }
 }
 
 extension Node {
