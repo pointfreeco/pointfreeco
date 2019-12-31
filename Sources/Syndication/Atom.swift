@@ -97,7 +97,7 @@ extension Tag {
 }
 
 extension Attribute.Rel {
-  public static var `self`: Self { .init(rawValue: "self") }
+  public static var `self`: Attribute.Rel { .init(rawValue: "self") }
 }
 
 extension Node {
@@ -135,7 +135,7 @@ extension Node {
 }
 
 extension Attribute where Element == Tag.Feed {
-  public static func xmlns(_ xmlns: String) -> Self {
+  public static func xmlns(_ xmlns: String) -> Attribute {
     return .init("xmlns", xmlns)
   }
 }
