@@ -316,8 +316,11 @@ deploy-production:
 	@heroku container:push web -a pointfreeco
 	@heroku container:release web -a pointfreeco
 
-test-linux: sourcery
+test-linux:
 	docker-compose up --abort-on-container-exit --build
+
+test-swift:
+	swift test
 
 test-oss: db
 	@$(SWIFT) test -Xswiftc "-D" -Xswiftc "OSS"
