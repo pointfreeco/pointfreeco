@@ -12,8 +12,14 @@ jobs:
       run: brew install postgresql
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
+    - name: Install CommonMark
+      run: brew install cmark
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+    - name: Start Postgres
+      run: brew services start postgresql
     - name: Run tests
-      run: make test-swift
+      run: make test-oss
 
   ubuntu:
     name: Ubuntu
