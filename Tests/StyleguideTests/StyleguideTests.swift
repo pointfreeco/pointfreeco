@@ -46,7 +46,7 @@ class StyleguideTests: XCTestCase {
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
       let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -75,7 +75,7 @@ class StyleguideTests: XCTestCase {
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
       let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 190, height: 40))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -99,7 +99,7 @@ class StyleguideTests: XCTestCase {
     assertSnapshot(matching: doc, as: .html)
 
     #if !os(Linux)
-    if ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
       let webView = WKWebView.init(frame: NSRect(x: 0, y: 0, width: 80, height: 36))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
