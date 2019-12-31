@@ -15,7 +15,11 @@ class DatabaseTestCase: XCTestCase {
 
     self.database = .init(
       databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test",
-      logger: Logger()
+      logger: Logger(
+        level: .debug,
+        output: StandardFileHandle(handle: .nullDevice),
+        error: StandardFileHandle(handle: .nullDevice)
+      )
     )
 
     _ = try! self.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
