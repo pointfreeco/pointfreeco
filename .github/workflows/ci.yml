@@ -8,6 +8,10 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Install Postgres
+      run: brew install postgresql
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
     - name: Run tests
       run: make test-swift
 
