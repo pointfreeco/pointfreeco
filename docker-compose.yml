@@ -10,10 +10,21 @@ services:
       - '5433:5432'
     restart: always
 
-  web:
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.local
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     DATABASE_URL: postgres://pointfreeco:@db:5432/pointfreeco_development
+  #   ports:
+  #     - '8080:8080'
+
+  ci:
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile.ci
     depends_on:
       - db
     environment:
