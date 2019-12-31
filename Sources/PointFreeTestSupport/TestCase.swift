@@ -45,7 +45,7 @@ open class TestCase: XCTestCase {
   }
 
   public var isScreenshotTestingAvailable: Bool {
-    if ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if ProcessInfo.processInfo.environment["GITHUB_WORKFLOW"] == nil {
       return true
     } else {
       return false
