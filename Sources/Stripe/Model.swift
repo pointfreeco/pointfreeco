@@ -353,7 +353,6 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-//  public var amount: Cents<Int>?
   public var created: Date
   public var currency: Currency
   public var id: Id
@@ -378,7 +377,6 @@ public struct Plan: Codable, Equatable {
     nickname: String,
     tiers: [Tier]?
     ) {
-//    self.amount = amount
     self.created = created
     self.currency = currency
     self.id = id
