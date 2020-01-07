@@ -1,6 +1,6 @@
 import Css
 import Foundation
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import Styleguide

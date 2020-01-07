@@ -2,7 +2,7 @@ import Css
 import FunctionalCss
 import HtmlCssSupport
 import Foundation
-import HtmlUpgrade
+import Html
 import Prelude
 
 public enum GitHubLinkType {

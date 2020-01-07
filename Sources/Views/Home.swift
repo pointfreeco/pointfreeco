@@ -1,7 +1,7 @@
 import Css
 import Foundation
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter

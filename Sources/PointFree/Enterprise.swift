@@ -2,7 +2,7 @@ import Css
 import Either
 import FunctionalCss
 import Foundation
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport

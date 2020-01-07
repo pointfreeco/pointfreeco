@@ -1,7 +1,7 @@
 import Css
 import CssTestSupport
-import HtmlUpgradeSnapshotTesting
-import HtmlUpgrade
+import HtmlSnapshotTesting
+import Html
 import SnapshotTesting
 import Styleguide
 #if !os(Linux)

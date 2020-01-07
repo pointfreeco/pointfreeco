@@ -1,6 +1,6 @@
 import ApplicativeRouter
 import Either
-import HtmlUpgrade
+import Html
 import HtmlPlainTextPrint
 import Mailgun
 import Models

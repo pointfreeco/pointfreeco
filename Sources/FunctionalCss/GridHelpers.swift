@@ -1,5 +1,5 @@
 import Css
-import HtmlUpgrade
+import Html
 
 // TODO: extract to grid helpers in design systems?
 extension Node {
