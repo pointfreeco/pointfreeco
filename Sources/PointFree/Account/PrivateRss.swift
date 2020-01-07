@@ -138,7 +138,7 @@ private func validateUserAgent<Z>(
 
     guard
       let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
-      userAgent.contains("slack") || userAgent.contains("twitter") || userAgent.contains("facebook")
+      Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
       else { return middleware(conn) }
 
     return Current.database.updateUser(user.id, nil, nil, nil, nil, User.RssSalt(rawValue: Current.uuid()))
