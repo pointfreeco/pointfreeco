@@ -256,7 +256,6 @@ private func runStripe<A>(_ secretKey: Client.SecretKey, _ logger: Logger?) -> (
               do {
                 return try jsonDecoder.decode(A.self, from: data)
               } catch {
-                print(error)
                 throw (try? jsonDecoder.decode(StripeErrorEnvelope.self, from: data))
                   ?? JSONError.error(String(decoding: data, as: UTF8.self), error) as Error
               }
