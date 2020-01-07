@@ -237,7 +237,7 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
   return DecodableRequest(
     rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
-      <> setHeader("Stripe-Version", "2018-11-08")
+      <> setHeader("Stripe-Version", "2019-12-03")
   )
 }
 

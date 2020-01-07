@@ -90,8 +90,8 @@ extension Invoice {
       amountDue: 0_00,
       amountPaid: 17_00,
       charge: charge,
+      created: .mock,
       customer: "cus_test",
-      date: .mock,
       discount: nil,
       id: "in_test",
       lines: .mock([.mock]),
@@ -139,7 +139,6 @@ extension Plan {
     interval: .month,
     metadata: [:],
     nickname: "Individual Monthly",
-    statementDescriptor: nil,
     tiers: [
       Tier(unitAmount: 16_00, upTo: 1),
       Tier(unitAmount: 18_00, upTo: nil)
@@ -179,7 +178,7 @@ extension Subscription {
     items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
-    start: .mock,
+    startDate: .mock,
     status: .active
   )
 
