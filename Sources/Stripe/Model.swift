@@ -393,7 +393,7 @@ public struct Plan: Codable, Equatable {
 
   public func amount(for quantity: Int) -> Cents<Int> {
     // TODO: what to do with force unwrap?
-    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.unitAmount
     return amount.map { $0 * quantity }
   }
 
@@ -409,10 +409,6 @@ public struct Plan: Codable, Equatable {
   }
 
   public struct Tier: Codable, Equatable {
-    // TODO: remove
-    public var amount: Cents<Int> {
-      return self.unitAmount
-    }
     public var unitAmount: Cents<Int>
     public var upTo: Int?
 
@@ -422,7 +418,6 @@ public struct Plan: Codable, Equatable {
     }
 
     private enum CodingKeys: String, CodingKey {
-//      case amount
       case unitAmount = "unit_amount"
       case upTo = "up_to"
     }
