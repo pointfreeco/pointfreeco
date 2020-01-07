@@ -418,7 +418,6 @@ public struct Plan: Codable, Equatable {
   }
 
   private enum CodingKeys: String, CodingKey {
-//    case amount
     case created
     case currency
     case id
