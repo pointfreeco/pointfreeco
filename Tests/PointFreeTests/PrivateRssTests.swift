@@ -141,6 +141,7 @@ class PrivateRssTests: TestCase {
       &Current,
       \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
+      \.envVars.rssUserAgentWatchlist .~ ["blob"],
       \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
     )
@@ -152,7 +153,7 @@ class PrivateRssTests: TestCase {
       to: .account(.rss(userId: userId, rssSalt: rssSalt)),
       session: .loggedOut
     )
-    req.allHTTPHeaderFields?["User-Agent"] = "SlackExpand"
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
 
     let conn = connection(from: req)
 
@@ -165,7 +166,8 @@ class PrivateRssTests: TestCase {
     update(
       &Current,
       \.database .~ .mock,
-      \.database.fetchUserById .~ const(pure(.some(user)))
+      \.database.fetchUserById .~ const(pure(.some(user))),
+      \.envVars.rssUserAgentWatchlist .~ ["blob"]
     )
     
     Current.database.updateUser = { _, _, _, _, _, _ in
@@ -180,7 +182,7 @@ class PrivateRssTests: TestCase {
       to: .account(.rss(userId: userId, rssSalt: rssSalt)),
       session: .loggedOut
     )
-    req.allHTTPHeaderFields?["User-Agent"] = "SlackExpand"
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
 
     let conn = connection(from: req)
 
