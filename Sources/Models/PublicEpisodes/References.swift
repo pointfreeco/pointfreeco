@@ -782,6 +782,18 @@ their errors.
     title: "Validated"
   )
 
+  public static let testingAndDeclarativeUIs = Episode.Reference(
+    author: "Nataliya Patsovska",
+    blurb: #"""
+Nataliya gives a great talk on some of the ways to test SwiftUI views, and leverages Xcode previews to make snapshot testing even more powerful.
+
+> With SwiftUI and Combine, Apple is changing its approach for how we define data flows and UI. As we move from playing with sample code to writing production apps, it’s time to start thinking about testing. Nataliya will show how to apply several learnings from her experience with declarative UIs to this new reality.
+"""#,
+    link: "https://www.youtube.com/watch?v=tk0HzScvW2M",
+    publishedAt: referenceDateFormatter.date(from: "2019-10-24"),
+    title: "Testing and Declarative UI's"
+  )
+
   public static let parsec = Episode.Reference(
     author: "Daan Leijen, Paolo Martini, Antoine Latter",
     blurb: """
@@ -889,7 +901,6 @@ The Wikipedia entry for monads.
     publishedAt: Date(timeIntervalSince1970: 607410000),
     title: "Why Functional Programming Matters"
   )
-
 }
 
 let referenceDateFormatter = { () -> DateFormatter in
