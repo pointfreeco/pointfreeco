@@ -416,9 +416,8 @@ public struct Plan: Codable, Equatable {
     public var unitAmount: Cents<Int>
     public var upTo: Int?
 
-    // TODO: update init
-    public init(amount: Cents<Int>, upTo: Int?) {
-      self.unitAmount = amount
+    public init(unitAmount: Cents<Int>, upTo: Int?) {
+      self.unitAmount = unitAmount
       self.upTo = upTo
     }
 
