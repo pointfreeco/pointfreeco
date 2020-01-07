@@ -1,7 +1,7 @@
 import Ccmark
 import Css
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import PointFreePrelude
 import Prelude

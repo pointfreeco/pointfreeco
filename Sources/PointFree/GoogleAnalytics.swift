@@ -1,4 +1,4 @@
-import HtmlUpgrade
+import Html
 
 public func addGoogleAnalytics(_ node: Node) -> Node {
   switch node {

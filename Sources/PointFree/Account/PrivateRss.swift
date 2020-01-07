@@ -138,7 +138,7 @@ private func validateUserAgent<Z>(
 
     guard
       let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
-      userAgent.contains("slack") || userAgent.contains("twitter") || userAgent.contains("facebook")
+      Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
       else { return middleware(conn) }
 
     return Current.database.updateUser(user.id, nil, nil, nil, nil, User.RssSalt(rawValue: Current.uuid()))
@@ -185,13 +185,11 @@ private func fetchStripeSubscriptionForUser<A>(
     }
 }
 
-private let privateEpisodesFeedView = itunesRssFeedLayout { (data: (subscription: Stripe.Subscription?, user: User)) -> [Node] in
-  [
-    node(
-      rssChannel: privateRssChannel(user: data.user),
-      items: items(forUser: data.user, subscription: data.subscription)
-    )
-  ]
+private let privateEpisodesFeedView = itunesRssFeedLayout { (data: (subscription: Stripe.Subscription?, user: User)) -> Node in
+  node(
+    rssChannel: privateRssChannel(user: data.user),
+    items: items(forUser: data.user, subscription: data.subscription)
+  )
 }
 
 func privateRssChannel(user: User) -> RssChannel {
@@ -297,12 +295,10 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
 }
 
 private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
-  [
-    node(
-      rssChannel: invalidatedChannel(errorMessage: errorMessage),
-      items: [invalidatedItem(errorMessage: errorMessage)]
-    )
-  ]
+  node(
+    rssChannel: invalidatedChannel(errorMessage: errorMessage),
+    items: [invalidatedItem(errorMessage: errorMessage)]
+  )
 }
 
 private func invalidatedChannel(errorMessage: String) -> RssChannel {

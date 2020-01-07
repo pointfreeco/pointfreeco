@@ -1,7 +1,7 @@
 import Css
 import FunctionalCss
 import Foundation
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import PointFreeRouter
 import Prelude

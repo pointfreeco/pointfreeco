@@ -1,6 +1,6 @@
 import FunctionalCss
 import GitHub
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Optics
 import PointFreeRouter

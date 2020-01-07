@@ -1,5 +1,5 @@
 import Foundation
-import HtmlUpgrade
+import Html
 import Models
 import Optics
 import PointFreeRouter
