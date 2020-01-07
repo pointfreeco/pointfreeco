@@ -4,7 +4,7 @@ import Css
 import Dispatch
 import Either
 import Foundation
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import HtmlPlainTextPrint
 import HttpPipelineHtmlSupport
@@ -99,17 +99,13 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-public func plainText(for node: Node) -> String {
-  return plainText(for: downgrade(node: node))
-}
-
 public func respond<A>(
   _ view: @escaping (A) -> Node
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderUpgradeHtml(view(conn.data)),
+        body: Current.renderHtml(view(conn.data)),
         contentType: .html
     )
   }
