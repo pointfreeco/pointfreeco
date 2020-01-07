@@ -1,4 +1,4 @@
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import ModelsTestSupport

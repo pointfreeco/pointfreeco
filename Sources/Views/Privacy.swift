@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Prelude
 import Styleguide

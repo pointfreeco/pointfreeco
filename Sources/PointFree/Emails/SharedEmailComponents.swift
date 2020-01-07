@@ -1,5 +1,5 @@
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Foundation
 import Models
@@ -97,8 +97,8 @@ private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
 // TODO: move into a package for html email helpers.
 extension Node {
   public static func emailTable(
-    attributes: [Attribute<HtmlUpgrade.Tag.Table>],
-    _ content: ChildOf<HtmlUpgrade.Tag.Table>...
+    attributes: [Attribute<Tag.Table>],
+    _ content: ChildOf<Tag.Table>...
   ) -> Node {
     return .table(attributes: [.border(0), .cellpadding(0), .cellspacing(0)] + attributes, .fragment(content))
   }

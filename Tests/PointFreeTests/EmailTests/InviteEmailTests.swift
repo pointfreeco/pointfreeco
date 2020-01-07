@@ -1,5 +1,6 @@
 import SnapshotTesting
-import HtmlUpgrade
+import Html
+import HtmlPlainTextPrint
 import Prelude
 import XCTest
 @testable import PointFree

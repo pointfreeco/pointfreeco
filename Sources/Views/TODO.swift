@@ -1,5 +1,5 @@
 import Css
-import HtmlUpgrade
+import Html
 import HttpPipeline
 import Models
 import PointFreeRouter

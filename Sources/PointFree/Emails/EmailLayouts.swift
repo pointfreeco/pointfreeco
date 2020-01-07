@@ -1,5 +1,5 @@
 import Css
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import Prelude

@@ -1,5 +1,6 @@
 @testable import GitHub
-import HtmlUpgrade
+import Html
+import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 @testable import PointFree
