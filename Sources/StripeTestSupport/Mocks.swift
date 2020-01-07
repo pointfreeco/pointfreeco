@@ -132,7 +132,6 @@ extension ListEnvelope {
 
 extension Plan {
   public static let mock = Plan(
-    amount: 17_00,
     created: .mock,
     currency: .usd,
     id: .monthly,

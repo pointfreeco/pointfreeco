@@ -368,7 +368,6 @@ public struct Plan: Codable, Equatable {
   }
 
   public init(
-    amount: Cents<Int>,
     created: Date,
     currency: Currency,
     id: Id,
