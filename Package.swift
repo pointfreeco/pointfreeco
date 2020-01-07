@@ -32,11 +32,11 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
-    .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("7459d52")),
+    .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("7db1167")),
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("b26e98e")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("926e8e0")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("1c8052c")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("0ab5190")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
     ],
   targets: [

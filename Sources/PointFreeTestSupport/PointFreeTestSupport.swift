@@ -40,7 +40,8 @@ extension Environment {
     gitHub: .some(.mock),
     logger: .mock,
     mailgun: .mock,
-    renderUpgradeHtml: Html.render,
+    renderHtml: Html.render,
+    renderXml: Html._xmlRender,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
   )
@@ -114,10 +115,13 @@ extension UUID {
 extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
-      let renderUpgradeHtml = Current.renderUpgradeHtml
-      update(&Current, \.renderUpgradeHtml .~ { debugRender($0) })
+      let renderHtml = Current.renderHtml
+      let renderXml = Current.renderXml
+      Current.renderHtml = { debugRender($0) }
+      Current.renderXml = { _debugXmlRender($0) }
       let conn = io.perform()
-      update(&Current, \.renderUpgradeHtml .~ renderUpgradeHtml)
+      Current.renderHtml = renderHtml
+      Current.renderXml = renderXml
       return conn
     }
   }

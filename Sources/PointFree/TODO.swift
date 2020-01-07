@@ -105,7 +105,7 @@ public func respond<A>(
   return { conn in
     conn
       |> respond(
-        body: Current.renderUpgradeHtml(view(conn.data)),
+        body: Current.renderHtml(view(conn.data)),
         contentType: .html
     )
   }

@@ -114,7 +114,7 @@ func respond<A, B>(
       return conn
         |> writeSessionCookieMiddleware(\.flash .~ nil)
         >=> respond(
-          body: Current.renderUpgradeHtml(pageLayout(newLayoutData)),
+          body: Current.renderHtml(pageLayout(newLayoutData)),
           contentType: .html
       )
     }

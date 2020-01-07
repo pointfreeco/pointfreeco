@@ -22,7 +22,8 @@ public struct Environment {
   public var gitHub: GitHub.Client!
   public var logger = Logger()
   public var mailgun: Mailgun.Client!
-  public var renderUpgradeHtml: (Node) -> String = Html.render
+  public var renderHtml: (Node) -> String = Html.render
+  public var renderXml: (Node) -> String = Html._xmlRender
   public var stripe: Stripe.Client!
   public var uuid: () -> UUID = UUID.init
 }

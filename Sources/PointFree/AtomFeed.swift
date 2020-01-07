@@ -190,7 +190,7 @@ public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .
   return { conn in
     conn
       |> respond(
-        body: Current.renderUpgradeHtml(view(conn.data)),
+        body: Current.renderXml(view(conn.data)),
         contentType: contentType
     )
   }
@@ -200,7 +200,7 @@ public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middlewa
   return { conn in
     conn
       |> respond(
-        body: Current.renderUpgradeHtml(node),
+        body: Current.renderXml(node),
         contentType: contentType
     )
   }
