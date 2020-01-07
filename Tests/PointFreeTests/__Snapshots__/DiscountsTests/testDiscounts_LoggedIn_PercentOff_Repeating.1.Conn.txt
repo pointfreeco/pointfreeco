@@ -3,7 +3,7 @@ Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 55089
+Content-Length: 55360
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1904,6 +1904,9 @@ html {
           </a>
         </div>
       </div>
+      <input name="isOwnerTakingSeat"
+             type="hidden"
+             value="true">
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -1955,7 +1958,7 @@ html {
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — 22% off!
+                Yearly — Save 22% off monthly billing!
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2132,9 +2135,19 @@ html {
                name="coupon"
                placeholder="Coupon Code"
                type="hidden"
-               value="coupon-deadbeef">
-        <div class="m-pb2
-                    m-pt3
+               value="deadbeef">
+      </div>
+      <div class="d-ml4
+                  d-mr4
+                  m-ml2
+                  m-mr2
+                  d-pb4
+                  d-pt3
+                  m-pb4
+                  m-pt3
+                  middle-m
+                  row">
+        <div class="m-pb4
                     col-m
                     col-m-12">
           <span class="fg-black
@@ -2149,21 +2162,14 @@ html {
                        h6
                        lh-4
                        fg-gray400">
-             You are using the coupon <strong>Student Discount</strong>
-            , which gives you 50% off every billing period.
+            <br>
+            <br>
+             You are using the coupon <strong>50% off 12 months</strong>
+            , which gives you 
+            50% off every billing period for the first 12 months
+            .
           </span>
         </div>
-      </div>
-      <div class="d-ml4
-                  d-mr4
-                  m-ml2
-                  m-mr2
-                  d-pb4
-                  d-pt3
-                  m-pb4
-                  m-pt3
-                  middle-m
-                  row">
         <div class="start-m
                     col-m">
           <div class="flex
@@ -2191,8 +2197,9 @@ function updateSeats() {
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
     teamMemberInputs[idx].name = "teammates[" + idx + "]"
   }
+  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers
-    ? teamMembers.childNodes.length + 1
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats

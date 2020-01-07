@@ -2,6 +2,14 @@ import Foundation
 
 extension Episode.Reference {
 
+  public static let accessControl = Episode.Reference(
+    author: "Apple",
+    blurb: "This chapter of the Swift Programming Language book explains access control in depth and how it affects module imports.",
+    link: "https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html",
+    publishedAt: nil,
+    title: "Access Control"
+  )
+
   public static let aLittleRespectForAnySequence = Episode.Reference(
     author: "Rob Napier",
     blurb: "This blog post explores the need for `AnySequence` in Swift as a pattern for working around some of the shortcomings of protocols in Swift.",
@@ -38,6 +46,16 @@ The topic of category theory in mathematics formalizes the idea we were grasping
     title: "Category Theory"
   )
 
+  public static let combineFramework = Episode.Reference(
+    author: nil,
+    blurb: """
+Combine is Apple's framework for reactive programming.
+""",
+    link: "https://developer.apple.com/documentation/combine",
+    publishedAt: nil,
+    title: "Combine"
+  )
+
   public static let combinatorsDanielSteinberg = Episode.Reference(
     author: "Daniel Steinberg",
     blurb: """
@@ -48,6 +66,16 @@ Daniel gives a wonderful overview of how the idea of "combinators" infiltrates m
     link: "https://vimeo.com/290272240",
     publishedAt: referenceDateFormatter.date(from: "2018-09-14"),
     title: "Combinators"
+  )
+
+  public static let composableReducers = Episode.Reference(
+    author: "Brandon Williams",
+    blurb: """
+A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
+""",
+    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
+    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
+    title: "Composable Reducers"
   )
 
   public static let composableSetters = Episode.Reference(
@@ -71,6 +99,26 @@ focus on just the core ideas.
     link: "https://typeclasses.com/contravariance",
     publishedAt: nil,
     title: "Contravariance"
+  )
+
+  public static let deferredPublishers = Episode.Reference(
+    author: "@_lksz_",
+    blurb: #"""
+Combine is quite a large framework to get a handle of! When noting that its `Future` publisher is eager on Twitter, we were tipped off to the `Deferred` publisher as an easy solution.
+"""#,
+    link: "https://twitter.com/_lksz_/status/1183773360494383104",
+    publishedAt: referenceDateFormatter.date(from: "2019-10-19"),
+    title: "Deferred Publishers: Tweet Tip"
+  )
+
+  public static let elmCommandsAndSubscriptions = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Elm is a pure functional language wherein applications are described exclusively with unidirectional data flow. It also has a story for side effects that closely matches the approach we take in these episodes. This document describes how commands (like our effect functions) allow for communication with the outside world, and how the results can be mapped into an action (what Elm calls a "message") in order to be fed back to the reducer.
+"""#,
+    link: "https://guide.elm-lang.org/effects/",
+    publishedAt: nil,
+    title: "Elm: Commands and Subscriptions"
   )
 
   public static let difficultiesWithEfficientLargeFileParsing = Episode.Reference(
@@ -121,6 +169,26 @@ A proposal has been accepted in the Swift evolution process that would allow key
     link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
     publishedAt: Date(timeIntervalSince1970: 1553004000),
     title: "SE-0249 - Key Path Expressions as Functions"
+  )
+
+  public static let gallagherProtocolsWithAssociatedTypes = Episode.Reference(
+    author: "Alexis Gallagher",
+    blurb: """
+This talk by Alexis Gallagher shows why protocols with associated types are so complicated, and tries to understand why Swift chose to go with that design instead of other alternatives.
+""",
+    link: "https://www.youtube.com/watch?v=XWoNjiSPqI8",
+    publishedAt: referenceDateFormatter.date(from: "2015-12-15"),
+    title: "Protocols with Associated Types"
+  )
+
+  public static let haskellAntipatternExistentialTypeclass = Episode.Reference(
+    author: "Luke Palmer",
+    blurb: """
+A Haskell article that demonstrates a pattern in the Haskell community, and why it _might_ be an anti-pattern. In a nutshell, the pattern is for libraries to express their functionality with typeclasses (i.e. protocols) and provide `Any*` wrappers around the protocol for when you do not want to refer to a particular instance of that protocol. The alternative is to replace the typeclass with a simple concrete data type. Sound familiar?
+""",
+    link: "https://lukepalmer.wordpress.com/2010/01/24/haskell-antipattern-existential-typeclass/",
+    publishedAt: referenceDateFormatter.date(from: "2010-01-24"),
+    title: "Haskell Antipattern: Existential Typeclass"
   )
 
   public static let haskellUnderstandingMonadsState = Episode.Reference(
@@ -177,6 +245,16 @@ was a cause of confusion for those new to functional terms.
     title: "Introduce Sequence.compactMap(_:)"
   )
 
+  public static let lazyEvaluation = Episode.Reference(
+    author: nil,
+    blurb: """
+Laziness is often touted as an important attribute of functional programming (for example, in John Hughes' seminal paper, _Why Functional Programming Matters_) and is a primary feature of the Haskell programming language.
+""",
+    link: "https://en.wikipedia.org/wiki/Lazy_evaluation",
+    publishedAt: nil,
+    title: "Lazy Evaluation"
+  )
+
   public static let learningParserCombinatorsWithRust = Episode.Reference(
     author: "Bodil Stokke",
     blurb: """
@@ -206,7 +284,19 @@ Ole discusses the concept of "illegal states" in data types, and how to leverage
     publishedAt: referenceDateFormatter.date(from: "2018-04-26"),
     title: "Making illegal states unrepresentable"
   )
-  
+
+  public static let modernSwiftApiDesign = Episode.Reference(
+    author: "Apple",
+    blurb: """
+As of WWDC 2019, Apple no longer recommends that we "start with a protocol" when designing our APIs. A more balanced approach is discussed instead, including trying out concrete data types. Fast forward to 12:58 for the discussion.
+
+> Every programming language has a set of conventions that people come to expect. Learn about the patterns that are common to Swift API design, with examples from new APIs like SwiftUI, Combine, and RealityKit. Whether you're developing an app as part of a team, or you're publishing a library for others to use, find out how to use new features of Swift to ensure clarity and correct use of your APIs.
+""",
+    link: "https://developer.apple.com/videos/play/wwdc2019/415/?time=778",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-02"),
+    title: "Modern Swift API Design"
+  )
+
   public static let nioRenameThenToFlatMap = Episode.Reference(
     author: "Apple",
     blurb: """
@@ -288,6 +378,16 @@ Our open source tool for generating enum properties for any enum in your code ba
     title: "pointfreeco/swift-enum-properties"
   )
 
+  public static let promisesAreNotNeutralEnough = Episode.Reference(
+    author: "André Staltz",
+    blurb: """
+Promises are JavaScript's default abstraction for asynchronous work, but unlike the `Parallel` type we've defined on Point-Free, promises are eager, not lazy. In this blog post André does a great job explaining how the choice of eagerness is overly opinionated and some of the problems that come out of such a decision.
+""",
+    link: "https://staltz.com/promises-are-not-neutral-enough.html",
+    publishedAt: referenceDateFormatter.date(from: "2018-02-14"),
+    title: "Promises Are Not Neutral Enough"
+  )
+
   public static let protocolOrientedProgrammingIsNotASilverBullet = Episode.Reference(
     author: "Chris Eidhof",
     blurb: """
@@ -312,6 +412,18 @@ Apple's eponymous WWDC talk on protocol-oriented programming:
     publishedAt: referenceDateFormatter.date(from: "2015-06-16"),
     title: "Protocol-Oriented Programming in Swift"
   )
+
+    public static let pullbackWikipedia = Episode.Reference(
+      author: nil,
+      blurb: #"""
+  We use the term _pullback_ for the strange, unintuitive backwards composition that seems to show up often in programming. The term comes from a very precise concept in mathematics. Here is the Wikipedia entry:
+
+  > In mathematics, a pullback is either of two different, but related processes: precomposition and fibre-product. Its "dual" is a pushforward.
+  """#,
+      link: "https://en.wikipedia.org/wiki/Pullback",
+      publishedAt: nil,
+      title: "Pullback"
+    )
 
   public static let railwayOrientedProgramming = Episode.Reference(
     author: "Scott Wlaschin",
@@ -348,6 +460,25 @@ very simple, small pieces and then compose them together to create a really comp
     publishedAt: Date(timeIntervalSince1970: 1542690000),
     title: "Random Zalgo Generator"
   )
+  public static let reactiveStreams = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Reactive Streams is an initiative to provide a standard for asynchronous stream processing with non-blocking back pressure and is the basis for many of the design decisions behind the Combine framework.
+"""#,
+    link: "https://www.reactive-streams.org",
+    publishedAt: nil,
+    title: "Reactive Streams"
+  )
+
+  public static let reactiveSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+ReactiveSwift is a popular Swift library for reactive programming that succeeded its original Objective-C library called ReactiveCocoa.
+"""#,
+    link: "https://github.com/ReactiveCocoa/ReactiveSwift",
+    publishedAt: nil,
+    title: "ReactiveSwift"
+  )
 
   public static let reduceWithInout = Episode.Reference(
     author: "Chris Eidhof",
@@ -359,6 +490,16 @@ The Swift standard library comes with two versions of `reduce`: one that takes a
     title: "Reduce with inout"
   )
 
+  public static let reduxDataFlow = Episode.Reference(
+    author: nil,
+    blurb: #"""
+  The Redux documentation describes and motivates its "strict unidirectional data flow."
+  """#,
+    link: "https://redux.js.org/basics/data-flow",
+    publishedAt: nil,
+    title: "Redux: Data Flow"
+  )
+
   public static let reduxHomepage = Episode.Reference(
     author: nil,
     blurb: """
@@ -367,6 +508,66 @@ The idea of modeling an application's architecture on simple reducer functions w
     link: "https://redux.js.org",
     publishedAt: nil,
     title: "Redux: A predictable state container for JavaScript apps."
+  )
+
+  public static let reduxMiddleware = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Redux, at its core, is very simple and has no single, strong opinion on how to handle side effects. It does, however, provide a means of layering what it calls "middleware" over reducers, and this third-party extension point allows folks to adopt a variety of solutions to the side effect problem.
+"""#,
+    link: "https://redux.js.org/advanced/middleware",
+    publishedAt: nil,
+    title: "Redux Middleware"
+  )
+
+  public static let reduxThunk = Episode.Reference(
+    author: nil,
+    blurb: #"""
+Redux Thunk is the recommended middleware for basic Redux side effects logic. Side effects are captured in "thunks" (closures) to be executed by the store. Thunks may optionally utilize a callback argument that can feed actions back to the store at a later time.
+"""#,
+    link: "https://github.com/reduxjs/redux-thunk",
+    publishedAt: nil,
+    title: "Redux Thunk"
+  )
+
+  public static let regexpParser = Episode.Reference(
+    author: "Alexander Grebenyuk",
+    blurb: """
+This library for parsing regular expression strings into a Swift data type uses many of the ideas developed in our series of episodes on parsers. It's a great example of how to break a very large, complex problem into many tiny parsers that glue back together.
+""",
+    link: "https://github.com/kean/Regex",
+    publishedAt: referenceDateFormatter.date(from: "2019-08-10"),
+    title: "Regex"
+  )
+
+  public static let regexesVsCombinatorialParsing = Episode.Reference(
+    author: "Soroush Khanlou",
+    blurb: """
+In this article, Soroush Khanlou applies parser combinators to a real world problem: parsing notation for a music app. He found that parser combinators improved on regular expressions not only in readability, but in performance!
+""",
+    link: "http://khanlou.com/2019/12/regex-vs-combinatorial-parsing/",
+    publishedAt: referenceDateFormatter.date(from: "2019-12-03"),
+    title: "Regexes vs Combinatorial Parsing"
+  )
+
+  public static let reSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+ReSwift is one of the earliest, most popular Redux-inspired libraries for Swift. Its design matches Redux, including its adoption of "middleware" as the primary means of introducing side effects into a reducer.
+"""#,
+    link: "https://github.com/ReSwift/ReSwift",
+    publishedAt: nil,
+    title: "ReSwift"
+  )
+
+  public static let rxSwift = Episode.Reference(
+    author: nil,
+    blurb: #"""
+RxSwift is a popular library for reactive programming based on "Reactive Extensions," which generally goes by Rx.
+"""#,
+    link: "https://github.com/ReactiveX/RxSwift",
+    publishedAt: nil,
+    title: "RxSwift"
   )
 
   public static let scannerAppleDocs = Episode.Reference(
@@ -539,6 +740,17 @@ In this free episode of Swift talk, Chris and Florian discuss how to efficiently
     publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
     title: "Swift Strings and Substrings"
   )
+
+  public static let swiftUIFlux = Episode.Reference(
+    author: "Thomas Ricouard",
+    blurb: #"""
+An early example of Redux in SwiftUI. Like ReSwift, it uses "middleware" to handle side effects.
+"""#,
+    link: "https://github.com/Dimillian/SwiftUIFlux",
+    publishedAt: nil,
+    title: "SwiftUIFlux"
+  )
+
   public static let swiftTagged = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
@@ -670,14 +882,12 @@ The Wikipedia entry for monads.
     title: "Monad (functional programming)"
   )
 
-  public static let composableReducers = Episode.Reference(
-    author: "Brandon Williams",
-    blurb: """
-A talk that Brandon gave at the 2017 Functional Swift conference in Berlin. The talk contains a brief account of many of the ideas covered in our series of episodes on "Composable State Management".
-""",
-    link: "https://www.youtube.com/watch?v=QOIigosUNGU",
-    publishedAt: referenceDateFormatter.date(from: "2017-10-10"),
-    title: "Composable Reducers"
+  public static let whyFunctionalProgrammingMatters = Episode.Reference(
+    author: "John Hughes",
+    blurb: "A classic paper exploring what makes functional programming special. It focuses on two positive aspects that set it apart from the rest: laziness and modularity.",
+    link: "https://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf",
+    publishedAt: Date(timeIntervalSince1970: 607410000),
+    title: "Why Functional Programming Matters"
   )
 
 }

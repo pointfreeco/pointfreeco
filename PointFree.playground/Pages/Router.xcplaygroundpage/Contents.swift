@@ -1,5 +1,8 @@
+import ApplicativeRouter
+import Models
 import Foundation
 @testable import PointFree
+import PointFreeRouter
 import Either
 
 _ = try! PointFree
@@ -10,23 +13,23 @@ _ = try! PointFree
 
 let urlString = "http://localhost:8080/account/subscription/change"
 
-router.match(string: urlString)!
+pointFreeRouter.router.match(string: urlString)!
 
-router.request(
+pointFreeRouter.router.request(
   for: .account(.subscription(.change(.show))),
   base: URL(string: "https://www.pointfree.co")
 )
 
-let userId = Database.User.Id.init(rawValue: UUID())
-let rssSalt = Database.User.RssSalt.init(rawValue: UUID())
+let userId = Encrypted(UUID().uuidString, with: Current.envVars.appSecret)!
+let rssSalt = Encrypted(UUID().uuidString, with: Current.envVars.appSecret)!
 
-router.request(for: Route.account(Route.Account.rss(userId: userId, rssSalt: rssSalt)))?.url?.path
+pointFreeRouter.request(for: .account(.rss(userId: userId, rssSalt: rssSalt)))?.url?.path
 
 
 print(
-sendEmail(
-  to: adminEmails,
-  subject: "[Private Rss Feed Error] TEST",
-  content: inj1("test")
+  sendEmail(
+    to: adminEmails,
+    subject: "[Private Rss Feed Error] TEST",
+    content: inj1("test")
   ).run.perform()
 )

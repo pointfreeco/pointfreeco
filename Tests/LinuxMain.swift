@@ -13,7 +13,6 @@ extension AccountTests {
   static var allTests: [(String, (AccountTests) -> () throws -> Void)] = [
     ("testAccount", testAccount),
     ("testAccount_InvoiceBilling", testAccount_InvoiceBilling),
-    ("testAccount_WithRssFeatureFlag", testAccount_WithRssFeatureFlag),
     ("testTeam_OwnerIsNotSubscriber", testTeam_OwnerIsNotSubscriber),
     ("testTeam_NoRemainingSeats", testTeam_NoRemainingSeats),
     ("testTeam_AsTeammate", testTeam_AsTeammate),
@@ -73,7 +72,6 @@ extension BlogTests {
   static var allTests: [(String, (BlogTests) -> () throws -> Void)] = [
     ("testBlogIndex", testBlogIndex),
     ("testBlogIndex_WithLotsOfPosts", testBlogIndex_WithLotsOfPosts),
-    ("testBlogIndex_Unauthed", testBlogIndex_Unauthed),
     ("testBlogShow", testBlogShow),
     ("testBlogShow_Unauthed", testBlogShow_Unauthed),
     ("testBlogAtomFeed", testBlogAtomFeed),
@@ -122,12 +120,19 @@ extension DatabaseTests {
   static var allTests: [(String, (DatabaseTests) -> () throws -> Void)] = [
     ("testUpsertUser_FetchUserById", testUpsertUser_FetchUserById),
     ("testFetchEnterpriseAccount", testFetchEnterpriseAccount),
+    ("testCreateSubscription_OwnerIsNotTakingSeat", testCreateSubscription_OwnerIsNotTakingSeat),
+    ("testCreateSubscription_OwnerIsTakingSeat", testCreateSubscription_OwnerIsTakingSeat),
   ]
 }
 extension DiscountsTests {
   static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
     ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
-    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
+    ("testDiscounts_LoggedIn_PercentOff_Forever", testDiscounts_LoggedIn_PercentOff_Forever),
+    ("testDiscounts_LoggedIn_5DollarsOff_Forever", testDiscounts_LoggedIn_5DollarsOff_Forever),
+    ("testDiscounts_LoggedIn_PercentOff_Repeating", testDiscounts_LoggedIn_PercentOff_Repeating),
+    ("testDiscounts_LoggedIn_5DollarsOff_Repeating", testDiscounts_LoggedIn_5DollarsOff_Repeating),
+    ("testDiscounts_LoggedIn_PercentOff_Once", testDiscounts_LoggedIn_PercentOff_Once),
+    ("testDiscounts_LoggedIn_5DollarsOff_Once", testDiscounts_LoggedIn_5DollarsOff_Once),
   ]
 }
 extension EitherIOTests {
@@ -304,6 +309,7 @@ extension PaymentInfoTests {
 extension PointFreeRouterTests {
   static var allTests: [(String, (PointFreeRouterTests) -> () throws -> Void)] = [
     ("testUpdateProfile", testUpdateProfile),
+    ("testSubscribeRoute", testSubscribeRoute),
   ]
 }
 extension PricingLandingTests {
@@ -325,6 +331,8 @@ extension PrivateRssTests {
     ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
     ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
     ("testFeed_BadSalt", testFeed_BadSalt),
+    ("testFeed_InvalidUserAgent", testFeed_InvalidUserAgent),
+    ("testFeed_BadSalt_InvalidUserAgent", testFeed_BadSalt_InvalidUserAgent),
   ]
 }
 extension RegistrationEmailTests {
@@ -363,7 +371,8 @@ extension StripeWebhooksTests {
     ("testValidHook", testValidHook),
     ("testStaleHook", testStaleHook),
     ("testInvalidHook", testInvalidHook),
-    ("testNoSubscriptionId", testNoSubscriptionId),
+    ("testNoInvoiceSubscriptionId", testNoInvoiceSubscriptionId),
+    ("testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId", testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId),
     ("testPastDueEmail", testPastDueEmail),
   ]
 }
@@ -388,6 +397,7 @@ extension SubscribeTests {
     ("testInvalidQuantity", testInvalidQuantity),
     ("testHappyPath", testHappyPath),
     ("testHappyPath_Team", testHappyPath_Team),
+    ("testHappyPath_Team_OwnerIsNotTakingSeat", testHappyPath_Team_OwnerIsNotTakingSeat),
     ("testCreateCustomerFailure", testCreateCustomerFailure),
     ("testCreateStripeSubscriptionFailure", testCreateStripeSubscriptionFailure),
     ("testCreateStripeSubscriptionFailure_TeamAndMonthly", testCreateStripeSubscriptionFailure_TeamAndMonthly),
@@ -401,11 +411,13 @@ extension SubscriptionConfirmationTests {
     ("testPersonal_LoggedIn_SwitchToMonthly", testPersonal_LoggedIn_SwitchToMonthly),
     ("testTeam_LoggedIn", testTeam_LoggedIn),
     ("testTeam_LoggedIn_WithDefaults", testTeam_LoggedIn_WithDefaults),
+    ("testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat", testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat),
     ("testTeam_LoggedIn_SwitchToMonthly", testTeam_LoggedIn_SwitchToMonthly),
     ("testTeam_LoggedIn_AddTeamMember", testTeam_LoggedIn_AddTeamMember),
     ("testPersonal_LoggedIn_ActiveSubscriber", testPersonal_LoggedIn_ActiveSubscriber),
     ("testPersonal_LoggedOut", testPersonal_LoggedOut),
     ("testPersonal_LoggedIn_WithDiscount", testPersonal_LoggedIn_WithDiscount),
+    ("testTeam_LoggedIn_RemoveOwnerFromTeam", testTeam_LoggedIn_RemoveOwnerFromTeam),
   ]
 }
 extension TeamEmailsTests {

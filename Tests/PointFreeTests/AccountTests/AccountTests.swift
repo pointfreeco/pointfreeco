@@ -1,7 +1,6 @@
 import Database
 import DatabaseTestSupport
 import Either
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -64,27 +63,6 @@ final class AccountTests: TestCase {
         as: [
           "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
           "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
-        ]
-      )
-    }
-    #endif
-  }
-
-  func testAccount_WithRssFeatureFlag() {
-    Current = .teamYearly
-      |> \.features .~ [.podcastRss |> \.isEnabled .~ true]
-
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2500))
         ]
       )
     }
@@ -309,7 +287,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.canceled)),
+      \.database.fetchSubscriptionById .~ const(pure(.canceled))
+    )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 

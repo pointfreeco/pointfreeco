@@ -13,7 +13,7 @@ extension Client {
     createEnterpriseAccount: { _, _, _ in pure(.mock) },
     createEnterpriseEmail: { _, _ in pure(.mock) },
     createFeedRequestEvent: { _, _, _ in pure(unit) },
-    createSubscription: { _, _ in pure(.mock) },
+    createSubscription: { _, _, _ in pure(.mock) },
     deleteEnterpriseEmail: { _ in pure(unit) },
     deleteTeamInvite: const(pure(unit)),
     execute: { _, _ in throwE(unit) },
@@ -41,7 +41,7 @@ extension Client {
     removeTeammateUserIdFromSubscriptionId: { _, _ in pure(unit) },
     sawUser: const(pure(unit)),
     updateStripeSubscription: const(pure(.mock)),
-    updateUser: { _, _, _, _, _ in pure(unit) },
+    updateUser: { _, _, _, _, _, _ in pure(unit) },
     upsertUser: { _, _ in pure(.some(.mock)) }
   )
 }

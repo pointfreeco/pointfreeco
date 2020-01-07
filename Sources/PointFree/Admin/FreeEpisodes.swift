@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -11,7 +9,6 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 let indexFreeEpisodeEmailMiddleware: Middleware<
@@ -21,7 +18,7 @@ let indexFreeEpisodeEmailMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(freeEpisodeView(episodes: Current.episodes(), today: Current.date()))
+    >=> respond({ _ in freeEpisodeView(episodes: Current.episodes(), today: Current.date()) })
 
 let sendFreeEpisodeEmailMiddleware: Middleware<
   StatusLineOpen,
@@ -52,7 +49,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
 
   // A personalized email to send to each user.
   let freeEpisodeEmails = users.map { user in
-    lift(IO { inj2(freeEpisodeEmail.view((episode, user))) })
+    lift(IO { inj2(freeEpisodeEmail((episode, user))) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
@@ -72,7 +69,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
         to: adminEmails,
         subject: "New free episode email finished sending!",
         content: inj2(
-          adminEmailReport("New free episode").view(
+          adminEmailReport("New free episode")(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

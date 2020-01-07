@@ -1,5 +1,4 @@
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -22,7 +21,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_NoAnnouncements_Subscriber() {
-    let doc = newBlogPostEmail.view((post, "", "", .mock))
+    let doc = newBlogPostEmail((post, "", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -40,7 +39,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_NoAnnouncements_NonSubscriber() {
-    let doc = newBlogPostEmail.view((post, "", "", .nonSubscriber))
+    let doc = newBlogPostEmail((post, "", "", .nonSubscriber))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -58,7 +57,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_Announcements_Subscriber() {
-    let doc = newBlogPostEmail.view((post, "Hey, thanks for being a subscriber! You're the best!", "", .mock))
+    let doc = newBlogPostEmail((post, "Hey, thanks for being a subscriber! You're the best!", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -76,7 +75,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_Announcements_NonSubscriber() {
-    let doc = newBlogPostEmail.view((post, "", "Hey! You're not a subscriber, but that's ok. At least you're interested in functional programming!", .nonSubscriber))
+    let doc = newBlogPostEmail((post, "", "Hey! You're not a subscriber, but that's ok. At least you're interested in functional programming!", .nonSubscriber))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -126,7 +125,7 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_NoCoverImage() {
-    let doc = newBlogPostEmail.view((post |> \.coverImage .~ nil, "", "", .mock))
+    let doc = newBlogPostEmail((post |> \.coverImage .~ nil, "", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

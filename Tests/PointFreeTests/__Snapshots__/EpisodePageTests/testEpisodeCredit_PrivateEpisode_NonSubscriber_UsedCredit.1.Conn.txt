@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 82480
+Content-Length: 78425
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1694,9 +1694,6 @@ html {
     </style>
     <style>
       
-.md-ctn {
-  word-break : break-word;
-}
 
 .md-ctn hr {
   margin-top       : 2rem;
@@ -1740,6 +1737,16 @@ html {
 
 .md-ctn p:not(:last-child) {
   margin-bottom : 1.5rem;
+}
+
+
+.md-ctn pre code {
+  padding-top    : 2rem;
+  padding-right  : 2rem;
+  padding-bottom : 2rem;
+  padding-left   : 2rem;
+  display        : block;
+  overflow-x     : auto;
 }
 
 .md-ctn code {
@@ -1806,38 +1813,6 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <style>
-      .vjs-subs-caps-button{display:none}
-    </style>
-    <script>
-      window.HELP_IMPROVE_VIDEOJS = false
-
-function videoJsLoaded() {
-  var video = document.getElementsByTagName('video')[0]
-  if (video == undefined) { return }
-
-  video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
-    if (event.availability != "available") { return }
-
-    videojs("episode-video").ready(function() {
-      var existingAirplayControl = document.getElementsByClassName('vjs-airplay-control')
-      if (existingAirplayControl.length != 0) { return }
-
-      var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
-
-      var template = document.createElement('div')
-      template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="AirPlay"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxM3B4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iTWVkaWEtQ29udHJvbC1TeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iX0Fzc2V0cy9JbmxpbmUvQWlycGxheSIgZmlsbD0iI2ZmZmZmZiI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik03LjU5MDI1MzMzLDcuMTQ2NTg2ODkgQzcuNzkxODA0NDksNi45NTMxMDU3NyA4LjExNDQ5MzQ0LDYuOTQ5MTc5NSA4LjMyMDEzNDY0LDcuMTQ2NTg2ODkgTDEzLjY4NTI2NDYsMTIuMjk2ODk4OCBDMTQuMDc5NzUxMSwxMi42NzU1OTAyIDEzLjk1NTg4NzIsMTIuOTgyNTgwMiAxMy4zOTg5MTU0LDEyLjk4MjU4MDIgTDIuNTExNDcyNTQsMTIuOTgyNTgwMiBDMS45NTg4Mzk3OSwxMi45ODI1ODAyIDEuODM5Mjc4NDksMTIuNjY3Mjk0NiAyLjIyNTEyMzM2LDEyLjI5Njg5ODggTDcuNTkwMjUzMzMsNy4xNDY1ODY4OSBaIiBpZD0iaU9TL0Z1bGxzY3JlZW4vQWlycGxheSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMsMTAgTDE0Ljk5OTEyODMsMTAgQzE1LjU1NTM2OTEsMTAgMTYsOS41NTQzNDUzMyAxNiw5LjAwNDYwMjQzIEwxNiwwLjk5NTM5NzU2OCBDMTYsMC40NTU2NjQzOTYgMTUuNTUxODk0NSwwIDE0Ljk5OTEyODMsMCBMMS4wMDA4NzE2NiwwIEMwLjQ0NDYzMDg2MSwwIDAsMC40NDU2NTQ2NzEgMCwwLjk5NTM5NzU2OCBMMCw5LjAwNDYwMjQzIEMwLDkuNTQ0MzM1NiAwLjQ0ODEwNTUwNSwxMCAxLjAwMDg3MTY2LDEwIEwzLDEwIEw0LDkgTDEuNDk4MjY3NDEsOSBDMS4yMjMwODE5Miw5IDEsOC43NjkyMDMxOSAxLDguNDk5NTY0MTcgTDEsMS41MDA0MzU4MyBDMSwxLjIyNDA1Mjc1IDEuMjE5OTA2NTcsMSAxLjQ5ODI2NzQxLDEgTDE0LjUwMTczMjYsMSBDMTQuNzc2OTE4MSwxIDE1LDEuMjMwNzk2ODEgMTUsMS41MDA0MzU4MyBMMTUsOC40OTk1NjQxNyBDMTUsOC43NzU5NDcyNSAxNC43ODAwOTM0LDkgMTQuNTAxNzMyNiw5IEwxMiw5IEwxMywxMCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="AirPlay" style="vertical-align:middle"></button>'
-
-      controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
-
-      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0]
-      airplayControl.addEventListener('click', function() {
-        video.webkitShowPlaybackTargetPicker()
-      })
-    })
-  })
-}
-    </script>
     <meta name="description"
           content="As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.">
     <meta property="og:description"
@@ -1987,504 +1962,506 @@ function videoJsLoaded() {
       <div class="col-m
                   col-d-6
                   col-m-12">
-        <div>
-          <div class="hide-m">
-            <div class="d-pl4
-                        d-pr4
-                        d-pt4
-                        d-pb4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        bg-white">
-              <strong class="fg-black
-                             bold
-                             ts-m-r0_75
-                             lh-1
-                             caps">
-                #1 • Tuesday Jun 20, 2017 • Subscriber-only
-              </strong>
-              <h1 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2
-                         m-mt2">
-                <a href="/episodes/ep1-type-safe-html-in-swift">
-                  Type-Safe HTML in Swift
-                </a>
-              </h1>
-              <div class="body-leading
-                          fg-black
-                          normal
-                          lh-4">
-                <div class="md-ctn">
-                  <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
-
-                </div>
-              </div>
-              <div class="d-pt3
-                          m-pt2">
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#transcript">
-                  Transcript
-                </a>
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#exercises">
-                  Exercises
-                </a>
-              </div>
-            </div>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="center
-                      d-ml4
-                      d-mr4
-                      d-mt4
-                      d-mb4
-                      m-ml3
-                      m-mr3
-                      m-mt3
-                      m-mb3
-                      d-pt2
-                      d-pl2
-                      d-pr2
-                      m-pb3
-                      m-pt1
-                      m-pl1
-                      m-pr1
-                      bg-gray900">
-            <h3 class="fg-black
-                       bold
-                       ts-d-r1_5
-                       ts-m-r1_25
-                       lh-2">
-              Subscribe to Point&#8209;Free
-            </h3>
-            <p class="body-leading
-                      fg-black
-                      normal
-                      lh-4
-                      m-pb3
-                      m-pt2">
-              You have access to this episode because you used a free episode credit. To get access to all past and
-future episodes, become a subscriber today!
-            </p>
-            <a href="/pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-purple
-                      h5
-                      m-pl2
-                      m-pr2">
-              See subscription options
-            </a>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div id="transcript"
-               class="d-pb4
-                      d-pt2
-                      d-pl4
+        <div class="hide-m">
+          <div class="d-pl4
                       d-pr4
+                      d-pt4
+                      d-pb4
                       m-pl3
                       m-pr3
                       m-pt3
                       m-pb3
                       bg-white">
-            <div>
-              <div id="t1"
-                   class="block">
-                <a href="#t1"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:01
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.</p>
-
-              </div>
-            </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Template Languages
+            <strong class="fg-black
+                           bold
+                           ts-m-r0_75
+                           lh-1
+                           caps">
+              #1 • Tuesday Jun 20, 2017 • Subscriber-only
+            </strong>
+            <h1 class="fg-black
+                       bold
+                       ts-d-r1_5
+                       ts-m-r1_25
+                       lh-2
+                       m-mt2">
+              <a href="/episodes/ep1-type-safe-html-in-swift">
+                Type-Safe HTML in Swift
               </a>
-            </h2>
-            <div>
-              <div id="t2"
-                   class="block">
-                <a href="#t2"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:02
-                </a>
-              </div>
+            </h1>
+            <div class="body-leading
+                        fg-black
+                        normal
+                        lh-4">
               <div class="md-ctn">
-                <p>A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:</p>
+                <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
 
               </div>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                <h1>{{title}}</h1>
-              </code>
-            </pre>
-            <div>
-              <div id="t4"
-                   class="block">
-                <a href="#t4"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:04
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>and here is a Leaf template:</p>
-
-              </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                <h1>#(title)</h1>
-              </code>
-            </pre>
-            <div>
-              <div id="t6"
-                   class="block">
-                <a href="#t6"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:06
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. [“title”: “Hello World!”], and then it will generate HTML that can be sent to the browser:</p>
-
-              </div>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="center
+                    d-ml4
+                    d-mr4
+                    d-mt4
+                    d-mb4
+                    m-ml3
+                    m-mr3
+                    m-mt3
+                    m-mb3
+                    d-pt2
+                    d-pl2
+                    d-pr2
+                    m-pb3
+                    m-pt1
+                    m-pl1
+                    m-pr1
+                    bg-gray900">
+          <h3 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Subscribe to Point&#8209;Free
+          </h3>
+          <p class="body-leading
+                    fg-black
+                    normal
+                    lh-4
+                    m-pb3
+                    m-pt2">
+            You have access to this episode because you used a free episode credit. To get access to all past and
+future episodes, become a subscriber today!
+          </p>
+          <a href="/pricing"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    rounded
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-purple
+                    h5
+                    m-pl2
+                    m-pr2">
+            See subscription options
+          </a>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div id="transcript"
+             class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <div>
+            <div id="t1"
+                 class="block">
+              <a href="#t1"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:01
+              </a>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                <h1>Hello World!</h1>
-              </code>
-            </pre>
-            <div>
-              <div id="t8"
-                   class="block">
-                <a href="#t8"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:08
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:</p>
+            <div class="md-ctn">
+              <p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them. One important job of a web server is to produce the HTML that will be served up to the browser. We claim that by using types and pure functions, we can enhance this part of the web request lifecycle.</p>
 
-              </div>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                {{#if show}}
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Template Languages
+            </a>
+          </h2>
+          <div>
+            <div id="t2"
+                 class="block">
+              <a href="#t2"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:02
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>A popular method for generating HTML is using so-called “templating languages”, for example Mustache and Handlebars. There is even one written in Swift for use with the Vapor web framework called Leaf. These libraries ingest plain text that you provide and interpolate values into it using tokens. For example, here is a Mustache (and Handlebar) template:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              <h1>{{title}}</h1>
+            </code>
+          </pre>
+          <div>
+            <div id="t4"
+                 class="block">
+              <a href="#t4"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:04
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>and here is a Leaf template:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              <h1>#(title)</h1>
+            </code>
+          </pre>
+          <div>
+            <div id="t6"
+                 class="block">
+              <a href="#t6"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:06
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>You can then render these templates by providing a dictionary of key/value pairs to interpolate, e.g. [“title”: “Hello World!”], and then it will generate HTML that can be sent to the browser:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              <h1>Hello World!</h1>
+            </code>
+          </pre>
+          <div>
+            <div id="t8"
+                 class="block">
+              <a href="#t8"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:08
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Templating languages will also provide simple constructs for injecting small amounts of logic into the templates. For example, an if statement can be used to conditionally show some elements:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              {{#if show}}
   <span>I’m here!</span>
 {{/if}}
-              </code>
-            </pre>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                #if(show) {
+            </code>
+          </pre>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              #if(show) {
   <span>I’m here!</span>
 }
-              </code>
-            </pre>
-            <div>
-              <div id="t11"
-                   class="block">
-                <a href="#t11"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:11
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.</p>
-
-              </div>
-            </div>
-            <div>
-              <div id="t12"
-                   class="block">
-                <a href="#t12"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:12
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.</p>
-
-              </div>
-            </div>
-            <div>
-              <div id="t13"
-                   class="block">
-                <a href="#t13"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:13
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.</p>
-
-              </div>
-            </div>
-            <div>
-              <div id="t14"
-                   class="block">
-                <a href="#t14"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:14
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.</p>
-
-              </div>
-            </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t3">
-              <a href="#t3">
-                Embedded Domain Specific Language
+            </code>
+          </pre>
+          <div>
+            <div id="t11"
+                 class="block">
+              <a href="#t11"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:11
               </a>
-            </h2>
-            <div>
-              <div id="t15"
-                   class="block">
-                <a href="#t15"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:15
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:</p>
-
-              </div>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-html">
-                <header>
+            <div class="md-ctn">
+              <p>The advantages of approaching views like this is that you get support for all that HTML has to offer out of the gate, and focus on building a small language for interpolating values into the templates. Some claim also that these templates lead to “logic-less” views, though confusingly they all support plenty of constructs for logic such as “if” statements and loops. A more accurate description might be “less logic” views since you are necessarily constricted by what logic you can use by the language.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t12"
+                 class="block">
+              <a href="#t12"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:12
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>The downsides, however, far outweigh the ups. Most errors in templating languages appear at runtime since they are usually not compiled. One can adopt a linting tool to find some (but not all) errors, but that is also an extra dependency that you need to manage. Some templating languages are compiled (like HAML), but even then the tooling is basic and can return confusing error messages. In general, it is on you to make these languages safe for you to deploy with confidence.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t13"
+                 class="block">
+              <a href="#t13"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:13
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Furthermore, a templating language is just that: a language! It needs to be robust enough to handle what most users what to do with a language. That means it should support expressions, logical flow, loops, IDE autocomplete, IDE syntax highlighting, and more. It also needs to solve all of the new problems that appear, like escaping characters that are ambiguous with respect to HTML and the template language.</p>
+
+            </div>
+          </div>
+          <div>
+            <div id="t14"
+                 class="block">
+              <a href="#t14"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:14
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>We claim that rather than embracing “logic-less” templates, and instead embracing pure functions and types, we will get a far more expressive, safer and composable view layer that can be compiled directly in Swift with no extra tooling or dependencies.</p>
+
+            </div>
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t3">
+            <a href="#t3">
+              Embedded Domain Specific Language
+            </a>
+          </h2>
+          <div>
+            <div id="t15"
+                 class="block">
+              <a href="#t15"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:15
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>An alternative approach to views is using “embedded domain specific languages” (EDSLs). In this approach we use an existing programming language (e.g. Swift), to build a system of types and functions that models the structure of the domain we are modeling (e.g. HTML). Let’s take a fragment of HTML that we will use as inspiration to build in an EDSL:</p>
+
+            </div>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-html">
+              <header>
   <h1 id="welcome">Welcome!</h1>
   <p>
     Welcome to you, who has come here. See <a href="/more">more</a>.
   </p>
 </header>
-              </code>
-            </pre>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t7">
-              <a href="#t7">
-                Making the EDSL easier to use
+            </code>
+          </pre>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t7">
+            <a href="#t7">
+              Making the EDSL easier to use
+            </a>
+          </h2>
+          <div>
+            <div id="t3"
+                 class="block">
+              <a href="#t3"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:03
               </a>
-            </h2>
-            <div>
-              <div id="t3"
-                   class="block">
-                <a href="#t3"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:03
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!</p>
-
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t9">
-              <a href="#t9">
-                Safer Attributes
-              </a>
-            </h2>
-            <div>
-              <div id="t4"
-                   class="block">
-                <a href="#t4"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:04
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width=“foo”. We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.</p>
+            <div class="md-ctn">
+              <p>Currently our EDSL is not super friendly to work with. It’s a bit more verbose than the plain HTML, and it’s hard to see the underlying HTML from looking at the code. Fortunately, these problems are fixed with a couple of helper functions and some nice features of Swift!</p>
 
-              </div>
-            </div>
-            <div>
-              <div id="t6"
-                   class="block">
-                <a href="#t6"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:06
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. “id”, “href”, etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:</p>
-
-              </div>
             </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 id="exercises"
-                class="h4
-                       lh-3
-                       m-pt2">
-              Exercises
-            </h2>
-            <ol>
-              <li id="exercise-1">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t9">
+            <a href="#t9">
+              Safer Attributes
+            </a>
+          </h2>
+          <div>
+            <div id="t4"
+                 class="block">
+              <a href="#t4"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:04
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Right now our Attribute type is just a pair of strings representing the key and value. This allows for non-sensical pairs, such as width=“foo”. We can encode the fact that attributes require specific types of values into the type system, and get additional safety on this aspect.</p>
 
-                  </div>
-                  <details>
-                    <summary>
-                      Solution
-                    </summary>
-                    <div class="bg-gray900
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+            </div>
+          </div>
+          <div>
+            <div id="t6"
+                 class="block">
+              <a href="#t6"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:06
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>We start by creating a type specifically to model keys that can be used in attributes. This type has two parts: the name of the key as a string (e.g. “id”, “href”, etc…), and the type of value this key is allowed to hold. There is a wonderful way to encode this latter requirement into the type system: you make the key’s type a generic parameter, but you don’t actually use it! Such a type is called a phantom type. We define our type as such:</p>
 
-                      </div>
-                    </div>
-                  </details>
+            </div>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
+
                 </div>
-              </li>
-            </ol>
-          </div>
+                <details>
+                  <summary class="cursor-pointer">
+                    Solution
+                  </summary>
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150
@@ -2498,48 +2475,36 @@ future episodes, become a subscriber today!
           <div class="w-100p
                       relative"
                style="padding-bottom:56.25%">
-            <video id="episode-video"
-                   class="h-100p
-                          w-100p
-                          absolute
-                          bg-gray650
-                          video-js
-                          vjs-default-skin
-                          vjs-big-play-centered"
-                   style="position:absolute"
-                   controls
-                   playslinline
-                   autoplay
-                   poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2],"playsinline":true}">
-              <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
-                      type="application/vnd.apple.mpegurl">
-            </video>
+            <iframe class="h-100p
+                           w-100p
+                           absolute
+                           bg-gray650"
+                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+            </iframe>
+            <script src="https://player.vimeo.com/api/player.js">
+            </script>
             <script>
-              var hasPlayed = false;
-var video = document.getElementsByTagName("video")[0];
-video.addEventListener("play", function () {
-  hasPlayed = true;
-});
-document.addEventListener("keypress", function (event) {
-  if (hasPlayed && event.key === " ") {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  jump(window.location.hash, false);
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (target.tagName != "A") { return; }
+    var hash = new URL(target.href).hash;
+    jump(hash, true);
+  });
+
+  function jump(hash, play) {
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+    if (time <= 0) { return; }
+    player.setCurrentTime(time);
+    if (play) { player.play(); }
   }
-});
-document.addEventListener("click", function (event) {
-  var target = event.target;
-  if (target.tagName != "A") { return; }
-  var hash = new URL(target.href).hash;
-  var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
-  if (time <= 0) { return; }
-  var video = document.getElementsByTagName("video")[0];
-  video.currentTime = time;
-  video.play();
 });
             </script>
           </div>

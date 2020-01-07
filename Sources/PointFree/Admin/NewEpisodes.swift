@@ -1,7 +1,7 @@
 import Css
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -12,34 +12,34 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 
-let showNewEpisodeEmailMiddleware =
+let showNewEpisodeEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(showNewEpisodeView.contramap(lower))
+    >=> respond({ _ in showNewEpisodeView })
 
-private let showNewEpisodeView = View<User> { _ in
-  ul(
+private let showNewEpisodeView = Node.ul(
+  .fragment(
     Current.episodes()
       .sorted(by: their(^\.sequence, >))
       .prefix(upTo: 1)
-      .map(li <<< newEpisodeEmailRowView.view)
+      .map { .li(newEpisodeEmailRowView(ep: $0)) }
   )
-}
+)
 
-private let newEpisodeEmailRowView = View<Episode> { ep in
-  p([
+private func newEpisodeEmailRowView(ep: Episode) -> Node {
+  return .p(
     .text("Episode #\(ep.sequence): \(ep.title)"),
-
-    form([action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))), method(.post)], [
-
-      textarea([name("subscriber_announcement"), placeholder("Subscriber announcement")]),
-      textarea([name("nonsubscriber_announcement"), placeholder("Non-subscribers announcements")]),
-
-      input([type(.submit), name("test"), value("Test email!")]),
-      input([type(.submit), name("live"), value("Send email!")])
-      ])
-    ])
+    .form(
+      attributes: [
+        .action(path(to: .admin(.newEpisodeEmail(.send(ep.id, subscriberAnnouncement: nil, nonSubscriberAnnouncement: nil, isTest: nil))))),
+        .method(.post)
+      ],
+      .textarea(attributes: [.name("subscriber_announcement"), .placeholder("Subscriber announcement")]),
+      .textarea(attributes: [.name("nonsubscriber_announcement"), .placeholder("Non-subscribers announcements")]),
+      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
+      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
+    )
+  )
 }
 
 let sendNewEpisodeEmailMiddleware: Middleware<
@@ -96,7 +96,7 @@ private func sendEmail(
 
   // A personalized email to send to each user.
   let newEpisodeEmails = users.map { user in
-    lift(IO { newEpisodeEmail.view((episode, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
+    lift(IO { newEpisodeEmail((episode, subscriberAnnouncement, nonSubscriberAnnouncement, user)) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
@@ -116,7 +116,7 @@ private func sendEmail(
         to: adminEmails,
         subject: "New episode email finished sending!",
         content: inj2(
-          adminEmailReport("New episode").view(
+          adminEmailReport("New episode")(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

@@ -1,15 +1,51 @@
 import Css
 import FunctionalCss
 import Html
+import HtmlUpgrade
 import Foundation
 import Prelude
 
-// TODO: move to a support package in swift-web
-public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
-  return .init(
-    "class",
-    render(classes: selectors)
-  )
+extension HtmlUpgrade.Attribute {
+  // TODO: move to a support package in swift-web
+  public static func `class`<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
+    return .init(
+      "class",
+      render(classes: selectors)
+    )
+  }
+}
+
+extension HtmlUpgrade.Attribute {
+  public static func style(_ style: Stylesheet) -> HtmlUpgrade.Attribute<Element> {
+    return .style(unsafe: render(config: Config.inline, css: style))
+  }
+}
+
+extension HtmlUpgrade.ChildOf where Element == HtmlUpgrade.Tag.Head {
+  public static func style(
+    _ css: Stylesheet,
+    config: Css.Config = .compact
+  ) -> HtmlUpgrade.ChildOf<HtmlUpgrade.Tag.Head> {
+    return .style(unsafe: render(config: config, css: css))
+  }
+}
+
+
+public func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
+  switch node {
+  case let .comment(comment):
+    return [.comment(comment)]
+  case let .doctype(doctype):
+    return [.doctype(doctype)]
+  case let .element(tag, attrs, child):
+    return [.element(tag, attrs, downgrade(node: child))]
+  case let .fragment(children):
+    return children.flatMap(downgrade(node:))
+  case let .raw(value):
+    return [.raw(value)]
+  case let .text(value):
+    return [.text(value)]
+  }
 }
 
 // TODO: make Css.key function public
@@ -37,8 +73,4 @@ public let textarea = CssSelector.elem(textareaElement)
 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
-}
-
-public func bgcolor<T>(_ value: String) -> Attribute<T> {
-  return .init("bgcolor", value)
 }

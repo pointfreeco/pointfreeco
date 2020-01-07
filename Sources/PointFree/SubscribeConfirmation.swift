@@ -7,7 +7,6 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Tuple
-import View
 import Views
 
 public let subscribeConfirmation: Middleware<
@@ -16,12 +15,11 @@ public let subscribeConfirmation: Middleware<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
   Data
   >
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< redirectActiveSubscribers(user: get1)
+  = redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: View(Views.subscriptionConfirmation),
+    >>> _respond(
+      view: Views.subscriptionConfirmation,
       layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
           currentRoute: currentRoute,
@@ -32,8 +30,10 @@ public let subscribeConfirmation: Middleware<
             subscribeData,
             coupon,
             currentUser,
+            subscriberState,
+            stats(forEpisodes: Current.episodes()),
             Current.stripe.js,
-            Current.envVars.stripe.publishableKey.rawValue
+            Current.envVars.stripe.publishableKey
           ),
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
@@ -50,11 +50,27 @@ public let discountSubscribeConfirmation: Middleware<
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
-    or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
+    or: redirect(
+      to: .subscribeConfirmation(
+        lane: .personal,
+        billing: nil,
+        isOwnerTakingSeat: nil,
+        teammates: nil
+      ),
+      headersMiddleware: flash(.error, couponError)
+    )
     )
     <<< filter(
       get6 >>> ^\.valid,
-      or: redirect(to: .subscribeConfirmation(.personal, nil, nil), headersMiddleware: flash(.error, couponError))
+      or: redirect(
+        to: .subscribeConfirmation(
+          lane: .personal,
+          billing: nil,
+          isOwnerTakingSeat: nil,
+          teammates: nil
+        ),
+        headersMiddleware: flash(.error, couponError)
+      )
     )
     <| map(over6(Optional.some))
     >>> pure

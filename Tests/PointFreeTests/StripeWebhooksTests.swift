@@ -1,6 +1,5 @@
 import Either
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -166,7 +165,7 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
-  func testNoSubscriptionId() {
+  func testNoInvoiceSubscriptionId() {
     #if !os(Linux)
     let invoice = Invoice.mock(charge: .left("ch_test"))
       |> \.subscription .~ nil
@@ -188,8 +187,34 @@ final class StripeWebhooksTests: TestCase {
     #endif
   }
 
+  func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() {
+    #if !os(Linux)
+    let invoice = Invoice.mock(charge: .left("ch_test"))
+      |> \.subscription .~ nil
+      |> \.lines.data .~ [
+        .mock
+          |> \.subscription .~ nil
+    ]
+    let event = Event<Either<Invoice, Subscription>>(
+      data: .init(object: .left(invoice)),
+      id: "evt_test",
+      type: .invoicePaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=950becadb9b19c86003ad07e745cc0b99a50f76b362bb50d5fe159c1f84c606f",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    #endif
+  }
+
   func testPastDueEmail() {
-    let doc = pastDueEmailView.view(unit)
+    let doc = pastDueEmailView(unit)
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

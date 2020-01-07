@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -114,13 +112,13 @@ private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parall
     parallel(sendEmail(
       to: [teammate.email],
       subject: "You have been removed from \(owner.displayName)’s Point-Free team",
-      content: inj2(youHaveBeenRemovedEmailView.view(.teamOwner(owner)))
+      content: inj2(youHaveBeenRemovedEmailView(.teamOwner(owner)))
       )
       .run),
     parallel(sendEmail(
       to: [owner.email],
       subject: "Your teammate \(teammate.displayName) has been removed",
-      content: inj2(teammateRemovedEmailView.view((owner, teammate)))
+      content: inj2(teammateRemovedEmailView((owner, teammate)))
       )
       .run)
   )

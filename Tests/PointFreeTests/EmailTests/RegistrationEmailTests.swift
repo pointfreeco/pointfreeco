@@ -1,6 +1,5 @@
 @testable import GitHub
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -19,7 +18,7 @@ class RegistrationEmailTests: TestCase {
   }
 
   func testRegistrationEmail() {
-    let doc = registrationEmailView.view(.mock)
+    let doc = registrationEmailView(.mock)
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

@@ -1,19 +1,13 @@
-import Css
-import FunctionalCss
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import Optics
 import PointFreeRouter
 import Prelude
 import Stripe
-import Styleguide
 import Tuple
-import View
+import Views
 
 let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
@@ -30,13 +24,13 @@ let paymentInfoResponse =
     )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: View(paymentInfoView),
+    >>> _respond(
+      view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
       layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: card,
+          data: (card, Current.envVars.stripe.publishableKey.rawValue, Current.stripe.js),
           title: "Update Payment Info"
         )
     }
@@ -72,68 +66,3 @@ let updatePaymentInfoMiddleware:
           )
       }
 }
-
-func paymentInfoView(card: Stripe.Card) -> [Node] {
-  return [
-    gridRow([
-      gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-        div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-            [titleRowView]
-              <> currentPaymentInfoRowView(card: card)
-              <> [updatePaymentInfoRowView]
-        )
-        ])
-      ])
-  ]
-}
-
-private let titleRowView =
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment Info"])
-        ])
-      ])
-    ])
-
-private func currentPaymentInfoRowView(card: Stripe.Card) -> [Node] {
-  return [
-    gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-      gridColumn(sizes: [.mobile: 12], [
-        div([
-          h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
-          p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
-          p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
-          ])
-        ])
-      ])
-  ]
-}
-
-private let updatePaymentInfoRowView =
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),
-        form(
-          [action(path(to: .account(.paymentInfo(.update(nil))))), id(StripeHtml.formId), method(.post)],
-          StripeHtml.cardInput(couponId: nil)
-            <> StripeHtml.errors
-            <> StripeHtml.scripts
-            <> [
-              button(
-                [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-                ["Update payment info"]
-              ),
-              a(
-                [
-                  href(path(to: .account(.index))),
-                  `class`([Class.pf.components.button(color: .black, style: .underline)])
-                ],
-                ["Cancel"]
-              )
-          ]
-        )
-      ])
-    ])
-  ])

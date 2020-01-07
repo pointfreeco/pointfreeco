@@ -3,7 +3,6 @@ import DatabaseTestSupport
 import Either
 import GitHub
 import GitHubTestSupport
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -264,7 +263,7 @@ class EpisodePageTests: TestCase {
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -362,7 +361,7 @@ class EpisodePageTests: TestCase {
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
     _ = Current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)

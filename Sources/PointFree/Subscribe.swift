@@ -8,28 +8,14 @@ import Prelude
 import Stripe
 import Tuple
 
-let subscribeMiddleware =
-  filterMap(
-    require1 >>> pure,
-    or: redirect(
-      with: get1 >>> subscribeConfirmationWithSubscribeData,
-      headersMiddleware: flash(.error, "Error creating subscription!")
-    )
-    )
-    <<< filter(
-      get1 >>> ^\.pricing >>> validateQuantity,
-      or: redirect(
-        with: get1 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
-      )
-    )
-    <<< filter(
-      get1 >>> validateCoupon(forSubscribeData:),
-      or: redirect(
-        with: get1 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
-      )
-    )
+let subscribeMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<SubscribeData?, User?>,
+  Data
+  > = requireSubscribeData
+    <<< validateQuantity
+    <<< validateCoupon
     <<< redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
     <| subscribe
@@ -40,36 +26,25 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
     let (subscribeData, user) = conn.data
       |> lower
 
-    let subscriptionOrError = (pure(subscribeData) as EitherIO<Error, SubscribeData>)
-      .withExcept(const(unit))
-      .flatMap { subscribeData in
-        Current.stripe
-          .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, nil)
-          .map { ($0, subscribeData) }
-          .flatMap {
-            Current.stripe
-              .createSubscription($0.id, $1.pricing.plan, $1.pricing.quantity, $1.coupon)
+    let subscriptionOrError = Current.stripe
+      .createCustomer(subscribeData.token, user.id.rawValue.uuidString, user.email, nil)
+      .flatMap { customer in
+        Current.stripe.createSubscription(
+          customer.id,
+          subscribeData.pricing.plan,
+          subscribeData.pricing.quantity,
+          subscribeData.coupon
+        )
+      }
+      .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
+        Current.database
+          .createSubscription(stripeSubscription, user.id, subscribeData.isOwnerTakingSeat)
+          .flatMap { subscription in
+            sendInviteEmails(inviter: user, subscribeData: subscribeData)
+              .map(const(subscription))
         }
-        .flatMap { stripeSubscription -> EitherIO<Error, Models.Subscription?> in
-          let parallel = sequence(
-            subscribeData.teammates
-              .filter { email in email.rawValue.contains("@") && email != user.email }
-              .prefix(subscribeData.pricing.quantity - 1)
-              .map { email in
-                Current.database.insertTeamInvite(email, user.id)
-                  .flatMap { invite in sendInviteEmail(invite: invite, inviter: user) }
-                  .run
-                  .parallel
-            }
-          ).map(const(unit))
-
-          return lift(parallel.sequential).flatMap { _ in
-            Current.database
-              .createSubscription(stripeSubscription, user.id)
-          }
-        }
-    }
-    .run
+      }
+      .run
 
     return subscriptionOrError.flatMap(
       either(
@@ -93,6 +68,24 @@ private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>
     )
 }
 
+private func sendInviteEmails(inviter: User, subscribeData: SubscribeData) -> EitherIO<Error, Prelude.Unit> {
+  return lift(
+    sequence(
+      subscribeData.teammates
+        .filter { email in email.rawValue.contains("@") && email != inviter.email }
+        .prefix(subscribeData.pricing.quantity - (subscribeData.isOwnerTakingSeat ? 1 : 0))
+        .map { email in
+          Current.database.insertTeamInvite(email, inviter.id)
+            .flatMap { invite in sendInviteEmail(invite: invite, inviter: inviter) }
+            .run
+            .parallel
+    })
+      .sequential
+  )
+  .map(const(unit))
+  .catch(const(pure(unit)))
+}
+
 private func validateQuantity(_ pricing: Pricing) -> Bool {
   return !pricing.isTeam || Pricing.validTeamQuantities.contains(pricing.quantity)
 }
@@ -112,14 +105,56 @@ private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bo
 
 private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeData?) -> Route {
   guard let subscribeData = subscribeData else {
-    return .subscribeConfirmation(.team, .yearly, [""])
+    return .subscribeConfirmation(
+      lane: .team,
+      billing: .yearly,
+      isOwnerTakingSeat: true,
+      teammates: [""]
+    )
   }
   guard let coupon = subscribeData.coupon else {
     return .subscribeConfirmation(
-      subscribeData.pricing.isPersonal ? .personal : .team,
-      subscribeData.pricing.billing,
-      subscribeData.teammates
+      lane: subscribeData.pricing.isPersonal ? .personal : .team,
+      billing: subscribeData.pricing.billing,
+      isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+      teammates: subscribeData.teammates
     )
   }
   return .discounts(code: coupon, subscribeData.pricing.billing)
+}
+
+private func requireSubscribeData(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData?, User?>, Data> {
+  return middleware |> filterMap(
+    require1 >>> pure,
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "Error creating subscription!")
+    )
+  )
+}
+
+private func validateQuantity(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
+  return middleware |> filter(
+    get1 >>> ^\.pricing >>> validateQuantity,
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
+    )
+  )
+}
+
+private func validateCoupon(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
+  return middleware |> filter(
+    get1 >>> validateCoupon(forSubscribeData:),
+    or: redirect(
+      with: get1 >>> subscribeConfirmationWithSubscribeData,
+      headersMiddleware: flash(.error, "Coupons can only be used on individual subscription plans.")
+    )
+  )
 }

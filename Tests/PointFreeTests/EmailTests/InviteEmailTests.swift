@@ -1,10 +1,9 @@
 import SnapshotTesting
-import Html
+import HtmlUpgrade
 import Prelude
 import XCTest
 @testable import PointFree
 import PointFreeTestSupport
-import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 #if !os(Linux)
@@ -18,7 +17,7 @@ class EmailInviteTests: TestCase {
   }
 
   func testEmailInvite() {
-    let doc = teamInviteEmailView.view((.mock, .mock))
+    let doc = teamInviteEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -36,7 +35,7 @@ class EmailInviteTests: TestCase {
   }
 
   func testInviteAcceptance() {
-    let doc = inviteeAcceptedEmailView.view((.mock, .mock))
+    let doc = inviteeAcceptedEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

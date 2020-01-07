@@ -2,21 +2,21 @@ import Css
 import FunctionalCss
 import HtmlCssSupport
 import Foundation
-import Html
+import HtmlUpgrade
 import Prelude
 
 public enum GitHubLinkType {
   case black
   case white
 
-  fileprivate var iconFillColor: String {
+  public var iconFillColor: String {
     switch self {
     case .white:  return "#000"
     case .black:  return "#fff"
     }
   }
 
-  fileprivate var buttonClass: CssSelector {
+  public var buttonClass: CssSelector {
     switch self {
     case .black:  return Class.pf.components.button(color: .black)
     case .white:  return Class.pf.components.button(color: .white)
@@ -24,78 +24,79 @@ public enum GitHubLinkType {
   }
 }
 
-public func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Node {
-  return a(
-    [
-      Html.href(href ?? ""),
-      `class`([type.buttonClass])
-    ],
-    [
-      img(
+extension Node {
+  public static func gitHubLink(text: String, type: GitHubLinkType, href: String?) -> Node {
+    return .a(
+      attributes: [
+        .href(href ?? ""),
+        .class([type.buttonClass])
+      ],
+      .img(
         base64: gitHubSvgBase64(fill: type.iconFillColor),
         type: .image(.svg),
         alt: "",
-        [
-          `class`([Class.margin([.mobile: [.right: 1]])]),
-          style(margin(bottom: .px(-4))),
-          width(20),
-          height(20)
+        attributes: [
+          .class([Class.margin([.mobile: [.right: 1]])]),
+          .style(margin(bottom: .px(-4))),
+          .width(20),
+          .height(20)
         ]
       ),
-      span([.text(text)])
-    ]
-  )
+      .span(.text(text))
+    )
+  }
 }
 
-public func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
+extension Node {
+  public static func twitterShareLink(text: String, url: String, via: String? = nil) -> Node {
+    var components = URLComponents(string: "https://twitter.com/intent/tweet")!
+    components.queryItems = [
+      URLQueryItem(name: "text", value: text),
+      URLQueryItem(name: "url", value: url),
+      via.map { URLQueryItem(name: "via", value: $0) }
+      ]
+      .compactMap { $0 }
+    let tweetHref = components.url?.absoluteString ?? ""
 
-  var components = URLComponents(string: "https://twitter.com/intent/tweet")!
-  components.queryItems = [
-    URLQueryItem(name: "text", value: text),
-    URLQueryItem(name: "url", value: url),
-    via.map { URLQueryItem(name: "via", value: $0) }
-    ]
-    .compactMap { $0 }
-  let tweetHref = components.url?.absoluteString ?? ""
-
-  return a(
-    [
-      href(tweetHref),
-      onclick(unsafe: """
-        window.open(
-          "\(tweetHref)",
-          "newwindow",
-          "width=500,height=500"
-        );
-        """),
-      target(.blank),
-      rel(.init(rawValue: "noopener noreferrer")),
-      `class`([twitterLinkButtonClass]),
-      style(twitterLinkButtonStyle)
-    ],
-    [
-      twitterIconImg(fill: "fff"),
-      span(
-        [
-          style(twitterButtonTextStyle),
-          `class`([twitterButtonTextClass])
+    return a(
+      attributes: [
+        .href(tweetHref),
+        .onclick(unsafe: """
+          window.open(
+            "\(tweetHref)",
+            "newwindow",
+            "width=500,height=500"
+          );
+          """),
+        .target(.blank),
+        .rel(.init(rawValue: "noopener noreferrer")),
+        .class([twitterLinkButtonClass]),
+        .style(twitterLinkButtonStyle)
+      ],
+      .twitterIconImg(fill: "fff"),
+      .span(
+        attributes: [
+          .style(twitterButtonTextStyle),
+          .class([twitterButtonTextClass])
         ],
-        ["Tweet"]
+        "Tweet"
       )
-    ]
-  )
+    )
+  }
 }
 
-public func twitterIconImg(fill: String) -> Node {
-  return img(
-    base64: twitterLogoSvg(fill: fill),
-    type: .image(.svg),
-    alt: "",
-    [
-      style(twitterButtonIconStyle),
-      `class`([twitterButtonIconClass])
-    ]
-  )
+extension Node {
+  public static func twitterIconImg(fill: String) -> Node {
+    return .img(
+      base64: twitterLogoSvg(fill: fill),
+      type: .image(.svg),
+      alt: "",
+      attributes: [
+        .style(twitterButtonIconStyle),
+        .class([twitterButtonIconClass])
+      ]
+    )
+  }
 }
 
 private let twitterLinkButtonClass: CssSelector =

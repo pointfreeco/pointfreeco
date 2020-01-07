@@ -219,7 +219,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
       .run
       .perform()
 
@@ -303,7 +303,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
       .run
       .perform()
 
@@ -345,7 +345,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id, true)
       .run
       .perform()
 
@@ -382,7 +382,7 @@ class InviteTests: TestCase {
       |> (\Stripe.Subscription.quantity) .~ 2
     let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
-    _ = Current.database.createSubscription(stripeSubscription, currentUser.id)
+    _ = Current.database.createSubscription(stripeSubscription, currentUser.id, true)
       .run
       .perform()
       .right!!

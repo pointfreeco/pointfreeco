@@ -1,6 +1,6 @@
 import Either
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
+import HtmlUpgradeSnapshotTesting
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -66,7 +66,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelEmail() {
-    let doc = cancelEmailView.view((.mock, .mock))
+    let doc = cancelEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -128,7 +128,7 @@ final class CancelTests: TestCase {
   }
 
   func testReactivateEmail() {
-    let doc = reactivateEmailView.view((.mock, .mock))
+    let doc = reactivateEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)

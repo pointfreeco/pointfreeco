@@ -1,7 +1,7 @@
 import Css
 import Either
 import Foundation
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
@@ -12,52 +12,60 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 
-let showNewBlogPostEmailMiddleware =
+let showNewBlogPostEmailMiddleware: AppMiddleware<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond(showNewBlogPostView.contramap(lower))
+    >=> respond({ _ in showNewBlogPostView })
 
-private let showNewBlogPostView = View<User> { _ in
-  ul(
+private let showNewBlogPostView = Node.ul(
+  .fragment(
     Current.blogPosts()
       .sorted(by: their(^\.id, >))
       .prefix(upTo: 3)
-      .map(li <<< newBlogPostEmailRowView.view)
+      .map { .li(newBlogPostEmailRowView(post: $0)) }
   )
-}
+)
 
-private let newBlogPostEmailRowView = View<BlogPost> { post in
-  p([
+private func newBlogPostEmailRowView(post: BlogPost) -> Node {
+  return .p(
     .text("Blog Post: \(post.title)"),
-
-    form([action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))), method(.post)], [
-
-      input([
-        checked(true),
-        name(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue),
-        type(.checkbox),
-        value("true"),
-        ]),
-      textarea([
-        name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
-        placeholder("Subscriber announcement")
-        ]),
-      input([
-        checked(true),
-        name(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue),
-        type(.checkbox),
-        value("true"),
-        ]),
-      textarea([
-        name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
-        placeholder("Non-subscriber announcement")
-        ]),
-
-      input([type(.submit), name("test"), value("Test email!")]),
-      input([type(.submit), name("live"), value("Send email!")])
-      ])
-    ])
+    .form(
+      attributes: [
+        .action(path(to: .admin(.newBlogPostEmail(.send(post.id, formData: nil, isTest: nil))))),
+        .method(.post)
+      ],
+      .input(
+        attributes: [
+          .checked(true),
+          .name(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue),
+          .type(.checkbox),
+          .value("true"),
+        ]
+      ),
+      .textarea(
+        attributes: [
+          .name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
+          .placeholder("Subscriber announcement")
+        ]
+      ),
+      .input(
+        attributes: [
+          .checked(true),
+          .name(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue),
+          .type(.checkbox),
+          .value("true"),
+        ]
+      ),
+      .textarea(
+        attributes: [
+          .name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
+          .placeholder("Non-subscriber announcement")
+        ]
+      ),
+      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
+      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
+    )
+  )
 }
 
 let sendNewBlogPostEmailMiddleware: Middleware<
@@ -138,7 +146,7 @@ private func sendEmail(
 
   // A personalized email to send to each user.
   let newBlogPostEmails = users.map { user in
-    lift(IO { newBlogPostEmail.view((post, subscriberAnnouncement, nonsubscriberAnnouncement, user)) })
+    lift(IO { newBlogPostEmail((post, subscriberAnnouncement, nonsubscriberAnnouncement, user)) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
@@ -158,7 +166,7 @@ private func sendEmail(
         to: adminEmails,
         subject: "New blog post email finished sending!",
         content: inj2(
-          newBlogPostEmailAdminReportEmail.view(
+          newBlogPostEmailAdminReportEmail(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

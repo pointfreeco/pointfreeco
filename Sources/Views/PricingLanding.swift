@@ -1,149 +1,150 @@
 import Css
 import FunctionalCss
-import Html
+import HtmlUpgrade
 import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
 import Tagged
-import View
 import HtmlCssSupport
 
-public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
-public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
-public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
+public struct EpisodeStats {
+  public let allEpisodeCount: AllEpisodeCount
+  public let episodeHourCount: EpisodeHourCount
+  public let freeEpisodeCount: FreeEpisodeCount
 
-public func pricingLanding(
-  allEpisodeCount: AllEpisodeCount,
-  currentUser: User?,
-  episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount,
-  subscriberState: SubscriberState
-  ) -> [Node] {
-
-  return hero(currentUser: currentUser, subscriberState: subscriberState)
-    + plansAndPricing(
-      allEpisodeCount: allEpisodeCount,
-      currentUser: currentUser,
-      episodeHourCount: episodeHourCount,
-      freeEpisodeCount: freeEpisodeCount,
-      subscriberState: subscriberState
-    )
-    + whatToExpect
-    + faq
-    + whatPeopleAreSaying
-    + featuredTeams
-    + footer(allEpisodeCount: allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
+  public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
+  public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
+  public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
 }
 
-func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
+public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
+  return EpisodeStats(
+    allEpisodeCount: .init(rawValue: episodes.count),
+    episodeHourCount: .init(
+      rawValue: episodes.reduce(0) { $0 + $1.length } / 3600
+    ),
+    freeEpisodeCount: .init(
+      rawValue: episodes.lazy.filter { $0.permission == .free }.count
+    )
+  )
+}
+
+public func pricingLanding(
+  currentUser: User?,
+  stats: EpisodeStats,
+  subscriberState: SubscriberState
+  ) -> Node {
+
+  return [
+    hero(currentUser: currentUser, subscriberState: subscriberState),
+    plansAndPricing(
+      currentUser: currentUser,
+      stats: stats,
+      subscriberState: subscriberState
+    ),
+    whatToExpect,
+    faq,
+    whatPeopleAreSaying,
+    featuredTeams,
+    footer(allEpisodeCount: stats.allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
+  ]
+}
+
+func ctaColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   guard currentUser == nil || subscriberState.isActive else { return [] }
 
   let title = subscriberState.isActive
     ? "You‘re already a subscriber!"
     : "Start with a free episode"
 
-  let ctaButton = subscriberState.isActive
-    ? a(
-      [
-        href(path(to: .account(.index))),
-        `class`([Class.pf.components.button(color: .white)])
+  let ctaButton: Node = subscriberState.isActive
+    ? .a(
+      attributes: [
+        .href(path(to: .account(.index))),
+        .class([Class.pf.components.button(color: .white)])
       ],
-      ["Manage your account"]
+      "Manage your account"
     )
-    : gitHubLink(
+    : .gitHubLink(
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
       href: path(to: .login(redirect: url(to: .pricingLanding)))
   )
 
-  return [
-    gridColumn(
-      sizes: [.mobile: 12, .desktop: 4],
-      [
-        `class`([
-          Class.grid.center(.desktop),
-          Class.padding([.desktop: [.left: 2]])
-          ])
-      ],
-      [
-        div(
-          [],
-          [
-            p(
-              [
-                `class`([
-                  Class.pf.colors.fg.white,
-                  Class.padding([.mobile: [.bottom: 2]])
-                  ])
-              ],
-              [.text(title)]
-            ),
-            ctaButton
-          ]
-        )
-      ]
+  return .gridColumn(
+    sizes: [.mobile: 12, .desktop: 4],
+    attributes: [
+      .class([
+        Class.grid.center(.desktop),
+        Class.padding([.desktop: [.left: 2]])
+        ])
+    ],
+    .div(
+      .p(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.white,
+            Class.padding([.mobile: [.bottom: 2]])
+            ])
+        ],
+        .text(title)
+      ),
+      ctaButton
     )
-  ]
+  )
 }
 
-private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
+private func titleColumn(currentUser: User?, subscriberState: SubscriberState) -> Node {
   let isTwoColumnHero = currentUser == nil || subscriberState.isActive
   let titleColumnCount = isTwoColumnHero ? 8 : 12
 
-  return [
-    gridColumn(
+  return
+    .gridColumn(
       sizes: [.mobile: 12, .desktop: titleColumnCount],
-      [
-        `class`([
+      attributes: [
+        .class([
           Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 0, .right: 2]]),
           isTwoColumnHero ? darkRightBorder: .star
           ]),
       ],
-      [
-        h1(
-          [
-            `class`([
-              Class.pf.type.responsiveTitle2,
-              Class.pf.colors.fg.white
-              ]),
-            style(lineHeight(1.2))
-          ],
-          [.raw("Explore the wonderful world of&nbsp;functional programming in Swift.")]
-        )
-      ]
-    )
-  ]
+      .h1(
+        attributes: [
+          .class([
+            Class.pf.type.responsiveTitle2,
+            Class.pf.colors.fg.white
+            ]),
+          .style(lineHeight(1.2))
+        ],
+        .raw("Explore the wonderful world of&nbsp;functional programming in Swift.")
+      )
+  )
 }
 
-private func hero(currentUser: User?, subscriberState: SubscriberState) -> [Node] {
-  return [
-    div(
-      [
-        `class`([
-          Class.pf.colors.bg.black,
-          Class.border.top,
+private func hero(currentUser: User?, subscriberState: SubscriberState) -> Node {
+  return .div(
+    attributes: [
+      .class([
+        Class.pf.colors.bg.black,
+        Class.border.top,
+        ]),
+      // TODO: move to nav?
+      .style(key("border-top-color", "#333"))
+    ],
+    .gridRow(
+      attributes: [
+        .class([
+          Class.grid.middle(.desktop),
+          Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
           ]),
-        // TODO: move to nav?
-        style(key("border-top-color", "#333"))
+        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
       ],
-      [
-        gridRow(
-          [
-            `class`([
-              Class.grid.middle(.desktop),
-              Class.padding([.mobile: [.leftRight: 3, .topBottom: 4], .desktop: [.all: 5]])
-              ]),
-            style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
-          ],
-          titleColumn(currentUser: currentUser, subscriberState: subscriberState)
-            + ctaColumn(currentUser: currentUser, subscriberState: subscriberState)
-        )
-      ]
+      titleColumn(currentUser: currentUser, subscriberState: subscriberState),
+      ctaColumn(currentUser: currentUser, subscriberState: subscriberState)
     )
-  ]
+  )
 }
 
 private let baseCtaButtonClass =
@@ -169,222 +170,200 @@ private let contactusButtonClasses =
     | Class.pf.colors.border.gray800
 
 private func plansAndPricing(
-  allEpisodeCount: AllEpisodeCount,
   currentUser: User?,
-  episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount,
+  stats: EpisodeStats,
   subscriberState: SubscriberState
-  ) -> [Node] {
+  ) -> Node {
   return [
-    gridRow(
-      [
-        `class`([
+    .gridRow(
+      attributes: [
+        .class([
           Class.padding([.mobile: [.leftRight: 2, .top: 3], .desktop: [.leftRight: 4, .top: 4]]),
           Class.grid.between(.desktop)
           ]),
       ],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([
-              Class.grid.center(.desktop),
-              Class.padding([.desktop: [.bottom: 2]])
-              ])
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [
+          .class([
+            Class.grid.center(.desktop),
+            Class.padding([.desktop: [.bottom: 2]])
+            ])
+        ],
+        .h3(
+          attributes: [
+            .id("plans-and-pricing"),
+            .class([Class.pf.type.responsiveTitle2])
           ],
-          [
-            h3(
-              [
-                id("plans-and-pricing"),
-                `class`([Class.pf.type.responsiveTitle2])
-              ],
-              ["Plans and pricing"]
-            )
-          ]
+          "Plans and pricing"
         )
-      ]
+      )
     ),
-    ul(
-      [
-        `class`([
+    .ul(
+      attributes: [
+        .class([
           Class.margin([.mobile: [.all: 0]]),
           Class.padding([.mobile: [.all: 0], .desktop: [.leftRight: 2, .topBottom: 0]]),
           Class.type.list.styleNone,
           Class.flex.wrap,
           Class.flex.flex
           ]),
-        style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
       ],
-      [
-        pricingPlan(
-          currentUser: currentUser,
-          subscriberState: subscriberState,
-          plan: .free(freeEpisodeCount: freeEpisodeCount)
-        ),
-        pricingPlan(
-          currentUser: currentUser,
-          subscriberState: subscriberState,
-          plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
-        ),
-        pricingPlan(
-          currentUser: currentUser,
-          subscriberState: subscriberState,
-          plan: .team
-        ),
-        pricingPlan(
-          currentUser: currentUser,
-          subscriberState: subscriberState,
-          plan: .enterprise
-        ),
-      ]
-    ),
-    gridRow(
-      [
-        `class`([
-          Class.padding([.mobile: [.leftRight: 2], .desktop: [.leftRight: 5]]),
-          ]),
-      ],
-      [
-        gridColumn(
-          sizes: [.mobile: 12],
-          [
-            `class`([
-              Class.grid.center(.desktop),
-              Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.bottom: 4]])
-              ])
-          ],
-          [
-            p(
-              [
-                `class`([
-                  Class.pf.type.body.regular,
-                  Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
-                  Class.pf.colors.fg.gray400
-                  ]),
-                style(maxWidth(.px(480)) <> margin(leftRight: .auto))
-              ],
-              [
-                "Prices shown with annual billing. When billed month to month, the ",
-                strong(["Personal"]),
-                " plan is $18, and the ",
-                strong(["Team"]),
-                " plan is $16 per member per month."
-              ]
-            )
-          ]
+      pricingPlan(
+        currentUser: currentUser,
+        subscriberState: subscriberState,
+        plan: .free(freeEpisodeCount: stats.freeEpisodeCount)
+      ),
+      pricingPlan(
+        currentUser: currentUser,
+        subscriberState: subscriberState,
+        plan: .personal(
+          allEpisodeCount: stats.allEpisodeCount,
+          episodeHourCount: stats.episodeHourCount
         )
-      ]
+      ),
+      pricingPlan(
+        currentUser: currentUser,
+        subscriberState: subscriberState,
+        plan: .team
+      ),
+      pricingPlan(
+        currentUser: currentUser,
+        subscriberState: subscriberState,
+        plan: .enterprise
+      )
     ),
+    .gridRow(
+      attributes: [
+        .class([Class.padding([.mobile: [.leftRight: 2], .desktop: [.leftRight: 5]])]),
+      ],
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [
+          .class([
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.top: 2, .bottom: 3, .leftRight: 2], .desktop: [.bottom: 4]])
+            ])
+        ],
+        .p(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular,
+              Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
+              Class.pf.colors.fg.gray400
+              ]),
+            .style(maxWidth(.px(480)) <> margin(leftRight: .auto))
+          ],
+          "Prices shown with annual billing. When billed month to month, the ",
+          .strong("Personal"),
+          " plan is $18, and the ",
+          .strong("Team"),
+          " plan is $16 per member per month."
+        )
+      )
+    )
   ]
 }
 
 private func planCost(_ cost: PricingPlan.Cost) -> Node {
-  return gridRow(
-    [
-      `class`([
+  return .gridRow(
+    attributes: [
+      .class([
         Class.grid.start(.mobile),
         Class.grid.middle(.mobile)
         ]),
     ],
-    [
-      gridColumn(
-        sizes: [:],
-        [
-          `class`([
-            Class.padding([.mobile: [.right: 2]])
-            ]),
-          style(flex(grow: 0, shrink: nil, basis: nil))
+    .gridColumn(
+      sizes: [:],
+      attributes: [
+        .class([
+          Class.padding([.mobile: [.right: 2]])
+          ]),
+        .style(flex(grow: 0, shrink: nil, basis: nil))
+      ],
+      .h3(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.black,
+            Class.typeScale([.mobile: .r2, .desktop: .r2]),
+            Class.type.light
+            ])
         ],
-        [
-          h3(
-            [
-              `class`([
-                Class.pf.colors.fg.black,
-                Class.typeScale([.mobile: .r2, .desktop: .r2]),
-                Class.type.light
-                ])
-            ],
-            [.text(cost.value)]
-          )
-        ]
-      ),
-      gridColumn(
-        sizes: [:],
-        [],
-        [
-          p(
-            [
-              `class`([
-                Class.pf.type.body.small,
-                Class.typeScale([.mobile: .r0_875, .desktop: .r0_75]),
-                Class.type.lineHeight(1)
-                ])
-            ],
-            [.raw(cost.title ?? "")]
-          )
-        ]
-      ),
-    ]
+        .text(cost.value)
+      )
+    ),
+    .gridColumn(
+      sizes: [:],
+      .p(
+        attributes: [
+          .class([
+            Class.pf.type.body.small,
+            Class.typeScale([.mobile: .r0_875, .desktop: .r0_75]),
+            Class.type.lineHeight(1)
+            ])
+        ],
+        .raw(cost.title ?? "")
+      )
+    )
   )
 }
 
-private func pricingPlan(
+func pricingPlan(
   currentUser: User?,
   subscriberState: SubscriberState,
   plan: PricingPlan
   ) -> ChildOf<Tag.Ul> {
 
-  let cost = plan.cost.map(planCost) ?? div([])
+  let cost = plan.cost.map(planCost) ?? []
 
-  return li(
-    [
-      `class`([
+  return .li(
+    attributes: [
+      .class([
         Class.padding([.mobile: [.all: 2], .desktop: [.all: 1]]),
         Class.margin([.mobile: [.all: 0]]),
         Class.flex.flex,
         planItem,
         ])
     ],
-    [
-      div(
-        [
-          `class`([
-            Class.pf.colors.bg.gray900,
-            Class.flex.column,
-            Class.padding([.mobile: [.all: 2]]),
-            Class.size.width100pct,
-            Class.flex.flex,
+    .div(
+      attributes: [
+        .class([
+          Class.pf.colors.bg.gray900,
+          Class.flex.column,
+          Class.padding([.mobile: [.all: 2]]),
+          Class.size.width100pct,
+          Class.flex.flex,
+          ]),
+      ],
+      .h4(
+        attributes: [.class([Class.pf.type.responsiveTitle4])],
+        .text(plan.title)
+      ),
+      cost,
+      .ul(
+        attributes: [
+          .class([
+            Class.type.list.styleNone,
+            Class.padding([.mobile: [.all: 0]]),
+            Class.pf.colors.fg.gray400,
+            Class.pf.type.body.regular,
+            Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
+            Class.pf.colors.fg.gray400
             ]),
+          .style(flex(grow: 1, shrink: 0, basis: .auto))
         ],
-        [
-          h4(
-            [`class`([Class.pf.type.responsiveTitle4])],
-            [.text(plan.title)]
-          ),
-          cost,
-          ul(
-            [
-              `class`([
-                Class.type.list.styleNone,
-                Class.padding([.mobile: [.all: 0]]),
-                Class.pf.colors.fg.gray400,
-                Class.pf.type.body.regular,
-                Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
-                Class.pf.colors.fg.gray400
-                ]),
-              style(flex(grow: 1, shrink: 0, basis: .auto))
-            ],
-            plan.features.map { feature in
-              li(
-                [`class`([Class.padding([.mobile: [.top: 1]])])],
-                [.text(feature)]
-              )
-            }
-          ),
-          pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
-        ]
-      )
-    ]
+        .fragment(
+          plan.features.map { feature in
+            .li(
+              attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
+              [.text(feature)]
+            )
+          }
+        )
+      ),
+      pricingPlanCta(currentUser: currentUser, subscriberState: subscriberState, plan: plan)
+    )
   )
 }
 
@@ -395,365 +374,338 @@ private func pricingPlanCta(
   ) -> Node {
 
   if plan.cost == nil {
-    return a(
-      [
-        mailto("support@pointfree.co"),
-        `class`([
+    return .a(
+      attributes: [
+        .mailto("support@pointfree.co"),
+        .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           contactusButtonClasses
           ])
       ],
-      ["Contact Us"]
+      "Contact Us"
     )
   } else if plan.isFree && currentUser == nil  {
-    return a(
-      [
-        href(path(to: .login(redirect: url(to: .pricingLanding)))),
-        `class`([
+    return .a(
+      attributes: [
+        .href(path(to: .login(redirect: url(to: .pricingLanding)))),
+        .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses
           ])
       ],
-      ["Choose plan"]
+      "Choose plan"
     )
   } else if !plan.isFree {
-    return a(
-      [
-        href(
+    return .a(
+      attributes: [
+        .href(
           subscriberState.isActive
             ? path(to: .account(.index))
-            : path(to: plan.lane.map { Route.subscribeConfirmation($0, nil, nil) } ?? .home)
+            : path(
+              to: plan.lane
+                .map {
+                  let route = Route.subscribeConfirmation(
+                    lane: $0,
+                    billing: nil,
+                    isOwnerTakingSeat: nil,
+                    teammates: nil
+                  )
+                  return currentUser == nil ? .login(redirect: url(to: route)) : route
+                }
+                ?? .home
+          )
         ),
-        `class`([
+        .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses
           ])
       ],
-      [subscriberState.isActive ? "Manage subscription" : "Choose plan"]
+      subscriberState.isActive ? "Manage subscription" : "Choose plan"
     )
   } else {
-    return div([])
+    return []
   }
 }
 
-private let whatToExpect = [
-  div(
-    [style(backgroundColor(.other("#fafafa")))],
-    [
-      gridRow(
-        [
-          `class`([
-            Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
-            ]),
-          style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+private let whatToExpect = Node.div(
+  attributes: [.style(backgroundColor(.other("#fafafa")))],
+  .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
+        ]),
+      .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+    ],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
+          ])
+      ],
+      .h3(
+        attributes: [
+          .id("what-to-expect"),
+          .class([Class.pf.type.responsiveTitle2])
         ],
-        [
-          gridColumn(
-            sizes: [.mobile: 12],
-            [
-              `class`([
-                Class.grid.center(.desktop),
-                Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
-                ])
-            ],
-            [
-              h3(
-                [
-                  id("what-to-expect"),
-                  `class`([Class.pf.type.responsiveTitle2])
-                ],
-                ["What to expect"]
-              )
-            ]
-          ),
-          gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            [
-              `class`([
-                Class.grid.center(.desktop),
-                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-                lightBottomBorder,
-                lightRightBorder
-                ]),
-            ],
-            [whatToExpectColumn(item: .newContent)]
-          ),
-          gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            [
-              `class`([
-                Class.grid.center(.desktop),
-                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-                lightBottomBorder
-                ])
-            ],
-            [whatToExpectColumn(item: .topics)]
-          ),
-          gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            [
-              `class`([
-                Class.grid.center(.desktop),
-                Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
-                Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
-                lightRightBorder
-                ])
-            ],
-            [whatToExpectColumn(item: .playgrounds)]
-          ),
-          gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            [`class`([Class.grid.center(.desktop)])],
-            [whatToExpectColumn(item: .transcripts)]
-          )
-        ]
+        "What to expect"
       )
-    ]
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightBottomBorder,
+          lightRightBorder
+          ]),
+      ],
+      whatToExpectColumn(item: .newContent)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightBottomBorder
+          ])
+      ],
+      whatToExpectColumn(item: .topics)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightRightBorder
+          ])
+      ],
+      whatToExpectColumn(item: .playgrounds)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [.class([Class.grid.center(.desktop)])],
+      whatToExpectColumn(item: .transcripts)
+    )
   )
-]
+)
 
 private func whatToExpectColumn(item: WhatToExpectItem) -> Node {
-  return div(
-    [`class`([Class.padding([.desktop: [.all: 3]])])],
-    [
-      img(
-        src: item.imageSrc,
-        alt: "",
-        [
-          `class`([
-            Class.layout.fit, Class.margin([.mobile: [.bottom: 2]]),
-            Class.pf.colors.bg.white
-            ])
-        ]
-      ),
-      h4(
-        [`class`([Class.pf.type.responsiveTitle5])],
-        [.text(item.title)]
-      ),
-      p(
-        [`class`([Class.pf.colors.fg.gray400])],
-        [.text(item.description)]
-      )
-    ]
+  return .div(
+    attributes: [.class([Class.padding([.desktop: [.all: 3]])])],
+    .img(
+      src: item.imageSrc,
+      alt: "",
+      attributes: [
+        .class([
+          Class.layout.fit, Class.margin([.mobile: [.bottom: 2]]),
+          Class.pf.colors.bg.white
+          ])
+      ]
+    ),
+    .h4(
+      attributes: [.class([Class.pf.type.responsiveTitle5])],
+      .text(item.title)
+    ),
+    .p(
+      attributes: [.class([Class.pf.colors.fg.gray400])],
+      .text(item.description)
+    )
   )
 }
 
-private let faq = [
-  gridRow(
-    [
-      `class`([
-        Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
-        ]),
-      style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
-    ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 8],
-        [
-          style(margin(leftRight: .auto))
+private let faq = Node.gridRow(
+  attributes: [
+    .class([
+      Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])
+      ]),
+    .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto))
+  ],
+  .gridColumn(
+    sizes: [.mobile: 12, .desktop: 8],
+    attributes: [.style(margin(leftRight: .auto))],
+    .div(
+      .h3(
+        attributes: [
+          .id("faq"),
+          .class([
+            Class.pf.type.responsiveTitle2,
+            Class.grid.center(.desktop),
+            Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
+            ]),
         ],
-        [
-          div([
-            h3(
-              [
-                id("faq"),
-                `class`([
-                  Class.pf.type.responsiveTitle2,
-                  Class.grid.center(.desktop),
-                  Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]])
-                  ]),
-              ],
-              ["FAQ"]
-            )
-            ]
-            + faqItems
-          )
-        ]
-      )
-    ]
+        "FAQ"
+      ),
+      .fragment(faqItems)
+    )
   )
-]
+)
 
-private let faqItems = Faq.allFaqs.flatMap { faq in
+private let faqItems: [Node] = Faq.allFaqs.flatMap { faq in
   [
-    p(
-      [
-        `class`([
+    .p(
+      attributes: [
+        .class([
           Class.type.bold,
           Class.pf.colors.fg.black
           ])
       ],
-      [.text(faq.question)]
+      .text(faq.question)
     ),
-    p(
-      [
-        `class`([
+    .p(
+      attributes: [
+        .class([
           Class.pf.colors.fg.gray400,
           Class.padding([.mobile: [.bottom: 2]]),
           ])
       ],
-      [.raw(faq.answer)]
+      .raw(faq.answer)
     )
   ]
 }
 
-private let whatPeopleAreSaying = [
-  gridRow(
-    [
-      `class`([
-        Class.grid.between(.desktop)
+private let whatPeopleAreSaying = Node.gridRow(
+  attributes: [
+    .class([Class.grid.between(.desktop)])
+  ],
+  .gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.leftRight: 2, .top: 0, .bottom: 3], .desktop: [.leftRight: 4, .top: 0, .bottom: 3]]),
+        Class.grid.center(.desktop),
         ]),
     ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12],
-        [
-          `class`([
-            Class.padding([.mobile: [.leftRight: 2, .top: 0, .bottom: 3], .desktop: [.leftRight: 4, .top: 0, .bottom: 3]]),
-            Class.grid.center(.desktop),
-            ]),
+    .div(
+      attributes: [
+        .class([Class.border.top, Class.padding([.mobile: [.top: 3], .desktop: [.top: 4]])]),
+        .style(borderColor(top: Colors.gray850))
+      ],
+      .h3(
+        attributes: [
+          .id("what-people-are-saying"),
+          .class([Class.pf.type.responsiveTitle2])
         ],
-        [
-          div(
-            [
-              `class`([Class.border.top, Class.padding([.mobile: [.top: 3], .desktop: [.top: 4]])]),
-              style(borderColor(top: Colors.gray850))
-            ],
-            [
-              h3(
-                [
-                  id("what-people-are-saying"),
-                  `class`([Class.pf.type.responsiveTitle2])
-                ],
-                ["What people are saying"]
-              )
-            ]
-          )
-        ]
-      ),
-      div(
-        [
-          `class`([
-            Class.flex.flex,
-            Class.flex.none,
-            Class.size.width100pct,
-            Class.margin([.mobile: [.bottom: 4]]),
-            Class.layout.overflowAuto(.x),
-            testimonialContainer
-            ]),
-        ],
-        Testimonial.all.map { testimonial in
-          div(
-            [
-              `class`([
-                Class.flex.column,
-                Class.flex.flex,
-                Class.pf.colors.bg.gray900,
-                Class.padding([.mobile: [.all: 3]]),
-                Class.margin([.mobile: [.leftRight: 2]]),
-                testimonialItem
-                ]),
-            ],
-            [
-              a(
-                [
-                  href(testimonial.tweetUrl),
-                  target(.blank),
-                  rel(.init(rawValue: "noopener noreferrer")),
-                  `class`([
-                    Class.pf.colors.fg.black,
-                    Class.pf.type.body.leading
-                    ]),
-                  style(flex(grow: 1, shrink: 0, basis: .auto))
-                ],
-                [.text("“\(testimonial.quote)”")]
-              ),
-              a(
-                [
-                  href("https://www.twitter.com/\(testimonial.twitterHandle)"),
-                  `class`([
-                    Class.pf.colors.fg.black,
-                    Class.pf.type.body.leading,
-
-                    ]),
-                ],
-                [
-                  twitterIconImg(fill: "1DA1F3"),
-                  span(
-                    [
-                      `class`([Class.type.medium]),
-                      style(margin(left: .px(3)))
-                    ],
-                    [.text(testimonial.subscriber ?? "@\(testimonial.twitterHandle)")]
-                  )
-                ]
-              )
-            ]
-          )
-        }
+        "What people are saying"
       )
-    ]
-  )
-]
-
-private let featuredTeams = [
-  gridRow(
-    [
-      `class`([
-        Class.pf.colors.bg.gray900,
-        Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
-        Class.grid.middle(.mobile),
-        Class.grid.center(.mobile)
-        ])
+    )
+  ),
+  .div(
+    attributes: [
+      .class([
+        Class.flex.flex,
+        Class.flex.none,
+        Class.size.width100pct,
+        Class.margin([.mobile: [.bottom: 4]]),
+        Class.layout.overflowAuto(.x),
+        testimonialContainer
+        ]),
     ],
-    [
-      gridColumn(
-        sizes: [.mobile: 12, .desktop: 12],
-        [`class`([Class.padding([.mobile: [.bottom: 3]])])],
-        [
-          h6(
-            [
-              id("featured-teams"),
-              `class`([
-                Class.pf.colors.fg.gray400,
-                Class.pf.type.responsiveTitle7,
-                Class.type.align.center
-                ]),
-            ],
-            ["Featured Teams"]
-          )
-        ]
-      ),
-
-      gridColumn(
-        sizes: [.mobile: 6, .desktop: 2],
-        [`class`([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
-        [img(base64: nytLogoSvg, type: .image(.svg), alt: "New York Times", [])]
-      ),
-      gridColumn(
-        sizes: [.mobile: 6, .desktop: 2],
-        [`class`([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
-        [img(base64: spotifyLogoSvg, type: .image(.svg), alt: "Spotify", [])]
-      ),
-      gridColumn(
-        sizes: [.mobile: 6, .desktop: 2],
-        [img(base64: venmoLogoSvg, type: .image(.svg), alt: "Venmo", [])]
-      ),
-      gridColumn(
-        sizes: [.mobile: 6, .desktop: 2],
-        [img(base64: atlassianLogoSvg, type: .image(.svg), alt: "Atlassian", [])]
-      ),
-    ]
+    .fragment(testimonialItems)
   )
-]
+)
+
+private let testimonialItems: [Node] = Testimonial.all.map { testimonial in
+  .div(
+    attributes: [
+      .class([
+        Class.flex.column,
+        Class.flex.flex,
+        Class.pf.colors.bg.gray900,
+        Class.padding([.mobile: [.all: 3]]),
+        Class.margin([.mobile: [.leftRight: 2]]),
+        testimonialItem
+        ]),
+    ],
+    .a(
+      attributes: [
+        .href(testimonial.tweetUrl),
+        .target(.blank),
+        .rel(.init(rawValue: "noopener noreferrer")),
+        .class([
+          Class.pf.colors.fg.black,
+          Class.pf.type.body.leading
+          ]),
+        .style(flex(grow: 1, shrink: 0, basis: .auto))
+      ],
+      .text("“\(testimonial.quote)”")
+    ),
+    .a(
+      attributes: [
+        .href("https://www.twitter.com/\(testimonial.twitterHandle)"),
+        .class([
+          Class.pf.colors.fg.black,
+          Class.pf.type.body.leading,
+          ]),
+      ],
+      .twitterIconImg(fill: "1DA1F3"),
+      .span(
+        attributes: [
+          .class([Class.type.medium]),
+          .style(margin(left: .px(3)))
+        ],
+        .text(testimonial.subscriber ?? "@\(testimonial.twitterHandle)")
+      )
+    )
+  )
+}
+
+private let featuredTeams = Node.gridRow(
+  attributes: [
+    .class([
+      Class.pf.colors.bg.gray900,
+      Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+      Class.grid.middle(.mobile),
+      Class.grid.center(.mobile)
+      ])
+  ],
+  .gridColumn(
+    sizes: [.mobile: 12, .desktop: 12],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3]])])],
+    .h6(
+      attributes: [
+        .id("featured-teams"),
+        .class([
+          Class.pf.colors.fg.gray400,
+          Class.pf.type.responsiveTitle7,
+          Class.type.align.center
+          ]),
+      ],
+      "Featured Teams"
+    )
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+    [.img(base64: nytLogoSvg, type: .image(.svg), alt: "New York Times")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+    [.img(base64: spotifyLogoSvg, type: .image(.svg), alt: "Spotify")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    [.img(base64: venmoLogoSvg, type: .image(.svg), alt: "Venmo")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    [.img(base64: atlassianLogoSvg, type: .image(.svg), alt: "Atlassian")]
+  )
+)
 
 private func footer(
-  allEpisodeCount: AllEpisodeCount,
+  allEpisodeCount: EpisodeStats.AllEpisodeCount,
   currentUser: User?,
   subscriberState: SubscriberState
-  ) -> [Node] {
+  ) -> Node {
 
   guard !subscriberState.isActive else { return [] }
 
@@ -765,56 +717,61 @@ private func footer(
     ? "Includes a free episode of your choice, plus weekly<br>updates from our newsletter."
     : "Access all \(allEpisodeCount.rawValue) episodes on Point-Free today!"
 
-  let ctaButton = currentUser == nil
-    ? gitHubLink(
+  let ctaButton: Node = currentUser == nil
+    ? .gitHubLink(
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
       href: path(to: .login(redirect: url(to: .pricingLanding)))
       )
-    : a(
-      [
-        href(path(to: .subscribeConfirmation(.personal, nil, nil))),
-        `class`([Class.pf.components.button(color: .white)])
+    : .a(
+      attributes: [
+        .href(
+          path(
+            to: .subscribeConfirmation(
+              lane: .personal,
+              billing: nil,
+              isOwnerTakingSeat: nil,
+              teammates: nil
+            )
+          )
+        ),
+        .class([Class.pf.components.button(color: .white)])
       ],
-      ["Subscribe"]
+      "Subscribe"
   )
 
-  return [
-    div(
-      [
-        `class`([
-          Class.pf.colors.bg.gray150,
-          Class.padding([.mobile: [.leftRight: 2, .topBottom: 4], .desktop: [.all: 5]]),
-          Class.type.align.center
-          ]),
+  return .div(
+    attributes: [
+      .class([
+        Class.pf.colors.bg.gray150,
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 4], .desktop: [.all: 5]]),
+        Class.type.align.center
+        ]),
+    ],
+    .h3(
+      attributes: [
+        .class([
+          Class.pf.type.responsiveTitle3,
+          Class.pf.colors.fg.white
+          ])
       ],
-      [
-        h3(
-          [
-            `class`([
-              Class.pf.type.responsiveTitle3,
-              Class.pf.colors.fg.white
-              ])
-          ],
-          [.text(title)]
-        ),
-        p(
-          [
-            `class`([
-              Class.pf.colors.fg.white,
-              Class.padding([.mobile: [.bottom: 3]])
-              ])
-          ],
-          [.raw(subtitle)]
-        ),
-        ctaButton
-      ]
-    )
-  ]
+      .text(title)
+    ),
+    .p(
+      attributes: [
+        .class([
+          Class.pf.colors.fg.white,
+          Class.padding([.mobile: [.bottom: 3]])
+          ])
+      ],
+      .raw(subtitle)
+    ),
+    ctaButton
+  )
 }
 
-private struct PricingPlan {
+struct PricingPlan {
   let cost: Cost?
   let lane: Pricing.Lane?
   let features: [String]
@@ -829,7 +786,7 @@ private struct PricingPlan {
     return self.cost?.value == "$0" && self.lane == nil
   }
 
-  static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
+  static func free(freeEpisodeCount: EpisodeStats.FreeEpisodeCount) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: nil, value: "$0"),
       lane: nil,
@@ -844,8 +801,8 @@ private struct PricingPlan {
   }
 
   static func personal(
-    allEpisodeCount: AllEpisodeCount,
-    episodeHourCount: EpisodeHourCount
+    allEpisodeCount: EpisodeStats.AllEpisodeCount,
+    episodeHourCount: EpisodeStats.EpisodeHourCount
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
@@ -963,6 +920,15 @@ private struct Testimonial {
   static let all: [Testimonial] = [
     Testimonial(
       quote: """
+The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.
+""",
+      subscriber: "Max Smirnov",
+      tweetUrl: "https://twitter.com/atimca/status/1204399892531228672",
+      twitterHandle: "Atimca"
+    ),
+
+    Testimonial(
+      quote: """
 There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!
 """,
       subscriber: "Romain Pouclet",
@@ -977,6 +943,16 @@ I listened to the first two episodes of @pointfreeco this weekend and it was the
       subscriber: "Christina Lee",
       tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
       twitterHandle: "RunChristinaRun"
+    ),
+
+    Testimonial(
+      quote: """
+My new favourite morning routine is feeding 👶🏻 while watching
+@pointfreeco
+""",
+      subscriber: "Frank Courville",
+      tweetUrl: "https://twitter.com/Frankacy/status/1204154907185557507",
+      twitterHandle: "Frankacy"
     ),
 
     Testimonial(

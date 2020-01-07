@@ -1,5 +1,5 @@
 import SnapshotTesting
-import Html
+import HtmlUpgrade
 import Prelude
 import XCTest
 @testable import PointFree
@@ -17,7 +17,7 @@ class TeamEmailsTests: TestCase {
   }
 
   func testYouHaveBeenRemovedEmailView() {
-    let emailNodes = youHaveBeenRemovedEmailView.view(.teamOwner(.mock))
+    let emailNodes = youHaveBeenRemovedEmailView(.teamOwner(.mock))
 
     assertSnapshot(matching: emailNodes, as: .html)
 
@@ -32,7 +32,7 @@ class TeamEmailsTests: TestCase {
   }
 
   func testTeammateRemovedEmailView() {
-    let emailNodes = teammateRemovedEmailView.view((.mock, .mock))
+    let emailNodes = teammateRemovedEmailView((.mock, .mock))
 
     assertSnapshot(matching: emailNodes, as: .html)
 

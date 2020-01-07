@@ -5,27 +5,32 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Tuple
-import View
 import Views
 
 public let pricingLanding: Middleware<
   StatusLineOpen,
   ResponseEnded,
-  Tuple6<User?, AllEpisodeCount, EpisodeHourCount, FreeEpisodeCount, Route, SubscriberState>,
+  Tuple3<User?, Route, SubscriberState>,
   Data
   >
   = writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: View(Views.pricingLanding),
-      layoutData: { currentUser, allEpisodeCount, episodeHourCount, freeEpisodeCount, currentRoute, subscriberState in
-        SimplePageLayoutData(
+    >>> _respond(
+      view: Views.pricingLanding,
+      layoutData: { currentUser, currentRoute, subscriberState in
+        let episodeStats = stats(forEpisodes: Current.episodes())
+
+        return SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (allEpisodeCount, currentUser, episodeHourCount, freeEpisodeCount, subscriberState),
+          data: (
+            currentUser,
+            episodeStats,
+            subscriberState
+          ),
           description: """
-Get full access to all \(allEpisodeCount) videos on Point-Free. Choose from a variety of plans, including
+Get full access to all \(episodeStats.allEpisodeCount) videos on Point-Free. Choose from a variety of plans, including
 personal, team and enterprise subscriptions.
 """,
           extraStyles: extraSubscriptionLandingStyles,

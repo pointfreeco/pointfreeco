@@ -2,6 +2,7 @@ import Database
 import Foundation
 import GitHub
 import Html
+import HtmlUpgrade
 import Mailgun
 import Models
 import Logger
@@ -22,7 +23,8 @@ public struct Environment {
   public var gitHub: GitHub.Client!
   public var logger = Logger()
   public var mailgun: Mailgun.Client!
-  public var renderHtml: ([Node]) -> String = Html.render
+  public var renderHtml: ([Html.Node]) -> String = Html.render
+  public var renderUpgradeHtml: (HtmlUpgrade.Node) -> String = HtmlUpgrade.render
   public var stripe: Stripe.Client!
   public var uuid: () -> UUID = UUID.init
 }

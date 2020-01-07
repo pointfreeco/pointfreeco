@@ -1,30 +1,29 @@
-import Html
+import HtmlUpgrade
 import HtmlSnapshotTesting
 @testable import HttpPipeline
 import Prelude
 import SnapshotTesting
 @testable import PointFree
 import PointFreeTestSupport
-import View
 import XCTest
 
 class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
 
-    let view = View<Prelude.Unit> { _ in
-      [
-        doctype,
-        html([
-          head([title("Point-Free")]),
-          body(["Hello world!"])
-          ])
+    func view(_: Prelude.Unit) -> Node {
+      return [
+        .doctype,
+        .html(
+          .head(.title("Point-Free")),
+          .body("Hello world!")
+        )
       ]
     }
 
     let layoutView = metaLayout(view)
 
     assertSnapshot(
-      matching: layoutView.view(
+      matching: layoutView(
         .init(
           description: "A video series on functional programming.",
           image: "http://www.example.com/image.jpg",

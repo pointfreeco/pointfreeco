@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -12,7 +10,6 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
 let showEpisodeCreditsMiddleware: Middleware<
@@ -22,7 +19,7 @@ let showEpisodeCreditsMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(showEpisodeCreditsView.contramap(const(unit)))
+    >=> respond({ _ in showEpisodeCreditsView })
 
 let redeemEpisodeCreditMiddleware: Middleware<
   StatusLineOpen,

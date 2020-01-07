@@ -109,6 +109,7 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
             ? $0.publishedAt <= now
             : true
       }
+      .sorted(by: their(^\.sequence))
     }
   )
   return pure(unit)

@@ -1,8 +1,8 @@
-GET http://localhost:8080/subscribe/team?billing=monthly&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co
+GET http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62447
+Content-Length: 65252
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1792,9 +1792,9 @@ html {
     <meta name="twitter:site"
           content="@pointfreeco">
     <meta property="og:url"
-          content="http://localhost:8080/subscribe/team?billing=monthly&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co">
+          content="http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co">
     <meta name="twitter:url"
-          content="http://localhost:8080/subscribe/team?billing=monthly&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co">
+          content="http://localhost:8080/subscribe/team?billing=monthly&isOwnerTakingSeat=true&teammates=blob.jr@pointfree.co,blob.sr@pointfree.co">
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-106218876-1', 'auto');ga('send', 'pageview');
     </script>
@@ -1925,17 +1925,22 @@ html {
             Team members
           </h1>
         </div>
-        <div class="border
+        <div id="team-owner"
+             class="border
                     border-gray-850
                     m-pl2
                     m-pr2
                     m-pt2
                     m-pb2
+                    m-mt1
                     col-m
                     col-m-12"
              style="line-height:0">
           <div class="flex
                       middle-m">
+            <input name="isOwnerTakingSeat"
+                   type="hidden"
+                   value="true">
             <img src="https://avatars0.githubusercontent.com/u/-1?v=4"
                  alt
                  class="bg-green
@@ -1943,9 +1948,29 @@ html {
                         m-mr1"
                  style="width:24px;
                         height:24px">
-            <span>
+            <span class="w-100p">
               Blob
             </span>
+            <a id="remove-yourself-button"
+               class="cursor-pointer
+                      fg-red
+                      pf-link-red
+                      light
+                      fg-black
+                      normal
+                      h6
+                      lh-4
+                      underline-link"
+               onclick="var ownerRow = this.parentNode.parentNode
+ownerRow.parentNode.removeChild(ownerRow)
+
+var teamMember = document.getElementById("team-member-template-without-remove").content.cloneNode(true)
+var teamMembersContainer = document.getElementById("team-members")
+teamMembersContainer.insertBefore(teamMember, teamMembersContainer.firstChild)
+
+updateSeats()">
+              Remove&nbsp;yourself
+            </a>
           </div>
         </div>
         <div id="team-members"
@@ -2059,6 +2084,37 @@ updateSeats()">
                 </div>
               </div>
             </template>
+            <template id="team-member-template-without-remove">
+              <div class="border
+                          border-gray-850
+                          m-pl2
+                          m-pr2
+                          m-pt2
+                          m-pb2
+                          m-mt1
+                          col-m
+                          col-m-12"
+                   style="line-height:0">
+                <div class="flex
+                            middle-m">
+                  <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMjAgMTYiIHdpZHRoPSIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yIC00KSI+PHBhdGggZD0ibTAgMGgyNHYyNGgtMjR6Ii8+PHBhdGggZD0ibTIwIDRoLTE2Yy0xLjEgMC0xLjk5LjktMS45OSAybC0uMDEgMTJjMCAxLjEuOSAyIDIgMmgxNmMxLjEgMCAyLS45IDItMnYtMTJjMC0xLjEtLjktMi0yLTJ6bTAgMTRoLTE2di0xMGw4IDUgOC01em0tOC03LTgtNWgxNnoiIGZpbGw9IiMxMjEyMTIiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L3N2Zz4="
+                       alt
+                       class="m-mr1"
+                       style="width:24px;
+                              height:24px">
+                  <input type="email"
+                         placeholder="blob@pointfree.co"
+                         class="w-100p"
+                         name="teammates[]"
+                         style="border-top-width:0;
+                                border-right-width:0;
+                                border-bottom-width:0;
+                                border-left-width:0;
+                                outline:none"
+                         value>
+                </div>
+              </div>
+            </template>
             <a id="add-team-member-button"
                class="medium
                       cursor-pointer
@@ -2086,7 +2142,8 @@ updateSeats()">
                   lh-4
                   fg-gray400
                   m-pt3">
-          You can add additional team members at anytime from your account page.
+          You must have at least two seats for your team subscription. You can add additional team members at any time
+from your account page.
         </p>
       </div>
       <div class="d-ml4
@@ -2139,7 +2196,7 @@ updateSeats()">
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — 25% off!
+                Yearly — Save 25% off monthly billing!
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2312,20 +2369,6 @@ updateSeats()">
 })
           </script>
         </div>
-        <div class="m-pb2
-                    m-pt3
-                    col-m
-                    col-m-12">
-          <span class="fg-black
-                       normal
-                       h6
-                       lh-4
-                       fg-gray400"
-                id="pricing-preview">
-          </span>
-          <span>
-          </span>
-        </div>
       </div>
       <div class="d-ml4
                   d-mr4
@@ -2337,6 +2380,17 @@ updateSeats()">
                   m-pt3
                   middle-m
                   row">
+        <div class="m-pb4
+                    col-m
+                    col-m-12">
+          <span class="fg-black
+                       normal
+                       h6
+                       lh-4
+                       fg-gray400"
+                id="pricing-preview">
+          </span>
+        </div>
         <div class="start-m
                     col-m">
           <div class="flex
@@ -2364,8 +2418,9 @@ function updateSeats() {
   for (var idx = 0; idx < teamMemberInputs.length; idx++) {
     teamMemberInputs[idx].name = "teammates[" + idx + "]"
   }
+  var teamOwnerIsTakingSeat = document.getElementById("team-owner") != null
   var seats = teamMembers
-    ? teamMembers.childNodes.length + 1
+    ? teamMembers.childNodes.length + (teamOwnerIsTakingSeat ? 1 : 0)
     : 1
   var form = document.getElementById("subscribe-form")
   form["pricing[quantity]"].value = seats

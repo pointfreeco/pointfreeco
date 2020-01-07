@@ -738,10 +738,25 @@ If we could do something like this then we could maybe even conceivably extract 
   ),
   Episode.TranscriptBlock(
     content: """
-Unfortunately, it is not yet known how this can be accomplished in SwiftUI. The closest we have come up with is to create a wrapper class that conforms to `ObjectBinding` and exposes only a bit of sub-state. We need to define our own initializer and we need to expose the global state's `didChange` with a computed property.
-""",
+  Unfortunately, it is not yet known how this can be accomplished in SwiftUI. The closest we have come up with is to create a wrapper class that conforms to `ObjectBinding` and exposes only a bit of sub-state. We need to define our own initializer and we need to expose the global state's `didChange` with a computed property.
+  """,
     timestamp: (21*60 + 01),
     type: .paragraph
+  ),
+  Episode.TranscriptBlock(
+    content: """
+This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+
+Rather than define `FavoritePrimesState`, we can instead pass two bindings to `FavoritesPrimeView`:
+
+```swift
+struct FavoritePrimesView: View {
+  @Binding var favoritePrimes: [Int]
+  @Binding var activityFeed: [AppState.Activity]
+```
+""",
+    timestamp: nil,
+    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """
@@ -832,21 +847,6 @@ Unfortunately, it came with a _lot_ of boilerplate.
 """,
     timestamp: (22*60 + 47),
     type: .paragraph
-  ),
-  Episode.TranscriptBlock(
-    content: """
-This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
-
-Rather than define `FavoritePrimesState`, we can instead pass two bindings to `FavoritesPrimeView`:
-
-```
-struct FavoritePrimesView: View {
-  @Binding var favoritePrimes: [Int]
-  @Binding var activityFeed: [AppState.Activity]
-```
-""",
-    timestamp: nil,
-    type: .correction
   ),
   Episode.TranscriptBlock(
     content: """

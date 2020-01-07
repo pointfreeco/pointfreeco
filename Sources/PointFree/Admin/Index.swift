@@ -1,18 +1,12 @@
-import Css
-import Either
 import Foundation
-import Html
-import HtmlCssSupport
+import HtmlUpgrade
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
-import Styleguide
 import Tuple
-import View
 
 public let adminEmails: [EmailAddress] = [
   "mbw234@gmail.com",
@@ -35,30 +29,25 @@ func requireAdmin<A>(
       <| middleware
 }
 
-let adminIndex =
-  writeStatus(.ok)
-    >=> respond(adminIndexView.contramap(lower))
+let adminIndex: AppMiddleware<Tuple1<User>> = writeStatus(.ok)
+  >=> map(lower)
+  >>> _respond(
+    view: adminIndexView(currentUser:),
+    layoutData: { currentUser in
+      SimplePageLayoutData(
+        currentUser: currentUser,
+        data: currentUser,
+        title: "Admin"
+      )
+  }
+)
 
-private let adminIndexView = View<User> { currentUser in
-  ul([
-    li([
-      a([href(path(to: .admin(.newEpisodeEmail(.show))))], ["Send new episode email"]),
-      ]),
-
-    li([
-      a([href(path(to: .admin(.episodeCredits(.show))))], ["Send episode credits"])
-      ]),
-
-    li([
-      a([href(path(to: .admin(.freeEpisodeEmail(.index))))], ["Send free episode email"]),
-      ]),
-
-    li([
-      a([href(path(to: .admin(.newBlogPostEmail(.index))))], ["Send new blog post email"]),
-      ]),
-
-    li([
-      a([href(path(to: .admin(.ghost(.index))))], ["Ghost a user"]),
-      ]),
-    ])
+private func adminIndexView(currentUser: User) -> Node {
+  return .ul(
+    .li(.a(attributes: [.href(path(to: .admin(.newEpisodeEmail(.show))))], "Send new episode email")),
+    .li(.a(attributes: [.href(path(to: .admin(.episodeCredits(.show))))], "Send episode credits")),
+    .li(.a(attributes: [.href(path(to: .admin(.freeEpisodeEmail(.index))))], "Send free episode email")),
+    .li(.a(attributes: [.href(path(to: .admin(.newBlogPostEmail(.index))))], "Send new blog post email")),
+    .li(.a(attributes: [.href(path(to: .admin(.ghost(.index))))], "Ghost a user"))
+  )
 }

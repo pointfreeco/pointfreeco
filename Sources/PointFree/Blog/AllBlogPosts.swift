@@ -41,4 +41,11 @@ private let _allBlogPosts: [BlogPost] = [
   post0028_openSourcingEnumProperties,
   post0029_enterpriseSubscriptions,
   post0030_SwiftUIAndStateManagementCorrections,
+  post0031_HigherOrderSnapshotStrategies,
+  post0032_AnOverviewOfCombine,
+  post0033_CyberMondaySale,
+  post0034_TestingSwiftUI,
+  post0035_SnapshotTestingSwiftUI,
+  post0036_HolidayDiscount,
+  post0037_2019YearInReview,
 ]

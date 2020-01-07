@@ -1,5 +1,4 @@
-import Html
-import HtmlPlainTextPrint
+import HtmlUpgrade
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -18,7 +17,7 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_Subscriber() {
-    let doc = newEpisodeEmail.view((Current.episodes().first!, "", "", .mock))
+    let doc = newEpisodeEmail((Current.episodes().first!, "", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -39,7 +38,7 @@ class NewEpisodeEmailTests: TestCase {
     let episode = Current.episodes().first!
       |> \.permission .~ .free
 
-    let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
+    let doc = newEpisodeEmail((episode, "", "", .nonSubscriber))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
@@ -59,7 +58,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Announcement_NonSubscriber() {
     let episode = Current.episodes().first!
 
-    let doc = newEpisodeEmail.view((
+    let doc = newEpisodeEmail((
       episode,
       "This is an announcement for subscribers.",
       "This is an announcement for NON-subscribers.",
@@ -84,7 +83,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Announcement_Subscriber() {
     let episode = Current.episodes().first!
 
-    let doc = newEpisodeEmail.view((
+    let doc = newEpisodeEmail((
       episode,
       "This is an announcement for subscribers.",
       "This is an announcement for NON-subscribers.",

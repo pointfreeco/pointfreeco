@@ -1,15 +1,9 @@
-import Css
-import FunctionalCss
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import Models
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Tuple
-import View
 import Views
 
 let blogIndexMiddleware: Middleware<
@@ -19,7 +13,7 @@ let blogIndexMiddleware: Middleware<
   Data> =
   writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
+    >>> _respond(
       view: blogIndexView,
       layoutData: { blogPosts, currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(

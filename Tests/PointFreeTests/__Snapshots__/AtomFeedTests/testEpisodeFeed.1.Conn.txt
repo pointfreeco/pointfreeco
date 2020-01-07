@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7473
+Content-Length: 7512
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -85,7 +85,7 @@ X-XSS-Protection: 1; mode=block
     </itunes:category>
     <item>
       <title>
-        Type-Safe HTML in Swift
+        🆓 Type-Safe HTML in Swift
       </title>
       <pubDate>
         Tue, 20 Jun 2017 12:00:00 +0000
@@ -134,21 +134,21 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
         1
       </itunes:episode>
       <itunes:title>
-        Type-Safe HTML in Swift
+        🆓 Type-Safe HTML in Swift
       </itunes:title>
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+      <enclosure url="https://www.vimeo.com/pointfreeco/download-video.mp4"
                  length="500000000"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/video.mp4"
+      <media:content url="https://www.vimeo.com/pointfreeco/download-video.mp4"
                      length="500000000"
                      type="video/mp4"
                      medium="video">
         <media:title>
-          Type-Safe HTML in Swift
+          🆓 Type-Safe HTML in Swift
         </media:title>
       </media:content>
     </item>
@@ -211,11 +211,11 @@ text, no markdown allowed. Here is some more text just to have some filler.
       <itunes:episodeType>
         trailer
       </itunes:episodeType>
-      <enclosure url="https://s3.amazonaws.com/pointfreeco/trailer.mp4"
+      <enclosure url="https://www.vimeo.com/pointfreeco/download-trailer.mp4"
                  length="5000000"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://s3.amazonaws.com/pointfreeco/trailer.mp4"
+      <media:content url="https://www.vimeo.com/pointfreeco/download-trailer.mp4"
                      length="5000000"
                      type="video/mp4"
                      medium="video">
