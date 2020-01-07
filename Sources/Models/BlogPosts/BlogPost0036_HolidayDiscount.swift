@@ -16,6 +16,7 @@ We hope you’ll [join us](/discounts/holiday-2019) for all of the great materia
       type: .paragraph)
   ],
   coverImage: nil,
+  hidden: true,
   id: 36,
   publishedAt: Date(timeIntervalSince1970: 1577080800),
   title: "🎉 Holiday Sale: 30% Off Point-Free"
