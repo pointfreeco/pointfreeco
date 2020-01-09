@@ -12,7 +12,7 @@ import Tuple
 import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
+  requestLogger(logger: { Current.logger.info("\($0)") }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
     <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)

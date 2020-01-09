@@ -4,7 +4,7 @@ import Prelude
 import Models
 import ModelsTestSupport
 import GitHubTestSupport
-import Logger
+import Logging
 import SnapshotTesting
 import XCTest
 

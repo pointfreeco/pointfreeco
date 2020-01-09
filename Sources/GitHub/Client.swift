@@ -3,7 +3,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import Logger
+import Logging
 import Optics
 import PointFreePrelude
 import Prelude

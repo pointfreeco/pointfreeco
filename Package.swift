@@ -15,7 +15,6 @@ let package = Package(
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
-    .library(name: "Logger", targets: ["Logger"]),
     .library(name: "Mailgun", targets: ["Mailgun"]),
     .library(name: "Models", targets: ["Models"]),
     .library(name: "ModelsTestSupport", targets: ["ModelsTestSupport"]),
@@ -28,8 +27,9 @@ let package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Views", targets: ["Views"]),
-    ],
+  ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     .package(url: "https://github.com/ianpartridge/swift-backtrace.git", .exact("1.1.0")),
     .package(url: "https://github.com/pointfreeco/Ccmark.git", .branch("master")),
     .package(url: "https://github.com/pointfreeco/swift-html.git", .revision("3a1b7e4")),
@@ -38,7 +38,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
     .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("f827fb9")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
-    ],
+  ],
   targets: [
 
     .target(
@@ -46,13 +46,13 @@ let package = Package(
       dependencies: [
         "Either",
         "GitHub",
-        "Logger",
+        "Logging",
         "Models",
         "PostgreSQL",
         "Prelude",
         "Stripe",
         "Tagged",
-        ]
+      ]
     ),
 
     .target(
@@ -66,7 +66,7 @@ let package = Package(
         "PointFreePrelude",
         "PostgreSQL",
         "Prelude",
-        ]
+      ]
     ),
 
     .testTarget(
@@ -75,10 +75,10 @@ let package = Package(
         "Database",
         "DatabaseTestSupport",
         "GitHubTestSupport",
-        "Logger",
+        "Logging",
         "ModelsTestSupport",
         "SnapshotTesting",
-        ]
+      ]
     ),
 
     .target(
@@ -97,19 +97,19 @@ let package = Package(
         "FunctionalCss",
         "Html",
         "SnapshotTesting",
-        ]
+      ]
     ),
 
     .target(
       name: "GitHub",
       dependencies: [
         "Either",
-        "Logger",
+        "Logging",
         "Optics",
         "PointFreePrelude",
         "Prelude",
         "Tagged",
-        ]
+      ]
     ),
 
     .target(
@@ -118,7 +118,7 @@ let package = Package(
         "Either",
         "GitHub",
         "Prelude",
-        ]
+      ]
     ),
 
     .testTarget(
@@ -127,14 +127,7 @@ let package = Package(
         "GitHub",
         "GitHubTestSupport",
         "SnapshotTesting",
-        ]
-    ),
-
-    .target(
-      name: "Logger",
-      dependencies: [
-        "Either",
-        ]
+      ]
     ),
 
     .target(
@@ -142,11 +135,11 @@ let package = Package(
       dependencies: [
         "Either",
         "HttpPipeline",
-        "Logger",
+        "Logging",
         "Models",
         "PointFreePrelude",
         "UrlFormEncoding",
-        ]
+      ]
     ),
 
     .target(
@@ -156,7 +149,7 @@ let package = Package(
         "PointFreePrelude",
         "Stripe",
         "Tagged",
-        ]
+      ]
     ),
 
     .target(
@@ -170,7 +163,7 @@ let package = Package(
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
-        ]
+      ]
     ),
 
     .testTarget(
@@ -178,7 +171,7 @@ let package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
-        ]
+      ]
     ),
 
     .target(
@@ -211,7 +204,7 @@ let package = Package(
         "Tuple",
         "UrlFormEncoding",
         "Views",
-        ]
+      ]
     ),
 
     .testTarget(
@@ -223,7 +216,7 @@ let package = Package(
         "HttpPipelineTestSupport",
         "PointFree",
         "PointFreeTestSupport",
-        ]
+      ]
     ),
 
     .target(
@@ -252,13 +245,13 @@ let package = Package(
       name: "PointFreePrelude",
       dependencies: [
         "Either",
-        "Logger",
+        "Logging",
         "Optics",
         "Prelude",
         "Tagged",
         "Tuple",
         "UrlFormEncoding",
-        ]
+      ]
     ),
 
     .target(
@@ -272,50 +265,50 @@ let package = Package(
         "HttpPipelineTestSupport",
         "Models",
         "ModelsTestSupport",
-        "Logger",
+        "Logging",
         "PointFree",
         "PointFreePrelude",
         "Prelude",
         "SnapshotTesting",
         "Stripe",
         "StripeTestSupport",
-        ]
+      ]
     ),
 
     .target(
       name: "Runner",
       dependencies: [
         "PointFree",
-        ]),
+    ]),
 
     .target(
       name: "Server",
       dependencies: [
         "PointFree",
-        ]),
+    ]),
 
     .target(
       name: "Stripe",
       dependencies: [
         "Either",
-        "Logger",
+        "Logging",
         "PointFreePrelude",
         "Prelude",
         "Tagged",
         "TaggedMoney"
-        ]
+      ]
     ),
 
     .target(
       name: "StripeTestSupport",
       dependencies: [
         "Either",
-        "Logger",
+        "Logging",
         "Optics",
         "PointFreePrelude",
         "Prelude",
         "Stripe",
-        ]
+      ]
     ),
 
     .testTarget(
@@ -324,7 +317,7 @@ let package = Package(
         "SnapshotTesting",
         "Stripe",
         "StripeTestSupport",
-        ]
+      ]
     ),
 
     .target(
@@ -335,7 +328,7 @@ let package = Package(
         "Html",
         "HtmlCssSupport",
         "Prelude",
-        ]),
+    ]),
 
     .testTarget(
       name: "StyleguideTests",
@@ -344,19 +337,19 @@ let package = Package(
         "HtmlSnapshotTesting",
         "SnapshotTesting",
         "Styleguide",
-        ]),
+    ]),
 
     .target(
       name: "Syndication",
       dependencies: [
         "Html",
-        ]),
+    ]),
 
     .testTarget(
       name: "SyndicationTests",
       dependencies: [
         "Syndication",
-        ]),
+    ]),
 
     .target(
       name: "Views",
@@ -367,12 +360,12 @@ let package = Package(
         "PointFreeRouter",
         "Prelude",
         "Styleguide",
-        ]),
+    ]),
 
     .testTarget(
       name: "ViewsTests",
       dependencies: [
         "Views",
-        ]),
-    ]
+    ]),
+  ]
 )

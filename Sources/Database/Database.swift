@@ -1,7 +1,7 @@
 import Either
 import Foundation
 import GitHub
-import Logger
+import Logging
 import Models
 import PointFreePrelude
 import Prelude
