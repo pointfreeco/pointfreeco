@@ -1,5 +1,8 @@
 import ApplicativeRouter
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public struct PointFreeRouter {
   public let baseUrl: URL

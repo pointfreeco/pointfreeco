@@ -1,6 +1,9 @@
 import Either
 import Foundation
-import Logger
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+import Logging
 import Optics
 import Prelude
 import PointFreePrelude

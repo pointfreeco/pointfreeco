@@ -6,12 +6,15 @@ import Database
 import DatabaseTestSupport
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import GitHub
 import GitHubTestSupport
 import Html
 import HttpPipeline
 import HttpPipelineTestSupport
-import Logger
+import Logging
 import Mailgun
 import Models
 import ModelsTestSupport
@@ -74,7 +77,7 @@ extension Assets {
 }
 
 extension Logger {
-  public static let mock = Logger.init(level: .debug, output: .null, error: .null)
+  public static let mock = Logger(label: "co.pointfree.PointFreeTestSupport")
 }
 
 extension EnvVars {
