@@ -42,7 +42,7 @@ public func prepareEmail(
             .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
             .map({ url(to: .expressUnsubscribe(payload: $0)) })
           else {
-            Current.logger.error("Failed to generate unsubscribe link for user \(userId)")
+            Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
             return []
         }
 

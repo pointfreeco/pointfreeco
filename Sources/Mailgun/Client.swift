@@ -1,7 +1,10 @@
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import HttpPipeline
-import Logger
+import Logging
 import Models
 import Optics
 import PointFreePrelude

@@ -1,7 +1,10 @@
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Prelude
-import Logger
+import Logging
 import Optics
 import Tagged
 import UrlFormEncoding
@@ -98,7 +101,7 @@ public func logError<A>(
   return { error in
     var errorDump = ""
     dump(error, to: &errorDump)
-    logger.log(.error, errorDump, file: file, line: line)
+    logger.log(.error, "\(errorDump)", file: "\(file)", line: line)
 
     return throwE(error)
   }

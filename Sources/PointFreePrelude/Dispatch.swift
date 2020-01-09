@@ -14,6 +14,9 @@ extension DispatchTimeInterval {
       return .some(n)
     case .never:
       return nil
+    @unknown default:
+      assertionFailure()
+      return nil
     }
   }
 
