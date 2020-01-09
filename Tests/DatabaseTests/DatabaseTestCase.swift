@@ -1,7 +1,7 @@
 import Database
 import GitHub
 import GitHubTestSupport
-import Logger
+import Logging
 import ModelsTestSupport
 import Prelude
 import SnapshotTesting
@@ -15,7 +15,7 @@ class DatabaseTestCase: XCTestCase {
 
     self.database = .init(
       databaseUrl: "postgres://pointfreeco:@localhost:5432/pointfreeco_test",
-      logger: Logger()
+      logger: Logger(label: "co.pointfree.DatabaseTests")
     )
 
     _ = try! self.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])

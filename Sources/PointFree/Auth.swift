@@ -1,5 +1,8 @@
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import GitHub
 import HttpPipeline
 import Models

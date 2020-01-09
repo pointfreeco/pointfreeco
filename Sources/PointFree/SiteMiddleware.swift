@@ -4,6 +4,7 @@ import Foundation
 import HttpPipeline
 import Models
 import Optics
+import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Stripe
@@ -12,7 +13,7 @@ import Tuple
 import Views
 
 public let siteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
-  requestLogger(logger: { Current.logger.info($0) }, uuid: UUID.init)
+  requestLogger(logger: { Current.logger.log(.info, "\($0)") }, uuid: UUID.init)
     <<< requireHerokuHttps(allowedInsecureHosts: allowedInsecureHosts)
     <<< redirectUnrelatedHosts(isAllowedHost: { isAllowed(host: $0) }, canonicalHost: canonicalHost)
     <<< route(router: pointFreeRouter.router, notFound: routeNotFoundMiddleware)
@@ -183,7 +184,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> stripeWebhookMiddleware
 
     case let .webhooks(.stripe(.unknownEvent(event))):
-      Current.logger.error("Received invalid webhook \(event.type)")
+      Current.logger.log(.error, "Received invalid webhook \(event.type)")
       return conn
         |> writeStatus(.internalServerError)
         >=> respond(text: "We don't support this event.")

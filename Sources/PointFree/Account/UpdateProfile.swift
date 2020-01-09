@@ -98,7 +98,7 @@ func encryptPayload<A>(
           .unapply((user.id, data.email))
           .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
         else {
-          Current.logger.error("Failed to encrypt email change for user: \(user.id)")
+          Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
           return conn |> redirect(
             to: .account(.index),
@@ -119,7 +119,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
     let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
     let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
     else {
-      Current.logger.error("Failed to decrypt email change payload: \(conn.data.rawValue)")
+      Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 
       return conn |> redirect(
         to: .account(.index),
