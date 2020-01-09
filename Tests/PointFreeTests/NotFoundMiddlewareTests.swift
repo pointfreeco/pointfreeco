@@ -1,4 +1,7 @@
 import Either
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import HttpPipeline
 import Optics
 @testable import PointFree
