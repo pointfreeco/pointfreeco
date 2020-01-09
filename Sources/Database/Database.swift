@@ -1062,11 +1062,11 @@ private struct _Client {
       return EitherIO<Swift.Error, PostgreSQL.Node>.wrap { () -> Node in
         let uuid = UUID().uuidString
         let startTime = Date().timeIntervalSince1970
-        self.logger.debug("[DB] \(uuid) \(query)")
+        self.logger.log(.debug, "[DB] \(uuid) \(query)")
         let result = try conn.execute(query, representable)
         let endTime = Date().timeIntervalSince1970
         let delta = Int((endTime - startTime) * 1000)
-        self.logger.debug("[DB] \(uuid) \(delta)ms")
+        self.logger.log(.debug, "[DB] \(uuid) \(delta)ms")
         return result
       }
     }

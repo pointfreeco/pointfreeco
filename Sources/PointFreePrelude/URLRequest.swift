@@ -101,7 +101,7 @@ public func logError<A>(
   return { error in
     var errorDump = ""
     dump(error, to: &errorDump)
-    logger.error("\(errorDump), file: \(file), line: \(line)")
+    logger.log(.error, "\(errorDump)", file: "\(file)", line: line)
 
     return throwE(error)
   }
