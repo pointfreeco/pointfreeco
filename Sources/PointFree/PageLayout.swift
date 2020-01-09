@@ -1,6 +1,9 @@
 import Css
-import FunctionalCss
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+import FunctionalCss
 import HtmlCssSupport
 import Html
 import HttpPipeline
