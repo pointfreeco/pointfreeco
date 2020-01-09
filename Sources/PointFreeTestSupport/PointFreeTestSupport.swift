@@ -6,6 +6,9 @@ import Database
 import DatabaseTestSupport
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import GitHub
 import GitHubTestSupport
 import Html
