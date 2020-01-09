@@ -1,21 +1,12 @@
 import Css
 import FunctionalCss
 import Html
-import HtmlUpgrade
 import Foundation
 import Prelude
 
-// TODO: move to a support package in swift-web
-public func `class`<T>(_ selectors: [CssSelector]) -> Html.Attribute<T> {
-  return .init(
-    "class",
-    render(classes: selectors)
-  )
-}
-
-extension HtmlUpgrade.Attribute {
+extension Attribute {
   // TODO: move to a support package in swift-web
-  public static func `class`<T>(_ selectors: [CssSelector]) -> HtmlUpgrade.Attribute<T> {
+  public static func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
     return .init(
       "class",
       render(classes: selectors)
@@ -23,41 +14,18 @@ extension HtmlUpgrade.Attribute {
   }
 }
 
-extension HtmlUpgrade.Attribute {
-  public static func style(_ style: Stylesheet) -> HtmlUpgrade.Attribute<Element> {
+extension Attribute {
+  public static func style(_ style: Stylesheet) -> Attribute<Element> {
     return .style(unsafe: render(config: Config.inline, css: style))
   }
 }
 
-public func downgrade(node: HtmlUpgrade.Node) -> [Html.Node] {
-  switch node {
-  case let .comment(comment):
-    return [.comment(comment)]
-  case let .doctype(doctype):
-    return [.doctype(doctype)]
-  case let .element(tag, attrs, child):
-    return [.element(tag, attrs, downgrade(node: child))]
-  case let .fragment(children):
-    return children.flatMap(downgrade(node:))
-  case let .raw(value):
-    return [.raw(value)]
-  case let .text(value):
-    return [.text(value)]
-  }
-}
-
-public func upgrade(node: Html.Node) -> HtmlUpgrade.Node {
-  switch node {
-  case let .comment(comment):
-    return [.comment(comment)]
-  case let .doctype(doctype):
-    return [.doctype(doctype)]
-  case let .element(tag, attrs, children):
-    return .element(tag, attrs, .fragment(children.map(upgrade(node:))))
-  case let .raw(value):
-    return [.raw(value)]
-  case let .text(value):
-    return [.text(value)]
+extension ChildOf where Element == Tag.Head {
+  public static func style(
+    _ css: Stylesheet,
+    config: Css.Config = .compact
+  ) -> ChildOf<Tag.Head> {
+    return .style(unsafe: render(config: config, css: css))
   }
 }
 
@@ -86,8 +54,4 @@ public let textarea = CssSelector.elem(textareaElement)
 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
-}
-
-public func bgcolor<T>(_ value: String) -> Html.Attribute<T> {
-  return .init("bgcolor", value)
 }

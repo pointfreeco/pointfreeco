@@ -9,6 +9,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Styleguide
+import Views
 #if !os(Linux)
 import WebKit
 #endif
@@ -66,16 +67,16 @@ private func testDocView(
   subscriberState: SubscriberState,
   currentRoute: Route?
   )
-  ) -> [Node] {
+) -> Node {
   return [
-    doctype,
-    html([
-      head([
-        Html.style(unsafe: renderedNormalizeCss),
-        HtmlCssSupport.style(styleguide),
-        meta(viewport: .width(.deviceWidth), .initialScale(1)),
-        ]),
-      body(
+    .doctype,
+    .html(
+      .head(
+        .style(safe: renderedNormalizeCss),
+        .style(styleguide),
+        .meta(viewport: .width(.deviceWidth), .initialScale(1))
+      ),
+      .body(
         minimalNavView(
           style: data.style,
           currentUser: data.currentUser,
@@ -83,6 +84,6 @@ private func testDocView(
           currentRoute: data.currentRoute
         )
       )
-      ])
+    )
   ]
 }

@@ -1,4 +1,3 @@
-import HttpPipeline
 import PointFreePrelude
 import Tagged
 

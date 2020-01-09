@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter
@@ -13,7 +13,9 @@ public func blogIndexView(
   subscriberState: SubscriberState
   ) -> Node {
 
-  let allPosts = blogPosts.sorted(by: their(^\.id, >))
+  let allPosts = blogPosts
+    .sorted(by: their(^\.id, >))
+    .filter { !$0.hidden }
   let newPosts = allPosts.prefix(3)
   let oldPosts = allPosts.dropFirst(3)
 

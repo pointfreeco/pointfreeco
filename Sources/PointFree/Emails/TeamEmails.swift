@@ -32,33 +32,40 @@ let youHaveBeenRemovedEmailView = simpleEmailLayout(youHaveBeenRemovedEmailBody)
   )
 }
 
-private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> [Node] {
-  return [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              .text("""
-                You have been removed from \(removalType.displayName)’s Point-Free team, which means you no longer
-                have access to full episodes and transcripts. If you wish to subscribe to an individual plan,
-                click the link below!
-                """)
-              ]),
-
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              a([
-                href(url(to: .pricingLanding)),
-                `class`([Class.pf.components.button(color: .purple)])
-                ],
-                ["See subscription plans"])
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Team removal"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            """
+            You have been removed from \(removalType.displayName)’s Point-Free team, which means you no longer
+            have access to full episodes and transcripts. If you wish to subscribe to an individual plan,
+            click the link below!
+            """
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            .a(
+              attributes: [
+                .href(url(to: .pricingLanding)),
+                .class([Class.pf.components.button(color: .purple)])
+              ],
+              "See subscription plans"
+            )
+          )
+        )
+      )
+    )
+  )
 }
 
 let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody) <<< { teamOwner, teammate in
@@ -72,31 +79,38 @@ let teammateRemovedEmailView = simpleEmailLayout(teammateRemovedEmailBody) <<< {
   )
 }
 
-private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> [Node] {
-  return [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            h3([`class`([Class.pf.type.responsiveTitle3])], ["Team removal"]),
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              .text("""
-                You have removed \(teammate.displayName) from your Point-Free team, which means they no longer
-                have access to full episodes and transcripts. You can add them back anytime from your account
-                settings.
-                """)
-              ]),
-
-            p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-              a([
-                href(url(to: .account(.index))),
-                `class`([Class.pf.components.button(color: .purple)])
-                ],
-                ["Account settings"])
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+private func teammateRemovedEmailBody(teamOwner: User, teammate: User) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Team removal"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            """
+            You have removed \(teammate.displayName) from your Point-Free team, which means they no longer
+            have access to full episodes and transcripts. You can add them back anytime from your account
+            settings.
+            """
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            .a(
+              attributes: [
+                .href(url(to: .account(.index))),
+                .class([Class.pf.components.button(color: .purple)])
+              ],
+              "Account settings"
+            )
+          )
+        )
+      )
+    )
+  )
 }

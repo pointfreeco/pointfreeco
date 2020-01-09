@@ -2,12 +2,9 @@ import Css
 import FunctionalCss
 import Foundation
 import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Tuple
 
 func routeNotFoundMiddleware<A>(
@@ -18,7 +15,7 @@ func routeNotFoundMiddleware<A>(
       |> currentUserMiddleware
       >=> writeStatus(.notFound)
       >=> map(lower)
-      >>> respond(
+      >>> _respond(
         view: { _ in routeNotFoundView },
         layoutData: { currentUser, _ in
           SimplePageLayoutData(
@@ -30,17 +27,16 @@ func routeNotFoundMiddleware<A>(
   )
 }
 
-private let routeNotFoundView = [
-  gridRow([`class`([Class.grid.center(.mobile)])], [
-    gridColumn(sizes: [.mobile: 6], [
-      div([style(padding(topBottom: .rem(12)))], [
-        h5([`class`([Class.pf.type.responsiveTitle5])], ["Page not found :("]),
-        pre([
-          code([`class`([Class.pf.components.code(lang: "swift")])], [
-            "f: (Page) -> Never"
-            ])
-          ])
-        ])
-      ])
-    ])
-]
+private let routeNotFoundView = Node.gridRow(
+  attributes: [.class([Class.grid.center(.mobile)])],
+  .gridColumn(
+    sizes: [.mobile: 6],
+    .div(
+      attributes: [.style(padding(topBottom: .rem(12)))],
+      .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], "Page not found :("),
+      .pre(
+        .code(attributes: [.class([Class.pf.components.code(lang: "swift")])], "f: (Page) -> Never")
+      )
+    )
+  )
+)

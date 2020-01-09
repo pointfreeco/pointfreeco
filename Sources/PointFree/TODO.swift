@@ -6,6 +6,7 @@ import Either
 import Foundation
 import Html
 import HttpPipeline
+import HtmlPlainTextPrint
 import HttpPipelineHtmlSupport
 import Models
 import Optics
@@ -15,19 +16,6 @@ import Styleguide
 import Tagged
 import Tuple
 import UrlFormEncoding
-
-extension Tagged where Tag == EncryptedTag, RawValue == String {
-  public init?(_ text: String, with secret: AppSecret) {
-    guard
-      let string = encrypted(text: text, secret: secret.rawValue)
-      else { return nil }
-    self.init(rawValue: string)
-  }
-
-  public func decrypt(with secret: AppSecret) -> String? {
-    return decrypted(text: self.rawValue, secret: secret.rawValue)
-  }
-}
 
 public typealias AppMiddleware<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
 public typealias AppTransformer<A, B> = (@escaping AppMiddleware<A>) -> AppMiddleware<B>
@@ -46,7 +34,7 @@ public func array<A>(_ tuple: (A, A, A, A, A, A, A, A, A)) -> [A] {
 /// - Parameter notFoundView: A view to render in case of encountering a `nil` value.
 /// - Returns: New middleware that operates on optional values.
 public func requireSome<A>(
-  notFoundView: [Node]
+  notFoundView: Node
   )
   -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
   -> Middleware<StatusLineOpen, ResponseEnded, A?, Data> {
@@ -59,7 +47,7 @@ public func requireSome<A>(
           ?? (
             conn.map(const(unit))
               |> writeStatus(.notFound)
-              >=> respond(notFoundView)
+              >=> respond({ _ in notFoundView })
         )
       }
     }
@@ -111,10 +99,14 @@ public func responseTimeout(_ interval: TimeInterval)
     }
 }
 
-func text(_ string: String) -> Node {
-  return .text(string)
-}
-
-func playsinline(_ value: Bool) -> Attribute<Tag.Video> {
-  return .init("playslinline", value ? "" : nil)
+public func respond<A>(
+  _ view: @escaping (A) -> Node
+) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+  return { conn in
+    conn
+      |> respond(
+        body: Current.renderHtml(view(conn.data)),
+        contentType: .html
+    )
+  }
 }

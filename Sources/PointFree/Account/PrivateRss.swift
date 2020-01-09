@@ -18,6 +18,7 @@ let accountRssMiddleware
     <<< { fetchUser >=> $0 }
     <<< requireUser
     <<< validateUserAndSalt
+    <<< validateUserAgent
     <<< fetchUserSubscription
     <<< requireActiveSubscription
     <<< fetchStripeSubscriptionForUser
@@ -36,17 +37,19 @@ private let decryptUrl: (
       """)
 )
 
-private let requireUser: (
-  @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User, User.RssSalt>, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, User.RssSalt>, Data> =
-  filterMap(
-    require1 >>> pure,
-    or: invalidatedFeedMiddleware(errorMessage: """
-      ‼️ The user for this RSS feed could not be found, so we have disabled this feed. You can retrieve \
-      your most up-to-date private podcast URL by visiting your account page at \
-      \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
-      """)
-)
+private func requireUser<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, T2<User?, Z>, Data> {
+  return middleware
+    |> filterMap(
+      require1 >>> pure,
+      or: invalidatedFeedMiddleware(errorMessage: """
+        ‼️ The user for this RSS feed could not be found, so we have disabled this feed. You can retrieve \
+        your most up-to-date private podcast URL by visiting your account page at \
+        \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+        """)
+  )
+}
 
 private let requireActiveSubscription: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple1<User>, Data>
@@ -127,6 +130,30 @@ private func validateUserAndSalt<Z>(
     }
 }
 
+private func validateUserAgent<Z>(
+  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, T2<User, Z>, Data> {
+  return { conn in
+    let user = get1(conn.data)
+
+    guard
+      let userAgent = conn.request.allHTTPHeaderFields?["User-Agent"]?.lowercased(),
+      Current.envVars.rssUserAgentWatchlist.contains(where: { userAgent.contains($0) })
+      else { return middleware(conn) }
+
+    return Current.database.updateUser(user.id, nil, nil, nil, nil, User.RssSalt(rawValue: Current.uuid()))
+      .run
+      .flatMap { _ in
+        conn
+          |> invalidatedFeedMiddleware(errorMessage: """
+            ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can \
+            retrieve your most up-to-date private podcast URL by visiting your account page at \
+            \(url(to: .account(.index))). If you think this is an error, please contact support@pointfree.co.
+            """)
+    }
+  }
+}
+
 private func trackFeedRequest<I>(_ conn: Conn<I, (Stripe.Subscription?, User)>) -> IO<Conn<I, (Stripe.Subscription?, User)>> {
 
   return Current.database.createFeedRequestEvent(
@@ -158,13 +185,11 @@ private func fetchStripeSubscriptionForUser<A>(
     }
 }
 
-private let privateEpisodesFeedView = itunesRssFeedLayout { (data: (subscription: Stripe.Subscription?, user: User)) -> [Node] in
-  [
-    node(
-      rssChannel: privateRssChannel(user: data.user),
-      items: items(forUser: data.user, subscription: data.subscription)
-    )
-  ]
+private let privateEpisodesFeedView = itunesRssFeedLayout { (data: (subscription: Stripe.Subscription?, user: User)) -> Node in
+  node(
+    rssChannel: privateRssChannel(user: data.user),
+    items: items(forUser: data.user, subscription: data.subscription)
+  )
 }
 
 func privateRssChannel(user: User) -> RssChannel {
@@ -270,12 +295,10 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
 }
 
 private let invalidatedFeedView = itunesRssFeedLayout { errorMessage in
-  [
-    node(
-      rssChannel: invalidatedChannel(errorMessage: errorMessage),
-      items: [invalidatedItem(errorMessage: errorMessage)]
-    )
-  ]
+  node(
+    rssChannel: invalidatedChannel(errorMessage: errorMessage),
+    items: [invalidatedItem(errorMessage: errorMessage)]
+  )
 }
 
 private func invalidatedChannel(errorMessage: String) -> RssChannel {

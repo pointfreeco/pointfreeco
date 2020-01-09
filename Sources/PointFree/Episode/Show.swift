@@ -75,7 +75,7 @@ private func applyCreditMiddleware<Z>(
 
   return Current.database.redeemEpisodeCredit(episode.sequence, user.id)
     .flatMap { _ in
-      Current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1)
+      Current.database.updateUser(user.id, nil, nil, nil, user.episodeCreditCount - 1, nil)
     }
     .run
     .flatMap(
@@ -173,22 +173,26 @@ private let episodeNotFoundView = { param, user, subscriberState, route in
   )
   } >>> simplePageLayout(_episodeNotFoundView)
 
-private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> [Node] {
-
-  return [
-    gridRow([`class`([Class.grid.center(.mobile)])], [
-      gridColumn(sizes: [.mobile: 6], [
-        div([style(padding(topBottom: .rem(12)))], [
-          h5([`class`([Class.h5])], ["Episode not found :("]),
-          pre([
-            code([`class`([Class.pf.components.code(lang: "swift")])], [
-              "f: (Episode) -> Never"
-              ])
-            ])
-          ])
-        ])
-      ])
-  ]
+private func _episodeNotFoundView(_: Either<String, Episode.Id>, _: User?, _: SubscriberState, _: Route?) -> Node {
+  return .gridRow(
+    attributes: [.class([Class.grid.center(.mobile)])],
+    .gridColumn(
+      sizes: [.mobile: 6],
+      .div(
+        attributes: [.style(padding(topBottom: .rem(12)))],
+        .h5(
+          attributes: [.class([Class.h5])],
+          "Episode not found :("
+        ),
+        .pre(
+          .code(
+            attributes: [.class([Class.pf.components.code(lang: "swift")])],
+            "f: (Episode) -> Never"
+          )
+        )
+      )
+    )
+  )
 }
 
 private func episode(forParam param: Either<String, Episode.Id>) -> Episode? {

@@ -1,6 +1,7 @@
 import Either
 import Html
 import HtmlPlainTextPrint
+import HtmlSnapshotTesting
 import HttpPipeline
 import Optics
 @testable import PointFree

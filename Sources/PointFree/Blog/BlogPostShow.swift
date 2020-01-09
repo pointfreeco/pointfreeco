@@ -1,15 +1,10 @@
-import Css
-import FunctionalCss
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import Models
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
-import Styleguide
 import Tuple
 import Views
 
@@ -27,7 +22,7 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Eit
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (post, subscriberState),
+          data: (Current.date(), post, subscriberState),
           description: post.blurb,
           extraStyles: markdownBlockStyles,
           image: post.coverImage ?? Current.assets.emailHeaderImgSrc,

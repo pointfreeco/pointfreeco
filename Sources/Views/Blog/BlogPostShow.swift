@@ -1,14 +1,22 @@
 import Css
 import Foundation
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
 
-public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -> Node {
+public func blogPostShowView(
+  currentDate: Date,
+  post: BlogPost,
+  subscriberState: SubscriberState
+) -> Node {
+  let showHolidaySpecialCallout = holidayDiscount2019Interval.contains(currentDate.timeIntervalSince1970)
+    && subscriberState.isNonSubscriber
+    && post.id != 36
+
   return [
     .gridRow(
       attributes: [.class([Class.padding([.mobile: [.leftRight: 3], .desktop: [.leftRight: 4]])])],
@@ -16,6 +24,7 @@ public func blogPostShowView(post: BlogPost, subscriberState: SubscriberState) -
         .gridColumn(
           sizes: [.mobile: 12, .desktop: 9],
           attributes: [.style(margin(leftRight: .auto))],
+          showHolidaySpecialCallout ? holidaySpecialCallout : [],
           .div(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 3], .desktop: [.topBottom: 4]])])],
             blogPostContentView(post),
@@ -116,6 +125,15 @@ private func subscriberCalloutView(_ subscriberState: SubscriberState) -> Node {
     )
   ]
 }
+
+private let holidaySpecialCallout: Node = .div(
+  attributes: [
+    .class([
+      Class.margin([.mobile: [.top: 4], .desktop: [.leftRight: 4]]),
+    ])
+  ],
+  holidaySpecialContent
+)
 
 let episodeDateFormatter: DateFormatter = {
   let df = DateFormatter()

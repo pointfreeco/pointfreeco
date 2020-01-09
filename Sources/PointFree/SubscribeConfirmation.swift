@@ -15,8 +15,7 @@ public let subscribeConfirmation: Middleware<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
   Data
   >
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< redirectActiveSubscribers(user: get1)
+  = redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)
     >>> _respond(
@@ -31,6 +30,8 @@ public let subscribeConfirmation: Middleware<
             subscribeData,
             coupon,
             currentUser,
+            subscriberState,
+            stats(forEpisodes: Current.episodes()),
             Current.stripe.js,
             Current.envVars.stripe.publishableKey
           ),

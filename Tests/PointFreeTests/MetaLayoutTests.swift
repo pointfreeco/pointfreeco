@@ -10,13 +10,13 @@ import XCTest
 class MetaLayoutTests: TestCase {
   func testMetaTagsWithStyleTag() {
 
-    func view(_: Prelude.Unit) -> [Node] {
+    func view(_: Prelude.Unit) -> Node {
       return [
-        doctype,
-        html([
-          head([title("Point-Free")]),
-          body(["Hello world!"])
-          ])
+        .doctype,
+        .html(
+          .head(.title("Point-Free")),
+          .body("Hello world!")
+        )
       ]
     }
 

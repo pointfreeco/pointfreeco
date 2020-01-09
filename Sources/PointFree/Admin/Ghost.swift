@@ -6,6 +6,7 @@ import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
+import Styleguide
 import Tuple
 
 let ghostIndexMiddleware: Middleware<
@@ -15,7 +16,7 @@ let ghostIndexMiddleware: Middleware<
   Data
   > =
   writeStatus(.ok)
-    >=> respond(indexView)
+    >=> respond({ _ in indexView })
 
 let ghostStartMiddleware: Middleware<
   StatusLineOpen,
@@ -74,14 +75,12 @@ private func fetchGhostee(userId: User.Id?) -> IO<User?> {
     .map(^\.right)
 }
 
-private let indexView: [Node] =   [
-  h3(["Ghost a user"]),
-  form(
-    [method(.post), action(pointFreeRouter.path(to: .admin(.ghost(.start(nil)))))],
-    [
-      label(["User id:"]),
-      input([type(.text), name("user_id")]),
-      input([type(.submit), value("Ghost 👻")])
-    ]
+private let indexView: Node = [
+  .h3("Ghost a user"),
+  .form(
+    attributes: [.method(.post), .action(pointFreeRouter.path(to: .admin(.ghost(.start(nil)))))],
+    .label("User id:"),
+    .input(attributes: [.type(.text), .name("user_id")]),
+    .input(attributes: [.type(.submit), .value("Ghost 👻")])
   )
 ]

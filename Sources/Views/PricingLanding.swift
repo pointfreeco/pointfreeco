@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter
@@ -9,32 +9,46 @@ import Styleguide
 import Tagged
 import HtmlCssSupport
 
-public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
-public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
-public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
+public struct EpisodeStats {
+  public let allEpisodeCount: AllEpisodeCount
+  public let episodeHourCount: EpisodeHourCount
+  public let freeEpisodeCount: FreeEpisodeCount
+
+  public typealias FreeEpisodeCount = Tagged<((), freeEpisodeCount: ()), Int>
+  public typealias AllEpisodeCount = Tagged<((), allEpisodeCount: ()), Int>
+  public typealias EpisodeHourCount = Tagged<((), episodeHourCount: ()), Int>
+}
+
+public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
+  return EpisodeStats(
+    allEpisodeCount: .init(rawValue: episodes.count),
+    episodeHourCount: .init(
+      rawValue: episodes.reduce(0) { $0 + $1.length } / 3600
+    ),
+    freeEpisodeCount: .init(
+      rawValue: episodes.lazy.filter { $0.permission == .free }.count
+    )
+  )
+}
 
 public func pricingLanding(
-  allEpisodeCount: AllEpisodeCount,
   currentUser: User?,
-  episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount,
+  stats: EpisodeStats,
   subscriberState: SubscriberState
   ) -> Node {
 
   return [
     hero(currentUser: currentUser, subscriberState: subscriberState),
     plansAndPricing(
-      allEpisodeCount: allEpisodeCount,
       currentUser: currentUser,
-      episodeHourCount: episodeHourCount,
-      freeEpisodeCount: freeEpisodeCount,
+      stats: stats,
       subscriberState: subscriberState
     ),
     whatToExpect,
     faq,
     whatPeopleAreSaying,
     featuredTeams,
-    footer(allEpisodeCount: allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
+    footer(allEpisodeCount: stats.allEpisodeCount, currentUser: currentUser, subscriberState: subscriberState)
   ]
 }
 
@@ -156,10 +170,8 @@ private let contactusButtonClasses =
     | Class.pf.colors.border.gray800
 
 private func plansAndPricing(
-  allEpisodeCount: AllEpisodeCount,
   currentUser: User?,
-  episodeHourCount: EpisodeHourCount,
-  freeEpisodeCount: FreeEpisodeCount,
+  stats: EpisodeStats,
   subscriberState: SubscriberState
   ) -> Node {
   return [
@@ -201,12 +213,15 @@ private func plansAndPricing(
       pricingPlan(
         currentUser: currentUser,
         subscriberState: subscriberState,
-        plan: .free(freeEpisodeCount: freeEpisodeCount)
+        plan: .free(freeEpisodeCount: stats.freeEpisodeCount)
       ),
       pricingPlan(
         currentUser: currentUser,
         subscriberState: subscriberState,
-        plan: .personal(allEpisodeCount: allEpisodeCount, episodeHourCount: episodeHourCount)
+        plan: .personal(
+          allEpisodeCount: stats.allEpisodeCount,
+          episodeHourCount: stats.episodeHourCount
+        )
       ),
       pricingPlan(
         currentUser: currentUser,
@@ -294,7 +309,7 @@ private func planCost(_ cost: PricingPlan.Cost) -> Node {
   )
 }
 
-private func pricingPlan(
+func pricingPlan(
   currentUser: User?,
   subscriberState: SubscriberState,
   plan: PricingPlan
@@ -387,14 +402,17 @@ private func pricingPlanCta(
           subscriberState.isActive
             ? path(to: .account(.index))
             : path(
-              to: plan.lane.map {
-                Route.subscribeConfirmation(
-                  lane: $0,
-                  billing: nil,
-                  isOwnerTakingSeat: nil,
-                  teammates: nil
-                )
-                } ?? .home
+              to: plan.lane
+                .map {
+                  let route = Route.subscribeConfirmation(
+                    lane: $0,
+                    billing: nil,
+                    isOwnerTakingSeat: nil,
+                    teammates: nil
+                  )
+                  return currentUser == nil ? .login(redirect: url(to: route)) : route
+                }
+                ?? .home
           )
         ),
         .class([
@@ -684,7 +702,7 @@ private let featuredTeams = Node.gridRow(
 )
 
 private func footer(
-  allEpisodeCount: AllEpisodeCount,
+  allEpisodeCount: EpisodeStats.AllEpisodeCount,
   currentUser: User?,
   subscriberState: SubscriberState
   ) -> Node {
@@ -753,7 +771,7 @@ private func footer(
   )
 }
 
-private struct PricingPlan {
+struct PricingPlan {
   let cost: Cost?
   let lane: Pricing.Lane?
   let features: [String]
@@ -768,7 +786,7 @@ private struct PricingPlan {
     return self.cost?.value == "$0" && self.lane == nil
   }
 
-  static func free(freeEpisodeCount: FreeEpisodeCount) -> PricingPlan {
+  static func free(freeEpisodeCount: EpisodeStats.FreeEpisodeCount) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: nil, value: "$0"),
       lane: nil,
@@ -783,8 +801,8 @@ private struct PricingPlan {
   }
 
   static func personal(
-    allEpisodeCount: AllEpisodeCount,
-    episodeHourCount: EpisodeHourCount
+    allEpisodeCount: EpisodeStats.AllEpisodeCount,
+    episodeHourCount: EpisodeStats.EpisodeHourCount
     ) -> PricingPlan {
     return PricingPlan(
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
@@ -902,6 +920,15 @@ private struct Testimonial {
   static let all: [Testimonial] = [
     Testimonial(
       quote: """
+The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.
+""",
+      subscriber: "Max Smirnov",
+      tweetUrl: "https://twitter.com/atimca/status/1204399892531228672",
+      twitterHandle: "Atimca"
+    ),
+
+    Testimonial(
+      quote: """
 There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!
 """,
       subscriber: "Romain Pouclet",
@@ -916,6 +943,16 @@ I listened to the first two episodes of @pointfreeco this weekend and it was the
       subscriber: "Christina Lee",
       tweetUrl: "https://twitter.com/RunChristinaRun/status/968920979320709120",
       twitterHandle: "RunChristinaRun"
+    ),
+
+    Testimonial(
+      quote: """
+My new favourite morning routine is feeding 👶🏻 while watching
+@pointfreeco
+""",
+      subscriber: "Frank Courville",
+      tweetUrl: "https://twitter.com/Frankacy/status/1204154907185557507",
+      twitterHandle: "Frankacy"
     ),
 
     Testimonial(

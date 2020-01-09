@@ -2,7 +2,7 @@ import Css
 import FunctionalCss
 import Either
 import Foundation
-import HtmlUpgrade
+import Html
 import HtmlCssSupport
 import Models
 import PointFreeRouter
@@ -188,8 +188,14 @@ private func leftColumnView(
   date: () -> Date
   ) -> Node {
 
-  let subscribeNodes = isSubscribeBannerVisible(for: permission)
+  let isHolidayDiscountActive = holidayDiscount2019Interval.contains(date().timeIntervalSince1970)
+    && subscriberState.isNonSubscriber
+
+  let subscribeNode = !isHolidayDiscountActive && isSubscribeBannerVisible(for: permission)
     ? subscribeView(permission: permission, user: user, episode: episode)
+    : []
+  let holidayNode: Node = isHolidayDiscountActive
+    ? [holidayCallout, divider]
     : []
   let transcriptNodes = transcriptView(blocks: episode.transcriptBlocks, isEpisodeViewable: isEpisodeViewable(for: permission))
 
@@ -199,12 +205,22 @@ private func leftColumnView(
       episodeInfoView(permission: permission, ep: episode, previousEpisodes: previousEpisodes, date: date)
     ),
     divider,
-    subscribeNodes,
+    subscribeNode,
+    holidayNode,
     transcriptNodes,
     exercisesView(exercises: episode.exercises),
     referencesView(references: episode.references)
   ]
 }
+
+private let holidayCallout: Node = .div(
+  attributes: [
+    .class([
+      Class.margin([.mobile: [.topBottom: 4], .desktop: [.leftRight: 4]]),
+    ])
+  ],
+  holidaySpecialContent
+)
 
 private func subscribeBlurb(for permission: EpisodePermission) -> StaticString {
   switch permission {
@@ -384,7 +400,7 @@ private func previousEpisodesView(of ep: Episode, previousEpisodes: [Episode]) -
         Class.padding([.mobile: [.left: 2]])
         ])],
       .fragment(
-        previousEpisodes.map {
+        previousEpisodes.suffix(4).map {
           .li(
             attributes: [.class([Class.pf.type.body.leading])],
             "#",

@@ -7,45 +7,46 @@ import PointFreeRouter
 import Styleguide
 import Prelude
 
-let hostSignOffView = [
-  p([`class`([Class.padding([.mobile: [.top: 2]])])], [
+let hostSignOffView: Node = [
+  .p(
+    attributes: [.class([Class.padding([.mobile: [.top: 2]])])],
     "Your hosts,"
-    ]),
-  p([
-    a([href(twitterUrl(to: .mbrandonw))], [.raw("Brandon&nbsp;Williams")]),
+  ),
+  .p(
+    .a(attributes: [.href(twitterUrl(to: .mbrandonw))], .raw("Brandon&nbsp;Williams")),
     " & ",
-    a([href(twitterUrl(to: .stephencelis))], [.raw("Stephen&nbsp;Celis")]),
-    ])
+    .a(attributes: [.href(twitterUrl(to: .stephencelis))], .raw("Stephen&nbsp;Celis"))
+  )
 ]
 
-func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> [Node] {
-  return [
-    emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-            p([`class`([Class.pf.type.body.small])], [
-              "Contact us via email at ",
-              a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
-              ", or on Twitter ",
-              a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
-              "."
-              ]),
-
-            p([`class`([Class.pf.type.body.small])], [
-              "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
-              ]),
-
-            ]
-            + unsubscribeView(user: user, newsletter: newsletter)
-          )
-          ])
-        ])
-      ])
-  ]
+func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node {
+  return .emailTable(
+    attributes: [.class([Class.pf.colors.bg.gray900]), .style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .p(
+            attributes: [.class([Class.pf.type.body.small])],
+            "Contact us via email at ",
+            .a(attributes: [.mailto("support@pointfree.co")], "support@pointfree.co"),
+            ", or on Twitter ",
+            .a(attributes: [.href(twitterUrl(to: .pointfreeco))], "@pointfreeco"),
+            "."
+          ),
+          .p(
+            attributes: [.class([Class.pf.type.body.small])],
+            "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
+          ),
+          unsubscribeView(user: user, newsletter: newsletter)
+        )
+      )
+    )
+  )
 }
 
-private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) -> [Node] {
+private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node {
   guard
     let user = user,
     let newsletter = newsletter
@@ -61,14 +62,13 @@ private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) 
       return []
   }
 
-  return [
-    p([`class`([Class.pf.type.body.small])], [
-      .text(subscribedReason(newsletter: newsletter)),
-      " If you no longer wish to receive emails like this, you can unsubscribe ",
-      a([href(unsubUrl)], ["here"]),
-      "."
-      ])
-  ]
+  return .p(
+    attributes: [.class([Class.pf.type.body.small])],
+    .text(subscribedReason(newsletter: newsletter)),
+    " If you no longer wish to receive emails like this, you can unsubscribe ",
+    .a(attributes: [.href(unsubUrl)], "here"),
+    "."
+  )
 }
 
 private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
@@ -95,6 +95,11 @@ private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
 }
 
 // TODO: move into a package for html email helpers.
-public func emailTable(_ attribs: [Attribute<Html.Tag.Table>], _ content: [ChildOf<Html.Tag.Table>]) -> Node {
-  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
+extension Node {
+  public static func emailTable(
+    attributes: [Attribute<Tag.Table>],
+    _ content: ChildOf<Tag.Table>...
+  ) -> Node {
+    return .table(attributes: [.border(0), .cellpadding(0), .cellspacing(0)] + attributes, .fragment(content))
+  }
 }

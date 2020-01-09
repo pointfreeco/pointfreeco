@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54798
+Content-Length: 54793
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1957,7 +1957,7 @@ html {
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — 22% off!
+                Yearly — Save 22% off monthly billing!
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2129,18 +2129,6 @@ html {
 })
           </script>
         </div>
-        <div class="m-pb2
-                    m-pt3
-                    col-m
-                    col-m-12">
-          <span class="fg-black
-                       normal
-                       h6
-                       lh-4
-                       fg-gray400"
-                id="pricing-preview">
-          </span>
-        </div>
       </div>
       <div class="d-ml4
                   d-mr4
@@ -2152,6 +2140,17 @@ html {
                   m-pt3
                   middle-m
                   row">
+        <div class="m-pb4
+                    col-m
+                    col-m-12">
+          <span class="fg-black
+                       normal
+                       h6
+                       lh-4
+                       fg-gray400"
+                id="pricing-preview">
+          </span>
+        </div>
         <div class="start-m
                     col-m">
           <div class="flex

@@ -1,30 +1,22 @@
-import Css
-import FunctionalCss
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Tuple
-import UrlFormEncoding
 import Views
 
 let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
     >>> _respond(
-      view: homeView(currentUser:subscriberState:episodes:date:),
+      view: homeView(currentDate:currentUser:subscriberState:episodes:date:),
       layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
           currentRoute: currentRoute,
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (currentUser, subscriberState, Current.episodes(), Current.date),
+          data: (Current.date(), currentUser, subscriberState, Current.episodes(), Current.date),
           extraStyles: markdownBlockStyles,
           openGraphType: .website,
           style: .base(.mountains(.main)),

@@ -1,6 +1,6 @@
 import Css
 import FunctionalCss
-import HtmlUpgrade
+import Html
 import Models
 import PointFreeRouter
 import Styleguide
@@ -95,8 +95,7 @@ private let enterpriseRowClass =
     | Class.grid.center(.mobile)
     | Class.padding([.mobile: [.topBottom: 3, .leftRight: 2], .desktop: [.topBottom: 4, .leftRight: 0]])
 
-// TODO: Remove when the `blockInputClass` in Account.swift is moved into Views.
-private let blockInputClass =
+public let blockInputClass =
   regularInputClass
     | Class.size.width100pct
     | Class.display.block
@@ -109,7 +108,7 @@ let baseInputClass =
     | Class.border.all
     | Class.pf.colors.border.gray800
 
-let regularInputClass =
+public let regularInputClass =
   baseInputClass
     | Class.size.height(rem: 3)
     | Class.padding([.mobile: [.all: 1]])

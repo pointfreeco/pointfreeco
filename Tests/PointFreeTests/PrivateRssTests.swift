@@ -1,5 +1,4 @@
 import Either
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -134,4 +133,60 @@ class PrivateRssTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+
+  func testFeed_InvalidUserAgent() {
+    let user = Models.User.mock
+
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
+      \.envVars.rssUserAgentWatchlist .~ ["blob"],
+      \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+    )
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
+
+    var req = request(
+      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testFeed_BadSalt_InvalidUserAgent() {
+    let user = Models.User.mock
+
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchUserById .~ const(pure(.some(user))),
+      \.envVars.rssUserAgentWatchlist .~ ["blob"]
+    )
+    
+    Current.database.updateUser = { _, _, _, _, _, _ in
+      XCTFail("The user should not be updated.")
+      return pure(unit)
+    }
+
+    let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
+    let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
+
+    var req = request(
+      to: .account(.rss(userId: userId, rssSalt: rssSalt)),
+      session: .loggedOut
+    )
+    req.allHTTPHeaderFields?["User-Agent"] = "Blob 1.0 (https://www.blob.com)"
+
+    let conn = connection(from: req)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
 }

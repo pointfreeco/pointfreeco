@@ -72,7 +72,6 @@ extension BlogTests {
   static var allTests: [(String, (BlogTests) -> () throws -> Void)] = [
     ("testBlogIndex", testBlogIndex),
     ("testBlogIndex_WithLotsOfPosts", testBlogIndex_WithLotsOfPosts),
-    ("testBlogIndex_Unauthed", testBlogIndex_Unauthed),
     ("testBlogShow", testBlogShow),
     ("testBlogShow_Unauthed", testBlogShow_Unauthed),
     ("testBlogAtomFeed", testBlogAtomFeed),
@@ -128,7 +127,12 @@ extension DatabaseTests {
 extension DiscountsTests {
   static var allTests: [(String, (DiscountsTests) -> () throws -> Void)] = [
     ("testDiscounts_LoggedOut", testDiscounts_LoggedOut),
-    ("testDiscounts_LoggedIn", testDiscounts_LoggedIn),
+    ("testDiscounts_LoggedIn_PercentOff_Forever", testDiscounts_LoggedIn_PercentOff_Forever),
+    ("testDiscounts_LoggedIn_5DollarsOff_Forever", testDiscounts_LoggedIn_5DollarsOff_Forever),
+    ("testDiscounts_LoggedIn_PercentOff_Repeating", testDiscounts_LoggedIn_PercentOff_Repeating),
+    ("testDiscounts_LoggedIn_5DollarsOff_Repeating", testDiscounts_LoggedIn_5DollarsOff_Repeating),
+    ("testDiscounts_LoggedIn_PercentOff_Once", testDiscounts_LoggedIn_PercentOff_Once),
+    ("testDiscounts_LoggedIn_5DollarsOff_Once", testDiscounts_LoggedIn_5DollarsOff_Once),
   ]
 }
 extension EitherIOTests {
@@ -327,6 +331,8 @@ extension PrivateRssTests {
     ("testFeed_Authenticated_NonSubscriber", testFeed_Authenticated_NonSubscriber),
     ("testFeed_Authenticated_InActiveSubscriber", testFeed_Authenticated_InActiveSubscriber),
     ("testFeed_BadSalt", testFeed_BadSalt),
+    ("testFeed_InvalidUserAgent", testFeed_InvalidUserAgent),
+    ("testFeed_BadSalt_InvalidUserAgent", testFeed_BadSalt_InvalidUserAgent),
   ]
 }
 extension RegistrationEmailTests {

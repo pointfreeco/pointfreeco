@@ -71,7 +71,7 @@ func notifyAdmins<A>(subject: String) -> (Error) -> EitherIO<Error, A> {
 
 // TODO: team callouts
 
-private func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> [Node]) -> Email {
+private func prepareWelcomeEmail(to user: User, subject: String, content: (User) -> Node) -> Email {
   return prepareEmail(
     to: [user.email],
     subject: subject,
@@ -79,7 +79,7 @@ private func prepareWelcomeEmail(to user: User, subject: String, content: (User)
   )
 }
 
-func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) -> (User) -> [Node] {
+func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> Node) -> (User) -> Node {
   return simpleEmailLayout(content >>> wrapper) <<< { user in
     SimpleEmailLayoutData(
       user: user,
@@ -92,16 +92,19 @@ func welcomeEmailView(_ subject: String, _ content: @escaping (User) -> [Node]) 
   }
 }
 
-private let wrapper = { view in
-  [
-    emailTable([style(contentTableStyles)], [
-      tr([
-        td([valign(.top)], [
-          div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])], view)
-          ])
-        ])
-      ])
-  ]
+private func wrapper(view: Node) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          view
+        )
+      )
+    )
+  )
 }
 
 func welcomeEmail1(_ user: User) -> Email {
@@ -113,9 +116,9 @@ func welcomeEmail1(_ user: User) -> Email {
   )
 }
 
-func welcomeEmail1Content(user: User) -> [Node] {
+func welcomeEmail1Content(user: User) -> Node {
   return [
-    markdownBlock(
+    .markdownBlock(
       """
       👋 Howdy!
 
@@ -127,7 +130,7 @@ func welcomeEmail1Content(user: User) -> [Node] {
       """
     ),
     user.episodeCreditCount > 0
-      ? markdownBlock(
+      ? .markdownBlock(
         """
         In the meantime, it looks like you have a **free episode credit**! You can use this to see *any*
         subscriber-only episode, completely for free! Just visit [our site](\(url(to: .home))), go to an
@@ -146,18 +149,17 @@ func welcomeEmail1Content(user: User) -> [Node] {
         * [Composable State Management: Reducers](https://www.pointfree.co/episodes/ep68-composable-state-management-reducers)
         """
         )
-      : nil
+      : []
     ,
-    markdownBlock(
+    .markdownBlock(
       """
       When you're ready to subscribe for yourself _or_ your team, visit
       [our subscribe page](\(url(to: .pricingLanding)))!
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    + hostSignOffView
+    hostSignOffView
+  ]
 }
 
 func welcomeEmail2(_ user: User) -> Email {
@@ -169,7 +171,7 @@ func welcomeEmail2(_ user: User) -> Email {
   )
 }
 
-func welcomeEmail2Content(user: User) -> [Node] {
+func welcomeEmail2Content(user: User) -> Node {
   let freeEpisodeLinks = Current.episodes()
     .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
@@ -177,10 +179,11 @@ func welcomeEmail2Content(user: User) -> [Node] {
       """
       * [\($0.title)](\(url(to: .episode(.left($0.slug)))))
       """
-    }
-    .joined(separator: "\n")
+  }
+  .joined(separator: "\n")
+
   return [
-    markdownBlock(
+    .markdownBlock(
       """
       👋 Hey there!
 
@@ -193,15 +196,15 @@ func welcomeEmail2Content(user: User) -> [Node] {
       """
     ),
     user.episodeCreditCount > 0
-      ? markdownBlock(
+      ? .markdownBlock(
         """
         You *also* have a **free episode credit** you can use to see *any* _subscriber-only_ episode,
         completely for free! Just visit [our site](\(url(to: .home))), go to an episode, and click the "\(useCreditCTA)" button.
         """
         )
-      : nil
+      : []
     ,
-    markdownBlock(
+    .markdownBlock(
       """
       If you have any questions, don't hesitate to reply to this email!
 
@@ -210,9 +213,8 @@ func welcomeEmail2Content(user: User) -> [Node] {
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    + hostSignOffView
+    hostSignOffView
+  ]
 }
 
 func welcomeEmail3(_ user: User) -> Email {
@@ -224,9 +226,9 @@ func welcomeEmail3(_ user: User) -> Email {
   )
 }
 
-func welcomeEmail3Content(user: User) -> [Node] {
+func welcomeEmail3Content(user: User) -> Node {
   return [
-    markdownBlock(
+    .markdownBlock(
       """
       👋 Hiya!
 
@@ -235,15 +237,15 @@ func welcomeEmail3Content(user: User) -> [Node] {
       """
     ),
     user.episodeCreditCount > 1
-      ? markdownBlock(
+      ? .markdownBlock(
         """
         It looks like you may have been saving the last one for a rainy day! But now you have
         \(user.episodeCreditCount), so it's time to cash one in! 🤑
         """
         )
-      : nil
+      : []
     ,
-    markdownBlock(
+    .markdownBlock(
       """
       Please use it to check out _any_ subscriber-only episode, completely free! Just visit [our site](\(url(to: .home))), go to
       an episode, and click the "\(useCreditCTA)" button.
@@ -257,33 +259,31 @@ func welcomeEmail3Content(user: User) -> [Node] {
       * [Contravariance](https://www.pointfree.co/episodes/ep14-contravariance)
 
         A fun, mind-bendy episode that explores what it means to the take that `map` function and flip it
-        around!
+      around!
 
       * [Tagged](https://www.pointfree.co/episodes/ep12-tagged)
 
         This one's a bit more down-to-earth! We talk about type-safety and how Swift's type system gives us
-        yet another powerful tool to prevent bugs _at compile time!_
+      yet another powerful tool to prevent bugs _at compile time!_
 
       * [Setters: Part 1](https://www.pointfree.co/episodes/ep6-functional-setters)
 
         Setters are functions that make you rethink function composition in some pretty powerful ways! This is
-        the first of a multi-part series that goes _deep!_
+      the first of a multi-part series that goes _deep!_
 
       We hope you'll find it interesting enough to consider
       [getting a subscription](\(url(to: .pricingLanding))) for yourself or your team!
       """
     ),
     subscribeButton,
-    ]
-    .compactMap(id)
-    + hostSignOffView
+    hostSignOffView
+  ]
 }
 
-private let subscribeButton = p(
-  [`class`([Class.padding([.mobile: [.topBottom: 2]])])],
-  [
-    a([href(url(to: .pricingLanding)), `class`([Class.pf.components.button(color: .purple)])],
-      ["Subscribe to Point-Free!"]
-    ),
-  ]
+private let subscribeButton = Node.p(
+  attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+  .a(
+    attributes: [.href(url(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+    "Subscribe to Point-Free!"
+  )
 )

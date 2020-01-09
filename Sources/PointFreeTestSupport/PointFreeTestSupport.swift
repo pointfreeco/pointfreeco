@@ -9,7 +9,6 @@ import Foundation
 import GitHub
 import GitHubTestSupport
 import Html
-import HtmlUpgrade
 import HttpPipeline
 import HttpPipelineTestSupport
 import Logger
@@ -42,7 +41,7 @@ extension Environment {
     logger: .mock,
     mailgun: .mock,
     renderHtml: Html.render,
-    renderUpgradeHtml: HtmlUpgrade.render,
+    renderXml: Html._xmlRender,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
   )
@@ -117,9 +116,12 @@ extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
       let renderHtml = Current.renderHtml
-      update(&Current, \.renderHtml .~ { debugRender($0) })
+      let renderXml = Current.renderXml
+      Current.renderHtml = { debugRender($0) }
+      Current.renderXml = { _debugXmlRender($0) }
       let conn = io.perform()
-      update(&Current, \.renderHtml .~ renderHtml)
+      Current.renderHtml = renderHtml
+      Current.renderXml = renderXml
       return conn
     }
   }

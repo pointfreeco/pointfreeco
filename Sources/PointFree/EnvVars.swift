@@ -25,6 +25,7 @@ public struct EnvVars: Codable {
   public var mailgun = Mailgun()
   public var port = 8080
   public var postgres = Postgres()
+  public var rssUserAgentWatchlist: [String] = []
   public var stripe = Stripe()
 
   private enum CodingKeys: String, CodingKey {
@@ -32,6 +33,7 @@ public struct EnvVars: Codable {
     case appSecret = "APP_SECRET"
     case baseUrl = "BASE_URL"
     case port = "PORT"
+    case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
   }
 
   public enum AppEnv: String, Codable {
@@ -96,16 +98,19 @@ public struct EnvVars: Codable {
 
 extension EnvVars {
   public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
+    let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.appEnv = try values.decode(AppEnv.self, forKey: .appEnv)
-    self.appSecret = try values.decode(AppSecret.self, forKey: .appSecret)
-    self.baseUrl = try values.decode(URL.self, forKey: .baseUrl)
+    self.appEnv = try container.decode(AppEnv.self, forKey: .appEnv)
+    self.appSecret = try container.decode(AppSecret.self, forKey: .appSecret)
+    self.baseUrl = try container.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
     self.gitHub = try .init(from: decoder)
     self.mailgun = try .init(from: decoder)
-    self.port = Int(try values.decode(String.self, forKey: .port))!
+    self.port = Int(try container.decode(String.self, forKey: .port))!
     self.postgres = try .init(from: decoder)
+    self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
+      .split(separator: ",")
+      .map(String.init)
     self.stripe = try .init(from: decoder)
   }
 
@@ -120,6 +125,9 @@ extension EnvVars {
     try self.mailgun.encode(to: encoder)
     try container.encode(String(self.port), forKey: .port)
     try self.postgres.encode(to: encoder)
+    try container.encode(
+      String(self.rssUserAgentWatchlist.joined(separator: ",")), forKey: .rssUserAgentWatchlist
+    )
     try self.stripe.encode(to: encoder)
   }
 }
