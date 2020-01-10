@@ -13,7 +13,6 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.local
     depends_on:
       - db
     environment:
