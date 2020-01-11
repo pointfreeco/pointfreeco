@@ -53,7 +53,7 @@ private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoic
           .gridColumn(
             sizes: [.mobile: 4],
             attributes: [.class([Class.type.align.end, Class.type.fontFamily.monospace])],
-            .div(.text(dateFormatter.string(from: invoice.date)))
+            .div(.text(dateFormatter.string(from: invoice.created)))
           ),
           .gridColumn(
             sizes: [.mobile: 2],
@@ -159,7 +159,7 @@ public func invoiceView(
         .gridColumn(
           sizes: [.mobile: 12, .desktop: 6],
           attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-          .div(.text(dateFormatter.string(from: invoice.date)))
+          .div(.text(dateFormatter.string(from: invoice.created)))
         )
       ),
       invoice.charge?.right?.source.left.map {

@@ -90,8 +90,8 @@ extension Invoice {
       amountDue: 0_00,
       amountPaid: 17_00,
       charge: charge,
+      created: .mock,
       customer: "cus_test",
-      date: .mock,
       discount: nil,
       id: "in_test",
       lines: .mock([.mock]),
@@ -132,35 +132,33 @@ extension ListEnvelope {
 
 extension Plan {
   public static let mock = Plan(
-    amount: 17_00,
     created: .mock,
     currency: .usd,
     id: .monthly,
     interval: .month,
     metadata: [:],
     nickname: "Individual Monthly",
-    statementDescriptor: nil,
     tiers: [
-      Tier(amount: 16_00, upTo: nil),
-      Tier(amount: 18_00, upTo: nil)
+      Tier(unitAmount: 16_00, upTo: 1),
+      Tier(unitAmount: 18_00, upTo: nil)
     ]
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.amount .~ 170_00
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 170_00]
     |> \.id .~ .yearly
     |> \.interval .~ .year
     |> \.nickname .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
-    |> \.amount .~ 16_00
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 16_00]
     |> \.id .~ .monthly
     |> \.nickname .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
-    |> \.amount .~ 160_00
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 160_00]
     |> \.id .~ .yearly
     |> \.nickname .~ "Team Yearly"
 }
@@ -179,7 +177,7 @@ extension Subscription {
     items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
-    start: .mock,
+    startDate: .mock,
     status: .active
   )
 
@@ -235,6 +233,10 @@ extension Subscription.Item {
     plan: .mock,
     quantity: 1
   )
+}
+
+extension Plan.Tier {
+  public static let mock = Plan.Tier(unitAmount: 17_00, upTo: nil)
 }
 
 fileprivate extension Date {

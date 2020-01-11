@@ -31,6 +31,16 @@ bootstrap-private:
 	@echo "  ✅ Bootstrapped! Opening Xcode..."
 	@open -g PointFree.xcworkspace
 
+/usr/local/bin/stripe:
+	brew install stripe/stripe-cli/stripe
+
+stripe-listen: /usr/local/bin/stripe
+	stripe listen \
+		--events invoice.payment_failed,invoice.payment_succeeded,customer.subscription.deleted \
+		--forward-to localhost:8080/webhooks/stripe \
+		--latest \
+		--print-json
+
 uninstall: uninstall-mm db-drop
 
 install-mm:
