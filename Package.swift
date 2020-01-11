@@ -188,7 +188,6 @@ let package = Package(
         "Html",
         "HtmlCssSupport",
         "HtmlPlainTextPrint",
-        "Html",
         "HttpPipeline",
         "HttpPipelineHtmlSupport",
         "Mailgun",
@@ -211,7 +210,6 @@ let package = Package(
       name: "PointFreeTests",
       dependencies: [
         "CssTestSupport",
-        "HtmlSnapshotTesting",
         "HtmlSnapshotTesting",
         "HttpPipelineTestSupport",
         "PointFree",
