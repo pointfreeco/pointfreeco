@@ -249,6 +249,7 @@ public struct Invoice: Codable, Equatable {
   public var customer: Customer.Id
   public var discount: Discount?
   public var id: Id?
+  public var invoicePdf: String
   public var lines: ListEnvelope<LineItem>
   public var number: Number
   public var periodStart: Date
@@ -265,6 +266,7 @@ public struct Invoice: Codable, Equatable {
     customer: Customer.Id,
     discount: Discount?,
     id: Id?,
+    invoicePdf: String,
     lines: ListEnvelope<LineItem>,
     number: Number,
     periodStart: Date,
@@ -280,6 +282,7 @@ public struct Invoice: Codable, Equatable {
     self.customer = customer
     self.discount = discount
     self.id = id
+    self.invoicePdf = invoicePdf
     self.lines = lines
     self.number = number
     self.periodStart = periodStart
@@ -300,6 +303,7 @@ public struct Invoice: Codable, Equatable {
     case customer
     case discount
     case id
+    case invoicePdf = "invoice_pdf"
     case lines
     case number
     case periodStart = "period_start"

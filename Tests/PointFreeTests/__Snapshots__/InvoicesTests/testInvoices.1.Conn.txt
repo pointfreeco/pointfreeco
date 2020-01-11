@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 44901
+Content-Length: 44921
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1873,7 +1873,7 @@ html {
                             m-pr1
                             m-pt1
                             m-pb1"
-                     href="/account/invoices/in_test"
+                     href="https://pay.stripe.com/invoice/invst_test/pdf"
                      target="_blank">
                     Print
                   </a>

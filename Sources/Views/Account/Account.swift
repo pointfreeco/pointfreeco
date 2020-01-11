@@ -1055,7 +1055,7 @@ private func subscriptionPaymentInfoView(_ subscription: Stripe.Subscription) ->
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
-                  .href(path(to: .account(.invoices(.index)))),
+                  .href(path(to: .account(.invoices))),
                 ],
                 "Payment history"
               )
@@ -1101,7 +1101,7 @@ private let subscriptionInvoiceBillingInfoView = Node.gridRow(
             .a(
               attributes: [
                 .class([Class.pf.components.button(color: .black, size: .small, style: .underline)]),
-                .href(path(to: .account(.invoices(.index)))),
+                .href(path(to: .account(.invoices))),
               ],
               "Payment history"
             )
