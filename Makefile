@@ -257,7 +257,7 @@ uninstall-colortheme:
 
 # sourcery
 
-sourcery: route
+sourcery: routes
 
 routes:
 	@echo "  ⚠️  Generating routes..."
