@@ -7,16 +7,11 @@ import Stripe
 public enum Account: DerivePartialIsos, Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
-  case invoices(Invoices)
+  case invoices
   case paymentInfo(PaymentInfo)
   case rss(userId: Encrypted<String>, rssSalt: Encrypted<String>)
   case subscription(Subscription)
   case update(ProfileData?)
-
-  public enum Invoices: DerivePartialIsos, Equatable {
-    case index
-    case show(Stripe.Invoice.Id)
-  }
 
   public enum PaymentInfo: DerivePartialIsos, Equatable {
     case show
@@ -47,11 +42,8 @@ private let accountRouters: [Router<Account>] = [
   .index
     <¢> get <% end,
 
-  .invoices <<< .index
+  .invoices
     <¢> get %> lit("invoices") <% end,
-
-  .invoices <<< .show
-    <¢> get %> lit("invoices") %> pathParam(.tagged(.string)) <% end,
 
   .paymentInfo <<< .show <¢> get %> lit("payment-info") <% end,
 

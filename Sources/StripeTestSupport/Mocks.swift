@@ -94,6 +94,7 @@ extension Invoice {
       customer: "cus_test",
       discount: nil,
       id: "in_test",
+      invoicePdf: "https://pay.stripe.com/invoice/invst_test/pdf",
       lines: .mock([.mock]),
       number: "0000000-0000",
       periodStart: .mock,
