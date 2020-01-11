@@ -311,7 +311,6 @@ test-oss: db
 	@$(SWIFT) test \
 		--enable-pubgrub-resolver \
 		--enable-test-discovery \
-		--parallel \
 		-Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
