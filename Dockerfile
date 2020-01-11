@@ -1,23 +1,32 @@
-FROM swift:5.1
+FROM swift:5.1 as build
 
 RUN apt-get update
-RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl postgresql
+RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 
-WORKDIR /app
+WORKDIR /build
 
-COPY Makefile ./
-COPY Package.swift ./
+COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
 
-# cmark
-RUN git clone https://github.com/commonmark/cmark && \
-	cd cmark && \
-	git checkout 1880e6535e335f143f9547494def01c13f2f331b
+RUN git clone https://github.com/commonmark/cmark \
+  && cd cmark \
+  && git checkout 1880e6535e335f143f9547494def01c13f2f331b
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift package update
-RUN swift build --product Server --configuration release -Xswiftc -g && \
-    swift build --product Runner --configuration release -Xswiftc -g
-CMD .build/release/Server
+RUN swift build --configuration release --product Server -Xswiftc -g \
+  && swift build --configuration release --product Runner -Xswiftc -g
+
+FROM swift:5.1-slim
+
+RUN apt-get update
+RUN apt-get install -y libpq-dev libssl-dev libz-dev openssl
+
+WORKDIR /app
+
+COPY --from=build /usr/include/cmark* /usr/include/
+COPY --from=build /usr/lib/libcmark* /usr/lib/
+COPY --from=build /build/.build/release/Server /usr/bin
+COPY --from=build /build/.build/release/Runner /usr/bin
+ENTRYPOINT ["Server"]
