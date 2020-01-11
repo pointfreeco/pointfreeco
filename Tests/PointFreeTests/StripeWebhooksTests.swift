@@ -219,7 +219,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0a40efd7b8fa89a7a4f5ce3138dcd18cfb63f12bdccf5a9c77f405c43b57a2d1",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -233,7 +233,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=0a40efd7b8fa89a7a4f5ce3138dcd18cfb63f12bdccf5a9c77f405c43b57a2d1",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -269,7 +269,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=1c51cbdeb494f239e41b5ed50d816e61c6fa0c1cbf269f245b9ce0659b1eca3c",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=88c795045454a2977201390f375156287035824e8fbae5da6508777e43b6f637",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -295,7 +295,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=d333002410d8aa50c4426c42d7d2e87d1fcbd4f103326c1bcceb19db85fcff01",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=5f4853f7a2c6ffe6497cdabf7ae10fc693d3b1e8caa70ccfeca6b460872040b4",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
