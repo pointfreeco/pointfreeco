@@ -146,14 +146,14 @@ final class StripeWebhooksTests: TestCase {
 }
 """
 
-    try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
+    _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
   }
 
   func testValidHook() {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=123e75f349e0698a7eb0287d5c1beafa6f109654498c400f271a36bfb4f6cc66",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -167,7 +167,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=123e75f349e0698a7eb0287d5c1beafa6f109654498c400f271a36bfb4f6cc66",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -203,7 +203,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=1c51cbdeb494f239e41b5ed50d816e61c6fa0c1cbf269f245b9ce0659b1eca3c",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=6157cea464c5032f6e11fb99c4a964c1e7e66bf811776c6b36dd6ecfc024d4eb",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -229,7 +229,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=d333002410d8aa50c4426c42d7d2e87d1fcbd4f103326c1bcceb19db85fcff01",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=1baca5a65d607ec4cd74349d681a112a0dea069a350a82d9bd087bebbc3a12fe",
       forHTTPHeaderField: "Stripe-Signature"
     )
 

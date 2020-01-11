@@ -37,16 +37,13 @@ import Stripe
 
 
 
-      extension PartialIso where A == (
-            Account.Invoices
-        ), B == Account {
-
-          public static let invoices = parenthesize <| PartialIso(
-            apply: Account.invoices,
-            unapply: {
-              guard case let .invoices(result) = $0 else { return nil }
-              return .some(result)
-          })
+      extension PartialIso where A == Prelude.Unit, B == Account {
+        public static let invoices = parenthesize <| PartialIso<Prelude.Unit, Account>(
+          apply: const(.some(.invoices)),
+          unapply: {
+            guard case .invoices = $0 else { return nil }
+            return .some(Prelude.unit)
+        })
       }
 
 
@@ -103,31 +100,6 @@ import Stripe
             apply: Account.update,
             unapply: {
               guard case let .update(result) = $0 else { return nil }
-              return .some(result)
-          })
-      }
-
-
-
-      extension PartialIso where A == Prelude.Unit, B == Account.Invoices {
-        public static let index = parenthesize <| PartialIso<Prelude.Unit, Account.Invoices>(
-          apply: const(.some(.index)),
-          unapply: {
-            guard case .index = $0 else { return nil }
-            return .some(Prelude.unit)
-        })
-      }
-
-
-
-      extension PartialIso where A == (
-            Stripe.Invoice.Id
-        ), B == Account.Invoices {
-
-          public static let show = parenthesize <| PartialIso(
-            apply: Account.Invoices.show,
-            unapply: {
-              guard case let .show(result) = $0 else { return nil }
               return .some(result)
           })
       }
