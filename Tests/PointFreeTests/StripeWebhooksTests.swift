@@ -24,191 +24,125 @@ final class StripeWebhooksTests: TestCase {
   func testDecoding() throws {
     let json = """
 {
-  "id": "evt_test",
+  "id": "evt_1FyO3MD0Nyli3dRgk47ZGyCo",
   "object": "event",
-  "api_version": "2017-08-15",
-  "created": 1578691068,
+  "api_version": "2019-12-03",
+  "created": 1578426564,
   "data": {
     "object": {
-      "id": "in_test",
+      "id": "in_1FyO1tD0Nyli3dRgJf6GaMHT",
       "object": "invoice",
       "account_country": "US",
       "account_name": "Point-Free, Inc.",
-      "amount_due": 1260,
-      "amount_paid": 1260,
-      "amount_remaining": 0,
-      "application_fee": null,
-      "attempt_count": 2,
+      "amount_due": 2000,
+      "amount_paid": 0,
+      "amount_remaining": 2000,
+      "attempt_count": 1,
       "attempted": true,
-      "auto_advance": false,
-      "billing": "charge_automatically",
-      "billing_reason": "subscription_cycle",
-      "charge": "ch_test",
-      "closed": true,
+      "auto_advance": true,
+      "billing_reason": "manual",
+      "charge": "ch_1FyO1uD0Nyli3dRg4VrNlXQs",
       "collection_method": "charge_automatically",
-      "created": 1577988811,
+      "created": 1578426473,
       "currency": "usd",
       "custom_fields": null,
-      "customer": "cus_test",
+      "customer": "cus_GVOpkZIBdvM6Kx",
       "customer_address": null,
-      "customer_email": "test@example.com",
+      "customer_email": null,
       "customer_name": null,
       "customer_phone": null,
       "customer_shipping": null,
       "customer_tax_exempt": "none",
       "customer_tax_ids": [
+
       ],
-      "date": 1577988811,
       "default_payment_method": null,
       "default_source": null,
       "default_tax_rates": [
+
       ],
-      "description": null,
-      "discount": {
-        "object": "discount",
-        "coupon": {
-          "id": "cyber-monday-2019",
-          "object": "coupon",
-          "amount_off": null,
-          "created": 1575243866,
-          "currency": null,
-          "duration": "repeating",
-          "duration_in_months": 12,
-          "livemode": true,
-          "max_redemptions": null,
-          "metadata": {
-          },
-          "name": "Cyber Monday 2019",
-          "percent_off": 30,
-          "percent_off_precise": 30,
-          "redeem_by": 1575392400,
-          "times_redeemed": 72,
-          "valid": false
-        },
-        "customer": "cus_test",
-        "end": 1606932807,
-        "start": 1575310407,
-        "subscription": "sub_test"
-      },
+      "description": "(created by Stripe CLI)",
+      "discount": null,
       "due_date": null,
       "ending_balance": 0,
-      "finalized_at": 1577992648,
       "footer": null,
-      "forgiven": false,
-      "hosted_invoice_url": "https://pay.stripe.com/invoice/invst_test",
-      "invoice_pdf": "https://pay.stripe.com/invoice/invst_test/pdf",
+      "hosted_invoice_url": "https://pay.stripe.com/invoice/invst_W3mOVwMEUH5LlknZ79xMDrV2iy",
+      "invoice_pdf": "https://pay.stripe.com/invoice/invst_W3mOVwMEUH5LlknZ79xMDrV2iy/pdf",
       "lines": {
         "object": "list",
         "data": [
           {
-            "id": "sub_test",
+            "id": "il_1FyO1sD0Nyli3dRgjmhFXFlT",
             "object": "line_item",
-            "amount": 1800,
+            "amount": 2000,
             "currency": "usd",
-            "description": null,
+            "description": "(created by Stripe CLI)",
             "discountable": true,
-            "livemode": true,
+            "invoice_item": "ii_1FyO1sD0Nyli3dRgknhHc7Bp",
+            "livemode": false,
             "metadata": {
             },
             "period": {
-              "end": 1580667207,
-              "start": 1577988807
+              "end": 1578426472,
+              "start": 1578426472
             },
-            "plan": {
-              "id": "monthly-2019",
-              "object": "plan",
-              "active": true,
-              "aggregate_usage": null,
-              "amount": null,
-              "amount_decimal": null,
-              "billing_scheme": "tiered",
-              "created": 1566052471,
-              "currency": "usd",
-              "interval": "month",
-              "interval_count": 1,
-              "livemode": true,
-              "metadata": {
-              },
-              "name": "Point-Free Monthly",
-              "nickname": "Point-Free Monthly",
-              "product": "prod_test",
-              "statement_descriptor": "POINT-FREE MONTHLY",
-              "tiers": [
-                {
-                  "amount": 1800,
-                  "flat_amount": null,
-                  "flat_amount_decimal": null,
-                  "unit_amount_decimal": "1800",
-                  "up_to": 1
-                },
-                {
-                  "amount": 1600,
-                  "flat_amount": null,
-                  "flat_amount_decimal": null,
-                  "unit_amount_decimal": "1600",
-                  "up_to": null
-                }
-              ],
-              "tiers_mode": "volume",
-              "transform_usage": null,
-              "trial_period_days": null,
-              "usage_type": "licensed"
-            },
+            "plan": null,
             "proration": false,
             "quantity": 1,
             "subscription": null,
-            "subscription_item": "si_test",
             "tax_amounts": [
+
             ],
             "tax_rates": [
+
             ],
-            "type": "subscription",
-            "unique_id": "il_test",
-            "unique_line_item_id": "sli_test"
+            "type": "invoiceitem"
           }
         ],
         "has_more": false,
         "total_count": 1,
-        "url": "/v1/invoices/in_test/lines"
+        "url": "/v1/invoices/in_1FyO1tD0Nyli3dRgJf6GaMHT/lines"
       },
-      "livemode": true,
+      "livemode": false,
       "metadata": {
       },
-      "next_payment_attempt": null,
-      "number": "A7CC96D4-0002",
-      "paid": true,
-      "payment_intent": "pi_test",
-      "period_end": 1577988807,
-      "period_start": 1575310407,
+      "next_payment_attempt": 1579031274,
+      "number": "6371C201-0001",
+      "paid": false,
+      "payment_intent": "pi_1FyO1uD0Nyli3dRgEsRJums1",
+      "period_end": 1578426473,
+      "period_start": 1578426473,
       "post_payment_credit_notes_amount": 0,
       "pre_payment_credit_notes_amount": 0,
       "receipt_number": null,
       "starting_balance": 0,
       "statement_descriptor": null,
-      "status": "paid",
+      "status": "open",
       "status_transitions": {
-        "finalized_at": 1577992648,
+        "finalized_at": 1578426474,
         "marked_uncollectible_at": null,
-        "paid_at": 1578691067,
+        "paid_at": null,
         "voided_at": null
       },
-      "subscription": "sub_test",
-      "subtotal": 1800,
+      "subscription": null,
+      "subtotal": 2000,
       "tax": null,
       "tax_percent": null,
-      "total": 1260,
+      "total": 2000,
       "total_tax_amounts": [
+
       ],
-      "webhooks_delivered_at": 1577988812
+      "webhooks_delivered_at": 1578426475,
+      "application_fee_amount": null
     }
   },
-  "livemode": true,
-  "pending_webhooks": 1,
+  "livemode": false,
+  "pending_webhooks": 2,
   "request": {
     "id": null,
     "idempotency_key": null
   },
-  "type": "invoice.payment_succeeded"
+  "type": "invoice.payment_failed"
 }
 """
 
@@ -219,7 +153,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0a40efd7b8fa89a7a4f5ce3138dcd18cfb63f12bdccf5a9c77f405c43b57a2d1",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -233,7 +167,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
     var hook = request(to: .webhooks(.stripe(.knownEvent(.invoice))))
     hook.addValue(
-      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=0a40efd7b8fa89a7a4f5ce3138dcd18cfb63f12bdccf5a9c77f405c43b57a2d1",
+      "t=\(Int(Current.date().addingTimeInterval(-600).timeIntervalSince1970)),v1=0a5165bc2b26cc1fa438d7c7cf76d8625104edb05b38993c7af63d74189a0c7a",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -269,7 +203,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=88c795045454a2977201390f375156287035824e8fbae5da6508777e43b6f637",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=1c51cbdeb494f239e41b5ed50d816e61c6fa0c1cbf269f245b9ce0659b1eca3c",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
@@ -295,7 +229,7 @@ final class StripeWebhooksTests: TestCase {
 
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
-      "t=\(Int(Current.date().timeIntervalSince1970)),v1=5f4853f7a2c6ffe6497cdabf7ae10fc693d3b1e8caa70ccfeca6b460872040b4",
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=d333002410d8aa50c4426c42d7d2e87d1fcbd4f103326c1bcceb19db85fcff01",
       forHTTPHeaderField: "Stripe-Signature"
     )
 

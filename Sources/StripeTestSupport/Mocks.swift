@@ -139,26 +139,26 @@ extension Plan {
     metadata: [:],
     nickname: "Individual Monthly",
     tiers: [
-      Tier(amount: 16_00, upTo: 1),
-      Tier(amount: 18_00, upTo: nil)
+      Tier(unitAmount: 16_00, upTo: 1),
+      Tier(unitAmount: 18_00, upTo: nil)
     ]
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.tiers .~ [.mock |> \.amount .~ 170_00]
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 170_00]
     |> \.id .~ .yearly
     |> \.interval .~ .year
     |> \.nickname .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
-    |> \.tiers .~ [.mock |> \.amount .~ 16_00]
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 16_00]
     |> \.id .~ .monthly
     |> \.nickname .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
-    |> \.tiers .~ [.mock |> \.amount .~ 160_00]
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 160_00]
     |> \.id .~ .yearly
     |> \.nickname .~ "Team Yearly"
 }
@@ -236,7 +236,7 @@ extension Subscription.Item {
 }
 
 extension Plan.Tier {
-  public static let mock = Plan.Tier(amount: 17_00, upTo: nil)
+  public static let mock = Plan.Tier(unitAmount: 17_00, upTo: nil)
 }
 
 fileprivate extension Date {

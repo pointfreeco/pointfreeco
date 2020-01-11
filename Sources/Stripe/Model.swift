@@ -386,7 +386,8 @@ public struct Plan: Codable, Equatable {
   }
 
   public func amount(for quantity: Int) -> Cents<Int> {
-    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.amount ?? -1
+    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
+      ?? -1
     return amount.map { $0 * quantity }
   }
 
@@ -402,16 +403,16 @@ public struct Plan: Codable, Equatable {
   }
 
   public struct Tier: Codable, Equatable {
-    public var amount: Cents<Int>
+    public var unitAmount: Cents<Int>
     public var upTo: Int?
 
-    public init(amount: Cents<Int>, upTo: Int?) {
-      self.amount = amount
+    public init(unitAmount: Cents<Int>, upTo: Int?) {
+      self.unitAmount = unitAmount
       self.upTo = upTo
     }
 
     private enum CodingKeys: String, CodingKey {
-      case amount = "amount"
+      case unitAmount = "unit_amount"
       case upTo = "up_to"
     }
   }
