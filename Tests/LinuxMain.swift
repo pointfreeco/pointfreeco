@@ -252,9 +252,6 @@ extension InviteTests {
 extension InvoicesTests {
   static var allTests: [(String, (InvoicesTests) -> () throws -> Void)] = [
     ("testInvoices", testInvoices),
-    ("testInvoice", testInvoice),
-    ("testInvoice_InvoiceBilling", testInvoice_InvoiceBilling),
-    ("testInvoiceWithDiscount", testInvoiceWithDiscount),
   ]
 }
 extension MetaLayoutTests {

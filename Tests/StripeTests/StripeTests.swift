@@ -179,18 +179,25 @@ final class StripeTests: XCTestCase {
   func testDecodingSubscriptionWithDiscount() throws {
     let jsonString = """
 {
-  "id": "sub_DLOCPKtT3ezRQ7",
+  "id": "sub_GVRtJttAzOiMPg",
   "object": "subscription",
   "application_fee_percent": null,
-  "billing": "charge_automatically",
-  "billing_cycle_anchor": 1533218660,
+  "billing_cycle_anchor": 1578437899,
+  "billing_thresholds": null,
+  "cancel_at": null,
   "cancel_at_period_end": false,
   "canceled_at": null,
-  "created": 1533218660,
-  "current_period_end": 1535897060,
-  "current_period_start": 1533218660,
-  "customer": "cus_DLOB6Ix7b7Xu83",
+  "collection_method": "charge_automatically",
+  "created": 1578437899,
+  "current_period_end": 1581116299,
+  "current_period_start": 1578437899,
+  "customer": "cus_GVRtJN8LjWXJdL",
   "days_until_due": null,
+  "default_payment_method": null,
+  "default_source": null,
+  "default_tax_rates": [
+
+  ],
   "discount": {
     "object": "discount",
     "coupon": {
@@ -212,39 +219,39 @@ final class StripeTests: XCTestCase {
       "times_redeemed": 2,
       "valid": true
     },
-    "customer": "cus_DLOB6Ix7b7Xu83",
+    "customer": "cus_GVRtJN8LjWXJdL",
     "end": null,
     "start": 1533218660,
-    "subscription": "sub_DLOCPKtT3ezRQ7"
+    "subscription": "sub_GVRtJttAzOiMPg"
   },
   "ended_at": null,
   "items": {
     "object": "list",
     "data": [
       {
-        "id": "si_DLOCbdDWbIZn1f",
+        "id": "si_GVRt0uvjMxAoVV",
         "object": "subscription_item",
-        "created": 1533218660,
+        "billing_thresholds": null,
+        "created": 1578437899,
         "metadata": {
         },
         "plan": {
-          "id": "individual-monthly",
+          "id": "plan_GVRtPfU0wnWPC5",
           "object": "plan",
           "active": true,
           "aggregate_usage": null,
-          "amount": 1700,
+          "amount": 2000,
+          "amount_decimal": "2000",
           "billing_scheme": "per_unit",
-          "created": 1513818719,
+          "created": 1578437898,
           "currency": "usd",
           "interval": "month",
           "interval_count": 1,
           "livemode": false,
           "metadata": {
           },
-          "name": "Individual Monthly",
           "nickname": null,
-          "product": "prod_BzH9x8QMPSEtMQ",
-          "statement_descriptor": null,
+          "product": "prod_GVRtIVoEidgAjD",
           "tiers": null,
           "tiers_mode": null,
           "transform_usage": null,
@@ -252,34 +259,40 @@ final class StripeTests: XCTestCase {
           "usage_type": "licensed"
         },
         "quantity": 1,
-        "subscription": "sub_DLOCPKtT3ezRQ7"
+        "subscription": "sub_GVRtJttAzOiMPg",
+        "tax_rates": [
+
+        ]
       }
     ],
     "has_more": false,
     "total_count": 1,
-    "url": "/v1/subscription_items?subscription=sub_DLOCPKtT3ezRQ7"
+    "url": "/v1/subscription_items?subscription=sub_GVRtJttAzOiMPg"
   },
+  "latest_invoice": "in_1FyR0BD0Nyli3dRgBzTjLMSa",
   "livemode": false,
   "metadata": {
   },
+  "next_pending_invoice_item_invoice": null,
+  "pending_invoice_item_interval": null,
+  "pending_setup_intent": null,
   "plan": {
-    "id": "individual-monthly",
+    "id": "plan_GVRtPfU0wnWPC5",
     "object": "plan",
     "active": true,
     "aggregate_usage": null,
-    "amount": 1700,
+    "amount": 2000,
+    "amount_decimal": "2000",
     "billing_scheme": "per_unit",
-    "created": 1513818719,
+    "created": 1578437898,
     "currency": "usd",
     "interval": "month",
     "interval_count": 1,
     "livemode": false,
     "metadata": {
     },
-    "name": "Individual Monthly",
     "nickname": null,
-    "product": "prod_BzH9x8QMPSEtMQ",
-    "statement_descriptor": null,
+    "product": "prod_GVRtIVoEidgAjD",
     "tiers": null,
     "tiers_mode": null,
     "transform_usage": null,
@@ -287,7 +300,8 @@ final class StripeTests: XCTestCase {
     "usage_type": "licensed"
   },
   "quantity": 1,
-  "start": 1533218660,
+  "schedule": null,
+  "start_date": 1578437899,
   "status": "active",
   "tax_percent": null,
   "trial_end": null,
