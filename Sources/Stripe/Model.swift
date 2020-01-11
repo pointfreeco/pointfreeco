@@ -245,8 +245,8 @@ public struct Invoice: Codable, Equatable {
   public var amountDue: Cents<Int>
   public var amountPaid: Cents<Int>
   public var charge: Either<Charge.Id, Charge>?
+  public var created: Date
   public var customer: Customer.Id
-  public var date: Date
   public var discount: Discount?
   public var id: Id?
   public var lines: ListEnvelope<LineItem>
@@ -261,8 +261,8 @@ public struct Invoice: Codable, Equatable {
     amountDue: Cents<Int>,
     amountPaid: Cents<Int>,
     charge: Either<Charge.Id, Charge>?,
+    created: Date,
     customer: Customer.Id,
-    date: Date,
     discount: Discount?,
     id: Id?,
     lines: ListEnvelope<LineItem>,
@@ -276,8 +276,8 @@ public struct Invoice: Codable, Equatable {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
     self.charge = charge
+    self.created = created
     self.customer = customer
-    self.date = date
     self.discount = discount
     self.id = id
     self.lines = lines
@@ -296,8 +296,8 @@ public struct Invoice: Codable, Equatable {
     case amountDue = "amount_remaining"
     case amountPaid = "amount_paid"
     case charge
+    case created
     case customer
-    case date
     case discount
     case id
     case lines
@@ -314,7 +314,7 @@ public struct LineItem: Codable, Equatable {
   public var amount: Cents<Int>
   public var description: String?
   public var id: Id
-  public var plan: Plan
+  public var plan: Plan?
   public var quantity: Int
   public var subscription: Subscription.Id?
 
@@ -322,7 +322,7 @@ public struct LineItem: Codable, Equatable {
     amount: Cents<Int>,
     description: String?,
     id: Id,
-    plan: Plan,
+    plan: Plan?,
     quantity: Int,
     subscription: Subscription.Id?
     ) {
@@ -353,7 +353,6 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-  public var amount: Cents<Int>?
   public var created: Date
   public var currency: Currency
   public var id: Id
@@ -361,7 +360,6 @@ public struct Plan: Codable, Equatable {
   public var metadata: [String: String]
   private var name: String? // FIXME: remove
   private var _nickname: String? // FIXME: remove
-  public var statementDescriptor: String?
   public var tiers: [Tier]?
 
   public var nickname: String {
@@ -370,30 +368,26 @@ public struct Plan: Codable, Equatable {
   }
 
   public init(
-    amount: Cents<Int>,
     created: Date,
     currency: Currency,
     id: Id,
     interval: Interval,
     metadata: [String: String],
     nickname: String,
-    statementDescriptor: String?,
     tiers: [Tier]?
     ) {
-    self.amount = amount
     self.created = created
     self.currency = currency
     self.id = id
     self.interval = interval
     self.metadata = metadata
     self.nickname = nickname
-    self.statementDescriptor = statementDescriptor
     self.tiers = tiers
   }
 
   public func amount(for quantity: Int) -> Cents<Int> {
-    let amount = self.amount
-      ?? (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })!.amount
+    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
+      ?? -1
     return amount.map { $0 * quantity }
   }
 
@@ -409,22 +403,21 @@ public struct Plan: Codable, Equatable {
   }
 
   public struct Tier: Codable, Equatable {
-    public var amount: Cents<Int>
+    public var unitAmount: Cents<Int>
     public var upTo: Int?
 
-    public init(amount: Cents<Int>, upTo: Int?) {
-      self.amount = amount
+    public init(unitAmount: Cents<Int>, upTo: Int?) {
+      self.unitAmount = unitAmount
       self.upTo = upTo
     }
 
     private enum CodingKeys: String, CodingKey {
-      case amount
+      case unitAmount = "unit_amount"
       case upTo = "up_to"
     }
   }
 
   private enum CodingKeys: String, CodingKey {
-    case amount
     case created
     case currency
     case id
@@ -432,7 +425,6 @@ public struct Plan: Codable, Equatable {
     case metadata
     case name
     case _nickname = "nickname" // FIXME: remove
-    case statementDescriptor = "statement_descriptor"
     case tiers
   }
 }
@@ -450,7 +442,7 @@ public struct Subscription: Codable, Equatable {
   public var items: ListEnvelope<Item>
   public var plan: Plan
   public var quantity: Int
-  public var start: Date
+  public var startDate: Date
   public var status: Status
 
   public init(
@@ -466,7 +458,7 @@ public struct Subscription: Codable, Equatable {
     items: ListEnvelope<Item>,
     plan: Plan,
     quantity: Int,
-    start: Date,
+    startDate: Date,
     status: Status
     ) {
     self.canceledAt = canceledAt
@@ -481,7 +473,7 @@ public struct Subscription: Codable, Equatable {
     self.items = items
     self.plan = plan
     self.quantity = quantity
-    self.start = start
+    self.startDate = startDate
     self.status = status
   }
 
@@ -541,7 +533,7 @@ public struct Subscription: Codable, Equatable {
     case items
     case plan
     case quantity
-    case start
+    case startDate = "start_date"
     case status
   }
 }
