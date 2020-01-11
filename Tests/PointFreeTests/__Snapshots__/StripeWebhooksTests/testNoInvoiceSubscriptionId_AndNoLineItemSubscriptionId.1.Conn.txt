@@ -1,8 +1,8 @@
 POST http://localhost:8080/webhooks/stripe
 Cookie: pf_session={}
-Stripe-Signature: t=1517356800,v1=d333002410d8aa50c4426c42d7d2e87d1fcbd4f103326c1bcceb19db85fcff01
+Stripe-Signature: t=1517356800,v1=1baca5a65d607ec4cd74349d681a112a0dea069a350a82d9bd087bebbc3a12fe
 
-{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"customer":"cus_test","lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"plan":{"name":"Individual Monthly","id":"monthly-2019","nickname":"Individual Monthly","created":1517356800,"tiers":[{"up_to":1,"unit_amount":1600},{"unit_amount":1800}],"metadata":{},"currency":"usd","interval":"month"}}]},"charge":"ch_test","total":1700,"period_start":1517356800,"subtotal":1700,"amount_remaining":0,"period_end":1519948800,"number":"0000000-0000","created":1517356800}},"type":"invoice.payment_failed"}
+{"id":"evt_test","data":{"object":{"id":"in_test","amount_paid":1700,"customer":"cus_test","lines":{"has_more":false,"data":[{"amount":1700,"id":"ii_test","quantity":1,"plan":{"name":"Individual Monthly","id":"monthly-2019","nickname":"Individual Monthly","created":1517356800,"tiers":[{"up_to":1,"unit_amount":1600},{"unit_amount":1800}],"metadata":{},"currency":"usd","interval":"month"}}]},"charge":"ch_test","total":1700,"period_start":1517356800,"subtotal":1700,"amount_remaining":0,"period_end":1519948800,"number":"0000000-0000","created":1517356800,"invoice_pdf":"https:\/\/pay.stripe.com\/invoice\/invst_test\/pdf"}},"type":"invoice.payment_failed"}
 
 400 Bad Request
 Content-Length: 52
