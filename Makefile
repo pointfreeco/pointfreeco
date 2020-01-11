@@ -257,7 +257,7 @@ uninstall-colortheme:
 
 # sourcery
 
-sourcery: routes sourcery-tests
+sourcery: routes
 
 routes:
 	@echo "  ⚠️  Generating routes..."
@@ -268,28 +268,6 @@ routes:
 		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
 		--output ./Sources/PointFreeRouter/__Generated__/DerivedPartialIsos.swift \
 		&& echo "  ✅ Generated!"
-
-SOURCERY_TESTS_IMPORTS = \
-	@testable import FunctionalCssTests; \
-	@testable import DatabaseTests; \
-	@testable import GitHubTests; \
-	@testable import ModelsTests; \
-	@testable import PointFreeRouterTests; \
-	@testable import PointFreeTests; \
-	@testable import StripeTests; \
-	@testable import StyleguideTests; \
-	@testable import SyndicationTests;
-
-sourcery-tests: check-sourcery
-	@echo "  ⚠️  Generating tests..."
-	@.bin/sourcery \
-		--quiet \
-		--sources ./Tests/ \
-		--templates ./.sourcery-templates/LinuxMain.stencil \
-		--output ./Tests/ \
-		--args testimports='$(SOURCERY_TESTS_IMPORTS)'
-	@mv ./Tests/LinuxMain.generated.swift ./Tests/LinuxMain.swift
-	@echo "  ✅ Generated!"
 
 # private
 
@@ -330,7 +308,10 @@ test-linux: sourcery
 	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
-	@$(SWIFT) test -Xswiftc "-D" -Xswiftc "OSS"
+	@$(SWIFT) test \
+		--enable-pubgrub-resolver \
+		--enable-test-discovery \
+		-Xswiftc "-D" -Xswiftc "OSS"
 
 scorch-docker:
 	@docker container ls --all --quiet \
