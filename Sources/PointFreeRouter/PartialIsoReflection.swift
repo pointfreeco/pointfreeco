@@ -1,8 +1,8 @@
 import ApplicativeRouter
 #if canImport(Darwin)
 import Darwin
-#elseif canImport(Glib)
-import Glib.C
+#elseif canImport(Glibc)
+import Glibc
 #endif
 import Prelude
 
