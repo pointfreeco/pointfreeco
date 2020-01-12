@@ -3,7 +3,7 @@ import Prelude
 import Models
 
 extension Route {
-  public enum Api: DerivePartialIsos, Equatable {
+  public enum Api: Equatable {
     case episodes
     case episode(Episode.Id)
   }
@@ -13,9 +13,9 @@ let apiRouter
   = apiRouters.reduce(.empty, <|>)
 
 private let apiRouters: [Router<Route.Api>] = [
-  .episodes
+  .case(const(.episodes))
     <¢> "episodes" <% end,
 
-  .episode
+  .case(Route.Api.episode)
     <¢> "episodes" %> pathParam(.tagged(.int)) <% end
 ]

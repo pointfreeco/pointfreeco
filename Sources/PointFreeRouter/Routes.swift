@@ -11,7 +11,7 @@ import UrlFormEncoding
 public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
-public enum Route: DerivePartialIsos, Equatable {
+public enum Route: Equatable {
   case about
   case account(Account)
   case admin(Admin)
@@ -44,7 +44,7 @@ public enum Route: DerivePartialIsos, Equatable {
   case useEpisodeCredit(Episode.Id)
   case webhooks(Webhooks)
 
-  public enum Blog: DerivePartialIsos, Equatable {
+  public enum Blog: Equatable {
     case feed
     case index
     case show(Either<String, BlogPost.Id>)
@@ -58,18 +58,18 @@ public enum Route: DerivePartialIsos, Equatable {
     }
   }
 
-  public enum Enterprise: DerivePartialIsos, Equatable {
+  public enum Enterprise: Equatable {
     case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
     case landing(EnterpriseAccount.Domain)
     case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
   }
 
-  public enum Feed: DerivePartialIsos, Equatable {
+  public enum Feed: Equatable {
     case atom
     case episodes
   }
 
-  public enum Invite: DerivePartialIsos, Equatable {
+  public enum Invite: Equatable {
     case accept(TeamInvite.Id)
     case addTeammate(EmailAddress?)
     case resend(TeamInvite.Id)
@@ -78,15 +78,15 @@ public enum Route: DerivePartialIsos, Equatable {
     case show(TeamInvite.Id)
   }
 
-  public enum Team: DerivePartialIsos, Equatable {
+  public enum Team: Equatable {
     case leave
     case remove(User.Id)
   }
 
-  public enum Webhooks: DerivePartialIsos, Equatable {
+  public enum Webhooks: Equatable {
     case stripe(_Stripe)
 
-    public enum _Stripe: DerivePartialIsos, Equatable {
+    public enum _Stripe: Equatable {
       case knownEvent(Event<Either<Invoice, Stripe.Subscription>>)
       case unknownEvent(Event<Prelude.Unit>)
       case fatal
@@ -118,118 +118,118 @@ extension PartialIso where A == String {
 }
 
 let routers: [Router<Route>] = [
-  .about
+  .case(const(.about))
     <¢> get %> lit("about") <% end,
 
-  .account
+  .case(Route.account)
     <¢> lit("account") %> accountRouter,
 
-  .admin
+  .case(Route.admin)
     <¢> lit("admin") %> adminRouter,
 
-  .api
+  .case(Route.api)
     <¢> "api" %> apiRouter,
 
-  .appleDeveloperMerchantIdDomainAssociation
+  .case(const(.appleDeveloperMerchantIdDomainAssociation))
     <¢> get %> lit(".well-known") %> lit("apple-developer-merchantid-domain-association"),
 
-  .blog <<< .feed
+  .case(const(.blog(.feed)))
     <¢> get %> lit("blog") %> lit("feed") %> lit("atom.xml") <% end,
 
-  .discounts
+  .case(Route.discounts)
     <¢> get %> lit("discounts")
     %> pathParam(.tagged(.string))
     <%> queryParam("billing", opt(.rawRepresentable))
     <% end,
 
-  .endGhosting
+  .case(const(.endGhosting))
     <¢> post %> "ghosting" %> "end" <% end,
 
-  .blog <<< .index
+  .case(const(.blog(.index)))
     <¢> get %> lit("blog") <% end,
 
-  .blog <<< .show
+  .case { .blog(.show($0)) }
     <¢> get %> lit("blog") %> lit("posts") %> pathParam(.blogPostIdOrString) <% end,
 
-  .episode
+  .case(Route.episode)
     <¢> get %> lit("episodes") %> pathParam(.episodeIdOrString) <% end,
 
-  .episodes
+  .case(const(.episodes))
     <¢> get %> lit("episodes") <% end,
 
-  .feed <<< .atom
+  .case(const(.feed(.atom)))
     <¢> get %> lit("feed") %> lit("atom.xml") <% end,
 
-  .feed <<< .episodes
+  .case(const(.feed(.episodes)))
     <¢> (get <|> head) %> lit("feed") %> lit("episodes.xml") <% end,
 
-  .enterprise <<< PartialIso.acceptInvite
+  parenthesize(.case { .enterprise(.acceptInvite($0, email: $1, userId: $2)) })
     <¢> get %> "enterprise" %> pathParam(.tagged) <%> "accept"
     %> queryParam("email", .tagged)
     <%> queryParam("user_id", .tagged)
     <% end,
 
-  .enterprise <<< .landing
+  .case { .enterprise(.landing($0)) }
     <¢> get %> "enterprise" %> pathParam(.tagged(.string)) <% end,
 
-  .enterprise <<< .requestInvite
+  .case { .enterprise(.requestInvite($0, $1)) }
     <¢> post %> "enterprise" %> pathParam(.tagged(.string)) <%> "request"
     %> formBody(EnterpriseRequestFormData.self, decoder: formDecoder) <% end,
 
-  .expressUnsubscribe
+  .case(Route.expressUnsubscribe)
     <¢> get %> lit("newsletters") %> lit("express-unsubscribe")
     %> queryParam("payload", .tagged)
     <% end,
 
-  .expressUnsubscribeReply
+  .case(Route.expressUnsubscribeReply)
     <¢> post %> lit("newsletters") %> lit("express-unsubscribe-reply")
     %> formBody(MailgunForwardPayload.self, decoder: formDecoder)
     <% end,
 
-  .gitHubCallback
+  .case(Route.gitHubCallback)
     <¢> get %> lit("github-auth")
     %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
     <% end,
 
-  .home
+  .case(const(.home))
     <¢> get <% end,
 
-  .invite <<< .accept
+  .case { .invite(.accept($0)) }
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("accept") <% end,
 
-  .invite <<< .addTeammate
+  .case { .invite(.addTeammate($0)) }
     <¢> post %> lit("invites") %> lit("add") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
-  .invite <<< .resend
+  .case { .invite(.resend($0)) }
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("resend") <% end,
 
-  .invite <<< .revoke
+  .case { .invite(.revoke($0)) }
     <¢> post %> lit("invites") %> pathParam(.tagged(.uuid)) <% lit("revoke") <% end,
 
-  .invite <<< .send
+  .case { .invite(.send($0)) }
     // TODO: this weird Optional.iso.some is cause `formField` takes a partial iso `String -> A` instead of
     //       `(String?) -> A` like it is for `queryParam`.
     <¢> post %> lit("invites") %> formField("email", Optional.iso.some >>> opt(.rawRepresentable)) <% end,
 
-  .invite <<< .show
+  .case { .invite(.show($0)) }
     <¢> get %> lit("invites") %> pathParam(.tagged(.uuid)) <% end,
 
-  .login
+  .case(Route.login)
     <¢> get %> lit("login") %> queryParam("redirect", opt(.string)) <% end,
 
-  .logout
+  .case(const(.logout))
     <¢> get %> lit("logout") <% end,
 
-  .pricingLanding
+  .case(const(.pricingLanding))
     <¢> get %> lit("pricing") <% end,
 
-  .privacy
+  .case(const(.privacy))
     <¢> get %> lit("privacy") <% end,
 
-  .subscribe
+  .case(Route.subscribe)
     <¢> post %> lit("subscribe") %> stringBody.map(subscriberDataIso) <% end,
 
-  PartialIso.subscribeConfirmation
+  parenthesize(.case(Route.subscribeConfirmation))
     <¢> get %> lit("subscribe")
     %> pathParam(.rawRepresentable)
     <%> queryParam("billing", opt(.rawRepresentable))
@@ -237,20 +237,20 @@ let routers: [Router<Route>] = [
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <% end,
 
-  .team <<< .leave
+  .case(const(.team(.leave)))
     <¢> post %> lit("account") %> lit("team") %> lit("leave")
     <% end,
 
-  .team <<< .remove
+  .case { .team(.remove($0)) }
     <¢> post %> lit("account") %> lit("team") %> lit("members")
     %> pathParam(.tagged(.uuid))
     <% lit("remove")
     <% end,
 
-  .useEpisodeCredit
+  .case(Route.useEpisodeCredit)
     <¢> post %> lit("episodes") %> pathParam(.tagged(.int)) <% lit("credit") <% end,
 
-  .webhooks <<< .stripe <<< .knownEvent
+  .case { .webhooks(.stripe(.knownEvent($0))) }
     <¢> post %> lit("webhooks") %> lit("stripe")
     %> jsonBody(
       Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
@@ -259,7 +259,7 @@ let routers: [Router<Route>] = [
     )
     <% end,
 
-  .webhooks <<< .stripe <<< .unknownEvent
+  .case { .webhooks(.stripe(.unknownEvent($0))) }
     <¢> post %> lit("webhooks") %> lit("stripe")
     %> jsonBody(
       Stripe.Event<Prelude.Unit>.self,
@@ -268,7 +268,7 @@ let routers: [Router<Route>] = [
     )
     <% end,
 
-  .webhooks <<< .stripe <<< .fatal
+  .case(const(.webhooks(.stripe(.fatal))))
     <¢> post %> lit("webhooks") %> lit("stripe") <% end,
 ]
 

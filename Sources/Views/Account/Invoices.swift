@@ -67,7 +67,7 @@ private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoic
               .a(
                 attributes: [
                   .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(invoice.invoicePdf),
+                  .href(invoice.invoicePdf ?? "#"),
                   .target(.blank),
                 ],
                 "Print"
