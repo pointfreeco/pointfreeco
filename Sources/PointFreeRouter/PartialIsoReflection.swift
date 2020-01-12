@@ -17,7 +17,7 @@ extension PartialIso {
 
 private func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root) -> Value? {
   func extractHelp(from root: Root) -> ([String], Value)? {
-    var path: [String] = ["\(root)"]
+    var path: [String] = []
     if let value = root as? Value {
       var otherRoot = embed(value)
       var root = root
@@ -34,11 +34,8 @@ private func extract<Root, Value>(from root: Root, via embed: @escaping (Value) 
       }
       any = anyChild
     }
-    if Value.self == Void.self {
-      return (path, ()) as? ([String], Value)
-    }
-    if Value.self == Unit.self {
-      return (path, unit) as? ([String], Value)
+    if Value.self == Void.self || Value.self == Unit.self {
+      return (["\(root)"] + path, ()) as? ([String], Value)
     }
     return nil
   }
