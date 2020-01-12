@@ -9,7 +9,7 @@ import Prelude
 extension PartialIso {
   public static func `case`(_ embed: @escaping (A) -> B) -> PartialIso {
     return PartialIso(
-      apply: { value in embed(value) },
+      apply: embed,
       unapply: { extract(from: $0, via: embed) }
     )
   }
@@ -34,8 +34,11 @@ private func extract<Root, Value>(from root: Root, via embed: @escaping (Value) 
       }
       any = anyChild
     }
-    if Value.self == Void.self || Value.self == Unit.self {
+    if Value.self == Void.self {
       return (["\(root)"] + path, ()) as? ([String], Value)
+    }
+    if Value.self == Unit.self {
+      return (["\(root)"] + path, unit) as? ([String], Value)
     }
     return nil
   }
