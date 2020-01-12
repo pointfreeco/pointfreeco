@@ -35,7 +35,7 @@ let accountRouter
 
 private let accountRouters: [Router<Account>] = [
   .case(Account.confirmEmailChange)
-    <¢> get %> lit("confirm-email-change")
+    <¢> get %> "confirm-email-change"
     %> queryParam("payload", .tagged)
     <% end,
 
@@ -43,35 +43,35 @@ private let accountRouters: [Router<Account>] = [
     <¢> get <% end,
 
   .case(const(.invoices))
-    <¢> get %> lit("invoices") <% end,
+    <¢> get %> "invoices" <% end,
 
   .case(const(.paymentInfo(.show)))
-    <¢> get %> lit("payment-info") <% end,
+    <¢> get %> "payment-info" <% end,
 
   .case { .paymentInfo(.update($0)) }
-    <¢> post %> lit("payment-info")
+    <¢> post %> "payment-info"
     %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
     <% end,
 
   .case(Account.rss)
-    <¢> (get <|> head) %> lit("rss")
+    <¢> (get <|> head) %> "rss"
     %> pathParam(.tagged)
     <%> pathParam(.tagged)
     <% end,
 
   .case(const(.subscription(.cancel)))
-    <¢> post %> lit("subscription") %> lit("cancel") <% end,
+    <¢> post %> "subscription" %> "cancel" <% end,
 
   .case(const(.subscription(.change(.show))))
-    <¢> get %> lit("subscription") %> lit("change") <% end,
+    <¢> get %> "subscription" %> "change" <% end,
 
   .case { .subscription(.change(.update($0))) }
-    <¢> post %> lit("subscription") %> lit("change")
+    <¢> post %> "subscription" %> "change"
     %> formBody(Pricing?.self, decoder: formDecoder)
     <% end,
 
   .case(const(.subscription(.reactivate)))
-    <¢> post %> lit("subscription") %> lit("reactivate") <% end,
+    <¢> post %> "subscription" %> "reactivate" <% end,
 
   .case(Account.update)
     <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,

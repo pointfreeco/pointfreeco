@@ -28,25 +28,25 @@ public enum GitHubRoute {
 public let gitHubRouter = [
 
   parenthesize(.case(GitHubRoute.authorize))
-    <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
+    <¢> get %> "login" %> "oauth" %> "authorize"
     %> queryParam("client_id", .tagged(.string))
     <%> queryParam("redirect_uri", opt(.string))
     <%> queryParam("scope", .string)
     <% end,
 
   .case(GitHubRoute.episodeCodeSample)
-    <¢> lit("pointfreeco") %> lit("episode-code-samples") %> lit("tree") %> lit("master")
+    <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "master"
     %> pathParam(.string)
     <% end,
 
   .case(const(.license))
-    <¢> lit("pointfreeco") %> lit("pointfreeco") %> lit("blob") %> lit("master") %> lit("LICENSE") %> end,
+    <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "master" %> "LICENSE" %> end,
 
   .case(const(.organization))
-    <¢> get <% lit("pointfreeco") <% end,
+    <¢> get <% "pointfreeco" <% end,
 
   .case(GitHubRoute.repo)
-    <¢> get %> lit("pointfreeco") %> pathParam(.rawRepresentable) <% end,
+    <¢> get %> "pointfreeco" %> pathParam(.rawRepresentable) <% end,
 
   ]
   .reduce(.empty, <|>)
