@@ -11,11 +11,11 @@ public let privacyView: Node = .gridRow(
     attributes: [.style(margin(leftRight: .auto))],
     .div(
       attributes: [.class([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-      .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Privacy Policy"),
+      .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Privacy Policy & Terms"),
       privacyPolicy,
       .p(
         attributes: [.class([Class.padding([.mobile: [.top: 2]])])],
-        "This document was last updated on January 7, 2018."
+        "This document was last updated on January 13, 2020."
       )
     )
   )
@@ -29,6 +29,7 @@ private let privacyPolicy: Node = [
   howWeProtectYourInformation,
   sharingYourPersonalInformation,
   complianceWithChildrensOnlinePrivacyProtectionAct,
+  terms,
   changesToThisPrivacyPolicy,
   contactingUs
 ]
@@ -155,6 +156,16 @@ private let complianceWithChildrensOnlinePrivacyProtectionAct: Node = [
     or maintain information at our Site from those we actually know are under 13, and no part of our
     website is structured to attract anyone under 13.
     """
+  )
+]
+
+private let terms: Node = [
+  .h2(
+    attributes: [.class([Class.pf.type.responsiveTitle3, Class.padding([.mobile: [.top: 2]])])],
+    "Terms of use"
+  ),
+  .p(
+    "Individual subscriptions are only valid for use by an individual person. Team subscriptions are only valid for use by the number of persons allotted seats. We reserve the right to cancel subscriptions at our own discretion."
   )
 ]
 
