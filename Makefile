@@ -255,20 +255,6 @@ colortheme:
 uninstall-colortheme:
 	rm -r $(COLOR_THEME)
 
-# sourcery
-
-sourcery: routes
-
-routes:
-	@echo "  ⚠️  Generating routes..."
-	@mkdir -p ./Sources/PointFreeRouter/__Generated__
-	@.bin/sourcery \
-		--quiet \
-		--sources ./Sources/PointFreeRouter/ \
-		--templates ./.sourcery-templates/DerivePartialIsos.stencil \
-		--output ./Sources/PointFreeRouter/__Generated__/DerivedPartialIsos.swift \
-		&& echo "  ✅ Generated!"
-
 # private
 
 xcodeproj: check-dependencies
@@ -304,7 +290,7 @@ deploy-production:
 	@heroku container:push web -a pointfreeco
 	@heroku container:release web -a pointfreeco
 
-test-linux: sourcery
+test-linux:
 	docker-compose up --abort-on-container-exit --build
 
 test-oss: db
@@ -337,7 +323,6 @@ SUDO_PROMPT = "  🔒 Please enter your password: "
 	check-dependencies \
 	check-cmark \
 	check-postgres \
-	check-sourcery \
 	db \
 	db-drop \
 	xcodeproj-oss \
