@@ -2,21 +2,21 @@ import ApplicativeRouter
 import Foundation
 import Prelude
 
-public enum TwitterRoute: DerivePartialIsos {
+public enum TwitterRoute {
   case mbrandonw
   case pointfreeco
   case stephencelis
 }
 
-public let twitterRouter = [
-  .mbrandonw
-    <¢> get %> lit("mbrandonw") <% end,
+public let twitterRouter: Router<TwitterRoute> = [
+  .case(const(.mbrandonw))
+    <¢> get %> "mbrandonw" <% end,
 
-  .pointfreeco
-    <¢> get %> lit("pointfreeco") <% end,
+  .case(const(.pointfreeco))
+    <¢> get %> "pointfreeco" <% end,
 
-  .stephencelis
-    <¢> get %> lit("stephencelis") <% end,
+  .case(const(.stephencelis))
+    <¢> get %> "stephencelis" <% end,
   ]
   .reduce(.empty, <|>)
 

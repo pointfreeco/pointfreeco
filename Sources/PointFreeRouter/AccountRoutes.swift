@@ -4,7 +4,7 @@ import PointFreePrelude
 import Prelude
 import Stripe
 
-public enum Account: DerivePartialIsos, Equatable {
+public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
   case invoices
@@ -13,17 +13,17 @@ public enum Account: DerivePartialIsos, Equatable {
   case subscription(Subscription)
   case update(ProfileData?)
 
-  public enum PaymentInfo: DerivePartialIsos, Equatable {
+  public enum PaymentInfo: Equatable {
     case show
     case update(Stripe.Token.Id?)
   }
 
-  public enum Subscription: DerivePartialIsos, Equatable {
+  public enum Subscription: Equatable {
     case cancel
     case change(Change)
     case reactivate
 
-    public enum Change: DerivePartialIsos, Equatable {
+    public enum Change: Equatable {
       case show
       case update(Pricing?)
     }
@@ -34,44 +34,45 @@ let accountRouter
   = accountRouters.reduce(.empty, <|>)
 
 private let accountRouters: [Router<Account>] = [
-  .confirmEmailChange
-    <¢> get %> lit("confirm-email-change")
+  .case(Account.confirmEmailChange)
+    <¢> get %> "confirm-email-change"
     %> queryParam("payload", .tagged)
     <% end,
 
-  .index
+  .case(const(.index))
     <¢> get <% end,
 
-  .invoices
-    <¢> get %> lit("invoices") <% end,
+  .case(const(.invoices))
+    <¢> get %> "invoices" <% end,
 
-  .paymentInfo <<< .show <¢> get %> lit("payment-info") <% end,
+  .case(const(.paymentInfo(.show)))
+    <¢> get %> "payment-info" <% end,
 
-  .paymentInfo <<< .update
-    <¢> post %> lit("payment-info")
+  .case { .paymentInfo(.update($0)) }
+    <¢> post %> "payment-info"
     %> formField("token", Optional.iso.some >>> opt(.tagged(.string)))
     <% end,
 
-  .rss
-    <¢> (get <|> head) %> lit("rss")
+  .case(Account.rss)
+    <¢> (get <|> head) %> "rss"
     %> pathParam(.tagged)
     <%> pathParam(.tagged)
     <% end,
 
-  .subscription <<< .cancel
-    <¢> post %> lit("subscription") %> lit("cancel") <% end,
+  .case(const(.subscription(.cancel)))
+    <¢> post %> "subscription" %> "cancel" <% end,
 
-  .subscription <<< .change <<< .show
-    <¢> get %> lit("subscription") %> lit("change") <% end,
+  .case(const(.subscription(.change(.show))))
+    <¢> get %> "subscription" %> "change" <% end,
 
-  .subscription <<< .change <<< .update
-    <¢> post %> lit("subscription") %> lit("change")
+  .case { .subscription(.change(.update($0))) }
+    <¢> post %> "subscription" %> "change"
     %> formBody(Pricing?.self, decoder: formDecoder)
     <% end,
 
-  .subscription <<< .reactivate
-    <¢> post %> lit("subscription") %> lit("reactivate") <% end,
+  .case(const(.subscription(.reactivate)))
+    <¢> post %> "subscription" %> "reactivate" <% end,
 
-  .update
+  .case(Account.update)
     <¢> post %> formBody(ProfileData?.self, decoder: formDecoder) <% end,
 ]
