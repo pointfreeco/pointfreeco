@@ -7,6 +7,7 @@ import Glibc
 import Prelude
 
 extension PartialIso {
+  @inlinable
   public static func `case`(_ embed: @escaping (A) -> B) -> PartialIso {
     return PartialIso(
       apply: embed,
@@ -15,16 +16,10 @@ extension PartialIso {
   }
 }
 
-private func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root) -> Value? {
+@inlinable
+func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root) -> Value? {
   func extractHelp(from root: Root) -> ([String], Value)? {
     var path: [String] = []
-    if let value = root as? Value {
-      var otherRoot = embed(value)
-      var root = root
-      if memcmp(&root, &otherRoot, MemoryLayout<Root>.size) == 0 {
-        return (path, value)
-      }
-    }
     var any: Any = root
     while case let (label?, anyChild)? = Mirror(reflecting: any).children.first {
       path.append(label)
@@ -34,11 +29,18 @@ private func extract<Root, Value>(from root: Root, via embed: @escaping (Value) 
       }
       any = anyChild
     }
+    if Value.self == Unit.self {
+      return (["\(root)"] + path, unit) as? ([String], Value)
+    }
     if Value.self == Void.self {
       return (["\(root)"] + path, ()) as? ([String], Value)
     }
-    if Value.self == Unit.self {
-      return (["\(root)"] + path, unit) as? ([String], Value)
+    if let value = root as? Value {
+      var otherRoot = embed(value)
+      var root = root
+      if memcmp(&root, &otherRoot, MemoryLayout<Root>.size) == 0 {
+        return (path, value)
+      }
     }
     return nil
   }
