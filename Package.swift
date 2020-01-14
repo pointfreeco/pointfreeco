@@ -36,7 +36,7 @@ let package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude.git", .revision("9240a1f")),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.1"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .revision("fde36b6")),
-    .package(url: "https://github.com/pointfreeco/swift-web.git", .revision("f827fb9")),
+    .package(url: "https://github.com/pointfreeco/swift-web.git", .branch("avoid-unit")),
     .package(url: "https://github.com/vapor-community/postgresql.git", .exact("2.1.2")),
   ],
   targets: [

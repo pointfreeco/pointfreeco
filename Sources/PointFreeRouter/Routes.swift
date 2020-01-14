@@ -118,7 +118,7 @@ extension PartialIso where A == String {
 }
 
 let routers: [Router<Route>] = [
-  .case(const(.about))
+  .case(.about)
     <¢> get %> "about" <% end,
 
   .case(Route.account)
@@ -130,10 +130,10 @@ let routers: [Router<Route>] = [
   .case(Route.api)
     <¢> "api" %> apiRouter,
 
-  .case(const(.appleDeveloperMerchantIdDomainAssociation))
+  .case(.appleDeveloperMerchantIdDomainAssociation)
     <¢> get %> ".well-known" %> "apple-developer-merchantid-domain-association",
 
-  .case(const(.blog(.feed)))
+  .case(.blog(.feed))
     <¢> get %> "blog" %> "feed" %> "atom.xml" <% end,
 
   .case(Route.discounts)
@@ -142,10 +142,10 @@ let routers: [Router<Route>] = [
     <%> queryParam("billing", opt(.rawRepresentable))
     <% end,
 
-  .case(const(.endGhosting))
+  .case(.endGhosting)
     <¢> post %> "ghosting" %> "end" <% end,
 
-  .case(const(.blog(.index)))
+  .case(.blog(.index))
     <¢> get %> "blog" <% end,
 
   .case { .blog(.show($0)) }
@@ -154,13 +154,13 @@ let routers: [Router<Route>] = [
   .case(Route.episode)
     <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
 
-  .case(const(.episodes))
+  .case(.episodes)
     <¢> get %> "episodes" <% end,
 
-  .case(const(.feed(.atom)))
+  .case(.feed(.atom))
     <¢> get %> "feed" %> "atom.xml" <% end,
 
-  .case(const(.feed(.episodes)))
+  .case(.feed(.episodes))
     <¢> (get <|> head) %> "feed" %> "episodes.xml" <% end,
 
   parenthesize(.case { .enterprise(.acceptInvite($0, email: $1, userId: $2)) })
@@ -191,7 +191,7 @@ let routers: [Router<Route>] = [
     %> queryParam("code", opt(.string)) <%> queryParam("redirect", opt(.string))
     <% end,
 
-  .case(const(.home))
+  .case(.home)
     <¢> get <% end,
 
   .case { .invite(.accept($0)) }
@@ -217,13 +217,13 @@ let routers: [Router<Route>] = [
   .case(Route.login)
     <¢> get %> "login" %> queryParam("redirect", opt(.string)) <% end,
 
-  .case(const(.logout))
+  .case(.logout)
     <¢> get %> "logout" <% end,
 
-  .case(const(.pricingLanding))
+  .case(.pricingLanding)
     <¢> get %> "pricing" <% end,
 
-  .case(const(.privacy))
+  .case(.privacy)
     <¢> get %> "privacy" <% end,
 
   .case(Route.subscribe)
@@ -237,7 +237,7 @@ let routers: [Router<Route>] = [
     <%> queryParam("teammates", opt(.array(of: .rawRepresentable)))
     <% end,
 
-  .case(const(.team(.leave)))
+  .case(.team(.leave))
     <¢> post %> "account" %> "team" %> "leave"
     <% end,
 
@@ -266,7 +266,7 @@ let routers: [Router<Route>] = [
     )
     <% end,
 
-  .case(const(.webhooks(.stripe(.fatal))))
+  .case(.webhooks(.stripe(.fatal)))
     <¢> post %> "webhooks" %> "stripe" <% end,
 ]
 

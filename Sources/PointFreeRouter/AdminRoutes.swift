@@ -45,19 +45,19 @@ private let adminRouters: [Router<Admin>] = [
     <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
     <% end,
 
-  .case(const(.episodeCredits(.show)))
+  .case(.episodeCredits(.show))
     <¢> get %> "episode-credits" %> end,
 
-  .case(const(.index))
+  .case(.index)
     <¢> get <% end,
 
   .case { .freeEpisodeEmail(.send($0)) }
     <¢> post %> "free-episode-email" %> pathParam(.tagged(.int)) <% "send" <% end,
 
-  .case(const(.freeEpisodeEmail(.index)))
+  .case(.freeEpisodeEmail(.index))
     <¢> get %> "free-episode-email" <% end,
 
-  .case(const(.ghost(.index)))
+  .case(.ghost(.index))
     <¢> get %> "ghost" <% end,
 
   .case { .ghost(.start($0)) }
@@ -65,7 +65,7 @@ private let adminRouters: [Router<Admin>] = [
     %> formField("user_id", .tagged(.uuid)).map(Optional.iso.some)
     <% end,
 
-  .case(const(.newBlogPostEmail(.index)))
+  .case(.newBlogPostEmail(.index))
     <¢> get %> "new-blog-post-email" <% end,
 
   parenthesize(.case { .newBlogPostEmail(.send($0, formData: $1, isTest: $2)) })
@@ -81,6 +81,6 @@ private let adminRouters: [Router<Admin>] = [
     <%> isTest
     <% end,
 
-  .case(const(.newEpisodeEmail(.show)))
+  .case(.newEpisodeEmail(.show))
     <¢> get %> "new-episode-email" <% end,
 ]
