@@ -9,13 +9,13 @@ public enum TwitterRoute {
 }
 
 public let twitterRouter: Router<TwitterRoute> = [
-  .case(const(.mbrandonw))
+  .case(.mbrandonw)
     <¢> get %> "mbrandonw" <% end,
 
-  .case(const(.pointfreeco))
+  .case(.pointfreeco)
     <¢> get %> "pointfreeco" <% end,
 
-  .case(const(.stephencelis))
+  .case(.stephencelis)
     <¢> get %> "stephencelis" <% end,
   ]
   .reduce(.empty, <|>)
