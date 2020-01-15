@@ -13,7 +13,7 @@ let apiRouter
   = apiRouters.reduce(.empty, <|>)
 
 private let apiRouters: [Router<Route.Api>] = [
-  .case(const(.episodes))
+  .case(.episodes)
     <¢> "episodes" <% end,
 
   .case(Route.Api.episode)
