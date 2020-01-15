@@ -39,10 +39,10 @@ public let gitHubRouter = [
     %> pathParam(.string)
     <% end,
 
-  .case(const(.license))
+  .case(.license)
     <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "master" %> "LICENSE" %> end,
 
-  .case(const(.organization))
+  .case(.organization)
     <¢> get <% "pointfreeco" <% end,
 
   .case(GitHubRoute.repo)

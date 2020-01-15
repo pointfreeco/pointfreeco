@@ -39,13 +39,13 @@ private let accountRouters: [Router<Account>] = [
     %> queryParam("payload", .tagged)
     <% end,
 
-  .case(const(.index))
+  .case(.index)
     <¢> get <% end,
 
-  .case(const(.invoices))
+  .case(.invoices)
     <¢> get %> "invoices" <% end,
 
-  .case(const(.paymentInfo(.show)))
+  .case(.paymentInfo(.show))
     <¢> get %> "payment-info" <% end,
 
   .case { .paymentInfo(.update($0)) }
@@ -59,10 +59,10 @@ private let accountRouters: [Router<Account>] = [
     <%> pathParam(.tagged)
     <% end,
 
-  .case(const(.subscription(.cancel)))
+  .case(.subscription(.cancel))
     <¢> post %> "subscription" %> "cancel" <% end,
 
-  .case(const(.subscription(.change(.show))))
+  .case(.subscription(.change(.show)))
     <¢> get %> "subscription" %> "change" <% end,
 
   .case { .subscription(.change(.update($0))) }
@@ -70,7 +70,7 @@ private let accountRouters: [Router<Account>] = [
     %> formBody(Pricing?.self, decoder: formDecoder)
     <% end,
 
-  .case(const(.subscription(.reactivate)))
+  .case(.subscription(.reactivate))
     <¢> post %> "subscription" %> "reactivate" <% end,
 
   .case(Account.update)

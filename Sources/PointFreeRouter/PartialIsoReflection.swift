@@ -16,6 +16,27 @@ extension PartialIso {
   }
 }
 
+extension PartialIso where A == Void {
+  @inlinable
+  public static func `case`(_ value: B) -> PartialIso {
+    let description = "\(value)"
+    return PartialIso(
+      apply: { _ in value },
+      unapply: { "\($0)" == description ? () : nil }
+    )
+  }
+}
+
+extension PartialIso where A == B {
+  @inlinable
+  public static func `case`(_ embed: @escaping (A) -> B) -> PartialIso {
+    return PartialIso(
+      apply: embed,
+      unapply: embed
+    )
+  }
+}
+
 @inlinable
 func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root) -> Value? {
   func extractHelp(from root: Root) -> ([String], Value)? {
@@ -28,19 +49,6 @@ func extract<Root, Value>(from root: Root, via embed: @escaping (Value) -> Root)
         return (path, child)
       }
       any = anyChild
-    }
-    if Value.self == Unit.self {
-      return (["\(root)"] + path, unit) as? ([String], Value)
-    }
-    if Value.self == Void.self {
-      return (["\(root)"] + path, ()) as? ([String], Value)
-    }
-    if let value = root as? Value {
-      var otherRoot = embed(value)
-      var root = root
-      if memcmp(&root, &otherRoot, MemoryLayout<Root>.size) == 0 {
-        return (path, value)
-      }
     }
     return nil
   }
