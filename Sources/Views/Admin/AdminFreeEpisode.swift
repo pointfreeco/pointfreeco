@@ -12,7 +12,7 @@ public func freeEpisodeView(episodes: [Episode], today: Date) -> Node {
       .fragment(
         episodes
           .filter { !$0.isSubscriberOnly(currentDate: today) }
-          .sorted(by: their(^\.sequence))
+          .sorted(by: their(\.sequence))
           .map { .li(row(episode: $0)) }
       )
     )

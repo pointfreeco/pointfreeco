@@ -38,7 +38,7 @@ private func fetchInvoices<A>(
     return { conn in
       let subscription = conn.data.first
 
-      return Current.stripe.fetchInvoices(subscription.customer.either(id, ^\.id))
+      return Current.stripe.fetchInvoices(subscription.customer.either(id, \.id))
         .withExcept(notifyError(subject: "Couldn't load invoices"))
         .run
         .flatMap {

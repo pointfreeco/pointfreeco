@@ -75,7 +75,7 @@ private func fetchGhostee(userId: User.Id?) -> IO<User?> {
   return Current.database.fetchUserById(userId)
     .mapExcept(requireSome)
     .run
-    .map(^\.right)
+    .map(\.right)
 }
 
 private let indexView: Node = [
