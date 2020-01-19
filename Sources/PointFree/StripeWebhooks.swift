@@ -227,7 +227,7 @@ private func extraSubscriptionId(
   switch event.data.object {
   case let .left(invoice):
     return invoice.subscription
-      ?? invoice.lines.data.compactMap(^\.subscription).first
+      ?? invoice.lines.data.compactMap(\.subscription).first
   case let .right(subscription):
     return subscription.id
   }

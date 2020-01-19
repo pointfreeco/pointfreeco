@@ -24,7 +24,7 @@ private func fetchStripeSubscription<A>(
 
       return Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)
         .run
-        .map(^\.right)
+        .map(\.right)
         .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
     }
 }
@@ -38,7 +38,7 @@ let updateProfileMiddleware: Middleware<
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
-      get2 >>> ^\.email >>> isValidEmail,
+      get2 >>> \.email >>> isValidEmail,
       or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
     )
     <<< encryptPayload

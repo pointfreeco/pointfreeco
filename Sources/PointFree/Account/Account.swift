@@ -25,9 +25,35 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Sub
     }
 )
 
+extension Either {
+  subscript<A>(ifLeft left: WritableKeyPath<L, A>, ifRight right: WritableKeyPath<R, A>) -> A {
+    get {
+      switch self {
+      case let .left(l):
+        return l[keyPath: left]
+      case let .right(r):
+        return r[keyPath: right]
+      }
+    }
+    set {
+      switch self {
+      case var .left(l):
+        l[keyPath: left] = newValue
+        self = .left(l)
+      case var .right(r):
+        r[keyPath: right] = newValue
+        self = .right(r)
+      }
+    }
+  }
+}
+
+
 private func fetchAccountData<I>(
   _ conn: Conn<I, Tuple2<User, SubscriberState>>
   ) -> IO<Conn<I, AccountData>> {
+
+  _ = \Stripe.Subscription.customer[ifLeft: \.self, ifRight: \.id]
 
   let (user, subscriberState) = lower(conn.data)
 
@@ -42,17 +68,17 @@ private func fetchAccountData<I>(
     .mapExcept(requireSome)
 
   let owner = ownerSubscription
-    .flatMap(Current.database.fetchUserById <<< ^\.userId)
+    .flatMap(Current.database.fetchUserById <<< \.userId)
     .mapExcept(requireSome)
 
   let subscription = userSubscription <|> ownerSubscription
 
   let stripeSubscription = subscription
-    .map(^\.stripeSubscriptionId)
+    .map(\.stripeSubscriptionId)
     .flatMap(Current.stripe.fetchSubscription)
 
   let upcomingInvoice = stripeSubscription
-    .map(^\.customer >>> either(id, ^\.id))
+    .map(\.customer[ifLeft: \.self, ifRight: \.id])
     .flatMap(Current.stripe.fetchUpcomingInvoice)
 
   let everything = zip8(
@@ -62,11 +88,11 @@ private func fetchAccountData<I>(
     Current.database.fetchEpisodeCredits(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    stripeSubscription.run.map(^\.right).parallel,
+    stripeSubscription.run.map(\.right).parallel,
 
-    subscription.run.map(^\.right).parallel,
+    subscription.run.map(\.right).parallel,
 
-    owner.run.map(^\.right).parallel,
+    owner.run.map(\.right).parallel,
 
     Current.database.fetchTeamInvites(user.id).run.parallel
       .map { $0.right ?? [] },
@@ -74,7 +100,7 @@ private func fetchAccountData<I>(
     Current.database.fetchSubscriptionTeammatesByOwnerId(user.id).run.parallel
       .map { $0.right ?? [] },
 
-    upcomingInvoice.run.map(^\.right).parallel
+    upcomingInvoice.run.map(\.right).parallel
   )
 
   return everything

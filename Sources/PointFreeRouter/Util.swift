@@ -19,7 +19,7 @@ extension PartialIso where B: TaggedType, A == B.RawValue {
   public static var tagged: PartialIso<B.RawValue, B> {
     return PartialIso(
       apply: B.init(rawValue:),
-      unapply: ^\.rawValue
+      unapply: \.rawValue >>> Optional.some
     )
   }
 }

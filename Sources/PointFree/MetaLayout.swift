@@ -75,7 +75,7 @@ public struct Metadata<A> {
         
         ]
         .compactMap { $0 }
-        .map(^\.rawValue)
+        .map(\.rawValue)
     )
   }
 }
