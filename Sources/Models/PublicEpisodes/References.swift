@@ -331,6 +331,16 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
   )
 
+  public static let parseDontValidate = Episode.Reference(
+    author: "Alexis King",
+    blurb: """
+  This article demonstrates that parsing can be a great alternative to validating. When validating you often check for certain requirements of your values, but don't have any record of that check in your types. Whereas parsing allows you to upgrade the types to something more restrictive so that you cannot misuse the value later on.
+  """,
+    link: "https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/",
+    publishedAt: referenceDateFormatter.date(from: "2019-11-05"),
+    title: "Parse, don’t validate"
+  )
+
   public static let playgroundDrivenDevelopmentAtKickstarter = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
