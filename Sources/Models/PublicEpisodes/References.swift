@@ -151,24 +151,12 @@ This short article explains how everything can be seen to be a function, even va
     title: "Everything’s a Function."
   )
 
-  public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
-    author: nil,
-    blurb: """
-The Swift evolution review of the proposal to add a `Result` type to the standard library. It discussed many functional facets of the `Result` type, including which operators to include (including `map` and `flatMap`), and how they should be defined.
-""",
-    link: "https://forums.swift.org/t/se-0235-add-result-to-the-standard-library/17752",
-    publishedAt: Date(timeIntervalSince1970: 1541610000),
-    title: "SE-0235 - Add Result to the Standard Library"
-  )
-
-  public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
-    author: "Stephen Celis & Greg Titus",
-    blurb: """
-A proposal has been accepted in the Swift evolution process that would allow key paths to be automatically promoted to getter functions. This would allow using key paths in much the same way you would use functions, but perhaps more succinctly: `users.map(\\.name)`.
-""",
-    link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
-    publishedAt: Date(timeIntervalSince1970: 1553004000),
-    title: "SE-0249 - Key Path Expressions as Functions"
+  public static let goshDarnIfCaseLetSyntax = Episode.Reference(
+    author: "Zoë Smith",
+    blurb: "This site is a cheat sheet for `if case let` syntax in Swift, which can be seriously complicated.",
+    link: "http://goshdarnifcaseletsyntax.com",
+    publishedAt: nil,
+    title: "How Do I Write If Case Let in Swift?"
   )
 
   public static let gallagherProtocolsWithAssociatedTypes = Episode.Reference(
@@ -621,6 +609,26 @@ lays down the case for scrapping type classes and just using simple datatypes.
     link: "http://www.haskellforall.com/2012/05/scrap-your-type-classes.html",
     publishedAt: Date(timeIntervalSince1970: 1335931200),
     title: "Scrap your type classes"
+  )
+
+  public static let se0235AddResultToTheStandardLibrary = Episode.Reference(
+    author: nil,
+    blurb: """
+The Swift evolution review of the proposal to add a `Result` type to the standard library. It discussed many functional facets of the `Result` type, including which operators to include (including `map` and `flatMap`), and how they should be defined.
+""",
+    link: "https://forums.swift.org/t/se-0235-add-result-to-the-standard-library/17752",
+    publishedAt: Date(timeIntervalSince1970: 1541610000),
+    title: "SE-0235 - Add Result to the Standard Library"
+  )
+
+  public static let se0249KeyPathExpressionsAsFunctions = Episode.Reference(
+    author: "Stephen Celis & Greg Titus",
+    blurb: #"""
+A proposal has been accepted in the Swift evolution process that would allow key paths to be automatically promoted to getter functions. This would allow using key paths in much the same way you would use functions, but perhaps more succinctly: `users.map(\.name)`.
+"""#,
+    link: "https://forums.swift.org/t/se-0249-key-path-expressions-as-functions/21780",
+    publishedAt: Date(timeIntervalSince1970: 1553004000),
+    title: "SE-0249 - Key Path Expressions as Functions"
   )
 
   public static let semanticEditorCombinators = Episode.Reference(
