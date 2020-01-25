@@ -210,6 +210,16 @@ with the basics and slowly builds up to controlling more and more complex depend
     title: "How to Control the World"
   )
 
+  public static let introductionToOpticsLensesAndPrisms = Episode.Reference(
+    author: "Giulio Canti",
+    blurb: #"""
+Swift's key paths appear more generally in other languages in the form of "lenses": a composable pair of getter/setter functions. Our case paths are correspondingly called "prisms": a pair of functions that can attempt to extract a value, or embed it. In this article Giulio Canti introduces these concepts in JavaScript.
+"""#,
+    link: "https://medium.com/@gcanti/introduction-to-optics-lenses-and-prisms-3230e73bfcfe",
+    publishedAt: Date(timeIntervalSince1970: 1481173200),
+    title: "Introduction to Optics: Lenses and Prisms"
+  )
+
   public static let iosSnapshotTestCaseGithub = Episode.Reference(
     author: "Uber, previously Facebook",
     blurb: """
@@ -329,6 +339,16 @@ on this very website, and it unlocks a lot of wonderful transformations and oppo
     link: "https://www.pointfree.co/blog/posts/16-open-sourcing-swift-html-a-type-safe-alternative-to-templating-languages-in-swift",
     publishedAt: Date(timeIntervalSince1970: 1541998800),
     title: "Open sourcing swift-html: A Type-Safe Alternative to Templating Languages in Swift"
+  )
+
+  public static let opticsByExample = Episode.Reference(
+    author: "Chris Penner",
+    blurb: #"""
+Key paths and case paths are sometimes called lenses and prisms, but there are many more flavors of "optics" out there. Chris Penner explores many of them in this book.
+"""#,
+    link: "https://leanpub.com/optics-by-example",
+    publishedAt: nil,
+    title: "Optics By Example: Functional Lenses in Haskell"
   )
 
   public static let parseDontValidate = Episode.Reference(
@@ -749,6 +769,16 @@ In this free episode of Swift talk, Chris and Florian discuss how to efficiently
     link: "https://talk.objc.io/episodes/S01E78-swift-strings-and-substrings",
     publishedAt: referenceDateFormatter.date(from: "2017-12-01"),
     title: "Swift Strings and Substrings"
+  )
+
+  public static let swiftTipBindingsWithKvoAndKeyPaths = Episode.Reference(
+    author: "Chris Eidhof & Florian Kugler",
+    blurb: #"""
+This handy Swift tip shows you how to create bindings between object values using key paths, similar to the helper we used in this episode.
+"""#,
+    link: "https://www.objc.io/blog/2018/04/24/bindings-with-kvo-and-keypaths/",
+    publishedAt: Date(timeIntervalSince1970: 1524542400),
+    title: "Swift Tip: Bindings with KVO and Key Paths"
   )
 
   public static let swiftUIFlux = Episode.Reference(
