@@ -147,6 +147,162 @@ final class StripeWebhooksTests: TestCase {
 """
 
     _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
+
+    _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(#"""
+{
+  "id": "evt_test",
+  "object": "event",
+  "api_version": "2019-12-03",
+  "created": 1580021134,
+  "data": {
+    "object": {
+      "id": "in_test",
+      "object": "invoice",
+      "account_country": "US",
+      "account_name": "Point-Free, Inc.",
+      "amount_due": 1800,
+      "amount_paid": 0,
+      "amount_remaining": 1800,
+      "application_fee_amount": null,
+      "attempt_count": 1,
+      "attempted": true,
+      "auto_advance": true,
+      "billing_reason": "subscription_create",
+      "charge": "ch_test",
+      "collection_method": "charge_automatically",
+      "created": 1580021131,
+      "currency": "usd",
+      "custom_fields": null,
+      "customer": "cus_test",
+      "customer_address": null,
+      "customer_email": "test@example.com",
+      "customer_name": null,
+      "customer_phone": null,
+      "customer_shipping": null,
+      "customer_tax_exempt": "none",
+      "customer_tax_ids": [
+      ],
+      "default_payment_method": null,
+      "default_source": null,
+      "default_tax_rates": [
+      ],
+      "description": null,
+      "discount": null,
+      "due_date": null,
+      "ending_balance": 0,
+      "footer": null,
+      "hosted_invoice_url": "https://pay.stripe.com/invoice/invst_test",
+      "invoice_pdf": "https://pay.stripe.com/invoice/invst_test/pdf",
+      "lines": {
+        "object": "list",
+        "data": [
+          {
+            "id": "il_test",
+            "object": "line_item",
+            "amount": 1800,
+            "currency": "usd",
+            "description": "1 seat × Point-Free Monthly (Tier 1 at $18.00 / month)",
+            "discountable": true,
+            "livemode": true,
+            "metadata": {
+            },
+            "period": {
+              "end": 1582699530,
+              "start": 1580021130
+            },
+            "plan": {
+              "id": "monthly-2019",
+              "object": "plan",
+              "active": true,
+              "aggregate_usage": null,
+              "amount": null,
+              "amount_decimal": null,
+              "billing_scheme": "tiered",
+              "created": 1566052471,
+              "currency": "usd",
+              "interval": "month",
+              "interval_count": 1,
+              "livemode": true,
+              "metadata": {
+              },
+              "nickname": "Point-Free Monthly",
+              "product": "prod_test",
+              "tiers": [
+                {
+                  "flat_amount": null,
+                  "flat_amount_decimal": null,
+                  "unit_amount": 1800,
+                  "unit_amount_decimal": "1800",
+                  "up_to": 1
+                },
+                {
+                  "flat_amount": null,
+                  "flat_amount_decimal": null,
+                  "unit_amount": 1600,
+                  "unit_amount_decimal": "1600",
+                  "up_to": null
+                }
+              ],
+              "tiers_mode": "volume",
+              "transform_usage": null,
+              "trial_period_days": null,
+              "usage_type": "licensed"
+            },
+            "proration": false,
+            "quantity": 1,
+            "subscription": "sub_test",
+            "subscription_item": "si_test",
+            "tax_amounts": [
+            ],
+            "tax_rates": [
+            ],
+            "type": "subscription"
+          }
+        ],
+        "has_more": false,
+        "total_count": 1,
+        "url": "/v1/invoices/in_test/lines"
+      },
+      "livemode": true,
+      "metadata": {
+      },
+      "next_payment_attempt": null,
+      "number": null,
+      "paid": false,
+      "payment_intent": "pi_test",
+      "period_end": 1580021130,
+      "period_start": 1580021130,
+      "post_payment_credit_notes_amount": 0,
+      "pre_payment_credit_notes_amount": 0,
+      "receipt_number": null,
+      "starting_balance": 0,
+      "statement_descriptor": null,
+      "status": "open",
+      "status_transitions": {
+        "finalized_at": 1580021131,
+        "marked_uncollectible_at": null,
+        "paid_at": null,
+        "voided_at": null
+      },
+      "subscription": "sub_test",
+      "subtotal": 1800,
+      "tax": null,
+      "tax_percent": null,
+      "total": 1800,
+      "total_tax_amounts": [
+      ],
+      "webhooks_delivered_at": null
+    }
+  },
+  "livemode": true,
+  "pending_webhooks": 1,
+  "request": {
+    "id": "req_test",
+    "idempotency_key": null
+  },
+  "type": "invoice.payment_failed"
+}
+"""#.utf8))
   }
 
   func testValidHook() {
@@ -230,6 +386,28 @@ final class StripeWebhooksTests: TestCase {
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=1baca5a65d607ec4cd74349d681a112a0dea069a350a82d9bd087bebbc3a12fe",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    #endif
+  }
+
+  func testNoInvoiceNumber() {
+    #if !os(Linux)
+    let invoice = Invoice.mock(charge: .left("ch_test"))
+      |> \.number .~ nil
+    let event = Event<Either<Invoice, Subscription>>(
+      data: .init(object: .left(invoice)),
+      id: "evt_test",
+      type: .invoicePaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=f9240c1450ce2603dfc0c2650adc94aeaefa17c123bb3c15b820df4637aeff13",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
