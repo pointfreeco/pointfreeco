@@ -273,6 +273,18 @@ A wonderful article that explains parser combinators from start to finish. The a
     title: "Ledger Mac App: Parsing Techniques"
   )
 
+  public static let makeYourOwnCodeFormatterInSwift = Episode.Reference(
+    author: "Yasuhiro Inami",
+    blurb: #"""
+Inami uses the concept of case paths (though he calls them prisms!) to demonstrate how to traverse and focus on various parts of a Swift syntax tree in order to rewrite it.
+
+> Code formatter is one of the most important tool to write a beautiful Swift code. If you are working with the team, 'code consistency' is always a problem, and your team's guideline and code review can probably ease a little. Since Xcode doesn't fully fix our problems, now it's a time to make our own automatic style-rule! In this talk, we will look into how Swift language forms a formal grammar and AST, how it can be parsed, and we will see the power of SwiftSyntax and it's structured editing that everyone can practice.
+"""#,
+    link: "https://www.youtube.com/watch?v=_F9KcXSLc_s",
+    publishedAt: referenceDateFormatter.date(from: "2019-01-19"),
+    title: "Make your own code formatter in Swift "
+  )
+
   public static let makingIllegalStatesUnrepresentable = Episode.Reference(
     author: "Ole Begemann",
     blurb: """
