@@ -148,7 +148,7 @@ final class StripeWebhooksTests: TestCase {
 
     _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(json.utf8))
 
-    try! Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(#"""
+    _ = try Stripe.jsonDecoder.decode(Stripe.Event<Stripe.Invoice>.self, from: Data(#"""
 {
   "id": "evt_test",
   "object": "event",
@@ -386,6 +386,28 @@ final class StripeWebhooksTests: TestCase {
     var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
     hook.addValue(
       "t=\(Int(Current.date().timeIntervalSince1970)),v1=1baca5a65d607ec4cd74349d681a112a0dea069a350a82d9bd087bebbc3a12fe",
+      forHTTPHeaderField: "Stripe-Signature"
+    )
+
+    let conn = connection(from: hook)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    #endif
+  }
+
+  func testNoInvoiceNumber() {
+    #if !os(Linux)
+    let invoice = Invoice.mock(charge: .left("ch_test"))
+      |> \.number .~ nil
+    let event = Event<Either<Invoice, Subscription>>(
+      data: .init(object: .left(invoice)),
+      id: "evt_test",
+      type: .invoicePaymentFailed
+    )
+
+    var hook = request(to: .webhooks(.stripe(.knownEvent(event))))
+    hook.addValue(
+      "t=\(Int(Current.date().timeIntervalSince1970)),v1=f9240c1450ce2603dfc0c2650adc94aeaefa17c123bb3c15b820df4637aeff13",
       forHTTPHeaderField: "Stripe-Signature"
     )
 
