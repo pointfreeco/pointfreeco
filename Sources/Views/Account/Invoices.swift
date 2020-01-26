@@ -48,7 +48,7 @@ private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoic
           .gridColumn(
             sizes: [.mobile: 4],
             attributes: [.class([Class.type.fontFamily.monospace])],
-            .div(.text("#" + invoice.number.rawValue))
+            .div(.text("#" + (invoice.number?.rawValue ?? "")))
           ),
           .gridColumn(
             sizes: [.mobile: 4],

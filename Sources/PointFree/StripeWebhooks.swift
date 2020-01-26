@@ -21,9 +21,12 @@ let stripeWebhookMiddleware: Middleware<
   Data
   >
   = validateStripeSignature
+    <<< filter(
+      { $0.data.object.either({ $0.number != nil }, const(true)) },
+      or: writeStatus(.ok) >=> respond(text: "OK")
+    )
     <<< filterMap(
-      extraSubscriptionId(fromEvent:)
-        >>> pure,
+      extraSubscriptionId(fromEvent:) >>> pure,
       or: stripeHookFailure(
         subject: "[PointFree Error] Stripe Hook Failed!",
         body: "Couldn't extract subscription id from event payload."

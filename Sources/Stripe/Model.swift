@@ -251,7 +251,7 @@ public struct Invoice: Codable, Equatable {
   public var id: Id?
   public var invoicePdf: String?
   public var lines: ListEnvelope<LineItem>
-  public var number: Number
+  public var number: Number?
   public var periodStart: Date
   public var periodEnd: Date
   public var subscription: Subscription.Id?
@@ -268,7 +268,7 @@ public struct Invoice: Codable, Equatable {
     id: Id?,
     invoicePdf: String?,
     lines: ListEnvelope<LineItem>,
-    number: Number,
+    number: Number?,
     periodStart: Date,
     periodEnd: Date,
     subscription: Subscription.Id?,
