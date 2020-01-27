@@ -1,4 +1,3 @@
-import Database
 import Foundation
 import GitHub
 import Mailgun

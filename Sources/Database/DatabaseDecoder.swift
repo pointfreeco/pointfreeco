@@ -2,19 +2,19 @@ import Foundation
 import PostgreSQL
 import Prelude
 
-public final class DatabaseDecoder: Decoder {
+final class DatabaseDecoder: Decoder {
   private(set) var containers: [PostgreSQL.Node] = []
   private var container: PostgreSQL.Node {
     return containers.last!
   }
 
-  public private(set) var codingPath: [CodingKey] = []
-  public let userInfo: [CodingUserInfoKey: Any] = [:]
+  private(set) var codingPath: [CodingKey] = []
+  let userInfo: [CodingUserInfoKey: Any] = [:]
 
-  public init() {
+  init() {
   }
 
-  public func decode<T: Decodable>(_ type: T.Type, from node: Node) throws -> T {
+  func decode<T: Decodable>(_ type: T.Type, from node: Node) throws -> T {
     self.containers.append(node)
     defer { self.containers.removeLast() }
     if type == Date.self {
@@ -27,7 +27,7 @@ public final class DatabaseDecoder: Decoder {
     }
   }
 
-  public func container<Key>(keyedBy type: Key.Type) throws
+  func container<Key>(keyedBy type: Key.Type) throws
     -> KeyedDecodingContainer<Key>
     where Key: CodingKey {
 
@@ -37,18 +37,18 @@ public final class DatabaseDecoder: Decoder {
       return .init(KeyedContainer(decoder: self, container: container))
   }
 
-  public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+  func unkeyedContainer() throws -> UnkeyedDecodingContainer {
     guard let container = self.container.array else {
       throw Error.decodingError("Expected unkeyed container, got \(self.container)", self.codingPath)
     }
     return UnkeyedContainer(decoder: self, container: container, codingPath: self.codingPath)
   }
 
-  public func singleValueContainer() throws -> SingleValueDecodingContainer {
+  func singleValueContainer() throws -> SingleValueDecodingContainer {
     return SingleValueContainer(decoder: self, container: self.container)
   }
 
-  public enum Error: Swift.Error {
+  enum Error: Swift.Error {
     case decodingError(String, [CodingKey])
   }
 
@@ -412,20 +412,20 @@ public final class DatabaseDecoder: Decoder {
 }
 
 extension DatabaseDecoder.UnkeyedContainer.Key: CodingKey {
-  public var stringValue: String {
+  var stringValue: String {
     return String(self.index)
   }
 
-  public init?(stringValue: String) {
+  init?(stringValue: String) {
     guard let intValue = Int(stringValue) else { return nil }
     self.init(intValue: intValue)
   }
 
-  public var intValue: Int? {
+  var intValue: Int? {
     return .some(self.index)
   }
 
-  public init?(intValue: Int) {
+  init?(intValue: Int) {
     self.init(index: intValue)
   }
 }

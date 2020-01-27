@@ -10,7 +10,9 @@ let package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .library(name: "Bootstrap", targets: ["Bootstrap"]),
     .library(name: "Database", targets: ["Database"]),
+    .library(name: "DatabaseApi", targets: ["DatabaseApi"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
@@ -42,8 +44,41 @@ let package = Package(
   targets: [
 
     .target(
+      name: "Bootstrap",
+      dependencies: [
+        "ApplicativeRouter",
+        "ApplicativeRouterHttpPipelineSupport",
+        "Backtrace",
+        "Css",
+        "CssReset",
+        "DatabaseApi",
+        "Either",
+        "GitHub",
+        "Html",
+        "HtmlCssSupport",
+        "HtmlPlainTextPrint",
+        "HttpPipeline",
+        "HttpPipelineHtmlSupport",
+        "Mailgun",
+        "Models",
+        "Optics",
+        "PointFreeRouter",
+        "PointFreePrelude",
+        "PostgreSQL",
+        "Stripe",
+        "Styleguide",
+        "Syndication",
+        "TaggedMoney",
+        "Tuple",
+        "UrlFormEncoding",
+        "Views",
+      ]
+    ),
+
+    .target(
       name: "Database",
       dependencies: [
+        "DatabaseApi",
         "Either",
         "GitHub",
         "Logging",
@@ -52,6 +87,17 @@ let package = Package(
         "Prelude",
         "Stripe",
         "Tagged",
+      ]
+    ),
+
+    .target(
+      name: "DatabaseApi",
+      dependencies: [
+        "Either",
+        "GitHub",
+        "Models",
+        "Prelude",
+        "Stripe",
       ]
     ),
 
@@ -182,7 +228,7 @@ let package = Package(
         "Backtrace",
         "Css",
         "CssReset",
-        "Database",
+        "DatabaseApi",
         "Either",
         "GitHub",
         "Html",
