@@ -1,4 +1,5 @@
 import Backtrace
+import DatabaseApi
 import Either
 import Foundation
 import GitHub

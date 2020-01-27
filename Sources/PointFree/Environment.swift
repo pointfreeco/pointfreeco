@@ -1,4 +1,4 @@
-import Database
+import DatabaseApi
 import Foundation
 import GitHub
 import Html
@@ -14,7 +14,7 @@ public struct Environment {
   public var assets = Assets()
   public var blogPosts = allBlogPosts
   public var cookieTransform = CookieTransform.encrypted
-  public var database: Database.Client!
+  public var database: DatabaseApi.Client!
   public var date: () -> Date = Date.init
   public var envVars = EnvVars()
   public var episodes = { [Episode]() }
