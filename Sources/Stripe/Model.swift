@@ -100,7 +100,10 @@ public struct Coupon: Equatable {
     case let .amountOff(amountOff):
       return cents - amountOff
     case let .percentOff(percentOff):
-      return cents.map { Int((Double($0) * (1 - (Double(percentOff) / 100))).rounded()) }
+      return cents.map { cents -> Int in
+        let discountPercent = Double(100 - percentOff) / 100
+        return Int(Double(cents) * discountPercent)
+      }
     }
   }
 
