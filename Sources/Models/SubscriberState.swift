@@ -36,6 +36,7 @@ public enum SubscriberState {
 
   public var isActive: Bool {
     return self.status == .some(.active)
+      || self.status == .some(.trialing)
   }
 
   public var isPastDue: Bool {
@@ -55,7 +56,9 @@ public enum SubscriberState {
   public var isNonSubscriber: Bool {
     switch self {
     case .teammate(status: .active, _),
-         .owner(hasSeat: _, status: .active, _):
+         .teammate(status: .trialing, _),
+         .owner(hasSeat: _, status: .active, _),
+         .owner(hasSeat: _, status: .trialing, _):
       return false
     default:
       return true
@@ -63,9 +66,15 @@ public enum SubscriberState {
   }
 
   public var isActiveSubscriber: Bool {
-    if case .teammate(status: .active, _) = self { return true }
-    if case .owner(hasSeat: true, status: .active, _) = self { return true }
-    return false
+    switch self {
+    case .teammate(status: .active, _),
+         .teammate(status: .trialing, _),
+         .owner(hasSeat: true, status: .active, _),
+         .owner(hasSeat: true, status: .trialing, _):
+      return true
+    default:
+      return false
+    }
   }
 
   public var isEnterpriseSubscriber: Bool {
