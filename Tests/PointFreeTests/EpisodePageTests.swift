@@ -436,4 +436,18 @@ class EpisodePageTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+
+  func testEpisodePage_Trialing() {
+    update(&Current, \.database .~ .mock)
+
+    var subscription = Subscription.mock
+    subscription.stripeSubscriptionStatus = .trialing
+    Current.database.fetchSubscriptionById = { _ in pure(subscription) }
+
+    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn(as: .mock))
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
 }
