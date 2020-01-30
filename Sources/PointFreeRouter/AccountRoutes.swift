@@ -7,11 +7,16 @@ import Stripe
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
-  case invoices
+  case invoices(Invoices)
   case paymentInfo(PaymentInfo)
   case rss(userId: Encrypted<String>, rssSalt: Encrypted<String>)
   case subscription(Subscription)
   case update(ProfileData?)
+
+  public enum Invoices: Equatable {
+    case index
+    case show(Stripe.Invoice.Id)
+  }
 
   public enum PaymentInfo: Equatable {
     case show
@@ -42,8 +47,11 @@ private let accountRouters: [Router<Account>] = [
   .case(.index)
     <¢> get <% end,
 
-  .case(.invoices)
+  .case(.invoices(.index))
     <¢> get %> "invoices" <% end,
+
+  .case { .invoices(.show($0)) }
+    <¢> get %> "invoices" %> pathParam(.tagged(.string)) <% end,
 
   .case(.paymentInfo(.show))
     <¢> get %> "payment-info" <% end,
