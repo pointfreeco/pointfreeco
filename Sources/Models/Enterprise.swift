@@ -1,6 +1,5 @@
 import EmailAddress
 import Foundation
-import PointFreePrelude
 import Tagged
 
 public struct EnterpriseAccount: Decodable, Equatable {
