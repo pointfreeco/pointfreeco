@@ -1,5 +1,4 @@
 import EmailAddress
-import PointFreePrelude
 import Tagged
 
 public struct AccessToken: Codable {
