@@ -32,7 +32,7 @@ func requireAdmin<A>(
 
 let adminIndex: AppMiddleware<Tuple1<User>> = writeStatus(.ok)
   >=> map(lower)
-  >>> _respond(
+  >>> respond(
     view: adminIndexView(currentUser:),
     layoutData: { currentUser in
       SimplePageLayoutData(
