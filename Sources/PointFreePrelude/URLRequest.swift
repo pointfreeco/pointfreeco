@@ -55,26 +55,3 @@ public func logError<A>(
     return throwE(error)
   }
 }
-
-public func jsonDataTask<A>(
-  with request: URLRequest,
-  decoder: JSONDecoder? = nil,
-  logger: Logger?
-  )
-  -> EitherIO<Error, A>
-  where A: Decodable {
-
-    return dataTask(with: request, logger: logger)
-      .map(first)
-      .flatMap { data in
-        .wrap {
-          do {
-            return try (decoder ?? defaultDecoder).decode(A.self, from: data)
-          } catch {
-            throw JSONError.error(String(decoding: data, as: UTF8.self), error)
-          }
-        }
-    }
-}
-
-private let defaultDecoder = JSONDecoder()

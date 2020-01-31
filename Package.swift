@@ -140,10 +140,8 @@ let package = Package(
         "DecodableRequest",
         "EmailAddress",
         "Either",
+        "FoundationPrelude",
         "Logging",
-        "Optics",
-        "PointFreePrelude",
-        "Prelude",
         "Tagged",
       ]
     ),
@@ -176,7 +174,6 @@ let package = Package(
         "HttpPipeline",
         "Logging",
         "Models",
-        "PointFreePrelude",
         "UrlFormEncoding",
       ]
     ),

@@ -72,8 +72,52 @@ public func dataTask(
   )
 }
 
+public func jsonDataTask<A>(
+  with request: URLRequest,
+  decoder: JSONDecoder? = nil,
+  logger: Logger?
+  )
+  -> EitherIO<Error, A>
+  where A: Decodable {
+
+    return dataTask(with: request, logger: logger)
+      .map { data, _ in data }
+      .flatMap { data in
+        .wrap {
+          do {
+            return try (decoder ?? defaultDecoder).decode(A.self, from: data)
+          } catch {
+            throw JSONError.error(String(decoding: data, as: UTF8.self), error)
+          }
+        }
+    }
+}
+
+private let defaultDecoder = JSONDecoder()
+
 public enum JSONError: Error {
   case error(String, Error)
 }
 
 private let timeoutInterval: TimeInterval = 25
+
+public enum Method {
+  case get([String: Any])
+  case post([String: Any])
+  case delete([String: String])
+}
+
+extension URLRequest {
+  public mutating func attach(method: Method) {
+    switch method {
+    case .get:
+      self.httpMethod = "GET"
+    case let .post(params):
+      self.httpMethod = "POST"
+      self.attach(formData: params)
+    case let .delete(params):
+      self.httpMethod = "DELETE"
+      self.attach(formData: params)
+    }
+  }
+}

@@ -245,29 +245,10 @@ public let jsonEncoder: JSONEncoder = {
 }()
 //  |> \.keyEncodingStrategy .~ .convertToSnakeCase
 
-enum Method {
-  case get
-  case post([String: Any])
-  case delete([String: String])
-}
-
-private func attachMethod(_ method: Method, request: inout URLRequest) {
-  switch method {
-  case .get:
-    request.httpMethod = "GET"
-  case let .post(params):
-    request.httpMethod = "POST"
-    request.attach(formData: params)
-  case let .delete(params):
-    request.httpMethod = "DELETE"
-    request.attach(formData: params)
-  }
-}
-
-func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableRequest<A> {
+func stripeRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
   var request = URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
   request.setHeader(name: "Stripe-Version", value: "2019-12-03")
-  attachMethod(method, request: &request)
+  request.attach(method: method)
 
   return DecodableRequest(rawValue: request)
 }
