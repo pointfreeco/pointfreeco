@@ -15,7 +15,7 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Eit
     )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: blogPostShowView,
       layoutData: { (post: BlogPost, currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(

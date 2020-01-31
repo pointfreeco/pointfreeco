@@ -22,7 +22,7 @@ let episodeResponse =
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.episodeView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)

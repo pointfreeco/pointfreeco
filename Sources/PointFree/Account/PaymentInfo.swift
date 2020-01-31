@@ -24,7 +24,7 @@ let paymentInfoResponse =
     )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
       layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(

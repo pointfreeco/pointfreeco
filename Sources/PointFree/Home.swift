@@ -9,7 +9,7 @@ import Views
 let homeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, SubscriberState, Route?>, Data> =
   writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: homeView(currentDate:currentUser:subscriberState:episodes:date:),
       layoutData: { (currentUser: User?, subscriberState: SubscriberState, currentRoute: Route?) in
         SimplePageLayoutData(
