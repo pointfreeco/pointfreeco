@@ -183,7 +183,6 @@ let package = Package(
       dependencies: [
         "EmailAddress",
         "GitHub",
-        "PointFreePrelude",
         "Stripe",
         "Tagged",
       ]
@@ -285,7 +284,6 @@ let package = Package(
         "Either",
         "Logging",
         "FoundationPrelude",
-        "Optics",
         "Prelude",
         "Tagged",
         "Tuple",
@@ -400,12 +398,6 @@ let package = Package(
         "PointFreeRouter",
         "Prelude",
         "Styleguide",
-    ]),
-
-    .testTarget(
-      name: "ViewsTests",
-      dependencies: [
-        "Views",
     ]),
   ]
 )

@@ -6,7 +6,6 @@ import FoundationNetworking
 import FoundationPrelude
 import Prelude
 import Logging
-import Optics
 import Tagged
 import UrlFormEncoding
 
@@ -24,21 +23,6 @@ extension URLRequest {
     return .init(pairs, uniquingKeysWith: { $1 })
   }
 }
-
-private let guaranteeHeaders = \URLRequest.allHTTPHeaderFields %~ {
-  $0 ?? [:]
-}
-
-public let setHeader = { name, value in
-  guaranteeHeaders
-    <> (\.allHTTPHeaderFields <<< map <<< \.[name] .~ value)
-}
-
-public let attachFormData =
-  urlFormEncode(value:)
-    >>> ^\.utf8
-    >>> Data.init(_:)
-    >>> set(\URLRequest.httpBody)
 
 public func logError<A>(
   subject: String,
