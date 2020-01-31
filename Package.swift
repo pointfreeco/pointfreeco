@@ -12,6 +12,9 @@ let package = Package(
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
+    .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
+    .library(name: "EmailAddress", targets: ["EmailAddress"]),
+    .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
@@ -78,6 +81,36 @@ let package = Package(
         "Logging",
         "ModelsTestSupport",
         "SnapshotTesting",
+      ]
+    ),
+
+    .target(
+      name: "DecodableRequest",
+      dependencies: [
+        "Tagged"
+      ]
+    ),
+
+    .target(
+      name: "EmailAddress",
+      dependencies: [
+        "Tagged"
+      ]
+    ),
+
+    .target(
+      name: "FoundationPrelude",
+      dependencies: [
+        "Either",
+        "Logging",
+        "UrlFormEncoding",
+      ]
+    ),
+
+    .testTarget(
+      name: "FoundationPreludeTests",
+      dependencies: [
+        "FoundationPrelude",
       ]
     ),
 
@@ -244,6 +277,7 @@ let package = Package(
       dependencies: [
         "Either",
         "Logging",
+        "FoundationPrelude",
         "Optics",
         "Prelude",
         "Tagged",
@@ -288,10 +322,11 @@ let package = Package(
     .target(
       name: "Stripe",
       dependencies: [
+        "DecodableRequest",
         "Either",
+        "EmailAddress",
+        "FoundationPrelude",
         "Logging",
-        "PointFreePrelude",
-        "Prelude",
         "Tagged",
         "TaggedMoney"
       ]
@@ -302,7 +337,6 @@ let package = Package(
       dependencies: [
         "Either",
         "Logging",
-        "Optics",
         "PointFreePrelude",
         "Prelude",
         "Stripe",
