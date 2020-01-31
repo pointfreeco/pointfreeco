@@ -1,4 +1,5 @@
 import Css
+import EmailAddress
 import Foundation
 import FunctionalCss
 import Html

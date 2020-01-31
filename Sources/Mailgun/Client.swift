@@ -1,8 +1,11 @@
+import DecodableRequest
 import Either
+import EmailAddress
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import FoundationPrelude
 import HttpPipeline
 import Logging
 import Models
@@ -131,7 +134,7 @@ private func runMailgun<A>(
 
     mailgunRequest.rawValue = mailgunRequest.rawValue
       |> setBaseUrl(baseUrl)
-      |> attachBasicAuth(username: "api", password: apiKey.rawValue)
+    mailgunRequest.rawValue.attachBasicAuth(username: "api", password: apiKey.rawValue)
 
     return dataTask(with: mailgunRequest.rawValue, logger: logger)
       .map(first)

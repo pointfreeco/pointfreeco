@@ -48,6 +48,7 @@ let package = Package(
       name: "Database",
       dependencies: [
         "Either",
+        "EmailAddress",
         "GitHub",
         "Logging",
         "Models",
@@ -136,6 +137,8 @@ let package = Package(
     .target(
       name: "GitHub",
       dependencies: [
+        "DecodableRequest",
+        "EmailAddress",
         "Either",
         "Logging",
         "Optics",
@@ -166,7 +169,10 @@ let package = Package(
     .target(
       name: "Mailgun",
       dependencies: [
+        "DecodableRequest",
         "Either",
+        "EmailAddress",
+        "FoundationPrelude",
         "HttpPipeline",
         "Logging",
         "Models",
@@ -178,6 +184,7 @@ let package = Package(
     .target(
       name: "Models",
       dependencies: [
+        "EmailAddress",
         "GitHub",
         "PointFreePrelude",
         "Stripe",
@@ -217,6 +224,7 @@ let package = Package(
         "CssReset",
         "Database",
         "Either",
+        "EmailAddress",
         "GitHub",
         "Html",
         "HtmlCssSupport",
@@ -243,6 +251,7 @@ let package = Package(
       name: "PointFreeTests",
       dependencies: [
         "CssTestSupport",
+        "EmailAddress",
         "HtmlSnapshotTesting",
         "HttpPipelineTestSupport",
         "PointFree",
@@ -254,6 +263,7 @@ let package = Package(
       name: "PointFreeRouter",
       dependencies: [
         "ApplicativeRouter",
+        "EmailAddress",
         "HttpPipeline",
         "Models",
         "Prelude",
@@ -387,6 +397,7 @@ let package = Package(
       name: "Views",
       dependencies: [
         "Css",
+        "EmailAddress",
         "FunctionalCss",
         "Html",
         "PointFreeRouter",

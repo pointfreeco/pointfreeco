@@ -1,5 +1,6 @@
 import FunctionalCss
 import Either
+import EmailAddress
 import Html
 import HtmlCssSupport
 import Mailgun

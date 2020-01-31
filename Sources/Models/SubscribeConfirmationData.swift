@@ -1,3 +1,4 @@
+import EmailAddress
 import PointFreePrelude
 import Stripe
 

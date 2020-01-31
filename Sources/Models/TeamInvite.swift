@@ -1,3 +1,4 @@
+import EmailAddress
 import Foundation
 import PointFreePrelude
 import Tagged

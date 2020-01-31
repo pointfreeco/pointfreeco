@@ -1,3 +1,4 @@
+import EmailAddress
 @testable import GitHub
 import Html
 import HtmlSnapshotTesting

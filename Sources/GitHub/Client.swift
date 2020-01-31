@@ -1,3 +1,4 @@
+import DecodableRequest
 import Either
 import Foundation
 #if canImport(FoundationNetworking)
