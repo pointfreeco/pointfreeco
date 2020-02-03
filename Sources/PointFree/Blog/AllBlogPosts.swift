@@ -48,4 +48,5 @@ private let _allBlogPosts: [BlogPost] = [
   post0035_SnapshotTestingSwiftUI,
   post0036_HolidayDiscount,
   post0037_2019YearInReview,
+  post0038_openSourcingCasePaths,
 ]
