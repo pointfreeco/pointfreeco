@@ -49,126 +49,125 @@ Unfortunately, no such structure exists for enum cases!
     ),
 
     .init(
-      content: """
+      content: #"""
 enum Authentication {
   case authenticated(accessToken: String)
   case unauthenticated
 }
 
 \Authentication.authenticated // 🛑
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 And so it's impossible to write similar generic algorithms that can zoom in on a particular enum case.
 
 ## Introducing: case paths
 
 [CasePaths](https://github.com/pointfreeco/swift-case-paths) intends to bridge this gap by introducing what we call "case paths." Case paths can be constructed simply by prepending the enum type and case name with a _forward_ slash:
-
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 import CasePaths
 
 /Authentication.authenticated // CasePath<Authentication, String>
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 ### Case paths vs. key paths
 
 While key paths package up the functionality of getting and setting a value on a root structure, case paths package up the functionality of extracting and embedding a value on a root enumeration.
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 user[keyPath: \User.id] = 42
 user[keyPath: \User.id] // 42
 
 let authentication = (/Authentication.authenticated).embed("cafebeef")
 (/Authentication.authenticated).extract(from: authentication) // Optional("cafebeef")
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 Case path extraction can fail and return `nil` because the cases may not match up.
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 (/Authentication.authenticated).extract(from: .unauthenticated) // nil
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 Case paths, like key paths, compose. Where key paths use dot-syntax to dive deeper into a structure, case paths use a double-dot syntax:
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 \HighScore.user.name
 // WritableKeyPath<HighScore, String>
 
 /Result<Authentication, Error>..Authentication.authenticated
 // CasePath<Result<Authentication, Error>, String>
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 Case paths, also like key paths, provide an "[identity](https://github.com/apple/swift-evolution/blob/master/proposals/0227-identity-keypath.md)" path, which is useful for interacting with APIs that use key paths and case paths but you want to work with entire structure.
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 \User.self           // WritableKeyPath<User, User>
 /Authentication.self // CasePath<Authentication, Authentication>
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 Key paths are created for every property, even computed ones, so what is the equivalent for case paths? "Computed" case paths can be created by providing custom `embed` and `extract` functions:
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 CasePath<Authentication, String>(
   embed: { decryptedToken in
     Authentication.authenticated(token: encrypt(decryptedToken))
@@ -181,24 +180,24 @@ CasePath<Authentication, String>(
     return decryptedToken
   }
 )
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
 
     .init(
-      content: """
+      content: #"""
 Since Swift 5.2, key path expressions can be passed directly to methods like `map`. The same is true of case path expressions, which can be passed to methods like `compactMap`:
-""",
+"""#,
       timestamp: nil,
       type: .paragraph
     ),
 
     .init(
-      content: """
+      content: #"""
 users.map(\User.name)
 authentications.compactMap(/Authentication.authenticated)
-""",
+"""#,
       timestamp: nil,
       type: .code(lang: .swift)
     ),
