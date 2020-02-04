@@ -225,7 +225,7 @@ extract(case: Authentication.authenticated, from: .authenticated("cafebeef"))
       content: #"""
 ## Try it out today!
 
-The official 0.1.0 release of [CasePaths](http://github.com/pointfreeco/swift-case-paths) is on GitHub now, and we have more improvements and refinements coming soon. We hope that case paths will unlock all new kinds of interesting, expressive code! Try it today!
+The official 0.1.0 release of [CasePaths](http://github.com/pointfreeco/swift-case-paths) is on GitHub now, and we have more improvements and refinements coming soon. We hope that case paths will unlock all new kinds of interesting, expressive code! [Try it today](https://github.com/pointfreeco/swift-case-paths)!
 """#,
       timestamp: nil,
       type: .paragraph
