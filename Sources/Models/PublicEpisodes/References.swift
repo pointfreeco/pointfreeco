@@ -726,6 +726,16 @@ many other code bases.
     title: "Structure and Interpretation of Swift Programs"
   )
 
+  public static let swiftCasePaths = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+`CasePaths` is one of our open source projects for bringing the power and ergonomics of key paths to enums.
+""",
+    link: "https://github.com/pointfreeco/swift-case-paths",
+    publishedAt: nil,
+    title: "CasePaths"
+  )
+
   public static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
