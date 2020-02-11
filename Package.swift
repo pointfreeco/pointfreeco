@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -44,14 +44,14 @@ let package = Package(
     .target(
       name: "Database",
       dependencies: [
-        "Either",
         "GitHub",
-        "Logging",
         "Models",
-        "PostgreSQL",
-        "Prelude",
         "Stripe",
-        "Tagged",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "PostgreSQL", package: "postgresql"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
@@ -59,13 +59,13 @@ let package = Package(
       name: "DatabaseTestSupport",
       dependencies: [
         "Database",
-        "Either",
         "Models",
         "ModelsTestSupport",
-        "Optics",
         "PointFreePrelude",
-        "PostgreSQL",
-        "Prelude",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "PostgreSQL", package: "postgresql"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -75,49 +75,49 @@ let package = Package(
         "Database",
         "DatabaseTestSupport",
         "GitHubTestSupport",
-        "Logging",
+        .product(name: "Logging", package: "swift-log"),
         "ModelsTestSupport",
-        "SnapshotTesting",
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
     .target(
       name: "FunctionalCss",
       dependencies: [
-        "Css",
-        "Html",
-        "Prelude"
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "Prelude", package: "swift-prelude")
       ]
     ),
 
     .testTarget(
       name: "FunctionalCssTests",
       dependencies: [
-        "CssTestSupport",
         "FunctionalCss",
-        "Html",
-        "SnapshotTesting",
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
     .target(
       name: "GitHub",
       dependencies: [
-        "Either",
-        "Logging",
-        "Optics",
         "PointFreePrelude",
-        "Prelude",
-        "Tagged",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
     .target(
       name: "GitHubTestSupport",
       dependencies: [
-        "Either",
         "GitHub",
-        "Prelude",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -126,19 +126,19 @@ let package = Package(
       dependencies: [
         "GitHub",
         "GitHubTestSupport",
-        "SnapshotTesting",
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
     .target(
       name: "Mailgun",
       dependencies: [
-        "Either",
-        "HttpPipeline",
-        "Logging",
+        .product(name: "HttpPipeline", package: "swift-web"),
         "Models",
         "PointFreePrelude",
-        "UrlFormEncoding",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -148,7 +148,7 @@ let package = Package(
         "GitHub",
         "PointFreePrelude",
         "Stripe",
-        "Tagged",
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
@@ -158,11 +158,11 @@ let package = Package(
         "GitHub",
         "GitHubTestSupport",
         "Models",
-        "Optics",
-        "Prelude",
         "PointFreePrelude",
         "Stripe",
         "StripeTestSupport",
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
@@ -177,55 +177,55 @@ let package = Package(
     .target(
       name: "PointFree",
       dependencies: [
-        "ApplicativeRouter",
-        "ApplicativeRouterHttpPipelineSupport",
-        "Backtrace",
-        "Css",
-        "CssReset",
         "Database",
-        "Either",
         "GitHub",
-        "Html",
-        "HtmlCssSupport",
-        "HtmlPlainTextPrint",
-        "HttpPipeline",
-        "HttpPipelineHtmlSupport",
         "Mailgun",
         "Models",
-        "Optics",
         "PointFreeRouter",
         "PointFreePrelude",
-        "PostgreSQL",
         "Stripe",
         "Styleguide",
         "Syndication",
-        "TaggedMoney",
-        "Tuple",
-        "UrlFormEncoding",
         "Views",
+        .product(name: "ApplicativeRouter", package: "swift-web"),
+        .product(name: "ApplicativeRouterHttpPipelineSupport", package: "swift-web"),
+        .product(name: "Backtrace", package: "swift-backtrace"),
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "CssReset", package: "swift-web"),
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "HtmlCssSupport", package: "swift-web"),
+        .product(name: "HtmlPlainTextPrint", package: "swift-web"),
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "PostgreSQL", package: "postgresql"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
+        .product(name: "Tuple", package: "swift-prelude"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
     .testTarget(
       name: "PointFreeTests",
       dependencies: [
-        "CssTestSupport",
-        "HtmlSnapshotTesting",
-        "HttpPipelineTestSupport",
         "PointFree",
         "PointFreeTestSupport",
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "HtmlSnapshotTesting", package: "swift-html"),
+        .product(name: "HttpPipelineTestSupport", package: "swift-web"),
       ]
     ),
 
     .target(
       name: "PointFreeRouter",
       dependencies: [
-        "ApplicativeRouter",
-        "HttpPipeline",
         "Models",
-        "Prelude",
-        "Tagged",
-        "UrlFormEncoding"
+        .product(name: "ApplicativeRouter", package: "swift-web"),
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -234,21 +234,21 @@ let package = Package(
       dependencies: [
         "Models",
         "PointFreeRouter",
-        "SnapshotTesting",
-        "UrlFormEncoding"
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+        .product(name: "UrlFormEncoding", package: "swift-web")
       ]
     ),
 
     .target(
       name: "PointFreePrelude",
       dependencies: [
-        "Either",
-        "Logging",
-        "Optics",
-        "Prelude",
-        "Tagged",
-        "Tuple",
-        "UrlFormEncoding",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tuple", package: "swift-prelude"),
+        .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),
 
@@ -257,19 +257,19 @@ let package = Package(
       dependencies: [
         "Database",
         "DatabaseTestSupport",
-        "Either",
         "GitHub",
         "GitHubTestSupport",
-        "HttpPipelineTestSupport",
         "Models",
         "ModelsTestSupport",
-        "Logging",
         "PointFree",
         "PointFreePrelude",
-        "Prelude",
-        "SnapshotTesting",
         "Stripe",
         "StripeTestSupport",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "HttpPipelineTestSupport", package: "swift-web"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
@@ -288,59 +288,59 @@ let package = Package(
     .target(
       name: "Stripe",
       dependencies: [
-        "Either",
-        "Logging",
         "PointFreePrelude",
-        "Prelude",
-        "Tagged",
-        "TaggedMoney"
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Prelude", package: "swift-prelude"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
       ]
     ),
 
     .target(
       name: "StripeTestSupport",
       dependencies: [
-        "Either",
-        "Logging",
-        "Optics",
         "PointFreePrelude",
-        "Prelude",
         "Stripe",
+        .product(name: "Either", package: "swift-prelude"),
+        .product(name: "Logging", package: "swift-log"),
+        .product(name: "Optics", package: "swift-prelude"),
+        .product(name: "Prelude", package: "swift-prelude"),
       ]
     ),
 
     .testTarget(
       name: "StripeTests",
       dependencies: [
-        "SnapshotTesting",
         "Stripe",
         "StripeTestSupport",
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 
     .target(
       name: "Styleguide",
       dependencies: [
-        "Css",
         "FunctionalCss",
-        "Html",
-        "HtmlCssSupport",
-        "Prelude",
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "HtmlCssSupport", package: "swift-web"),
+        .product(name: "Prelude", package: "swift-prelude"),
     ]),
 
     .testTarget(
       name: "StyleguideTests",
       dependencies: [
-        "CssTestSupport",
-        "HtmlSnapshotTesting",
-        "SnapshotTesting",
         "Styleguide",
+        .product(name: "CssTestSupport", package: "swift-web"),
+        .product(name: "HtmlSnapshotTesting", package: "swift-html"),
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
     ]),
 
     .target(
       name: "Syndication",
       dependencies: [
-        "Html",
+        .product(name: "Html", package: "swift-html")
     ]),
 
     .testTarget(
@@ -352,12 +352,12 @@ let package = Package(
     .target(
       name: "Views",
       dependencies: [
-        "Css",
         "FunctionalCss",
-        "Html",
         "PointFreeRouter",
-        "Prelude",
         "Styleguide",
+        .product(name: "Css", package: "swift-web"),
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "Prelude", package: "swift-prelude"),
     ]),
 
     .testTarget(
@@ -365,5 +365,6 @@ let package = Package(
       dependencies: [
         "Views",
     ]),
+
   ]
 )
