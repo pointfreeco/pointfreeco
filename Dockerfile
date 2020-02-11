@@ -1,4 +1,4 @@
-FROM swift:5.1 as build
+FROM swiftlang/swift:nightly-5.2 as build
 
 RUN apt-get update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
@@ -18,7 +18,7 @@ RUN make -C cmark install
 RUN swift build --configuration release --product Server -Xswiftc -g \
   && swift build --configuration release --product Runner -Xswiftc -g
 
-FROM swift:5.1-slim
+FROM swiftlang/swift:nightly-5.2-slim
 
 RUN apt-get update
 RUN apt-get install -y libpq-dev libssl-dev libz-dev openssl
