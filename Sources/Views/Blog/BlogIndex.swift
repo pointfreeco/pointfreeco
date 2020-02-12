@@ -14,7 +14,7 @@ public func blogIndexView(
   ) -> Node {
 
   let allPosts = blogPosts
-    .sorted(by: their(\.id, >))
+    .sorted(by: their(^\.id, >))
     .filter { !$0.hidden }
   let newPosts = allPosts.prefix(3)
   let oldPosts = allPosts.dropFirst(3)

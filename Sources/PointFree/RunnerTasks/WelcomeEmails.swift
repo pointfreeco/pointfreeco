@@ -19,7 +19,7 @@ public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
         .map(map(welcomeEmail2))
         .run.parallel,
       Current.database.fetchUsersToWelcome(3)
-        .flatMap { users in Current.database.incrementEpisodeCredits(users.map(\.id)) }
+        .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
         .map(map(welcomeEmail3))
         .run.parallel
   )
@@ -173,7 +173,7 @@ func welcomeEmail2(_ user: User) -> Email {
 
 func welcomeEmail2Content(user: User) -> Node {
   let freeEpisodeLinks = Current.episodes()
-    .sorted(by: their(\.sequence, >))
+    .sorted(by: their(^\.sequence, >))
     .filter { !$0.subscriberOnly }
     .map {
       """

@@ -139,7 +139,7 @@ private func validateQuantity(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Tuple2<SubscribeData, User?>, Data> {
   return middleware |> filter(
-    get1 >>> \.pricing >>> validateQuantity,
+    get1 >>> ^\.pricing >>> validateQuantity,
     or: redirect(
       with: get1 >>> subscribeConfirmationWithSubscribeData,
       headersMiddleware: flash(.error, "An invalid subscription quantity was used.")

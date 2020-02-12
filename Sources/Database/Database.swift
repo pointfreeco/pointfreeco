@@ -1050,7 +1050,7 @@ private struct _Client {
     ) -> EitherIO<Swift.Error, T?> {
 
     return self.rows(query, representable)
-      .map(\.first)
+      .map(^\.first)
   }
 
   func execute(

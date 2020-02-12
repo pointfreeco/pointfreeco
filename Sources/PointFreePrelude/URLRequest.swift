@@ -40,7 +40,7 @@ public func attachBasicAuth(username: String = "", password: String = "") -> (UR
 
 public let attachFormData =
   urlFormEncode(value:)
-    >>> \.utf8
+    >>> ^\.utf8
     >>> Data.init(_:)
     >>> set(\URLRequest.httpBody)
 

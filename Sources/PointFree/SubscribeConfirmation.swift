@@ -61,7 +61,7 @@ public let discountSubscribeConfirmation: Middleware<
     )
     )
     <<< filter(
-      get6 >>> \.valid,
+      get6 >>> ^\.valid,
       or: redirect(
         to: .subscribeConfirmation(
           lane: .personal,
@@ -82,7 +82,7 @@ private func fetchCoupon(_ couponId: Stripe.Coupon.Id?) -> IO<Stripe.Coupon?> {
   guard let couponId = couponId else { return pure(nil) }
   return Current.stripe.fetchCoupon(couponId)
     .run
-    .map(\.right)
+    .map(^\.right)
 }
 
 func redirectActiveSubscribers<A>(
