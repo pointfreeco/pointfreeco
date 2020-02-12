@@ -98,8 +98,8 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
   let allEpisodes = allPublicEpisodes + allPrivateEpisodes
   #endif
 
-  assert(allEpisodes.count == Set(allEpisodes.map(^\.id)).count)
-  assert(allEpisodes.count == Set(allEpisodes.map(^\.sequence)).count)
+  assert(allEpisodes.count == Set(allEpisodes.map(\.id)).count)
+  assert(allEpisodes.count == Set(allEpisodes.map(\.sequence)).count)
   update(
     &Current, (\Environment.episodes) .~ {
       let now = Current.date()
@@ -109,7 +109,7 @@ private let loadEpisodes = { (_: Prelude.Unit) -> EitherIO<Error, Prelude.Unit> 
             ? $0.publishedAt <= now
             : true
       }
-      .sorted(by: their(^\.sequence))
+      .sorted(by: their(\.sequence))
     }
   )
   return pure(unit)
