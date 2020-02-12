@@ -6,7 +6,6 @@ RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 ENV OSS 1
 WORKDIR /build
 
-COPY .pf-env .
 COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
