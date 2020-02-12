@@ -8,14 +8,8 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Install Postgres
-      run: brew install postgresql
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
-    - name: Install CommonMark
-      run: brew install cmark
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
+    - name: Install Dependencies
+      run: brew install cmark postgresql
     - name: Start Postgres
       run: brew services start postgresql
     - name: Run tests
