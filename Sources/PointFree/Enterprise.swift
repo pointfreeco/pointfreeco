@@ -95,7 +95,7 @@ private func createEnterpriseEmail(
   return Current.database.createEnterpriseEmail(get3(data), get4(data))
     .map(const(data))
     .run
-    .map(^\.right)
+    .map(\.right)
 }
 
 private func linkToEnterpriseSubscription<Z>(
@@ -105,7 +105,7 @@ private func linkToEnterpriseSubscription<Z>(
   return Current.database.addUserIdToSubscriptionId(get1(data).id, get2(data).subscriptionId)
     .map(const(data))
     .run
-    .map(^\.right)
+    .map(\.right)
 }
 
 private func successfullyAcceptedInviteMiddleware<A, Z>(
@@ -234,7 +234,7 @@ func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<Enterprise
   return Current.database.fetchEnterpriseAccountForDomain(domain)
     .mapExcept(requireSome)
     .run
-    .map(^\.right)
+    .map(\.right)
 }
 
 let enterpriseInviteEmailView = simpleEmailLayout(enterpriseInviteEmailBodyView)

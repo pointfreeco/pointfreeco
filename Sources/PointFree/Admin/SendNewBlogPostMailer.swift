@@ -20,7 +20,7 @@ let showNewBlogPostEmailMiddleware: AppMiddleware<Prelude.Unit> =
 private let showNewBlogPostView = Node.ul(
   .fragment(
     Current.blogPosts()
-      .sorted(by: their(^\.id, >))
+      .sorted(by: their(\.id, >))
       .prefix(upTo: 3)
       .map { .li(newBlogPostEmailRowView(post: $0)) }
   )
@@ -160,7 +160,7 @@ private func sendEmail(
   }
 
   // An email to send to admins once all user emails are sent
-  let newBlogPostEmailReport = sequence(newBlogPostEmails.map(^\.run))
+  let newBlogPostEmailReport = sequence(newBlogPostEmails.map(\.run))
     .flatMap { results in
       sendEmail(
         to: adminEmails,
@@ -169,7 +169,7 @@ private func sendEmail(
           newBlogPostEmailAdminReportEmail(
             (
               zip(users, results)
-                .filter(second >>> ^\.isLeft)
+                .filter(second >>> \.isLeft)
                 .map(first),
 
               results.count

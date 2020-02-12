@@ -1,5 +1,7 @@
 import Database
+import DatabaseTestSupport
 import GitHub
+import PointFreeTestSupport
 import Prelude
 import Models
 import ModelsTestSupport
@@ -7,20 +9,22 @@ import GitHubTestSupport
 import Logging
 import SnapshotTesting
 import XCTest
+@testable import PointFree
 
-final class DatabaseTests: DatabaseTestCase {
+
+final class DatabaseTests: TestCase {
   func testUpsertUser_FetchUserById() throws {
-    let userA = try self.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
-    let userB = try self.database.fetchUserById(userA!.id).run.perform().unwrap()
+    let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
+    let userB = try Current.database.fetchUserById(userA!.id).run.perform().unwrap()
     XCTAssertEqual(userA?.id, userB?.id)
     XCTAssertEqual("hello@pointfree.co", userB?.email.rawValue)
   }
 
   func testFetchEnterpriseAccount() {
-    let user = self.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
-    let subscription = self.database.createSubscription(.mock, user.id, true).run.perform().right!!
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co").run.perform().right!!
+    let subscription = Current.database.createSubscription(.mock, user.id, true).run.perform().right!!
 
-    let createdAccount = self.database.createEnterpriseAccount(
+    let createdAccount = Current.database.createEnterpriseAccount(
       "Blob, Inc.",
       "blob.biz",
       subscription.id
@@ -29,7 +33,7 @@ final class DatabaseTests: DatabaseTestCase {
       .perform()
       .right!!
 
-    let fetchedAccount = self.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
+    let fetchedAccount = Current.database.fetchEnterpriseAccountForDomain(createdAccount.domain)
       .run
       .perform()
       .right!!
@@ -41,17 +45,17 @@ final class DatabaseTests: DatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsNotTakingSeat() {
-    let user = self.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
       .run
       .perform()
       .right!!
 
-    _ = self.database.createSubscription(.mock, user.id, false)
+    _ = Current.database.createSubscription(.mock, user.id, false)
       .run
       .perform()
       .right!!
 
-    let freshUser = self.database.fetchUserById(user.id)
+    let freshUser = Current.database.fetchUserById(user.id)
       .run
       .perform()
       .right!!
@@ -60,17 +64,17 @@ final class DatabaseTests: DatabaseTestCase {
   }
 
   func testCreateSubscription_OwnerIsTakingSeat() {
-    let user = self.database.registerUser(.mock, "blob@pointfree.co")
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let subscription = self.database.createSubscription(.mock, user.id, true)
+    let subscription = Current.database.createSubscription(.mock, user.id, true)
       .run
       .perform()
       .right!!
 
-    let freshUser = self.database.fetchUserById(user.id)
+    let freshUser = Current.database.fetchUserById(user.id)
       .run
       .perform()
       .right!!

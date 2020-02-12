@@ -54,7 +54,7 @@ func changeSubscription(
         .flatMap { sub -> EitherIO<Error, Stripe.Subscription> in
           if shouldInvoice {
             parallel(
-              Current.stripe.invoiceCustomer(sub.customer.either(id, ^\.id))
+              Current.stripe.invoiceCustomer(sub.customer.either(id, \.id))
                 .withExcept(notifyError(subject: "Invoice Failed"))
                 .run
               )
@@ -79,7 +79,7 @@ func requireActiveSubscription<A>(
   -> Middleware<StatusLineOpen, ResponseEnded, T2<Stripe.Subscription, A>, Data> {
 
     return filter(
-      get1 >>> (^\.status == .active),
+      get1 >>> (\.status == .active),
       or: redirect(
         to: .pricingLanding,
         headersMiddleware: flash(

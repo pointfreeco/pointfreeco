@@ -97,14 +97,14 @@ public func currentSubscriptionMiddleware<A, I>(
 
   return (userSubscription <|> ownerSubscription)
     .run
-    .map(^\.right)
+    .map(\.right)
     .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
       subscription
         .map { subscription in
           Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
             .mapExcept(requireSome)
             .run
-            .map(^\.right)
+            .map(\.right)
             .map { enterpriseAccount in (subscription, enterpriseAccount) }
         }
         ?? pure(nil)

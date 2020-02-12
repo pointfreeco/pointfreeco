@@ -11,7 +11,6 @@ let package = Package(
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Database", targets: ["Database"]),
-    .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
@@ -66,18 +65,6 @@ let package = Package(
         .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
-    ),
-
-    .testTarget(
-      name: "DatabaseTests",
-      dependencies: [
-        "Database",
-        "DatabaseTestSupport",
-        "GitHubTestSupport",
-        .product(name: "Logging", package: "swift-log"),
-        "ModelsTestSupport",
-        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
       ]
     ),
 

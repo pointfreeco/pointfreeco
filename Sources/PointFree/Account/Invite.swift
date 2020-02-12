@@ -102,7 +102,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
 
       // VERIFY: user is subscribed
       let subscription = inviter
-        .flatMap(^\.id >>> Current.database.fetchSubscriptionByOwnerId)
+        .flatMap(\.id >>> Current.database.fetchSubscriptionByOwnerId)
         .mapExcept(requireSome)
         .flatMap { subscription in
           Current.stripe.fetchSubscription(subscription.stripeSubscriptionId)

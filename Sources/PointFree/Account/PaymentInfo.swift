@@ -13,7 +13,7 @@ let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <<< filterMap(
-      over1(^\.customer.right?.sources.data.first?.left) >>> require1 >>> pure,
+      over1(\.customer.right?.sources.data.first?.left) >>> require1 >>> pure,
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(
@@ -55,7 +55,7 @@ let updatePaymentInfoMiddleware:
     <| { conn in
       let (subscription, _, token) = lower(conn.data)
 
-      return Current.stripe.updateCustomer(subscription.customer.either(id, ^\.id), token)
+      return Current.stripe.updateCustomer(subscription.customer.either(id, \.id), token)
         .run
         .flatMap {
           conn |> redirect(

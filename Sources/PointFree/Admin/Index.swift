@@ -20,7 +20,7 @@ func requireAdmin<A>(
 
     return filterMap(require1 >>> pure, or: loginAndRedirect)
       <<< filter(
-        get1 >>> ^\.isAdmin,
+        get1 >>> \.isAdmin,
         or: redirect(
           to: .home,
           headersMiddleware: flash(.error, "You don't have access to that.")
