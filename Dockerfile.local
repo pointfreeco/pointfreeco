@@ -1,12 +1,10 @@
-FROM swift:5.1 as build
+FROM swift:5.1
 
 RUN apt-get update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 
-ENV OSS 1
 WORKDIR /build
 
-COPY .pf-env .
 COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
@@ -17,18 +15,6 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build --configuration release --product Server -Xswiftc -g -Xswiftc -Xfrontend -Xswiftc -warn-long-function-bodies=200 -Xswiftc -Xfrontend -Xswiftc -warn-long-expression-type-checking=200 \
-  && swift build --configuration release --product Runner -Xswiftc -g -Xswiftc -Xfrontend -Xswiftc -warn-long-function-bodies=200 -Xswiftc -Xfrontend -Xswiftc -warn-long-expression-type-checking=200
+RUN swift build --build-tests --jobs 1 -Xswiftc -D -Xswiftc OSS
 
-FROM swift:5.1-slim
-
-RUN apt-get update
-RUN apt-get install -y libpq-dev libssl-dev libz-dev
-
-WORKDIR /app
-
-COPY --from=build /usr/include/cmark* /usr/include/
-COPY --from=build /usr/lib/libcmark* /usr/lib/
-COPY --from=build /build/.build/release/Server /usr/bin
-COPY --from=build /build/.build/release/Runner /usr/bin
-ENTRYPOINT ["Server"]
+ENTRYPOINT [".build/debug/Server"]

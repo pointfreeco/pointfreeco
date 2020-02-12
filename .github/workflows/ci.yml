@@ -1,0 +1,28 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    name: MacOS
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Homebrew Update
+      run: brew update
+    - name: Install Dependencies
+      run: brew install cmark postgresql
+    - name: Start Postgres
+      run: brew services start postgresql
+    - name: Run tests
+      run: make test-oss
+      env:
+        CI: 1
+
+  ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run tests
+      run: make test-linux
