@@ -5,6 +5,7 @@ RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 
 WORKDIR /build
 
+Copy Makefile .
 COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
@@ -15,6 +16,6 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build --build-tests --jobs 1 -Xswiftc -D -Xswiftc OSS
+RUN swift build --build-tests --enable-pubgrub-resolver --enable-test-discovery --jobs 1 -Xswiftc -D -Xswiftc OSS
 
 ENTRYPOINT [".build/debug/Server"]

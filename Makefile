@@ -291,7 +291,7 @@ deploy-production:
 
 test-linux:
 	docker-compose build && docker-compose run \
-		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
+		--entrypoint "swift test --enable-pubgrub-resolver --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
 
 test-oss: db
 	@$(SWIFT) test \
