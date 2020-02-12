@@ -103,7 +103,7 @@ db-drop:
 
 xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
+	@$(SWIFT) package generate-xcodeproj \
 		&& echo "  ✅ Generated!" \
 		|| (echo "  🛑 Failed!" && exit 1)
 

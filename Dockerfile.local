@@ -3,7 +3,6 @@ FROM swiftlang/swift:nightly-5.2
 RUN apt-get update
 RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 
-ENV OSS 1
 WORKDIR /build
 
 COPY Package.swift .
