@@ -22,7 +22,7 @@ let cancelMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <<< filter(
-      get1 >>> \.isRenewing,
+      get1 >>> ^\.isRenewing,
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "Your subscription is already canceled!")
@@ -35,7 +35,7 @@ let reactivateMiddleware =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
     <<< filter(
-      get1 >>> \.isCanceling,
+      get1 >>> ^\.isCanceling,
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "Your subscription can’t be reactivated!")
@@ -173,7 +173,7 @@ func fetchSubscription<A>(
       let subscription = Current.database.fetchSubscriptionByOwnerId(get1(conn.data).id)
         .mapExcept(requireSome)
         .run
-        .map(\.right)
+        .map(^\.right)
 
       return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
     }
@@ -193,7 +193,7 @@ private func fetchStripeSubscription<A>(
     return { conn in
       Current.stripe.fetchSubscription(conn.data.first.stripeSubscriptionId)
         .run
-        .map(\.right)
+        .map(^\.right)
         .flatMap { conn.map(const($0 .*. conn.data.second)) |> middleware }
     }
 }

@@ -82,63 +82,63 @@ public final class DatabaseDecoder: Decoder {
     }
 
     func decodeNil(forKey key: Key) throws -> Bool {
-      return try self.checked(key, \.isNull)
+      return try self.checked(key, ^\.isNull)
     }
 
     func decode(_ type: Bool.Type, forKey key: Key) throws -> Bool {
-      return try self.unwrap(key, \.bool)
+      return try self.unwrap(key, ^\.bool)
     }
 
     func decode(_ type: Int.Type, forKey key: Key) throws -> Int {
-      return try self.unwrap(key, \.int)
+      return try self.unwrap(key, ^\.int)
     }
 
     func decode(_ type: Int8.Type, forKey key: Key) throws -> Int8 {
-      return try self.unwrap(key, \.int >=> Int8.init)
+      return try self.unwrap(key, ^\.int >=> Int8.init)
     }
 
     func decode(_ type: Int16.Type, forKey key: Key) throws -> Int16 {
-      return try self.unwrap(key, \.int >=> Int16.init)
+      return try self.unwrap(key, ^\.int >=> Int16.init)
     }
 
     func decode(_ type: Int32.Type, forKey key: Key) throws -> Int32 {
-      return try self.unwrap(key, \.int >=> Int32.init)
+      return try self.unwrap(key, ^\.int >=> Int32.init)
     }
 
     func decode(_ type: Int64.Type, forKey key: Key) throws -> Int64 {
-      return try self.unwrap(key, \.int >=> Int64.init)
+      return try self.unwrap(key, ^\.int >=> Int64.init)
     }
 
     func decode(_ type: UInt.Type, forKey key: Key) throws -> UInt {
-      return try self.unwrap(key, \.uint)
+      return try self.unwrap(key, ^\.uint)
     }
 
     func decode(_ type: UInt8.Type, forKey key: Key) throws -> UInt8 {
-      return try self.unwrap(key, \.uint >=> UInt8.init)
+      return try self.unwrap(key, ^\.uint >=> UInt8.init)
     }
 
     func decode(_ type: UInt16.Type, forKey key: Key) throws -> UInt16 {
-      return try self.unwrap(key, \.uint >=> UInt16.init)
+      return try self.unwrap(key, ^\.uint >=> UInt16.init)
     }
 
     func decode(_ type: UInt32.Type, forKey key: Key) throws -> UInt32 {
-      return try self.unwrap(key, \.uint >=> UInt32.init)
+      return try self.unwrap(key, ^\.uint >=> UInt32.init)
     }
 
     func decode(_ type: UInt64.Type, forKey key: Key) throws -> UInt64 {
-      return try self.unwrap(key, \.uint >=> UInt64.init)
+      return try self.unwrap(key, ^\.uint >=> UInt64.init)
     }
 
     func decode(_ type: Float.Type, forKey key: Key) throws -> Float {
-      return try self.unwrap(key, \.float)
+      return try self.unwrap(key, ^\.float)
     }
 
     func decode(_ type: Double.Type, forKey key: Key) throws -> Double {
-      return try self.unwrap(key, \.double)
+      return try self.unwrap(key, ^\.double)
     }
 
     func decode(_ type: String.Type, forKey key: Key) throws -> String {
-      return try self.unwrap(key, \.string)
+      return try self.unwrap(key, ^\.string)
     }
 
     func decode<T>(_ type: T.Type, forKey key: Key) throws -> T where T: Decodable {
@@ -226,63 +226,63 @@ public final class DatabaseDecoder: Decoder {
     }
 
     mutating func decodeNil() throws -> Bool {
-      return try self.checked(\.isNull)
+      return try self.checked(^\.isNull)
     }
 
     mutating func decode(_ type: Bool.Type) throws -> Bool {
-      return try self.unwrap(\.bool)
+      return try self.unwrap(^\.bool)
     }
 
     mutating func decode(_ type: Int.Type) throws -> Int {
-      return try self.unwrap(\.int)
+      return try self.unwrap(^\.int)
     }
 
     mutating func decode(_ type: Int8.Type) throws -> Int8 {
-      return try self.unwrap(\.int >=> Int8.init)
+      return try self.unwrap(^\.int >=> Int8.init)
     }
 
     mutating func decode(_ type: Int16.Type) throws -> Int16 {
-      return try self.unwrap(\.int >=> Int16.init)
+      return try self.unwrap(^\.int >=> Int16.init)
     }
 
     mutating func decode(_ type: Int32.Type) throws -> Int32 {
-      return try self.unwrap(\.int >=> Int32.init)
+      return try self.unwrap(^\.int >=> Int32.init)
     }
 
     mutating func decode(_ type: Int64.Type) throws -> Int64 {
-      return try self.unwrap(\.int >=> Int64.init)
+      return try self.unwrap(^\.int >=> Int64.init)
     }
 
     mutating func decode(_ type: UInt.Type) throws -> UInt {
-      return try self.unwrap(\.uint)
+      return try self.unwrap(^\.uint)
     }
 
     mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
-      return try self.unwrap(\.uint >=> UInt8.init)
+      return try self.unwrap(^\.uint >=> UInt8.init)
     }
 
     mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
-      return try self.unwrap(\.uint >=> UInt16.init)
+      return try self.unwrap(^\.uint >=> UInt16.init)
     }
 
     mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
-      return try self.unwrap(\.uint >=> UInt32.init)
+      return try self.unwrap(^\.uint >=> UInt32.init)
     }
 
     mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
-      return try self.unwrap(\.uint >=> UInt64.init)
+      return try self.unwrap(^\.uint >=> UInt64.init)
     }
 
     mutating func decode(_ type: Float.Type) throws -> Float {
-      return try self.unwrap(\.float)
+      return try self.unwrap(^\.float)
     }
 
     mutating func decode(_ type: Double.Type) throws -> Double {
-      return try self.unwrap(\.double)
+      return try self.unwrap(^\.double)
     }
 
     mutating func decode(_ type: String.Type) throws -> String {
-      return try self.unwrap(\.string)
+      return try self.unwrap(^\.string)
     }
 
     mutating func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
@@ -350,59 +350,59 @@ public final class DatabaseDecoder: Decoder {
     }
 
     func decode(_ type: Bool.Type) throws -> Bool {
-      return try self.unwrap(\.bool)
+      return try self.unwrap(^\.bool)
     }
 
     func decode(_ type: Int.Type) throws -> Int {
-      return try self.unwrap(\.int)
+      return try self.unwrap(^\.int)
     }
 
     func decode(_ type: Int8.Type) throws -> Int8 {
-      return try self.unwrap(\.int >=> Int8.init)
+      return try self.unwrap(^\.int >=> Int8.init)
     }
 
     func decode(_ type: Int16.Type) throws -> Int16 {
-      return try self.unwrap(\.int >=> Int16.init)
+      return try self.unwrap(^\.int >=> Int16.init)
     }
 
     func decode(_ type: Int32.Type) throws -> Int32 {
-      return try self.unwrap(\.int >=> Int32.init)
+      return try self.unwrap(^\.int >=> Int32.init)
     }
 
     func decode(_ type: Int64.Type) throws -> Int64 {
-      return try self.unwrap(\.int >=> Int64.init)
+      return try self.unwrap(^\.int >=> Int64.init)
     }
 
     func decode(_ type: UInt.Type) throws -> UInt {
-      return try self.unwrap(\.uint)
+      return try self.unwrap(^\.uint)
     }
 
     func decode(_ type: UInt8.Type) throws -> UInt8 {
-      return try self.unwrap(\.uint >=> UInt8.init)
+      return try self.unwrap(^\.uint >=> UInt8.init)
     }
 
     func decode(_ type: UInt16.Type) throws -> UInt16 {
-      return try self.unwrap(\.uint >=> UInt16.init)
+      return try self.unwrap(^\.uint >=> UInt16.init)
     }
 
     func decode(_ type: UInt32.Type) throws -> UInt32 {
-      return try self.unwrap(\.uint >=> UInt32.init)
+      return try self.unwrap(^\.uint >=> UInt32.init)
     }
 
     func decode(_ type: UInt64.Type) throws -> UInt64 {
-      return try self.unwrap(\.uint >=> UInt64.init)
+      return try self.unwrap(^\.uint >=> UInt64.init)
     }
 
     func decode(_ type: Float.Type) throws -> Float {
-      return try self.unwrap(\.float)
+      return try self.unwrap(^\.float)
     }
 
     func decode(_ type: Double.Type) throws -> Double {
-      return try self.unwrap(\.double)
+      return try self.unwrap(^\.double)
     }
 
     func decode(_ type: String.Type) throws -> String {
-      return try self.unwrap(\.string)
+      return try self.unwrap(^\.string)
     }
 
     func decode<T>(_ type: T.Type) throws -> T where T: Decodable {

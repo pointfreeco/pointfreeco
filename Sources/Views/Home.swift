@@ -16,7 +16,7 @@ public func homeView(
   date: () -> Date
   ) -> Node {
 
-  let episodes = episodes.sorted(by: their(\.sequence, >))
+  let episodes = episodes.sorted(by: their(^\.sequence, >))
 
   let ctaInsertionIndex = subscriberState.isNonSubscriber ? min(3, episodes.count) : 0
   let firstBatch = episodes[0..<ctaInsertionIndex]

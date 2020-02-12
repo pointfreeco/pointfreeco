@@ -13,7 +13,7 @@ import Tuple
 let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filter(
-      get2 >>> \.isOwner >>> (!),
+      get2 >>> ^\.isOwner >>> (!),
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "You are the owner of the subscription, you can’t leave.")
@@ -60,8 +60,8 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<U
       over1(
         Current.database.fetchUserById
           >>> mapExcept(requireSome)
-          >>> \.run
-          >>> map(\.right)
+          >>> ^\.run
+          >>> map(^\.right)
         )
         >>> sequence1
         >>> map(require1),

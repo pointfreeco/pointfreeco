@@ -42,9 +42,9 @@ private func unsubscribeMiddleware<I>(
   let (userId, newsletter) = conn.data
 
   return Current.database.fetchEmailSettingsForUserId(userId)
-    .map { settings in settings.filter(\.newsletter != newsletter) }
+    .map { settings in settings.filter(^\.newsletter != newsletter) }
     .flatMap { settings in
-      Current.database.updateUser(userId, nil, nil, settings.map(\.newsletter), nil, nil)
+      Current.database.updateUser(userId, nil, nil, settings.map(^\.newsletter), nil, nil)
     }
     .run
     .map(const(conn.map(const(unit))))

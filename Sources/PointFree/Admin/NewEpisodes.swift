@@ -20,7 +20,7 @@ let showNewEpisodeEmailMiddleware: AppMiddleware<Prelude.Unit> =
 private let showNewEpisodeView = Node.ul(
   .fragment(
     Current.episodes()
-      .sorted(by: their(\.sequence, >))
+      .sorted(by: their(^\.sequence, >))
       .prefix(upTo: 1)
       .map { .li(newEpisodeEmailRowView(ep: $0)) }
   )
@@ -110,7 +110,7 @@ private func sendEmail(
   }
 
   // An email to send to admins once all user emails are sent
-  let newEpisodeEmailReport = sequence(newEpisodeEmails.map(\.run))
+  let newEpisodeEmailReport = sequence(newEpisodeEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
         to: adminEmails,
@@ -119,7 +119,7 @@ private func sendEmail(
           adminEmailReport("New episode")(
             (
               zip(users, results)
-                .filter(second >>> \.isLeft)
+                .filter(second >>> ^\.isLeft)
                 .map(first),
 
               results.count

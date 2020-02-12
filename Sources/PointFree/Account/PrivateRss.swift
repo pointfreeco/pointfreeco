@@ -176,9 +176,9 @@ private func fetchStripeSubscriptionForUser<A>(
         .map {
           Current.database.fetchSubscriptionById($0)
             .mapExcept(requireSome)
-            .flatMap(Current.stripe.fetchSubscription <<< \.stripeSubscriptionId)
+            .flatMap(Current.stripe.fetchSubscription <<< ^\.stripeSubscriptionId)
             .run
-            .map(\.right)
+            .map(^\.right)
             .flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
         }
         ?? (conn.map(const(nil .*. conn.data)) |> middleware)
@@ -252,7 +252,7 @@ private func items(forUser user: User, subscription: Stripe.Subscription?) -> [R
   return Current
     .episodes()
     .filter { $0.sequence != 0 }
-    .sorted(by: their(\.sequence, >))
+    .sorted(by: their(^\.sequence, >))
     .prefix(subscription?.plan.interval == .some(.year) ? 99999 : nonYearlyMaxRssItems)
     .map { item(forUser: user, episode: $0) }
 }
@@ -402,7 +402,7 @@ private func fetchUserSubscription<A>(
       let subscription = Current.database.fetchSubscriptionById(subscriptionId)
         .mapExcept(requireSome)
         .run
-        .map(\.right)
+        .map(^\.right)
 
       return subscription.flatMap { conn.map(const($0 .*. conn.data)) |> middleware }
     }

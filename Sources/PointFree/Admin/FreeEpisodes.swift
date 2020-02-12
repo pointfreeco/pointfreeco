@@ -63,7 +63,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
   }
 
   // An email to send to admins once all user emails are sent
-  let freeEpisodeEmailReport = sequence(freeEpisodeEmails.map(\.run))
+  let freeEpisodeEmailReport = sequence(freeEpisodeEmails.map(^\.run))
     .flatMap { results in
       sendEmail(
         to: adminEmails,
@@ -72,7 +72,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
           adminEmailReport("New free episode")(
             (
               zip(users, results)
-                .filter(second >>> \.isLeft)
+                .filter(second >>> ^\.isLeft)
                 .map(first),
 
               results.count

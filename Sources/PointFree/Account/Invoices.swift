@@ -63,7 +63,7 @@ private func fetchInvoices<A>(
     return { conn in
       let subscription = conn.data.first
 
-      return Current.stripe.fetchInvoices(subscription.customer.either(id, \.id))
+      return Current.stripe.fetchInvoices(subscription.customer.either(id, ^\.id))
         .withExcept(notifyError(subject: "Couldn't load invoices"))
         .run
         .flatMap {
@@ -90,7 +90,7 @@ private func fetchInvoices<A>(
 private func fetchInvoice(id: Stripe.Invoice.Id) -> IO<Stripe.Invoice?> {
   return Current.stripe.fetchInvoice(id)
     .run
-    .map(\.right)
+    .map(^\.right)
 }
 
 private let invoiceError = """
@@ -99,5 +99,5 @@ If the problem persists, please notify <support@pointfree.co>.
 """
 
 private func invoiceBelongsToCustomer(_ data: Tuple3<Stripe.Subscription, User, Stripe.Invoice>) -> Bool {
-  return get1(data).customer.either(id, \.id) == get3(data).customer
+  return get1(data).customer.either(id, ^\.id) == get3(data).customer
 }

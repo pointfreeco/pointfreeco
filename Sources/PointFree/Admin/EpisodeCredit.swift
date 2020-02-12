@@ -59,7 +59,7 @@ private func fetchUser(id: User.Id?) -> IO<User?> {
   return Current.database.fetchUserById(id)
     .mapExcept(requireSome)
     .run
-    .map(\.right)
+    .map(^\.right)
 }
 
 private func fetchEpisode(bySequence sequence: Int?) -> Episode? {

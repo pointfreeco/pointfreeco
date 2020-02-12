@@ -216,7 +216,7 @@ private func emailSettingCheckboxes(_ currentEmailSettings: [EmailSetting], _ su
               attributes: [
                 .type(.checkbox),
                 .name("emailSettings[\(newsletter.rawValue)]"),
-                .checked(currentEmailSettings.contains(where: \.newsletter == newsletter)),
+                .checked(currentEmailSettings.contains(where: ^\.newsletter == newsletter)),
                 .class([Class.margin([.mobile: [.right: 1]])])
               ]
             ),

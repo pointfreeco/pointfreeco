@@ -78,7 +78,7 @@ final class WelcomeEmailTests: TestCase {
         ).run.perform().right!!
     }
 
-    _ = Current.database.incrementEpisodeCredits(users.map(\.id)).run.perform().right!
+    _ = Current.database.incrementEpisodeCredits(users.map(^\.id)).run.perform().right!
 
     let updatedUsers = users.map { Current.database.fetchUserById($0.id).run.perform().right!! }
 
