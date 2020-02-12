@@ -16,6 +16,6 @@ RUN git clone https://github.com/commonmark/cmark \
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift build --build-tests --jobs 1
+RUN swift build --build-tests --jobs 1 -Xswiftc -D -Xswiftc OSS
 
 ENTRYPOINT [".build/debug/Server"]
