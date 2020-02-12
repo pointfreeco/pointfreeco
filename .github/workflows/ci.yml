@@ -16,6 +16,8 @@ jobs:
       run: brew services start postgresql
     - name: Run tests
       run: make test-oss
+      env:
+        CI: 1
 
   ubuntu:
     name: Ubuntu
