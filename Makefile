@@ -101,10 +101,9 @@ db-drop:
 	dropdb --username pointfreeco pointfreeco_test || true
 	dropuser pointfreeco || true
 
-
 xcodeproj-oss: check-dependencies
 	@echo "  ⚠️  Generating \033[1mPointFree.xcodeproj\033[0m..."
-	@$(SWIFT) package generate-xcodeproj --xcconfig-overrides=OSS.xcconfig >/dev/null \
+	@$(SWIFT) package generate-xcodeproj \
 		&& echo "  ✅ Generated!" \
 		|| (echo "  🛑 Failed!" && exit 1)
 
@@ -291,7 +290,8 @@ deploy-production:
 	@heroku container:release web -a pointfreeco
 
 test-linux:
-	docker-compose up --abort-on-container-exit --build
+	docker-compose build && docker-compose run \
+		--entrypoint "swift test --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
 
 test-oss: db
 	@$(SWIFT) test \
