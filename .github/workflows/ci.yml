@@ -11,7 +11,7 @@ jobs:
     - name: Homebrew Update
       run: brew update
     - name: Install Dependencies
-      run: brew uninstall libpq && brew install cmark postgresql
+      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql
     - name: Start Postgres
       run: brew services start postgresql
     - name: Select Xcode 11.3
