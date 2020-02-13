@@ -51,7 +51,8 @@ let package = Package(
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -65,7 +66,8 @@ let package = Package(
         .product(name: "Optics", package: "swift-prelude"),
         .product(name: "PostgreSQL", package: "postgresql"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -74,7 +76,8 @@ let package = Package(
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "Prelude", package: "swift-prelude")
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -84,7 +87,8 @@ let package = Package(
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -96,7 +100,8 @@ let package = Package(
         .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -105,7 +110,8 @@ let package = Package(
         "GitHub",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -114,7 +120,8 @@ let package = Package(
         "GitHub",
         "GitHubTestSupport",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -126,7 +133,8 @@ let package = Package(
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -136,7 +144,8 @@ let package = Package(
         "PointFreePrelude",
         "Stripe",
         .product(name: "Tagged", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -150,7 +159,8 @@ let package = Package(
         "StripeTestSupport",
         .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -158,7 +168,8 @@ let package = Package(
       dependencies: [
         "Models",
         "ModelsTestSupport",
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -190,7 +201,8 @@ let package = Package(
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -201,7 +213,8 @@ let package = Package(
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
         .product(name: "HttpPipelineTestSupport", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -213,7 +226,8 @@ let package = Package(
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -223,7 +237,8 @@ let package = Package(
         "PointFreeRouter",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
         .product(name: "UrlFormEncoding", package: "swift-web")
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -236,7 +251,8 @@ let package = Package(
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "Tuple", package: "swift-prelude"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -257,20 +273,25 @@ let package = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
       name: "Runner",
       dependencies: [
         "PointFree",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Server",
       dependencies: [
         "PointFree",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Stripe",
@@ -281,7 +302,8 @@ let package = Package(
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -293,7 +315,8 @@ let package = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .testTarget(
@@ -302,7 +325,8 @@ let package = Package(
         "Stripe",
         "StripeTestSupport",
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-      ]
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
     .target(
@@ -313,7 +337,9 @@ let package = Package(
         .product(name: "Html", package: "swift-html"),
         .product(name: "HtmlCssSupport", package: "swift-web"),
         .product(name: "Prelude", package: "swift-prelude"),
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .testTarget(
       name: "StyleguideTests",
@@ -322,19 +348,25 @@ let package = Package(
         .product(name: "CssTestSupport", package: "swift-web"),
         .product(name: "HtmlSnapshotTesting", package: "swift-html"),
         .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Syndication",
       dependencies: [
         .product(name: "Html", package: "swift-html")
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .testTarget(
       name: "SyndicationTests",
       dependencies: [
         "Syndication",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .target(
       name: "Views",
@@ -345,13 +377,27 @@ let package = Package(
         .product(name: "Css", package: "swift-web"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "Prelude", package: "swift-prelude"),
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
     .testTarget(
       name: "ViewsTests",
       dependencies: [
         "Views",
-    ]),
+      ],
+      swiftSettings: [.warnLongExpressionTypeChecking]
+    ),
 
   ]
 )
+
+extension SwiftSetting {
+  static let warnLongExpressionTypeChecking = unsafeFlags(
+    [
+      "-Xfrontend", "-warn-long-expression-type-checking=200",
+      "-Xfrontend", "-warn-long-function-bodies=200",
+    ],
+    .when(configuration: .debug)
+  )
+}
