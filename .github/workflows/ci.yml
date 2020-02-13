@@ -8,8 +8,12 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Homebrew Update
+      run: brew update
     - name: Install Dependencies
-      run: brew install cmark
+      run: brew install cmark postgresql
+    - name: Start Postgres
+      run: brew services start postgresql
     - name: Run tests
       run: make test-oss
       env:
