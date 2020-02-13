@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 197257
+Content-Length: 197220
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2921,7 +2921,7 @@ and reassigned at any time. Colleagues are invited to your team over email.
              style="flex-grow:1;
                     flex-shrink:0;
                     flex-basis:auto">
-            “I bought the annual subscription pointfree.co and after I watched all videos and played with the sample code and libraries github.com/pointfreeco. I can say it was the best money I spent in the last 12 months.”
+            “I bought the annual subscription and after I watched all videos and played with the sample code and libraries I can say it was the best money I spent in the last 12 months.”
           </a>
           <a href="https://www.twitter.com/lucaceppelli"
              class="fg-black

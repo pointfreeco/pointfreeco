@@ -71,7 +71,7 @@ Every single episode of @pointfreeco has been mind blowing. I feel like I've gro
 
     Testimonial(
       quote: """
-I bought the annual subscription pointfree.co and after I watched all videos and played with the sample code and libraries github.com/pointfreeco. I can say it was the best money I spent in the last 12 months.
+I bought the annual subscription and after I watched all videos and played with the sample code and libraries I can say it was the best money I spent in the last 12 months.
 """,
       subscriber: "Luca Ceppelli",
       tweetUrl: "https://twitter.com/lucaceppelli/status/1136290297242165249",
