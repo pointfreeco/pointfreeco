@@ -2,6 +2,16 @@
 
 import PackageDescription
 
+extension SwiftSetting {
+  static let warnLongExpressionTypeChecking = unsafeFlags(
+    [
+      "-Xfrontend", "-warn-long-expression-type-checking=200",
+      "-Xfrontend", "-warn-long-function-bodies=200",
+    ],
+    .when(configuration: .debug)
+  )
+}
+
 let package = Package(
   name: "PointFree",
   platforms: [
@@ -391,13 +401,3 @@ let package = Package(
 
   ]
 )
-
-extension SwiftSetting {
-  static let warnLongExpressionTypeChecking = unsafeFlags(
-    [
-      "-Xfrontend", "-warn-long-expression-type-checking=200",
-      "-Xfrontend", "-warn-long-function-bodies=200",
-    ],
-    .when(configuration: .debug)
-  )
-}
