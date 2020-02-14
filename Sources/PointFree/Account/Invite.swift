@@ -1,11 +1,6 @@
-import Css
-import FunctionalCss
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Mailgun
 import Models
 import Optics
@@ -13,9 +8,8 @@ import PointFreeRouter
 import PointFreePrelude
 import Prelude
 import Stripe
-import Styleguide
 import Tuple
-import View
+import Views
 
 let showInviteMiddleware =
   redirectCurrentSubscribers
@@ -23,8 +17,8 @@ let showInviteMiddleware =
     <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: showInviteView,
+    >>> _respond(
+      view: Views.showInviteView,
       layoutData: { teamInvite, inviter, currentUser in
         SimplePageLayoutData(
           currentUser: currentUser,
@@ -46,7 +40,18 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
     <| { conn in
       Current.database.deleteTeamInvite(get1(conn.data).id)
         .run
-        .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
+        .flatMap(
+          const(
+            conn
+              |> redirect(
+                to: path(to: .account(.index)),
+                headersMiddleware: flash(
+                  .notice,
+                  "Invite to \(get1(conn.data).email.rawValue) has been revoked."
+                )
+            )
+          )
+      )
 }
 
 let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
@@ -87,7 +92,7 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
               sendEmail(
                 to: [inviter.email],
                 subject: "\(currentUser.displayName) has accepted your Point-Free team invitation!",
-                content: inj2(inviteeAcceptedEmailView.view((inviter: inviter, invitee: currentUser)))
+                content: inj2(inviteeAcceptedEmailView((inviter, currentUser)))
                 )
                 .run
                 .map(const(unit))
@@ -122,6 +127,32 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
+let addTeammateViaInviteMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, EmailAddress?>,
+  Data
+  > =
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+    <<< requireStripeSubscription
+    <<< requireActiveSubscription
+    <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
+
+      let (stripeSubscription, inviter, email) = lower(conn.data)
+      let newPricing = Pricing(
+        billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
+        quantity: stripeSubscription.quantity + 1
+      )
+
+      return conn
+        .map(const((stripeSubscription, newPricing)))
+        |> changeSubscription(
+          error: subscriptionModificationErrorMiddleware,
+          success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
+      )
+}
+
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filterMap(require1 >>> pure, or: redirect(to: .account(.index)))
@@ -149,104 +180,18 @@ let sendInviteMiddleware =
       }
 }
 
-let showInviteView = View<(TeamInvite, User, User?)> { teamInvite, inviter, currentUser in
+func invalidSubscriptionErrorMiddleware<A>(
+  _ conn: Conn<StatusLineOpen, A>
+  ) -> IO<Conn<ResponseEnded, Data>> {
 
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          currentUser
-            .map { showInviteLoggedInView.view(($0, teamInvite, inviter)) }
-            ?? showInviteLoggedOutView.view((teamInvite, inviter))
+  return conn
+    |> redirect(
+      to: .account(.index),
+      headersMiddleware: flash(
+        .error,
+        "Invalid subscription data. Please try again or contact <support@pointfree.co>."
       )
-      ])
-    ])
-}
-
-private let showInviteLoggedOutView = View<(TeamInvite, User)> { invite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
-
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
-           has invited you to join their team on Point-Free, a video series exploring functional programming
-          concepts using the Swift programming language. Accepting this invitation gives you access to all of
-          the videos, transcripts, and code samples on this site.
-          """
-          ]),
-
-        p([
-          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"
-          ]),
-
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          gitHubLink(
-            text: "Login with GitHub",
-            type: .black,
-            href: path(to: .login(redirect: url(to: .invite(.show(invite.id)))))
-          )
-          ])
-        ])
-      ])
-    ])
-}
-
-private let showInviteLoggedInView = View<(User, TeamInvite, User)> { currentUser, teamInvite, inviter in
-  gridRow([`class`([Class.padding([.mobile: [.topBottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["You’ve been invited!"]),
-
-        p([
-          "Your colleague ",
-          a([mailto(inviter.email.rawValue)], [.text(inviter.displayName)]),
-          """
-           has invited you to join their team account on Point-Free, a video series exploring functional
-          programming concepts using the Swift programming language. Accepting this invitation gives you
-          access to all of the videos, transcripts, and code samples on this site.
-          """
-          ]),
-
-        form([action(path(to: .invite(.accept(teamInvite.id)))), method(.post)], [
-          input([
-              type(.submit),
-              value("Accept"),
-              `class`([Class.pf.components.button(color: .purple)])
-            ])
-          ])
-        ])
-      ])
-    ])
-}
-
-private let inviteNotFoundView = View<Prelude.Unit> { _ in
-
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])], [
-        h3([`class`([Class.pf.type.responsiveTitle3])], ["Invite not found"]),
-
-        p([
-          """
-          Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
-          the sender. To see subscription plans available, click the link below:
-          """
-          ]),
-
-        p([`class`([Class.padding([.mobile: [.top: 3]])])], [
-          a(
-            [
-              href(path(to: .pricing(nil, expand: nil))),
-              `class`([Class.pf.components.button(color: .purple)])
-            ],
-            ["Subscribe"])
-          ])
-        ])
-      ])
-    ])
+  )
 }
 
 private func requireTeamInvite<A>(
@@ -262,8 +207,8 @@ private func requireTeamInvite<A>(
         case .left:
           return conn.map(const(unit))
             |> writeStatus(.notFound)
-            >=> respond(
-              view: inviteNotFoundView,
+            >=> _respond(
+              view: { _ in inviteNotFoundView },
               layoutData: { data in
                 SimplePageLayoutData(
                   currentUser: nil,
@@ -281,14 +226,14 @@ private func requireTeamInvite<A>(
   }
 }
 
-private func sendInviteEmail(
+func sendInviteEmail(
   invite: TeamInvite, inviter: User
-  ) ->  EitherIO<Error, SendEmailResponse> {
+  ) -> EitherIO<Error, SendEmailResponse> {
 
   return sendEmail(
     to: [invite.email],
     subject: "You’re invited to join \(inviter.displayName)’s team on Point-Free",
-    content: inj2(teamInviteEmailView.view((inviter, invite)))
+    content: inj2(teamInviteEmailView((inviter, invite)))
   )
 }
 

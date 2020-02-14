@@ -1,6 +1,6 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
-[![Swift 4.1](https://img.shields.io/badge/swift-4.1-ED523F.svg?style=flat)](https://swift.org/download/)
+[![Swift 5.1](https://img.shields.io/badge/swift-5.1-ED523F.svg?style=flat)](https://swift.org/download/)
 [![iOS/macOS CI](https://img.shields.io/circleci/project/github/pointfreeco/pointfreeco/master.svg?label=macos)](https://circleci.com/gh/pointfreeco/pointfreeco)
 [![Linux CI](https://img.shields.io/travis/pointfreeco/pointfreeco/master.svg?label=linux)](https://travis-ci.org/pointfreeco/pointfreeco)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
@@ -23,8 +23,6 @@ Interested in a [video tour of the code base](https://www.pointfree.co/episodes/
 
 The repo contains an extensive test suite and some playgrounds to explore. To get things running:
 
-* Make sure [Xcode](https://developer.apple.com/xcode/) is installed!
-
 * Make sure [`cmark`](https://github.com/commonmark/cmark) is installed. You can install it with Homebrew:
   ``` sh
   brew install cmark # or your preferred installation method
@@ -34,6 +32,7 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   ``` sh
   brew install postgres # or your preferred installation method
   brew services start postgresql # or your preferred launch method
+  make db
   ```
   (If you use Postgres.app, EnterpriseDB, or another installation method, please follow some additional instructions in the [CPostgreSQL](https://github.com/vapor-community/cpostgresql) README.)
 
@@ -43,21 +42,16 @@ The repo contains an extensive test suite and some playgrounds to explore. To ge
   cd pointfreeco
   ```
 
-* Bootstrap! If you want us to take care of the details for you, we need to install a few module maps in your SDK path to make sure CommonCrypto, Postgres, cmark, and other modules are available to our libraries, playgrounds, and tests. We also need to set up a `pointfreeco` user and database in Postgres. You can read our [Makefile](Makefile) for more info, and run:
-  ``` sh
-  make bootstrap-oss
-  ```
-
-With everything bootstrapped and the project open in Xcode, you can:
+With the project open in Xcode, you can:
 
 * Run the server locally
   * Select the `Server` target
   * Run: Command+R
   * Visit `http://localhost:8080`
 * Explore our playgrounds
-  * Select the `PointFree-Package` target
+  * Select the `PointFree` target
   * Build: Command+B
-  * Open a [playground](https://github.com/pointfreeco/pointfreeco/tree/master/pointfreeco.playground)!
+  * Open a [playground](https://github.com/pointfreeco/pointfreeco/tree/master/PointFree.playground)!
 
 ## Some fun things to explore
 

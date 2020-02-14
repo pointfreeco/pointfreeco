@@ -1,4 +1,6 @@
-import Html
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport

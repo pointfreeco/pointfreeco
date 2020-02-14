@@ -11,11 +11,10 @@ import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
-import View
 import Views
 
 public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
-  .contramap { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
+  <<< { episode, subscriberAnnouncement, nonSubscriberAnnouncement, user in
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
@@ -32,91 +31,97 @@ public let newEpisodeEmail = simpleEmailLayout(newEpisodeEmailContent)
     )
 }
 
-let newEpisodeEmailContent = View<(Episode, String?, isSubscriber: Bool)> { ep, announcement, isSubscriber in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
-
-            announcementView.view(announcement) <> [
-
-              a([href(url(to: .episode(.left(ep.slug))))], [
-                h3([`class`([Class.pf.type.responsiveTitle3])], [.text("#\(ep.sequence): \(ep.title)")]),
-                ]),
-              p([.text(ep.blurb)]),
-              p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-                a([href(url(to: .episode(.left(ep.slug))))], [
-                  img([src(ep.image), alt(""), style(maxWidth(.pct(100)))])
-                  ])
-                ])
-              ]
-              <> nonSubscriberCtaView.view((ep, isSubscriber))
-              <> subscriberCtaView.view((ep, isSubscriber))
-              <> hostSignOffView.view(unit))
-        ])
-      ])
-    ])
+func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bool) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
+          announcementView(announcement: announcement),
+          .a(
+            attributes: [.href(url(to: .episode(.left(ep.slug))))],
+            .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], .text("#\(ep.sequence): \(ep.title)"))
+          ),
+          .p(.text(ep.blurb)),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+            .a(
+              attributes: [.href(url(to: .episode(.left(ep.slug))))],
+              .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
+            )
+          ),
+          nonSubscriberCtaView(ep: ep, isSubscriber: isSubscriber),
+          subscriberCtaView(ep: ep, isSubscriber: isSubscriber),
+          hostSignOffView
+        )
+      )
+    )
+  )
 }
 
-private let announcementView = View<String?> { announcement -> [Node] in
+private func announcementView(announcement: String?) -> Node {
   guard let announcement = announcement, !announcement.isEmpty else { return [] }
+  
+  return .blockquote(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.all: 2]]),
+        Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
+        Class.pf.colors.bg.blue900,
+        Class.type.italic
+      ])
+    ],
+    .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], "Announcements"),
+    .markdownBlock(announcement)
+  )
+}
 
+private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
+  guard !isSubscriber else { return [] }
+  
+  let blurb = ep.subscriberOnly
+    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
+    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
+  
+  let watchText = ep.subscriberOnly
+    ? "Watch preview"
+    : "Watch"
+  
   return [
-    blockquote(
-      [
-        `class`(
-          [
-            Class.padding([.mobile: [.all: 2]]),
-            Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
-            Class.pf.colors.bg.blue900,
-            Class.type.italic
-          ]
-        )
-      ],
-      [
-        h5([`class`([Class.pf.type.responsiveTitle5])], ["Announcements"]),
-        markdownBlock(announcement)
-      ]
+    .p(.text(blurb)),
+    .p(
+      attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+      .a(
+        attributes: [.href(url(to: .pricingLanding)), .class([Class.pf.components.button(color: .purple)])],
+        "Subscribe to Point-Free!"
+      ),
+      .a(
+        attributes: [
+          .href(url(to: .episode(.left(ep.slug)))),
+          .class([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
+        ],
+        .text(watchText)
+      )
     )
   ]
 }
 
-private let nonSubscriberCtaView = View<(Episode, isSubscriber: Bool)> { ep, isSubscriber -> [Node] in
-  guard !isSubscriber else { return [] }
-
-  let blurb = ep.subscriberOnly
-    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
-    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
-
-  let watchText = ep.subscriberOnly
-    ? "Watch preview"
-    : "Watch"
-
-  return [
-    p([.text(blurb)]),
-    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .pricing(nil, expand: nil))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Subscribe to Point-Free!"]
-      ),
-      a(
-        [
-          href(url(to: .episode(.left(ep.slug)))),
-            `class`([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
-        ],
-        [.text(watchText)]
-      )
-      ])
-  ]
-}
-
-private let subscriberCtaView = View<(Episode, isSubscriber: Bool)> { (ep, isSubscriber) -> [Node] in
+private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   guard isSubscriber else { return [] }
-
+  
   return [
-    p([.text("This episode is \(ep.length / 60) minutes long.")]),
-    p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
-      a([href(url(to: .episode(.left(ep.slug)))), `class`([Class.pf.components.button(color: .purple)])],
-        ["Watch now!"])
-      ])
+    .p(.text("This episode is \(ep.length / 60) minutes long.")),
+    .p(
+      attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
+      .a(
+        attributes: [
+          .href(url(to: .episode(.left(ep.slug)))),
+          .class([Class.pf.components.button(color: .purple)])
+        ],
+        "Watch now!"
+      )
+    )
   ]
 }

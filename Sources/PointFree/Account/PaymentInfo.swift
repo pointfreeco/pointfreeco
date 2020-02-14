@@ -1,32 +1,36 @@
-import Css
-import FunctionalCss
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import Optics
 import PointFreeRouter
 import Prelude
 import Stripe
-import Styleguide
 import Tuple
-import View
+import Views
 
 let paymentInfoResponse =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< requireStripeSubscription
+    <<< filterMap(
+      over1(^\.customer.right?.sources.data.first?.left) >>> require1 >>> pure,
+      or: redirect(
+        to: .account(.index),
+        headersMiddleware: flash(
+          .error,
+          "You have invoice billing. Contact us <support@pointfree.co> to make changes to your payment info."
+        )
+      )
+    )
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> respond(
-      view: paymentInfoView,
-      layoutData: { subscription, currentUser, formFields, subscriberState in
+    >>> _respond(
+      view: Views.paymentInfoView(card:publishableKey:stripeJsSrc:),
+      layoutData: { card, currentUser, subscriberState in
         SimplePageLayoutData(
           currentSubscriberState: subscriberState,
           currentUser: currentUser,
-          data: (subscription, formFields),
+          data: (card, Current.envVars.stripe.publishableKey.rawValue, Current.stripe.js),
           title: "Update Payment Info"
         )
     }
@@ -43,7 +47,7 @@ let updatePaymentInfoMiddleware:
     <<< filterMap(
       require2 >>> pure,
       or: redirect(
-        to: .account(.paymentInfo(.show(expand: nil))),
+        to: .account(.paymentInfo(.show)),
         headersMiddleware: flash(.error, genericPaymentInfoError)
       )
     )
@@ -55,74 +59,10 @@ let updatePaymentInfoMiddleware:
         .run
         .flatMap {
           conn |> redirect(
-            to: .account(.paymentInfo(.show(expand: nil))),
+            to: .account(.paymentInfo(.show)),
             headersMiddleware: $0.isLeft
               ? flash(.error, genericPaymentInfoError)
               : flash(.notice, "Your payment information has been updated.")
           )
       }
-}
-
-let paymentInfoView = View<(Stripe.Subscription, PricingFormStyle)> { subscription, formFields in
-
-  gridRow([
-    gridColumn(sizes: [.mobile: 12, .desktop: 8], [style(margin(leftRight: .auto))], [
-      div([`class`([Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])])],
-          titleRowView.view(unit)
-            <> (subscription.customer.right?.sources.data.first.map(currentPaymentInfoRowView.view) ?? [])
-            <> updatePaymentInfoRowView.view(formFields)
-      )
-      ])
-    ])
-}
-
-private let titleRowView = View<Prelude.Unit> { _ in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h1([`class`([Class.pf.type.responsiveTitle3])], ["Payment Info"])
-        ])
-      ])
-    ])
-}
-
-private let currentPaymentInfoRowView = View<Stripe.Card> { card in
-  gridRow([`class`([Class.padding([.mobile: [.bottom: 2]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Current Payment Info"]),
-        p([.text(card.brand.rawValue + " ending in " + String(card.last4))]),
-        p([.text("Expires " + String(card.expMonth) + "/" + String(card.expYear))]),
-        ])
-      ])
-    ])
-}
-
-private let updatePaymentInfoRowView = View<PricingFormStyle> { formStyle in
-  return gridRow([`class`([Class.padding([.mobile: [.bottom: 4]])])], [
-    gridColumn(sizes: [.mobile: 12], [
-      div([
-        h2([`class`([Class.pf.type.responsiveTitle4])], ["Update"]),
-        form(
-          [action(path(to: .account(.paymentInfo(.update(nil))))), id(StripeHtml.formId), method(.post)],
-          StripeHtml.cardInput(couponId: nil, formStyle: formStyle)
-            <> StripeHtml.errors
-            <> StripeHtml.scripts
-            <> [
-              button(
-                [`class`([Class.pf.components.button(color: .purple), Class.margin([.mobile: [.top: 3]])])],
-                ["Update payment info"]
-              ),
-              a(
-                [
-                  href(path(to: .account(.index))),
-                  `class`([Class.pf.components.button(color: .black, style: .underline)])
-                ],
-                ["Cancel"]
-              )
-          ]
-        )
-      ])
-    ])
-  ])
 }

@@ -42,6 +42,10 @@ body {
   background-color : #121212;
 }
 
+.bg-gray150 {
+  background-color : #242424;
+}
+
 .bg-gray650 {
   background-color : #a8a8a8;
 }
@@ -90,6 +94,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {

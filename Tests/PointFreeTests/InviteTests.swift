@@ -28,6 +28,18 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
@@ -48,6 +60,18 @@ class InviteTests: TestCase {
     let conn = connection(from: showInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
   }
 
   func testShowInvite_LoggedIn_Subscriber() {
@@ -195,7 +219,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
       .run
       .perform()
 
@@ -279,7 +303,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.mock, inviterUser.id, true)
       .run
       .perform()
 
@@ -321,7 +345,7 @@ class InviteTests: TestCase {
       .perform()
       .right!!
 
-    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id)
+    _ = Current.database.createSubscription(Stripe.Subscription.canceling, inviterUser.id, true)
       .run
       .perform()
 
@@ -343,6 +367,48 @@ class InviteTests: TestCase {
         .perform()
         .right!!.subscriptionId,
       "Current user now has a subscription"
+    )
+  }
+
+  func testAddTeammate() {
+    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+
+    let currentUser = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    let stripeSubscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.quantity) .~ 2
+    let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
+
+    _ = Current.database.createSubscription(stripeSubscription, currentUser.id, true)
+      .run
+      .perform()
+      .right!!
+
+    let session = Session.loggedIn
+      |> \.user .~ .standard(currentUser.id)
+    let conn = connection(
+      from: request(
+        to: .invite(.addTeammate(teammateEmailAddress)),
+        session: session
+      )
+    )
+
+    assertSnapshot(matching: siteMiddleware(conn), as: .ioConn)
+
+    let teamInvites = Current.database.fetchTeamInvites(currentUser.id)
+      .run
+      .perform()
+      .right!
+    XCTAssertEqual(
+      [teammateEmailAddress],
+      teamInvites.map { $0.email }
+    )
+    XCTAssertEqual(
+      [currentUser.id],
+      teamInvites.map { $0.inviterUserId }
     )
   }
 }

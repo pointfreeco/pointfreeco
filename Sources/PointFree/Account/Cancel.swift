@@ -10,11 +10,11 @@ import Mailgun
 import Models
 import Optics
 import PointFreePrelude
+import PointFreeRouter
 import Prelude
 import Styleguide
 import Stripe
 import Tuple
-import View
 
 // MARK: Middleware
 
@@ -150,7 +150,7 @@ private func requireSubscriptionAndOwner<A>(
       <<< filterMap(
         require1 >>> pure,
         or: redirect(
-          to: .pricing(nil, expand: nil),
+          to: .pricingLanding,
           headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
         )
       )
@@ -206,44 +206,50 @@ private func sendCancelEmail(to owner: User, for subscription: Stripe.Subscripti
     return sendEmail(
       to: [owner.email],
       subject: "Your subscription has been canceled",
-      content: inj2(cancelEmailView.view((owner, subscription)))
+      content: inj2(cancelEmailView((owner, subscription)))
     )
 }
 
-let cancelEmailView = simpleEmailLayout(cancelEmailBodyView)
-  .contramap { owner, subscription in
-    SimpleEmailLayoutData(
-      user: nil,
-      newsletter: nil,
-      title: "Your subscription has been canceled",
-      preheader: """
-      Your \(subscription.plan.name) subscription has been canceled and will remain active through
-      \(dateFormatter.string(from: subscription.currentPeriodEnd)).
-      """,
-      template: .default,
-      data: (owner, subscription)
-    )
+let cancelEmailView = simpleEmailLayout(cancelEmailBodyView) <<< { owner, subscription in
+  SimpleEmailLayoutData(
+    user: nil,
+    newsletter: nil,
+    title: "Your subscription has been canceled",
+    preheader: """
+    Your \(subscription.plan.nickname) subscription has been canceled and will remain active through
+    \(dateFormatter.string(from: subscription.currentPeriodEnd)).
+    """,
+    template: .default,
+    data: (owner, subscription)
+  )
 }
 
-private let cancelEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription canceled"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Subscription canceled"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Your ",
-            strong([.text(subscription.plan.name)]),
+            .strong(.text(subscription.plan.nickname)),
             " subscription has been canceled and will remain active through ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
-            a([href(url(to: .account(.index)))], ["your account page"]),
+            .a(attributes: [.href(url(to: .account(.index)))], "your account page"),
             "."
-            ])
-          ])
-        ])
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }
 
 private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscription)
@@ -252,37 +258,43 @@ private func sendReactivateEmail(to owner: User, for subscription: Stripe.Subscr
     return sendEmail(
       to: [owner.email],
       subject: "Your subscription has been reactivated",
-      content: inj2(reactivateEmailView.view((owner, subscription)))
+      content: inj2(reactivateEmailView((owner, subscription)))
     )
 }
 
-let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView)
-  .contramap { owner, subscription in
-    SimpleEmailLayoutData(
-      user: nil,
-      newsletter: nil,
-      title: "Your subscription has been reactivated",
-      preheader: "Your \(subscription.plan.name) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
-      template: .default,
-      data: (owner, subscription)
-    )
+let reactivateEmailView = simpleEmailLayout(reactivateEmailBodyView) <<< { owner, subscription in
+  SimpleEmailLayoutData(
+    user: nil,
+    newsletter: nil,
+    title: "Your subscription has been reactivated",
+    preheader: "Your \(subscription.plan.nickname) subscription has been reactivated and will renew on \(dateFormatter.string(from: subscription.currentPeriodEnd)).",
+    template: .default,
+    data: (owner, subscription)
+  )
 }
 
-private let reactivateEmailBodyView = View<(User, Stripe.Subscription)> { user, subscription in
-  emailTable([style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          h3([`class`([Class.pf.type.responsiveTitle3])], ["Subscription reactivated"]),
-          p([`class`([Class.padding([.mobile: [.topBottom: 2]])])], [
+private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscription) -> Node {
+  return .emailTable(
+    attributes: [.style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .h3(
+            attributes: [.class([Class.pf.type.responsiveTitle3])],
+            "Subscription reactivated"
+          ),
+          .p(
+            attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Thanks for sticking with us! Your ",
-            strong([.text(subscription.plan.name)]),
+            .strong(.text(subscription.plan.nickname)),
             " subscription has been reactivated and will renew on ",
             .text(dateFormatter.string(from: subscription.currentPeriodEnd)),
             "."
-            ])
-          ])
-        ])
-      ])
-    ])
+          )
+        )
+      )
+    )
+  )
 }

@@ -8,7 +8,7 @@ import WebKit
 
 Current = .mock
 
-var request = PointFreeTestSupport.request(to: .pricing(nil, expand: nil))
+var request = PointFreeTestSupport.request(to: .pricingLanding)
 
 let result = siteMiddleware(connection(from: request)).perform()
 let htmlStr = String(decoding: result.response.body, as: UTF8.self)

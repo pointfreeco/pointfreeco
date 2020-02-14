@@ -7,7 +7,7 @@ import WebKit
 Current = .mock
 let post = Current.blogPosts().first!
 
-let req = request(to: .blog(.show(post)), session: .loggedOut)
+let req = request(to: .blog(.show(.right(post.id))), session: .loggedOut)
 let result = siteMiddleware(connection(from: req)).perform().response.body
 let htmlStr = String(decoding: result, as: UTF8.self)
 

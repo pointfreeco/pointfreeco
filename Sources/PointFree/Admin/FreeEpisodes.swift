@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -11,18 +9,24 @@ import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
-let indexFreeEpisodeEmailMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
-  requireAdmin
-    <| writeStatus(.ok)
-    >=> respond(freeEpisodeView(episodes: Current.episodes(), today: Current.date()))
+let indexFreeEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple1<User>,
+  Data
+  > =
+  writeStatus(.ok)
+    >=> respond({ _ in freeEpisodeView(episodes: Current.episodes(), today: Current.date()) })
 
-let sendFreeEpisodeEmailMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Episode.Id>, Data> =
-  requireAdmin
-    <<< filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
+let sendFreeEpisodeEmailMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User, Episode.Id>,
+  Data
+  > =
+  filterMap(get2 >>> fetchEpisode >>> pure, or: redirect(to: .admin(.freeEpisodeEmail(.index))))
     <| sendFreeEpisodeEmails
     >=> redirect(to: .admin(.index))
 
@@ -45,7 +49,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
 
   // A personalized email to send to each user.
   let freeEpisodeEmails = users.map { user in
-    lift(IO { inj2(freeEpisodeEmail.view((episode, user))) })
+    lift(IO { inj2(freeEpisodeEmail((episode, user))) })
       .flatMap { nodes in
         sendEmail(
           to: [user.email],
@@ -65,7 +69,7 @@ private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -
         to: adminEmails,
         subject: "New free episode email finished sending!",
         content: inj2(
-          adminEmailReport("New free episode").view(
+          adminEmailReport("New free episode")(
             (
               zip(users, results)
                 .filter(second >>> ^\.isLeft)

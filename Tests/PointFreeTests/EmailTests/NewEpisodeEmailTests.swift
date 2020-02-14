@@ -12,14 +12,19 @@ import WebKit
 import XCTest
 
 class NewEpisodeEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testNewEpisodeEmail_Subscriber() {
-    let doc = newEpisodeEmail.view((Current.episodes().first!, "", "", .mock))
+    let doc = newEpisodeEmail((Current.episodes().first!, "", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -34,13 +39,13 @@ class NewEpisodeEmailTests: TestCase {
     let episode = Current.episodes().first!
       |> \.permission .~ .free
 
-    let doc = newEpisodeEmail.view((episode, "", "", .nonSubscriber))
+    let doc = newEpisodeEmail((episode, "", "", .nonSubscriber))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -54,7 +59,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Announcement_NonSubscriber() {
     let episode = Current.episodes().first!
 
-    let doc = newEpisodeEmail.view((
+    let doc = newEpisodeEmail((
       episode,
       "This is an announcement for subscribers.",
       "This is an announcement for NON-subscribers.",
@@ -65,7 +70,7 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -79,7 +84,7 @@ class NewEpisodeEmailTests: TestCase {
   func testNewEpisodeEmail_Announcement_Subscriber() {
     let episode = Current.episodes().first!
 
-    let doc = newEpisodeEmail.view((
+    let doc = newEpisodeEmail((
       episode,
       "This is an announcement for subscribers.",
       "This is an announcement for NON-subscribers.",
@@ -90,7 +95,7 @@ class NewEpisodeEmailTests: TestCase {
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)

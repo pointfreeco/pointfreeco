@@ -13,14 +13,19 @@ import WebKit
 import XCTest
 
 class RegistrationEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testRegistrationEmail() {
-    let doc = registrationEmailView.view(.mock)
+    let doc = registrationEmailView(.mock)
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 900, height: 1200))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)

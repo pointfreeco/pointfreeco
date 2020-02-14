@@ -8,15 +8,16 @@ Take a moment to hear from the hosts about what to expect from this new series.
   codeSampleDirectory: "",
   exercises: [],
   fullVideo: .init(
-    bytesLength: 411_951_213,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full/0000-introduction.m3u8"
+    bytesLength: 90533615,
+    downloadUrl: "https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/354215017"
   ),
   id: 0,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/0000-poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807678036.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807678036.jpg",
   length: 179,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_517_206_269),
   sequence: 0,
   title: "We launched!",

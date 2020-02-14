@@ -7,15 +7,16 @@ We bring tools from previous episodes down to earth and apply them to an everyda
   codeSampleDirectory: "0003-styling-with-functions",
   exercises: [],
   fullVideo: .init(
-    bytesLength: 556_949_587,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full-720p-457F2D7D-65ED-4765-A42E-2B7F0F4FFE48.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/full/0003-styling-with-functions.m3u8"
+    bytesLength: 324873341,
+    downloadUrl: "https://player.vimeo.com/external/348652413.hd.mp4?s=9389dd8f4ac9a1207dbb2184477ecf4a18c83c98&profile_id=175&download=1",
+    streamingSource: "https://player.vimeo.com/video/348652413"
   ),
   id: 3,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/0003-poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0003-styling-with-functions/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807678140.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807678140.jpg",
   length: 1_634,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_518_441_151),
   sequence: 3,
   title: "UIKit Styling with Functions",

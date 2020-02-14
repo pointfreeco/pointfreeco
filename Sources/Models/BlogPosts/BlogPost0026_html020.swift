@@ -69,9 +69,8 @@ You can snapshot test swift-html's `Node` type using the `html` strategy.
     ),
     .init(
       content: """
-import Html
 import HtmlSnapshotTesting
-import SnpashotTesting
+import SnapshotTesting
 import XCTest
 
 class MyWebPageTests: XCTestCase {

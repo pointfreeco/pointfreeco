@@ -2,39 +2,22 @@ import Foundation
 import Html
 import HttpPipeline
 import Models
+import PointFreeRouter
 import Prelude
 import Syndication
-import View
-
-let atomFeedResponse =
-  writeStatus(.ok)
-    >=> respond(pointFreeFeed, contentType: .application(.atom))
 
 let episodesRssMiddleware: Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data> =
   writeStatus(.ok)
     >=> respond(episodesFeedView, contentType: .text(.init(rawValue: "xml"), charset: .utf8))
     >=> clearHeadBody
 
-let pointFreeFeed = View<[Episode]> { episodes in
-  atomLayout.view(
-    AtomFeed(
-      atomUrl: url(to: .feed(.atom)),
-      author: AtomAuthor(
-        email: "support@pointfree.co",
-        name: "Point-Free"
-      ),
-      entries: episodes.map(atomEntry(for:)),
-      siteUrl: url(to: .home),
-      title: "Point-Free"
+private let episodesFeedView = itunesRssFeedLayout { (_: Prelude.Unit) in
+  [
+    node(
+      rssChannel: freeEpisodeRssChannel,
+      items: items()
     )
-  )
-}
-
-private let episodesFeedView = itunesRssFeedLayout <| View<Prelude.Unit> { _ in
-  node(
-    rssChannel: freeEpisodeRssChannel,
-    items: items()
-  )
+  ]
 }
 
 var freeEpisodeRssChannel: RssChannel {
@@ -95,6 +78,12 @@ private func items() -> [RssItem] {
 
 private func item(episode: Episode) -> RssItem {
 
+  func title(episode: Episode) -> String {
+    return episode.subscriberOnly
+      ? episode.title
+      : "🆓 \(episode.title)"
+  }
+
   func summary(episode: Episode) -> String {
     return episode.subscriberOnly
       ? "🔒 \(episode.blurb)"
@@ -107,7 +96,7 @@ private func item(episode: Episode) -> RssItem {
       return """
 Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
 this episode, and if you find this interesting you may want to consider a subscription \
-\(url(to: .pricing(nil, expand: nil))).
+\(url(to: .pricingLanding)).
 
 ---
 
@@ -117,7 +106,7 @@ this episode, and if you find this interesting you may want to consider a subscr
       return """
 Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
 that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-subscription \(url(to: .pricing(nil, expand: nil))).
+subscription \(url(to: .pricingLanding)).
 
 ---
 
@@ -180,48 +169,39 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
       subtitle: summary(episode: episode),
       summary: summary(episode: episode),
       season: 1,
-      title: episode.title
+      title: title(episode: episode)
     ),
     link: url(to: .episode(.left(episode.slug))),
     media: .init(
       content: mediaContent(episode: episode),
-      title: episode.title
+      title: title(episode: episode)
     ),
     pubDate: episode.freeSince ?? episode.publishedAt,
-    title: episode.title
+    title: title(episode: episode)
   )
 }
 
 // TODO: swift-web
-public extension Application {
-  public static var atom = Application(rawValue: "atom+xml")
+extension Html.Application {
+  public static var atom = Html.Application(rawValue: "atom+xml")
 }
 
-public func respond<A>(_ view: View<A>, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ view: @escaping (A) -> Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(view.view(conn.data)),
+        body: Current.renderXml(view(conn.data)),
         contentType: contentType
     )
   }
 }
 
-public func respond<A>(_ nodes: [Node], contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
+public func respond<A>(_ node: Node, contentType: MediaType = .html) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
   return { conn in
     conn
       |> respond(
-        body: Current.renderHtml(nodes),
+        body: Current.renderXml(node),
         contentType: contentType
     )
   }
-}
-
-private func atomEntry(for episode: Episode) -> AtomEntry {
-  return AtomEntry(
-    content: [.text(episode.blurb)],
-    siteUrl: url(to: .episode(.left(episode.slug))),
-    title: episode.title,
-    updated: episode.publishedAt
-  )
 }

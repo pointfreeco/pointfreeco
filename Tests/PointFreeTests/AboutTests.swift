@@ -11,12 +11,13 @@ import WebKit
 
 class AboutTests: TestCase {
   func testAbout() {
+//    record=true
     let conn = connection(from: request(to: .about))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [

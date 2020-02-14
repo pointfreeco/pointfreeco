@@ -1,6 +1,9 @@
 import Either
 import Foundation
-import Logger
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+import Logging
 import Optics
 import Prelude
 import PointFreePrelude
@@ -90,9 +93,9 @@ extension Client {
 }
 
 func cancelSubscription(id: Subscription.Id) -> DecodableRequest<Subscription> {
-  return stripeRequest(
-    "subscriptions/" + id.rawValue + "?expand[]=customer", .delete(["at_period_end": "true"])
-  )
+  return stripeRequest("subscriptions/" + id.rawValue + "?expand[]=customer", .post([
+    "cancel_at_period_end": "true"
+  ]))
 }
 
 func createCustomer(
@@ -129,7 +132,9 @@ func createSubscription(
 }
 
 func fetchCoupon(id: Coupon.Id) -> DecodableRequest<Coupon> {
-  return stripeRequest("coupons/" + id.rawValue)
+  return stripeRequest(
+    "coupons/" + (id.rawValue.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")
+  )
 }
 
 func fetchCustomer(id: Customer.Id) -> DecodableRequest<Customer> {
@@ -193,12 +198,14 @@ func updateSubscription(
 
     guard let item = currentSubscription.items.data.first else { return nil }
 
-    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(filteredValues <| [
-      "coupon": "",
-      "items[0][id]": item.id.rawValue,
-      "items[0][plan]": plan.rawValue,
-      "items[0][quantity]": String(quantity),
-      "prorate": prorate.map(String.init(describing:)),
+    return stripeRequest("subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer", .post(
+      filteredValues <| [
+        "cancel_at_period_end": "false",
+        "coupon": "",
+        "items[0][id]": item.id.rawValue,
+        "items[0][plan]": plan.rawValue,
+        "items[0][quantity]": String(quantity),
+        "prorate": prorate.map(String.init(describing:)),
       ]))
 }
 
@@ -233,6 +240,7 @@ func stripeRequest<A>(_ path: String, _ method: Method = .get) -> DecodableReque
   return DecodableRequest(
     rawValue: URLRequest(url: URL(string: "https://api.stripe.com/v1/" + path)!)
       |> attachMethod(method)
+      <> setHeader("Stripe-Version", "2019-12-03")
   )
 }
 

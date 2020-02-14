@@ -14,6 +14,7 @@ public struct Card: Codable, Equatable {
   public var expYear: Int
   public var id: Id
   public var last4: String
+  public var object: Object
 
   public init(
     brand: Brand,
@@ -21,7 +22,8 @@ public struct Card: Codable, Equatable {
     expMonth: Int,
     expYear: Int,
     id: Id,
-    last4: String
+    last4: String,
+    object: Object
     ) {
     self.brand = brand
     self.customer = customer
@@ -29,9 +31,12 @@ public struct Card: Codable, Equatable {
     self.expYear = expYear
     self.id = id
     self.last4 = last4
+    self.object = object
   }
 
   public typealias Id = Tagged<Card, String>
+
+  public enum Object: String, Codable { case card }
 
   public enum Brand: String, Codable, Equatable {
     case visa = "Visa"
@@ -57,15 +62,16 @@ public struct Card: Codable, Equatable {
     case expYear = "exp_year"
     case id
     case last4
+    case object
   }
 }
 
 public struct Charge: Codable, Equatable {
   public var amount: Cents<Int>
   public var id: Id
-  public var source: Card
+  public var source: Either<Card, Source>
 
-  public init(amount: Cents<Int>, id: Id, source: Card) {
+  public init(amount: Cents<Int>, id: Id, source: Either<Card, Source>) {
     self.amount = amount
     self.id = id
     self.source = source
@@ -87,6 +93,18 @@ public struct Coupon: Equatable {
     self.name = name
     self.rate = rate
     self.valid = valid
+  }
+
+  public func discount(for cents: Cents<Int>) -> Cents<Int> {
+    switch self.rate {
+    case let .amountOff(amountOff):
+      return cents - amountOff
+    case let .percentOff(percentOff):
+      return cents.map { cents -> Int in
+        let discountPercent = Double(100 - percentOff) / 100
+        return Int(Double(cents) * discountPercent)
+      }
+    }
   }
 
   public var formattedDescription: String {
@@ -115,11 +133,25 @@ public struct Coupon: Equatable {
     public var formattedDescription: String {
       switch self {
       case let .amountOff(amountOff):
-        return "$\(amountOff) off"
+        return "$\(Int(amountOff.map(Double.init).dollars.rawValue)) off"
       case let .percentOff(percentOff):
         return "\(percentOff)% off"
       }
     }
+  }
+}
+
+public struct Source: Codable, Equatable {
+  public var id: Id
+  public var object: Object
+
+  public typealias Id = Tagged<Source, String>
+
+  public enum Object: String, Codable { case source }
+
+  public init(id: Id, object: Object) {
+    self.id = id
+    self.object = object
   }
 }
 
@@ -128,14 +160,14 @@ public struct Customer: Codable, Equatable {
   public var defaultSource: Card.Id?
   public var id: Id
   public var metadata: [String: String]
-  public var sources: ListEnvelope<Card>
+  public var sources: ListEnvelope<Either<Card, Source>>
 
   public init(
     businessVatId: Vat?,
     defaultSource: Card.Id?,
     id: Id,
     metadata: [String: String],
-    sources: ListEnvelope<Card>
+    sources: ListEnvelope<Either<Card, Source>>
     ) {
     self.businessVatId = businessVatId
     self.defaultSource = defaultSource
@@ -216,13 +248,13 @@ public struct Invoice: Codable, Equatable {
   public var amountDue: Cents<Int>
   public var amountPaid: Cents<Int>
   public var charge: Either<Charge.Id, Charge>?
-  public var closed: Bool
+  public var created: Date
   public var customer: Customer.Id
-  public var date: Date
   public var discount: Discount?
   public var id: Id?
+  public var invoicePdf: String?
   public var lines: ListEnvelope<LineItem>
-  public var number: Number
+  public var number: Number?
   public var periodStart: Date
   public var periodEnd: Date
   public var subscription: Subscription.Id?
@@ -233,13 +265,13 @@ public struct Invoice: Codable, Equatable {
     amountDue: Cents<Int>,
     amountPaid: Cents<Int>,
     charge: Either<Charge.Id, Charge>?,
-    closed: Bool,
+    created: Date,
     customer: Customer.Id,
-    date: Date,
     discount: Discount?,
     id: Id?,
+    invoicePdf: String?,
     lines: ListEnvelope<LineItem>,
-    number: Number,
+    number: Number?,
     periodStart: Date,
     periodEnd: Date,
     subscription: Subscription.Id?,
@@ -249,11 +281,11 @@ public struct Invoice: Codable, Equatable {
     self.amountDue = amountDue
     self.amountPaid = amountPaid
     self.charge = charge
-    self.closed = closed
+    self.created = created
     self.customer = customer
-    self.date = date
     self.discount = discount
     self.id = id
+    self.invoicePdf = invoicePdf
     self.lines = lines
     self.number = number
     self.periodStart = periodStart
@@ -270,11 +302,11 @@ public struct Invoice: Codable, Equatable {
     case amountDue = "amount_remaining"
     case amountPaid = "amount_paid"
     case charge
-    case closed
+    case created
     case customer
-    case date
     case discount
     case id
+    case invoicePdf = "invoice_pdf"
     case lines
     case number
     case periodStart = "period_start"
@@ -289,7 +321,7 @@ public struct LineItem: Codable, Equatable {
   public var amount: Cents<Int>
   public var description: String?
   public var id: Id
-  public var plan: Plan
+  public var plan: Plan?
   public var quantity: Int
   public var subscription: Subscription.Id?
 
@@ -297,7 +329,7 @@ public struct LineItem: Codable, Equatable {
     amount: Cents<Int>,
     description: String?,
     id: Id,
-    plan: Plan,
+    plan: Plan?,
     quantity: Int,
     subscription: Subscription.Id?
     ) {
@@ -328,33 +360,42 @@ public struct ListEnvelope<A: Codable & Equatable>: Codable, Equatable {
 }
 
 public struct Plan: Codable, Equatable {
-  public var amount: Cents<Int>
   public var created: Date
   public var currency: Currency
   public var id: Id
   public var interval: Interval
   public var metadata: [String: String]
-  public var name: String
-  public var statementDescriptor: String?
+  private var name: String? // FIXME: remove
+  private var _nickname: String? // FIXME: remove
+  public var tiers: [Tier]?
+
+  public var nickname: String {
+    get { return self._nickname ?? self.name ?? "" }
+    set { self._nickname = newValue; self.name = newValue }
+  }
 
   public init(
-    amount: Cents<Int>,
     created: Date,
     currency: Currency,
     id: Id,
     interval: Interval,
     metadata: [String: String],
-    name: String,
-    statementDescriptor: String?
+    nickname: String,
+    tiers: [Tier]?
     ) {
-    self.amount = amount
     self.created = created
     self.currency = currency
     self.id = id
     self.interval = interval
     self.metadata = metadata
-    self.name = name
-    self.statementDescriptor = statementDescriptor
+    self.nickname = nickname
+    self.tiers = tiers
+  }
+
+  public func amount(for quantity: Int) -> Cents<Int> {
+    let amount = (self.tiers ?? []).first(where: { $0.upTo.map { quantity < $0 } ?? true })?.unitAmount
+      ?? -1
+    return amount.map { $0 * quantity }
   }
 
   public typealias Id = Tagged<Plan, String>
@@ -368,15 +409,30 @@ public struct Plan: Codable, Equatable {
     case year
   }
 
+  public struct Tier: Codable, Equatable {
+    public var unitAmount: Cents<Int>
+    public var upTo: Int?
+
+    public init(unitAmount: Cents<Int>, upTo: Int?) {
+      self.unitAmount = unitAmount
+      self.upTo = upTo
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case unitAmount = "unit_amount"
+      case upTo = "up_to"
+    }
+  }
+
   private enum CodingKeys: String, CodingKey {
-    case amount
     case created
     case currency
     case id
     case interval
     case metadata
     case name
-    case statementDescriptor = "statement_descriptor"
+    case _nickname = "nickname" // FIXME: remove
+    case tiers
   }
 }
 
@@ -393,7 +449,7 @@ public struct Subscription: Codable, Equatable {
   public var items: ListEnvelope<Item>
   public var plan: Plan
   public var quantity: Int
-  public var start: Date
+  public var startDate: Date
   public var status: Status
 
   public init(
@@ -409,7 +465,7 @@ public struct Subscription: Codable, Equatable {
     items: ListEnvelope<Item>,
     plan: Plan,
     quantity: Int,
-    start: Date,
+    startDate: Date,
     status: Status
     ) {
     self.canceledAt = canceledAt
@@ -424,12 +480,16 @@ public struct Subscription: Codable, Equatable {
     self.items = items
     self.plan = plan
     self.quantity = quantity
-    self.start = start
+    self.startDate = startDate
     self.status = status
   }
 
   public var isCanceling: Bool {
     return self.status == .active && self.cancelAtPeriodEnd
+  }
+
+  public var isCancellable: Bool {
+    return self.status == .active && !self.cancelAtPeriodEnd
   }
 
   public var isRenewing: Bool {
@@ -480,7 +540,7 @@ public struct Subscription: Codable, Equatable {
     case items
     case plan
     case quantity
-    case start
+    case startDate = "start_date"
     case status
   }
 }
@@ -600,19 +660,11 @@ extension Coupon: Codable {
 }
 
 extension Tagged where Tag == Plan, RawValue == String {
-  public static var individualMonthly: Plan.Id {
-    return "individual-monthly"
+  public static var monthly: Plan.Id {
+    return "monthly-2019"
   }
 
-  public static var individualYearly: Plan.Id {
-    return "individual-yearly"
-  }
-
-  public static var teamMonthly: Plan.Id {
-    return "team-monthly"
-  }
-
-  public static var teamYearly: Plan.Id {
-    return "team-yearly"
+  public static var yearly: Plan.Id {
+    return "yearly-2019"
   }
 }

@@ -32,7 +32,15 @@ extension Card {
     expMonth: 1,
     expYear: 2020,
     id: "card_test",
-    last4: "4242"
+    last4: "4242",
+    object: Object.card
+  )
+}
+
+extension Source {
+  public static let mock = Source(
+    id: "src_DEADBEEF",
+    object: .source
   )
 }
 
@@ -40,7 +48,7 @@ extension Charge {
   public static let mock = Charge(
     amount: 17_00,
     id: "ch_test",
-    source: .mock
+    source: .left(.mock)
   )
 }
 
@@ -50,7 +58,7 @@ extension Customer {
     defaultSource: "card_test",
     id: "cus_test",
     metadata: [:],
-    sources: .mock([.mock])
+    sources: .mock([.left(.mock)])
   )
 }
 
@@ -82,11 +90,11 @@ extension Invoice {
       amountDue: 0_00,
       amountPaid: 17_00,
       charge: charge,
-      closed: true,
+      created: .mock,
       customer: "cus_test",
-      date: .mock,
       discount: nil,
       id: "in_test",
+      invoicePdf: "https://pay.stripe.com/invoice/invst_test/pdf",
       lines: .mock([.mock]),
       number: "0000000-0000",
       periodStart: .mock,
@@ -125,33 +133,35 @@ extension ListEnvelope {
 
 extension Plan {
   public static let mock = Plan(
-    amount: 17_00,
     created: .mock,
     currency: .usd,
-    id: .individualMonthly,
+    id: .monthly,
     interval: .month,
     metadata: [:],
-    name: "Individual Monthly",
-    statementDescriptor: nil
+    nickname: "Individual Monthly",
+    tiers: [
+      Tier(unitAmount: 16_00, upTo: 1),
+      Tier(unitAmount: 18_00, upTo: nil)
+    ]
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = mock
-    |> \.amount .~ 170_00
-    |> \.id .~ .individualYearly
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 170_00]
+    |> \.id .~ .yearly
     |> \.interval .~ .year
-    |> \.name .~ "Individual Yearly"
+    |> \.nickname .~ "Individual Yearly"
 
   public static let teamMonthly = individualMonthly
-    |> \.amount .~ 16_00
-    |> \.id .~ .teamMonthly
-    |> \.name .~ "Team Monthly"
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 16_00]
+    |> \.id .~ .monthly
+    |> \.nickname .~ "Team Monthly"
 
   public static let teamYearly = individualYearly
-    |> \.amount .~ 160_00
-    |> \.id .~ .teamYearly
-    |> \.name .~ "Team Yearly"
+    |> \.tiers .~ [.mock |> \.unitAmount .~ 160_00]
+    |> \.id .~ .yearly
+    |> \.nickname .~ "Team Yearly"
 }
 
 extension Subscription {
@@ -168,7 +178,7 @@ extension Subscription {
     items: .mock([.mock]),
     plan: .mock,
     quantity: 1,
-    start: .mock,
+    startDate: .mock,
     status: .active
   )
 
@@ -192,7 +202,7 @@ extension Subscription {
     |> \.cancelAtPeriodEnd .~ true
 
   public static let canceled = canceling
-    |> \.canceledAt .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    |> \.canceledAt .~ .some(Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
     |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
     |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
     |> \.status .~ .canceled
@@ -224,6 +234,10 @@ extension Subscription.Item {
     plan: .mock,
     quantity: 1
   )
+}
+
+extension Plan.Tier {
+  public static let mock = Plan.Tier(unitAmount: 17_00, upTo: nil)
 }
 
 fileprivate extension Date {

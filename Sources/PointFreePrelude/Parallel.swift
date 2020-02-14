@@ -67,3 +67,18 @@ public func zip8<A, B, C, D, E, F, G, H>(
 
   return tuple8 <¢> a <*> b <*> c <*> d <*> e <*> f <*> g <*> h
 }
+
+public func zip9<A, B, C, D, E, F, G, H, I>(
+  _ a: Parallel<A>,
+  _ b: Parallel<B>,
+  _ c: Parallel<C>,
+  _ d: Parallel<D>,
+  _ e: Parallel<E>,
+  _ f: Parallel<F>,
+  _ g: Parallel<G>,
+  _ h: Parallel<H>,
+  _ i: Parallel<I>
+  ) -> Parallel<(A, B, C, D, E, F, G, H, I)> {
+
+  return tuple9 <¢> a <*> b <*> c <*> d <*> e <*> f <*> g <*> h <*> i
+}

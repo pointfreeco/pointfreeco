@@ -4,12 +4,29 @@ import Html
 import Foundation
 import Prelude
 
-// TODO: move to a support package in swift-web
-public func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
-  return .init(
-    "class",
-    render(classes: selectors)
-  )
+extension Attribute {
+  // TODO: move to a support package in swift-web
+  public static func `class`<T>(_ selectors: [CssSelector]) -> Attribute<T> {
+    return .init(
+      "class",
+      render(classes: selectors)
+    )
+  }
+}
+
+extension Attribute {
+  public static func style(_ style: Stylesheet) -> Attribute<Element> {
+    return .style(unsafe: render(config: Config.inline, css: style))
+  }
+}
+
+extension ChildOf where Element == Tag.Head {
+  public static func style(
+    _ css: Stylesheet,
+    config: Css.Config = .compact
+  ) -> ChildOf<Tag.Head> {
+    return .style(unsafe: render(config: config, css: css))
+  }
 }
 
 // TODO: make Css.key function public
@@ -37,8 +54,4 @@ public let textarea = CssSelector.elem(textareaElement)
 
 public func opacity(_ value: Double) -> Stylesheet {
   return key("opacity")(value)
-}
-
-public func bgcolor<T>(_ value: String) -> Attribute<T> {
-  return .init("bgcolor", value)
 }

@@ -1,6 +1,5 @@
 import Foundation
 import Html
-import View
 
 public struct RssChannel {
   public var copyright: String
@@ -243,154 +242,150 @@ public struct RssItem {
 }
 
 public func node(rssChannel channel: RssChannel, items: [RssItem]) -> Node {
-  let itunesNodes = channel.itunes.map(nodes(itunes:)) ?? []
+  let itunesNodes = channel.itunes.map(nodes(itunes:)) ?? .fragment([])
 
-  return element(
+  return .element(
     "channel",
-    [
-      element("title", [.text(channel.title)]),
-      element("link", [.text(channel.link)]),
-      element("language", [.text(channel.language)]),
-      element("description", [.text(channel.description)]),
-      element("copyright", [.text(channel.copyright)]),
-
-      element(
+    [],
+    .fragment([
+      .element("title", [], .text(channel.title)),
+      .element("link", [], .text(channel.link)),
+      .element("language", [], .text(channel.language)),
+      .element("description", [], .text(channel.description)),
+      .element("copyright", [], .text(channel.copyright)),
+      .element(
         "image",
-        [
-          element("url", [.text(channel.image.url)]),
-          element("title", [.text(channel.image.title)]),
-          element("link", [.text(channel.image.link)]),
-          ]
-      )
-      ]
-      + itunesNodes
-      + items.map(node(rssItem:))
+        [],
+        .fragment([
+          .element("url", [], .text(channel.image.url)),
+          .element("title", [], .text(channel.image.title)),
+          .element("link", [], .text(channel.image.link))
+        ])
+      ),
+      itunesNodes,
+      .fragment(items.map(node(rssItem:)))
+    ])
   )
 }
 
-public func itunesRssFeedLayout<A>(_ view: View<A>) -> View<A> {
-  return View { a in
+public func itunesRssFeedLayout<A>(_ view: @escaping (A) -> Node) -> (A) -> Node {
+  return { a in
     [
       .raw(
         """
         <?xml version="1.0" encoding="utf-8" ?>
         """
       ),
-      element(
+      .element(
         "rss",
         [
-          .init("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd") as Attribute<Void>,
-          .init("xmlns:rawvoice", "http://www.rawvoice.com/rawvoiceRssModule/"),
-          .init("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
-          .init("xmlns:media", "http://www.rssboard.org/media-rss"),
-          .init("xmlns:atom", "http://www.w3.org/2005/Atom"),
-          .init("version", "2.0")
+          ("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd"),
+          ("xmlns:rawvoice", "http://www.rawvoice.com/rawvoiceRssModule/"),
+          ("xmlns:dc", "http://purl.org/dc/elements/1.1/"),
+          ("xmlns:media", "http://www.rssboard.org/media-rss"),
+          ("xmlns:atom", "http://www.w3.org/2005/Atom"),
+          ("version", "2.0")
         ],
-        view.view(a)
+        view(a)
       )
     ]
   }
 }
 
 private func node(category: RssChannel.Itunes.Category) -> Node {
-  return element(
+  return .element(
     "itunes:category",
-    [.init("text", category.name) as Attribute<Void>],
-    [element("itunes:category", [.text(category.subcategory)])]
+    [("text", category.name)],
+    .element("itunes:category", [], .text(category.subcategory))
   )
 }
 
-private func nodes(itunes: RssChannel.Itunes) -> [Node] {
-
+private func nodes(itunes: RssChannel.Itunes) -> Node {
   return [
-    element("itunes:author", [.text(itunes.author)]),
-    element("itunes:subtitle", [.text(itunes.subtitle)]),
-    element("itunes:summary", [.text(itunes.summary)]),
-    element("itunes:explicit", [.text(yesOrNo(itunes.explicit))]),
-    element(
+    .element("itunes:author", [], .text(itunes.author)),
+    .element("itunes:subtitle", [], .text(itunes.subtitle)),
+    .element("itunes:summary", [], .text(itunes.summary)),
+    .element("itunes:explicit", [], .text(yesOrNo(itunes.explicit))),
+    .element(
       "itunes:owner",
-      [
-        element("itunes:name", [.text(itunes.owner.name)]),
-        element("itunes:email", [.text(itunes.owner.email)])
-      ]
+      [],
+      .fragment([
+        .element("itunes:name", [], .text(itunes.owner.name)),
+        .element("itunes:email", [], .text(itunes.owner.email))
+      ])
     ),
-    element("itunes:type", [.text(itunes.type.rawValue)]),
-    element("itunes:keywords", [.text(itunes.keywords.joined(separator: ","))]),
-    element(
+    .element("itunes:type", [], .text(itunes.type.rawValue)),
+    .element("itunes:keywords", [], .text(itunes.keywords.joined(separator: ","))),
+    .element(
       "itunes:image",
-      [.init("href", itunes.image.href) as Attribute<Void>],
-      []
-    )
-    ]
-    + itunes.categories.map(node(category:))
+      [("href", itunes.image.href)],
+      ""
+    ),
+    .fragment(itunes.categories.map(node(category:)))
+  ]
 }
 
-private func nodes(itunes: RssItem.Itunes) -> [Node] {
+private func nodes(itunes: RssItem.Itunes) -> Node {
   return [
-    element("itunes:author", [.text(itunes.author)]),
-    element("itunes:subtitle", [.text(itunes.subtitle)]),
-    element("itunes:summary", [.text(itunes.summary)]),
-    element("itunes:explicit", ["no"]),
-    element("itunes:duration", [.text(timestampLabel(for: itunes.duration))]),
-    element("itunes:image", [.text(itunes.image)]),
-    element("itunes:season", [.text("\(itunes.season)")]),
-    element("itunes:episode", [.text("\(itunes.episode)")]),
-    element("itunes:title", [.text(itunes.title)]),
-    element("itunes:episodeType", [.text(itunes.episodeType.rawValue)])
+    .element("itunes:author", [], .text(itunes.author)),
+    .element("itunes:subtitle", [], .text(itunes.subtitle)),
+    .element("itunes:summary", [], .text(itunes.summary)),
+    .element("itunes:explicit", [], "no"),
+    .element("itunes:duration", [], .text(timestampLabel(for: itunes.duration))),
+    .element("itunes:image", [], .text(itunes.image)),
+    .element("itunes:season", [], .text("\(itunes.season)")),
+    .element("itunes:episode", [], .text("\(itunes.episode)")),
+    .element("itunes:title", [], .text(itunes.title)),
+    .element("itunes:episodeType", [], .text(itunes.episodeType.rawValue))
   ]
 }
 
 private func node(rssItem: RssItem) -> Node {
-  let creatorNodes = (rssItem.dublinCore?.creators ?? []).map {
-    element("dc:creator", [.text($0)])
-  }
-  let itunesNodes = rssItem.itunes.map(nodes(itunes:)) ?? []
-  let enclosureNodes = [
-    rssItem.enclosure.map { enclosure in
-      element(
-        "enclosure",
-        [
-          .init("url", enclosure.url) as Attribute<Void>,
-          .init("length", "\(enclosure.length)"),
-          .init("type", enclosure.type),
-          ],
-        []
-      )
+  let creatorNodes = Node.fragment(
+    (rssItem.dublinCore?.creators ?? []).map { .element("dc:creator", [], .text($0)) }
+  )
+  let itunesNodes = rssItem.itunes.map(nodes(itunes:)) ?? .fragment([])
+  let enclosureNodes = rssItem.enclosure.map { enclosure in
+    .element(
+      "enclosure",
+      [
+        ("url", enclosure.url.replacingOccurrences(of: "&", with: "&amp;")),
+        ("length", "\(enclosure.length)"),
+        ("type", enclosure.type),
+      ],
+      []
+    )
     }
-    ]
-    .compactMap { $0 }
+    ?? Node.fragment([])
 
-  let mediaNodes = [
-    rssItem.media.map { media in
-      element(
-        "media:content",
-        [
-          .init("url", media.content.url) as Attribute<Void>,
-          .init("length", "\(media.content.length)"),
-          .init("type", media.content.type),
-          .init("medium", media.content.medium)
-        ],
-        [
-          element("media:title", [.text(media.title)])
-        ]
-      )
+  let mediaNodes = rssItem.media.map { media in
+    .element(
+      "media:content",
+      [
+        ("url", media.content.url.replacingOccurrences(of: "&", with: "&amp;")),
+        ("length", "\(media.content.length)"),
+        ("type", media.content.type),
+        ("medium", media.content.medium)
+      ],
+      .element("media:title", [], .text(media.title))
+    )
     }
-    ]
-    .compactMap { $0 }
+    ?? Node.fragment([])
 
-  return element(
+  return .element(
     "item",
-    [
-      element("title", [.text(rssItem.title)]),
-      element("pubDate", [.text(rssDateFormatter.string(from: rssItem.pubDate))]),
-      element("link", [.text(rssItem.link)]),
-      element("guid", [.text(rssItem.guid)]),
-      element("description", [.text(rssItem.description)])
-      ]
-      + creatorNodes
-      + itunesNodes
-      + enclosureNodes
-      + mediaNodes
+    [],
+    .fragment([
+      .element("title", [], .text(rssItem.title)),
+      .element("pubDate", [], .text(rssDateFormatter.string(from: rssItem.pubDate))),
+      .element("link", [], .text(rssItem.link)),
+      .element("guid", [], .text(rssItem.guid)),
+      .element("description", [], .text(rssItem.description)),
+      creatorNodes,
+      itunesNodes,
+      enclosureNodes,
+      mediaNodes
+    ])
   )
 }
 

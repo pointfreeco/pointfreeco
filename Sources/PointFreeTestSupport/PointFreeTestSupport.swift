@@ -6,12 +6,15 @@ import Database
 import DatabaseTestSupport
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import GitHub
 import GitHubTestSupport
 import Html
 import HttpPipeline
 import HttpPipelineTestSupport
-import Logger
+import Logging
 import Mailgun
 import Models
 import ModelsTestSupport
@@ -41,6 +44,7 @@ extension Environment {
     logger: .mock,
     mailgun: .mock,
     renderHtml: Html.render,
+    renderXml: Html._xmlRender,
     stripe: .some(.mock),
     uuid: unzurry(.mock)
   )
@@ -50,6 +54,9 @@ extension Environment {
     |> (\Environment.database.fetchTeamInvites) .~ const(pure([.mock]))
     |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
     |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(.upcoming |> \.amountDue .~ 640_00))
+
+  public static let teamYearlyTeammate = teamYearly
+    |> (\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil))
 
   public static let individualMonthly = mock
     |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
@@ -70,7 +77,7 @@ extension Assets {
 }
 
 extension Logger {
-  public static let mock = Logger.init(level: .debug, output: .null, error: .null)
+  public static let mock = Logger(label: "co.pointfree.PointFreeTestSupport")
 }
 
 extension EnvVars {
@@ -84,7 +91,8 @@ extension EnvVars {
 extension Mailgun.Client {
   public static let mock = Mailgun.Client(
     appSecret: "deadbeefdeadbeefdeadbeefdeadbeef",
-    sendEmail: const(pure(.init(id: "deadbeef", message: "success!")))
+    sendEmail: const(pure(.init(id: "deadbeef", message: "success!"))),
+    validate: const(pure(.init(mailboxVerification: true)))
   )
 }
 
@@ -95,8 +103,12 @@ extension Date {
 extension Session {
   public static let loggedOut = empty
 
-  public static let loggedIn = loggedOut
-    |> \.userId .~ Models.User.mock.id
+  public static func loggedIn(as user: Models.User) -> Session {
+    return loggedOut
+      |> \.user .~ .standard(user.id)
+  }
+
+  public static let loggedIn = Session.loggedIn(as: .mock)
 }
 
 extension UUID {
@@ -107,9 +119,12 @@ extension Snapshotting {
   public static var ioConn: Snapshotting<IO<Conn<ResponseEnded, Data>>, String> {
     return Snapshotting<Conn<ResponseEnded, Data>, String>.conn.pullback { io in
       let renderHtml = Current.renderHtml
-      update(&Current, \.renderHtml .~ { debugRender($0) })
+      let renderXml = Current.renderXml
+      Current.renderHtml = { debugRender($0) }
+      Current.renderXml = { _debugXmlRender($0) }
       let conn = io.perform()
-      update(&Current, \.renderHtml .~ renderHtml)
+      Current.renderHtml = renderHtml
+      Current.renderXml = renderXml
       return conn
     }
   }
@@ -165,5 +180,12 @@ public func request(to route: Route, session: Session = .loggedOut, basicAuth: B
     with: pointFreeRouter.request(for: route)!,
     session: session,
     basicAuth: basicAuth
+  )
+}
+
+extension Database.Client {
+  public static let liveTest = Database.Client(
+    databaseUrl: Current.envVars.postgres.databaseUrl,
+    logger: Current.logger
   )
 }

@@ -11,7 +11,7 @@ extension Episode.Reference {
   public static let mock = Episode.Reference(
     author: "Blob",
     blurb: "Blob uses functional programming to impress all of their friends.",
-    link: "https://www.pointfree.co",
+    link: "https://www.pointfree.co/episodes/ep100-this-is-a-really-long-url",
     publishedAt: Date(timeIntervalSince1970: 1234567890),
     title: "Functional Programming is Fun!"
   )
@@ -19,7 +19,13 @@ extension Episode.Reference {
 
 extension Episode.Exercise {
   public static let mock = Episode.Exercise(
-    problem: "Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.",
+    problem: """
+Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.
+
+```
+pi_1(X) = 0
+```
+""",
     solution: "Let g be a Riemannian metric on X, and consider the Ricci flow..."
   )
 }
@@ -33,21 +39,22 @@ private let subscriberOnlyEpisode = Episode(
   exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco/video.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.mp4",
+    streamingSource: "https://www.vimeo.com/pointfreeco/stream-video.m3u8"
   ),
   id: 2,
   image: "",
   itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .subscriberOnly,
+  previousEpisodeInCollection: 1,
   publishedAt: Date(timeIntervalSince1970: 1_482_192_000),
   sequence: 2,
   title: "Proof in Functions",
   trailerVideo: .init(
     bytesLength: 5_000_000,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",
+    streamingSource: "https://www.vimeo.com/pointfreeco/stream-trailer.m3u8"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(
@@ -164,21 +171,22 @@ As server-side Swift becomes more popular and widely adopted, it will be importa
   exercises: [.mock],
   fullVideo: .init(
     bytesLength: 500_000_000,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco/video.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco/video.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-video.mp4",
+    streamingSource: "https://www.vimeo.com/pointfreeco/stream-video.m3u8"
   ),
   id: 1,
   image: "",
   itunesImage: "https://s3.amazonaws.com/itunes.jpg",
   length: 1380,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1_497_960_000),
   sequence: 1,
   title: "Type-Safe HTML in Swift",
   trailerVideo: .init(
     bytesLength: 5_000_000,
-    downloadUrl: "https://s3.amazonaws.com/pointfreeco/trailer.mp4",
-    streamingSource: "https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
+    downloadUrl: "https://www.vimeo.com/pointfreeco/download-trailer.mp4",
+    streamingSource: "https://www.vimeo.com/pointfreeco/stream-trailer.m3u8"
   ),
   transcriptBlocks: [
     Episode.TranscriptBlock(

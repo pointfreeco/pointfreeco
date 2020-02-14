@@ -1,5 +1,6 @@
 import Database
 import Models
+import NIO
 import Optics
 @testable import PointFree
 import PointFreeRouter
@@ -7,14 +8,14 @@ import Prelude
 import SnapshotTesting
 import XCTest
 
-open class TestCase: SnapshotTestCase {
+open class TestCase: XCTestCase {
   override open func setUp() {
     super.setUp()
     diffTool = "ksdiff"
 //    record = true
     Current = .mock
     Current.envVars = Current.envVars.assigningValuesFrom(ProcessInfo.processInfo.environment)
-    Current.database = .init(databaseUrl: Current.envVars.postgres.databaseUrl, logger: Current.logger)
+    Current.database = .liveTest
     pointFreeRouter = PointFreeRouter(baseUrl: Current.envVars.baseUrl)
 
     _ = try! Current.database.execute("DROP SCHEMA IF EXISTS public CASCADE", [])
@@ -41,5 +42,13 @@ open class TestCase: SnapshotTestCase {
   override open func tearDown() {
     super.tearDown()
     record = false
+  }
+
+  public var isScreenshotTestingAvailable: Bool {
+    if ProcessInfo.processInfo.environment["CI"] == nil {
+      return true
+    } else {
+      return false
+    }
   }
 }

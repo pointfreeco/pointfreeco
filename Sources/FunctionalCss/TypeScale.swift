@@ -65,7 +65,7 @@ public let typescale =
     <> Class.h3 % fontSize(.rem(2))    // 32  28
     <> Class.h4 % fontSize(.rem(1.5))  // 24  21
     <> Class.h5 % fontSize(.rem(1.0))  // 16  14
-    <> Class.h6 % fontSize(.rem(0.75)) // 12  11
+    <> Class.h6 % fontSize(.rem(0.875)) // 14  12.25
     <> responsiveFontSizes
 
 private let responsiveFontSizes =

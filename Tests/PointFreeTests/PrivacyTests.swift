@@ -10,13 +10,18 @@ import WebKit
 #endif
 
 class PrivacyTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testPrivacy() {
     let conn = connection(from: request(to: .privacy))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [

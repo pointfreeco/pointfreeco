@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 75930
+Content-Length: 70292
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -66,6 +66,10 @@ body {
   background-color : #121212;
 }
 
+.bg-gray150 {
+  background-color : #242424;
+}
+
 .bg-gray650 {
   background-color : #a8a8a8;
 }
@@ -114,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -411,7 +422,7 @@ a:link.btn-normal {
 }
 
 .h6 {
-  font-size : 0.75rem;
+  font-size : 0.875rem;
 }
 
 .ts-m-r4 {
@@ -729,6 +740,10 @@ a:link.btn-normal {
   padding-bottom : 4rem;
 }
 
+.m-pb5 {
+  padding-bottom : 8rem;
+}
+
 .m-pl0 {
   padding-left : 0;
 }
@@ -747,6 +762,10 @@ a:link.btn-normal {
 
 .m-pl4 {
   padding-left : 4rem;
+}
+
+.m-pl5 {
+  padding-left : 8rem;
 }
 
 .m-pr0 {
@@ -769,6 +788,10 @@ a:link.btn-normal {
   padding-right : 4rem;
 }
 
+.m-pr5 {
+  padding-right : 8rem;
+}
+
 .m-pt0 {
   padding-top : 0;
 }
@@ -787,6 +810,10 @@ a:link.btn-normal {
 
 .m-pt4 {
   padding-top : 4rem;
+}
+
+.m-pt5 {
+  padding-top : 8rem;
 }
 
 .m-mb0 {
@@ -809,6 +836,10 @@ a:link.btn-normal {
   margin-bottom : 4rem;
 }
 
+.m-mb5 {
+  margin-bottom : 8rem;
+}
+
 .m-ml0 {
   margin-left : 0;
 }
@@ -827,6 +858,10 @@ a:link.btn-normal {
 
 .m-ml4 {
   margin-left : 4rem;
+}
+
+.m-ml5 {
+  margin-left : 8rem;
 }
 
 .m-mr0 {
@@ -849,6 +884,10 @@ a:link.btn-normal {
   margin-right : 4rem;
 }
 
+.m-mr5 {
+  margin-right : 8rem;
+}
+
 .m-mt0 {
   margin-top : 0;
 }
@@ -867,6 +906,10 @@ a:link.btn-normal {
 
 .m-mt4 {
   margin-top : 4rem;
+}
+
+.m-mt5 {
+  margin-top : 8rem;
 }
 
 .bold {
@@ -1463,6 +1506,10 @@ html {
   padding-bottom : 4rem;
 }
 
+.d-pb5 {
+  padding-bottom : 8rem;
+}
+
 .d-pl0 {
   padding-left : 0;
 }
@@ -1481,6 +1528,10 @@ html {
 
 .d-pl4 {
   padding-left : 4rem;
+}
+
+.d-pl5 {
+  padding-left : 8rem;
 }
 
 .d-pr0 {
@@ -1503,6 +1554,10 @@ html {
   padding-right : 4rem;
 }
 
+.d-pr5 {
+  padding-right : 8rem;
+}
+
 .d-pt0 {
   padding-top : 0;
 }
@@ -1521,6 +1576,10 @@ html {
 
 .d-pt4 {
   padding-top : 4rem;
+}
+
+.d-pt5 {
+  padding-top : 8rem;
 }
 
 }
@@ -1546,6 +1605,10 @@ html {
   margin-bottom : 4rem;
 }
 
+.d-mb5 {
+  margin-bottom : 8rem;
+}
+
 .d-ml0 {
   margin-left : 0;
 }
@@ -1564,6 +1627,10 @@ html {
 
 .d-ml4 {
   margin-left : 4rem;
+}
+
+.d-ml5 {
+  margin-left : 8rem;
 }
 
 .d-mr0 {
@@ -1586,6 +1653,10 @@ html {
   margin-right : 4rem;
 }
 
+.d-mr5 {
+  margin-right : 8rem;
+}
+
 .d-mt0 {
   margin-top : 0;
 }
@@ -1604,6 +1675,10 @@ html {
 
 .d-mt4 {
   margin-top : 4rem;
+}
+
+.d-mt5 {
+  margin-top : 8rem;
 }
 
 }
@@ -1664,6 +1739,16 @@ html {
   margin-bottom : 1.5rem;
 }
 
+
+.md-ctn pre code {
+  padding-top    : 2rem;
+  padding-right  : 2rem;
+  padding-bottom : 2rem;
+  padding-left   : 2rem;
+  display        : block;
+  overflow-x     : auto;
+}
+
 .md-ctn code {
   font-family                : monospace;
   padding-top                : 1px;
@@ -1679,62 +1764,6 @@ html {
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
   background-color           : #f7f7f7;
-}
-
-.block input:checked ~ * > * {
-  color : #974dff;
-}
-
-input {
-  color : #a8a8a8;
-}
-
-input {
-  margin-right : auto;
-  margin-left  : auto;
-}
-
-.content0 {
-  display : none;
-}
-
-.content1 {
-  display : none;
-}
-
-#tab0:checked ~ * .content0 {
-  display : inherit;
-}
-
-#tab1:checked ~ * .content1 {
-  display : inherit;
-}
-
-#tab0:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-#tab1:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
-}
-
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
-}
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
 }
 
 
@@ -1784,36 +1813,6 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <style>
-      .vjs-subs-caps-button{display:none}
-    </style>
-    <script>
-      window.HELP_IMPROVE_VIDEOJS = false
-
-function videoJsLoaded() {
-  video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
-    if (event.availability != "available") { return }
-
-    videojs("episode-video").ready(function() {
-      var existingAirplayControl = document.getElementsByClassName('vjs-airplay-control')
-      if (existingAirplayControl.length != 0) { return }
-
-      var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
-      var video = document.getElementsByTagName('video')[0]
-
-      var template = document.createElement('div')
-      template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="AirPlay"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxM3B4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iTWVkaWEtQ29udHJvbC1TeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iX0Fzc2V0cy9JbmxpbmUvQWlycGxheSIgZmlsbD0iI2ZmZmZmZiI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik03LjU5MDI1MzMzLDcuMTQ2NTg2ODkgQzcuNzkxODA0NDksNi45NTMxMDU3NyA4LjExNDQ5MzQ0LDYuOTQ5MTc5NSA4LjMyMDEzNDY0LDcuMTQ2NTg2ODkgTDEzLjY4NTI2NDYsMTIuMjk2ODk4OCBDMTQuMDc5NzUxMSwxMi42NzU1OTAyIDEzLjk1NTg4NzIsMTIuOTgyNTgwMiAxMy4zOTg5MTU0LDEyLjk4MjU4MDIgTDIuNTExNDcyNTQsMTIuOTgyNTgwMiBDMS45NTg4Mzk3OSwxMi45ODI1ODAyIDEuODM5Mjc4NDksMTIuNjY3Mjk0NiAyLjIyNTEyMzM2LDEyLjI5Njg5ODggTDcuNTkwMjUzMzMsNy4xNDY1ODY4OSBaIiBpZD0iaU9TL0Z1bGxzY3JlZW4vQWlycGxheSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMsMTAgTDE0Ljk5OTEyODMsMTAgQzE1LjU1NTM2OTEsMTAgMTYsOS41NTQzNDUzMyAxNiw5LjAwNDYwMjQzIEwxNiwwLjk5NTM5NzU2OCBDMTYsMC40NTU2NjQzOTYgMTUuNTUxODk0NSwwIDE0Ljk5OTEyODMsMCBMMS4wMDA4NzE2NiwwIEMwLjQ0NDYzMDg2MSwwIDAsMC40NDU2NTQ2NzEgMCwwLjk5NTM5NzU2OCBMMCw5LjAwNDYwMjQzIEMwLDkuNTQ0MzM1NiAwLjQ0ODEwNTUwNSwxMCAxLjAwMDg3MTY2LDEwIEwzLDEwIEw0LDkgTDEuNDk4MjY3NDEsOSBDMS4yMjMwODE5Miw5IDEsOC43NjkyMDMxOSAxLDguNDk5NTY0MTcgTDEsMS41MDA0MzU4MyBDMSwxLjIyNDA1Mjc1IDEuMjE5OTA2NTcsMSAxLjQ5ODI2NzQxLDEgTDE0LjUwMTczMjYsMSBDMTQuNzc2OTE4MSwxIDE1LDEuMjMwNzk2ODEgMTUsMS41MDA0MzU4MyBMMTUsOC40OTk1NjQxNyBDMTUsOC43NzU5NDcyNSAxNC43ODAwOTM0LDkgMTQuNTAxNzMyNiw5IEwxMiw5IEwxMywxMCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="AirPlay" style="vertical-align:middle"></button>'
-
-      controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
-
-      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0]
-      airplayControl.addEventListener('click', function() {
-        video.webkitShowPlaybackTargetPicker()
-      })
-    })
-  })
-}
-    </script>
     <meta name="description"
           content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.">
@@ -1960,343 +1959,321 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-6
                   col-m-12">
-        <div>
-          <div class="hide-m">
-            <div class="d-pl4
-                        d-pr4
-                        d-pt4
-                        d-pb4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        bg-white">
-              <strong class="fg-black
-                             bold
-                             ts-m-r0_75
-                             lh-1
-                             caps">
-                #2 • Tuesday Dec 20, 2016 • Free Episode
-              </strong>
-              <h1 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2
-                         m-mt2">
-                <a href="/episodes/ep2-proof-in-functions">
-                  Proof in Functions
-                </a>
-              </h1>
-              <div class="body-leading
-                          fg-black
-                          normal
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
-                </div>
-              </div>
-              <div class="d-pt3
-                          m-pt2">
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#transcript">
-                  Transcript
-                </a>
-                <a class="pf-link-purple
-                          m-mr2"
-                   href="#exercises">
-                  Exercises
-                </a>
-              </div>
-            </div>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div id="transcript"
-               class="d-pb4
-                      d-pt2
-                      d-pl4
+        <div class="hide-m">
+          <div class="d-pl4
                       d-pr4
+                      d-pt4
+                      d-pb4
                       m-pl3
                       m-pr3
                       m-pt3
                       m-pb3
                       bg-white">
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Introduction
+            <strong class="fg-black
+                           bold
+                           ts-m-r0_75
+                           lh-1
+                           caps">
+              #2 • Tuesday Dec 20, 2016 • Free Episode
+            </strong>
+            <h1 class="fg-black
+                       bold
+                       ts-d-r1_5
+                       ts-m-r1_25
+                       lh-2
+                       m-mt2">
+              <a href="/episodes/ep2-proof-in-functions">
+                Proof in Functions
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
+            </h1>
+            <div class="body-leading
+                        fg-black
+                        normal
+                        lh-4">
               <div class="md-ctn">
-                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+              </div>
+            </div>
+            <div class="d-pt3
+                        m-pt2">
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#transcript">
+                Transcript
+              </a>
+              <a class="pf-link-purple
+                        m-mr2"
+                 href="#exercises">
+                Exercises
+              </a>
+            </div>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div id="transcript"
+             class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Introduction
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Title
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Title
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
+            </div>
+            <div class="md-ctn">
+              <p>You can also break into new paragraphs in the markdown without creating a whole new paragraph block.
 However, you cannot associate a timestamp with this paragraph.</p>
 
-              </div>
             </div>
-            <div class="m-ml2
-                        m-mr2
-                        m-mt3
-                        m-mb3
-                        m-pl2
-                        m-pr2
-                        m-pt2
-                        m-pb2"
-                 style="background-color: #ffdbdd;
-                        border-left: 3px solid #eb1c26">
-              <h3 class="fg-black
-                         bold
-                         ts-d-r1
-                         ts-m-r0_875
-                         lh-1">
-                Correction
-              </h3>
-              <div class="fg-black
-                          normal
-                          h5
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
+          </div>
+          <div class="m-ml2
+                      m-mr2
+                      m-mt3
+                      m-mb3
+                      m-pl2
+                      m-pr2
+                      m-pt2
+                      m-pb2"
+               style="background-color: #ffdbdd;
+                      border-left: 3px solid #eb1c26">
+            <h3 class="fg-black
+                       bold
+                       ts-d-r1
+                       ts-m-r0_875
+                       lh-1">
+              Correction
+            </h3>
+            <div class="fg-black
+                        normal
+                        h5
+                        lh-4">
+              <div class="md-ctn">
+                <p>This is a correction for those time we make mistakes… it happens! We can use <em>markdown</em> in this block,
 including code snippets: <code>map(f &gt;&gt;&gt; g)</code>.</p>
 
-                </div>
               </div>
             </div>
-            <div>
-              <div id="t30"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="30"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
+          </div>
+          <div>
+            <div id="t30"
+                 class="block">
+              <a href="#t30"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:30
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>Here we have created a whole new transcript block so that we can associate a timestamp with it.</p>
 
-              </div>
             </div>
-            <div>
-              <div class="md-ctn">
-                <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
+          </div>
+          <div>
+            <div class="md-ctn">
+              <p>It is also possible to create a <code>paragraph</code> block and use <code>nil</code> for the timestamp to omit the rendered
 time at the beginning of the text. That’s what we have done here.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t60">
-              <a href="#t60">
-                Title Block
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t60">
+            <a href="#t60">
+              Title Block
+            </a>
+          </h2>
+          <div>
+            <div id="t60"
+                 class="block">
+              <a href="#t60"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                01:00
               </a>
-            </h2>
-            <div>
-              <div id="t60"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="60"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
+            </div>
+            <div class="md-ctn">
+              <p>That block above is called a <code>title</code> transcript block. It allows you to break up the transcript into
 chapters. All of the <code>title</code> blocks are gathered up and rendered as a “table of contents” under the
 episode video.</p>
 <p>Next up we are going to show off a <code>code</code> block. It allows you to render a multiline, syntax
 highlighted snippet of code:</p>
 
-              </div>
             </div>
-            <pre>
-              <code class="code
-                           block
-                           m-pl3
-                           m-pr3
-                           m-pt3
-                           m-pb3
-                           overflow-auto-x
-                           language-swift">
-                infix operator |>
+          </div>
+          <pre>
+            <code class="code
+                         block
+                         m-pl3
+                         m-pr3
+                         m-pt3
+                         m-pb3
+                         overflow-auto-x
+                         language-swift">
+              infix operator |>
 
 func |> <A, B>(x: A, f: (A) -> B) -> B {
   return f(x)
 }
-              </code>
-            </pre>
-            <div>
-              <div id="t90"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="90"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  01:30
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>You can write as much code as you want in that block, and you can specify the language of the code
+            </code>
+          </pre>
+          <div>
+            <div id="t90"
+                 class="block">
+              <a href="#t90"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                01:30
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>You can write as much code as you want in that block, and you can specify the language of the code
 so that its syntax is highlighted nicely.</p>
 
-              </div>
             </div>
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t120">
-              <a href="#t120">
-                Another Title
+          </div>
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t120">
+            <a href="#t120">
+              Another Title
+            </a>
+          </h2>
+          <div>
+            <div id="t120"
+                 class="block">
+              <a href="#t120"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                02:00
               </a>
-            </h2>
-            <div>
-              <div id="t120"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="120"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  02:00
-                </a>
-              </div>
-              <div class="md-ctn">
-                <p>That was another title. See how the title create the “table of contents” under the video?</p>
+            </div>
+            <div class="md-ctn">
+              <p>That was another title. See how the title create the “table of contents” under the video?</p>
 <p>Here’s a block quote with a really long word inside so that we can make sure that word breaking is
 working how we expect:</p>
 <blockquote>
 <p>Fatal error: ‘try!’ expression unexpectedly raised an error: Swift.DecodingError.typeMismatch(Swift.Dictionary&lt;Swift.Dictionary&lt;Swift.StringSwift.Dictionary&lt;Swift.String, Any&gt;&gt;&gt;, Swift.DecodingError.Context(codingPath: [_JSONKey(stringValue: “Index 0”, intValue: 0), CodingKeys(stringValue: “email”, intValue: nil)], debugDescription: “Expected to decode Dictionary&lt;String, Any&gt; but found a string/data instead.”, underlyingError: nil))</p>
 </blockquote>
 
-              </div>
             </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 id="exercises"
-                class="h4
-                       lh-3
-                       m-pt2">
-              Exercises
-            </h2>
-            <ol>
-              <li id="exercise-1">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
 
-                  </div>
-                  <details>
-                    <summary>
-                      Solution
-                    </summary>
-                    <div class="bg-gray900
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
-
-                      </div>
-                    </div>
-                  </details>
                 </div>
-              </li>
-            </ol>
-          </div>
+                <details>
+                  <summary class="cursor-pointer">
+                    Solution
+                  </summary>
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150
@@ -2310,23 +2287,38 @@ working how we expect:</p>
           <div class="w-100p
                       relative"
                style="padding-bottom:56.25%">
-            <video id="episode-video"
-                   class="h-100p
-                          w-100p
-                          absolute
-                          bg-gray650
-                          video-js
-                          vjs-default-skin
-                          vjs-big-play-centered"
-                   style="position:absolute"
-                   controls
-                   playslinline
-                   autoplay
-                   poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">
-              <source src="https://s3.amazonaws.com/pointfreeco/video.m3u8"
-                      type="application/vnd.apple.mpegurl">
-            </video>
+            <iframe class="h-100p
+                           w-100p
+                           absolute
+                           bg-gray650"
+                    src="https://www.vimeo.com/pointfreeco/stream-video.m3u8"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+            </iframe>
+            <script src="https://player.vimeo.com/api/player.js">
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  jump(window.location.hash, false);
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (target.tagName != "A") { return; }
+    var hash = new URL(target.href).hash;
+    jump(hash, true);
+  });
+
+  function jump(hash, play) {
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+    if (time <= 0) { return; }
+    player.setCurrentTime(time);
+    if (play) { player.play(); }
+  }
+});
+            </script>
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2349,10 +2341,6 @@ working how we expect:</p>
                 <div>
                   <div class="hide-m">
                     <a href="#t0"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2363,11 +2351,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="0"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2394,10 +2378,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t0"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2408,11 +2388,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="0"
+                    <a href="#t0"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2439,10 +2415,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t60"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="60"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2453,11 +2425,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="60"
+                    <a href="#t60"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2484,10 +2452,6 @@ video.play();event.preventDefault();"
                 <div>
                   <div class="hide-m">
                     <a href="#t120"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();"
-                       data-t="120"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2498,11 +2462,7 @@ video.play();"
                     </a>
                   </div>
                   <div class="hide-d">
-                    <a href="#"
-                       onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                       data-t="120"
+                    <a href="#t120"
                        class="pf-link-green
                               text-decoration-none
                               fg-black
@@ -2553,23 +2513,6 @@ video.play();event.preventDefault();"
         </div>
       </div>
     </div>
-    <script>
-      var hasPlayed = false;
-var video = document.getElementsByTagName('video')[0];
-video.addEventListener('play', function () {
-  hasPlayed = true;
-});
-document.addEventListener('keypress', function (event) {
-  if (hasPlayed && event.key === ' ') {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
-  }
-});
-    </script>
     <footer class="row
                    d-pl4
                    d-pr4
@@ -2631,6 +2574,16 @@ document.addEventListener('keypress', function (event) {
             Content
           </h5>
           <ol class="list-reset">
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
             <li>
               <a class="pf-link-purple
                         fg-black

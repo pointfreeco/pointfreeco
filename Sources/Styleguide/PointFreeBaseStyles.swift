@@ -6,6 +6,7 @@ public enum Colors {
   public static let black = Color.other("#121212")
   public static let blue = Color.other("#4cccff")
   public static let blue900 = Color.other("#e6f8ff")
+  public static let gray150 = Color.other("#242424")
   public static let gray300 = Color.other("#555555")
   public static let gray400 = Color.other("#666666")
   public static let gray650 = Color.other("#a8a8a8")
@@ -27,6 +28,7 @@ extension Class {
         public static let black = CssSelector.class("bg-black")
         public static let blue900 = CssSelector.class("bg-blue900")
         public static let dark = CssSelector.class("bg-dark")
+        public static let gray150 = CssSelector.class("bg-gray150")
         public static let gray650 = CssSelector.class("bg-gray650")
         public static let gray900 = CssSelector.class("bg-gray900")
         public static let green = CssSelector.class("bg-green")
@@ -40,6 +42,7 @@ extension Class {
       public enum border {
         public static let gray650 = CssSelector.class("border-gray-650")
         public static let gray800 = CssSelector.class("border-gray-800")
+        public static let gray850 = CssSelector.class("border-gray-850")
         public static let gray900 = CssSelector.class("border-gray-900")
       }
       public enum fg {
@@ -348,6 +351,7 @@ private let colorStyles: Stylesheet =
   Class.pf.colors.bg.black % backgroundColor(Colors.black)
     <> Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900)
     <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
+    <> Class.pf.colors.bg.gray150 % backgroundColor(Colors.gray150)
     <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
     <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
     <> Class.pf.colors.bg.green % backgroundColor(Colors.green)
@@ -360,6 +364,7 @@ private let colorStyles: Stylesheet =
 
     <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
     <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)
+    <> Class.pf.colors.border.gray850 % borderColor(all: Colors.gray850)
     <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
 
     <> Class.pf.colors.fg.black % color(Colors.black)

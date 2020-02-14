@@ -1,26 +1,21 @@
-FROM norionomura/swift:421
+FROM swift:5.1
 
-# postgres
 RUN apt-get update
-RUN apt-get install -y postgresql libpq-dev
+RUN apt-get install -y cmake libpq-dev libssl-dev libz-dev openssl
 
-ENV OSS 1
-WORKDIR /app
+WORKDIR /build
 
-COPY .build/dependencies-state.json ./.build/dependencies-state.json
-COPY .env ./
-COPY Makefile ./
-COPY Package.swift ./
-COPY Packages ./Packages
+Copy Makefile .
+COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
 
-# cmark
-RUN apt-get -y install cmake
-RUN git clone https://github.com/commonmark/cmark
+RUN git clone https://github.com/commonmark/cmark \
+  && cd cmark \
+  && git checkout 1880e6535e335f143f9547494def01c13f2f331b
 RUN make -C cmark INSTALL_PREFIX=/usr
 RUN make -C cmark install
 
-RUN swift package update
-RUN swift build --product Server --configuration release
-CMD ./.build/release/Server
+RUN swift build --build-tests --enable-pubgrub-resolver --enable-test-discovery --jobs 1 -Xswiftc -D -Xswiftc OSS
+
+ENTRYPOINT [".build/debug/Server"]

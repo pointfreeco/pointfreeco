@@ -6,45 +6,47 @@ import Models
 import PointFreeRouter
 import Styleguide
 import Prelude
-import View
 
-let hostSignOffView = View<Prelude.Unit> { _ in
-  [
-    p([`class`([Class.padding([.mobile: [.top: 2]])])], [
-      "Your hosts,"
-      ]),
-    p([
-      a([href(twitterUrl(to: .mbrandonw))], [.raw("Brandon&nbsp;Williams")]),
-      " & ",
-      a([href(twitterUrl(to: .stephencelis))], [.raw("Stephen&nbsp;Celis")]),
-      ])
-  ]
-}
+let hostSignOffView: Node = [
+  .p(
+    attributes: [.class([Class.padding([.mobile: [.top: 2]])])],
+    "Your hosts,"
+  ),
+  .p(
+    .a(attributes: [.href(twitterUrl(to: .mbrandonw))], .raw("Brandon&nbsp;Williams")),
+    " & ",
+    .a(attributes: [.href(twitterUrl(to: .stephencelis))], .raw("Stephen&nbsp;Celis"))
+  )
+]
 
-let emailFooterView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter in
-  emailTable([`class`([Class.pf.colors.bg.gray900]), style(contentTableStyles)], [
-    tr([
-      td([valign(.top)], [
-        div([`class`([Class.padding([.mobile: [.all: 2]])])], [
-          p([`class`([Class.pf.type.body.small])], [
+func emailFooterView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node {
+  return .emailTable(
+    attributes: [.class([Class.pf.colors.bg.gray900]), .style(contentTableStyles)],
+    .tr(
+      .td(
+        attributes: [.valign(.top)],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
+          .p(
+            attributes: [.class([Class.pf.type.body.small])],
             "Contact us via email at ",
-            a([mailto("support@pointfree.co")], ["support@pointfree.co"]),
+            .a(attributes: [.mailto("support@pointfree.co")], "support@pointfree.co"),
             ", or on Twitter ",
-            a([href(twitterUrl(to: .pointfreeco))], ["@pointfreeco"]),
+            .a(attributes: [.href(twitterUrl(to: .pointfreeco))], "@pointfreeco"),
             "."
-            ]),
-
-          p([`class`([Class.pf.type.body.small])], [
+          ),
+          .p(
+            attributes: [.class([Class.pf.type.body.small])],
             "Our postal address: 139 Skillman #5C, Brooklyn, NY 11211"
-            ]),
-
-          ] + unsubscribeView.view((user, newsletter)))
-        ])
-      ])
-    ])
+          ),
+          unsubscribeView(user: user, newsletter: newsletter)
+        )
+      )
+    )
+  )
 }
 
-private let unsubscribeView = View<(User?, EmailSetting.Newsletter?)> { user, newsletter -> [Node] in
+private func unsubscribeView(user: User?, newsletter: EmailSetting.Newsletter?) -> Node {
   guard
     let user = user,
     let newsletter = newsletter
@@ -56,18 +58,17 @@ private let unsubscribeView = View<(User?, EmailSetting.Newsletter?)> { user, ne
       .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
       .map({ url(to: .expressUnsubscribe(payload: $0)) })
     else {
-      Current.logger.error("Failed to generate unsubscribe link for user \(user.id)")
+      Current.logger.log(.error, "Failed to generate unsubscribe link for user \(user.id)")
       return []
   }
 
-  return [
-    p([`class`([Class.pf.type.body.small])], [
-      .text(subscribedReason(newsletter: newsletter)),
-      " If you no longer wish to receive emails like this, you can unsubscribe ",
-      a([href(unsubUrl)], ["here"]),
-      "."
-      ])
-  ]
+  return .p(
+    attributes: [.class([Class.pf.type.body.small])],
+    .text(subscribedReason(newsletter: newsletter)),
+    " If you no longer wish to receive emails like this, you can unsubscribe ",
+    .a(attributes: [.href(unsubUrl)], "here"),
+    "."
+  )
 }
 
 private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
@@ -94,6 +95,11 @@ private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
 }
 
 // TODO: move into a package for html email helpers.
-public func emailTable(_ attribs: [Attribute<Html.Tag.Table>], _ content: [ChildOf<Html.Tag.Table>]) -> Node {
-  return table([border(0), cellpadding(0), cellspacing(0)] + attribs, content)
+extension Node {
+  public static func emailTable(
+    attributes: [Attribute<Tag.Table>],
+    _ content: ChildOf<Tag.Table>...
+  ) -> Node {
+    return .table(attributes: [.border(0), .cellpadding(0), .cellspacing(0)] + attributes, .fragment(content))
+  }
 }

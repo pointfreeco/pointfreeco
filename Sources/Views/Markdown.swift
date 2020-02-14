@@ -3,17 +3,20 @@ import Css
 import FunctionalCss
 import Html
 import HtmlCssSupport
+import PointFreePrelude
 import Prelude
 import Styleguide
 
-public func markdownBlock(_ markdown: String) -> Node {
-  return markdownBlock([], markdown)
-}
-
-public func markdownBlock(_ attribs: [Attribute<Tag.Div>] = [], _ markdown: String) -> Node {
-  return div(addClasses([markdownContainerClass], to: attribs), [
-    .raw(unsafeMark(from: markdown))
-    ])
+extension Node {
+  public static func markdownBlock(
+    attributes: [Attribute<Tag.Div>] = [],
+    _ markdown: String
+    ) -> Node {
+    return .div(
+      attributes: _addClasses([markdownContainerClass], to: attributes),
+      .raw(unsafeMark(from: markdown))
+    )
+  }
 }
 
 public func unsafeMark(from markdown: String) -> String {
@@ -42,22 +45,30 @@ private let pMarkdownStyles: Stylesheet =
     <> (p & .pseudo(.not(.pseudo(.lastChild)))) % margin(bottom: .rem(1.5))
 
 private let codeMarkdownStyles: Stylesheet =
-  code % (
-    fontFamily(["monospace"])
-      <> padding(topBottom: .px(1), leftRight: .px(5))
-      <> borderWidth(all: .px(1))
-      <> borderRadius(all: .px(3))
-      <> backgroundColor(Color.other("#f7f7f7"))
+  pre % (
+    code % (
+      padding(top: .rem(2), right: .rem(2), bottom: .rem(2), left: .rem(2))
+        <> display(.block)
+        <> overflow(x: .auto)
+    )
+    )
+    <> code % (
+      fontFamily(["monospace"])
+        <> padding(topBottom: .px(1), leftRight: .px(5))
+        <> borderWidth(all: .px(1))
+        <> borderRadius(all: .px(3))
+        <> backgroundColor(Color.other("#f7f7f7"))
 )
 
 private let blockquoteMarkdownStyles: Stylesheet =
   blockquote % fontStyle(.italic)
 
-private let aMarkdownStyles: Stylesheet =
-  a % key("text-decoration", "underline")
-    <> (a & .pseudo(.link)) % color(Colors.purple150)
-    <> (a & .pseudo(.visited)) % color(Colors.purple150)
-    <> (a & .pseudo(.hover)) % color(Colors.black)
+private let aMarkdownStyles = Stylesheet.concat(
+  a % key("text-decoration", "underline"),
+  (a & CssSelector.pseudo(.link)) % color(Colors.purple150),
+  (a & CssSelector.pseudo(.visited)) % color(Colors.purple150),
+  (a & CssSelector.pseudo(.hover)) % color(Colors.black)
+)
 
 private let hrMarkdownStyles: Stylesheet =
   hr % (

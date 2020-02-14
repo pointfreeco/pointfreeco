@@ -105,7 +105,8 @@ private let spacings: [Size] = [
   .rem(0.5),
   .rem(1.0),
   .rem(2.0),
-  .rem(4.0)
+  .rem(4.0),
+  .rem(8.0)
 ]
 
 private func selector(_ data: [Breakpoint: [Side: Int]], whitespace: Whitespace) -> CssSelector {

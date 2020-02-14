@@ -5,6 +5,7 @@ import Foundation
 import Models
 import PointFreeRouter
 import Prelude
+import Tagged
 import Tuple
 
 let expressUnsubscribeMiddleware =
@@ -43,7 +44,7 @@ private func unsubscribeMiddleware<I>(
   return Current.database.fetchEmailSettingsForUserId(userId)
     .map { settings in settings.filter(^\.newsletter != newsletter) }
     .flatMap { settings in
-      Current.database.updateUser(userId, nil, nil, settings.map(^\.newsletter), nil)
+      Current.database.updateUser(userId, nil, nil, settings.map(^\.newsletter), nil, nil)
     }
     .run
     .map(const(conn.map(const(unit))))

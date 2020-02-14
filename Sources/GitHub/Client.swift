@@ -1,9 +1,13 @@
 import Either
 import Foundation
-import Logger
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+import Logging
 import Optics
 import PointFreePrelude
 import Prelude
+import Tagged
 
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
@@ -90,11 +94,7 @@ private func runGitHub<A>(_ logger: Logger?) -> (DecodableRequest<A>) -> EitherI
 
 private let gitHubJsonEncoder: JSONEncoder = { () in
   let encoder = JSONEncoder()
-
-  if #available(OSX 10.13, *) {
-    encoder.outputFormatting = [.sortedKeys]
-  }
-
+  encoder.outputFormatting = [.sortedKeys]
   return encoder
 }()
 

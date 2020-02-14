@@ -4,7 +4,7 @@ import GitHub
 import Html
 import Mailgun
 import Models
-import Logger
+import Logging
 import Prelude
 import Stripe
 
@@ -20,9 +20,10 @@ public struct Environment {
   public var episodes = { [Episode]() }
   public var features = [Feature].allFeatures
   public var gitHub: GitHub.Client!
-  public var logger = Logger()
+  public var logger = Logger(label: "co.pointfree")
   public var mailgun: Mailgun.Client!
-  public var renderHtml: ([Node]) -> String = Html.render
+  public var renderHtml: (Node) -> String = Html.render
+  public var renderXml: (Node) -> String = Html._xmlRender
   public var stripe: Stripe.Client!
   public var uuid: () -> UUID = UUID.init
 }

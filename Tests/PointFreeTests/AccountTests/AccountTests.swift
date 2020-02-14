@@ -1,7 +1,6 @@
 import Database
 import DatabaseTestSupport
 import Either
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -33,7 +32,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -45,21 +44,25 @@ final class AccountTests: TestCase {
     #endif
   }
 
-  func testAccount_WithRssFeatureFlag() {
+  func testAccount_InvoiceBilling() {
+    let customer = Stripe.Customer.mock
+      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
+    let subscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.customer) .~ .right(customer)
     Current = .teamYearly
-      |> \.features .~ [.podcastRss |> \.isEnabled .~ true]
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2500)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 2500))
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2400))
         ]
       )
     }
@@ -68,6 +71,7 @@ final class AccountTests: TestCase {
 
   func testTeam_OwnerIsNotSubscriber() {
     let currentUser = User.nonSubscriber
+      |> \.episodeCreditCount .~ 2
     let subscription = Subscription.mock
       |> \.userId .~ currentUser.id
 
@@ -77,13 +81,66 @@ final class AccountTests: TestCase {
       |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
 
     let session = Session.loggedIn
-      |> (\Session.userId) .~ currentUser.id
+      |> \.user .~ .standard(currentUser.id)
     let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testTeam_NoRemainingSeats() {
+    let currentUser = User.nonSubscriber
+    let subscription = Subscription.mock
+      |> \.userId .~ currentUser.id
+    let stripeSubscription = Stripe.Subscription.mock
+      |> (\Stripe.Subscription.quantity) .~ 2
+
+    Current = .teamYearly
+      |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
+      |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock, .mock]))
+      |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
+      |> (\Environment.database.fetchTeamInvites) .~ const(pure([]))
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(stripeSubscription))
+
+    let session = Session.loggedIn
+      |> \.user .~ .standard(currentUser.id)
+    let conn = connection(from: request(to: .account(.index), session: session))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 2000)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 2000))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testTeam_AsTeammate() {
+    Current = .teamYearlyTeammate
+
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn(as: .teammate)))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -112,7 +169,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -127,12 +184,13 @@ final class AccountTests: TestCase {
   func testAccountWithFlashNotice() {
     let flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(
+      from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -147,12 +205,12 @@ final class AccountTests: TestCase {
   func testAccountWithFlashWarning() {
     let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -167,12 +225,12 @@ final class AccountTests: TestCase {
   func testAccountWithFlashError() {
     let flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> \.flash .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -196,7 +254,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -216,7 +274,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -229,14 +287,18 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.canceled)),
+      \.database.fetchSubscriptionById .~ const(pure(.canceled))
+    )
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -264,7 +326,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -293,7 +355,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -316,7 +378,7 @@ final class AccountTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -327,5 +389,4 @@ final class AccountTests: TestCase {
     }
     #endif
   }
-
 }

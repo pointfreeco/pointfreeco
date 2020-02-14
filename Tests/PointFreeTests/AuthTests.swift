@@ -1,9 +1,9 @@
 import Either
 @testable import GitHub
-import Html
 import HttpPipeline
 @testable import PointFree
 import PointFreePrelude
+import PointFreeRouter
 import PointFreeTestSupport
 import Prelude
 import Optics
@@ -11,6 +11,10 @@ import SnapshotTesting
 import XCTest
 
 class AuthTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
 
   func testRegister() {
     let gitHubUserEnvelope = GitHubUserEnvelope.mock

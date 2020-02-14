@@ -1,5 +1,4 @@
 import Either
-import Html
 import HttpPipeline
 @testable import Models
 import ModelsTestSupport
@@ -23,12 +22,12 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex() {
-    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
+    let conn = connection(from: request(to: .blog(.index)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -42,17 +41,27 @@ class BlogTests: TestCase {
 
   func testBlogIndex_WithLotsOfPosts() {
     let shortMock = BlogPost.mock |> \.contentBlocks .~ [BlogPost.mock.contentBlocks[1]]
+    let posts = [
+      shortMock,
+      shortMock,
+      shortMock,
+      shortMock |> \.hidden .~ true,
+      shortMock,
+      shortMock,
+      shortMock
+    ]
+
     update(
       &Current,
-      \.blogPosts .~ unzurry((1...6).map(const(shortMock)))
+      \.blogPosts .~ unzurry(posts)
     )
 
-    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
+    let conn = connection(from: request(to: .blog(.index)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -64,20 +73,14 @@ class BlogTests: TestCase {
     #endif
   }
 
-  func testBlogIndex_Unauthed() {
-    let conn = connection(from: request(to: .blog(.index), basicAuth: true))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
   func testBlogShow() {
     let slug = Current.blogPosts().first!.slug
-    let conn = connection(from: request(to: .blog(.show(slug: slug)), basicAuth: true))
+    let conn = connection(from: request(to: .blog(.show(slug: slug))))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -97,7 +100,7 @@ class BlogTests: TestCase {
   }
 
   func testBlogAtomFeed() {
-    let conn = connection(from: request(to: .blog(.feed), basicAuth: true))
+    let conn = connection(from: request(to: .blog(.feed)))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }

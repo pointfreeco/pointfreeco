@@ -3,7 +3,6 @@ import DatabaseTestSupport
 import Either
 import GitHub
 import GitHubTestSupport
-import Html
 import HttpPipeline
 import Models
 import ModelsTestSupport
@@ -34,12 +33,12 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2100)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2100))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2400)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2400))
         ]
       )
     }
@@ -55,12 +54,12 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
-          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2300)),
-          "mobile": .ioConnWebView(size: .init(width: 500, height: 2300))
+          "desktop": .ioConnWebView(size: .init(width: 1100, height: 2600)),
+          "mobile": .ioConnWebView(size: .init(width: 500, height: 2600))
         ]
       )
     }
@@ -84,7 +83,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -113,7 +112,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -135,7 +134,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshot(
         matching: conn |> siteMiddleware,
         as: .ioConnWebView(size: .init(width: 1100, height: 1000))
@@ -168,7 +167,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -204,7 +203,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -240,7 +239,7 @@ class EpisodePageTests: TestCase {
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -264,7 +263,7 @@ class EpisodePageTests: TestCase {
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
 
@@ -362,7 +361,7 @@ class EpisodePageTests: TestCase {
     let user = Current.database
       .registerUser(.mock, "hello@pointfree.co")
       .run.perform().right!!
-    _ = Current.database.updateUser(user.id, nil, nil, nil, 1).run.perform()
+    _ = Current.database.updateUser(user.id, nil, nil, nil, 1, nil).run.perform()
     _ = Current.database.redeemEpisodeCredit(episode.sequence, user.id).run.perform()
 
     let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
@@ -401,7 +400,7 @@ class EpisodePageTests: TestCase {
     XCTAssertTrue(episode.subscriberOnly)
   }
 
-  func testEpisodePage_ExercisesAndReferences() { 
+  func testEpisodePage_ExercisesAndReferences() {
     let episode = Current.episodes()[0]
       |> \.exercises .~ [.mock, .mock]
       |> \.references .~ [.mock]
@@ -418,22 +417,37 @@ class EpisodePageTests: TestCase {
     )
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
       let html = String(decoding: siteMiddleware(conn).perform().data, as: UTF8.self)
       webView.loadHTMLString(html, baseURL: nil)
       assertSnapshot(matching: webView, as: .image, named: "desktop")
 
-      webView.evaluateJavaScript(
-        """
-          document.getElementsByTagName('details')[0].open = true
-          """, completionHandler: nil)
-      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-
       webView.frame.size.width = 500
-      webView.frame.size.width = 1900
+      webView.frame.size.height = 1700
       assertSnapshot(matching: webView, as: .image, named: "mobile")
+
+      webView.evaluateJavaScript("""
+        document.getElementsByTagName('details')[0].open = true
+        """)
+      assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
     }
     #endif
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testEpisodePage_Trialing() {
+    update(&Current, \.database .~ .mock)
+
+    var subscription = Subscription.mock
+    subscription.stripeSubscriptionStatus = .trialing
+    Current.database.fetchSubscriptionById = { _ in pure(subscription) }
+
+    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn(as: .mock))
+
+    let conn = connection(from: episode)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

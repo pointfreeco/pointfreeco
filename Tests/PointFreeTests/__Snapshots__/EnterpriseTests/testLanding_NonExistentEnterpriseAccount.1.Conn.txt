@@ -1,0 +1,12 @@
+GET http://localhost:8080/enterprise/blob.biz
+Cookie: pf_session={}
+
+302 Found
+Location: /
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: pf_session={"flash":{"message":"That enterprise account does not exist.","priority":"warning"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 1; mode=block

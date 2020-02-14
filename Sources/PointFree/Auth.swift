@@ -1,17 +1,15 @@
-import Css
 import Either
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import GitHub
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
-import Styleguide
 import UrlFormEncoding
 import Tuple
 
@@ -34,7 +32,7 @@ let loginResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Models.User?
 let logoutResponse: (Conn<StatusLineOpen, Prelude.Unit>) -> IO<Conn<ResponseEnded, Data>> =
   redirect(
     to: path(to: .home),
-    headersMiddleware: writeSessionCookieMiddleware(\.userId .~ nil)
+    headersMiddleware: writeSessionCookieMiddleware(\.user .~ nil)
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -44,6 +42,13 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
 
 public func currentUserMiddleware<A>(_ conn: Conn<StatusLineOpen, A>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>> {
+
+    if let userId = conn.request.session.userId {
+      Current.database.sawUser(userId)
+        .run
+        .parallel
+        .run { _ in }
+    }
 
     let user = conn.request.session.userId
       .flatMap {
@@ -72,7 +77,7 @@ public func requireLoggedOutUser<A>(
 
 public func currentSubscriptionMiddleware<A, I>(
   _ conn: Conn<I, T2<Models.User?, A>>
-  ) -> IO<Conn<I, T3<Models.Subscription?, Models.User?, A>>> {
+  ) -> IO<Conn<I, T3<(Models.Subscription, EnterpriseAccount?)?, Models.User?, A>>> {
 
   let user = conn.data.first
 
@@ -93,6 +98,17 @@ public func currentSubscriptionMiddleware<A, I>(
   return (userSubscription <|> ownerSubscription)
     .run
     .map(^\.right)
+    .flatMap { subscription -> IO<(Models.Subscription, Models.EnterpriseAccount?)?> in
+      subscription
+        .map { subscription in
+          Current.database.fetchEnterpriseAccountForSubscription(subscription.id)
+            .mapExcept(requireSome)
+            .run
+            .map(^\.right)
+            .map { enterpriseAccount in (subscription, enterpriseAccount) }
+        }
+        ?? pure(nil)
+    }
     .map { conn.map(const($0 .*. conn.data)) }
 }
 
@@ -127,7 +143,7 @@ private func registerUser(env: GitHubUserEnvelope) -> EitherIO<Error, Models.Use
               sendEmail(
                 to: [email.email],
                 subject: "Point-Free Registration",
-                content: inj2(registrationEmailView.view(env.gitHubUser))
+                content: inj2(registrationEmailView(env.gitHubUser))
                 )
                 .run
               )
@@ -169,7 +185,7 @@ private func gitHubAuthTokenMiddleware(
         ) { user in
           conn |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
-            headersMiddleware: writeSessionCookieMiddleware(\.userId .~ user.id)
+            headersMiddleware: writeSessionCookieMiddleware(\.user .~ .standard(user.id))
           )
         }
     )

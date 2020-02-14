@@ -7,23 +7,24 @@ Join us for a tour of the code base that powers this very site and see what func
   codeSampleDirectory: "0022-a-tour-of-point-free",
   exercises: exercises,
   fullVideo: .init(
-    bytesLength: 784_408_755,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full-720p-DB0427B5-7387-45A1-8995-1C7B005AD28C.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/full/0022-tour-of-pointfreeco.m3u8"
+    bytesLength: 325_311_571,
+    downloadUrl: "https://player.vimeo.com/external/355115759.hd.mp4?s=0f54ad38cc5fd26db2c19cf457d4b427c90e55ca&profile_id=174",
+    streamingSource: "https://player.vimeo.com/video/355115759"
   ),
   id: 22,
-  image: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/poster.jpg",
-  itunesImage: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/itunes-poster.jpg",
+  image: "https://i.vimeocdn.com/video/807848603.jpg",
+  itunesImage: "https://i.vimeocdn.com/video/807848603.jpg",
   length: 39*60 + 21,
   permission: .free,
+  previousEpisodeInCollection: nil,
   publishedAt: Date(timeIntervalSince1970: 1531735023),
   references: [.serverSideSwiftFromScratch, .pointfreeco],
   sequence: 22,
   title: "A Tour of Point-Free",
   trailerVideo: .init(
-    bytesLength: 29_662_893,
-    downloadUrl: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer-720p.mp4",
-    streamingSource: "https://d1hf1soyumxcgv.cloudfront.net/0022-tour-of-pointfreeco/trailer/0022-trailer.m3u8"
+    bytesLength: 27_774_800,
+    downloadUrl: "https://player.vimeo.com/external/355115419.hd.mp4?s=8ba4a82f0c043e6dda797a609a9a53f4ab44b057&profile_id=174&download=1",
+    streamingSource: "https://player.vimeo.com/video/355115419"
   ),
   transcriptBlocks: transcriptBlocks
 )

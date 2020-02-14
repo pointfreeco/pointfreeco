@@ -1,3 +1,11 @@
+import Prelude
+
+extension Monoid {
+  public static func concat(_ xs: Self...) -> Self {
+    return xs.reduce(.empty, <>)
+  }
+}
+
 public func concat<A>(_ fs: [(A) -> A]) -> (A) -> A {
   return { a in
     fs.reduce(a) { a, f in f(a) }

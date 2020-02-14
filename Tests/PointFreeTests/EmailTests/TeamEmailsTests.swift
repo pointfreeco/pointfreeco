@@ -11,13 +11,18 @@ import WebKit
 #endif
 
 class TeamEmailsTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testYouHaveBeenRemovedEmailView() {
-    let emailNodes = youHaveBeenRemovedEmailView.view((.mock, .mock))
+    let emailNodes = youHaveBeenRemovedEmailView(.teamOwner(.mock))
 
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
@@ -27,12 +32,12 @@ class TeamEmailsTests: TestCase {
   }
 
   func testTeammateRemovedEmailView() {
-    let emailNodes = teammateRemovedEmailView.view((.mock, .mock))
+    let emailNodes = teammateRemovedEmailView((.mock, .mock))
 
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 

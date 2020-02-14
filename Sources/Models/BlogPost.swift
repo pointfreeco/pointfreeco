@@ -6,6 +6,7 @@ public struct BlogPost: Equatable {
   public var blurb: String
   public var contentBlocks: [Episode.TranscriptBlock]
   public var coverImage: String?
+  public var hidden: Bool
   public var id: Id
   public var publishedAt: Date
   public var title: String
@@ -15,6 +16,7 @@ public struct BlogPost: Equatable {
     blurb: String,
     contentBlocks: [Episode.TranscriptBlock],
     coverImage: String?,
+    hidden: Bool = false,
     id: Id,
     publishedAt: Date,
     title: String) {
@@ -22,6 +24,7 @@ public struct BlogPost: Equatable {
     self.blurb = blurb
     self.contentBlocks = contentBlocks
     self.coverImage = coverImage
+    self.hidden = hidden
     self.id = id
     self.publishedAt = publishedAt
     self.title = title

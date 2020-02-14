@@ -1,0 +1,2 @@
+GET https://api.stripe.com/v1/coupons/give%20me%20free%20subscription
+Stripe-Version: 2019-12-03

@@ -1,5 +1,4 @@
 import Either
-import Html
 import HttpPipeline
 import Optics
 @testable import PointFree
@@ -20,83 +19,16 @@ final class ChangeTests: TestCase {
 //    record = true
   }
 
-  func testChangeShow() {
-    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
+  func testChangeRedirect() {
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ]
-      )
-    }
-    #endif
-  }
-
-  func testChangeShowLoggedOut() {
-    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedOut))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testChangeShowNoSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(throwE(unit)))
+    update(
+      &Current,
+      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+    )
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testChangeShowCancelingSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
-
-    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ]
-      )
-    }
-    #endif
-  }
-
-  func testChangeShowCanceledSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceled)))
-
-    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testChangeShowDiscountSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.discounted)))
-
-    let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 1800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 1800))
-        ]
-      )
-    }
     #endif
   }
 
@@ -169,7 +101,7 @@ final class ChangeTests: TestCase {
   }
 
   func testChangeUpdateAddSeatsIndividualPlan() {
-    //    record = true
+//    record = true
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
     update(

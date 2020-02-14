@@ -1,12 +1,13 @@
 import Either
-import Html
 import HttpPipeline
+import Models
 import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import Stripe
 #if !os(Linux)
 import WebKit
 #endif
@@ -20,12 +21,12 @@ class PaymentInfoTests: TestCase {
   }
 
   func testRender() {
-    let conn = connection(from: request(to: .account(.paymentInfo(.show(expand: nil))), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       assertSnapshots(
         matching: conn |> siteMiddleware,
         as: [
@@ -35,5 +36,18 @@ class PaymentInfoTests: TestCase {
       )
     }
     #endif
+  }
+
+  func testInvoiceBilling() {
+    let customer = Stripe.Customer.mock
+      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
+    let subscription = Stripe.Subscription.teamYearly
+      |> (\Stripe.Subscription.customer) .~ .right(customer)
+    Current = .teamYearly
+      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
+
+    let conn = connection(from: request(to: .account(.paymentInfo(.show)), session: .loggedIn))
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

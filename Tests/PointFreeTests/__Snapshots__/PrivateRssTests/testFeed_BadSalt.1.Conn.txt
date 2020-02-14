@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/f9c46e50cb32c3f12369e92c8bb9d9db09edf2cce5
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4877
+Content-Length: 5021
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -29,7 +29,7 @@ X-XSS-Protection: 1; mode=block
       en-US
     </language>
     <description>
-      ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
+      ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
     </description>
     <copyright>
       Copyright Point-Free, Inc. 2018
@@ -52,7 +52,7 @@ X-XSS-Protection: 1; mode=block
       Functional programming concepts explained simply.
     </itunes:subtitle>
     <itunes:summary>
-      ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
+      ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
     </itunes:summary>
     <itunes:explicit>
       no
@@ -88,7 +88,7 @@ X-XSS-Protection: 1; mode=block
         Invalid Feed URL
       </title>
       <pubDate>
-        Mon, 29 Jan 2018 06:11:09 +0000
+        Mon, 01 Jan 4001 00:00:00 +0000
       </pubDate>
       <link>
         http://localhost:8080
@@ -97,7 +97,7 @@ X-XSS-Protection: 1; mode=block
         1517356800.0
       </guid>
       <description>
-        ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
+        ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
       </description>
       <dc:creator>
         Brandon Williams
@@ -109,10 +109,10 @@ X-XSS-Protection: 1; mode=block
         Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
-        ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
+        ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
       </itunes:subtitle>
       <itunes:summary>
-        ‼️ The URL for this feed has been turned off by Point-Free. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
+        ‼️ The URL for this feed has been turned off by Point-Free due to suspicious activity. You can retrieve your most up-to-date private podcast URL by visiting your account page at http://localhost:8080/account. If you think this is an error, please contact support@pointfree.co.
       </itunes:summary>
       <itunes:explicit>
         no
@@ -121,7 +121,7 @@ X-XSS-Protection: 1; mode=block
         00:00:00
       </itunes:duration>
       <itunes:image>
-        https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/itunes-poster.jpg
+        https://i.vimeocdn.com/video/807678036.jpg
       </itunes:image>
       <itunes:season>
         1
@@ -135,12 +135,12 @@ X-XSS-Protection: 1; mode=block
       <itunes:episodeType>
         full
       </itunes:episodeType>
-      <enclosure url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4"
-                 length="411951213"
+      <enclosure url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=175&amp;download=1"
+                 length="90533615"
                  type="video/mp4">
       </enclosure>
-      <media:content url="https://d1hf1soyumxcgv.cloudfront.net/0000-introduction/full-720p-DE41675F-1919-4023-A5B3-1B9522C6BBBE.mp4"
-                     length="411951213"
+      <media:content url="https://player.vimeo.com/external/354215017.hd.mp4?s=5ec513cdfcccb5bab74356a156dea1dabdd48a16&amp;profile_id=175&amp;download=1"
+                     length="90533615"
                      type="video/mp4"
                      medium="video">
         <media:title>

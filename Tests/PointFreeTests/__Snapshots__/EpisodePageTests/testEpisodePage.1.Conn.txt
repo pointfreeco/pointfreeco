@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 77440
+Content-Length: 74956
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -66,6 +66,10 @@ body {
   background-color : #121212;
 }
 
+.bg-gray150 {
+  background-color : #242424;
+}
+
 .bg-gray650 {
   background-color : #a8a8a8;
 }
@@ -114,6 +118,13 @@ body {
   border-right-color  : #ccc;
   border-bottom-color : #ccc;
   border-left-color   : #ccc;
+}
+
+.border-gray-850 {
+  border-top-color    : #d8d8d8;
+  border-right-color  : #d8d8d8;
+  border-bottom-color : #d8d8d8;
+  border-left-color   : #d8d8d8;
 }
 
 .border-gray-900 {
@@ -411,7 +422,7 @@ a:link.btn-normal {
 }
 
 .h6 {
-  font-size : 0.75rem;
+  font-size : 0.875rem;
 }
 
 .ts-m-r4 {
@@ -729,6 +740,10 @@ a:link.btn-normal {
   padding-bottom : 4rem;
 }
 
+.m-pb5 {
+  padding-bottom : 8rem;
+}
+
 .m-pl0 {
   padding-left : 0;
 }
@@ -747,6 +762,10 @@ a:link.btn-normal {
 
 .m-pl4 {
   padding-left : 4rem;
+}
+
+.m-pl5 {
+  padding-left : 8rem;
 }
 
 .m-pr0 {
@@ -769,6 +788,10 @@ a:link.btn-normal {
   padding-right : 4rem;
 }
 
+.m-pr5 {
+  padding-right : 8rem;
+}
+
 .m-pt0 {
   padding-top : 0;
 }
@@ -787,6 +810,10 @@ a:link.btn-normal {
 
 .m-pt4 {
   padding-top : 4rem;
+}
+
+.m-pt5 {
+  padding-top : 8rem;
 }
 
 .m-mb0 {
@@ -809,6 +836,10 @@ a:link.btn-normal {
   margin-bottom : 4rem;
 }
 
+.m-mb5 {
+  margin-bottom : 8rem;
+}
+
 .m-ml0 {
   margin-left : 0;
 }
@@ -827,6 +858,10 @@ a:link.btn-normal {
 
 .m-ml4 {
   margin-left : 4rem;
+}
+
+.m-ml5 {
+  margin-left : 8rem;
 }
 
 .m-mr0 {
@@ -849,6 +884,10 @@ a:link.btn-normal {
   margin-right : 4rem;
 }
 
+.m-mr5 {
+  margin-right : 8rem;
+}
+
 .m-mt0 {
   margin-top : 0;
 }
@@ -867,6 +906,10 @@ a:link.btn-normal {
 
 .m-mt4 {
   margin-top : 4rem;
+}
+
+.m-mt5 {
+  margin-top : 8rem;
 }
 
 .bold {
@@ -1463,6 +1506,10 @@ html {
   padding-bottom : 4rem;
 }
 
+.d-pb5 {
+  padding-bottom : 8rem;
+}
+
 .d-pl0 {
   padding-left : 0;
 }
@@ -1481,6 +1528,10 @@ html {
 
 .d-pl4 {
   padding-left : 4rem;
+}
+
+.d-pl5 {
+  padding-left : 8rem;
 }
 
 .d-pr0 {
@@ -1503,6 +1554,10 @@ html {
   padding-right : 4rem;
 }
 
+.d-pr5 {
+  padding-right : 8rem;
+}
+
 .d-pt0 {
   padding-top : 0;
 }
@@ -1521,6 +1576,10 @@ html {
 
 .d-pt4 {
   padding-top : 4rem;
+}
+
+.d-pt5 {
+  padding-top : 8rem;
 }
 
 }
@@ -1546,6 +1605,10 @@ html {
   margin-bottom : 4rem;
 }
 
+.d-mb5 {
+  margin-bottom : 8rem;
+}
+
 .d-ml0 {
   margin-left : 0;
 }
@@ -1564,6 +1627,10 @@ html {
 
 .d-ml4 {
   margin-left : 4rem;
+}
+
+.d-ml5 {
+  margin-left : 8rem;
 }
 
 .d-mr0 {
@@ -1586,6 +1653,10 @@ html {
   margin-right : 4rem;
 }
 
+.d-mr5 {
+  margin-right : 8rem;
+}
+
 .d-mt0 {
   margin-top : 0;
 }
@@ -1604,6 +1675,10 @@ html {
 
 .d-mt4 {
   margin-top : 4rem;
+}
+
+.d-mt5 {
+  margin-top : 8rem;
 }
 
 }
@@ -1664,6 +1739,16 @@ html {
   margin-bottom : 1.5rem;
 }
 
+
+.md-ctn pre code {
+  padding-top    : 2rem;
+  padding-right  : 2rem;
+  padding-bottom : 2rem;
+  padding-left   : 2rem;
+  display        : block;
+  overflow-x     : auto;
+}
+
 .md-ctn code {
   font-family                : monospace;
   padding-top                : 1px;
@@ -1679,62 +1764,6 @@ html {
   border-bottom-right-radius : 3px;
   border-bottom-left-radius  : 3px;
   background-color           : #f7f7f7;
-}
-
-.block input:checked ~ * > * {
-  color : #974dff;
-}
-
-input {
-  color : #a8a8a8;
-}
-
-input {
-  margin-right : auto;
-  margin-left  : auto;
-}
-
-.content0 {
-  display : none;
-}
-
-.content1 {
-  display : none;
-}
-
-#tab0:checked ~ * .content0 {
-  display : inherit;
-}
-
-#tab1:checked ~ * .content1 {
-  display : inherit;
-}
-
-#tab0:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-#tab1:checked + * {
-  color            : #974dff;
-  background-color : #fff;
-}
-
-.num-spinner {
-  padding-left        : 20px;
-  max-width           : 160px;
-  border              : 0;
-  border-bottom-style : solid;
-  border-bottom-color : #a8a8a8;
-  border-bottom-width : 1px;
-}
-
-input::-webkit-inner-spin-button {
-  opacity : 1.0;
-}
-
-input::-webkit-outer-spin-button {
-  opacity : 1.0;
 }
 
 
@@ -1784,36 +1813,6 @@ Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookb
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <style>
-      .vjs-subs-caps-button{display:none}
-    </style>
-    <script>
-      window.HELP_IMPROVE_VIDEOJS = false
-
-function videoJsLoaded() {
-  video.addEventListener('webkitplaybacktargetavailabilitychanged', function(event) {
-    if (event.availability != "available") { return }
-
-    videojs("episode-video").ready(function() {
-      var existingAirplayControl = document.getElementsByClassName('vjs-airplay-control')
-      if (existingAirplayControl.length != 0) { return }
-
-      var controlBar = document.getElementsByClassName('vjs-control-bar')[0]
-      var video = document.getElementsByTagName('video')[0]
-
-      var template = document.createElement('div')
-      template.innerHTML = '<button class="vjs-airplay-control vjs-control vjs-button" type="button" title="AirPlay"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxM3B4IiB2aWV3Qm94PSIwIDAgMTYgMTMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iTWVkaWEtQ29udHJvbC1TeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iX0Fzc2V0cy9JbmxpbmUvQWlycGxheSIgZmlsbD0iI2ZmZmZmZiI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik03LjU5MDI1MzMzLDcuMTQ2NTg2ODkgQzcuNzkxODA0NDksNi45NTMxMDU3NyA4LjExNDQ5MzQ0LDYuOTQ5MTc5NSA4LjMyMDEzNDY0LDcuMTQ2NTg2ODkgTDEzLjY4NTI2NDYsMTIuMjk2ODk4OCBDMTQuMDc5NzUxMSwxMi42NzU1OTAyIDEzLjk1NTg4NzIsMTIuOTgyNTgwMiAxMy4zOTg5MTU0LDEyLjk4MjU4MDIgTDIuNTExNDcyNTQsMTIuOTgyNTgwMiBDMS45NTg4Mzk3OSwxMi45ODI1ODAyIDEuODM5Mjc4NDksMTIuNjY3Mjk0NiAyLjIyNTEyMzM2LDEyLjI5Njg5ODggTDcuNTkwMjUzMzMsNy4xNDY1ODY4OSBaIiBpZD0iaU9TL0Z1bGxzY3JlZW4vQWlycGxheSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMsMTAgTDE0Ljk5OTEyODMsMTAgQzE1LjU1NTM2OTEsMTAgMTYsOS41NTQzNDUzMyAxNiw5LjAwNDYwMjQzIEwxNiwwLjk5NTM5NzU2OCBDMTYsMC40NTU2NjQzOTYgMTUuNTUxODk0NSwwIDE0Ljk5OTEyODMsMCBMMS4wMDA4NzE2NiwwIEMwLjQ0NDYzMDg2MSwwIDAsMC40NDU2NTQ2NzEgMCwwLjk5NTM5NzU2OCBMMCw5LjAwNDYwMjQzIEMwLDkuNTQ0MzM1NiAwLjQ0ODEwNTUwNSwxMCAxLjAwMDg3MTY2LDEwIEwzLDEwIEw0LDkgTDEuNDk4MjY3NDEsOSBDMS4yMjMwODE5Miw5IDEsOC43NjkyMDMxOSAxLDguNDk5NTY0MTcgTDEsMS41MDA0MzU4MyBDMSwxLjIyNDA1Mjc1IDEuMjE5OTA2NTcsMSAxLjQ5ODI2NzQxLDEgTDE0LjUwMTczMjYsMSBDMTQuNzc2OTE4MSwxIDE1LDEuMjMwNzk2ODEgMTUsMS41MDA0MzU4MyBMMTUsOC40OTk1NjQxNyBDMTUsOC43NzU5NDcyNSAxNC43ODAwOTM0LDkgMTQuNTAxNzMyNiw5IEwxMiw5IEwxMywxMCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="AirPlay" style="vertical-align:middle"></button>'
-
-      controlBar.insertBefore(template.firstChild, controlBar.childNodes[controlBar.childNodes.length - 1])
-
-      var airplayControl = document.getElementsByClassName('vjs-airplay-control')[0]
-      airplayControl.addEventListener('click', function() {
-        video.webkitShowPlaybackTargetPicker()
-      })
-    })
-  })
-}
-    </script>
     <meta name="description"
           content="This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
 text, no markdown allowed. Here is some more text just to have some filler.">
@@ -1955,7 +1954,7 @@ text, no markdown allowed. Here is some more text just to have some filler.">
                     lh-4"
              style="margin-right:-6rem;
                     margin-left:-6rem">
-          A new Swift video series exploring functional programming and more.
+          A video series exploring functional programming and Swift.
         </div>
       </div>
       <div class="d-pt0
@@ -2010,6 +2009,30 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
 
               </div>
             </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                  Type-Safe HTML in Swift
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -2018,274 +2041,296 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <div class="col-m
                   col-d-6
                   col-m-12">
-        <div>
-          <div class="hide-m">
-            <div class="d-pl4
-                        d-pr4
-                        d-pt4
-                        d-pb4
-                        m-pl3
-                        m-pr3
-                        m-pt3
-                        m-pb3
-                        bg-white">
-              <strong class="fg-black
-                             bold
-                             ts-m-r0_75
-                             lh-1
-                             caps">
-                #2 • Tuesday Dec 20, 2016 • Subscriber-only
-              </strong>
-              <h1 class="fg-black
-                         bold
-                         ts-d-r1_5
-                         ts-m-r1_25
-                         lh-2
-                         m-mt2">
-                <a href="/episodes/ep2-proof-in-functions">
-                  Proof in Functions
-                </a>
-              </h1>
-              <div class="body-leading
-                          fg-black
-                          normal
-                          lh-4">
-                <div class="md-ctn">
-                  <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="center
-                      d-ml4
-                      d-mr4
-                      d-mt4
-                      d-mb4
-                      m-ml3
-                      m-mr3
-                      m-mt3
-                      m-mb3
-                      d-pt2
-                      d-pl2
-                      d-pr2
+        <div class="hide-m">
+          <div class="d-pl4
+                      d-pr4
+                      d-pt4
+                      d-pb4
+                      m-pl3
+                      m-pr3
+                      m-pt3
                       m-pb3
-                      m-pt1
-                      m-pl1
-                      m-pr1
-                      bg-gray900">
-            <h3 class="fg-black
+                      bg-white">
+            <strong class="fg-black
+                           bold
+                           ts-m-r0_75
+                           lh-1
+                           caps">
+              #2 • Tuesday Dec 20, 2016 • Subscriber-only
+            </strong>
+            <h1 class="fg-black
                        bold
                        ts-d-r1_5
                        ts-m-r1_25
-                       lh-2">
-              Subscribe to Point&#8209;Free
-            </h3>
-            <p class="body-leading
-                      fg-black
-                      normal
-                      lh-4
-                      m-pb3
-                      m-pt2">
-              This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
-today!
-            </p>
-            <a href="/pricing"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-purple
-                      h5
-                      m-pl2
-                      m-pr2">
-              See subscription options
-            </a>
-            <span class="m-pl2">
-              or
-            </span>
-            <a href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-outline
-                      border-none
-                      underline
-                      pf-link-black
-                      fg-black
-                      bg-inherit
-                      h5
-                      m-pl2
-                      m-pr2">
-              Log in
-            </a>
-            <p class="fg-black
-                      normal
-                      h5
-                      lh-4
-                      m-pb2
-                      m-pt4">
-              Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
-subscriber-only episode of your choosing!
-            </p>
-            <a href="/login?redirect=/episodes/ep2-proof-in-functions"
-               class="medium
-                      cursor-pointer
-                      nowrap
-                      btn-normal
-                      rounded
-                      border-none
-                      text-decoration-none
-                      pf-link-white
-                      fg-white
-                      bg-black
-                      h5
-                      m-pl2
-                      m-pr2">
-              Sign up for free episode
-            </a>
-          </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div id="transcript"
-               class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 class="h4
-                       lh-3
-                       m-pt2"
-                id="t0">
-              <a href="#t0">
-                Introduction
+                       lh-2
+                       m-mt2">
+              <a href="/episodes/ep2-proof-in-functions">
+                Proof in Functions
               </a>
-            </h2>
-            <div>
-              <div id="t0"
-                   class="block">
-                <a href="#"
-                   onclick="var video = document.getElementsByTagName("video")[0];
-video.currentTime = event.target.dataset.t;
-video.play();event.preventDefault();"
-                   data-t="0"
-                   class="vid-time-link
-                          text-decoration-none
-                          pf-link-gray650
-                          h6">
-                  00:00
-                </a>
-              </div>
+            </h1>
+            <div class="body-leading
+                        fg-black
+                        normal
+                        lh-4">
               <div class="md-ctn">
-                <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
+                <p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
+text, no markdown allowed. Here is some more text just to have some filler.</p>
+
+              </div>
+            </div>
+            <p class="d-pt1
+                      m-pt1
+                      bg-white
+                      body-leading
+                      fg-black
+                      normal
+                      lh-4">
+              This episode builds on concepts introduced previously:
+            </p>
+            <ul class="list-style-none
+                       m-pl2">
+              <li class="body-leading
+                         fg-black
+                         normal
+                         lh-4">
+                #
+                1
+                : 
+                <a class="pf-link-purple"
+                   href="http://localhost:8080/episodes/ep1-type-safe-html-in-swift">
+                  Type-Safe HTML in Swift
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="center
+                    d-ml4
+                    d-mr4
+                    d-mt4
+                    d-mb4
+                    m-ml3
+                    m-mr3
+                    m-mt3
+                    m-mb3
+                    d-pt2
+                    d-pl2
+                    d-pr2
+                    m-pb3
+                    m-pt1
+                    m-pl1
+                    m-pr1
+                    bg-gray900">
+          <h3 class="fg-black
+                     bold
+                     ts-d-r1_5
+                     ts-m-r1_25
+                     lh-2">
+            Subscribe to Point&#8209;Free
+          </h3>
+          <p class="body-leading
+                    fg-black
+                    normal
+                    lh-4
+                    m-pb3
+                    m-pt2">
+            This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber
+today!
+          </p>
+          <a href="/pricing"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    rounded
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-purple
+                    h5
+                    m-pl2
+                    m-pr2">
+            See subscription options
+          </a>
+          <span class="m-pl2">
+            or
+          </span>
+          <a href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-outline
+                    border-none
+                    underline
+                    pf-link-black
+                    fg-black
+                    bg-inherit
+                    h5
+                    m-pl2
+                    m-pr2">
+            Log in
+          </a>
+          <p class="fg-black
+                    normal
+                    h5
+                    lh-4
+                    m-pb2
+                    m-pt4">
+            Sign up for our weekly newsletter to be notified of new episodes, and unlock access to any
+subscriber-only episode of your choosing!
+          </p>
+          <a href="/login?redirect=/episodes/ep2-proof-in-functions"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    rounded
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-black
+                    h5
+                    m-pl2
+                    m-pr2">
+            Sign up for free episode
+          </a>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div id="transcript"
+             class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 class="h4
+                     lh-3
+                     m-pt2"
+              id="t0">
+            <a href="#t0">
+              Introduction
+            </a>
+          </h2>
+          <div>
+            <div id="t0"
+                 class="block">
+              <a href="#t0"
+                 class="vid-time-link
+                        text-decoration-none
+                        pf-link-gray650
+                        h6">
+                00:00
+              </a>
+            </div>
+            <div class="md-ctn">
+              <p>This is a <code>paragraph</code> transcript block. It just contains some markdown text. A paragraph block can
 also have a timestamp associated with it, which is rendered at the beginning of the text. Clicking
 that timestamp jumps the video to that spot.</p>
 
-              </div>
             </div>
-            <div class="row">
-              <div style="margin-right:auto;
-                          margin-left:auto"
-                   class="col-m
-                          col-m-12">
-                <div class="m-mt4
-                            m-pl3
-                            m-pr3
-                            m-pt3
-                            m-pb3
-                            bg-gray900">
-                  <h4 class="fg-black
-                             bold
-                             ts-d-r1_5
-                             ts-m-r1_25
-                             lh-2
-                             m-pb2">
-                    Subscribe to Point-Free
-                  </h4>
-                  <p>
-                    👋 Hey there! Does this episode sound interesting? Well, then you may want to 
-                    <a href="/pricing"
-                       class="underline-link">
-                      subscribe
-                    </a>
-                     so that you get access to this episodes and more!
-                  </p>
-                </div>
+          </div>
+          <div class="row">
+            <div style="margin-right:auto;
+                        margin-left:auto"
+                 class="col-m
+                        col-m-12">
+              <div class="m-mt4
+                          m-pl3
+                          m-pr3
+                          m-pt3
+                          m-pb3
+                          bg-gray900">
+                <h4 class="fg-black
+                           bold
+                           ts-d-r1_5
+                           ts-m-r1_25
+                           lh-2
+                           m-pb2">
+                  Subscribe to Point-Free
+                </h4>
+                <p>
+                  👋 Hey there! Does this episode sound interesting? Well, then you may want to 
+                  <a href="/pricing"
+                     class="underline-link">
+                    subscribe
+                  </a>
+                   so that you get access to this episodes and more!
+                </p>
               </div>
             </div>
           </div>
-          <hr class="pf-divider
-                     border-top
-                     m-ml0
-                     m-mr0
-                     m-mt0
-                     m-mb0
-                     bg-white">
-          <div class="d-pb4
-                      d-pt2
-                      d-pl4
-                      d-pr4
-                      m-pl3
-                      m-pr3
-                      m-pt3
-                      m-pb3
-                      bg-white">
-            <h2 id="exercises"
-                class="h4
-                       lh-3
-                       m-pt2">
-              Exercises
-            </h2>
-            <ol>
-              <li id="exercise-1">
-                <div>
-                  <div class="md-ctn">
-                    <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+        </div>
+        <hr class="pf-divider
+                   border-top
+                   m-ml0
+                   m-mr0
+                   m-mt0
+                   m-mb0
+                   bg-white">
+        <div class="d-pb4
+                    d-pt2
+                    d-pl4
+                    d-pr4
+                    m-pl3
+                    m-pr3
+                    m-pt3
+                    m-pb3
+                    bg-white">
+          <h2 id="exercises"
+              class="h4
+                     lh-3
+                     m-pt2">
+            Exercises
+          </h2>
+          <ol>
+            <li id="exercise-1">
+              <div>
+                <div class="md-ctn">
+                  <p>Show that every simply-connected, 3-dimensional manifold is homeomorphic to the 3-sphere.</p>
+<pre><code>pi_1(X) = 0
+</code></pre>
 
-                  </div>
-                  <details>
-                    <summary>
-                      Solution
-                    </summary>
-                    <div class="bg-gray900
-                                m-pl2
-                                m-pr2
-                                m-pt1
-                                m-pb1
-                                m-mb3
-                                overflow-auto-x">
-                      <div class="md-ctn">
-                        <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
+                </div>
+                <details>
+                  <summary class="cursor-pointer">
+                    Solution
+                  </summary>
+                  <div class="border-left
+                              border-gray-850
+                              bg-white
+                              m-pl2
+                              m-pr2
+                              m-pt1
+                              m-pb1
+                              m-mb3
+                              overflow-auto-x">
+                    <div class="md-ctn">
+                      <p>Let g be a Riemannian metric on X, and consider the Ricci flow…</p>
 
-                      </div>
                     </div>
-                  </details>
-                </div>
-              </li>
-            </ol>
-          </div>
+                  </div>
+                </details>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="bg-purple150
@@ -2299,23 +2344,38 @@ that timestamp jumps the video to that spot.</p>
           <div class="w-100p
                       relative"
                style="padding-bottom:56.25%">
-            <video id="episode-video"
-                   class="h-100p
-                          w-100p
-                          absolute
-                          bg-gray650
-                          video-js
-                          vjs-default-skin
-                          vjs-big-play-centered"
-                   style="position:absolute"
-                   controls
-                   playslinline
-                   autoplay
-                   poster
-                   data-setup="{"control":true,"playbackRates":[1,1.25,1.5,1.75,2]}">
-              <source src="https://s3.amazonaws.com/pointfreeco/trailer.m3u8"
-                      type="application/vnd.apple.mpegurl">
-            </video>
+            <iframe class="h-100p
+                           w-100p
+                           absolute
+                           bg-gray650"
+                    src="https://www.vimeo.com/pointfreeco/stream-trailer.m3u8"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+            </iframe>
+            <script src="https://player.vimeo.com/api/player.js">
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
+
+  jump(window.location.hash, false);
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    if (target.tagName != "A") { return; }
+    var hash = new URL(target.href).hash;
+    jump(hash, true);
+  });
+
+  function jump(hash, play) {
+    var time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "");
+    if (time <= 0) { return; }
+    player.setCurrentTime(time);
+    if (play) { player.play(); }
+  }
+});
+            </script>
           </div>
           <div class="d-pl4
                       d-pr4
@@ -2450,23 +2510,6 @@ that timestamp jumps the video to that spot.</p>
         </div>
       </div>
     </div>
-    <script>
-      var hasPlayed = false;
-var video = document.getElementsByTagName('video')[0];
-video.addEventListener('play', function () {
-  hasPlayed = true;
-});
-document.addEventListener('keypress', function (event) {
-  if (hasPlayed && event.key === ' ') {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    event.preventDefault();
-  }
-});
-    </script>
     <footer class="row
                    d-pl4
                    d-pr4
@@ -2534,6 +2577,16 @@ document.addEventListener('keypress', function (event) {
                         normal
                         h5
                         lh-4"
+                 href="/pricing">
+                Pricing
+              </a>
+            </li>
+            <li>
+              <a class="pf-link-purple
+                        fg-black
+                        normal
+                        h5
+                        lh-4"
                  href="/">
                 Videos
               </a>
@@ -2556,43 +2609,6 @@ document.addEventListener('keypress', function (event) {
                         lh-4"
                  href="/about">
                 About Us
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-2
-                  col-m-4">
-        <div>
-          <h5 class="fg-black
-                     bold
-                     ts-d-r0_875
-                     ts-m-r0_75
-                     lh-1
-                     caps
-                     fg-white">
-            Account
-          </h5>
-          <ol class="list-reset">
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Subscribe
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Pricing
               </a>
             </li>
           </ol>

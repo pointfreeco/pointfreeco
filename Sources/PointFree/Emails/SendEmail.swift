@@ -7,6 +7,7 @@ import Models
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
+import Styleguide
 
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
@@ -19,7 +20,7 @@ public func prepareEmail(
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
-  content: Either3<String, [Node], (String, [Node])>,
+  content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
   )
   -> Email {
@@ -28,7 +29,7 @@ public func prepareEmail(
       either3(
         content,
         { plain in (plain, nil) },
-        { nodes in (plainText(for: nodes), render(nodes)) },
+        { node in (plainText(for: node), render(node)) },
         second { render($0) }
     )
 
@@ -41,7 +42,7 @@ public func prepareEmail(
             .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
             .map({ url(to: .expressUnsubscribe(payload: $0)) })
           else {
-            Current.logger.error("Failed to generate unsubscribe link for user \(userId)")
+            Current.logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
             return []
         }
 
@@ -82,7 +83,7 @@ public func sendEmail(
   to: [EmailAddress],
   subject: String,
   unsubscribeData: (User.Id, EmailSetting.Newsletter)? = nil,
-  content: Either3<String, [Node], (String, [Node])>,
+  content: Either3<String, Node, (String, Node)>,
   domain: String = mgDomain
   )
   -> EitherIO<Error, SendEmailResponse> {

@@ -1,10 +1,10 @@
 import SnapshotTesting
 import Html
+import HtmlPlainTextPrint
 import Prelude
 import XCTest
 @testable import PointFree
 import PointFreeTestSupport
-import HtmlPlainTextPrint
 import HttpPipeline
 import Optics
 #if !os(Linux)
@@ -12,14 +12,19 @@ import WebKit
 #endif
 
 class EmailInviteTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
   func testEmailInvite() {
-    let doc = teamInviteEmailView.view((.mock, .mock))
+    let doc = teamInviteEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)
@@ -31,13 +36,13 @@ class EmailInviteTests: TestCase {
   }
 
   func testInviteAcceptance() {
-    let doc = inviteeAcceptedEmailView.view((.mock, .mock))
+    let doc = inviteeAcceptedEmailView((.mock, .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: .init(x: 0, y: 0, width: 800, height: 800))
       webView.loadHTMLString(render(doc), baseURL: nil)
       assertSnapshot(matching: webView, as: .image)

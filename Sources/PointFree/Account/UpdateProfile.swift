@@ -29,7 +29,12 @@ private func fetchStripeSubscription<A>(
     }
 }
 
-let updateProfileMiddleware =
+let updateProfileMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple2<User?, ProfileData?>,
+  Data
+  > =
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
     <<< filter(
@@ -47,18 +52,19 @@ let updateProfileMiddleware =
 
       let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
       if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
-        updateFlash = flash(.warning, "We’ve sent an email to \(user.email) to confirm this change.")
+        updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
         parallel(
           sendEmail(
             to: [user.email],
             subject: "Email change confirmation",
-            content: inj2(confirmEmailChangeEmailView.view((user, data.email, emailChangePayload)))
+            content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
             )
             .run
           )
           .run({ _ in })
       } else {
-        updateFlash = flash(.notice, "We’ve updated your profile!")
+        // TODO: why is unicode ‘ not encoded correctly?
+        updateFlash = flash(.notice, "We've updated your profile!")
       }
 
       let updateCustomerExtraInvoiceInfo = zip(
@@ -68,7 +74,7 @@ let updateProfileMiddleware =
         .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
         ?? pure(unit)
 
-      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil)
+      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil, nil)
         .flatMap(const(updateCustomerExtraInvoiceInfo))
         .run
         .flatMap(
@@ -92,7 +98,7 @@ func encryptPayload<A>(
           .unapply((user.id, data.email))
           .flatMap({ Encrypted($0, with: Current.envVars.appSecret) })
         else {
-          Current.logger.error("Failed to encrypt email change for user: \(user.id)")
+          Current.logger.log(.error, "Failed to encrypt email change for user: \(user.id)")
 
           return conn |> redirect(
             to: .account(.index),
@@ -113,7 +119,7 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
     let decrypted = conn.data.decrypt(with: Current.envVars.appSecret),
     let (userId, newEmailAddress) = emailChangeIso.apply(decrypted)
     else {
-      Current.logger.error("Failed to decrypt email change payload: \(conn.data.rawValue)")
+      Current.logger.log(.error, "Failed to decrypt email change payload: \(conn.data.rawValue)")
 
       return conn |> redirect(
         to: .account(.index),
@@ -128,14 +134,14 @@ let confirmEmailChangeMiddleware: Middleware<StatusLineOpen, ResponseEnded, Encr
         sendEmail(
           to: [newEmailAddress],
           subject: "Email change confirmation",
-          content: inj2(emailChangedEmailView.view((user, newEmailAddress)))
+          content: inj2(emailChangedEmailView((user, newEmailAddress)))
         )
       }
       .run
     )
     .run({ _ in })
 
-  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil)
+  return Current.database.updateUser(userId, nil, newEmailAddress, nil, nil, nil)
     .run
     .flatMap(const(conn |> redirect(to: .account(.index))))
 }

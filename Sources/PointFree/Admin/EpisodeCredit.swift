@@ -1,8 +1,6 @@
 import Css
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
@@ -12,17 +10,24 @@ import PointFreePrelude
 import Prelude
 import Styleguide
 import Tuple
-import View
 import Views
 
-let showEpisodeCreditsMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple1<User?>, Data> =
-  requireAdmin
-    <| writeStatus(.ok)
-    >=> respond(showEpisodeCreditsView.contramap(const(unit)))
+let showEpisodeCreditsMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple1<User>,
+  Data
+  > =
+  writeStatus(.ok)
+    >=> respond({ _ in showEpisodeCreditsView })
 
-let redeemEpisodeCreditMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple3<User?, User.Id?, Int?>, Data> =
-  requireAdmin
-    <<< filterMap(
+let redeemEpisodeCreditMiddleware: Middleware<
+  StatusLineOpen,
+  ResponseEnded,
+  Tuple3<User, User.Id?, Int?>,
+  Data
+  > =
+  filterMap(
       over2(fetchUser(id:)) >>> sequence2 >>> map(require2),
       or: redirect(to: .admin(.episodeCredits(.show)), headersMiddleware: flash(.error, "Could not find that user."))
     )

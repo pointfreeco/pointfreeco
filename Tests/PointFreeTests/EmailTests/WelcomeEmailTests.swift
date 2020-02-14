@@ -22,12 +22,12 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail1() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail1Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
@@ -39,12 +39,12 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail2() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail2Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 
@@ -56,12 +56,12 @@ final class WelcomeEmailTests: TestCase {
   func testWelcomeEmail3() {
     update(&Current, \.database .~ .mock)
 
-    let emailNodes = welcomeEmailView("", welcomeEmail3Content).view(.newUser)
+    let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
 
     assertSnapshot(matching: emailNodes, as: .html)
 
     #if !os(Linux)
-    if #available(OSX 10.13, *), ProcessInfo.processInfo.environment["CIRCLECI"] == nil {
+    if self.isScreenshotTestingAvailable {
       let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
       webView.loadHTMLString(render(emailNodes), baseURL: nil)
 

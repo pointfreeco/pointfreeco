@@ -3,7 +3,7 @@ import Foundation
 import GitHub
 import Prelude
 
-public enum GitHubRoute: DerivePartialIsos {
+public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.Id, redirectUri: String?, scope: String)
   case episodeCodeSample(directory: String)
   case license
@@ -27,26 +27,26 @@ public enum GitHubRoute: DerivePartialIsos {
 
 public let gitHubRouter = [
 
-  PartialIso.authorize
-    <¢> get %> lit("login") %> lit("oauth") %> lit("authorize")
+  parenthesize(.case(GitHubRoute.authorize))
+    <¢> get %> "login" %> "oauth" %> "authorize"
     %> queryParam("client_id", .tagged(.string))
     <%> queryParam("redirect_uri", opt(.string))
     <%> queryParam("scope", .string)
     <% end,
 
-  .episodeCodeSample
-    <¢> lit("pointfreeco") %> lit("episode-code-samples") %> lit("tree") %> lit("master")
+  .case(GitHubRoute.episodeCodeSample)
+    <¢> "pointfreeco" %> "episode-code-samples" %> "tree" %> "master"
     %> pathParam(.string)
     <% end,
 
-  .license
-    <¢> lit("pointfreeco") %> lit("pointfreeco") %> lit("blob") %> lit("master") %> lit("LICENSE") %> end,
+  .case(.license)
+    <¢> "pointfreeco" %> "pointfreeco" %> "blob" %> "master" %> "LICENSE" %> end,
 
-  .organization
-    <¢> get <% lit("pointfreeco") <% end,
+  .case(.organization)
+    <¢> get <% "pointfreeco" <% end,
 
-  .repo
-    <¢> get %> lit("pointfreeco") %> pathParam(.rawRepresentable) <% end,
+  .case(GitHubRoute.repo)
+    <¢> get %> "pointfreeco" %> pathParam(.rawRepresentable) <% end,
 
   ]
   .reduce(.empty, <|>)
