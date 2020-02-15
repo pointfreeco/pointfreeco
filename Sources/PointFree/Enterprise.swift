@@ -17,14 +17,8 @@ import Tuple
 import UrlFormEncoding
 import Views
 
-let enterpriseLandingResponse: M<Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>>
-  = filterMap(
-    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
-    or: redirect(
-      to: .home,
-      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
-    )
-    )
+let enterpriseLandingResponse
+  = requireEnterpriseAccount
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -40,8 +34,21 @@ let enterpriseLandingResponse: M<Tuple3<User?, SubscriberState, EnterpriseAccoun
     }
 )
 
-let enterpriseRequestMiddleware: M<Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>>
-  = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
+private let requireEnterpriseAccount
+  : MT<
+  Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>,
+  Tuple3<User?, SubscriberState, EnterpriseAccount>
+  >
+  = filterMap(
+    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
+    or: redirect(
+      to: .home,
+      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+    )
+)
+
+let enterpriseRequestMiddleware
+  = requireEnterpriseAccountWithFormData
     <<< validateMembership
     <<< filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< sendEnterpriseInvitation
@@ -51,6 +58,15 @@ let enterpriseRequestMiddleware: M<Tuple3<User?, EnterpriseAccount.Domain, Enter
         headersMiddleware: flash(.notice, "We've sent an invite to \(get3(conn.data).email.rawValue)!")
       )
 }
+
+private let requireEnterpriseAccountWithFormData
+  : MT<
+  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
+  Tuple3<User?, EnterpriseAccount, EnterpriseRequestFormData>
+  >
+  = filterMap(
+    over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home)
+)
 
 let enterpriseAcceptInviteMiddleware
   = redirectCurrentSubscribersAndRequireEnterpriseAccount

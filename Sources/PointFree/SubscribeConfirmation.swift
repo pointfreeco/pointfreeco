@@ -42,11 +42,16 @@ public let subscribeConfirmation: Middleware<
     }
 )
 
-public let discountSubscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
+public let discountSubscribeConfirmation
+  = fetchAndValidateCoupon
+    <| map(over6(Optional.some))
+    >>> pure
+    >=> subscribeConfirmation
+
+private let fetchAndValidateCoupon
+  : MT<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
-  Data
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
@@ -71,10 +76,7 @@ public let discountSubscribeConfirmation: Middleware<
         ),
         headersMiddleware: flash(.error, couponError)
       )
-    )
-    <| map(over6(Optional.some))
-    >>> pure
-    >=> subscribeConfirmation
+)
 
 private let couponError = "That coupon code is invalid or has expired."
 

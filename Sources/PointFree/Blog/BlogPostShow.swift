@@ -8,11 +8,8 @@ import Prelude
 import Tuple
 import Views
 
-let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, Route?>, Data> =
-  filterMap(
-    over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),
-    or: redirect(to: .home)
-    )
+let blogPostShowMiddleware
+  = fetchBlogPostForParam
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -33,6 +30,16 @@ let blogPostShowMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple4<Eit
           usePrismJs: true
         )
     }
+)
+
+private let fetchBlogPostForParam
+  : MT<
+  Tuple4<Either<String, BlogPost.Id>, User?, SubscriberState, Route?>,
+  Tuple4<BlogPost, User?, SubscriberState, Route?>
+  >
+  = filterMap(
+    over1(fetchBlogPost(forParam:) >>> pure) >>> sequence1 >>> map(require1),
+    or: redirect(to: .home)
 )
 
 func fetchBlogPost(forParam param: Either<String, BlogPost.Id>) -> BlogPost? {

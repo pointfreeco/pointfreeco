@@ -10,19 +10,23 @@ import Prelude
 import Styleguide
 import Tuple
 
-let leaveTeamMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
+let leaveTeamMiddleware
+  = requireOwner
+    <<< leaveTeam
+    <| redirect(
+      to: .account(.index),
+      headersMiddleware: flash(.notice, "You are no longer a part of that team.")
+)
+
+private let requireOwner
+  : MT<Tuple2<User?, SubscriberState>, Tuple2<User, SubscriberState>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filter(
       get2 >>> ^\.isOwner >>> (!),
       or: redirect(
         to: .account(.index),
         headersMiddleware: flash(.error, "You are the owner of the subscription, you can’t leave.")
       )
-    )
-    <<< leaveTeam
-    <| redirect(
-      to: .account(.index),
-      headersMiddleware: flash(.notice, "You are no longer a part of that team.")
 )
 
 private func leaveTeam<Z>(
@@ -54,19 +58,9 @@ private func leaveTeam<Z>(
   }
 }
 
-let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User?>, Data> =
-  filterMap(require2 >>> pure, or: loginAndRedirect)
-    <<< filterMap(
-      over1(
-        Current.database.fetchUserById
-          >>> mapExcept(requireSome)
-          >>> ^\.run
-          >>> map(^\.right)
-        )
-        >>> sequence1
-        >>> map(require1),
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Could not find that teammate."))
-    )
+let removeTeammateMiddleware
+  = filterMap(require2 >>> pure, or: loginAndRedirect)
+    <<< requireTeammate
     <| { conn -> IO<Conn<StatusLineOpen, Prelude.Unit>> in
       let (teammate, currentUser) = lower(conn.data)
       guard let teammateSubscriptionId = teammate.subscriptionId
@@ -96,11 +90,25 @@ let removeTeammateMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<U
 
               return pure(x)
           }
-        }
-        .run
-        .map(const(conn.map(const(unit))))
+      }
+      .run
+      .map(const(conn.map(const(unit))))
     }
     >=> redirect(to: .account(.index), headersMiddleware: flash(.notice, "That teammate has been removed."))
+
+private let requireTeammate
+  : MT<Tuple2<User.Id, User>, Tuple2<User, User>>
+  = filterMap(
+    over1(
+      Current.database.fetchUserById
+        >>> mapExcept(requireSome)
+        >>> ^\.run
+        >>> map(^\.right)
+      )
+      >>> sequence1
+      >>> map(require1),
+    or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Could not find that teammate."))
+)
 
 private func sendEmailsForTeammateRemoval(owner: User, teammate: User) -> Parallel<Prelude.Unit> {
 
