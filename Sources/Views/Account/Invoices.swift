@@ -119,79 +119,38 @@ public func invoiceView(
     )
   )
 
+  func section(_ pairs: [(String, String)]) -> Node {
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      .fragment(
+        pairs.map { left, right in
+          .gridRow(
+            .gridColumn(
+              sizes: [.mobile: 12, .desktop: 2],
+              attributes: [.class([Class.type.bold])],
+              .div(.text(left))
+            ),
+            .gridColumn(
+              sizes: [.mobile: 12, .desktop: 10],
+              attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
+              .div(.text(right))
+            )
+          )
+        }
+      )
+    )
+  }
+
   let billingHeader = Node.gridRow(
     attributes: [.class([Class.padding([.mobile: [.topBottom: 3]])])],
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 6],
-      .gridRow(
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 2],
-          attributes: [.class([Class.type.bold])],
-          .div("Bill to")
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 10],
-          attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-          .div(.text(currentUser.displayName))
-        )
-      )
-    ),
-    .gridColumn(
-      sizes: [.mobile: 12, .desktop: 6],
-      .gridRow(
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.type.bold])],
-          .div("Invoice number")
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-          .div(.text(invoice.number?.rawValue ?? ""))
-        )
-      ),
-      .gridRow(
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.type.bold])],
-          .div("Billed on")
-        ),
-        .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
-          attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-          .div(.text(dateFormatter.string(from: invoice.created)))
-        )
-      ),
-      invoice.charge?.right?.source.left.map {
-        .gridRow(
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            attributes: [.class([Class.type.bold])],
-            .div("Payment method")
-          ),
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-            .div(.text($0.brand.rawValue + " ⋯ \($0.last4)"))
-          )
-        )
-        } ?? [],
-      subscription.customer.right?.businessVatId.map {
-        .gridRow(
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            attributes: [.class([Class.type.bold])],
-            .div("VAT")
-          ),
-          .gridColumn(
-            sizes: [.mobile: 12, .desktop: 6],
-            attributes: [.class([Class.padding([.mobile: [.bottom: 1]])])],
-            .div(.text($0.rawValue))
-          )
-        )
-        }
-        ?? [],
-      extraInvoiceInfo(subscription: subscription)
+    section([("Bill to", currentUser.displayName)]),
+    section(
+      [
+        invoice.number.map { ("Invoice number", $0.rawValue) },
+        ("Billed on", dateFormatter.string(from: invoice.created)),
+        invoice.charge?.right?.source.left.map { ("Payment method", $0.brand.rawValue + " ⋯ \($0.last4)") },
+        subscription.customer.right?.businessVatId.map { ("VAT", $0.rawValue) }
+        ].compactMap { $0 }
     )
   )
 

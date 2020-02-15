@@ -13,7 +13,7 @@ let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Sub
   filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >=> writeStatus(.ok)
-    >=> _respond(
+    >=> respond(
       view: Views.accountView(accountData:allEpisodes:currentDate:appSecret:),
       layoutData: { accountData in
         SimplePageLayoutData(

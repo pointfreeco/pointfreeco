@@ -11,18 +11,9 @@ import Tuple
 
 // MARK: Middleware
 
-let subscriptionChangeMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<User?, Pricing?>,
-  Data
-  > =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
-    <<< fetchSeatsTaken
-    <<< requireStripeSubscription
-    <<< requireActiveSubscription
-    <<< requireValidSeating
+let subscriptionChangeMiddleware: M<Tuple2<User?, Pricing?>>
+  = requireUserAndPricingAndSeats
+    <<< validateActiveSubscriptionAndSeating
     <| changeSubscription(
       error: subscriptionModificationErrorMiddleware,
       success: redirect(
@@ -31,10 +22,22 @@ let subscriptionChangeMiddleware: Middleware<
       )
 )
 
+private let requireUserAndPricingAndSeats
+  : MT<Tuple2<User?, Pricing?>, Tuple3<User, Int, Pricing>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+    <<< fetchSeatsTaken
+
+private let validateActiveSubscriptionAndSeating
+  : MT<Tuple3<User, Int, Pricing>, (Stripe.Subscription, Pricing)>
+  = requireStripeSubscription
+    <<< requireActiveSubscription
+    <<< requireValidSeating
+
 func changeSubscription(
   error: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>,
   success: @escaping Middleware<StatusLineOpen, ResponseEnded, Prelude.Unit, Data>
-  ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
+) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>> {
 
     return { conn in

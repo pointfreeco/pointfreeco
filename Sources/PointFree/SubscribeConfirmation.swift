@@ -18,7 +18,7 @@ public let subscribeConfirmation: Middleware<
   = redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.subscriptionConfirmation,
       layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
