@@ -13,7 +13,7 @@ import SnapshotTesting
 @testable import Stripe
 import XCTest
 
-class UpdateProfileTests: LiveDatabaseTestCase {
+class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record=true
@@ -95,6 +95,13 @@ class UpdateProfileTests: LiveDatabaseTestCase {
     #if !os(Linux)
     assertSnapshot(matching: output, as: .conn)
     #endif
+  }
+}
+
+class UpdateProfileTests: LiveDatabaseTestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
   }
 
   func testUpdateExtraInvoiceInfo() {

@@ -10,7 +10,7 @@ import Optics
 import SnapshotTesting
 import XCTest
 
-class AuthTests: LiveDatabaseTestCase {
+class AuthIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
@@ -52,6 +52,20 @@ class AuthTests: LiveDatabaseTestCase {
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+
+  func testLoginWithRedirect() {
+    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
+    let conn = connection(from: login)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+}
+
+class AuthTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
   }
 
   func testAuth_WithFetchAuthTokenFailure() {
@@ -109,13 +123,6 @@ class AuthTests: LiveDatabaseTestCase {
     update(&Current, \.database .~ .mock)
 
     let login = request(to: .login(redirect: nil), session: .loggedIn)
-    let conn = connection(from: login)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testLoginWithRedirect() {
-    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
     let conn = connection(from: login)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
