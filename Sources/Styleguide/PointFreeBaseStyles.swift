@@ -311,26 +311,27 @@ extension Class.pf {
   }
 }
 
-public let pointFreeBaseStyles =
-  (body | html) % height(.pct(100))
-    <> bodyStyles
-    <> resets
-    <> colorStyles
-    <> codeStyles
-    <> inlineCodeStyles
-    <> opacities
-    <> aStyles
-    <> typeStyles
-    <> baseMarginStyles
-    <> hrReset
-    <> dividerStyles
-    <> navBarStyles
-    <> baseButtonStyles
-    <> heroLogoStyles
-    <> videoTimeLinkStyles
-    <> blueGradientStyles
-    <> reflectStyles
-    <> prismJsTheme
+public let pointFreeBaseStyles: Stylesheet = concat([
+  (body | html) % height(.pct(100)),
+  bodyStyles,
+  resets,
+  colorStyles,
+  codeStyles,
+  inlineCodeStyles,
+  opacities,
+  aStyles,
+  typeStyles,
+  baseMarginStyles,
+  hrReset,
+  dividerStyles,
+  navBarStyles,
+  baseButtonStyles,
+  heroLogoStyles,
+  videoTimeLinkStyles,
+  blueGradientStyles,
+  reflectStyles,
+  prismJsTheme,
+])
 
 private let bodyStyles =
   html % (
@@ -347,52 +348,52 @@ private let resets =
   body % boxSizing(.borderBox)
     <> (.star | .star & .pseudoElem(.before) | .star & .pseudoElem(.after)) % boxSizing(.inherit)
 
-private let colorStyles: Stylesheet =
-  Class.pf.colors.bg.black % backgroundColor(Colors.black)
-    <> Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900)
-    <> Class.pf.colors.bg.dark % backgroundColor(Colors.black)
-    <> Class.pf.colors.bg.gray150 % backgroundColor(Colors.gray150)
-    <> Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650)
-    <> Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900)
-    <> Class.pf.colors.bg.green % backgroundColor(Colors.green)
-    <> Class.pf.colors.bg.inherit % backgroundColor(.inherit)
-    <> Class.pf.colors.bg.purple % backgroundColor(Colors.purple)
-    <> Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150)
-    <> Class.pf.colors.bg.red % backgroundColor(Colors.red)
-    <> Class.pf.colors.bg.white % backgroundColor(.other("#fff"))
-    <> Class.pf.colors.bg.yellow % backgroundColor(Colors.yellow)
+private let colorStyles: Stylesheet = concat([
+  Class.pf.colors.bg.black % backgroundColor(Colors.black),
+  Class.pf.colors.bg.blue900 % backgroundColor(Colors.blue900),
+  Class.pf.colors.bg.dark % backgroundColor(Colors.black),
+  Class.pf.colors.bg.gray150 % backgroundColor(Colors.gray150),
+  Class.pf.colors.bg.gray650 % backgroundColor(Colors.gray650),
+  Class.pf.colors.bg.gray900 % backgroundColor(Colors.gray900),
+  Class.pf.colors.bg.green % backgroundColor(Colors.green),
+  Class.pf.colors.bg.inherit % backgroundColor(.inherit),
+  Class.pf.colors.bg.purple % backgroundColor(Colors.purple),
+  Class.pf.colors.bg.purple150 % backgroundColor(Colors.purple150),
+  Class.pf.colors.bg.red % backgroundColor(Colors.red),
+  Class.pf.colors.bg.white % backgroundColor(.other("#fff")),
+  Class.pf.colors.bg.yellow % backgroundColor(Colors.yellow),
 
-    <> Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650)
-    <> Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800)
-    <> Class.pf.colors.border.gray850 % borderColor(all: Colors.gray850)
-    <> Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900)
+  Class.pf.colors.border.gray650 % borderColor(all: Colors.gray650),
+  Class.pf.colors.border.gray800 % borderColor(all: Colors.gray800),
+  Class.pf.colors.border.gray850 % borderColor(all: Colors.gray850),
+  Class.pf.colors.border.gray900 % borderColor(all: Colors.gray900),
 
-    <> Class.pf.colors.fg.black % color(Colors.black)
-    <> Class.pf.colors.fg.blue % color(Colors.blue)
-    <> Class.pf.colors.fg.gray300 % color(Colors.gray300)
-    <> Class.pf.colors.fg.gray400 % color(Colors.gray400)
-    <> Class.pf.colors.fg.gray650 % color(Colors.gray650)
-    <> Class.pf.colors.fg.gray850 % color(Colors.gray850)
-    <> Class.pf.colors.fg.green % color(Colors.green)
-    <> Class.pf.colors.fg.purple % color(Colors.purple)
-    <> Class.pf.colors.fg.red % color(Colors.red)
-    <> Class.pf.colors.fg.yellow % color(Colors.yellow)
-    <> Class.pf.colors.fg.white % color(.other("#fff"))
-
-    <> (a & .pseudo(.link) & Class.pf.colors.link.black) % color(Colors.black)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.black) % color(Colors.black)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.gray650) % color(Colors.gray650)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.gray650) % color(Colors.gray650)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.green) % color(Colors.green)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.green) % color(Colors.green)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.purple) % color(Colors.purple)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.purple) % color(Colors.purple)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.red) % color(Colors.red)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.red) % color(Colors.red)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.white) % color(Colors.white)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white)
-    <> (a & .pseudo(.link) & Class.pf.colors.link.yellow) % color(Colors.yellow)
-    <> (a & .pseudo(.visited) & Class.pf.colors.link.yellow) % color(Colors.yellow)
+  Class.pf.colors.fg.black % color(Colors.black),
+  Class.pf.colors.fg.blue % color(Colors.blue),
+  Class.pf.colors.fg.gray300 % color(Colors.gray300),
+  Class.pf.colors.fg.gray400 % color(Colors.gray400),
+  Class.pf.colors.fg.gray650 % color(Colors.gray650),
+  Class.pf.colors.fg.gray850 % color(Colors.gray850),
+  Class.pf.colors.fg.green % color(Colors.green),
+  Class.pf.colors.fg.purple % color(Colors.purple),
+  Class.pf.colors.fg.red % color(Colors.red),
+  Class.pf.colors.fg.yellow % color(Colors.yellow),
+  Class.pf.colors.fg.white % color(.other("#fff")),
+  (a & .pseudo(.link) & Class.pf.colors.link.black) % color(Colors.black),
+  (a & .pseudo(.visited) & Class.pf.colors.link.black) % color(Colors.black),
+  (a & .pseudo(.link) & Class.pf.colors.link.gray650) % color(Colors.gray650),
+  (a & .pseudo(.visited) & Class.pf.colors.link.gray650) % color(Colors.gray650),
+  (a & .pseudo(.link) & Class.pf.colors.link.green) % color(Colors.green),
+  (a & .pseudo(.visited) & Class.pf.colors.link.green) % color(Colors.green),
+  (a & .pseudo(.link) & Class.pf.colors.link.purple) % color(Colors.purple),
+  (a & .pseudo(.visited) & Class.pf.colors.link.purple) % color(Colors.purple),
+  (a & .pseudo(.link) & Class.pf.colors.link.red) % color(Colors.red),
+  (a & .pseudo(.visited) & Class.pf.colors.link.red) % color(Colors.red),
+  (a & .pseudo(.link) & Class.pf.colors.link.white) % color(Colors.white),
+  (a & .pseudo(.visited) & Class.pf.colors.link.white) % color(Colors.white),
+  (a & .pseudo(.link) & Class.pf.colors.link.yellow) % color(Colors.yellow),
+  (a & .pseudo(.visited) & Class.pf.colors.link.yellow) % color(Colors.yellow),
+])
 
 private let _codeClass = CssSelector.class("code")
 private let codeStyles =
@@ -414,29 +415,40 @@ private let inlineCodeStyles =
 
 private let token = CssSelector.class("token")
 
-private let prismJsTheme =
-  (token & CssSelector.class("builtin")) % color(.other("#6f42c1"))
-    <> (token & CssSelector.class("comment")) % color(.other("#6a737d"))
-    <> (token & CssSelector.class("function")) % color(.other("#005cc5"))
-    <> (token & CssSelector.class("keyword")) % color(.other("#d73a49"))
-    <> (token & CssSelector.class("number")) % color(.other("#a963ff"))
-    <> (token & CssSelector.class("operator")) % color(.other("#d73a49"))
-    <> (token & CssSelector.class("string")) % color(.other("#032f62"))
+private let prismJsTheme: Stylesheet = concat([
+  (token & CssSelector.class("builtin")) % color(.other("#6f42c1")),
+  (token & CssSelector.class("comment")) % color(.other("#6a737d")),
+  (token & CssSelector.class("function")) % color(.other("#005cc5")),
+  (token & CssSelector.class("keyword")) % color(.other("#d73a49")),
+  (token & CssSelector.class("number")) % color(.other("#a963ff")),
+  (token & CssSelector.class("operator")) % color(.other("#d73a49")),
+  (token & CssSelector.class("string")) % color(.other("#032f62")),
+])
 
-private let opacities =
-  Class.pf.opacity25 % opacity(0.25)
-    <> Class.pf.opacity50 % opacity(0.50)
-    <> Class.pf.opacity75 % opacity(0.75)
+private let opacities: Stylesheet = concat([
+  Class.pf.opacity25 % opacity(0.25),
+  Class.pf.opacity50 % opacity(0.50),
+  Class.pf.opacity75 % opacity(0.75),
+])
 
 private let aStyles =
+  _textDecorationNone
+    <> _textDecorationUnderline
+    <> _textDecorationUnderlineLink
+
+private let _textDecorationNone =
   (a | a & .pseudo(.link) | a & .pseudo(.visited)) % (
     color(Colors.black)
       <> key("text-decoration", "none")
-  )
-  <> (a & .pseudo(.hover) | a & .pseudo(.active)) % (
+)
+
+private let _textDecorationUnderline =
+  (a & .pseudo(.hover) | a & .pseudo(.active)) % (
     key("text-decoration", "underline")
-    )
-    <> (a & Class.pf.type.underlineLink) % key("text-decoration", "underline")
+)
+
+private let _textDecorationUnderlineLink =
+  (a & Class.pf.type.underlineLink) % key("text-decoration", "underline")
 
 private let baseMarginStyles =
   (h1 | h2 | h3 | h4 | h5 | h6 | p | ul | ol) % margin(topBottom: .rem(0.5), leftRight: 0)

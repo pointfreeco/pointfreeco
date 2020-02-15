@@ -8,12 +8,8 @@ import Prelude
 import Stripe
 import Tuple
 
-let subscribeMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<SubscribeData?, User?>,
-  Data
-  > = requireSubscribeData
+let subscribeMiddleware//: M<Tuple2<SubscribeData?, User?>>
+  = requireSubscribeData
     <<< validateQuantity
     <<< validateCoupon
     <<< redirectActiveSubscribers(user: get2)
