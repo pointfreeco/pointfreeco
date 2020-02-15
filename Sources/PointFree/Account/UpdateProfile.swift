@@ -57,8 +57,9 @@ let updateProfileMiddleware
         updateFlash = flash(.notice, "We've updated your profile!")
       }
 
+      let customerId = subscription?.customer.either(id, ^\.id)
       let updateCustomerExtraInvoiceInfo = zip(
-        subscription?.customer.left ?? subscription?.customer.right?.id,
+        customerId,
         data.extraInvoiceInfo
       )
         .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
