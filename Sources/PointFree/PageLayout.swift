@@ -78,18 +78,6 @@ struct SimplePageLayoutData<A> {
   }
 }
 
-func _respond<A, B>(
-  view: @escaping (B) -> Node,
-  layoutData: @escaping (A) -> SimplePageLayoutData<B>
-  )
-  -> Middleware<HeadersOpen, ResponseEnded, A, Data> {
-
-    return respond(
-      view: view,
-      layoutData: layoutData
-    )
-}
-
 func respond<A, B>(
   view: @escaping (B) -> Node,
   layoutData: @escaping (A) -> SimplePageLayoutData<B>
