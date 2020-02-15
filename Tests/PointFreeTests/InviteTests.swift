@@ -306,9 +306,37 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       teamInvites.map { $0.inviterUserId }
     )
   }
+
+  func testResendInvite_CurrentUserIsNotInviter() {
+    let currentUser = Current.database.registerUser(
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
+      )
+      .run
+      .perform()
+      .right!!
+
+    let inviterUser = Current.database.registerUser(
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
+      )
+      .run
+      .perform()
+      .right!!
+
+    let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
+      .run
+      .perform()
+      .right!
+
+    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let conn = connection(from: resendInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
 }
 
-class InviteTests: LiveDatabaseTestCase {
+class InviteTests: TestCase {
   override func setUp() {
     super.setUp()
 //    record = true
@@ -385,34 +413,6 @@ class InviteTests: LiveDatabaseTestCase {
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testResendInvite_CurrentUserIsNotInviter() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
-      .run
-      .perform()
-      .right!!
-
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
-      .run
-      .perform()
-      .right!!
-
-    let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
-      .run
-      .perform()
-      .right!
-
-    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let conn = connection(from: resendInvite)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
