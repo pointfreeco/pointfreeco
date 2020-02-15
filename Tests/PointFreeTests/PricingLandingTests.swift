@@ -13,7 +13,7 @@ import WebKit
 #endif
 import XCTest
 
-class PricingLandingTests: LiveDatabaseTestCase {
+class PricingLandingTests: TestCase {
   override func setUp() {
     super.setUp()
 //    record = true
