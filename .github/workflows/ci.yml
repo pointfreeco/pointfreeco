@@ -26,9 +26,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Check Docker
-      run: |
-        docker-compose help
-        docker-compose -v
+    - name: Start Postgres
+      run: docker-compose start db
     - name: Run tests
       run: make test-linux
+    - name: Stop Postgres
+      run: docker-compose start db
