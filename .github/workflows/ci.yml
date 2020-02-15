@@ -23,7 +23,7 @@ jobs:
 
   ubuntu:
     name: Ubuntu
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Run tests
