@@ -12,9 +12,7 @@ import Tuple
 import Views
 
 let showInviteMiddleware =
-  redirectCurrentSubscribers
-    <<< requireTeamInvite
-    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
+  validateTeamInvite
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -27,6 +25,12 @@ let showInviteMiddleware =
         )
     }
 )
+
+private let validateTeamInvite
+  : MT<Tuple2<TeamInvite.Id, User?>, Tuple3<TeamInvite, User, User?>>
+  = redirectCurrentSubscribers
+    <<< requireTeamInvite
+    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
 
 private let genericInviteError = "You need to be the inviter to do that!"
 
@@ -127,9 +131,8 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
-let addTeammateViaInviteMiddleware: M<Tuple2<User?, EmailAddress?>>
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+let addTeammateViaInviteMiddleware
+  = requireUserAndValidEmail
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
@@ -147,6 +150,11 @@ let addTeammateViaInviteMiddleware: M<Tuple2<User?, EmailAddress?>>
           success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
       )
 }
+
+private let requireUserAndValidEmail
+  : MT<Tuple2<User?, EmailAddress?>, Tuple2<User, EmailAddress>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
 
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)

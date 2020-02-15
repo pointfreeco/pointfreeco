@@ -8,13 +8,21 @@ import Prelude
 import Stripe
 import Tuple
 
-let subscribeMiddleware//: M<Tuple2<SubscribeData?, User?>>
+let subscribeMiddleware
+  = validateSubscribeData
+    <<< validateUser
+    <| subscribe
+
+private let validateSubscribeData
+  : MT<Tuple2<SubscribeData?, User?>, Tuple2<SubscribeData, User?>>
   = requireSubscribeData
     <<< validateQuantity
     <<< validateCoupon
-    <<< redirectActiveSubscribers(user: get2)
+
+private let validateUser
+  : MT<Tuple2<SubscribeData, User?>, Tuple2<SubscribeData, User>>
+  = redirectActiveSubscribers(user: get2)
     <<< filterMap(require2 >>> pure, or: loginAndRedirectToPricing)
-    <| subscribe
 
 private func subscribe(_ conn: Conn<StatusLineOpen, Tuple2<SubscribeData, User>>)
   -> IO<Conn<ResponseEnded, Data>> {

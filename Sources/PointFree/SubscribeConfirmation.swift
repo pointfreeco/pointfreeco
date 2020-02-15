@@ -9,12 +9,8 @@ import Stripe
 import Tuple
 import Views
 
-public let subscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
-  Data
-  >
+public let subscribeConfirmation
+  : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
   = redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)

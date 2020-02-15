@@ -52,16 +52,8 @@ We couldn’t update your payment info at this time. Please try again later or c
 <support@pointfree.co>.
 """
 
-let updatePaymentInfoMiddleware:
-  Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, Stripe.Token.Id?>, Data> =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(
-      require2 >>> pure,
-      or: redirect(
-        to: .account(.paymentInfo(.show)),
-        headersMiddleware: flash(.error, genericPaymentInfoError)
-      )
-    )
+let updatePaymentInfoMiddleware
+  = requireUserAndToken
     <<< requireStripeSubscription
     <| { conn in
       let (subscription, _, token) = lower(conn.data)
@@ -77,3 +69,14 @@ let updatePaymentInfoMiddleware:
           )
       }
 }
+
+private let requireUserAndToken
+  : MT<Tuple2<User?, Stripe.Token.Id?>, Tuple2<User, Stripe.Token.Id>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(
+      require2 >>> pure,
+      or: redirect(
+        to: .account(.paymentInfo(.show)),
+        headersMiddleware: flash(.error, genericPaymentInfoError)
+      )
+)

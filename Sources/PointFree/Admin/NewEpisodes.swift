@@ -42,26 +42,35 @@ private func newEpisodeEmailRowView(ep: Episode) -> Node {
   )
 }
 
-let sendNewEpisodeEmailMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple5<User, Episode.Id, String?, String?, Bool?>,
-  Data
-  > =
-  filterMap(
-      over2(fetchEpisode) >>> require2 >>> pure,
-      or: redirect(to: .admin(.newEpisodeEmail(.show)))
-    )
-    <<< filterMap(
-      require5 >>> pure,
-      or: redirect(to: .admin(.newEpisodeEmail(.show)))
-    )
+let sendNewEpisodeEmailMiddleware: M<Tuple5<User, Episode.Id, String?, String?, Bool?>>
+  = requireEpisode
+    <<< requireIsTest
     <| sendNewEpisodeEmails
     >=> redirect(to: .admin(.index))
 
+private let requireEpisode
+  : MT<
+  Tuple5<User, Episode.Id, String?, String?, Bool?>,
+  Tuple5<User, Episode, String?, String?, Bool?>
+  >
+  = filterMap(
+    over2(fetchEpisode) >>> require2 >>> pure,
+    or: redirect(to: .admin(.newEpisodeEmail(.show)))
+)
+
+private let requireIsTest
+  : MT<
+  Tuple5<User, Episode, String?, String?, Bool?>,
+  Tuple5<User, Episode, String?, String?, Bool>
+  >
+  = filterMap(
+    require5 >>> pure,
+    or: redirect(to: .admin(.newEpisodeEmail(.show)))
+)
+
 private func sendNewEpisodeEmails<I>(
   _ conn: Conn<I, Tuple5<User, Episode, String?, String? , Bool>>
-  ) -> IO<Conn<I, Prelude.Unit>> {
+) -> IO<Conn<I, Prelude.Unit>> {
 
   let (_, episode, subscriberAnnouncement, nonSubscriberAnnouncement, isTest) = lower(conn.data)
 

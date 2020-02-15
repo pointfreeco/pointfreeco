@@ -19,8 +19,7 @@ import Tuple
 // MARK: Middleware
 
 let cancelMiddleware =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireStripeSubscription
+  requireUserAndStripeSubscription
     <<< filter(
       get1 >>> ^\.isRenewing,
       or: redirect(
@@ -32,8 +31,7 @@ let cancelMiddleware =
     >>> cancel
 
 let reactivateMiddleware =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireStripeSubscription
+  requireUserAndStripeSubscription
     <<< filter(
       get1 >>> ^\.isCanceling,
       or: redirect(
@@ -44,6 +42,11 @@ let reactivateMiddleware =
     <<< requireSubscriptionItem
     <| map(lower)
     >>> reactivate
+
+private let requireUserAndStripeSubscription
+  : MT<Tuple1<User?>, Tuple2<Stripe.Subscription, User>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
 
 // MARK: -
 
