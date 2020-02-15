@@ -13,7 +13,7 @@ import SnapshotTesting
 @testable import Stripe
 import XCTest
 
-class UpdateProfileTests: TestCase {
+class UpdateProfileTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record=true
