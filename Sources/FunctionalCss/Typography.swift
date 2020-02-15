@@ -51,17 +51,24 @@ extension Class {
   }
 }
 
-public let typography: Stylesheet =
-  emphasisStyles
-    <> lineHeightStyles
-    <> miscStyles
-    <> listStyles
-    <> _alignStyles
-    <> wrapRules
+public let typography: Stylesheet = concat([
+  emphasisStyles,
+  lineHeightStyles,
+  miscStyles,
+  listStyles,
+  _alignStyles,
+  wrapRules,
+])
 
-private let lineHeightStyles: Stylesheet =
-  [1.15, 1.25, 1.45, 1.5].enumerated().map { Class.type.lineHeight($0) % lineHeight($1) }.concat()
-    <> [1, 2, 3, 4].map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }.concat()
+private let lineHeightStyles: Stylesheet = concat([
+  [1.15, 1.25, 1.45, 1.5]
+    .enumerated()
+    .map { Class.type.lineHeight($0) % lineHeight($1) }
+    .concat(),
+  [1, 2, 3, 4]
+    .map { Class.type.lineHeight(rem: $0) % lineHeight(.rem(Double($0))) }
+    .concat()
+])
 
 private let italicStyle = Class.type.italic % fontStyle(.italic)
 private let lightStyle = Class.type.light % fontWeight(.w300)
@@ -69,14 +76,15 @@ private let lighterStyle = Class.type.lighter % fontWeight(.lighter)
 private let normalStyle = Class.type.normal % fontWeight(.normal)
 private let underlineStyle = Class.type.underline % key("text-decoration", "underline")
 
-private let emphasisStyles: Stylesheet =
-  boldStyles
-    <> capsStyles
-    <> italicStyle
-    <> lightStyle
-    <> lighterStyle
-    <> normalStyle
-    <> underlineStyle
+private let emphasisStyles: Stylesheet = concat([
+  boldStyles,
+  capsStyles,
+  italicStyle,
+  lightStyle,
+  lighterStyle,
+  normalStyle,
+  underlineStyle,
+])
 
 private let capsStyles =
   Class.type.caps % (
@@ -84,34 +92,36 @@ private let capsStyles =
       <> letterSpacing(.pt(0.54))
 )
 
-private let boldStyles =
-  Class.type.bold % fontWeight(.w700)
-    <> Class.type.bolder % fontWeight(.bolder)
-    <> Class.type.medium % fontWeight(.w500)
-    <> Class.type.semiBold % fontWeight(.w600)
+private let boldStyles: Stylesheet = concat([
+  Class.type.bold % fontWeight(.w700),
+  Class.type.bolder % fontWeight(.bolder),
+  Class.type.medium % fontWeight(.w500),
+  Class.type.semiBold % fontWeight(.w600),
+])
 
-private let miscStyles: Stylesheet =
-  Class.type.fontFamily.inherit % fontFamily(.inherit)
-    <> Class.type.fontFamily.monospace % fontFamily(["monospace"])
-    <> Class.type.fontSizeInherit % fontSize(.inherit)
-    <> Class.type.textDecorationNone % key("text-decoration", "none")
+private let miscStyles: Stylesheet = concat([
+  Class.type.fontFamily.inherit % fontFamily(.inherit),
+  Class.type.fontFamily.monospace % fontFamily(["monospace"]),
+  Class.type.fontSizeInherit % fontSize(.inherit),
+  Class.type.textDecorationNone % key("text-decoration", "none"),
+])
 
-private let listStyles: Stylesheet =
-  Class.type.list.styleNone % listStyleType(.none)
-  <> Class.type.list.reset % (
-    listStyleType(.none)
-      <> padding(left: 0)
-)
+private let listStyles: Stylesheet = concat([
+  Class.type.list.styleNone % listStyleType(.none),
+  Class.type.list.reset % (listStyleType(.none) <> padding(left: 0)),
+])
 
-private let _alignStyles =
-  Class.type.align.start % textAlign(.start)
-    <> Class.type.align.center % textAlign(.center)
-    <> Class.type.align.end % textAlign(.end)
-    <> Class.type.align.justify % textAlign(.justify)
+private let _alignStyles: Stylesheet = concat([
+  Class.type.align.start % textAlign(.start),
+  Class.type.align.center % textAlign(.center),
+  Class.type.align.end % textAlign(.end),
+  Class.type.align.justify % textAlign(.justify),
+])
 
-private let wrapRules =
-  Class.type.nowrap % key("white-space", "nowrap")
-    <> Class.type.breakWord % key("word-wrap", "break-word")
+private let wrapRules: Stylesheet = concat([
+  Class.type.nowrap % key("white-space", "nowrap"),
+  Class.type.breakWord % key("word-wrap", "break-word")
+])
 
 //.truncate {
 //  max-width: 100%;
