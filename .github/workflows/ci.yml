@@ -26,9 +26,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Start Postgres
-      run: docker-compose up --no-start && docker-compose start db
     - name: Run tests
       run: make test-linux
-    - name: Stop Postgres
-      run: docker-compose stop db
