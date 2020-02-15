@@ -11,7 +11,7 @@ import Tuple
 
 // MARK: Middleware
 
-let subscriptionChangeMiddleware: M<Tuple2<User?, Pricing?>>
+let subscriptionChangeMiddleware
   = requireUserAndPricingAndSeats
     <<< validateActiveSubscriptionAndSeating
     <| changeSubscription(
