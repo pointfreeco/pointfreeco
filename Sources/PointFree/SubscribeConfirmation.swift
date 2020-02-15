@@ -94,17 +94,11 @@ func redirectActiveSubscribers<A>(
         let user = user(conn.data)
 
         let userSubscription = (user?.subscriptionId)
-          .map(
-            Current.database.fetchSubscriptionById
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let ownerSubscription = (user?.id)
-          .map(
-            Current.database.fetchSubscriptionByOwnerId
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential
