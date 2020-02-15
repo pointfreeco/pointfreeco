@@ -15,9 +15,13 @@ import Tuple
 
 let gitHubCallbackResponse =
   requireLoggedOutUser
-    <<< filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
-    <<< requireAccessToken
+    <<< requireAuthCodeAndAccessToken
     <| gitHubAuthTokenMiddleware
+
+private let requireAuthCodeAndAccessToken
+  : MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>>
+  = filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
+  <<< requireAccessToken
 
 /// Middleware to run when the GitHub auth code is missing.
 private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =

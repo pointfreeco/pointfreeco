@@ -15,7 +15,7 @@ import Tuple
 
 let showNewBlogPostEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
-    >=> respond({ _ in showNewBlogPostView })
+    >=> respond(const(showNewBlogPostView))
 
 private let showNewBlogPostView = Node.ul(
   .fragment(

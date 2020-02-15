@@ -40,42 +40,44 @@ private let titleRowView = Node.gridRow(
 )
 
 private func invoicesRowView(invoicesEnvelope: Stripe.ListEnvelope<Stripe.Invoice>) -> Node {
-  return .div(
-    .fragment(
-      invoicesEnvelope.data.map { invoice in
-        .gridRow(
-          attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
-          .gridColumn(
-            sizes: [.mobile: 4],
-            attributes: [.class([Class.type.fontFamily.monospace])],
-            .div(.text("#" + (invoice.number?.rawValue ?? "")))
-          ),
-          .gridColumn(
-            sizes: [.mobile: 4],
-            attributes: [.class([Class.type.align.end, Class.type.fontFamily.monospace])],
-            .div(.text(dateFormatter.string(from: invoice.created)))
-          ),
-          .gridColumn(
-            sizes: [.mobile: 2],
-            attributes: [.class([Class.type.align.end, Class.type.fontFamily.monospace])],
-            .div(.text(format(cents: invoice.total)))
-          ),
-          .gridColumn(
-            sizes: [.mobile: 2],
-            attributes: [.class([Class.grid.end(.mobile), Class.grid.end(.desktop)])],
-            .div(
-              .a(
-                attributes: [
-                  .class([Class.pf.components.button(color: .purple, size: .small)]),
-                  .href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
-                  .target(.blank),
-                ],
-                "Print"
-              )
-            )
+  func invoiceRow(_ invoice: Stripe.Invoice) -> Node {
+    Node.gridRow(
+      attributes: [.class([Class.padding([.mobile: [.bottom: 2]])])],
+      .gridColumn(
+        sizes: [.mobile: 4],
+        attributes: [.class([Class.type.fontFamily.monospace])],
+        .div(.text("#" + (invoice.number?.rawValue ?? "")))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 4],
+        attributes: [.class([Class.type.align.end, Class.type.fontFamily.monospace])],
+        .div(.text(dateFormatter.string(from: invoice.created)))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 2],
+        attributes: [.class([Class.type.align.end, Class.type.fontFamily.monospace])],
+        .div(.text(format(cents: invoice.total)))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 2],
+        attributes: [.class([Class.grid.end(.mobile), Class.grid.end(.desktop)])],
+        .div(
+          .a(
+            attributes: [
+              .class([Class.pf.components.button(color: .purple, size: .small)]),
+              .href(invoice.id.map { path(to: .account(.invoices(.show($0)))) } ?? "#"),
+              .target(.blank),
+            ],
+            "Print"
           )
         )
-      }
+      )
+    )
+  }
+
+  return .div(
+    .fragment(
+      invoicesEnvelope.data.map(invoiceRow)
     )
   )
 }

@@ -13,6 +13,7 @@ import Tuple
 
 let subscriptionChangeMiddleware
   = requireUserAndPricingAndSeats
+    <<< fetchSeatsTaken
     <<< validateActiveSubscriptionAndSeating
     <| changeSubscription(
       error: subscriptionModificationErrorMiddleware,
@@ -23,10 +24,9 @@ let subscriptionChangeMiddleware
 )
 
 private let requireUserAndPricingAndSeats
-  : MT<Tuple2<User?, Pricing?>, Tuple3<User, Int, Pricing>>
+  : MT<Tuple2<User?, Pricing?>, Tuple2<User, Pricing>>
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
-    <<< fetchSeatsTaken
 
 private let validateActiveSubscriptionAndSeating
   : MT<Tuple3<User, Int, Pricing>, (Stripe.Subscription, Pricing)>
@@ -46,11 +46,13 @@ func changeSubscription(
       let newPrice = defaultPricing(for: newPricing).map { $0 * newPricing.quantity }
       let currentPrice = currentSubscription.plan.amount(for: currentSubscription.quantity)
 
+      let plansMatch = newPricing.plan == currentSubscription.plan.id
+      let seatsIncreased = newPricing.quantity > currentSubscription.quantity
+      let intervalsMatch = newPricing.interval == currentSubscription.plan.interval
       let shouldProrate = newPrice > currentPrice
-      let shouldInvoice = newPricing.plan == currentSubscription.plan.id
-        && newPricing.quantity > currentSubscription.quantity
-        || shouldProrate
-        && newPricing.interval == currentSubscription.plan.interval
+
+      let shouldInvoice = plansMatch && seatsIncreased
+        || intervalsMatch && shouldProrate
 
       return Current.stripe
         .updateSubscription(currentSubscription, newPricing.plan, newPricing.quantity, shouldProrate)
@@ -125,8 +127,7 @@ private func requireValidSeating(
         )
       )
       )
-      <| map(lower)
-      >>> map({ subscription, _, _, pricing in (subscription, pricing) })
+      <| map { (get1($0), get4($0))}
       >>> middleware
 }
 

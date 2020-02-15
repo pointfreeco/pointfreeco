@@ -34,47 +34,7 @@ let updateProfileMiddleware
     <<< validateEmail
     <<< encryptPayload
     <<< fetchSubscriptionAndStripeSubscription
-    <| { (conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>) -> IO<Conn<ResponseEnded, Data>> in
-      let (subscription, user, data, emailChangePayload) = lower(conn.data)
-
-      let emailSettings = data.emailSettings.keys
-        .compactMap(EmailSetting.Newsletter.init(rawValue:))
-
-      let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
-      if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
-        updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
-        parallel(
-          sendEmail(
-            to: [user.email],
-            subject: "Email change confirmation",
-            content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
-          )
-            .run
-        )
-          .run({ _ in })
-      } else {
-        // TODO: why is unicode ‘ not encoded correctly?
-        updateFlash = flash(.notice, "We've updated your profile!")
-      }
-
-      let customerId = subscription?.customer.either(id, ^\.id)
-      let updateCustomerExtraInvoiceInfo = zip(
-        customerId,
-        data.extraInvoiceInfo
-      )
-        .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
-        ?? pure(unit)
-
-      return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil, nil)
-        .flatMap(const(updateCustomerExtraInvoiceInfo))
-        .run
-        .flatMap(
-          const(
-            conn.map(const(unit))
-              |> redirect(to: path(to: .account(.index)), headersMiddleware: updateFlash)
-          )
-      )
-}
+    <| updateProfileMiddlewareHandler
 
 private let requireUserAndProfileData
   : MT<Tuple2<User?, ProfileData?>, Tuple2<User, ProfileData>>
@@ -87,6 +47,50 @@ private let validateEmail
     get2 >>> ^\.email >>> isValidEmail,
     or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
 )
+
+private func updateProfileMiddlewareHandler(
+  conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>
+) -> IO<Conn<ResponseEnded, Data>> {
+  let (subscription, user, data, emailChangePayload) = lower(conn.data)
+
+  let emailSettings = data.emailSettings.keys
+    .compactMap(EmailSetting.Newsletter.init(rawValue:))
+
+  let updateFlash: Middleware<HeadersOpen, HeadersOpen, Prelude.Unit, Prelude.Unit>
+  if data.email.rawValue.lowercased() != user.email.rawValue.lowercased() {
+    updateFlash = flash(.warning, "We've sent an email to \(user.email) to confirm this change.")
+    parallel(
+      sendEmail(
+        to: [user.email],
+        subject: "Email change confirmation",
+        content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
+      )
+        .run
+    )
+      .run({ _ in })
+  } else {
+    // TODO: why is unicode ‘ not encoded correctly?
+    updateFlash = flash(.notice, "We've updated your profile!")
+  }
+
+  let customerId = subscription?.customer.either(id, ^\.id)
+  let updateCustomerExtraInvoiceInfo = zip(
+    customerId,
+    data.extraInvoiceInfo
+  )
+    .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
+    ?? pure(unit)
+
+  return Current.database.updateUser(user.id, data.name, nil, emailSettings, nil, nil)
+    .flatMap(const(updateCustomerExtraInvoiceInfo))
+    .run
+    .flatMap(
+      const(
+        conn.map(const(unit))
+          |> redirect(to: path(to: .account(.index)), headersMiddleware: updateFlash)
+      )
+  )
+}
 
 private let fetchSubscriptionAndStripeSubscription
   : MT<

@@ -366,128 +366,135 @@ private func billingPeriod(
   coupon: Coupon?,
   lane: Pricing.Lane,
   subscribeData: SubscribeConfirmationData
-  ) -> Node {
-  return .gridRow(
-    attributes: [.class([moduleRowClass])],
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [.class([moduleTitleColumnClass])],
-      .h1(attributes: [.class([moduleTitleClass])], "Billing interval")
-    ),
-    .gridColumn(
-      sizes: [.mobile: 12],
+) -> Node {
+
+  let titleColumn = Node.gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [.class([moduleTitleColumnClass])],
+    .h1(attributes: [.class([moduleTitleClass])], "Billing interval")
+  )
+
+  let yearlyColumn = Node.gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [
+      .class([
+        Class.border.all,
+        Class.pf.colors.border.gray850,
+        Class.padding([.mobile: [.all: 2]])
+        ]),
+      .style(lineHeight(0))
+    ],
+    .label(
       attributes: [
         .class([
-          Class.border.all,
-          Class.pf.colors.border.gray850,
-          Class.padding([.mobile: [.all: 2]])
-          ]),
-        .style(lineHeight(0))
+          Class.cursor.pointer,
+          Class.flex.flex,
+          Class.flex.items.baseline
+          ])
       ],
-      .label(
-        attributes: [
-          .class([
-            Class.cursor.pointer,
-            Class.flex.flex,
-            Class.flex.items.baseline
-            ])
-        ],
-        .div(
-          .input(
-            attributes: [
-              .checked(subscribeData.billing == .yearly),
-              .id("yearly"),
-              .type(.radio),
-              .name("pricing[billing]"),
-              .value("yearly"),
-            ]
-          )
-        ),
-        .div(
-          attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
-          .h5(
-            attributes: [
-              .class([
-                Class.pf.type.responsiveTitle6,
-                Class.margin([.mobile: [.all: 0]])
-                ])
-            ],
-            lane == .team
-              ? "Yearly — Save 25% off monthly billing!"
-              : "Yearly — Save 22% off monthly billing!"
-          ),
-          .p(
-            attributes: [
-              .class([
-                Class.padding([.mobile: [.top: 1]]),
-                Class.pf.type.body.small,
-                Class.pf.colors.fg.gray650
-                ])
-            ],
-            lane == .team
-              ? "$144 per member per year"
-              : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
-          )
+      .div(
+        .input(
+          attributes: [
+            .checked(subscribeData.billing == .yearly),
+            .id("yearly"),
+            .type(.radio),
+            .name("pricing[billing]"),
+            .value("yearly"),
+          ]
         )
-      )
-    ),
-    .gridColumn(
-      sizes: [.mobile: 12],
-      attributes: [
-        .class([
-          Class.border.left,
-          Class.border.right,
-          Class.border.bottom,
-          Class.pf.colors.border.gray850,
-          Class.padding([.mobile: [.all: 2]])
-          ]),
-        .style(lineHeight(0))
-      ],
-      .label(
-        attributes: [
-          .class([
-            Class.cursor.pointer,
-            Class.flex.flex,
-            Class.flex.items.baseline
-            ])
-        ],
-        .div(
-          .input(
-            attributes: [
-              .checked(subscribeData.billing == .monthly),
-              .id("monthly"),
-              .type(.radio),
-              .name("pricing[billing]"),
-              .value("monthly"),
-            ]
-          )
+      ),
+      .div(
+        attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
+        .h5(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle6,
+              Class.margin([.mobile: [.all: 0]])
+              ])
+          ],
+          lane == .team
+            ? "Yearly — Save 25% off monthly billing!"
+            : "Yearly — Save 22% off monthly billing!"
         ),
-        .div(
-          attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
-          .h5(
-            attributes: [
-              .class([
-                Class.pf.type.responsiveTitle6,
-                Class.margin([.mobile: [.all: 0]])
-                ])
-            ],
-            "Monthly"
-          ),
-          .p(
-            attributes: [
-              .class([
-                Class.padding([.mobile: [.top: 1]]),
-                Class.pf.type.body.small,
-                Class.pf.colors.fg.gray650
-                ])
-            ],
-            lane == .team
-              ? "$16 per member, per month"
-              : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
-          )
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.top: 1]]),
+              Class.pf.type.body.small,
+              Class.pf.colors.fg.gray650
+              ])
+          ],
+          lane == .team
+            ? "$144 per member per year"
+            : discountedBillingIntervalSubtitle(interval: .year, coupon: coupon)
         )
       )
     )
+  )
+
+  let monthlyColumn = Node.gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [
+      .class([
+        Class.border.left,
+        Class.border.right,
+        Class.border.bottom,
+        Class.pf.colors.border.gray850,
+        Class.padding([.mobile: [.all: 2]])
+        ]),
+      .style(lineHeight(0))
+    ],
+    .label(
+      attributes: [
+        .class([
+          Class.cursor.pointer,
+          Class.flex.flex,
+          Class.flex.items.baseline
+          ])
+      ],
+      .div(
+        .input(
+          attributes: [
+            .checked(subscribeData.billing == .monthly),
+            .id("monthly"),
+            .type(.radio),
+            .name("pricing[billing]"),
+            .value("monthly"),
+          ]
+        )
+      ),
+      .div(
+        attributes: [.class([Class.margin([.mobile: [.left: 2]])])],
+        .h5(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle6,
+              Class.margin([.mobile: [.all: 0]])
+              ])
+          ],
+          "Monthly"
+        ),
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.top: 1]]),
+              Class.pf.type.body.small,
+              Class.pf.colors.fg.gray650
+              ])
+          ],
+          lane == .team
+            ? "$16 per member, per month"
+            : discountedBillingIntervalSubtitle(interval: .month, coupon: coupon)
+        )
+      )
+    )
+  )
+
+  return .gridRow(
+    attributes: [.class([moduleRowClass])],
+    titleColumn,
+    yearlyColumn,
+    monthlyColumn
   )
 }
 
