@@ -15,7 +15,7 @@ import Stripe
 import StripeTestSupport
 import XCTest
 
-class InviteTests: TestCase {
+class InviteTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true

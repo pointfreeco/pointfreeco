@@ -10,7 +10,7 @@ import Optics
 import SnapshotTesting
 import XCTest
 
-class AuthTests: TestCase {
+class AuthTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true

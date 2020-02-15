@@ -17,7 +17,7 @@ import WebKit
 #endif
 import XCTest
 
-class EpisodePageTests: TestCase {
+class EpisodePageTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
