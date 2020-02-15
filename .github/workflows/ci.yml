@@ -28,7 +28,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Check Docker
       run: |
-        docker compose help
-        docker compose -v
+        docker-compose help
+        docker-compose -v
     - name: Run tests
       run: make test-linux
