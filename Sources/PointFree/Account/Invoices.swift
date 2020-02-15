@@ -13,8 +13,7 @@ import Views
 // MARK: Middleware
 
 let invoicesResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireStripeSubscription
+  requireUserAndStripeSubscription
     <<< fetchInvoices
     <| writeStatus(.ok)
     >=> map(lower)
@@ -31,16 +30,8 @@ let invoicesResponse =
 )
 
 let invoiceResponse =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< requireStripeSubscription
-    <<< filterMap(
-      over3(fetchInvoice) >>> sequence3 >>> map(require3),
-      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
-    )
-    <<< filter(
-      invoiceBelongsToCustomer,
-      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
-    )
+  requireUserAndStripeSubscription
+    <<< requireInvoice
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -54,6 +45,28 @@ let invoiceResponse =
         )
     }
 )
+
+private let requireInvoice
+  : MT<
+  Tuple3<Stripe.Subscription, User, Invoice.Id>,
+  Tuple3<Stripe.Subscription, User, Invoice>
+  >
+  = filterMap(
+    over3(fetchInvoice) >>> sequence3 >>> map(require3),
+    or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
+    )
+    <<< filter(
+      invoiceBelongsToCustomer,
+      or: redirect(to: .account(.invoices(.index)), headersMiddleware: flash(.error, invoiceError))
+)
+
+private func requireUserAndStripeSubscription<A>(
+  middleware: @escaping M<T3<Stripe.Subscription, User, A>>
+) -> M<T2<User?, A>> {
+  filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< requireStripeSubscription
+    <| middleware
+}
 
 private func fetchInvoices<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<Stripe.Subscription, Stripe.ListEnvelope<Stripe.Invoice>, A>, Data>

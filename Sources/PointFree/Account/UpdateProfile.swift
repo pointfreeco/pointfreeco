@@ -29,21 +29,11 @@ private func fetchStripeSubscription<A>(
     }
 }
 
-let updateProfileMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<User?, ProfileData?>,
-  Data
-  > =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
-    <<< filter(
-      get2 >>> ^\.email >>> isValidEmail,
-      or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
-    )
+let updateProfileMiddleware
+  = requireUserAndProfileData
+    <<< validateEmail
     <<< encryptPayload
-    <<< fetchSubscription
-    <<< fetchStripeSubscription
+    <<< fetchSubscriptionAndStripeSubscription
     <| { (conn: Conn<StatusLineOpen, Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>>) -> IO<Conn<ResponseEnded, Data>> in
       let (subscription, user, data, emailChangePayload) = lower(conn.data)
 
@@ -58,9 +48,9 @@ let updateProfileMiddleware: Middleware<
             to: [user.email],
             subject: "Email change confirmation",
             content: inj2(confirmEmailChangeEmailView((user, data.email, emailChangePayload)))
-            )
-            .run
           )
+            .run
+        )
           .run({ _ in })
       } else {
         // TODO: why is unicode ‘ not encoded correctly?
@@ -70,7 +60,7 @@ let updateProfileMiddleware: Middleware<
       let updateCustomerExtraInvoiceInfo = zip(
         subscription?.customer.left ?? subscription?.customer.right?.id,
         data.extraInvoiceInfo
-        )
+      )
         .map(Current.stripe.updateCustomerExtraInvoiceInfo >>> map(const(unit)))
         ?? pure(unit)
 
@@ -84,6 +74,25 @@ let updateProfileMiddleware: Middleware<
           )
       )
 }
+
+private let requireUserAndProfileData
+  : MT<Tuple2<User?, ProfileData?>, Tuple2<User, ProfileData>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: redirect(to: .account(.index)))
+
+private let validateEmail
+  : MT<Tuple2<User, ProfileData>, Tuple2<User, ProfileData>>
+  = filter(
+    get2 >>> ^\.email >>> isValidEmail,
+    or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Please enter a valid email."))
+)
+
+private let fetchSubscriptionAndStripeSubscription
+  : MT<
+  Tuple3<User, ProfileData, Encrypted<String>>,
+  Tuple4<Stripe.Subscription?, User, ProfileData, Encrypted<String>>
+  > = fetchSubscription
+    <<< fetchStripeSubscription
 
 func encryptPayload<A>(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T4<User, ProfileData, Encrypted<String>, A>, Data>
