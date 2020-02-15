@@ -13,7 +13,7 @@ import Prelude
 import Styleguide
 import Tuple
 
-let showNewEpisodeEmailMiddleware: AppMiddleware<Prelude.Unit> =
+let showNewEpisodeEmailMiddleware: M<Prelude.Unit> =
   writeStatus(.ok)
     >=> respond({ _ in showNewEpisodeView })
 

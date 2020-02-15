@@ -29,9 +29,9 @@ func requireAdmin<A>(
       <| middleware
 }
 
-let adminIndex: AppMiddleware<Tuple1<User>> = writeStatus(.ok)
+let adminIndex: M<Tuple1<User>> = writeStatus(.ok)
   >=> map(lower)
-  >>> _respond(
+  >>> respond(
     view: adminIndexView(currentUser:),
     layoutData: { currentUser in
       SimplePageLayoutData(
