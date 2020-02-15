@@ -8,12 +8,12 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Homebrew Update
-      run: brew update
     - name: Install Dependencies
-      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql
+      run: brew uninstall --ignore-dependencies libpq && brew install cmark postgresql || brew update
+      env:
+        HOMEBREW_NO_AUTO_UPDATE=1
     - name: Start Postgres
-      run: brew services start postgresql
+      run: brew services start postgresql || brew update && brew services start postgresql
     - name: Select Xcode 11.3
       run: sudo xcode-select -s /Applications/Xcode_11.3.app
     - name: Run tests
