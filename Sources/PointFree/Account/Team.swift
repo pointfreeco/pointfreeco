@@ -99,12 +99,12 @@ let removeTeammateMiddleware
 private let requireTeammate
   : MT<Tuple2<User.Id, User>, Tuple2<User, User>>
   = filterMap(
-    over1(
-      Current.database.fetchUserById
-        >>> mapExcept(requireSome)
-        >>> ^\.run
-        >>> map(^\.right)
-      )
+    over1 {
+      Current.database.fetchUserById($0)
+        .mapExcept(requireSome)
+        .run
+        .map(^\.right)
+      }
       >>> sequence1
       >>> map(require1),
     or: redirect(to: .account(.index), headersMiddleware: flash(.error, "Could not find that teammate."))
