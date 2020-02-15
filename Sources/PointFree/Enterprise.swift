@@ -17,17 +17,11 @@ import Tuple
 import UrlFormEncoding
 import Views
 
-let enterpriseLandingResponse: AppMiddleware<Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>>
-  = filterMap(
-    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
-    or: redirect(
-      to: .home,
-      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
-    )
-    )
+let enterpriseLandingResponse
+  = requireEnterpriseAccount
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: enterpriseView,
       layoutData: { user, subscriberState, enterpriseAccount in
         SimplePageLayoutData(
@@ -40,8 +34,21 @@ let enterpriseLandingResponse: AppMiddleware<Tuple3<User?, SubscriberState, Ente
     }
 )
 
-let enterpriseRequestMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>>
-  = filterMap(over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home))
+private let requireEnterpriseAccount
+  : MT<
+  Tuple3<User?, SubscriberState, EnterpriseAccount.Domain>,
+  Tuple3<User?, SubscriberState, EnterpriseAccount>
+  >
+  = filterMap(
+    over3(fetchEnterpriseAccount) >>> sequence3 >>> map(require3),
+    or: redirect(
+      to: .home,
+      headersMiddleware: flash(.warning, "That enterprise account does not exist.")
+    )
+)
+
+let enterpriseRequestMiddleware
+  = requireEnterpriseAccountWithFormData
     <<< validateMembership
     <<< filterMap(require1 >>> pure, or: loginAndRedirect)
     <<< sendEnterpriseInvitation
@@ -52,15 +59,37 @@ let enterpriseRequestMiddleware: AppMiddleware<Tuple3<User?, EnterpriseAccount.D
       )
 }
 
-let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>>
-  = filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< redirectCurrentSubscribers
-    <<< requireEnterpriseAccount
-    <<< filterMap(
-      validateInvitation >>> pure,
-      or: invalidInvitationLinkMiddleware(
-        reason: "Something is wrong with your invitation link. Please try again."
-      )
+private let requireEnterpriseAccountWithFormData
+  : MT<
+  Tuple3<User?, EnterpriseAccount.Domain, EnterpriseRequestFormData>,
+  Tuple3<User?, EnterpriseAccount, EnterpriseRequestFormData>
+  >
+  = filterMap(
+    over2(fetchEnterpriseAccount) >>> sequence2 >>> map(require2), or: redirect(to: .home)
+)
+
+let enterpriseAcceptInviteMiddleware
+  = redirectCurrentSubscribersAndRequireEnterpriseAccount
+    <<< validateInvitationAndLink
+    <| successfullyAcceptedInviteMiddleware
+
+private let redirectCurrentSubscribersAndRequireEnterpriseAccount
+  : MT<
+  Tuple4<User?, EnterpriseAccount.Domain, Encrypted<String>, Encrypted<String>>,
+  Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
+  >
+  = filterMap(require1 >>> pure, or: loginAndRedirect) <<< redirectCurrentSubscribers <<< requireEnterpriseAccount
+
+private let validateInvitationAndLink
+  : MT<
+  Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>,
+  Tuple4<User, EnterpriseAccount, EmailAddress, User.Id>
+  >
+  = filterMap(
+    validateInvitation >>> pure,
+    or: invalidInvitationLinkMiddleware(
+      reason: "Something is wrong with your invitation link. Please try again."
+    )
     )
     <<< filterMap(
       createEnterpriseEmail,
@@ -71,12 +100,11 @@ let enterpriseAcceptInviteMiddleware: AppMiddleware<Tuple4<User?, EnterpriseAcco
       or: invalidInvitationLinkMiddleware(
         reason: "Something is wrong with your invitation link. Please try again."
       )
-    )
-    <| successfullyAcceptedInviteMiddleware
+)
 
 private func requireEnterpriseAccount<A, Z>(
-  _ middleware: @escaping AppMiddleware<T3<A, EnterpriseAccount, Z>>
-  ) -> AppMiddleware<T3<A, EnterpriseAccount.Domain, Z>> {
+  _ middleware: @escaping M<T3<A, EnterpriseAccount, Z>>
+  ) -> M<T3<A, EnterpriseAccount.Domain, Z>> {
   
   return middleware
     |> filterMap(
@@ -134,8 +162,8 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
 }
 
 private func validateMembership<Z>(
-  _ middleware: @escaping AppMiddleware<T3<User?, EnterpriseAccount, Z>>
-  ) -> AppMiddleware<T3<User?, EnterpriseAccount, Z>> {
+  _ middleware: @escaping M<T3<User?, EnterpriseAccount, Z>>
+  ) -> M<T3<User?, EnterpriseAccount, Z>> {
   
   return { conn in
     let (user, account) = (get1(conn.data), get2(conn.data))
@@ -188,8 +216,8 @@ private func validateInvitation(
 }
 
 private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
-  ) -> AppMiddleware<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
+  _ middleware: @escaping M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>>
+  ) -> M<T4<User, EnterpriseAccount, EnterpriseRequestFormData, Z>> {
   
   return { conn in
     let (user, account, request) = (get1(conn.data), get2(conn.data), get3(conn.data))
@@ -291,8 +319,8 @@ fileprivate extension Tagged where Tag == EmailAddress.Tag, RawValue == EmailAdd
 }
 
 private func redirectCurrentSubscribers<Z>(
-  _ middleware: @escaping AppMiddleware<T2<User, Z>>
-  ) -> AppMiddleware<T2<User, Z>> {
+  _ middleware: @escaping M<T2<User, Z>>
+  ) -> M<T2<User, Z>> {
   
   return { conn in
     let user = get1(conn.data)

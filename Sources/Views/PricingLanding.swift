@@ -926,10 +926,11 @@ public let extraSubscriptionLandingStyles =
         <> height(.px(380))
 )
 
-private let desktopBorderStyles =
-  darkRightBorder % key("border-right", "1px solid #333")
-    <> lightRightBorder % key("border-right", "1px solid #e8e8e8")
-    <> lightBottomBorder % key("border-bottom", "1px solid #e8e8e8")
+private let desktopBorderStyles: Stylesheet = concat([
+  darkRightBorder % key("border-right", "1px solid #333"),
+  lightRightBorder % key("border-right", "1px solid #e8e8e8"),
+  lightBottomBorder % key("border-bottom", "1px solid #e8e8e8"),
+])
 
 private let extraSubscriptionLandingDesktopStyles: Stylesheet =
   desktopBorderStyles
