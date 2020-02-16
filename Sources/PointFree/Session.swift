@@ -18,7 +18,7 @@ private let cookieExpirationDuration: TimeInterval = 315_360_000 // 60 * 60 * 24
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {
-    
+
     return { conn in
       let value = update(conn.request.session)
       guard value != conn.request.session else { return pure(conn) }
