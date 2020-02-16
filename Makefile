@@ -112,7 +112,8 @@ test-oss: db
 
 test-linux:
 	docker-compose build && docker-compose run \
-		--entrypoint "swift test --enable-pubgrub-resolver --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web
+		--entrypoint "swift test --enable-pubgrub-resolver --enable-test-discovery --skip-build -Xswiftc -D -Xswiftc OSS" web \
+		|| docker-compose logs db && exit 1
 
 linux-start:
 	docker-compose up --build
