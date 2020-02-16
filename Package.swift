@@ -110,14 +110,6 @@ let package = Package(
       swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
-    .testTarget(
-      name: "FoundationPreludeTests",
-      dependencies: [
-        "FoundationPrelude",
-      ],
-      swiftSettings: [.warnLongExpressionTypeChecking]
-    ),
-
     .target(
       name: "FunctionalCss",
       dependencies: [
