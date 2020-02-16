@@ -61,13 +61,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
     let subscribeData = SubscribeData.individualMonthly
       |> \.coupon .~ "deadbeef"

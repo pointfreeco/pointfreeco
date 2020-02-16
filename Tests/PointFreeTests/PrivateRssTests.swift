@@ -137,14 +137,10 @@ class PrivateRssTests: TestCase {
   func testFeed_InvalidUserAgent() {
     let user = Models.User.mock
 
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.envVars.rssUserAgentWatchlist .~ ["blob"],
-      \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
-      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.envVars.rssUserAgentWatchlist = ["blob"]
+    Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
     let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!

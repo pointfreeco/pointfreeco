@@ -13,23 +13,24 @@ public enum CookieTransform: String, Codable {
   case encrypted
 }
 
+private let cookieExpirationDuration: TimeInterval = 315_360_000 // 60 * 60 * 24 * 365 * 10
+
 public func writeSessionCookieMiddleware<A>(_ update: @escaping (Session) -> Session)
   -> (Conn<HeadersOpen, A>)
   -> IO<Conn<HeadersOpen, A>> {
-
+    
     return { conn in
       let value = update(conn.request.session)
       guard value != conn.request.session else { return pure(conn) }
-      return setCookie(
-          key: pointFreeUserSessionCookieName,
-          value: value,
-          options: [
-            .expires(Current.date().addingTimeInterval(60 * 60 * 24 * 365 * 10)),
-            .path("/")
-        ]
-        )
-        .map { conn |> writeHeader($0) }
-        ?? pure(conn)
+      guard let header = setCookie(
+        key: pointFreeUserSessionCookieName,
+        value: value,
+        options: [
+          .expires(Current.date().addingTimeInterval(cookieExpirationDuration)),
+          .path("/")
+      ]) else { return pure(conn) }
+      
+      return writeHeader(header)(conn)
     }
 }
 

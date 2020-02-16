@@ -153,16 +153,13 @@ final class AccountTests: TestCase {
   }
 
   func testAccount_WithExtraInvoiceInfo() {
+    var customer = Stripe.Customer.mock
+    customer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
+    var subscription = Stripe.Subscription.mock
+    subscription.customer = .right(customer)
+
     Current = .teamYearly
-      |> \.stripe.fetchSubscription .~ const(
-        pure(
-          .mock
-            |> \.customer .~ .right(
-              .mock
-                |> \.metadata .~ ["extraInvoiceInfo": "VAT: 1234567890"]
-          )
-        )
-    )
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
