@@ -1,4 +1,4 @@
-import PointFreePrelude
+import EmailAddress
 
 // NB: remove this `Encodable` to get a runtime crash
 public struct ProfileData: Encodable, Equatable {

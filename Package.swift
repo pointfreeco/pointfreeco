@@ -21,6 +21,9 @@ let package = Package(
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Database", targets: ["Database"]),
+    .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
+    .library(name: "EmailAddress", targets: ["EmailAddress"]),
+    .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
@@ -346,10 +349,11 @@ let package = Package(
     .target(
       name: "Stripe",
       dependencies: [
-        "PointFreePrelude",
+        "DecodableRequest",
+        "EmailAddress",
+        "FoundationPrelude",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
       ],
@@ -363,7 +367,6 @@ let package = Package(
         "Stripe",
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "Optics", package: "swift-prelude"),
         .product(name: "Prelude", package: "swift-prelude"),
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]
@@ -421,6 +424,7 @@ let package = Package(
     .target(
       name: "Views",
       dependencies: [
+        "EmailAddress",
         "FunctionalCss",
         "PointFreeRouter",
         "Styleguide",
@@ -430,14 +434,5 @@ let package = Package(
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]
     ),
-
-    .testTarget(
-      name: "ViewsTests",
-      dependencies: [
-        "Views",
-      ],
-      swiftSettings: [.warnLongExpressionTypeChecking]
-    ),
-
   ]
 )

@@ -1,11 +1,7 @@
 import Either
 import Foundation
-import Optics
-import Prelude
-import PointFreePrelude
 import Tagged
 import TaggedMoney
-import UrlFormEncoding
 
 public struct Card: Codable, Equatable {
   public var brand: Brand
@@ -208,7 +204,7 @@ public struct StripeErrorEnvelope: Codable, Error {
   }
 }
 
-public struct StripeError: Codable {
+public struct StripeError: Codable, Error {
   public var message: String
 
   public init(message: String) {

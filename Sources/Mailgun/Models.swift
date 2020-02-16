@@ -1,4 +1,4 @@
-import PointFreePrelude
+import EmailAddress
 
 public struct SendEmailResponse: Decodable {
   public let id: String

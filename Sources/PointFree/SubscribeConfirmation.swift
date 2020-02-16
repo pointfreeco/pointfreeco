@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import HttpPipeline
 import Foundation
 import Models

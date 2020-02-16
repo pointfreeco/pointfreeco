@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import Foundation
 import GitHub
 import Logging
