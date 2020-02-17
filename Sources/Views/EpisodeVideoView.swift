@@ -50,7 +50,6 @@ window.addEventListener("load", function (event) {
     console.log(data.percent - lastSeenPercent)
     if (data.percent - lastSeenPercent >= 0.01) {
       lastSeenPercent = data.percent;
-      console.log(data);
 
       var httpRequest = new XMLHttpRequest();
       httpRequest.open(
