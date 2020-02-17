@@ -12,18 +12,23 @@ import Stripe
 import Syndication
 import Tuple
 
-let accountRssMiddleware
-  : Middleware<StatusLineOpen, ResponseEnded, Tuple2<Encrypted<String>, Encrypted<String>>, Data>
-  = decryptUrl
-    <<< { fetchUser >=> $0 }
-    <<< requireUser
-    <<< validateUserAndSalt
-    <<< validateUserAgent
-    <<< fetchUserSubscription
-    <<< requireActiveSubscription
-    <<< fetchStripeSubscriptionForUser
-    <| map(lower)
-    >>> accountRssResponse
+let accountRssMiddleware = decryptUrlAndFetchUser
+  <<< validateUserAndSaltAndUserAgent
+  <<< fetchActiveStripeSubscription
+  <| map(lower)
+  >>> accountRssResponse
+
+private let decryptUrlAndFetchUser
+  : MT<Tuple2<Encrypted<String>, Encrypted<String>>, Tuple2<User, User.RssSalt>>
+  = decryptUrl <<< { fetchUser >=> $0 } <<< requireUser
+
+private let validateUserAndSaltAndUserAgent
+  : MT<Tuple2<User, User.RssSalt>, Tuple1<User>>
+  = validateUserAndSalt <<< validateUserAgent
+
+private let fetchActiveStripeSubscription
+  : MT<Tuple1<User>, Tuple2<Stripe.Subscription?, User>>
+  = fetchUserSubscription <<< requireActiveSubscription <<< fetchStripeSubscriptionForUser
 
 private let decryptUrl: (
   @escaping Middleware<StatusLineOpen, ResponseEnded, Tuple2<User.Id, User.RssSalt>, Data>
