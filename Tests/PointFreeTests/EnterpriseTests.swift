@@ -94,6 +94,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
+    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
 
@@ -114,6 +115,7 @@ class EnterpriseTests: TestCase {
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
 
+    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
 
@@ -134,7 +136,8 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
-    
+
+    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
     
@@ -155,6 +158,7 @@ class EnterpriseTests: TestCase {
     let loggedInUser = User.mock
       |> \.id .~ User.Id(rawValue: UUID(uuidString: "DEADBEEF-0000-0000-0000-123456789012")!)
 
+    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
 
@@ -196,7 +200,8 @@ class EnterpriseTests: TestCase {
     let loggedInUser = User.mock
       |> \.id .~ userId
       |> \.subscriptionId .~ nil
-    
+
+    Current.database = .mock
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
     Current.database.fetchSubscriptionById = const(pure(nil))
 
