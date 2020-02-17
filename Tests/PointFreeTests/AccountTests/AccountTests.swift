@@ -240,11 +240,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithPastDue() {
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
-    )
+    var subscription = Models.Subscription.mock
+    subscription.stripeSubscriptionStatus = .pastDue
+
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 

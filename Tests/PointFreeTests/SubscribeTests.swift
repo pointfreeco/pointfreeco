@@ -303,13 +303,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createCustomer .~ { _, _, _, _ in throwE(unit as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
