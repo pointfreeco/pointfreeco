@@ -17,16 +17,13 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRegister() {
-    let gitHubUserEnvelope = GitHubUserEnvelope.mock
-      |> \.accessToken .~ .init(accessToken: "1234-deadbeef")
-      |> \.gitHubUser.id .~ 1234567890
-      |> \.gitHubUser.name .~ "Blobby McBlob"
+    var gitHubUserEnvelope = GitHubUserEnvelope.mock
+    gitHubUserEnvelope.accessToken = .init(accessToken: "1234-deadbeef")
+    gitHubUserEnvelope.gitHubUser.id = 1234567890
+    gitHubUserEnvelope.gitHubUser.name = "Blobby McBlob"
 
-    update(
-      &Current,
-      \.gitHub.fetchUser .~ const(pure(gitHubUserEnvelope.gitHubUser)),
-      \.gitHub.fetchAuthToken .~ const(pure(pure(gitHubUserEnvelope.accessToken)))
-    )
+    Current.gitHub.fetchUser = const(pure(gitHubUserEnvelope.gitHubUser))
+    Current.gitHub.fetchAuthToken = const(pure(pure(gitHubUserEnvelope.accessToken)))
 
     let result = connection(
       from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)

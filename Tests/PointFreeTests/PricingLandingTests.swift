@@ -20,11 +20,10 @@ class PricingLandingIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testLanding_LoggedIn_InactiveSubscriber() {
-    let user = User.admin |> \.subscriptionId .~ nil
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(user))
-    )
+    var user = User.admin
+    user.subscriptionId = nil
+    
+    Current.database.fetchUserById = const(pure(user))
 
     let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -52,12 +51,9 @@ class PricingLandingTests: TestCase {
   }
 
   func testLanding_LoggedIn_ActiveSubscriber() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.admin)),
-      \.database.fetchSubscriptionById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
-    )
+    Current.database.fetchUserById = const(pure(.admin))
+    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
     let conn = connection(from: request(to: .pricingLanding, session: .loggedIn))
     let result = conn |> siteMiddleware
