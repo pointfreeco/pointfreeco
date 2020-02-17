@@ -15,14 +15,11 @@ import Tuple
 import Views
 
 let episodeResponse =
-  filterMap(
-    over1(episode(forParam:)) >>> require1 >>> pure,
-    or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-    )
+  fetchEpisodeForParam
     <| writeStatus(.ok)
     >=> userEpisodePermission
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.episodeView(episodePageData:),
       layoutData: { permission, episode, currentUser, subscriberState, currentRoute in
         let navStyle: NavStyle = currentUser == nil ? .mountains(.main) : .minimal(.light)
@@ -50,14 +47,28 @@ let episodeResponse =
 )
 
 let useCreditResponse =
-  filterMap(
+  fetchEpisodeForParam
+    <<< validateUserEpisodePermission
+    <| applyCreditMiddleware
+
+private let fetchEpisodeForParam
+  : MT<
+  Tuple4<Either<String, Episode.Id>, User?, SubscriberState, Route?>,
+  Tuple4<Episode, User?, SubscriberState, Route?>
+  >
+  = filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> respond(lower >>> episodeNotFoundView)
-    )
-    <<< { userEpisodePermission >=> $0 }
+)
+
+private let validateUserEpisodePermission
+  : MT<
+  Tuple4<Episode, User?, SubscriberState, Route?>,
+  Tuple5<EpisodePermission, Episode, User, SubscriberState, Route?>
+  >
+  = { userEpisodePermission >=> $0 }
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
-    <| applyCreditMiddleware
 
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>

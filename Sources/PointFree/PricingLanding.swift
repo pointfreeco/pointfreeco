@@ -15,7 +15,7 @@ public let pricingLanding: Middleware<
   >
   = writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.pricingLanding,
       layoutData: { currentUser, currentRoute, subscriberState in
         let episodeStats = stats(forEpisodes: Current.episodes())

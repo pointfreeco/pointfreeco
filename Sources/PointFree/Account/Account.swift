@@ -9,11 +9,11 @@ import Stripe
 import Tuple
 import Views
 
-let accountResponse: Middleware<StatusLineOpen, ResponseEnded, Tuple2<User?, SubscriberState>, Data> =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
+let accountResponse
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >=> writeStatus(.ok)
-    >=> _respond(
+    >=> respond(
       view: Views.accountView(accountData:allEpisodes:currentDate:appSecret:),
       layoutData: { accountData in
         SimplePageLayoutData(
