@@ -223,13 +223,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
     let subscribeData = SubscribeData.individualMonthly
       |> \.coupon .~ "deadbeef"
@@ -250,7 +246,6 @@ final class SubscribeTests: TestCase {
     assertSnapshot(matching: conn, as: .conn)
     #endif
   }
-
 
   func testNotLoggedIn_IndividualYearly() {
     update(&Current, \.database .~ .mock)
@@ -315,13 +310,10 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createCustomer .~ { _, _, _, _ in throwE(unit as Error) }
-    )
+    Current.database = .mock
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)

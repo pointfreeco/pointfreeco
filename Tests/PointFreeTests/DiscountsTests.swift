@@ -57,12 +57,9 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
@@ -99,12 +96,9 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
@@ -123,12 +117,9 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
@@ -147,12 +138,9 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
@@ -171,12 +159,9 @@ class DiscountsTests: TestCase {
       rate: .percentOff(50),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
@@ -195,12 +180,9 @@ class DiscountsTests: TestCase {
       rate: .amountOff(5_00),
       valid: true
     )
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.fetchCoupon .~ const(pure(fiftyPercentOffForever))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.fetchCoupon = const(pure(fiftyPercentOffForever))
 
     assertSnapshot(
       matching: connection(
