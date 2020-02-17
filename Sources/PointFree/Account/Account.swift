@@ -9,7 +9,7 @@ import Stripe
 import Tuple
 import Views
 
-let accountResponse//: M<Tuple2<User?, SubscriberState>>
+let accountResponse
   = filterMap(require1 >>> pure, or: loginAndRedirect)
     <| fetchAccountData
     >=> writeStatus(.ok)
