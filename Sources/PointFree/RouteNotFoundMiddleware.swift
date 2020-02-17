@@ -15,7 +15,7 @@ func routeNotFoundMiddleware<A>(
       |> currentUserMiddleware
       >=> writeStatus(.notFound)
       >=> map(lower)
-      >>> _respond(
+      >>> respond(
         view: { _ in routeNotFoundView },
         layoutData: { currentUser, _ in
           SimplePageLayoutData(

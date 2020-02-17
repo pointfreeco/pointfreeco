@@ -25,7 +25,10 @@ public enum GitHubRoute {
   }
 }
 
-public let gitHubRouter = [
+public let gitHubRouter
+ = gitHubRouters.reduce(.empty, <|>)
+
+private let gitHubRouters: [Router<GitHubRoute>] = [
 
   parenthesize(.case(GitHubRoute.authorize))
     <¢> get %> "login" %> "oauth" %> "authorize"
@@ -48,8 +51,7 @@ public let gitHubRouter = [
   .case(GitHubRoute.repo)
     <¢> get %> "pointfreeco" %> pathParam(.rawRepresentable) <% end,
 
-  ]
-  .reduce(.empty, <|>)
+]
 
 public func gitHubUrl(to route: GitHubRoute) -> String {
   return gitHubRouter.url(for: route, base: gitHubBaseUrl)?.absoluteString ?? ""
