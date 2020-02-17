@@ -57,7 +57,7 @@ final class CancelTests: TestCase {
   }
 
   func testCancelStripeFailure() {
-    Current.stripe.fetchSubscription = const(throwE(unit))
+    Current.stripe.cancelSubscription = const(throwE(unit))
 
     let conn = connection(from: request(to: .account(.subscription(.cancel)), session: .loggedIn))
 
