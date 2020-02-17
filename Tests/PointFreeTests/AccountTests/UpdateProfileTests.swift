@@ -98,7 +98,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   }
 }
 
-class UpdateProfileTests: LiveDatabaseTestCase {
+class UpdateProfileTests: TestCase {
   override func setUp() {
     super.setUp()
 //    record=true
