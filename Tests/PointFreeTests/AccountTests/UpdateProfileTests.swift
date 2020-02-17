@@ -4,7 +4,6 @@ import HtmlSnapshotTesting
 @testable import HttpPipeline
 import HttpPipelineTestSupport
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -107,17 +106,16 @@ class UpdateProfileTests: TestCase {
   func testUpdateExtraInvoiceInfo() {
     var updatedCustomerWithExtraInvoiceInfo: String!
 
-    let stripeSubscription = Stripe.Subscription.mock
-      |> \.customer .~ .right(
-        .mock
-          |> \.metadata .~ ["extraInvoiceInfo": "VAT: 1234567890"]
-    )
+    var stripeSubscription = Stripe.Subscription.mock
+    var stripeCustomer = Stripe.Customer.mock
+    stripeCustomer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
+    stripeSubscription.customer = .right(stripeCustomer)
 
     Current = .teamYearly
-      |> \.stripe.fetchSubscription .~ const(pure(stripeSubscription))
-      |> \.stripe.updateCustomerExtraInvoiceInfo .~ { _, info -> EitherIO<Error, Stripe.Customer> in
-        updatedCustomerWithExtraInvoiceInfo = info
-        return pure(.mock)
+    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
+    Current.stripe.updateCustomerExtraInvoiceInfo = { _, info -> EitherIO<Error, Stripe.Customer> in
+      updatedCustomerWithExtraInvoiceInfo = info
+      return pure(.mock)
     }
 
     let update = request(

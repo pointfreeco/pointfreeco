@@ -3,7 +3,6 @@ import Either
 import FoundationNetworking
 #endif
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -13,14 +12,14 @@ import Stripe
 import XCTest
 
 private func secureRequest(_ urlString: String) -> URLRequest {
-  return URLRequest(url: URL(string: urlString)!)
-    |> \.allHTTPHeaderFields .~ ["X-Forwarded-Proto": "https"]
+  var request = URLRequest(url: URL(string: urlString)!)
+  request.allHTTPHeaderFields = ["X-Forwarded-Proto": "https"]
+  return request
 }
 
 class DiscountsTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 

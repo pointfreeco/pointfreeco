@@ -1,7 +1,6 @@
 import ApplicativeRouter
 import HttpPipeline
 @testable import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -17,21 +16,17 @@ class HomeTests: TestCase {
     super.setUp()
 //    record = true
 
-    let eps = [
-      ep10
-        |> \.permission .~ .subscriberOnly
-        |> \.references .~ [.mock],
-      ep2,
-      ep1
-        |> \.permission .~ .subscriberOnly,
-      introduction,
-      ]
-      .suffix(4)
-      .map(\.image .~ "")
+    var e1 = ep10
+    e1.permission = .subscriberOnly
+    e1.references = [.mock]
+    let e2 = ep2
+    var e3 = ep1
+    e3.permission = .subscriberOnly
+    let e4 = introduction
 
-    update(
-      &Current, 
-      \.episodes .~ unzurry(eps)
+    Current.episodes = unzurry(
+      [e1, e2, e3, e4]
+        .map { var e = $0; e.image = ""; return e }
     )
   }
 

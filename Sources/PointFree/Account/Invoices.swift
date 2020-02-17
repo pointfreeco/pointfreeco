@@ -2,7 +2,6 @@ import Either
 import Foundation
 import HttpPipeline
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
