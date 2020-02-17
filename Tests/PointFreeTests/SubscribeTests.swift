@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 @testable import GitHub
 import HttpPipeline
 import Models

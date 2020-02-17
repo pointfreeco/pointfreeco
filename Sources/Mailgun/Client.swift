@@ -1,14 +1,14 @@
+import DecodableRequest
 import Either
+import EmailAddress
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import FoundationPrelude
 import HttpPipeline
 import Logging
 import Models
-import Optics
-import PointFreePrelude
-import Prelude
 import Tagged
 import UrlFormEncoding
 
@@ -55,10 +55,9 @@ public struct Client {
     self.appSecret = appSecret
 
     self.sendEmail = { email in
-      mailgunSend(email: email, domain: domain)
-        |> runMailgun(apiKey: apiKey, logger: logger)
+      runMailgun(apiKey: apiKey, logger: logger)(mailgunSend(email: email, domain: domain))
     }
-    self.validate = mailgunValidate >>> runMailgun(apiKey: apiKey, logger: logger)
+    self.validate = { runMailgun(apiKey: apiKey, logger: logger)(mailgunValidate(email: $0)) }
   }
 
   /// Constructs the email address that users can email in order to unsubscribe from a particular newsletter.
@@ -110,11 +109,9 @@ public struct Client {
   }
 }
 
-private func setBaseUrl(_ baseUrl: URL) -> (URLRequest) -> URLRequest {
-  return { request in
-    var request = request
-    request.url = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.url(relativeTo: baseUrl)
-    return request
+extension URLRequest {
+  fileprivate mutating func set(baseUrl: URL) {
+    self.url = URLComponents(url: self.url!, resolvingAgainstBaseURL: false)?.url(relativeTo: baseUrl)
   }
 }
 
@@ -125,16 +122,15 @@ private func runMailgun<A>(
 
   return { mailgunRequest in
     guard let baseUrl = URL(string: "https://api.mailgun.net")
-      else { return throwE(unit) }
+      else { return throwE(MailgunError()) }
     guard var mailgunRequest = mailgunRequest
-      else { return throwE(unit) }
+      else { return throwE(MailgunError()) }
 
-    mailgunRequest.rawValue = mailgunRequest.rawValue
-      |> setBaseUrl(baseUrl)
-      |> attachBasicAuth(username: "api", password: apiKey.rawValue)
+    mailgunRequest.rawValue.set(baseUrl: baseUrl)
+    mailgunRequest.rawValue.attachBasicAuth(username: "api", password: apiKey.rawValue)
 
     return dataTask(with: mailgunRequest.rawValue, logger: logger)
-      .map(first)
+      .map { data, _ in data }
       .flatMap { data in
         .wrap {
           do {
@@ -148,26 +144,7 @@ private func runMailgun<A>(
   }
 }
 
-private enum Method {
-  case get([String: Any])
-  case post([String: Any])
-  case delete([String: String])
-}
-
-private func attachMethod(_ method: Method) -> (URLRequest) -> URLRequest {
-  switch method {
-  case .get:
-    return \.httpMethod .~ "GET"
-  case let .post(params):
-    return (\.httpMethod .~ "POST")
-      <> attachFormData(params)
-  case let .delete(params):
-    return (\.httpMethod .~ "DELETE")
-      <> attachFormData(params)
-  }
-}
-
-private func mailgunRequest<A>(_ path: String, _ method: Method = .get([:])) -> DecodableRequest<A> {
+private func mailgunRequest<A>(_ path: String, _ method: FoundationPrelude.Method = .get([:])) -> DecodableRequest<A> {
 
   var components = URLComponents(url: URL(string: path)!, resolvingAgainstBaseURL: false)!
   if case let .get(params) = method {
@@ -176,10 +153,9 @@ private func mailgunRequest<A>(_ path: String, _ method: Method = .get([:])) -> 
     }
   }
 
-  return DecodableRequest(
-    rawValue: URLRequest(url: components.url!)
-      |> attachMethod(method)
-  )
+  var request = URLRequest(url: components.url!)
+  request.attach(method: method)
+  return DecodableRequest(rawValue: request)
 }
 
 private func mailgunSend(email: Email, domain: Client.Domain) -> DecodableRequest<SendEmailResponse> {
@@ -216,5 +192,8 @@ public struct MailgunError: Codable, Swift.Error {
   }
 }
 
-private let jsonDecoder = JSONDecoder()
-  |> \.dateDecodingStrategy .~ .secondsSince1970
+private let jsonDecoder: JSONDecoder = {
+  let decoder = JSONDecoder()
+  decoder.dateDecodingStrategy = .secondsSince1970
+  return decoder
+}()

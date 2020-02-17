@@ -1,4 +1,4 @@
-import PointFreePrelude
+import EmailAddress
 import Tagged
 
 public struct MailgunForwardPayload: Codable, Equatable {
