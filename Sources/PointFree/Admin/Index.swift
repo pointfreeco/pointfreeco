@@ -3,7 +3,6 @@ import Foundation
 import Html
 import HttpPipeline
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude

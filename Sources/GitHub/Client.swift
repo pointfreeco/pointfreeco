@@ -79,10 +79,8 @@ internal func fetchGitHubUser(with token: AccessToken) -> DecodableRequest<GitHu
 
 private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableRequest<A> {
   var request = URLRequest(url: URL(string: "https://api.github.com/" + path)!)
-  request.allHTTPHeaderFields = [
-    "Authorization": "token \(token.accessToken)",
-    "Accept": "application/vnd.github.v3+json"
-  ]
+  request.addValue("token \(token.accessToken)", forHTTPHeaderField: "Authorization")
+  request.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
   return DecodableRequest(rawValue: request)
 }
 
