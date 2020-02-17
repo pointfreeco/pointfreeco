@@ -13,61 +13,10 @@ import WebKit
 #endif
 import XCTest
 
-final class WelcomeEmailTests: TestCase {
+final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record=true
-  }
-
-  func testWelcomeEmail1() {
-    update(&Current, \.database .~ .mock)
-
-    let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
-
-    assertSnapshot(matching: emailNodes, as: .html)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
-
-      assertSnapshot(matching: webView, as: .image)
-    }
-    #endif
-  }
-
-  func testWelcomeEmail2() {
-    update(&Current, \.database .~ .mock)
-
-    let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
-
-    assertSnapshot(matching: emailNodes, as: .html)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
-
-      assertSnapshot(matching: webView, as: .image)
-    }
-    #endif
-  }
-
-  func testWelcomeEmail3() {
-    update(&Current, \.database .~ .mock)
-
-    let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
-
-    assertSnapshot(matching: emailNodes, as: .html)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-      webView.loadHTMLString(render(emailNodes), baseURL: nil)
-
-      assertSnapshot(matching: webView, as: .image)
-    }
-    #endif
   }
 
   func testIncrementEpisodeCredits() {
@@ -84,10 +33,60 @@ final class WelcomeEmailTests: TestCase {
 
     zip(users, updatedUsers).forEach { XCTAssertEqual($0.episodeCreditCount + 1, $1.episodeCreditCount) }
   }
+}
+
+final class WelcomeEmailTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
+  func testWelcomeEmail1() {
+    let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
+
+    assertSnapshot(matching: emailNodes, as: .html)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
+  }
+
+  func testWelcomeEmail2() {
+    let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
+
+    assertSnapshot(matching: emailNodes, as: .html)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
+  }
+
+  func testWelcomeEmail3() {
+    let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
+
+    assertSnapshot(matching: emailNodes, as: .html)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+      webView.loadHTMLString(render(emailNodes), baseURL: nil)
+
+      assertSnapshot(matching: webView, as: .image)
+    }
+    #endif
+  }
 
   func testEpisodeEmails() {
-    update(&Current, \.database .~ .mock)
-
     _ = sendWelcomeEmails()
       .run
       .perform()
