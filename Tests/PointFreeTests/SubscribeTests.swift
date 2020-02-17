@@ -61,6 +61,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCouponFailure_Individual() {
+    Current.database = .mock
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
@@ -303,6 +304,7 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
+    Current.database = .mock
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
