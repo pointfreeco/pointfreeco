@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import EmailAddress
 import GitHub
 import Either
 import HttpPipeline

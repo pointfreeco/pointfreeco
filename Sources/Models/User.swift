@@ -1,6 +1,6 @@
+import EmailAddress
 import Foundation
 import GitHub
-import PointFreePrelude
 import Stripe
 import Tagged
 

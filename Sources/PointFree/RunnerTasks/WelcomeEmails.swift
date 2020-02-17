@@ -1,3 +1,4 @@
+import EmailAddress
 import FunctionalCss
 import Either
 import Html

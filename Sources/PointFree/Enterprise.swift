@@ -1,5 +1,6 @@
 import Css
 import Either
+import EmailAddress
 import FunctionalCss
 import Foundation
 import Html
