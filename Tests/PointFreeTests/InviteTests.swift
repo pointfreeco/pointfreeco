@@ -343,6 +343,8 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedOut() {
+    update(&Current, \.database .~ .mock)
+
     let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
@@ -362,18 +364,15 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedIn_NonSubscriber() {
-    let currentUser = Models.User.mock
-      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+    var currentUser = Models.User.mock
+    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
-    let invite = Models.TeamInvite.mock
-      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+    var invite = Models.TeamInvite.mock
+    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    let db = Database.Client.mock
-      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
-
-    update(&Current, \.database .~ db)
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
@@ -394,22 +393,17 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedIn_Subscriber() {
-    let currentUser = User.mock
-      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+    var currentUser = User.mock
+    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
-    let invite = TeamInvite.mock
-      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+    var invite = TeamInvite.mock
+    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
-    let db = Database.Client.mock
-      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(.mock))
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchSubscriptionById = const(pure(.mock))
 
-    update(
-      &Current,
-      \.database .~ db,
-      \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .active))
-    )
+    Current.stripe.fetchSubscription = const(pure(.mock |> \.status .~ .active))
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)
