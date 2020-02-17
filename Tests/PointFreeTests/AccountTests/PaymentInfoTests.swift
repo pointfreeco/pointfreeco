@@ -16,7 +16,6 @@ import XCTest
 class PaymentInfoTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
