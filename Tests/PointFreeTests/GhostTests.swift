@@ -13,7 +13,7 @@ import XCTest
 final class GhostTests: TestCase {
   override func setUp() {
     super.setUp()
-    record=true
+//    record=true
   }
 
   func testStartGhosting_HappyPath() {

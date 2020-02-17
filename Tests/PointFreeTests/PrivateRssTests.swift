@@ -23,7 +23,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
       \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
@@ -47,7 +46,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
       \.stripe.fetchSubscription .~ const(pure(.individualYearly))
@@ -71,7 +69,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.database.fetchSubscriptionByOwnerId .~ const(throwE(unit))
     )
@@ -94,7 +91,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
     )
@@ -117,7 +113,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user)))
     )
 
@@ -139,7 +134,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.envVars.rssUserAgentWatchlist .~ ["blob"],
       \.episodes .~ unzurry([introduction, ep1, ep2, ep3, ep10, ep22]),
@@ -165,7 +159,6 @@ class PrivateRssTests: TestCase {
 
     update(
       &Current,
-      \.database .~ .mock,
       \.database.fetchUserById .~ const(pure(.some(user))),
       \.envVars.rssUserAgentWatchlist .~ ["blob"]
     )

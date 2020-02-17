@@ -14,7 +14,7 @@ import PointFreeTestSupport
 import HttpPipelineTestSupport
 import Optics
 
-class NewslettersTests: TestCase {
+class NewslettersIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
