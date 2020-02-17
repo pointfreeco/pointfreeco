@@ -159,7 +159,7 @@ let routers: [Router<Route>] = [
   .case(.episode(.index))
     <¢> get %> "episodes" <% end,
 
-  parenthesize(.case { Route.episode(Route.EpisodeRoute.progress(param: $0, percent: $1)) })
+  parenthesize(.case { .episode(.progress(param: $0, percent: $1)) })
     <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"
     %> queryParam("percent", .int)
     <% end,
