@@ -21,6 +21,7 @@ class PrivateRssTests: TestCase {
   func testFeed_Authenticated_Subscriber_Monthly() {
     let user = Models.User.mock
 
+    Current.database = .mock
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
     Current.stripe.fetchSubscription = const(pure(.individualMonthly))
@@ -40,7 +41,8 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Yearly() {
     let user = Models.User.mock
-
+    
+    Current.database = .mock
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
     Current.stripe.fetchSubscription = const(pure(.individualYearly))
