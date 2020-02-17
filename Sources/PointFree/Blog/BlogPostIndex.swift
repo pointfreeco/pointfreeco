@@ -13,7 +13,7 @@ let blogIndexMiddleware: Middleware<
   Data> =
   writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: blogIndexView,
       layoutData: { blogPosts, currentUser, subscriberState, currentRoute in
         SimplePageLayoutData(

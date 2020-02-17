@@ -20,7 +20,6 @@ import XCTest
 final class AccountTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record = true
   }
 
@@ -153,16 +152,13 @@ final class AccountTests: TestCase {
   }
 
   func testAccount_WithExtraInvoiceInfo() {
+    var customer = Stripe.Customer.mock
+    customer.metadata = ["extraInvoiceInfo": "VAT: 1234567890"]
+    var subscription = Stripe.Subscription.mock
+    subscription.customer = .right(customer)
+
     Current = .teamYearly
-      |> \.stripe.fetchSubscription .~ const(
-        pure(
-          .mock
-            |> \.customer .~ .right(
-              .mock
-                |> \.metadata .~ ["extraInvoiceInfo": "VAT: 1234567890"]
-          )
-        )
-    )
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
@@ -243,11 +239,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithPastDue() {
-    update(
-      &Current,
-      \.database.fetchSubscriptionById .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock |> \.stripeSubscriptionStatus .~ .pastDue))
-    )
+    var subscription = Models.Subscription.mock
+    subscription.stripeSubscriptionStatus = .pastDue
+
+    Current.database.fetchSubscriptionById = const(pure(subscription))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 

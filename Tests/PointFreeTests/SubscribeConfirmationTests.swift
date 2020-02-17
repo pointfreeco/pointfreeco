@@ -20,12 +20,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -56,12 +53,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_SwitchToMonthly() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -92,12 +86,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -128,12 +122,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_WithDefaults() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -164,12 +158,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -200,12 +194,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_SwitchToMonthly() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = -1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -236,12 +230,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_AddTeamMember() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = 1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -272,12 +266,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_ActiveSubscriber() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(.mock))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(.mock))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(.mock))
 
     let conn = connection(
       from: request(
@@ -296,12 +287,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedOut() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(nil)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(nil))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(
@@ -332,12 +320,9 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testPersonal_LoggedIn_WithDiscount() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.mock))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(from: request(to: .discounts(code: "dead-beef", nil), session: .loggedIn))
     let result = conn |> siteMiddleware
@@ -358,12 +343,12 @@ class SubscriptionConfirmationTests: TestCase {
   }
 
   func testTeam_LoggedIn_RemoveOwnerFromTeam() {
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.mock |> \.gitHubUserId .~ -1)),
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    var user = User.mock
+    user.gitHubUserId = 1
+
+    Current.database.fetchUserById = const(pure(user))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(

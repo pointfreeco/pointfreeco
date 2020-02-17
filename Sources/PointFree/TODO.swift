@@ -17,8 +17,14 @@ import Tagged
 import Tuple
 import UrlFormEncoding
 
-public typealias AppMiddleware<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
-public typealias AppTransformer<A, B> = (@escaping AppMiddleware<A>) -> AppMiddleware<B>
+extension IO {
+  public static func pure(_ a: A) -> IO {
+    Prelude.pure(a)
+  }
+}
+
+public typealias M<A> = Middleware<StatusLineOpen, ResponseEnded, A, Data>
+public typealias MT<A, B> = (@escaping M<B>) -> M<A>
 
 // todo: swift-prelude?
 // todo: rename to `tupleArray`?
