@@ -71,6 +71,7 @@ let progressResponse: AppMiddleware<
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> end
     )
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <| writeStatus(.ok)
     >=> end
 
