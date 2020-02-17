@@ -397,7 +397,7 @@ class InviteTests: TestCase {
     currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
 
     var invite = TeamInvite.mock
-    invite.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
 
     Current.database.fetchUserById = const(pure(.some(currentUser)))
     Current.database.fetchTeamInvite = const(pure(.some(invite)))

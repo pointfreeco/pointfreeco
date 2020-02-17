@@ -147,7 +147,7 @@ class PrivateRssTests: TestCase {
   func testFeed_BadSalt_InvalidUserAgent() {
     let user = Models.User.mock
 
-    Current.database.fetchUserById = const(pure(.some(user))),
+    Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.updateUser = { _, _, _, _, _, _ in
       XCTFail("The user should not be updated.")
       return pure(unit)
