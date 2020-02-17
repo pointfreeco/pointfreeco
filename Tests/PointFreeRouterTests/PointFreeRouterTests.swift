@@ -43,4 +43,39 @@ coupon=student-discount&isOwnerTakingSeat=false&pricing[billing]=monthly&pricing
 
     XCTAssertEqual(pointFreeRouter.match(request: request)!, route)
   }
+
+  func testEpisodeShowRoute() {
+    let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
+
+    let route = Route.episode(.show(.left("ep10-hello-world")))
+
+    XCTAssertEqual(
+      pointFreeRouter.match(request: request),
+      route
+    )
+
+    XCTAssertEqual(
+      pointFreeRouter.request(for: route),
+      request
+    )
+  }
+
+  func testEpisodeProgressRoute() {
+    var request = URLRequest(
+      url: URL(string: "http://localhost:8080/episodes/ep10-hello-world/progress?percent=50")!
+    )
+    request.httpMethod = "POST"
+
+    let route = Route.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
+
+    XCTAssertEqual(
+      pointFreeRouter.match(request: request),
+      route
+    )
+
+    XCTAssertEqual(
+      pointFreeRouter.request(for: route),
+      request
+    )
+  }
 }

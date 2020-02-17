@@ -26,7 +26,7 @@ class EpisodePageTests: TestCase {
   func testEpisodePage() {
     update(&Current, \.database .~ .mock)
 
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
+    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedOut)
 
     let conn = connection(from: episode)
 
@@ -47,7 +47,7 @@ class EpisodePageTests: TestCase {
 
   func testEpisodePageSubscriber() {
     update(&Current, \.database .~ .mock)
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
@@ -76,7 +76,7 @@ class EpisodePageTests: TestCase {
       \.episodes .~ { [freeEpisode] }
     )
 
-    let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedOut)
+    let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedOut)
 
     let conn = connection(from: episode)
 
@@ -105,7 +105,7 @@ class EpisodePageTests: TestCase {
       \.episodes .~ { [freeEpisode] }
     )
 
-    let episode = request(to: .episode(.left(freeEpisode.slug)), session: .loggedIn)
+    let episode = request(to: .episode(.show(.left(freeEpisode.slug))), session: .loggedIn)
 
     let conn = connection(from: episode)
 
@@ -127,7 +127,7 @@ class EpisodePageTests: TestCase {
   func testEpisodeNotFound() {
     update(&Current, \.database .~ .mock)
 
-    let episode = request(to: .episode(.left("object-oriented-programming")))
+    let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
 
     let conn = connection(from: episode)
 
@@ -161,7 +161,7 @@ class EpisodePageTests: TestCase {
     )
 
     let conn = connection(
-      from: request(to: .episode(.left(episode.slug)), session: .loggedIn)
+      from: request(to: .episode(.show(.left(episode.slug))), session: .loggedIn)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -197,7 +197,7 @@ class EpisodePageTests: TestCase {
     )
 
     let conn = connection(
-      from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -233,7 +233,7 @@ class EpisodePageTests: TestCase {
     )
 
     let conn = connection(
-      from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -413,7 +413,7 @@ class EpisodePageTests: TestCase {
     )
 
     let conn = connection(
-      from: request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn)
+      from: request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn)
     )
 
     #if !os(Linux)
@@ -444,7 +444,7 @@ class EpisodePageTests: TestCase {
     subscription.stripeSubscriptionStatus = .trialing
     Current.database.fetchSubscriptionById = { _ in pure(subscription) }
 
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedIn(as: .mock))
+    let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedIn(as: .mock))
 
     let conn = connection(from: episode)
 

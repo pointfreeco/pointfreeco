@@ -21,8 +21,7 @@ public enum Route: Equatable {
   case discounts(code: Stripe.Coupon.Id, Pricing.Billing?)
   case endGhosting
   case enterprise(Enterprise)
-  case episode(Either<String, Episode.Id>)
-  case episodes
+  case episode(EpisodeRoute)
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
@@ -62,6 +61,12 @@ public enum Route: Equatable {
     case acceptInvite(EnterpriseAccount.Domain, email: Encrypted<String>, userId: Encrypted<String>)
     case landing(EnterpriseAccount.Domain)
     case requestInvite(EnterpriseAccount.Domain, EnterpriseRequestFormData)
+  }
+
+  public enum EpisodeRoute: Equatable {
+    case index
+    case progress(param: Either<String, Episode.Id>, percent: Int)
+    case show(Either<String, Episode.Id>)
   }
 
   public enum Feed: Equatable {
@@ -151,11 +156,16 @@ let routers: [Router<Route>] = [
   .case { .blog(.show($0)) }
     <¢> get %> "blog" %> "posts" %> pathParam(.blogPostIdOrString) <% end,
 
-  .case(Route.episode)
-    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
-
-  .case(.episodes)
+  .case(.episode(.index))
     <¢> get %> "episodes" <% end,
+
+  parenthesize(.case { Route.episode(Route.EpisodeRoute.progress(param: $0, percent: $1)) })
+    <¢> post %> "episodes" %> pathParam(.episodeIdOrString) <%> "progress"
+    %> queryParam("percent", .int)
+    <% end,
+
+  .case { .episode(.show($0)) }
+    <¢> get %> "episodes" %> pathParam(.episodeIdOrString) <% end,
 
   .case(.feed(.atom))
     <¢> get %> "feed" %> "atom.xml" <% end,
