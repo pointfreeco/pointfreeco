@@ -1,4 +1,4 @@
-import PointFreePrelude
+import EmailAddress
 import Stripe
 
 public struct SubscribeConfirmationData: Equatable {
