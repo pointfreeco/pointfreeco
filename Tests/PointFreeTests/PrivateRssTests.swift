@@ -41,7 +41,7 @@ class PrivateRssTests: TestCase {
 
   func testFeed_Authenticated_Subscriber_Yearly() {
     let user = Models.User.mock
-    
+
     Current.database = .mock
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
@@ -88,6 +88,7 @@ class PrivateRssTests: TestCase {
     var subscription = Models.Subscription.mock
     subscription.stripeSubscriptionStatus = .pastDue
 
+    Current.database = .mock
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.database.fetchSubscriptionByOwnerId = const(pure(subscription))
 
@@ -129,6 +130,7 @@ class PrivateRssTests: TestCase {
   func testFeed_InvalidUserAgent() {
     let user = Models.User.mock
 
+    Current.database = .mock
     Current.database.fetchUserById = const(pure(.some(user)))
     Current.envVars.rssUserAgentWatchlist = ["blob"]
     Current.episodes = unzurry([introduction, ep1, ep2, ep3, ep10, ep22])
