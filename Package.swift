@@ -117,8 +117,8 @@ let package = Package(
       dependencies: [
         "DecodableRequest",
         "EmailAddress",
-        .product(name: "Either", package: "swift-prelude"),
         "FoundationPrelude",
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Tagged", package: "swift-tagged"),
       ],
@@ -150,10 +150,10 @@ let package = Package(
       dependencies: [
         "DecodableRequest",
         "EmailAddress",
-        .product(name: "HttpPipeline", package: "swift-web"),
-        "Models",
-        .product(name: "Either", package: "swift-prelude"),
         "FoundationPrelude",
+        "Models",
+        .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
       ],
