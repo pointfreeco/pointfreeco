@@ -13,21 +13,10 @@ import SnapshotTesting
 @testable import Stripe
 import XCTest
 
-final class SubscribeTests: TestCase {
+final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record=true
-  }
-
-  func testNotLoggedIn_IndividualMonthly() {
-    let conn = connection(from: request(to: .subscribe(.some(.individualMonthly))))
-      |> siteMiddleware
-      |> Prelude.perform
-    update(&Current, \.database .~ .mock)
-
-    #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
-    #endif
   }
 
   func testCoupon_Individual() {
@@ -60,35 +49,6 @@ final class SubscribeTests: TestCase {
     #endif
   }
 
-  func testCouponFailure_Individual() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
-
-    let subscribeData = SubscribeData.individualMonthly
-      |> \.coupon .~ "deadbeef"
-
-    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
-      .run
-      .perform()
-      .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
-
-    let conn = connection(
-      from: request(to: .subscribe(.some(subscribeData)), session: session)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
-
-    #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
-    #endif
-  }
-
   func testCoupon_Team() {
     let subscribeData = SubscribeData.teamYearly(quantity: 4)
       |> \.coupon .~ "deadbeef"
@@ -114,68 +74,6 @@ final class SubscribeTests: TestCase {
       .perform()
       .right!
     XCTAssertNil(subscription)
-  }
-
-  func testNotLoggedIn_IndividualYearly() {
-    update(&Current, \.database .~ .mock)
-    let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
-      |> siteMiddleware
-      |> Prelude.perform
-
-    #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
-    #endif
-  }
-
-  func testNotLoggedIn_Team() {
-    update(&Current, \.database .~ .mock)
-    let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
-      |> siteMiddleware
-      |> Prelude.perform
-
-    #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
-    #endif
-  }
-
-  func testCurrentSubscribers() {
-    update(&Current, \.database .~ .mock)
-    let conn = connection(
-      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
-
-    #if !os(Linux)
-    assertSnapshot(matching: conn, as: .conn)
-    #endif
-  }
-
-  func testInvalidQuantity() {
-    #if !os(Linux)
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
-
-    let conn = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
-
-    assertSnapshot(matching: conn, as: .conn, named: "too_high")
-
-    let conn2 = connection(
-      from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
-      )
-      |> siteMiddleware
-      |> Prelude.perform
-
-    assertSnapshot(matching: conn2, as: .conn, named: "too_low")
-    #endif
   }
 
   func testHappyPath() {
@@ -304,6 +202,116 @@ final class SubscribeTests: TestCase {
       .right!!
     // Confirm that owner of subscription is not taking up a seat on the sub.
     XCTAssertEqual(nil, freshUser.subscriptionId)
+  }
+
+}
+
+final class SubscribeTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record=true
+  }
+
+  func testNotLoggedIn_IndividualMonthly() {
+    let conn = connection(from: request(to: .subscribe(.some(.individualMonthly))))
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testCouponFailure_Individual() {
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
+      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
+    )
+
+    let subscribeData = SubscribeData.individualMonthly
+      |> \.coupon .~ "deadbeef"
+
+    let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
+      .run
+      .perform()
+      .right!!
+    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(subscribeData)), session: session)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+
+  func testNotLoggedIn_IndividualYearly() {
+    update(&Current, \.database .~ .mock)
+    let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testNotLoggedIn_Team() {
+    update(&Current, \.database .~ .mock)
+    let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testCurrentSubscribers() {
+    update(&Current, \.database .~ .mock)
+    let conn = connection(
+      from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    #if !os(Linux)
+    assertSnapshot(matching: conn, as: .conn)
+    #endif
+  }
+
+  func testInvalidQuantity() {
+    #if !os(Linux)
+    update(
+      &Current,
+      \.database .~ .mock,
+      \.database.fetchSubscriptionById .~ const(pure(nil)),
+      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
+    )
+
+    let conn = connection(
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: conn, as: .conn, named: "too_high")
+
+    let conn2 = connection(
+      from: request(to: .subscribe(.some(.teamYearly(quantity: 0))), session: .loggedIn)
+      )
+      |> siteMiddleware
+      |> Prelude.perform
+
+    assertSnapshot(matching: conn2, as: .conn, named: "too_low")
+    #endif
   }
 
   func testCreateCustomerFailure() {

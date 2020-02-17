@@ -20,7 +20,6 @@ private func secureRequest(_ urlString: String) -> URLRequest {
 class SiteMiddlewareTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record=true
   }
 
