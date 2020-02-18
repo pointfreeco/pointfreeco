@@ -71,20 +71,38 @@ private let validateUserEpisodePermission
     <<< validateCreditRequest
 
 let progressResponse: M<
-  Tuple5<
+  Tuple4<
   Either<String, Episode.Id>,
   Int,
   Models.User?,
-  SubscriberState,
-  Route?>
+  SubscriberState>
   > =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> end
     )
-    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
-    <| writeStatus(.ok)
-    >=> end
+    <<< filterMap(require3 >>> pure, or: writeStatus(.ok) >=> end)
+    <| updateProgress
+
+private let updateProgress: M<Tuple4<Episode, Int, Models.User, SubscriberState>> = { conn in
+  let (episode, percent, user, subscriberState) = lower(conn.data)
+
+  switch subscriberState {
+  case .owner(true, .active, _), .teammate(.active, _):
+    return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
+      .run
+      .flatMap { _ in
+        conn
+          |> writeStatus(.ok)
+          >=> end
+    }
+
+  case .nonSubscriber, .owner, .teammate:
+    return  conn
+      |> writeStatus(.ok)
+      >=> end
+  }
+}
 
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>

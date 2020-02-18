@@ -445,4 +445,43 @@ class EpisodePageTests: TestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
+
+  func testProgress_LoggedIn() {
+    var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in
+      didUpdate = true
+      return pure(unit)
+    }
+
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedIn
+    )
+    let conn = connection(from: progressRequest)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, true)
+  }
+
+  func testProgress_LoggedOut() {
+    var didUpdate = false
+    Current.database.updateEpisodeProgress = { _, _, _ in
+      didUpdate = true
+      return pure(unit)
+    }
+
+    let episode = Current.episodes().first!
+    let percent = 20
+    let progressRequest = request(
+      to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+      session: .loggedOut
+    )
+    let conn = connection(from: progressRequest)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+    XCTAssertEqual(didUpdate, false)
+  }
+
 }
