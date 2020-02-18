@@ -9,7 +9,6 @@ import Html
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
@@ -103,7 +102,7 @@ func respond<A, B>(
         >>> addGoogleAnalytics
 
       return conn
-        |> writeSessionCookieMiddleware(\.flash .~ nil)
+        |> writeSessionCookieMiddleware { $0.flash = nil }
         >=> respond(
           body: Current.renderHtml(pageLayout(newLayoutData)),
           contentType: .html

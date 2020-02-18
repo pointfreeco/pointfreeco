@@ -4,7 +4,6 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -44,12 +43,12 @@ final class AccountTests: TestCase {
   }
 
   func testAccount_InvoiceBilling() {
-    let customer = Stripe.Customer.mock
-      |> (\Stripe.Customer.sources) .~ .mock([.right(.mock)])
-    let subscription = Stripe.Subscription.teamYearly
-      |> (\Stripe.Subscription.customer) .~ .right(customer)
+    var customer = Stripe.Customer.mock
+    customer.sources = .mock([.right(.mock)])
+    var subscription = Stripe.Subscription.teamYearly
+    subscription.customer = .right(customer)
     Current = .teamYearly
-      |> (\Environment.stripe.fetchSubscription) .~ const(pure(subscription))
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
@@ -69,18 +68,18 @@ final class AccountTests: TestCase {
   }
 
   func testTeam_OwnerIsNotSubscriber() {
-    let currentUser = User.nonSubscriber
-      |> \.episodeCreditCount .~ 2
-    let subscription = Subscription.mock
-      |> \.userId .~ currentUser.id
+    var currentUser = User.nonSubscriber
+    currentUser.episodeCreditCount = 2
+    var subscription = Models.Subscription.mock
+    subscription.userId = currentUser.id
 
     Current = .teamYearly
-      |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([]))
-      |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([]))
+    Current.database.fetchSubscriptionById = const(pure(.some(subscription)))
 
-    let session = Session.loggedIn
-      |> \.user .~ .standard(currentUser.id)
+    var session = Session.loggedIn
+    session.user = .standard(currentUser.id)
     let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -100,20 +99,20 @@ final class AccountTests: TestCase {
 
   func testTeam_NoRemainingSeats() {
     let currentUser = User.nonSubscriber
-    let subscription = Subscription.mock
-      |> \.userId .~ currentUser.id
-    let stripeSubscription = Stripe.Subscription.mock
-      |> (\Stripe.Subscription.quantity) .~ 2
+    var subscription = Models.Subscription.mock
+    subscription.userId = currentUser.id
+    var stripeSubscription = Stripe.Subscription.mock
+    stripeSubscription.quantity = 2
 
     Current = .teamYearly
-      |> (\Environment.database.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock, .mock]))
-      |> (\Environment.database.fetchSubscriptionById) .~ const(pure(.some(subscription)))
-      |> (\Environment.database.fetchTeamInvites) .~ const(pure([]))
-      |> (\Environment.stripe.fetchSubscription) .~ const(pure(stripeSubscription))
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock, .mock]))
+    Current.database.fetchSubscriptionById = const(pure(.some(subscription)))
+    Current.database.fetchTeamInvites = const(pure([]))
+    Current.stripe.fetchSubscription = const(pure(stripeSubscription))
 
-    let session = Session.loggedIn
-      |> \.user .~ .standard(currentUser.id)
+    var session = Session.loggedIn
+    session.user = .standard(currentUser.id)
     let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -178,10 +177,11 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithFlashNotice() {
-    let flash = Flash(priority: .notice, message: "You’ve subscribed!")
+    var session = Session.loggedIn
+    session.flash = Flash(priority: .notice, message: "You’ve subscribed!")
 
     let conn = connection(
-      from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
+      from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -199,9 +199,10 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithFlashWarning() {
-    let flash = Flash(priority: .warning, message: "Your subscription is past-due!")
+    var session = Session.loggedIn
+    session.flash = Flash(priority: .warning, message: "Your subscription is past-due!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -219,9 +220,10 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithFlashError() {
-    let flash = Flash(priority: .error, message: "An error has occurred!")
+    var session = Session.loggedIn
+    session.flash = Flash(priority: .error, message: "An error has occurred!")
 
-    let conn = connection(from: request(to: .account(.index), session: .loggedIn |> (\Session.flash) .~ flash))
+    let conn = connection(from: request(to: .account(.index), session: session))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 
@@ -263,7 +265,7 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCancelingSubscription() {
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.canceling)))
+    Current.stripe.fetchSubscription = const(pure(.canceling))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
@@ -283,11 +285,8 @@ final class AccountTests: TestCase {
   }
 
   func testAccountCanceledSubscription() {
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.canceled)),
-      \.database.fetchSubscriptionById .~ const(pure(.canceled))
-    )
+    Current.database.fetchSubscriptionById = const(pure(.canceled))
+    Current.stripe.fetchSubscription = const(pure(.canceled))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
@@ -307,16 +306,14 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_NoneChosen() {
-    let user = User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+    var user = User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 1
 
-    update(
-      &Current,
-      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
-      \.database.fetchEpisodeCredits .~ const(pure([])),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchEpisodeCredits = const(pure([]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -335,16 +332,13 @@ final class AccountTests: TestCase {
   }
 
   func testEpisodeCredits_1Credit_1Chosen() {
-    let user = User.mock
-      |> \.subscriptionId .~ nil
-      |> \.episodeCreditCount .~ 1
+    var user = User.mock
+    user.subscriptionId = nil
+    user.episodeCreditCount = 1
 
-    update(
-      &Current,
-      (\Environment.database.fetchUserById) .~ const(pure(.some(user))),
-      \.database.fetchEpisodeCredits .~ const(pure([.mock])),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchEpisodeCredits = const(pure([.mock]))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 
@@ -364,10 +358,10 @@ final class AccountTests: TestCase {
   }
 
   func testAccountWithDiscount() {
-    let subscription = Stripe.Subscription.mock
-      |> \.discount .~ .mock
+    var subscription = Stripe.Subscription.mock
+    subscription.discount = .mock
     Current = .teamYearly
-      |> \.stripe.fetchSubscription .~ const(pure(subscription))
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
     let conn = connection(from: request(to: .account(.index), session: .loggedIn))
 

@@ -1,6 +1,5 @@
 import Css
 import Html
-import Optics
 import Prelude
 
 /// Transforms `node` by applying a reasonable number of the styles from `stylesheet` to each element.

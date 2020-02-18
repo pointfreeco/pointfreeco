@@ -18,7 +18,6 @@ import Logging
 import Mailgun
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreeRouter
 import PointFreePrelude
@@ -49,18 +48,21 @@ extension Environment {
     uuid: unzurry(.mock)
   )
 
-  public static let teamYearly = mock
-    |> (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
-    |> (\Environment.database.fetchTeamInvites) .~ const(pure([.mock]))
-    |> (\Environment.stripe.fetchSubscription) .~ const(pure(.teamYearly))
-    |> (\Environment.stripe.fetchUpcomingInvoice) .~ const(pure(.upcoming |> \.amountDue .~ 640_00))
+  public static let teamYearly = update(mock) {
+    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    $0.database.fetchTeamInvites = const(pure([.mock]))
+    $0.stripe.fetchSubscription = const(pure(.teamYearly))
+    $0.stripe.fetchUpcomingInvoice = const(pure(update(.upcoming) { $0.amountDue = 640_00 }))
+  }
 
-  public static let teamYearlyTeammate = teamYearly
-    |> (\Environment.database.fetchSubscriptionByOwnerId) .~ const(pure(nil))
+  public static let teamYearlyTeammate = update(teamYearly) {
+    $0.database.fetchSubscriptionByOwnerId = const(pure(nil))
+  }
 
-  public static let individualMonthly = mock
-    |> (\.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.mock]))
-    |> \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
+  public static let individualMonthly = update(mock) {
+    $0.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.mock]))
+    $0.stripe.fetchSubscription = const(pure(.individualMonthly))
+  }
 }
 
 extension Array where Element == Episode {
@@ -82,9 +84,10 @@ extension Logger {
 
 extension EnvVars {
   public static var mock: EnvVars {
-    return EnvVars()
-      |> \.appEnv .~ EnvVars.AppEnv.testing
-      |> \.postgres.databaseUrl .~ "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+    return update(EnvVars()) {
+      $0.appEnv = EnvVars.AppEnv.testing
+      $0.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
+    }
   }
 }
 
@@ -104,8 +107,9 @@ extension Session {
   public static let loggedOut = empty
 
   public static func loggedIn(as user: Models.User) -> Session {
-    return loggedOut
-      |> \.user .~ .standard(user.id)
+    return update(loggedOut) {
+      $0.user = .standard(user.id)
+    }
   }
 
   public static let loggedIn = Session.loggedIn(as: .mock)

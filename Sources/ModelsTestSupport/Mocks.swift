@@ -1,6 +1,5 @@
 import Foundation
 import Models
-import Optics
 import Prelude
 import PointFreePrelude
 import Stripe
@@ -45,11 +44,13 @@ extension Models.Subscription {
     userId: User.mock.id
   )
 
-  public static let canceled = mock
-    |> \.stripeSubscriptionStatus .~ .canceled
+  public static let canceled = update(mock) {
+    $0.stripeSubscriptionStatus = .canceled
+  }
 
-  public static let pastDue = mock
-    |> \.stripeSubscriptionStatus .~ .pastDue
+  public static let pastDue = update(mock) {
+    $0.stripeSubscriptionStatus = .pastDue
+  }
 }
 
 extension TeamInvite {
@@ -74,21 +75,25 @@ extension Models.User {
     subscriptionId: .init(rawValue: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
   )
 
-  public static let newUser = mock
-    |> \.episodeCreditCount .~ 1
-    |> \.subscriptionId .~ nil
+  public static let newUser = update(mock) {
+    $0.episodeCreditCount = 1
+    $0.subscriptionId = nil
+  }
 
   public static let owner = mock
 
-  public static let teammate = mock
-    |> \.id .~ .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+  public static let teammate = update(mock) {
+    $0.id = .init(rawValue: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!)
+  }
 
-  public static let nonSubscriber = mock
-    |> \.subscriptionId .~ nil
+  public static let nonSubscriber = update(mock) {
+    $0.subscriptionId = nil
+  }
 
-  public static let admin = mock
-    |> \.isAdmin .~ true
-    |> \.id .~ .init(rawValue: UUID(uuidString: "12121212-1212-1212-1212-121212121212")!)
+  public static let admin = update(mock) {
+    $0.isAdmin = true
+    $0.id = .init(rawValue: UUID(uuidString: "12121212-1212-1212-1212-121212121212")!)
+  }
 }
 
 fileprivate extension Date {

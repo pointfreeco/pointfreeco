@@ -3,7 +3,6 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -55,10 +54,10 @@ class EnterpriseTests: TestCase {
 
   func testLanding_AlreadySubscribedToEnterprise() {
     let subscriptionId = Subscription.Id(rawValue: UUID(uuidString: "00000000-0000-0000-0000-012387451903")!)
-    let account = EnterpriseAccount.mock
-      |> \.subscriptionId .~ subscriptionId
-    let user = User.mock
-      |> (\User.subscriptionId) .~ subscriptionId
+    var account = EnterpriseAccount.mock
+    account.subscriptionId = subscriptionId
+    var user = User.mock
+    user.subscriptionId = subscriptionId
 
     Current.database.fetchEnterpriseAccountForDomain = const(pure(.some(account)))
 

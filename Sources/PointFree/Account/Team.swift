@@ -4,7 +4,6 @@ import Foundation
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreePrelude
 import Prelude
 import Styleguide

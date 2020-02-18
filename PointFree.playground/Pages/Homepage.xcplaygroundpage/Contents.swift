@@ -1,6 +1,5 @@
 import HttpPipeline
 import Models
-import Optics
 import PlaygroundSupport
 @testable import PointFree
 import PointFreePrelude
@@ -8,7 +7,8 @@ import PointFreePrelude
 import Prelude
 import WebKit
 
-Current = .mock |> \.episodes .~ unzurry(allPublicEpisodes)
+Current = .mock
+Current.episodes = unzurry(allPublicEpisodes)
 
 let result = siteMiddleware(connection(from: request(to: .home))).perform()
 let htmlStr = String(decoding: result.response.body, as: UTF8.self)

@@ -2,7 +2,6 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -61,11 +60,8 @@ class PrivateRssTests: TestCase {
   func testFeed_Authenticated_NonSubscriber() {
     let user = Models.User.nonSubscriber
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user))),
-      \.database.fetchSubscriptionByOwnerId .~ const(throwE(unit))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
+    Current.database.fetchSubscriptionByOwnerId = const(throwE(unit))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
     let rssSalt = Encrypted(user.rssSalt.rawValue.uuidString, with: Current.envVars.appSecret)!
@@ -104,10 +100,7 @@ class PrivateRssTests: TestCase {
   func testFeed_BadSalt() {
     let user = Models.User.mock
 
-    update(
-      &Current,
-      \.database.fetchUserById .~ const(pure(.some(user)))
-    )
+    Current.database.fetchUserById = const(pure(.some(user)))
 
     let userId = Encrypted(user.id.rawValue.uuidString, with: Current.envVars.appSecret)!
     let rssSalt = Encrypted("BAADBAAD-BAAD-BAAD-BAAD-BAADBAADBAAD", with: Current.envVars.appSecret)!
