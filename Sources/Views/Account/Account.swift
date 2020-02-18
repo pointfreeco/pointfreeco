@@ -3,7 +3,6 @@ import FunctionalCss
 import Foundation
 import Html
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
@@ -1197,7 +1196,10 @@ public struct AccountData {
   }
 }
 
-private let dateFormatter = DateFormatter()
-  |> \.dateStyle .~ .short
-  |> \.timeStyle .~ .none
-  |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+private let dateFormatter: DateFormatter = {
+  let formatter = DateFormatter()
+  formatter.dateStyle = .short
+  formatter.timeStyle = .none
+  formatter.timeZone = TimeZone(secondsFromGMT: 0)
+  return formatter
+}()

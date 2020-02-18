@@ -3,7 +3,6 @@ import Either
 import FoundationNetworking
 #endif
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -39,10 +38,9 @@ final class NotFoundMiddlewareTests: TestCase {
   }
 
   func testNotFound_LoggedIn() {
-    let conn = connection(
-      from: request(to: .home, session: .loggedIn)
-        |> (over(\.url) <<< map) %~ { $0.appendingPathComponent("404") }
-    )
+    var req = request(to: .home, session: .loggedIn)
+    req.url?.appendPathComponent("404")
+    let conn = connection(from: req)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
 

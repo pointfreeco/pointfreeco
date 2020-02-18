@@ -2,7 +2,6 @@ import Either
 import HttpPipeline
 @testable import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -17,7 +16,6 @@ import XCTest
 class BlogTests: TestCase {
   override func setUp() {
     super.setUp()
-    update(&Current, \.database .~ .mock)
 //    record = true
   }
 
@@ -40,21 +38,21 @@ class BlogTests: TestCase {
   }
 
   func testBlogIndex_WithLotsOfPosts() {
-    let shortMock = BlogPost.mock |> \.contentBlocks .~ [BlogPost.mock.contentBlocks[1]]
+    var shortMock = BlogPost.mock
+    shortMock.contentBlocks = [BlogPost.mock.contentBlocks[1]]
+    var hiddenMock = shortMock
+    hiddenMock.hidden = true
     let posts = [
       shortMock,
       shortMock,
       shortMock,
-      shortMock |> \.hidden .~ true,
+      hiddenMock,
       shortMock,
       shortMock,
       shortMock
     ]
 
-    update(
-      &Current,
-      \.blogPosts .~ unzurry(posts)
-    )
+    Current.blogPosts = unzurry(posts)
 
     let conn = connection(from: request(to: .blog(.index)))
 

@@ -1,6 +1,6 @@
 import Either
 import Foundation
-import Optics
+import PointFreePrelude
 import Prelude
 import Stripe
 
@@ -105,10 +105,11 @@ extension Invoice {
     )
   }
 
-  public static let upcoming = mock(charge: .right(.mock))
-    |> \.amountDue .~ 17_00
-    |> \.amountPaid .~ 0
-    |> \.id .~ nil
+  public static let upcoming = update(mock(charge: .right(.mock))) {
+    $0.amountDue = 17_00
+    $0.amountPaid = 0
+    $0.id = nil
+  }
 }
 
 extension LineItem {
@@ -147,21 +148,24 @@ extension Plan {
 
   public static let individualMonthly = mock
 
-  public static let individualYearly = mock
-    |> \.tiers .~ [.mock |> \.unitAmount .~ 170_00]
-    |> \.id .~ .yearly
-    |> \.interval .~ .year
-    |> \.nickname .~ "Individual Yearly"
+  public static let individualYearly = update(mock) {
+    $0.tiers = [update(.mock) { $0.unitAmount = 170_00 }]
+    $0.id = .yearly
+    $0.interval = .year
+    $0.nickname = "Individual Yearly"
+  }
 
-  public static let teamMonthly = individualMonthly
-    |> \.tiers .~ [.mock |> \.unitAmount .~ 16_00]
-    |> \.id .~ .monthly
-    |> \.nickname .~ "Team Monthly"
+  public static let teamMonthly = update(individualMonthly) {
+    $0.tiers = [update(.mock) { $0.unitAmount = 16_00 }]
+    $0.id = .monthly
+    $0.nickname = "Team Monthly"
+  }
 
-  public static let teamYearly = individualYearly
-    |> \.tiers .~ [.mock |> \.unitAmount .~ 160_00]
-    |> \.id .~ .yearly
-    |> \.nickname .~ "Team Yearly"
+  public static let teamYearly = update(individualYearly) {
+    $0.tiers = [update(.mock) { $0.unitAmount = 160_00 }]
+    $0.id = .yearly
+    $0.nickname = "Team Yearly"
+  }
 }
 
 extension Subscription {
@@ -182,35 +186,42 @@ extension Subscription {
     status: .active
   )
 
-  public static let individualMonthly = mock
-    |> \.plan .~ .individualMonthly
-    |> \.quantity .~ 1
+  public static let individualMonthly = update(mock) {
+    $0.plan = .individualMonthly
+    $0.quantity = 1
+  }
 
-  public static let individualYearly = mock
-    |> \.plan .~ .individualYearly
-    |> \.quantity .~ 1
+  public static let individualYearly = update(mock) {
+    $0.plan = .individualYearly
+    $0.quantity = 1
+  }
 
-  public static let teamMonthly = mock
-    |> \.plan .~ .teamMonthly
-    |> \.quantity .~ 4
+  public static let teamMonthly = update(mock) {
+    $0.plan = .teamMonthly
+    $0.quantity = 4
+  }
 
-  public static let teamYearly = mock
-    |> \.plan .~ .teamYearly
-    |> \.quantity .~ 4
+  public static let teamYearly = update(mock) {
+    $0.plan = .teamYearly
+    $0.quantity = 4
+  }
 
-  public static let canceling = mock
-    |> \.cancelAtPeriodEnd .~ true
+  public static let canceling = update(mock) {
+    $0.cancelAtPeriodEnd = true
+  }
 
-  public static let canceled = canceling
-    |> \.canceledAt .~ .some(Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
-    |> \.currentPeriodEnd .~ Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
-    |> \.currentPeriodStart .~ Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
-    |> \.status .~ .canceled
+  public static let canceled = update(canceling) {
+    $0.canceledAt = .some(Date(timeInterval: -60 * 60 * 24 * 30, since: .mock))
+    $0.currentPeriodEnd = Date(timeInterval: -60 * 60 * 24 * 30, since: .mock)
+    $0.currentPeriodStart = Date(timeInterval: -60 * 60 * 24 * 60, since: .mock)
+    $0.status = .canceled
+  }
 
-  public static let discounted = mock
-    |> \.plan .~ .individualYearly
-    |> \.quantity .~ 1
-    |> \.discount .~ .mock
+  public static let discounted = update(mock) {
+    $0.plan = .individualYearly
+    $0.quantity = 1
+    $0.discount = .mock
+  }
 }
 
 extension Discount {

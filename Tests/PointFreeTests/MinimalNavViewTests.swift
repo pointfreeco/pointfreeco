@@ -2,7 +2,6 @@ import Html
 import HtmlCssSupport
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreeRouter
 import PointFreeTestSupport

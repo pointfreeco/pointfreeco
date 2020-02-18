@@ -1,6 +1,6 @@
 import Either
 import HttpPipeline
-import Optics
+import Models
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -20,10 +20,7 @@ final class ChangeTests: TestCase {
 
   func testChangeRedirect() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualMonthly))
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
 
     let conn = connection(from: request(to: .account(.subscription(.change(.show))), session: .loggedIn))
 
@@ -33,14 +30,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeIndividualPlan() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualYearly)))), session: .loggedIn))
 
@@ -50,14 +44,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeIndividualPlan() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.individualMonthly)))), session: .loggedIn))
 
@@ -67,14 +58,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateUpgradeTeamPlan() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
@@ -84,14 +72,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateDowngradeTeamPlan() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualYearly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualYearly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
@@ -103,14 +88,11 @@ final class ChangeTests: TestCase {
 //    record = true
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        invoiceCustomer.fulfill()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      invoiceCustomer.fulfill()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly)))), session: .loggedIn))
 
@@ -121,14 +103,11 @@ final class ChangeTests: TestCase {
 
   func testChangeUpgradeIndividualMonthlyToTeamYearly() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.individualMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.individualMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
 
     let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly)))), session: .loggedIn))
 
@@ -139,15 +118,16 @@ final class ChangeTests: TestCase {
   func testChangeUpdateAddSeatsTeamPlan() {
     #if !os(Linux)
     let invoiceCustomer = expectation(description: "invoiceCustomer")
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        invoiceCustomer.fulfill()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
-    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity +~ 4)))), session: .loggedIn))
+
+    Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      invoiceCustomer.fulfill()
+      return pure(.mock(charge: .right(.mock)))
+    }
+    var pricing = Pricing.teamMonthly
+    pricing.quantity += 4
+
+    let conn = connection(from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
     let result = conn |> siteMiddleware
 
     let performed = result.perform()
@@ -158,16 +138,15 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateRemoveSeats() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.stripe.fetchSubscription .~ const(pure(.teamMonthly)),
-      \.stripe.invoiceCustomer .~ { _ in
-        XCTFail()
-        return pure(.mock(charge: .right(.mock)))
-      }
-    )
+    Current.stripe.fetchSubscription = const(pure(.teamMonthly))
+    Current.stripe.invoiceCustomer = { _ in
+      XCTFail()
+      return pure(.mock(charge: .right(.mock)))
+    }
+    var pricing = Pricing.teamMonthly
+    pricing.quantity -= 1
 
-    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamMonthly |> \.quantity -~ 1)))), session: .loggedIn))
+    let conn = connection(from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif
@@ -175,18 +154,18 @@ final class ChangeTests: TestCase {
 
   func testChangeUpdateRemoveSeatsInvalidNumber() {
     #if !os(Linux)
-    let subscription = Stripe.Subscription.mock
-      |> \.plan .~ .teamYearly
-      |> \.quantity .~ 5
+    var subscription = Stripe.Subscription.mock
+    subscription.plan = .teamYearly
+    subscription.quantity = 5
 
-    update(
-      &Current,
-      (\Environment.database.fetchSubscriptionTeammatesByOwnerId) .~ const(pure([.teammate, .teammate])),
-      \.database.fetchTeamInvites .~ const(pure([.mock, .mock])),
-      \.stripe.fetchSubscription .~ const(pure(subscription))
-    )
+    Current.database.fetchSubscriptionTeammatesByOwnerId = const(pure([.teammate, .teammate]))
+    Current.database.fetchTeamInvites = const(pure([.mock, .mock]))
+    Current.stripe.fetchSubscription = const(pure(subscription))
 
-    let conn = connection(from: request(to: .account(.subscription(.change(.update(.teamYearly |> \.quantity .~ 3)))), session: .loggedIn))
+    var pricing = Pricing.teamYearly
+    pricing.quantity = 3
+
+    let conn = connection(from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn))
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
     #endif

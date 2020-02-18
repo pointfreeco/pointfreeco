@@ -2,7 +2,6 @@
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreeTestSupport
 import Prelude
