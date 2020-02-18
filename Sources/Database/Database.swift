@@ -42,7 +42,7 @@ public struct Client {
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
-  public var updateEpisodeProgress: (Episode.Sequence, Models.User.Id, Int) -> EitherIO<Error, Prelude.Unit>
+  public var updateEpisodeProgress: (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -79,7 +79,7 @@ public struct Client {
     registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
-    updateEpisodeProgress: @escaping (Episode.Sequence, Models.User.Id, Int) -> EitherIO<Error, Prelude.Unit>,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -175,7 +175,7 @@ extension Client {
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
       sawUser: client.sawUser(id:),
-      updateEpisodeProgress: client.updateEpisodeProgress(episodeSequence:userId:percent:),
+      updateEpisodeProgress: client.updateEpisodeProgress(episodeSequence:percent:userId:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:rssSalt:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
@@ -395,15 +395,19 @@ private struct _Client {
       .map(const(unit))
   }
 
-  func updateEpisodeProgress(episodeSequence: Episode.Sequence, userId: Models.User.Id, percent: Int) -> EitherIO<Error, Prelude.Unit> {
+  func updateEpisodeProgress(
+    episodeSequence: Episode.Sequence,
+    percent: Int,
+    userId: Models.User.Id
+  ) -> EitherIO<Error, Prelude.Unit> {
     return self.execute(
       #"""
-INSERT INTO "video_progresses" (episode_sequence, percent, user_id)
+INSERT INTO "episode_progresses" ("episode_sequence", "percent", "user_id")
 VALUES ($1, $2, $3)
-ON CONFLICT (episode_sequence, user_id)
-SET "percent" = MAXIMUM(percent, $2)
+ON CONFLICT ("episode_sequence", "user_id") DO UPDATE
+SET "percent" = GREATEST(episode_progresses.percent, $2)
 """#,
-      [episodeSequence.rawValue, userId.rawValue.uuidString, percent]
+      [episodeSequence.rawValue, percent, userId.rawValue.uuidString]
     )
       .map(const(unit))
   }
@@ -1059,6 +1063,12 @@ SET "percent" = MAXIMUM(percent, $2)
         "updated_at" timestamp without time zone
       )
       """#
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+      ON "episode_progresses" ("episode_sequence", "user_id")
+      """
       )))
       .map(const(unit))
   }
