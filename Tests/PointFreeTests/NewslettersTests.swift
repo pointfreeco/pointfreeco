@@ -13,7 +13,6 @@ import PointFreeRouter
 import PointFreeTestSupport
 @testable import HttpPipeline
 import HttpPipelineTestSupport
-import Optics
 
 class NewslettersIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {

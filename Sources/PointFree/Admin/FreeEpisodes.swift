@@ -4,20 +4,14 @@ import Foundation
 import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 import Styleguide
 import Tuple
 import Views
 
-let indexFreeEpisodeEmailMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple1<User>,
-  Data
-  > =
-  writeStatus(.ok)
+let indexFreeEpisodeEmailMiddleware: M<Tuple1<User>>
+  = writeStatus(.ok)
     >=> respond({ _ in freeEpisodeView(episodes: Current.episodes(), today: Current.date()) })
 
 let sendFreeEpisodeEmailMiddleware: Middleware<

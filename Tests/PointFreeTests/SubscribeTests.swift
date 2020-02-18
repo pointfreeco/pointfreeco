@@ -4,7 +4,6 @@ import EmailAddress
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter
@@ -21,14 +20,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testCoupon_Individual() {
-    let subscribeData = SubscribeData.individualMonthly
-      |> \.coupon .~ "deadbeef"
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let conn = connection(
       from: request(to: .subscribe(.some(subscribeData)), session: session)
@@ -51,14 +51,15 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testCoupon_Team() {
-    let subscribeData = SubscribeData.teamYearly(quantity: 4)
-      |> \.coupon .~ "deadbeef"
+    var subscribeData = SubscribeData.teamYearly(quantity: 4)
+    subscribeData.coupon = "deadbeef"
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let conn = connection(
       from: request(to: .subscribe(.some(subscribeData)), session: session)
@@ -82,7 +83,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: session)
@@ -109,7 +111,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let emails: [EmailAddress] = [
       "blob1@pointfree.co",
@@ -118,13 +121,11 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       "blob4@pointfree.co",
     ]
 
+    var subscribeData = SubscribeData.teamYearly(quantity: 5)
+    subscribeData.teammates = emails
+
     let req = request(
-      to: .subscribe(
-        .some(
-          .teamYearly(quantity: 5)
-            |> \.teammates .~ emails
-        )
-      ),
+      to: .subscribe(.some(subscribeData)),
       session: session
     )
     let conn = connection(from: req)
@@ -155,7 +156,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let emails: [EmailAddress] = [
       "blob1@pointfree.co",
@@ -165,14 +167,12 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       "blob5@pointfree.co",
     ]
 
+    var subscribeData = SubscribeData.teamYearly(quantity: 5)
+    subscribeData.teammates = emails
+    subscribeData.isOwnerTakingSeat = false
+
     let req = request(
-      to: .subscribe(
-        .some(
-          .teamYearly(quantity: 5)
-            |> \.teammates .~ emails
-            |> \.isOwnerTakingSeat .~ false
-        )
-      ),
+      to: .subscribe(.some(subscribeData)),
       session: session
     )
     let conn = connection(from: req)
@@ -228,14 +228,15 @@ final class SubscribeTests: TestCase {
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
-    let subscribeData = SubscribeData.individualMonthly
-      |> \.coupon .~ "deadbeef"
+    var subscribeData = SubscribeData.individualMonthly
+    subscribeData.coupon = "deadbeef"
 
     let user = Current.database.upsertUser(.mock, "hello@pointfree.co")
       .run
       .perform()
       .right!!
-    let session = Session.loggedIn |> \.user .~ .standard(user.id)
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
 
     let conn = connection(
       from: request(to: .subscribe(.some(subscribeData)), session: session)
@@ -249,7 +250,6 @@ final class SubscribeTests: TestCase {
   }
 
   func testNotLoggedIn_IndividualYearly() {
-    update(&Current, \.database .~ .mock)
     let conn = connection(from: request(to: .subscribe(.some(.individualYearly))))
       |> siteMiddleware
       |> Prelude.perform
@@ -260,7 +260,6 @@ final class SubscribeTests: TestCase {
   }
 
   func testNotLoggedIn_Team() {
-    update(&Current, \.database .~ .mock)
     let conn = connection(from: request(to: .subscribe(.some(.teamYearly(quantity: 5)))))
       |> siteMiddleware
       |> Prelude.perform
@@ -271,7 +270,6 @@ final class SubscribeTests: TestCase {
   }
 
   func testCurrentSubscribers() {
-    update(&Current, \.database .~ .mock)
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
       )
@@ -285,12 +283,8 @@ final class SubscribeTests: TestCase {
 
   func testInvalidQuantity() {
     #if !os(Linux)
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(to: .subscribe(.some(.teamYearly(quantity: 200))), session: .loggedIn)
@@ -311,7 +305,6 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateCustomerFailure() {
-    Current.database = .mock
     Current.database.fetchSubscriptionById = const(pure(nil))
     Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
     Current.stripe.createCustomer = { _, _, _, _ in throwE(unit as Error) }
@@ -328,13 +321,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)
@@ -348,13 +337,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -376,13 +361,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateStripeSubscriptionFailure_TeamAndMonthly_TooManyEmails() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil)),
-      \.stripe.createSubscription .~ { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
-    )
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
+    Current.stripe.createSubscription = { _, _, _, _ in throwE(StripeErrorEnvelope.mock as Error) }
 
     let subscribeData = SubscribeData(
       coupon: nil,
@@ -404,13 +385,9 @@ final class SubscribeTests: TestCase {
   }
 
   func testCreateDatabaseSubscriptionFailure() {
-    update(
-      &Current,
-      \.database .~ .mock,
-      \.database.createSubscription .~ { _, _, _ in throwE(unit as Error) },
-      \.database.fetchSubscriptionById .~ const(pure(nil)),
-      \.database.fetchSubscriptionByOwnerId .~ const(pure(nil))
-    )
+    Current.database.createSubscription = { _, _, _ in throwE(unit as Error) }
+    Current.database.fetchSubscriptionById = const(pure(nil))
+    Current.database.fetchSubscriptionByOwnerId = const(pure(nil))
 
     let conn = connection(
       from: request(to: .subscribe(.some(.individualMonthly)), session: .loggedIn)

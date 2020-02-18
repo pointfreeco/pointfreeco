@@ -1,5 +1,4 @@
 import HttpPipeline
-import Optics
 import PlaygroundSupport
 @testable import PointFree
 @testable import PointFreeTestSupport

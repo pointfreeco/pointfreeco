@@ -1,7 +1,6 @@
 import Database
 import Models
 import NIO
-import Optics
 @testable import PointFree
 import PointFreeRouter
 import Prelude

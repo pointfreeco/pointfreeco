@@ -1,7 +1,6 @@
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreeTestSupport
 import Prelude
@@ -36,8 +35,8 @@ class NewEpisodeEmailTests: TestCase {
   }
 
   func testNewEpisodeEmail_FreeEpisode_NonSubscriber() {
-    let episode = Current.episodes().first!
-      |> \.permission .~ .free
+    var episode = Current.episodes().first!
+    episode.permission = .free
 
     let doc = newEpisodeEmail((episode, "", "", .nonSubscriber))
 

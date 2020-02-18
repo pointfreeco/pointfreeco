@@ -6,7 +6,6 @@ import FoundationNetworking
 import GitHub
 import HttpPipeline
 import Models
-import Optics
 import PointFreeRouter
 import PointFreePrelude
 import Prelude
@@ -36,7 +35,7 @@ let loginResponse: M<Tuple2<Models.User?, String?>> =
 let logoutResponse: M<Prelude.Unit> =
   redirect(
     to: path(to: .home),
-    headersMiddleware: writeSessionCookieMiddleware(\.user .~ nil)
+    headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
 )
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
@@ -189,7 +188,7 @@ private func gitHubAuthTokenMiddleware(
         ) { user in
           conn |> HttpPipeline.redirect(
             to: redirect ?? path(to: .home),
-            headersMiddleware: writeSessionCookieMiddleware(\.user .~ .standard(user.id))
+            headersMiddleware: writeSessionCookieMiddleware { $0.user = .standard(user.id) }
           )
         }
     )

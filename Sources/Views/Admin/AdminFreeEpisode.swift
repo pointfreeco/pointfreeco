@@ -1,7 +1,6 @@
 import Foundation
 import Html
 import Models
-import Optics
 import PointFreeRouter
 import Prelude
 

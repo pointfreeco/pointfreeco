@@ -3,7 +3,6 @@ import FunctionalCss
 import Html
 import HtmlCssSupport
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude

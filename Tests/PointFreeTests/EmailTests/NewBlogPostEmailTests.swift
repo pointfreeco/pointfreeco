@@ -6,7 +6,6 @@ import HtmlPlainTextPrint
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreeRouter
 import PointFreeTestSupport
@@ -129,12 +128,17 @@ class NewBlogPostEmailTests: TestCase {
   }
 
   func testNewBlogPostEmail_NoCoverImage() {
-    let doc = newBlogPostEmail((post |> \.coverImage .~ nil, "", "", .mock))
+    var p = post
+    p.coverImage = nil
+    let doc = newBlogPostEmail((p, "", "", .mock))
 
     assertSnapshot(matching: doc, as: .html)
     assertSnapshot(matching: plainText(for: doc), as: .lines)
   }
 }
 
-private let post = post0001_welcome
-  |> \.coverImage .~ ""
+private let post: BlogPost = {
+  var post = post0001_welcome
+  post.coverImage = ""
+  return post
+}()

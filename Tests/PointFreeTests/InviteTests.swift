@@ -6,7 +6,6 @@ import Either
 import HttpPipeline
 import Models
 import ModelsTestSupport
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -64,18 +63,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testRevokeInvite_CurrentUserIsNotInviter() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -99,18 +95,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAcceptInvitation_HappyPath() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -147,18 +140,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAcceptInvitation_InviterIsNotSubscriber() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -183,18 +173,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -208,7 +195,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
+    Current.stripe.fetchSubscription = const(pure(.canceled))
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let conn = connection(from: acceptInvite)
@@ -225,18 +212,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -250,7 +234,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!
 
-    update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
+    Current.stripe.fetchSubscription = const(pure(.canceled))
 
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let conn = connection(from: acceptInvite)
@@ -274,8 +258,8 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let stripeSubscription = Stripe.Subscription.teamYearly
-      |> (\Stripe.Subscription.quantity) .~ 2
+    var stripeSubscription = Stripe.Subscription.teamYearly
+    stripeSubscription.quantity = 2
     let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
     _ = Current.database.createSubscription(stripeSubscription, currentUser.id, true)
@@ -283,8 +267,8 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       .perform()
       .right!!
 
-    let session = Session.loggedIn
-      |> \.user .~ .standard(currentUser.id)
+    var session = Session.loggedIn
+    session.user = .standard(currentUser.id)
     let conn = connection(
       from: request(
         to: .invite(.addTeammate(teammateEmailAddress)),
@@ -309,18 +293,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testResendInvite_CurrentUserIsNotInviter() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
+    var env = GitHubUserEnvelope.mock
+    env.gitHubUser.id = 1
+    let currentUser = Current.database.registerUser(env, "hello@pointfree.co")
       .run
       .perform()
       .right!!
 
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
+    env.gitHubUser.id = 2
+    let inviterUser = Current.database.registerUser(env, "inviter@pointfree.co")
       .run
       .perform()
       .right!!
@@ -344,8 +325,6 @@ class InviteTests: TestCase {
   }
 
   func testShowInvite_LoggedOut() {
-    update(&Current, \.database .~ .mock)
-
     let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
     let conn = connection(from: showInvite)
 
@@ -404,7 +383,7 @@ class InviteTests: TestCase {
     Current.database.fetchTeamInvite = const(pure(.some(invite)))
     Current.database.fetchSubscriptionById = const(pure(.mock))
 
-    Current.stripe.fetchSubscription = const(pure(.mock |> \.status .~ .active))
+    Current.stripe.fetchSubscription = const(pure(.mock))
 
     let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
     let conn = connection(from: showInvite)

@@ -1,5 +1,4 @@
 import Html
-import Optics
 import Prelude
 
 // TODO: extract to swift-web
