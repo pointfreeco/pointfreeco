@@ -171,7 +171,7 @@ can access your private podcast feed by visiting \(url(to: .account(.index))).
       season: 1,
       title: title(episode: episode)
     ),
-    link: url(to: .episode(.left(episode.slug))),
+    link: url(to: .episode(.show(.left(episode.slug)))),
     media: .init(
       content: mediaContent(episode: episode),
       title: title(episode: episode)

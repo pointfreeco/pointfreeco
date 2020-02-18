@@ -44,6 +44,21 @@ window.addEventListener("load", function (event) {
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
+
+  var lastSeenPercent = 0
+  player.on('timeupdate', function(data) {
+    console.log(data.percent - lastSeenPercent)
+    if (data.percent - lastSeenPercent >= 0.01) {
+      lastSeenPercent = data.percent;
+
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open(
+        "POST",
+        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+      );
+      httpRequest.send();
+    }
+  });
 });
 """
     )

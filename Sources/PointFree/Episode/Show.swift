@@ -1,6 +1,6 @@
 import Css
-import FunctionalCss
 import Either
+import FunctionalCss
 import Foundation
 import Html
 import HtmlCssSupport
@@ -69,6 +69,22 @@ private let validateUserEpisodePermission
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
 
+let progressResponse: M<
+  Tuple5<
+  Either<String, Episode.Id>,
+  Int,
+  Models.User?,
+  SubscriberState,
+  Route?>
+  > =
+  filterMap(
+    over1(episode(forParam:)) >>> require1 >>> pure,
+    or: writeStatus(.notFound) >=> end
+    )
+    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
+    <| writeStatus(.ok)
+    >=> end
+
 private func applyCreditMiddleware<Z>(
   _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
   ) -> IO<Conn<ResponseEnded, Data>> {
@@ -78,7 +94,7 @@ private func applyCreditMiddleware<Z>(
   guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
-        to: .episode(.left(episode.slug)),
+        to: .episode(.show(.left(episode.slug))),
         headersMiddleware: flash(.error, "You do not have any credits to use.")
     )
   }
@@ -93,14 +109,14 @@ private func applyCreditMiddleware<Z>(
         const(
           conn
             |> redirect(
-              to: .episode(.left(episode.slug)),
+              to: .episode(.show(.left(episode.slug))),
               headersMiddleware: flash(.warning, "Something went wrong.")
           )
         ),
         const(
           conn
             |> redirect(
-              to: .episode(.left(episode.slug)),
+              to: .episode(.show(.left(episode.slug))),
               headersMiddleware: flash(.notice, "You now have access to this episode!")
           )
         )
@@ -118,7 +134,7 @@ private func validateCreditRequest<Z>(
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episode(.left(episode.slug)),
+          to: .episode(.show(.left(episode.slug))),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
     }
@@ -129,7 +145,7 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episode(.left(episode.slug)),
+        to: .episode(.show(.left(episode.slug))),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
     )
   }

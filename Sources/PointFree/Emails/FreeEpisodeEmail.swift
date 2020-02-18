@@ -49,7 +49,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             " so that we can keep new episodes coming!"
           ),
           .a(
-            attributes: [.href(url(to: .episode(.left(ep.slug))))],
+            attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
             .h3(
               attributes: [.class([Class.pf.type.responsiveTitle3])],
               .text("Episode #\(ep.sequence) is now free!")
@@ -62,7 +62,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
           .p(.text(ep.blurb)),
           .p(attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
              .a(
-              attributes: [.href(url(to: .episode(.left(ep.slug))))],
+              attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
@@ -71,7 +71,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
               attributes: [
-                .href(url(to: .episode(.left(ep.slug)))),
+                .href(url(to: .episode(.show(.left(ep.slug))))),
                 .class([Class.pf.components.button(color: .purple)])
               ],
               "Watch now!"
