@@ -271,7 +271,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
       type: "video/mp4",
       url: episode.fullVideo.downloadUrl
     ),
-    guid: url(to: .episode(.left(episode.slug))),
+    guid: url(to: .episode(.show(.left(episode.slug)))),
     itunes: RssItem.Itunes(
       author: "Brandon Williams & Stephen Celis",
       duration: episode.length,
@@ -284,7 +284,7 @@ private func item(forUser user: User, episode: Episode) -> RssItem {
       season: 1,
       title: episode.title
     ),
-    link: url(to: .episode(.left(episode.slug))),
+    link: url(to: .episode(.show(.left(episode.slug)))),
     media: .init(
       content: .init(
         length: episode.fullVideo.bytesLength,

@@ -41,14 +41,14 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
           attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView(announcement: announcement),
           .a(
-            attributes: [.href(url(to: .episode(.left(ep.slug))))],
+            attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
             .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], .text("#\(ep.sequence): \(ep.title)"))
           ),
           .p(.text(ep.blurb)),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
-              attributes: [.href(url(to: .episode(.left(ep.slug))))],
+              attributes: [.href(url(to: .episode(.show(.left(ep.slug)))))],
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
@@ -99,7 +99,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
       ),
       .a(
         attributes: [
-          .href(url(to: .episode(.left(ep.slug)))),
+          .href(url(to: .episode(.show(.left(ep.slug))))),
           .class([Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock])
         ],
         .text(watchText)
@@ -117,7 +117,7 @@ private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
       .a(
         attributes: [
-          .href(url(to: .episode(.left(ep.slug)))),
+          .href(url(to: .episode(.show(.left(ep.slug))))),
           .class([Class.pf.components.button(color: .purple)])
         ],
         "Watch now!"

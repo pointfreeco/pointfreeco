@@ -69,13 +69,17 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
       return conn.map(const(unit))
         |> endGhostingMiddleware
 
-    case let .episode(param):
-      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
-        |> episodeResponse
-
-    case .episodes:
+    case .episode(.index):
       return conn
         |> redirect(to: path(to: .home))
+
+    case let .episode(.progress(param: param, percent: percent)):
+      return conn.map(const(param .*. percent .*. user .*. subscriberState .*. route .*. unit))
+        |> progressResponse
+
+    case let .episode(.show(param)):
+      return conn.map(const(param .*. user .*. subscriberState .*. route .*. unit))
+        |> episodeResponse
 
     case let .enterprise(.acceptInvite(domain, encryptedEmail, encryptedUserId)):
       return conn.map(const(user .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
