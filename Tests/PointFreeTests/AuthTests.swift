@@ -50,9 +50,9 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
-
   func testLoginWithRedirect() {
-    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
+
+    let login = request(to: .login(redirect: url(to: .episode(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
@@ -94,7 +94,7 @@ class AuthTests: TestCase {
         .~ const(pure(.left(.init(description: "", error: .badVerificationCode, errorUri: ""))))
     )
 
-    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.right(42)))))
+    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: url(to: .episode(.show(.right(42))))))
     let conn = connection(from: auth)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
