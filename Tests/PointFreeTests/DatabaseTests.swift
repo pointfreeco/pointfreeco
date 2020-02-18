@@ -11,7 +11,6 @@ import SnapshotTesting
 import XCTest
 @testable import PointFree
 
-
 final class DatabaseTests: LiveDatabaseTestCase {
   func testUpsertUser_FetchUserById() throws {
     let userA = try Current.database.upsertUser(.mock, "hello@pointfree.co").run.perform().unwrap()
@@ -80,5 +79,70 @@ final class DatabaseTests: LiveDatabaseTestCase {
       .right!!
 
     XCTAssertEqual(subscription.id, freshUser.subscriptionId)
+  }
+
+  func testUpdateEpisodeProgress() {
+    let user = Current.database.registerUser(.mock, "blob@pointfree.co")
+      .run
+      .perform()
+      .right!!
+
+    _ = Current.database.updateEpisodeProgress(1, 20, user.id)
+      .run
+      .perform()
+      .right!
+
+    XCTAssertEqual(
+      Current.database.execute(
+        #"""
+        SELECT *
+        FROM "episode_progresses"
+        WHERE "user_id" = $1
+        AND "percent" = $2
+        """#,
+        [user.id.rawValue.uuidString, 20]
+      )
+        .run.perform().right!.wrapped.array!.count,
+      1
+    )
+
+    _ = Current.database.updateEpisodeProgress(1, 10, user.id)
+      .run
+      .perform()
+      .right!
+
+    XCTAssertEqual(
+      Current.database.execute(
+        #"""
+        SELECT *
+        FROM "episode_progresses"
+        WHERE "user_id" = $1
+        AND "percent" = $2
+        """#,
+        [user.id.rawValue.uuidString, 20]
+      )
+        .run.perform().right!.wrapped.array!.count,
+      1
+    )
+
+    _ = Current.database.updateEpisodeProgress(1, 30, user.id)
+      .run
+      .perform()
+      .right!
+
+    XCTAssertEqual(
+      Current.database.execute(
+        #"""
+        SELECT *
+        FROM "episode_progresses"
+        WHERE "user_id" = $1
+        AND "percent" = $2
+        """#,
+        [user.id.rawValue.uuidString, 30]
+      )
+        .run.perform().right!.wrapped.array!.count,
+      1
+    )
+
   }
 }

@@ -378,15 +378,8 @@ let package = Package(
     .target(
       name: "Syndication",
       dependencies: [
+        "Models",
         .product(name: "Html", package: "swift-html")
-      ],
-      swiftSettings: [.warnLongExpressionTypeChecking]
-    ),
-
-    .testTarget(
-      name: "SyndicationTests",
-      dependencies: [
-        "Syndication",
       ],
       swiftSettings: [.warnLongExpressionTypeChecking]
     ),
