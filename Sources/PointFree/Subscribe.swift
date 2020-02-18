@@ -112,7 +112,8 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       lane: .team,
       billing: .yearly,
       isOwnerTakingSeat: true,
-      teammates: [""]
+      teammates: [""],
+      referralCode: nil
     )
   }
   guard let coupon = subscribeData.coupon else {
@@ -120,7 +121,8 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       lane: subscribeData.pricing.isPersonal ? .personal : .team,
       billing: subscribeData.pricing.billing,
       isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-      teammates: subscribeData.teammates
+      teammates: subscribeData.teammates,
+      referralCode: subscribeData.referralCode
     )
   }
   return .discounts(code: coupon, subscribeData.pricing.billing)

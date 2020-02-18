@@ -42,7 +42,7 @@ public func subscriptionConfirmation(
     currentUser != nil
       ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
       : [],
-    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon)
+    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon, referralCode: subscribeData.referralCode)
   )
 }
 
@@ -667,7 +667,12 @@ private func discount(coupon: Stripe.Coupon) -> Node {
   )
 }
 
-private func total(isLoggedIn: Bool, lane: Pricing.Lane, coupon: Stripe.Coupon?) -> Node {
+private func total(
+  isLoggedIn: Bool,
+  lane: Pricing.Lane,
+  coupon: Stripe.Coupon?,
+  referralCode: User.ReferralCode?
+) -> Node {
   let discount = coupon?.discount ?? { $0 }
   return .gridRow(
     attributes: [
@@ -802,7 +807,13 @@ window.addEventListener("load", function() {
               redirect: url(
                 to: coupon
                   .map { Route.discounts(code: $0.id, nil) }
-                  ?? .subscribeConfirmation(lane: lane, billing: nil, isOwnerTakingSeat: nil, teammates: nil)
+                  ?? .subscribeConfirmation(
+                    lane: lane,
+                    billing: nil,
+                    isOwnerTakingSeat: nil,
+                    teammates: nil,
+                    referralCode: referralCode
+                )
               )
             )
           )

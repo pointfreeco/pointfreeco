@@ -29,7 +29,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -62,7 +63,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -98,7 +100,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -134,7 +137,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: .some(.monthly),
           isOwnerTakingSeat: true,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -170,7 +174,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: .some(.monthly),
           isOwnerTakingSeat: false,
-          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"])
+          teammates: .some(["blob.jr@pointfree.co", "blob.sr@pointfree.co"]),
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -206,7 +211,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -242,7 +248,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -275,7 +282,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
@@ -296,7 +304,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .personal,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedOut
       )
@@ -355,7 +364,8 @@ class SubscriptionConfirmationTests: TestCase {
           lane: .team,
           billing: nil,
           isOwnerTakingSeat: nil,
-          teammates: nil
+          teammates: nil,
+          referralCode: nil
         ),
         session: .loggedIn
       )
