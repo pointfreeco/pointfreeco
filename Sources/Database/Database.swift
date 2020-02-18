@@ -1091,7 +1091,7 @@ private struct _Client {
             || quote_ident(column_name)
             || ' = '
             || quote_literal(id) INTO results;
-        IF results IS NULL THEN
+          IF results IS NULL THEN
             EXIT;
           END IF;
           times := times + 1;
