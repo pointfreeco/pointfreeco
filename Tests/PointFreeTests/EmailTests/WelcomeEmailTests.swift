@@ -2,11 +2,11 @@ import Either
 @testable import GitHub
 import Html
 import HttpPipeline
+import Models
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
 #if !os(Linux)
 import WebKit
@@ -20,11 +20,11 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
   }
 
   func testIncrementEpisodeCredits() {
-    let users = [1, 2, 3].map {
-      Current.database.registerUser(
-        .mock |> \.gitHubUser.id .~ .init(rawValue: $0),
-        .init(rawValue: "\($0)@pointfree.co")
-        ).run.perform().right!!
+    let users: [User] = [1, 2, 3].map {
+      var env = GitHubUserEnvelope.mock
+      env.gitHubUser.id = .init(rawValue: $0)
+      return Current.database.registerUser(env, .init(rawValue: "\($0)@pointfree.co"))
+        .run.perform().right!!
     }
 
     _ = Current.database.incrementEpisodeCredits(users.map(^\.id)).run.perform().right!

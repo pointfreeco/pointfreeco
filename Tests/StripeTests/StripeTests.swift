@@ -1,5 +1,4 @@
 import Either
-import Optics
 import Prelude
 import SnapshotTesting
 @testable import Stripe

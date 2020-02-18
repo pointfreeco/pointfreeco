@@ -2,7 +2,6 @@ import Either
 import Html
 import HtmlPlainTextPrint
 import HttpPipeline
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeTestSupport
@@ -348,8 +347,8 @@ final class StripeWebhooksTests: TestCase {
 
   func testNoInvoiceSubscriptionId() {
     #if !os(Linux)
-    let invoice = Invoice.mock(charge: .left("ch_test"))
-      |> \.subscription .~ nil
+    var invoice = Invoice.mock(charge: .left("ch_test"))
+    invoice.subscription = nil
     let event = Event<Either<Invoice, Subscription>>(
       data: .init(object: .left(invoice)),
       id: "evt_test",
@@ -370,12 +369,11 @@ final class StripeWebhooksTests: TestCase {
 
   func testNoInvoiceSubscriptionId_AndNoLineItemSubscriptionId() {
     #if !os(Linux)
-    let invoice = Invoice.mock(charge: .left("ch_test"))
-      |> \.subscription .~ nil
-      |> \.lines.data .~ [
-        .mock
-          |> \.subscription .~ nil
-    ]
+    var invoice = Invoice.mock(charge: .left("ch_test"))
+    invoice.subscription = nil
+    var line = LineItem.mock
+    line.subscription = nil
+    invoice.lines.data = [line]
     let event = Event<Either<Invoice, Subscription>>(
       data: .init(object: .left(invoice)),
       id: "evt_test",
@@ -396,8 +394,8 @@ final class StripeWebhooksTests: TestCase {
 
   func testNoInvoiceNumber() {
     #if !os(Linux)
-    let invoice = Invoice.mock(charge: .left("ch_test"))
-      |> \.number .~ nil
+    var invoice = Invoice.mock(charge: .left("ch_test"))
+    invoice.number = nil
     let event = Event<Either<Invoice, Subscription>>(
       data: .init(object: .left(invoice)),
       id: "evt_test",

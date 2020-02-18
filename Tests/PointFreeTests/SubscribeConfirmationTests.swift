@@ -1,7 +1,6 @@
 import Either
 import HttpPipeline
 import Models
-import Optics
 @testable import PointFree
 import PointFreePrelude
 import PointFreeRouter

@@ -5,29 +5,17 @@ import FoundationNetworking
 import Html
 import HttpPipeline
 import Models
-import Optics
 import PointFreePrelude
 import PointFreeRouter
 import Prelude
-import Styleguide
 import Tuple
 
-let ghostIndexMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Prelude.Unit,
-  Data
-  > =
-  writeStatus(.ok)
+let ghostIndexMiddleware: M<Prelude.Unit>
+  = writeStatus(.ok)
     >=> respond({ _ in indexView })
 
-let ghostStartMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<User, User.Id?>,
-  Data
-  > =
-  filterMap(
+let ghostStartMiddleware: M<Tuple2<User, User.Id?>>
+  = filterMap(
     over2(fetchGhostee) >>> sequence2 >>> map(require2),
     or: redirect(
       to: .admin(.ghost(.index)),
@@ -36,25 +24,15 @@ let ghostStartMiddleware: Middleware<
     )
     <| redirect(to: .home, headersMiddleware: startGhosting)
 
-let endGhostingMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Prelude.Unit,
-  Data
-  > =
-  redirect(
-    to: .home,
-    headersMiddleware: endGhosting
-)
+let endGhostingMiddleware: M<Prelude.Unit>
+  = redirect(to: .home, headersMiddleware: endGhosting)
 
 private func endGhosting<A>(
   conn: Conn<HeadersOpen, A>
   ) -> IO<Conn<HeadersOpen, A>> {
 
   return conn
-    |> writeSessionCookieMiddleware(
-      \.user .~ conn.request.session.ghosterId.map(Session.User.standard)
-  )
+    |> writeSessionCookieMiddleware { $0.user = conn.request.session.ghosterId.map(Session.User.standard) }
 }
 
 private func startGhosting(
@@ -63,10 +41,8 @@ private func startGhosting(
 
   let (adminUser, ghostee) = lower(conn.data)
 
-  return conn
-    |> writeSessionCookieMiddleware(
-      \.user .~ .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
-  )
+  return conn |>
+    writeSessionCookieMiddleware { $0.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id) }
 }
 
 private func fetchGhostee(userId: User.Id?) -> IO<User?> {

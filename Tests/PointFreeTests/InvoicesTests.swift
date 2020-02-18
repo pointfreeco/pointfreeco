@@ -4,7 +4,6 @@ import HttpPipeline
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
-import Optics
 import SnapshotTesting
 @testable import Stripe
 import XCTest
@@ -55,12 +54,12 @@ final class InvoicesTests: TestCase {
   }
 
   func testInvoice_InvoiceBilling() {
-    let charge = Charge.mock
-      |> (\Charge.source) .~ .right(.mock)
+    var charge = Charge.mock
+    charge.source = .right(.mock)
     let invoice = Invoice.mock(charge: .right(charge))
 
     Current = .teamYearly
-      |> (\Environment.stripe.fetchInvoice) .~ const(pure(invoice))
+    Current.stripe.fetchInvoice = const(pure(invoice))
 
     let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
@@ -80,11 +79,11 @@ final class InvoicesTests: TestCase {
   }
 
   func testInvoiceWithDiscount() {
-    let invoice = Stripe.Invoice.mock(charge: .right(.mock))
-      |> \.discount .~ .mock
-      |> \.total .~ 1455
-      |> \.subtotal .~ 1700
-    update(&Current, \.stripe.fetchInvoice .~ const(pure(invoice)))
+    var invoice = Stripe.Invoice.mock(charge: .right(.mock))
+    invoice.discount = .mock
+    invoice.total = 1455
+    invoice.subtotal = 1700
+    Current.stripe.fetchInvoice = const(pure(invoice))
 
     let conn = connection(from: request(to: .account(.invoices(.show("in_test"))), session: .loggedIn))
 
