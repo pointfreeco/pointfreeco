@@ -1,5 +1,6 @@
 import Foundation
 import Html
+import Models
 
 public struct RssChannel {
   public var copyright: String
@@ -171,7 +172,7 @@ public struct RssItem {
   public struct Itunes {
     public var author: String
     public var duration: Int
-    public var episode: Int
+    public var episode: Episode.Sequence
     public var episodeType: EpisodeType
     public var explicit: Bool
     public var image: String
@@ -183,7 +184,7 @@ public struct RssItem {
     public init(
       author: String,
       duration: Int,
-      episode: Int,
+      episode: Episode.Sequence,
       episodeType: EpisodeType,
       explicit: Bool,
       image: String,
