@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65855
+Content-Length: 65426
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2248,21 +2248,6 @@ that timestamp jumps the video to that spot.</p>
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
-
-  var lastSeenPercent = 0
-  player.on('timeupdate', function(data) {
-    console.log(data.percent - lastSeenPercent)
-    if (data.percent - lastSeenPercent >= 0.01) {
-      lastSeenPercent = data.percent;
-
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open(
-        "POST",
-        window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-      );
-      httpRequest.send();
-    }
-  });
 });
             </script>
           </div>

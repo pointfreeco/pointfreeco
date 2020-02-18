@@ -56,7 +56,7 @@ private func fetchUser(id: User.Id?) -> IO<User?> {
     .map(^\.right)
 }
 
-private func fetchEpisode(bySequence sequence: Int?) -> Episode? {
+private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {
   guard let sequence = sequence else { return nil }
   return Current.episodes()
     .first(where: { $0.sequence == sequence })

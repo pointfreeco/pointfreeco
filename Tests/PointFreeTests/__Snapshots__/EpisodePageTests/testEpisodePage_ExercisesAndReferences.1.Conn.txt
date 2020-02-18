@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65903
+Content-Length: 66082
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2258,6 +2258,11 @@ that timestamp jumps the video to that spot.</p>
     player.setCurrentTime(time);
     if (play) { player.play(); }
   }
+});
+            </script>
+            <script>
+              window.addEventListener("load", function (event) {
+  var player = new Vimeo.Player(document.querySelector("iframe"));
 
   var lastSeenPercent = 0
   player.on('timeupdate', function(data) {
