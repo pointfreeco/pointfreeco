@@ -52,7 +52,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
   }
   func testLoginWithRedirect() {
 
-    let login = request(to: .login(redirect: url(to: .episode(.right(42)))), session: .loggedIn)
+    let login = request(to: .login(redirect: url(to: .episode(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
     assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)

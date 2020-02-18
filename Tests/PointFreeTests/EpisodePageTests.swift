@@ -164,8 +164,6 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodePage() {
-    let episode = request(to: .episode(.left(Current.episodes().first!.slug)), session: .loggedOut)
-
     let episode = request(to: .episode(.show(.left(Current.episodes().first!.slug))), session: .loggedOut)
 
     let conn = connection(from: episode)
@@ -262,8 +260,6 @@ class EpisodePageTests: TestCase {
   }
 
   func testEpisodeNotFound() {
-    let episode = request(to: .episode(.left("object-oriented-programming")))
-
     let episode = request(to: .episode(.show(.left("object-oriented-programming"))))
 
     let conn = connection(from: episode)
