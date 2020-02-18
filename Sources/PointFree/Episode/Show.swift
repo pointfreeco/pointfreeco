@@ -70,7 +70,7 @@ private let validateUserEpisodePermission
     <<< filterMap(require3 >>> pure, or: loginAndRedirect)
     <<< validateCreditRequest
 
-let progressResponse: AppMiddleware<
+let progressResponse: M<
   Tuple5<
   Either<String, Episode.Id>,
   Int,
