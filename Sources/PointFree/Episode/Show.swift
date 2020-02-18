@@ -73,22 +73,26 @@ private let validateUserEpisodePermission
 let progressResponse: M<
   Tuple4<
   Either<String, Episode.Id>,
-  Int,
   Models.User?,
-  SubscriberState>
+  SubscriberState,
+  Int>
   > =
   filterMap(
     over1(episode(forParam:)) >>> require1 >>> pure,
     or: writeStatus(.notFound) >=> end
     )
-    <<< filterMap(require3 >>> pure, or: writeStatus(.ok) >=> end)
-    <| updateProgress
+    <| userEpisodePermission
+    >=> updateProgress
 
-private let updateProgress: M<Tuple4<Episode, Int, Models.User, SubscriberState>> = { conn in
-  let (episode, percent, user, subscriberState) = lower(conn.data)
+private let updateProgress: M<Tuple5<EpisodePermission, Episode, Models.User?, SubscriberState, Int>> = { conn in
+  guard case let (permission, episode, .some(user), subscriberState, percent) = lower(conn.data)
+    else {
+      return conn
+        |> writeStatus(.ok)
+        >=> end
+  }
 
-  switch subscriberState {
-  case .owner(true, .active, _), .teammate(.active, _):
+  if isEpisodeViewable(for: permission) {
     return Current.database.updateEpisodeProgress(episode.sequence, percent, user.id)
       .run
       .flatMap { _ in
@@ -96,8 +100,7 @@ private let updateProgress: M<Tuple4<Episode, Int, Models.User, SubscriberState>
           |> writeStatus(.ok)
           >=> end
     }
-
-  case .nonSubscriber, .owner, .teammate:
+  } else {
     return  conn
       |> writeStatus(.ok)
       >=> end

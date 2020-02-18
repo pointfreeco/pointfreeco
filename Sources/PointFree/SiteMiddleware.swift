@@ -74,7 +74,7 @@ private func render(conn: Conn<StatusLineOpen, T3<(Models.Subscription, Enterpri
         |> redirect(to: path(to: .home))
 
     case let .episode(.progress(param: param, percent: percent)):
-      return conn.map(const(param .*. percent .*. user .*. subscriberState .*. unit))
+      return conn.map(const(param .*. user .*. subscriberState .*. percent .*. unit))
         |> progressResponse
 
     case let .episode(.show(param)):

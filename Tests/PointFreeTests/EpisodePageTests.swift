@@ -381,7 +381,6 @@ class EpisodePageTests: TestCase {
     #endif
   }
 
-
   func test_permission() {
     let start = Date(timeIntervalSinceReferenceDate: 0)
     let end = Date(timeIntervalSinceReferenceDate: 100)
