@@ -1070,6 +1070,55 @@ private struct _Client {
         ON "episode_progresses" ("episode_sequence", "user_id")
         """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
+      RETURNS text AS $$
+      DECLARE
+        id text;
+        results text;
+        times integer := 0;
+      BEGIN
+        LOOP
+          id := encode(gen_random_bytes(6), 'base64');
+          id := replace(id, '/', 'p');
+          id := replace(id, '+', 'f');
+          EXECUTE 'SELECT '
+            || quote_ident(column_name)
+            || ' FROM '
+            || quote_ident(table_name)
+            || ' WHERE '
+            || quote_ident(column_name)
+            || ' = '
+            || quote_literal(id) INTO results;
+          IF results IS NULL THEN
+            EXIT;
+          END IF;
+          times := times + 1;
+          IF times > 100 THEN
+            id := NULL;
+            EXIT;
+          END IF;
+        END LOOP;
+        RETURN id;
+      END;
+      $$ LANGUAGE 'plpgsql';
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referral_code" character varying DEFAULT gen_shortid('users', 'referral_code') NOT NULL
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referrer_id" uuid REFERENCES "users" ("id")
+      """
+      )))
       .map(const(unit))
   }
 
