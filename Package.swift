@@ -386,14 +386,6 @@ let package = Package(
       swiftSettings: [.warnLongExpressionTypeChecking]
     ),
 
-    .testTarget(
-      name: "SyndicationTests",
-      dependencies: [
-        "Syndication",
-      ],
-      swiftSettings: [.warnLongExpressionTypeChecking]
-    ),
-
     .target(
       name: "Views",
       dependencies: [

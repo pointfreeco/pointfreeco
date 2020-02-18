@@ -38,10 +38,11 @@ public struct Client {
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
   public var insertTeamInvite: (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>
   public var migrate: () -> EitherIO<Error, Prelude.Unit>
-  public var redeemEpisodeCredit: (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var redeemEpisodeCredit: (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>
   public var registerUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
   public var removeTeammateUserIdFromSubscriptionId: (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>
   public var sawUser: (Models.User.Id) -> EitherIO<Error, Prelude.Unit>
+  public var updateEpisodeProgress: (Episode.Sequence, Models.User.Id, Int) -> EitherIO<Error, Prelude.Unit>
   public var updateStripeSubscription: (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>
   public var updateUser: (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>
   public var upsertUser: (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -74,10 +75,11 @@ public struct Client {
     incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
     insertTeamInvite: @escaping (EmailAddress, Models.User.Id) -> EitherIO<Error, TeamInvite>,
     migrate: @escaping () -> EitherIO<Error, Prelude.Unit>,
-    redeemEpisodeCredit: @escaping (Int, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    redeemEpisodeCredit: @escaping (Episode.Sequence, Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
     registerUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>,
     removeTeammateUserIdFromSubscriptionId: @escaping (Models.User.Id, Models.Subscription.Id) -> EitherIO<Error, Prelude.Unit>,
     sawUser: @escaping (Models.User.Id) -> EitherIO<Error, Prelude.Unit>,
+    updateEpisodeProgress: @escaping (Episode.Sequence, Models.User.Id, Int) -> EitherIO<Error, Prelude.Unit>,
     updateStripeSubscription: @escaping (Stripe.Subscription) -> EitherIO<Error, Models.Subscription?>,
     updateUser: @escaping (Models.User.Id, String?, EmailAddress?, [EmailSetting.Newsletter]?, Int?, Models.User.RssSalt?) -> EitherIO<Error, Prelude.Unit>,
     upsertUser: @escaping (GitHubUserEnvelope, EmailAddress) -> EitherIO<Error, Models.User?>
@@ -113,6 +115,7 @@ public struct Client {
     self.registerUser = registerUser
     self.removeTeammateUserIdFromSubscriptionId = removeTeammateUserIdFromSubscriptionId
     self.sawUser = sawUser
+    self.updateEpisodeProgress = updateEpisodeProgress
     self.updateStripeSubscription = updateStripeSubscription
     self.updateUser = updateUser
     self.upsertUser = upsertUser
@@ -172,6 +175,7 @@ extension Client {
       registerUser: client.registerUser(withGitHubEnvelope:email:),
       removeTeammateUserIdFromSubscriptionId: client.remove(teammateUserId:fromSubscriptionId:),
       sawUser: client.sawUser(id:),
+      updateEpisodeProgress: client.updateEpisodeProgress(episodeSequence:userId:percent:),
       updateStripeSubscription: client.update(stripeSubscription:),
       updateUser: client.updateUser(withId:name:email:emailSettings:episodeCreditCount:rssSalt:),
       upsertUser: client.upsertUser(withGitHubEnvelope:email:)
@@ -388,6 +392,19 @@ private struct _Client {
     """,
       [userId.rawValue.uuidString]
       )
+      .map(const(unit))
+  }
+
+  func updateEpisodeProgress(episodeSequence: Episode.Sequence, userId: Models.User.Id, percent: Int) -> EitherIO<Error, Prelude.Unit> {
+    return self.execute(
+      #"""
+INSERT INTO "video_progresses" (episode_sequence, percent, user_id)
+VALUES ($1, $2, $3)
+ON CONFLICT (episode_sequence, user_id)
+SET "percent" = MAXIMUM(percent, $2)
+"""#,
+      [episodeSequence.rawValue, userId.rawValue.uuidString, percent]
+    )
       .map(const(unit))
   }
 
@@ -778,7 +795,7 @@ private struct _Client {
     )
   }
 
-  func redeemEpisodeCredit(episodeSequence: Int, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
+  func redeemEpisodeCredit(episodeSequence: Episode.Sequence, userId: Models.User.Id) -> EitherIO<Error, Prelude.Unit> {
 
     return self.execute(
       """
@@ -786,7 +803,7 @@ private struct _Client {
     VALUES ($1, $2)
     """,
       [
-        episodeSequence,
+        episodeSequence.rawValue,
         userId.rawValue.uuidString
       ]
       )
@@ -1030,6 +1047,18 @@ private struct _Client {
       ALTER TABLE "users"
       ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
       """
+      )))
+      .flatMap(const(execute(
+        #"""
+      CREATE TABLE IF NOT EXISTS "episode_progresses" (
+        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+        "episode_sequence" smallint NOT NULL,
+        "percent" smallint NOT NULL,
+        "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+        "updated_at" timestamp without time zone
+      )
+      """#
       )))
       .map(const(unit))
   }

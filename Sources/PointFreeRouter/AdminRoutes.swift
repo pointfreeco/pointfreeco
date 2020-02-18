@@ -11,7 +11,7 @@ public enum Admin: Equatable {
   case newEpisodeEmail(NewEpisodeEmail)
 
   public enum EpisodeCredit: Equatable {
-    case add(userId: User.Id?, episodeSequence: Int?)
+    case add(userId: User.Id?, episodeSequence: Episode.Sequence?)
     case show
   }
 
@@ -42,7 +42,7 @@ private let adminRouters: [Router<Admin>] = [
   .case { .episodeCredits(.add(userId: $0, episodeSequence: $1)) }
     <¢> post %> "episode-credits" %> "add"
     %> formField("user_id", Optional.iso.some >>> opt(.tagged(.uuid)))
-    <%> formField("episode_sequence", Optional.iso.some >>> opt(.int))
+    <%> formField("episode_sequence", Optional.iso.some >>> opt(.tagged(.int)))
     <% end,
 
   .case(.episodeCredits(.show))
