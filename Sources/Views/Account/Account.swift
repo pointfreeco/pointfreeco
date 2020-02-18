@@ -111,7 +111,7 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
 private func episodeLinkView(_ episode: Episode) -> Node {
   return .a(
     attributes: [
-      .href(path(to: .episode(.left(episode.slug)))),
+      .href(path(to: .episode(.show(.left(episode.slug))))),
       .class([Class.pf.colors.link.purple])
     ],
     .text("#\(episode.sequence): \(episode.title)")
