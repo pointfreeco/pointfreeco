@@ -1072,34 +1072,44 @@ private struct _Client {
       )))
       .flatMap(const(execute(
         """
-      CREATE SEQUENCE IF NOT EXISTS users_referral_code_sequence
-      """
-      )))
-      .flatMap(const(execute(
-        """
-      CREATE OR REPLACE FUNCTION next_referral_code (OUT result bigint)
-      AS $$
+      CREATE OR REPLACE FUNCTION gen_shortid(table_name text, column_name text)
+      RETURNS text AS $$
       DECLARE
-        pf_epoch bigint := 1517202000;
-        sequence_id bigint;
-        now bigint;
+        id text;
+        results text;
+        times integer := 0;
       BEGIN
-        SELECT
-          nextval('users_referral_code_sequence') % 1024 INTO sequence_id;
-        SELECT
-          FLOOR(EXTRACT(EPOCH FROM clock_timestamp())) INTO now;
-        result := (now - pf_epoch) << 19;
-        result := result | (sequence_id);
+        LOOP
+          id := encode(gen_random_bytes(6), 'base64');
+          id := replace(id, '/', 'p');
+          id := replace(id, '+', 'f');
+          EXECUTE 'SELECT '
+            || quote_ident(column_name)
+            || ' FROM '
+            || quote_ident(table_name)
+            || ' WHERE '
+            || quote_ident(column_name)
+            || ' = '
+            || quote_literal(id) INTO results;
+        IF results IS NULL THEN
+            EXIT;
+          END IF;
+          times := times + 1;
+          IF times > 100 THEN
+            id := NULL;
+            EXIT;
+          END IF;
+        END LOOP;
+        RETURN id;
       END;
-      $$
-      LANGUAGE PLPGSQL;
+      $$ LANGUAGE 'plpgsql';
       """
       )))
       .flatMap(const(execute(
         """
       ALTER TABLE "users"
       ADD COLUMN IF NOT EXISTS
-      "referral_code" bigint DEFAULT next_referral_code() NOT NULL
+      "referral_code" character varying DEFAULT gen_shortid('users', 'referral_code') NOT NULL
       """
       )))
       .flatMap(const(execute(
