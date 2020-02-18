@@ -1054,21 +1054,21 @@ private struct _Client {
       )))
       .flatMap(const(execute(
         #"""
-      CREATE TABLE IF NOT EXISTS "episode_progresses" (
-        "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-        "episode_sequence" smallint NOT NULL,
-        "percent" smallint NOT NULL,
-        "user_id" uuid REFERENCES "users" ("id") NOT NULL,
-        "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
-        "updated_at" timestamp without time zone
-      )
-      """#
+        CREATE TABLE IF NOT EXISTS "episode_progresses" (
+          "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+          "episode_sequence" smallint NOT NULL,
+          "percent" smallint NOT NULL,
+          "user_id" uuid REFERENCES "users" ("id") NOT NULL,
+          "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+          "updated_at" timestamp without time zone
+        )
+        """#
       )))
       .flatMap(const(execute(
         """
-      CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
-      ON "episode_progresses" ("episode_sequence", "user_id")
-      """
+        CREATE UNIQUE INDEX IF NOT EXISTS "index_episode_progresses_on_episode_sequence_user_id"
+        ON "episode_progresses" ("episode_sequence", "user_id")
+        """
       )))
       .map(const(unit))
   }
