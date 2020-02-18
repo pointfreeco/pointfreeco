@@ -1,5 +1,6 @@
 import ApplicativeRouter
 import Either
+import EmailAddress
 import Foundation
 import Models
 import PointFreePrelude

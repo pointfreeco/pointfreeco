@@ -14,54 +14,54 @@ import Prelude
 import Styleguide
 import Stripe
 
-let stripeWebhookMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Event<Either<Invoice, Stripe.Subscription>>,
-  Data
-  >
+let stripeWebhookMiddleware
   = validateStripeSignature
-    <<< filter(
-      { $0.data.object.either({ $0.number != nil }, const(true)) },
-      or: writeStatus(.ok) >=> respond(text: "OK")
-    )
-    <<< filterMap(
-      extraSubscriptionId(fromEvent:) >>> pure,
-      or: stripeHookFailure(
-        subject: "[PointFree Error] Stripe Hook Failed!",
-        body: "Couldn't extract subscription id from event payload."
-      )
-    )
+    <<< filterInvalidInvoices
+    <<< requireSubscriptionId
     <| handleFailedPayment
 
-private func validateStripeSignature<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-  )
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+private let filterInvalidInvoices
+  : MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>>
+  = filter(
+    { $0.data.object.either({ $0.number != nil }, const(true)) },
+    or: writeStatus(.ok) >=> respond(text: "OK")
+)
 
-    return { conn in
-      let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
-        .map(keysWithAllValues(separator: ","))
-        ?? []
+private let requireSubscriptionId
+  : MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.Id>
+  = filterMap(
+    extraSubscriptionId(fromEvent:) >>> pure,
+    or: stripeHookFailure(
+      subject: "[PointFree Error] Stripe Hook Failed!",
+      body: "Couldn't extract subscription id from event payload."
+    )
+)
 
-      let params = Dictionary(pairs, uniquingKeysWith: +)
+private func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
+  
+  return { conn in
+    let pairs = conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+      .map(keysWithAllValues(separator: ","))
+      ?? []
 
-      guard
-        let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
-        shouldTolerate(timestamp),
-        let signatures = params["v1"],
-        let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
-        signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
-        else {
-          return conn
-            |> stripeHookFailure(
-              subject: "[PointFree Error] Stripe Hook Failed!",
-              body: "Couldn't verify signature."
-          )
-      }
+    let params = Dictionary(pairs, uniquingKeysWith: +)
 
-      return conn |> middleware
+    guard
+      let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
+      shouldTolerate(timestamp),
+      let signatures = params["v1"],
+      let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
+      signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
+      else {
+        return conn
+          |> stripeHookFailure(
+            subject: "[PointFree Error] Stripe Hook Failed!",
+            body: "Couldn't verify signature."
+        )
     }
+
+    return conn |> middleware
+  }
 }
 
 private func isSignatureValid(timestamp: TimeInterval, payload: String) -> (String) -> Bool {

@@ -31,7 +31,6 @@ class HomeTests: TestCase {
 
     update(
       &Current, 
-      \.database .~ .mock,
       \.episodes .~ unzurry(eps)
     )
   }

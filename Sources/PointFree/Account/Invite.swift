@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import Foundation
 import HttpPipeline
 import Mailgun
@@ -12,12 +13,10 @@ import Tuple
 import Views
 
 let showInviteMiddleware =
-  redirectCurrentSubscribers
-    <<< requireTeamInvite
-    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
+  validateTeamInvite
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.showInviteView,
       layoutData: { teamInvite, inviter, currentUser in
         SimplePageLayoutData(
@@ -28,10 +27,16 @@ let showInviteMiddleware =
     }
 )
 
+private let validateTeamInvite
+  : MT<Tuple2<TeamInvite.Id, User?>, Tuple3<TeamInvite, User, User?>>
+  = redirectCurrentSubscribers
+    <<< requireTeamInvite
+    <<< filterMap(fetchTeamInviter, or: redirect(to: .home))
+
 private let genericInviteError = "You need to be the inviter to do that!"
 
-let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
-  requireTeamInvite
+let revokeInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
+  = requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< filter(
       validateCurrentUserIsInviter,
@@ -54,8 +59,8 @@ let revokeInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
       )
 }
 
-let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
-  filterMap(require2 >>> pure, or: loginAndRedirect)
+let resendInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
+  = filterMap(require2 >>> pure, or: loginAndRedirect)
     <<< requireTeamInvite
     <<< filter(
       validateCurrentUserIsInviter,
@@ -73,8 +78,8 @@ let resendInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
       )
 }
 
-let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<TeamInvite.Id, User?>, Data> =
-  redirectCurrentSubscribers
+let acceptInviteMiddleware: M<Tuple2<TeamInvite.Id, User?>>
+  = redirectCurrentSubscribers
     <<< requireTeamInvite
     <<< filterMap(require2 >>> pure, or: loginAndRedirect)
     <| { conn in
@@ -127,14 +132,8 @@ let acceptInviteMiddleware: Middleware<StatusLineOpen, ResponseEnded, Tuple2<Tea
         .flatMap(const(conn |> redirect(to: path(to: .account(.index)))))
 }
 
-let addTeammateViaInviteMiddleware: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple2<User?, EmailAddress?>,
-  Data
-  > =
-  filterMap(require1 >>> pure, or: loginAndRedirect)
-    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
+let addTeammateViaInviteMiddleware
+  = requireUserAndValidEmail
     <<< requireStripeSubscription
     <<< requireActiveSubscription
     <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
@@ -152,6 +151,11 @@ let addTeammateViaInviteMiddleware: Middleware<
           success: map(const(email .*. inviter .*. unit)) >>> sendInviteMiddleware
       )
 }
+
+private let requireUserAndValidEmail
+  : MT<Tuple2<User?, EmailAddress?>, Tuple2<User, EmailAddress>>
+  = filterMap(require1 >>> pure, or: loginAndRedirect)
+    <<< filterMap(require2 >>> pure, or: invalidSubscriptionErrorMiddleware)
 
 let sendInviteMiddleware =
   filterMap(require2 >>> pure, or: loginAndRedirect)
@@ -195,8 +199,8 @@ func invalidSubscriptionErrorMiddleware<A>(
 }
 
 private func requireTeamInvite<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite, A>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T2<TeamInvite.Id, A>, Data> {
+  _ middleware: @escaping M<T2<TeamInvite, A>>
+  ) -> M<T2<TeamInvite.Id, A>> {
 
   return { conn in
     Current.database.fetchTeamInvite(get1(conn.data))
@@ -207,7 +211,7 @@ private func requireTeamInvite<A>(
         case .left:
           return conn.map(const(unit))
             |> writeStatus(.notFound)
-            >=> _respond(
+            >=> respond(
               view: { _ in inviteNotFoundView },
               layoutData: { data in
                 SimplePageLayoutData(
@@ -256,8 +260,8 @@ private func validateActiveStripeSubscription(
 }
 
 private func redirectCurrentSubscribers<A, B>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, T3<A, User?, B>, Data>
-  ) -> Middleware<StatusLineOpen, ResponseEnded, T3<A, User?, B>, Data> {
+  _ middleware: @escaping M<T3<A, User?, B>>
+  ) -> M<T3<A, User?, B>> {
 
   return { conn in
     guard

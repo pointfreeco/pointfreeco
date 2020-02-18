@@ -1,4 +1,5 @@
 import Either
+import EmailAddress
 import HttpPipeline
 import Foundation
 import Models
@@ -9,16 +10,12 @@ import Stripe
 import Tuple
 import Views
 
-public let subscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
-  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>,
-  Data
-  >
+public let subscribeConfirmation
+  : M<Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>>
   = redirectActiveSubscribers(user: get1)
     <| writeStatus(.ok)
     >=> map(lower)
-    >>> _respond(
+    >>> respond(
       view: Views.subscriptionConfirmation,
       layoutData: { currentUser, currentRoute, subscriberState, lane, subscribeData, coupon in
         SimplePageLayoutData(
@@ -42,11 +39,16 @@ public let subscribeConfirmation: Middleware<
     }
 )
 
-public let discountSubscribeConfirmation: Middleware<
-  StatusLineOpen,
-  ResponseEnded,
+public let discountSubscribeConfirmation
+  = fetchAndValidateCoupon
+    <| map(over6(Optional.some))
+    >>> pure
+    >=> subscribeConfirmation
+
+private let fetchAndValidateCoupon
+  : MT<
   Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon.Id?>,
-  Data
+  Tuple6<User?, Route, SubscriberState, Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon>
   >
   = filterMap(
     over6(fetchCoupon) >>> sequence6 >>> map(require6),
@@ -71,10 +73,7 @@ public let discountSubscribeConfirmation: Middleware<
         ),
         headersMiddleware: flash(.error, couponError)
       )
-    )
-    <| map(over6(Optional.some))
-    >>> pure
-    >=> subscribeConfirmation
+)
 
 private let couponError = "That coupon code is invalid or has expired."
 
@@ -96,17 +95,11 @@ func redirectActiveSubscribers<A>(
         let user = user(conn.data)
 
         let userSubscription = (user?.subscriptionId)
-          .map(
-            Current.database.fetchSubscriptionById
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionById($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let ownerSubscription = (user?.id)
-          .map(
-            Current.database.fetchSubscriptionByOwnerId
-              >>> mapExcept(requireSome)
-          )
+          .map { Current.database.fetchSubscriptionByOwnerId($0).mapExcept(requireSome) }
           ?? throwE(unit)
 
         let race = (userSubscription.run.parallel <|> ownerSubscription.run.parallel).sequential

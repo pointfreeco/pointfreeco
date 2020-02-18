@@ -1,3 +1,4 @@
+import EmailAddress
 import FunctionalCss
 import Either
 import Html
@@ -12,19 +13,18 @@ import Views
 
 public func sendWelcomeEmails() -> EitherIO<Error, Prelude.Unit> {
   let zippedEmails = zip3(
-      Current.database.fetchUsersToWelcome(1)
-        .map(map(welcomeEmail1))
-        .run.parallel,
-      Current.database.fetchUsersToWelcome(2)
-        .map(map(welcomeEmail2))
-        .run.parallel,
-      Current.database.fetchUsersToWelcome(3)
-        .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
-        .map(map(welcomeEmail3))
-        .run.parallel
+    Current.database.fetchUsersToWelcome(1)
+      .map(map(welcomeEmail1))
+      .run.parallel,
+    Current.database.fetchUsersToWelcome(2)
+      .map(map(welcomeEmail2))
+      .run.parallel,
+    Current.database.fetchUsersToWelcome(3)
+      .flatMap { users in Current.database.incrementEpisodeCredits(users.map(^\.id)) }
+      .map(map(welcomeEmail3))
+      .run.parallel
   )
-  let flattenedEmails = zippedEmails
-    .map { curry { $0 + $1 + $2 } <¢> $0 <*> $1 <*> $2 }
+  let flattenedEmails = zippedEmails.map { $0 <> $1 <> $2 }
   let emails = EitherIO(run: flattenedEmails.sequential)
 
   let delayedSend = send(email:)

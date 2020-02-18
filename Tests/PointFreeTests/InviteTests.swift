@@ -1,5 +1,6 @@
 import Database
 import DatabaseTestSupport
+import EmailAddress
 import GitHub
 import Either
 import HttpPipeline
@@ -15,87 +16,10 @@ import Stripe
 import StripeTestSupport
 import XCTest
 
-class InviteTests: TestCase {
+class InviteIntegrationTests: LiveDatabaseTestCase {
   override func setUp() {
     super.setUp()
 //    record = true
-  }
-
-  func testShowInvite_LoggedOut() {
-    update(&Current, \.database .~ .mock)
-
-    let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
-    let conn = connection(from: showInvite)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
-        ]
-      )
-    }
-    #endif
-  }
-
-  func testShowInvite_LoggedIn_NonSubscriber() {
-    let currentUser = Models.User.mock
-      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
-
-    let invite = Models.TeamInvite.mock
-      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
-
-    let db = Database.Client.mock
-      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(nil))
-
-    update(&Current, \.database .~ db)
-
-    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
-    let conn = connection(from: showInvite)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-
-    #if !os(Linux)
-    if self.isScreenshotTestingAvailable {
-      assertSnapshots(
-        matching: conn |> siteMiddleware,
-        as: [
-          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
-          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
-        ]
-      )
-    }
-    #endif
-  }
-
-  func testShowInvite_LoggedIn_Subscriber() {
-    let currentUser = User.mock
-      |> \.id .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
-
-    let invite = TeamInvite.mock
-      |> \.inviterUserId .~ .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
-
-    let db = Database.Client.mock
-      |> (\Database.Client.fetchUserById) .~ const(pure(.some(currentUser)))
-      |> \.fetchTeamInvite .~ const(pure(.some(invite)))
-      |> \.fetchSubscriptionById .~ const(pure(.mock))
-
-    update(
-      &Current,
-      \.database .~ db,
-      \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .active))
-    )
-
-    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
-    let conn = connection(from: showInvite)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 
   func testResendInvite_HappyPath() {
@@ -105,34 +29,6 @@ class InviteTests: TestCase {
       .right!!
 
     let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", currentUser.id)
-      .run
-      .perform()
-      .right!
-
-    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
-    let conn = connection(from: resendInvite)
-
-    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
-  }
-
-  func testResendInvite_CurrentUserIsNotInviter() {
-    let currentUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 1,
-      "hello@pointfree.co"
-      )
-      .run
-      .perform()
-      .right!!
-
-    let inviterUser = Current.database.registerUser(
-      .mock |> \.gitHubUser.id .~ 2,
-      "inviter@pointfree.co"
-      )
-      .run
-      .perform()
-      .right!!
-
-    let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
       .run
       .perform()
       .right!
@@ -355,7 +251,7 @@ class InviteTests: TestCase {
       .right!
 
     update(&Current, \.stripe.fetchSubscription .~ const(pure(.mock |> \.status .~ .canceled)))
-    
+
     let acceptInvite = request(to: .invite(.accept(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
     let conn = connection(from: acceptInvite)
 
@@ -410,5 +306,109 @@ class InviteTests: TestCase {
       [currentUser.id],
       teamInvites.map { $0.inviterUserId }
     )
+  }
+
+  func testResendInvite_CurrentUserIsNotInviter() {
+    let currentUser = Current.database.registerUser(
+      .mock |> \.gitHubUser.id .~ 1,
+      "hello@pointfree.co"
+      )
+      .run
+      .perform()
+      .right!!
+
+    let inviterUser = Current.database.registerUser(
+      .mock |> \.gitHubUser.id .~ 2,
+      "inviter@pointfree.co"
+      )
+      .run
+      .perform()
+      .right!!
+
+    let teamInvite = Current.database.insertTeamInvite("blobber@pointfree.co", inviterUser.id)
+      .run
+      .perform()
+      .right!
+
+    let resendInvite = request(to: .invite(.resend(teamInvite.id)), session: .init(flash: nil, userId: currentUser.id))
+    let conn = connection(from: resendInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+  }
+}
+
+class InviteTests: TestCase {
+  override func setUp() {
+    super.setUp()
+//    record = true
+  }
+
+  func testShowInvite_LoggedOut() {
+    update(&Current, \.database .~ .mock)
+
+    let showInvite = request(to: .invite(.show(Models.TeamInvite.mock.id)))
+    let conn = connection(from: showInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testShowInvite_LoggedIn_NonSubscriber() {
+    var currentUser = Models.User.mock
+    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+
+    var invite = Models.TeamInvite.mock
+    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchSubscriptionById = const(pure(nil))
+
+    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+    let conn = connection(from: showInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
+
+    #if !os(Linux)
+    if self.isScreenshotTestingAvailable {
+      assertSnapshots(
+        matching: conn |> siteMiddleware,
+        as: [
+          "desktop": .ioConnWebView(size: .init(width: 1080, height: 800)),
+          "mobile": .ioConnWebView(size: .init(width: 400, height: 800))
+        ]
+      )
+    }
+    #endif
+  }
+
+  func testShowInvite_LoggedIn_Subscriber() {
+    var currentUser = User.mock
+    currentUser.id = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0002")!)
+
+    var invite = TeamInvite.mock
+    invite.inviterUserId = .init(rawValue: UUID(uuidString: "deadbeef-dead-beef-dead-beefdead0001")!)
+
+    Current.database.fetchUserById = const(pure(.some(currentUser)))
+    Current.database.fetchTeamInvite = const(pure(.some(invite)))
+    Current.database.fetchSubscriptionById = const(pure(.mock))
+
+    Current.stripe.fetchSubscription = const(pure(.mock |> \.status .~ .active))
+
+    let showInvite = request(to: .invite(.show(invite.id)), session: .loggedIn)
+    let conn = connection(from: showInvite)
+
+    assertSnapshot(matching: conn |> siteMiddleware, as: .ioConn)
   }
 }

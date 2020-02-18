@@ -1,3 +1,4 @@
+import EmailAddress
 import Foundation
 import Html
 import HttpPipeline
@@ -29,17 +30,18 @@ func requireAdmin<A>(
       <| middleware
 }
 
-let adminIndex: AppMiddleware<Tuple1<User>> = writeStatus(.ok)
-  >=> map(lower)
-  >>> _respond(
-    view: adminIndexView(currentUser:),
-    layoutData: { currentUser in
-      SimplePageLayoutData(
-        currentUser: currentUser,
-        data: currentUser,
-        title: "Admin"
-      )
-  }
+let adminIndex
+  = writeStatus(.ok)
+    >=> map(lower)
+    >>> respond(
+      view: adminIndexView(currentUser:),
+      layoutData: { currentUser in
+        SimplePageLayoutData(
+          currentUser: currentUser,
+          data: currentUser,
+          title: "Admin"
+        )
+    }
 )
 
 private func adminIndexView(currentUser: User) -> Node {
