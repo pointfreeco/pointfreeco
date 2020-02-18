@@ -33,6 +33,7 @@ public struct Client {
   public var fetchTeamInvites: (Models.User.Id) -> EitherIO<Error, [TeamInvite]>
   public var fetchUserByGitHub: (GitHubUser.Id) -> EitherIO<Error, Models.User?>
   public var fetchUserById: (Models.User.Id) -> EitherIO<Error, Models.User?>
+  public var fetchUserByReferralCode: (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>
   public var fetchUsersSubscribedToNewsletter: (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>
   public var fetchUsersToWelcome: (Int) -> EitherIO<Error, [Models.User]>
   public var incrementEpisodeCredits: ([Models.User.Id]) -> EitherIO<Error, [Models.User]>
@@ -70,6 +71,7 @@ public struct Client {
     fetchTeamInvites: @escaping (Models.User.Id) -> EitherIO<Error, [TeamInvite]>,
     fetchUserByGitHub: @escaping (GitHubUser.Id) -> EitherIO<Error, Models.User?>,
     fetchUserById: @escaping (Models.User.Id) -> EitherIO<Error, Models.User?>,
+    fetchUserByReferralCode: @escaping (Models.User.ReferralCode) -> EitherIO<Error, Models.User?>,
     fetchUsersSubscribedToNewsletter: @escaping (EmailSetting.Newsletter, Either<Prelude.Unit, Prelude.Unit>?) -> EitherIO<Error, [Models.User]>,
     fetchUsersToWelcome: @escaping (Int) -> EitherIO<Error, [Models.User]>,
     incrementEpisodeCredits: @escaping ([Models.User.Id]) -> EitherIO<Error, [Models.User]>,
@@ -106,6 +108,7 @@ public struct Client {
     self.fetchTeamInvites = fetchTeamInvites
     self.fetchUserByGitHub = fetchUserByGitHub
     self.fetchUserById = fetchUserById
+    self.fetchUserByReferralCode = fetchUserByReferralCode
     self.fetchUsersSubscribedToNewsletter = fetchUsersSubscribedToNewsletter
     self.fetchUsersToWelcome = fetchUsersToWelcome
     self.incrementEpisodeCredits = incrementEpisodeCredits
@@ -166,6 +169,7 @@ extension Client {
       fetchTeamInvites: client.fetchTeamInvites(inviterId:),
       fetchUserByGitHub: client.fetchUser(byGitHubUserId:),
       fetchUserById: client.fetchUser(byUserId:),
+      fetchUserByReferralCode: client.fetchUser(byReferralCode:),
       fetchUsersSubscribedToNewsletter: client.fetchUsersSubscribed(to:nonsubscriberOrSubscriber:),
       fetchUsersToWelcome: client.fetchUsersToWelcome(fromWeeksAgo:),
       incrementEpisodeCredits: client.incrementEpisodeCredits(for:),
@@ -548,6 +552,18 @@ private struct _Client {
     LIMIT 1
     """,
       [id.rawValue.uuidString]
+    )
+  }
+
+  func fetchUser(byReferralCode referralCode: Models.User.ReferralCode) -> EitherIO<Error, Models.User?> {
+    return self.firstRow(
+      """
+    SELECT *
+    FROM "users"
+    WHERE "referral_code" = $1
+    LIMIT 1
+    """,
+      [referralCode.rawValue]
     )
   }
 

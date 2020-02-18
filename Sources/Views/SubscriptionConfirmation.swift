@@ -19,6 +19,7 @@ public func subscriptionConfirmation(
   coupon: Stripe.Coupon?,
   currentUser: User?,
   subscriberState: SubscriberState = .nonSubscriber,
+  referrer: User?,
   episodeStats: EpisodeStats,
   stripeJs: String,
   stripePublishableKey: Stripe.Client.PublishableKey
@@ -34,6 +35,7 @@ public func subscriptionConfirmation(
     header(
       currentUser: currentUser,
       subscriberState: subscriberState,
+      referrer: referrer,
       episodeStats: episodeStats,
       lane: lane
     ),
@@ -42,36 +44,33 @@ public func subscriptionConfirmation(
     currentUser != nil
       ? payment(lane: lane, coupon: coupon, stripeJs: stripeJs, stripePublishableKey: stripePublishableKey)
       : [],
-    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon, referralCode: subscribeData.referralCode)
+    total(isLoggedIn: currentUser != nil, lane: lane, coupon: coupon, referrer: referrer)
   )
 }
 
 private func header(
   currentUser: User? = nil,
   subscriberState: SubscriberState = .nonSubscriber,
+  referrer: User?,
   episodeStats: EpisodeStats,
   lane: Pricing.Lane
 ) -> Node {
-  return [
-    .input(
-      attributes: [
-        .name("pricing[lane]"),
-        .type(.hidden),
-        .value(lane.rawValue),
-      ]
-    ),
-    .gridRow(
-      attributes: [.class([moduleRowClass])],
-      .gridColumn(
-        sizes: [.mobile: 12],
-        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
-      ),
+
+  let header: Node
+  if let referrer = referrer {
+    header = [
       .gridColumn(
         sizes: [:],
         attributes: [.class([Class.grid.start(.mobile)])],
-        "You selected the ",
-        .strong([lane == .personal ? "Personal" : "Team"]),
-        " plan"
+        "Subscribe today to get \(.strong("one month free*")) and instant access to:"
+      ),
+    ]
+  } else {
+    header = [
+      .gridColumn(
+        sizes: [:],
+        attributes: [.class([Class.grid.start(.mobile)])],
+        "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
       ),
       .gridColumn(
         sizes: [:],
@@ -81,12 +80,31 @@ private func header(
             .class([
               Class.pf.colors.link.gray650,
               Class.pf.type.underlineLink
-              ]),
+            ]),
             .href(url(to: .pricingLanding))
           ],
           "Change plan"
         )
       ),
+    ]
+  }
+
+  return [
+    .input(
+      attributes: [
+        .name("pricing[lane]"),
+        .type(.hidden),
+        .value(lane.rawValue),
+      ]
+    ),
+    
+    .gridRow(
+      attributes: [.class([moduleRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 12],
+        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
+      ),
+      header,
       planFeatures(
         currentUser: currentUser,
         episodeStats: episodeStats,
@@ -117,7 +135,7 @@ private func planFeatures(
           Class.pf.type.body.regular,
           Class.typeScale([.mobile: .r1, .desktop: .r0_875]),
           Class.pf.colors.fg.gray400
-          ]),
+        ]),
         .style(flex(grow: 1, shrink: 0, basis: .auto))
       ],
       .fragment(
@@ -127,10 +145,10 @@ private func planFeatures(
         )
           .features
           .map { feature in
-          .li(
-            attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
-            [.text(feature)]
-          )
+            .li(
+              attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
+              .text(feature)
+            )
         }
       )
     )
@@ -141,16 +159,14 @@ private func teamMembers(
   lane: Pricing.Lane,
   currentUser: User,
   subscribeData: SubscribeConfirmationData
-  ) -> Node {
+) -> Node {
 
   guard lane == .team else {
-    return [
-      .input(attributes: [
-        .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
-        .type(.hidden),
-        .value("true")
-        ])
-    ]
+    return .input(attributes: [
+      .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
+      .type(.hidden),
+      .value("true")
+    ])
   }
 
   return .gridRow(
@@ -209,7 +225,7 @@ updateSeats()
           Class.pf.type.body.small,
           Class.pf.colors.fg.gray400,
           Class.padding([.mobile: [.top: 3]])
-          ])
+        ])
       ],
       """
 You must have at least two seats for your team subscription. You can add additional team members at any time
@@ -225,7 +241,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
       .name(SubscribeData.CodingKeys.isOwnerTakingSeat.rawValue),
       .type(.hidden),
       .value("false")
-      ])
+    ])
   }
 
   return .gridColumn(
@@ -237,7 +253,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.top: 1]]),
-        ]),
+      ]),
       .style(lineHeight(0))
     ],
     .div(
@@ -245,7 +261,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         .class([
           Class.flex.flex,
           Class.grid.middle(.mobile)
-          ])
+        ])
       ],
       .input(
         attributes: [
@@ -262,7 +278,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
             Class.pf.colors.bg.green,
             Class.border.circle,
             Class.margin([.mobile: [.right: 1]])
-            ]),
+          ]),
           .style(width(.px(24)) <> height(.px(24)))
         ]
       ),
@@ -280,7 +296,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
             Class.type.light,
             Class.pf.type.body.small,
             Class.pf.type.underlineLink
-            ]),
+          ]),
           .onclick(
             safe: """
 var ownerRow = this.parentNode.parentNode
@@ -309,7 +325,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.top: 1]])
-        ]),
+      ]),
       .style(lineHeight(0))
     ],
     .div(
@@ -317,7 +333,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         .class([
           Class.flex.flex,
           Class.grid.middle(.mobile)
-          ])
+        ])
       ],
       .img(
         base64: mailIconSvg,
@@ -326,7 +342,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
         attributes: [
           .class([
             Class.margin([.mobile: [.right: 1]])
-            ]),
+          ]),
           .style(width(.px(24)) <> height(.px(24)))
         ]
       ),
@@ -340,7 +356,7 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
             <> key("outline", "none")
         ),
         .value(email.rawValue),
-        ]),
+      ]),
       withRemoveButton
         ? .a(attributes: [
           .class([
@@ -350,13 +366,13 @@ private func teamMemberTemplate(_ email: EmailAddress, withRemoveButton: Bool) -
             Class.type.light,
             Class.pf.type.body.small,
             Class.pf.type.underlineLink
-            ]),
+          ]),
           .onclick(safe: """
 var teamMemberRow = this.parentNode.parentNode
 teamMemberRow.parentNode.removeChild(teamMemberRow)
 updateSeats()
 """)
-          ], "Remove")
+        ], "Remove")
         : []
     )
   )
@@ -381,7 +397,7 @@ private func billingPeriod(
         Class.border.all,
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]])
-        ]),
+      ]),
       .style(lineHeight(0))
     ],
     .label(
@@ -390,7 +406,7 @@ private func billingPeriod(
           Class.cursor.pointer,
           Class.flex.flex,
           Class.flex.items.baseline
-          ])
+        ])
       ],
       .div(
         .input(
@@ -410,7 +426,7 @@ private func billingPeriod(
             .class([
               Class.pf.type.responsiveTitle6,
               Class.margin([.mobile: [.all: 0]])
-              ])
+            ])
           ],
           lane == .team
             ? "Yearly — Save 25% off monthly billing!"
@@ -422,7 +438,7 @@ private func billingPeriod(
               Class.padding([.mobile: [.top: 1]]),
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray650
-              ])
+            ])
           ],
           lane == .team
             ? "$144 per member per year"
@@ -441,7 +457,7 @@ private func billingPeriod(
         Class.border.bottom,
         Class.pf.colors.border.gray850,
         Class.padding([.mobile: [.all: 2]])
-        ]),
+      ]),
       .style(lineHeight(0))
     ],
     .label(
@@ -450,7 +466,7 @@ private func billingPeriod(
           Class.cursor.pointer,
           Class.flex.flex,
           Class.flex.items.baseline
-          ])
+        ])
       ],
       .div(
         .input(
@@ -470,7 +486,7 @@ private func billingPeriod(
             .class([
               Class.pf.type.responsiveTitle6,
               Class.margin([.mobile: [.all: 0]])
-              ])
+            ])
           ],
           "Monthly"
         ),
@@ -480,7 +496,7 @@ private func billingPeriod(
               Class.padding([.mobile: [.top: 1]]),
               Class.pf.type.body.small,
               Class.pf.colors.fg.gray650
-              ])
+            ])
           ],
           lane == .team
             ? "$16 per member, per month"
@@ -569,7 +585,7 @@ private func payment(
           .class([
             Class.pf.colors.fg.red,
             Class.pf.type.body.small,
-            ]),
+          ]),
           .id("card-errors"),
         ]
       ),
@@ -643,7 +659,7 @@ private func discountedTotalDisclaimer(coupon: Coupon?) -> Node {
       .class([
         Class.pf.type.body.small,
         Class.pf.colors.fg.gray400
-        ]),
+      ]),
     ],
     .br,
     .br,
@@ -671,16 +687,17 @@ private func total(
   isLoggedIn: Bool,
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
-  referralCode: User.ReferralCode?
+  referrer: User?
 ) -> Node {
   let discount = coupon?.discount ?? { $0 }
+  let referralDiscount = referrer == nil ? 0 : 18
   return .gridRow(
     attributes: [
       .class([
         Class.margin([.mobile: [.leftRight: 2], .desktop: [.leftRight: 4]]),
         Class.padding([.mobile: [.top: 3, .bottom: 4], .desktop: [.top: 3, .bottom: 4]]),
         Class.grid.middle(.mobile)
-        ])
+      ])
     ],
     .gridColumn(
       sizes: [.mobile: 12],
@@ -690,7 +707,7 @@ private func total(
           .class([
             Class.pf.type.body.small,
             Class.pf.colors.fg.gray400
-            ]),
+          ]),
           .id("pricing-preview"),
         ],
         []
@@ -706,7 +723,7 @@ private func total(
             Class.flex.flex,
             Class.flex.align.center,
             Class.grid.middle(.mobile),
-            ])
+          ])
         ],
         .h3(
           attributes: [
@@ -721,7 +738,7 @@ private func total(
         .input(attributes: [
           .name("pricing[quantity]"),
           .type(.hidden),
-          ]),
+        ]),
         .script(unsafe: #"""
 function format(money) {
   return "$" + money.toFixed(2).replace(/\.00$/, "")
@@ -747,8 +764,8 @@ function updateSeats() {
   var monthlyPrice = seats * monthlyPricePerSeat
   document.getElementById("total").textContent = format(
     monthly
-      ? monthlyPrice
-      : monthlyPrice * 12
+      ? (monthlyPrice - \#(referralDiscount))
+      : (monthlyPrice * 12 - \#(referralDiscount))
   )
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
@@ -772,7 +789,7 @@ window.addEventListener("load", function() {
               Class.pf.colors.fg.gray400,
               Class.margin([.mobile: [.left: 1]]),
               Class.padding([.mobile: [.bottom: 1]])
-              ])
+            ])
           ],
           "Total"
         )
@@ -812,7 +829,7 @@ window.addEventListener("load", function() {
                     billing: nil,
                     isOwnerTakingSeat: nil,
                     teammates: nil,
-                    referralCode: referralCode
+                    referralCode: referrer?.referralCode
                 )
               )
             )
