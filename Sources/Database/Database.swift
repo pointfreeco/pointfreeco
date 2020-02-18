@@ -1031,6 +1031,45 @@ private struct _Client {
       ADD FOREIGN KEY ("subscription_id") REFERENCES "subscriptions" ("id")
       """
       )))
+      .flatMap(const(execute(
+        """
+      CREATE SEQUENCE IF NOT EXISTS users_referral_code_sequence
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      CREATE OR REPLACE FUNCTION next_referral_code (OUT result bigint)
+      AS $$
+      DECLARE
+        pf_epoch bigint := 1517202000;
+        sequence_id bigint;
+        now bigint;
+      BEGIN
+        SELECT
+          nextval('users_referral_code_sequence') % 1024 INTO sequence_id;
+        SELECT
+          FLOOR(EXTRACT(EPOCH FROM clock_timestamp())) INTO now;
+        result := (now - pf_epoch) << 19;
+        result := result | (sequence_id);
+      END;
+      $$
+      LANGUAGE PLPGSQL;
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referral_code" bigint DEFAULT next_referral_code() NOT NULL
+      """
+      )))
+      .flatMap(const(execute(
+        """
+      ALTER TABLE "users"
+      ADD COLUMN IF NOT EXISTS
+      "referrer_id" uuid REFERENCES "users" ("id")
+      """
+      )))
       .map(const(unit))
   }
 
